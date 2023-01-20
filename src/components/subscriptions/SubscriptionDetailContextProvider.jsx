@@ -4,6 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import {
   DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
+  PAGE_SIZE,
 } from './data/constants';
 import { useSubscriptionUsersOverview, useSubscriptionUsers } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
@@ -12,13 +13,14 @@ export const SubscriptionDetailContext = createContext({});
 export const defaultStatusFilter = [ASSIGNED, ACTIVATED, REVOKED].join();
 
 const SubscriptionDetailContextProvider = ({
-  children, subscription, disableDataFetching,
+  children, subscription, disableDataFetching, pageSize,
 }) => {
   // Initialize state needed for the subscription detail view and provide in SubscriptionDetailContext
   const { data: subscriptions, errors, setErrors } = useContext(SubscriptionContext);
   const hasMultipleSubscriptions = subscriptions.count > 1;
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchQuery, setSearchQuery] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
   const [overview, forceRefreshOverview] = useSubscriptionUsersOverview({
     subscriptionUUID: subscription.uuid,
     search: searchQuery,
@@ -30,12 +32,14 @@ const SubscriptionDetailContextProvider = ({
 
   const [users, forceRefreshUsers, loadingUsers] = useSubscriptionUsers({
     currentPage,
+    sortBy,
     searchQuery,
     subscriptionUUID: subscription.uuid,
     errors,
     setErrors,
     userStatusFilter,
     isDisabled: disableDataFetching,
+    pageSize,
   });
 
   const forceRefreshDetailView = useCallback(() => {
@@ -45,11 +49,13 @@ const SubscriptionDetailContextProvider = ({
 
   const context = useMemo(() => ({
     currentPage,
+    sortBy,
     hasMultipleSubscriptions,
     forceRefreshOverview,
     overview,
     searchQuery,
     setCurrentPage,
+    setSortBy,
     setSearchQuery,
     subscription,
     users,
@@ -59,6 +65,7 @@ const SubscriptionDetailContextProvider = ({
     forceRefreshDetailView,
   }), [
     currentPage,
+    sortBy,
     searchQuery,
     hasMultipleSubscriptions,
     overview,
@@ -82,10 +89,12 @@ SubscriptionDetailContextProvider.propTypes = {
     uuid: PropTypes.string.isRequired,
   }).isRequired,
   disableDataFetching: PropTypes.bool,
+  pageSize: PropTypes.number,
 };
 
 SubscriptionDetailContextProvider.defaultProps = {
   disableDataFetching: false,
+  pageSize: PAGE_SIZE,
 };
 
 export default SubscriptionDetailContextProvider;

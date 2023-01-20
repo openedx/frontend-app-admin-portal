@@ -8,6 +8,7 @@ import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
 import SubscriptionDetailContextProvider from '../subscriptions/SubscriptionDetailContextProvider';
 import { useSubscriptionFromParams } from '../subscriptions/data/contextHooks';
 import SubscriptionDetailsSkeleton from '../subscriptions/SubscriptionDetailsSkeleton';
+import { LPR_SUBSCRIPTION_PAGE_SIZE } from '../subscriptions/data/constants';
 
 // eslint-disable-next-line no-unused-vars
 export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
@@ -25,10 +26,14 @@ export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
     );
   }
   return (
-    <SubscriptionDetailContextProvider subscription={subscription}>
+    <SubscriptionDetailContextProvider
+      key={subscription.uuid}
+      subscription={subscription}
+      pageSize={LPR_SUBSCRIPTION_PAGE_SIZE}
+    >
       <SubscriptionExpirationModals />
       <SubscriptionDetails />
-      <LicenseAllocationDetails />
+      <LicenseAllocationDetails key={subscription.uuid} subscriptionUUID={subscription.uuid} />
     </SubscriptionDetailContextProvider>
   );
 };

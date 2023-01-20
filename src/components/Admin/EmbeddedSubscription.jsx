@@ -54,7 +54,7 @@ const EmbeddedSubscription = () => {
                     </div>
                   </>
                 )
-                : <h3>{activeSubscriptions[0].title}</h3>}
+                : <h3 className="ml-4 mt-3">{activeSubscriptions[0].title}</h3>}
               <ConnectedSubscriptionDetailPage enterpriseSlug={enterpriseSlug} match={match} />
               <div className="d-flex align-items-center">
                 <Icon src={Lightbulb} className="text-danger mr-2" />

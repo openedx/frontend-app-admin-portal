@@ -2,14 +2,20 @@ import React from 'react';
 import { CardGrid, Alert } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import {
-  DEFAULT_ERROR_MESSAGE, HIGHLIGHTS_CARD_GRID_COLUMN_SIZES, MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
+  DEFAULT_ERROR_MESSAGE,
+  HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
+  MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
 } from './data/constants';
 import SkeletonContentCardContainer from './SkeletonContentCardContainer';
 import { generateAboutPageUrl } from './data/utils';
+import EVENT_NAMES from '../../eventTracking';
 
-const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highlightedContent }) => {
+const ContentHighlightsCardItemsContainer = ({
+  enterpriseId, enterpriseSlug, isLoading, highlightedContent,
+}) => {
   if (isLoading) {
     return (
       <SkeletonContentCardContainer itemCount={MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET} />
@@ -22,22 +28,38 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
       </Alert>
     );
   }
+  const trackClickEvent = ({ aggregationKey }) => {
+    const trackInfo = {
+      aggregation_key: aggregationKey,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE}`,
+      trackInfo,
+    );
+  };
   return (
     <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
       {highlightedContent.map(({
-        uuid, title, contentType, authoringOrganizations, contentKey, cardImageUrl,
+        uuid, title, contentType, authoringOrganizations, contentKey, cardImageUrl, aggregationKey,
       }) => (
         <ContentHighlightCardItem
           isLoading={isLoading}
           key={uuid}
           cardImageUrl={cardImageUrl}
           title={title}
-          href={generateAboutPageUrl({
-            enterpriseSlug,
-            contentType: contentType?.toLowerCase(),
-            contentKey,
-          })}
-          contentType={contentType?.toLowerCase()}
+          hyperlinkAttrs={
+            {
+              href: generateAboutPageUrl({
+                enterpriseSlug,
+                contentType: contentType.toLowerCase(),
+                contentKey,
+              }),
+              target: '_blank',
+              onClick: () => trackClickEvent({ aggregationKey }),
+            }
+        }
+          contentType={contentType.toLowerCase()}
           partners={authoringOrganizations}
         />
       ))}
@@ -46,6 +68,7 @@ const ContentHighlightsCardItemsContainer = ({ enterpriseSlug, isLoading, highli
 };
 
 ContentHighlightsCardItemsContainer.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   highlightedContent: PropTypes.arrayOf(PropTypes.shape({
@@ -62,6 +85,7 @@ ContentHighlightsCardItemsContainer.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 

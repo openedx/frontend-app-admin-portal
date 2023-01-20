@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentConfirmContentCard from '../ContentConfirmContentCard';
 import { testCourseData, testCourseAggregation, FOOTER_TEXT_BY_CONTENT_TYPE } from '../../data/constants';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
@@ -13,6 +13,15 @@ import { configuration } from '../../../../config';
 import { useContentHighlightsContext } from '../../data/hooks';
 
 const mockStore = configureMockStore();
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
+
 const initialState = {
   portalConfiguration:
     {
@@ -74,10 +83,17 @@ describe('<ContentConfirmContentCard />', () => {
       expect(screen.queryAllByText(testCourseData[i].partners[0].name)).toBeTruthy();
     }
   });
-  it('deletes the correct content', () => {
+  it('deletes the correct content and sends first track event of the mock', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
     const deleteButton = screen.getAllByRole('button', { 'aria-label': 'Delete' });
     userEvent.click(deleteButton[0]);
     expect(mockDeleteSelectedRowId).toHaveBeenCalledWith(testCourseData[0].aggregationKey);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+  it('sends second track event of the mock on click of hyperlink', () => {
+    renderWithRouter(<ContentHighlightContentCardWrapper />);
+    const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
+    userEvent.click(hyperlinkTitle);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 });
