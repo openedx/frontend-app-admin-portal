@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import algoliasearch from 'algoliasearch/lite';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentConfirmContentCard from '../ContentConfirmContentCard';
-import { testCourseData, testCourseAggregation, FOOTER_TEXT_BY_CONTENT_TYPE } from '../../data/constants';
-import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { configuration } from '../../../../config';
+import { FOOTER_TEXT_BY_CONTENT_TYPE } from '../../data/constants';
 import { useContentHighlightsContext } from '../../data/hooks';
-
-const mockStore = configureMockStore();
+import {
+  testCourseData,
+  ContentHighlightsContext,
+  initialStateValue,
+} from '../../../../data/tests/ContentHighlightsTestData';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -22,56 +20,25 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-const initialState = {
-  portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-    },
-};
-testCourseData.forEach((element, index) => {
-  if (!element.objectID) {
-    testCourseData[index].objectID = index + 1;
-  }
-});
 const mockDeleteSelectedRowId = jest.fn();
 jest.mock('../../data/hooks');
 useContentHighlightsContext.mockReturnValue({
   deleteSelectedRowId: mockDeleteSelectedRowId,
 });
 
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
-
 const ContentHighlightContentCardWrapper = ({
-  // eslint-disable-next-line react/prop-types
-  store = mockStore(initialState),
-}) => {
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: testCourseAggregation,
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <Provider store={store}>
-      <ContentHighlightsContext.Provider value={contextValue}>
-        {testCourseData.map((original) => (
-          <ContentConfirmContentCard
-            original={original}
-            key={original.aggregationKey}
-          />
-        ))}
-      </ContentHighlightsContext.Provider>
-    </Provider>
-  );
-};
-
+  contextValue = initialStateValue,
+  testCourses = testCourseData,
+}) => (
+  <ContentHighlightsContext value={contextValue}>
+    {testCourses.map((original) => (
+      <ContentConfirmContentCard
+        original={original}
+        key={original.aggregationKey}
+      />
+    ))}
+  </ContentHighlightsContext>
+);
 describe('<ContentConfirmContentCard />', () => {
   it('renders the correct content', () => {
     renderWithRouter(<ContentHighlightContentCardWrapper />);
@@ -95,5 +62,9 @@ describe('<ContentConfirmContentCard />', () => {
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
     userEvent.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+  it('should not render anything with no test data', () => {
+    renderWithRouter(<ContentHighlightContentCardWrapper testCourses={[]} />);
+    expect(screen.queryAllByTestId('content-confirm-content-card')).toHaveLength(0);
   });
 });

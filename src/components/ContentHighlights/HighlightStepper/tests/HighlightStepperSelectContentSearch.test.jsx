@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import algoliasearch from 'algoliasearch/lite';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
-import {
-  testCourseAggregation,
-  testCourseData,
-} from '../../data/constants';
-import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { configuration } from '../../../../config';
 import HighlightStepperSelectContent from '../HighlightStepperSelectContentSearch';
+import {
+  testCourseData,
+  ContentHighlightsContext,
+  initialStateValue,
+} from '../../../../data/tests/ContentHighlightsTestData';
+import { testCourseAggregation } from '../../data/constants';
 
-const mockStore = configureMockStore([thunk]);
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -24,42 +18,16 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
     sendEnterpriseTrackEvent: jest.fn(),
   });
 });
-const enterpriseId = 'test-enterprise-id';
-const initialState = {
-  portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-      enterpriseId,
-    },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
 
 // eslint-disable-next-line react/prop-types
-const HighlightStepperSelectContentSearchWrapper = ({ children, currentSelectedRowIds = [] }) => {
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds,
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          {children}
-        </ContentHighlightsContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-};
+const HighlightStepperSelectContentSearchWrapper = ({
+  children,
+  value = initialStateValue,
+}) => (
+  <ContentHighlightsContext value={value}>
+    {children}
+  </ContentHighlightsContext>
+);
 
 const mockCourseData = [...testCourseData];
 
@@ -97,7 +65,16 @@ describe('HighlightStepperSelectContentSearch', () => {
   });
   test('renders the search results with all selected', async () => {
     renderWithRouter(
-      <HighlightStepperSelectContentSearchWrapper currentSelectedRowIds={testCourseAggregation}>
+      <HighlightStepperSelectContentSearchWrapper value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+      >
         <HighlightStepperSelectContent />
       </HighlightStepperSelectContentSearchWrapper>,
     );
@@ -106,7 +83,7 @@ describe('HighlightStepperSelectContentSearch', () => {
   });
   test('sends track event on click', async () => {
     renderWithRouter(
-      <HighlightStepperSelectContentSearchWrapper currentSelectedRowIds={testCourseAggregation}>
+      <HighlightStepperSelectContentSearchWrapper>
         <HighlightStepperSelectContent />
       </HighlightStepperSelectContentSearchWrapper>,
     );

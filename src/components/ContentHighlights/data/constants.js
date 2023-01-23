@@ -398,7 +398,6 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
     ],
   },
 ];
-
 export const testCourseData = [
   {
     aggregationKey: 'course:HarvardX+CS50x',

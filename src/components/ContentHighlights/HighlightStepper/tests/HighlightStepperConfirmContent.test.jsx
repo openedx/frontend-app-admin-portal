@@ -1,55 +1,17 @@
-import React, { useState } from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import algoliasearch from 'algoliasearch/lite';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
 import HighlightStepperConfirmContent, { BaseReviewContentSelections, SelectedContent } from '../HighlightStepperConfirmContent';
 import {
   DEFAULT_ERROR_MESSAGE,
-  testCourseAggregation,
-  testCourseData,
 } from '../../data/constants';
-import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { configuration } from '../../../../config';
-
-const mockStore = configureMockStore([thunk]);
-const enterpriseId = 'test-enterprise-id';
-const initialState = {
-  portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-      enterpriseId,
-    },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
-
-// eslint-disable-next-line react/prop-types
-const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds = [] }) => {
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds,
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <Provider store={mockStore(initialState)}>
-      <ContentHighlightsContext.Provider value={contextValue}>
-        {children}
-      </ContentHighlightsContext.Provider>
-    </Provider>
-  );
-};
+import { TEST_ENTERPRISE_ID } from '../../../../data/tests/constants';
+import {
+  testCourseData,
+  ContentHighlightsContext,
+  initialStateValue,
+  testCourseAggregation,
+} from '../../../../data/tests/ContentHighlightsTestData';
 
 // testCourseDataAggregation is the course keys coming from the Algolia search results
 const testCourseDataAggregation = testCourseData.map((element) => element.aggregationKey.split(':')[1]);
@@ -86,9 +48,16 @@ jest.mock('react-instantsearch-dom', () => ({
 describe('<HighlightStepperConfirmContent />', () => {
   it('renders the content', () => {
     renderWithRouter(
-      <HighlightStepperConfirmContentWrapper currentSelectedRowIds={testCourseAggregation}>
-        <HighlightStepperConfirmContent enterpriseId={enterpriseId} />
-      </HighlightStepperConfirmContentWrapper>,
+      <ContentHighlightsContext value={{
+        ...initialStateValue,
+        stepperModal: {
+          ...initialStateValue.stepperModal,
+          currentSelectedRowIds: testCourseAggregation,
+        },
+      }}
+      >
+        <HighlightStepperConfirmContent enterpriseId={TEST_ENTERPRISE_ID} />
+      </ContentHighlightsContext>,
     );
     testCourseData.forEach((element) => {
       expect(screen.getByText(element.title)).toBeInTheDocument();
@@ -96,9 +65,9 @@ describe('<HighlightStepperConfirmContent />', () => {
   });
   it('renders the content in the correct order based on testCourseAggregationCourses', () => {
     const { container } = renderWithRouter(
-      <HighlightStepperConfirmContentWrapper currentSelectedRowIds={testCourseAggregation}>
-        <HighlightStepperConfirmContent enterpriseId={enterpriseId} />
-      </HighlightStepperConfirmContentWrapper>,
+      <ContentHighlightsContext>
+        <HighlightStepperConfirmContent enterpriseId={TEST_ENTERPRISE_ID} />
+      </ContentHighlightsContext>,
     );
     container.querySelectorAll('div[data-testid="title-test"]').forEach((element, index) => {
       expect(element).toHaveTextContent(sortedTestCourseTitles[index]);
@@ -110,17 +79,17 @@ describe('<HighlightStepperConfirmContent />', () => {
 describe('BaseReviewContentSelections', () => {
   it('returns skeleton while search stalled', () => {
     renderWithRouter(
-      <HighlightStepperConfirmContentWrapper>
+      <ContentHighlightsContext>
         <BaseReviewContentSelections isSearchStalled />
-      </HighlightStepperConfirmContentWrapper>,
+      </ContentHighlightsContext>,
     );
     expect(screen.getAllByTestId('card-item-skeleton')).toBeTruthy();
   });
   it('should render selected card content', () => {
     renderWithRouter(
-      <HighlightStepperConfirmContentWrapper>
+      <ContentHighlightsContext>
         <BaseReviewContentSelections isSearchStalled={false} />
-      </HighlightStepperConfirmContentWrapper>,
+      </ContentHighlightsContext>,
     );
     expect(screen.getByTestId('base-content-no-results')).toBeInTheDocument();
   });
@@ -129,9 +98,9 @@ describe('BaseReviewContentSelections', () => {
 describe('SelectedContent', () => {
   it('should not render anything when nothing is selected', () => {
     renderWithRouter(
-      <HighlightStepperConfirmContentWrapper>
-        <SelectedContent enterpriseId={enterpriseId} />
-      </HighlightStepperConfirmContentWrapper>,
+      <ContentHighlightsContext>
+        <SelectedContent enterpriseId={TEST_ENTERPRISE_ID} />
+      </ContentHighlightsContext>,
     );
     expect(screen.getByTestId('selected-content-no-results')).toBeInTheDocument();
     expect(screen.getByText(DEFAULT_ERROR_MESSAGE.EMPTY_SELECTEDROWIDS)).toBeInTheDocument();

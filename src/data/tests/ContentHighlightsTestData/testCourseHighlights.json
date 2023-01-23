@@ -1,0 +1,257 @@
+[
+    {
+        "uuid": "55371e4d-07ab-418b-b012-738cd0c748c9",
+        "title": "Dire Core",
+        "is_published": true,
+        "enterprise_curation": "321123",
+        "highlighted_content": [
+            {
+                "uuid": "b5e72316-b4eb-4175-ae9e-94bc7566ea9a",
+                "content_type": "Course",
+                "content_key": "edX+DemoX",
+                "title": "Math",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "2bdb75e7-8c82-49b6-a13d-25283a6dca2e",
+                        "name": "General Studies 1",
+                        "logo_image_url": "https://placekitten.com/200/100"
+                    },
+                    {
+                        "uuid": "666ff0d0-833f-4466-afd8-ad58507c9dcd",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Super General Studies"
+                    }
+                ]
+            },
+            {
+                "title": "Science",
+                "content_type": "Learnerpathway",
+                "uuid": "10f78f34-cb3d-4be2-8611-3cc0ba5ea8b8",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "7601a229-43ef-4fac-9b21-49c0fb6e7189",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "General Studies 2"
+                    }
+                ]
+            },
+            {
+                "title": "English",
+                "content_type": "Program",
+                "uuid": "53b80aaa-6813-4258-a5b2-77f41f54d4e7",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "d4d97a50-86d1-4afa-b50d-de02038b16e2",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "General Studies 3"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Dire Math",
+        "uuid": "b9f33716-1c1a-499b-93b8-6e9ec44d9c0b",
+        "is_published": true,
+        "enterprise_curation": "321123",
+        "highlighted_content": [
+            {
+                "title": "Math Xtreme",
+                "content_type": "Course",
+                "uuid": "e8140829-96bd-4e56-b94b-0026672dcc9d",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "faac4722-4078-43a7-ae6b-425db8271203",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Matheletes"
+                    }
+                ]
+            },
+            {
+                "title": "Science for Math Majors",
+                "content_type": "Course",
+                "uuid": "1816754d-3baa-4502-9d65-570258aab231",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "fa2dbcb6-579c-4853-8d69-6efed076e742",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Matheletes"
+                    }
+                ]
+            },
+            {
+                "title": "English Divergence",
+                "content_type": "Course",
+                "uuid": "b5b8b224-c902-4fd6-9030-b282a5164050",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "499b858a-bf74-4fed-9e23-99fc141715c9",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Matheletes"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Dire Science",
+        "uuid": "064fb141-dcc3-4a31-88ea-00bd17898147",
+        "is_published": false,
+        "enterprise_curation": "321123",
+        "highlighted_content": [
+            {
+                "title": "Math for Science Majors",
+                "content_type": "Course",
+                "uuid": "7ca02c60-aea3-482b-b3c8-45fb762ff744",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "c77c063b-dd82-49cc-bf15-b0aabcf92fb2",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "The Beakers"
+                    }
+                ]
+            },
+            {
+                "title": "Science Xtreme",
+                "content_type": "Course",
+                "uuid": "3ba38218-09c9-4a5e-a611-f7460065a5d3",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "4e3fbd19-5faa-4998-9048-20416983d739",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "The Beakers"
+                    }
+                ]
+            },
+            {
+                "title": "English Obfuscation",
+                "content_type": "Course",
+                "uuid": "635667a6-1e9b-48a2-a409-58983a7963a6",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "5b3c4a08-8ba2-44b6-9680-4a857dcfc751",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "The Beakers"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Dire English",
+        "uuid": "96c9254f-9640-4db8-87f1-b213020a811c",
+        "is_published": true,
+        "enterprise_curation": "321123",
+        "highlighted_content": [
+            {
+                "title": "To Math or not Math",
+                "content_type": "Course",
+                "uuid": "723089fd-5c71-4704-a5ce-fa0c8efd862a",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "e935012d-6597-4ba1-8ffc-ce14a1a0a003",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Extensive Etymology"
+                    }
+                ]
+            },
+            {
+                "title": "Science for English Majors",
+                "content_type": "Course",
+                "uuid": "3c1f423d-77ee-4af9-8708-cc6abf4b9117",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "32ea4851-7fa7-47c0-9de6-19b0c17e3ffb",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Extensive Etymology"
+                    }
+                ]
+            },
+            {
+                "title": "Moore English: Lawlessness Refined",
+                "content_type": "Course",
+                "uuid": "d6a61ba1-90fa-4dec-a55c-86da907a2710",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "1940a030-4fcd-49e6-9cb3-f5e414b92f03",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Extensive Etymology"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Dire Engineering",
+        "uuid": "f220b6a5-b35d-41ce-a8c7-394e659defcc",
+        "is_published": true,
+        "enterprise_curation": "321123",
+        "highlighted_content": [
+            {
+                "title": "Math for Engineering Majors",
+                "content_type": "Course",
+                "uuid": "cfc9c0b1-ac7c-465d-a696-f6a4febed95f",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "f27a7673-66af-4d4b-98cc-5441c2033929",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Building Bridges"
+                    }
+                ]
+            },
+            {
+                "title": "Science for Engineering Majors",
+                "content_type": "Course",
+                "uuid": "d127b068-d2b5-4313-b0fb-00e0a9155d58",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "30d1020c-b9c3-4a07-b683-911cf4c81ffc",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Building Bridges"
+                    }
+                ]
+            },
+            {
+                "title": "English Instantiation",
+                "content_type": "Course",
+                "uuid": "96f3c8a2-060e-4621-ac26-94d55aa4ecf4",
+                "content_key": "edX+DemoX",
+                "card_image_url": "https://picsum.photos/360/200",
+                "authoring_organizations": [
+                    {
+                        "uuid": "3c4932ca-3843-4b96-90f6-efe857c0afba",
+                        "logo_image_url": "https://placekitten.com/200/100",
+                        "name": "Building Bridges"
+                    }
+                ]
+            }
+        ]
+    }
+]
