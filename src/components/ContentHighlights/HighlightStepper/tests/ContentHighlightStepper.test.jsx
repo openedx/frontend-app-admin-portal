@@ -21,6 +21,7 @@ import {
 import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
+import 'jest-canvas-mock';
 
 const mockStore = configureMockStore([thunk]);
 

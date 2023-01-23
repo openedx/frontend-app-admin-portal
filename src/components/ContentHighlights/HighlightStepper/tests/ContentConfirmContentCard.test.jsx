@@ -11,6 +11,7 @@ import {
   ContentHighlightsContext,
   initialStateValue,
 } from '../../../../data/tests/ContentHighlightsTestData';
+import 'jest-canvas-mock';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');

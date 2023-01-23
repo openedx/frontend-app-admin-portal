@@ -12,6 +12,7 @@ import {
   initialStateValue,
   testCourseAggregation,
 } from '../../../../data/tests/ContentHighlightsTestData';
+import 'jest-canvas-mock';
 
 // testCourseDataAggregation is the course keys coming from the Algolia search results
 const testCourseDataAggregation = testCourseData.map((element) => element.aggregationKey.split(':')[1]);
