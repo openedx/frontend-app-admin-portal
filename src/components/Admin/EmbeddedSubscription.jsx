@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Form, Icon } from '@edx/paragon';
 import moment from 'moment';
-import { Lightbulb } from '@edx/paragon/icons';
+import { Lightbulb, ArrowOutward } from '@edx/paragon/icons';
 import ConnectedSubscriptionDetailPage from './SubscriptionDetailPage';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
 import { sortSubscriptionsByStatus } from '../subscriptions/data/utils';
@@ -29,6 +29,7 @@ const EmbeddedSubscription = () => {
   if (loading) {
     return <LoadingMessage className="subscriptions" />;
   }
+  const bestPracticesUrl = 'https://business.edx.org/hubfs/Onboarding and Engagement/Engagement Assets/Key Timelines & Best Practices.pdf';
 
   return (
     <div>{
@@ -62,8 +63,18 @@ const EmbeddedSubscription = () => {
                   performance.
                 </span>
               </div>
-              <span className="ml-4.5"> Learn more helpful tips in Best Practices.
-              </span>
+              <div className="align-items-center">
+                <span className="ml-4.5"> Learn more helpful tips in </span>
+                <span>
+                  <Link
+                    to={{ pathname: bestPracticesUrl }}
+                    target="_blank"
+                  >
+                    Best Practices
+                  </Link>
+                  <Icon className="d-inline-flex ml-2" src={ArrowOutward} />
+                </span>
+              </div>
             </>
             )
         }

@@ -21,7 +21,6 @@ import {
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
 import { formatTimestamp } from '../../../../utils';
 import SubscriptionZeroStateMessage from '../../../subscriptions/SubscriptionZeroStateMessage';
-import DownloadCsvButton from '../../../subscriptions/buttons/DownloadCsvButton';
 import EnrollBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/EnrollBulkAction';
 import RemindBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/RemindBulkAction';
 import RevokeBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/RevokeBulkAction';
@@ -203,13 +202,6 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
 
   const showSubscriptionZeroStateMessage = subscription.licenses.total === subscription.licenses.unassigned;
 
-  const tableActions = useMemo(() => {
-    if (showSubscriptionZeroStateMessage) {
-      return [];
-    }
-    return [<DownloadCsvButton />];
-  }, [showSubscriptionZeroStateMessage]);
-
   return (
     <div key={subscriptionUUID}>
       {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
@@ -228,13 +220,9 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
         manualPagination
         itemCount={users.count}
         pageCount={users.numPages || 1}
-        tableActions={tableActions}
         initialState={{
           pageSize: 5,
           pageIndex: DEFAULT_PAGE - 1,
-          sortBy: [
-            { id: 'statusBadge', desc: true },
-          ],
         }}
         initialTableOptions={{
           getRowId: row => row.id,
