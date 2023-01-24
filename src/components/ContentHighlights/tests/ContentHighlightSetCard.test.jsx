@@ -15,14 +15,26 @@ import {
 } from '../data/constants';
 import { ContentHighlightsContext, initialStateValue } from '../../../data/tests/ContentHighlightsTestData';
 import { initialStateValue as initialEnterpriseAppContextValue } from '../../../data/tests/EnterpriseAppTestData/context';
+import { TEST_ENTERPRISE_SLUG } from '../../../data/tests/constants';
+import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 
 const mockData = [{
   title: 'Test Title',
   highlightSetUUID: 'test-uuid',
-  enterpriseSlug: 'test-enterprise-slug',
+  enterpriseSlug: TEST_ENTERPRISE_SLUG,
   itemCount: 0,
   imageCapSrc: 'http://fake.image',
   isPublished: true,
+  onClick: jest.fn(),
+}];
+
+const mockUnpublishedData = [{
+  title: 'Test Title',
+  highlightSetUUID: 'test-uuid',
+  enterpriseSlug: TEST_ENTERPRISE_SLUG,
+  itemCount: 0,
+  imageCapSrc: 'http://fake.image',
+  isPublished: false,
   onClick: jest.fn(),
 }];
 
@@ -53,6 +65,7 @@ const ContentHighlightSetCardWrapper = ({
     {data.map((highlight) => (
       <ContentHighlightSetCard key={uuidv4()} {...highlight} />
     ))}
+    <ContentHighlightStepper />
   </ContentHighlightsContext>
 );
 
@@ -104,5 +117,25 @@ describe('<ContentHighlightSetCard>', () => {
     // Verify Dismiss
     await waitFor(() => { expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument(); });
     expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
+  });
+  it('opens stepper on unpublished (draft) content', () => {
+    const updatedEnterpriseAppContextValue = {
+      value: {
+        enterpriseCuration: {
+          enterpriseCuration: {
+            highlightSets: mockUnpublishedData,
+          },
+        },
+      },
+    };
+    renderWithRouter(
+      <ContentHighlightSetCardWrapper
+        enterpriseAppContextValue={updatedEnterpriseAppContextValue}
+        data={mockUnpublishedData}
+      />,
+    );
+    const newHighlightButton = screen.getByText(mockUnpublishedData[0].title);
+    userEvent.click(newHighlightButton);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 });

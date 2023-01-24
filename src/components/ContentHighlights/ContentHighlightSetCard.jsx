@@ -29,7 +29,6 @@ const ContentHighlightSetCard = ({
     }
     openStepperModal();
   };
-
   return (
     <Card
       isClickable

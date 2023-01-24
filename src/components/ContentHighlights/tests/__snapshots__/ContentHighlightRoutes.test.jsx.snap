@@ -1,0 +1,1031 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContentHighlightRoutes renders highlight set 1`] = `
+<div>
+  <div
+    class="mt-5 container-fluid"
+  >
+    <div
+      class="pgn__action-row"
+      data-testid="header-skeleton"
+    >
+      <h2>
+        <span
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span
+            class="react-loading-skeleton"
+          >
+            ‌
+          </span>
+          <br />
+        </span>
+      </h2>
+      <span
+        class="pgn__action-row-spacer"
+      />
+      <span
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <span
+          class="react-loading-skeleton"
+        >
+          ‌
+        </span>
+        <br />
+      </span>
+    </div>
+    <div
+      class="pgn__card-grid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          <div
+            class="pgn__card pgn__card-light card"
+            data-testid="card-item-skeleton"
+            tabindex="-1"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+              data-testid="image-loader-wrapper"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-image-cap-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 140px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-logo-cap"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 41px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-section mt-2"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-section-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 100px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+            <div
+              class="pgn__card-footer vertical"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+                class="pgn__card-footer-loader"
+              >
+                <span
+                  class="react-loading-skeleton"
+                  style="height: 18px;"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-3 col-lg-4 col-md-6 col-12"
+        >
+          ;
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ContentHighlightRoutes renders zero state 1`] = `
+<div>
+  <div
+    class="my-5 container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-xl-5 col-lg-8 col-md-9 col-sm-10 col-12"
+      >
+        <div
+          class="pgn__card pgn__card-light card"
+          tabindex="-1"
+        >
+          <div
+            class="bg-light-400 p-4"
+          >
+            <div
+              class="pgn__card-wrapper-image-cap vertical"
+            >
+              <img
+                alt=""
+                class="pgn__card-image-cap"
+                src="icon/mock/path"
+              />
+            </div>
+          </div>
+          <div
+            class="pgn__card-section text-center align-self-center"
+          >
+            <h2
+              class="h3 mb-3"
+            >
+              You haven't created any highlights yet.
+            </h2>
+            <p>
+              Create and recommend content collections to your learners, enabling them to quickly locate content relevant to them.
+            </p>
+          </div>
+          <div
+            class="pgn__card-footer vertical"
+          >
+            <button
+              class="btn btn-primary btn-block"
+              type="button"
+            >
+              <span
+                class="pgn__icon btn-icon-before"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  focusable="false"
+                  height="24"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              New highlight
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
