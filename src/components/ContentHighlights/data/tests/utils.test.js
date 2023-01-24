@@ -1,6 +1,7 @@
 import { testHighlightSet } from '../../../../data/tests/ContentHighlightsTestData';
-import { extractHighlightSetUUID, generateAboutPageUrl } from '../utils';
+import { extractHighlightSetUUID, generateAboutPageUrl, preventUnload } from '../utils';
 import { TEST_ENTERPRISE_SLUG } from '../../../../data/tests/constants';
+import { ALERT_TEXT } from '../constants';
 
 describe('ContentHighlights utils', () => {
   describe('extractHighlightSetUUID', () => {
@@ -19,5 +20,14 @@ describe('ContentHighlights utils', () => {
       const url = generateAboutPageUrl(TEST_ENTERPRISE_SLUG, 'learnerpathway', '');
       expect(url).toBeUndefined();
     });
+  });
+  it('should set returnValue of event to the global alert and preventDefault', () => {
+    const event = {
+      returnValue: null,
+      preventDefault: jest.fn(),
+    };
+    preventUnload(event);
+    expect(event.preventDefault).toHaveBeenCalledTimes(1);
+    expect(event.returnValue).toBe(ALERT_TEXT.GLOBAL_ALERT_TEXT.message);
   });
 });

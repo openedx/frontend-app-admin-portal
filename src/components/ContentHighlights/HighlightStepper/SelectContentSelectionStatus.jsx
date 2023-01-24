@@ -13,7 +13,6 @@ const SelectContentSelectionStatus = ({ className }) => {
     ContentHighlightsContext,
     v => Object.keys(v[0].stepperModal.currentSelectedRowIds).length,
   );
-
   const handleClearSelection = () => {
     toggleAllRowsSelected(false);
   };
@@ -28,6 +27,7 @@ const SelectContentSelectionStatus = ({ className }) => {
           variant="link"
           size="inline"
           onClick={handleClearSelection}
+          data-testid="clear-selection"
         >
           Clear selection
         </Button>

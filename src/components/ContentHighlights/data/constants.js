@@ -85,6 +85,9 @@ export const ALERT_TEXT = {
   SUB_TEXT: {
     currentContent: 'Delete at least one highlight to create a new one.',
   },
+  GLOBAL_ALERT_TEXT: {
+    message: 'Are you sure? Your data will not be saved.',
+  },
 };
 
 // Default footer values based on API response for ContentHighlightCardItem

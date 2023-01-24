@@ -29,6 +29,7 @@ import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCu
 import { useContentHighlightsContext } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import { STEPPER_STEP_LABELS, STEPPER_STEP_TEXT } from '../data/constants';
+import { preventUnload } from '../data/utils';
 
 const steps = [
   STEPPER_STEP_LABELS.CREATE_TITLE,
@@ -231,7 +232,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
   /**
    * This section triggers browser response to unsaved items when the stepper modal is open/active
    *
-   * Mandatory requirements to trigger response by browser, event.preventDefault && event.returnValue
+   * Mandatory requirements to trigger response by browser within preventUnload utility function:
+   * event.preventDefault && event.returnValue
    * A return value is required to trigger the browser unsaved data blocking modal response
    *
    * Conditional MUST be set on event listener initialization.
@@ -239,11 +241,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
    * within ContentHighlightRoutes.jsx (essentially all of highlights)
    * */
   useEffect(() => {
-    const preventUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = 'Are you sure? Your data will not be saved.';
-    };
-
     if (isStepperModalOpen) {
       global.addEventListener('beforeunload', preventUnload);
     }

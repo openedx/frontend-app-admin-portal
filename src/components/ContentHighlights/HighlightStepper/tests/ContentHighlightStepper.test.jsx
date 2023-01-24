@@ -17,7 +17,12 @@ import {
   ContentHighlightsContext,
   initialStateValue,
   testCourseAggregation,
+  rawTestCourseHighlights,
 } from '../../../../data/tests/ContentHighlightsTestData';
+import { initialStateValue as initialEnterpriseAppContextValue } from '../../../../data/tests/EnterpriseAppTestData/context';
+import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
+
+jest.mock('../../../../data/services/EnterpriseCatalogApiService');
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -27,10 +32,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
+const mockDispatchFn = jest.fn();
+
 const ContentHighlightStepperWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
   value = initialStateValue,
 }) => (
-  <ContentHighlightsContext value={value}>
+  <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
     <ContentHighlightsDashboard />
   </ContentHighlightsContext>
 );
@@ -262,5 +270,77 @@ describe('<ContentHighlightStepper>', () => {
     const footerLink = screen.getByText(STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT);
     userEvent.click(footerLink);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+  it('Publishes the content', () => {
+    EnterpriseCatalogApiService.createHighlightSet.mockResolvedValueOnce({
+      data: rawTestCourseHighlights[0],
+    });
+    const updatedEnterpriseAppContextValue = {
+      value: {
+        ...initialEnterpriseAppContextValue,
+        enterpriseCuration: {
+          ...initialEnterpriseAppContextValue.enterpriseCuration,
+          dispatch: mockDispatchFn,
+        },
+      },
+    };
+    renderWithRouter(<ContentHighlightStepperWrapper
+      enterpriseAppContextValue={updatedEnterpriseAppContextValue}
+      value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
+    // open stepper --> title
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    // title --> select content
+    const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
+    userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    // select content --> confirm content
+    const nextButton2 = screen.getByText('Next');
+    userEvent.click(nextButton2);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
+    // confirm content --> publish
+    const nextButton3 = screen.getByText('Publish');
+    userEvent.click(nextButton3);
+
+    expect(EnterpriseCatalogApiService.createHighlightSet).toHaveBeenCalledTimes(1);
+  });
+  it('Clear selection button removing checked items', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
+    // open stepper --> title
+    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    // title --> select content
+    const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
+    userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+
+    const clearSelectionButton = screen.getByTestId('clear-selection');
+    expect(clearSelectionButton).toBeInTheDocument();
+
+    userEvent.click(clearSelectionButton);
   });
 });

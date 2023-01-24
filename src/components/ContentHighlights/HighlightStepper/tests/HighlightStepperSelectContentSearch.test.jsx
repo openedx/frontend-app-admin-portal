@@ -3,7 +3,8 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import userEvent from '@testing-library/user-event';
-import HighlightStepperSelectContent from '../HighlightStepperSelectContentSearch';
+import renderer from 'react-test-renderer';
+import HighlightStepperSelectContent, { PriceTableCell } from '../HighlightStepperSelectContentSearch';
 import {
   testCourseData,
   ContentHighlightsContext,
@@ -81,5 +82,49 @@ describe('HighlightStepperSelectContentSearch', () => {
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
     userEvent.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+  test('Control bar toggles', () => {
+    renderWithRouter(
+      <ContentHighlightsContext value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+      >
+        <HighlightStepperSelectContent />
+      </ContentHighlightsContext>,
+    );
+    const controlBar = screen.getByTestId('icon-btn-val-list');
+    expect(controlBar.getAttribute('aria-selected')).toEqual('false');
+    userEvent.click(controlBar);
+    expect(controlBar.getAttribute('aria-selected')).toEqual('true');
+  });
+});
+describe('PriceTableCell', () => {
+  it('renders correctly', () => {
+    const row = {
+      original: {
+        firstEnrollablePaidSeatPrice: 100,
+      },
+    };
+    const tree = renderer
+      .create(<PriceTableCell row={row} />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+  it('returns null', () => {
+    const row = {
+      original: {
+        firstEnrollablePaidSeatPrice: null,
+      },
+    };
+    const tree = renderer
+      .create(<PriceTableCell row={row} />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });

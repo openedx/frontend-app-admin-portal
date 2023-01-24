@@ -1,5 +1,5 @@
 import { configuration } from '../../../config';
-import { FOOTER_TEXT_BY_CONTENT_TYPE } from './constants';
+import { ALERT_TEXT, FOOTER_TEXT_BY_CONTENT_TYPE } from './constants';
 
 // Highlight Card logic for footer text
 export const getContentHighlightCardFooter = ({ price, contentType }) => {
@@ -25,4 +25,9 @@ export function generateAboutPageUrl({ enterpriseSlug, contentType, contentKey }
 
 export function extractHighlightSetUUID(highlightSets) {
   return highlightSets.map((set) => set.uuid);
+}
+
+export function preventUnload(e) {
+  e.preventDefault();
+  e.returnValue = ALERT_TEXT.GLOBAL_ALERT_TEXT.message;
 }
