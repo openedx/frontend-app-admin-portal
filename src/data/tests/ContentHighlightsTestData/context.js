@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { ContentHighlightsContext as NestedContentHighlightsContext } from '../../../components/ContentHighlights/ContentHighlightsContext';
 import { searchClient } from '../constants';
 import { EnterpriseAppContext } from '../EnterpriseAppTestData/context';
-
 /**
  * @param {Object} stepperModal - The initial state of the stepperModal.
  * @param {boolean} stepperModal.isOpen - Indicates whether the stepper modal is open or closed.
@@ -53,9 +52,10 @@ export const ContentHighlightsContext = ({
 ContentHighlightsContext.propTypes = {
   children: PropTypes.node.isRequired,
   value: PropTypes.shape(),
-  enterpriseAppContextValue: PropTypes.shape().isRequired,
+  enterpriseAppContextValue: PropTypes.shape(),
 };
 
 ContentHighlightsContext.defaultProps = {
   value: initialStateValue,
+  enterpriseAppContextValue: null,
 };

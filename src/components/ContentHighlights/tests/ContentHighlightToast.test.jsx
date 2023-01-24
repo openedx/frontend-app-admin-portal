@@ -2,15 +2,15 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlightToast from '../ContentHighlightToast';
+import { BaseContext } from '../../../data/tests/context';
 
 const ContentHighlightToastWrapper = ({
   ...props
 }) => (
-  <IntlProvider locale="en">
+  <BaseContext locale="en">
     <ContentHighlightToast {...props} />
-  </IntlProvider>
+  </BaseContext>
 );
 
 describe('<ContentHighlightToast>', () => {

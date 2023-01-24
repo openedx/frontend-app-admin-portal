@@ -4,6 +4,7 @@ import { initialStateValue, ContentHighlightsContext } from './context';
 const rawTestCourseData = require('./testCourseData.json');
 const rawTestCourseHighlights = require('./testCourseHighlights.json');
 const testCourseAggregation = require('./testCourseAggregation.json');
+const testHighlightSet = require('./testHighlightSet.json');
 
 export {
   initialStateValue,
@@ -11,6 +12,7 @@ export {
   rawTestCourseData,
   rawTestCourseHighlights,
   testCourseAggregation,
+  testHighlightSet,
   testCourseData,
   testCourseHighlightsData,
 };

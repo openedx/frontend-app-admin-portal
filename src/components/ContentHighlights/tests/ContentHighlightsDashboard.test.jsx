@@ -9,18 +9,13 @@ import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import {
   initialStateValue,
   ContentHighlightsContext,
-  testCourseHighlightsData,
+  testHighlightSet,
 } from '../../../data/tests/ContentHighlightsTestData';
-import { initialStateValue as enterpriseContextInitialStateValue } from '../../../data/tests/EnterpriseAppTestData/context';
-
-// Process property name into default api response
-const exampleHighlightSet = testCourseHighlightsData[0];
-exampleHighlightSet.highlightedContentUuids = exampleHighlightSet.highlightedContent;
-delete exampleHighlightSet.highlightedContent;
+import { initialStateValue as initialEnterpriseAppContextValue } from '../../../data/tests/EnterpriseAppTestData/context';
 
 const ContentHighlightsDashboardWrapper = ({
   value = initialStateValue,
-  enterpriseAppContextValue = enterpriseContextInitialStateValue,
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
   props,
 }) => (
   <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
@@ -48,7 +43,7 @@ describe('<ContentHighlightsDashboard>', () => {
           value: {
             enterpriseCuration: {
               enterpriseCuration: {
-                highlightSets: [exampleHighlightSet],
+                highlightSets: [testHighlightSet],
               },
             },
           },

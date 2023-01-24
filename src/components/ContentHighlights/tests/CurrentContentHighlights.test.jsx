@@ -1,64 +1,24 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import algoliasearch from 'algoliasearch/lite';
 import CurrentContentHighlights from '../CurrentContentHighlights';
-import { ContentHighlightsContext } from '../ContentHighlightsContext';
+// import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { BUTTON_TEXT, HEADER_TEXT } from '../data/constants';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
-import { configuration } from '../../../config';
+import { initialStateValue as initialEnterpriseAppContextValue } from '../../../data/tests/EnterpriseAppTestData/context';
+import {
+  ContentHighlightsContext, initialStateValue, testHighlightSet,
+} from '../../../data/tests/ContentHighlightsTestData';
 
-const mockStore = configureMockStore([thunk]);
-
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise',
-  },
-};
-
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: [],
-    },
-  },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
-
-/* eslint-disable react/prop-types */
 const CurrentContentHighlightsWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  value = initialStateValue,
   ...props
-}) => {
-/* eslint-enable react/prop-types */
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: {},
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          <CurrentContentHighlights {...props} />
-        </ContentHighlightsContext.Provider>
-      </EnterpriseAppContext.Provider>
-    </Provider>
-  );
-};
+}) => (
+  <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
+    <CurrentContentHighlights {...props} />
+  </ContentHighlightsContext>
+);
 
 describe('<CurrentContentHighlights>', () => {
   it('Displays the header title', () => {
@@ -71,12 +31,6 @@ describe('<CurrentContentHighlights>', () => {
   });
 
   describe('ContentHighlightSetCardContainer', () => {
-    const exampleHighlightSet = {
-      uuid: 'fake-uuid',
-      title: 'Test Highlight Set',
-      isPublished: false,
-      highlightedContentUuids: [],
-    };
     it('Displays no highlight set cards', () => {
       renderWithRouter(<CurrentContentHighlightsWrapper />);
       expect(screen.queryByText('Published')).not.toBeInTheDocument();
@@ -85,35 +39,45 @@ describe('<CurrentContentHighlights>', () => {
     it('Displays draft highlight set cards', () => {
       renderWithRouter(
         <CurrentContentHighlightsWrapper
-          enterpriseAppContextValue={{
-            enterpriseCuration: {
-              enterpriseCuration: {
-                highlightSets: [exampleHighlightSet],
-              },
-            },
-          }}
+          enterpriseAppContextValue={
+              {
+                value: {
+                  enterpriseCuration: {
+                    enterpriseCuration: {
+                      highlightSets: [{
+                        ...testHighlightSet,
+                        isPublished: false,
+                      },
+                      ],
+                    },
+                  },
+                },
+              }
+}
         />,
       );
       expect(screen.getByText('Drafts')).toBeInTheDocument();
-      expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+      expect(screen.getByText(testHighlightSet.title)).toBeInTheDocument();
     });
     it('Displays published highlight set cards', () => {
       renderWithRouter(
         <CurrentContentHighlightsWrapper
           enterpriseAppContextValue={{
-            enterpriseCuration: {
+            value: {
               enterpriseCuration: {
-                highlightSets: [{
-                  ...exampleHighlightSet,
-                  isPublished: true,
-                }],
+                enterpriseCuration: {
+                  highlightSets: [{
+                    ...testHighlightSet,
+                    isPublished: true,
+                  }],
+                },
               },
             },
           }}
         />,
       );
       expect(screen.getByText('Published')).toBeInTheDocument();
-      expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+      expect(screen.getByText(testHighlightSet.title)).toBeInTheDocument();
     });
   });
 });

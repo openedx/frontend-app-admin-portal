@@ -1,24 +1,20 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
 import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
-import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
-import { configuration } from '../../../config';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import {
-  BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT, STEPPER_STEP_TEXT,
+  BUTTON_TEXT,
+  HEADER_TEXT,
+  MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
+  ALERT_TEXT,
+  STEPPER_STEP_TEXT,
 } from '../data/constants';
-
-const mockStore = configureMockStore([thunk]);
+import { ContentHighlightsContext, initialStateValue } from '../../../data/tests/ContentHighlightsTestData';
+import { initialStateValue as initialEnterpriseAppContextValue } from '../../../data/tests/EnterpriseAppTestData/context';
 
 const mockData = [{
   title: 'Test Title',
@@ -30,13 +26,6 @@ const mockData = [{
   onClick: jest.fn(),
 }];
 
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: mockData,
-    },
-  },
-};
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -53,46 +42,19 @@ for (let i = 0; i < MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION; i++) {
     highlightSetUUID: `test-uuid-${i}`,
   });
 }
-const initialState = {
-  portalConfiguration: {
-    enterpriseId: 'test-enterprise-id',
-    enterpriseSlug: 'test-enterprise',
-  },
-  highlightSetUUID: 'test-uuid',
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
 
 const ContentHighlightSetCardWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  value = initialStateValue,
   data = mockData,
-}) => {
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: {},
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          <CurrentContentHighlightHeader />
-          {data.map((highlight) => (
-            <ContentHighlightSetCard key={uuidv4()} {...highlight} />
-          ))}
-        </ContentHighlightsContext.Provider>
-      </EnterpriseAppContext.Provider>
-    </Provider>
-  );
-};
+}) => (
+  <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
+    <CurrentContentHighlightHeader />
+    {data.map((highlight) => (
+      <ContentHighlightSetCard key={uuidv4()} {...highlight} />
+    ))}
+  </ContentHighlightsContext>
+);
 
 describe('<ContentHighlightSetCard>', () => {
   it('Displays the title of the highlight set', () => {
@@ -112,9 +74,11 @@ describe('<ContentHighlightSetCard>', () => {
   });
   it('renders correct text when more then or equal to max curations', async () => {
     const updatedEnterpriseAppContextValue = {
-      enterpriseCuration: {
+      value: {
         enterpriseCuration: {
-          highlightSets: mockMultipleData,
+          enterpriseCuration: {
+            highlightSets: mockMultipleData,
+          },
         },
       },
     };
