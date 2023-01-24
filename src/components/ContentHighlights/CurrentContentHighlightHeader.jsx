@@ -15,6 +15,7 @@ import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvi
 import {
   BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT,
 } from './data/constants';
+import { extractHighlightSetUUID } from './data/utils';
 
 const CurrentContentHighlightHeader = ({ enterpriseId }) => {
   const {
@@ -36,12 +37,11 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       setMaxHighlightsReached(false);
     }
   }, [highlightSets]);
-
   const createNewHighlight = () => {
     if (maxHighlightsReached) {
       setShowMaxHighlightsAlert(true);
       const trackInfo = {
-        existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
+        existing_highlight_set_uuids: extractHighlightSetUUID(highlightSets),
         existing_highlight_set_count: highlightSets.length,
       };
       sendEnterpriseTrackEvent(
@@ -52,7 +52,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
     } else {
       openStepperModal();
       const trackInfo = {
-        existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
+        existing_highlight_set_uuids: extractHighlightSetUUID(highlightSets),
         existing_highlight_set_count: highlightSets.length,
       };
       sendEnterpriseTrackEvent(

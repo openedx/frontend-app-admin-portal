@@ -22,3 +22,7 @@ export function generateAboutPageUrl({ enterpriseSlug, contentType, contentKey }
   }
   return `${aboutPageBase}/${contentType}/${contentKey}`;
 }
+
+export function extractHighlightSetUUID(highlightSets) {
+  return highlightSets.map((set) => set.uuid);
+}
