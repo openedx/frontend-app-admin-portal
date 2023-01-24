@@ -34,7 +34,7 @@ export const EnterpriseAppContext = ({
   enterpriseAppContextValue,
 }) => (
   <BaseContext initialState={enterpriseAppContextValue?.initialBaseState || initialBaseState}>
-    <NestedEnterpriseAppContext.Provider value={enterpriseAppContextValue?.initialBaseState || value}>
+    <NestedEnterpriseAppContext.Provider value={enterpriseAppContextValue?.value || value}>
       {children}
     </NestedEnterpriseAppContext.Provider>
   </BaseContext>

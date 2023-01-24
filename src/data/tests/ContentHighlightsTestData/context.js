@@ -38,11 +38,11 @@ export const initialStateValue = {
 export const ContentHighlightsContext = ({
   children,
   value,
-  enterpriseAppContextValues,
+  enterpriseAppContextValue,
 }) => {
   const contextValue = useState(value);
   return (
-    <EnterpriseAppContext enterpriseAppContextValue={enterpriseAppContextValues}>
+    <EnterpriseAppContext enterpriseAppContextValue={enterpriseAppContextValue}>
       <NestedContentHighlightsContext.Provider value={contextValue}>
         {children}
       </NestedContentHighlightsContext.Provider>
@@ -53,7 +53,7 @@ export const ContentHighlightsContext = ({
 ContentHighlightsContext.propTypes = {
   children: PropTypes.node.isRequired,
   value: PropTypes.shape(),
-  enterpriseAppContextValues: PropTypes.shape().isRequired,
+  enterpriseAppContextValue: PropTypes.shape().isRequired,
 };
 
 ContentHighlightsContext.defaultProps = {

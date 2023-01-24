@@ -46,11 +46,7 @@ export const BaseContext = ({
 BaseContext.propTypes = {
   children: PropTypes.node.isRequired,
   initialState: PropTypes.shape({
-    portalConfiguration: PropTypes.shape({
-      enterpriseSlug: PropTypes.string,
-      enterpriseName: PropTypes.string,
-      enterpriseId: PropTypes.string,
-    }),
+    portalConfiguration: PropTypes.shape(),
   }),
 };
 

@@ -1,77 +1,32 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
-import algoliasearch from 'algoliasearch/lite';
 import { BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
-import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
-import { configuration } from '../../../config';
+import {
+  initialStateValue,
+  ContentHighlightsContext,
+  testCourseHighlightsData,
+} from '../../../data/tests/ContentHighlightsTestData';
+import { initialStateValue as enterpriseContextInitialStateValue } from '../../../data/tests/EnterpriseAppTestData/context';
 
-const mockStore = configureMockStore([thunk]);
+// Process property name into default api response
+const exampleHighlightSet = testCourseHighlightsData[0];
+exampleHighlightSet.highlightedContentUuids = exampleHighlightSet.highlightedContent;
+delete exampleHighlightSet.highlightedContent;
 
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise',
-    enterpriseId: 'test-enterprise-id',
-  },
-};
-
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: [],
-    },
-  },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
-
-const exampleHighlightSet = {
-  uuid: 'fake-uuid',
-  title: 'Test Highlight Set',
-  isPublished: false,
-  highlightedContentUuids: [],
-};
-
-/* eslint-disable react/prop-types */
 const ContentHighlightsDashboardWrapper = ({
-  enterpriseAppContextValue = initialEnterpriseAppContextValue,
-  ...props
-}) => {
-  /* eslint-enable react/prop-types */
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: {},
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <ContentHighlightsContext.Provider value={contextValue}>
-            <ContentHighlightsDashboard {...props} />
-          </ContentHighlightsContext.Provider>
-        </EnterpriseAppContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-};
+  value = initialStateValue,
+  enterpriseAppContextValue = enterpriseContextInitialStateValue,
+  props,
+}) => (
+  <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
+    <ContentHighlightsDashboard {...props} />
+  </ContentHighlightsContext>
+);
 
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {
@@ -90,9 +45,11 @@ describe('<ContentHighlightsDashboard>', () => {
     renderWithRouter(
       <ContentHighlightsDashboardWrapper
         enterpriseAppContextValue={{
-          enterpriseCuration: {
+          value: {
             enterpriseCuration: {
-              highlightSets: [exampleHighlightSet],
+              enterpriseCuration: {
+                highlightSets: [exampleHighlightSet],
+              },
             },
           },
         }}

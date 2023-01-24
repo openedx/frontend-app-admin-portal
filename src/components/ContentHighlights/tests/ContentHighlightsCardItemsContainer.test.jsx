@@ -1,17 +1,14 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import { camelCaseObject } from '@edx/frontend-platform';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
-import { DEFAULT_ERROR_MESSAGE, TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
-
-const mockStore = configureMockStore([thunk]);
+import { DEFAULT_ERROR_MESSAGE } from '../data/constants';
+import { BaseContext } from '../../../data/tests/context';
+import { testCourseHighlightsData } from '../../../data/tests/ContentHighlightsTestData';
+import 'jest-canvas-mock';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -21,17 +18,12 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-const testHighlightSet = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent;
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise',
-  },
-};
+const testHighlightSet = testCourseHighlightsData[0]?.highlightedContent;
 
 const ContentHighlightsCardItemsContainerWrapper = (props) => (
-  <Provider store={mockStore(initialState)}>
+  <BaseContext>
     <ContentHighlightsCardItemsContainer {...props} />
-  </Provider>
+  </BaseContext>
 );
 
 describe('<ContentHighlightsCardItemsContainer>', () => {

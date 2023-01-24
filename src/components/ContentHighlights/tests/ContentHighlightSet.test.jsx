@@ -7,19 +7,18 @@ import { Provider } from 'react-redux';
 import Router, { Route } from 'react-router-dom';
 import { renderHook } from '@testing-library/react-hooks/dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { camelCaseObject } from '@edx/frontend-platform';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentHighlightSet from '../ContentHighlightSet';
 import { useHighlightSet } from '../data/hooks';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
-import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import { configuration } from '../../../config';
+import { testCourseHighlightsData } from '../../../data/tests/ContentHighlightsTestData';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
-const mockHighlightSetResponse = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA);
+const mockHighlightSetResponse = testCourseHighlightsData;
 const mockStore = configureMockStore([thunk]);
 const highlightSetUUID = 'fake-uuid';
 const searchClient = algoliasearch(
@@ -96,7 +95,7 @@ describe('<ContentHighlightSet>', () => {
     expect(result.current).toEqual({
       isLoading: false,
       error: null,
-      highlightSet: camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA),
+      highlightSet: testCourseHighlightsData,
     });
     expect(
       EnterpriseCatalogApiService.fetchHighlightSet,

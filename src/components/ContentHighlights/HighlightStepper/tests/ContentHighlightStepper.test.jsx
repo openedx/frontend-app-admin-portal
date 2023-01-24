@@ -1,49 +1,23 @@
+/* eslint-disable react/prop-types */
 import { screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import { useState } from 'react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import algoliasearch from 'algoliasearch/lite';
-import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import configureMockStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
   BUTTON_TEXT,
   DEFAULT_ERROR_MESSAGE,
   MAX_HIGHLIGHT_TITLE_LENGTH,
   STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT,
   STEPPER_STEP_TEXT,
-  testCourseAggregation,
-  testCourseData,
 } from '../../data/constants';
-import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
-import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import 'jest-canvas-mock';
-
-const mockStore = configureMockStore([thunk]);
-
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise',
-    enterpriseId: 'test-enterprise-id',
-  },
-};
-
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: [],
-    },
-  },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
+import {
+  testCourseData,
+  ContentHighlightsContext,
+  initialStateValue,
+  testCourseAggregation,
+} from '../../../../data/tests/ContentHighlightsTestData';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -53,34 +27,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-/* eslint-disable react/prop-types */
 const ContentHighlightStepperWrapper = ({
-  enterpriseAppContextValue = initialEnterpriseAppContextValue,
-  ...props
-}) => {
-  /* eslint-enable react/prop-types */
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: testCourseAggregation,
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <ContentHighlightsContext.Provider value={contextValue}>
-            <ContentHighlightsDashboard {...props} />
-          </ContentHighlightsContext.Provider>
-        </EnterpriseAppContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-};
+  value = initialStateValue,
+}) => (
+  <ContentHighlightsContext value={value}>
+    <ContentHighlightsDashboard />
+  </ContentHighlightsContext>
+);
 
 const mockCourseData = [...testCourseData];
 jest.mock('react-instantsearch-dom', () => ({
@@ -118,7 +71,16 @@ describe('<ContentHighlightStepper>', () => {
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays the stepper and test all back and next buttons', () => {
-    renderWithRouter(<ContentHighlightStepperWrapper />);
+    renderWithRouter(<ContentHighlightStepperWrapper value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
     // open stepper --> title
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
@@ -191,7 +153,16 @@ describe('<ContentHighlightStepper>', () => {
     expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
   });
   it('Displays the stepper and closes the stepper on confirm', async () => {
-    renderWithRouter(<ContentHighlightStepperWrapper />);
+    renderWithRouter(<ContentHighlightStepperWrapper value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
 
     const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
     userEvent.click(stepper);
