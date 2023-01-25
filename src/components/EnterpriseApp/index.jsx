@@ -125,46 +125,47 @@ class EnterpriseApp extends React.Component {
         enterpriseName={enterpriseName}
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
-        <BrandStyles enterpriseBranding={enterpriseBranding} />
-        <div className="enterprise-app">
-          <MediaQuery minWidth={breakpoints.large.minWidth}>
-            {matchesMediaQ => (
-              <>
-                <ProductTours />
-                <Sidebar
-                  baseUrl={baseUrl}
-                  onWidthChange={(width) => {
-                    this.setState({
-                      sidebarWidth: width + defaultContentPadding,
-                    });
-                  }}
-                  isMobile={!matchesMediaQ}
-                />
-                <div
-                  className="content-wrapper full-page"
-                  tabIndex="-1"
-                  ref={this.contentWrapperRef}
-                  style={{
-                    paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
-                  }}
-                >
-                  <EnterpriseAppContent
+        <BrandStyles enterpriseBranding={enterpriseBranding}>
+          <div className="enterprise-app">
+            <MediaQuery minWidth={breakpoints.large.minWidth}>
+              {matchesMediaQ => (
+                <>
+                  <ProductTours />
+                  <Sidebar
                     baseUrl={baseUrl}
-                    email={email}
-                    enterpriseId={enterpriseId}
-                    enterpriseName={enterpriseName}
-                    enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
-                    enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
-                    enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
-                    enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
+                    onWidthChange={(width) => {
+                      this.setState({
+                        sidebarWidth: width + defaultContentPadding,
+                      });
+                    }}
+                    isMobile={!matchesMediaQ}
+                  />
+                  <div
+                    className="content-wrapper full-page"
+                    tabIndex="-1"
+                    ref={this.contentWrapperRef}
+                    style={{
+                      paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
+                    }}
                   >
-                    <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
-                  </EnterpriseAppContent>
-                </div>
-              </>
-            )}
-          </MediaQuery>
-        </div>
+                    <EnterpriseAppContent
+                      baseUrl={baseUrl}
+                      email={email}
+                      enterpriseId={enterpriseId}
+                      enterpriseName={enterpriseName}
+                      enableCodeManagementPage={features.CODE_MANAGEMENT && enableCodeManagementScreen}
+                      enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
+                      enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
+                      enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
+                    >
+                      <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
+                    </EnterpriseAppContent>
+                  </div>
+                </>
+              )}
+            </MediaQuery>
+          </div>
+        </BrandStyles>
       </EnterpriseAppContextProvider>
     );
   }

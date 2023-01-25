@@ -253,6 +253,43 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
     };
   }, [isStepperModalOpen]);
 
+  const handleNaviateToCreateTitle = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) - 1],
+      current_step_position: steps.indexOf(currentStep),
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_BACK}-TODO`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
+  };
+
+  const titleStepHasValidationError = !!titleStepValidationError || !highlightTitle;
+
+  const getStepClickHandlers = () => {
+    // validation
+    if (currentStep === STEPPER_STEP_LABELS.CREATE_TITLE && titleStepHasValidationError) {
+      return undefined;
+    }
+
+    return (nextStepKey) => {
+      if (nextStepKey === STEPPER_STEP_LABELS.CREATE_TITLE) {
+        handleNaviateToCreateTitle();
+      }
+      if (nextStepKey === STEPPER_STEP_LABELS.SELECT_CONTENT) {
+        handleNavigateToSelectContent();
+      }
+      return undefined;
+    };
+  };
+
   return (
     <>
       <Stepper activeKey={currentStep}>
@@ -261,7 +298,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
           className="bg-light-200"
           isOpen={isStepperModalOpen}
           onClose={openCloseConfirmationModal}
-          beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
+          beforeBodyNode={<Stepper.Header onStepClick={getStepClickHandlers()} className="border-bottom border-light" />}
           footerNode={(
             <>
               <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}>
@@ -278,7 +315,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
                 <Button
                   variant="primary"
                   onClick={handleNavigateToSelectContent}
-                  disabled={!!titleStepValidationError || !highlightTitle}
+                  disabled={titleStepHasValidationError}
                 >
                   Next
                 </Button>

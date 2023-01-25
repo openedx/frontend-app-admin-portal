@@ -63,7 +63,7 @@ export const useLinkManagement = (enterpriseUUID) => {
   };
 };
 
-export const useStylesForCustomBrandColors = (branding) => {
+export const useCustomBrandColors = (branding) => {
   const brandColors = useMemo(
     () => {
       if (!isDefinedAndNotNull(branding)) {
@@ -105,67 +105,7 @@ export const useStylesForCustomBrandColors = (branding) => {
     [branding],
   );
 
-  if (!isDefined(brandColors)) {
-    return null;
-  }
-
-  const styles = ({
-    key: 'styles',
-    styles: (`
-      .hero-brand {
-        background-color: ${brandColors.secondary.regular.hex()} !important;
-        border-color: ${brandColors.tertiary.regular.hex()} !important;
-        color: ${brandColors.secondary.textColor.hex()} !important;
-      }
-      .hero-brand h1 {
-        color: ${brandColors.secondary.textColor.hex()} !important;
-      }
-      .btn-brand {
-        background-color: ${brandColors.secondary.regular.hex()} !important;
-        border-color: ${brandColors.secondary.regular.hex()} !important;
-        color: ${brandColors.secondary.textColor.hex()} !important;
-      }
-      .btn-brand:hover {
-        background-color: ${brandColors.secondary.dark.hex()} !important;
-        border-color: ${brandColors.secondary.dark.hex()} !important;
-      }
-      .btn-brand:focus:before {
-        border-color: ${brandColors.secondary.regular.hex()} !important;
-      }
-      .btn-primary {
-        background-color: ${brandColors.primary.regular.hex()} !important;
-        border-color: ${brandColors.primary.regular.hex()} !important;
-        color: ${brandColors.primary.textColor.hex()} !important;
-      }
-      .btn-primary:hover {
-        background-color: ${brandColors.primary.dark.hex()} !important;
-        border-color: ${brandColors.primary.dark.hex()} !important;
-      }
-      .btn-brand-primary {
-        background-color: ${brandColors.primary.regular.hex()} !important;
-        border-color: ${brandColors.primary.regular.hex()} !important;
-        color: ${brandColors.primary.textColor.hex()} !important;
-      }
-      .btn-brand-primary:hover {
-        background-color: ${brandColors.primary.dark.hex()} !important;
-        border-color: ${brandColors.primary.dark.hex()} !important;
-      }
-      .btn-brand-primary:focus:before {
-        border-color: ${brandColors.primary.regular.hex()} !important;
-      }
-      .bg-brand-primary {
-        background-color: ${brandColors.primary.regular.hex()} !important;
-      }
-      .border-brand-primary {
-        border-color: ${brandColors.primary.regular.hex()} !important;
-      }
-      .color-brand-tertiary {
-        color: ${brandColors.tertiary.regular.hex()} !important;
-      }
-    `),
-  });
-
-  return styles;
+  return brandColors;
 };
 
 export default {

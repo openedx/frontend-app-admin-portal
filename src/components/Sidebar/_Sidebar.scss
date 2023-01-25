@@ -29,16 +29,16 @@
       top: 0;
 
       .nav-link {
-        color: $gray-700;
+        // color: $gray-700;
 
         &.active {
-          background: $primary;
-          color: $white;
+          // background: $primary;
+          // color: $white;
         }
 
         &:not(.active):hover,
         &:not(.active):focus {
-          background: $gray-200;
+          // background: $gray-200;
         }
       }
     }
