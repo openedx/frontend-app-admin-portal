@@ -5,6 +5,7 @@ export const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   statusBadge: 'status',
   recentAction: 'activation_date',
 };
+export const LPR_DEFAULT_SORT = '-status';
 
 // Subscription license statuses as defined on the backend
 export const ACTIVATED = 'activated';
