@@ -282,7 +282,7 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: mockErrorMessage,
-        enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
+        enterpriseCuration: undefined,
         updateEnterpriseCuration: expect.any(Function),
       });
     });

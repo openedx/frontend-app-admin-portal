@@ -35,7 +35,7 @@ const ContentHighlightsDashboard = () => {
       <Tabs
         className="mb-4.5"
         activeKey={activeTab}
-        onSelect={(k) => setActiveTab(k)}
+        onSelect={setActiveTab}
       >
         <Tab
           eventKey={camelCaseObject(TAB_TITLES.highlights)}

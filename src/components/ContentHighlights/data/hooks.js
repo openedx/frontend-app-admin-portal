@@ -129,7 +129,7 @@ export function useContentHighlightsContext() {
   const setCatalogVisibilityAlert = useCallback(({ isOpen }) => {
     setState(s => ({
       ...s,
-      catalogVisibilityAlert: isOpen,
+      catalogVisibilityAlertOpen: isOpen,
     }));
   }, [setState]);
 

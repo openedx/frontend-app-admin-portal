@@ -47,11 +47,10 @@ const ContentHighlightCatalogVisibilityAlertWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   highlightSets = [],
   catalogVisibility = false,
-
 }) => {
   const contextValue = useState({
     contentHighlights: highlightSets,
-    catalogVisibilityAlert: catalogVisibility,
+    catalogVisibilityAlertOpen: catalogVisibility,
     stepperModal: {
       isOpen: false,
       highlightTitle: null,
@@ -83,7 +82,7 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 });
 
 describe('ContentHighlightCatalogVisibilityAlert', () => {
-  it('renders API response failure when catalogVisibilityAlert context true', () => {
+  it('renders API response failure when catalogVisibilityAlertOpen context true', () => {
     renderWithRouter(
       <ContentHighlightCatalogVisibilityAlertWrapper catalogVisibility />,
     );

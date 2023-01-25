@@ -20,9 +20,9 @@ const ContentHighlightCatalogVisibilityAlert = () => {
       },
     },
   } = useContext(EnterpriseAppContext);
-  const catalogVisibilityAlert = useContextSelector(
+  const catalogVisibilityAlertOpen = useContextSelector(
     ContentHighlightsContext,
-    v => v[0].catalogVisibilityAlert,
+    v => v[0].catalogVisibilityAlertOpen,
   );
   const handleNewHighlightClick = () => {
     const trackInfo = {
@@ -37,7 +37,8 @@ const ContentHighlightCatalogVisibilityAlert = () => {
 
     openStepperModal();
   };
-  if (catalogVisibilityAlert) {
+
+  if (catalogVisibilityAlertOpen) {
     return (
       <Row className="mb-4.5">
         <Col xs={12} sm={10} md={9} lg={8}>
@@ -56,40 +57,42 @@ const ContentHighlightCatalogVisibilityAlert = () => {
       </Row>
     );
   }
-  if (highlightSets.length < 1) {
-    return (
-      <Row className="mb-4.5">
-        <Col xs={12} sm={10} md={9} lg={8}>
-          <Alert
-            variant="danger"
-            icon={Info}
-          >
-            <div className="d-flex">
-              <div style={{ flex: '0 0 80%' }}>
-                <Alert.Heading>
-                  {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
-                </Alert.Heading>
-                <p>
-                  {ALERT_TEXT.SUB_TEXT.catalogVisibility}
-                </p>
-              </div>
-              <div className="align-self-center">
-                <Button
-                  onClick={handleNewHighlightClick}
-                  data-testid={`catalog-visibility-alert-${BUTTON_TEXT.catalogVisibility}`}
-                  iconBefore={Add}
-                  block
-                >
-                  {BUTTON_TEXT.catalogVisibility}
-                </Button>
-              </div>
-            </div>
-          </Alert>
-        </Col>
-      </Row>
-    );
+
+  if (highlightSets.length > 0) {
+    return null;
   }
-  return null;
+
+  return (
+    <Row className="mb-4.5">
+      <Col xs={12} sm={10} md={9} lg={8}>
+        <Alert
+          variant="danger"
+          icon={Info}
+        >
+          <div className="d-flex">
+            <div style={{ flex: '0 0 80%' }}>
+              <Alert.Heading>
+                {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
+              </Alert.Heading>
+              <p>
+                {ALERT_TEXT.SUB_TEXT.catalogVisibility}
+              </p>
+            </div>
+            <div className="align-self-center">
+              <Button
+                onClick={handleNewHighlightClick}
+                data-testid={`catalog-visibility-alert-${BUTTON_TEXT.catalogVisibility}`}
+                iconBefore={Add}
+                block
+              >
+                {BUTTON_TEXT.catalogVisibility}
+              </Button>
+            </div>
+          </div>
+        </Alert>
+      </Col>
+    </Row>
+  );
 };
 
 export default ContentHighlightCatalogVisibilityAlert;

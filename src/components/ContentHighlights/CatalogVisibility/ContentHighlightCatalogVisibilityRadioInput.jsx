@@ -27,27 +27,28 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
   const { location } = history;
   /**
    * Sets enterpriseCuration.canOnlyViewHighlightSets to false if there are no highlight sets
-   * when the user enters content highlights dashboard. Runs on mount if there are no highlight sets
+   * when the user enters content highlights dashboard.
    */
-  const setDefault = async () => {
-    try {
-      await updateEnterpriseCuration({
-        canOnlyViewHighlightSets: false,
-      });
-    } catch (error) {
-      logError(`${error}: Error updating enterprise curation setting with no highlight sets,
-       ContentHighlightCatalogVsibiilityRadioInput`);
+  useEffect(() => {
+    if (highlightSets.length < 1 && canOnlyViewHighlightSets) {
+      const setDefault = async () => {
+        try {
+          await updateEnterpriseCuration({
+            canOnlyViewHighlightSets: false,
+          });
+        } catch (error) {
+          logError(`${error}: Error updating enterprise curation setting with no highlight sets,
+           ContentHighlightCatalogVsibiilityRadioInput`);
+        }
+      };
+      setDefault();
     }
-  };
-  if (highlightSets.length < 1 && canOnlyViewHighlightSets) {
-    setDefault();
-  }
+  }, [canOnlyViewHighlightSets, highlightSets.length, updateEnterpriseCuration]);
   // Sets default radio button based on number of highlight sets && catalog visibility setting
-  const [value, setValue] = useState(
-    !canOnlyViewHighlightSets || highlightSets.length < 1
-      ? LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value
-      : LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value,
-  );
+  const catalogVisibilityValue = !canOnlyViewHighlightSets || highlightSets.length < 1
+    ? LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value
+    : LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value;
+  const [value, setValue] = useState(catalogVisibilityValue);
   const handleChange = async (e) => {
     try {
       // persist ui changes on the dom to log event changes
@@ -111,11 +112,11 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
               id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
               style={{
-                width: '24px',
-                height: '24px',
+                width: 24,
+                height: 24,
               }}
               animation="border"
-              screenReaderText="loading"
+              screenReaderText="loading changes to view all content"
             />
             <ActionRowSpacer />
             <Form.Radio
@@ -133,12 +134,14 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
               hidden
               id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
-              style={{
-                width: '24px',
-                height: '24px',
-              }}
+              style={
+                {
+                  width: 24,
+                  height: 24,
+                }
+            }
               animation="border"
-              screenReaderText="loading"
+              screenReaderText="loading changes to view highlighted content only"
             />
             <ActionRowSpacer />
             <Form.Radio

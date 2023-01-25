@@ -56,7 +56,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
     } catch (error) {
       logError(error);
       setFetchError(error);
-      return error.message;
+      throw error;
     } finally {
       setIsLoading(false);
     }
