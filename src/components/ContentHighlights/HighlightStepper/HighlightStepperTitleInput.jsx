@@ -11,6 +11,10 @@ const HighlightStepperTitleInput = () => {
   const highlightTitle = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.highlightTitle);
   const [titleLength, setTitleLength] = useState(highlightTitle?.length || 0);
   const [isInvalid, setIsInvalid] = useState(false);
+  /**
+   *  Create seperate useState for FormInput as to differenciate between
+   *  the outer stepper context state and inner input useState.
+   * */
   const [highlightValue, setHighlightValue] = useState({
     initialized: false,
     highlightTitle: highlightTitle || '',
@@ -18,7 +22,6 @@ const HighlightStepperTitleInput = () => {
     highlightTitleLength: titleLength || 0,
   });
   const handleChange = ((e) => {
-    e.persist();
     if (e.target.value.length > MAX_HIGHLIGHT_TITLE_LENGTH) {
       setIsInvalid(true);
       setHighlightValue({
@@ -45,10 +48,10 @@ const HighlightStepperTitleInput = () => {
         titleStepValidationError: highlightValue.titleStepValidationError,
       });
       setTitleLength(highlightValue.highlightTitleLength);
-      setHighlightValue({
-        ...highlightValue,
+      setHighlightValue(prevState => ({
+        ...prevState,
         initialized: false,
-      });
+      }));
     }
   }, [highlightTitle, setHighlightTitle, highlightValue]);
   return (
