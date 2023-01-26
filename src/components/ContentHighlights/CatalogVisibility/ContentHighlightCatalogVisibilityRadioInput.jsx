@@ -1,5 +1,5 @@
 import {
-  Form, Container, Spinner, ActionRow,
+  Form, Container, Spinner,
 } from '@edx/paragon';
 import { useState, useContext, useEffect } from 'react';
 import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
@@ -25,6 +25,9 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
   const [radioGroupVisibility, setRadioGroupVisibility] = useState(true);
   const history = useHistory();
   const { location } = history;
+  const [isEntireCatalogSelectionLoading, setIsEntireCatalogSelectionLoading] = useState(false);
+  const [isHighlightsCatalogSelectionLoading, setIsHighlightsCatalogSelectionLoading] = useState(false);
+
   /**
    * Sets enterpriseCuration.canOnlyViewHighlightSets to false if there are no highlight sets
    * when the user enters content highlights dashboard.
@@ -49,30 +52,33 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
     ? LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value
     : LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value;
   const [value, setValue] = useState(catalogVisibilityValue);
+
   const handleChange = async (e) => {
+    const newTabValue = e.target.value;
     try {
-      // persist ui changes on the dom to log event changes
-      e.persist();
       // Show loading spinner
-      if (e.target.dataset.spinnerUi) {
-        document.getElementById(e.target.dataset.spinnerUi).hidden = false;
+      if (newTabValue === LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value) {
+        setIsEntireCatalogSelectionLoading(true);
+        setIsHighlightsCatalogSelectionLoading(false);
       }
-      // Update enterprise curation setting
+      if (newTabValue === LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value) {
+        setIsHighlightsCatalogSelectionLoading(true);
+        setIsEntireCatalogSelectionLoading(false);
+      }
       const data = await updateEnterpriseCuration({
-        canOnlyViewHighlightSets: LEARNER_PORTAL_CATALOG_VISIBILITY[e.target.value].canOnlyViewHighlightSets,
+        canOnlyViewHighlightSets: LEARNER_PORTAL_CATALOG_VISIBILITY[newTabValue].canOnlyViewHighlightSets,
       });
       // Send Track Event
       const trackInfo = {
-        can_only_view_highlight_sets: LEARNER_PORTAL_CATALOG_VISIBILITY[e.target.value].canOnlyViewHighlightSets,
+        can_only_view_highlight_sets: LEARNER_PORTAL_CATALOG_VISIBILITY[newTabValue].canOnlyViewHighlightSets,
       };
       sendEnterpriseTrackEvent(
         enterpriseCuration.enterpriseCustomer,
         EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_SET_CATALOG_VISIBILITY,
         trackInfo,
       );
-      // Hide loading spinner and set toast and closes alert if open
+      // Set toast and closes alert if open
       if (data) {
-        document.getElementById(e.target.dataset.spinnerUi).hidden = true;
         setCatalogVisibilityAlert({
           isOpen: false,
         });
@@ -80,16 +86,17 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
         history.push(location.pathname, {
           highlightToast: true,
         });
+        setValue(newTabValue);
       }
-      // Set radio button value
-      setValue(e.target.value);
     } catch (error) {
       logError(error);
-      // Hide loading spinner and set alert if error
-      document.getElementById(e.target.dataset.spinnerUi).hidden = true;
       setCatalogVisibilityAlert({
         isOpen: true,
       });
+    } finally {
+      // Hide loading spinner
+      setIsEntireCatalogSelectionLoading(false);
+      setIsHighlightsCatalogSelectionLoading(false);
     }
   };
   useEffect(() => {
@@ -106,54 +113,54 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
           onChange={handleChange}
           value={value}
         >
-          <ActionRow direction="horizontal">
+          <div className="d-flex align-items-center position-relative">
+            {isEntireCatalogSelectionLoading && (
             <Spinner
-              hidden
-              id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
+              className="position-absolute"
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
+              size="sm"
               style={{
-                width: 24,
-                height: 24,
+                left: -24,
               }}
               animation="border"
               screenReaderText="loading changes to view all content"
             />
+            )}
             <ActionRowSpacer />
             <Form.Radio
               value={LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}
               type="radio"
-              disabled={radioGroupVisibility}
-              data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`}
+              disabled={radioGroupVisibility || isEntireCatalogSelectionLoading || isHighlightsCatalogSelectionLoading}
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control-button`}
             >
               {BUTTON_TEXT.catalogVisibilityRadio1}
             </Form.Radio>
-          </ActionRow>
-          <ActionRow>
+          </div>
+          <div className="d-flex align-items-center position-relative">
+            {isHighlightsCatalogSelectionLoading && (
             <Spinner
-              hidden
-              id={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
+              className="position-absolute"
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
+              size="sm"
               style={
                 {
-                  width: 24,
-                  height: 24,
+                  left: -24,
                 }
             }
               animation="border"
               screenReaderText="loading changes to view highlighted content only"
             />
+            )}
             <ActionRowSpacer />
             <Form.Radio
               value={LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}
               type="radio"
-              disabled={radioGroupVisibility}
-              data-spinner-ui={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`}
+              disabled={radioGroupVisibility || isEntireCatalogSelectionLoading || isHighlightsCatalogSelectionLoading}
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control-button`}
             >
               {BUTTON_TEXT.catalogVisibilityRadio2}
             </Form.Radio>
-          </ActionRow>
+          </div>
         </Form.RadioSet>
       </Form.Group>
     </Container>

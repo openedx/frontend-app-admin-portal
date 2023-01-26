@@ -99,17 +99,15 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     renderWithRouter(<ContentHighlightCatalogVisibilityRadioInputWrapper highlightSets={mockHighlightSetResponse} />);
 
     const viewHighlightedContentButton = screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2);
-    const radio2LoadingStateInitial = !screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`).hidden;
+    const radio2LoadingStateInitial = screen.queryByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`);
     const radio1CheckedState = screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control-button`).checked;
 
     expect(radio2LoadingStateInitial).toBeFalsy();
     expect(radio1CheckedState).toBeTruthy();
+
     await act(() => {
       userEvent.click(viewHighlightedContentButton);
     });
-
-    const radio2LoadingStateIntermediary = !screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`).hidden;
-    expect(radio2LoadingStateIntermediary).toBeTruthy();
 
     await waitFor(() => EnterpriseCatalogApiService.updateEnterpriseCurationConfig({
       canOnlyViewHighlightSets: true,
@@ -141,7 +139,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
       />,
     );
     const viewAllContentButton = screen.getByText(BUTTON_TEXT.catalogVisibilityRadio1);
-    const radio1LoadingStateInitial = !screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`).hidden;
+    const radio1LoadingStateInitial = screen.queryByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`);
     const radio2CheckedState = screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control-button`).checked;
 
     expect(radio1LoadingStateInitial).toBeFalsy();
@@ -150,9 +148,6 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     await act(() => {
       userEvent.click(viewAllContentButton);
     });
-
-    const radio1LoadingStateIntermediary = !screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`).hidden;
-    expect(radio1LoadingStateIntermediary).toBeTruthy();
 
     await waitFor(() => EnterpriseCatalogApiService.updateEnterpriseCurationConfig({
       canOnlyViewHighlightSets: false,

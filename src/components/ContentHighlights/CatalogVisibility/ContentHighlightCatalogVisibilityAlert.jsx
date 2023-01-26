@@ -68,27 +68,22 @@ const ContentHighlightCatalogVisibilityAlert = () => {
         <Alert
           variant="danger"
           icon={Info}
+          actions={[
+            <Button
+              onClick={handleNewHighlightClick}
+              data-testid={`catalog-visibility-alert-${BUTTON_TEXT.catalogVisibility}`}
+              iconBefore={Add}
+            >
+              {BUTTON_TEXT.catalogVisibility}
+            </Button>,
+          ]}
         >
-          <div className="d-flex">
-            <div style={{ flex: '0 0 80%' }}>
-              <Alert.Heading>
-                {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
-              </Alert.Heading>
-              <p>
-                {ALERT_TEXT.SUB_TEXT.catalogVisibility}
-              </p>
-            </div>
-            <div className="align-self-center">
-              <Button
-                onClick={handleNewHighlightClick}
-                data-testid={`catalog-visibility-alert-${BUTTON_TEXT.catalogVisibility}`}
-                iconBefore={Add}
-                block
-              >
-                {BUTTON_TEXT.catalogVisibility}
-              </Button>
-            </div>
-          </div>
+          <Alert.Heading>
+            {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
+          </Alert.Heading>
+          <p>
+            {ALERT_TEXT.SUB_TEXT.catalogVisibility}
+          </p>
         </Alert>
       </Col>
     </Row>
