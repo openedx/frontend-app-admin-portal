@@ -7,7 +7,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import {
   BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT,
@@ -77,6 +77,14 @@ const ContentHighlightsDashboardWrapper = ({
   );
 };
 
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return {
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  };
+});
+
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
@@ -88,6 +96,7 @@ describe('<ContentHighlightsDashboard>', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(newHighlight);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays current highlights when data is populated', () => {
@@ -121,7 +130,10 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(highlightTab.classList.contains('active')).toBeTruthy();
     expect(catalogVisibilityTab.classList.contains('active')).toBeFalsy();
 
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     userEvent.click(catalogVisibilityTab);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+
     expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
     expect(highlightTab.classList.contains('active')).toBeFalsy();
   });
