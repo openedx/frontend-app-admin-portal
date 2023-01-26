@@ -17,15 +17,11 @@ const HighlightStepperTitle = () => (
         </h3>
         <div className="mb-4.5">
           <p>
-            Create a unique title for your highlight. This title is visible
-            to your learners and helps them navigate to relevant content.
+            {STEPPER_STEP_TEXT.SUB_TEXT.createTitle}
           </p>
           <p>
             <strong>
-              Pro tip: we recommend naming your highlight collection to reflect skills
-              it aims to develop, or to draw the attention of specific groups it targets.
-              For example, &quot;Recommended for Marketing&quot; or &quot;Develop Leadership
-              Skills&quot;.
+              {STEPPER_STEP_TEXT.PRO_TIP_TEXT.createTitle}
             </strong>
           </p>
         </div>
