@@ -77,7 +77,7 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
     const deleteHighlightSet = async () => {
       setDeletionState('pending');
       try {
-        dispatch(enterpriseCurationActions.setHighlightToast(highlightSetUUID));
+        dispatch(enterpriseCurationActions.setHighlightSetToast(highlightSetUUID));
         await EnterpriseCatalogApiService.deleteHighlightSet(highlightSetUUID);
         dispatch(enterpriseCurationActions.deleteHighlightSet(highlightSetUUID));
         setIsDeleted(true);

@@ -43,6 +43,7 @@ const ContentHighlightStepperWrapper = ({
   </ContentHighlightsContext>
 );
 
+
 const mockCourseData = [...testCourseData];
 jest.mock('react-instantsearch-dom', () => ({
   ...jest.requireActual('react-instantsearch-dom'),
@@ -67,14 +68,14 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('<ContentHighlightStepper>', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('Displays the stepper', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
@@ -90,7 +91,7 @@ describe('<ContentHighlightStepper>', () => {
       }
     />);
     // open stepper --> title
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     // title --> select content
@@ -117,6 +118,8 @@ describe('<ContentHighlightStepper>', () => {
     // title --> closed stepper
     const backButton4 = screen.getByText('Back');
     userEvent.click(backButton4);
+
+    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(6);
 
     // Confirm stepper close confirmation modal
@@ -128,18 +131,20 @@ describe('<ContentHighlightStepper>', () => {
     const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
     userEvent.click(confirmCloseButton);
 
-    expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
+    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
   });
   it('Displays the stepper and exits on the X button', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     userEvent.click(closeButton);
+
+    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
 
     // Confirm stepper close confirmation modal
@@ -158,7 +163,7 @@ describe('<ContentHighlightStepper>', () => {
     expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
 
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
-    expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
+    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
   });
   it('Displays the stepper and closes the stepper on confirm', async () => {
     renderWithRouter(<ContentHighlightStepperWrapper value={
@@ -172,7 +177,7 @@ describe('<ContentHighlightStepper>', () => {
       }
     />);
 
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const input = screen.getByTestId('stepper-title-input');
@@ -191,12 +196,13 @@ describe('<ContentHighlightStepper>', () => {
   it('Displays the stepper, closes, then displays stepper again', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper1 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper1 = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
     const closeButton = screen.getByRole('button', { name: 'Close' });
     userEvent.click(closeButton);
+    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
 
     // Confirm stepper close confirmation modal
     expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
@@ -214,9 +220,9 @@ describe('<ContentHighlightStepper>', () => {
     expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
 
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
-    expect(screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight)).toBeInTheDocument();
+    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
 
-    const stepper2 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper2 = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper2);
 
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
@@ -224,7 +230,7 @@ describe('<ContentHighlightStepper>', () => {
   it('opens the stepper modal close confirmation modal and cancels the modal', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
 
-    const stepper1 = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper1 = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
@@ -251,7 +257,7 @@ describe('<ContentHighlightStepper>', () => {
   });
   it('Displays error message in title page when highlight set name exceeds maximum value', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const input = screen.getByTestId('stepper-title-input');
@@ -264,7 +270,7 @@ describe('<ContentHighlightStepper>', () => {
   });
   it('sends segment event from footer link', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
     const footerLink = screen.getByText(STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT);

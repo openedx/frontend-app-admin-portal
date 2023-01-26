@@ -83,7 +83,8 @@ describe('<ContentHighlightSetCard>', () => {
   it('renders correct text when less then max curations', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
-    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument();
+    expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
   });
   it('renders correct text when more then or equal to max curations', async () => {
     const updatedEnterpriseAppContextValue = {

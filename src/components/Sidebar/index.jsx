@@ -40,7 +40,6 @@ const Sidebar = ({
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
   const getSidebarWidth = useCallback(() => {
@@ -63,10 +62,12 @@ const Sidebar = ({
   useEffect(() => {
     const sideBarWidth = getSidebarWidth();
     if (widthRef.current !== sideBarWidth) {
-      onWidthChange(sideBarWidth);
+      if (!isExpanded) {
+        onWidthChange(sideBarWidth);
+      }
       widthRef.current = sideBarWidth;
     }
-  }, [getSidebarWidth, isExpandedByToggle, isMobile, onWidthChange]);
+  }, [getSidebarWidth, isExpanded, isExpandedByToggle, isMobile, onWidthChange]);
 
   const getMenuItems = () => [
     {

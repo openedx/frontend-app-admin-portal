@@ -109,7 +109,7 @@ describe('<DeleteHighlightSet />', () => {
 
     await waitFor(() => {
       expect(mockDispatchFn).toHaveBeenCalledWith(
-        enterpriseCurationActions.setHighlightToast(highlightSetUUID),
+        enterpriseCurationActions.setHighlightSetToast(highlightSetUUID),
       );
     });
     await waitFor(() => {

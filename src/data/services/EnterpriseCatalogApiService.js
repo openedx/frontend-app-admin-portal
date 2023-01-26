@@ -57,6 +57,16 @@ class EnterpriseCatalogApiService {
     );
   }
 
+  static updateEnterpriseCurationConfig(enterpriseCurationUUID, options = {}) {
+    const payload = {
+      ...snakeCaseObject(options),
+    };
+    return EnterpriseCatalogApiService.apiClient().patch(
+      `${EnterpriseCatalogApiService.enterpriseCurationUrl}${enterpriseCurationUUID}/`,
+      payload,
+    );
+  }
+
   static createHighlightSet(enterpriseId, options = {}) {
     const payload = {
       enterprise_customer: enterpriseId,

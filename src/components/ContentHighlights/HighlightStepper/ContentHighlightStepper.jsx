@@ -97,7 +97,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         highlightedContentUuids: result.highlightedContent || [],
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
-      dispatchEnterpriseCuration(enterpriseCurationActions.setHighlightToast(transformedHighlightSet.uuid));
+      dispatchEnterpriseCuration(enterpriseCurationActions.setHighlightSetToast(transformedHighlightSet.uuid));
       history.push(location.pathname, {
         addHighlightSet: true,
       });

@@ -23,7 +23,7 @@ const CurrentContentHighlightsWrapper = ({
 describe('<CurrentContentHighlights>', () => {
   it('Displays the header title', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText(HEADER_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
   });
   it('Displays the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
