@@ -21,25 +21,26 @@ const HighlightStepperTitleInput = () => {
     titleStepValidationError: undefined,
     highlightTitleLength: titleLength || 0,
   });
-  const handleChange = ((e) => {
-    if (e.target.value.length > MAX_HIGHLIGHT_TITLE_LENGTH) {
+  const handleChange = (e) => {
+    const eventTargetValue = e.target.value;
+    if (eventTargetValue.length > MAX_HIGHLIGHT_TITLE_LENGTH) {
       setIsInvalid(true);
       setHighlightValue({
         initialized: true,
-        highlightTitle: e.target.value,
+        highlightTitle: eventTargetValue,
         titleStepValidationError: DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH,
-        highlightTitleLength: e.target.value.length,
+        highlightTitleLength: eventTargetValue.length,
       });
     } else {
       setIsInvalid(false);
       setHighlightValue({
         initialized: true,
-        highlightTitle: e.target.value,
+        highlightTitle: eventTargetValue,
         titleStepValidationError: undefined,
-        highlightTitleLength: e.target.value.length,
+        highlightTitleLength: eventTargetValue.length,
       });
     }
-  });
+  };
 
   useEffect(() => {
     if (highlightValue.initialized) {
@@ -60,7 +61,7 @@ const HighlightStepperTitleInput = () => {
     >
       <Form.Control
         data-testid="stepper-title-input"
-        value={highlightValue.highlightTitle || ''}
+        value={highlightValue.highlightTitle}
         onChange={handleChange}
         floatingLabel="Highlight title"
         autoComplete="off"
