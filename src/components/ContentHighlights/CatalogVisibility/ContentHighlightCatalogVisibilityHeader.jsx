@@ -2,7 +2,7 @@ import { HEADER_TEXT } from '../data/constants';
 
 const ContentHighlightCatalogVisibilityHeader = () => (
   <div className="mt-4.5">
-    <h2 className="mb-3 ">
+    <h2 className="mb-3">
       {HEADER_TEXT.catalogVisibility}
     </h2>
     <p>
