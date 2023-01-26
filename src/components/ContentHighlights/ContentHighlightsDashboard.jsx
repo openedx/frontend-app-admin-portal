@@ -27,7 +27,7 @@ const ContentHighlightsDashboard = () => {
   const highlightSets = enterpriseCuration?.highlightSets;
   const [activeTab, setActiveTab] = useState(TAB_TITLES.highlights);
   const [isHighlightSetCreated, setIsHighlightSetCreated] = useState(false);
-  const sendTrackEvent = (tab) => {
+  const sendTrackEventTabSwitch = (tab) => {
     const trackInfo = {
       active_tab: tab,
     };
@@ -49,7 +49,7 @@ const ContentHighlightsDashboard = () => {
         activeKey={activeTab}
         onSelect={(tab) => {
           setActiveTab(tab);
-          sendTrackEvent(tab);
+          sendTrackEventTabSwitch(tab);
         }}
       >
         <Tab
