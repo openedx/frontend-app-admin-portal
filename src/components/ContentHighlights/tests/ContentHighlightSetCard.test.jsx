@@ -15,7 +15,7 @@ import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
 import { configuration } from '../../../config';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import {
-  BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT, STEPPER_STEP_TEXT,
+  BUTTON_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT, STEPPER_STEP_TEXT,
 } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
@@ -108,7 +108,8 @@ describe('<ContentHighlightSetCard>', () => {
   it('renders correct text when less then max curations', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
-    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument();
+    expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
   });
   it('renders correct text when more then or equal to max curations', async () => {
     const updatedEnterpriseAppContextValue = {

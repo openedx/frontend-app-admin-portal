@@ -14,6 +14,15 @@ const ContentHighlights = () => {
   const [toasts, setToasts] = useState([]);
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   useEffect(() => {
+    if (locationState?.highlightToast) {
+      setToasts((prevState) => [...prevState, {
+        toastText: enterpriseCuration?.toastText,
+        uuid: uuidv4(),
+      }]);
+      const newState = { ...locationState };
+      delete newState.highlightToast;
+      history.replace({ ...location, state: newState });
+    }
     if (locationState?.deletedHighlightSet) {
       setToasts((prevState) => [...prevState, {
         toastText: `"${enterpriseCuration?.toastText}" deleted`,

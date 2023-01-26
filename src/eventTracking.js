@@ -71,6 +71,7 @@ export const CONTENT_HIGHLIGHTS_EVENTS = {
   // Dashboard
   HIGHLIGHT_DASHBOARD_SET_ABOUT_PAGE: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.set_item_about_page.clicked`,
   HIGHLIGHT_DASHBOARD_PUBLISHED_HIGHLIGHT_SET_CARD: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.published_highlight_set_card.clicked`,
+  HIGHLIGHT_DASHBOARD_SET_CATALOG_VISIBILITY: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.set_catalog_visibility.clicked`,
   // Highlight Creation
   NEW_HIGHLIHT_MAX_REACHED: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.create_new_content_highlight.max_reached.clicked`,
   NEW_HIGHLIGHT: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.create_new_content_highlight.clicked`,
