@@ -128,11 +128,12 @@ describe('useEnterpriseCuration', () => {
         EnterpriseCatalogApiService.getEnterpriseCurationConfig,
       ).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
 
-      await waitFor(() => act(() => updateEnterpriseCuration(updatedEnterpriseCuration)));
-
-      expect(
-        EnterpriseCatalogApiService.updateEnterpriseCurationConfig,
-      ).toHaveBeenCalledWith(mockEnterpriseCurationConfig.uuid, updatedEnterpriseCuration);
+      updateEnterpriseCuration(updatedEnterpriseCuration);
+      await waitFor(() => {
+        expect(
+          EnterpriseCatalogApiService.updateEnterpriseCurationConfig,
+        ).toHaveBeenCalledWith(mockEnterpriseCurationConfig.uuid, updatedEnterpriseCuration);
+      });
 
       expect(result.current).toEqual({
         isLoading: false,
