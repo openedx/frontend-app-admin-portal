@@ -959,71 +959,308 @@ exports[`ContentHighlightRoutes renders zero state 1`] = `
   <div
     class="my-5 container-fluid"
   >
-    <div
-      class="row"
-    >
-      <div
-        class="col-xl-5 col-lg-8 col-md-9 col-sm-10 col-12"
+    <div>
+      <nav
+        class="mb-4.5 pgn__tabs nav nav-tabs"
+        role="tablist"
       >
-        <div
-          class="pgn__card pgn__card-light card"
+        <a
+          aria-selected="true"
+          class="nav-item nav-link active"
+          data-rb-event-key="Highlights"
+          href="#"
+          role="tab"
+        >
+          Highlights
+        </a>
+        <a
+          aria-selected="false"
+          class="nav-item nav-link"
+          data-rb-event-key="Catalog Visibility"
+          href="#"
+          role="tab"
+        >
+          Catalog Visibility
+        </a>
+        <a
+          class="pgn__tab_invisible pgn__tab_more nav-item nav-link"
+          href="#"
+          role="tab"
           tabindex="-1"
         >
           <div
-            class="bg-light-400 p-4"
+            class="pgn__dropdown pgn__dropdown-light dropdown"
+            data-testid="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="nav-link dropdown-toggle btn btn-link"
+              id="pgn__tab-toggle"
+              type="button"
+            >
+              More...
+            </button>
+          </div>
+        </a>
+      </nav>
+      <div
+        class="tab-content"
+      >
+        <div
+          aria-hidden="false"
+          class="fade tab-pane active show"
+          role="tabpanel"
+        >
+          <div
+            class="mt-5 row"
           >
             <div
-              class="pgn__card-wrapper-image-cap vertical"
+              class="col-xl-5 col-lg-8 col-md-9 col-sm-10 col-12"
             >
-              <img
-                alt=""
-                class="pgn__card-image-cap"
-                src="icon/mock/path"
-              />
+              <div
+                class="pgn__card pgn__card-light card"
+                tabindex="-1"
+              >
+                <div
+                  class="bg-light-400 p-4"
+                >
+                  <div
+                    class="pgn__card-wrapper-image-cap vertical"
+                  >
+                    <img
+                      alt=""
+                      class="pgn__card-image-cap"
+                      src="icon/mock/path"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="pgn__card-section text-center align-self-center"
+                >
+                  <h2
+                    class="h3 mb-3"
+                  >
+                    You haven't created any highlights yet.
+                  </h2>
+                  <p>
+                    Create and recommend content collections to your learners, enabling them to quickly locate content relevant to them.
+                  </p>
+                </div>
+                <div
+                  class="pgn__card-footer vertical"
+                >
+                  <button
+                    class="btn btn-primary btn-block"
+                    data-testid="zero-state-card-New highlight"
+                    type="button"
+                  >
+                    <span
+                      class="pgn__icon btn-icon-before"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        fill="none"
+                        focusable="false"
+                        height="24"
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                    New highlight
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        >
           <div
-            class="pgn__card-section text-center align-self-center"
+            class="mt-4.5"
           >
             <h2
-              class="h3 mb-3"
+              class="mb-3"
             >
-              You haven't created any highlights yet.
+              Catalog Visibility
             </h2>
             <p>
-              Create and recommend content collections to your learners, enabling them to quickly locate content relevant to them.
+              Choose a visibility for your catalog.
+            </p>
+            <p>
+              <strong>
+                Pro tip: regardless of your choice, learners will be able to see all highlight collections.
+              </strong>
             </p>
           </div>
           <div
-            class="pgn__card-footer vertical"
+            class="mb-4.5 row"
           >
-            <button
-              class="btn btn-primary btn-block"
-              type="button"
+            <div
+              class="col-lg-8 col-md-9 col-sm-10 col-12"
             >
-              <span
-                class="pgn__icon btn-icon-before"
+              <div
+                class="fade alert-content alert alert-danger show"
+                role="alert"
               >
-                <svg
-                  aria-hidden="true"
-                  fill="none"
-                  focusable="false"
-                  height="24"
-                  role="img"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <span
+                  class="pgn__icon alert-icon"
                 >
-                  <path
-                    d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-                    fill="currentColor"
+                  <svg
+                    aria-hidden="true"
+                    fill="none"
+                    focusable="false"
+                    height="24"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                <div
+                  class="pgn__alert-message-wrapper"
+                >
+                  <div
+                    class="alert-message-content"
+                  >
+                    <div
+                      class="alert-heading h4"
+                    >
+                      No highlights created
+                    </div>
+                    <p>
+                      At least one highlight has to be created to make a selection
+                    </p>
+                  </div>
+                  <div
+                    class="pgn__alert-actions pgn__action-row"
+                  >
+                    <span
+                      class="pgn__action-row-spacer"
+                    />
+                    <button
+                      class="btn btn-primary btn-sm"
+                      data-testid="catalog-visibility-alert-New highlight"
+                      type="button"
+                    >
+                      <span
+                        class="pgn__icon btn-icon-before pgn__icon__sm"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          fill="none"
+                          focusable="false"
+                          height="24"
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      New highlight
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="container-fluid"
+          >
+            <div
+              class="pgn__form-group"
+            >
+              <div
+                class="pgn__form-control-set"
+                id="form-field1"
+                role="radiogroup"
+              >
+                <div
+                  class="d-flex align-items-center position-relative"
+                >
+                  <span
+                    class="pgn__action-row-spacer"
                   />
-                </svg>
-              </span>
-              New highlight
-            </button>
+                  <div
+                    class="pgn__form-radio pgn__form-control-disabled"
+                  >
+                    <input
+                      checked=""
+                      class="pgn__form-radio-input"
+                      data-testid="ALL_CONTENT-form-control-button"
+                      disabled=""
+                      id="form-field2"
+                      name="display-content"
+                      type="radio"
+                      value="ALL_CONTENT"
+                    />
+                    <div>
+                      <label
+                        class="pgn__form-label"
+                        for="form-field2"
+                      >
+                        Learners can view and enroll into all courses in your catalog
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="d-flex align-items-center position-relative"
+                >
+                  <span
+                    class="pgn__action-row-spacer"
+                  />
+                  <div
+                    class="pgn__form-radio pgn__form-control-disabled"
+                  >
+                    <input
+                      class="pgn__form-radio-input"
+                      data-testid="HIGHLIGHTED_CONTENT-form-control-button"
+                      disabled=""
+                      id="form-field3"
+                      name="display-content"
+                      type="radio"
+                      value="HIGHLIGHTED_CONTENT"
+                    />
+                    <div>
+                      <label
+                        class="pgn__form-label"
+                        for="form-field3"
+                      >
+                        Learners can only view and enroll into highlighted courses
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        <div
+          aria-hidden="true"
+          class="fade tab-pane"
+          role="tabpanel"
+        />
       </div>
     </div>
   </div>

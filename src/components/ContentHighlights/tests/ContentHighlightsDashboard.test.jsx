@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import {
@@ -12,6 +12,7 @@ import {
   testHighlightSet,
 } from '../../../data/tests/ContentHighlightsTestData';
 import { initialStateValue as initialEnterpriseAppContextValue } from '../../../data/tests/EnterpriseAppTestData/context';
+import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 
 const ContentHighlightsDashboardWrapper = ({
   value = initialStateValue,
@@ -20,16 +21,14 @@ const ContentHighlightsDashboardWrapper = ({
 }) => (
   <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
     <ContentHighlightsDashboard {...props} />
+    <ContentHighlightStepper />
   </ContentHighlightsContext>
 );
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
-  return {
-    ...originalModule,
-    sendEnterpriseTrackEvent: jest.fn(),
-  };
-});
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {
@@ -59,18 +58,22 @@ describe('<ContentHighlightsDashboard>', () => {
         }}
       />,
     );
-    expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+    expect(screen.getByText(testHighlightSet.title)).toBeInTheDocument();
   });
   it('Allows selection between tabs of dashboard, when highlight set exist', () => {
     renderWithRouter(
       <ContentHighlightsDashboardWrapper
-        enterpriseAppContextValue={{
-          enterpriseCuration: {
-            enterpriseCuration: {
-              highlightSets: [exampleHighlightSet],
+        enterpriseAppContextValue={
+          {
+            value: {
+              enterpriseCuration: {
+                enterpriseCuration: {
+                  highlightSets: [testHighlightSet],
+                },
+              },
             },
-          },
-        }}
+          }
+      }
       />,
     );
     const [highlightTab, catalogVisibilityTab] = screen.getAllByRole('tab');

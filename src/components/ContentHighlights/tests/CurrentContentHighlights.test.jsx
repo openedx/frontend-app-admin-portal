@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 // import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { BUTTON_TEXT, HEADER_TEXT } from '../data/constants';
+import { BUTTON_TEXT } from '../data/constants';
 import { initialStateValue as initialEnterpriseAppContextValue } from '../../../data/tests/EnterpriseAppTestData/context';
 import {
   ContentHighlightsContext, initialStateValue, testHighlightSet,

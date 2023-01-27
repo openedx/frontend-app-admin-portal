@@ -51,7 +51,7 @@ describe('<ContentHighlights>', () => {
         },
       },
     };
-    renderWithRouter(<ContentHighlightsWrapper enterpriseAppContextValue={toastMessage} highlightToast />);
+    renderWithRouter(<ContentHighlightsWrapper value={toastMessage} highlightToast />);
     expect(screen.getByText('highlighted', { exact: false })).toBeInTheDocument();
   });
 });

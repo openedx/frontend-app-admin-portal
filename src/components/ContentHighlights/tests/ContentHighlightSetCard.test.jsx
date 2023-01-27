@@ -8,7 +8,6 @@ import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
 import {
   BUTTON_TEXT,
-  HEADER_TEXT,
   MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
   ALERT_TEXT,
   STEPPER_STEP_TEXT,

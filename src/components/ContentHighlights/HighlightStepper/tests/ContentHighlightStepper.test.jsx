@@ -21,6 +21,7 @@ import {
 } from '../../../../data/tests/ContentHighlightsTestData';
 import { initialStateValue as initialEnterpriseAppContextValue } from '../../../../data/tests/EnterpriseAppTestData/context';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
+import ContentHighlightStepper from '../ContentHighlightStepper';
 
 jest.mock('../../../../data/services/EnterpriseCatalogApiService');
 
@@ -40,9 +41,9 @@ const ContentHighlightStepperWrapper = ({
 }) => (
   <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
     <ContentHighlightsDashboard />
+    <ContentHighlightStepper />
   </ContentHighlightsContext>
 );
-
 
 const mockCourseData = [...testCourseData];
 jest.mock('react-instantsearch-dom', () => ({
@@ -303,7 +304,7 @@ describe('<ContentHighlightStepper>', () => {
       }
     />);
     // open stepper --> title
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     // title --> select content
@@ -334,7 +335,7 @@ describe('<ContentHighlightStepper>', () => {
       }
     />);
     // open stepper --> title
-    const stepper = screen.getByText(BUTTON_TEXT.zeroStateCreateNewHighlight);
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     // title --> select content
