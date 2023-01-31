@@ -154,7 +154,7 @@ const SettingsLMSTab = ({
       </h2>
       {displayNeedsSSOAlert && !hasSSOConfig && (
         <Alert
-          className="mr-6 sso-alert-modal-margin"
+          className="mw-lg sso-alert-modal-margin"
           variant="danger"
           icon={Info}
           actions={[
