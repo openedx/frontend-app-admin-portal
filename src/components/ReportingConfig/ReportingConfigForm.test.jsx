@@ -6,6 +6,7 @@ import ReportingConfigForm from './ReportingConfigForm';
 const defaultConfig = {
   enterpriseCustomerId: 'test-customer-uuid',
   active: true,
+  enableCompression: true,
   deliveryMethod: 'email',
   email: ['test_email@example.com'],
   emailRaw: 'test_email@example.com',
@@ -135,7 +136,24 @@ describe('<ReportingConfigForm />', () => {
     wrapper.find('.btn-outline-danger').at(0).simulate('click');
     expect(mock).toHaveBeenCalled();
   });
+  it('check the compression checkbox is render or not', () => {
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={defaultConfig}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />
+    ));
 
+    expect(wrapper.exists('#enableCompression')).toEqual(true);
+    expect(wrapper.find('#enableCompression').hostNodes().prop('checked')).toEqual(true);
+    wrapper.find('#enableCompression').hostNodes().simulate('change', { target: { checked: false } });
+    wrapper.update();
+    expect(wrapper.find('#enableCompression').hostNodes().prop('checked')).toEqual(false);
+  });
   it('renders the proper fields when changing the delivery method', () => {
     const wrapper = mount((
       <ReportingConfigForm
@@ -176,7 +194,6 @@ describe('<ReportingConfigForm />', () => {
     wrapper.find('textarea#email').simulate('blur');
     expect(wrapper.find('textarea#email').hasClass('is-invalid')).toBeTruthy();
   });
-
   it('Does not submit if hourOfDay is empty', () => {
     const config = { ...defaultConfig };
     config.hourOfDay = undefined;
@@ -193,7 +210,6 @@ describe('<ReportingConfigForm />', () => {
     wrapper.find('input#hourOfDay').simulate('blur');
     expect(wrapper.find('input#hourOfDay').hasClass('is-invalid')).toBeTruthy();
   });
-
   it('Does not submit if sftp fields are empty and deliveryMethod is sftp', () => {
     const config = { ...defaultConfig };
     config.deliveryMethod = 'sftp';

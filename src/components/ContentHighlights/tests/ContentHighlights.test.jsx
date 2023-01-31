@@ -27,11 +27,15 @@ const initialState = {
 
 const ContentHighlightsWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  highlightToast = false,
   addToast = false,
   deleteToast = false,
 }) => {
   const history = useHistory();
   const { location } = history;
+  if (highlightToast) {
+    history.push(location.pathname, { highlightToast: true });
+  }
   if (addToast) {
     history.push(location.pathname, { addHighlightSet: true });
   }
@@ -49,7 +53,7 @@ const ContentHighlightsWrapper = ({
   );
 };
 
-describe('<ContentHighlightRoutes>', () => {
+describe('<ContentHighlights>', () => {
   it('Displays the Hero', () => {
     renderWithRouter(<ContentHighlightsWrapper />);
     expect(screen.getByText('Highlights')).toBeInTheDocument();
@@ -61,5 +65,16 @@ describe('<ContentHighlightRoutes>', () => {
   it('Displays the toast deleted', () => {
     renderWithRouter(<ContentHighlightsWrapper deleteToast />);
     expect(screen.getByText('deleted', { exact: false })).toBeInTheDocument();
+  });
+  it('Displays the toast highlight', () => {
+    const toastMessage = {
+      enterpriseCuration: {
+        enterpriseCuration: {
+          toastText: 'highlighted',
+        },
+      },
+    };
+    renderWithRouter(<ContentHighlightsWrapper enterpriseAppContextValue={toastMessage} highlightToast />);
+    expect(screen.getByText('highlighted', { exact: false })).toBeInTheDocument();
   });
 });

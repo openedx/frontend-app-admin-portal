@@ -26,10 +26,15 @@ export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
     );
   }
   return (
-    <SubscriptionDetailContextProvider subscription={subscription} pageSize={LPR_SUBSCRIPTION_PAGE_SIZE} licenseStatusOrdering="Pending">
+    <SubscriptionDetailContextProvider
+      key={subscription.uuid}
+      subscription={subscription}
+      pageSize={LPR_SUBSCRIPTION_PAGE_SIZE}
+      lprSubscriptionPage
+    >
       <SubscriptionExpirationModals />
       <SubscriptionDetails />
-      <LicenseAllocationDetails />
+      <LicenseAllocationDetails key={subscription.uuid} subscriptionUUID={subscription.uuid} />
     </SubscriptionDetailContextProvider>
   );
 };

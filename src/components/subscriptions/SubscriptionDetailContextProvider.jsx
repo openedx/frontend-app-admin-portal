@@ -4,22 +4,24 @@ import React, {
 import PropTypes from 'prop-types';
 import {
   DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
-  PAGE_SIZE,
+  PAGE_SIZE, LPR_DEFAULT_SORT,
 } from './data/constants';
 import { useSubscriptionUsersOverview, useSubscriptionUsers } from './data/hooks';
 import { SubscriptionContext } from './SubscriptionData';
 
 export const SubscriptionDetailContext = createContext({});
 export const defaultStatusFilter = [ASSIGNED, ACTIVATED, REVOKED].join();
+export const lprStatusFilter = [ASSIGNED, ACTIVATED].join();
 
 const SubscriptionDetailContextProvider = ({
-  children, subscription, disableDataFetching, pageSize, licenseStatusOrdering,
+  children, subscription, disableDataFetching, pageSize, lprSubscriptionPage,
 }) => {
   // Initialize state needed for the subscription detail view and provide in SubscriptionDetailContext
   const { data: subscriptions, errors, setErrors } = useContext(SubscriptionContext);
   const hasMultipleSubscriptions = subscriptions.count > 1;
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchQuery, setSearchQuery] = useState(null);
+  const [sortBy, setSortBy] = useState(lprSubscriptionPage ? LPR_DEFAULT_SORT : '');
   const [overview, forceRefreshOverview] = useSubscriptionUsersOverview({
     subscriptionUUID: subscription.uuid,
     search: searchQuery,
@@ -27,10 +29,11 @@ const SubscriptionDetailContextProvider = ({
     setErrors,
     isDisabled: disableDataFetching,
   });
-  const [userStatusFilter, setUserStatusFilter] = useState(defaultStatusFilter);
+  const [userStatusFilter, setUserStatusFilter] = useState(lprSubscriptionPage ? lprStatusFilter : defaultStatusFilter);
 
   const [users, forceRefreshUsers, loadingUsers] = useSubscriptionUsers({
     currentPage,
+    sortBy,
     searchQuery,
     subscriptionUUID: subscription.uuid,
     errors,
@@ -38,7 +41,6 @@ const SubscriptionDetailContextProvider = ({
     userStatusFilter,
     isDisabled: disableDataFetching,
     pageSize,
-    licenseStatusOrdering,
   });
 
   const forceRefreshDetailView = useCallback(() => {
@@ -48,11 +50,13 @@ const SubscriptionDetailContextProvider = ({
 
   const context = useMemo(() => ({
     currentPage,
+    sortBy,
     hasMultipleSubscriptions,
     forceRefreshOverview,
     overview,
     searchQuery,
     setCurrentPage,
+    setSortBy,
     setSearchQuery,
     subscription,
     users,
@@ -62,6 +66,7 @@ const SubscriptionDetailContextProvider = ({
     forceRefreshDetailView,
   }), [
     currentPage,
+    sortBy,
     searchQuery,
     hasMultipleSubscriptions,
     overview,
@@ -86,13 +91,13 @@ SubscriptionDetailContextProvider.propTypes = {
   }).isRequired,
   disableDataFetching: PropTypes.bool,
   pageSize: PropTypes.number,
-  licenseStatusOrdering: PropTypes.string,
+  lprSubscriptionPage: PropTypes.bool,
 };
 
 SubscriptionDetailContextProvider.defaultProps = {
   disableDataFetching: false,
   pageSize: PAGE_SIZE,
-  licenseStatusOrdering: '',
+  lprSubscriptionPage: false,
 };
 
 export default SubscriptionDetailContextProvider;

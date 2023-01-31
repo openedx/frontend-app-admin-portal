@@ -21,6 +21,7 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
  * @property {String} uuid
  * @property {String} title
  * @property {Boolean} isHighlightFeatureActive
+ * @property {Boolean} canOnlyViewHighlightSets
  * @property {THighlightSet[]} highlightSets
  * @property {String} created
  * @property {String} modified

@@ -92,7 +92,6 @@ const initialSubscriptionUsersOverview = {
 export const useSubscriptionUsersOverview = ({
   subscriptionUUID,
   search,
-  errors,
   setErrors,
   isDisabled = false,
 }) => {
@@ -117,15 +116,15 @@ export const useSubscriptionUsersOverview = ({
           setSubscriptionUsersOverview(camelCaseObject(subscriptionUsersOverviewData));
         } catch (err) {
           logError(err);
-          setErrors({
-            ...errors,
+          setErrors(s => ({
+            ...s,
             [SUBSCRIPTION_USERS_OVERVIEW]: NETWORK_ERROR_MESSAGE,
-          });
+          }));
         }
       }
     };
     fetchOverview();
-  }, [errors, search, setErrors, subscriptionUUID]);
+  }, [search, setErrors, subscriptionUUID]);
 
   const forceRefresh = useCallback(() => {
     loadSubscriptionUsersOverview();
@@ -149,14 +148,13 @@ export const useSubscriptionUsersOverview = ({
  */
 export const useSubscriptionUsers = ({
   currentPage,
+  sortBy,
   searchQuery,
   subscriptionUUID,
-  errors,
   setErrors,
   userStatusFilter,
   isDisabled = false,
   pageSize,
-  licenseStatusOrdering,
 }) => {
   const [subscriptionUsers, setSubscriptionUsers] = useState({ ...subscriptionInitState });
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -170,7 +168,7 @@ export const useSubscriptionUsers = ({
       const options = {
         status: userStatusFilter,
         page: currentPage,
-        license_status_lpr_ordering: licenseStatusOrdering,
+        ordering: sortBy,
       };
       if (searchQuery) {
         options.search = searchQuery;
@@ -181,10 +179,10 @@ export const useSubscriptionUsers = ({
         setLoadingUsers(false);
       } catch (err) {
         logError(err);
-        setErrors({
-          ...errors,
+        setErrors(s => ({
+          ...s,
           [SUBSCRIPTION_USERS]: NETWORK_ERROR_MESSAGE,
-        });
+        }));
       } finally {
         setLoadingUsers(false);
       }
@@ -192,13 +190,12 @@ export const useSubscriptionUsers = ({
     fetchUsers();
   }, [
     currentPage,
-    errors,
+    sortBy,
     searchQuery,
     setErrors,
     subscriptionUUID,
     userStatusFilter,
     pageSize,
-    licenseStatusOrdering,
   ]);
 
   const forceRefresh = useCallback(() => {

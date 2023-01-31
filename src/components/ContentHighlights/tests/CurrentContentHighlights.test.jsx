@@ -8,7 +8,7 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { BUTTON_TEXT, HEADER_TEXT } from '../data/constants';
+import { BUTTON_TEXT } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { configuration } from '../../../config';
 
@@ -63,7 +63,7 @@ const CurrentContentHighlightsWrapper = ({
 describe('<CurrentContentHighlights>', () => {
   it('Displays the header title', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText(HEADER_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
   });
   it('Displays the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
