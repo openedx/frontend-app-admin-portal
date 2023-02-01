@@ -242,6 +242,8 @@ class ReportingConfigForm extends React.Component {
             <ValidationFormGroup
               for="deliveryMethod"
               helpText="The method in which the data should be sent"
+              invalid={!!APIErrors.deliveryMethod}
+              invalidMessage={APIErrors.deliveryMethod}
             >
               <label htmlFor="deliveryMethod">Delivery Method</label>
               <Input
@@ -251,6 +253,13 @@ class ReportingConfigForm extends React.Component {
                 defaultValue={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
                 options={reportingConfigTypes.deliveryMethod.map(item => ({ label: item[1], value: item[0] }))}
                 onChange={e => this.setState({ deliveryMethod: e.target.value })}
+                disabled={config}
+              />
+              <input
+                type="hidden"
+                name="deliveryMethod"
+                value={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
+                disabled={!config}
               />
             </ValidationFormGroup>
             <ValidationFormGroup
