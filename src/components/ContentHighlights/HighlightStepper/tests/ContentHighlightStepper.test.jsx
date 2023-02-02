@@ -298,4 +298,44 @@ describe('<ContentHighlightStepper>', () => {
     userEvent.click(footerLink);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
+  it('removes title validation after exiting the stepper and revisiting', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    const stepper1 = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper1);
+    expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
+    const input = screen.getByTestId('stepper-title-input');
+    const reallyLongTitle = 'test-title-test-title-test-title-test-title-test-title-test-title';
+    const reallyLongTitleLength = reallyLongTitle.length;
+    fireEvent.change(input, { target: { value: reallyLongTitle } });
+
+    expect(screen.getByText(`${reallyLongTitleLength}/${MAX_HIGHLIGHT_TITLE_LENGTH}`, { exact: false })).toBeInTheDocument();
+    expect(screen.getByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).toBeInTheDocument();
+
+    const closeButton = screen.getByRole('button', { name: 'Close' });
+    userEvent.click(closeButton);
+
+    // Confirm stepper close confirmation modal
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
+    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
+
+    const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
+    userEvent.click(confirmCloseButton);
+
+    // Confirm stepper confirmation modal closed
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
+    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+
+    // Confirm stepper closed
+    expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
+
+    const stepper2 = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper2);
+
+    expect(screen.getByText(`0/${MAX_HIGHLIGHT_TITLE_LENGTH}`, { exact: false })).toBeInTheDocument();
+    expect(screen.queryByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).not.toBeInTheDocument();
+  });
 });
