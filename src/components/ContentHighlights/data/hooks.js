@@ -86,6 +86,7 @@ export function useContentHighlightsContext() {
         ...s.stepperModal,
         isOpen: false,
         highlightTitle: null,
+        titleStepValidationError: null,
         currentSelectedRowIds: {},
       },
     }));
