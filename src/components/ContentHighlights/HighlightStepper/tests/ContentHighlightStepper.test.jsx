@@ -349,7 +349,7 @@ describe('<ContentHighlightStepper>', () => {
     expect(clearSelectionButton).toBeInTheDocument();
 
     userEvent.click(clearSelectionButton);
-    });
+  });
   it('removes title validation after exiting the stepper and revisiting', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);
     const stepper1 = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
@@ -389,6 +389,5 @@ describe('<ContentHighlightStepper>', () => {
 
     expect(screen.getByText(`0/${MAX_HIGHLIGHT_TITLE_LENGTH}`, { exact: false })).toBeInTheDocument();
     expect(screen.queryByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).not.toBeInTheDocument();
-
   });
 });
