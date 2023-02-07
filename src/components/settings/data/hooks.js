@@ -168,7 +168,57 @@ export const useStylesForCustomBrandColors = (branding) => {
   return styles;
 };
 
-export default {
-  useCurrentSettingsTab,
-  useLinkManagement,
+export const useEnterpriseThemeVariables = (enterpriseBranding) => {
+  const [themeCSS, setThemeCSS] = useState();
+
+  const {
+    primaryColor,
+    secondaryColor,
+    tertiaryColor,
+  } = camelCaseObject(enterpriseBranding);
+
+  useEffect(() => {
+    const fetchTheme = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/tokens', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(
+            {
+              color: {
+                primary: {
+                  base: {
+                    value: primaryColor,
+                  },
+                },
+                hero: {
+                  bg: {
+                    value: secondaryColor,
+                  },
+                  text: {
+                    value: '{color.hero.bg}',
+                    modify: [{ type: 'color-yiq' }],
+                  },
+                  border: {
+                    value: tertiaryColor,
+                  },
+                },
+              },
+            },
+          ),
+        });
+        const json = await res.json();
+        setThemeCSS(json.cssOutput);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchTheme();
+  }, [primaryColor, secondaryColor, tertiaryColor]);
+
+  return {
+    themeCSS,
+  };
 };

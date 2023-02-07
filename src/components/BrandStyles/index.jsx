@@ -2,16 +2,25 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 
-import { useStylesForCustomBrandColors } from '../settings/data/hooks';
+import {
+  useEnterpriseThemeVariables,
+} from '../settings/data/hooks';
 
 const BrandStyles = ({
   enterpriseBranding,
 }) => {
-  const brandStyles = useStylesForCustomBrandColors(enterpriseBranding);
+  const {
+    isLoadingThemeCSS,
+    themeCSS,
+  } = useEnterpriseThemeVariables(enterpriseBranding);
+
+  if (isLoadingThemeCSS) {
+    return null;
+  }
 
   return (
     <Helmet>
-      <style key={brandStyles.key} type="text/css">{brandStyles.styles}</style>
+      <style>{themeCSS}</style>
     </Helmet>
   );
 };

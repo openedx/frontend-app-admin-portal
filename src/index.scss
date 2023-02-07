@@ -1,6 +1,8 @@
 // ... Any custom SCSS variables should be defined here
 $modal-max-width: 650px;
 
+$btn-focus-box-shadow: 0;
+
 @import "~@edx/brand/paragon/fonts";
 @import "~@edx/brand/paragon/variables";
 @import "~@edx/paragon/scss/core/core";

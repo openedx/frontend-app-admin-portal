@@ -14,9 +14,15 @@ const Hero = ({ title, enterpriseBranding }) => {
   const logo = color.isDark() ? edxWhiteSemiTransparentLogo : edxLogoDark;
 
   return (
-    <div className="hero hero-brand">
+    <div
+      className="hero"
+      style={{
+        backgroundColor: 'var(--pgn-color-hero-bg)',
+        borderColor: 'var(--pgn-color-hero-border)',
+      }}
+    >
       <div>
-        <h1>{title}</h1>
+        <h1 style={{ color: 'var(--pgn-color-hero-text)' }}>{title}</h1>
       </div>
       <div>
         <img src={logo} alt="edX logo" />
