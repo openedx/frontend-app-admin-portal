@@ -68,7 +68,6 @@ const SettingsLMSTab = ({
     const options = { enterprise_customer: enterpriseId };
     LmsApiService.fetchEnterpriseCustomerIntegrationConfigs(options)
       .then((response) => {
-        setShowNoConfigCard(true);
         setConfigsLoading(false);
         // Save all existing configs
         setExistingConfigsData(camelCaseDictArray(response.data));
@@ -79,6 +78,8 @@ const SettingsLMSTab = ({
           setConfigsExist(true);
           // Hide the create cards and show the create button
           setShowNewConfigButtons(false);
+        } else {
+          setShowNoConfigCard(true);
         }
       })
       .catch((error) => {
