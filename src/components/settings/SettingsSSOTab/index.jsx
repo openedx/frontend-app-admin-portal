@@ -29,7 +29,7 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
         validConfigExists = true;
       }
     });
-    if (existingConfigs?.length < 1 || !existingConfigs) {
+    if (!existingConfigs || existingConfigs?.length < 1) {
       setShowNoSSOCard(true);
     } else {
       setShowNoSSOCard(false);
