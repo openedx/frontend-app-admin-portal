@@ -1,32 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CardGrid } from '@edx/paragon';
-
+import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightSetCard from './ContentHighlightSetCard';
+import { HIGHLIGHTS_CARD_GRID_COLUMN_SIZES } from './data/constants';
+import EVENT_NAMES from '../../eventTracking';
 
 const HighlightSetSection = ({
+  enterpriseId,
   title: sectionTitle,
   highlightSets,
 }) => {
   if (highlightSets.length === 0) {
     return null;
   }
-
+  const trackClickEvent = ({
+    uuid, title, isPublished, highlightedContentUuids,
+  }) => {
+    const trackInfo = {
+      highlight_set_uuid: uuid,
+      highlight_set_title: title,
+      highlight_set_is_published: isPublished,
+      highlight_set_item_count: highlightedContentUuids.length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.HIGHLIGHT_DASHBOARD_PUBLISHED_HIGHLIGHT_SET_CARD}`,
+      trackInfo,
+    );
+  };
   return (
-    <div>
+    <div data-testid="highlight-set-section">
       <h3 className="mb-3">{sectionTitle}</h3>
-      <CardGrid
-        columnSizes={{
-          xs: 12,
-          lg: 6,
-          xl: 4,
-        }}
-      >
+      <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
         {highlightSets.map(({
           title,
           uuid,
           isPublished,
           highlightedContentUuids,
+          cardImageUrl,
         }) => (
           <ContentHighlightSetCard
             key={uuid}
@@ -34,7 +47,10 @@ const HighlightSetSection = ({
             highlightSetUUID={uuid}
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
-            imageCapSrc="https://picsum.photos/360/200/"
+            imageCapSrc={cardImageUrl}
+            onClick={() => trackClickEvent({
+              uuid, title, isPublished, highlightedContentUuids,
+            })}
           />
         ))}
       </CardGrid>
@@ -43,6 +59,7 @@ const HighlightSetSection = ({
 };
 
 HighlightSetSection.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   highlightSets: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
@@ -52,4 +69,8 @@ HighlightSetSection.propTypes = {
   })).isRequired,
 };
 
-export default HighlightSetSection;
+const mapStateToProps = (state) => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(HighlightSetSection);

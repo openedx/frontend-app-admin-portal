@@ -1,6 +1,5 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
-import { PAGE_SIZE } from '../../components/subscriptions/data/constants';
 import { configuration } from '../../config';
 
 class LicenseManagerApiService {
@@ -29,9 +28,9 @@ class LicenseManagerApiService {
     return LicenseManagerApiService.apiClient().get(url);
   }
 
-  static fetchSubscriptionUsers(subscriptionUUID, options) {
+  static fetchSubscriptionUsers(subscriptionUUID, options, pageSize) {
     const queryParams = new URLSearchParams({
-      page_size: PAGE_SIZE,
+      page_size: pageSize,
       ignore_null_emails: 1,
       ...options,
     });

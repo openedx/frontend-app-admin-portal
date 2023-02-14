@@ -46,7 +46,7 @@ export function getSyncStatus(status, statusMessage) {
               </Popover.Content>
             </Popover>
       )}
-        ><Hyperlink className="ml-3"><u>Read</u></Hyperlink>
+        ><Hyperlink className="ml-3" style={{ cursor: 'pointer' }}><u>Read</u></Hyperlink>
         </OverlayTrigger>
       </>
       )}

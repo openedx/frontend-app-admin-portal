@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import { Form } from '@edx/paragon';
 
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { HIGHLIGHT_TITLE_MAX_LENGTH } from '../data/constants';
+import { DEFAULT_ERROR_MESSAGE, MAX_HIGHLIGHT_TITLE_LENGTH } from '../data/constants';
 import { useContentHighlightsContext } from '../data/hooks';
 
 const HighlightStepperTitleInput = () => {
@@ -11,37 +11,63 @@ const HighlightStepperTitleInput = () => {
   const highlightTitle = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.highlightTitle);
   const [titleLength, setTitleLength] = useState(highlightTitle?.length || 0);
   const [isInvalid, setIsInvalid] = useState(false);
-
+  /**
+   *  Create seperate useState for FormInput as to differenciate between
+   *  the outer stepper context state and inner input useState.
+   * */
+  const [highlightValue, setHighlightValue] = useState({
+    initialized: false,
+    highlightTitle: highlightTitle || '',
+    titleStepValidationError: undefined,
+    highlightTitleLength: titleLength || 0,
+  });
   const handleChange = (e) => {
-    if (e.target.value.length > 60) {
+    const eventTargetValue = e.target.value;
+    if (eventTargetValue.length > MAX_HIGHLIGHT_TITLE_LENGTH) {
       setIsInvalid(true);
-      setHighlightTitle({
-        highlightTitle: e.target.value,
-        titleStepValidationError: 'Titles may only be 60 characters or less',
+      setHighlightValue({
+        initialized: true,
+        highlightTitle: eventTargetValue,
+        titleStepValidationError: DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH,
+        highlightTitleLength: eventTargetValue.length,
       });
     } else {
       setIsInvalid(false);
-      setHighlightTitle({
-        highlightTitle: e.target.value,
+      setHighlightValue({
+        initialized: true,
+        highlightTitle: eventTargetValue,
         titleStepValidationError: undefined,
+        highlightTitleLength: eventTargetValue.length,
       });
     }
-    setTitleLength(e.target.value.length);
   };
 
+  useEffect(() => {
+    if (highlightValue.initialized) {
+      setHighlightTitle({
+        highlightTitle: highlightValue.highlightTitle,
+        titleStepValidationError: highlightValue.titleStepValidationError,
+      });
+      setTitleLength(highlightValue.highlightTitleLength);
+      setHighlightValue(prevState => ({
+        ...prevState,
+        initialized: false,
+      }));
+    }
+  }, [highlightTitle, setHighlightTitle, highlightValue]);
   return (
     <Form.Group
       isInvalid={isInvalid}
     >
       <Form.Control
         data-testid="stepper-title-input"
-        value={highlightTitle || ''}
+        value={highlightValue.highlightTitle}
         onChange={handleChange}
         floatingLabel="Highlight title"
         autoComplete="off"
       />
       <Form.Control.Feedback type={isInvalid ? 'invalid' : undefined}>
-        {titleLength}/{HIGHLIGHT_TITLE_MAX_LENGTH}
+        {highlightValue.highlightTitleLength}/{MAX_HIGHLIGHT_TITLE_LENGTH}
       </Form.Control.Feedback>
     </Form.Group>
   );

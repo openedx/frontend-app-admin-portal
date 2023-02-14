@@ -162,6 +162,9 @@ export const useStylesForCustomBrandColors = (branding) => {
       .color-brand-tertiary {
         color: ${brandColors.tertiary.regular.hex()} !important;
       }
+      .secondary-background {
+        background: ${brandColors.secondary.regular.hex()} !important;
+      }
     `),
   });
 

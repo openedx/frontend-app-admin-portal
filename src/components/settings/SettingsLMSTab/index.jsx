@@ -1,15 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import {
   Alert, Button, Hyperlink, CardGrid, Toast, Skeleton,
 } from '@edx/paragon';
-import { Link } from 'react-router-dom';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
-import PropTypes from 'prop-types';
+
 import { camelCaseDictArray } from '../../../utils';
 import LMSCard from './LMSCard';
 import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
+import NoConfigCard from './NoConfigCard';
 import {
   BLACKBOARD_TYPE,
   CANVAS_TYPE,
@@ -37,7 +40,8 @@ const SettingsLMSTab = ({
 
   const [existingConfigsData, setExistingConfigsData] = useState({});
   const [configsExist, setConfigsExist] = useState(false);
-  const [showNewConfigButtons, setShowNewConfigButtons] = useState(true);
+  const [showNewConfigButtons, setShowNewConfigButtons] = useState(false);
+  const [showNoConfigCard, setShowNoConfigCard] = useState(true);
   const [configsLoading, setConfigsLoading] = useState(true);
   const [displayNames, setDisplayNames] = useState([]);
 
@@ -55,6 +59,7 @@ const SettingsLMSTab = ({
     setConfig(configType);
     // Hide the create new configs button
     setShowNewConfigButtons(false);
+    setShowNoConfigCard(false);
     // Since the user is editing, hide the existing config cards
     setConfigsExist(false);
   };
@@ -63,16 +68,18 @@ const SettingsLMSTab = ({
     const options = { enterprise_customer: enterpriseId };
     LmsApiService.fetchEnterpriseCustomerIntegrationConfigs(options)
       .then((response) => {
-        setShowNewConfigButtons(true);
         setConfigsLoading(false);
         // Save all existing configs
         setExistingConfigsData(camelCaseDictArray(response.data));
         // If the enterprise has existing configs
         if (response.data.length !== 0) {
+          setShowNoConfigCard(false);
           // toggle the existing configs bool
           setConfigsExist(true);
           // Hide the create cards and show the create button
           setShowNewConfigButtons(false);
+        } else {
+          setShowNoConfigCard(true);
         }
       })
       .catch((error) => {
@@ -155,7 +162,7 @@ const SettingsLMSTab = ({
       </h2>
       {displayNeedsSSOAlert && !hasSSOConfig && (
         <Alert
-          className="mr-6 sso-alert-modal-margin"
+          className="mw-lg sso-alert-modal-margin"
           variant="danger"
           icon={Info}
           actions={[
@@ -181,6 +188,14 @@ const SettingsLMSTab = ({
         </span>
       )}
       {configsLoading && (<span data-testid="skeleton"><Skeleton className="mb-4" count={2} height={20} /></span>)}
+      {showNoConfigCard && !configsLoading && (
+        <NoConfigCard
+          enterpriseSlug={enterpriseSlug}
+          setShowNoConfigCard={setShowNoConfigCard}
+          createNewConfig={setShowNewConfigButtons}
+          hasSSOConfig={hasSSOConfig}
+        />
+      )}
       {showNewConfigButtons && !configsLoading && (
         <span>
           <h4 className="mt-1">New configurations</h4>

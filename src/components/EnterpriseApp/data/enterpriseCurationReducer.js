@@ -11,6 +11,8 @@ export const SET_ENTERPRISE_CURATION = 'SET_ENTERPRISE_CURATION';
 export const SET_FETCH_ERROR = 'SET_FETCH_ERROR';
 export const DELETE_HIGHLIGHT_SET = 'DELETE_HIGHLIGHT_SET';
 export const ADD_HIGHLIGHT_SET = 'ADD_HIGHLIGHT_SET';
+export const SET_HIGHLIGHT_SET_TOAST_TEXT = 'SET_HIGHLIGHT_SET_TOAST_TEXT';
+export const SET_HIGHLIGHT_TOAST_TEXT = 'SET_HIGHLIGHT_TOAST_TEXT';
 
 export const enterpriseCurationActions = {
   setIsLoading: (payload) => ({
@@ -23,6 +25,14 @@ export const enterpriseCurationActions = {
   }),
   setFetchError: (payload) => ({
     type: SET_FETCH_ERROR,
+    payload,
+  }),
+  setHighlightToast: (payload) => ({
+    type: SET_HIGHLIGHT_TOAST_TEXT,
+    payload,
+  }),
+  setHighlightSetToast: (payload) => ({
+    type: SET_HIGHLIGHT_SET_TOAST_TEXT,
     payload,
   }),
   deleteHighlightSet: (payload) => ({
@@ -47,6 +57,28 @@ function enterpriseCurationReducer(state, action) {
       return { ...state, enterpriseCuration: action.payload };
     case SET_FETCH_ERROR:
       return { ...state, fetchError: action.payload };
+    case SET_HIGHLIGHT_TOAST_TEXT: {
+      return {
+        ...state,
+        enterpriseCuration: {
+          ...state.enterpriseCuration,
+          toastText: action.payload,
+        },
+      };
+    }
+    case SET_HIGHLIGHT_SET_TOAST_TEXT: {
+      const existingHighlightSets = getHighlightSetsFromState(state);
+      const filteredHighlightSets = existingHighlightSets.find(
+        highlightSet => highlightSet.uuid === action.payload,
+      );
+      return {
+        ...state,
+        enterpriseCuration: {
+          ...state.enterpriseCuration,
+          toastText: filteredHighlightSets?.title,
+        },
+      };
+    }
     case DELETE_HIGHLIGHT_SET: {
       const existingHighlightSets = getHighlightSetsFromState(state);
       const filteredHighlightSets = existingHighlightSets.filter(

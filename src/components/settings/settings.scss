@@ -51,6 +51,7 @@
 
 .side-button {
   float: right;
+  margin-left: 1rem;
   margin-right: 1rem;
   right: 0;
   width: 300px;
@@ -123,3 +124,21 @@
   min-width: 0.75rem;
 }
 
+.no-config {
+  max-height: 12rem !important;
+  .pgn__card-image-cap {
+    padding: 1rem;
+    object-fit: fill;
+  }
+}
+
+.error-footer {
+  background: $danger-100;
+  display: block;
+  text-align: center;
+  padding: 1rem 9rem !important;
+  .error-icon {
+    color: $danger-600;
+
+  }
+}

@@ -64,13 +64,13 @@ const SSOStepper = ({ enterpriseSlug, enterpriseId, enterpriseName }) => {
     const newConfigValues = { ...configValues };
     // Values we want all provider configs to by default contain
     configFormData.append('enterprise_customer_uuid', enterpriseId);
-    configFormData.append('enabled', true);
-    configFormData.append('debug_mode', true);
+    configFormData.append('enabled', providerConfig?.enabled || true);
+    configFormData.append('debug_mode', providerConfig?.debug_mode || false);
     configFormData.append('skip_hinted_login_dialog', true);
     configFormData.append('skip_registration_form', true);
     configFormData.append('skip_email_verification', true);
     configFormData.append('send_to_registration_first', true);
-    configFormData.append('automatic_refresh_enabled', true);
+    configFormData.append('automatic_refresh_enabled', providerConfig?.automatic_refresh_enabled || false);
 
     // Add all our config values to the form data
     Object.keys(configValues).forEach(key => configFormData.append(key, configValues[key]));

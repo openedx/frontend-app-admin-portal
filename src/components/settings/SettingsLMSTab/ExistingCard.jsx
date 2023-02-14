@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
+  useRouteMatch,
+} from 'react-router-dom';
+import {
   ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover,
 } from '@edx/paragon';
 import {
@@ -12,13 +15,14 @@ import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';
 import { getTimeAgo } from './ErrorReporting/utils';
 
-import { ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE } from '../data/constants';
+import {
+  ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE,
+  errorDeleteConfigModalText, errorToggleModalText,
+} from '../data/constants';
 
-const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
-const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
-const INCOMPLETE = 'incomplete';
-const ACTIVE = 'active';
-const INACTIVE = 'inactive';
+const INCOMPLETE = 'Incomplete';
+const ACTIVE = 'Active';
+const INACTIVE = 'Inactive';
 
 const ExistingCard = ({
   config,
@@ -26,18 +30,12 @@ const ExistingCard = ({
   enterpriseCustomerUuid,
   onClick,
   openError,
-  openReport,
-  setReportConfig,
   setErrorModalText,
   getStatus,
 }) => {
+  const redirectPath = `${useRouteMatch().url}`;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
-
-  const openModalButton = () => {
-    setReportConfig(config);
-    openReport();
-  };
 
   const toggleConfig = async (id, channelType, toggle) => {
     const configOptions = {
@@ -66,7 +64,7 @@ const ExistingCard = ({
       err = handleErrors(error);
     }
     if (err) {
-      setErrorModalText(errorDeleteModalText);
+      setErrorModalText(errorDeleteConfigModalText);
       openError();
     } else {
       onClick(DELETE_TOAST_MESSAGE);
@@ -104,7 +102,7 @@ const ExistingCard = ({
     switch (getStatus(config)) {
       case ACTIVE:
         if (isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) {
-          return <Button variant="outline-primary" onClick={() => openModalButton(config)}>View sync history</Button>;
+          return <Button variant="outline-primary" href={`${redirectPath}${config.channelCode}/${config.id}`}>View sync history</Button>;
         }
         return null;
       case INCOMPLETE:
@@ -185,7 +183,7 @@ const ExistingCard = ({
                 {(isInactive && isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) && (
                   <div className="d-flex">
                     <Dropdown.Item
-                      onClick={() => openModalButton(config)}
+                      href={`${redirectPath}${config.channelCode}/${config.id}`}
                       data-testid="dropdown-sync-history-item"
                     >
                       View sync history
@@ -205,7 +203,7 @@ const ExistingCard = ({
                 {(isInactive || isIncomplete) && (
                   <div className="d-flex">
                     <Dropdown.Item
-                      // Ask before deleting an inactive project
+                      // Ask before deleting an inactive config
                       onClick={() => handleClickDelete(isInactive)}
                       data-testid="dropdown-delete-item"
                     >
@@ -293,8 +291,6 @@ ExistingCard.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   openError: PropTypes.func.isRequired,
-  openReport: PropTypes.func.isRequired,
-  setReportConfig: PropTypes.func.isRequired,
   setErrorModalText: PropTypes.func.isRequired,
   getStatus: PropTypes.func.isRequired,
 };

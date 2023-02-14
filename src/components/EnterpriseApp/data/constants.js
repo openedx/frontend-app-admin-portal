@@ -12,5 +12,4 @@ export const ROUTE_NAMES = {
   settings: 'settings',
   subscriptionManagement: 'subscriptions',
   contentHighlights: 'content-highlights',
-  tableau_analytics: 'tableau-analytics',
 };
