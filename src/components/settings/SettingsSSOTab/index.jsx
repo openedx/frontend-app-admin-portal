@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert, Hyperlink, Toast, Skeleton,
@@ -6,6 +6,7 @@ import {
 import { WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs, useExistingProviderData } from './hooks';
+import NoSSOCard from './NoSSOCard';
 import ExistingSSOConfigs from './ExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
@@ -18,6 +19,8 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   } = useContext(SSOConfigContext);
   const [existingConfigs, error, isLoading] = useExistingSSOConfigs(enterpriseId, refreshBool);
   const [existingProviderData, pdError, pdIsLoading] = useExistingProviderData(enterpriseId, refreshBool);
+  const [showNewSSOForm, setShowNewSSOForm] = useState(false);
+  const [showNoSSOCard, setShowNoSSOCard] = useState(false);
 
   useEffect(() => {
     let validConfigExists = false;
@@ -26,6 +29,11 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
         validConfigExists = true;
       }
     });
+    if (!existingConfigs || existingConfigs?.length < 1) {
+      setShowNoSSOCard(true);
+    } else {
+      setShowNoSSOCard(false);
+    }
     setHasSSOConfig(validConfigExists);
   }, [existingConfigs, setHasSSOConfig]);
 
@@ -55,10 +63,10 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
             />
             )}
           {/* Nothing found so guide user to creation/edit form */}
-          {existingConfigs?.length < 1 && <NewSSOConfigForm />}
+          {showNoSSOCard && <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />}
           {/* Since we found a selected providerConfig we know we are in editing mode and can safely
           render the create/edit form */}
-          {existingConfigs?.length > 0 && (providerConfig !== null) && <NewSSOConfigForm />}
+          {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
           {error && (
           <Alert variant="warning" icon={WarningFilled}>
             An error occurred loading the SAML configs: <p>{error?.message}</p>
