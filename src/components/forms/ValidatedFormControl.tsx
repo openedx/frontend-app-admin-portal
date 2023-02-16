@@ -16,7 +16,7 @@ type InheritedParagonControlProps = {
   floatingLabel: string;
 };
 
-type ValidatedFormControlProps = {
+export type ValidatedFormControlProps = {
   // Field id, required to map to field in FormContext
   formId: string;
   // Inline Instructions inside form field when blank

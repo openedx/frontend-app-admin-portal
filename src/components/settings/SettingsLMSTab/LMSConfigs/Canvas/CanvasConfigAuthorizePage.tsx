@@ -1,11 +1,23 @@
 import React from "react";
 
-import { Form } from "@edx/paragon";
+import { Form, Alert } from "@edx/paragon";
+import { Info } from "@edx/paragon/icons";
 
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
 import { urlValidation } from "../../../../../utils";
-import type { FormFieldValidation } from "../../../../forms/FormContext";
+import {
+  FormFieldValidation,
+  useFormContext,
+} from "../../../../forms/FormContext";
+// @ts-ignore
+import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
+// @ts-ignore
+import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
+// @ts-ignore
+import { setWorkflowStateAction } from "../../../../forms/data/actions.ts";
+// @ts-ignore
+import { LMS_AUTHORIZATION_FAILED } from "./CanvasConfig.tsx";
 
 const formFieldNames = {
   DISPLAY_NAME: "displayName",
@@ -29,70 +41,85 @@ export const validations: FormFieldValidation[] = [
       // TODO: Check for duplicate display names
       const displayName = fields[formFieldNames.DISPLAY_NAME];
       const error = displayName?.length > 20;
-      return error && "Display Name should be 20 characters or less";
+      return error && "Display name should be 20 characters or less";
     },
   },
 ];
 
-// Page 2 of Canvas LMS config workflow
-const CanvasConfigAuthorizePage = () => (
-  <span>
-    <h2>Authorize connection to Canvas</h2>
+// Settings page of Canvas LMS config workflow
+const CanvasConfigAuthorizePage = () => {
+  const { dispatch, stateMap } = useFormContext();
+  return (
+    <span>
+      <h2>Authorize connection to Canvas</h2>
 
-    <Form style={{ maxWidth: "60rem" }}>
-      <Form.Group className="my-2.5">
-        <ValidatedFormControl
-          formId={formFieldNames.DISPLAY_NAME}
-          type="text"
-          floatingLabel="Display Name"
-          fieldInstructions="Create a custom name for this LMS."
+      <Form style={{ maxWidth: "60rem" }}>
+        {/* TODO: Add vertical spacing between fields */}
+        {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
+          <Alert variant="danger" icon={Info}>
+            <h3>Enablement failed</h3>
+            We were unable to enable your Canvas integration. Please try again
+            or contact enterprise customer support.
+          </Alert>
+        )}
+
+        <Form.Group className="my-2.5">
+          <ValidatedFormControl
+            formId={formFieldNames.DISPLAY_NAME}
+            type="text"
+            floatingLabel="Display Name"
+            fieldInstructions="Create a custom name for this LMS."
+          />
+        </Form.Group>
+        <Form.Group>
+          <ValidatedFormControl
+            formId={formFieldNames.CLIENT_ID}
+            className="mb-4"
+            type="text"
+            maxLength={255}
+            floatingLabel="API Client ID"
+          />
+        </Form.Group>
+        <Form.Group>
+          <ValidatedFormControl
+            formId={formFieldNames.CLIENT_SECRET}
+            className="my-4"
+            type="password"
+            maxLength={255}
+            floatingLabel="API Client Secret"
+          />
+        </Form.Group>
+        <Form.Group>
+          <ValidatedFormControl
+            formId={formFieldNames.ACCOUNT_ID}
+            className="my-4"
+            type="number"
+            maxLength={255}
+            floatingLabel="Canvas Account Number"
+          />
+        </Form.Group>
+        <Form.Group className="my-4">
+          <ValidatedFormControl
+            formId={formFieldNames.CANVAS_BASE_URL}
+            className="my-4"
+            type="text"
+            maxLength={255}
+            floatingLabel="Canvas Base URL"
+          />
+        </Form.Group>
+        <FormWaitModal
+          triggerState={WAITING_FOR_ASYNC_OPERATION}
+          onClose={() =>
+            dispatch?.(
+              setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
+            )
+          }
+          header="Authorization in progress"
+          text="Please confirm authorization through Canvas and return to this window once complete."
         />
-      </Form.Group>
-      <Form.Group>
-        <ValidatedFormControl
-          formId={formFieldNames.CLIENT_ID}
-          className="mb-4"
-          type="text"
-          maxLength={255}
-          floatingLabel="API Client ID"
-        />
-      </Form.Group>
-      <Form.Group>
-        <ValidatedFormControl
-          formId={formFieldNames.CLIENT_SECRET}
-          className="my-4"
-          type="password"
-          maxLength={255}
-          floatingLabel="API Client Secret"
-        />
-      </Form.Group>
-      <Form.Group>
-        <ValidatedFormControl
-          formId={formFieldNames.ACCOUNT_ID}
-          className="my-4"
-          type="number"
-          maxLength={255}
-          floatingLabel="Canvas Account Number"
-        />
-      </Form.Group>
-      <Form.Group className="my-4">
-        <ValidatedFormControl
-          formId={formFieldNames.CANVAS_BASE_URL}
-          className="my-4"
-          type="text"
-          maxLength={255}
-          floatingLabel="Canvas Base URL"
-        />
-      </Form.Group>
-      {/* TODO: Style panel */}
-      <div>
-        <h3>Action in Canvas required to complete authorization</h3>
-        Advancing to the next step will open a new window to complete the
-        authorization process in Canvas. Return to this window following
-        authorization to finish configuring your new integration.
-      </div>
-    </Form>
-  </span>
-);
+      </Form>
+    </span>
+  );
+};
 
 export default CanvasConfigAuthorizePage;

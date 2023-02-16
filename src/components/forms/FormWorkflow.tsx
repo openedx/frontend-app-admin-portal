@@ -1,8 +1,8 @@
 import React from "react";
-import type { SyntheticEvent, Dispatch } from "react";
-import { Button, Form, Stepper, useToggle } from "@edx/paragon";
+import type { Dispatch } from "react";
+import { Button, Stepper, useToggle } from "@edx/paragon";
+import { Launch } from "@edx/paragon/icons";
 
-import ConfigError from "../settings/ConfigError";
 // @ts-ignore
 import { useFormContext } from "./FormContext.tsx";
 import type {
@@ -10,16 +10,43 @@ import type {
   FormFieldValidation,
   FormContext,
 } from "./FormContext";
-// @ts-ignore
-import { setStepAction } from "./data/actions.ts";
+
+import {
+  setStepAction,
+  setWorkflowStateAction,
+  FORM_ERROR_MESSAGE,
+  // @ts-ignore
+} from "./data/actions.ts";
 import { SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
 import { FormActionArguments } from "./data/actions";
 // @ts-ignore
 import UnsavedChangesModal from "../settings/SettingsLMSTab/UnsavedChangesModal.tsx";
+// @ts-ignore
+import ConfigErrorModal from "../settings/ConfigErrorModal.tsx";
+import { pollAsync } from "../../utils";
+
+export const WAITING_FOR_ASYNC_OPERATION = "WAITING FOR ASYNC OPERATION";
+
+export type FormWorkflowErrorHandler = (errMsg: string) => void;
+
+export type FormWorkflowHandlerArgs<FormData> = {
+  formFields?: FormData;
+  errHandler?: FormWorkflowErrorHandler;
+  dispatch?: Dispatch<FormData>;
+};
+
+export type FormWorkflowAwaitHandler<FormData> = {
+  awaitCondition: (args: FormWorkflowHandlerArgs<FormData>) => Promise<boolean>;
+  awaitInterval: number;
+  awaitTimeout: number;
+  onAwaitTimeout?: (args: FormWorkflowHandlerArgs<FormData>) => void;
+};
 
 export type FormWorkflowButtonConfig<FormData> = {
   buttonText: string;
-  onClick: (formFields: FormData) => Promise<void>;
+  opensNewWindow: boolean;
+  onClick: (args: FormWorkflowHandlerArgs<FormData>) => Promise<FormData>;
+  awaitSuccess?: FormWorkflowAwaitHandler<FormData>;
 };
 
 type DynamicComponent = React.FunctionComponent | React.ComponentClass;
@@ -29,8 +56,11 @@ export type FormWorkflowStep<FormData> = {
   stepName: string;
   formComponent: DynamicComponent;
   validations: FormFieldValidation[];
-  saveChanges: (FormData) => Promise<void>;
-  nextButtonConfig: FormWorkflowButtonConfig<FormData>;
+  saveChanges: (
+    formData: FormData,
+    errHandler: FormWorkflowErrorHandler
+  ) => Promise<boolean>;
+  nextButtonConfig: (FormData) => FormWorkflowButtonConfig<FormData>;
 };
 
 export type FormWorkflowConfig<FormData> = {
@@ -43,6 +73,7 @@ export type FormWorkflowProps<FormData> = {
   onClickOut: (edited: boolean, msg?: string) => null;
   formData: FormData;
   dispatch: Dispatch<FormActionArguments>;
+  onSubmit: (FormData) => void;
 };
 
 // Modal container for multi-step forms
@@ -56,26 +87,64 @@ function FormWorkflow<FormData>({
     currentStep: step,
     hasErrors,
     isEdited,
+    stateMap,
   }: FormContext = useFormContext();
-  const [errorIsOpen, openError, closeError] = useToggle(false);
-  const [savedChangesModalIsOpen, openModal, closeModal] = useToggle(false);
+  const [
+    savedChangesModalIsOpen,
+    openSavedChangesModal,
+    closeSavedChangesModal,
+  ] = useToggle(false);
+  const nextButtonConfig = step?.nextButtonConfig(formFields);
+  const awaitingAsyncAction = stateMap && stateMap[WAITING_FOR_ASYNC_OPERATION];
+
+  const setFormError = (msg: string) => {
+    dispatch(setWorkflowStateAction(FORM_ERROR_MESSAGE, msg));
+  };
+  const clearFormError = () => setFormError("");
 
   const onCancel = () => {
     if (isEdited) {
-      openModal();
+      openSavedChangesModal();
     } else {
       onClickOut(false);
     }
   };
 
-  const onNext = async (event: SyntheticEvent) => {
-    await step?.nextButtonConfig.onClick(formFields as FormFields);
-    const nextStep: number = step.index + 1;
-    if (nextStep < formWorkflowConfig.steps.length) {
-      dispatch(setStepAction({ step: formWorkflowConfig.steps[nextStep] }));
-    } else {
-      // TODO: Fix
-      onClickOut(true, SUBMIT_TOAST_MESSAGE);
+  const onNext = async () => {
+    let advance = true;
+    if (nextButtonConfig) {
+      let newFormFields: FormData = await nextButtonConfig.onClick({
+        formFields,
+        errHandler: setFormError,
+        dispatch,
+      });
+      if (nextButtonConfig?.awaitSuccess) {
+        advance = await pollAsync(
+          () =>
+            nextButtonConfig.awaitSuccess?.awaitCondition?.({
+              formFields: newFormFields,
+              errHandler: setFormError,
+              dispatch,
+            }),
+          nextButtonConfig.awaitSuccess.awaitTimeout,
+          nextButtonConfig.awaitSuccess.awaitInterval
+        );
+        if (!advance && nextButtonConfig?.awaitSuccess) {
+          await nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
+            formFields: newFormFields,
+            errHandler: setFormError,
+            dispatch,
+          });
+        }
+      }
+      if (advance && step) {
+        const nextStep: number = step.index + 1;
+        if (nextStep < formWorkflowConfig.steps.length) {
+          dispatch(setStepAction({ step: formWorkflowConfig.steps[nextStep] }));
+        } else {
+          onClickOut(true, SUBMIT_TOAST_MESSAGE);
+        }
+      }
     }
   };
 
@@ -83,13 +152,7 @@ function FormWorkflow<FormData>({
     const FormComponent: DynamicComponent = step?.formComponent;
     return (
       <Stepper.Step eventKey={step.index.toString()} title={step.stepName}>
-        <span>
-          {step && step?.formComponent && (
-            <>
-              <FormComponent />
-            </>
-          )}
-        </span>
+        {step && step?.formComponent && <FormComponent />}
       </Stepper.Step>
     );
   };
@@ -110,10 +173,14 @@ function FormWorkflow<FormData>({
               Cancel
             </Button>
           }
-          {step.nextButtonConfig && (
+          {nextButtonConfig && (
             // @ts-ignore
-            <Button onClick={onNext} disabled={hasErrors}>
-              {step.nextButtonConfig.buttonText}
+            <Button
+              onClick={onNext}
+              disabled={hasErrors || awaitingAsyncAction}
+            >
+              {nextButtonConfig.buttonText}
+              {nextButtonConfig.opensNewWindow && <Launch />}
             </Button>
           )}
         </span>
@@ -123,13 +190,17 @@ function FormWorkflow<FormData>({
 
   return (
     <>
-      <ConfigError isOpen={errorIsOpen} close={closeError} />
+      <ConfigErrorModal
+        isOpen={stateMap && stateMap[FORM_ERROR_MESSAGE]}
+        close={clearFormError}
+        configTextOverride={stateMap && stateMap[FORM_ERROR_MESSAGE]}
+      />
       <UnsavedChangesModal
         isOpen={savedChangesModalIsOpen}
-        close={closeModal}
+        close={closeSavedChangesModal}
         exitWithoutSaving={() => onClickOut(false)}
         saveDraft={async () => {
-          await step?.saveChanges(formFields as FormData);
+          await step?.saveChanges(formFields as FormData, setFormError);
           onClickOut(true, SUBMIT_TOAST_MESSAGE);
         }}
       />

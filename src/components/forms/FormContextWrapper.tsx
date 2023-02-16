@@ -6,7 +6,7 @@ import type { FormFields } from "./FormContext";
 import FormWorkflow from "./FormWorkflow.tsx";
 import type { FormWorkflowProps } from "./FormWorkflow";
 // @ts-ignore
-import FormReducer, { initializeForm } from "./data/reducer.ts";
+import {FormReducer, initializeForm } from "./data/reducer.ts";
 import type { FormActionArguments } from "./data/actions";
 
 // Context wrapper for multi-step form container

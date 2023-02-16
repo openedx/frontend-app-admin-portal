@@ -312,6 +312,20 @@ const isDefinedAndNotNull = (value) => {
   return values.every(item => isDefined(item) && !isNull(item));
 };
 
+const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
+  const startTime = new Date().getTime();
+  while (new Date().getTime() - startTime < timeout) {
+    // eslint-disable-next-line no-await-in-loop
+    const result = await pollFunc();
+    if (checkFunc ? checkFunc(result) : !!result) {
+      return result;
+    }
+    // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
+    await new Promise(resolve => setTimeout(resolve, interval));
+  }
+  return false;
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -343,4 +357,5 @@ export {
   urlValidation,
   normalizeFileUpload,
   capitalizeFirstLetter,
+  pollAsync,
 };

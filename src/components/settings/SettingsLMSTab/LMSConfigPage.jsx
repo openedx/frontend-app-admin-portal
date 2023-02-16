@@ -38,6 +38,7 @@ const LMSConfigPage = ({
 }) => {
   const handleCloseWorkflow = (submitted, msg) => {
     onClick(submitted ? msg : '');
+    return true;
   };
   return (
     <span>
