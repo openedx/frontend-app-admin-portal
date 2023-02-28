@@ -74,9 +74,10 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         {},
       );
     }
+    history.replace(location.pathname, location.state);
     resetStepperModal();
     setCurrentStep(steps[0]);
-  }, [isCloseAlertOpen, resetStepperModal, closeCloseAlert, enterpriseId]);
+  }, [isCloseAlertOpen, location.pathname, location.state, history, resetStepperModal, closeCloseAlert, enterpriseId]);
 
   const handlePublish = async () => {
     setIsPublishing(true);
@@ -101,6 +102,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         addHighlightSet: true,
       });
       closeStepperModal();
+      history.replace(location.pathname, location.state);
       const handlePublishTrackEvent = () => {
         const trackInfo = {
           is_published: transformedHighlightSet.isPublished,
@@ -206,6 +208,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
 
   const openCloseConfirmationModal = () => {
     openCloseAlert();
+
     const trackInfo = {
       current_step: steps[steps.indexOf(currentStep)],
       current_step_position: steps.indexOf(currentStep) + 1,
