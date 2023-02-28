@@ -208,7 +208,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
 
   const openCloseConfirmationModal = () => {
     openCloseAlert();
-
     const trackInfo = {
       current_step: steps[steps.indexOf(currentStep)],
       current_step_position: steps.indexOf(currentStep) + 1,
