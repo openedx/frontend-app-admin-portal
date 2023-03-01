@@ -28,6 +28,7 @@ const SelectContentSelectionStatus = ({ className }) => {
           variant="link"
           size="inline"
           onClick={handleClearSelection}
+          data-testid="clear-selection"
         >
           Clear selection
         </Button>

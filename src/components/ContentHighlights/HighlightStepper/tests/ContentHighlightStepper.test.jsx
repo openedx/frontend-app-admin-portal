@@ -17,11 +17,14 @@ import {
   STEPPER_STEP_TEXT,
   testCourseAggregation,
   testCourseData,
+  TEST_COURSE_HIGHLIGHTS_DATA,
 } from '../../data/constants';
 import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import ContentHighlightStepper from '../ContentHighlightStepper';
+import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
+import 'jest-canvas-mock';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -31,11 +34,12 @@ const initialState = {
     enterpriseId: 'test-enterprise-id',
   },
 };
-
+const mockDispatchFn = jest.fn();
 const initialEnterpriseAppContextValue = {
   enterpriseCuration: {
     enterpriseCuration: {
       highlightSets: [],
+      dispatch: mockDispatchFn,
     },
   },
 };
@@ -52,6 +56,8 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
     sendEnterpriseTrackEvent: jest.fn(),
   });
 });
+
+jest.mock('../../../../data/services/EnterpriseCatalogApiService');
 
 /* eslint-disable react/prop-types */
 const ContentHighlightStepperWrapper = ({
@@ -105,6 +111,28 @@ jest.mock('react-instantsearch-dom', () => ({
     );
   },
 }));
+const closeStepper = () => {
+  const closeButton = screen.getByRole('button', { name: 'Close' });
+  userEvent.click(closeButton);
+
+  expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
+  expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+
+  // Confirm stepper close confirmation modal
+  expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
+  expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
+  expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
+  expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
+
+  const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
+  userEvent.click(confirmCloseButton);
+
+  // Confirm stepper confirmation modal closed
+  expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
+  expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
+  expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
+  expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+};
 
 describe('<ContentHighlightStepper>', () => {
   beforeEach(() => {
@@ -171,26 +199,7 @@ describe('<ContentHighlightStepper>', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
-    const closeButton = screen.getByRole('button', { name: 'Close' });
-    userEvent.click(closeButton);
-
-    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
-
-    // Confirm stepper close confirmation modal
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
-
-    const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
-    userEvent.click(confirmCloseButton);
-
-    // Confirm stepper confirmation modal closed
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+    closeStepper();
 
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
     expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
@@ -221,24 +230,7 @@ describe('<ContentHighlightStepper>', () => {
     userEvent.click(stepper1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
 
-    const closeButton = screen.getByRole('button', { name: 'Close' });
-    userEvent.click(closeButton);
-    expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
-
-    // Confirm stepper close confirmation modal
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
-
-    const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
-    userEvent.click(confirmCloseButton);
-
-    // Confirm stepper confirmation modal closed
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+    closeStepper();
 
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
     expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
@@ -311,23 +303,7 @@ describe('<ContentHighlightStepper>', () => {
     expect(screen.getByText(`${reallyLongTitleLength}/${MAX_HIGHLIGHT_TITLE_LENGTH}`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).toBeInTheDocument();
 
-    const closeButton = screen.getByRole('button', { name: 'Close' });
-    userEvent.click(closeButton);
-
-    // Confirm stepper close confirmation modal
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).toBeInTheDocument();
-    expect(screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).toBeInTheDocument();
-
-    const confirmCloseButton = screen.getByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit);
-    userEvent.click(confirmCloseButton);
-
-    // Confirm stepper confirmation modal closed
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit)).not.toBeInTheDocument();
-    expect(screen.queryByText(STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel)).not.toBeInTheDocument();
+    closeStepper();
 
     // Confirm stepper closed
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
@@ -337,5 +313,62 @@ describe('<ContentHighlightStepper>', () => {
 
     expect(screen.getByText(`0/${MAX_HIGHLIGHT_TITLE_LENGTH}`, { exact: false })).toBeInTheDocument();
     expect(screen.queryByText(DEFAULT_ERROR_MESSAGE.EXCEEDS_HIGHLIGHT_TITLE_LENGTH)).not.toBeInTheDocument();
+  });
+  it('Clear selection button removing checked items', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    // open stepper --> title
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    // title --> select content
+    const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
+    userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+
+    const clearSelectionButton = screen.getByTestId('clear-selection');
+    expect(clearSelectionButton).toBeInTheDocument();
+
+    userEvent.click(clearSelectionButton);
+  });
+  it('Publishes the content', () => {
+    EnterpriseCatalogApiService.createHighlightSet.mockResolvedValueOnce({
+      data: TEST_COURSE_HIGHLIGHTS_DATA,
+    });
+    renderWithRouter(<ContentHighlightStepperWrapper />);
+    // open stepper --> title
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    // title --> select content
+    const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
+    userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    // select content --> confirm content
+    const nextButton2 = screen.getByText('Next');
+    userEvent.click(nextButton2);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
+    // confirm content --> publish
+    const nextButton3 = screen.getByText('Publish');
+    userEvent.click(nextButton3);
+
+    expect(EnterpriseCatalogApiService.createHighlightSet).toHaveBeenCalledTimes(1);
+  });
+  it('Removes query param when publishing', () => {
+    EnterpriseCatalogApiService.createHighlightSet.mockResolvedValueOnce({
+      data: TEST_COURSE_HIGHLIGHTS_DATA,
+    });
+    const { history } = renderWithRouter(<ContentHighlightStepperWrapper />, {
+      route: '/admin/test-enterprise-slug/highlights?highlightId=123',
+    });
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper);
+
+    expect(history.location.search).toEqual('?highlightId=123');
+    closeStepper();
+    expect(history.location.search).toEqual('');
   });
 });
