@@ -8,7 +8,7 @@ import RenderField from '../RenderField';
 import StatusAlert from '../StatusAlert';
 
 import {
-  isRequired, isValidEmail, isValidNumber, maxLength512,
+  isRequired, isValidEmail, isNotValidNumberString, maxLength512,
 } from '../../utils';
 
 class RequestCodesForm extends React.Component {
@@ -103,7 +103,7 @@ class RequestCodesForm extends React.Component {
                 type="number"
                 component={RenderField}
                 label="Number of Codes"
-                validate={[isValidNumber]}
+                validate={[isNotValidNumberString]}
                 data-hj-suppress
               />
               <Field

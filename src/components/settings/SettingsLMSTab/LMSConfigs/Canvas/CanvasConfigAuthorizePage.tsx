@@ -5,11 +5,14 @@ import { Info } from "@edx/paragon/icons";
 
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { urlValidation } from "../../../../../utils";
-import {
+import { isValidNumber, urlValidation } from "../../../../../utils";
+import type {
   FormFieldValidation,
-  useFormContext,
 } from "../../../../forms/FormContext";
+import {
+  useFormContext,
+  // @ts-ignore
+} from "../../../../forms/FormContext.tsx";
 // @ts-ignore
 import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
 // @ts-ignore
@@ -19,7 +22,7 @@ import { setWorkflowStateAction } from "../../../../forms/data/actions.ts";
 // @ts-ignore
 import { LMS_AUTHORIZATION_FAILED } from "./CanvasConfig.tsx";
 
-const formFieldNames = {
+export const formFieldNames = {
   DISPLAY_NAME: "displayName",
   CLIENT_ID: "clientId",
   CLIENT_SECRET: "clientSecret",
@@ -31,17 +34,48 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.CANVAS_BASE_URL,
     validator: (fields) => {
-      const error = !urlValidation(fields[formFieldNames.CANVAS_BASE_URL]);
-      return error && "Please enter a valid URL";
+      const canvasUrl = fields[formFieldNames.CANVAS_BASE_URL];
+      if (canvasUrl) {
+        const error = !urlValidation(canvasUrl);
+        return error ? "Please enter a valid URL" : false;
+      } else {
+        return true;
+      }
     },
   },
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
-      // TODO: Check for duplicate display names
+      const displayName = fields[formFieldNames.DISPLAY_NAME];
+      return !displayName;
+    },
+  },
+  {
+    formFieldId: formFieldNames.DISPLAY_NAME,
+    validator: (fields) => {
       const displayName = fields[formFieldNames.DISPLAY_NAME];
       const error = displayName?.length > 20;
       return error && "Display name should be 20 characters or less";
+    },
+  },
+  {
+    formFieldId: formFieldNames.ACCOUNT_ID,
+    validator: (fields) => {
+      return !isValidNumber(fields[formFieldNames.ACCOUNT_ID]);
+    },
+  },
+  {
+    formFieldId: formFieldNames.CLIENT_ID,
+    validator: (fields) => {
+      const clientId = fields[formFieldNames.CLIENT_ID];
+      return !clientId;
+    },
+  },
+  {
+    formFieldId: formFieldNames.CLIENT_SECRET,
+    validator: (fields) => {
+      const clientSecret = fields[formFieldNames.CLIENT_SECRET];
+      return !clientSecret;
     },
   },
 ];

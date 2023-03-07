@@ -31,6 +31,7 @@ export type FormWorkflowErrorHandler = (errMsg: string) => void;
 
 export type FormWorkflowHandlerArgs<FormData> = {
   formFields?: FormData;
+  formFieldsChanged: boolean;
   errHandler?: FormWorkflowErrorHandler;
   dispatch?: Dispatch<FormData>;
 };
@@ -117,6 +118,7 @@ function FormWorkflow<FormData>({
         formFields,
         errHandler: setFormError,
         dispatch,
+        formFieldsChanged: !!isEdited,
       });
       if (nextButtonConfig?.awaitSuccess) {
         advance = await pollAsync(
@@ -125,6 +127,7 @@ function FormWorkflow<FormData>({
               formFields: newFormFields,
               errHandler: setFormError,
               dispatch,
+              formFieldsChanged: !!isEdited,
             }),
           nextButtonConfig.awaitSuccess.awaitTimeout,
           nextButtonConfig.awaitSuccess.awaitInterval
@@ -134,6 +137,7 @@ function FormWorkflow<FormData>({
             formFields: newFormFields,
             errHandler: setFormError,
             dispatch,
+            formFieldsChanged: !!isEdited,
           });
         }
       }

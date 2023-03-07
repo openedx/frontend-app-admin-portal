@@ -65,6 +65,7 @@ const LMSConfigPage = ({
           onSubmit: setExistingConfigFormData,
           onClickCancel: handleCloseWorkflow,
           existingData: existingConfigFormData,
+          existingConfigNames: existingConfigs,
         })}
         onClickOut={handleCloseWorkflow}
         onSubmit={setExistingConfigFormData}

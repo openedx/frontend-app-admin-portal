@@ -9,7 +9,7 @@ import type { FormActionArguments } from "./data/actions";
 import type { FormWorkflowStep } from "./FormWorkflow";
 
 export type FormFields = { [name: string]: any };
-export type FormValidatorResult = false | string;
+export type FormValidatorResult = boolean | string;
 export type FormValidator = (formFields: FormFields) => FormValidatorResult;
 export type FormFieldValidation = {
   formFieldId: string;

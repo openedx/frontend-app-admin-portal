@@ -4,6 +4,7 @@ import {
   snakeCaseDict,
   snakeCaseFormData,
   pollAsync,
+  isValidNumber,
 } from './utils';
 
 describe('utils', () => {
@@ -79,6 +80,17 @@ describe('utils', () => {
       const pollReturn = await pollAsync(mockPoll, 1000, 300);
       expect(pollReturn).toEqual(false);
       expect(mockPoll).toBeCalledTimes(4);
+    });
+  });
+
+  describe('validations', () => {
+    it('detects valid number', () => {
+      expect(isValidNumber(1)).toEqual(true);
+      expect(isValidNumber('1')).toEqual(true);
+      expect(isValidNumber(Infinity)).toEqual(true);
+      expect(isValidNumber('One')).toEqual(false);
+      expect(isValidNumber({})).toEqual(false);
+      expect(isValidNumber(undefined)).toEqual(false);
     });
   });
 });

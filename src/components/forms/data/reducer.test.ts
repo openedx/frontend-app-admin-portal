@@ -67,11 +67,14 @@ const steps: FormWorkflowStep<DummyFormFields>[] = [
 
 const testFormFields = { address: "123 45th st", zip: 12345 };
 
-const getTestInitializeFormArguments = () => ({
-  formFields: testFormFields,
-  validations: dummyFormFieldsValidations,
-  currentStep: steps[0],
-});
+const getTestInitializeFormArguments = () => {
+  const testArgs = {
+    formFields: { ...testFormFields },
+    validations: dummyFormFieldsValidations,
+    currentStep: steps[0],
+  };
+  return testArgs;
+};
 
 const getTestExpectedState = () => ({
   formFields: testFormFields,
@@ -93,6 +96,8 @@ describe("Form reducer tests", () => {
       formFields,
       currentStep: steps[0],
       isEdited: false,
+      hasErrors: false,
+      errorMap: {},
     });
   });
 
@@ -104,7 +109,7 @@ describe("Form reducer tests", () => {
       isEdited: true,
       hasErrors: true,
       errorMap: {
-        zip: [["zip", "Zip code should be positive nonzero number"]],
+        zip: ["Zip code should be positive nonzero number"],
       },
     };
 
@@ -113,15 +118,16 @@ describe("Form reducer tests", () => {
     ).toStrictEqual(expected);
   });
 
-  test("Update form fields", () => {
+  test("Update form fields", async () => {
     const action = updateFormFieldsAction({
       formFields: { zip: 54321, address: "543 21st st" },
     });
 
     const expected = {
       ...getTestExpectedState(),
-      formFields: { zip: 54321, address: "543 21st st"},
+      formFields: { zip: 54321, address: "543 21st st" },
       hasErrors: false,
+      errorMap: {},
     };
 
     expect(
@@ -135,6 +141,8 @@ describe("Form reducer tests", () => {
     const expected = {
       ...getTestExpectedState(),
       stateMap: { TEST_STATE: "Test State" },
+      hasErrors: false,
+      errorMap: {},
     };
 
     expect(
@@ -148,6 +156,8 @@ describe("Form reducer tests", () => {
     const expected = {
       ...getTestExpectedState(),
       currentStep: steps[1],
+      hasErrors: false,
+      errorMap: {},
     };
 
     expect(

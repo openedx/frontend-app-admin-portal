@@ -24,3 +24,9 @@ export function renderWithRouter(
     history,
   };
 }
+
+// Search for element by type and inner text
+export function findElementWithText(container, type, text) {
+  const elements = container.querySelectorAll(type);
+  return [...elements].find((elem) => elem.innerHTML.includes(text));
+}

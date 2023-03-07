@@ -3,6 +3,8 @@ import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
+import isNumber from 'lodash/isNumber';
+import isString from 'lodash/isString';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -105,9 +107,17 @@ const isTriggerKey = ({ triggerKeys, action, key }) => (
 // Validation functions
 const isRequired = (value = '') => (isEmpty(value) ? 'This field is required.' : undefined);
 const isValidEmail = (value = '') => (!isEmail(value) ? 'Must be a valid email address.' : undefined);
-const isValidNumber = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : undefined);
+const isNotValidNumberString = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : undefined);
 const maxLength = max => value => (value && value.length > max ? 'Must be 512 characters or less' : undefined);
 const maxLength512 = maxLength(512);
+const isValidNumber = (value) => {
+  // Verify is a valid number, whether it's a javascript number or string representation of a number
+  let isValidNum = isNumber(value);
+  if (!isValidNum && isString(value)) {
+    isValidNum = !isNotValidNumberString(value);
+  }
+  return isValidNum;
+};
 
 /** camelCase <--> snake_case functions
  * Because responses from django come as snake_cased JSON, its best
@@ -358,4 +368,5 @@ export {
   normalizeFileUpload,
   capitalizeFirstLetter,
   pollAsync,
+  isNotValidNumberString,
 };

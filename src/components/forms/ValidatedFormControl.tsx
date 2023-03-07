@@ -1,5 +1,6 @@
 import React from "react";
 import omit from "lodash/omit";
+import isString from "lodash/isString";
 
 import { Form } from "@edx/paragon";
 
@@ -31,11 +32,13 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
       setFormFieldAction({ fieldId: props.formId, value: e.target.value })
     );
   };
-  const error = errorMap && errorMap[props.formId];
+  const errors = errorMap?.[props.formId];
+  // Show error message if an error message was part of any detected errors
+  const showError = errors?.find?.(error => isString(error));
   const formControlProps = {
     ...omit(props, ["formId"]),
     onChange,
-    isInvalid: !!error,
+    isInvalid: showError,
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
@@ -45,8 +48,8 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
       {props.fieldInstructions && (
         <Form.Text>{props.fieldInstructions}</Form.Text>
       )}
-      {error && (
-        <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+      {showError && (
+        <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
       )}
     </>
   );
