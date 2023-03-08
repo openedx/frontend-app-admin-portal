@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
@@ -14,7 +15,6 @@ import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal/co
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
-import { EMAIL_FORM_NAME } from '../EmailTemplateForm';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
@@ -114,14 +114,23 @@ const initialState = {
   },
 };
 
+const mockIntl = {
+  formatMessage(message) {
+    return message.defaultMessage;
+  },
+};
+
 /* eslint-disable react/prop-types */
 const CodeReminderModalWrapper = (props) => (
   <MemoryRouter>
     <Provider store={mockStore(initialState)}>
-      <BaseCodeReminderModal
-        {...initialProps}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <BaseCodeReminderModal
+          {...initialProps}
+          {...props}
+          intl={mockIntl}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -149,6 +158,6 @@ describe('CodeReminderModal component', () => {
   });
   it('renders an email template form', () => {
     render(<CodeReminderModalWrapper />);
-    expect(screen.getByText(EMAIL_FORM_NAME)).toBeInTheDocument();
+    expect(screen.getByText('Email Template')).toBeInTheDocument();
   });
 });

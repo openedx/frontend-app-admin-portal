@@ -14,3 +14,5 @@ dist/
 
 # edx
 .env.private
+src/i18n/
+temp/

@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import last from 'lodash/last';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import CodeRevokeModal from './index';
@@ -81,13 +82,15 @@ const codeRevokeRequestData = (numCodes) => {
 const CodeRevokeModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <CodeRevokeModal
-        couponId={couponId}
-        title={couponTitle}
-        onClose={() => {}}
-        onSuccess={() => {}}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CodeRevokeModal
+          couponId={couponId}
+          title={couponTitle}
+          onClose={() => {}}
+          onSuccess={() => {}}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

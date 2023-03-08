@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { breakpoints, Skeleton } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -96,10 +97,12 @@ const initialState = {
 const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
   <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
     <Provider store={store}>
-      <Route
-        path="/:enterpriseSlug"
-        render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
-      />
+      <IntlProvider locale="en">
+        <Route
+          path="/:enterpriseSlug"
+          render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
