@@ -142,7 +142,7 @@ describe('<SettingsLMSTab />', () => {
     });
     const cancelButton = screen.getByText('Cancel');
     userEvent.click(cancelButton);
-    expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
+    expect(await screen.findByText('Exit configuration')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
     userEvent.click(exitButton);
     expect(screen.queryByText('Connect Canvas')).toBeFalsy();

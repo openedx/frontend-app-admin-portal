@@ -3,6 +3,8 @@ import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
+import isNumber from 'lodash/isNumber';
+import isString from 'lodash/isString';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -105,9 +107,17 @@ const isTriggerKey = ({ triggerKeys, action, key }) => (
 // Validation functions
 const isRequired = (value = '') => (isEmpty(value) ? 'This field is required.' : undefined);
 const isValidEmail = (value = '') => (!isEmail(value) ? 'Must be a valid email address.' : undefined);
-const isValidNumber = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : undefined);
+const isNotValidNumberString = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : undefined);
 const maxLength = max => value => (value && value.length > max ? 'Must be 512 characters or less' : undefined);
 const maxLength512 = maxLength(512);
+const isValidNumber = (value) => {
+  // Verify is a valid number, whether it's a javascript number or string representation of a number
+  let isValidNum = isNumber(value);
+  if (!isValidNum && isString(value)) {
+    isValidNum = !isNotValidNumberString(value);
+  }
+  return isValidNum;
+};
 
 /** camelCase <--> snake_case functions
  * Because responses from django come as snake_cased JSON, its best
@@ -312,6 +322,20 @@ const isDefinedAndNotNull = (value) => {
   return values.every(item => isDefined(item) && !isNull(item));
 };
 
+const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
+  const startTime = new Date().getTime();
+  while (new Date().getTime() - startTime < timeout) {
+    // eslint-disable-next-line no-await-in-loop
+    const result = await pollFunc();
+    if (checkFunc ? checkFunc(result) : !!result) {
+      return result;
+    }
+    // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
+    await new Promise(resolve => setTimeout(resolve, interval));
+  }
+  return false;
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -343,4 +367,6 @@ export {
   urlValidation,
   normalizeFileUpload,
   capitalizeFirstLetter,
+  pollAsync,
+  isNotValidNumberString,
 };
