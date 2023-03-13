@@ -25,7 +25,7 @@ const FormWaitModal = ({
 
   return (
     <AlertModal title={header} isOpen={isOpen} onClose={onClose} hasCloseButton>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex mt-2 justify-content-center">
         <Spinner
           screenReaderText={text}
           animation="border"
@@ -33,7 +33,7 @@ const FormWaitModal = ({
           variant="primary"
         />
       </div>
-      <p>{text}</p>
+      <p className="mt-3">{text}</p>
     </AlertModal>
   );
 };

@@ -13,7 +13,7 @@ import {
   MOODLE_TYPE,
   SAP_TYPE,
 } from '../data/constants';
-import BlackboardConfig from './LMSConfigs/BlackboardConfig';
+import { BlackboardFormConfig } from './LMSConfigs/Blackboard/BlackboardConfig.tsx';
 import { CanvasFormConfig } from './LMSConfigs/Canvas/CanvasConfig.tsx';
 import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
 import DegreedConfig from './LMSConfigs/DegreedConfig';
@@ -24,6 +24,7 @@ import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
 
 // TODO: Add remaining configs
 const flowConfigs = {
+  [BLACKBOARD_TYPE]: BlackboardFormConfig,
   [CANVAS_TYPE]: CanvasFormConfig,
 };
 
@@ -50,12 +51,17 @@ const LMSConfigPage = ({
       </h3>
       {/* TODO: Replace giant switch */}
       {LMSType === BLACKBOARD_TYPE && (
-      <BlackboardConfig
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-        onClick={onClick}
-        existingData={existingConfigFormData}
-        existingConfigs={existingConfigs}
-        setExistingConfigFormData={setExistingConfigFormData}
+      <FormContextWrapper
+        formWorkflowConfig={flowConfigs[BLACKBOARD_TYPE]({
+          enterpriseCustomerUuid,
+          onSubmit: setExistingConfigFormData,
+          onClickCancel: handleCloseWorkflow,
+          existingData: existingConfigFormData,
+          existingConfigNames: existingConfigs,
+        })}
+        onClickOut={handleCloseWorkflow}
+        onSubmit={setExistingConfigFormData}
+        formData={existingConfigFormData}
       />
       )}
       {LMSType === CANVAS_TYPE && (

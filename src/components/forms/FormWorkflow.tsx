@@ -184,7 +184,7 @@ function FormWorkflow<FormData>({
               disabled={hasErrors || awaitingAsyncAction}
             >
               {nextButtonConfig.buttonText}
-              {nextButtonConfig.opensNewWindow && <Launch />}
+              {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
             </Button>
           )}
         </span>
