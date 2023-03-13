@@ -6,10 +6,13 @@ import { Info } from "@edx/paragon/icons";
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
 import { urlValidation } from "../../../../../utils";
-import {
+import type {
   FormFieldValidation,
-  useFormContext,
 } from "../../../../forms/FormContext";
+import {
+  useFormContext,
+  // @ts-ignore
+} from "../../../../forms/FormContext.tsx";
 // @ts-ignore
 import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
 // @ts-ignore
