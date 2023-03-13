@@ -114,14 +114,15 @@ describe('<SettingsLMSTab />', () => {
       userEvent.click(screen.getByText('New learning platform integration'));
       expect(screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
     });
-    userEvent.click(screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName));
+    const blackboardCard = screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName);
+    userEvent.click(blackboardCard);
     expect(screen.queryByText('Connect Blackboard')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
     userEvent.click(cancelButton);
-    expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
+    expect(await screen.findByText('Exit configuration')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
     userEvent.click(exitButton);
     expect(screen.queryByText('Connect Blackboard')).toBeFalsy();
