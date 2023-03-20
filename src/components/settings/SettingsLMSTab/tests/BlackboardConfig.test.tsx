@@ -84,6 +84,7 @@ function testBlackboardConfigSetup(formData) {
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
+      isStepperOpen={true}
     />
   );
 }
@@ -103,18 +104,15 @@ async function clearForm() {
 describe("<BlackboardConfig />", () => {
   test("renders Blackboard Authorize Form", () => {
     render(testBlackboardConfigSetup(noConfigs));
+    screen.debug();
 
     screen.getByLabelText("Display Name");
     screen.getByLabelText("Blackboard Base URL");
   });
   test("test button disable", async () => {
-    const { container } = render(testBlackboardConfigSetup(noExistingData));
+    render(testBlackboardConfigSetup(noExistingData));
 
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await clearForm();
     expect(authorizeButton).toBeDisabled();
     userEvent.type(screen.getByLabelText("Display Name"), "name");
@@ -140,12 +138,8 @@ describe("<BlackboardConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
   });
   test('it edits existing configs on submit', async () => {
-    const { container } = render(testBlackboardConfigSetup(existingConfigData));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testBlackboardConfigSetup(existingConfigData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     await clearForm(); 
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -155,8 +149,8 @@ describe("<BlackboardConfig />", () => {
 
     userEvent.click(authorizeButton);
 
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(authorizeButton).not.toBeInTheDocument());
+    // await a change in button text from authorize to activate 
+    await waitFor(() => expect(screen.findByRole('button', {name: 'Activate'})))
 
     const expectedConfig = {
       active: true,
@@ -169,12 +163,8 @@ describe("<BlackboardConfig />", () => {
     expect(LmsApiService.updateBlackboardConfig).toHaveBeenCalledWith(expectedConfig, 1);
   });
   test('it creates new configs on submit', async () => {
-    const { container  } = render(testBlackboardConfigSetup(noExistingData));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testBlackboardConfigSetup(noExistingData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     
     await clearForm();
 
@@ -184,8 +174,8 @@ describe("<BlackboardConfig />", () => {
 
     userEvent.click(authorizeButton);
 
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(authorizeButton).not.toBeInTheDocument());
+    // await a change in button text from authorize to activate 
+    await waitFor(() => expect(screen.findByRole('button', {name: 'Activate'})))
 
     const expectedConfig = {
       active: false,
@@ -196,12 +186,9 @@ describe("<BlackboardConfig />", () => {
     expect(LmsApiService.postNewBlackboardConfig).toHaveBeenCalledWith(expectedConfig);
   });
   test('saves draft correctly', async () => {
-    const { container } = render(testBlackboardConfigSetup(noExistingData));
-    const cancelButton = findElementWithText(
-      container,
-      "button",
-      "Cancel"
-    );
+    render(testBlackboardConfigSetup(noExistingData));
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+
     await clearForm();
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
@@ -209,7 +196,6 @@ describe("<BlackboardConfig />", () => {
     expect(cancelButton).not.toBeDisabled();
     userEvent.click(cancelButton);
 
-    // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
     const closeButton = screen.getByRole('button', { name: 'Exit' });
 
@@ -224,12 +210,8 @@ describe("<BlackboardConfig />", () => {
     expect(LmsApiService.postNewBlackboardConfig).toHaveBeenCalledWith(expectedConfig);
   });
   test('Authorizing a config will initiate backend polling', async () => {
-    const { container } = render(testBlackboardConfigSetup(noExistingData));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testBlackboardConfigSetup(noExistingData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await clearForm();
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
@@ -237,19 +219,18 @@ describe("<BlackboardConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(authorizeButton).not.toBeInTheDocument());
+    // screen.debug();
+    // await a change in button text from authorize to activate 
+    await waitFor(() => expect(authorizeButton).toBeDisabled())
+    screen.debug();
 
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
   });
   test('Authorizing an existing, edited config will call update config endpoint', async () => {
-    const { container } = render(testBlackboardConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testBlackboardConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+
     act(() => {
       fireEvent.change(screen.getByLabelText('Display Name'), {
         target: { value: '' },
@@ -272,12 +253,8 @@ describe("<BlackboardConfig />", () => {
     await waitFor(() => expect(screen.getByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
   });
   test('Authorizing an existing config will not call update or create config endpoint', async () => {
-    const { container } = render(testBlackboardConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testBlackboardConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     expect(authorizeButton).not.toBeDisabled();
 
@@ -300,12 +277,9 @@ describe("<BlackboardConfig />", () => {
     expect(screen.queryByText("Display name should be 20 characters or less")).not.toBeInTheDocument();
   });
   test('it calls setExistingConfigFormData after authorization', async () => {
-    const { container } = render(testBlackboardConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testBlackboardConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+
     act(() => {
       fireEvent.change(screen.getByLabelText('Display Name'), {
         target: { value: '' },
@@ -318,11 +292,8 @@ describe("<BlackboardConfig />", () => {
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.getByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
     
-    const activateButton = findElementWithText(
-      container,
-      "button",
-      "Activate"
-    );
+    const activateButton = screen.getByRole('button', { name: 'Activate' });
+
     userEvent.click(activateButton);
     expect(mockSetExistingConfigFormData).toHaveBeenCalledWith({
       uuid: 'foobar',

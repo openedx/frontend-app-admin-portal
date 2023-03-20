@@ -289,7 +289,7 @@ const channelMapping = {
     delete: LmsApiService.deleteMoodleConfig,
   },
   [SAP_TYPE]: {
-    displayName: 'SAP',
+    displayName: 'SAP Success Factors',
     icon: SAPIcon,
     update: LmsApiService.updateSuccessFactorsConfig,
     delete: LmsApiService.deleteSuccessFactorsConfig,

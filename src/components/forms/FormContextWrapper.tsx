@@ -15,6 +15,7 @@ function FormContextWrapper<FormData>({
   onClickOut,
   onSubmit,
   formData,
+  isStepperOpen,
 }: FormWorkflowProps<FormData>) {
   const [formFieldsState, dispatch] = useReducer<
     FormReducer,
@@ -36,7 +37,7 @@ function FormContextWrapper<FormData>({
       formContext={formFieldsState || {}}
     >
       <FormWorkflow
-        {...{ formWorkflowConfig, onClickOut, onSubmit, dispatch }}
+        {...{ formWorkflowConfig, onClickOut, onSubmit, isStepperOpen, dispatch }}
       />
     </FormContextProvider>
   );
