@@ -5,7 +5,7 @@ import { Info } from "@edx/paragon/icons";
 
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { isValidNumber, urlValidation } from "../../../../../utils";
+import { urlValidation } from "../../../../../utils";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
@@ -13,21 +13,13 @@ import {
   useFormContext,
   // @ts-ignore
 } from "../../../../forms/FormContext.tsx";
-// @ts-ignore
-import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
-// @ts-ignore
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { setWorkflowStateAction } from "../../../../forms/data/actions.ts";
-// @ts-ignore
-import { LMS_AUTHORIZATION_FAILED } from "./DegreedConfig.tsx";
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",
   CLIENT_ID: "clientId",
   CLIENT_SECRET: "clientSecret",
   DEGREED_BASE_URL: "degreedBaseUrl",
-  DEGREED_FETCH_URL: "degreedBaseUrl",
+  DEGREED_FETCH_URL: "degreedFetchUrl",
 };
 
 export const validations: FormFieldValidation[] = [
@@ -87,21 +79,12 @@ export const validations: FormFieldValidation[] = [
 ];
 
 // Settings page of Degreed LMS config workflow
-const DegreedConfigAuthorizePage = () => {
+const DegreedConfigEnablePage = () => {
   const { dispatch, stateMap } = useFormContext();
   return (
     <span>
-      <h2>Authorize connection to Degreed</h2>
-
+      <h2>Enable connection to Degreed</h2>
       <Form style={{ maxWidth: "60rem" }}>
-        {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
-          <Alert variant="danger" icon={Info}>
-            <h3>Enablement failed</h3>
-            We were unable to enable your Degreed integration. Please try again
-            or contact enterprise customer support.
-          </Alert>
-        )}
-
         <Form.Group className="my-2.5">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
@@ -152,4 +135,4 @@ const DegreedConfigAuthorizePage = () => {
   );
 };
 
-export default DegreedConfigAuthorizePage;
+export default DegreedConfigEnablePage;

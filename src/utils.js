@@ -13,7 +13,7 @@ import { history } from '@edx/frontend-platform/initialize';
 import { features } from './config';
 
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
 } from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';
@@ -270,14 +270,8 @@ const channelMapping = {
     update: LmsApiService.updateCornerstoneConfig,
     delete: LmsApiService.deleteCornerstoneConfig,
   },
-  [DEGREED_TYPE]: {
-    displayName: 'Degreed',
-    icon: DegreedIcon,
-    update: LmsApiService.updateDegreedConfig,
-    delete: LmsApiService.deleteDegreedConfig,
-  },
   [DEGREED2_TYPE]: {
-    displayName: 'Degreed2',
+    displayName: 'Degreed',
     icon: DegreedIcon,
     update: LmsApiService.updateDegreed2Config,
     delete: LmsApiService.deleteDegreed2Config,

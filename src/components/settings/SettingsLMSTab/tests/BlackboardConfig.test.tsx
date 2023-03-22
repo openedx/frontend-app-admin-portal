@@ -104,8 +104,6 @@ async function clearForm() {
 describe("<BlackboardConfig />", () => {
   test("renders Blackboard Authorize Form", () => {
     render(testBlackboardConfigSetup(noConfigs));
-    screen.debug();
-
     screen.getByLabelText("Display Name");
     screen.getByLabelText("Blackboard Base URL");
   });
@@ -219,11 +217,8 @@ describe("<BlackboardConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // screen.debug();
     // await a change in button text from authorize to activate 
     await waitFor(() => expect(authorizeButton).toBeDisabled())
-    screen.debug();
-
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
   });

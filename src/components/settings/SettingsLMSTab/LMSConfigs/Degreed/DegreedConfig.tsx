@@ -8,7 +8,7 @@ import DegreedConfigAuthorizePage, {
   validations,
   formFieldNames
   // @ts-ignore
-} from "./DegreedConfigAuthorizePage.tsx";
+} from "./DegreedConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
@@ -61,8 +61,6 @@ export type DegreedFormConfigProps = {
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
 };
-
-export const LMS_AUTHORIZATION_FAILED = "LMS AUTHORIZATION FAILED";
 
 export const DegreedFormConfig = ({
   enterpriseCustomerUuid,

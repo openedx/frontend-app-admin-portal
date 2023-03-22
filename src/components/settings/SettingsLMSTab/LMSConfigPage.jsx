@@ -8,7 +8,6 @@ import {
   BLACKBOARD_TYPE,
   CANVAS_TYPE,
   CORNERSTONE_TYPE,
-  DEGREED_TYPE,
   DEGREED2_TYPE,
   MOODLE_TYPE,
   SAP_TYPE,
@@ -17,7 +16,6 @@ import { BlackboardFormConfig } from './LMSConfigs/Blackboard/BlackboardConfig.t
 import { CanvasFormConfig } from './LMSConfigs/Canvas/CanvasConfig.tsx';
 import { DegreedFormConfig } from './LMSConfigs/Degreed/DegreedConfig.tsx';
 import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
-import Degreed2Config from './LMSConfigs/Degreed2Config';
 import MoodleConfig from './LMSConfigs/MoodleConfig';
 import SAPConfig from './LMSConfigs/SAPConfig';
 import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
@@ -25,7 +23,7 @@ import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
 const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
   [CANVAS_TYPE]: CanvasFormConfig,
-  [DEGREED_TYPE]: DegreedFormConfig,
+  [DEGREED2_TYPE]: DegreedFormConfig,
 };
 
 const LMSConfigPage = ({
@@ -95,24 +93,8 @@ const LMSConfigPage = ({
         </>
       )}
       {LMSType === DEGREED2_TYPE && (
-        <>
-          <h3 className="mt-4.5 mb-3.5">
-            <Image className="lms-icon" src={channelMapping[LMSType]?.icon} />
-            <span className="ml-2">
-              Connect {channelMapping[LMSType]?.displayName}
-            </span>
-          </h3>
-          <Degreed2Config
-            enterpriseCustomerUuid={enterpriseCustomerUuid}
-            onClick={onClick}
-            existingData={existingConfigFormData}
-            existingConfigs={existingConfigs}
-          />
-        </>
-      )}
-      {LMSType === DEGREED_TYPE && (
         <FormContextWrapper
-          formWorkflowConfig={flowConfigs[DEGREED_TYPE]({
+          formWorkflowConfig={flowConfigs[DEGREED2_TYPE]({
             enterpriseCustomerUuid,
             onSubmit: setExistingConfigFormData,
             onClickCancel: handleCloseWorkflow,
@@ -125,15 +107,6 @@ const LMSConfigPage = ({
           isStepperOpen={isLmsStepperOpen}
         />
       )}
-
-      {/* {LMSType === DEGREED_TYPE && (
-      <DegreedConfig
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-        onClick={onClick}
-        existingData={existingConfigFormData}
-        existingConfigs={existingConfigs}
-      />
-    )} */}
       {LMSType === MOODLE_TYPE && (
         <>
           <h3 className="mt-4.5 mb-3.5">

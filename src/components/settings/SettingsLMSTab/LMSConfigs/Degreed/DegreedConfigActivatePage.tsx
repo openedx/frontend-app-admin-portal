@@ -8,7 +8,7 @@ const DegreedConfigActivatePage = () => (
       <h2>Activate your Degreed integration</h2>
 
       <p>
-        Your Degreed integration has been successfully authorized and is ready to
+        Your Degreed integration has been successfully created and is ready to
         activate!
       </p>
 
