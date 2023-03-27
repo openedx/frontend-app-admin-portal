@@ -43,7 +43,8 @@ export const validations: FormFieldValidation[] = [
         const error = !urlValidation(degreedUrl);
         return error ? "Please enter a valid URL" : false;
       } else {
-        return true;
+        // fetch url is optional
+        return false;
       }
     },
   },
