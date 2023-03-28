@@ -27,7 +27,6 @@ export const errorDeleteDataModalText = 'We were unable to delete your provider 
 export const BLACKBOARD_TYPE = 'BLACKBOARD';
 export const CANVAS_TYPE = 'CANVAS';
 export const CORNERSTONE_TYPE = 'CSOD';
-export const DEGREED_TYPE = 'DEGREED';
 export const DEGREED2_TYPE = 'DEGREED2';
 export const MOODLE_TYPE = 'MOODLE';
 export const SAP_TYPE = 'SAP';

@@ -94,6 +94,7 @@ function testCanvasConfigSetup(formData) {
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
+      isStepperOpen={true}
     />
   );
 }
@@ -130,13 +131,10 @@ describe("<CanvasConfig />", () => {
     screen.getByLabelText("Canvas Base URL");
   });
   test("test button disable", async () => {
-    const { container } = render(testCanvasConfigSetup(noExistingData));
+    render(testCanvasConfigSetup(noExistingData));
 
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+
     await clearForm();
     expect(authorizeButton).toBeDisabled();
     userEvent.type(screen.getByLabelText("Display Name"), "name");
@@ -165,12 +163,8 @@ describe("<CanvasConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
   });
   test('it edits existing configs on submit', async () => {
-    const { container } = render(testCanvasConfigSetup(existingConfigData));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testCanvasConfigSetup(existingConfigData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     await clearForm(); 
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -184,7 +178,7 @@ describe("<CanvasConfig />", () => {
     userEvent.click(authorizeButton);
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(authorizeButton).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
 
     const expectedConfig = {
       active: true,
@@ -200,12 +194,8 @@ describe("<CanvasConfig />", () => {
     expect(LmsApiService.updateCanvasConfig).toHaveBeenCalledWith(expectedConfig, 1);
   });
   test('it creates new configs on submit', async () => {
-    const { container  } = render(testCanvasConfigSetup(noExistingData));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testCanvasConfigSetup(noExistingData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     
     await clearForm();
 
@@ -219,7 +209,7 @@ describe("<CanvasConfig />", () => {
     userEvent.click(authorizeButton);
 
     // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(authorizeButton).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
 
     const expectedConfig = {
       active: false,
@@ -233,12 +223,9 @@ describe("<CanvasConfig />", () => {
     expect(LmsApiService.postNewCanvasConfig).toHaveBeenCalledWith(expectedConfig);
   });
   test('saves draft correctly', async () => {
-    const { container } = render(testCanvasConfigSetup(noExistingData));
-    const cancelButton = findElementWithText(
-      container,
-      "button",
-      "Cancel"
-    );
+    render(testCanvasConfigSetup(noExistingData));
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+
     await clearForm();
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
@@ -266,12 +253,9 @@ describe("<CanvasConfig />", () => {
     expect(LmsApiService.postNewCanvasConfig).toHaveBeenCalledWith(expectedConfig);
   });
   test('Authorizing a config will initiate backend polling', async () => {
-    const { container } = render(testCanvasConfigSetup(noExistingData));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testCanvasConfigSetup(noExistingData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+
     await clearForm();
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
@@ -282,19 +266,16 @@ describe("<CanvasConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(authorizeButton).not.toBeInTheDocument());
+    // await a text change from 'Authorize' to 'Activate'
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
 
     expect(window.open).toHaveBeenCalled();
     expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
   });
   test('Authorizing an existing, edited config will call update config endpoint', async () => {
-    const { container } = render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testCanvasConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+
     act(() => {
       fireEvent.change(screen.getByLabelText('Display Name'), {
         target: { value: '' },
@@ -317,12 +298,8 @@ describe("<CanvasConfig />", () => {
     await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
   });
   test('Authorizing an existing config will not call update or create config endpoint', async () => {
-    const { container } = render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testCanvasConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     expect(authorizeButton).not.toBeDisabled();
 
@@ -345,12 +322,9 @@ describe("<CanvasConfig />", () => {
     expect(screen.queryByText("Display name should be 20 characters or less")).not.toBeInTheDocument();
   });
   test('it calls setExistingConfigFormData after authorization', async () => {
-    const { container } = render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = findElementWithText(
-      container,
-      "button",
-      "Authorize"
-    );
+    render(testCanvasConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+
     act(() => {
       fireEvent.change(screen.getByLabelText('Display Name'), {
         target: { value: '' },
@@ -362,12 +336,8 @@ describe("<CanvasConfig />", () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-    
-    const activateButton = findElementWithText(
-      container,
-      "button",
-      "Activate"
-    );
+    const activateButton = screen.getByRole('button', { name: 'Activate' });
+
     userEvent.click(activateButton);
     expect(mockSetExistingConfigFormData).toHaveBeenCalledWith({
       uuid: 'foobar',
