@@ -45,8 +45,6 @@ export type CanvasConfigCamelCase = {
   refreshToken: string;
 };
 
-// TODO: Can we generate this dynamically?
-// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html
 export type CanvasConfigSnakeCase = {
   canvas_account_id: string;
   canvas_base_url: string;
@@ -60,7 +58,6 @@ export type CanvasConfigSnakeCase = {
   refresh_token: string;
 };
 
-// TODO: Make this a generic type usable by all lms configs
 export type CanvasFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: CanvasConfigCamelCase;

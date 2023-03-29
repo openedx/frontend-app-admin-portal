@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form } from '@edx/paragon';
+import { Container, Form, Image } from '@edx/paragon';
 import { BLACKBOARD_TYPE, CANVAS_TYPE } from '../../../data/constants';
 import { channelMapping } from '../../../../../utils';
 
@@ -11,10 +11,17 @@ const ConfigActivatePage = (lmsType: string) => {
   }
   const lmsName = channelMapping[lmsType].displayName;
   return (
-    <span>
-      <Form style={{ maxWidth: '60rem' }}>
-        <h2>Activate your {lmsName} integration</h2>
-
+    <Container size='md'>
+      <Form style={{ maxWidth: '60rem' }}>  
+        <span className='d-flex pb-4'>
+          <Image
+            className="lms-icon mr-2"
+            src={channelMapping[lmsType].icon}
+          />
+          <h3>
+            Activate your {lmsName} integration
+          </h3>
+        </span>
         <p>
           Your {lmsName} integration has been successfully {verb} and is ready to
           activate!
@@ -25,7 +32,7 @@ const ConfigActivatePage = (lmsType: string) => {
           learner activity with {lmsName}.
         </p>
       </Form>
-    </span>
+    </Container>
   )
 };
 

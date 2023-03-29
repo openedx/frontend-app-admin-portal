@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Form } from "@edx/paragon";
+import { Container, Form, Image } from "@edx/paragon";
 
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { urlValidation } from "../../../../../utils";
-import { INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME, } from "../../../data/constants";
+import { channelMapping, urlValidation } from "../../../../../utils";
+import { INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME, MOODLE_TYPE } from "../../../data/constants";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
@@ -82,8 +82,16 @@ export const validations: FormFieldValidation[] = [
 // Settings page of Moodle LMS config workflow
 const MoodleConfigEnablePage = () => {
   return (
-    <span>
-      <h2>Enable connection to Moodle</h2>
+    <Container size='md'>
+      <span className='d-flex pb-4'>
+        <Image
+          className="lms-icon mr-2"
+          src={channelMapping[MOODLE_TYPE].icon}
+        />
+        <h3>
+          Enable connection to Moodle
+        </h3>
+      </span>
       <Form style={{ maxWidth: "60rem" }}>
         <Form.Group className="my-2.5">
           <ValidatedFormControl
@@ -139,7 +147,7 @@ const MoodleConfigEnablePage = () => {
           />
         </Form.Group>
       </Form>
-    </span>
+    </Container>
   );
 };
 

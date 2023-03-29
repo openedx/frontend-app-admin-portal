@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Form, Alert } from "@edx/paragon";
+import { Container, Form, Image } from "@edx/paragon";
 
-import { INVALID_LINK, INVALID_NAME } from "../../../data/constants";
+import { DEGREED2_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { urlValidation } from "../../../../../utils";
+import { channelMapping, urlValidation } from "../../../../../utils";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
@@ -83,8 +83,16 @@ export const validations: FormFieldValidation[] = [
 const DegreedConfigEnablePage = () => {
   const { dispatch, stateMap } = useFormContext();
   return (
-    <span>
-      <h2>Enable connection to Degreed</h2>
+    <Container size='md'>
+      <span className='d-flex pb-4'>
+        <Image
+          className="lms-icon mr-2"
+          src={channelMapping[DEGREED2_TYPE].icon}
+        />
+        <h3>
+          Enable connection to Degreed
+        </h3>
+      </span>
       <Form style={{ maxWidth: "60rem" }}>
         <Form.Group className="my-2.5">
           <ValidatedFormControl
@@ -132,7 +140,7 @@ const DegreedConfigEnablePage = () => {
           />
         </Form.Group>
       </Form>
-    </span>
+    </Container>
   );
 };
 

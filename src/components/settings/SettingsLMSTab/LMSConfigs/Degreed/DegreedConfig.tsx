@@ -33,8 +33,6 @@ export type DegreedConfigCamelCase = {
   uuid: string;
 };
 
-// TODO: Can we generate this dynamically?
-// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html
 export type DegreedConfigSnakeCase = {
   display_name: string;
   client_id: string;
@@ -48,7 +46,6 @@ export type DegreedConfigSnakeCase = {
   refresh_token: string;
 };
 
-// TODO: Make this a generic type usable by all lms configs
 export type DegreedFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: DegreedConfigCamelCase;

@@ -36,8 +36,6 @@ export type MoodleConfigCamelCase = {
   uuid: string;
 };
 
-// TODO: Can we generate this dynamically?
-// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html
 export type MoodleConfigSnakeCase = {
   display_name: string;
   moodle_base_url: string;

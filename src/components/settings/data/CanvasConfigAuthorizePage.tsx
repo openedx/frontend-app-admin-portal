@@ -1,12 +1,12 @@
 import React from "react";
 
-import { Form, Alert } from "@edx/paragon";
+import { Alert, Container, Form, Image } from "@edx/paragon";
 import { Info } from "@edx/paragon/icons";
 
-import { INVALID_LINK, INVALID_NAME } from "./constants";
+import { CANVAS_TYPE, INVALID_LINK, INVALID_NAME } from "./constants";
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { isValidNumber, urlValidation } from "../../../../../utils";
+import { channelMapping, isValidNumber, urlValidation } from "../../../../../utils";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
@@ -85,11 +85,17 @@ export const validations: FormFieldValidation[] = [
 const CanvasConfigAuthorizePage = () => {
   const { dispatch, stateMap } = useFormContext();
   return (
-    <span>
-      <h2>Authorize connection to Canvas</h2>
-
+    <Container size='md'>
+      <span className='d-flex pb-4'>
+        <Image
+          className="lms-icon mr-2"
+          src={channelMapping[CANVAS_TYPE].icon}
+        />
+        <h3>
+          Authorize connection to Canvas
+        </h3>
+      </span>
       <Form style={{ maxWidth: "60rem" }}>
-        {/* TODO: Add vertical spacing between fields */}
         {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
           <Alert variant="danger" icon={Info}>
             <h3>Enablement failed</h3>
@@ -153,7 +159,7 @@ const CanvasConfigAuthorizePage = () => {
           text="Please confirm authorization through Canvas and return to this window once complete."
         />
       </Form>
-    </span>
+    </Container>
   );
 };
 

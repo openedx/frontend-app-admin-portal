@@ -1,12 +1,12 @@
 import React from "react";
 
-import { Form, Alert } from "@edx/paragon";
+import { Alert, Container, Form, Image } from "@edx/paragon";
 import { Info } from "@edx/paragon/icons";
 
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { INVALID_LINK, INVALID_NAME } from "../../../data/constants";
-import { urlValidation } from "../../../../../utils";
+import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
+import { channelMapping, urlValidation } from "../../../../../utils";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
@@ -39,7 +39,6 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
-      // TODO: Check for duplicate display names
       const displayName = fields[formFieldNames.DISPLAY_NAME];
       const error = displayName?.length > 20;
       return error && INVALID_NAME;
@@ -51,9 +50,16 @@ export const validations: FormFieldValidation[] = [
 const BlackboardConfigAuthorizePage = () => {
   const { dispatch, stateMap } = useFormContext();
   return (
-    <span>
-      <h2>Authorize connection to Blackboard</h2>
-
+    <Container size='md'>
+      <span className='d-flex pb-4'>
+        <Image
+          className="lms-icon mr-2"
+          src={channelMapping[BLACKBOARD_TYPE].icon}
+        />
+        <h3>
+          Authorize connection to Blackboard
+        </h3>
+      </span>
       <Form style={{ maxWidth: "60rem" }}>
         {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
           <Alert variant="danger" icon={Info}>
@@ -89,7 +95,7 @@ const BlackboardConfigAuthorizePage = () => {
           text="Please confirm authorization through Blackboard and return to this window once complete."
         />
       </Form>
-    </span>
+    </Container>
   );
 };
 
