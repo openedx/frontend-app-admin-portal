@@ -18,7 +18,6 @@ import {
 import LmsApiService from "../../../../data/services/LmsApiService";
 // @ts-ignore
 import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
-import { findElementWithText } from "../../../test/testUtils";
 
 jest.mock("../../data/constants", () => ({
   ...jest.requireActual("../../data/constants"),
@@ -209,13 +208,13 @@ describe("<DegreedConfig />", () => {
   test('validates poorly formatted existing data on load', async () => {
     render(testDegreedConfigSetup(invalidExistingData));
     screen.debug();
-    expect(screen.queryByText("Please enter a valid URL")).toBeInTheDocument();
-    expect(screen.queryByText("Display name should be 20 characters or less")).toBeInTheDocument();
+    expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
   });
   test('validates properly formatted existing data on load', () => {
     render(testDegreedConfigSetup(existingConfigData));
-    expect(screen.queryByText("Please enter a valid URL")).not.toBeInTheDocument();
-    expect(screen.queryByText("Display name should be 20 characters or less")).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
 
 });

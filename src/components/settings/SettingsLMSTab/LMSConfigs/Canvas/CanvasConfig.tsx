@@ -3,12 +3,12 @@ import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
 import {
   CANVAS_OAUTH_REDIRECT_URL,
+  CANVAS_TYPE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
   SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
-import CanvasConfigActivatePage from "./CanvasConfigActivatePage.tsx";
 import CanvasConfigAuthorizePage, {
   validations,
   formFieldNames
@@ -31,6 +31,7 @@ import {
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
 
 export type CanvasConfigCamelCase = {
   canvasAccountId: string;
@@ -219,6 +220,8 @@ export const CanvasFormConfig = ({
     dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
   };
 
+  const activatePage = () => ConfigActivatePage(CANVAS_TYPE);
+
   const steps: FormWorkflowStep<CanvasConfigCamelCase>[] = [
     {
       index: 0,
@@ -251,7 +254,7 @@ export const CanvasFormConfig = ({
     },
     {
       index: 1,
-      formComponent: CanvasConfigActivatePage,
+      formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,

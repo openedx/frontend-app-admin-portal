@@ -3,12 +3,13 @@ import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
 import {
   BLACKBOARD_OAUTH_REDIRECT_URL,
+  BLACKBOARD_TYPE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
   SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
-import BlackboardConfigActivatePage from "./BlackboardConfigActivatePage.tsx";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
 import BlackboardConfigAuthorizePage, {
   validations,
   formFieldNames
@@ -227,6 +228,8 @@ export const BlackboardFormConfig = ({
     dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
   };
 
+  const activatePage = () => ConfigActivatePage(BLACKBOARD_TYPE);
+
   const steps: FormWorkflowStep<BlackboardConfigCamelCase>[] = [
     {
       index: 0,
@@ -259,7 +262,7 @@ export const BlackboardFormConfig = ({
     },
     {
       index: 1,
-      formComponent: BlackboardConfigActivatePage,
+      formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,

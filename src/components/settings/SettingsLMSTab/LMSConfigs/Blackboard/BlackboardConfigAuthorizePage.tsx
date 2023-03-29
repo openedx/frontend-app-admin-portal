@@ -5,6 +5,7 @@ import { Info } from "@edx/paragon/icons";
 
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
+import { INVALID_LINK, INVALID_NAME } from "../../../data/constants";
 import { urlValidation } from "../../../../../utils";
 import type {
   FormFieldValidation,
@@ -32,7 +33,7 @@ export const validations: FormFieldValidation[] = [
     formFieldId: formFieldNames.BLACKBOARD_BASE_URL,
     validator: (fields) => {
       const error = !urlValidation(fields[formFieldNames.BLACKBOARD_BASE_URL]);
-      return error && "Please enter a valid URL";
+      return error && INVALID_LINK;
     },
   },
   {
@@ -41,7 +42,7 @@ export const validations: FormFieldValidation[] = [
       // TODO: Check for duplicate display names
       const displayName = fields[formFieldNames.DISPLAY_NAME];
       const error = displayName?.length > 20;
-      return error && "Display name should be 20 characters or less";
+      return error && INVALID_NAME;
     },
   },
 ];

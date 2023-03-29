@@ -313,13 +313,13 @@ describe("<CanvasConfig />", () => {
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testCanvasConfigSetup(invalidExistingData));
-    expect(screen.getByText("Please enter a valid URL")).toBeInTheDocument();
-    await waitFor(() => expect(expect(screen.getByText("Display name should be 20 characters or less")).toBeInTheDocument()));
+    expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
+    await waitFor(() => expect(expect(screen.getByText(INVALID_NAME)).toBeInTheDocument()));
   });
   test('validates properly formatted existing data on load', () => {
     render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    expect(screen.queryByText("Please enter a valid URL")).not.toBeInTheDocument();
-    expect(screen.queryByText("Display name should be 20 characters or less")).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
   test('it calls setExistingConfigFormData after authorization', async () => {
     render(testCanvasConfigSetup(existingConfigDataNoAuth));

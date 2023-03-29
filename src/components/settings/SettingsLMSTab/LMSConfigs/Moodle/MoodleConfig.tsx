@@ -1,13 +1,15 @@
 import handleErrors from "../../../utils";
 import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE   } from "../../../data/constants";
+import { INVALID_NAME, MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+// @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
-import DegreedConfigAuthorizePage, {
+
+import MoodleConfigAuthorizePage, {
   validations,
   formFieldNames
   // @ts-ignore
-} from "./DegreedConfigEnablePage.tsx";
+} from "./MoodleConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
@@ -22,12 +24,13 @@ import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
 
-export type DegreedConfigCamelCase = {
+export type MoodleConfigCamelCase = {
   displayName: string;
-  clientId: string;
-  clientSecret: string;
-  degreedBaseUrl: string;
-  degreedFetchUrl: string;
+  moodleBaseUrl: string;
+  webserviceShortName: string;
+  token: string;
+  username: string;
+  password: string;
   id: string;
   active: boolean;
   uuid: string;
@@ -35,59 +38,58 @@ export type DegreedConfigCamelCase = {
 
 // TODO: Can we generate this dynamically?
 // https://www.typescriptlang.org/docs/handbook/2/mapped-types.html
-export type DegreedConfigSnakeCase = {
+export type MoodleConfigSnakeCase = {
   display_name: string;
-  client_id: string;
-  client_secret: string;
-  degreed_base_url: string;
-  degreed_fetch_url: string;
+  moodle_base_url: string;
+  webservice_short_name: string;
+  token: string;
+  username: string;
+  password: string;
   id: string;
   active: boolean;
   uuid: string;
   enterprise_customer: string;
-  refresh_token: string;
 };
 
-// TODO: Make this a generic type usable by all lms configs
-export type DegreedFormConfigProps = {
+export type MoodleFormConfigProps = {
   enterpriseCustomerUuid: string;
-  existingData: DegreedConfigCamelCase;
+  existingData: MoodleConfigCamelCase;
   existingConfigNames: string[];
-  onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
+  onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
 };
 
-export const DegreedFormConfig = ({
+export const MoodleFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
   onClickCancel,
   existingData,
   existingConfigNames,
-}: DegreedFormConfigProps): FormWorkflowConfig<DegreedConfigCamelCase> => {
+}: MoodleFormConfigProps): FormWorkflowConfig<MoodleConfigCamelCase> => {
   const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
   const checkForDuplicateNames: FormFieldValidation = {
     formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: DegreedConfigCamelCase) => {
+    validator: (formFields: MoodleConfigCamelCase) => {
       return configNames?.includes(formFields.displayName)
-        ? "Display name already taken"
+        ? INVALID_NAME
         : false;
     },
   };
 
   const saveChanges = async (
-    formFields: DegreedConfigCamelCase,
+    formFields: MoodleConfigCamelCase,
     errHandler: (errMsg: string) => void
   ) => {
-    const transformedConfig: DegreedConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as DegreedConfigSnakeCase;
+    ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err = "";
 
     if (formFields.id) {
       try {
         transformedConfig.active = existingData.active;
-        await LmsApiService.updateDegreedConfig(
+        await LmsApiService.updateMoodleConfig(
           transformedConfig,
           existingData.id
         );
@@ -98,7 +100,7 @@ export const DegreedFormConfig = ({
     } else {
       try {
         transformedConfig.active = false;
-        await LmsApiService.postNewDegreedConfig(transformedConfig);
+        await LmsApiService.postNewMoodleConfig(transformedConfig);
         onSubmit(formFields);
       } catch (error) {
         err = handleErrors(error);
@@ -116,24 +118,24 @@ export const DegreedFormConfig = ({
     formFieldsChanged,
     errHandler,
     dispatch,
-  }: FormWorkflowHandlerArgs<DegreedConfigCamelCase>) => {
+  }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
     let currentFormFields = formFields;
-    const transformedConfig: DegreedConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as DegreedConfigSnakeCase;
+    ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err = "";
     if (formFieldsChanged) {
       if (currentFormFields?.id) {
         try {
           transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateDegreedConfig(
+          const response = await LmsApiService.updateMoodleConfig(
             transformedConfig,
             existingData.id
           );
           currentFormFields = camelCaseDict(
             response.data
-          ) as DegreedConfigCamelCase;
+          ) as MoodleConfigCamelCase;
           onSubmit(currentFormFields);
           dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
         } catch (error) {
@@ -142,12 +144,12 @@ export const DegreedFormConfig = ({
       } else {
         try {
           transformedConfig.active = false;
-          const response = await LmsApiService.postNewDegreedConfig(
+          const response = await LmsApiService.postNewMoodleConfig(
             transformedConfig
           );
           currentFormFields = camelCaseDict(
             response.data
-          ) as DegreedConfigCamelCase;
+          ) as MoodleConfigCamelCase;
           onSubmit(currentFormFields);
           dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
         } catch (error) {
@@ -161,12 +163,12 @@ export const DegreedFormConfig = ({
     return currentFormFields;
   };
 
-  const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);
+  const activatePage = () => ConfigActivatePage(MOODLE_TYPE);
 
-  const steps: FormWorkflowStep<DegreedConfigCamelCase>[] = [
+  const steps: FormWorkflowStep<MoodleConfigCamelCase>[] = [
     {
       index: 0,
-      formComponent: DegreedConfigAuthorizePage,
+      formComponent: MoodleConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames]),
       stepName: "Enable",
       saveChanges,
@@ -176,7 +178,7 @@ export const DegreedFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        return config as FormWorkflowButtonConfig<DegreedConfigCamelCase>;
+        return config as FormWorkflowButtonConfig<MoodleConfigCamelCase>;
       },
     },
     {
@@ -205,4 +207,4 @@ export const DegreedFormConfig = ({
   };
 };
 
-export default DegreedFormConfig;
+export default MoodleFormConfig;

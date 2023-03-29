@@ -15,8 +15,8 @@ import {
 import { BlackboardFormConfig } from './LMSConfigs/Blackboard/BlackboardConfig.tsx';
 import { CanvasFormConfig } from './LMSConfigs/Canvas/CanvasConfig.tsx';
 import { DegreedFormConfig } from './LMSConfigs/Degreed/DegreedConfig.tsx';
+import { MoodleFormConfig } from './LMSConfigs/Moodle/MoodleConfig.tsx';
 import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
-import MoodleConfig from './LMSConfigs/MoodleConfig';
 import SAPConfig from './LMSConfigs/SAPConfig';
 import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
 
@@ -24,6 +24,7 @@ const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
   [CANVAS_TYPE]: CanvasFormConfig,
   [DEGREED2_TYPE]: DegreedFormConfig,
+  [MOODLE_TYPE]: MoodleFormConfig,
 };
 
 const LMSConfigPage = ({
@@ -108,20 +109,19 @@ const LMSConfigPage = ({
         />
       )}
       {LMSType === MOODLE_TYPE && (
-        <>
-          <h3 className="mt-4.5 mb-3.5">
-            <Image className="lms-icon" src={channelMapping[LMSType]?.icon} />
-            <span className="ml-2">
-              Connect {channelMapping[LMSType]?.displayName}
-            </span>
-          </h3>
-          <MoodleConfig
-            enterpriseCustomerUuid={enterpriseCustomerUuid}
-            onClick={onClick}
-            existingData={existingConfigFormData}
-            existingConfigs={existingConfigs}
-          />
-        </>
+        <FormContextWrapper
+          formWorkflowConfig={flowConfigs[MOODLE_TYPE]({
+            enterpriseCustomerUuid,
+            onSubmit: setExistingConfigFormData,
+            onClickCancel: handleCloseWorkflow,
+            existingData: existingConfigFormData,
+            existingConfigNames: existingConfigs,
+          })}
+          onClickOut={handleCloseWorkflow}
+          onSubmit={setExistingConfigFormData}
+          formData={existingConfigFormData}
+          isStepperOpen={isLmsStepperOpen}
+        />
       )}
       {LMSType === SAP_TYPE && (
         <>

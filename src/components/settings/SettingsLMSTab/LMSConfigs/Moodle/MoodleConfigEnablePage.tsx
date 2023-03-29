@@ -1,50 +1,35 @@
 import React from "react";
 
-import { Form, Alert } from "@edx/paragon";
+import { Form } from "@edx/paragon";
 
-import { INVALID_LINK, INVALID_NAME } from "../../../data/constants";
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
 import { urlValidation } from "../../../../../utils";
+import { INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME, } from "../../../data/constants";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
-import {
-  useFormContext,
-  // @ts-ignore
-} from "../../../../forms/FormContext.tsx";
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",
-  CLIENT_ID: "clientId",
-  CLIENT_SECRET: "clientSecret",
-  DEGREED_BASE_URL: "degreedBaseUrl",
-  DEGREED_FETCH_URL: "degreedFetchUrl",
+  MOODLE_BASE_URL: "moodleBaseUrl",
+  WEBSERVICE_SHORT_NAME: "webserviceShortName",
+  TOKEN: "token",
+  USERNAME: "username",
+  PASSWORD: "password",
+
 };
 
 export const validations: FormFieldValidation[] = [
   {
-    formFieldId: formFieldNames.DEGREED_BASE_URL,
+    formFieldId: formFieldNames.MOODLE_BASE_URL,
     validator: (fields) => {
-      const degreedUrl = fields[formFieldNames.DEGREED_BASE_URL];
-      if (degreedUrl) {
-        const error = !urlValidation(degreedUrl);
+      const moodleUrl = fields[formFieldNames.MOODLE_BASE_URL];
+      if (moodleUrl) {
+        const error = !urlValidation(moodleUrl);
         return error ? INVALID_LINK : false;
       } else {
         return true;
-      }
-    },
-  },
-  {
-    formFieldId: formFieldNames.DEGREED_FETCH_URL,
-    validator: (fields) => {
-      const degreedUrl = fields[formFieldNames.DEGREED_FETCH_URL];
-      if (degreedUrl) {
-        const error = !urlValidation(degreedUrl);
-        return error ? INVALID_LINK : false;
-      } else {
-        // fetch url is optional
-        return false;
       }
     },
   },
@@ -64,27 +49,41 @@ export const validations: FormFieldValidation[] = [
     },
   },
   {
-    formFieldId: formFieldNames.CLIENT_ID,
+    formFieldId: formFieldNames.WEBSERVICE_SHORT_NAME,
     validator: (fields) => {
-      const clientId = fields[formFieldNames.CLIENT_ID];
-      return !clientId;
+      const webserviceShortName = fields[formFieldNames.WEBSERVICE_SHORT_NAME];
+      return !webserviceShortName;
     },
   },
   {
-    formFieldId: formFieldNames.CLIENT_SECRET,
+    formFieldId: formFieldNames.PASSWORD,
     validator: (fields) => {
-      const clientSecret = fields[formFieldNames.CLIENT_SECRET];
-      return !clientSecret;
+      const token = fields[formFieldNames.TOKEN];
+      const username = fields[formFieldNames.USERNAME];
+      const password = fields[formFieldNames.PASSWORD];
+
+      if (!token) {
+        if (username && password) {
+          return false;
+        }
+      } else {
+        if (!username && !password) {
+          return false;
+        }
+      }
+      if (!token && !username && !password) {
+        return true;
+      }
+      return INVALID_MOODLE_VERIFICATION;
     },
   },
 ];
 
-// Settings page of Degreed LMS config workflow
-const DegreedConfigEnablePage = () => {
-  const { dispatch, stateMap } = useFormContext();
+// Settings page of Moodle LMS config workflow
+const MoodleConfigEnablePage = () => {
   return (
     <span>
-      <h2>Enable connection to Degreed</h2>
+      <h2>Enable connection to Moodle</h2>
       <Form style={{ maxWidth: "60rem" }}>
         <Form.Group className="my-2.5">
           <ValidatedFormControl
@@ -96,39 +95,47 @@ const DegreedConfigEnablePage = () => {
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
-            formId={formFieldNames.CLIENT_ID}
+            formId={formFieldNames.MOODLE_BASE_URL}
             className="mb-4"
             type="text"
             maxLength={255}
-            floatingLabel="API Client ID"
+            floatingLabel="Moodle Base URL"
           />
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
-            formId={formFieldNames.CLIENT_SECRET}
+            formId={formFieldNames.WEBSERVICE_SHORT_NAME}
+            className="my-4"
+            type="text"
+            maxLength={255}
+            floatingLabel="Webservice Short Name"
+          />
+        </Form.Group>
+        <Form.Group className="my-4">
+          <ValidatedFormControl
+            formId={formFieldNames.TOKEN}
+            className="my-4"
+            type="text"
+            maxLength={255}
+            floatingLabel="Token"
+          />
+        </Form.Group>
+        <Form.Group className="my-4">
+          <ValidatedFormControl
+            formId={formFieldNames.USERNAME}
+            className="my-4"
+            type="text"
+            maxLength={255}
+            floatingLabel="Username"
+          />
+        </Form.Group>
+        <Form.Group className="my-4">
+          <ValidatedFormControl
+            formId={formFieldNames.PASSWORD}
             className="my-4"
             type="password"
             maxLength={255}
-            floatingLabel="API Client Secret"
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <ValidatedFormControl
-            formId={formFieldNames.DEGREED_BASE_URL}
-            className="my-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Degreed Base URL"
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <ValidatedFormControl
-            formId={formFieldNames.DEGREED_FETCH_URL}
-            className="my-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Degreed Token Fetch Base URL"
-            fieldInstructions="Optional: If provided, will be used as the url to fetch tokens."
+            floatingLabel="Password"
           />
         </Form.Group>
       </Form>
@@ -136,4 +143,4 @@ const DegreedConfigEnablePage = () => {
   );
 };
 
-export default DegreedConfigEnablePage;
+export default MoodleConfigEnablePage;

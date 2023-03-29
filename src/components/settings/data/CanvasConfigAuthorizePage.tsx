@@ -3,7 +3,7 @@ import React from "react";
 import { Form, Alert } from "@edx/paragon";
 import { Info } from "@edx/paragon/icons";
 
-import { INVALID_LINK, INVALID_NAME } from "../../../data/constants";
+import { INVALID_LINK, INVALID_NAME } from "./constants";
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
 import { isValidNumber, urlValidation } from "../../../../../utils";
