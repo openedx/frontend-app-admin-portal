@@ -1,200 +1,237 @@
 import React from 'react';
 import {
-  render, fireEvent, screen,
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
 } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import MoodleConfig from '../LMSConfigs/MoodleConfig';
-import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
-import LmsApiService from '../../../../data/services/LmsApiService';
+import '@testing-library/jest-dom/extend-expect';
 
-jest.mock('../../../../data/services/LmsApiService');
+// @ts-ignore
+import MoodleConfig from '../LMSConfigs/Moodle/MoodleConfig.tsx';
+import {
+  INVALID_LINK,
+  INVALID_MOODLE_VERIFICATION,
+  INVALID_NAME,
+} from '../../data/constants';
+import LmsApiService from '../../../../data/services/LmsApiService';
+// @ts-ignore
+import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
+
+jest.mock('../../data/constants', () => ({
+  ...jest.requireActual('../../data/constants'),
+  LMS_CONFIG_OAUTH_POLLING_INTERVAL: 0,
+}));
+window.open = jest.fn();
+const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateMoodleConfig');
+const mockConfigResponseData = {
+  uuid: 'foobar',
+  id: 1,
+  display_name: 'display name',
+  moodle_base_url: 'https://foobar.com',
+  active: false,
+};
+mockUpdateConfigApi.mockResolvedValue({ data: mockConfigResponseData });
+
+const mockPostConfigApi = jest.spyOn(LmsApiService, 'postNewMoodleConfig');
+mockPostConfigApi.mockResolvedValue({ data: mockConfigResponseData });
+
+const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleMoodleConfig');
+mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
-const noConfigs = [];
-const existingConfigDisplayNames = ['name'];
-const existingConfigDisplayNamesInvalid = ['foobar'];
+// Freshly creating a config will have an empty existing data object
 const noExistingData = {};
+
 const existingConfigData = {
   id: 1,
-  moodleBaseUrl: 'https://foobarish.com',
-  displayName: 'foobar',
+  displayName: 'hola',
+  moodleBaseUrl: 'https://example.com',
+  webserviceShortName: 'shortname',
+  token: 'token',
 };
+
 // Existing invalid data that will be validated on load
 const invalidExistingData = {
-  displayName: 'fooooooooobaaaaaaaaar',
-  moodleBaseUrl: 'bad_url :^(',
+  displayName: 'just a whole muddle of moodles',
+  moodleBaseUrl: "you dumb dumb this isn't a url",
+  webserviceShortName: 'shortname',
+  token: 'token',
+  username: 'blah1',
+  password: 'blahblah',
 };
+
+const noConfigs = [];
 
 afterEach(() => {
   jest.clearAllMocks();
 });
 
+const mockSetExistingConfigFormData = jest.fn();
+
+function testMoodleConfigSetup(formData) {
+  return (
+    <FormContextWrapper
+      formWorkflowConfig={MoodleConfig({
+        enterpriseCustomerUuid: enterpriseId,
+        onSubmit: mockSetExistingConfigFormData,
+        onClickCancel: mockOnClick,
+        existingData: formData,
+      })}
+      onClickOut={mockOnClick}
+      onSubmit={mockSetExistingConfigFormData}
+      formData={formData}
+      isStepperOpen
+    />
+  );
+}
+
+async function clearForm() {
+  await act(async () => {
+    fireEvent.change(screen.getByLabelText('Display Name'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByLabelText('Token'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByLabelText('Username'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: '' },
+    });
+  });
+}
+
 describe('<MoodleConfig />', () => {
-  test('renders Moodle Config Form', () => {
-    render(
-      <MoodleConfig
-        enterpriseCustomerUuid={enterpriseId}
-        onClick={mockOnClick}
-        existingData={noExistingData}
-        existingConfigs={noConfigs}
-      />,
-    );
+  test('renders Moodle Enable Form', () => {
+    render(testMoodleConfigSetup(noConfigs));
     screen.getByLabelText('Display Name');
     screen.getByLabelText('Moodle Base URL');
     screen.getByLabelText('Webservice Short Name');
+    screen.getByLabelText('Token');
+    screen.getByLabelText('Username');
+    screen.getByLabelText('Password');
   });
-  test('test button disable', () => {
-    render(
-      <MoodleConfig
-        enterpriseCustomerUuid={enterpriseId}
-        onClick={mockOnClick}
-        existingData={noExistingData}
-        existingConfigs={noConfigs}
-      />,
-    );
-    expect(screen.getByText('Submit')).toBeDisabled();
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: 'reallyreallyreallyreallyreallylongname' },
-    });
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'test1' },
-    });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
-      target: { value: 'test2' },
-    });
-    expect(screen.queryByText(INVALID_NAME));
+  test('test button disable', async () => {
+    render(testMoodleConfigSetup(noExistingData));
+
+    const enableButton = screen.getByRole('button', { name: 'Enable' });
+    await clearForm();
+    expect(enableButton).toBeDisabled();
+
+    userEvent.type(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
+    userEvent.type(screen.getByLabelText('Moodle Base URL'), 'badlink');
+    userEvent.type(screen.getByLabelText('Webservice Short Name'), 'name');
+    userEvent.type(screen.getByLabelText('Token'), 'ofmyaffection');
+    userEvent.type(screen.getByLabelText('Username'), 'user');
+
+    expect(enableButton).toBeDisabled();
     expect(screen.queryByText(INVALID_LINK));
-    expect(screen.getByText('Submit')).toBeDisabled();
-
-    // duplicate display name not able to be submitted
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: 'name' },
-    });
     expect(screen.queryByText(INVALID_NAME));
+    expect(screen.queryByText(INVALID_MOODLE_VERIFICATION));
 
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'https://test1.com' },
-    });
     fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: 'test2' },
+      target: { value: '' },
     });
-    fireEvent.change(screen.getByLabelText('Token'), {
-      target: { value: 'token111' },
+    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
+      target: { value: '' },
     });
-    expect(screen.getByText('Submit')).not.toBeDisabled();
-  });
-  test('it edits existing configs on submit', () => {
-    render(
-      <MoodleConfig
-        enterpriseCustomerUuid={enterpriseId}
-        onClick={mockOnClick}
-        existingData={existingConfigData}
-        existingConfigs={existingConfigDisplayNames}
-      />,
+    fireEvent.change(screen.getByLabelText('Username'), {
+      target: { value: '' },
+    });
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.type(
+      screen.getByLabelText('Moodle Base URL'),
+      'https://www.test.com',
     );
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'https://www.test1.com' },
-    });
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: 'displayName' },
-    });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
-      target: { value: 'test2' },
-    });
-    fireEvent.change(screen.getByLabelText('Token'), {
-      target: { value: 'token111' },
-    });
-    expect(screen.getByText('Submit')).not.toBeDisabled();
-    userEvent.click(screen.getByText('Submit'));
 
-    const expectedConfig = {
-      moodle_base_url: 'https://www.test1.com',
-      service_short_name: 'test2',
-      display_name: 'displayName',
-      enterprise_customer: enterpriseId,
-      token: 'token111',
-    };
-    expect(LmsApiService.updateMoodleConfig).toHaveBeenCalledWith(expectedConfig, 1);
-  });
-  test('it creates new configs on submit', () => {
-    render(
-      <MoodleConfig
-        enterpriseCustomerUuid={enterpriseId}
-        onClick={mockOnClick}
-        existingData={noExistingData}
-        existingConfigs={noConfigs}
-      />,
-    );
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: 'https://www.test1.com' },
-    });
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: 'displayName' },
-    });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
-      target: { value: 'test2' },
-    });
-    fireEvent.change(screen.getByLabelText('Token'), {
-      target: { value: 'token111' },
-    });
-    expect(screen.getByText('Submit')).not.toBeDisabled();
-    userEvent.click(screen.getByText('Submit'));
-
-    const expectedConfig = {
-      active: false,
-      moodle_base_url: 'https://www.test1.com',
-      service_short_name: 'test2',
-      display_name: 'displayName',
-      token: 'token111',
-      enterprise_customer: enterpriseId,
-    };
-    expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig);
-  });
-  test('saves draft correctly', () => {
-    render(
-      <MoodleConfig
-        enterpriseCustomerUuid={enterpriseId}
-        onClick={mockOnClick}
-        existingData={noExistingData}
-        existingConfigs={noConfigs}
-      />,
-    );
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: 'displayName' },
-    });
-    userEvent.click(screen.getByText('Cancel'));
-    userEvent.click(screen.getByText('Save'));
-    const expectedConfig = {
-      active: false,
-      display_name: 'displayName',
-      enterprise_customer: enterpriseId,
-    };
-    expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig);
-  });
-  test('validates poorly formatted existing data on load', () => {
-    render(
-      <MoodleConfig
-        enterpriseCustomerUuid={enterpriseId}
-        onClick={mockOnClick}
-        existingData={invalidExistingData}
-        existingConfigs={existingConfigDisplayNamesInvalid}
-      />,
-    );
-    expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
-    expect(screen.getByText(INVALID_NAME)).toBeInTheDocument();
-  });
-  test('validates properly formatted existing data on load', () => {
-    render(
-      <MoodleConfig
-        enterpriseCustomerUuid={enterpriseId}
-        onClick={mockOnClick}
-        existingData={existingConfigData}
-        existingConfigs={existingConfigDisplayNames}
-      />,
-    );
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_MOODLE_VERIFICATION)).not.toBeInTheDocument();
+    expect(enableButton).not.toBeDisabled();
+  });
+  test('it creates new configs on submit', async () => {
+    render(testMoodleConfigSetup(noExistingData));
+    const enableButton = screen.getByRole('button', { name: 'Enable' });
+
+    await clearForm();
+
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.type(screen.getByLabelText('Moodle Base URL'), 'https://www.test.com');
+    userEvent.type(screen.getByLabelText('Webservice Short Name'), 'name');
+    userEvent.type(screen.getByLabelText('Username'), 'user');
+    userEvent.type(screen.getByLabelText('Password'), 'password123');
+
+    await waitFor(() => expect(enableButton).not.toBeDisabled());
+
+    userEvent.click(enableButton);
+
+    const expectedConfig = {
+      active: false,
+      display_name: 'displayName',
+      moodle_base_url: 'https://www.test.com',
+      webservice_short_name: 'name',
+      token: '',
+      username: 'user',
+      password: 'password123',
+      enterprise_customer: enterpriseId,
+    };
+    await waitFor(() => expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig));
+  });
+  test('saves draft correctly', async () => {
+    render(testMoodleConfigSetup(noExistingData));
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+
+    await clearForm();
+
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.type(screen.getByLabelText('Moodle Base URL'), 'https://www.test.com');
+    userEvent.type(screen.getByLabelText('Webservice Short Name'), 'name');
+    userEvent.type(screen.getByLabelText('Username'), 'user');
+    userEvent.type(screen.getByLabelText('Password'), 'password123');
+
+    expect(cancelButton).not.toBeDisabled();
+    userEvent.click(cancelButton);
+
+    await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
+    const closeButton = screen.getByRole('button', { name: 'Exit' });
+
+    userEvent.click(closeButton);
+
+    const expectedConfig = {
+      active: false,
+      display_name: 'displayName',
+      moodle_base_url: 'https://www.test.com',
+      webservice_short_name: 'name',
+      token: '',
+      username: 'user',
+      password: 'password123',
+      enterprise_customer: enterpriseId,
+    };
+
+    expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig);
+  });
+  test('validates poorly formatted existing data on load', async () => {
+    render(testMoodleConfigSetup(invalidExistingData));
+    screen.debug();
+    expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
+    expect(screen.queryByText(INVALID_MOODLE_VERIFICATION)).toBeInTheDocument();
+  });
+  test('validates properly formatted existing data on load', () => {
+    render(testMoodleConfigSetup(existingConfigData));
+    expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_MOODLE_VERIFICATION)).not.toBeInTheDocument();
   });
 });

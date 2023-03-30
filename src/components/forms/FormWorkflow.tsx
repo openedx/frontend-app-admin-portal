@@ -50,7 +50,7 @@ export type FormWorkflowButtonConfig<FormData> = {
   awaitSuccess?: FormWorkflowAwaitHandler<FormData>;
 };
 
-type DynamicComponent = React.FunctionComponent | React.ComponentClass;
+type DynamicComponent = React.FunctionComponent | React.ComponentClass | React.ElementType;
 
 export type FormWorkflowStep<FormData> = {
   index: number;

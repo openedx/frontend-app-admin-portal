@@ -3,12 +3,12 @@ import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
 import {
   CANVAS_OAUTH_REDIRECT_URL,
+  CANVAS_TYPE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
   SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
-import CanvasConfigActivatePage from "./CanvasConfigActivatePage.tsx";
 import CanvasConfigAuthorizePage, {
   validations,
   formFieldNames
@@ -31,6 +31,8 @@ import {
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
+// @ts-ignore
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 
 export type CanvasConfigCamelCase = {
   canvasAccountId: string;
@@ -44,8 +46,6 @@ export type CanvasConfigCamelCase = {
   refreshToken: string;
 };
 
-// TODO: Can we generate this dynamically?
-// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html
 export type CanvasConfigSnakeCase = {
   canvas_account_id: string;
   canvas_base_url: string;
@@ -59,7 +59,6 @@ export type CanvasConfigSnakeCase = {
   refresh_token: string;
 };
 
-// TODO: Make this a generic type usable by all lms configs
 export type CanvasFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: CanvasConfigCamelCase;
@@ -219,6 +218,8 @@ export const CanvasFormConfig = ({
     dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
   };
 
+  const activatePage = () => ConfigActivatePage(CANVAS_TYPE);
+
   const steps: FormWorkflowStep<CanvasConfigCamelCase>[] = [
     {
       index: 0,
@@ -251,7 +252,7 @@ export const CanvasFormConfig = ({
     },
     {
       index: 1,
-      formComponent: CanvasConfigActivatePage,
+      formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,

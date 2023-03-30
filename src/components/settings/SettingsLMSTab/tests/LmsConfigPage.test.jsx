@@ -190,7 +190,7 @@ describe('<SettingsLMSTab />', () => {
     userEvent.click(exitButton);
     expect(screen.queryByText('Enable connection to Degreed')).toBeFalsy();
   });
-  test('Moodle card cancel flow', async () => {
+  test('Degreed card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapperWithSSO />);
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
@@ -199,17 +199,17 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[MOODLE_TYPE].displayName));
     });
     const moodleCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
-    userEvent.click(moodleCard);
-    expect(screen.queryByText('Connect Moodle')).toBeTruthy();
+    fireEvent.click(moodleCard);
+    expect(screen.queryByText('Enable connection to Moodle')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: 'displayName' },
     });
     const cancelButton = screen.getByText('Cancel');
     userEvent.click(cancelButton);
-    expect(await screen.findByText('Do you want to save your work?')).toBeTruthy();
+    expect(await screen.findByText('Exit configuration')).toBeTruthy();
     const exitButton = screen.getByText('Exit without saving');
     userEvent.click(exitButton);
-    expect(screen.queryByText('Connect Moodle')).toBeFalsy();
+    expect(screen.queryByText('Enable connection to Moodle')).toBeFalsy();
   });
   test('SAP card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapperWithSSO />);
@@ -241,13 +241,12 @@ describe('<SettingsLMSTab />', () => {
       expect(screen.findByText(channelMapping[MOODLE_TYPE].displayName));
     });
     const moodleCard = screen.getByText(channelMapping[MOODLE_TYPE].displayName);
-
-    await waitFor(() => userEvent.click(moodleCard));
-    await waitFor(() => expect(screen.queryByText('Connect Moodle')).toBeTruthy());
+    await waitFor(() => fireEvent.click(moodleCard));
+    expect(screen.queryByText('Enable connection to Moodle')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     await waitFor(() => userEvent.click(cancelButton));
-    await waitFor(() => expect(screen.queryByText('Exit without saving')).toBeFalsy());
-    await waitFor(() => expect(screen.queryByText('Connect Moodle')).toBeFalsy());
+    expect(screen.queryByText('Exit without saving')).toBeFalsy();
+    expect(screen.queryByText('Enable connection to Moodle')).toBeFalsy();
   });
   test('No action Degreed card cancel flow', async () => {
     renderWithRouter(<SettingsLMSWrapperWithSSO />);
