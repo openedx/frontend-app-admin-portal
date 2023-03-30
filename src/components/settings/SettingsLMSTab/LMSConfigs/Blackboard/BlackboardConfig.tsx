@@ -9,7 +9,7 @@ import {
   SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 import BlackboardConfigAuthorizePage, {
   validations,
   formFieldNames

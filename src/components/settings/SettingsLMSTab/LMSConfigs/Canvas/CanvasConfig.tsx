@@ -31,7 +31,8 @@ import {
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+// @ts-ignore
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 
 export type CanvasConfigCamelCase = {
   canvasAccountId: string;

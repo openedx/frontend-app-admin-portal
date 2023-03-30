@@ -1,8 +1,9 @@
 import handleErrors from "../../../utils";
 import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE   } from "../../../data/constants";
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+// @ts-ignore
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 import DegreedConfigAuthorizePage, {
   validations,
   formFieldNames

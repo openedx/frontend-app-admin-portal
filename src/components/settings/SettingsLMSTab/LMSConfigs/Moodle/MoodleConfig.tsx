@@ -3,7 +3,7 @@ import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
 import { INVALID_NAME, MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 
 import MoodleConfigAuthorizePage, {
   validations,
