@@ -1,30 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image } from '@edx/paragon';
 import { connect } from 'react-redux';
-import { channelMapping } from '../../../utils';
 
 import {
-  BLACKBOARD_TYPE,
-  CANVAS_TYPE,
-  CORNERSTONE_TYPE,
-  DEGREED2_TYPE,
-  MOODLE_TYPE,
-  SAP_TYPE,
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
 } from '../data/constants';
 import { BlackboardFormConfig } from './LMSConfigs/Blackboard/BlackboardConfig.tsx';
 import { CanvasFormConfig } from './LMSConfigs/Canvas/CanvasConfig.tsx';
+import { CornerstoneFormConfig } from './LMSConfigs/Cornerstone/CornerstoneConfig.tsx';
 import { DegreedFormConfig } from './LMSConfigs/Degreed/DegreedConfig.tsx';
 import { MoodleFormConfig } from './LMSConfigs/Moodle/MoodleConfig.tsx';
-import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
-import SAPConfig from './LMSConfigs/SAPConfig';
+import { SAPFormConfig } from './LMSConfigs/SAP/SAPConfig.tsx';
 import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
 
 const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
   [CANVAS_TYPE]: CanvasFormConfig,
+  [CORNERSTONE_TYPE]: CornerstoneFormConfig,
   [DEGREED2_TYPE]: DegreedFormConfig,
   [MOODLE_TYPE]: MoodleFormConfig,
+  [SAP_TYPE]: SAPFormConfig,
 };
 
 const LMSConfigPage = ({
@@ -37,109 +32,25 @@ const LMSConfigPage = ({
   isLmsStepperOpen,
   closeLmsStepper,
 }) => {
-  const [edited, setEdited] = React.useState(false);
   const handleCloseWorkflow = (submitted, msg) => {
     onClick(submitted ? msg : '');
     closeLmsStepper();
     return true;
   };
   return (
-    <span>
-      {LMSType === BLACKBOARD_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[BLACKBOARD_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === CANVAS_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[CANVAS_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === CORNERSTONE_TYPE && (
-        <>
-          <h3 className="mt-4.5 mb-3.5">
-            <Image className="lms-icon" src={channelMapping[LMSType]?.icon} />
-            <span className="ml-2">
-              Connect {channelMapping[LMSType]?.displayName}
-            </span>
-          </h3>
-          <CornerstoneConfig
-            enterpriseCustomerUuid={enterpriseCustomerUuid}
-            onClick={onClick}
-            existingData={existingConfigFormData}
-            existingConfigs={existingConfigs}
-            edited={edited}
-            setEdited={setEdited}
-          />
-        </>
-      )}
-      {LMSType === DEGREED2_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[DEGREED2_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === MOODLE_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[MOODLE_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === SAP_TYPE && (
-        <>
-          <h3 className="mt-4.5 mb-3.5">
-            <Image className="lms-icon" src={channelMapping[LMSType]?.icon} />
-            <span className="ml-2">
-              Connect {channelMapping[LMSType]?.displayName}
-            </span>
-          </h3>
-          <SAPConfig
-            enterpriseCustomerUuid={enterpriseCustomerUuid}
-            onClick={onClick}
-            existingData={existingConfigFormData}
-            existingConfigs={existingConfigs}
-          />
-        </>
-      )}
-    </span>
+    <FormContextWrapper
+      formWorkflowConfig={flowConfigs[LMSType]({
+        enterpriseCustomerUuid,
+        onSubmit: setExistingConfigFormData,
+        onClickCancel: handleCloseWorkflow,
+        existingData: existingConfigFormData,
+        existingConfigNames: existingConfigs,
+      })}
+      onClickOut={handleCloseWorkflow}
+      onSubmit={setExistingConfigFormData}
+      formData={existingConfigFormData}
+      isStepperOpen={isLmsStepperOpen}
+    />
   );
 };
 const mapStateToProps = (state) => ({

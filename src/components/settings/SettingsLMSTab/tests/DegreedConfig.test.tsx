@@ -19,11 +19,6 @@ import LmsApiService from "../../../../data/services/LmsApiService";
 // @ts-ignore
 import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
 
-jest.mock("../../data/constants", () => ({
-  ...jest.requireActual("../../data/constants"),
-  LMS_CONFIG_OAUTH_POLLING_INTERVAL: 0,
-}));
-window.open = jest.fn();
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, "updateDegreedConfig");
 const mockConfigResponseData = {
   uuid: 'foobar',
@@ -207,7 +202,6 @@ describe("<DegreedConfig />", () => {
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testDegreedConfigSetup(invalidExistingData));
-    screen.debug();
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
   });

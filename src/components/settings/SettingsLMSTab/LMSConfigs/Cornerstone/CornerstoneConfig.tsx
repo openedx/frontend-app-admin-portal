@@ -1,15 +1,14 @@
 import handleErrors from "../../../utils";
 import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { INVALID_NAME, MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { CORNERSTONE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-
-import MoodleConfigEnablePage, {
+import CornerstoneConfigEnablePage, {
   validations,
   formFieldNames
   // @ts-ignore
-} from "./MoodleConfigEnablePage.tsx";
+} from "./CornerstoneConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
@@ -24,70 +23,62 @@ import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
 
-export type MoodleConfigCamelCase = {
+export type CornerstoneConfigCamelCase = {
   displayName: string;
-  moodleBaseUrl: string;
-  webserviceShortName: string;
-  token: string;
-  username: string;
-  password: string;
+  cornerstoneBaseUrl: string;
   id: string;
   active: boolean;
   uuid: string;
 };
 
-export type MoodleConfigSnakeCase = {
+export type CornerstoneConfigSnakeCase = {
   display_name: string;
-  moodle_base_url: string;
-  webservice_short_name: string;
-  token: string;
-  username: string;
-  password: string;
+  cornerstone_base_url: string;
   id: string;
   active: boolean;
   uuid: string;
   enterprise_customer: string;
 };
 
-export type MoodleFormConfigProps = {
+export type CornerstoneFormConfigProps = {
   enterpriseCustomerUuid: string;
-  existingData: MoodleConfigCamelCase;
+  existingData: CornerstoneConfigCamelCase;
   existingConfigNames: string[];
-  onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
+  onSubmit: (cornerstoneConfig: CornerstoneConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
 };
 
-export const MoodleFormConfig = ({
+export const CornerstoneFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
   onClickCancel,
   existingData,
   existingConfigNames,
-}: MoodleFormConfigProps): FormWorkflowConfig<MoodleConfigCamelCase> => {
+}: CornerstoneFormConfigProps): FormWorkflowConfig<CornerstoneConfigCamelCase> => {
   const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
   const checkForDuplicateNames: FormFieldValidation = {
     formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: MoodleConfigCamelCase) => {
+    validator: (formFields: CornerstoneConfigCamelCase) => {
       return configNames?.includes(formFields.displayName)
-        ? INVALID_NAME
+        ? "Display name already taken"
         : false;
     },
   };
 
   const saveChanges = async (
-    formFields: MoodleConfigCamelCase,
+    formFields: CornerstoneConfigCamelCase,
     errHandler: (errMsg: string) => void
   ) => {
-    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as MoodleConfigSnakeCase;
+    ) as CornerstoneConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err = "";
 
     if (formFields.id) {
       try {
         transformedConfig.active = existingData.active;
-        await LmsApiService.updateMoodleConfig(
+        await LmsApiService.updateCornerstoneConfig(
           transformedConfig,
           existingData.id
         );
@@ -98,7 +89,7 @@ export const MoodleFormConfig = ({
     } else {
       try {
         transformedConfig.active = false;
-        await LmsApiService.postNewMoodleConfig(transformedConfig);
+        await LmsApiService.postNewCornerstoneConfig(transformedConfig);
         onSubmit(formFields);
       } catch (error) {
         err = handleErrors(error);
@@ -116,24 +107,24 @@ export const MoodleFormConfig = ({
     formFieldsChanged,
     errHandler,
     dispatch,
-  }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
+  }: FormWorkflowHandlerArgs<CornerstoneConfigCamelCase>) => {
     let currentFormFields = formFields;
-    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as MoodleConfigSnakeCase;
+    ) as CornerstoneConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err = "";
     if (formFieldsChanged) {
       if (currentFormFields?.id) {
         try {
           transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateMoodleConfig(
+          const response = await LmsApiService.updateCornerstoneConfig(
             transformedConfig,
             existingData.id
           );
           currentFormFields = camelCaseDict(
             response.data
-          ) as MoodleConfigCamelCase;
+          ) as CornerstoneConfigCamelCase;
           onSubmit(currentFormFields);
           dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
         } catch (error) {
@@ -142,12 +133,12 @@ export const MoodleFormConfig = ({
       } else {
         try {
           transformedConfig.active = false;
-          const response = await LmsApiService.postNewMoodleConfig(
+          const response = await LmsApiService.postNewCornerstoneConfig(
             transformedConfig
           );
           currentFormFields = camelCaseDict(
             response.data
-          ) as MoodleConfigCamelCase;
+          ) as CornerstoneConfigCamelCase;
           onSubmit(currentFormFields);
           dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
         } catch (error) {
@@ -161,12 +152,12 @@ export const MoodleFormConfig = ({
     return currentFormFields;
   };
 
-  const activatePage = () => ConfigActivatePage(MOODLE_TYPE);
+  const activatePage = () => ConfigActivatePage(CORNERSTONE_TYPE);
 
-  const steps: FormWorkflowStep<MoodleConfigCamelCase>[] = [
+  const steps: FormWorkflowStep<CornerstoneConfigCamelCase>[] = [
     {
       index: 0,
-      formComponent: MoodleConfigEnablePage,
+      formComponent: CornerstoneConfigEnablePage, 
       validations: validations.concat([checkForDuplicateNames]),
       stepName: "Enable",
       saveChanges,
@@ -176,7 +167,7 @@ export const MoodleFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        return config as FormWorkflowButtonConfig<MoodleConfigCamelCase>;
+        return config as FormWorkflowButtonConfig<CornerstoneConfigCamelCase>;
       },
     },
     {
@@ -205,4 +196,4 @@ export const MoodleFormConfig = ({
   };
 };
 
-export default MoodleFormConfig;
+export default CornerstoneFormConfig;
