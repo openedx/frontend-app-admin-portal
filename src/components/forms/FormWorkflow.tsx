@@ -1,6 +1,6 @@
 import React from "react";
 import type { Dispatch } from "react";
-import { Button, Stepper, useToggle } from "@edx/paragon";
+import { ActionRow, Button, FullscreenModal, Stepper, useToggle } from "@edx/paragon";
 import { Launch } from "@edx/paragon/icons";
 
 // @ts-ignore
@@ -50,7 +50,7 @@ export type FormWorkflowButtonConfig<FormData> = {
   awaitSuccess?: FormWorkflowAwaitHandler<FormData>;
 };
 
-type DynamicComponent = React.FunctionComponent | React.ComponentClass;
+type DynamicComponent = React.FunctionComponent | React.ComponentClass | React.ElementType;
 
 export type FormWorkflowStep<FormData> = {
   index: number;
@@ -75,12 +75,14 @@ export type FormWorkflowProps<FormData> = {
   formData: FormData;
   dispatch: Dispatch<FormActionArguments>;
   onSubmit: (FormData) => void;
+  isStepperOpen: boolean;
 };
 
 // Modal container for multi-step forms
 function FormWorkflow<FormData>({
   formWorkflowConfig,
   onClickOut,
+  isStepperOpen,
   dispatch,
 }: FormWorkflowProps<FormData>) {
   const {
@@ -161,37 +163,6 @@ function FormWorkflow<FormData>({
     );
   };
 
-  const stepActionRow = (step: FormWorkflowStep<FormData>) => {
-    return (
-      <Stepper.ActionRow eventKey={step.index.toString()}>
-        <span className="d-flex">
-          {/* TODO: Help Link */}
-          {/* TODO: Fix typescript issue with Paragon Button */}
-          {
-            // @ts-ignore
-            <Button
-              onClick={onCancel}
-              className="ml-auto mr-2"
-              variant="outline-primary"
-            >
-              Cancel
-            </Button>
-          }
-          {nextButtonConfig && (
-            // @ts-ignore
-            <Button
-              onClick={onNext}
-              disabled={hasErrors || awaitingAsyncAction}
-            >
-              {nextButtonConfig.buttonText}
-              {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
-            </Button>
-          )}
-        </span>
-      </Stepper.ActionRow>
-    );
-  };
-
   return (
     <>
       <ConfigErrorModal
@@ -210,13 +181,30 @@ function FormWorkflow<FormData>({
       />
 
       {formWorkflowConfig.steps && (
-        <Stepper activeKey={step?.index.toString()}>
-          <Stepper.Header />
-          {formWorkflowConfig.steps.map((stepConfig) => stepBody(stepConfig))}
-          {formWorkflowConfig.steps.map((stepConfig) =>
-            stepActionRow(stepConfig)
+        <FullscreenModal
+          title="New platform learning integration"
+          isOpen={isStepperOpen}
+          onClose={onCancel}
+          className='stepper-modal'
+          footerNode={(
+            <ActionRow>
+              <Button variant="tertiary">Help Center: Integrations</Button>
+              <ActionRow.Spacer />
+              <Button variant="tertiary" onClick={onCancel}>Cancel</Button>
+              {nextButtonConfig && (
+                <Button onClick={onNext} disabled={hasErrors || awaitingAsyncAction}>
+                  {nextButtonConfig.buttonText}
+                  {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
+                </Button> 
+              )}
+            </ActionRow>
           )}
-        </Stepper>
+          >
+          <Stepper activeKey={step?.index.toString()}>
+            <Stepper.Header />
+            {formWorkflowConfig.steps.map((stepConfig) => stepBody(stepConfig))}
+          </Stepper>
+        </FullscreenModal>
       )}
     </>
   );

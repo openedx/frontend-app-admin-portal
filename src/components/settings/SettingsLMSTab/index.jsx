@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
-  Alert, Button, Hyperlink, CardGrid, Toast, Skeleton,
+  Alert, Button, Hyperlink, CardGrid, Toast, Skeleton, useToggle,
 } from '@edx/paragon';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
@@ -48,11 +48,13 @@ const SettingsLMSTab = ({
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
   const [displayNeedsSSOAlert, setDisplayNeedsSSOAlert] = useState(false);
+  const [isLmsStepperOpen, openLmsStepper, closeLmsStepper] = useToggle(false);
   const toastMessages = [ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE];
 
   // onClick function for existing config cards' edit action
   const editExistingConfig = (configData, configType) => {
     setConfigsLoading(false);
+    openLmsStepper();
     // Set the form data to the card's associated config data
     setExistingConfigFormData(configData);
     // Set the config type to the card's type
@@ -105,12 +107,14 @@ const SettingsLMSTab = ({
       setShowToast(true);
       setConfig('');
       setToastMessage(input);
+      closeLmsStepper(true);
     } else {
       // Otherwise the user has clicked a create card and we need to set existing config bool to
       // false and set the config type to the card that was clicked type
       setShowNewConfigButtons(false);
       setConfigsExist(false);
       setConfig(input);
+      openLmsStepper();
     }
   };
 
@@ -219,7 +223,7 @@ const SettingsLMSTab = ({
           </CardGrid>
         </span>
       )}
-      {config && (
+      {isLmsStepperOpen && (
         <span>
           <LMSConfigPage
             LMSType={config}
@@ -227,6 +231,8 @@ const SettingsLMSTab = ({
             existingConfigFormData={existingConfigFormData}
             existingConfigs={displayNames}
             setExistingConfigFormData={setExistingConfigFormData}
+            isLmsStepperOpen={isLmsStepperOpen}
+            closeLmsStepper={closeLmsStepper}
           />
         </span>
       )}

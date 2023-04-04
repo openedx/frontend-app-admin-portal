@@ -3,12 +3,13 @@ import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
 import {
   BLACKBOARD_OAUTH_REDIRECT_URL,
+  BLACKBOARD_TYPE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
   SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
-import BlackboardConfigActivatePage from "./BlackboardConfigActivatePage.tsx";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 import BlackboardConfigAuthorizePage, {
   validations,
   formFieldNames
@@ -44,8 +45,6 @@ export type BlackboardConfigCamelCase = {
   refreshToken: string;
 };
 
-// TODO: Can we generate this dynamically?
-// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html
 export type BlackboardConfigSnakeCase = {
   blackboard_base_url: string;
   display_name: string;
@@ -56,7 +55,6 @@ export type BlackboardConfigSnakeCase = {
   refresh_token: string;
 };
 
-// TODO: Make this a generic type usable by all lms configs
 export type BlackboardFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: BlackboardConfigCamelCase;
@@ -227,6 +225,8 @@ export const BlackboardFormConfig = ({
     dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
   };
 
+  const activatePage = () => ConfigActivatePage(BLACKBOARD_TYPE);
+
   const steps: FormWorkflowStep<BlackboardConfigCamelCase>[] = [
     {
       index: 0,
@@ -259,7 +259,7 @@ export const BlackboardFormConfig = ({
     },
     {
       index: 1,
-      formComponent: BlackboardConfigActivatePage,
+      formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,

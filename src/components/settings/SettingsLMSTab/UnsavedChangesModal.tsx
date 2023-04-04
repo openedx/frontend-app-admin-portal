@@ -32,7 +32,6 @@ const UnsavedChangesModal = ({
     <ModalDialog.Body>{MODAL_TEXT}</ModalDialog.Body>
     <ModalDialog.Footer>
       <ActionRow>
-        {/* TODO: Fix typescript issue with Paragon Button */}
         {/* @ts-ignore */}
         <Button onClick={close} variant="outline-primary">
           Cancel

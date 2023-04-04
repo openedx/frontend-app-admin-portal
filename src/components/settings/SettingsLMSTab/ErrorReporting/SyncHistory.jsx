@@ -12,7 +12,7 @@ import ConfigError from '../../ConfigError';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 import {
-  ACTIVATE_TOAST_MESSAGE, BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE,
+  ACTIVATE_TOAST_MESSAGE, BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE,
   DEGREED2_TYPE, errorToggleModalText, INACTIVATE_TOAST_MESSAGE, MOODLE_TYPE, SAP_TYPE,
 } from '../../data/constants';
 
@@ -45,8 +45,6 @@ const SyncHistory = () => {
           response = await LmsApiService.fetchSingleCanvasConfig(configId); break;
         case CORNERSTONE_TYPE:
           response = await LmsApiService.fetchSingleCornerstoneConfig(configId); break;
-        case DEGREED_TYPE:
-          response = await LmsApiService.fetchSingleDegreedConfig(configId); break;
         case DEGREED2_TYPE:
           response = await LmsApiService.fetchSingleDegreed2Config(configId); break;
         case MOODLE_TYPE:
