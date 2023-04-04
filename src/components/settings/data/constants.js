@@ -27,7 +27,6 @@ export const errorDeleteDataModalText = 'We were unable to delete your provider 
 export const BLACKBOARD_TYPE = 'BLACKBOARD';
 export const CANVAS_TYPE = 'CANVAS';
 export const CORNERSTONE_TYPE = 'CSOD';
-export const DEGREED_TYPE = 'DEGREED';
 export const DEGREED2_TYPE = 'DEGREED2';
 export const MOODLE_TYPE = 'MOODLE';
 export const SAP_TYPE = 'SAP';
@@ -38,6 +37,7 @@ export const INVALID_LENGTH = 'Max length must be a number, but cannot be over 2
 export const INVALID_API_ROOT_URL = 'OAuth API Root URL attribute must be a valid URL';
 export const INVALID_SAPSF_OAUTH_ROOT_URL = 'SAPSF OAuth URL attribute must be a valid URL';
 export const INVALID_ODATA_API_TIMEOUT_INTERVAL = 'OData API timeout interval must be a number less than 30';
+export const INVALID_MOODLE_VERIFICATION = 'Please provide either a token OR a username and password';
 
 /**
  * Used as tab values and in router params

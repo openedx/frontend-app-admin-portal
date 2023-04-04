@@ -1,12 +1,11 @@
 import React from "react";
 
-import { Alert, Container, Form, Image } from "@edx/paragon";
-import { Info } from "@edx/paragon/icons";
+import { Container, Form, Image } from "@edx/paragon";
 
-import { CANVAS_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
+import { DEGREED2_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
 // @ts-ignore
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { channelMapping, isValidNumber, urlValidation } from "../../../../../utils";
+import { channelMapping, urlValidation } from "../../../../../utils";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
@@ -14,33 +13,38 @@ import {
   useFormContext,
   // @ts-ignore
 } from "../../../../forms/FormContext.tsx";
-// @ts-ignore
-import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
-// @ts-ignore
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { setWorkflowStateAction } from "../../../../forms/data/actions.ts";
-// @ts-ignore
-import { LMS_AUTHORIZATION_FAILED } from "./CanvasConfig.tsx";
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",
   CLIENT_ID: "clientId",
   CLIENT_SECRET: "clientSecret",
-  ACCOUNT_ID: "canvasAccountId",
-  CANVAS_BASE_URL: "canvasBaseUrl",
+  DEGREED_BASE_URL: "degreedBaseUrl",
+  DEGREED_FETCH_URL: "degreedFetchUrl",
 };
 
 export const validations: FormFieldValidation[] = [
   {
-    formFieldId: formFieldNames.CANVAS_BASE_URL,
+    formFieldId: formFieldNames.DEGREED_BASE_URL,
     validator: (fields) => {
-      const canvasUrl = fields[formFieldNames.CANVAS_BASE_URL];
-      if (canvasUrl) {
-        const error = !urlValidation(canvasUrl);
+      const degreedUrl = fields[formFieldNames.DEGREED_BASE_URL];
+      if (degreedUrl) {
+        const error = !urlValidation(degreedUrl);
         return error ? INVALID_LINK : false;
       } else {
         return true;
+      }
+    },
+  },
+  {
+    formFieldId: formFieldNames.DEGREED_FETCH_URL,
+    validator: (fields) => {
+      const degreedUrl = fields[formFieldNames.DEGREED_FETCH_URL];
+      if (degreedUrl) {
+        const error = !urlValidation(degreedUrl);
+        return error ? INVALID_LINK : false;
+      } else {
+        // fetch url is optional
+        return false;
       }
     },
   },
@@ -60,12 +64,6 @@ export const validations: FormFieldValidation[] = [
     },
   },
   {
-    formFieldId: formFieldNames.ACCOUNT_ID,
-    validator: (fields) => {
-      return !isValidNumber(fields[formFieldNames.ACCOUNT_ID]);
-    },
-  },
-  {
     formFieldId: formFieldNames.CLIENT_ID,
     validator: (fields) => {
       const clientId = fields[formFieldNames.CLIENT_ID];
@@ -81,29 +79,21 @@ export const validations: FormFieldValidation[] = [
   },
 ];
 
-// Settings page of Canvas LMS config workflow
-const CanvasConfigAuthorizePage = () => {
+// Settings page of Degreed LMS config workflow
+const DegreedConfigEnablePage = () => {
   const { dispatch, stateMap } = useFormContext();
   return (
     <Container size='md'>
       <span className='d-flex pb-4'>
         <Image
           className="lms-icon mr-2"
-          src={channelMapping[CANVAS_TYPE].icon}
+          src={channelMapping[DEGREED2_TYPE].icon}
         />
         <h3>
-          Authorize connection to Canvas
+          Enable connection to Degreed
         </h3>
       </span>
       <Form style={{ maxWidth: "60rem" }}>
-        {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
-          <Alert variant="danger" icon={Info}>
-            <h3>Enablement failed</h3>
-            We were unable to enable your Canvas integration. Please try again
-            or contact enterprise customer support.
-          </Alert>
-        )}
-
         <Form.Group className="my-2.5">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
@@ -130,37 +120,28 @@ const CanvasConfigAuthorizePage = () => {
             floatingLabel="API Client Secret"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="my-4">
           <ValidatedFormControl
-            formId={formFieldNames.ACCOUNT_ID}
+            formId={formFieldNames.DEGREED_BASE_URL}
             className="my-4"
-            type="number"
+            type="text"
             maxLength={255}
-            floatingLabel="Canvas Account Number"
+            floatingLabel="Degreed Base URL"
           />
         </Form.Group>
         <Form.Group className="my-4">
           <ValidatedFormControl
-            formId={formFieldNames.CANVAS_BASE_URL}
+            formId={formFieldNames.DEGREED_FETCH_URL}
             className="my-4"
             type="text"
             maxLength={255}
-            floatingLabel="Canvas Base URL"
+            floatingLabel="Degreed Token Fetch Base URL"
+            fieldInstructions="Optional: If provided, will be used as the url to fetch tokens."
           />
         </Form.Group>
-        <FormWaitModal
-          triggerState={WAITING_FOR_ASYNC_OPERATION}
-          onClose={() =>
-            dispatch?.(
-              setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
-            )
-          }
-          header="Authorization in progress"
-          text="Please confirm authorization through Canvas and return to this window once complete."
-        />
       </Form>
     </Container>
   );
 };
 
-export default CanvasConfigAuthorizePage;
+export default DegreedConfigEnablePage;

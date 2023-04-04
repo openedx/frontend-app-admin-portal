@@ -1,57 +1,45 @@
 import handleErrors from "../../../utils";
 import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import {
-  CANVAS_OAUTH_REDIRECT_URL,
-  CANVAS_TYPE,
-  LMS_CONFIG_OAUTH_POLLING_INTERVAL,
-  LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-  SUBMIT_TOAST_MESSAGE,
-} from "../../../data/constants";
+import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
-import CanvasConfigAuthorizePage, {
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
+import DegreedConfigAuthorizePage, {
   validations,
   formFieldNames
   // @ts-ignore
-} from "./CanvasConfigAuthorizePage.tsx";
+} from "./DegreedConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
-  FormWorkflowErrorHandler,
 } from "../../../../forms/FormWorkflow";
-// @ts-ignore
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
 import {
-  setWorkflowStateAction,
   updateFormFieldsAction,
   // @ts-ignore
 } from "../../../../forms/data/actions.ts";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 
-export type CanvasConfigCamelCase = {
-  canvasAccountId: string;
-  canvasBaseUrl: string;
+export type DegreedConfigCamelCase = {
   displayName: string;
   clientId: string;
   clientSecret: string;
+  degreedBaseUrl: string;
+  degreedFetchUrl: string;
   id: string;
   active: boolean;
   uuid: string;
-  refreshToken: string;
 };
 
-export type CanvasConfigSnakeCase = {
-  canvas_account_id: string;
-  canvas_base_url: string;
+export type DegreedConfigSnakeCase = {
   display_name: string;
   client_id: string;
   client_secret: string;
+  degreed_base_url: string;
+  degreed_fetch_url: string;
   id: string;
   active: boolean;
   uuid: string;
@@ -59,27 +47,25 @@ export type CanvasConfigSnakeCase = {
   refresh_token: string;
 };
 
-export type CanvasFormConfigProps = {
+export type DegreedFormConfigProps = {
   enterpriseCustomerUuid: string;
-  existingData: CanvasConfigCamelCase;
+  existingData: DegreedConfigCamelCase;
   existingConfigNames: string[];
-  onSubmit: (canvasConfig: CanvasConfigCamelCase) => void;
+  onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
 };
 
-export const LMS_AUTHORIZATION_FAILED = "LMS AUTHORIZATION FAILED";
-
-export const CanvasFormConfig = ({
+export const DegreedFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
   onClickCancel,
   existingData,
   existingConfigNames,
-}: CanvasFormConfigProps): FormWorkflowConfig<CanvasConfigCamelCase> => {
+}: DegreedFormConfigProps): FormWorkflowConfig<DegreedConfigCamelCase> => {
   const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
   const checkForDuplicateNames: FormFieldValidation = {
     formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: CanvasConfigCamelCase) => {
+    validator: (formFields: DegreedConfigCamelCase) => {
       return configNames?.includes(formFields.displayName)
         ? "Display name already taken"
         : false;
@@ -87,19 +73,19 @@ export const CanvasFormConfig = ({
   };
 
   const saveChanges = async (
-    formFields: CanvasConfigCamelCase,
+    formFields: DegreedConfigCamelCase,
     errHandler: (errMsg: string) => void
   ) => {
-    const transformedConfig: CanvasConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: DegreedConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as CanvasConfigSnakeCase;
+    ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err = "";
 
     if (formFields.id) {
       try {
         transformedConfig.active = existingData.active;
-        await LmsApiService.updateCanvasConfig(
+        await LmsApiService.updateDegreedConfig(
           transformedConfig,
           existingData.id
         );
@@ -110,7 +96,7 @@ export const CanvasFormConfig = ({
     } else {
       try {
         transformedConfig.active = false;
-        await LmsApiService.postNewCanvasConfig(transformedConfig);
+        await LmsApiService.postNewDegreedConfig(transformedConfig);
         onSubmit(formFields);
       } catch (error) {
         err = handleErrors(error);
@@ -128,24 +114,24 @@ export const CanvasFormConfig = ({
     formFieldsChanged,
     errHandler,
     dispatch,
-  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
+  }: FormWorkflowHandlerArgs<DegreedConfigCamelCase>) => {
     let currentFormFields = formFields;
-    const transformedConfig: CanvasConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: DegreedConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as CanvasConfigSnakeCase;
+    ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     let err = "";
     if (formFieldsChanged) {
       if (currentFormFields?.id) {
         try {
           transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateCanvasConfig(
+          const response = await LmsApiService.updateDegreedConfig(
             transformedConfig,
             existingData.id
           );
           currentFormFields = camelCaseDict(
             response.data
-          ) as CanvasConfigCamelCase;
+          ) as DegreedConfigCamelCase;
           onSubmit(currentFormFields);
           dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
         } catch (error) {
@@ -154,12 +140,12 @@ export const CanvasFormConfig = ({
       } else {
         try {
           transformedConfig.active = false;
-          const response = await LmsApiService.postNewCanvasConfig(
+          const response = await LmsApiService.postNewDegreedConfig(
             transformedConfig
           );
           currentFormFields = camelCaseDict(
             response.data
-          ) as CanvasConfigCamelCase;
+          ) as DegreedConfigCamelCase;
           onSubmit(currentFormFields);
           dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
         } catch (error) {
@@ -169,85 +155,26 @@ export const CanvasFormConfig = ({
     }
     if (err) {
       errHandler?.(err);
-    } else if (currentFormFields && !currentFormFields?.refreshToken) {
-      const oauthUrl =
-        `${currentFormFields.canvasBaseUrl}/login/oauth2/auth?client_id=${currentFormFields.clientId}&` +
-        `state=${currentFormFields.uuid}&response_type=code&` +
-        `redirect_uri=${CANVAS_OAUTH_REDIRECT_URL}`;
-
-      // Open the oauth window for the user
-      window.open(oauthUrl);
-      dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, true));
     }
     return currentFormFields;
   };
 
-  const awaitAfterSubmit = async ({
-    formFields,
-    errHandler,
-    dispatch,
-  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    if (formFields?.id) {
-      let err = "";
-      try {
-        const response = await LmsApiService.fetchSingleCanvasConfig(
-          formFields.id
-        );
-        if (response.data.refresh_token) {
-          dispatch?.(
-            setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
-          );
-          return true;
-        }
-      } catch (error) {
-        err = handleErrors(error);
-      }
-      if (err) {
-        errHandler?.(err);
-        return false;
-      }
-    }
+  const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);
 
-    return false;
-  };
-
-  const onAwaitTimeout = async ({
-    dispatch,
-  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false));
-    dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
-  };
-
-  const activatePage = () => ConfigActivatePage(CANVAS_TYPE);
-
-  const steps: FormWorkflowStep<CanvasConfigCamelCase>[] = [
+  const steps: FormWorkflowStep<DegreedConfigCamelCase>[] = [
     {
       index: 0,
-      formComponent: CanvasConfigAuthorizePage,
+      formComponent: DegreedConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames]),
-      stepName: "Authorize",
+      stepName: "Enable",
       saveChanges,
-      nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
+      nextButtonConfig: () => {
         let config = {
-          buttonText: "Authorize",
+          buttonText: "Enable",
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
-          config = {
-            ...config,
-            ...{
-              opensNewWindow: true,
-              awaitSuccess: {
-                awaitCondition: awaitAfterSubmit,
-                awaitInterval: LMS_CONFIG_OAUTH_POLLING_INTERVAL,
-                awaitTimeout: LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-                onAwaitTimeout: onAwaitTimeout,
-              },
-            },
-          };
-        }
-        return config as FormWorkflowButtonConfig<CanvasConfigCamelCase>;
+        return config as FormWorkflowButtonConfig<DegreedConfigCamelCase>;
       },
     },
     {
@@ -276,4 +203,4 @@ export const CanvasFormConfig = ({
   };
 };
 
-export default CanvasFormConfig;
+export default DegreedFormConfig;
