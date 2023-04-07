@@ -1,27 +1,20 @@
 import handleErrors from "../../../utils";
 import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { INVALID_NAME, SAP_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { SAP_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-import SAPConfigEnablePage, {
-  validations,
-  formFieldNames
-  // @ts-ignore
-} from "./SAPConfigEnablePage.tsx";
+// @ts-ignore
+import SAPConfigEnablePage, { validations } from "./SAPConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
 } from "../../../../forms/FormWorkflow";
-import {
-  updateFormFieldsAction,
-  // @ts-ignore
-} from "../../../../forms/data/actions.ts";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+// @ts-ignore
+import { updateFormFieldsAction } from "../../../../forms/data/actions.ts";
+import { checkForDuplicateNames } from "../utils";
 
 export type SAPConfigCamelCase = {
   displayName: string;
@@ -65,15 +58,6 @@ export const SAPFormConfig = ({
   existingData,
   existingConfigNames,
 }: SAPFormConfigProps): FormWorkflowConfig<SAPConfigCamelCase> => {
-  const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
-  const checkForDuplicateNames: FormFieldValidation = {
-    formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: SAPConfigCamelCase) => {
-      return configNames?.includes(formFields.displayName)
-        ? INVALID_NAME
-        : false;
-    },
-  };
 
   const saveChanges = async (
     formFields: SAPConfigCamelCase,
@@ -168,7 +152,7 @@ export const SAPFormConfig = ({
     {
       index: 0,
       formComponent: SAPConfigEnablePage,
-      validations: validations.concat([checkForDuplicateNames]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {

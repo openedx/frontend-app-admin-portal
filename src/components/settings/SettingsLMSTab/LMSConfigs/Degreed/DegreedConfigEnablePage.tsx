@@ -81,7 +81,6 @@ export const validations: FormFieldValidation[] = [
 
 // Settings page of Degreed LMS config workflow
 const DegreedConfigEnablePage = () => {
-  const { dispatch, stateMap } = useFormContext();
   return (
     <Container size='md'>
       <span className='d-flex pb-4'>

@@ -1,7 +1,7 @@
 import handleErrors from "../../../utils";
 import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { INVALID_NAME, MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 
@@ -23,6 +23,7 @@ import {
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
+import { checkForDuplicateNames } from "../utils";
 
 export type MoodleConfigCamelCase = {
   displayName: string;
@@ -64,15 +65,6 @@ export const MoodleFormConfig = ({
   existingData,
   existingConfigNames,
 }: MoodleFormConfigProps): FormWorkflowConfig<MoodleConfigCamelCase> => {
-  const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
-  const checkForDuplicateNames: FormFieldValidation = {
-    formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: MoodleConfigCamelCase) => {
-      return configNames?.includes(formFields.displayName)
-        ? INVALID_NAME
-        : false;
-    },
-  };
 
   const saveChanges = async (
     formFields: MoodleConfigCamelCase,
@@ -167,7 +159,7 @@ export const MoodleFormConfig = ({
     {
       index: 0,
       formComponent: MoodleConfigEnablePage,
-      validations: validations.concat([checkForDuplicateNames]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {

@@ -9,30 +9,20 @@ import {
   SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
-import CanvasConfigAuthorizePage, {
-  validations,
-  formFieldNames
-  // @ts-ignore
-} from "./CanvasConfigAuthorizePage.tsx";
+import CanvasConfigAuthorizePage, { validations } from "./CanvasConfigAuthorizePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
-  FormWorkflowErrorHandler,
 } from "../../../../forms/FormWorkflow";
 // @ts-ignore
 import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
-import {
-  setWorkflowStateAction,
-  updateFormFieldsAction,
   // @ts-ignore
-} from "../../../../forms/data/actions.ts";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+import { setWorkflowStateAction, updateFormFieldsAction } from "../../../../forms/data/actions.ts";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
+import { checkForDuplicateNames } from "../utils";
 
 export type CanvasConfigCamelCase = {
   canvasAccountId: string;
@@ -76,15 +66,6 @@ export const CanvasFormConfig = ({
   existingData,
   existingConfigNames,
 }: CanvasFormConfigProps): FormWorkflowConfig<CanvasConfigCamelCase> => {
-  const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
-  const checkForDuplicateNames: FormFieldValidation = {
-    formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: CanvasConfigCamelCase) => {
-      return configNames?.includes(formFields.displayName)
-        ? "Display name already taken"
-        : false;
-    },
-  };
 
   const saveChanges = async (
     formFields: CanvasConfigCamelCase,
@@ -224,7 +205,7 @@ export const CanvasFormConfig = ({
     {
       index: 0,
       formComponent: CanvasConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Authorize",
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {

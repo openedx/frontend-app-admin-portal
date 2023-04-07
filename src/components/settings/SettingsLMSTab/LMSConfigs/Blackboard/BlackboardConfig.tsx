@@ -12,7 +12,6 @@ import {
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 import BlackboardConfigAuthorizePage, {
   validations,
-  formFieldNames
   // @ts-ignore
 } from "./BlackboardConfigAuthorizePage.tsx";
 import type {
@@ -20,7 +19,6 @@ import type {
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
-  FormWorkflowErrorHandler,
 } from "../../../../forms/FormWorkflow";
 // @ts-ignore
 import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
@@ -29,9 +27,7 @@ import {
   updateFormFieldsAction,
   // @ts-ignore
 } from "../../../../forms/data/actions.ts";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+import { checkForDuplicateNames } from "../utils";
 
 export type BlackboardConfigCamelCase = {
   blackboardAccountId: string;
@@ -72,15 +68,6 @@ export const BlackboardFormConfig = ({
   existingData,
   existingConfigNames,
 }: BlackboardFormConfigProps): FormWorkflowConfig<BlackboardConfigCamelCase> => {
-  const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
-  const checkForDuplicateNames: FormFieldValidation = {
-    formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: BlackboardConfigCamelCase) => {
-      return configNames?.includes(formFields.displayName)
-        ? "Display name already taken"
-        : false;
-    },
-  };
 
   const saveChanges = async (
     formFields: BlackboardConfigCamelCase,
@@ -231,7 +218,7 @@ export const BlackboardFormConfig = ({
     {
       index: 0,
       formComponent: BlackboardConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Authorize",
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {

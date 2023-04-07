@@ -1,27 +1,20 @@
 import handleErrors from "../../../utils";
 import LmsApiService from "../../../../../data/services/LmsApiService";
 import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { DEGREED2_TYPE, SAVED_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-import DegreedConfigAuthorizePage, {
-  validations,
-  formFieldNames
-  // @ts-ignore
-} from "./DegreedConfigEnablePage.tsx";
+// @ts-ignore
+import DegreedConfigAuthorizePage, { validations } from "./DegreedConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
 } from "../../../../forms/FormWorkflow";
-import {
-  updateFormFieldsAction,
-  // @ts-ignore
-} from "../../../../forms/data/actions.ts";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+// @ts-ignore
+import { updateFormFieldsAction } from "../../../../forms/data/actions.ts";
+import { checkForDuplicateNames } from "../utils";
 
 export type DegreedConfigCamelCase = {
   displayName: string;
@@ -62,16 +55,6 @@ export const DegreedFormConfig = ({
   existingData,
   existingConfigNames,
 }: DegreedFormConfigProps): FormWorkflowConfig<DegreedConfigCamelCase> => {
-  const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
-  const checkForDuplicateNames: FormFieldValidation = {
-    formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: DegreedConfigCamelCase) => {
-      return configNames?.includes(formFields.displayName)
-        ? "Display name already taken"
-        : false;
-    },
-  };
-
   const saveChanges = async (
     formFields: DegreedConfigCamelCase,
     errHandler: (errMsg: string) => void
@@ -90,6 +73,7 @@ export const DegreedFormConfig = ({
           existingData.id
         );
         onSubmit(formFields);
+        onClickCancel(true, SAVED_TOAST_MESSAGE)
       } catch (error) {
         err = handleErrors(error);
       }
@@ -165,7 +149,7 @@ export const DegreedFormConfig = ({
     {
       index: 0,
       formComponent: DegreedConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {

@@ -228,7 +228,7 @@ const ExistingCard = ({
             <div className="ml-1 d-flex">
               <Image
                 className="lms-icon mr-2"
-                src={channelMapping[config.channelCode].icon}
+                src={channelMapping[config.channelCode]?.icon}
               />
               <div className="lms-card-title-overflow">
                 <span>{config.displayName}</span>
