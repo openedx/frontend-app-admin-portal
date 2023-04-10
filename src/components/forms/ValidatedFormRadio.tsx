@@ -59,14 +59,14 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
     <>
       <Form.Label>{formRadioProps.label}</Form.Label>
       <Form.RadioSet
-        name={formRadioProps.formId}
+        name={formRadioProps.id}
         onChange={formRadioProps.onChange}
         isInline
       >
         {createOptions(formRadioProps.options)}
       </Form.RadioSet>
-      {props.fieldInstructions && (
-        <Form.Text>{props.fieldInstructions}</Form.Text>
+      {formRadioProps.fieldInstructions && (
+        <Form.Text>{formRadioProps.fieldInstructions}</Form.Text>
       )}
       {showError && (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>

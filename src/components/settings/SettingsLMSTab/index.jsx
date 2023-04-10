@@ -91,7 +91,6 @@ const SettingsLMSTab = ({
       });
   }, [enterpriseId]);
 
-  // TODO: Rewrite with more descriptive parameters once all lms configs are refactored
   const onClick = (input) => {
     // Either we're creating a new config (a create config card was clicked), or we're navigating
     // back to the landing state from a form (submit or cancel was hit on the forms). In both cases,

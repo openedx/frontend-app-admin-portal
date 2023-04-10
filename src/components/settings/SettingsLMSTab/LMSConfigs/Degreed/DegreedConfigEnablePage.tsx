@@ -93,7 +93,7 @@ const DegreedConfigEnablePage = () => {
         </h3>
       </span>
       <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group className="my-2.5">
+        <Form.Group className="mt-2.5">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
@@ -131,7 +131,7 @@ const DegreedConfigEnablePage = () => {
         <Form.Group className="my-4">
           <ValidatedFormControl
             formId={formFieldNames.DEGREED_FETCH_URL}
-            className="my-4"
+            className="mt-4"
             type="text"
             maxLength={255}
             floatingLabel="Degreed Token Fetch Base URL"

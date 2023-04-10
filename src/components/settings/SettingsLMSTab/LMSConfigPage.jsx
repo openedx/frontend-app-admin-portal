@@ -38,19 +38,23 @@ const LMSConfigPage = ({
     return true;
   };
   return (
-    <FormContextWrapper
-      formWorkflowConfig={flowConfigs[LMSType]({
-        enterpriseCustomerUuid,
-        onSubmit: setExistingConfigFormData,
-        onClickCancel: handleCloseWorkflow,
-        existingData: existingConfigFormData,
-        existingConfigNames: existingConfigs,
-      })}
-      onClickOut={handleCloseWorkflow}
-      onSubmit={setExistingConfigFormData}
-      formData={existingConfigFormData}
-      isStepperOpen={isLmsStepperOpen}
-    />
+    <div>
+      {LMSType && (
+        <FormContextWrapper
+          formWorkflowConfig={flowConfigs[LMSType]({
+            enterpriseCustomerUuid,
+            onSubmit: setExistingConfigFormData,
+            onClickCancel: handleCloseWorkflow,
+            existingData: existingConfigFormData,
+            existingConfigNames: existingConfigs,
+          })}
+          onClickOut={handleCloseWorkflow}
+          onSubmit={setExistingConfigFormData}
+          formData={existingConfigFormData}
+          isStepperOpen={isLmsStepperOpen}
+        />
+      )}
+    </div>
   );
 };
 const mapStateToProps = (state) => ({

@@ -1,29 +1,17 @@
-import handleErrors from "../../../utils";
-import LmsApiService from "../../../../../data/services/LmsApiService";
-import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
+import { snakeCaseDict } from "../../../../../utils";
 import { MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-
-import MoodleConfigEnablePage, {
-  validations,
-  formFieldNames
   // @ts-ignore
-} from "./MoodleConfigEnablePage.tsx";
+import MoodleConfigEnablePage, { validations } from "./MoodleConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
 } from "../../../../forms/FormWorkflow";
-import {
-  updateFormFieldsAction,
-  // @ts-ignore
-} from "../../../../forms/data/actions.ts";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
-import { checkForDuplicateNames } from "../utils";
+// @ts-ignore
+import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
 
 export type MoodleConfigCamelCase = {
   displayName: string;
@@ -74,33 +62,7 @@ export const MoodleFormConfig = ({
       formFields
     ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-
-    if (formFields.id) {
-      try {
-        transformedConfig.active = existingData.active;
-        await LmsApiService.updateMoodleConfig(
-          transformedConfig,
-          existingData.id
-        );
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    } else {
-      try {
-        transformedConfig.active = false;
-        await LmsApiService.postNewMoodleConfig(transformedConfig);
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    }
-
-    if (err) {
-      errHandler(err);
-    }
-    return !err;
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, MOODLE_TYPE, errHandler);
   };
 
   const handleSubmit = async ({
@@ -114,43 +76,7 @@ export const MoodleFormConfig = ({
       formFields
     ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-    if (formFieldsChanged) {
-      if (currentFormFields?.id) {
-        try {
-          transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateMoodleConfig(
-            transformedConfig,
-            existingData.id
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as MoodleConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      } else {
-        try {
-          transformedConfig.active = false;
-          const response = await LmsApiService.postNewMoodleConfig(
-            transformedConfig
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as MoodleConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      }
-    }
-    if (err) {
-      errHandler?.(err);
-    }
-    return currentFormFields;
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, MOODLE_TYPE, errHandler, dispatch)
   };
 
   const activatePage = () => ConfigActivatePage(MOODLE_TYPE);

@@ -1,8 +1,5 @@
-import handleErrors from "../../../utils";
-import LmsApiService from "../../../../../data/services/LmsApiService";
-import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
+import { snakeCaseDict } from "../../../../../utils";
 import {
-  CANVAS_OAUTH_REDIRECT_URL,
   CANVAS_TYPE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
@@ -17,12 +14,8 @@ import type {
   FormWorkflowHandlerArgs,
 } from "../../../../forms/FormWorkflow";
 // @ts-ignore
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
-  // @ts-ignore
-import { setWorkflowStateAction, updateFormFieldsAction } from "../../../../forms/data/actions.ts";
-// @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-import { checkForDuplicateNames } from "../utils";
+import { afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils";
 
 export type CanvasConfigCamelCase = {
   canvasAccountId: string;
@@ -57,8 +50,6 @@ export type CanvasFormConfigProps = {
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
 };
 
-export const LMS_AUTHORIZATION_FAILED = "LMS AUTHORIZATION FAILED";
-
 export const CanvasFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
@@ -75,33 +66,7 @@ export const CanvasFormConfig = ({
       formFields
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-
-    if (formFields.id) {
-      try {
-        transformedConfig.active = existingData.active;
-        await LmsApiService.updateCanvasConfig(
-          transformedConfig,
-          existingData.id
-        );
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    } else {
-      try {
-        transformedConfig.active = false;
-        await LmsApiService.postNewCanvasConfig(transformedConfig);
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    }
-
-    if (err) {
-      errHandler(err);
-    }
-    return !err;
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, CANVAS_TYPE, errHandler);
   };
 
   const handleSubmit = async ({
@@ -115,52 +80,7 @@ export const CanvasFormConfig = ({
       formFields
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-    if (formFieldsChanged) {
-      if (currentFormFields?.id) {
-        try {
-          transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateCanvasConfig(
-            transformedConfig,
-            existingData.id
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as CanvasConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      } else {
-        try {
-          transformedConfig.active = false;
-          const response = await LmsApiService.postNewCanvasConfig(
-            transformedConfig
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as CanvasConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      }
-    }
-    if (err) {
-      errHandler?.(err);
-    } else if (currentFormFields && !currentFormFields?.refreshToken) {
-      const oauthUrl =
-        `${currentFormFields.canvasBaseUrl}/login/oauth2/auth?client_id=${currentFormFields.clientId}&` +
-        `state=${currentFormFields.uuid}&response_type=code&` +
-        `redirect_uri=${CANVAS_OAUTH_REDIRECT_URL}`;
-
-      // Open the oauth window for the user
-      window.open(oauthUrl);
-      dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, true));
-    }
-    return currentFormFields;
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, CANVAS_TYPE, errHandler, dispatch)
   };
 
   const awaitAfterSubmit = async ({
@@ -168,35 +88,13 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    if (formFields?.id) {
-      let err = "";
-      try {
-        const response = await LmsApiService.fetchSingleCanvasConfig(
-          formFields.id
-        );
-        if (response.data.refresh_token) {
-          dispatch?.(
-            setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
-          );
-          return true;
-        }
-      } catch (error) {
-        err = handleErrors(error);
-      }
-      if (err) {
-        errHandler?.(err);
-        return false;
-      }
-    }
-
-    return false;
+    afterSubmitHelper(CANVAS_TYPE, formFields, errHandler, dispatch);
   };
 
   const onAwaitTimeout = async ({
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false));
-    dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
+    onTimeoutHelper(dispatch);
   };
 
   const activatePage = () => ConfigActivatePage(CANVAS_TYPE);

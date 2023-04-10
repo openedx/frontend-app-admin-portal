@@ -1,7 +1,5 @@
-import handleErrors from "../../../utils";
-import LmsApiService from "../../../../../data/services/LmsApiService";
-import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { DEGREED2_TYPE, SAVED_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { snakeCaseDict } from "../../../../../utils";
+import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 // @ts-ignore
@@ -13,8 +11,7 @@ import type {
   FormWorkflowHandlerArgs,
 } from "../../../../forms/FormWorkflow";
 // @ts-ignore
-import { updateFormFieldsAction } from "../../../../forms/data/actions.ts";
-import { checkForDuplicateNames } from "../utils";
+import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
 
 export type DegreedConfigCamelCase = {
   displayName: string;
@@ -63,34 +60,7 @@ export const DegreedFormConfig = ({
       formFields
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-
-    if (formFields.id) {
-      try {
-        transformedConfig.active = existingData.active;
-        await LmsApiService.updateDegreedConfig(
-          transformedConfig,
-          existingData.id
-        );
-        onSubmit(formFields);
-        onClickCancel(true, SAVED_TOAST_MESSAGE)
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    } else {
-      try {
-        transformedConfig.active = false;
-        await LmsApiService.postNewDegreedConfig(transformedConfig);
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    }
-
-    if (err) {
-      errHandler(err);
-    }
-    return !err;
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, DEGREED2_TYPE, errHandler);
   };
 
   const handleSubmit = async ({
@@ -104,43 +74,7 @@ export const DegreedFormConfig = ({
       formFields
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-    if (formFieldsChanged) {
-      if (currentFormFields?.id) {
-        try {
-          transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateDegreedConfig(
-            transformedConfig,
-            existingData.id
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as DegreedConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      } else {
-        try {
-          transformedConfig.active = false;
-          const response = await LmsApiService.postNewDegreedConfig(
-            transformedConfig
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as DegreedConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      }
-    }
-    if (err) {
-      errHandler?.(err);
-    }
-    return currentFormFields;
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, DEGREED2_TYPE, errHandler, dispatch)
   };
 
   const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);
