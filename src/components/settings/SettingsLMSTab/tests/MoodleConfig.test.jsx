@@ -66,6 +66,9 @@ afterEach(() => {
 });
 
 const mockSetExistingConfigFormData = jest.fn();
+const mockPost = jest.fn();
+const mockUpdate = jest.fn();
+const mockDelete = jest.fn();
 
 function testMoodleConfigSetup(formData) {
   return (
@@ -75,11 +78,20 @@ function testMoodleConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         onClickCancel: mockOnClick,
         existingData: formData,
+        existingConfigNames: [],
+        channelMap: {
+          MOODLE: {
+            post: mockPost,
+            update: mockUpdate,
+            delete: mockDelete,
+          },
+        },
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
+      dispatch={jest.fn()}
     />
   );
 }
@@ -181,7 +193,7 @@ describe('<MoodleConfig />', () => {
       password: 'password123',
       enterprise_customer: enterpriseId,
     };
-    await waitFor(() => expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig));
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   });
   test('saves draft correctly', async () => {
     render(testMoodleConfigSetup(noExistingData));
@@ -214,7 +226,7 @@ describe('<MoodleConfig />', () => {
       enterprise_customer: enterpriseId,
     };
 
-    expect(LmsApiService.postNewMoodleConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testMoodleConfigSetup(invalidExistingData));

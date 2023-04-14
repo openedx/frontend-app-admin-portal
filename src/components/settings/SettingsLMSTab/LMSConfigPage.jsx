@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -12,6 +12,7 @@ import { DegreedFormConfig } from './LMSConfigs/Degreed/DegreedConfig.tsx';
 import { MoodleFormConfig } from './LMSConfigs/Moodle/MoodleConfig.tsx';
 import { SAPFormConfig } from './LMSConfigs/SAP/SAPConfig.tsx';
 import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
+import { getChannelMap } from '../../../utils';
 
 const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
@@ -32,11 +33,13 @@ const LMSConfigPage = ({
   isLmsStepperOpen,
   closeLmsStepper,
 }) => {
+  const channelMap = useMemo(() => getChannelMap(), []);
   const handleCloseWorkflow = (submitted, msg) => {
     onClick(submitted ? msg : '');
     closeLmsStepper();
     return true;
   };
+
   return (
     <div>
       {LMSType && (
@@ -47,6 +50,7 @@ const LMSConfigPage = ({
             onClickCancel: handleCloseWorkflow,
             existingData: existingConfigFormData,
             existingConfigNames: existingConfigs,
+            channelMap,
           })}
           onClickOut={handleCloseWorkflow}
           onSubmit={setExistingConfigFormData}

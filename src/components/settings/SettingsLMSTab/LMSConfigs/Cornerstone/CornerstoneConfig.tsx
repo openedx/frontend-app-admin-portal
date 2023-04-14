@@ -2,7 +2,7 @@ import { snakeCaseDict } from "../../../../../utils";
 import { CORNERSTONE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-  // @ts-ignore
+// @ts-ignore
 import CornerstoneConfigEnablePage, { validations } from "./CornerstoneConfigEnablePage.tsx";
 import type { 
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep,FormWorkflowHandlerArgs,
@@ -33,6 +33,7 @@ export type CornerstoneFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (cornerstoneConfig: CornerstoneConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  channelMap: { [key: string]: {[key: string]: any }},
 };
 
 export const CornerstoneFormConfig = ({
@@ -41,6 +42,7 @@ export const CornerstoneFormConfig = ({
   onClickCancel,
   existingData,
   existingConfigNames,
+  channelMap,
 }: CornerstoneFormConfigProps): FormWorkflowConfig<CornerstoneConfigCamelCase> => {
 
   const saveChanges = async (
@@ -51,7 +53,8 @@ export const CornerstoneFormConfig = ({
       formFields
     ) as CornerstoneConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, CORNERSTONE_TYPE, errHandler);
+    return handleSaveHelper(
+      transformedConfig, existingData, formFields, onSubmit, CORNERSTONE_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -65,7 +68,7 @@ export const CornerstoneFormConfig = ({
       formFields
     ) as CornerstoneConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, CORNERSTONE_TYPE, errHandler, dispatch)
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, CORNERSTONE_TYPE, channelMap, errHandler, dispatch)
   };
 
   const activatePage = () => ConfigActivatePage(CORNERSTONE_TYPE);

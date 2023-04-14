@@ -1,7 +1,7 @@
 import type { FormFieldValidation } from "../../../forms/FormContext";
 import { BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL, CANVAS_TYPE, INVALID_NAME } from "../../data/constants";
 import handleErrors from "../../utils";
-import { camelCaseDict, channelMapping } from "../../../../utils";
+import { camelCaseDict } from "../../../../utils";
 import { setWorkflowStateAction, updateFormFieldsAction } from "../../../forms/data/actions";
 import { CanvasConfigCamelCase, CanvasConfigSnakeCase } from "./Canvas/CanvasConfig";
 import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from "./Blackboard/BlackboardConfig";
@@ -26,6 +26,7 @@ export async function handleSubmitHelper(
   formFieldsChanged: Boolean,
   currentFormFields: any,
   lmsType: string,
+  channelMap: { [key: string]: {[key: string]: any }},
   errHandler: FormWorkflowErrorHandler | undefined,
   dispatch: any,
 ) {
@@ -36,7 +37,7 @@ export async function handleSubmitHelper(
     if (currentFormFields?.id) {
       try {
         transformedConfig.active = existingData.active;
-        const response = await channelMapping[lmsType].update(transformedConfig, existingData.id)
+        const response = await channelMap[lmsType].update(transformedConfig, existingData.id)
         currentFormFields = camelCaseDict(
           response.data
         ) as ConfigCamelCase;
@@ -48,7 +49,7 @@ export async function handleSubmitHelper(
     } else {
       try {
         transformedConfig.active = false;
-        const response = await channelMapping[lmsType].post(transformedConfig)
+        const response = await channelMap[lmsType].post(transformedConfig)
         currentFormFields = camelCaseDict(
           response.data
         ) as ConfigCamelCase;
@@ -62,7 +63,7 @@ export async function handleSubmitHelper(
   if (err) {
     errHandler?.(err);
   }
-  else if ((lmsType === BLACKBOARD_TYPE || lmsType === CANVAS_TYPE) && currentFormFields && !currentFormFields?.refreshToken) {
+  if ((lmsType === BLACKBOARD_TYPE || lmsType === CANVAS_TYPE) && currentFormFields && !currentFormFields?.refreshToken) {
     let oauthUrl: string;
     if (lmsType == BLACKBOARD_TYPE) {
       let appKey = existingData.clientId;
@@ -70,7 +71,7 @@ export async function handleSubmitHelper(
       if (!appKey || !configUuid) {
         try {
           if (lmsType === BLACKBOARD_TYPE) {
-            const response = await channelMapping[lmsType].fetchGlobal();
+            const response = await channelMap[lmsType].fetchGlobal();
             appKey = response.data.results[response.data.results.length - 1].app_key;
             configUuid = response.data.uuid;
           }
@@ -99,12 +100,13 @@ export async function handleSubmitHelper(
 export async function afterSubmitHelper(
   lmsType: string,
   formFields: any,
+  channelMap: { [key: string]: {[key: string]: any }},
   errHandler: FormWorkflowErrorHandler | undefined,
   dispatch: any) {
   if (formFields?.id) {
     let err = "";
     try {
-      const response = await channelMapping[lmsType].fetch(formFields.id);
+      const response = await channelMap[lmsType].fetch(formFields.id);
       if (response.data.refresh_token) {
         dispatch?.(
           setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
@@ -134,32 +136,23 @@ export async function handleSaveHelper(
   formFields: ConfigCamelCase,
   onSubmit: Function,
   lmsType: string,
+  channelMap: { [key: string]: {[key: string]: any }},
   errHandler: (errMsg: string) => void) {
   let err = "";
   if (formFields.id) {
     try {
-      console.log('test1')
       transformedConfig.active = existingData.active;
-      const response = await channelMapping[lmsType].update(transformedConfig, existingData.id);
-      console.log(response)
+      await channelMap[lmsType].update(transformedConfig, existingData.id);
       onSubmit(formFields);
-      console.log('test1 part 2')
     } catch (error) {
-      console.log('ERROR', error);
       err = handleErrors(error);
     }
   } else {
     try {
-      console.log('test2')
       transformedConfig.active = false;
-      console.log(channelMapping[lmsType].post)
-      console.log(transformedConfig)
-      const response = await channelMapping[lmsType].post(transformedConfig);
-      console.log(response);
+      await channelMap[lmsType].post(transformedConfig);
       onSubmit(formFields);
-      console.log('test2 part 2')
     } catch (error) {
-
       err = handleErrors(error);
     }
   }
@@ -178,7 +171,6 @@ export function checkForDuplicateNames(existingConfigNames: string[], existingDa
         ? INVALID_NAME
         : false;
     },
-
   }
   return displayNameValidation;
 }

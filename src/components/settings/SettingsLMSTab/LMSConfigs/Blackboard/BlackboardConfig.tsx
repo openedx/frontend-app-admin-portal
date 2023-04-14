@@ -7,10 +7,8 @@ import {
 } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-import BlackboardConfigAuthorizePage, {
-  validations,
-  // @ts-ignore
-} from "./BlackboardConfigAuthorizePage.tsx";
+// @ts-ignore
+import BlackboardConfigAuthorizePage, { validations } from "./BlackboardConfigAuthorizePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
@@ -47,6 +45,7 @@ export type BlackboardFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (blackboardConfig: BlackboardConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  channelMap: { [key: string]: {[key: string]: any }},
 };
 
 export const BlackboardFormConfig = ({
@@ -55,6 +54,7 @@ export const BlackboardFormConfig = ({
   onClickCancel,
   existingData,
   existingConfigNames,
+  channelMap,
 }: BlackboardFormConfigProps): FormWorkflowConfig<BlackboardConfigCamelCase> => {
 
   const saveChanges = async (
@@ -65,7 +65,7 @@ export const BlackboardFormConfig = ({
       formFields
     ) as BlackboardConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, BLACKBOARD_TYPE, errHandler);
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, BLACKBOARD_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -79,7 +79,7 @@ export const BlackboardFormConfig = ({
       formFields
     ) as BlackboardConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, BLACKBOARD_TYPE, errHandler, dispatch)
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, BLACKBOARD_TYPE, channelMap, errHandler, dispatch)
   };
 
   const awaitAfterSubmit = async ({
@@ -87,7 +87,7 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    afterSubmitHelper(BLACKBOARD_TYPE, formFields, errHandler, dispatch);
+    afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
   };
 
   const onAwaitTimeout = async ({

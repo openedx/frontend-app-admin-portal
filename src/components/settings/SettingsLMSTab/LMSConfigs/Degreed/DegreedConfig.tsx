@@ -43,6 +43,7 @@ export type DegreedFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  channelMap: { [key: string]: {[key: string]: any }},
 };
 
 export const DegreedFormConfig = ({
@@ -51,6 +52,7 @@ export const DegreedFormConfig = ({
   onClickCancel,
   existingData,
   existingConfigNames,
+  channelMap,
 }: DegreedFormConfigProps): FormWorkflowConfig<DegreedConfigCamelCase> => {
   const saveChanges = async (
     formFields: DegreedConfigCamelCase,
@@ -60,7 +62,7 @@ export const DegreedFormConfig = ({
       formFields
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, DEGREED2_TYPE, errHandler);
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, DEGREED2_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -74,7 +76,7 @@ export const DegreedFormConfig = ({
       formFields
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, DEGREED2_TYPE, errHandler, dispatch)
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, DEGREED2_TYPE, channelMap, errHandler, dispatch)
   };
 
   const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);

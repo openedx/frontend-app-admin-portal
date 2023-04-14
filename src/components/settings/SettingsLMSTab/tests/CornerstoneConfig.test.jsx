@@ -1,39 +1,14 @@
 import React from 'react';
 import {
-  act,
-  render,
-  fireEvent,
-  screen,
-  waitFor,
+  act, render, fireEvent, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-
+import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 // @ts-ignore
 import CornerstoneConfig from '../LMSConfigs/Cornerstone/CornerstoneConfig.tsx';
-import {
-  INVALID_LINK,
-  INVALID_NAME,
-} from '../../data/constants';
-import LmsApiService from '../../../../data/services/LmsApiService';
 // @ts-ignore
 import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
-
-const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateCornerstoneConfig');
-const mockConfigResponseData = {
-  uuid: 'foobar',
-  id: 1,
-  display_name: 'display name',
-  cornerstone_base_url: 'https://foobar.com',
-  active: false,
-};
-mockUpdateConfigApi.mockResolvedValue({ data: mockConfigResponseData });
-
-const mockPostConfigApi = jest.spyOn(LmsApiService, 'postNewCornerstoneConfig');
-mockPostConfigApi.mockResolvedValue({ data: mockConfigResponseData });
-
-const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleCornerstoneConfig');
-mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
@@ -59,6 +34,9 @@ afterEach(() => {
 });
 
 const mockSetExistingConfigFormData = jest.fn();
+const mockPost = jest.fn();
+const mockUpdate = jest.fn();
+const mockDelete = jest.fn();
 
 function testCornerstoneConfigSetup(formData) {
   return (
@@ -68,11 +46,20 @@ function testCornerstoneConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         onClickCancel: mockOnClick,
         existingData: formData,
+        existingConfigNames: [],
+        channelMap: {
+          CSOD: {
+            post: mockPost,
+            update: mockUpdate,
+            delete: mockDelete,
+          },
+        },
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
+      dispatch={jest.fn()}
     />
   );
 }
@@ -89,6 +76,9 @@ async function clearForm() {
 }
 
 describe('<CornerstoneConfig />', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
   test('renders Cornerstone Enable Form', () => {
     render(testCornerstoneConfigSetup(noConfigs));
     screen.getByLabelText('Display Name');
@@ -132,7 +122,7 @@ describe('<CornerstoneConfig />', () => {
       cornerstone_base_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
-    await waitFor(() => expect(LmsApiService.postNewCornerstoneConfig).toHaveBeenCalledWith(expectedConfig));
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   });
   test('saves draft correctly', async () => {
     render(testCornerstoneConfigSetup(noExistingData));
@@ -154,7 +144,7 @@ describe('<CornerstoneConfig />', () => {
       cornerstone_base_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.postNewCornerstoneConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testCornerstoneConfigSetup(invalidExistingData));

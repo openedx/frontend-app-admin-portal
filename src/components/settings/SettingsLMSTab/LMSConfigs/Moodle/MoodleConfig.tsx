@@ -44,6 +44,7 @@ export type MoodleFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  channelMap: { [key: string]: {[key: string]: any }};
 };
 
 export const MoodleFormConfig = ({
@@ -52,6 +53,7 @@ export const MoodleFormConfig = ({
   onClickCancel,
   existingData,
   existingConfigNames,
+  channelMap, 
 }: MoodleFormConfigProps): FormWorkflowConfig<MoodleConfigCamelCase> => {
 
   const saveChanges = async (
@@ -62,7 +64,7 @@ export const MoodleFormConfig = ({
       formFields
     ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, MOODLE_TYPE, errHandler);
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, MOODLE_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -76,7 +78,7 @@ export const MoodleFormConfig = ({
       formFields
     ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, MOODLE_TYPE, errHandler, dispatch)
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, MOODLE_TYPE, channelMap, errHandler, dispatch)
   };
 
   const activatePage = () => ConfigActivatePage(MOODLE_TYPE);

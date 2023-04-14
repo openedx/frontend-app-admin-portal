@@ -48,6 +48,7 @@ export type CanvasFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (canvasConfig: CanvasConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  channelMap: { [key: string]: {[key: string]: any }},
 };
 
 export const CanvasFormConfig = ({
@@ -56,6 +57,7 @@ export const CanvasFormConfig = ({
   onClickCancel,
   existingData,
   existingConfigNames,
+  channelMap,
 }: CanvasFormConfigProps): FormWorkflowConfig<CanvasConfigCamelCase> => {
 
   const saveChanges = async (
@@ -66,7 +68,7 @@ export const CanvasFormConfig = ({
       formFields
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, CANVAS_TYPE, errHandler);
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, CANVAS_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -80,7 +82,7 @@ export const CanvasFormConfig = ({
       formFields
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, CANVAS_TYPE, errHandler, dispatch)
+    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, CANVAS_TYPE, channelMap, errHandler, dispatch)
   };
 
   const awaitAfterSubmit = async ({
@@ -88,7 +90,7 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    afterSubmitHelper(CANVAS_TYPE, formFields, errHandler, dispatch);
+    afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
   };
 
   const onAwaitTimeout = async ({

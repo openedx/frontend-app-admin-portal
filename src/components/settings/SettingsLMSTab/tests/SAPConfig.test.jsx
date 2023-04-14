@@ -66,6 +66,9 @@ afterEach(() => {
 });
 
 const mockSetExistingConfigFormData = jest.fn();
+const mockPost = jest.fn();
+const mockUpdate = jest.fn();
+const mockDelete = jest.fn();
 
 function testSAPConfigSetup(formData) {
   return (
@@ -75,11 +78,20 @@ function testSAPConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         onClickCancel: mockOnClick,
         existingData: formData,
+        existingConfigNames: [],
+        channelMap: {
+          SAP: {
+            post: mockPost,
+            update: mockUpdate,
+            delete: mockDelete,
+          },
+        },
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
+      dispatch={jest.fn()}
     />
   );
 }
@@ -182,7 +194,7 @@ describe('<SAPConfig />', () => {
       sap_user_type: 'admin',
       enterprise_customer: enterpriseId,
     };
-    await waitFor(() => expect(LmsApiService.postNewSuccessFactorsConfig).toHaveBeenCalledWith(expectedConfig));
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   });
   test('saves draft correctly', async () => {
     render(testSAPConfigSetup(noExistingData));
@@ -217,7 +229,7 @@ describe('<SAPConfig />', () => {
       sap_user_type: 'user',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.postNewSuccessFactorsConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testSAPConfigSetup(invalidExistingData));

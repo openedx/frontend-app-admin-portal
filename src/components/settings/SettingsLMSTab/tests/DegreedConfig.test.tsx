@@ -1,20 +1,12 @@
 import React from "react";
 import {
-  act,
-  render,
-  fireEvent,
-  screen,
-  waitFor,
+  act, render, fireEvent, screen, waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
-
 // @ts-ignore
 import DegreedConfig from "../LMSConfigs/Degreed/DegreedConfig.tsx";
-import {
-  INVALID_LINK,
-  INVALID_NAME,
-} from "../../data/constants";
+import { INVALID_LINK, INVALID_NAME } from "../../data/constants";
 import LmsApiService from "../../../../data/services/LmsApiService";
 // @ts-ignore
 import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
@@ -66,6 +58,9 @@ afterEach(() => {
 });
 
 const mockSetExistingConfigFormData = jest.fn();
+const mockPost = jest.fn();
+const mockUpdate = jest.fn();
+const mockDelete = jest.fn();
 
 function testDegreedConfigSetup(formData) {
   return (
@@ -75,15 +70,23 @@ function testDegreedConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         onClickCancel: mockOnClick,
         existingData: formData,
+        existingConfigNames: [],
+        channelMap: {
+          DEGREED2: {
+            post: mockPost,
+            update: mockUpdate,
+            delete: mockDelete,
+          },
+        },
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
-      isStepperOpen={true}
+      isStepperOpen
+      dispatch={jest.fn()}
     />
   );
 }
-
 async function clearForm() {
   await act(async () => {
     fireEvent.change(screen.getByLabelText('Display Name'), {
@@ -104,8 +107,10 @@ async function clearForm() {
   });
 }
 
-
 describe("<DegreedConfig />", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
   test("renders Degreed Enable Form", () => {
     render(testDegreedConfigSetup(noConfigs));
     screen.getByLabelText("Display Name");
@@ -145,7 +150,6 @@ describe("<DegreedConfig />", () => {
   test('it creates new configs on submit', async () => {
     render(testDegreedConfigSetup(noExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
-    
     await clearForm();
 
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -167,7 +171,7 @@ describe("<DegreedConfig />", () => {
       degreed_fetch_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
-    await waitFor(() => expect(LmsApiService.postNewDegreedConfig).toHaveBeenCalledWith(expectedConfig));
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   });
   test('saves draft correctly', async () => {
     render(testDegreedConfigSetup(noExistingData));
@@ -188,7 +192,6 @@ describe("<DegreedConfig />", () => {
     const closeButton = screen.getByRole('button', { name: 'Exit' });
 
     userEvent.click(closeButton);
-    
     const expectedConfig = {
       active: false,
       display_name: 'displayName',
@@ -198,7 +201,7 @@ describe("<DegreedConfig />", () => {
       degreed_fetch_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.postNewDegreedConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testDegreedConfigSetup(invalidExistingData));

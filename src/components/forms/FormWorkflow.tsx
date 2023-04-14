@@ -61,7 +61,7 @@ export type FormWorkflowStep<FormData> = {
     formData: FormData,
     errHandler: FormWorkflowErrorHandler
   ) => Promise<boolean>;
-  nextButtonConfig: (FormData) => FormWorkflowButtonConfig<FormData>;
+  nextButtonConfig: (FormData: FormData) => FormWorkflowButtonConfig<FormData>;
 };
 
 export type FormWorkflowConfig<FormData> = {
@@ -74,7 +74,7 @@ export type FormWorkflowProps<FormData> = {
   onClickOut: (edited: boolean, msg?: string) => null;
   formData: FormData;
   dispatch: Dispatch<FormActionArguments>;
-  onSubmit: (FormData) => void;
+  onSubmit: (FormData: FormData) => void;
   isStepperOpen: boolean;
 };
 
@@ -135,7 +135,7 @@ function FormWorkflow<FormData>({
           nextButtonConfig.awaitSuccess.awaitInterval
         );
         if (!advance && nextButtonConfig?.awaitSuccess) {
-          await nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
+          nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
             formFields: newFormFields,
             errHandler: setFormError,
             dispatch,
