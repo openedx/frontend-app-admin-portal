@@ -6,9 +6,10 @@ import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 import CornerstoneConfigEnablePage, { validations } from "./CornerstoneConfigEnablePage.tsx";
 import type { 
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep,FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
+  // @ts-ignore
+} from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
-import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
+import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type CornerstoneConfigCamelCase = {
   displayName: string;

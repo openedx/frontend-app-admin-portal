@@ -9,9 +9,10 @@ import type {
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
+  // @ts-ignore
+} from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
-import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
+import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type SAPConfigCamelCase = {
   displayName: string;

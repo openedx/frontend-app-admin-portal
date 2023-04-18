@@ -12,10 +12,12 @@ import type {
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
+  // @ts-ignore
+} from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-import { afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils";
+// @ts-ignore
+import { afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
 
 export type CanvasConfigCamelCase = {
   canvasAccountId: string;

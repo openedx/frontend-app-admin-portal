@@ -14,8 +14,10 @@ import type {
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
-import { afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils";
+  // @ts-ignore
+} from "../../../../forms/FormWorkflow.tsx";
+// @ts-ignore
+import { afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
 
 export type BlackboardConfigCamelCase = {
   blackboardAccountId: string;

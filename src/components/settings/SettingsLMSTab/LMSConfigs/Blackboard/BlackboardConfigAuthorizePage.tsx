@@ -21,7 +21,7 @@ import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx"
 // @ts-ignore
 import { setWorkflowStateAction } from "../../../../forms/data/actions.ts";
 // @ts-ignore
-import { LMS_AUTHORIZATION_FAILED } from "../utils";
+import { LMS_AUTHORIZATION_FAILED } from "../utils.tsx";
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",

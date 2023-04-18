@@ -2,14 +2,16 @@ import type { FormFieldValidation } from "../../../forms/FormContext";
 import { BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL, CANVAS_TYPE, INVALID_NAME } from "../../data/constants";
 import handleErrors from "../../utils";
 import { camelCaseDict } from "../../../../utils";
-import { setWorkflowStateAction, updateFormFieldsAction } from "../../../forms/data/actions";
+// @ts-ignore
+import { setWorkflowStateAction, updateFormFieldsAction } from "../../../forms/data/actions.ts";
 import { CanvasConfigCamelCase, CanvasConfigSnakeCase } from "./Canvas/CanvasConfig";
 import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from "./Blackboard/BlackboardConfig";
 import { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from "./Cornerstone/CornerstoneConfig";
 import { DegreedConfigCamelCase, DegreedConfigSnakeCase } from "./Degreed/DegreedConfig";
 import { MoodleConfigCamelCase, MoodleConfigSnakeCase } from "./Moodle/MoodleConfig";
 import { SAPConfigCamelCase, SAPConfigSnakeCase } from "./SAP/SAPConfig";
-import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from "../../../forms/FormWorkflow";
+// @ts-ignore
+import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from "../../../forms/FormWorkflow.tsx";
 
 type ConfigCamelCase =
   BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
