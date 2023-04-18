@@ -31,7 +31,6 @@ export async function handleSubmitHelper(
   dispatch: any,
 ) {
   transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-
   let err = "";
   if (formFieldsChanged) {
     if (currentFormFields?.id) {
@@ -142,7 +141,7 @@ export async function handleSaveHelper(
   if (formFields.id) {
     try {
       transformedConfig.active = existingData.active;
-      await channelMap[lmsType].update(transformedConfig, existingData.id);
+      const response = await channelMap[lmsType].update(transformedConfig, existingData.id);
       onSubmit(formFields);
     } catch (error) {
       err = handleErrors(error);
@@ -150,7 +149,7 @@ export async function handleSaveHelper(
   } else {
     try {
       transformedConfig.active = false;
-      await channelMap[lmsType].post(transformedConfig);
+      const response = await channelMap[lmsType].post(transformedConfig);
       onSubmit(formFields);
     } catch (error) {
       err = handleErrors(error);

@@ -322,7 +322,6 @@ describe('<SettingsLMSTab />', () => {
     });
     const sapCard = screen.getByText(channelMapping[SAP_TYPE].displayName);
     await waitFor(() => fireEvent.click(sapCard));
-    screen.debug();
     expect(screen.queryByText('Enable connection to SAP Success Factors')).toBeTruthy();
     const cancelButton = screen.getByText('Cancel');
     await waitFor(() => userEvent.click(cancelButton));

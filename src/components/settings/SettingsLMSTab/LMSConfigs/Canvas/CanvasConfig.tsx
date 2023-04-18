@@ -90,7 +90,7 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
+    return afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
   };
 
   const onAwaitTimeout = async ({
