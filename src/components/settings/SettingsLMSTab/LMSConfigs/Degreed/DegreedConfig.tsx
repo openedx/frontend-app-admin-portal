@@ -44,7 +44,7 @@ export type DegreedFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
-  channelMap: { [key: string]: {[key: string]: any }},
+  channelMap: Record<string, Record<string, any>>,
 };
 
 export const DegreedFormConfig = ({
@@ -77,7 +77,9 @@ export const DegreedFormConfig = ({
       formFields
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, DEGREED2_TYPE, channelMap, errHandler, dispatch)
+    return handleSubmitHelper(
+      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, 
+      currentFormFields, DEGREED2_TYPE, channelMap, errHandler, dispatch);
   };
 
   const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);

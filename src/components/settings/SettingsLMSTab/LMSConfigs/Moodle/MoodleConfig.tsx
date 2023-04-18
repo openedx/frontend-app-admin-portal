@@ -45,7 +45,7 @@ export type MoodleFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
-  channelMap: { [key: string]: {[key: string]: any }};
+  channelMap: Record<string, Record<string, any>>;
 };
 
 export const MoodleFormConfig = ({
@@ -79,7 +79,9 @@ export const MoodleFormConfig = ({
       formFields
     ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, MOODLE_TYPE, channelMap, errHandler, dispatch)
+    return handleSubmitHelper(
+      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
+      currentFormFields, MOODLE_TYPE, channelMap, errHandler, dispatch)
   };
 
   const activatePage = () => ConfigActivatePage(MOODLE_TYPE);

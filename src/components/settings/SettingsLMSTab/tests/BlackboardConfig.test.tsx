@@ -65,7 +65,7 @@ const mockFetchGlobal = jest.fn();
 mockPost.mockResolvedValue({ data: mockConfigResponseData });
 mockUpdate.mockResolvedValue({ data: mockConfigResponseData });
 mockFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
-mockFetchGlobal.mockReturnValue({ data: { results: { app_key: 1 } } })
+mockFetchGlobal.mockReturnValue({ data: { results: [{ app_key: 1 }] } })
 
 
 function testBlackboardConfigSetup(formData) {

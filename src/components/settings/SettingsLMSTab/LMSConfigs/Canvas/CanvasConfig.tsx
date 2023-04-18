@@ -50,7 +50,7 @@ export type CanvasFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (canvasConfig: CanvasConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
-  channelMap: { [key: string]: {[key: string]: any }},
+  channelMap: Record<string, Record<string, any>>,
 };
 
 export const CanvasFormConfig = ({
@@ -84,7 +84,9 @@ export const CanvasFormConfig = ({
       formFields
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, CANVAS_TYPE, channelMap, errHandler, dispatch)
+    return handleSubmitHelper(
+      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
+      currentFormFields, CANVAS_TYPE, channelMap, errHandler, dispatch);
   };
 
   const awaitAfterSubmit = async ({

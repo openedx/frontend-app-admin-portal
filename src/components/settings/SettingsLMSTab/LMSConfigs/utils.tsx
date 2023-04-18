@@ -13,9 +13,9 @@ import { SAPConfigCamelCase, SAPConfigSnakeCase } from "./SAP/SAPConfig";
 // @ts-ignore
 import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from "../../../forms/FormWorkflow.tsx";
 
-type ConfigCamelCase =
+type ConfigCamelCase = {id?: string, active?: boolean} |
   BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
-type ConfigSnakeCase =
+type ConfigSnakeCase = {enterprise_customer?: string, active?: boolean} |
   BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase | DegreedConfigSnakeCase | MoodleConfigSnakeCase | SAPConfigSnakeCase;
 
 export const LMS_AUTHORIZATION_FAILED = "LMS AUTHORIZATION FAILED";
@@ -23,12 +23,12 @@ export const LMS_AUTHORIZATION_FAILED = "LMS AUTHORIZATION FAILED";
 export async function handleSubmitHelper(
   enterpriseCustomerUuid: string,
   transformedConfig: ConfigSnakeCase,
-  existingData: any,
-  onSubmit: Function,
+  existingData: ConfigCamelCase,
+  onSubmit: (param: ConfigCamelCase) => void,
   formFieldsChanged: Boolean,
   currentFormFields: any,
   lmsType: string,
-  channelMap: { [key: string]: {[key: string]: any }},
+  channelMap: Record<string, Record<string, any>>,
   errHandler: FormWorkflowErrorHandler | undefined,
   dispatch: any,
 ) {
@@ -61,9 +61,20 @@ export async function handleSubmitHelper(
       }
     }
   }
-  if (err) {
-    errHandler?.(err);
-  }
+  const authorizeError = await handleSubmitAuthorize(lmsType, existingData, currentFormFields, channelMap, dispatch);
+  if (err) { errHandler?.(err); }
+  if (authorizeError) { errHandler?.(authorizeError); }
+
+  return currentFormFields;
+}
+
+async function handleSubmitAuthorize(
+  lmsType: string, 
+  existingData: any,
+  currentFormFields: any,
+  channelMap: Record<string, Record<string, any>>,
+  dispatch: any,
+) {
   if ((lmsType === BLACKBOARD_TYPE || lmsType === CANVAS_TYPE) && currentFormFields && !currentFormFields?.refreshToken) {
     let oauthUrl: string;
     if (lmsType == BLACKBOARD_TYPE) {
@@ -73,12 +84,11 @@ export async function handleSubmitHelper(
         try {
           if (lmsType === BLACKBOARD_TYPE) {
             const response = await channelMap[lmsType].fetchGlobal();
-            appKey = response.data.results[response.data.results.length - 1].app_key;
+            appKey = response.data.results.at(-1).app_key;
             configUuid = response.data.uuid;
           }
-          else { }
         } catch (error) {
-          err = handleErrors(error);
+          return handleErrors(error);
         }
       }
       oauthUrl = `${currentFormFields.blackboardBaseUrl}/learn/api/public/v1/oauth2/authorizationcode?`
@@ -95,13 +105,13 @@ export async function handleSubmitHelper(
     window.open(oauthUrl);
     dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, true));
   }
-  return currentFormFields;
+  return null;
 }
 
 export async function afterSubmitHelper(
   lmsType: string,
   formFields: any,
-  channelMap: { [key: string]: {[key: string]: any }},
+  channelMap: Record<string, Record<string, any>>,
   errHandler: FormWorkflowErrorHandler | undefined,
   dispatch: any) {
   if (formFields?.id) {
@@ -125,25 +135,24 @@ export async function afterSubmitHelper(
   return false;
 }
 
-export async function onTimeoutHelper(
-  dispatch: any) {
+export async function onTimeoutHelper(dispatch: any) {
   dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false));
   dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
 }
 
 export async function handleSaveHelper(
   transformedConfig: ConfigSnakeCase,
-  existingData: any,
+  existingData: ConfigCamelCase,
   formFields: ConfigCamelCase,
-  onSubmit: Function,
+  onSubmit: (param: ConfigCamelCase) => void,
   lmsType: string,
-  channelMap: { [key: string]: {[key: string]: any }},
+  channelMap: Record<string, Record<string, any>>,
   errHandler: (errMsg: string) => void) {
   let err = "";
   if (formFields.id) {
     try {
       transformedConfig.active = existingData.active;
-      const response = await channelMap[lmsType].update(transformedConfig, existingData.id);
+      await channelMap[lmsType].update(transformedConfig, existingData.id);
       onSubmit(formFields);
     } catch (error) {
       err = handleErrors(error);
@@ -151,7 +160,7 @@ export async function handleSaveHelper(
   } else {
     try {
       transformedConfig.active = false;
-      const response = await channelMap[lmsType].post(transformedConfig);
+      await channelMap[lmsType].post(transformedConfig);
       onSubmit(formFields);
     } catch (error) {
       err = handleErrors(error);
@@ -163,15 +172,14 @@ export async function handleSaveHelper(
   return !err;
 }
 
-export function checkForDuplicateNames(existingConfigNames: string[], existingData: any): FormFieldValidation {
-  const configNames: string[] = existingConfigNames?.filter((name) => name !== existingData.displayName);
-  const displayNameValidation: FormFieldValidation = {
-    formFieldId: 'displayName',
-    validator: () => {
-      return configNames?.includes('displayName')
-        ? INVALID_NAME
-        : false;
-    },
-  }
-  return displayNameValidation;
+export function checkForDuplicateNames(
+  existingConfigNames: string[], existingData: {displayName: string}): FormFieldValidation {
+    return {
+      formFieldId: 'displayName',
+      validator: () => {
+        return existingConfigNames?.includes(existingData.displayName)
+          ? INVALID_NAME
+          : false;
+      },
+    };
 }

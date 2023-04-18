@@ -47,7 +47,7 @@ export type BlackboardFormConfigProps = {
   existingConfigNames: string[];
   onSubmit: (blackboardConfig: BlackboardConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
-  channelMap: { [key: string]: {[key: string]: any }},
+  channelMap: Record<string, Record<string, any>>,
 };
 
 export const BlackboardFormConfig = ({
@@ -81,7 +81,9 @@ export const BlackboardFormConfig = ({
       formFields
     ) as BlackboardConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSubmitHelper(enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, currentFormFields, BLACKBOARD_TYPE, channelMap, errHandler, dispatch)
+    return handleSubmitHelper(
+      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
+      currentFormFields, BLACKBOARD_TYPE, channelMap, errHandler, dispatch);
   };
 
   const awaitAfterSubmit = async ({
