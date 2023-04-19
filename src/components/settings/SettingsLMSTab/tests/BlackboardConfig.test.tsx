@@ -15,7 +15,6 @@ import {
   INVALID_LINK,
   INVALID_NAME,
 } from "../../data/constants";
-import LmsApiService from "../../../../data/services/LmsApiService";
 // @ts-ignore
 import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
 import { findElementWithText } from "../../../test/testUtils";
@@ -25,22 +24,6 @@ jest.mock("../../data/constants", () => ({
   LMS_CONFIG_OAUTH_POLLING_INTERVAL: 0,
 }));
 window.open = jest.fn();
-const mockUpdateConfigApi = jest.spyOn(LmsApiService, "updateBlackboardConfig");
-const mockConfigResponseData = {
-  uuid: 'foobar',
-  id: 1,
-  display_name: 'display name',
-  blackboard_base_url: 'https://foobar.com',
-  active: false,
-};
-mockUpdateConfigApi.mockResolvedValue({ data: mockConfigResponseData });
-
-const mockPostConfigApi = jest.spyOn(LmsApiService, 'postNewBlackboardConfig');
-mockPostConfigApi.mockResolvedValue({ data: mockConfigResponseData });
-
-const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
-mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: 'foobar' } });
-
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
 // Freshly creating a config will have an empty existing data object
@@ -66,11 +49,24 @@ const existingConfigDataNoAuth = {
 
 const noConfigs = [];
 
-afterEach(() => {
-  jest.clearAllMocks();
-});
+const mockConfigResponseData = {
+  uuid: 'foobar',
+  id: 1,
+  display_name: 'display name',
+  blackboard_base_url: 'https://foobar.com',
+  active: false,
+};
 
 const mockSetExistingConfigFormData = jest.fn();
+const mockPost = jest.fn();
+const mockUpdate = jest.fn();
+const mockFetch = jest.fn();
+const mockFetchGlobal = jest.fn();
+mockPost.mockResolvedValue({ data: mockConfigResponseData });
+mockUpdate.mockResolvedValue({ data: mockConfigResponseData });
+mockFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
+mockFetchGlobal.mockReturnValue({ data: { results: [{ app_key: 1 }] } })
+
 
 function testBlackboardConfigSetup(formData) {
   return (
@@ -80,11 +76,21 @@ function testBlackboardConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         onClickCancel: mockOnClick,
         existingData: formData,
+        existingConfigNames: [],
+        channelMap: {
+          BLACKBOARD: {
+            post: mockPost,
+            update: mockUpdate,
+            fetch: mockFetch,
+            fetchGlobal: mockFetchGlobal,
+          },
+        }
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen={true}
+      dispatch={jest.fn()}
     />
   );
 }
@@ -102,6 +108,9 @@ async function clearForm() {
 
 
 describe("<BlackboardConfig />", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("renders Blackboard Authorize Form", () => {
     render(testBlackboardConfigSetup(noConfigs));
     screen.getByLabelText("Display Name");
@@ -158,7 +167,7 @@ describe("<BlackboardConfig />", () => {
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.updateBlackboardConfig).toHaveBeenCalledWith(expectedConfig, 1);
+    expect(mockUpdate).toHaveBeenCalledWith(expectedConfig, 1);
   });
   test('it creates new configs on submit', async () => {
     render(testBlackboardConfigSetup(noExistingData));
@@ -181,7 +190,7 @@ describe("<BlackboardConfig />", () => {
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.postNewBlackboardConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('saves draft correctly', async () => {
     render(testBlackboardConfigSetup(noExistingData));
@@ -205,7 +214,7 @@ describe("<BlackboardConfig />", () => {
       enterprise_customer: enterpriseId,
       blackboard_base_url: 'https://www.test4.com',
     };
-    expect(LmsApiService.postNewBlackboardConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('Authorizing a config will initiate backend polling', async () => {
     render(testBlackboardConfigSetup(noExistingData));
@@ -220,7 +229,7 @@ describe("<BlackboardConfig />", () => {
     // await a change in button text from authorize to activate 
     await waitFor(() => expect(authorizeButton).toBeDisabled())
     expect(window.open).toHaveBeenCalled();
-    expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    expect(mockFetch).toHaveBeenCalledWith(1);
   });
   test('Authorizing an existing, edited config will call update config endpoint', async () => {
     render(testBlackboardConfigSetup(existingConfigDataNoAuth));
@@ -242,9 +251,9 @@ describe("<BlackboardConfig />", () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.getByText('Authorization in progress')).toBeInTheDocument());
-    expect(mockUpdateConfigApi).toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
-    expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    expect(mockFetch).toHaveBeenCalledWith(1);
     await waitFor(() => expect(screen.getByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
   });
   test('Authorizing an existing config will not call update or create config endpoint', async () => {
@@ -257,9 +266,9 @@ describe("<BlackboardConfig />", () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.getByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-    expect(mockUpdateConfigApi).not.toHaveBeenCalled();
+    expect(mockUpdate).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
-    expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    expect(mockFetch).toHaveBeenCalledWith(1);
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testBlackboardConfigSetup(invalidExistingData));

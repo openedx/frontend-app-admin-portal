@@ -15,38 +15,14 @@ import {
   INVALID_LINK,
   INVALID_NAME,
 } from "../../data/constants";
-import LmsApiService from "../../../../data/services/LmsApiService";
 // @ts-ignore
 import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
-import { findElementWithText } from "../../../test/testUtils";
 
 jest.mock("../../data/constants", () => ({
   ...jest.requireActual("../../data/constants"),
   LMS_CONFIG_OAUTH_POLLING_INTERVAL: 0,
 }));
 window.open = jest.fn();
-const mockUpdateConfigApi = jest.spyOn(LmsApiService, "updateCanvasConfig");
-const mockConfigResponseData = {
-  uuid: "foobar",
-  id: 1,
-  display_name: "display name",
-  canvas_base_url: "https://foobar.com",
-  canvas_account_id: 1,
-  client_id: "123abc",
-  client_secret: "asdhfahsdf",
-  active: false,
-};
-mockUpdateConfigApi.mockResolvedValue({ data: mockConfigResponseData });
-
-const mockPostConfigApi = jest.spyOn(LmsApiService, "postNewCanvasConfig");
-mockPostConfigApi.mockResolvedValue({ data: mockConfigResponseData });
-
-const mockFetchSingleConfig = jest.spyOn(
-  LmsApiService,
-  "fetchSingleCanvasConfig"
-);
-mockFetchSingleConfig.mockResolvedValue({ data: { refresh_token: "foobar" } });
-
 const enterpriseId = "test-enterprise-id";
 
 const mockOnClick = jest.fn();
@@ -74,13 +50,28 @@ const existingConfigDataNoAuth = {
   canvasAccountId: 10,
 };
 
+
+const mockConfigResponseData = {
+  uuid: 'foobar',
+  id: 1,
+  canvas_account_id: 1,
+  display_name: 'display name',
+  canvas_base_url: 'https://foobar.com',
+  client_id: "wassap",
+  client_secret: "chewlikeyouhaveasecret",
+  active: false,
+};
+
 const noConfigs = [];
 
-afterEach(() => {
-  jest.clearAllMocks();
-});
-
 const mockSetExistingConfigFormData = jest.fn();
+const mockPost = jest.fn();
+const mockUpdate = jest.fn();
+const mockFetch = jest.fn();
+mockPost.mockResolvedValue({ data: mockConfigResponseData });
+mockUpdate.mockResolvedValue({ data: mockConfigResponseData });
+mockFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
+
 
 function testCanvasConfigSetup(formData) {
   return (
@@ -90,11 +81,20 @@ function testCanvasConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         onClickCancel: mockOnClick,
         existingData: formData,
+        existingConfigNames: [],
+        channelMap: {
+          CANVAS: {
+            post: mockPost,
+            update: mockUpdate,
+            fetch: mockFetch,
+          },
+        }
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen={true}
+      dispatch={jest.fn()}
     />
   );
 }
@@ -121,9 +121,11 @@ async function clearForm() {
 
 
 describe("<CanvasConfig />", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("renders Canvas Authorize Form", () => {
     render(testCanvasConfigSetup(noConfigs));
-
     screen.getByLabelText("Display Name");
     screen.getByLabelText("API Client ID");
     screen.getByLabelText("API Client Secret");
@@ -191,7 +193,7 @@ describe("<CanvasConfig />", () => {
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.updateCanvasConfig).toHaveBeenCalledWith(expectedConfig, 1);
+    expect(mockUpdate).toHaveBeenCalledWith(expectedConfig, 1);
   });
   test('it creates new configs on submit', async () => {
     render(testCanvasConfigSetup(noExistingData));
@@ -220,7 +222,7 @@ describe("<CanvasConfig />", () => {
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
     };
-    expect(LmsApiService.postNewCanvasConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('saves draft correctly', async () => {
     render(testCanvasConfigSetup(noExistingData));
@@ -250,7 +252,7 @@ describe("<CanvasConfig />", () => {
       client_id: 'test1',
       client_secret: 'test2',
     };
-    expect(LmsApiService.postNewCanvasConfig).toHaveBeenCalledWith(expectedConfig);
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('Authorizing a config will initiate backend polling', async () => {
     render(testCanvasConfigSetup(noExistingData));
@@ -270,7 +272,7 @@ describe("<CanvasConfig />", () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
 
     expect(window.open).toHaveBeenCalled();
-    expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    expect(mockFetch).toHaveBeenCalledWith(1);
   });
   test('Authorizing an existing, edited config will call update config endpoint', async () => {
     render(testCanvasConfigSetup(existingConfigDataNoAuth));
@@ -292,9 +294,9 @@ describe("<CanvasConfig />", () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.getByText('Authorization in progress')).toBeInTheDocument());
-    expect(mockUpdateConfigApi).toHaveBeenCalled();
+    expect(mockUpdate).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
-    expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    expect(mockFetch).toHaveBeenCalledWith(1);
     await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
   });
   test('Authorizing an existing config will not call update or create config endpoint', async () => {
@@ -307,9 +309,9 @@ describe("<CanvasConfig />", () => {
 
     // Await a find by text in order to account for state changes in the button callback
     await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-    expect(mockUpdateConfigApi).not.toHaveBeenCalled();
+    expect(mockUpdate).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
-    expect(mockFetchSingleConfig).toHaveBeenCalledWith(1);
+    expect(mockFetch).toHaveBeenCalledWith(1);
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testCanvasConfigSetup(invalidExistingData));
@@ -345,8 +347,8 @@ describe("<CanvasConfig />", () => {
       displayName: 'display name',
       canvasBaseUrl: 'https://foobar.com',
       canvasAccountId: 1,
-      clientId: '123abc',
-      clientSecret: 'asdhfahsdf',
+      clientId: 'wassap',
+      clientSecret: 'chewlikeyouhaveasecret',
       active: false,
     });
   });

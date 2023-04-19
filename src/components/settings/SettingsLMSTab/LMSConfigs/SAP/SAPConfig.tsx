@@ -1,9 +1,9 @@
 import { snakeCaseDict } from "../../../../../utils";
-import { MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { SAP_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-  // @ts-ignore
-import MoodleConfigEnablePage, { validations } from "./MoodleConfigEnablePage.tsx";
+// @ts-ignore
+import SAPConfigEnablePage, { validations } from "./SAPConfigEnablePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
@@ -14,58 +14,60 @@ import type {
 // @ts-ignore
 import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
-export type MoodleConfigCamelCase = {
+export type SAPConfigCamelCase = {
   displayName: string;
-  moodleBaseUrl: string;
-  webserviceShortName: string;
-  token: string;
-  username: string;
-  password: string;
+  sapBaseUrl: string;
+  sapCompanyId: string;
+  sapUserId: string;
+  oauthClientId: string;
+  oauthClientSecret: string;
+  sapUserType: string;
   id: string;
   active: boolean;
   uuid: string;
 };
 
-export type MoodleConfigSnakeCase = {
+export type SAPConfigSnakeCase = {
   display_name: string;
-  moodle_base_url: string;
-  webservice_short_name: string;
-  token: string;
-  username: string;
-  password: string;
+  sap_base_url: string;
+  sap_company_id: string;
+  sap_user_id: string;
+  oauth_client_id: string;
+  oauth_client_secret: string;
+  sap_user_type: string;
   id: string;
   active: boolean;
   uuid: string;
   enterprise_customer: string;
 };
 
-export type MoodleFormConfigProps = {
+export type SAPFormConfigProps = {
   enterpriseCustomerUuid: string;
-  existingData: MoodleConfigCamelCase;
+  existingData: SAPConfigCamelCase;
   existingConfigNames: string[];
-  onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
+  onSubmit: (sapConfig: SAPConfigCamelCase) => void;
   onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;
 };
 
-export const MoodleFormConfig = ({
+export const SAPFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
   onClickCancel,
   existingData,
   existingConfigNames,
-  channelMap, 
-}: MoodleFormConfigProps): FormWorkflowConfig<MoodleConfigCamelCase> => {
+  channelMap,
+}: SAPFormConfigProps): FormWorkflowConfig<SAPConfigCamelCase> => {
 
   const saveChanges = async (
-    formFields: MoodleConfigCamelCase,
+    formFields: SAPConfigCamelCase,
     errHandler: (errMsg: string) => void
   ) => {
-    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: SAPConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as MoodleConfigSnakeCase;
+    ) as SAPConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, MOODLE_TYPE, channelMap, errHandler);
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, SAP_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -73,23 +75,23 @@ export const MoodleFormConfig = ({
     formFieldsChanged,
     errHandler,
     dispatch,
-  }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
+  }: FormWorkflowHandlerArgs<SAPConfigCamelCase>) => {
     let currentFormFields = formFields;
-    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: SAPConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as MoodleConfigSnakeCase;
+    ) as SAPConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
       enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, MOODLE_TYPE, channelMap, errHandler, dispatch)
+      currentFormFields, SAP_TYPE, channelMap, errHandler, dispatch);
   };
 
-  const activatePage = () => ConfigActivatePage(MOODLE_TYPE);
+  const activatePage = () => ConfigActivatePage(SAP_TYPE);
 
-  const steps: FormWorkflowStep<MoodleConfigCamelCase>[] = [
+  const steps: FormWorkflowStep<SAPConfigCamelCase>[] = [
     {
       index: 0,
-      formComponent: MoodleConfigEnablePage,
+      formComponent: SAPConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
       saveChanges,
@@ -99,7 +101,7 @@ export const MoodleFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        return config as FormWorkflowButtonConfig<MoodleConfigCamelCase>;
+        return config as FormWorkflowButtonConfig<SAPConfigCamelCase>;
       },
     },
     {
@@ -128,4 +130,4 @@ export const MoodleFormConfig = ({
   };
 };
 
-export default MoodleFormConfig;
+export default SAPFormConfig;
