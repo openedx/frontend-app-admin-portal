@@ -107,7 +107,8 @@ export function FormReducer<FormFields>(
         errorMap: {}
       };
     case SET_STEP:
-      const setStepArgs = action as SetStepArguments<FormFields>;
+    // TODO: Make sure LMSFormWorkflowConfig gets updated here with any LMS selection  
+    const setStepArgs = action as SetStepArguments<FormFields>;
       return { ...state, currentStep: setStepArgs.step };
     case SET_WORKFLOW_STATE:
       const setStateArgs = action as SetWorkflowStateArguments<any>;
