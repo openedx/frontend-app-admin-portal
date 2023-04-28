@@ -12,7 +12,6 @@ import {
 import debounce from 'lodash.debounce';
 import moment from 'moment';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { getConfig } from '@edx/frontend-platform/config';
 
 import { SubscriptionContext } from '../../SubscriptionData';
 import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
@@ -29,7 +28,6 @@ import RevokeBulkAction from './bulk-actions/RevokeBulkAction';
 import LicenseManagementTableActionColumn from './LicenseManagementTableActionColumn';
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
-import { pushEvent, EVENTS, isExperimentActive } from '../../../../optimizely';
 
 const userRecentAction = (user) => {
   switch (user.status) {
@@ -60,8 +58,6 @@ const LicenseManagementTable = () => {
   const [toastMessage, setToastMessage] = useState('');
   const { width } = useWindowSize();
   const showFiltersInSidebar = useMemo(() => width > breakpoints.medium.maxWidth, [width]);
-
-  const config = getConfig();
 
   const {
     forceRefresh: forceRefreshSubscription,
@@ -176,18 +172,12 @@ const LicenseManagementTable = () => {
 
   // Successful action modal callback
   const onRemindSuccess = () => {
-    if (isExperimentActive(config.EXPERIMENT_1_ID)) {
-      pushEvent(EVENTS.SUBSCRIPTION_LICENSE_REMIND, { enterpriseUUID: subscription.enterpriseCustomerUuid });
-    }
     // Refresh users to get updated lastRemindDate
     forceRefreshUsers();
     setToastMessage('Users successfully reminded');
     setShowToast(true);
   };
   const onRevokeSuccess = () => {
-    if (isExperimentActive(config.EXPERIMENT_1_ID)) {
-      pushEvent(EVENTS.SUBSCRIPTION_LICENSE_REVOKE, { enterpriseUUID: subscription.enterpriseCustomerUuid });
-    }
     // Refresh subscription and user data to get updated revoke count and revoked list of users
     forceRefreshSubscription();
     forceRefreshDetailView();
