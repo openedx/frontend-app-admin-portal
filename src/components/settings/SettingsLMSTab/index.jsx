@@ -47,10 +47,9 @@ const SettingsLMSTab = ({
   // onClick function for existing config cards' edit action
   const editExistingConfig = (configData, configType) => {
     setConfigsLoading(false);
+    // Setting this allows us to skip the selection step in the stepper
     setLmsType(configData.channelCode);
     openLmsStepper();
-
-    // How can I advance the step if I don’t have access to the dispatch in index.jsx?
     // Set the form data to the card's associated config data
     setExistingConfigFormData(configData);
     // Set the config type to the card's type
@@ -85,9 +84,9 @@ const SettingsLMSTab = ({
   }, [enterpriseId]);
 
   const onClick = (input) => {
-    // Either we're creating a new config (a create config card was clicked), or we're navigating
-    // back to the landing state from a form (submit or cancel was hit on the forms). In both cases,
-    // we want to clear existing config form data.
+    // Either we're creating a new config, or we're navigating back to
+    // the landing state from a form (submit or cancel was hit on the forms).
+    // In both cases, we want to clear existing config form data.
     setExistingConfigFormData({});
     // If either the user has submit or canceled
     if (input === '' || toastMessages.includes(input)) {
@@ -109,7 +108,7 @@ const SettingsLMSTab = ({
   };
 
   useEffect(() => {
-    // On load fetch potential existing configs
+    // On load, fetch potential existing configs
     fetchExistingConfigs();
   }, [fetchExistingConfigs]);
 
@@ -188,12 +187,12 @@ const SettingsLMSTab = ({
       {isLmsStepperOpen && (
         <span>
           <LMSConfigPage
-            onClick
+            onClick={onClick}
             existingConfigFormData={existingConfigFormData}
             existingConfigs={displayNames}
-            setExistingConfigFormData
-            isLmsStepperOpen
-            closeLmsStepper
+            setExistingConfigFormData={setExistingConfigFormData}
+            isLmsStepperOpen={isLmsStepperOpen}
+            closeLmsStepper={closeLmsStepper}
             lmsType={lmsType}
           />
         </span>

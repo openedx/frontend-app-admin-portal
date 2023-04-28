@@ -90,7 +90,8 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    return afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
+    const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
+    return response;
   };
 
   const onAwaitTimeout = async ({

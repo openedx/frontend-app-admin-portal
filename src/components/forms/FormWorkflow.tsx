@@ -122,7 +122,6 @@ function FormWorkflow<FormData>({
         dispatch,
         formFieldsChanged: !!isEdited,
       });
-
       if (nextButtonConfig?.awaitSuccess) {
         advance = await pollAsync(
           () =>
