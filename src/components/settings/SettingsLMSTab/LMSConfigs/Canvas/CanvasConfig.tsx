@@ -17,7 +17,7 @@ import type {
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 // @ts-ignore
-import { afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
+import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
 
 export type CanvasConfigCamelCase = {
   canvasAccountId: string;
@@ -49,14 +49,14 @@ export type CanvasFormConfigProps = {
   existingData: CanvasConfigCamelCase;
   existingConfigNames: string[];
   onSubmit: (canvasConfig: CanvasConfigCamelCase) => void;
-  onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
 };
 
 export const CanvasFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
-  onClickCancel,
+  handleCloseClick,
   existingData,
   existingConfigNames,
   channelMap,
@@ -103,11 +103,19 @@ export const CanvasFormConfig = ({
     onTimeoutHelper(dispatch);
   };
 
+  const activate = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, CANVAS_TYPE, formFields?.id, handleCloseClick, errHandler);
+    return formFields;
+  };
+
   const activatePage = () => ConfigActivatePage(CANVAS_TYPE);
 
   const steps: FormWorkflowStep<CanvasConfigCamelCase>[] = [
     {
-      index: 0,
+      index: 1,
       formComponent: CanvasConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Authorize",
@@ -136,19 +144,19 @@ export const CanvasFormConfig = ({
       },
     },
     {
-      index: 1,
+      index: 2,
       formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,
-      nextButtonConfig: () => ({
-        buttonText: "Activate",
-        opensNewWindow: false,
-        onClick: () => {
-          onClickCancel(true, SUBMIT_TOAST_MESSAGE);
-          return Promise.resolve(existingData);
-        },
-      }),
+      nextButtonConfig: () => {
+        let config = {
+          buttonText: "Activate",
+          opensNewWindow: false,
+          onClick: activate,
+        };
+        return config as FormWorkflowButtonConfig<CanvasConfigCamelCase>;
+      }
     },
   ];
 

@@ -74,7 +74,7 @@ function testBlackboardConfigSetup(formData) {
       formWorkflowConfig={BlackboardConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {
@@ -156,8 +156,8 @@ describe("<BlackboardConfig />", () => {
 
     userEvent.click(authorizeButton);
 
-    // await a change in button text from authorize to activate 
-    await waitFor(() => expect(screen.findByRole('button', {name: 'Activate'})))
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
 
     const expectedConfig = {
       active: true,
@@ -181,8 +181,8 @@ describe("<BlackboardConfig />", () => {
 
     userEvent.click(authorizeButton);
 
-    // await a change in button text from authorize to activate 
-    await waitFor(() => expect(screen.findByRole('button', {name: 'Activate'})))
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
 
     const expectedConfig = {
       active: false,
@@ -226,8 +226,8 @@ describe("<BlackboardConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // await a change in button text from authorize to activate 
-    await waitFor(() => expect(authorizeButton).toBeDisabled())
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);
   });
@@ -248,9 +248,8 @@ describe("<BlackboardConfig />", () => {
 
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Authorization in progress')).toBeInTheDocument());
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
     expect(mockUpdate).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);

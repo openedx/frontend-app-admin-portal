@@ -79,7 +79,7 @@ function testCanvasConfigSetup(formData) {
       formWorkflowConfig={CanvasConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {
@@ -268,9 +268,8 @@ describe("<CanvasConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // await a text change from 'Authorize' to 'Activate'
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
-
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Canvas and return to this window once complete.')));
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);
   });
@@ -292,8 +291,8 @@ describe("<CanvasConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Authorization in progress')).toBeInTheDocument());
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Canvas and return to this window once complete.')));
     expect(mockUpdate).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);
@@ -307,11 +306,12 @@ describe("<CanvasConfig />", () => {
 
     userEvent.click(authorizeButton);
 
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Canvas and return to this window once complete.')));
     expect(mockUpdate).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);
+    await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testCanvasConfigSetup(invalidExistingData));

@@ -1,13 +1,8 @@
 import groupBy from "lodash/groupBy";
 import isEmpty from "lodash/isEmpty";
 import keys from "lodash/keys"
-import {
-  SET_FORM_FIELD,
-  SET_STEP,
-  SET_WORKFLOW_STATE,
-  UPDATE_FORM_FIELDS,
 // @ts-ignore
-} from "./actions.ts";
+import { SET_FORM_FIELD, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS } from "./actions.ts";
 import type {
   FormActionArguments,
   SetFormFieldArguments,
@@ -24,7 +19,9 @@ const processFormErrors = (state: FormContext): FormContext => {
     hasErrors: false,
     errorMap: {},
   };
-  if (state.formFields) {
+  if (typeof state.currentStep?.validations == "boolean") {
+    errorState = {hasErrors: state.currentStep?.validations, errorMap: {}};
+  } else if (state.formFields) {
     // Generate list of errors with their formFieldIds
     // const formFieldsCopy = {...state.formFields};
     const errors = state.currentStep?.validations
@@ -107,8 +104,7 @@ export function FormReducer<FormFields>(
         errorMap: {}
       };
     case SET_STEP:
-    // TODO: Make sure LMSFormWorkflowConfig gets updated here with any LMS selection  
-    const setStepArgs = action as SetStepArguments<FormFields>;
+      const setStepArgs = action as SetStepArguments<FormFields>;
       return { ...state, currentStep: setStepArgs.step };
     case SET_WORKFLOW_STATE:
       const setStateArgs = action as SetWorkflowStateArguments<any>;

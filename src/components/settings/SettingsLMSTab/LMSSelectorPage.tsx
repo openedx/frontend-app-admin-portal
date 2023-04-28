@@ -1,42 +1,38 @@
 import React from "react";
 
-import { Container, Form, Image } from "@edx/paragon";
+import { Container, Image, SelectableBox, } from "@edx/paragon";
+import { channelMapping } from "../../../utils.js";
+import { LMS_KEYS } from "../data/constants.js";
 
-import {
-  useFormContext,
-  // @ts-ignore
-} from "../../../../forms/FormContext.tsx";
-import { FormFieldValidation } from "../../forms/FormContext";
-
-export const formFieldNames = {
-  LMS: "LMS",
-};
-
-export const validations: FormFieldValidation[] = [
-  {
-    formFieldId: formFieldNames.LMS,
-    validator: (fields) => {
-      const lmsSelection = fields[formFieldNames.LMS];
-      return !lmsSelection;
-    },
-  },
-];
-
-// LMS selector form page
-const LMSSelectorPage = () => {
-  const { dispatch, stateMap } = useFormContext();
-  return (
-    <Container size='md'>
-      <span className='d-flex pb-4'>
-        <h3>
-          Authorize connection to Canvas
-        </h3>
-      </span>
-      <Form style={{ maxWidth: "60rem" }}>
-        {/* TODO: Render the selector */}
-      </Form>
-    </Container>
-  );
-};
-
-export default LMSSelectorPage;
+export function LMSSelectorPage(lms: string, setLms: (value: string) => void) {
+  const LMSSelectorPageImpl = () => {
+    const handleChange = e => setLms(e.target.value);
+    return (
+      <Container size='lg'>
+        <span className='pb-4'>
+          <h3 className='pb-3'>
+            Let's get started
+          </h3>
+          <p>Select the LMS or LXP you want to integrate with edX For Business.</p>
+          <SelectableBox.Set
+            type='radio'
+            value={lms}
+            onChange={handleChange}
+            name="colors"
+            columns={3}
+          >
+            {LMS_KEYS.map(lms => (
+              <SelectableBox value={lms} type='radio' aria-label={`select ${channelMapping[lms].displayName}`}>
+                <div className="select-lms-card">
+                  <Image className="lms-icon" src={channelMapping[lms].icon} />
+                  <h3 className='pl-3'>{channelMapping[lms].displayName}</h3>
+                </div>
+              </SelectableBox>
+            ))}
+          </SelectableBox.Set>
+        </span>
+      </Container>
+    );
+  };
+  return LMSSelectorPageImpl;
+}

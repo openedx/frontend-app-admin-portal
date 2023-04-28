@@ -12,7 +12,7 @@ import type {
   // @ts-ignore
 } from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
-import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
+import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type SAPConfigCamelCase = {
   displayName: string;
@@ -46,14 +46,14 @@ export type SAPFormConfigProps = {
   existingData: SAPConfigCamelCase;
   existingConfigNames: string[];
   onSubmit: (sapConfig: SAPConfigCamelCase) => void;
-  onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;
 };
 
 export const SAPFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
-  onClickCancel,
+  handleCloseClick,
   existingData,
   existingConfigNames,
   channelMap,
@@ -86,11 +86,20 @@ export const SAPFormConfig = ({
       currentFormFields, SAP_TYPE, channelMap, errHandler, dispatch);
   };
 
+  const activate = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<SAPConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, SAP_TYPE, formFields?.id, handleCloseClick, errHandler);
+    return formFields;
+  };
+
+
   const activatePage = () => ConfigActivatePage(SAP_TYPE);
 
   const steps: FormWorkflowStep<SAPConfigCamelCase>[] = [
     {
-      index: 0,
+      index: 1,
       formComponent: SAPConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
@@ -105,19 +114,19 @@ export const SAPFormConfig = ({
       },
     },
     {
-      index: 1,
+      index: 2,
       formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,
-      nextButtonConfig: () => ({
-        buttonText: "Activate",
-        opensNewWindow: false,
-        onClick: () => {
-          onClickCancel(true, SUBMIT_TOAST_MESSAGE);
-          return Promise.resolve(existingData);
-        },
-      }),
+      nextButtonConfig: () => {
+        let config = {
+          buttonText: "Activate",
+          opensNewWindow: false,
+          onClick: activate,
+        };
+        return config as FormWorkflowButtonConfig<SAPConfigCamelCase>;
+      }
     },
   ];
 

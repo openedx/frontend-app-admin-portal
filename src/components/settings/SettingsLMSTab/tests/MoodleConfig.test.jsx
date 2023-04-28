@@ -76,7 +76,7 @@ function testMoodleConfigSetup(formData) {
       formWorkflowConfig={MoodleConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {

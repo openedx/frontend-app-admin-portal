@@ -1,5 +1,7 @@
 import type { FormFieldValidation } from "../../../forms/FormContext";
-import { BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL, CANVAS_TYPE, INVALID_NAME } from "../../data/constants";
+import { 
+  BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL, CANVAS_TYPE, INVALID_NAME, SUBMIT_TOAST_MESSAGE 
+} from "../../data/constants";
 import handleErrors from "../../utils";
 import { camelCaseDict } from "../../../../utils";
 // @ts-ignore
@@ -182,4 +184,32 @@ export function checkForDuplicateNames(
           : false;
       },
     };
+}
+
+export async function activateConfig(
+  enterpriseCustomerUuid: string,
+  channelMap: Record<string, Record<string, any>>,
+  lmsType: string,
+  id: string | undefined,
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>,
+  errHandler: FormWorkflowErrorHandler | undefined,
+  ) {
+    const configOptions = {
+    active: true,
+    enterprise_customer: enterpriseCustomerUuid,
+  };
+  let err;
+  try {
+    await channelMap[lmsType].update(configOptions, id);
+  } catch (error) {
+    err = handleErrors(error);
+  }
+  if (err) {
+    errHandler?.(err);
+  } else {
+    handleCloseClick(true, SUBMIT_TOAST_MESSAGE);
+  }
+  if (err) {
+    errHandler?.(err);
+  }
 }

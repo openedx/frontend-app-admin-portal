@@ -56,7 +56,7 @@ export type FormWorkflowStep<FormData> = {
   index: number;
   stepName: string;
   formComponent: DynamicComponent;
-  validations: FormFieldValidation[];
+  validations: FormFieldValidation[] | boolean;
   saveChanges: (
     formData: FormData,
     errHandler: FormWorkflowErrorHandler
@@ -122,6 +122,7 @@ function FormWorkflow<FormData>({
         dispatch,
         formFieldsChanged: !!isEdited,
       });
+
       if (nextButtonConfig?.awaitSuccess) {
         advance = await pollAsync(
           () =>

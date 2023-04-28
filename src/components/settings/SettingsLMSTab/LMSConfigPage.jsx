@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
 import { getChannelMap } from '../../../utils';
-import LMSFormWorkflowConfig from '../LMSFormWorkflowConfig.tsx';
+import LMSFormWorkflowConfig from './LMSFormWorkflowConfig.tsx';
 
 const LMSConfigPage = ({
   onClick,
@@ -14,6 +14,7 @@ const LMSConfigPage = ({
   setExistingConfigFormData,
   isLmsStepperOpen,
   closeLmsStepper,
+  lmsType,
 }) => {
   const channelMap = useMemo(() => getChannelMap(), []);
   const handleCloseWorkflow = (submitted, msg) => {
@@ -25,10 +26,11 @@ const LMSConfigPage = ({
   const formWorkflowConfig = LMSFormWorkflowConfig({
     enterpriseCustomerUuid,
     onSubmit: setExistingConfigFormData,
-    onClickCancel: handleCloseWorkflow,
+    handleCloseClick: handleCloseWorkflow,
     existingData: existingConfigFormData,
     existingConfigNames: existingConfigs,
     channelMap,
+    lmsType,
   });
 
   return (
@@ -49,6 +51,7 @@ const mapStateToProps = (state) => ({
 
 LMSConfigPage.defaultProps = {
   existingConfigs: [],
+  lmsType: '',
 };
 
 LMSConfigPage.propTypes = {
@@ -59,6 +62,7 @@ LMSConfigPage.propTypes = {
   setExistingConfigFormData: PropTypes.func.isRequired,
   isLmsStepperOpen: PropTypes.bool.isRequired,
   closeLmsStepper: PropTypes.func.isRequired,
+  lmsType: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(LMSConfigPage);

@@ -68,7 +68,7 @@ function testDegreedConfigSetup(formData) {
       formWorkflowConfig={DegreedConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {

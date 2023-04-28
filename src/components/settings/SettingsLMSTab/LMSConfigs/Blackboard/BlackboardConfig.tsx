@@ -3,7 +3,6 @@ import {
   BLACKBOARD_TYPE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-  SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
@@ -17,7 +16,7 @@ import type {
   // @ts-ignore
 } from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
-import { afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
+import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
 
 export type BlackboardConfigCamelCase = {
   blackboardAccountId: string;
@@ -46,14 +45,14 @@ export type BlackboardFormConfigProps = {
   existingData: BlackboardConfigCamelCase;
   existingConfigNames: string[];
   onSubmit: (blackboardConfig: BlackboardConfigCamelCase) => void;
-  onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
 };
 
 export const BlackboardFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
-  onClickCancel,
+  handleCloseClick,
   existingData,
   existingConfigNames,
   channelMap,
@@ -100,11 +99,19 @@ export const BlackboardFormConfig = ({
     onTimeoutHelper(dispatch);
   };
 
+  const activate = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, BLACKBOARD_TYPE, formFields?.id, handleCloseClick, errHandler);
+    return formFields;
+  };
+
   const activatePage = () => ConfigActivatePage(BLACKBOARD_TYPE);
 
   const steps: FormWorkflowStep<BlackboardConfigCamelCase>[] = [
     {
-      index: 0,
+      index: 1,
       formComponent: BlackboardConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Authorize",
@@ -133,19 +140,19 @@ export const BlackboardFormConfig = ({
       },
     },
     {
-      index: 1,
+      index: 2,
       formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,
-      nextButtonConfig: () => ({
-        buttonText: "Activate",
-        opensNewWindow: false,
-        onClick: () => {
-          onClickCancel(true, SUBMIT_TOAST_MESSAGE);
-          return Promise.resolve(existingData);
-        },
-      }),
+      nextButtonConfig: () => {
+        let config = {
+          buttonText: "Activate",
+          opensNewWindow: false,
+          onClick: activate,
+        };
+        return config as FormWorkflowButtonConfig<BlackboardConfigCamelCase>;
+      }
     },
   ];
 
