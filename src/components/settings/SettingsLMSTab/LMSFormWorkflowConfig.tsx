@@ -3,26 +3,21 @@ import React, { useState, useEffect } from "react";
 import { CANVAS_TYPE } from "../data/constants";
 // @ts-ignore
 import type { FormWorkflowConfig, FormWorkflowStep } from "../../../../forms/FormWorkflow.tsx";
-import CanvasFormConfig, {
-  CanvasConfigCamelCase,
-  CanvasConfigSnakeCase,
-} from "./LMSConfigs/Canvas/CanvasConfig";
-import MoodleFormConfig, {
-  MoodleConfigCamelCase,
-  MoodleConfigSnakeCase,
-} from "./LMSConfigs/Moodle/MoodleConfig";
-import BlackboardFormConfig, { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from "./LMSConfigs/Blackboard/BlackboardConfig";
-import CornerstoneFormConfig, { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from "./LMSConfigs/Cornerstone/CornerstoneConfig";
-import DegreedFormConfig, { DegreedConfigCamelCase, DegreedConfigSnakeCase } from "./LMSConfigs/Degreed/DegreedConfig";
-import SAPFormConfig, { SAPConfigCamelCase, SAPConfigSnakeCase } from "./LMSConfigs/SAP/SAPConfig";
-import {
-  BLACKBOARD_TYPE,
-  CORNERSTONE_TYPE,
-  DEGREED2_TYPE,
-  MOODLE_TYPE,
-  SAP_TYPE,
-} from "../data/constants";
-import { LMSSelectorPage} from "./LMSSelectorPage";
+// @ts-ignore
+import BlackboardFormConfig, { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from "./LMSConfigs/Blackboard/BlackboardConfig.tsx";
+// @ts-ignore
+import CanvasFormConfig, { CanvasConfigCamelCase, CanvasConfigSnakeCase } from "./LMSConfigs/Canvas/CanvasConfig.tsx";
+// @ts-ignore
+import CornerstoneFormConfig, { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from "./LMSConfigs/Cornerstone/CornerstoneConfig.tsx";
+// @ts-ignore
+import DegreedFormConfig, { DegreedConfigCamelCase, DegreedConfigSnakeCase } from "./LMSConfigs/Degreed/DegreedConfig.tsx";
+// @ts-ignore
+import MoodleFormConfig, { MoodleConfigCamelCase, MoodleConfigSnakeCase } from "./LMSConfigs/Moodle/MoodleConfig.tsx";
+// @ts-ignore
+import SAPFormConfig, { SAPConfigCamelCase, SAPConfigSnakeCase } from "./LMSConfigs/SAP/SAPConfig.tsx";
+import { BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE } from "../data/constants";
+// @ts-ignore
+import { LMSSelectorPage} from "./LMSSelectorPage.tsx";
 
 const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
