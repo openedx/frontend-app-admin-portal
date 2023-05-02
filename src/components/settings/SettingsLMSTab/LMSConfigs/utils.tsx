@@ -1,6 +1,6 @@
 import type { FormFieldValidation } from "../../../forms/FormContext";
-import { 
-  BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL, CANVAS_TYPE, INVALID_NAME, SUBMIT_TOAST_MESSAGE 
+import {
+  BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL, CANVAS_TYPE, INVALID_NAME, SUBMIT_TOAST_MESSAGE
 } from "../../data/constants";
 import handleErrors from "../../utils";
 import { camelCaseDict } from "../../../../utils";
@@ -15,9 +15,9 @@ import { SAPConfigCamelCase, SAPConfigSnakeCase } from "./SAP/SAPConfig";
 // @ts-ignore
 import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from "../../../forms/FormWorkflow.tsx";
 
-type ConfigCamelCase = {id?: string, active?: boolean} |
+type ConfigCamelCase = { id?: string, active?: boolean, lms?: string, } |
   BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
-type ConfigSnakeCase = {enterprise_customer?: string, active?: boolean} |
+type ConfigSnakeCase = { enterprise_customer?: string, active?: boolean } |
   BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase | DegreedConfigSnakeCase | MoodleConfigSnakeCase | SAPConfigSnakeCase;
 
 export const LMS_AUTHORIZATION_FAILED = "LMS AUTHORIZATION FAILED";
@@ -71,7 +71,7 @@ export async function handleSubmitHelper(
 }
 
 async function handleSubmitAuthorize(
-  lmsType: string, 
+  lmsType: string,
   existingData: any,
   currentFormFields: any,
   channelMap: Record<string, Record<string, any>>,
@@ -79,7 +79,7 @@ async function handleSubmitAuthorize(
 ) {
   if ((lmsType === BLACKBOARD_TYPE || lmsType === CANVAS_TYPE) && currentFormFields && !currentFormFields?.refreshToken) {
     let oauthUrl: string;
-    if (lmsType == BLACKBOARD_TYPE) {
+    if (lmsType === BLACKBOARD_TYPE) {
       let appKey = existingData.clientId;
       let configUuid = existingData.uuid;
       if (!appKey || !configUuid) {
@@ -175,15 +175,15 @@ export async function handleSaveHelper(
 }
 
 export function checkForDuplicateNames(
-  existingConfigNames: string[], existingData: {displayName: string}): FormFieldValidation {
-    return {
-      formFieldId: 'displayName',
-      validator: () => {
-        return existingConfigNames?.includes(existingData.displayName)
-          ? INVALID_NAME
-          : false;
-      },
-    };
+  existingConfigNames: string[], existingData: { displayName: string }): FormFieldValidation {
+  return {
+    formFieldId: 'displayName',
+    validator: () => {
+      return existingConfigNames?.includes(existingData.displayName)
+        ? INVALID_NAME
+        : false;
+    },
+  };
 }
 
 export async function activateConfig(
@@ -193,8 +193,8 @@ export async function activateConfig(
   id: string | undefined,
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>,
   errHandler: FormWorkflowErrorHandler | undefined,
-  ) {
-    const configOptions = {
+) {
+  const configOptions = {
     active: true,
     enterprise_customer: enterpriseCustomerUuid,
   };

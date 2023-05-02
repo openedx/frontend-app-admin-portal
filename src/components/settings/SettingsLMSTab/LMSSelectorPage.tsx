@@ -1,12 +1,33 @@
 import React from "react";
-
 import { Container, Image, SelectableBox, } from "@edx/paragon";
+
 import { channelMapping } from "../../../utils.js";
 import { LMS_KEYS } from "../data/constants.js";
+// @ts-ignore
+import { FormFieldValidation, useFormContext } from "../../forms/FormContext.tsx";
+// @ts-ignore
+import { setFormFieldAction } from "../../forms/data/actions.ts";
 
-export function LMSSelectorPage(lms: string, setLms: (value: string) => void) {
+export const validations: FormFieldValidation[] = [
+  {
+    formFieldId: 'lms',
+    validator: (fields) => {
+      return !LMS_KEYS.includes(fields['lms'])
+    },
+  },
+];
+
+export function LMSSelectorPage(setLms: (string) => void) {
   const LMSSelectorPageImpl = () => {
-    const handleChange = e => setLms(e.target.value);
+    const { dispatch, formFields } = useFormContext();
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setting this value allows the LMSFormWorkflowConfig page to rerender with the state
+    // change, which sets the LMS's associated steps 
+    setLms(e.target.value);
+    dispatch && dispatch(
+      setFormFieldAction({ fieldId: 'lms', value: e.target.value })
+    );
+  };
     return (
       <Container size='lg'>
         <span className='pb-4'>
@@ -16,7 +37,7 @@ export function LMSSelectorPage(lms: string, setLms: (value: string) => void) {
           <p>Select the LMS or LXP you want to integrate with edX For Business.</p>
           <SelectableBox.Set
             type='radio'
-            value={lms}
+            value={formFields?.lms}
             onChange={handleChange}
             name="colors"
             columns={3}

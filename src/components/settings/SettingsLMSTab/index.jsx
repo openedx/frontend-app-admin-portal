@@ -20,6 +20,8 @@ import {
   SUBMIT_TOAST_MESSAGE,
 } from '../data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
+// @ts-ignore
+import { useFormContext } from '../../forms/FormContext.tsx';
 
 const SettingsLMSTab = ({
   enterpriseId,
@@ -43,11 +45,13 @@ const SettingsLMSTab = ({
   const [lmsType, setLmsType] = useState('');
   const [isLmsStepperOpen, openLmsStepper, closeLmsStepper] = useToggle(false);
   const toastMessages = [ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE];
+  const { dispatch } = useFormContext();
 
   // onClick function for existing config cards' edit action
   const editExistingConfig = (configData, configType) => {
     setConfigsLoading(false);
     // Setting this allows us to skip the selection step in the stepper
+    dispatch?.setFormFieldAction({ fieldId: 'lms', value: configData.channelCode });
     setLmsType(configData.channelCode);
     openLmsStepper();
     // Set the form data to the card's associated config data

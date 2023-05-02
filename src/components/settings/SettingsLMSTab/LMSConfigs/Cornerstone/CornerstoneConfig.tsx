@@ -1,5 +1,5 @@
 import { snakeCaseDict } from "../../../../../utils";
-import { CORNERSTONE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { CORNERSTONE_TYPE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 // @ts-ignore
@@ -12,6 +12,7 @@ import type {
 import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type CornerstoneConfigCamelCase = {
+  lms: string;
   displayName: string;
   cornerstoneBaseUrl: string;
   id: string;
@@ -20,6 +21,7 @@ export type CornerstoneConfigCamelCase = {
 };
 
 export type CornerstoneConfigSnakeCase = {
+  lms: string;
   display_name: string;
   cornerstone_base_url: string;
   id: string;

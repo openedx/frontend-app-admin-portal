@@ -5,18 +5,9 @@ import { Launch } from "@edx/paragon/icons";
 
 // @ts-ignore
 import { useFormContext } from "./FormContext.tsx";
-import type {
-  FormFields,
-  FormFieldValidation,
-  FormContext,
-} from "./FormContext";
-
-import {
-  setStepAction,
-  setWorkflowStateAction,
-  FORM_ERROR_MESSAGE,
-  // @ts-ignore
-} from "./data/actions.ts";
+import type { FormFieldValidation, FormContext } from "./FormContext";
+// @ts-ignore
+import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE } from "./data/actions.ts";
 import { SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
 import { FormActionArguments } from "./data/actions";
 // @ts-ignore
@@ -56,7 +47,7 @@ export type FormWorkflowStep<FormData> = {
   index: number;
   stepName: string;
   formComponent: DynamicComponent;
-  validations: FormFieldValidation[] | boolean;
+  validations: FormFieldValidation[];
   saveChanges: (
     formData: FormData,
     errHandler: FormWorkflowErrorHandler

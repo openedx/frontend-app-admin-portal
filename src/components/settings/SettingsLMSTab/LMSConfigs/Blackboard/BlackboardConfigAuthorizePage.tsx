@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Alert, Container, Form, Image } from "@edx/paragon";
 import { Info } from "@edx/paragon/icons";
 
@@ -7,13 +6,9 @@ import { Info } from "@edx/paragon/icons";
 import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
 import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
 import { channelMapping, urlValidation } from "../../../../../utils";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
-import {
-  useFormContext,
-  // @ts-ignore
-} from "../../../../forms/FormContext.tsx";
+import type { FormFieldValidation } from "../../../../forms/FormContext";
+// @ts-ignore
+import { useFormContext } from "../../../../forms/FormContext.tsx";
 // @ts-ignore
 import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
 // @ts-ignore

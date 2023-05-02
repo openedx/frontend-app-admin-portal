@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  Context,
-  ReactNode,
-  Dispatch,
-} from "react";
+import React, { createContext, useContext, Context, ReactNode, Dispatch } from "react";
 import type { FormActionArguments } from "./data/actions";
 import type { FormWorkflowStep } from "./FormWorkflow";
 
@@ -12,7 +6,7 @@ export type FormFields = { [name: string]: any };
 export type FormValidatorResult = boolean | string;
 export type FormValidator = (formFields: FormFields) => FormValidatorResult;
 export type FormFieldValidation = {
-  formFieldId: string;
+  formFieldId?: string;
   validator: FormValidator;
 };
 

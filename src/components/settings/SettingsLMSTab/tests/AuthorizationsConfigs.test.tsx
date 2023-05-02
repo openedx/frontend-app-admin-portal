@@ -142,6 +142,7 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
       blackboard_base_url: 'https://www.test4.com',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
+      lms: BLACKBOARD_TYPE,
     };
     expect(mockBlackboardPost).toHaveBeenCalledWith(expectedConfig);
     expect(window.open).toHaveBeenCalled();
@@ -241,6 +242,7 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
       client_secret: 'test2',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
+      lms: CANVAS_TYPE,
     };
     expect(mockCanvasPost).toHaveBeenCalledWith(expectedConfig);
     expect(window.open).toHaveBeenCalled();

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import isEmpty from "lodash/isEmpty";
 
 import { CANVAS_TYPE } from "../data/constants";
 // @ts-ignore
@@ -17,7 +18,7 @@ import MoodleFormConfig, { MoodleConfigCamelCase, MoodleConfigSnakeCase } from "
 import SAPFormConfig, { SAPConfigCamelCase, SAPConfigSnakeCase } from "./LMSConfigs/SAP/SAPConfig.tsx";
 import { BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE } from "../data/constants";
 // @ts-ignore
-import { LMSSelectorPage} from "./LMSSelectorPage.tsx";
+import { LMSSelectorPage, validations} from "./LMSSelectorPage.tsx";
 
 const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
@@ -40,7 +41,6 @@ export type LMSFormConfigProps = {
   onSubmit: (LMSConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;
-  // if we have an existing config, we need this to set the lms state variable
   lmsType?: string;
 };
 
@@ -53,12 +53,11 @@ export const LMSFormWorkflowConfig = ({
   channelMap,
   lmsType,
 }: LMSFormConfigProps): FormWorkflowConfig<LMSConfigCamelCase> => {
-  
   const [lms, setLms] = useState(lmsType ? lmsType : '');
   // once an lms is selected by the user (or they are editing and existing one)
   // we dynamically render the correct FormConfig
   const lmsConfig =
-  (lms !== '') &&
+    (lms && !isEmpty(lms)) &&
     flowConfigs[lms]({
       enterpriseCustomerUuid,
       onSubmit,
@@ -71,8 +70,8 @@ export const LMSFormWorkflowConfig = ({
   let steps: FormWorkflowStep<LMSConfigCamelCase>[] = [
     {
       index: 0,
-      formComponent: LMSSelectorPage(lms, setLms),
-      validations: (lms !== ''),
+      formComponent: LMSSelectorPage(setLms),
+      validations: validations,
       stepName: "Select LMS",
       nextButtonConfig: () => ({
         buttonText: "Next",

@@ -5,16 +5,14 @@ import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 // @ts-ignore
 import DegreedConfigAuthorizePage, { validations } from "./DegreedConfigEnablePage.tsx";
 import type {
-  FormWorkflowButtonConfig,
-  FormWorkflowConfig,
-  FormWorkflowStep,
-  FormWorkflowHandlerArgs,
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
   // @ts-ignore
 } from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
 import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type DegreedConfigCamelCase = {
+  lms: string;
   displayName: string;
   clientId: string;
   clientSecret: string;
@@ -26,6 +24,7 @@ export type DegreedConfigCamelCase = {
 };
 
 export type DegreedConfigSnakeCase = {
+  lms: string;
   display_name: string;
   client_id: string;
   client_secret: string;

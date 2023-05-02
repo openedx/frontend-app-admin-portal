@@ -19,6 +19,7 @@ import type {
 import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
 
 export type BlackboardConfigCamelCase = {
+  lms: string;
   blackboardAccountId: string;
   blackboardBaseUrl: string;
   displayName: string;
@@ -31,6 +32,7 @@ export type BlackboardConfigCamelCase = {
 };
 
 export type BlackboardConfigSnakeCase = {
+  lms: string;
   blackboard_base_url: string;
   display_name: string;
   id: string;
