@@ -11,11 +11,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 // @ts-ignore
 import MoodleConfig from '../LMSConfigs/Moodle/MoodleConfig.tsx';
-import {
-  INVALID_LINK,
-  INVALID_MOODLE_VERIFICATION,
-  INVALID_NAME,
-} from '../../data/constants';
+import { INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 // @ts-ignore
 import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
@@ -76,7 +72,7 @@ function testMoodleConfigSetup(formData) {
       formWorkflowConfig={MoodleConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {
@@ -180,6 +176,7 @@ describe('<MoodleConfig />', () => {
     userEvent.type(screen.getByLabelText('Password'), 'password123');
 
     await waitFor(() => expect(enableButton).not.toBeDisabled());
+    await act(async () => { userEvent.click(enableButton); });
 
     userEvent.click(enableButton);
 
@@ -225,7 +222,6 @@ describe('<MoodleConfig />', () => {
       password: 'password123',
       enterprise_customer: enterpriseId,
     };
-
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('validates poorly formatted existing data on load', async () => {

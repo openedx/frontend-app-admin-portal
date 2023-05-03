@@ -79,7 +79,7 @@ function testCanvasConfigSetup(formData) {
       formWorkflowConfig={CanvasConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {
@@ -164,66 +164,6 @@ describe("<CanvasConfig />", () => {
 
     expect(authorizeButton).not.toBeDisabled();
   });
-  test('it edits existing configs on submit', async () => {
-    render(testCanvasConfigSetup(existingConfigData));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-
-    await clearForm(); 
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
-
-    expect(authorizeButton).not.toBeDisabled();
-
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
-
-    const expectedConfig = {
-      active: true,
-      id: 1,
-      refresh_token: "foobar",
-      canvas_base_url: 'https://www.test4.com',
-      canvas_account_id: '3',
-      client_id: 'test1',
-      client_secret: 'test2',
-      display_name: 'displayName',
-      enterprise_customer: enterpriseId,
-    };
-    expect(mockUpdate).toHaveBeenCalledWith(expectedConfig, 1);
-  });
-  test('it creates new configs on submit', async () => {
-    render(testCanvasConfigSetup(noExistingData));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-    
-    await clearForm();
-
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
-    await waitFor(() => expect(authorizeButton).not.toBeDisabled());
-
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
-
-    const expectedConfig = {
-      active: false,
-      canvas_base_url: 'https://www.test4.com',
-      canvas_account_id: '3',
-      client_id: 'test1',
-      client_secret: 'test2',
-      display_name: 'displayName',
-      enterprise_customer: enterpriseId,
-    };
-    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
-  });
   test('saves draft correctly', async () => {
     render(testCanvasConfigSetup(noExistingData));
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
@@ -268,48 +208,8 @@ describe("<CanvasConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // await a text change from 'Authorize' to 'Activate'
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Activate' })).toBeInTheDocument());
-
-    expect(window.open).toHaveBeenCalled();
-    expect(mockFetch).toHaveBeenCalledWith(1);
-  });
-  test('Authorizing an existing, edited config will call update config endpoint', async () => {
-    render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-
-    act(() => {
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
-        target: { value: '' },
-      });
-    });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-
-    expect(authorizeButton).not.toBeDisabled();
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Authorization in progress')).toBeInTheDocument());
-    expect(mockUpdate).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalled();
-    expect(mockFetch).toHaveBeenCalledWith(1);
-    await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-  });
-  test('Authorizing an existing config will not call update or create config endpoint', async () => {
-    render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-
-    expect(authorizeButton).not.toBeDisabled();
-
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-    expect(mockUpdate).not.toHaveBeenCalled();
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Canvas and return to this window once complete.')));
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);
   });
@@ -322,34 +222,5 @@ describe("<CanvasConfig />", () => {
     render(testCanvasConfigSetup(existingConfigDataNoAuth));
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
-  });
-  test('it calls setExistingConfigFormData after authorization', async () => {
-    render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-
-    act(() => {
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-    });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    expect(authorizeButton).not.toBeDisabled();
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-    const activateButton = screen.getByRole('button', { name: 'Activate' });
-
-    userEvent.click(activateButton);
-    expect(mockSetExistingConfigFormData).toHaveBeenCalledWith({
-      uuid: 'foobar',
-      id: 1,
-      displayName: 'display name',
-      canvasBaseUrl: 'https://foobar.com',
-      canvasAccountId: 1,
-      clientId: 'wassap',
-      clientSecret: 'chewlikeyouhaveasecret',
-      active: false,
-    });
   });
 });

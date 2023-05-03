@@ -1,20 +1,18 @@
 import { snakeCaseDict } from "../../../../../utils";
-import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { DEGREED2_TYPE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
 // @ts-ignore
 import DegreedConfigAuthorizePage, { validations } from "./DegreedConfigEnablePage.tsx";
 import type {
-  FormWorkflowButtonConfig,
-  FormWorkflowConfig,
-  FormWorkflowStep,
-  FormWorkflowHandlerArgs,
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
   // @ts-ignore
 } from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
-import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
+import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type DegreedConfigCamelCase = {
+  lms: string;
   displayName: string;
   clientId: string;
   clientSecret: string;
@@ -26,6 +24,7 @@ export type DegreedConfigCamelCase = {
 };
 
 export type DegreedConfigSnakeCase = {
+  lms: string;
   display_name: string;
   client_id: string;
   client_secret: string;
@@ -43,14 +42,14 @@ export type DegreedFormConfigProps = {
   existingData: DegreedConfigCamelCase;
   existingConfigNames: string[];
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
-  onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
 };
 
 export const DegreedFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
-  onClickCancel,
+  handleCloseClick,
   existingData,
   existingConfigNames,
   channelMap,
@@ -82,11 +81,18 @@ export const DegreedFormConfig = ({
       currentFormFields, DEGREED2_TYPE, channelMap, errHandler, dispatch);
   };
 
-  const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);
+  const activate = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<DegreedConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, DEGREED2_TYPE, formFields?.id, handleCloseClick, errHandler);
+    return formFields;
+  };
 
+  const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);
   const steps: FormWorkflowStep<DegreedConfigCamelCase>[] = [
     {
-      index: 0,
+      index: 1,
       formComponent: DegreedConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
@@ -101,19 +107,19 @@ export const DegreedFormConfig = ({
       },
     },
     {
-      index: 1,
+      index: 2,
       formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,
-      nextButtonConfig: () => ({
-        buttonText: "Activate",
-        opensNewWindow: false,
-        onClick: () => {
-          onClickCancel(true, SUBMIT_TOAST_MESSAGE);
-          return Promise.resolve(existingData);
-        },
-      }),
+      nextButtonConfig: () => {
+        let config = {
+          buttonText: "Activate",
+          opensNewWindow: false,
+          onClick: activate,
+        };
+        return config as FormWorkflowButtonConfig<DegreedConfigCamelCase>;
+      }
     },
   ];
 

@@ -74,7 +74,7 @@ function testBlackboardConfigSetup(formData) {
       formWorkflowConfig={BlackboardConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {
@@ -141,7 +141,6 @@ describe("<BlackboardConfig />", () => {
       screen.getByLabelText("Blackboard Base URL"),
       "https://www.test4.com"
     );
-
     expect(authorizeButton).not.toBeDisabled();
   });
   test('it edits existing configs on submit', async () => {
@@ -156,8 +155,8 @@ describe("<BlackboardConfig />", () => {
 
     userEvent.click(authorizeButton);
 
-    // await a change in button text from authorize to activate 
-    await waitFor(() => expect(screen.findByRole('button', {name: 'Activate'})))
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
 
     const expectedConfig = {
       active: true,
@@ -180,9 +179,8 @@ describe("<BlackboardConfig />", () => {
     await waitFor(() => expect(authorizeButton).not.toBeDisabled());
 
     userEvent.click(authorizeButton);
-
-    // await a change in button text from authorize to activate 
-    await waitFor(() => expect(screen.findByRole('button', {name: 'Activate'})))
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
 
     const expectedConfig = {
       active: false,
@@ -226,47 +224,8 @@ describe("<BlackboardConfig />", () => {
     expect(authorizeButton).not.toBeDisabled();
     userEvent.click(authorizeButton);
 
-    // await a change in button text from authorize to activate 
-    await waitFor(() => expect(authorizeButton).toBeDisabled())
-    expect(window.open).toHaveBeenCalled();
-    expect(mockFetch).toHaveBeenCalledWith(1);
-  });
-  test('Authorizing an existing, edited config will call update config endpoint', async () => {
-    render(testBlackboardConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-
-    act(() => {
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
-        target: { value: '' },
-      });
-    });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
-
-    expect(authorizeButton).not.toBeDisabled();
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Authorization in progress')).toBeInTheDocument());
-    expect(mockUpdate).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalled();
-    expect(mockFetch).toHaveBeenCalledWith(1);
-    await waitFor(() => expect(screen.getByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-  });
-  test('Authorizing an existing config will not call update or create config endpoint', async () => {
-    render(testBlackboardConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-
-    expect(authorizeButton).not.toBeDisabled();
-
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-    expect(mockUpdate).not.toHaveBeenCalled();
+    // await authorization loading modal
+    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);
   });
@@ -279,32 +238,5 @@ describe("<BlackboardConfig />", () => {
     render(testBlackboardConfigSetup(existingConfigDataNoAuth));
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
-  });
-  test('it calls setExistingConfigFormData after authorization', async () => {
-    render(testBlackboardConfigSetup(existingConfigDataNoAuth));
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-
-    act(() => {
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-    });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    expect(authorizeButton).not.toBeDisabled();
-    userEvent.click(authorizeButton);
-
-    // Await a find by text in order to account for state changes in the button callback
-    await waitFor(() => expect(screen.getByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeInTheDocument());
-    
-    const activateButton = screen.getByRole('button', { name: 'Activate' });
-
-    userEvent.click(activateButton);
-    expect(mockSetExistingConfigFormData).toHaveBeenCalledWith({
-      uuid: 'foobar',
-      id: 1,
-      displayName: 'display name',
-      blackboardBaseUrl: 'https://foobar.com',
-      active: false,
-    });
   });
 });

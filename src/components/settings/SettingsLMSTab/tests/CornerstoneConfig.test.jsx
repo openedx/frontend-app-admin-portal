@@ -44,7 +44,7 @@ function testCornerstoneConfigSetup(formData) {
       formWorkflowConfig={CornerstoneConfig({
         enterpriseCustomerUuid: enterpriseId,
         onSubmit: mockSetExistingConfigFormData,
-        onClickCancel: mockOnClick,
+        handleCloseClick: mockOnClick,
         existingData: formData,
         existingConfigNames: [],
         channelMap: {

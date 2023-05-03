@@ -1,20 +1,18 @@
 import { snakeCaseDict } from "../../../../../utils";
-import { MOODLE_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { MOODLE_TYPE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
   // @ts-ignore
 import MoodleConfigEnablePage, { validations } from "./MoodleConfigEnablePage.tsx";
 import type {
-  FormWorkflowButtonConfig,
-  FormWorkflowConfig,
-  FormWorkflowStep,
-  FormWorkflowHandlerArgs,
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
   // @ts-ignore
 } from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
-import { checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
+import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type MoodleConfigCamelCase = {
+  lms: string;
   displayName: string;
   moodleBaseUrl: string;
   webserviceShortName: string;
@@ -27,6 +25,7 @@ export type MoodleConfigCamelCase = {
 };
 
 export type MoodleConfigSnakeCase = {
+  lms: string;
   display_name: string;
   moodle_base_url: string;
   webservice_short_name: string;
@@ -44,14 +43,14 @@ export type MoodleFormConfigProps = {
   existingData: MoodleConfigCamelCase;
   existingConfigNames: string[];
   onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
-  onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;
 };
 
 export const MoodleFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
-  onClickCancel,
+  handleCloseClick,
   existingData,
   existingConfigNames,
   channelMap, 
@@ -84,11 +83,19 @@ export const MoodleFormConfig = ({
       currentFormFields, MOODLE_TYPE, channelMap, errHandler, dispatch)
   };
 
+  const activate = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, MOODLE_TYPE, formFields?.id, handleCloseClick, errHandler);
+    return formFields;
+  };
+
   const activatePage = () => ConfigActivatePage(MOODLE_TYPE);
 
   const steps: FormWorkflowStep<MoodleConfigCamelCase>[] = [
     {
-      index: 0,
+      index: 1,
       formComponent: MoodleConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
@@ -103,19 +110,19 @@ export const MoodleFormConfig = ({
       },
     },
     {
-      index: 1,
+      index: 2,
       formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,
-      nextButtonConfig: () => ({
-        buttonText: "Activate",
-        opensNewWindow: false,
-        onClick: () => {
-          onClickCancel(true, SUBMIT_TOAST_MESSAGE);
-          return Promise.resolve(existingData);
-        },
-      }),
+      nextButtonConfig: () => {
+        let config = {
+          buttonText: "Activate",
+          opensNewWindow: false,
+          onClick: activate,
+        };
+        return config as FormWorkflowButtonConfig<MoodleConfigCamelCase>;
+      }
     },
   ];
 
