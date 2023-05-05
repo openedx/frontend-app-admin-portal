@@ -119,12 +119,16 @@ const needsRefreshTokenConfigData = [
 ];
 
 describe('<ExistingLMSCardDeck />', () => {
+  // const mockLocation = new URL('https://example.com');
   beforeEach(() => {
     jest.resetAllMocks();
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
     features.FEATURE_INTEGRATION_REPORTING = true;
+    // eslint-disable-next-line no-restricted-globals
+    // location = window.location;
+    // mockLocation.replace = jest.fn();
   });
 
   it('renders active config card', () => {

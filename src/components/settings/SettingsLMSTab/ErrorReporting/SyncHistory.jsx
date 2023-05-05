@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  ActionRow, AlertModal, Breadcrumb, Button, Card, Icon, Image, Skeleton, Toast, useToggle,
+  ActionRow, AlertModal, Breadcrumb, Button, Card, Hyperlink,
+  Icon, Image, Skeleton, Toast, useToggle,
 } from '@edx/paragon';
 import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
 import { getStatus } from '../utils';
 import { getTimeAgo } from './utils';
 import handleErrors from '../../utils';
+import { channelMapping, formatTimestamp } from '../../../../utils';
 import ConfigError from '../../ConfigError';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
@@ -15,16 +17,23 @@ import {
   ACTIVATE_TOAST_MESSAGE, BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE,
   DEGREED2_TYPE, errorToggleModalText, INACTIVATE_TOAST_MESSAGE, MOODLE_TYPE, SAP_TYPE,
 } from '../../data/constants';
-
-import { channelMapping } from '../../../../utils';
 import ErrorReportingTable from './ErrorReportingTable';
 
 const SyncHistory = () => {
+  // the simple redirect is used for going back to the lms page
   const vars = (window.location.pathname).split('lms/');
   const redirectPath = `${vars[0]}lms/`;
   const configInfo = vars[1].split('/');
   const configChannel = configInfo[0];
   const configId = configInfo[1];
+
+  // the redirect with params is used when editing an existing config
+  let fullLink = `${((window.location.href).split('lms/'))[0]}lms/?`;
+  const queryParams = new URLSearchParams({
+    lms: configChannel,
+    id: configId,
+  });
+  fullLink += queryParams.toString();
 
   const [config, setConfig] = useState();
   const [errorModalText, setErrorModalText] = useState();
@@ -33,7 +42,18 @@ const SyncHistory = () => {
   const [toastMessage, setToastMessage] = useState(null);
   const [reloadPage, setReloadPage] = useState(false);
 
-  const getActiveStatus = status => (status === 'Active' ? `${status} •` : '');
+  const getSubheaders = () => {
+    const sub1 = (getStatus(config) === 'Active' ? `${getStatus(config)}` : null);
+    const sub2 = channelMapping[config.channelCode].displayName;
+    const sub3 = `Last modified on ${formatTimestamp({ timestamp: config.lastModifiedAt })}`;
+    return (
+      <span className="d-flex">
+        {sub1 && (<span>{sub1}<span className="p-2">•</span></span>)}
+        <span>{sub2}<span className="p-2">•</span></span>
+        <span>{sub3}</span>
+      </span>
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,8 +114,8 @@ const SyncHistory = () => {
     if (input !== null) {
       setReloadPage(true);
       setToastMessage(input);
-    // if configuration is being deleted
     } else {
+      // if configuration is being deleted
       window.location.href = redirectPath;
     }
   };
@@ -124,7 +144,9 @@ const SyncHistory = () => {
       return (
         <ActionRow>
           <Button onClick={() => toggleConfig(false)} variant="tertiary">Disable</Button>
-          {/* <Button variant="outline-primary">Configure</Button>  */}
+          <Hyperlink destination={fullLink}>
+            <Button variant="outline-primary">Configure</Button>
+          </Hyperlink>
         </ActionRow>
       );
     }
@@ -132,7 +154,9 @@ const SyncHistory = () => {
       return (
         <ActionRow>
           <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-          {/* <Button variant="tertiary">Configure</Button> */}
+          <Hyperlink destination={fullLink}>
+            <Button variant="tertiary">Configure</Button>
+          </Hyperlink>
           <Button onClick={() => toggleConfig(true)} variant="outline-primary">Enable</Button>
         </ActionRow>
       );
@@ -140,7 +164,9 @@ const SyncHistory = () => {
     return ( // if incomplete
       <ActionRow>
         <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-        {/* <Button variant="outline-primary">Configure</Button> */}
+        <Hyperlink destination={fullLink}>
+          <Button variant="outline-primary">Configure</Button>
+        </Hyperlink>
       </ActionRow>
     );
   };
@@ -205,8 +231,8 @@ const SyncHistory = () => {
                 />
                 {config.displayName}
               </h2>
-              <p className="small pt-3" style={{ wordSpacing: '7px' }}>
-                {getActiveStatus(getStatus(config))} {config.channelCode}
+              <p className="x-small pt-3">
+                {getSubheaders()}
               </p>
             </Card.Section>
             {getLastSync()}
