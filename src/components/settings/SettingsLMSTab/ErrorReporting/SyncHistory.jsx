@@ -28,12 +28,12 @@ const SyncHistory = () => {
   const configId = configInfo[1];
 
   // the redirect with params is used when editing an existing config
-  let fullLink = `${((window.location.href).split('lms/'))[0]}lms/?`;
+  let editConfigUrl = `${((window.location.href).split('lms/'))[0]}lms/?`;
   const queryParams = new URLSearchParams({
     lms: configChannel,
     id: configId,
   });
-  fullLink += queryParams.toString();
+  editConfigUrl += queryParams.toString();
 
   const [config, setConfig] = useState();
   const [errorModalText, setErrorModalText] = useState();
@@ -43,14 +43,14 @@ const SyncHistory = () => {
   const [reloadPage, setReloadPage] = useState(false);
 
   const getSubheaders = () => {
-    const sub1 = (getStatus(config) === 'Active' ? `${getStatus(config)}` : null);
-    const sub2 = channelMapping[config.channelCode].displayName;
-    const sub3 = `Last modified on ${formatTimestamp({ timestamp: config.lastModifiedAt })}`;
+    const status = (getStatus(config) === 'Active' ? `${getStatus(config)}` : null);
+    const lmsChannel = channelMapping[config.channelCode].displayName;
+    const modified = `Last modified on ${formatTimestamp({ timestamp: config.lastModifiedAt })}`;
     return (
       <span className="d-flex">
-        {sub1 && (<span>{sub1}<span className="p-2">•</span></span>)}
-        <span>{sub2}<span className="p-2">•</span></span>
-        <span>{sub3}</span>
+        {status && (<span>{status}<span className="p-2">•</span></span>)}
+        <span>{lmsChannel}<span className="p-2">•</span></span>
+        <span>{modified}</span>
       </span>
     );
   };
@@ -144,7 +144,7 @@ const SyncHistory = () => {
       return (
         <ActionRow>
           <Button onClick={() => toggleConfig(false)} variant="tertiary">Disable</Button>
-          <Hyperlink destination={fullLink}>
+          <Hyperlink destination={editConfigUrl}>
             <Button variant="outline-primary">Configure</Button>
           </Hyperlink>
         </ActionRow>
@@ -154,7 +154,7 @@ const SyncHistory = () => {
       return (
         <ActionRow>
           <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-          <Hyperlink destination={fullLink}>
+          <Hyperlink destination={editConfigUrl}>
             <Button variant="tertiary">Configure</Button>
           </Hyperlink>
           <Button onClick={() => toggleConfig(true)} variant="outline-primary">Enable</Button>
@@ -164,7 +164,7 @@ const SyncHistory = () => {
     return ( // if incomplete
       <ActionRow>
         <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-        <Hyperlink destination={fullLink}>
+        <Hyperlink destination={editConfigUrl}>
           <Button variant="outline-primary">Configure</Button>
         </Hyperlink>
       </ActionRow>
