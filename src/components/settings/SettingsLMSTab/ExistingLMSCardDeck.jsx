@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  CardGrid, useToggle,
-} from '@edx/paragon';
+import { CardGrid, useToggle } from '@edx/paragon';
 import { getStatus } from './utils';
-import ConfigError from '../ConfigError';
 import ExistingCard from './ExistingCard';
+import ConfigErrorModal from '../ConfigErrorModal';
 
 const ExistingLMSCardDeck = ({
   configData,
@@ -44,7 +42,7 @@ const ExistingLMSCardDeck = ({
 
   return (
     <span>
-      <ConfigError
+      <ConfigErrorModal
         isOpen={errorIsOpen}
         close={closeError}
         configTextOverride={errorModalText}

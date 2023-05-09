@@ -4,12 +4,10 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
-// @ts-ignore
-import DegreedConfig from "../LMSConfigs/Degreed/DegreedConfig.tsx";
+import DegreedConfig from "../LMSConfigs/Degreed/DegreedConfig";
 import { INVALID_LINK, INVALID_NAME } from "../../data/constants";
 import LmsApiService from "../../../../data/services/LmsApiService";
-// @ts-ignore
-import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
+import FormContextWrapper from "../../../forms/FormContextWrapper";
 
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, "updateDegreedConfig");
 const mockConfigResponseData = {

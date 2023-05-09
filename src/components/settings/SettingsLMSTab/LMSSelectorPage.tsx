@@ -3,10 +3,8 @@ import { Container, Image, SelectableBox, } from "@edx/paragon";
 
 import { channelMapping } from "../../../utils.js";
 import { LMS_KEYS } from "../data/constants.js";
-// @ts-ignore
-import { FormFieldValidation, useFormContext } from "../../forms/FormContext.tsx";
-// @ts-ignore
-import { setFormFieldAction } from "../../forms/data/actions.ts";
+import { FormFieldValidation, useFormContext } from "../../forms/FormContext";
+import { setFormFieldAction } from "../../forms/data/actions";
 
 export const validations: FormFieldValidation[] = [
   {

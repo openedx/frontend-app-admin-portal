@@ -1,15 +1,11 @@
 import { snakeCaseDict } from "../../../../../utils";
 import { SAP_TYPE } from "../../../data/constants";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import SAPConfigEnablePage, { validations } from "./SAPConfigEnablePage.tsx";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import SAPConfigEnablePage, { validations } from "./SAPConfigEnablePage";
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
+} from "../../../../forms/FormWorkflow";
+import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
 
 export type SAPConfigCamelCase = {
   lms: string;

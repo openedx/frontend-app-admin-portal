@@ -1,15 +1,11 @@
 import { snakeCaseDict } from "../../../../../utils";
 import { MOODLE_TYPE } from "../../../data/constants";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-  // @ts-ignore
-import MoodleConfigEnablePage, { validations } from "./MoodleConfigEnablePage.tsx";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import MoodleConfigEnablePage, { validations } from "./MoodleConfigEnablePage";
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
+} from "../../../../forms/FormWorkflow";
+import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
 
 export type MoodleConfigCamelCase = {
   lms: string;

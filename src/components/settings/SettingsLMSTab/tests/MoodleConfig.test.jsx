@@ -1,20 +1,14 @@
 import React from 'react';
 import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
+  act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
-// @ts-ignore
-import MoodleConfig from '../LMSConfigs/Moodle/MoodleConfig.tsx';
+import MoodleConfig from '../LMSConfigs/Moodle/MoodleConfig';
 import { INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
-// @ts-ignore
-import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
 
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateMoodleConfig');
 const mockConfigResponseData = {

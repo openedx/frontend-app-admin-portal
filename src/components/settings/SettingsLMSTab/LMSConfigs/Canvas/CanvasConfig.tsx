@@ -2,16 +2,12 @@ import { snakeCaseDict } from "../../../../../utils";
 import { 
   CANVAS_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from "../../../data/constants";
-// @ts-ignore
-import CanvasConfigAuthorizePage, { validations } from "./CanvasConfigAuthorizePage.tsx";
+import CanvasConfigAuthorizePage, { validations } from "./CanvasConfigAuthorizePage";
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
+} from "../../../../forms/FormWorkflow";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils";
 
 export type CanvasConfigCamelCase = {
   lms: string;

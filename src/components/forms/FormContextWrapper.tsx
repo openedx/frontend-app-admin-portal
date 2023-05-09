@@ -1,12 +1,9 @@
 import React, { useReducer } from "react";
-// @ts-ignore
-import FormContextProvider from "./FormContext.tsx";
+import FormContextProvider from "./FormContext";
 import type { FormFields } from "./FormContext";
-// @ts-ignore
-import FormWorkflow from "./FormWorkflow.tsx";
+import FormWorkflow from "./FormWorkflow";
 import type { FormWorkflowProps } from "./FormWorkflow";
-// @ts-ignore
-import {FormReducer, initializeForm } from "./data/reducer.ts";
+import {FormReducer, initializeForm } from "./data/reducer";
 import type { FormActionArguments } from "./data/actions";
 
 // Context wrapper for multi-step form container

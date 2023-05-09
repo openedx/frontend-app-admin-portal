@@ -3,10 +3,8 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { screen, render } from '@testing-library/react';
 
-// @ts-ignore
-import FormWaitModal from '../FormWaitModal.tsx';
-// @ts-ignore
-import FormContextProvider from '../FormContext.tsx';
+import FormWaitModal from '../FormWaitModal';
+import FormContextProvider from '../FormContext';
 
 const FormWaitModalWrapper = ({
   mockDispatch,

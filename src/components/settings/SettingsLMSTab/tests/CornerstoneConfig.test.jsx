@@ -5,10 +5,8 @@ import {
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
-// @ts-ignore
-import CornerstoneConfig from '../LMSConfigs/Cornerstone/CornerstoneConfig.tsx';
-// @ts-ignore
-import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
+import CornerstoneConfig from '../LMSConfigs/Cornerstone/CornerstoneConfig';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();

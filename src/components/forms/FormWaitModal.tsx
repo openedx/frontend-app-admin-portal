@@ -1,7 +1,6 @@
 import React from "react";
 import { AlertModal, Spinner } from "@edx/paragon";
-// @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
+import { useFormContext } from "./FormContext";
 import type { FormContext } from "./FormContext";
 
 type FormWaitModal = {

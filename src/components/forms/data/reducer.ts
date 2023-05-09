@@ -1,14 +1,9 @@
 import groupBy from "lodash/groupBy";
 import isEmpty from "lodash/isEmpty";
 import keys from "lodash/keys"
-// @ts-ignore
-import { SET_FORM_FIELD, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS } from "./actions.ts";
+import { SET_FORM_FIELD, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS } from "./actions";
 import type {
-  FormActionArguments,
-  SetFormFieldArguments,
-  SetStepArguments,
-  SetWorkflowStateArguments,
-  UpdateFormFieldArguments,
+  FormActionArguments, SetFormFieldArguments, SetStepArguments, SetWorkflowStateArguments, UpdateFormFieldArguments,
 } from "./actions";
 import type { FormContext, FormFieldValidation } from "../FormContext";
 import type { FormWorkflowStep } from "../FormWorkflow";

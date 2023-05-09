@@ -32,15 +32,12 @@ const UnsavedChangesModal = ({
     <ModalDialog.Body>{MODAL_TEXT}</ModalDialog.Body>
     <ModalDialog.Footer>
       <ActionRow>
-        {/* @ts-ignore */}
         <Button onClick={close} variant="outline-primary">
           Cancel
         </Button>
-        {/* @ts-ignore */}
         <Button onClick={exitWithoutSaving} variant="outline-primary">
           Exit without saving
         </Button>
-        {/* @ts-ignore */}
         <Button onClick={saveDraft} variant="primary">
           Exit
         </Button>

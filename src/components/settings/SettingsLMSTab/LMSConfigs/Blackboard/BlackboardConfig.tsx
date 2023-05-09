@@ -1,22 +1,15 @@
 import { snakeCaseDict } from "../../../../../utils";
 import {
-  BLACKBOARD_TYPE,
-  LMS_CONFIG_OAUTH_POLLING_INTERVAL,
-  LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
+  BLACKBOARD_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from "../../../data/constants";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import BlackboardConfigAuthorizePage, { validations } from "./BlackboardConfigAuthorizePage.tsx";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import BlackboardConfigAuthorizePage, { validations } from "./BlackboardConfigAuthorizePage";
 import type {
-  FormWorkflowButtonConfig,
-  FormWorkflowConfig,
-  FormWorkflowStep,
-  FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
+} from "../../../../forms/FormWorkflow";
+import { 
+  activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper 
+} from "../utils";
 
 export type BlackboardConfigCamelCase = {
   lms: string;

@@ -4,16 +4,14 @@ import {
 } from "../../data/constants";
 import handleErrors from "../../utils";
 import { camelCaseDict } from "../../../../utils";
-// @ts-ignore
-import { setWorkflowStateAction, updateFormFieldsAction } from "../../../forms/data/actions.ts";
+import { setWorkflowStateAction, updateFormFieldsAction } from "../../../forms/data/actions";
 import { CanvasConfigCamelCase, CanvasConfigSnakeCase } from "./Canvas/CanvasConfig";
 import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from "./Blackboard/BlackboardConfig";
 import { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from "./Cornerstone/CornerstoneConfig";
 import { DegreedConfigCamelCase, DegreedConfigSnakeCase } from "./Degreed/DegreedConfig";
 import { MoodleConfigCamelCase, MoodleConfigSnakeCase } from "./Moodle/MoodleConfig";
 import { SAPConfigCamelCase, SAPConfigSnakeCase } from "./SAP/SAPConfig";
-// @ts-ignore
-import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from "../../../forms/FormWorkflow.tsx";
+import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from "../../../forms/FormWorkflow";
 
 type ConfigCamelCase = { id?: string, active?: boolean, lms?: string, } |
   BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;

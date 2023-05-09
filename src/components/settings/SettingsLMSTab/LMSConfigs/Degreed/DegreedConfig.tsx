@@ -1,15 +1,11 @@
 import { snakeCaseDict } from "../../../../../utils";
 import { DEGREED2_TYPE } from "../../../data/constants";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import DegreedConfigAuthorizePage, { validations } from "./DegreedConfigEnablePage.tsx";
+import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
+import DegreedConfigAuthorizePage, { validations } from "./DegreedConfigEnablePage";
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
+} from "../../../../forms/FormWorkflow";
+import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
 
 export type DegreedConfigCamelCase = {
   lms: string;

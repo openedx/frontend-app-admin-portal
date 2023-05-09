@@ -2,21 +2,15 @@ import React from "react";
 import { Alert, Container, Form, Image } from "@edx/paragon";
 import { Info } from "@edx/paragon/icons";
 
-// @ts-ignore
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
+import ValidatedFormControl from "../../../../forms/ValidatedFormControl";
 import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
 import { channelMapping, urlValidation } from "../../../../../utils";
 import type { FormFieldValidation } from "../../../../forms/FormContext";
-// @ts-ignore
-import { useFormContext } from "../../../../forms/FormContext.tsx";
-// @ts-ignore
-import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
-// @ts-ignore
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { setWorkflowStateAction } from "../../../../forms/data/actions.ts";
-// @ts-ignore
-import { LMS_AUTHORIZATION_FAILED } from "../utils.tsx";
+import { useFormContext } from "../../../../forms/FormContext";
+import FormWaitModal from "../../../../forms/FormWaitModal";
+import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow";
+import { setWorkflowStateAction } from "../../../../forms/data/actions";
+import { LMS_AUTHORIZATION_FAILED } from "../utils";
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",

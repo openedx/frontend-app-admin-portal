@@ -4,10 +4,8 @@ import isString from "lodash/isString";
 
 import { Form } from "@edx/paragon";
 
-// @ts-ignore
-import { setFormFieldAction } from "./data/actions.ts";
-// @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
+import { setFormFieldAction } from "./data/actions";
+import { useFormContext } from "./FormContext";
 
 type InheritedParagonRadioProps = {
   className?: string;
@@ -18,8 +16,8 @@ export type ValidatedFormRadioProps = {
   formId: string;
   // Inline Instructions inside form field when blank
   fieldInstructions?: string;
-  label: string;
-  options: string[][]
+  label: string | undefined;
+  options: string[][] | undefined
 } & InheritedParagonRadioProps;
 
 const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {

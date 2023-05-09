@@ -2,13 +2,10 @@ import React from "react";
 
 import { Container, Form, Image } from "@edx/paragon";
 
-// @ts-ignore
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
+import ValidatedFormControl from "../../../../forms/ValidatedFormControl";
 import { channelMapping, urlValidation } from "../../../../../utils";
 import { INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME, MOODLE_TYPE } from "../../../data/constants";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+import type { FormFieldValidation } from "../../../../forms/FormContext";
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",

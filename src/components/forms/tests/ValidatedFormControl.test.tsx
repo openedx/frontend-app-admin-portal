@@ -4,11 +4,9 @@ import '@testing-library/jest-dom/extend-expect';
 import { screen, render } from '@testing-library/react';
 import userEvent, { TargetElement } from '@testing-library/user-event';
 
-// @ts-ignore
-import FormContextProvider from '../FormContext.tsx';
+import FormContextProvider from '../FormContext';
 import type { FormContext } from '../FormContext';
-// @ts-ignore
-import ValidatedFormControl from '../ValidatedFormControl.tsx';
+import ValidatedFormControl from '../ValidatedFormControl';
 import type {ValidatedFormControlProps} from '../ValidatedFormControl';
 
 type ValidatedFormControlWrapperProps = {

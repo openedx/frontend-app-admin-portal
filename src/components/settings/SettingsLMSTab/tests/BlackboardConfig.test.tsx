@@ -1,23 +1,11 @@
 import React from "react";
-import {
-  act,
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { act, render, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
 
-// @ts-ignore
-import BlackboardConfig from "../LMSConfigs/Blackboard/BlackboardConfig.tsx";
-import {
-  INVALID_LINK,
-  INVALID_NAME,
-} from "../../data/constants";
-// @ts-ignore
-import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
-import { findElementWithText } from "../../../test/testUtils";
+import BlackboardConfig from "../LMSConfigs/Blackboard/BlackboardConfig";
+import { INVALID_LINK, INVALID_NAME } from "../../data/constants";
+import FormContextWrapper from "../../../forms/FormContextWrapper";
 
 jest.mock("../../data/constants", () => ({
   ...jest.requireActual("../../data/constants"),

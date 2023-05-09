@@ -1,20 +1,13 @@
 import { Component } from "react";
-import type { FormContext, FormFieldValidation } from "../FormContext";
-import {
-  FormWorkflowButtonConfig,
-  FormWorkflowHandlerArgs,
-  FormWorkflowStep,
+import type { FormFieldValidation } from "../FormContext";
+import { 
+  FormWorkflowButtonConfig, FormWorkflowHandlerArgs, FormWorkflowStep
 } from "../FormWorkflow";
 import {
-  setFormFieldAction,
-  updateFormFieldsAction,
-  setStepAction,
-  setWorkflowStateAction,
-  // @ts-ignore
-} from "./actions.ts";
+  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction,
+} from "./actions";
 import type { InitializeFormArguments } from "./reducer";
-// @ts-ignore
-import { FormReducer, initializeForm } from "./reducer.ts";
+import { FormReducer, initializeForm } from "./reducer";
 
 type DummyFormFields = {
   address: string;

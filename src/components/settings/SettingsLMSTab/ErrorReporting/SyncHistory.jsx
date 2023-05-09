@@ -8,7 +8,7 @@ import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
 import { getStatus } from '../utils';
 import { getTimeAgo } from './utils';
 import handleErrors from '../../utils';
-import ConfigError from '../../ConfigError';
+import ConfigErrorModal from '../../ConfigErrorModal';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 import {
@@ -176,7 +176,7 @@ const SyncHistory = () => {
           Once deleted, any saved integration data will be lost.
         </p>
       </AlertModal>
-      <ConfigError
+      <ConfigErrorModal
         isOpen={errorIsOpen}
         close={closeError}
         configTextOverride={errorModalText}

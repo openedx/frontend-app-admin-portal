@@ -2,10 +2,8 @@ import React from "react";
 
 import { Container, Form, Image } from "@edx/paragon";
 
-// @ts-ignore
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-// @ts-ignore
-import ValidatedFormRadio from "../../../../forms/ValidatedFormRadio.tsx";
+import ValidatedFormControl from "../../../../forms/ValidatedFormControl";
+import ValidatedFormRadio from "../../../../forms/ValidatedFormRadio";
 import { channelMapping, urlValidation } from "../../../../../utils";
 import { INVALID_LINK, INVALID_NAME, SAP_TYPE } from "../../../data/constants";
 import type {

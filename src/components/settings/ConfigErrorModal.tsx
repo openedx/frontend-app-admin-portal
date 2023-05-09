@@ -27,7 +27,6 @@ const ConfigErrorModal = ({
     footerNode={(
       <ActionRow>
         <ActionRow.Spacer />
-        {/* @ts-ignore */}
         <Button variant="primary">
           <Hyperlink style={{ color: 'white' }} destination={HELP_CENTER_LINK} target="_blank">Contact Support</Hyperlink>
         </Button>

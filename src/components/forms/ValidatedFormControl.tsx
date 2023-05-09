@@ -4,17 +4,14 @@ import isString from "lodash/isString";
 
 import { Form } from "@edx/paragon";
 
-// @ts-ignore
-import { setFormFieldAction } from "./data/actions.ts";
-// @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
+import { setFormFieldAction } from "./data/actions";
+import { useFormContext } from "./FormContext";
 
-// TODO: Add Form.Control props.  Does Paragon export?
 type InheritedParagonControlProps = {
   className?: string;
   type: string;
   maxLength?: number;
-  floatingLabel: string;
+  floatingLabel: string | undefined;
 };
 
 export type ValidatedFormControlProps = {

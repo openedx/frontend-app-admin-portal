@@ -3,17 +3,13 @@ import type { Dispatch } from "react";
 import { ActionRow, Button, FullscreenModal, Stepper, useToggle } from "@edx/paragon";
 import { Launch } from "@edx/paragon/icons";
 
-// @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
+import { useFormContext } from "./FormContext";
 import type { FormFieldValidation, FormContext } from "./FormContext";
-// @ts-ignore
-import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE } from "./data/actions.ts";
+import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE } from "./data/actions";
 import { SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
 import { FormActionArguments } from "./data/actions";
-// @ts-ignore
-import UnsavedChangesModal from "../settings/SettingsLMSTab/UnsavedChangesModal.tsx";
-// @ts-ignore
-import ConfigErrorModal from "../settings/ConfigErrorModal.tsx";
+import UnsavedChangesModal from "../settings/SettingsLMSTab/UnsavedChangesModal";
+import ConfigErrorModal from "../settings/ConfigErrorModal";
 import { pollAsync } from "../../utils";
 
 export const WAITING_FOR_ASYNC_OPERATION = "WAITING FOR ASYNC OPERATION";

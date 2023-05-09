@@ -2,13 +2,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { screen, render } from '@testing-library/react';
-import userEvent, { TargetElement } from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 
-// @ts-ignore
-import FormContextProvider from '../FormContext.tsx';
+import FormContextProvider from '../FormContext';
 import type { FormContext } from '../FormContext';
-// @ts-ignore
-import ValidatedFormRadio from '../ValidatedFormRadio.tsx';
+import ValidatedFormRadio from '../ValidatedFormRadio';
 import { ValidatedFormRadioProps } from '../ValidatedFormRadio';
 
 type ValidatedFormRadioWrapperProps = {
@@ -41,7 +39,6 @@ const ValidatedFormRadioWrapper = ({
     >
       <ValidatedFormRadio
         formId={formId}
-        type="text"
         fieldInstructions={fieldInstructions}
         label={label}
         options={options}
