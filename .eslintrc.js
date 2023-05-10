@@ -6,15 +6,13 @@ const config = getBaseConfig('eslint');
 config.rules = {
   ...config.rules,
   'default-param-last': 'off',
-
 };
 
-config.overrides = [
+config.ignorePatterns = ["*.json", ".eslintrc.js", "*.config.js", "jsdom-with-global.js"];
+
+config.overrides =  [
   {
     files: ['*.test.js', '*.test.jsx'],
-    rules: {
-      'default-param-last': 'off',
-    },
     parser: "@typescript-eslint/parser",
     parserOptions: {
       project: [
@@ -23,7 +21,6 @@ config.overrides = [
       ]
     }
   },
-
 ];
 
 

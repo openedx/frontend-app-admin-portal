@@ -10,6 +10,7 @@ const initialState = {
   data: null,
 };
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const licenseRemind = (state = initialState, action) => {
   switch (action.type) {
     case LICENSE_REMIND_REQUEST:

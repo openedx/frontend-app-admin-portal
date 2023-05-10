@@ -15,6 +15,7 @@ const updateCsv = (state, csvId, updatedCsvState) => ({
   },
 });
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const csv = (state = {}, action) => {
   switch (action.type) {
     case FETCH_CSV_REQUEST:

@@ -83,6 +83,7 @@ export const initialState = {
   },
 };
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const emailTemplate = (state = initialState, action) => {
   switch (action.type) {
     case EMAIL_TEMPLATE_REQUEST:

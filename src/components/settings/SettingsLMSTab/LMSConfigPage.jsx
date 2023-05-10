@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import FormContextWrapper from '../../forms/FormContextWrapper';
 import { getChannelMap } from '../../../utils';
-import LMSFormWorkflowConfig from './LMSFormWorkflowConfig';
+import { LMSFormWorkflowConfig } from './LMSFormWorkflowConfig';
 
 const LMSConfigPage = ({
   onClick,

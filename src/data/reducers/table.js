@@ -18,6 +18,7 @@ const updateTable = (state, tableId, updatedTableState) => ({
   },
 });
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const tableReducer = (state = {}, action) => {
   switch (action.type) {
     case PAGINATION_REQUEST:

@@ -4,6 +4,7 @@ import {
   CLEAR_SELECTION,
 } from './actions';
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const selectedRowsReducer = (state = [], action) => {
   switch (action.type) {
     case SET_SELECTED_ROWS:

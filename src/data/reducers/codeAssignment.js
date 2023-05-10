@@ -10,6 +10,7 @@ const initialState = {
   data: null,
 };
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const codeAssignment = (state = initialState, action) => {
   switch (action.type) {
     case CODE_ASSIGNMENT_REQUEST:
