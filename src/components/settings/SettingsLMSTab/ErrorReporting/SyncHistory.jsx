@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  ActionRow, AlertModal, Breadcrumb, Button, Card, Hyperlink,
+  ActionRow, AlertModal, Badge, Breadcrumb, Button, Card, Hyperlink,
   Icon, Image, Skeleton, Toast, useToggle,
 } from '@edx/paragon';
 import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
@@ -42,8 +42,13 @@ const SyncHistory = () => {
   const [toastMessage, setToastMessage] = useState(null);
   const [reloadPage, setReloadPage] = useState(false);
 
+  const lmsStatus = useMemo(() => {
+    if (config) { return getStatus(config); }
+    return null;
+  }, [config]);
+
   const getSubheaders = () => {
-    const status = (getStatus(config) === 'Active' ? `${getStatus(config)}` : null);
+    const status = (lmsStatus === 'Active' ? `${lmsStatus}` : null);
     const lmsChannel = channelMapping[config.channelCode].displayName;
     const modified = `Last modified on ${formatTimestamp({ timestamp: config.lastModifiedAt })}`;
     return (
@@ -140,7 +145,7 @@ const SyncHistory = () => {
   };
 
   const createActionRow = () => {
-    if (getStatus(config) === 'Active') {
+    if (lmsStatus === 'Active') {
       return (
         <ActionRow>
           <Button onClick={() => toggleConfig(false)} variant="tertiary">Disable</Button>
@@ -150,7 +155,7 @@ const SyncHistory = () => {
         </ActionRow>
       );
     }
-    if (getStatus(config) === 'Inactive') {
+    if (lmsStatus === 'Inactive') {
       return (
         <ActionRow>
           <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
@@ -230,6 +235,9 @@ const SyncHistory = () => {
                   src={channelMapping[configChannel].icon}
                 />
                 {config.displayName}
+                {lmsStatus !== 'Active' && (
+                  <Badge className="card-status-badge" variant="light">{lmsStatus}</Badge>
+                )}
               </h2>
               <p className="x-small pt-3">
                 {getSubheaders()}
