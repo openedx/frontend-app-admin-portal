@@ -1,70 +1,63 @@
 import { snakeCaseDict } from "../../../../../utils";
-import { MOODLE_TYPE } from "../../../data/constants";
+import { CORNERSTONE_TYPE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-  // @ts-ignore
-import MoodleConfigEnablePage, { validations } from "./MoodleConfigEnablePage.tsx";
-import type {
-  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
+// @ts-ignore
+import CornerstoneConfigEnablePage, { validations } from "./CornerstoneConfigEnablePage.tsx";
+import type { 
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep,FormWorkflowHandlerArgs,
   // @ts-ignore
 } from "../../../../forms/FormWorkflow.tsx";
 // @ts-ignore
 import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
-export type MoodleConfigCamelCase = {
+export type CornerstoneConfigCamelCase = {
   lms: string;
   displayName: string;
-  moodleBaseUrl: string;
-  webserviceShortName: string;
-  token: string;
-  username: string;
-  password: string;
+  cornerstoneBaseUrl: string;
   id: string;
   active: boolean;
   uuid: string;
 };
 
-export type MoodleConfigSnakeCase = {
+export type CornerstoneConfigSnakeCase = {
   lms: string;
   display_name: string;
-  moodle_base_url: string;
-  webservice_short_name: string;
-  token: string;
-  username: string;
-  password: string;
+  cornerstone_base_url: string;
   id: string;
   active: boolean;
   uuid: string;
   enterprise_customer: string;
 };
 
-export type MoodleFormConfigProps = {
+export type CornerstoneFormConfigProps = {
   enterpriseCustomerUuid: string;
-  existingData: MoodleConfigCamelCase;
+  existingData: CornerstoneConfigCamelCase;
   existingConfigNames: string[];
-  onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
+  onSubmit: (cornerstoneConfig: CornerstoneConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
-  channelMap: Record<string, Record<string, any>>;
+  channelMap: Record<string, Record<string, any>>,
 };
 
-export const MoodleFormConfig = ({
+export const CornerstoneFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
   handleCloseClick,
   existingData,
   existingConfigNames,
-  channelMap, 
-}: MoodleFormConfigProps): FormWorkflowConfig<MoodleConfigCamelCase> => {
+  channelMap,
+}: CornerstoneFormConfigProps): FormWorkflowConfig<CornerstoneConfigCamelCase> => {
 
   const saveChanges = async (
-    formFields: MoodleConfigCamelCase,
+    formFields: CornerstoneConfigCamelCase,
     errHandler: (errMsg: string) => void
   ) => {
-    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as MoodleConfigSnakeCase;
+    ) as CornerstoneConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, MOODLE_TYPE, channelMap, errHandler);
+    return handleSaveHelper(
+      transformedConfig, existingData, formFields, onSubmit, CORNERSTONE_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -72,31 +65,31 @@ export const MoodleFormConfig = ({
     formFieldsChanged,
     errHandler,
     dispatch,
-  }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
+  }: FormWorkflowHandlerArgs<CornerstoneConfigCamelCase>) => {
     let currentFormFields = formFields;
-    const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
+    const transformedConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
       formFields
-    ) as MoodleConfigSnakeCase;
+    ) as CornerstoneConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
       enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, MOODLE_TYPE, channelMap, errHandler, dispatch)
+      currentFormFields, CORNERSTONE_TYPE, channelMap, errHandler, dispatch);
   };
 
   const activate = async ({
     formFields,
     errHandler,
-  }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, MOODLE_TYPE, formFields?.id, handleCloseClick, errHandler);
+  }: FormWorkflowHandlerArgs<CornerstoneConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, CORNERSTONE_TYPE, formFields?.id, handleCloseClick, errHandler);
     return formFields;
   };
 
-  const activatePage = () => ConfigActivatePage(MOODLE_TYPE);
+  const activatePage = () => ConfigActivatePage(CORNERSTONE_TYPE);
 
-  const steps: FormWorkflowStep<MoodleConfigCamelCase>[] = [
+  const steps: FormWorkflowStep<CornerstoneConfigCamelCase>[] = [
     {
       index: 1,
-      formComponent: MoodleConfigEnablePage,
+      formComponent: CornerstoneConfigEnablePage, 
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
       saveChanges,
@@ -106,7 +99,7 @@ export const MoodleFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        return config as FormWorkflowButtonConfig<MoodleConfigCamelCase>;
+        return config as FormWorkflowButtonConfig<CornerstoneConfigCamelCase>;
       },
     },
     {
@@ -121,7 +114,7 @@ export const MoodleFormConfig = ({
           opensNewWindow: false,
           onClick: activate,
         };
-        return config as FormWorkflowButtonConfig<MoodleConfigCamelCase>;
+        return config as FormWorkflowButtonConfig<CornerstoneConfigCamelCase>;
       }
     },
   ];
@@ -135,4 +128,4 @@ export const MoodleFormConfig = ({
   };
 };
 
-export default MoodleFormConfig;
+export default CornerstoneFormConfig;

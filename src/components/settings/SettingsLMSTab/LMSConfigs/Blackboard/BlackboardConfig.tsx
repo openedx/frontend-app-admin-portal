@@ -1,39 +1,25 @@
-import handleErrors from "../../../utils";
-import LmsApiService from "../../../../../data/services/LmsApiService";
-import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
+import { snakeCaseDict } from "../../../../../utils";
 import {
-  BLACKBOARD_OAUTH_REDIRECT_URL,
   BLACKBOARD_TYPE,
   LMS_CONFIG_OAUTH_POLLING_INTERVAL,
   LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-  SUBMIT_TOAST_MESSAGE,
 } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-import BlackboardConfigAuthorizePage, {
-  validations,
-  formFieldNames
-  // @ts-ignore
-} from "./BlackboardConfigAuthorizePage.tsx";
+// @ts-ignore
+import BlackboardConfigAuthorizePage, { validations } from "./BlackboardConfigAuthorizePage.tsx";
 import type {
   FormWorkflowButtonConfig,
   FormWorkflowConfig,
   FormWorkflowStep,
   FormWorkflowHandlerArgs,
-  FormWorkflowErrorHandler,
-} from "../../../../forms/FormWorkflow";
-// @ts-ignore
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
-import {
-  setWorkflowStateAction,
-  updateFormFieldsAction,
   // @ts-ignore
-} from "../../../../forms/data/actions.ts";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+} from "../../../../forms/FormWorkflow.tsx";
+// @ts-ignore
+import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
 
 export type BlackboardConfigCamelCase = {
+  lms: string;
   blackboardAccountId: string;
   blackboardBaseUrl: string;
   displayName: string;
@@ -46,6 +32,7 @@ export type BlackboardConfigCamelCase = {
 };
 
 export type BlackboardConfigSnakeCase = {
+  lms: string;
   blackboard_base_url: string;
   display_name: string;
   id: string;
@@ -60,27 +47,18 @@ export type BlackboardFormConfigProps = {
   existingData: BlackboardConfigCamelCase;
   existingConfigNames: string[];
   onSubmit: (blackboardConfig: BlackboardConfigCamelCase) => void;
-  onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
+  channelMap: Record<string, Record<string, any>>,
 };
-
-export const LMS_AUTHORIZATION_FAILED = "LMS AUTHORIZATION FAILED";
 
 export const BlackboardFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
-  onClickCancel,
+  handleCloseClick,
   existingData,
   existingConfigNames,
+  channelMap,
 }: BlackboardFormConfigProps): FormWorkflowConfig<BlackboardConfigCamelCase> => {
-  const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
-  const checkForDuplicateNames: FormFieldValidation = {
-    formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: BlackboardConfigCamelCase) => {
-      return configNames?.includes(formFields.displayName)
-        ? "Display name already taken"
-        : false;
-    },
-  };
 
   const saveChanges = async (
     formFields: BlackboardConfigCamelCase,
@@ -90,33 +68,7 @@ export const BlackboardFormConfig = ({
       formFields
     ) as BlackboardConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-
-    if (formFields.id) {
-      try {
-        transformedConfig.active = existingData.active;
-        await LmsApiService.updateBlackboardConfig(
-          transformedConfig,
-          existingData.id
-        );
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    } else {
-      try {
-        transformedConfig.active = false;
-        await LmsApiService.postNewBlackboardConfig(transformedConfig);
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    }
-
-    if (err) {
-      errHandler(err);
-    }
-    return !err;
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, BLACKBOARD_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -130,63 +82,9 @@ export const BlackboardFormConfig = ({
       formFields
     ) as BlackboardConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-    if (formFieldsChanged) {
-      if (currentFormFields?.id) {
-        try {
-          transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateBlackboardConfig(
-            transformedConfig,
-            existingData.id
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as BlackboardConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      } else {
-        try {
-          transformedConfig.active = false;
-          const response = await LmsApiService.postNewBlackboardConfig(
-            transformedConfig
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as BlackboardConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      }
-    }
-    if (err) {
-      errHandler?.(err);
-    } else if (currentFormFields && !currentFormFields?.refreshToken) {
-      let appKey = existingData.clientId;
-      let configUuid = existingData.uuid;
-      if (!appKey || !configUuid) {
-        try {
-          const response = await LmsApiService.fetchBlackboardGlobalConfig();
-          appKey = response.data.results[response.data.results.length - 1].app_key;
-          configUuid = response.data.uuid;
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      }
-      const oauthUrl = `${currentFormFields.blackboardBaseUrl}/learn/api/public/v1/oauth2/authorizationcode?`
-        + `redirect_uri=${BLACKBOARD_OAUTH_REDIRECT_URL}&scope=read%20write%20delete%20offline&`
-        + `response_type=code&client_id=${appKey}&state=${configUuid}`;
-      window.open(oauthUrl);
-
-      // Open the oauth window for the user
-      window.open(oauthUrl);
-      dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, true));
-    }
-    return currentFormFields;
+    return handleSubmitHelper(
+      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
+      currentFormFields, BLACKBOARD_TYPE, channelMap, errHandler, dispatch);
   };
 
   const awaitAfterSubmit = async ({
@@ -194,44 +92,31 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    if (formFields?.id) {
-      let err = "";
-      try {
-        const response = await LmsApiService.fetchSingleBlackboardConfig(
-          formFields.id
-        );
-        if (response.data.refresh_token) {
-          dispatch?.(
-            setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
-          );
-          return true;
-        }
-      } catch (error) {
-        err = handleErrors(error);
-      }
-      if (err) {
-        errHandler?.(err);
-        return false;
-      }
-    }
-
-    return false;
+    const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
+    return response;
   };
 
   const onAwaitTimeout = async ({
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false));
-    dispatch?.(setWorkflowStateAction(LMS_AUTHORIZATION_FAILED, true));
+    onTimeoutHelper(dispatch);
+  };
+
+  const activate = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, BLACKBOARD_TYPE, formFields?.id, handleCloseClick, errHandler);
+    return formFields;
   };
 
   const activatePage = () => ConfigActivatePage(BLACKBOARD_TYPE);
 
   const steps: FormWorkflowStep<BlackboardConfigCamelCase>[] = [
     {
-      index: 0,
+      index: 1,
       formComponent: BlackboardConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Authorize",
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {
@@ -258,19 +143,19 @@ export const BlackboardFormConfig = ({
       },
     },
     {
-      index: 1,
+      index: 2,
       formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,
-      nextButtonConfig: () => ({
-        buttonText: "Activate",
-        opensNewWindow: false,
-        onClick: () => {
-          onClickCancel(true, SUBMIT_TOAST_MESSAGE);
-          return Promise.resolve(existingData);
-        },
-      }),
+      nextButtonConfig: () => {
+        let config = {
+          buttonText: "Activate",
+          opensNewWindow: false,
+          onClick: activate,
+        };
+        return config as FormWorkflowButtonConfig<BlackboardConfigCamelCase>;
+      }
     },
   ];
 

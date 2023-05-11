@@ -1,34 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Image } from '@edx/paragon';
 import { connect } from 'react-redux';
-import { channelMapping } from '../../../utils';
 
-import {
-  BLACKBOARD_TYPE,
-  CANVAS_TYPE,
-  CORNERSTONE_TYPE,
-  DEGREED2_TYPE,
-  MOODLE_TYPE,
-  SAP_TYPE,
-} from '../data/constants';
-import { BlackboardFormConfig } from './LMSConfigs/Blackboard/BlackboardConfig.tsx';
-import { CanvasFormConfig } from './LMSConfigs/Canvas/CanvasConfig.tsx';
-import { DegreedFormConfig } from './LMSConfigs/Degreed/DegreedConfig.tsx';
-import { MoodleFormConfig } from './LMSConfigs/Moodle/MoodleConfig.tsx';
-import CornerstoneConfig from './LMSConfigs/CornerstoneConfig';
-import SAPConfig from './LMSConfigs/SAPConfig';
 import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
-
-const flowConfigs = {
-  [BLACKBOARD_TYPE]: BlackboardFormConfig,
-  [CANVAS_TYPE]: CanvasFormConfig,
-  [DEGREED2_TYPE]: DegreedFormConfig,
-  [MOODLE_TYPE]: MoodleFormConfig,
-};
+import { getChannelMap } from '../../../utils';
+import LMSFormWorkflowConfig from './LMSFormWorkflowConfig.tsx';
 
 const LMSConfigPage = ({
-  LMSType,
   onClick,
   enterpriseCustomerUuid,
   existingConfigFormData,
@@ -36,110 +14,35 @@ const LMSConfigPage = ({
   setExistingConfigFormData,
   isLmsStepperOpen,
   closeLmsStepper,
+  lmsType,
 }) => {
-  const [edited, setEdited] = React.useState(false);
+  const channelMap = useMemo(() => getChannelMap(), []);
   const handleCloseWorkflow = (submitted, msg) => {
     onClick(submitted ? msg : '');
     closeLmsStepper();
     return true;
   };
+
+  const formWorkflowConfig = LMSFormWorkflowConfig({
+    enterpriseCustomerUuid,
+    onSubmit: setExistingConfigFormData,
+    handleCloseClick: handleCloseWorkflow,
+    existingData: existingConfigFormData,
+    existingConfigNames: existingConfigs,
+    channelMap,
+    lmsType,
+  });
+
   return (
-    <span>
-      {LMSType === BLACKBOARD_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[BLACKBOARD_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === CANVAS_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[CANVAS_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === CORNERSTONE_TYPE && (
-        <>
-          <h3 className="mt-4.5 mb-3.5">
-            <Image className="lms-icon" src={channelMapping[LMSType]?.icon} />
-            <span className="ml-2">
-              Connect {channelMapping[LMSType]?.displayName}
-            </span>
-          </h3>
-          <CornerstoneConfig
-            enterpriseCustomerUuid={enterpriseCustomerUuid}
-            onClick={onClick}
-            existingData={existingConfigFormData}
-            existingConfigs={existingConfigs}
-            edited={edited}
-            setEdited={setEdited}
-          />
-        </>
-      )}
-      {LMSType === DEGREED2_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[DEGREED2_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === MOODLE_TYPE && (
-        <FormContextWrapper
-          formWorkflowConfig={flowConfigs[MOODLE_TYPE]({
-            enterpriseCustomerUuid,
-            onSubmit: setExistingConfigFormData,
-            onClickCancel: handleCloseWorkflow,
-            existingData: existingConfigFormData,
-            existingConfigNames: existingConfigs,
-          })}
-          onClickOut={handleCloseWorkflow}
-          onSubmit={setExistingConfigFormData}
-          formData={existingConfigFormData}
-          isStepperOpen={isLmsStepperOpen}
-        />
-      )}
-      {LMSType === SAP_TYPE && (
-        <>
-          <h3 className="mt-4.5 mb-3.5">
-            <Image className="lms-icon" src={channelMapping[LMSType]?.icon} />
-            <span className="ml-2">
-              Connect {channelMapping[LMSType]?.displayName}
-            </span>
-          </h3>
-          <SAPConfig
-            enterpriseCustomerUuid={enterpriseCustomerUuid}
-            onClick={onClick}
-            existingData={existingConfigFormData}
-            existingConfigs={existingConfigs}
-          />
-        </>
-      )}
-    </span>
+    <div>
+      <FormContextWrapper
+        formWorkflowConfig={formWorkflowConfig}
+        onClickOut={handleCloseWorkflow}
+        onSubmit={setExistingConfigFormData}
+        formData={existingConfigFormData}
+        isStepperOpen={isLmsStepperOpen}
+      />
+    </div>
   );
 };
 const mapStateToProps = (state) => ({
@@ -148,17 +51,18 @@ const mapStateToProps = (state) => ({
 
 LMSConfigPage.defaultProps = {
   existingConfigs: [],
+  lmsType: '',
 };
 
 LMSConfigPage.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
-  LMSType: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingConfigFormData: PropTypes.shape({}).isRequired,
   existingConfigs: PropTypes.arrayOf(PropTypes.string),
   setExistingConfigFormData: PropTypes.func.isRequired,
   isLmsStepperOpen: PropTypes.bool.isRequired,
   closeLmsStepper: PropTypes.func.isRequired,
+  lmsType: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(LMSConfigPage);

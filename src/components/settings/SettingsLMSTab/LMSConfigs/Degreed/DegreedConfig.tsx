@@ -1,29 +1,18 @@
-import handleErrors from "../../../utils";
-import LmsApiService from "../../../../../data/services/LmsApiService";
-import { camelCaseDict, snakeCaseDict } from "../../../../../utils";
-import { DEGREED2_TYPE, SUBMIT_TOAST_MESSAGE } from "../../../data/constants";
+import { snakeCaseDict } from "../../../../../utils";
+import { DEGREED2_TYPE } from "../../../data/constants";
 // @ts-ignore
 import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-import DegreedConfigAuthorizePage, {
-  validations,
-  formFieldNames
-  // @ts-ignore
-} from "./DegreedConfigEnablePage.tsx";
+// @ts-ignore
+import DegreedConfigAuthorizePage, { validations } from "./DegreedConfigEnablePage.tsx";
 import type {
-  FormWorkflowButtonConfig,
-  FormWorkflowConfig,
-  FormWorkflowStep,
-  FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
-import {
-  updateFormFieldsAction,
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
   // @ts-ignore
-} from "../../../../forms/data/actions.ts";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+} from "../../../../forms/FormWorkflow.tsx";
+// @ts-ignore
+import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
 
 export type DegreedConfigCamelCase = {
+  lms: string;
   displayName: string;
   clientId: string;
   clientSecret: string;
@@ -35,6 +24,7 @@ export type DegreedConfigCamelCase = {
 };
 
 export type DegreedConfigSnakeCase = {
+  lms: string;
   display_name: string;
   client_id: string;
   client_secret: string;
@@ -52,26 +42,18 @@ export type DegreedFormConfigProps = {
   existingData: DegreedConfigCamelCase;
   existingConfigNames: string[];
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
-  onClickCancel: (submitted: boolean, status: string) => Promise<boolean>;
+  handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
+  channelMap: Record<string, Record<string, any>>,
 };
 
 export const DegreedFormConfig = ({
   enterpriseCustomerUuid,
   onSubmit,
-  onClickCancel,
+  handleCloseClick,
   existingData,
   existingConfigNames,
+  channelMap,
 }: DegreedFormConfigProps): FormWorkflowConfig<DegreedConfigCamelCase> => {
-  const configNames: string[] = existingConfigNames?.filter( (name) => name !== existingData.displayName);
-  const checkForDuplicateNames: FormFieldValidation = {
-    formFieldId: formFieldNames.DISPLAY_NAME,
-    validator: (formFields: DegreedConfigCamelCase) => {
-      return configNames?.includes(formFields.displayName)
-        ? "Display name already taken"
-        : false;
-    },
-  };
-
   const saveChanges = async (
     formFields: DegreedConfigCamelCase,
     errHandler: (errMsg: string) => void
@@ -80,33 +62,7 @@ export const DegreedFormConfig = ({
       formFields
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-
-    if (formFields.id) {
-      try {
-        transformedConfig.active = existingData.active;
-        await LmsApiService.updateDegreedConfig(
-          transformedConfig,
-          existingData.id
-        );
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    } else {
-      try {
-        transformedConfig.active = false;
-        await LmsApiService.postNewDegreedConfig(transformedConfig);
-        onSubmit(formFields);
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    }
-
-    if (err) {
-      errHandler(err);
-    }
-    return !err;
+    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, DEGREED2_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -120,52 +76,25 @@ export const DegreedFormConfig = ({
       formFields
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    let err = "";
-    if (formFieldsChanged) {
-      if (currentFormFields?.id) {
-        try {
-          transformedConfig.active = existingData.active;
-          const response = await LmsApiService.updateDegreedConfig(
-            transformedConfig,
-            existingData.id
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as DegreedConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      } else {
-        try {
-          transformedConfig.active = false;
-          const response = await LmsApiService.postNewDegreedConfig(
-            transformedConfig
-          );
-          currentFormFields = camelCaseDict(
-            response.data
-          ) as DegreedConfigCamelCase;
-          onSubmit(currentFormFields);
-          dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-        } catch (error) {
-          err = handleErrors(error);
-        }
-      }
-    }
-    if (err) {
-      errHandler?.(err);
-    }
-    return currentFormFields;
+    return handleSubmitHelper(
+      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, 
+      currentFormFields, DEGREED2_TYPE, channelMap, errHandler, dispatch);
+  };
+
+  const activate = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<DegreedConfigCamelCase>) => {
+    activateConfig(enterpriseCustomerUuid, channelMap, DEGREED2_TYPE, formFields?.id, handleCloseClick, errHandler);
+    return formFields;
   };
 
   const activatePage = () => ConfigActivatePage(DEGREED2_TYPE);
-
   const steps: FormWorkflowStep<DegreedConfigCamelCase>[] = [
     {
-      index: 0,
+      index: 1,
       formComponent: DegreedConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {
@@ -178,19 +107,19 @@ export const DegreedFormConfig = ({
       },
     },
     {
-      index: 1,
+      index: 2,
       formComponent: activatePage,
       validations: [],
       stepName: "Activate",
       saveChanges,
-      nextButtonConfig: () => ({
-        buttonText: "Activate",
-        opensNewWindow: false,
-        onClick: () => {
-          onClickCancel(true, SUBMIT_TOAST_MESSAGE);
-          return Promise.resolve(existingData);
-        },
-      }),
+      nextButtonConfig: () => {
+        let config = {
+          buttonText: "Activate",
+          opensNewWindow: false,
+          onClick: activate,
+        };
+        return config as FormWorkflowButtonConfig<DegreedConfigCamelCase>;
+      }
     },
   ];
 

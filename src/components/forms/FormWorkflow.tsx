@@ -5,18 +5,9 @@ import { Launch } from "@edx/paragon/icons";
 
 // @ts-ignore
 import { useFormContext } from "./FormContext.tsx";
-import type {
-  FormFields,
-  FormFieldValidation,
-  FormContext,
-} from "./FormContext";
-
-import {
-  setStepAction,
-  setWorkflowStateAction,
-  FORM_ERROR_MESSAGE,
-  // @ts-ignore
-} from "./data/actions.ts";
+import type { FormFieldValidation, FormContext } from "./FormContext";
+// @ts-ignore
+import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE } from "./data/actions.ts";
 import { SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
 import { FormActionArguments } from "./data/actions";
 // @ts-ignore
@@ -61,7 +52,7 @@ export type FormWorkflowStep<FormData> = {
     formData: FormData,
     errHandler: FormWorkflowErrorHandler
   ) => Promise<boolean>;
-  nextButtonConfig: (FormData) => FormWorkflowButtonConfig<FormData>;
+  nextButtonConfig: (FormData: FormData) => FormWorkflowButtonConfig<FormData>;
 };
 
 export type FormWorkflowConfig<FormData> = {
@@ -74,7 +65,7 @@ export type FormWorkflowProps<FormData> = {
   onClickOut: (edited: boolean, msg?: string) => null;
   formData: FormData;
   dispatch: Dispatch<FormActionArguments>;
-  onSubmit: (FormData) => void;
+  onSubmit: (FormData: FormData) => void;
   isStepperOpen: boolean;
 };
 
@@ -135,7 +126,7 @@ function FormWorkflow<FormData>({
           nextButtonConfig.awaitSuccess.awaitInterval
         );
         if (!advance && nextButtonConfig?.awaitSuccess) {
-          await nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
+          nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
             formFields: newFormFields,
             errHandler: setFormError,
             dispatch,
