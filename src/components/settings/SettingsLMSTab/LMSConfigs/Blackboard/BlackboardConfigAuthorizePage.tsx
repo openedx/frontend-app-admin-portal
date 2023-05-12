@@ -1,20 +1,22 @@
-import React from "react";
-import { Alert, Container, Form, Image } from "@edx/paragon";
-import { Info } from "@edx/paragon/icons";
+import React from 'react';
+import {
+  Alert, Container, Form, Image,
+} from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl";
-import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
-import { channelMapping, urlValidation } from "../../../../../utils";
-import type { FormFieldValidation } from "../../../../forms/FormContext";
-import { useFormContext } from "../../../../forms/FormContext";
-import FormWaitModal from "../../../../forms/FormWaitModal";
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow";
-import { setWorkflowStateAction } from "../../../../forms/data/actions";
-import { LMS_AUTHORIZATION_FAILED } from "../utils";
+import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
+import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from '../../../data/constants';
+import { channelMapping, urlValidation } from '../../../../../utils';
+import type { FormFieldValidation } from '../../../../forms/FormContext';
+import { useFormContext } from '../../../../forms/FormContext';
+import FormWaitModal from '../../../../forms/FormWaitModal';
+import { WAITING_FOR_ASYNC_OPERATION } from '../../../../forms/FormWorkflow';
+import { setWorkflowStateAction } from '../../../../forms/data/actions';
+import { LMS_AUTHORIZATION_FAILED } from '../utils';
 
 export const formFieldNames = {
-  DISPLAY_NAME: "displayName",
-  BLACKBOARD_BASE_URL: "blackboardBaseUrl",
+  DISPLAY_NAME: 'displayName',
+  BLACKBOARD_BASE_URL: 'blackboardBaseUrl',
 };
 
 export const validations: FormFieldValidation[] = [
@@ -39,8 +41,8 @@ export const validations: FormFieldValidation[] = [
 const BlackboardConfigAuthorizePage = () => {
   const { dispatch, stateMap } = useFormContext();
   return (
-    <Container size='md'>
-      <span className='d-flex pb-4'>
+    <Container size="md">
+      <span className="d-flex pb-4">
         <Image
           className="lms-icon mr-2"
           src={channelMapping[BLACKBOARD_TYPE].icon}
@@ -49,7 +51,7 @@ const BlackboardConfigAuthorizePage = () => {
           Authorize connection to Blackboard
         </h3>
       </span>
-      <Form style={{ maxWidth: "60rem" }}>
+      <Form style={{ maxWidth: '60rem' }}>
         {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
           <Alert variant="danger" icon={Info}>
             <h3>Enablement failed</h3>
@@ -75,11 +77,9 @@ const BlackboardConfigAuthorizePage = () => {
         </Form.Group>
         <FormWaitModal
           triggerState={WAITING_FOR_ASYNC_OPERATION}
-          onClose={() =>
-            dispatch?.(
-              setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
-            )
-          }
+          onClose={() => dispatch?.(
+            setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false),
+          )}
           header="Authorization in progress"
           text="Please confirm authorization through Blackboard and return to this window once complete."
         />

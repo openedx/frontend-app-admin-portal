@@ -12,6 +12,7 @@ const FormWaitModalWrapper = ({
   triggerState,
   header,
   text,
+  onClose,
 }) => {
   const contextValue = {
     stateMap: { SHOW_MODAL: showModal },
@@ -23,6 +24,7 @@ const FormWaitModalWrapper = ({
     >
       <FormWaitModal
         {...{
+          onClose,
           triggerState,
           header,
           text,
@@ -35,6 +37,7 @@ const FormWaitModalWrapper = ({
 describe('<FormWaitModal />', () => {
   it('renders if flag set', () => {
     const mockDispatch = jest.fn();
+    const mockOnClose = jest.fn();
     render(
       <FormWaitModalWrapper
         showModal
@@ -42,6 +45,7 @@ describe('<FormWaitModal />', () => {
         triggerState="SHOW_MODAL"
         header="Test FormWaitModal"
         text="Some text to test with"
+        onClose={mockOnClose}
       />,
     );
 
@@ -50,6 +54,7 @@ describe('<FormWaitModal />', () => {
   });
   it('does not render if flag not set', () => {
     const mockDispatch = jest.fn();
+    const mockOnClose = jest.fn();
     render(
       <FormWaitModalWrapper
         showModal={false}
@@ -57,6 +62,7 @@ describe('<FormWaitModal />', () => {
         triggerState="SHOW_MODAL"
         header="Test FormWaitModal"
         text="Some text to test with"
+        onClose={mockOnClose}
       />,
     );
 

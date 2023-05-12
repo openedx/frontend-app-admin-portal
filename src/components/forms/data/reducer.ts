@@ -1,21 +1,23 @@
-import groupBy from "lodash/groupBy";
-import isEmpty from "lodash/isEmpty";
-import keys from "lodash/keys"
-import { SET_FORM_FIELD, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS } from "./actions";
+import groupBy from 'lodash/groupBy';
+import isEmpty from 'lodash/isEmpty';
+import keys from 'lodash/keys';
+import {
+  SET_FORM_FIELD, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS,
+} from './actions';
 import type {
   FormActionArguments, SetFormFieldArguments, SetStepArguments, SetWorkflowStateArguments, UpdateFormFieldArguments,
-} from "./actions";
-import type { FormContext, FormFieldValidation } from "../FormContext";
-import type { FormWorkflowStep } from "../FormWorkflow";
+} from './actions';
+import type { FormContext, FormFieldValidation } from '../FormContext';
+import type { FormWorkflowStep } from '../FormWorkflow';
 
 const processFormErrors = (state: FormContext): FormContext => {
   // Get all form errors
-  let errorState: Pick<FormContext, "hasErrors" | "errorMap"> = {
+  let errorState: Pick<FormContext, 'hasErrors' | 'errorMap'> = {
     hasErrors: false,
     errorMap: {},
   };
-  if (typeof state.currentStep?.validations == "boolean") {
-    errorState = {hasErrors: state.currentStep?.validations, errorMap: {}};
+  if (typeof state.currentStep?.validations === 'boolean') {
+    errorState = { hasErrors: state.currentStep?.validations, errorMap: {} };
   } else if (state.formFields) {
     // Generate list of errors with their formFieldIds
     // const formFieldsCopy = {...state.formFields};
@@ -27,17 +29,17 @@ const processFormErrors = (state: FormContext): FormContext => {
       .filter((err) => !!err[1]);
     if (!isEmpty(errors)) {
       // Convert to map of errors indexed by formFieldId
-      let errorMap = groupBy(errors, (error) => error[0]);
+      const errorMap = groupBy(errors, (error) => error[0]);
       keys(errorMap).forEach((key) => {
         // Remove unneeded key from values now that we're grouping by it.
         errorMap[key] = errorMap[key].map(kvp => kvp[1]);
-      })
+      });
       errorState = {
         hasErrors: true,
         errorMap,
       };
     } else {
-      errorState = {hasErrors: false, errorMap: {}};
+      errorState = { hasErrors: false, errorMap: {} };
     }
   }
 
@@ -54,11 +56,11 @@ export type InitializeFormArguments<FormFields> = {
 };
 export function initializeForm<FormFields>(
   state: FormContext,
-  action: InitializeFormArguments<FormFields>
+  action: InitializeFormArguments<FormFields>,
 ) {
   const additions: Pick<
-    FormContext,
-    "isEdited" | "formFields" | "currentStep"
+  FormContext,
+  'isEdited' | 'formFields' | 'currentStep'
   > = { isEdited: false };
   if (action?.formFields) {
     additions.formFields = action.formFields;
@@ -74,7 +76,7 @@ export function initializeForm<FormFields>(
 
 export function FormReducer<FormFields>(
   state: FormContext = { formFields: {} },
-  action: FormActionArguments
+  action: FormActionArguments,
 ) {
   switch (action.type) {
     case SET_FORM_FIELD:
@@ -89,14 +91,13 @@ export function FormReducer<FormFields>(
       });
       return newState;
     case UPDATE_FORM_FIELDS:
-      const updateFormFieldsArgs =
-        action as UpdateFormFieldArguments<FormFields>;
+      const updateFormFieldsArgs = action as UpdateFormFieldArguments<FormFields>;
       return {
         ...state,
         formFields: updateFormFieldsArgs.formFields,
         isEdited: false,
         hasErrors: false,
-        errorMap: {}
+        errorMap: {},
       };
     case SET_STEP:
       const setStepArgs = action as SetStepArguments<FormFields>;
