@@ -33,6 +33,25 @@ const configData = {
     lastSyncErroredAt: null,
     lastContentSyncErroredAt: null,
     lastLearnerSyncErroredAt: null,
+    lastModifiedAt: '2023-05-05T14:51:53.473144Z',
+  },
+};
+
+const configDataDisabled = {
+  data: {
+    channelCode: 'BLACKBOARD',
+    id: 1,
+    isValid: [{ missing: [] }, { incorrect: [] }],
+    active: false,
+    displayName: 'foobar',
+    enterpriseCustomer: enterpriseCustomerUuid,
+    lastSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastContentSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
+    lastModifiedAt: '2023-05-05T14:51:53.473144Z',
   },
 };
 
@@ -214,10 +233,12 @@ describe('<ExistingLMSCardDeck />', () => {
       administrator: true,
     });
     features.FEATURE_INTEGRATION_REPORTING = true;
-    const url = 'http://dummy.com/test-enterprise/admin/settings/lms';
+    const baseUrl = 'http://dummy.com';
+    const pathName = '/test-enterprise/admin/settings/lms';
     Object.defineProperty(window, 'location', {
       value: {
-        pathname: `${url}/${configData.data.channelCode}/${configData.data.id}`,
+        pathname: `${pathName}/${configData.data.channelCode}/${configData.data.id}`,
+        href: `${baseUrl}${pathName}/${configData.data.channelCode}/${configData.data.id}`,
       },
       writable: true,
     });
@@ -239,6 +260,8 @@ describe('<ExistingLMSCardDeck />', () => {
     await waitForElementToBeRemoved(skeleton);
     expect(mockFetchSingleConfig).toHaveBeenCalledWith('1');
     expect(screen.getByText('Disable')).toBeInTheDocument();
+    expect(screen.getByText('Configure')).toBeInTheDocument();
+    expect(screen.getByText('Last modified on May 5, 2023')).toBeInTheDocument();
     expect(screen.getByText('Last sync:')).toBeInTheDocument();
 
     await waitFor(() => expect(screen.getByText('Course key')).toBeInTheDocument());
@@ -246,6 +269,22 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getAllByText('Sync attempt time')).toHaveLength(2);
 
     expect(screen.getAllByText('No results found')).toHaveLength(2);
+  });
+  it('check disabled config', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configDataDisabled);
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    expect(mockFetchSingleConfig).toHaveBeenCalledWith('1');
+    expect(screen.getByText('Enable')).toBeInTheDocument();
+    expect(screen.getByText('Configure')).toBeInTheDocument();
+    expect(screen.getByText('Delete')).toBeInTheDocument();
   });
   it('populates with learner sync data', async () => {
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');

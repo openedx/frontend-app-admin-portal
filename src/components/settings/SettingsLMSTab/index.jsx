@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
   Alert, Button, Hyperlink, Toast, Skeleton, useToggle,
 } from '@edx/paragon';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
-import { camelCaseDictArray } from '../../../utils';
+import { camelCaseDictArray, channelMapping } from '../../../utils';
 import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
 import NoConfigCard from './NoConfigCard';
@@ -48,12 +48,11 @@ const SettingsLMSTab = ({
   const { dispatch } = useFormContext();
 
   // onClick function for existing config cards' edit action
-  const editExistingConfig = (configData, configType) => {
+  const editExistingConfig = useCallback((configData, configType) => {
     setConfigsLoading(false);
     // Setting this allows us to skip the selection step in the stepper
     dispatch?.setFormFieldAction({ fieldId: 'lms', value: configData.channelCode });
     setLmsType(configData.channelCode);
-    openLmsStepper();
     // Set the form data to the card's associated config data
     setExistingConfigFormData(configData);
     // Set the config type to the card's type
@@ -62,7 +61,21 @@ const SettingsLMSTab = ({
     setShowNoConfigCard(false);
     // Since the user is editing, hide the existing config cards
     setConfigsExist(false);
-  };
+    openLmsStepper();
+  }, [dispatch, openLmsStepper]);
+
+  // we pass in params (configId and lmsType) from SyncHistory when user wants to edit that config
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const fetchData = async () => channelMapping[query.get('lms')].fetch(query.get('id'));
+    fetchData()
+      .then((response) => {
+        editExistingConfig(camelCaseObject(response.data), query.get('id'));
+      })
+      .catch((err) => {
+        logError(err);
+      });
+  }, [editExistingConfig]);
 
   const fetchExistingConfigs = useCallback(() => {
     const options = { enterprise_customer: enterpriseId };
@@ -140,15 +153,15 @@ const SettingsLMSTab = ({
         </Hyperlink>
         <div className="mt-3" style={{ pointerEvents: null }}>
           {!configsLoading && !config && (
-          <Button
-            variant="primary"
-            className="side-button"
-            iconBefore={Add}
-            disabled={displayNeedsSSOAlert && !hasSSOConfig}
-            onClick={openLmsStepper}
-          >
-            New
-          </Button>
+            <Button
+              variant="primary"
+              className="side-button"
+              iconBefore={Add}
+              disabled={displayNeedsSSOAlert && !hasSSOConfig}
+              onClick={openLmsStepper}
+            >
+              New
+            </Button>
           )}
         </div>
       </h2>
