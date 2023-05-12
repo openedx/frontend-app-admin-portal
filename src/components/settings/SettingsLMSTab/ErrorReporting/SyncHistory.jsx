@@ -1,30 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  ActionRow, AlertModal, Breadcrumb, Button, Card, Icon, Image, Skeleton, Toast, useToggle,
+  ActionRow, AlertModal, Badge, Breadcrumb, Button, Card, Hyperlink,
+  Icon, Image, Skeleton, Toast, useToggle,
 } from '@edx/paragon';
 import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
 import { getStatus } from '../utils';
 import { getTimeAgo } from './utils';
 import handleErrors from '../../utils';
 import ConfigErrorModal from '../../ConfigErrorModal';
+import { channelMapping, formatTimestamp } from '../../../../utils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 import {
   ACTIVATE_TOAST_MESSAGE, BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE,
   DEGREED2_TYPE, errorToggleModalText, INACTIVATE_TOAST_MESSAGE, MOODLE_TYPE, SAP_TYPE,
 } from '../../data/constants';
-
-import { channelMapping } from '../../../../utils';
 import ErrorReportingTable from './ErrorReportingTable';
 
 const SyncHistory = () => {
+  // the simple redirect is used for going back to the lms page
   const vars = (window.location.pathname).split('lms/');
   const redirectPath = `${vars[0]}lms/`;
   const configInfo = vars[1].split('/');
   const configChannel = configInfo[0];
   const configId = configInfo[1];
+
+  // the redirect with params is used when editing an existing config
+  let editConfigUrl = `${((window.location.href).split('lms/'))[0]}lms/?`;
+  const queryParams = new URLSearchParams({
+    lms: configChannel,
+    id: configId,
+  });
+  editConfigUrl += queryParams.toString();
 
   const [config, setConfig] = useState();
   const [errorModalText, setErrorModalText] = useState();
@@ -33,7 +42,23 @@ const SyncHistory = () => {
   const [toastMessage, setToastMessage] = useState(null);
   const [reloadPage, setReloadPage] = useState(false);
 
-  const getActiveStatus = status => (status === 'Active' ? `${status} •` : '');
+  const lmsStatus = useMemo(() => {
+    if (config) { return getStatus(config); }
+    return null;
+  }, [config]);
+
+  const getSubheaders = () => {
+    const status = (lmsStatus === 'Active' ? `${lmsStatus}` : null);
+    const lmsChannel = channelMapping[config.channelCode].displayName;
+    const modified = `Last modified on ${formatTimestamp({ timestamp: config.lastModifiedAt })}`;
+    return (
+      <span className="d-flex">
+        {status && (<span>{status}<span className="p-2">•</span></span>)}
+        <span>{lmsChannel}<span className="p-2">•</span></span>
+        <span>{modified}</span>
+      </span>
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,8 +119,8 @@ const SyncHistory = () => {
     if (input !== null) {
       setReloadPage(true);
       setToastMessage(input);
-    // if configuration is being deleted
     } else {
+      // if configuration is being deleted
       window.location.href = redirectPath;
     }
   };
@@ -120,19 +145,23 @@ const SyncHistory = () => {
   };
 
   const createActionRow = () => {
-    if (getStatus(config) === 'Active') {
+    if (lmsStatus === 'Active') {
       return (
         <ActionRow>
           <Button onClick={() => toggleConfig(false)} variant="tertiary">Disable</Button>
-          {/* <Button variant="outline-primary">Configure</Button>  */}
+          <Hyperlink destination={editConfigUrl}>
+            <Button variant="outline-primary">Configure</Button>
+          </Hyperlink>
         </ActionRow>
       );
     }
-    if (getStatus(config) === 'Inactive') {
+    if (lmsStatus === 'Inactive') {
       return (
         <ActionRow>
           <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-          {/* <Button variant="tertiary">Configure</Button> */}
+          <Hyperlink destination={editConfigUrl}>
+            <Button variant="tertiary">Configure</Button>
+          </Hyperlink>
           <Button onClick={() => toggleConfig(true)} variant="outline-primary">Enable</Button>
         </ActionRow>
       );
@@ -140,7 +169,9 @@ const SyncHistory = () => {
     return ( // if incomplete
       <ActionRow>
         <Button onClick={() => setShowDeleteModal(true)} variant="tertiary">Delete</Button>
-        {/* <Button variant="outline-primary">Configure</Button> */}
+        <Hyperlink destination={editConfigUrl}>
+          <Button variant="outline-primary">Configure</Button>
+        </Hyperlink>
       </ActionRow>
     );
   };
@@ -204,9 +235,12 @@ const SyncHistory = () => {
                   src={channelMapping[configChannel].icon}
                 />
                 {config.displayName}
+                {lmsStatus !== 'Active' && (
+                  <Badge className="card-status-badge" variant="light">{lmsStatus}</Badge>
+                )}
               </h2>
-              <p className="small pt-3" style={{ wordSpacing: '7px' }}>
-                {getActiveStatus(getStatus(config))} {config.channelCode}
+              <p className="x-small pt-3">
+                {getSubheaders()}
               </p>
             </Card.Section>
             {getLastSync()}

@@ -70,7 +70,6 @@ const getTestInitializeFormArguments = () => {
 
 const getTestExpectedState = () => ({
   formFields: testFormFields,
-  validations: dummyFormFieldsValidations,
   currentStep: steps[0],
   isEdited: false,
 });
@@ -106,7 +105,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm(getTestInitializeFormArguments(), action)),
+      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
     ).toStrictEqual(expected);
   });
 
@@ -123,7 +122,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm(getTestInitializeFormArguments()), action),
+      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
     ).toStrictEqual(expected);
   });
 
@@ -138,7 +137,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm(getTestInitializeFormArguments()), action),
+      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
     ).toStrictEqual(expected);
   });
 
@@ -153,7 +152,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm(getTestInitializeFormArguments()), action),
+      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
     ).toStrictEqual(expected);
   });
 });
