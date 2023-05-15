@@ -89,7 +89,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.0.0",
-    "@edx/frontend-build": "^12.5.0",
+    "@edx/frontend-build": "12.8.27",
     "@faker-js/faker": "^7.6.0",
     "@testing-library/dom": "7.31.2",
     "@testing-library/jest-dom": "5.11.9",
