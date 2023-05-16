@@ -1,11 +1,11 @@
-import React from "react";
-import omit from "lodash/omit";
-import isString from "lodash/isString";
+import React from 'react';
+import omit from 'lodash/omit';
+import isString from 'lodash/isString';
 
-import { Form } from "@edx/paragon";
+import { Form } from '@edx/paragon';
 
-import { setFormFieldAction } from "./data/actions";
-import { useFormContext } from "./FormContext";
+import { setFormFieldAction } from './data/actions';
+import { useFormContext } from './FormContext';
 
 type InheritedParagonControlProps = {
   className?: string;
@@ -26,14 +26,14 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
   const { formFields, errorMap, dispatch } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch && dispatch(
-      setFormFieldAction({ fieldId: props.formId, value: e.target.value })
+      setFormFieldAction({ fieldId: props.formId, value: e.target.value }),
     );
   };
   const errors = errorMap?.[props.formId];
   // Show error message if an error message was part of any detected errors
   const showError = errors?.find?.(error => isString(error));
   const formControlProps = {
-    ...omit(props, ["formId"]),
+    ...omit(props, ['formId']),
     onChange,
     isInvalid: showError,
     id: props.formId,

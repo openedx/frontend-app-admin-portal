@@ -7,7 +7,7 @@ import userEvent, { TargetElement } from '@testing-library/user-event';
 import FormContextProvider from '../FormContext';
 import type { FormContext } from '../FormContext';
 import ValidatedFormControl from '../ValidatedFormControl';
-import type {ValidatedFormControlProps} from '../ValidatedFormControl';
+import type { ValidatedFormControlProps } from '../ValidatedFormControl';
 
 type ValidatedFormControlWrapperProps = {
   mockDispatch: () => void;

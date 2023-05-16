@@ -1,14 +1,16 @@
-import React from "react";
-import { act, render, fireEvent, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom/extend-expect";
+import React from 'react';
+import {
+  act, render, fireEvent, screen, waitFor,
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
 
-import BlackboardConfig from "../LMSConfigs/Blackboard/BlackboardConfig";
-import { INVALID_LINK, INVALID_NAME } from "../../data/constants";
-import FormContextWrapper from "../../../forms/FormContextWrapper";
+import BlackboardConfig from '../LMSConfigs/Blackboard/BlackboardConfig';
+import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
 
-jest.mock("../../data/constants", () => ({
-  ...jest.requireActual("../../data/constants"),
+jest.mock('../../data/constants', () => ({
+  ...jest.requireActual('../../data/constants'),
   LMS_CONFIG_OAUTH_POLLING_INTERVAL: 0,
 }));
 window.open = jest.fn();
@@ -19,20 +21,20 @@ const noExistingData = {};
 // Existing config data that has been authorized
 const existingConfigData = {
   active: true,
-  refreshToken: "foobar",
+  refreshToken: 'foobar',
   id: 1,
-  displayName: "foobarss",
+  displayName: 'foobarss',
 };
 // Existing invalid data that will be validated on load
 const invalidExistingData = {
-  displayName: "fooooooooobaaaaaaaaar",
-  blackboardBaseUrl: "bad_url :^(",
+  displayName: 'fooooooooobaaaaaaaaar',
+  blackboardBaseUrl: 'bad_url :^(',
 };
 // Existing config data that has not been authorized
 const existingConfigDataNoAuth = {
   id: 1,
-  displayName: "foobar",
-  blackboardBaseUrl: "https://foobarish.com",
+  displayName: 'foobar',
+  blackboardBaseUrl: 'https://foobarish.com',
 };
 
 const noConfigs = [];
@@ -53,8 +55,7 @@ const mockFetchGlobal = jest.fn();
 mockPost.mockResolvedValue({ data: mockConfigResponseData });
 mockUpdate.mockResolvedValue({ data: mockConfigResponseData });
 mockFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
-mockFetchGlobal.mockReturnValue({ data: { results: [{ app_key: 1 }] } })
-
+mockFetchGlobal.mockReturnValue({ data: { results: [{ app_key: 1 }] } });
 
 function testBlackboardConfigSetup(formData) {
   return (
@@ -72,12 +73,12 @@ function testBlackboardConfigSetup(formData) {
             fetch: mockFetch,
             fetchGlobal: mockFetchGlobal,
           },
-        }
+        },
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
-      isStepperOpen={true}
+      isStepperOpen
       dispatch={jest.fn()}
     />
   );
@@ -94,40 +95,39 @@ async function clearForm() {
   });
 }
 
-
-describe("<BlackboardConfig />", () => {
+describe('<BlackboardConfig />', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  test("renders Blackboard Authorize Form", () => {
+  test('renders Blackboard Authorize Form', () => {
     render(testBlackboardConfigSetup(noConfigs));
-    screen.getByLabelText("Display Name");
-    screen.getByLabelText("Blackboard Base URL");
+    screen.getByLabelText('Display Name');
+    screen.getByLabelText('Blackboard Base URL');
   });
-  test("test button disable", async () => {
+  test('test button disable', async () => {
     render(testBlackboardConfigSetup(noExistingData));
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await clearForm();
     expect(authorizeButton).toBeDisabled();
-    userEvent.type(screen.getByLabelText("Display Name"), "name");
-    userEvent.type(screen.getByLabelText("Blackboard Base URL"), "test4");
+    userEvent.type(screen.getByLabelText('Display Name'), 'name');
+    userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'test4');
 
     expect(authorizeButton).toBeDisabled();
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
     await act(async () => {
-      fireEvent.change(screen.getByLabelText("Display Name"), {
-        target: { value: "" },
+      fireEvent.change(screen.getByLabelText('Display Name'), {
+        target: { value: '' },
       });
-      fireEvent.change(screen.getByLabelText("Blackboard Base URL"), {
-        target: { value: "" },
+      fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
+        target: { value: '' },
       });
     });
-    userEvent.type(screen.getByLabelText("Display Name"), "displayName");
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(
-      screen.getByLabelText("Blackboard Base URL"),
-      "https://www.test4.com"
+      screen.getByLabelText('Blackboard Base URL'),
+      'https://www.test4.com',
     );
     expect(authorizeButton).not.toBeDisabled();
   });
@@ -135,7 +135,7 @@ describe("<BlackboardConfig />", () => {
     render(testBlackboardConfigSetup(existingConfigData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
-    await clearForm(); 
+    await clearForm();
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
 
@@ -149,7 +149,7 @@ describe("<BlackboardConfig />", () => {
     const expectedConfig = {
       active: true,
       id: 1,
-      refresh_token: "foobar",
+      refresh_token: 'foobar',
       blackboard_base_url: 'https://www.test4.com',
       display_name: 'displayName',
       enterprise_customer: enterpriseId,
@@ -159,7 +159,7 @@ describe("<BlackboardConfig />", () => {
   test('it creates new configs on submit', async () => {
     render(testBlackboardConfigSetup(noExistingData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-    
+
     await clearForm();
 
     userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
@@ -193,7 +193,7 @@ describe("<BlackboardConfig />", () => {
     const closeButton = screen.getByRole('button', { name: 'Exit' });
 
     userEvent.click(closeButton);
-    
+
     const expectedConfig = {
       active: false,
       display_name: 'displayName',

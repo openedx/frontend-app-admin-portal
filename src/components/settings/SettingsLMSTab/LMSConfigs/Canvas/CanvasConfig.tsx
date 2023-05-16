@@ -1,13 +1,15 @@
-import { snakeCaseDict } from "../../../../../utils";
-import { 
+import { snakeCaseDict } from '../../../../../utils';
+import {
   CANVAS_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-} from "../../../data/constants";
-import CanvasConfigAuthorizePage, { validations } from "./CanvasConfigAuthorizePage";
+} from '../../../data/constants';
+import CanvasConfigAuthorizePage, { validations } from './CanvasConfigAuthorizePage';
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
-import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils";
+} from '../../../../forms/FormWorkflow';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import {
+  activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper,
+} from '../utils';
 
 export type CanvasConfigCamelCase = {
   lms: string;
@@ -53,13 +55,12 @@ export const CanvasFormConfig = ({
   existingConfigNames,
   channelMap,
 }: CanvasFormConfigProps): FormWorkflowConfig<CanvasConfigCamelCase> => {
-
   const saveChanges = async (
     formFields: CanvasConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
     const transformedConfig: CanvasConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, CANVAS_TYPE, channelMap, errHandler);
@@ -71,23 +72,30 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    let currentFormFields = formFields;
+    const currentFormFields = formFields;
     const transformedConfig: CanvasConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, CANVAS_TYPE, channelMap, errHandler, dispatch);
+      enterpriseCustomerUuid,
+      transformedConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      CANVAS_TYPE,
+      channelMap,
+      errHandler,
+      dispatch,
+    );
   };
 
   const awaitAfterSubmit = async ({
     formFields,
     errHandler,
     dispatch,
-  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    return afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
-  };
+  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
 
   const onAwaitTimeout = async ({
     dispatch,
@@ -110,11 +118,11 @@ export const CanvasFormConfig = ({
       index: 1,
       formComponent: CanvasConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
-      stepName: "Authorize",
+      stepName: 'Authorize',
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
         let config = {
-          buttonText: "Authorize",
+          buttonText: 'Authorize',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
@@ -127,7 +135,7 @@ export const CanvasFormConfig = ({
                 awaitCondition: awaitAfterSubmit,
                 awaitInterval: LMS_CONFIG_OAUTH_POLLING_INTERVAL,
                 awaitTimeout: LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-                onAwaitTimeout: onAwaitTimeout,
+                onAwaitTimeout,
               },
             },
           };
@@ -139,16 +147,16 @@ export const CanvasFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<CanvasConfigCamelCase>;
-      }
+      },
     },
   ];
 

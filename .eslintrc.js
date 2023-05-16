@@ -6,6 +6,7 @@ const config = getBaseConfig('eslint');
 config.rules = {
   ...config.rules,
   'default-param-last': 'off',
+  'import/no-named-as-default': 0,
 };
 
 config.ignorePatterns = ["*.json", ".eslintrc.js", "*.config.js", "jsdom-with-global.js"];

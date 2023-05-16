@@ -1,11 +1,13 @@
-import { snakeCaseDict } from "../../../../../utils";
-import { DEGREED2_TYPE } from "../../../data/constants";
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
-import DegreedConfigAuthorizePage, { validations } from "./DegreedConfigEnablePage";
+import { snakeCaseDict } from '../../../../../utils';
+import { DEGREED2_TYPE } from '../../../data/constants';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import DegreedConfigAuthorizePage, { validations } from './DegreedConfigEnablePage';
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
+} from '../../../../forms/FormWorkflow';
+import {
+  activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper,
+} from '../utils';
 
 export type DegreedConfigCamelCase = {
   lms: string;
@@ -52,13 +54,13 @@ export const DegreedFormConfig = ({
 }: DegreedFormConfigProps): FormWorkflowConfig<DegreedConfigCamelCase> => {
   const saveChanges = async (
     formFields: DegreedConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
-    const transformedConfig: DegreedConfigSnakeCase = snakeCaseDict(
-      formFields
+    const snakeConfig: DegreedConfigSnakeCase = snakeCaseDict(
+      formFields,
     ) as DegreedConfigSnakeCase;
-    transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, DEGREED2_TYPE, channelMap, errHandler);
+    snakeConfig.enterprise_customer = enterpriseCustomerUuid;
+    return handleSaveHelper(snakeConfig, existingData, formFields, onSubmit, DEGREED2_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -67,14 +69,23 @@ export const DegreedFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<DegreedConfigCamelCase>) => {
-    let currentFormFields = formFields;
+    const currentFormFields = formFields;
     const transformedConfig: DegreedConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as DegreedConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged, 
-      currentFormFields, DEGREED2_TYPE, channelMap, errHandler, dispatch);
+      enterpriseCustomerUuid,
+      transformedConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      DEGREED2_TYPE,
+      channelMap,
+      errHandler,
+      dispatch,
+    );
   };
 
   const activate = async ({
@@ -91,11 +102,11 @@ export const DegreedFormConfig = ({
       index: 1,
       formComponent: DegreedConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
-      stepName: "Enable",
+      stepName: 'Enable',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Enable",
+        const config = {
+          buttonText: 'Enable',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
@@ -106,16 +117,16 @@ export const DegreedFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<DegreedConfigCamelCase>;
-      }
+      },
     },
   ];
 

@@ -51,7 +51,7 @@ const processFormErrors = (state: FormContext): FormContext => {
 
 export type InitializeFormArguments<FormFields> = {
   formFields: FormFields;
-  validations: FormFieldValidation[];
+  validations?: FormFieldValidation[];
   currentStep: FormWorkflowStep<FormFields>;
 };
 export function initializeForm<FormFields>(
@@ -75,11 +75,11 @@ export function initializeForm<FormFields>(
 }
 
 export function FormReducer<FormFields>(
-  state: FormContext = { formFields: {} },
   action: FormActionArguments,
+  state: FormContext = { formFields: {} },
 ) {
   switch (action.type) {
-    case SET_FORM_FIELD:
+    case SET_FORM_FIELD: {
       const setFormFieldArgs = action as SetFormFieldArguments;
       let newState = state ? { ...state } : { formFields: {} };
       if (newState.formFields) {
@@ -90,7 +90,7 @@ export function FormReducer<FormFields>(
         isEdited: true,
       });
       return newState;
-    case UPDATE_FORM_FIELDS:
+    } case UPDATE_FORM_FIELDS: {
       const updateFormFieldsArgs = action as UpdateFormFieldArguments<FormFields>;
       return {
         ...state,
@@ -99,10 +99,10 @@ export function FormReducer<FormFields>(
         hasErrors: false,
         errorMap: {},
       };
-    case SET_STEP:
+    } case SET_STEP: {
       const setStepArgs = action as SetStepArguments<FormFields>;
       return { ...state, currentStep: setStepArgs.step };
-    case SET_WORKFLOW_STATE:
+    } case SET_WORKFLOW_STATE: {
       const setStateArgs = action as SetWorkflowStateArguments<any>;
       const oldStateMap = state.stateMap || {};
       const newStateMap = {
@@ -110,7 +110,7 @@ export function FormReducer<FormFields>(
         [setStateArgs.name]: setStateArgs.state,
       };
       return { ...state, stateMap: newStateMap };
-    default:
+    } default:
       return state;
   }
 }

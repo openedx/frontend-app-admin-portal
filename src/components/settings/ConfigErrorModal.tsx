@@ -17,8 +17,7 @@ const ConfigErrorModal = ({
   isOpen,
   close,
   configTextOverride,
-}: ConfigErrorProps) => {
-  return (
+}: ConfigErrorProps) => (
   <AlertModal
     title="Something went wrong"
     isOpen={isOpen}
@@ -44,6 +43,6 @@ const ConfigErrorModal = ({
     </p>
     )}
   </AlertModal>
-)};
+);
 
 export default ConfigErrorModal;

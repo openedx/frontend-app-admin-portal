@@ -1,19 +1,21 @@
-import React from "react";
+import React from 'react';
 
-import { Container, Form, Image } from "@edx/paragon";
+import { Container, Form, Image } from '@edx/paragon';
 
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl";
-import { channelMapping, urlValidation } from "../../../../../utils";
-import { INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME, MOODLE_TYPE } from "../../../data/constants";
-import type { FormFieldValidation } from "../../../../forms/FormContext";
+import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
+import { channelMapping, urlValidation } from '../../../../../utils';
+import {
+  INVALID_LINK, INVALID_MOODLE_VERIFICATION, INVALID_NAME, MOODLE_TYPE,
+} from '../../../data/constants';
+import type { FormFieldValidation } from '../../../../forms/FormContext';
 
 export const formFieldNames = {
-  DISPLAY_NAME: "displayName",
-  MOODLE_BASE_URL: "moodleBaseUrl",
-  WEBSERVICE_SHORT_NAME: "webserviceShortName",
-  TOKEN: "token",
-  USERNAME: "username",
-  PASSWORD: "password",
+  DISPLAY_NAME: 'displayName',
+  MOODLE_BASE_URL: 'moodleBaseUrl',
+  WEBSERVICE_SHORT_NAME: 'webserviceShortName',
+  TOKEN: 'token',
+  USERNAME: 'username',
+  PASSWORD: 'password',
 
 };
 
@@ -25,9 +27,8 @@ export const validations: FormFieldValidation[] = [
       if (moodleUrl) {
         const error = !urlValidation(moodleUrl);
         return error ? INVALID_LINK : false;
-      } else {
-        return true;
       }
+      return true;
     },
   },
   {
@@ -63,10 +64,8 @@ export const validations: FormFieldValidation[] = [
         if (username && password) {
           return false;
         }
-      } else {
-        if (!username && !password) {
-          return false;
-        }
+      } else if (!username && !password) {
+        return false;
       }
       if (!token && !username && !password) {
         return true;
@@ -77,75 +76,73 @@ export const validations: FormFieldValidation[] = [
 ];
 
 // Settings page of Moodle LMS config workflow
-const MoodleConfigEnablePage = () => {
-  return (
-    <Container size='md'>
-      <span className='d-flex pb-4'>
-        <Image
-          className="lms-icon mr-2"
-          src={channelMapping[MOODLE_TYPE].icon}
+const MoodleConfigEnablePage = () => (
+  <Container size="md">
+    <span className="d-flex pb-4">
+      <Image
+        className="lms-icon mr-2"
+        src={channelMapping[MOODLE_TYPE].icon}
+      />
+      <h3>
+        Enable connection to Moodle
+      </h3>
+    </span>
+    <Form style={{ maxWidth: '60rem' }}>
+      <Form.Group className="my-2.5">
+        <ValidatedFormControl
+          formId={formFieldNames.DISPLAY_NAME}
+          type="text"
+          floatingLabel="Display Name"
+          fieldInstructions="Create a custom name for this LMS."
         />
-        <h3>
-          Enable connection to Moodle
-        </h3>
-      </span>
-      <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group className="my-2.5">
-          <ValidatedFormControl
-            formId={formFieldNames.DISPLAY_NAME}
-            type="text"
-            floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
-          />
-        </Form.Group>
-        <Form.Group>
-          <ValidatedFormControl
-            formId={formFieldNames.MOODLE_BASE_URL}
-            className="mb-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Moodle Base URL"
-          />
-        </Form.Group>
-        <Form.Group>
-          <ValidatedFormControl
-            formId={formFieldNames.WEBSERVICE_SHORT_NAME}
-            className="my-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Webservice Short Name"
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <ValidatedFormControl
-            formId={formFieldNames.TOKEN}
-            className="my-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Token"
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <ValidatedFormControl
-            formId={formFieldNames.USERNAME}
-            className="my-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Username"
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <ValidatedFormControl
-            formId={formFieldNames.PASSWORD}
-            className="my-4"
-            type="password"
-            maxLength={255}
-            floatingLabel="Password"
-          />
-        </Form.Group>
-      </Form>
-    </Container>
-  );
-};
+      </Form.Group>
+      <Form.Group>
+        <ValidatedFormControl
+          formId={formFieldNames.MOODLE_BASE_URL}
+          className="mb-4"
+          type="text"
+          maxLength={255}
+          floatingLabel="Moodle Base URL"
+        />
+      </Form.Group>
+      <Form.Group>
+        <ValidatedFormControl
+          formId={formFieldNames.WEBSERVICE_SHORT_NAME}
+          className="my-4"
+          type="text"
+          maxLength={255}
+          floatingLabel="Webservice Short Name"
+        />
+      </Form.Group>
+      <Form.Group className="my-4">
+        <ValidatedFormControl
+          formId={formFieldNames.TOKEN}
+          className="my-4"
+          type="text"
+          maxLength={255}
+          floatingLabel="Token"
+        />
+      </Form.Group>
+      <Form.Group className="my-4">
+        <ValidatedFormControl
+          formId={formFieldNames.USERNAME}
+          className="my-4"
+          type="text"
+          maxLength={255}
+          floatingLabel="Username"
+        />
+      </Form.Group>
+      <Form.Group className="my-4">
+        <ValidatedFormControl
+          formId={formFieldNames.PASSWORD}
+          className="my-4"
+          type="password"
+          maxLength={255}
+          floatingLabel="Password"
+        />
+      </Form.Group>
+    </Form>
+  </Container>
+);
 
 export default MoodleConfigEnablePage;

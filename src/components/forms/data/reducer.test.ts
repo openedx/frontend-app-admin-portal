@@ -105,7 +105,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
+      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 
@@ -122,7 +122,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
+      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 
@@ -137,7 +137,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
+      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 
@@ -152,7 +152,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(initializeForm({}, getTestInitializeFormArguments()), action),
+      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 });

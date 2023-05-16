@@ -1,9 +1,8 @@
-import React from "react";
-import { ModalDialog, ActionRow, Button } from "@edx/paragon";
+import React from 'react';
+import { ModalDialog, ActionRow, Button } from '@edx/paragon';
 
-const MODAL_TITLE = "Exit configuration";
-const MODAL_TEXT =
-  "Your configuration data will be saved under your Learning Platform settings";
+const MODAL_TITLE = 'Exit configuration';
+const MODAL_TEXT = 'Your configuration data will be saved under your Learning Platform settings';
 
 type UnsavedChangesModalProps = {
   isOpen: boolean;

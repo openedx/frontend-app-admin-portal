@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 import {
   act, render, fireEvent, screen, waitFor,
-} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom/extend-expect";
-import DegreedConfig from "../LMSConfigs/Degreed/DegreedConfig";
-import { INVALID_LINK, INVALID_NAME } from "../../data/constants";
-import LmsApiService from "../../../../data/services/LmsApiService";
-import FormContextWrapper from "../../../forms/FormContextWrapper";
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
+import DegreedConfig from '../LMSConfigs/Degreed/DegreedConfig';
+import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
+import LmsApiService from '../../../../data/services/LmsApiService';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
 
-const mockUpdateConfigApi = jest.spyOn(LmsApiService, "updateDegreedConfig");
+const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateDegreedConfig');
 const mockConfigResponseData = {
   uuid: 'foobar',
   id: 1,
@@ -32,11 +32,11 @@ const noExistingData = {};
 
 const existingConfigData = {
   id: 1,
-  displayName: "foobar",
+  displayName: 'foobar',
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
-  degreedBaseUrl: "https://foobarish.com",
-  degreedFetchUrl: "https://foobarish.com/fetch"
+  degreedBaseUrl: 'https://foobarish.com',
+  degreedFetchUrl: 'https://foobarish.com/fetch',
 };
 
 // Existing invalid data that will be validated on load
@@ -44,10 +44,9 @@ const invalidExistingData = {
   displayName: "your display name doesn't need to be this long stop it",
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
-  degreedBaseUrl: "bad icky url",
-  degreedFetchUrl: "https://foobarish.com/fetch"
+  degreedBaseUrl: 'bad icky url',
+  degreedFetchUrl: 'https://foobarish.com/fetch',
 };
-
 
 const noConfigs = [];
 
@@ -105,19 +104,19 @@ async function clearForm() {
   });
 }
 
-describe("<DegreedConfig />", () => {
+describe('<DegreedConfig />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-  test("renders Degreed Enable Form", () => {
+  test('renders Degreed Enable Form', () => {
     render(testDegreedConfigSetup(noConfigs));
-    screen.getByLabelText("Display Name");
-    screen.getByLabelText("API Client ID");
-    screen.getByLabelText("API Client Secret");
-    screen.getByLabelText("Degreed Base URL");
-    screen.getByLabelText("Degreed Token Fetch Base URL");
+    screen.getByLabelText('Display Name');
+    screen.getByLabelText('API Client ID');
+    screen.getByLabelText('API Client Secret');
+    screen.getByLabelText('Degreed Base URL');
+    screen.getByLabelText('Degreed Token Fetch Base URL');
   });
-  test("test button disable", async () => {
+  test('test button disable', async () => {
     render(testDegreedConfigSetup(noExistingData));
 
     const enableButton = screen.getByRole('button', { name: 'Enable' });
@@ -138,10 +137,10 @@ describe("<DegreedConfig />", () => {
     expect(enableButton).toBeDisabled();
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
-    userEvent.type(screen.getByLabelText("Display Name"), "displayName");
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(
-      screen.getByLabelText("Degreed Base URL"),
-      "https://www.test4.com"
+      screen.getByLabelText('Degreed Base URL'),
+      'https://www.test4.com',
     );
     expect(enableButton).not.toBeDisabled();
   });
@@ -211,5 +210,4 @@ describe("<DegreedConfig />", () => {
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
-
 });

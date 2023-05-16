@@ -1,16 +1,17 @@
-import { useState } from "react";
-import isEmpty from "lodash/isEmpty";
+import { useState } from 'react';
+import isEmpty from 'lodash/isEmpty';
 
-import { CANVAS_TYPE } from "../data/constants";
-import type { FormWorkflowConfig, FormWorkflowStep } from "../../forms/FormWorkflow";
-import BlackboardFormConfig, { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from "./LMSConfigs/Blackboard/BlackboardConfig";
-import CanvasFormConfig, { CanvasConfigCamelCase, CanvasConfigSnakeCase } from "./LMSConfigs/Canvas/CanvasConfig";
-import CornerstoneFormConfig, { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from "./LMSConfigs/Cornerstone/CornerstoneConfig";
-import DegreedFormConfig, { DegreedConfigCamelCase, DegreedConfigSnakeCase } from "./LMSConfigs/Degreed/DegreedConfig";
-import MoodleFormConfig, { MoodleConfigCamelCase, MoodleConfigSnakeCase } from "./LMSConfigs/Moodle/MoodleConfig";
-import SAPFormConfig, { SAPConfigCamelCase, SAPConfigSnakeCase } from "./LMSConfigs/SAP/SAPConfig";
-import { BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE } from "../data/constants";
-import { LMSSelectorPage, validations} from "./LMSSelectorPage";
+import {
+  CANVAS_TYPE, BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
+} from '../data/constants';
+import type { FormWorkflowConfig, FormWorkflowStep } from '../../forms/FormWorkflow';
+import BlackboardFormConfig, { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './LMSConfigs/Blackboard/BlackboardConfig';
+import CanvasFormConfig, { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './LMSConfigs/Canvas/CanvasConfig';
+import CornerstoneFormConfig, { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from './LMSConfigs/Cornerstone/CornerstoneConfig';
+import DegreedFormConfig, { DegreedConfigCamelCase, DegreedConfigSnakeCase } from './LMSConfigs/Degreed/DegreedConfig';
+import MoodleFormConfig, { MoodleConfigCamelCase, MoodleConfigSnakeCase } from './LMSConfigs/Moodle/MoodleConfig';
+import SAPFormConfig, { SAPConfigCamelCase, SAPConfigSnakeCase } from './LMSConfigs/SAP/SAPConfig';
+import { LMSSelectorPage, validations } from './LMSSelectorPage';
 
 const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
@@ -22,9 +23,9 @@ const flowConfigs = {
 };
 
 export type LMSConfigCamelCase = BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase
-  | MoodleConfigCamelCase | SAPConfigCamelCase;
+| MoodleConfigCamelCase | SAPConfigCamelCase;
 export type LMSConfigSnakeCase = BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase | DegreedConfigSnakeCase
-  | MoodleConfigSnakeCase | SAPConfigSnakeCase;
+| MoodleConfigSnakeCase | SAPConfigSnakeCase;
 
 export type LMSFormConfigProps = {
   enterpriseCustomerUuid: string;
@@ -45,28 +46,27 @@ export const LMSFormWorkflowConfig = ({
   channelMap,
   lmsType,
 }: LMSFormConfigProps): FormWorkflowConfig<LMSConfigCamelCase> => {
-  const [lms, setLms] = useState(lmsType ? lmsType : '');
+  const [lms, setLms] = useState(lmsType || '');
   // once an lms is selected by the user (or they are editing and existing one)
   // we dynamically render the correct FormConfig
-  const lmsConfig =
-    (lms && !isEmpty(lms)) &&
-    flowConfigs[lms]({
+  const lmsConfig = (lms && !isEmpty(lms))
+    && flowConfigs[lms]({
       enterpriseCustomerUuid,
       onSubmit,
       handleCloseClick,
       existingData,
       existingConfigNames,
-      channelMap
+      channelMap,
     });
 
   let steps: FormWorkflowStep<LMSConfigCamelCase>[] = [
     {
       index: 0,
       formComponent: LMSSelectorPage(setLms),
-      validations: validations,
-      stepName: "Select LMS",
+      validations,
+      stepName: 'Select LMS',
       nextButtonConfig: () => ({
-        buttonText: "Next",
+        buttonText: 'Next',
         opensNewWindow: false,
         onClick: () => {},
       }),
@@ -80,12 +80,12 @@ export const LMSFormWorkflowConfig = ({
     steps = steps.concat(
       {
         index: 1,
-        stepName: "Activate",
+        stepName: 'Activate',
       },
       {
         index: 2,
-        stepName: "Enable",
-      }
+        stepName: 'Enable',
+      },
     );
   }
 

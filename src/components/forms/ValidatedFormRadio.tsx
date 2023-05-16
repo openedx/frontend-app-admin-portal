@@ -1,11 +1,11 @@
-import React from "react";
-import omit from "lodash/omit";
-import isString from "lodash/isString";
+import React from 'react';
+import omit from 'lodash/omit';
+import isString from 'lodash/isString';
 
-import { Form } from "@edx/paragon";
+import { Form } from '@edx/paragon';
 
-import { setFormFieldAction } from "./data/actions";
-import { useFormContext } from "./FormContext";
+import { setFormFieldAction } from './data/actions';
+import { useFormContext } from './FormContext';
 
 type InheritedParagonRadioProps = {
   className?: string;
@@ -23,16 +23,16 @@ export type ValidatedFormRadioProps = {
 const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
   const { formFields, errorMap, dispatch } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch && dispatch(
-      setFormFieldAction({ fieldId: props.formId, value: e.target.value })
-    );
+    if (dispatch) {
+      dispatch(setFormFieldAction({ fieldId: props.formId, value: e.target.value }));
+    }
   };
 
   const errors = errorMap?.[props.formId];
   // Show error message if an error message was part of any detected errors
   const showError = errors?.find?.(error => isString(error));
   const formRadioProps = {
-    ...omit(props, ["formId"]),
+    ...omit(props, ['formId']),
     onChange,
     isInvalid: showError,
     id: props.formId,
@@ -40,18 +40,18 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
   };
 
   const createOptions = (options: string[][]) => {
-    const optionList: any = []
-    options?.forEach(option => {   
-      const radioLabel = option[0]
-      const radioValue = option[1]
+    const optionList: any = [];
+    options?.forEach(option => {
+      const radioLabel = option[0];
+      const radioValue = option[1];
       optionList.push(
         <Form.Radio key={`radio-selection-${radioValue}`} value={radioValue}>
           {radioLabel}
-        </Form.Radio>
-      )
-    })
-    return optionList
-  }
+        </Form.Radio>,
+      );
+    });
+    return optionList;
+  };
 
   return (
     <>

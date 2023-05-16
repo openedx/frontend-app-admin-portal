@@ -1,11 +1,13 @@
-import { snakeCaseDict } from "../../../../../utils";
-import { MOODLE_TYPE } from "../../../data/constants";
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
-import MoodleConfigEnablePage, { validations } from "./MoodleConfigEnablePage";
+import { snakeCaseDict } from '../../../../../utils';
+import { MOODLE_TYPE } from '../../../data/constants';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import MoodleConfigEnablePage, { validations } from './MoodleConfigEnablePage';
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
+} from '../../../../forms/FormWorkflow';
+import {
+  activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper,
+} from '../utils';
 
 export type MoodleConfigCamelCase = {
   lms: string;
@@ -49,15 +51,14 @@ export const MoodleFormConfig = ({
   handleCloseClick,
   existingData,
   existingConfigNames,
-  channelMap, 
+  channelMap,
 }: MoodleFormConfigProps): FormWorkflowConfig<MoodleConfigCamelCase> => {
-
   const saveChanges = async (
     formFields: MoodleConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
     const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, MOODLE_TYPE, channelMap, errHandler);
@@ -69,14 +70,23 @@ export const MoodleFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
-    let currentFormFields = formFields;
+    const currentFormFields = formFields;
     const transformedConfig: MoodleConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as MoodleConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, MOODLE_TYPE, channelMap, errHandler, dispatch)
+      enterpriseCustomerUuid,
+      transformedConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      MOODLE_TYPE,
+      channelMap,
+      errHandler,
+      dispatch,
+    );
   };
 
   const activate = async ({
@@ -94,11 +104,11 @@ export const MoodleFormConfig = ({
       index: 1,
       formComponent: MoodleConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
-      stepName: "Enable",
+      stepName: 'Enable',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Enable",
+        const config = {
+          buttonText: 'Enable',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
@@ -109,16 +119,16 @@ export const MoodleFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<MoodleConfigCamelCase>;
-      }
+      },
     },
   ];
 

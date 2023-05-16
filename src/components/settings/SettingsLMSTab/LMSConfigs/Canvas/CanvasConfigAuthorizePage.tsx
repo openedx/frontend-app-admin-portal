@@ -1,24 +1,26 @@
-import React from "react";
+import React from 'react';
 
-import { Alert, Container, Form, Image } from "@edx/paragon";
-import { Info } from "@edx/paragon/icons";
+import {
+  Alert, Container, Form, Image,
+} from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 
-import { CANVAS_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl";
-import { channelMapping, isValidNumber, urlValidation } from "../../../../../utils";
-import type { FormFieldValidation } from "../../../../forms/FormContext";
-import { useFormContext } from "../../../../forms/FormContext";
-import FormWaitModal from "../../../../forms/FormWaitModal";
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow";
-import { setWorkflowStateAction } from "../../../../forms/data/actions";
-import { LMS_AUTHORIZATION_FAILED } from "../utils";
+import { CANVAS_TYPE, INVALID_LINK, INVALID_NAME } from '../../../data/constants';
+import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
+import { channelMapping, isValidNumber, urlValidation } from '../../../../../utils';
+import type { FormFieldValidation } from '../../../../forms/FormContext';
+import { useFormContext } from '../../../../forms/FormContext';
+import FormWaitModal from '../../../../forms/FormWaitModal';
+import { WAITING_FOR_ASYNC_OPERATION } from '../../../../forms/FormWorkflow';
+import { setWorkflowStateAction } from '../../../../forms/data/actions';
+import { LMS_AUTHORIZATION_FAILED } from '../utils';
 
 export const formFieldNames = {
-  DISPLAY_NAME: "displayName",
-  CLIENT_ID: "clientId",
-  CLIENT_SECRET: "clientSecret",
-  ACCOUNT_ID: "canvasAccountId",
-  CANVAS_BASE_URL: "canvasBaseUrl",
+  DISPLAY_NAME: 'displayName',
+  CLIENT_ID: 'clientId',
+  CLIENT_SECRET: 'clientSecret',
+  ACCOUNT_ID: 'canvasAccountId',
+  CANVAS_BASE_URL: 'canvasBaseUrl',
 };
 
 export const validations: FormFieldValidation[] = [
@@ -29,9 +31,8 @@ export const validations: FormFieldValidation[] = [
       if (canvasUrl) {
         const error = !urlValidation(canvasUrl);
         return error ? INVALID_LINK : false;
-      } else {
-        return true;
       }
+      return true;
     },
   },
   {
@@ -51,9 +52,7 @@ export const validations: FormFieldValidation[] = [
   },
   {
     formFieldId: formFieldNames.ACCOUNT_ID,
-    validator: (fields) => {
-      return !isValidNumber(fields[formFieldNames.ACCOUNT_ID]);
-    },
+    validator: (fields) => !isValidNumber(fields[formFieldNames.ACCOUNT_ID]),
   },
   {
     formFieldId: formFieldNames.CLIENT_ID,
@@ -75,8 +74,8 @@ export const validations: FormFieldValidation[] = [
 const CanvasConfigAuthorizePage = () => {
   const { dispatch, stateMap } = useFormContext();
   return (
-    <Container size='md'>
-      <span className='d-flex pb-4'>
+    <Container size="md">
+      <span className="d-flex pb-4">
         <Image
           className="lms-icon mr-2"
           src={channelMapping[CANVAS_TYPE].icon}
@@ -85,7 +84,7 @@ const CanvasConfigAuthorizePage = () => {
           Authorize connection to Canvas
         </h3>
       </span>
-      <Form style={{ maxWidth: "60rem" }}>
+      <Form style={{ maxWidth: '60rem' }}>
         {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
           <Alert variant="danger" icon={Info}>
             <h3>Enablement failed</h3>
@@ -140,11 +139,9 @@ const CanvasConfigAuthorizePage = () => {
         </Form.Group>
         <FormWaitModal
           triggerState={WAITING_FOR_ASYNC_OPERATION}
-          onClose={() =>
-            dispatch?.(
-              setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
-            )
-          }
+          onClose={() => dispatch?.(
+            setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false),
+          )}
           header="Authorization in progress"
           text="Please confirm authorization through Canvas and return to this window once complete."
         />

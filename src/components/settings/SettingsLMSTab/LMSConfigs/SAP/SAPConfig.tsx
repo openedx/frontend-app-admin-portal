@@ -1,11 +1,13 @@
-import { snakeCaseDict } from "../../../../../utils";
-import { SAP_TYPE } from "../../../data/constants";
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage";
-import SAPConfigEnablePage, { validations } from "./SAPConfigEnablePage";
+import { snakeCaseDict } from '../../../../../utils';
+import { SAP_TYPE } from '../../../data/constants';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import SAPConfigEnablePage, { validations } from './SAPConfigEnablePage';
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-} from "../../../../forms/FormWorkflow";
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils";
+} from '../../../../forms/FormWorkflow';
+import {
+  activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper,
+} from '../utils';
 
 export type SAPConfigCamelCase = {
   lms: string;
@@ -53,13 +55,12 @@ export const SAPFormConfig = ({
   existingConfigNames,
   channelMap,
 }: SAPFormConfigProps): FormWorkflowConfig<SAPConfigCamelCase> => {
-
   const saveChanges = async (
     formFields: SAPConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
     const transformedConfig: SAPConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as SAPConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, SAP_TYPE, channelMap, errHandler);
@@ -71,14 +72,23 @@ export const SAPFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<SAPConfigCamelCase>) => {
-    let currentFormFields = formFields;
+    const currentFormFields = formFields;
     const transformedConfig: SAPConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as SAPConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, SAP_TYPE, channelMap, errHandler, dispatch);
+      enterpriseCustomerUuid,
+      transformedConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      SAP_TYPE,
+      channelMap,
+      errHandler,
+      dispatch,
+    );
   };
 
   const activate = async ({
@@ -89,7 +99,6 @@ export const SAPFormConfig = ({
     return formFields;
   };
 
-
   const activatePage = () => ConfigActivatePage(SAP_TYPE);
 
   const steps: FormWorkflowStep<SAPConfigCamelCase>[] = [
@@ -97,11 +106,11 @@ export const SAPFormConfig = ({
       index: 1,
       formComponent: SAPConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
-      stepName: "Enable",
+      stepName: 'Enable',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Enable",
+        const config = {
+          buttonText: 'Enable',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
@@ -112,16 +121,16 @@ export const SAPFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<SAPConfigCamelCase>;
-      }
+      },
     },
   ];
 

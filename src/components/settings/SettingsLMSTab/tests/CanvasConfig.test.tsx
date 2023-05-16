@@ -1,18 +1,20 @@
-import React from "react";
-import { act, render, fireEvent, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import "@testing-library/jest-dom/extend-expect";
+import React from 'react';
+import {
+  act, render, fireEvent, screen, waitFor,
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
 
-import CanvasConfig from "../LMSConfigs/Canvas/CanvasConfig";
-import { INVALID_LINK, INVALID_NAME } from "../../data/constants";
-import FormContextWrapper from "../../../forms/FormContextWrapper";
+import CanvasConfig from '../LMSConfigs/Canvas/CanvasConfig';
+import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
 
-jest.mock("../../data/constants", () => ({
-  ...jest.requireActual("../../data/constants"),
+jest.mock('../../data/constants', () => ({
+  ...jest.requireActual('../../data/constants'),
   LMS_CONFIG_OAUTH_POLLING_INTERVAL: 0,
 }));
 window.open = jest.fn();
-const enterpriseId = "test-enterprise-id";
+const enterpriseId = 'test-enterprise-id';
 
 const mockOnClick = jest.fn();
 // Freshly creating a config will have an empty existing data object
@@ -20,25 +22,24 @@ const noExistingData = {};
 // Existing config data that has been authorized
 const existingConfigData = {
   active: true,
-  refreshToken: "foobar",
+  refreshToken: 'foobar',
   id: 1,
-  displayName: "foobarss",
+  displayName: 'foobarss',
 };
 // Existing invalid data that will be validated on load
 const invalidExistingData = {
-  displayName: "fooooooooobaaaaaaaaar",
-  canvasBaseUrl: "bad_url :^(",
+  displayName: 'fooooooooobaaaaaaaaar',
+  canvasBaseUrl: 'bad_url :^(',
 };
 // Existing config data that has not been authorized
 const existingConfigDataNoAuth = {
   id: 1,
-  displayName: "foobar",
-  canvasBaseUrl: "https://foobarish.com",
-  clientId: "ayylmao",
-  clientSecret: "testingsecret",
+  displayName: 'foobar',
+  canvasBaseUrl: 'https://foobarish.com',
+  clientId: 'ayylmao',
+  clientSecret: 'testingsecret',
   canvasAccountId: 10,
 };
-
 
 const mockConfigResponseData = {
   uuid: 'foobar',
@@ -46,8 +47,8 @@ const mockConfigResponseData = {
   canvas_account_id: 1,
   display_name: 'display name',
   canvas_base_url: 'https://foobar.com',
-  client_id: "wassap",
-  client_secret: "chewlikeyouhaveasecret",
+  client_id: 'wassap',
+  client_secret: 'chewlikeyouhaveasecret',
   active: false,
 };
 
@@ -60,7 +61,6 @@ const mockFetch = jest.fn();
 mockPost.mockResolvedValue({ data: mockConfigResponseData });
 mockUpdate.mockResolvedValue({ data: mockConfigResponseData });
 mockFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
-
 
 function testCanvasConfigSetup(formData) {
   return (
@@ -77,12 +77,12 @@ function testCanvasConfigSetup(formData) {
             update: mockUpdate,
             fetch: mockFetch,
           },
-        }
+        },
       })}
       onClickOut={mockOnClick}
       onSubmit={mockSetExistingConfigFormData}
       formData={formData}
-      isStepperOpen={true}
+      isStepperOpen
       dispatch={jest.fn()}
     />
   );
@@ -108,47 +108,46 @@ async function clearForm() {
   });
 }
 
-
-describe("<CanvasConfig />", () => {
+describe('<CanvasConfig />', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  test("renders Canvas Authorize Form", () => {
+  test('renders Canvas Authorize Form', () => {
     render(testCanvasConfigSetup(noConfigs));
-    screen.getByLabelText("Display Name");
-    screen.getByLabelText("API Client ID");
-    screen.getByLabelText("API Client Secret");
-    screen.getByLabelText("Canvas Account Number");
-    screen.getByLabelText("Canvas Base URL");
+    screen.getByLabelText('Display Name');
+    screen.getByLabelText('API Client ID');
+    screen.getByLabelText('API Client Secret');
+    screen.getByLabelText('Canvas Account Number');
+    screen.getByLabelText('Canvas Base URL');
   });
-  test("test button disable", async () => {
+  test('test button disable', async () => {
     render(testCanvasConfigSetup(noExistingData));
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     await clearForm();
     expect(authorizeButton).toBeDisabled();
-    userEvent.type(screen.getByLabelText("Display Name"), "name");
-    userEvent.type(screen.getByLabelText("Canvas Base URL"), "test4");
-    userEvent.type(screen.getByLabelText("API Client ID"), "test3");
-    userEvent.type(screen.getByLabelText("Canvas Account Number"), "23");
-    userEvent.type(screen.getByLabelText("API Client Secret"), "test6");
+    userEvent.type(screen.getByLabelText('Display Name'), 'name');
+    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'test4');
+    userEvent.type(screen.getByLabelText('API Client ID'), 'test3');
+    userEvent.type(screen.getByLabelText('Canvas Account Number'), '23');
+    userEvent.type(screen.getByLabelText('API Client Secret'), 'test6');
 
     expect(authorizeButton).toBeDisabled();
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
     await act(async () => {
-      fireEvent.change(screen.getByLabelText("Display Name"), {
-        target: { value: "" },
+      fireEvent.change(screen.getByLabelText('Display Name'), {
+        target: { value: '' },
       });
-      fireEvent.change(screen.getByLabelText("Canvas Base URL"), {
-        target: { value: "" },
+      fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
+        target: { value: '' },
       });
     });
-    userEvent.type(screen.getByLabelText("Display Name"), "displayName");
+    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.type(
-      screen.getByLabelText("Canvas Base URL"),
-      "https://www.test4.com"
+      screen.getByLabelText('Canvas Base URL'),
+      'https://www.test4.com',
     );
 
     expect(authorizeButton).not.toBeDisabled();

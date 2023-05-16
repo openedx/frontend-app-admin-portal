@@ -12,7 +12,6 @@ import { useFormContext } from '../../../../forms/FormContext';
 import FormWaitModal from '../../../../forms/FormWaitModal';
 import { WAITING_FOR_ASYNC_OPERATION } from '../../../../forms/FormWorkflow';
 import { setWorkflowStateAction } from '../../../../forms/data/actions';
-import { LMS_AUTHORIZATION_FAILED } from '../utils';
 
 export const formFieldNames = {
   DISPLAY_NAME: 'displayName',
@@ -40,6 +39,7 @@ export const validations: FormFieldValidation[] = [
 // Settings page of Blackboard LMS config workflow
 const BlackboardConfigAuthorizePage = () => {
   const { dispatch, stateMap } = useFormContext();
+  const LMS_AUTHORIZATION_FAILED = 'LMS AUTHORIZATION FAILED';
   return (
     <Container size="md">
       <span className="d-flex pb-4">

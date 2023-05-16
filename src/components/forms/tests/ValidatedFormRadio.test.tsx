@@ -6,8 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 import FormContextProvider from '../FormContext';
 import type { FormContext } from '../FormContext';
-import ValidatedFormRadio from '../ValidatedFormRadio';
-import { ValidatedFormRadioProps } from '../ValidatedFormRadio';
+import ValidatedFormRadio, { ValidatedFormRadioProps } from '../ValidatedFormRadio';
 
 type ValidatedFormRadioWrapperProps = {
   mockDispatch: () => void;
@@ -16,14 +15,13 @@ type ValidatedFormRadioWrapperProps = {
   formId: string;
 } & Partial<ValidatedFormRadioProps>;
 
-
 const ValidatedFormRadioWrapper = ({
   mockDispatch,
   formId,
   formValue,
   fieldInstructions,
   label,
-  options, 
+  options,
   formError,
 }: ValidatedFormRadioWrapperProps) => {
   let contextValue: FormContext = {
@@ -55,7 +53,7 @@ describe('<ValidatedFormControl />', () => {
         mockDispatch={mockDispatch}
         formId="TEST_FORM_FIELD"
         label="Test Label"
-        options={[["Label1", "1"],["Label2", "2"]]}
+        options={[['Label1', '1'], ['Label2', '2']]}
         fieldInstructions="Test Instructions"
       />,
     );
@@ -69,11 +67,11 @@ describe('<ValidatedFormControl />', () => {
         mockDispatch={mockDispatch}
         formId="TEST_FORM_FIELD"
         label="Test Label"
-        options={[["Label1", "1"],["Label2", "2"]]}
+        options={[['Label1', '1'], ['Label2', '2']]}
         fieldInstructions="Test Instructions"
       />,
     );
-    userEvent.click(screen.getByText('Label1'))
+    userEvent.click(screen.getByText('Label1'));
     expect(mockDispatch).toBeCalledWith({ type: 'SET FORM FIELD', fieldId: 'TEST_FORM_FIELD', value: '1' });
   });
   it('renders with error populated from context', () => {
@@ -83,7 +81,7 @@ describe('<ValidatedFormControl />', () => {
         mockDispatch={mockDispatch}
         formId="TEST_FORM_FIELD"
         label="Test Label"
-        options={[["Label1", "1"],["Label2", "2"]]}
+        options={[['Label1', '1'], ['Label2', '2']]}
         formError="Something is wrong with this field"
       />,
     );
