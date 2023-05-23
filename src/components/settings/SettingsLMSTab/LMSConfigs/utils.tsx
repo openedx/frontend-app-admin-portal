@@ -37,7 +37,7 @@ export async function handleSubmitHelper(
   transformedConfig.enterprise_customer = enterpriseCustomerUuid;
   let err = "";
   if (formFieldsChanged) {
-    if (currentFormFields?.id) {
+    if (currentFormFields?.id) { // id only exists on existing configs
       try {
         transformedConfig.active = existingData.active;
         const response = await channelMap[lmsType].update(transformedConfig, existingData.id)

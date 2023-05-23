@@ -236,6 +236,13 @@ describe("<BlackboardConfig />", () => {
   });
   test('validates properly formatted existing data on load', () => {
     render(testBlackboardConfigSetup(existingConfigDataNoAuth));
+    expect(screen.getByText('Form updates require reauthorization'));
+    // ensuring the existing data is prefilled
+    expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.displayName);
+    expect((screen.getByLabelText('Blackboard Base URL') as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.blackboardBaseUrl);
+
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

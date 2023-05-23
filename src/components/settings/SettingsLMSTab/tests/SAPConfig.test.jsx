@@ -21,7 +21,7 @@ const mockConfigResponseData = {
   uuid: 'foobar',
   id: 1,
   display_name: 'display name',
-  sap_base_url: 'https://foobar.com',
+  sapf_base_url: 'https://foobar.com',
   active: false,
 };
 mockUpdateConfigApi.mockResolvedValue({ data: mockConfigResponseData });
@@ -40,23 +40,23 @@ const noExistingData = {};
 const existingConfigData = {
   id: 1,
   displayName: 'whatsinaname',
-  sapBaseUrl: 'http://www.example.com',
-  sapCompanyId: '12',
-  sapUserId: 'userId',
-  oauthClientId: 'clientId',
-  oauthClientSecret: 'secretshh',
-  sapUserType: 'admin',
+  sapsfBaseUrl: 'http://www.example.com',
+  sapsfCompanyId: '12',
+  sapsfUserId: 'userId',
+  key: 'clientId',
+  secret: 'secretshh',
+  userType: 'admin',
 };
 
 // Existing invalid data that will be validated on load
 const invalidExistingData = {
   displayName: 'just a whole muddle of saps',
-  sapBaseUrl: 'you dumb dumb this isnt a url',
-  sapCompanyId: '12',
-  sapUserId: 'userId',
-  oauthClientId: 'clientId',
-  oauthClientSecret: 'secretshh',
-  sapUserType: 'admin',
+  sapsfBaseUrl: 'you dumb dumb this isnt a url',
+  sapsfCompanyId: '12',
+  sapsfUserId: 'userId',
+  key: 'clientId',
+  secret: 'secretshh',
+  userType: 'admin',
 };
 
 const noConfigs = [];
@@ -186,12 +186,12 @@ describe('<SAPConfig />', () => {
     const expectedConfig = {
       active: false,
       display_name: 'lmsconfig',
-      sap_base_url: 'http://www.example.com',
-      sap_company_id: '1',
-      sap_user_id: '1',
-      oauth_client_id: 'id',
-      oauth_client_secret: 'secret',
-      sap_user_type: 'admin',
+      sapsf_base_url: 'http://www.example.com',
+      sapsf_company_id: '1',
+      sapsf_user_id: '1',
+      key: 'id',
+      secret: 'secret',
+      user_type: 'admin',
       enterprise_customer: enterpriseId,
     };
     await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
@@ -221,12 +221,12 @@ describe('<SAPConfig />', () => {
     const expectedConfig = {
       active: false,
       display_name: 'lmsconfig',
-      sap_base_url: 'http://www.example.com',
-      sap_company_id: '1',
-      sap_user_id: '1',
-      oauth_client_id: 'id',
-      oauth_client_secret: 'secret',
-      sap_user_type: 'user',
+      sapsf_base_url: 'http://www.example.com',
+      sapsf_company_id: '1',
+      sapsf_user_id: '1',
+      key: 'id',
+      secret: 'secret',
+      user_type: 'user',
       enterprise_customer: enterpriseId,
     };
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
@@ -238,6 +238,14 @@ describe('<SAPConfig />', () => {
   });
   test('validates properly formatted existing data on load', () => {
     render(testSAPConfigSetup(existingConfigData));
+    // ensuring the existing data is prefilled
+    expect(screen.getByLabelText('Display Name').value).toEqual(existingConfigData.displayName);
+    expect(screen.getByLabelText('SAP Base URL').value).toEqual(existingConfigData.sapsfBaseUrl);
+    expect(screen.getByLabelText('SAP Company ID').value).toEqual(existingConfigData.sapsfCompanyId);
+    expect(screen.getByLabelText('SAP User ID').value).toEqual(existingConfigData.sapsfUserId);
+    expect(screen.getByLabelText('OAuth Client ID').value).toEqual(existingConfigData.key);
+    expect(screen.getByLabelText('OAuth Client Secret').value).toEqual(existingConfigData.secret);
+
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

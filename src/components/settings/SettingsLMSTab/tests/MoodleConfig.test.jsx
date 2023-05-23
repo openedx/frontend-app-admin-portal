@@ -41,7 +41,7 @@ const existingConfigData = {
   id: 1,
   displayName: 'hola',
   moodleBaseUrl: 'https://example.com',
-  webserviceShortName: 'shortname',
+  serviceShortName: 'shortname',
   token: 'token',
 };
 
@@ -49,7 +49,7 @@ const existingConfigData = {
 const invalidExistingData = {
   displayName: 'just a whole muddle of moodles',
   moodleBaseUrl: "you dumb dumb this isn't a url",
-  webserviceShortName: 'shortname',
+  serviceShortName: 'shortname',
   token: 'token',
   username: 'blah1',
   password: 'blahblah',
@@ -184,7 +184,7 @@ describe('<MoodleConfig />', () => {
       active: false,
       display_name: 'displayName',
       moodle_base_url: 'https://www.test.com',
-      webservice_short_name: 'name',
+      service_short_name: 'name',
       token: '',
       username: 'user',
       password: 'password123',
@@ -216,7 +216,7 @@ describe('<MoodleConfig />', () => {
       active: false,
       display_name: 'displayName',
       moodle_base_url: 'https://www.test.com',
-      webservice_short_name: 'name',
+      service_short_name: 'name',
       token: '',
       username: 'user',
       password: 'password123',
@@ -232,6 +232,12 @@ describe('<MoodleConfig />', () => {
   });
   test('validates properly formatted existing data on load', () => {
     render(testMoodleConfigSetup(existingConfigData));
+    // ensuring the existing data is prefilled
+    expect(screen.getByLabelText('Display Name').value).toEqual(existingConfigData.displayName);
+    expect(screen.getByLabelText('Moodle Base URL').value).toEqual(existingConfigData.moodleBaseUrl);
+    expect(screen.getByLabelText('Webservice Short Name').value).toEqual(existingConfigData.serviceShortName);
+    expect(screen.getByLabelText('Token').value).toEqual(existingConfigData.token);
+
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_MOODLE_VERIFICATION)).not.toBeInTheDocument();

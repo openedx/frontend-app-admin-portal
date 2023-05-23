@@ -38,7 +38,7 @@ const existingConfigData = {
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
   degreedBaseUrl: "https://foobarish.com",
-  degreedFetchUrl: "https://foobarish.com/fetch"
+  degreedTokenFetchBaseUrl: "https://foobarish.com/fetch"
 };
 
 // Existing invalid data that will be validated on load
@@ -47,7 +47,7 @@ const invalidExistingData = {
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
   degreedBaseUrl: "bad icky url",
-  degreedFetchUrl: "https://foobarish.com/fetch"
+  degreedTokenFetchBaseUrl: "https://foobarish.com/fetch"
 };
 
 
@@ -168,7 +168,7 @@ describe("<DegreedConfig />", () => {
       client_id: '1',
       client_secret: 'shhhitsasecret123',
       degreed_base_url: 'https://www.test.com',
-      degreed_fetch_url: 'https://www.test.com',
+      degreed_token_fetch_base_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
     await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
@@ -198,7 +198,7 @@ describe("<DegreedConfig />", () => {
       client_id: '1',
       client_secret: 'shhhitsasecret123',
       degreed_base_url: 'https://www.test.com',
-      degreed_fetch_url: 'https://www.test.com',
+      degreed_token_fetch_base_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
@@ -210,6 +210,18 @@ describe("<DegreedConfig />", () => {
   });
   test('validates properly formatted existing data on load', () => {
     render(testDegreedConfigSetup(existingConfigData));
+    // ensuring the existing data is prefilled
+    expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
+      existingConfigData.displayName);
+    expect((screen.getByLabelText('API Client ID') as HTMLInputElement).value).toEqual(
+      existingConfigData.clientId);
+    expect((screen.getByLabelText('API Client Secret') as HTMLInputElement).value).toEqual(
+      existingConfigData.clientSecret);
+    expect((screen.getByLabelText('Degreed Base URL') as HTMLInputElement).value).toEqual(
+      existingConfigData.degreedBaseUrl);
+    expect((screen.getByLabelText('Degreed Token Fetch Base URL') as HTMLInputElement).value).toEqual(
+      existingConfigData.degreedTokenFetchBaseUrl)
+
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

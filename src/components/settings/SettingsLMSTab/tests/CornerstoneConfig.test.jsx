@@ -153,6 +153,10 @@ describe('<CornerstoneConfig />', () => {
   });
   test('validates properly formatted existing data on load', () => {
     render(testCornerstoneConfigSetup(existingConfigData));
+    // ensuring the existing data is prefilled
+    expect(screen.getByLabelText('Display Name').value).toEqual(existingConfigData.displayName);
+    expect(screen.getByLabelText('Cornerstone Base URL').value).toEqual(existingConfigData.cornerstoneBaseUrl);
+
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

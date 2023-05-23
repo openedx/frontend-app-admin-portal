@@ -15,7 +15,7 @@ export type MoodleConfigCamelCase = {
   lms: string;
   displayName: string;
   moodleBaseUrl: string;
-  webserviceShortName: string;
+  serviceShortName: string;
   token: string;
   username: string;
   password: string;
@@ -28,7 +28,7 @@ export type MoodleConfigSnakeCase = {
   lms: string;
   display_name: string;
   moodle_base_url: string;
-  webservice_short_name: string;
+  service_short_name: string;
   token: string;
   username: string;
   password: string;

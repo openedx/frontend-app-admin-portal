@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import _ from 'lodash';
 import { snakeCaseDict } from "../../../../../utils";
 import {
   BLACKBOARD_TYPE,
@@ -60,6 +62,12 @@ export const BlackboardFormConfig = ({
   channelMap,
 }: BlackboardFormConfigProps): FormWorkflowConfig<BlackboardConfigCamelCase> => {
 
+  let initialState: BlackboardConfigCamelCase; 
+
+  // useEffect(() => {
+  //   initialState = {...existingData}
+  // }, []);
+
   const saveChanges = async (
     formFields: BlackboardConfigCamelCase,
     errHandler: (errMsg: string) => void
@@ -112,6 +120,7 @@ export const BlackboardFormConfig = ({
 
   const activatePage = () => ConfigActivatePage(BLACKBOARD_TYPE);
 
+
   const steps: FormWorkflowStep<BlackboardConfigCamelCase>[] = [
     {
       index: 1,
@@ -125,7 +134,8 @@ export const BlackboardFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
+        // if they've never authorized it or if they've changed the form
+        if (!formFields.refreshToken || !_.isEqual(initialState, formFields)) {
           config = {
             ...config,
             ...{

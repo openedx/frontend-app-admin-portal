@@ -17,7 +17,7 @@ export type DegreedConfigCamelCase = {
   clientId: string;
   clientSecret: string;
   degreedBaseUrl: string;
-  degreedFetchUrl: string;
+  degreedTokenFetchBaseUrl: string;
   id: string;
   active: boolean;
   uuid: string;
@@ -29,7 +29,7 @@ export type DegreedConfigSnakeCase = {
   client_id: string;
   client_secret: string;
   degreed_base_url: string;
-  degreed_fetch_url: string;
+  degreed_token_fetch_base_url: string;
   id: string;
   active: boolean;
   uuid: string;

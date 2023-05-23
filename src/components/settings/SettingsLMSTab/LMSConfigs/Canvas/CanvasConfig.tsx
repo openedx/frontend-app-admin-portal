@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import _ from 'lodash';
 import { snakeCaseDict } from "../../../../../utils";
 import { 
   CANVAS_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
@@ -57,6 +59,12 @@ export const CanvasFormConfig = ({
   existingConfigNames,
   channelMap,
 }: CanvasFormConfigProps): FormWorkflowConfig<CanvasConfigCamelCase> => {
+
+  let initialState: CanvasConfigCamelCase; 
+
+  // useEffect(() => {
+  //   initialState = {...existingData}
+  // }, []);
 
   const saveChanges = async (
     formFields: CanvasConfigCamelCase,
@@ -122,7 +130,8 @@ export const CanvasFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
+        // if they've never authorized it or if they've changed the form
+        if (!formFields.refreshToken || !_.isEqual(initialState, formFields)) {
           config = {
             ...config,
             ...{

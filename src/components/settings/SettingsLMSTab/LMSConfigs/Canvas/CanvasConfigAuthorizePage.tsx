@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Alert, Container, Form, Image } from "@edx/paragon";
 import { Info } from "@edx/paragon/icons";
@@ -83,7 +83,14 @@ export const validations: FormFieldValidation[] = [
 
 // Settings page of Canvas LMS config workflow
 const CanvasConfigAuthorizePage = () => {
-  const { dispatch, stateMap } = useFormContext();
+  const { formFields, dispatch, stateMap } = useFormContext();
+  const [isExisting, setIsExisting] = useState(false);
+  useEffect(() => {
+    if (formFields?.id) {
+      setIsExisting(true);
+    }
+  }, []);
+
   return (
     <Container size='md'>
       <span className='d-flex pb-4'>
@@ -97,13 +104,20 @@ const CanvasConfigAuthorizePage = () => {
       </span>
       <Form style={{ maxWidth: "60rem" }}>
         {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
-          <Alert variant="danger" icon={Info}>
+          <Alert variant="danger" className='mb-4' icon={Info}>
             <h3>Enablement failed</h3>
             We were unable to enable your Canvas integration. Please try again
             or contact enterprise customer support.
           </Alert>
         )}
-
+        {isExisting && (
+          <Alert variant="info" className='mb-4' icon={Info}>
+            <h3>Form updates require reauthorization</h3>
+            Your authorization is currently complete. By updating the form below,
+            reauthorization will be required and advancing to the next step will
+            open a new window to complete the process in Canvas. Return to this window
+            following reauthorization to finish reconfiguring your integration.
+          </Alert>)}
         <Form.Group className="my-2.5">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
@@ -148,6 +162,12 @@ const CanvasConfigAuthorizePage = () => {
             floatingLabel="Canvas Base URL"
           />
         </Form.Group>
+        <Alert variant="info" icon={Info}>
+            <h3>Authorization in Canvas required to complete configuration</h3>
+            Advancing to the next step will open a new window to complete the authorization
+            process in Canvas. Return to this window following authorization to finish configuring 
+            your new integration.
+        </Alert>
         <FormWaitModal
           triggerState={WAITING_FOR_ASYNC_OPERATION}
           onClose={() =>
