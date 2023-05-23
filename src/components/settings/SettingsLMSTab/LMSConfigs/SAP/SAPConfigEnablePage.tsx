@@ -14,9 +14,9 @@ import type {
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",
-  SAPF_BASE_URL: "sapsfBaseUrl",
-  SAPF_COMPANY_ID: "sapsfCompanyId",
-  SAPF_USER_ID: "sapsfUserId",
+  SAPSF_BASE_URL: "sapsfBaseUrl",
+  SAPSF_COMPANY_ID: "sapsfCompanyId",
+  SAPSF_USER_ID: "sapsfUserId",
   KEY: "key",
   SECRET: "secret",
   USER_TYPE: "userType",
@@ -24,9 +24,9 @@ export const formFieldNames = {
 
 export const validations: FormFieldValidation[] = [
   {
-    formFieldId: formFieldNames.SAPF_BASE_URL,
+    formFieldId: formFieldNames.SAPSF_BASE_URL,
     validator: (fields) => {
-      const sapUrl = fields[formFieldNames.SAPF_BASE_URL];
+      const sapUrl = fields[formFieldNames.SAPSF_BASE_URL];
       if (sapUrl) {
         const error = !urlValidation(sapUrl);
         return error ? INVALID_LINK : false;
@@ -51,16 +51,16 @@ export const validations: FormFieldValidation[] = [
     },
   },
   {
-    formFieldId: formFieldNames.SAPF_COMPANY_ID,
+    formFieldId: formFieldNames.SAPSF_COMPANY_ID,
     validator: (fields) => {
-      const sapsfCompanyId = fields[formFieldNames.SAPF_COMPANY_ID];
+      const sapsfCompanyId = fields[formFieldNames.SAPSF_COMPANY_ID];
       return !sapsfCompanyId;
     },
   },
   {
-    formFieldId: formFieldNames.SAPF_USER_ID,
+    formFieldId: formFieldNames.SAPSF_USER_ID,
     validator: (fields) => {
-      const sapsfUserId = fields[formFieldNames.SAPF_USER_ID];
+      const sapsfUserId = fields[formFieldNames.SAPSF_USER_ID];
       return !sapsfUserId;
     },
   },
@@ -110,7 +110,7 @@ const SAPConfigEnablePage = () => {
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
-            formId={formFieldNames.SAPF_BASE_URL}
+            formId={formFieldNames.SAPSF_BASE_URL}
             className="mb-4"
             type="text"
             maxLength={255}
@@ -119,7 +119,7 @@ const SAPConfigEnablePage = () => {
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
-            formId={formFieldNames.SAPF_COMPANY_ID}
+            formId={formFieldNames.SAPSF_COMPANY_ID}
             className="my-4"
             type="text"
             maxLength={255}
@@ -128,7 +128,7 @@ const SAPConfigEnablePage = () => {
         </Form.Group>
         <Form.Group className="my-4">
           <ValidatedFormControl
-            formId={formFieldNames.SAPF_USER_ID}
+            formId={formFieldNames.SAPSF_USER_ID}
             className="my-4"
             type="text"
             maxLength={255}
