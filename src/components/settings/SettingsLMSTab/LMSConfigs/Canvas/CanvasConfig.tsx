@@ -60,12 +60,6 @@ export const CanvasFormConfig = ({
   channelMap,
 }: CanvasFormConfigProps): FormWorkflowConfig<CanvasConfigCamelCase> => {
 
-  let initialState: CanvasConfigCamelCase; 
-
-  // useEffect(() => {
-  //   initialState = {...existingData}
-  // }, []);
-
   const saveChanges = async (
     formFields: CanvasConfigCamelCase,
     errHandler: (errMsg: string) => void
@@ -121,7 +115,7 @@ export const CanvasFormConfig = ({
     {
       index: 1,
       formComponent: CanvasConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Authorize",
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
@@ -131,7 +125,7 @@ export const CanvasFormConfig = ({
           onClick: handleSubmit,
         };
         // if they've never authorized it or if they've changed the form
-        if (!formFields.refreshToken || !_.isEqual(initialState, formFields)) {
+        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{

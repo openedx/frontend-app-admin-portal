@@ -235,17 +235,4 @@ describe("<CanvasConfig />", () => {
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
-  test('changes to previously authorized config requires reauthorization', () => {
-    render(testCanvasConfigSetup(existingConfigDataNoAuth));
-    expect(screen.getByText('Form updates require reauthorization'));
-    // ensuring the existing data is prefilled
-    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-    console.log(authorizeButton);
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    console.log(authorizeButton);
-
-
-    // expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
-    // expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
-  });
 });

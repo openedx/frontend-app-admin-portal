@@ -100,7 +100,7 @@ export const SAPFormConfig = ({
     {
       index: 1,
       formComponent: SAPConfigEnablePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {

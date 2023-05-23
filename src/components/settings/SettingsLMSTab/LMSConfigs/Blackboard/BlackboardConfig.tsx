@@ -62,12 +62,6 @@ export const BlackboardFormConfig = ({
   channelMap,
 }: BlackboardFormConfigProps): FormWorkflowConfig<BlackboardConfigCamelCase> => {
 
-  let initialState: BlackboardConfigCamelCase; 
-
-  // useEffect(() => {
-  //   initialState = {...existingData}
-  // }, []);
-
   const saveChanges = async (
     formFields: BlackboardConfigCamelCase,
     errHandler: (errMsg: string) => void
@@ -125,7 +119,7 @@ export const BlackboardFormConfig = ({
     {
       index: 1,
       formComponent: BlackboardConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Authorize",
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {
@@ -135,7 +129,7 @@ export const BlackboardFormConfig = ({
           onClick: handleSubmit,
         };
         // if they've never authorized it or if they've changed the form
-        if (!formFields.refreshToken || !_.isEqual(initialState, formFields)) {
+        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{

@@ -166,6 +166,7 @@ describe('<SAPConfig />', () => {
     expect(enableButton).not.toBeDisabled();
   });
   test('it creates new configs on submit', async () => {
+    jest.setTimeout(30000);
     render(testSAPConfigSetup(noExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
 

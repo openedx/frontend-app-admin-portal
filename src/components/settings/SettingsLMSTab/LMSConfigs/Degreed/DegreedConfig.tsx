@@ -94,7 +94,7 @@ export const DegreedFormConfig = ({
     {
       index: 1,
       formComponent: DegreedConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {
