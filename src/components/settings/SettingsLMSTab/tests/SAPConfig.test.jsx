@@ -166,7 +166,6 @@ describe('<SAPConfig />', () => {
     expect(enableButton).not.toBeDisabled();
   });
   test('it creates new configs on submit', async () => {
-    jest.setTimeout(30000);
     render(testSAPConfigSetup(noExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
 
@@ -196,7 +195,7 @@ describe('<SAPConfig />', () => {
       enterprise_customer: enterpriseId,
     };
     await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
-  });
+  }, 30000);
   test('saves draft correctly', async () => {
     render(testSAPConfigSetup(noExistingData));
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
