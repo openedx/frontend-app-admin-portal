@@ -13,7 +13,7 @@ import type {
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",
   MOODLE_BASE_URL: "moodleBaseUrl",
-  WEBSERVICE_SHORT_NAME: "webserviceShortName",
+  SERVICE_SHORT_NAME: "serviceShortName",
   TOKEN: "token",
   USERNAME: "username",
   PASSWORD: "password",
@@ -49,10 +49,10 @@ export const validations: FormFieldValidation[] = [
     },
   },
   {
-    formFieldId: formFieldNames.WEBSERVICE_SHORT_NAME,
+    formFieldId: formFieldNames.SERVICE_SHORT_NAME,
     validator: (fields) => {
-      const webserviceShortName = fields[formFieldNames.WEBSERVICE_SHORT_NAME];
-      return !webserviceShortName;
+      const serviceShortName = fields[formFieldNames.SERVICE_SHORT_NAME];
+      return !serviceShortName;
     },
   },
   {
@@ -112,7 +112,7 @@ const MoodleConfigEnablePage = () => {
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
-            formId={formFieldNames.WEBSERVICE_SHORT_NAME}
+            formId={formFieldNames.SERVICE_SHORT_NAME}
             className="my-4"
             type="text"
             maxLength={255}

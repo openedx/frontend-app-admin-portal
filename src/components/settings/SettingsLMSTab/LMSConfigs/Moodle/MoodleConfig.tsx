@@ -15,7 +15,7 @@ export type MoodleConfigCamelCase = {
   lms: string;
   displayName: string;
   moodleBaseUrl: string;
-  webserviceShortName: string;
+  serviceShortName: string;
   token: string;
   username: string;
   password: string;
@@ -28,7 +28,7 @@ export type MoodleConfigSnakeCase = {
   lms: string;
   display_name: string;
   moodle_base_url: string;
-  webservice_short_name: string;
+  service_short_name: string;
   token: string;
   username: string;
   password: string;
@@ -97,7 +97,7 @@ export const MoodleFormConfig = ({
     {
       index: 1,
       formComponent: MoodleConfigEnablePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -27,7 +28,7 @@ const LMSConfigPage = ({
     enterpriseCustomerUuid,
     onSubmit: setExistingConfigFormData,
     handleCloseClick: handleCloseWorkflow,
-    existingData: existingConfigFormData,
+    existingData: _.cloneDeep(existingConfigFormData),
     existingConfigNames: existingConfigs,
     channelMap,
     lmsType,

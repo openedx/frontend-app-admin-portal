@@ -47,14 +47,14 @@ const existingConfigDataNoAuth = {
   canvasBaseUrl: "https://foobarish.com",
   clientId: "ayylmao",
   clientSecret: "testingsecret",
-  canvasAccountId: 10,
+  canvasAccountId: '10',
 };
 
 
 const mockConfigResponseData = {
   uuid: 'foobar',
   id: 1,
-  canvas_account_id: 1,
+  canvas_account_id: '1',
   display_name: 'display name',
   canvas_base_url: 'https://foobar.com',
   client_id: "wassap",
@@ -220,6 +220,18 @@ describe("<CanvasConfig />", () => {
   });
   test('validates properly formatted existing data on load', () => {
     render(testCanvasConfigSetup(existingConfigDataNoAuth));
+    // ensuring the existing data is prefilled
+    expect((screen.getByLabelText("Display Name") as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.displayName);
+    expect((screen.getByLabelText("Canvas Base URL") as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.canvasBaseUrl);
+    expect((screen.getByLabelText("API Client ID") as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.clientId);
+    expect((screen.getByLabelText("Canvas Account Number") as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.canvasAccountId);
+    expect((screen.getByLabelText("API Client Secret") as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.clientSecret);
+
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

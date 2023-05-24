@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import _ from 'lodash';
 import { snakeCaseDict } from "../../../../../utils";
 import {
   BLACKBOARD_TYPE,
@@ -112,11 +114,12 @@ export const BlackboardFormConfig = ({
 
   const activatePage = () => ConfigActivatePage(BLACKBOARD_TYPE);
 
+
   const steps: FormWorkflowStep<BlackboardConfigCamelCase>[] = [
     {
       index: 1,
       formComponent: BlackboardConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Authorize",
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {
@@ -125,7 +128,8 @@ export const BlackboardFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
+        // if they've never authorized it or if they've changed the form
+        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{

@@ -14,12 +14,12 @@ import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitH
 export type SAPConfigCamelCase = {
   lms: string;
   displayName: string;
-  sapBaseUrl: string;
-  sapCompanyId: string;
-  sapUserId: string;
-  oauthClientId: string;
-  oauthClientSecret: string;
-  sapUserType: string;
+  sapsfBaseUrl: string;
+  sapsfCompanyId: string;
+  sapsfUserId: string;
+  key: string;
+  secret: string;
+  userType: string;
   id: string;
   active: boolean;
   uuid: string;
@@ -28,12 +28,12 @@ export type SAPConfigCamelCase = {
 export type SAPConfigSnakeCase = {
   lms: string;
   display_name: string;
-  sap_base_url: string;
-  sap_company_id: string;
-  sap_user_id: string;
-  oauth_client_id: string;
-  oauth_client_secret: string;
-  sap_user_type: string;
+  sapsf_base_url: string;
+  sapsf_company_id: string;
+  sapsf_user_id: string;
+  key: string;
+  secret: string;
+  user_type: string;
   id: string;
   active: boolean;
   uuid: string;
@@ -100,7 +100,7 @@ export const SAPFormConfig = ({
     {
       index: 1,
       formComponent: SAPConfigEnablePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {

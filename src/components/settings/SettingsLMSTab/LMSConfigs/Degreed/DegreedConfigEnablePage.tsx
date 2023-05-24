@@ -9,17 +9,13 @@ import { channelMapping, urlValidation } from "../../../../../utils";
 import type {
   FormFieldValidation,
 } from "../../../../forms/FormContext";
-import {
-  useFormContext,
-  // @ts-ignore
-} from "../../../../forms/FormContext.tsx";
 
 export const formFieldNames = {
   DISPLAY_NAME: "displayName",
   CLIENT_ID: "clientId",
   CLIENT_SECRET: "clientSecret",
   DEGREED_BASE_URL: "degreedBaseUrl",
-  DEGREED_FETCH_URL: "degreedFetchUrl",
+  DEGREED_TOKEN_FETCH_BASE_URL: "degreedTokenFetchBaseUrl",
 };
 
 export const validations: FormFieldValidation[] = [
@@ -36,9 +32,9 @@ export const validations: FormFieldValidation[] = [
     },
   },
   {
-    formFieldId: formFieldNames.DEGREED_FETCH_URL,
+    formFieldId: formFieldNames.DEGREED_TOKEN_FETCH_BASE_URL,
     validator: (fields) => {
-      const degreedUrl = fields[formFieldNames.DEGREED_FETCH_URL];
+      const degreedUrl = fields[formFieldNames.DEGREED_TOKEN_FETCH_BASE_URL];
       if (degreedUrl) {
         const error = !urlValidation(degreedUrl);
         return error ? INVALID_LINK : false;
@@ -130,7 +126,7 @@ const DegreedConfigEnablePage = () => {
         </Form.Group>
         <Form.Group className="my-4">
           <ValidatedFormControl
-            formId={formFieldNames.DEGREED_FETCH_URL}
+            formId={formFieldNames.DEGREED_TOKEN_FETCH_BASE_URL}
             className="mt-4"
             type="text"
             maxLength={255}

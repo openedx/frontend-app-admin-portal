@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import _ from 'lodash';
 import { snakeCaseDict } from "../../../../../utils";
 import { 
   CANVAS_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
@@ -113,7 +115,7 @@ export const CanvasFormConfig = ({
     {
       index: 1,
       formComponent: CanvasConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Authorize",
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
@@ -122,7 +124,8 @@ export const CanvasFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
+        // if they've never authorized it or if they've changed the form
+        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{
