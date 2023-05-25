@@ -69,7 +69,7 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
           remainingFunds={offerSummary?.remainingFunds}
           enterpriseUUID={enterpriseUUID}
         />
-        <OfferNameHeading name={enterpriseOffer.displayName} />
+        <OfferNameHeading name={enterpriseOffer.name} />
         <div className="d-flex flex-wrap align-items-center mb-3.5">
           <Stack direction="horizontal" gap={3}>
             {enterpriseOffer.isCurrent ? (
@@ -78,8 +78,8 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
               <Badge variant="light">Ended</Badge>
             )}
             <OfferDates
-              start={enterpriseOffer.startDatetime}
-              end={enterpriseOffer.endDatetime}
+              start={enterpriseOffer.start}
+              end={enterpriseOffer.end}
             />
           </Stack>
         </div>
