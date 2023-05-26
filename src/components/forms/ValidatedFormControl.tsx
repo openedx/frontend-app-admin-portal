@@ -25,7 +25,7 @@ export type ValidatedFormControlProps = {
 
 // Control that reads from/writes to form context store
 const ValidatedFormControl = (props: ValidatedFormControlProps) => {
-  const { currentStep, formFields, errorMap, dispatch } = useFormContext();
+  const { showErrors, formFields, errorMap, dispatch } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch && dispatch(
       setFormFieldAction({ fieldId: props.formId, value: e.target.value })
@@ -37,7 +37,7 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
   const formControlProps = {
     ...omit(props, ["formId"]),
     onChange,
-    isInvalid: currentStep?.showError && showError,
+    isInvalid: showErrors && showError,
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
@@ -47,7 +47,7 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
       {props.fieldInstructions && (
         <Form.Text>{props.fieldInstructions}</Form.Text>
       )}
-      {currentStep?.showError && showError &&  (
+      {showErrors && showError &&  (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
       )}
     </>

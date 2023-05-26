@@ -35,6 +35,16 @@ export function updateFormFieldsAction<FormData>({
   };
 }
 
+export const SET_SHOW_ERRORS = "SET SHOW ERRORS";
+export type SetShowErrorsArguments = {
+  showErrors: boolean;
+} & FormActionArguments;
+// Construct action for setting a step
+export const setShowErrorsAction = ({ showErrors }: SetShowErrorsArguments) => ({
+  type: SET_SHOW_ERRORS,
+  showErrors,
+});
+
 export const SET_STEP = "SET STEP";
 export type SetStepArguments<FormData> = {
   step: FormWorkflowStep<FormData>;

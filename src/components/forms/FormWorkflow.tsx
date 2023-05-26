@@ -7,7 +7,7 @@ import { Launch } from "@edx/paragon/icons";
 import { FormFields, useFormContext } from "./FormContext.tsx";
 import type { FormFieldValidation, FormContext } from "./FormContext";
 // @ts-ignore
-import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE } from "./data/actions.ts";
+import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE, setShowErrorsAction } from "./data/actions.ts";
 import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
 import { FormActionArguments } from "./data/actions";
 // @ts-ignore
@@ -55,8 +55,6 @@ export type FormWorkflowStep<FormData> = {
     errHandler: FormWorkflowErrorHandler
   ) => Promise<boolean>;
   nextButtonConfig: (FormData: FormData) => FormWorkflowButtonConfig<FormData>;
-  hasError?: boolean;
-  showError?: boolean;
 };
 
 export type FormWorkflowConfig<FormData> = {
@@ -84,6 +82,7 @@ function FormWorkflow<FormData>({
     formFields,
     currentStep: step,
     hasErrors,
+    showErrors,
     isEdited,
     stateMap,
   }: FormContext = useFormContext();
@@ -110,8 +109,8 @@ function FormWorkflow<FormData>({
   };
 
   const onNext = async () => {
-    if (step?.hasError) {
-      step.showError = true;
+    if (hasErrors && step) {
+      dispatch(setShowErrorsAction({ showErrors: true }));
       //triggers rerender to have errors show up with 
       dispatch(setStepAction({ step: step }));
     } else {
@@ -145,7 +144,7 @@ function FormWorkflow<FormData>({
           }
         }
         if (advance && step) {
-          step.showError = false;
+          dispatch(setShowErrorsAction({ showErrors: false }));
           const nextStep: number = step.index + 1;
           if (nextStep < formWorkflowConfig.steps.length) {
             dispatch(setStepAction({ step: formWorkflowConfig.steps[nextStep] }));
@@ -165,8 +164,8 @@ function FormWorkflow<FormData>({
         title={step.stepName}>
         {/* there's a bug in paragon that reorders the steps when there's an error
         so we can't comment this back in until that is fixed
-        hasError={step.showError}
-        description={step.showError ? 'Error' : ''}> */}
+        hasError={showError}
+        description={showError ? 'Error' : ''}> */}
         {step && step?.formComponent && <FormComponent />}
       </Stepper.Step>
     );

@@ -19,25 +19,6 @@ type ValidatedFormControlWrapperProps = {
   formId: string;
 } & Partial<ValidatedFormControlProps>;
 
-const createDummyStep = (
-  index: number,
-  stepName: string,
-  validations: FormFieldValidation[]
-): FormWorkflowStep<any> => ({
-  index,
-  stepName,
-  validations,
-  formComponent: Component,
-  saveChanges: () => Promise.resolve(true),
-  nextButtonConfig: jest.fn(),
-  hasError: true,
-  showError: true,
-});
-
-const step: FormWorkflowStep<any>[] = [
-  createDummyStep(0, "testStep", []),
-];
-
 const ValidatedFormControlWrapper = ({
   mockDispatch,
   formId,
@@ -53,7 +34,7 @@ const ValidatedFormControlWrapper = ({
     contextValue = 
     { ...contextValue, 
       errorMap: { [formId]: [formError] },
-      currentStep: step[0] ,
+      showErrors: true,
     };
   }
   return (

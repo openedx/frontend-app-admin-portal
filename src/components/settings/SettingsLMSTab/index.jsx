@@ -139,7 +139,7 @@ const SettingsLMSTab = ({
     // update list of used display names to prevent duplicates
     const updatedMap = new Map();
     if (existingConfigsData[0]) {
-      existingConfigsData?.map((existingConfig) => updatedMap.set(existingConfig.displayName, existingConfig.id));
+      existingConfigsData?.forEach((existingConfig) => updatedMap.set(existingConfig.displayName, existingConfig.id));
     }
     setDisplayNames(updatedMap);
   }, [existingConfigsData]);

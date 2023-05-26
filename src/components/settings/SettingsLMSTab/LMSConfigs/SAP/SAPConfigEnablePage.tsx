@@ -53,6 +53,13 @@ export const validations: FormFieldValidation[] = [
     },
   },
   {
+    formFieldId: formFieldNames.SAPSF_BASE_URL,
+    validator: (fields) => {
+      const error = !fields[formFieldNames.SAPSF_BASE_URL];
+      return error && validationMessages.baseUrlRequired;
+    },
+  },
+  {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
       const displayName = fields[formFieldNames.DISPLAY_NAME];
