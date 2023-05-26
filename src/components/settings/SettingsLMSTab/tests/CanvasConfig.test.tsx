@@ -17,6 +17,8 @@ import {
 } from "../../data/constants";
 // @ts-ignore
 import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
+// @ts-ignore
+import { validationMessages } from "../LMSConfigs/Canvas/CanvasConfigAuthorizePage.tsx";
 
 jest.mock("../../data/constants", () => ({
   ...jest.requireActual("../../data/constants"),
@@ -81,7 +83,7 @@ function testCanvasConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         handleCloseClick: mockOnClick,
         existingData: formData,
-        existingConfigNames: [],
+        existingConfigNames: new Map(),
         channelMap: {
           CANVAS: {
             post: mockPost,
@@ -132,48 +134,48 @@ describe("<CanvasConfig />", () => {
     screen.getByLabelText("Canvas Account Number");
     screen.getByLabelText("Canvas Base URL");
   });
-  test("test button disable", async () => {
+  test("test error messages", async () => {
     render(testCanvasConfigSetup(noExistingData));
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     await clearForm();
-    expect(authorizeButton).toBeDisabled();
-    userEvent.type(screen.getByLabelText("Display Name"), "name");
-    userEvent.type(screen.getByLabelText("Canvas Base URL"), "test4");
-    userEvent.type(screen.getByLabelText("API Client ID"), "test3");
-    userEvent.type(screen.getByLabelText("Canvas Account Number"), "23");
-    userEvent.type(screen.getByLabelText("API Client Secret"), "test6");
+    userEvent.click(authorizeButton);
+    expect(screen.queryByText(validationMessages.displayNameRequired));
+    expect(screen.queryByText(validationMessages.canvasUrlRequired));
+    expect(screen.queryByText(validationMessages.clientIdRequired));
+    expect(screen.queryByText(validationMessages.accountIdRequired));
+    expect(screen.queryByText(validationMessages.clientSecretRequired));
 
-    expect(authorizeButton).toBeDisabled();
+    userEvent.paste(screen.getByLabelText("Display Name"), "name");
+    userEvent.paste(screen.getByLabelText("Canvas Base URL"), "test4");
+    userEvent.paste(screen.getByLabelText("API Client ID"), "test3");
+    userEvent.paste(screen.getByLabelText("Canvas Account Number"), "23");
+    userEvent.paste(screen.getByLabelText("API Client Secret"), "test6");
+    userEvent.click(authorizeButton);
+
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText("Display Name"), {
-        target: { value: "" },
-      });
-      fireEvent.change(screen.getByLabelText("Canvas Base URL"), {
-        target: { value: "" },
-      });
-    });
-    userEvent.type(screen.getByLabelText("Display Name"), "displayName");
-    userEvent.type(
+    await clearForm();
+    userEvent.paste(screen.getByLabelText("Display Name"), "displayName");
+    userEvent.paste(
       screen.getByLabelText("Canvas Base URL"),
       "https://www.test4.com"
     );
-
-    expect(authorizeButton).not.toBeDisabled();
+    userEvent.click(authorizeButton);
+    expect(!screen.queryByText(INVALID_LINK));
+    expect(!screen.queryByText(INVALID_NAME));
   });
   test('saves draft correctly', async () => {
     render(testCanvasConfigSetup(noExistingData));
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
     await clearForm();
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
 
     expect(cancelButton).not.toBeDisabled();
     userEvent.click(cancelButton);
@@ -199,13 +201,11 @@ describe("<CanvasConfig />", () => {
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     await clearForm();
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
-
-    expect(authorizeButton).not.toBeDisabled();
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
     userEvent.click(authorizeButton);
 
     // await authorization loading modal
@@ -215,11 +215,14 @@ describe("<CanvasConfig />", () => {
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testCanvasConfigSetup(invalidExistingData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+    userEvent.click(authorizeButton);
+    await waitFor(() => expect(screen.getByText(INVALID_NAME)).toBeInTheDocument());
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
-    await waitFor(() => expect(expect(screen.getByText(INVALID_NAME)).toBeInTheDocument()));
   });
   test('validates properly formatted existing data on load', () => {
     render(testCanvasConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     // ensuring the existing data is prefilled
     expect((screen.getByLabelText("Display Name") as HTMLInputElement).value).toEqual(
       existingConfigDataNoAuth.displayName);
@@ -232,6 +235,7 @@ describe("<CanvasConfig />", () => {
     expect((screen.getByLabelText("API Client Secret") as HTMLInputElement).value).toEqual(
       existingConfigDataNoAuth.clientSecret);
 
+    userEvent.click(authorizeButton);
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

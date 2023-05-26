@@ -43,7 +43,7 @@ export type SAPConfigSnakeCase = {
 export type SAPFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: SAPConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (sapConfig: SAPConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;

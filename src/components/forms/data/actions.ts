@@ -39,7 +39,7 @@ export const SET_STEP = "SET STEP";
 export type SetStepArguments<FormData> = {
   step: FormWorkflowStep<FormData>;
 } & FormActionArguments;
-// Construct action for setting a form field value
+// Construct action for setting a step
 export const setStepAction = ({ step }: SetStepArguments<any>) => ({
   type: SET_STEP,
   step,

@@ -23,12 +23,31 @@ export const formFieldNames = {
   BLACKBOARD_BASE_URL: "blackboardBaseUrl",
 };
 
+export const validationMessages = {
+  displayNameRequired: 'Please enter Display Name',
+  baseUrlRequired: 'Please enter Blackboard Base URL',
+};
+
 export const validations: FormFieldValidation[] = [
+  {
+    formFieldId: formFieldNames.BLACKBOARD_BASE_URL,
+    validator: (fields) => {
+      const error = !fields[formFieldNames.BLACKBOARD_BASE_URL];
+      return error && validationMessages.baseUrlRequired;
+    },
+  },
   {
     formFieldId: formFieldNames.BLACKBOARD_BASE_URL,
     validator: (fields) => {
       const error = !urlValidation(fields[formFieldNames.BLACKBOARD_BASE_URL]);
       return error && INVALID_LINK;
+    },
+  },
+  {
+    formFieldId: formFieldNames.DISPLAY_NAME,
+    validator: (fields) => {
+      const error = !fields[formFieldNames.DISPLAY_NAME];
+      return error && validationMessages.displayNameRequired;
     },
   },
   {

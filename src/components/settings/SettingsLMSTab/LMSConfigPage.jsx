@@ -51,7 +51,7 @@ const mapStateToProps = (state) => ({
 });
 
 LMSConfigPage.defaultProps = {
-  existingConfigs: [],
+  existingConfigs: {},
   lmsType: '',
 };
 
@@ -59,7 +59,7 @@ LMSConfigPage.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingConfigFormData: PropTypes.shape({}).isRequired,
-  existingConfigs: PropTypes.arrayOf(PropTypes.string),
+  existingConfigs: PropTypes.shape({}),
   setExistingConfigFormData: PropTypes.func.isRequired,
   isLmsStepperOpen: PropTypes.bool.isRequired,
   closeLmsStepper: PropTypes.func.isRequired,

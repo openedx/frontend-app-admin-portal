@@ -9,7 +9,6 @@ import { setFormFieldAction } from "./data/actions.ts";
 // @ts-ignore
 import { useFormContext } from "./FormContext.tsx";
 
-// TODO: Add Form.Control props.  Does Paragon export?
 type InheritedParagonControlProps = {
   className?: string;
   type: string;
@@ -26,7 +25,7 @@ export type ValidatedFormControlProps = {
 
 // Control that reads from/writes to form context store
 const ValidatedFormControl = (props: ValidatedFormControlProps) => {
-  const { formFields, errorMap, dispatch } = useFormContext();
+  const { currentStep, formFields, errorMap, dispatch } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch && dispatch(
       setFormFieldAction({ fieldId: props.formId, value: e.target.value })
@@ -38,7 +37,7 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
   const formControlProps = {
     ...omit(props, ["formId"]),
     onChange,
-    isInvalid: showError,
+    isInvalid: currentStep?.showError && showError,
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
@@ -48,7 +47,7 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
       {props.fieldInstructions && (
         <Form.Text>{props.fieldInstructions}</Form.Text>
       )}
-      {showError && (
+      {currentStep?.showError && showError &&  (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
       )}
     </>
