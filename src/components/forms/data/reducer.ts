@@ -41,8 +41,14 @@ const processFormErrors = (state: FormContext): FormContext => {
         hasErrors: true,
         errorMap,
       };
+      if (state.currentStep) {
+        state.currentStep.hasError = true;
+      }
     } else {
       errorState = {hasErrors: false, errorMap: {}};
+      if (state.currentStep) {
+        state.currentStep.hasError = false;
+      }
     }
   }
 

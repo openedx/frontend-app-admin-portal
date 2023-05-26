@@ -22,6 +22,16 @@ export const formFieldNames = {
   USER_TYPE: "userType",
 };
 
+export const validationMessages = {
+  displayNameRequired: 'Please enter Display Name',
+  baseUrlRequired: 'Please enter SAP Base URL',
+  companyIdRequired: 'Please enter SAP Company ID',
+  userIdRequired: 'Please enter SAP User ID',
+  keyRequired: 'Please enter OAuth Client ID',
+  secretRequired: 'Please enter OAuth Client Secret',
+  userTypeRequired: 'Please select SAP User Type',
+};
+
 export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.SAPSF_BASE_URL,
@@ -38,8 +48,8 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
-      const displayName = fields[formFieldNames.DISPLAY_NAME];
-      return !displayName;
+      const error = !fields[formFieldNames.DISPLAY_NAME];
+      return error && validationMessages.displayNameRequired;
     },
   },
   {
@@ -53,36 +63,36 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.SAPSF_COMPANY_ID,
     validator: (fields) => {
-      const sapsfCompanyId = fields[formFieldNames.SAPSF_COMPANY_ID];
-      return !sapsfCompanyId;
+      const error = !fields[formFieldNames.SAPSF_COMPANY_ID];
+      return error && validationMessages.companyIdRequired;
     },
   },
   {
     formFieldId: formFieldNames.SAPSF_USER_ID,
     validator: (fields) => {
-      const sapsfUserId = fields[formFieldNames.SAPSF_USER_ID];
-      return !sapsfUserId;
+      const error = !fields[formFieldNames.SAPSF_USER_ID];
+      return error && validationMessages.userIdRequired;
     },
   },
   {
     formFieldId: formFieldNames.KEY,
     validator: (fields) => {
-      const key = fields[formFieldNames.KEY];
-      return !key;
+      const error = !fields[formFieldNames.KEY];
+      return error && validationMessages.keyRequired;
     },
   },
   {
     formFieldId: formFieldNames.SECRET,
     validator: (fields) => {
-      const secret = fields[formFieldNames.SECRET];
-      return !secret;
+      const error = !fields[formFieldNames.SECRET];
+      return error && validationMessages.secretRequired;
     },
   },
   {
     formFieldId: formFieldNames.USER_TYPE,
     validator: (fields) => {
-      const userType = fields[formFieldNames.USER_TYPE];
-      return !userType;
+      const error = !fields[formFieldNames.USER_TYPE];
+      return error && validationMessages.userTypeRequired;
     },
   },
 ];
