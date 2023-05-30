@@ -89,18 +89,17 @@ const DegreedConfigEnablePage = () => {
         </h3>
       </span>
       <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group className="mt-2.5">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.CLIENT_ID}
-            className="mb-4"
             type="text"
             maxLength={255}
             floatingLabel="API Client ID"
@@ -109,29 +108,26 @@ const DegreedConfigEnablePage = () => {
         <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.CLIENT_SECRET}
-            className="my-4"
             type="password"
             maxLength={255}
             floatingLabel="API Client Secret"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.DEGREED_BASE_URL}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="Degreed Base URL"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.DEGREED_TOKEN_FETCH_BASE_URL}
-            className="mt-4"
             type="text"
             maxLength={255}
             floatingLabel="Degreed Token Fetch Base URL"
-            fieldInstructions="Optional: If provided, will be used as the url to fetch tokens."
+            fieldInstructions="Optional: If provided, will be used as the url to fetch tokens"
           />
         </Form.Group>
       </Form>

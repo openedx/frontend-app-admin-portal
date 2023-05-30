@@ -116,7 +116,7 @@ export const CanvasFormConfig = ({
       index: 1,
       formComponent: CanvasConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: "Authorize",
+      stepName: "Configure",
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
         let config = {

@@ -98,7 +98,7 @@ export const MoodleFormConfig = ({
       index: 1,
       formComponent: MoodleConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: "Enable",
+      stepName: "Configure",
       saveChanges,
       nextButtonConfig: () => {
         let config = {

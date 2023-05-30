@@ -82,7 +82,7 @@ const BlackboardConfigAuthorizePage = () => {
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
         <Form.Group className="my-4.5">

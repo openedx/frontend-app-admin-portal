@@ -72,7 +72,7 @@ export const LMSFormWorkflowConfig = ({
       index: 0,
       formComponent: LMSSelectorPage(setLms),
       validations: validations,
-      stepName: "Select LMS",
+      stepName: "Select",
       nextButtonConfig: () => ({
         buttonText: "Next",
         opensNewWindow: false,
@@ -88,11 +88,11 @@ export const LMSFormWorkflowConfig = ({
     steps = steps.concat(
       {
         index: 1,
-        stepName: "Activate",
+        stepName: "Configure",
       },
       {
         index: 2,
-        stepName: "Enable",
+        stepName: "Activate",
       }
     );
   }

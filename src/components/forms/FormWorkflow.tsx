@@ -173,7 +173,7 @@ function FormWorkflow<FormData>({
 
       {formWorkflowConfig.steps && (
         <FullscreenModal
-          title="New platform learning integration"
+          title="New learning platform integration"
           isOpen={isStepperOpen}
           onClose={onCancel}
           className='stepper-modal'

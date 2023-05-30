@@ -105,13 +105,12 @@ const SAPConfigEnablePage = () => {
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.SAPSF_BASE_URL}
-            className="mb-4"
             type="text"
             maxLength={255}
             floatingLabel="SAP Base URL"
@@ -120,43 +119,38 @@ const SAPConfigEnablePage = () => {
         <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.SAPSF_COMPANY_ID}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="SAP Company ID"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.SAPSF_USER_ID}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="SAP User ID"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.KEY}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="OAuth Client ID"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.SECRET}
-            className="my-4"
             type="password"
             maxLength={255}
             floatingLabel="OAuth Client Secret"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormRadio
             formId={formFieldNames.USER_TYPE}
-            className="my-4"
             label="SAP User Type"
             options={[["User", "user"],["Admin", "admin"]]}
           />

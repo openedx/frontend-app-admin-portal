@@ -98,13 +98,12 @@ const MoodleConfigEnablePage = () => {
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
         <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.MOODLE_BASE_URL}
-            className="mb-4"
             type="text"
             maxLength={255}
             floatingLabel="Moodle Base URL"
@@ -113,34 +112,30 @@ const MoodleConfigEnablePage = () => {
         <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.SERVICE_SHORT_NAME}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="Webservice Short Name"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.TOKEN}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="Token"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.USERNAME}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="Username"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group>
           <ValidatedFormControl
             formId={formFieldNames.PASSWORD}
-            className="my-4"
             type="password"
             maxLength={255}
             floatingLabel="Password"
