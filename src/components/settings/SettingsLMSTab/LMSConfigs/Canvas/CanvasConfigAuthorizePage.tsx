@@ -31,6 +31,14 @@ export const formFieldNames = {
   CANVAS_BASE_URL: "canvasBaseUrl",
 };
 
+export const validationMessages = {
+  displayNameRequired: 'Please enter Display Name',
+  clientIdRequired: 'Please enter API Client ID',
+  clientSecretRequired: 'Please enter API Client Secret',
+  accountIdRequired: 'Please enter Account ID',
+  canvasUrlRequired: 'Please enter Canvas Base Url',
+};
+
 export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.CANVAS_BASE_URL,
@@ -40,15 +48,15 @@ export const validations: FormFieldValidation[] = [
         const error = !urlValidation(canvasUrl);
         return error ? INVALID_LINK : false;
       } else {
-        return true;
+        return validationMessages.canvasUrlRequired;
       }
     },
   },
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
-      const displayName = fields[formFieldNames.DISPLAY_NAME];
-      return !displayName;
+      const error = !(fields[formFieldNames.DISPLAY_NAME]);
+      return error && validationMessages.displayNameRequired;
     },
   },
   {
@@ -62,21 +70,22 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.ACCOUNT_ID,
     validator: (fields) => {
-      return !isValidNumber(fields[formFieldNames.ACCOUNT_ID]);
+      const error = !isValidNumber(fields[formFieldNames.ACCOUNT_ID]);
+      return error && validationMessages.accountIdRequired;
     },
   },
   {
     formFieldId: formFieldNames.CLIENT_ID,
     validator: (fields) => {
-      const clientId = fields[formFieldNames.CLIENT_ID];
-      return !clientId;
+      const error = !(fields[formFieldNames.CLIENT_ID]);
+      return error && validationMessages.clientIdRequired;
     },
   },
   {
     formFieldId: formFieldNames.CLIENT_SECRET,
     validator: (fields) => {
-      const clientSecret = fields[formFieldNames.CLIENT_SECRET];
-      return !clientSecret;
+      const error = !(fields[formFieldNames.CLIENT_SECRET]);
+      return error && validationMessages.clientSecretRequired;
     },
   },
 ];

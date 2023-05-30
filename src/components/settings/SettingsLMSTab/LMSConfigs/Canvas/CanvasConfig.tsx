@@ -45,7 +45,7 @@ export type CanvasConfigSnakeCase = {
 export type CanvasFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: CanvasConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (canvasConfig: CanvasConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,

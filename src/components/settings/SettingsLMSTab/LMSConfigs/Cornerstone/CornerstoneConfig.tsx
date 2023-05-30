@@ -33,7 +33,7 @@ export type CornerstoneConfigSnakeCase = {
 export type CornerstoneFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: CornerstoneConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (cornerstoneConfig: CornerstoneConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,

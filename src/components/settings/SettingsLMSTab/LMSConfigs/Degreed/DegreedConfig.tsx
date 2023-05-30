@@ -40,7 +40,7 @@ export type DegreedConfigSnakeCase = {
 export type DegreedFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: DegreedConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,

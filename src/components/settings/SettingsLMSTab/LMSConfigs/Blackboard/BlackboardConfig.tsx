@@ -47,7 +47,7 @@ export type BlackboardConfigSnakeCase = {
 export type BlackboardFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: BlackboardConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (blackboardConfig: BlackboardConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,

@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { Dispatch } from "react";
-import { ActionRow, Button, FullscreenModal, Stepper, useToggle } from "@edx/paragon";
+import { ActionRow, Button, FullscreenModal, Hyperlink, Stepper, useToggle } from "@edx/paragon";
 import { Launch } from "@edx/paragon/icons";
 
 // @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
+import { FormFields, useFormContext } from "./FormContext.tsx";
 import type { FormFieldValidation, FormContext } from "./FormContext";
 // @ts-ignore
-import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE } from "./data/actions.ts";
-import { SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
+import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE, setShowErrorsAction } from "./data/actions.ts";
+import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
 import { FormActionArguments } from "./data/actions";
 // @ts-ignore
 import UnsavedChangesModal from "../settings/SettingsLMSTab/UnsavedChangesModal.tsx";
 // @ts-ignore
 import ConfigErrorModal from "../settings/ConfigErrorModal.tsx";
-import { pollAsync } from "../../utils";
+import { channelMapping, pollAsync } from "../../utils";
+// @ts-ignore
+import { InitializeFormArguments, initializeForm } from "./data/reducer.ts";
 
 export const WAITING_FOR_ASYNC_OPERATION = "WAITING FOR ASYNC OPERATION";
 
@@ -80,6 +82,7 @@ function FormWorkflow<FormData>({
     formFields,
     currentStep: step,
     hasErrors,
+    showErrors,
     isEdited,
     stateMap,
   }: FormContext = useFormContext();
@@ -88,6 +91,7 @@ function FormWorkflow<FormData>({
     openSavedChangesModal,
     closeSavedChangesModal,
   ] = useToggle(false);
+  const [helpCenterLink, setHelpCenterLink] = useState(HELP_CENTER_LINK);
   const nextButtonConfig = step?.nextButtonConfig(formFields);
   const awaitingAsyncAction = stateMap && stateMap[WAITING_FOR_ASYNC_OPERATION];
 
@@ -105,41 +109,48 @@ function FormWorkflow<FormData>({
   };
 
   const onNext = async () => {
-    let advance = true;
-    if (nextButtonConfig) {
-      let newFormFields: FormData = await nextButtonConfig.onClick({
-        formFields,
-        errHandler: setFormError,
-        dispatch,
-        formFieldsChanged: !!isEdited,
-      });
-      if (nextButtonConfig?.awaitSuccess) {
-        advance = await pollAsync(
-          () =>
-            nextButtonConfig.awaitSuccess?.awaitCondition?.({
+    if (hasErrors && step) {
+      dispatch(setShowErrorsAction({ showErrors: true }));
+      //triggers rerender to have errors show up with 
+      dispatch(setStepAction({ step: step }));
+    } else {
+      let advance = true;
+      if (nextButtonConfig) {
+        let newFormFields: FormData = await nextButtonConfig.onClick({
+          formFields,
+          errHandler: setFormError,
+          dispatch,
+          formFieldsChanged: !!isEdited,
+        });
+        if (nextButtonConfig?.awaitSuccess) {
+          advance = await pollAsync(
+            () =>
+              nextButtonConfig.awaitSuccess?.awaitCondition?.({
+                formFields: newFormFields,
+                errHandler: setFormError,
+                dispatch,
+                formFieldsChanged: !!isEdited,
+              }),
+            nextButtonConfig.awaitSuccess.awaitTimeout,
+            nextButtonConfig.awaitSuccess.awaitInterval
+          );
+          if (!advance && nextButtonConfig?.awaitSuccess) {
+            nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
               formFields: newFormFields,
               errHandler: setFormError,
               dispatch,
               formFieldsChanged: !!isEdited,
-            }),
-          nextButtonConfig.awaitSuccess.awaitTimeout,
-          nextButtonConfig.awaitSuccess.awaitInterval
-        );
-        if (!advance && nextButtonConfig?.awaitSuccess) {
-          nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
-            formFields: newFormFields,
-            errHandler: setFormError,
-            dispatch,
-            formFieldsChanged: !!isEdited,
-          });
+            });
+          }
         }
-      }
-      if (advance && step) {
-        const nextStep: number = step.index + 1;
-        if (nextStep < formWorkflowConfig.steps.length) {
-          dispatch(setStepAction({ step: formWorkflowConfig.steps[nextStep] }));
-        } else {
-          onClickOut(true, SUBMIT_TOAST_MESSAGE);
+        if (advance && step) {
+          dispatch(setShowErrorsAction({ showErrors: false }));
+          const nextStep: number = step.index + 1;
+          if (nextStep < formWorkflowConfig.steps.length) {
+            dispatch(setStepAction({ step: formWorkflowConfig.steps[nextStep] }));
+          } else {
+            onClickOut(true, SUBMIT_TOAST_MESSAGE);
+          }
         }
       }
     }
@@ -148,11 +159,23 @@ function FormWorkflow<FormData>({
   const stepBody = (step: FormWorkflowStep<FormData>) => {
     const FormComponent: DynamicComponent = step?.formComponent;
     return (
-      <Stepper.Step eventKey={step.index.toString()} title={step.stepName}>
+      <Stepper.Step
+        eventKey={step.index.toString()}
+        title={step.stepName}>
+        {/* there's a bug in paragon that reorders the steps when there's an error
+        so we can't comment this back in until that is fixed
+        hasError={showError}
+        description={showError ? 'Error' : ''}> */}
         {step && step?.formComponent && <FormComponent />}
       </Stepper.Step>
     );
   };
+
+  useEffect(() => {
+    if (formFields?.channelCode) {
+      setHelpCenterLink(channelMapping[formFields?.channelCode].helpCenter);
+    }
+  }, [formFields]);
 
   return (
     <>
@@ -179,18 +202,24 @@ function FormWorkflow<FormData>({
           className='stepper-modal'
           footerNode={(
             <ActionRow>
-              <Button variant="tertiary">Help Center: Integrations</Button>
+              <Hyperlink
+                destination={helpCenterLink}
+                className="btn btn-outline-tertiary"
+                target="_blank"
+              >
+                Help Center: Integrations
+              </Hyperlink>
               <ActionRow.Spacer />
               <Button variant="tertiary" onClick={onCancel}>Cancel</Button>
               {nextButtonConfig && (
-                <Button onClick={onNext} disabled={hasErrors || awaitingAsyncAction}>
+                <Button onClick={onNext} disabled={awaitingAsyncAction}>
                   {nextButtonConfig.buttonText}
                   {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
-                </Button> 
+                </Button>
               )}
             </ActionRow>
           )}
-          >
+        >
           <Stepper activeKey={step?.index.toString()}>
             <Stepper.Header />
             {formWorkflowConfig.steps.map((stepConfig) => stepBody(stepConfig))}

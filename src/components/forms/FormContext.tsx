@@ -15,6 +15,7 @@ export type FormContext = {
   formFields?: FormFields;
   isEdited?: boolean;
   hasErrors?: boolean;
+  showErrors?: boolean;
   errorMap?: { [name: string]: string[] };
   stateMap?: { [name: string]: any };
   currentStep?: FormWorkflowStep<any>;

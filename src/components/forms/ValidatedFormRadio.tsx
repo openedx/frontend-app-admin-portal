@@ -23,7 +23,7 @@ export type ValidatedFormRadioProps = {
 } & InheritedParagonRadioProps;
 
 const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
-  const { formFields, errorMap, dispatch } = useFormContext();
+  const { showErrors, formFields, errorMap, dispatch } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch && dispatch(
       setFormFieldAction({ fieldId: props.formId, value: e.target.value })
@@ -36,7 +36,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
   const formRadioProps = {
     ...omit(props, ["formId"]),
     onChange,
-    isInvalid: showError,
+    isInvalid: showErrors && showError,
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
@@ -68,7 +68,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
       {formRadioProps.fieldInstructions && (
         <Form.Text>{formRadioProps.fieldInstructions}</Form.Text>
       )}
-      {showError && (
+      {showErrors && showError && (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
       )}
     </>

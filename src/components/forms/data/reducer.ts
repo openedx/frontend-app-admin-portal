@@ -2,7 +2,7 @@ import groupBy from "lodash/groupBy";
 import isEmpty from "lodash/isEmpty";
 import keys from "lodash/keys"
 // @ts-ignore
-import { SET_FORM_FIELD, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS } from "./actions.ts";
+import { SET_FORM_FIELD, SET_SHOW_ERRORS, SET_STEP, SET_WORKFLOW_STATE, SetShowErrorsArguments, UPDATE_FORM_FIELDS } from "./actions.ts";
 import type {
   FormActionArguments,
   SetFormFieldArguments,
@@ -106,6 +106,9 @@ export function FormReducer<FormFields>(
     case SET_STEP:
       const setStepArgs = action as SetStepArguments<FormFields>;
       return { ...state, currentStep: setStepArgs.step };
+    case SET_SHOW_ERRORS:
+      const SetShowErrorsArgs = action as SetShowErrorsArguments;
+      return { ...state, showErrors: SetShowErrorsArgs.showErrors };
     case SET_WORKFLOW_STATE:
       const setStateArgs = action as SetWorkflowStateArguments<any>;
       const oldStateMap = state.stateMap || {};
