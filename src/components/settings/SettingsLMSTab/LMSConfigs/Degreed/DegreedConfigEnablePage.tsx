@@ -18,6 +18,13 @@ export const formFieldNames = {
   DEGREED_TOKEN_FETCH_BASE_URL: "degreedTokenFetchBaseUrl",
 };
 
+export const validationMessages = {
+  displayNameRequired: 'Please enter Display Name',
+  clientIdRequired: 'Please enter Client Id',
+  clientSecretRequired: 'Please enter Client Secret',
+  degreedUrlRequired: 'Please enter Degreed Base Url',
+};
+
 export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.DEGREED_BASE_URL,
@@ -27,7 +34,7 @@ export const validations: FormFieldValidation[] = [
         const error = !urlValidation(degreedUrl);
         return error ? INVALID_LINK : false;
       } else {
-        return true;
+        return validationMessages.degreedUrlRequired;
       }
     },
   },
@@ -47,9 +54,9 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
-      const displayName = fields[formFieldNames.DISPLAY_NAME];
-      return !displayName;
-    },
+      const error = !(fields[formFieldNames.DISPLAY_NAME]);
+      return error && validationMessages.displayNameRequired;
+    }
   },
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
@@ -62,15 +69,15 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.CLIENT_ID,
     validator: (fields) => {
-      const clientId = fields[formFieldNames.CLIENT_ID];
-      return !clientId;
+      const error = !fields[formFieldNames.CLIENT_ID];
+      return error && validationMessages.clientIdRequired;
     },
   },
   {
     formFieldId: formFieldNames.CLIENT_SECRET,
     validator: (fields) => {
-      const clientSecret = fields[formFieldNames.CLIENT_SECRET];
-      return !clientSecret;
+      const error = !fields[formFieldNames.CLIENT_SECRET];
+      return error && validationMessages.clientSecretRequired;
     },
   },
 ];

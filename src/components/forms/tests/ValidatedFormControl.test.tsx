@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { Component } from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { screen, render } from '@testing-library/react';
 import userEvent, { TargetElement } from '@testing-library/user-event';
 
 // @ts-ignore
-import FormContextProvider from '../FormContext.tsx';
+import FormContextProvider, { FormFieldValidation } from '../FormContext.tsx';
 import type { FormContext } from '../FormContext';
 // @ts-ignore
 import ValidatedFormControl from '../ValidatedFormControl.tsx';
 import type {ValidatedFormControlProps} from '../ValidatedFormControl';
+import { FormWorkflowStep } from '../FormWorkflow.js';
 
 type ValidatedFormControlWrapperProps = {
   mockDispatch: () => void;
@@ -30,7 +31,11 @@ const ValidatedFormControlWrapper = ({
     formFields: { [formId]: formValue },
   };
   if (formError) {
-    contextValue = { ...contextValue, errorMap: { [formId]: [formError] } };
+    contextValue = 
+    { ...contextValue, 
+      errorMap: { [formId]: [formError] },
+      showErrors: true,
+    };
   }
   return (
     <FormContextProvider

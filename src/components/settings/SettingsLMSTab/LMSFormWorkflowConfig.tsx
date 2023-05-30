@@ -37,7 +37,7 @@ export type LMSConfigSnakeCase = BlackboardConfigSnakeCase | CanvasConfigSnakeCa
 export type LMSFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: LMSConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (LMSConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;

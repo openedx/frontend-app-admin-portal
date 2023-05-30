@@ -41,7 +41,7 @@ export type MoodleConfigSnakeCase = {
 export type MoodleFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: MoodleConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;

@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
-import { Close, Menu } from '@edx/paragon/icons';
+import { Close, MenuIcon } from '@edx/paragon/icons';
 
 import SidebarToggle from './index';
 import {
@@ -42,7 +42,7 @@ SidebarToggleWrapper.propTypes = {
 describe('<Sidebar />', () => {
   it('renders correctly with menu icon', () => {
     const wrapper = mount(<SidebarToggleWrapper />);
-    expect(wrapper.find(Menu)).toHaveLength(1);
+    expect(wrapper.find(MenuIcon)).toHaveLength(1);
   });
 
   it('renders correctly with close icon', () => {

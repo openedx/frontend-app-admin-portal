@@ -12,9 +12,17 @@ const SSO_TAB_LABEL = 'Single Sign On (SSO)';
 const APPEARANCE_TAB_LABEL = 'Portal Appearance';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
+export const HELP_CENTER_BLACKBOARD = 'https://business-support.edx.org/hc/en-us/sections/4405096719895-Blackboard';
+export const HELP_CENTER_CANVAS = 'https://business-support.edx.org/hc/en-us/sections/1500002584121-Canvas';
+export const HELP_CENTER_CORNERSTONE = 'https://business-support.edx.org/hc/en-us/sections/1500002151021-Cornerstone';
+export const HELP_CENTER_DEGREED = 'https://business-support.edx.org/hc/en-us/sections/360000868494-Degreed';
+export const HELP_CENTER_MOODLE = 'https://business-support.edx.org/hc/en-us/sections/1500002758722-Moodle';
+export const HELP_CENTER_SAP = 'https://business-support.edx.org/hc/en-us/sections/360000868534-SuccessFactors';
+
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
 export const HELP_CENTER_SAP_IDP_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005205314';
 export const HELP_CENTER_BRANDING_LINK = 'https://business-support.edx.org/hc/en-us/sections/8739219372183';
+
 export const ACTIVATE_TOAST_MESSAGE = 'Learning platform integration successfully activated.';
 export const DELETE_TOAST_MESSAGE = 'Learning platform integration successfully removed.';
 export const INACTIVATE_TOAST_MESSAGE = 'Learning platform integration successfully disabled.';
@@ -39,7 +47,6 @@ export const INVALID_LENGTH = 'Max length must be a number, but cannot be over 2
 export const INVALID_API_ROOT_URL = 'OAuth API Root URL attribute must be a valid URL';
 export const INVALID_SAPSF_OAUTH_ROOT_URL = 'SAPSF OAuth URL attribute must be a valid URL';
 export const INVALID_ODATA_API_TIMEOUT_INTERVAL = 'OData API timeout interval must be a number less than 30';
-export const INVALID_MOODLE_VERIFICATION = 'Please provide either a token OR a username and password';
 
 /**
  * Used as tab values and in router params

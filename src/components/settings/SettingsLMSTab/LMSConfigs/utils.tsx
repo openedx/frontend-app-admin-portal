@@ -175,13 +175,18 @@ export async function handleSaveHelper(
   return !err;
 }
 
-export function checkForDuplicateNames(existingConfigNames: string[]): FormFieldValidation {
+export function checkForDuplicateNames(existingConfigNames: Map<string, string>): FormFieldValidation {
     return {
     formFieldId: 'displayName',
     validator: (fields) => {
-      return existingConfigNames?.includes(fields['displayName'])
-        ? INVALID_NAME
-        : false;
+      let validName = true;
+      validName = !(existingConfigNames?.has(fields['displayName']));
+      if (fields.id && !validName) { // if we're editing an existing config
+        if (existingConfigNames.get(fields['displayName']) == fields.id) {
+          validName = true;
+        }
+      }
+      return validName ? false : INVALID_NAME;
     },
   };
 }
