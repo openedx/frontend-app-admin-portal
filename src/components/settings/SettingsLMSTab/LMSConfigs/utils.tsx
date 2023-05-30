@@ -186,7 +186,7 @@ export function checkForDuplicateNames(existingConfigNames: Map<string, string>)
           validName = true;
         }
       }
-      return validName ? '' : INVALID_NAME;
+      return validName ? false : INVALID_NAME;
     },
   };
 }
