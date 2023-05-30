@@ -105,7 +105,7 @@ const MoodleConfigEnablePage = () => {
         </h3>
       </span>
       <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group className="my-2.5">
+        <Form.Group className="mb-4">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
@@ -113,7 +113,7 @@ const MoodleConfigEnablePage = () => {
             fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.MOODLE_BASE_URL}
             type="text"
@@ -121,7 +121,7 @@ const MoodleConfigEnablePage = () => {
             floatingLabel="Moodle Base URL"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.SERVICE_SHORT_NAME}
             type="text"
@@ -129,7 +129,7 @@ const MoodleConfigEnablePage = () => {
             floatingLabel="Webservice Short Name"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.TOKEN}
             type="text"
@@ -137,7 +137,7 @@ const MoodleConfigEnablePage = () => {
             floatingLabel="Token"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.USERNAME}
             type="text"
@@ -145,7 +145,7 @@ const MoodleConfigEnablePage = () => {
             floatingLabel="Username"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.PASSWORD}
             type="password"

@@ -65,7 +65,7 @@ const CornerstoneConfigEnablePage = () => {
         </h3>
       </span>
       <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group>
+        <Form.Group className="mb-4">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
@@ -73,7 +73,7 @@ const CornerstoneConfigEnablePage = () => {
             fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.CORNERSTONE_BASE_URL}
             type="text"

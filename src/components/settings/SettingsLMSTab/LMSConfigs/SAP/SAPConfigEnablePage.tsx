@@ -117,7 +117,7 @@ const SAPConfigEnablePage = () => {
         </h3>
       </span>
       <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group className="my-2.5">
+        <Form.Group className="mb-4">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
@@ -125,7 +125,7 @@ const SAPConfigEnablePage = () => {
             fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.SAPSF_BASE_URL}
             type="text"
@@ -133,7 +133,7 @@ const SAPConfigEnablePage = () => {
             floatingLabel="SAP Base URL"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.SAPSF_COMPANY_ID}
             type="text"
@@ -141,7 +141,7 @@ const SAPConfigEnablePage = () => {
             floatingLabel="SAP Company ID"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.SAPSF_USER_ID}
             type="text"
@@ -149,7 +149,7 @@ const SAPConfigEnablePage = () => {
             floatingLabel="SAP User ID"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.KEY}
             type="text"
@@ -157,7 +157,7 @@ const SAPConfigEnablePage = () => {
             floatingLabel="OAuth Client ID"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.SECRET}
             type="password"
@@ -165,7 +165,7 @@ const SAPConfigEnablePage = () => {
             floatingLabel="OAuth Client Secret"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormRadio
             formId={formFieldNames.USER_TYPE}
             label="SAP User Type"
