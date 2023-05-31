@@ -14,6 +14,7 @@ import { MoodleConfigCamelCase, MoodleConfigSnakeCase } from "./Moodle/MoodleCon
 import { SAPConfigCamelCase, SAPConfigSnakeCase } from "./SAP/SAPConfig";
 // @ts-ignore
 import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from "../../../forms/FormWorkflow.tsx";
+import LmsApiService from "../../../../data/services/LmsApiService";
 
 type ConfigCamelCase = { id?: string, active?: boolean, lms?: string, } |
   BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
@@ -37,7 +38,7 @@ export async function handleSubmitHelper(
   transformedConfig.enterprise_customer = enterpriseCustomerUuid;
   let err = "";
   if (formFieldsChanged) {
-    if (currentFormFields?.id) {
+    if (currentFormFields?.id) { // id only exists on existing configs
       try {
         transformedConfig.active = existingData.active;
         const response = await channelMap[lmsType].update(transformedConfig, existingData.id)
@@ -174,14 +175,18 @@ export async function handleSaveHelper(
   return !err;
 }
 
-export function checkForDuplicateNames(
-  existingConfigNames: string[], existingData: { displayName: string }): FormFieldValidation {
-  return {
+export function checkForDuplicateNames(existingConfigNames: Map<string, string>): FormFieldValidation {
+    return {
     formFieldId: 'displayName',
-    validator: () => {
-      return existingConfigNames?.includes(existingData.displayName)
-        ? INVALID_NAME
-        : false;
+    validator: (fields) => {
+      let validName = true;
+      validName = !(existingConfigNames?.has(fields['displayName']));
+      if (fields.id && !validName) { // if we're editing an existing config
+        if (existingConfigNames.get(fields['displayName']) == fields.id) {
+          validName = true;
+        }
+      }
+      return validName ? false : INVALID_NAME;
     },
   };
 }

@@ -30,6 +30,7 @@ const ValidatedFormRadioWrapper = ({
 }: ValidatedFormRadioWrapperProps) => {
   let contextValue: FormContext = {
     formFields: { [formId]: formValue },
+    showErrors: true,
   };
   if (formError) {
     contextValue = { ...contextValue, errorMap: { [formId]: [formError] } };

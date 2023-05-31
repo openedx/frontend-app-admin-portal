@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
-import { Close, Menu } from '@edx/paragon/icons';
+import { Close, MenuIcon } from '@edx/paragon/icons';
 
 import './SidebarToggle.scss';
 
@@ -12,7 +12,7 @@ const SidebarToggle = (props) => {
     collapseSidebar,
   } = props;
 
-  const Icon = isExpandedByToggle ? Close : Menu;
+  const Icon = isExpandedByToggle ? Close : MenuIcon;
 
   return (
     <Button

@@ -10,6 +10,8 @@ import { INVALID_LINK, INVALID_NAME } from "../../data/constants";
 import LmsApiService from "../../../../data/services/LmsApiService";
 // @ts-ignore
 import FormContextWrapper from "../../../forms/FormContextWrapper.tsx";
+// @ts-ignore
+import { validationMessages } from "../LMSConfigs/Degreed/DegreedConfigEnablePage.tsx";
 
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, "updateDegreedConfig");
 const mockConfigResponseData = {
@@ -38,7 +40,7 @@ const existingConfigData = {
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
   degreedBaseUrl: "https://foobarish.com",
-  degreedFetchUrl: "https://foobarish.com/fetch"
+  degreedTokenFetchBaseUrl: "https://foobarish.com/fetch"
 };
 
 // Existing invalid data that will be validated on load
@@ -47,7 +49,7 @@ const invalidExistingData = {
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
   degreedBaseUrl: "bad icky url",
-  degreedFetchUrl: "https://foobarish.com/fetch"
+  degreedTokenFetchBaseUrl: "https://foobarish.com/fetch"
 };
 
 
@@ -70,7 +72,7 @@ function testDegreedConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         handleCloseClick: mockOnClick,
         existingData: formData,
-        existingConfigNames: [],
+        existingConfigNames: new Map(),
         channelMap: {
           DEGREED2: {
             post: mockPost,
@@ -119,17 +121,21 @@ describe("<DegreedConfig />", () => {
     screen.getByLabelText("Degreed Base URL");
     screen.getByLabelText("Degreed Token Fetch Base URL");
   });
-  test("test button disable", async () => {
+  test("test error messages", async () => {
     render(testDegreedConfigSetup(noExistingData));
 
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     await clearForm();
-    expect(enableButton).toBeDisabled();
+    userEvent.click(enableButton);
+    expect(screen.queryByText(validationMessages.displayNameRequired));
+    expect(screen.queryByText(validationMessages.clientIdRequired));
+    expect(screen.queryByText(validationMessages.clientSecretRequired));
+    expect(screen.queryByText(validationMessages.degreedUrlRequired));
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
-    userEvent.type(screen.getByLabelText('API Client ID'), '1');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'shhhitsasecret123');
-    userEvent.type(screen.getByLabelText('Degreed Base URL'), 'badlink');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
+    userEvent.paste(screen.getByLabelText('API Client ID'), '1');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'shhhitsasecret123');
+    userEvent.paste(screen.getByLabelText('Degreed Base URL'), 'badlink');
 
     fireEvent.change(screen.getByLabelText('Display Name'), {
       target: { value: '' },
@@ -137,29 +143,28 @@ describe("<DegreedConfig />", () => {
     fireEvent.change(screen.getByLabelText('Degreed Base URL'), {
       target: { value: '' },
     });
-    expect(enableButton).toBeDisabled();
+    userEvent.click(enableButton);
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
-    userEvent.type(screen.getByLabelText("Display Name"), "displayName");
-    userEvent.type(
+    userEvent.paste(screen.getByLabelText("Display Name"), "displayName");
+    userEvent.paste(
       screen.getByLabelText("Degreed Base URL"),
       "https://www.test4.com"
     );
-    expect(enableButton).not.toBeDisabled();
+    userEvent.click(enableButton);
+    expect(!screen.queryByText(INVALID_LINK));
+    expect(!screen.queryByText(INVALID_NAME));
   });
   test('it creates new configs on submit', async () => {
     render(testDegreedConfigSetup(noExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     await clearForm();
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('API Client ID'), '1');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'shhhitsasecret123');
-    userEvent.type(screen.getByLabelText('Degreed Base URL'), 'https://www.test.com');
-    userEvent.type(screen.getByLabelText('Degreed Token Fetch Base URL'), 'https://www.test.com');
-
-    await waitFor(() => expect(enableButton).not.toBeDisabled());
-
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('API Client ID'), '1');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'shhhitsasecret123');
+    userEvent.paste(screen.getByLabelText('Degreed Base URL'), 'https://www.test.com');
+    userEvent.paste(screen.getByLabelText('Degreed Token Fetch Base URL'), 'https://www.test.com');
     userEvent.click(enableButton);
 
     const expectedConfig = {
@@ -168,7 +173,7 @@ describe("<DegreedConfig />", () => {
       client_id: '1',
       client_secret: 'shhhitsasecret123',
       degreed_base_url: 'https://www.test.com',
-      degreed_fetch_url: 'https://www.test.com',
+      degreed_token_fetch_base_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
     await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
@@ -178,12 +183,11 @@ describe("<DegreedConfig />", () => {
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
     await clearForm();
-
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('API Client ID'), '1');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'shhhitsasecret123');
-    userEvent.type(screen.getByLabelText('Degreed Base URL'), 'https://www.test.com');
-    userEvent.type(screen.getByLabelText('Degreed Token Fetch Base URL'), 'https://www.test.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('API Client ID'), '1');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'shhhitsasecret123');
+    userEvent.paste(screen.getByLabelText('Degreed Base URL'), 'https://www.test.com');
+    userEvent.paste(screen.getByLabelText('Degreed Token Fetch Base URL'), 'https://www.test.com');
 
     expect(cancelButton).not.toBeDisabled();
     userEvent.click(cancelButton);
@@ -198,18 +202,34 @@ describe("<DegreedConfig />", () => {
       client_id: '1',
       client_secret: 'shhhitsasecret123',
       degreed_base_url: 'https://www.test.com',
-      degreed_fetch_url: 'https://www.test.com',
+      degreed_token_fetch_base_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testDegreedConfigSetup(invalidExistingData));
+    const enableButton = screen.getByRole('button', { name: 'Enable' });
+    userEvent.click(enableButton)
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
   });
   test('validates properly formatted existing data on load', () => {
     render(testDegreedConfigSetup(existingConfigData));
+    const enableButton = screen.getByRole('button', { name: 'Enable' });
+    // ensuring the existing data is prefilled
+    expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
+      existingConfigData.displayName);
+    expect((screen.getByLabelText('API Client ID') as HTMLInputElement).value).toEqual(
+      existingConfigData.clientId);
+    expect((screen.getByLabelText('API Client Secret') as HTMLInputElement).value).toEqual(
+      existingConfigData.clientSecret);
+    expect((screen.getByLabelText('Degreed Base URL') as HTMLInputElement).value).toEqual(
+      existingConfigData.degreedBaseUrl);
+    expect((screen.getByLabelText('Degreed Token Fetch Base URL') as HTMLInputElement).value).toEqual(
+      existingConfigData.degreedTokenFetchBaseUrl)
+
+    userEvent.click(enableButton)
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

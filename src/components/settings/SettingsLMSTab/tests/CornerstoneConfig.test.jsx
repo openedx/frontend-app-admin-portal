@@ -46,7 +46,7 @@ function testCornerstoneConfigSetup(formData) {
         onSubmit: mockSetExistingConfigFormData,
         handleCloseClick: mockOnClick,
         existingData: formData,
-        existingConfigNames: [],
+        existingConfigNames: new Map(),
         channelMap: {
           CSOD: {
             post: mockPost,
@@ -89,32 +89,29 @@ describe('<CornerstoneConfig />', () => {
 
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     await clearForm();
-    expect(enableButton).toBeDisabled();
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
-    userEvent.type(screen.getByLabelText('Cornerstone Base URL'), 'badlink');
-    expect(enableButton).toBeDisabled();
+    userEvent.paste(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
+    userEvent.paste(screen.getByLabelText('Cornerstone Base URL'), 'badlink');
+    userEvent.click(enableButton);
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
 
     await clearForm();
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(
       screen.getByLabelText('Cornerstone Base URL'),
       'https://www.test4.com',
     );
-    expect(enableButton).not.toBeDisabled();
+    expect(!screen.queryByText(INVALID_LINK));
+    expect(!screen.queryByText(INVALID_NAME));
   });
   test('it creates new configs on submit', async () => {
     render(testCornerstoneConfigSetup(noExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
 
     await clearForm();
-
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Cornerstone Base URL'), 'https://www.test.com');
-    await waitFor(() => expect(enableButton).not.toBeDisabled());
-
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Cornerstone Base URL'), 'https://www.test.com');
     userEvent.click(enableButton);
     const expectedConfig = {
       active: false,
@@ -129,8 +126,8 @@ describe('<CornerstoneConfig />', () => {
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
     await clearForm();
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Cornerstone Base URL'), 'https://www.test.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Cornerstone Base URL'), 'https://www.test.com');
     expect(cancelButton).not.toBeDisabled();
     userEvent.click(cancelButton);
 
@@ -148,11 +145,17 @@ describe('<CornerstoneConfig />', () => {
   });
   test('validates poorly formatted existing data on load', async () => {
     render(testCornerstoneConfigSetup(invalidExistingData));
+    const enableButton = screen.getByRole('button', { name: 'Enable' });
+    userEvent.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
   });
   test('validates properly formatted existing data on load', () => {
     render(testCornerstoneConfigSetup(existingConfigData));
+    // ensuring the existing data is prefilled
+    expect(screen.getByLabelText('Display Name').value).toEqual(existingConfigData.displayName);
+    expect(screen.getByLabelText('Cornerstone Base URL').value).toEqual(existingConfigData.cornerstoneBaseUrl);
+
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

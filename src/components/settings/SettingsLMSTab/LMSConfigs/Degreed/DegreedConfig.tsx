@@ -17,7 +17,7 @@ export type DegreedConfigCamelCase = {
   clientId: string;
   clientSecret: string;
   degreedBaseUrl: string;
-  degreedFetchUrl: string;
+  degreedTokenFetchBaseUrl: string;
   id: string;
   active: boolean;
   uuid: string;
@@ -29,7 +29,7 @@ export type DegreedConfigSnakeCase = {
   client_id: string;
   client_secret: string;
   degreed_base_url: string;
-  degreed_fetch_url: string;
+  degreed_token_fetch_base_url: string;
   id: string;
   active: boolean;
   uuid: string;
@@ -40,7 +40,7 @@ export type DegreedConfigSnakeCase = {
 export type DegreedFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: DegreedConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
@@ -94,7 +94,7 @@ export const DegreedFormConfig = ({
     {
       index: 1,
       formComponent: DegreedConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: "Enable",
       saveChanges,
       nextButtonConfig: () => {

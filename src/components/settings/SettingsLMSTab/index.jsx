@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -37,7 +38,7 @@ const SettingsLMSTab = ({
   const [configsExist, setConfigsExist] = useState(false);
   const [showNoConfigCard, setShowNoConfigCard] = useState(true);
   const [configsLoading, setConfigsLoading] = useState(true);
-  const [displayNames, setDisplayNames] = useState([]);
+  const [displayNames, setDisplayNames] = useState(new Map());
 
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
@@ -54,7 +55,7 @@ const SettingsLMSTab = ({
     dispatch?.setFormFieldAction({ fieldId: 'lms', value: configData.channelCode });
     setLmsType(configData.channelCode);
     // Set the form data to the card's associated config data
-    setExistingConfigFormData(configData);
+    setExistingConfigFormData(_.cloneDeep(configData));
     // Set the config type to the card's type
     setConfig(configType);
     // Hide the create new configs button
@@ -136,9 +137,11 @@ const SettingsLMSTab = ({
 
   useEffect(() => {
     // update list of used display names to prevent duplicates
+    const updatedMap = new Map();
     if (existingConfigsData[0]) {
-      setDisplayNames(existingConfigsData?.map((existingConfig) => existingConfig.displayName));
+      existingConfigsData?.forEach((existingConfig) => updatedMap.set(existingConfig.displayName, existingConfig.id));
     }
+    setDisplayNames(updatedMap);
   }, [existingConfigsData]);
 
   return (
