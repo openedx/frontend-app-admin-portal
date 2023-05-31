@@ -128,9 +128,9 @@ describe('<LearnerCreditManagement />', () => {
     it('displays correctly', () => {
       const mockOffer = {
         id: mockEnterpriseOfferId,
-        name: mockOfferDisplayName,
-        start: '2022-01-01',
-        end: '2023-01-01',
+        displayName: mockOfferDisplayName,
+        startDatetime: '2022-01-01',
+        endDatetime: '2023-01-01',
       };
       const mockOfferRedemption = {
         created: '2022-02-01',
@@ -160,10 +160,10 @@ describe('<LearnerCreditManagement />', () => {
       render(<LearnerCreditManagementWrapper enterpriseSubsidiesContextValue={subsidiesContextValue} />);
       expect(screen.queryByTestId('404-page-not-found')).toBeFalsy();
       expect(screen.getByText('Learner Credit Management'));
-      expect(screen.getByText(mockOffer.name));
+      expect(screen.getByText(mockOffer.displayName));
 
-      expect(screen.getByText(mockOffer.start));
-      expect(screen.getByText(mockOffer.end));
+      expect(screen.getByText(mockOffer.startDatetime));
+      expect(screen.getByText(mockOffer.endDatetime));
 
       expect(screen.getByText(`Data last updated on ${moment(mockOfferRedemption.created).format(DATE_FORMAT)}`, { exact: false }));
 

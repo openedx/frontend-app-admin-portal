@@ -9,7 +9,7 @@ export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagem
     offers,
     canManageLearnerCredit,
     isLoading: isLoadingOffers,
-  } = useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen, enterpriseId });
+  } = useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen });
 
   const {
     customerAgreement,
