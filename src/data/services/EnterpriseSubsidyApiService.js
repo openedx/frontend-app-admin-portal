@@ -1,4 +1,5 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { snakeCaseObject } from '@edx/frontend-platform';
 
 import { configuration } from '../../config';
 
@@ -10,7 +11,7 @@ class SubsidyApiService {
   static getSubsidyByCustomerUUID(uuid, options = {}) {
     const queryParams = new URLSearchParams({
       enterprise_customer_uuid: uuid,
-      ...options,
+      ...snakeCaseObject(options),
     });
     const url = `${SubsidyApiService.baseUrl}/subsidies/?${queryParams.toString()}`;
     return SubsidyApiService.apiClient({
