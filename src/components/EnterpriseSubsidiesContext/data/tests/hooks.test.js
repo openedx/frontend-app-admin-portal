@@ -108,7 +108,10 @@ describe('useEnterpriseOffers', () => {
 
     await waitForNextUpdate();
 
-    expect(SubsidyApiService.getSubsidyByCustomerUUID).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    expect(SubsidyApiService.getSubsidyByCustomerUUID).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_UUID,
+      { subsidyType: 'learner_credit' },
+    );
     expect(result.current).toEqual({
       offers: mockOffers,
       isLoading: false,
@@ -157,7 +160,10 @@ describe('useEnterpriseOffers', () => {
 
     await waitForNextUpdate();
 
-    expect(SubsidyApiService.getSubsidyByCustomerUUID).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+    expect(SubsidyApiService.getSubsidyByCustomerUUID).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_UUID,
+      { subsidyType: 'learner_credit' },
+    );
     expect(result.current).toEqual({
       offers: mockOfferData,
       isLoading: false,

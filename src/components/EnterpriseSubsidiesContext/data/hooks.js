@@ -18,7 +18,7 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
     const fetchOffers = async () => {
       try {
         const [enterpriseSubsidyResponse, ecommerceApiResponse] = await Promise.all([
-          SubsidyApiService.getSubsidyByCustomerUUID(enterpriseId),
+          SubsidyApiService.getSubsidyByCustomerUUID(enterpriseId, { subsidyType: 'learner_credit' }),
           EcommerceApiService.fetchEnterpriseOffers({
             isCurrent: true,
           }),
