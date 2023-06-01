@@ -1,10 +1,10 @@
 import React, { useReducer } from 'react';
 import FormContextProvider from './FormContext';
-import type { FormFields } from './FormContext';
 import FormWorkflow from './FormWorkflow';
 import type { FormWorkflowProps } from './FormWorkflow';
-import { FormReducer, initializeForm } from './data/reducer';
-import type { FormActionArguments } from './data/actions';
+import {
+  FormReducer, FormReducerType, initializeForm, InitializeFormArguments,
+} from './data/reducer';
 
 // Context wrapper for multi-step form container
 function FormContextWrapper<FormData>({
@@ -14,18 +14,16 @@ function FormContextWrapper<FormData>({
   formData,
   isStepperOpen,
 }: FormWorkflowProps<FormData>) {
+  const initializeAction: InitializeFormArguments<FormData> = {
+    formFields: formData as FormData,
+    currentStep: formWorkflowConfig.getCurrentStep(),
+  };
   const [formFieldsState, dispatch] = useReducer<
-  FormReducer,
-  FormActionArguments
+  FormReducerType,
+  InitializeFormArguments<FormData>
   >(
     FormReducer,
-    initializeForm(
-      {},
-      {
-        formFields: formData as FormFields,
-        currentStep: formWorkflowConfig.getCurrentStep(),
-      },
-    ),
+    initializeAction,
     initializeForm,
   );
   return (

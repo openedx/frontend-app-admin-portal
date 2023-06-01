@@ -7,7 +7,7 @@ import {
 import type {
   FormActionArguments, SetFormFieldArguments, SetStepArguments, SetWorkflowStateArguments, UpdateFormFieldArguments,
 } from './actions';
-import type { FormContext, FormFieldValidation } from '../FormContext';
+import { FormContext, FormFields, FormFieldValidation } from '../FormContext';
 import type { FormWorkflowStep } from '../FormWorkflow';
 
 const processFormErrors = (state: FormContext): FormContext => {
@@ -54,10 +54,11 @@ export type InitializeFormArguments<FormFields> = {
   validations?: FormFieldValidation[];
   currentStep: FormWorkflowStep<FormFields>;
 };
-export function initializeForm<FormFields>(
+
+export function initializeFormImpl<FormFields>(
   state: FormContext,
   action: InitializeFormArguments<FormFields>,
-) {
+): FormContext {
   const additions: Pick<
   FormContext,
   'isEdited' | 'formFields' | 'currentStep'
@@ -74,10 +75,28 @@ export function initializeForm<FormFields>(
   };
 }
 
-export function FormReducer<FormFields>(
-  action: FormActionArguments,
+export function initializeForm<FormFields>(action: InitializeFormArguments<FormFields>) {
+  const initialFormState: Pick<
+  FormContext,
+  'isEdited' | 'formFields' | 'currentStep'
+  > = { isEdited: false };
+  if (action?.formFields) {
+    initialFormState.formFields = action.formFields;
+  }
+  if (action?.currentStep) {
+    initialFormState.currentStep = action.currentStep;
+  }
+  return {
+    ...initialFormState,
+  };
+}
+
+export type FormReducerType = (FormActionArguments, FormContext) => FormContext;
+
+export const FormReducer: FormReducerType = (
   state: FormContext = { formFields: {} },
-) {
+  action: FormActionArguments,
+) => {
   switch (action.type) {
     case SET_FORM_FIELD: {
       const setFormFieldArgs = action as SetFormFieldArguments;
@@ -113,4 +132,4 @@ export function FormReducer<FormFields>(
     } default:
       return state;
   }
-}
+};

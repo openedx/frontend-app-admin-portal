@@ -62,7 +62,6 @@ export type FormWorkflowConfig<FormData> = {
 export type FormWorkflowProps<FormData> = {
   formWorkflowConfig: FormWorkflowConfig<FormData>;
   onClickOut: (edited: boolean, msg?: string) => null;
-  formData: FormData;
   dispatch: Dispatch<FormActionArguments>;
   onSubmit: (FormData: FormData) => void;
   isStepperOpen: boolean;
