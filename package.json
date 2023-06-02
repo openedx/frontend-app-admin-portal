@@ -30,7 +30,7 @@
     "@edx/frontend-enterprise-logistration": "3.2.0",
     "@edx/frontend-enterprise-utils": "3.2.0",
     "@edx/frontend-platform": "4.5.1",
-    "@edx/paragon": "20.40.2",
+    "@edx/paragon": "20.39.2",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
@@ -88,9 +88,8 @@
     "webpack-merge": "5.4.0"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.21.5",
     "@edx/browserslist-config": "1.0.0",
-    "@edx/frontend-build": "12.8.38",
+    "@edx/frontend-build": "^12.8.38",
     "@faker-js/faker": "^7.6.0",
     "@testing-library/dom": "7.31.2",
     "@testing-library/jest-dom": "5.11.9",
@@ -104,7 +103,7 @@
     "identity-obj-proxy": "3.0.0",
     "jest-canvas-mock": "^2.4.0",
     "jest-localstorage-mock": "^2.4.22",
-    "postcss": "8.4.24",
+    "postcss": "8.1.0",
     "react-dev-utils": "11.0.4",
     "react-test-renderer": "16.13.1",
     "resize-observer-polyfill": "1.5.1",
