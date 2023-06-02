@@ -18,18 +18,13 @@ class InviteLearnersModal extends React.Component {
     super(props);
 
     this.errorMessageRef = React.createRef();
-    this.modalRef = React.createRef();
 
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
 
   componentDidMount() {
-    const { current: { firstFocusableElement } } = this.modalRef;
     const { contactEmail } = this.props;
 
-    if (firstFocusableElement) {
-      firstFocusableElement.focus();
-    }
     this.props.initialize({
       'email-template-greeting': emailTemplate.greeting,
       'email-template-body': emailTemplate.body,
@@ -179,46 +174,39 @@ class InviteLearnersModal extends React.Component {
     } = this.props;
 
     return (
-      <div
-        ref={this.modalRef}
+      <ModalDialog
+        isOpen
+        onClose={onClose}
+        className="add-users"
+        hasCloseButton
       >
-        <ModalDialog
-          isOpen
-          onClose={onClose}
-          className="add-users"
-          hasCloseButton
-
-        >
-          <ModalDialog.Header>
-            <ModalDialog.Title>
-              Invite learners
-            </ModalDialog.Title>
-          </ModalDialog.Header>
-          <ModalDialog.Body>
-            <div className="p-2">
-              {this.renderBody()}
-            </div>
-          </ModalDialog.Body>
-          <ModalDialog.Footer>
-            <ActionRow>
-              <ModalDialog.CloseButton variant="link">
-                Cancel
-              </ModalDialog.CloseButton>
-              <Button
-                key="subscribe-users-submit-btn"
-                disabled={submitting}
-                className="subscribe-users-save-btn"
-                onClick={handleSubmit(this.handleModalSubmit)}
-              >
-                <>
-                  {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                  Invite learners
-                </>
-              </Button>,
-            </ActionRow>
-          </ModalDialog.Footer>
-        </ModalDialog>
-      </div>
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            Invite learners
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          {this.renderBody()}
+        </ModalDialog.Body>
+        <ModalDialog.Footer>
+          <ActionRow>
+            <ModalDialog.CloseButton variant="link">
+              Cancel
+            </ModalDialog.CloseButton>
+            <Button
+              key="subscribe-users-submit-btn"
+              disabled={submitting}
+              className="subscribe-users-save-btn"
+              onClick={handleSubmit(this.handleModalSubmit)}
+            >
+              <>
+                {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                Invite learners
+              </>
+            </Button>,
+          </ActionRow>
+        </ModalDialog.Footer>
+      </ModalDialog>
     );
   }
 }

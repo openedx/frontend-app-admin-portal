@@ -38,7 +38,6 @@ export class BaseCodeAssignmentModal extends React.Component {
     super(props);
 
     this.errorMessageRef = React.createRef();
-    this.modalRef = React.createRef();
 
     this.state = {
       mode: MODAL_TYPES.assign,
@@ -50,14 +49,6 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-  }
-
-  componentDidMount() {
-    const { current: { firstFocusableElement } } = this.modalRef;
-
-    if (firstFocusableElement) {
-      firstFocusableElement.focus();
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -402,50 +393,46 @@ export class BaseCodeAssignmentModal extends React.Component {
     } = this.state;
 
     return (
-      <div ref={this.modalRef}>
-        <ModalDialog
-          isOpen
-          onClose={onClose}
-          className="code-assignment"
-          hasCloseButton
-
-        >
-          <ModalDialog.Header>
-            <ModalDialog.Title>
-              {this.renderTitle()}
-            </ModalDialog.Title>
-          </ModalDialog.Header>
-          <ModalDialog.Body>
-            <div className="p-2">
-              {this.renderBody()}
-            </div>
-          </ModalDialog.Body>
-          <ModalDialog.Footer>
-            <ActionRow>
-              <ModalDialog.CloseButton variant="link">
-                Cancel
-              </ModalDialog.CloseButton>
-              <Button
-                key="assign-submit-btn"
-                disabled={submitting}
-                onClick={handleSubmit(this.handleModalSubmit)}
-                data-testid={SUBMIT_BUTTON_TEST_ID}
-              >
-                <>
-                  {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                  {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
-                </>
-              </Button>,
-              <SaveTemplateButton
-                key="save-assign-template-btn"
-                templateType={MODAL_TYPES.assign}
-                setMode={this.setMode}
-                handleSubmit={handleSubmit}
-              />,
-            </ActionRow>
-          </ModalDialog.Footer>
-        </ModalDialog>
-      </div>
+      <ModalDialog
+        isOpen
+        size="lg"
+        onClose={onClose}
+        className="code-assignment"
+        hasCloseButton
+      >
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            {this.renderTitle()}
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          {this.renderBody()}
+        </ModalDialog.Body>
+        <ModalDialog.Footer>
+          <ActionRow>
+            <ModalDialog.CloseButton variant="link">
+              Cancel
+            </ModalDialog.CloseButton>
+            <Button
+              key="assign-submit-btn"
+              disabled={submitting}
+              onClick={handleSubmit(this.handleModalSubmit)}
+              data-testid={SUBMIT_BUTTON_TEST_ID}
+            >
+              <>
+                {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
+              </>
+            </Button>,
+            <SaveTemplateButton
+              key="save-assign-template-btn"
+              templateType={MODAL_TYPES.assign}
+              setMode={this.setMode}
+              handleSubmit={handleSubmit}
+            />,
+          </ActionRow>
+        </ModalDialog.Footer>
+      </ModalDialog>
     );
   }
 }

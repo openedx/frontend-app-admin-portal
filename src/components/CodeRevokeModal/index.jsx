@@ -30,7 +30,6 @@ class CodeRevokeModal extends React.Component {
     super(props);
 
     this.errorMessageRef = React.createRef();
-    this.modalRef = React.createRef();
 
     this.state = {
       mode: MODAL_TYPES.revoke,
@@ -40,14 +39,6 @@ class CodeRevokeModal extends React.Component {
     this.setMode = this.setMode.bind(this);
     this.setDoNotEmail = this.setDoNotEmail.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    const { current: { firstFocusableElement } } = this.modalRef;
-
-    if (firstFocusableElement) {
-      firstFocusableElement.focus();
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -228,51 +219,46 @@ class CodeRevokeModal extends React.Component {
     } = this.state;
 
     return (
-      <div
-        ref={this.modalRef}
+      <ModalDialog
+        isOpen
+        onClose={onClose}
+        className="code-revoke"
+        hasCloseButton
       >
-        <ModalDialog
-          isOpen
-          onClose={onClose}
-          className="code-revoke"
-          hasCloseButton
-
-        >
-          <ModalDialog.Header>
-            <ModalDialog.Title>
-              {this.renderTitle()}
-            </ModalDialog.Title>
-          </ModalDialog.Header>
-          <ModalDialog.Body>
-            {this.renderBody()}
-          </ModalDialog.Body>
-          <ModalDialog.Footer>
-            <ActionRow>
-              <ModalDialog.CloseButton variant="link">
-                Close
-              </ModalDialog.CloseButton>
-              <Button
-                key="revoke-submit-btn"
-                disabled={submitting}
-                className="code-revoke-save-btn"
-                onClick={handleSubmit(this.handleModalSubmit)}
-              >
-                <>
-                  {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-                  Revoke
-                </>
-              </Button>,
-              <SaveTemplateButton
-                key="save-revoke-template-btn"
-                templateType={MODAL_TYPES.revoke}
-                setMode={this.setMode}
-                handleSubmit={handleSubmit}
-                disabled={doNotEmail}
-              />,
-            </ActionRow>
-          </ModalDialog.Footer>
-        </ModalDialog>
-      </div>
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            {this.renderTitle()}
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          {this.renderBody()}
+        </ModalDialog.Body>
+        <ModalDialog.Footer>
+          <ActionRow>
+            <ModalDialog.CloseButton variant="link">
+              Close
+            </ModalDialog.CloseButton>
+            <Button
+              key="revoke-submit-btn"
+              disabled={submitting}
+              className="code-revoke-save-btn"
+              onClick={handleSubmit(this.handleModalSubmit)}
+            >
+              <>
+                {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                Revoke
+              </>
+            </Button>,
+            <SaveTemplateButton
+              key="save-revoke-template-btn"
+              templateType={MODAL_TYPES.revoke}
+              setMode={this.setMode}
+              handleSubmit={handleSubmit}
+              disabled={doNotEmail}
+            />,
+          </ActionRow>
+        </ModalDialog.Footer>
+      </ModalDialog>
     );
   }
 }

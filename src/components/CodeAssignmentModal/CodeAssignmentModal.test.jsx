@@ -90,7 +90,7 @@ const initialProps = {
   enterpriseSlug: 'bearsRus',
   setEmailAddress: () => {},
   enterpriseUuid: 'foo',
-  createPendingEnterpriseUsers: () => { },
+  createPendingEnterpriseUsers: () => {},
 };
 
 const mockStore = configureMockStore([thunk]);
