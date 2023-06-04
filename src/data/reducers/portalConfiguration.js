@@ -27,7 +27,6 @@ const initialState = {
   enablePortalLearnerCreditManagementScreen: false,
 };
 
-// eslint-disable-next-line @typescript-eslint/default-param-last
 const portalConfiguration = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PORTAL_CONFIGURATION_REQUEST:

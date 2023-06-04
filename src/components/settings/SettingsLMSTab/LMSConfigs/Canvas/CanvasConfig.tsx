@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { snakeCaseDict } from '../../../../../utils';
 import {
   CANVAS_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
@@ -6,42 +7,16 @@ import CanvasConfigAuthorizePage, { validations } from './CanvasConfigAuthorizeP
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
 } from '../../../../forms/FormWorkflow';
+import type { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './CanvasTypes';
 import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
 import {
   activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper,
 } from '../utils';
 
-export type CanvasConfigCamelCase = {
-  lms: string;
-  canvasAccountId: string;
-  canvasBaseUrl: string;
-  displayName: string;
-  clientId: string;
-  clientSecret: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  refreshToken: string;
-};
-
-export type CanvasConfigSnakeCase = {
-  lms: string;
-  canvas_account_id: string;
-  canvas_base_url: string;
-  display_name: string;
-  client_id: string;
-  client_secret: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-  refresh_token: string;
-};
-
 export type CanvasFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: CanvasConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (canvasConfig: CanvasConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
@@ -95,7 +70,9 @@ export const CanvasFormConfig = ({
     formFields,
     errHandler,
     dispatch,
-  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
+  }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
+    afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
+  };
 
   const onAwaitTimeout = async ({
     dispatch,
@@ -117,7 +94,7 @@ export const CanvasFormConfig = ({
     {
       index: 1,
       formComponent: CanvasConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: 'Authorize',
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
@@ -126,7 +103,8 @@ export const CanvasFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
+        // if they've never authorized it or if they've changed the form
+        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{

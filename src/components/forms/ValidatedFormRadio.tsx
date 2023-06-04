@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import omit from 'lodash/omit';
 import isString from 'lodash/isString';
 
@@ -21,7 +21,9 @@ export type ValidatedFormRadioProps = {
 } & InheritedParagonRadioProps;
 
 const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
-  const { formFields, errorMap, dispatch } = useFormContext();
+  const {
+    showErrors, formFields, errorMap, dispatch,
+  } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (dispatch) {
       dispatch(setFormFieldAction({ fieldId: props.formId, value: e.target.value }));
@@ -34,10 +36,18 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
   const formRadioProps = {
     ...omit(props, ['formId']),
     onChange,
-    isInvalid: showError,
+    isInvalid: showErrors && showError,
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
+  // we need to set the original values on load in order to trigger the validation
+  useEffect(() => {
+    if (dispatch) {
+      dispatch(
+        setFormFieldAction({ fieldId: props.formId, value: formRadioProps.value }),
+      );
+    }
+  }, [dispatch, props.formId, formRadioProps.value]);
 
   const createOptions = (options: string[][]) => {
     const optionList: any = [];
@@ -55,7 +65,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
 
   return (
     <>
-      <Form.Label>{formRadioProps.label}</Form.Label>
+      <Form.Label {...formRadioProps}>{formRadioProps.label}</Form.Label>
       <Form.RadioSet
         name={formRadioProps.id}
         onChange={formRadioProps.onChange}
@@ -66,7 +76,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
       {formRadioProps.fieldInstructions && (
         <Form.Text>{formRadioProps.fieldInstructions}</Form.Text>
       )}
-      {showError && (
+      {showErrors && showError && (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
       )}
     </>

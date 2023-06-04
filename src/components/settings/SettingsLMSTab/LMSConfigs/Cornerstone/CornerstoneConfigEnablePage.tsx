@@ -15,6 +15,11 @@ export const formFieldNames = {
   CORNERSTONE_FETCH_URL: 'cornerstoneFetchUrl',
 };
 
+export const validationMessages = {
+  displayNameRequired: 'Please enter Display Name',
+  cornerstoneUrlRequired: 'Please enter Cornerstone Base Url',
+};
+
 export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.CORNERSTONE_BASE_URL,
@@ -24,14 +29,14 @@ export const validations: FormFieldValidation[] = [
         const error = !urlValidation(cornerstoneUrl);
         return error ? INVALID_LINK : false;
       }
-      return true;
+      return validationMessages.cornerstoneUrlRequired;
     },
   },
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
-      const displayName = fields[formFieldNames.DISPLAY_NAME];
-      return !displayName;
+      const error = !(fields[formFieldNames.DISPLAY_NAME]);
+      return error && validationMessages.displayNameRequired;
     },
   },
   {

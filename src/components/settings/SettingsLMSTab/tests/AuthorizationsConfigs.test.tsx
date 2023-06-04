@@ -126,11 +126,17 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     await waitFor(() => {
       expect(screen.queryByText('Authorize connection to Blackboard')).toBeTruthy();
     });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
+    await waitFor(() => {
+      screen.getByText('Authorization in progress');
+    });
+    const inProgress = screen.getByText('Authorization in progress');
+    await waitForElementToBeRemoved(inProgress);
+
     await waitFor(() => {
       expect(screen.queryByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeTruthy();
     });
@@ -171,8 +177,8 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
         target: { value: '' },
       });
     });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
@@ -220,11 +226,11 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
       });
     });
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
@@ -279,11 +285,11 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
       });
     });
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);

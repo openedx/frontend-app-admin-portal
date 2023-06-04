@@ -46,7 +46,6 @@ jest.mock('react-router-dom', () => ({
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ContentHighlightSetWrapper = (
-  // eslint-disable-next-line @typescript-eslint/default-param-last
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   { children },
   ...props

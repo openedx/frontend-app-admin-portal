@@ -16,7 +16,6 @@ export const initialSubsidyRequestsState = {
   isLoading: false,
 };
 
-// eslint-disable-next-line @typescript-eslint/default-param-last
 export const subsidyRequestsReducer = (state = initialSubsidyRequestsState, action) => {
   switch (action.type) {
     case SET_IS_LOADING_SUBSIDY_REQUESTS:

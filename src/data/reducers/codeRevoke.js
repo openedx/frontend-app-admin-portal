@@ -10,7 +10,6 @@ const initialState = {
   data: null,
 };
 
-// eslint-disable-next-line @typescript-eslint/default-param-last
 const codeRevoke = (state = initialState, action) => {
   switch (action.type) {
     case CODE_REVOKE_REQUEST:

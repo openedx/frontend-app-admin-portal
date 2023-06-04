@@ -8,38 +8,12 @@ import type {
 import {
   activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper,
 } from '../utils';
-
-export type MoodleConfigCamelCase = {
-  lms: string;
-  displayName: string;
-  moodleBaseUrl: string;
-  webserviceShortName: string;
-  token: string;
-  username: string;
-  password: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-};
-
-export type MoodleConfigSnakeCase = {
-  lms: string;
-  display_name: string;
-  moodle_base_url: string;
-  webservice_short_name: string;
-  token: string;
-  username: string;
-  password: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-};
+import type { MoodleConfigCamelCase, MoodleConfigSnakeCase } from './MoodleTypes';
 
 export type MoodleFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: MoodleConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (moodleConfig: MoodleConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;
@@ -103,7 +77,7 @@ export const MoodleFormConfig = ({
     {
       index: 1,
       formComponent: MoodleConfigEnablePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: 'Enable',
       saveChanges,
       nextButtonConfig: () => {

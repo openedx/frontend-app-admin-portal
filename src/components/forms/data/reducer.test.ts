@@ -83,12 +83,10 @@ describe('Form reducer tests', () => {
       validations: dummyFormFieldsValidations,
       currentStep: steps[0],
     };
-    expect(initializeForm({}, initializeFormArguments)).toEqual({
+    expect(initializeForm(initializeFormArguments)).toEqual({
       formFields,
       currentStep: steps[0],
       isEdited: false,
-      hasErrors: false,
-      errorMap: {},
     });
   });
 
@@ -105,7 +103,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
+      FormReducer(action, initializeForm(getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 
@@ -122,7 +120,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
+      FormReducer(action, initializeForm(getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 
@@ -137,7 +135,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
+      FormReducer(action, initializeForm(getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 
@@ -152,7 +150,7 @@ describe('Form reducer tests', () => {
     };
 
     expect(
-      FormReducer(action, initializeForm({}, getTestInitializeFormArguments())),
+      FormReducer(action, initializeForm(getTestInitializeFormArguments())),
     ).toStrictEqual(expected);
   });
 });

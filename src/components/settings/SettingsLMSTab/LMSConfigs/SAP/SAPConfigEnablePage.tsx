@@ -12,19 +12,29 @@ import type {
 
 export const formFieldNames = {
   DISPLAY_NAME: 'displayName',
-  SAP_BASE_URL: 'sapBaseUrl',
-  SAP_COMPANY_ID: 'sapCompanyId',
-  SAP_USER_ID: 'sapUserId',
-  OAUTH_CLIENT_ID: 'oauthClientId',
-  OAUTH_CLIENT_SECRET: 'oauthClientSecret',
-  SAP_USER_TYPE: 'sapUserType',
+  SAPSF_BASE_URL: 'sapsfBaseUrl',
+  SAPSF_COMPANY_ID: 'sapsfCompanyId',
+  SAPSF_USER_ID: 'sapsfUserId',
+  KEY: 'key',
+  SECRET: 'secret',
+  USER_TYPE: 'userType',
+};
+
+export const validationMessages = {
+  displayNameRequired: 'Please enter Display Name',
+  baseUrlRequired: 'Please enter SAP Base URL',
+  companyIdRequired: 'Please enter SAP Company ID',
+  userIdRequired: 'Please enter SAP User ID',
+  keyRequired: 'Please enter OAuth Client ID',
+  secretRequired: 'Please enter OAuth Client Secret',
+  userTypeRequired: 'Please select SAP User Type',
 };
 
 export const validations: FormFieldValidation[] = [
   {
-    formFieldId: formFieldNames.SAP_BASE_URL,
+    formFieldId: formFieldNames.SAPSF_BASE_URL,
     validator: (fields) => {
-      const sapUrl = fields[formFieldNames.SAP_BASE_URL];
+      const sapUrl = fields[formFieldNames.SAPSF_BASE_URL];
       if (sapUrl) {
         const error = !urlValidation(sapUrl);
         return error ? INVALID_LINK : false;
@@ -35,8 +45,15 @@ export const validations: FormFieldValidation[] = [
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
     validator: (fields) => {
-      const displayName = fields[formFieldNames.DISPLAY_NAME];
-      return !displayName;
+      const error = !fields[formFieldNames.DISPLAY_NAME];
+      return error && validationMessages.displayNameRequired;
+    },
+  },
+  {
+    formFieldId: formFieldNames.SAPSF_BASE_URL,
+    validator: (fields) => {
+      const error = !fields[formFieldNames.SAPSF_BASE_URL];
+      return error && validationMessages.baseUrlRequired;
     },
   },
   {
@@ -48,38 +65,38 @@ export const validations: FormFieldValidation[] = [
     },
   },
   {
-    formFieldId: formFieldNames.SAP_COMPANY_ID,
+    formFieldId: formFieldNames.SAPSF_COMPANY_ID,
     validator: (fields) => {
-      const sapCompanyId = fields[formFieldNames.SAP_COMPANY_ID];
-      return !sapCompanyId;
+      const error = !fields[formFieldNames.SAPSF_COMPANY_ID];
+      return error && validationMessages.companyIdRequired;
     },
   },
   {
-    formFieldId: formFieldNames.SAP_USER_ID,
+    formFieldId: formFieldNames.SAPSF_USER_ID,
     validator: (fields) => {
-      const sapUserId = fields[formFieldNames.SAP_USER_ID];
-      return !sapUserId;
+      const error = !fields[formFieldNames.SAPSF_USER_ID];
+      return error && validationMessages.userIdRequired;
     },
   },
   {
-    formFieldId: formFieldNames.OAUTH_CLIENT_ID,
+    formFieldId: formFieldNames.KEY,
     validator: (fields) => {
-      const oauthClientId = fields[formFieldNames.OAUTH_CLIENT_ID];
-      return !oauthClientId;
+      const error = !fields[formFieldNames.KEY];
+      return error && validationMessages.keyRequired;
     },
   },
   {
-    formFieldId: formFieldNames.OAUTH_CLIENT_SECRET,
+    formFieldId: formFieldNames.SECRET,
     validator: (fields) => {
-      const secret = fields[formFieldNames.OAUTH_CLIENT_SECRET];
-      return !secret;
+      const error = !fields[formFieldNames.SECRET];
+      return error && validationMessages.secretRequired;
     },
   },
   {
-    formFieldId: formFieldNames.SAP_USER_TYPE,
+    formFieldId: formFieldNames.USER_TYPE,
     validator: (fields) => {
-      const sapUserType = fields[formFieldNames.SAP_USER_TYPE];
-      return !sapUserType;
+      const error = !fields[formFieldNames.USER_TYPE];
+      return error && validationMessages.userTypeRequired;
     },
   },
 ];
@@ -106,7 +123,7 @@ const SAPConfigEnablePage = () => (
       </Form.Group>
       <Form.Group>
         <ValidatedFormControl
-          formId={formFieldNames.SAP_BASE_URL}
+          formId={formFieldNames.SAPSF_BASE_URL}
           className="mb-4"
           type="text"
           maxLength={255}
@@ -115,7 +132,7 @@ const SAPConfigEnablePage = () => (
       </Form.Group>
       <Form.Group>
         <ValidatedFormControl
-          formId={formFieldNames.SAP_COMPANY_ID}
+          formId={formFieldNames.SAPSF_COMPANY_ID}
           className="my-4"
           type="text"
           maxLength={255}
@@ -124,7 +141,7 @@ const SAPConfigEnablePage = () => (
       </Form.Group>
       <Form.Group className="my-4">
         <ValidatedFormControl
-          formId={formFieldNames.SAP_USER_ID}
+          formId={formFieldNames.SAPSF_USER_ID}
           className="my-4"
           type="text"
           maxLength={255}
@@ -133,7 +150,7 @@ const SAPConfigEnablePage = () => (
       </Form.Group>
       <Form.Group className="my-4">
         <ValidatedFormControl
-          formId={formFieldNames.OAUTH_CLIENT_ID}
+          formId={formFieldNames.KEY}
           className="my-4"
           type="text"
           maxLength={255}
@@ -142,7 +159,7 @@ const SAPConfigEnablePage = () => (
       </Form.Group>
       <Form.Group className="my-4">
         <ValidatedFormControl
-          formId={formFieldNames.OAUTH_CLIENT_SECRET}
+          formId={formFieldNames.SECRET}
           className="my-4"
           type="password"
           maxLength={255}
@@ -151,7 +168,7 @@ const SAPConfigEnablePage = () => (
       </Form.Group>
       <Form.Group className="my-4">
         <ValidatedFormRadio
-          formId={formFieldNames.SAP_USER_TYPE}
+          formId={formFieldNames.USER_TYPE}
           className="my-4"
           label="SAP User Type"
           options={[['User', 'user'], ['Admin', 'admin']]}

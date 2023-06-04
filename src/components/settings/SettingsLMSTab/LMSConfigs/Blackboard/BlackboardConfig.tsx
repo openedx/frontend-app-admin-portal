@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { snakeCaseDict } from '../../../../../utils';
 import {
   BLACKBOARD_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
@@ -7,38 +8,15 @@ import BlackboardConfigAuthorizePage, { validations } from './BlackboardConfigAu
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
 } from '../../../../forms/FormWorkflow';
+import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './BlackboardTypes';
 import {
   activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper,
 } from '../utils';
 
-export type BlackboardConfigCamelCase = {
-  lms: string;
-  blackboardAccountId: string;
-  blackboardBaseUrl: string;
-  displayName: string;
-  clientId: string;
-  clientSecret: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  refreshToken: string;
-};
-
-export type BlackboardConfigSnakeCase = {
-  lms: string;
-  blackboard_base_url: string;
-  display_name: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-  refresh_token: string;
-};
-
 export type BlackboardFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: BlackboardConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (blackboardConfig: BlackboardConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
@@ -117,7 +95,7 @@ export const BlackboardFormConfig = ({
     {
       index: 1,
       formComponent: BlackboardConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: 'Authorize',
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {
@@ -126,7 +104,8 @@ export const BlackboardFormConfig = ({
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
+        // if they've never authorized it or if they've changed the form
+        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{

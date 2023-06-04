@@ -8,37 +8,12 @@ import type {
 import {
   activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper,
 } from '../utils';
-
-export type DegreedConfigCamelCase = {
-  lms: string;
-  displayName: string;
-  clientId: string;
-  clientSecret: string;
-  degreedBaseUrl: string;
-  degreedFetchUrl: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-};
-
-export type DegreedConfigSnakeCase = {
-  lms: string;
-  display_name: string;
-  client_id: string;
-  client_secret: string;
-  degreed_base_url: string;
-  degreed_fetch_url: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-  refresh_token: string;
-};
+import type { DegreedConfigCamelCase, DegreedConfigSnakeCase } from './DegreedTypes';
 
 export type DegreedFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: DegreedConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (degreedConfig: DegreedConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
@@ -101,7 +76,7 @@ export const DegreedFormConfig = ({
     {
       index: 1,
       formComponent: DegreedConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
       stepName: 'Enable',
       saveChanges,
       nextButtonConfig: () => {

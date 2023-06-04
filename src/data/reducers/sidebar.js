@@ -10,7 +10,6 @@ const initialState = {
   hasSidebarToggle: false,
 };
 
-// eslint-disable-next-line @typescript-eslint/default-param-last
 const sidebarReducer = (state = initialState, action) => {
   const getStateKey = () => {
     const { payload: { usingToggle } } = action;

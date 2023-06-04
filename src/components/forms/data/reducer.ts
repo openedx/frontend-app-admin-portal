@@ -2,12 +2,12 @@ import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import {
-  SET_FORM_FIELD, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS,
+  SetShowErrorsArguments, SET_FORM_FIELD, SET_SHOW_ERRORS, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS,
 } from './actions';
 import type {
   FormActionArguments, SetFormFieldArguments, SetStepArguments, SetWorkflowStateArguments, UpdateFormFieldArguments,
 } from './actions';
-import type { FormContext, FormFieldValidation } from '../FormContext';
+import { FormContext, FormFields, FormFieldValidation } from '../FormContext';
 import type { FormWorkflowStep } from '../FormWorkflow';
 
 const processFormErrors = (state: FormContext): FormContext => {
@@ -54,10 +54,11 @@ export type InitializeFormArguments<FormFields> = {
   validations?: FormFieldValidation[];
   currentStep: FormWorkflowStep<FormFields>;
 };
-export function initializeForm<FormFields>(
+
+export function initializeFormImpl<FormFields>(
   state: FormContext,
   action: InitializeFormArguments<FormFields>,
-) {
+): FormContext {
   const additions: Pick<
   FormContext,
   'isEdited' | 'formFields' | 'currentStep'
@@ -74,10 +75,28 @@ export function initializeForm<FormFields>(
   };
 }
 
-export function FormReducer<FormFields>(
-  action: FormActionArguments,
+export function initializeForm<FormFields>(action: InitializeFormArguments<FormFields>) {
+  const initialFormState: Pick<
+  FormContext,
+  'isEdited' | 'formFields' | 'currentStep'
+  > = { isEdited: false };
+  if (action?.formFields) {
+    initialFormState.formFields = action.formFields;
+  }
+  if (action?.currentStep) {
+    initialFormState.currentStep = action.currentStep;
+  }
+  return {
+    ...initialFormState,
+  };
+}
+
+export type FormReducerType = (FormActionArguments, FormContext) => FormContext;
+
+export const FormReducer: FormReducerType = (
   state: FormContext = { formFields: {} },
-) {
+  action: FormActionArguments,
+) => {
   switch (action.type) {
     case SET_FORM_FIELD: {
       const setFormFieldArgs = action as SetFormFieldArguments;
@@ -102,6 +121,9 @@ export function FormReducer<FormFields>(
     } case SET_STEP: {
       const setStepArgs = action as SetStepArguments<FormFields>;
       return { ...state, currentStep: setStepArgs.step };
+    } case SET_SHOW_ERRORS: {
+      const SetShowErrorsArgs = action as SetShowErrorsArguments;
+      return { ...state, showErrors: SetShowErrorsArgs.showErrors };
     } case SET_WORKFLOW_STATE: {
       const setStateArgs = action as SetWorkflowStateArguments<any>;
       const oldStateMap = state.stateMap || {};
@@ -113,4 +135,4 @@ export function FormReducer<FormFields>(
     } default:
       return state;
   }
-}
+};

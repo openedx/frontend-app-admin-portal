@@ -5,7 +5,8 @@ const config = getBaseConfig('eslint');
 /* Custom config manipulations */
 config.rules = {
   ...config.rules,
-  'default-param-last': 'off',
+  '@typescript-eslint/default-param-last': 'off',
+  'react/require-default-props': 'off',
   'import/no-named-as-default': 0,
 };
 

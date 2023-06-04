@@ -5,12 +5,18 @@ import {
   CANVAS_TYPE, BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
 } from '../data/constants';
 import type { FormWorkflowConfig, FormWorkflowStep } from '../../forms/FormWorkflow';
-import BlackboardFormConfig, { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './LMSConfigs/Blackboard/BlackboardConfig';
-import CanvasFormConfig, { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './LMSConfigs/Canvas/CanvasConfig';
-import CornerstoneFormConfig, { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from './LMSConfigs/Cornerstone/CornerstoneConfig';
-import DegreedFormConfig, { DegreedConfigCamelCase, DegreedConfigSnakeCase } from './LMSConfigs/Degreed/DegreedConfig';
-import MoodleFormConfig, { MoodleConfigCamelCase, MoodleConfigSnakeCase } from './LMSConfigs/Moodle/MoodleConfig';
-import SAPFormConfig, { SAPConfigCamelCase, SAPConfigSnakeCase } from './LMSConfigs/SAP/SAPConfig';
+import BlackboardFormConfig from './LMSConfigs/Blackboard/BlackboardConfig';
+import type { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './LMSConfigs/Blackboard/BlackboardTypes';
+import CanvasFormConfig from './LMSConfigs/Canvas/CanvasConfig';
+import type { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './LMSConfigs/Canvas/CanvasTypes';
+import CornerstoneFormConfig from './LMSConfigs/Cornerstone/CornerstoneConfig';
+import type { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from './LMSConfigs/Cornerstone/CornerstoneTypes';
+import DegreedFormConfig from './LMSConfigs/Degreed/DegreedConfig';
+import type { DegreedConfigCamelCase, DegreedConfigSnakeCase } from './LMSConfigs/Degreed/DegreedTypes';
+import MoodleFormConfig from './LMSConfigs/Moodle/MoodleConfig';
+import type { MoodleConfigCamelCase, MoodleConfigSnakeCase } from './LMSConfigs/Moodle/MoodleTypes';
+import SAPFormConfig from './LMSConfigs/SAP/SAPConfig';
+import type { SAPConfigCamelCase, SAPConfigSnakeCase } from './LMSConfigs/SAP/SAPTypes';
 import { LMSSelectorPage, validations } from './LMSSelectorPage';
 
 const flowConfigs = {
@@ -22,15 +28,15 @@ const flowConfigs = {
   [SAP_TYPE]: SAPFormConfig,
 };
 
-export type LMSConfigCamelCase = BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase
-| MoodleConfigCamelCase | SAPConfigCamelCase;
-export type LMSConfigSnakeCase = BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase | DegreedConfigSnakeCase
-| MoodleConfigSnakeCase | SAPConfigSnakeCase;
+export type LMSConfigCamelCase = BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase
+| DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
+export type LMSConfigSnakeCase = BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase
+| DegreedConfigSnakeCase | MoodleConfigSnakeCase | SAPConfigSnakeCase;
 
 export type LMSFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: LMSConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (LMSConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;
@@ -64,7 +70,7 @@ export const LMSFormWorkflowConfig = ({
       index: 0,
       formComponent: LMSSelectorPage(setLms),
       validations,
-      stepName: 'Select LMS',
+      stepName: 'Enable',
       nextButtonConfig: () => ({
         buttonText: 'Next',
         opensNewWindow: false,
@@ -80,11 +86,23 @@ export const LMSFormWorkflowConfig = ({
     steps = steps.concat(
       {
         index: 1,
+        formComponent: LMSSelectorPage(setLms),
+        validations,
         stepName: 'Activate',
+        nextButtonConfig: () => ({
+          buttonText: 'Next',
+          opensNewWindow: false,
+        }),
       },
       {
         index: 2,
+        formComponent: LMSSelectorPage(setLms),
+        validations,
         stepName: 'Enable',
+        nextButtonConfig: () => ({
+          buttonText: 'Next',
+          opensNewWindow: false,
+        }),
       },
     );
   }

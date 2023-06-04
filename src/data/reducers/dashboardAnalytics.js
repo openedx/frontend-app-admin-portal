@@ -15,7 +15,6 @@ const initialState = {
   last_updated_date: null,
 };
 
-// eslint-disable-next-line @typescript-eslint/default-param-last
 const dashboardAnalytics = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_DASHBOARD_ANALYTICS_REQUEST:

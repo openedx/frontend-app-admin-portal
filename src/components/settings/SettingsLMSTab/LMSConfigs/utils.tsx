@@ -1,72 +1,28 @@
 import type { FormFieldValidation } from '../../../forms/FormContext';
 import {
-  BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL, CANVAS_TYPE, INVALID_NAME, SUBMIT_TOAST_MESSAGE,
+  BLACKBOARD_OAUTH_REDIRECT_URL, BLACKBOARD_TYPE, CANVAS_OAUTH_REDIRECT_URL,
+  CANVAS_TYPE, INVALID_NAME, SUBMIT_TOAST_MESSAGE,
 } from '../../data/constants';
 import handleErrors from '../../utils';
 import { camelCaseDict } from '../../../../utils';
 import { setWorkflowStateAction, updateFormFieldsAction } from '../../../forms/data/actions';
-import { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './Canvas/CanvasConfig';
-import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './Blackboard/BlackboardConfig';
-import { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from './Cornerstone/CornerstoneConfig';
-import { DegreedConfigCamelCase, DegreedConfigSnakeCase } from './Degreed/DegreedConfig';
-import { MoodleConfigCamelCase, MoodleConfigSnakeCase } from './Moodle/MoodleConfig';
-import { SAPConfigCamelCase, SAPConfigSnakeCase } from './SAP/SAPConfig';
+import { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './Canvas/CanvasTypes';
+import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './Blackboard/BlackboardTypes';
+import { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from './Cornerstone/CornerstoneTypes';
+import { DegreedConfigCamelCase, DegreedConfigSnakeCase } from './Degreed/DegreedTypes';
+import { MoodleConfigCamelCase, MoodleConfigSnakeCase } from './Moodle/MoodleTypes';
+import { SAPConfigCamelCase, SAPConfigSnakeCase } from './SAP/SAPTypes';
 import { FormWorkflowErrorHandler, WAITING_FOR_ASYNC_OPERATION } from '../../../forms/FormWorkflow';
 
 type ConfigCamelCase = { id?: string, active?: boolean, lms?: string, } |
-BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
+BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase |
+DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
+
 type ConfigSnakeCase = { enterprise_customer?: string, active?: boolean } |
-BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase | DegreedConfigSnakeCase | MoodleConfigSnakeCase | SAPConfigSnakeCase;
+BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase |
+DegreedConfigSnakeCase | MoodleConfigSnakeCase | SAPConfigSnakeCase;
 
 export const LMS_AUTHORIZATION_FAILED = 'LMS AUTHORIZATION FAILED';
-
-export async function handleSubmitHelper(
-  enterpriseCustomerUuid: string,
-  transformedConfig: ConfigSnakeCase,
-  existingData: ConfigCamelCase,
-  onSubmit: (param: ConfigCamelCase) => void,
-  formFieldsChanged: Boolean,
-  currentFormFields: any,
-  lmsType: string,
-  channelMap: Record<string, Record<string, any>>,
-  errHandler: FormWorkflowErrorHandler | undefined,
-  dispatch: any,
-) {
-  transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-  let err = '';
-  if (formFieldsChanged) {
-    if (currentFormFields?.id) {
-      try {
-        transformedConfig.active = existingData.active;
-        const response = await channelMap[lmsType].update(transformedConfig, existingData.id);
-        currentFormFields = camelCaseDict(
-          response.data,
-        ) as ConfigCamelCase;
-        onSubmit(currentFormFields);
-        dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    } else {
-      try {
-        transformedConfig.active = false;
-        const response = await channelMap[lmsType].post(transformedConfig);
-        currentFormFields = camelCaseDict(
-          response.data,
-        ) as ConfigCamelCase;
-        onSubmit(currentFormFields);
-        dispatch?.(updateFormFieldsAction({ formFields: currentFormFields }));
-      } catch (error) {
-        err = handleErrors(error);
-      }
-    }
-  }
-  const authorizeError = await handleSubmitAuthorize(lmsType, existingData, currentFormFields, channelMap, dispatch);
-  if (err) { errHandler?.(err); }
-  if (authorizeError) { errHandler?.(authorizeError); }
-
-  return currentFormFields;
-}
 
 async function handleSubmitAuthorize(
   lmsType: string,
@@ -75,7 +31,8 @@ async function handleSubmitAuthorize(
   channelMap: Record<string, Record<string, any>>,
   dispatch: any,
 ) {
-  if ((lmsType === BLACKBOARD_TYPE || lmsType === CANVAS_TYPE) && currentFormFields && !currentFormFields?.refreshToken) {
+  if ((lmsType === BLACKBOARD_TYPE || lmsType === CANVAS_TYPE)
+  && currentFormFields && !currentFormFields?.refreshToken) {
     let oauthUrl: string;
     if (lmsType === BLACKBOARD_TYPE) {
       let appKey = existingData.clientId;
@@ -104,6 +61,56 @@ async function handleSubmitAuthorize(
     dispatch?.(setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, true));
   }
   return null;
+}
+
+export async function handleSubmitHelper(
+  enterpriseCustomerUuid: string,
+  transformedConfig: ConfigSnakeCase,
+  existingData: ConfigCamelCase,
+  onSubmit: (param: ConfigCamelCase) => void,
+  formFieldsChanged: Boolean,
+  currentFormFields: any,
+  lmsType: string,
+  channelMap: Record<string, Record<string, any>>,
+  errHandler: FormWorkflowErrorHandler | undefined,
+  dispatch: any,
+) {
+  const config = transformedConfig;
+  let formFields = currentFormFields;
+  config.enterprise_customer = enterpriseCustomerUuid;
+  let err = '';
+  if (formFieldsChanged) {
+    if (formFields?.id) { // id only exists on existing configs
+      try {
+        config.active = existingData.active;
+        const response = await channelMap[lmsType].update(config, existingData.id);
+        formFields = camelCaseDict(
+          response.data,
+        ) as ConfigCamelCase;
+        onSubmit(formFields);
+        dispatch?.(updateFormFieldsAction({ formFields }));
+      } catch (error) {
+        err = handleErrors(error);
+      }
+    } else {
+      try {
+        config.active = false;
+        const response = await channelMap[lmsType].post(config);
+        formFields = camelCaseDict(
+          response.data,
+        ) as ConfigCamelCase;
+        onSubmit(formFields);
+        dispatch?.(updateFormFieldsAction({ formFields }));
+      } catch (error) {
+        err = handleErrors(error);
+      }
+    }
+  }
+  const authorizeError = await handleSubmitAuthorize(lmsType, existingData, formFields, channelMap, dispatch);
+  if (err) { errHandler?.(err); }
+  if (authorizeError) { errHandler?.(authorizeError); }
+
+  return currentFormFields;
 }
 
 export async function afterSubmitHelper(
@@ -149,18 +156,19 @@ export async function handleSaveHelper(
   errHandler: (errMsg: string) => void,
 ) {
   let err = '';
+  const config = transformedConfig;
   if (formFields.id) {
     try {
-      transformedConfig.active = existingData.active;
-      await channelMap[lmsType].update(transformedConfig, existingData.id);
+      config.active = existingData.active;
+      await channelMap[lmsType].update(config, existingData.id);
       onSubmit(formFields);
     } catch (error) {
       err = handleErrors(error);
     }
   } else {
     try {
-      transformedConfig.active = false;
-      await channelMap[lmsType].post(transformedConfig);
+      config.active = false;
+      await channelMap[lmsType].post(config);
       onSubmit(formFields);
     } catch (error) {
       err = handleErrors(error);
@@ -172,12 +180,19 @@ export async function handleSaveHelper(
   return !err;
 }
 
-export function checkForDuplicateNames(existingConfigNames: string[], existingData: { displayName: string }): FormFieldValidation {
+export function checkForDuplicateNames(existingConfigNames: Map<string, string>): FormFieldValidation {
   return {
     formFieldId: 'displayName',
-    validator: () => (existingConfigNames?.includes(existingData.displayName)
-      ? INVALID_NAME
-      : false),
+    validator: (fields) => {
+      let validName = true;
+      validName = !(existingConfigNames?.has(fields.displayName));
+      if (fields.id && !validName) { // if we're editing an existing config
+        if (existingConfigNames.get(fields.displayName) === fields.id) {
+          validName = true;
+        }
+      }
+      return validName ? false : INVALID_NAME;
+    },
   };
 }
 
