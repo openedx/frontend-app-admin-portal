@@ -4,6 +4,7 @@ import { MemoryRouter, Redirect } from 'react-router-dom';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EnterpriseList, { TITLE } from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
@@ -38,14 +39,16 @@ const store = mockStore({
 const EnterpriseListWrapper = ({ initialEntries, ...rest }) => (
   <MemoryRouter initialEntries={initialEntries}>
     <Provider store={store}>
-      <EnterpriseList
-        enterpriseList={{
-          results: [],
-        }}
-        searchEnterpriseList={() => {}}
-        clearPortalConfiguration={() => {}}
-        {...rest}
-      />
+      <IntlProvider locale="en">
+        <EnterpriseList
+          enterpriseList={{
+            results: [],
+          }}
+          searchEnterpriseList={() => {}}
+          clearPortalConfiguration={() => {}}
+          {...rest}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
