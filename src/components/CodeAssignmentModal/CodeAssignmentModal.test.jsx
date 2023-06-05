@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { screen, render } from '@testing-library/react';
 // import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -11,13 +11,12 @@ import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import remindEmailTemplate from './emailTemplate';
 import CodeAssignmentModal, { BaseCodeAssignmentModal } from '.';
-import { ASSIGNMENT_MODAL_FIELDS, NOTIFY_LEARNERS_CHECKBOX_TEST_ID } from './constants';
+import { getAssignmentModalFields, NOTIFY_LEARNERS_CHECKBOX_TEST_ID } from './constants';
 import { displayCode, displaySelectedCodes } from '../CodeModal/codeModalHelpers';
 
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
-import { EMAIL_FORM_NAME } from '../EmailTemplateForm';
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
@@ -122,14 +121,20 @@ const initialState = {
   },
 };
 
+const mockIntl = {
+  formatMessage: message => message.defaultMessage,
+};
+
 /* eslint-disable react/prop-types */
 const CodeAssignmentModalWrapper = (props) => (
   <MemoryRouter>
     <Provider store={mockStore(initialState)}>
-      <CodeAssignmentModal
-        {...initialProps}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CodeAssignmentModal
+          {...initialProps}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -148,9 +153,12 @@ describe('CodeAssignmentModal component', () => {
     render(
       <MemoryRouter>
         <Provider store={mockStore(initialState)}>
-          <BaseCodeAssignmentModal
-            {...props}
-          />
+          <IntlProvider locale="en">
+            <BaseCodeAssignmentModal
+              {...props}
+              intl={mockIntl}
+            />
+          </IntlProvider>
         </Provider>
       </MemoryRouter>,
     );
@@ -167,11 +175,13 @@ describe('CodeAssignmentModal component', () => {
   });
   it('renders an email template form', () => {
     render(<CodeAssignmentModalWrapper />);
-    expect(screen.getByText(EMAIL_FORM_NAME)).toBeInTheDocument();
+    expect(screen.getByText('Email Template')).toBeInTheDocument();
   });
   it('renders a auto-reminder checkbox', () => {
+    const formatMessageMock = message => message.defaultMessage;
+    const assignmentModalFields = getAssignmentModalFields(formatMessageMock);
     render(<CodeAssignmentModalWrapper />);
-    expect(screen.getByText(ASSIGNMENT_MODAL_FIELDS['enable-nudge-emails'].label)).toBeInTheDocument();
+    expect(screen.getByText(assignmentModalFields['enable-nudge-emails'].label)).toBeInTheDocument();
   });
   it('renders notify learners toggle checkbox', () => {
     render(<CodeAssignmentModalWrapper />);

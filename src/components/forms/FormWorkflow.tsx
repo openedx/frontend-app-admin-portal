@@ -103,7 +103,6 @@ const FormWorkflow = <FormConfigData extends unknown>({
   };
 
   const onNext = async () => {
-    console.log('on next');
     if (hasErrors && step) {
       dispatch(setShowErrorsAction({ showErrors: true }));
       // triggers rerender to have errors show up with
@@ -111,16 +110,13 @@ const FormWorkflow = <FormConfigData extends unknown>({
     } else {
       let advance = true;
       if (nextButtonConfig && nextButtonConfig.onClick) {
-        console.log('line 114 ', nextButtonConfig);
         const newFormFields: FormConfigData = await nextButtonConfig.onClick({
           formFields,
           errHandler: setFormError,
           dispatch,
           formFieldsChanged: !!isEdited,
         });
-        console.log('awaitsuccess', nextButtonConfig?.awaitSuccess);
         if (nextButtonConfig?.awaitSuccess) {
-          console.log('await success');
           advance = await pollAsync(
             () => nextButtonConfig.awaitSuccess?.awaitCondition?.({
               formFields: newFormFields,
@@ -131,9 +127,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
             nextButtonConfig.awaitSuccess.awaitTimeout,
             nextButtonConfig.awaitSuccess.awaitInterval,
           );
-          console.log('advance ', advance);
           if (!advance && nextButtonConfig?.awaitSuccess) {
-            console.log('!advance && nextButtonConfig?.awaitSuccess ');
             nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
               formFields: newFormFields,
               errHandler: setFormError,
@@ -143,7 +137,6 @@ const FormWorkflow = <FormConfigData extends unknown>({
           }
         }
         if (advance && step) {
-          console.log('advancing');
           dispatch(setShowErrorsAction({ showErrors: false }));
           const nextStep: number = step.index + 1;
           if (nextStep < formWorkflowConfig.steps.length) {
@@ -174,10 +167,6 @@ const FormWorkflow = <FormConfigData extends unknown>({
     }
     return null;
   };
-
-  useEffect(() => {
-    console.log('awaitingasync ', awaitingAsyncAction);
-  }, [awaitingAsyncAction]);
 
   useEffect(() => {
     if (formFields?.channelCode) {

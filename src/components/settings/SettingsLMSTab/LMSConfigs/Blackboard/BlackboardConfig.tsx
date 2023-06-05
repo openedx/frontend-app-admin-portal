@@ -47,7 +47,6 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    console.log('in handle submit');
     const currentFormFields = formFields;
     const transformedConfig: BlackboardConfigSnakeCase = snakeCaseDict(
       formFields,
@@ -73,7 +72,6 @@ export const BlackboardFormConfig = ({
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
     const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
-    console.log('response in awaitaftersubmit', response);
     return response;
   };
 

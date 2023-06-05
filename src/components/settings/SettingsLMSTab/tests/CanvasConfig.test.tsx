@@ -105,76 +105,76 @@ describe('<CanvasConfig />', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  // test('renders Canvas Authorize Form', () => {
-  //   render(testCanvasConfigSetup(noConfigs));
-  //   screen.getByLabelText('Display Name');
-  //   screen.getByLabelText('API Client ID');
-  //   screen.getByLabelText('API Client Secret');
-  //   screen.getByLabelText('Canvas Account Number');
-  //   screen.getByLabelText('Canvas Base URL');
-  // });
-  // test('test error messages', async () => {
-  //   render(testCanvasConfigSetup(noExistingData));
+  test('renders Canvas Authorize Form', () => {
+    render(testCanvasConfigSetup(noConfigs));
+    screen.getByLabelText('Display Name');
+    screen.getByLabelText('API Client ID');
+    screen.getByLabelText('API Client Secret');
+    screen.getByLabelText('Canvas Account Number');
+    screen.getByLabelText('Canvas Base URL');
+  });
+  test('test error messages', async () => {
+    render(testCanvasConfigSetup(noExistingData));
 
-  //   const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
-  //   await clearForm();
-  //   userEvent.click(authorizeButton);
-  //   expect(screen.queryByText(validationMessages.displayNameRequired));
-  //   expect(screen.queryByText(validationMessages.canvasUrlRequired));
-  //   expect(screen.queryByText(validationMessages.clientIdRequired));
-  //   expect(screen.queryByText(validationMessages.accountIdRequired));
-  //   expect(screen.queryByText(validationMessages.clientSecretRequired));
+    await clearForm();
+    userEvent.click(authorizeButton);
+    expect(screen.queryByText(validationMessages.displayNameRequired));
+    expect(screen.queryByText(validationMessages.canvasUrlRequired));
+    expect(screen.queryByText(validationMessages.clientIdRequired));
+    expect(screen.queryByText(validationMessages.accountIdRequired));
+    expect(screen.queryByText(validationMessages.clientSecretRequired));
 
-  //   userEvent.paste(screen.getByLabelText('Display Name'), 'name');
-  //   userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'test4');
-  //   userEvent.paste(screen.getByLabelText('API Client ID'), 'test3');
-  //   userEvent.paste(screen.getByLabelText('Canvas Account Number'), '23');
-  //   userEvent.paste(screen.getByLabelText('API Client Secret'), 'test6');
-  //   userEvent.click(authorizeButton);
+    userEvent.paste(screen.getByLabelText('Display Name'), 'name');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'test4');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test3');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '23');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test6');
+    userEvent.click(authorizeButton);
 
-  //   expect(screen.queryByText(INVALID_LINK));
-  //   expect(screen.queryByText(INVALID_NAME));
-  //   await clearForm();
-  //   userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-  //   userEvent.paste(
-  //     screen.getByLabelText('Canvas Base URL'),
-  //     'https://www.test4.com',
-  //   );
-  //   userEvent.click(authorizeButton);
-  //   expect(!screen.queryByText(INVALID_LINK));
-  //   expect(!screen.queryByText(INVALID_NAME));
-  // });
-  // test('saves draft correctly', async () => {
-  //   render(testCanvasConfigSetup(noExistingData));
-  //   const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+    expect(screen.queryByText(INVALID_LINK));
+    expect(screen.queryByText(INVALID_NAME));
+    await clearForm();
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(
+      screen.getByLabelText('Canvas Base URL'),
+      'https://www.test4.com',
+    );
+    userEvent.click(authorizeButton);
+    expect(!screen.queryByText(INVALID_LINK));
+    expect(!screen.queryByText(INVALID_NAME));
+  });
+  test('saves draft correctly', async () => {
+    render(testCanvasConfigSetup(noExistingData));
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
-  //   await clearForm();
-  //   userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-  //   userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-  //   userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
-  //   userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
-  //   userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
+    await clearForm();
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
 
-  //   expect(cancelButton).not.toBeDisabled();
-  //   userEvent.click(cancelButton);
+    expect(cancelButton).not.toBeDisabled();
+    userEvent.click(cancelButton);
 
-  //   // Await a find by text in order to account for state changes in the button callback
-  //   await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
+    // Await a find by text in order to account for state changes in the button callback
+    await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
 
-  //   userEvent.click(screen.getByText('Exit'));
+    userEvent.click(screen.getByText('Exit'));
 
-  //   const expectedConfig = {
-  //     active: false,
-  //     display_name: 'displayName',
-  //     enterprise_customer: enterpriseId,
-  //     canvas_account_id: '3',
-  //     canvas_base_url: 'https://www.test4.com',
-  //     client_id: 'test1',
-  //     client_secret: 'test2',
-  //   };
-  //   expect(mockPost).toHaveBeenCalledWith(expectedConfig);
-  // });
+    const expectedConfig = {
+      active: false,
+      display_name: 'displayName',
+      enterprise_customer: enterpriseId,
+      canvas_account_id: '3',
+      canvas_base_url: 'https://www.test4.com',
+      client_id: 'test1',
+      client_secret: 'test2',
+    };
+    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
+  });
   test('Authorizing a config will initiate backend polling', async () => {
     render(testCanvasConfigSetup(noExistingData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
@@ -192,35 +192,35 @@ describe('<CanvasConfig />', () => {
     expect(window.open).toHaveBeenCalled();
     expect(mockFetch).toHaveBeenCalledWith(1);
   });
-  // test('validates poorly formatted existing data on load', async () => {
-  //   render(testCanvasConfigSetup(invalidExistingData));
-  //   const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-  //   userEvent.click(authorizeButton);
-  //   await waitFor(() => expect(screen.getByText(INVALID_NAME)).toBeInTheDocument());
-  //   expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
-  // });
-  // test('validates properly formatted existing data on load', () => {
-  //   render(testCanvasConfigSetup(existingConfigDataNoAuth));
-  //   const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-  //   // ensuring the existing data is prefilled
-  //   expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
-  //     existingConfigDataNoAuth.displayName,
-  //   );
-  //   expect((screen.getByLabelText('Canvas Base URL') as HTMLInputElement).value).toEqual(
-  //     existingConfigDataNoAuth.canvasBaseUrl,
-  //   );
-  //   expect((screen.getByLabelText('API Client ID') as HTMLInputElement).value).toEqual(
-  //     existingConfigDataNoAuth.clientId,
-  //   );
-  //   expect((screen.getByLabelText('Canvas Account Number') as HTMLInputElement).value).toEqual(
-  //     existingConfigDataNoAuth.canvasAccountId,
-  //   );
-  //   expect((screen.getByLabelText('API Client Secret') as HTMLInputElement).value).toEqual(
-  //     existingConfigDataNoAuth.clientSecret,
-  //   );
+  test('validates poorly formatted existing data on load', async () => {
+    render(testCanvasConfigSetup(invalidExistingData));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+    userEvent.click(authorizeButton);
+    await waitFor(() => expect(screen.getByText(INVALID_NAME)).toBeInTheDocument());
+    expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
+  });
+  test('validates properly formatted existing data on load', () => {
+    render(testCanvasConfigSetup(existingConfigDataNoAuth));
+    const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
+    // ensuring the existing data is prefilled
+    expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.displayName,
+    );
+    expect((screen.getByLabelText('Canvas Base URL') as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.canvasBaseUrl,
+    );
+    expect((screen.getByLabelText('API Client ID') as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.clientId,
+    );
+    expect((screen.getByLabelText('Canvas Account Number') as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.canvasAccountId,
+    );
+    expect((screen.getByLabelText('API Client Secret') as HTMLInputElement).value).toEqual(
+      existingConfigDataNoAuth.clientSecret,
+    );
 
-  //   userEvent.click(authorizeButton);
-  //   expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
-  //   expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
-  // });
+    userEvent.click(authorizeButton);
+    expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
+  });
 });

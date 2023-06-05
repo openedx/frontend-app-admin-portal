@@ -46,6 +46,7 @@
     "dash-embedded-component": "file:packages/dash-embedded-component-2.0.2.tgz",
     "file-saver": "1.3.8",
     "font-awesome": "4.7.0",
+    "frontend-platform-shim": "file:packages/frontend-platform-shim",
     "history": "4.10.1",
     "html-react-parser": "3.0.7",
     "jest-environment-jsdom": "26.6.1",

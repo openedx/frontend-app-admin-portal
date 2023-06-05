@@ -11,6 +11,7 @@ import { render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 import { StatusAlert } from '@edx/paragon';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
 import EcommerceaApiService from '../../data/services/EcommerceApiService';
@@ -96,10 +97,12 @@ const initialCouponData = {
 const CouponDetailsWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <CouponDetails
-        couponData={initialCouponData}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CouponDetails
+          couponData={initialCouponData}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

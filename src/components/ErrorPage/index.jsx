@@ -4,6 +4,8 @@ import Helmet from 'react-helmet';
 
 import { Alert } from '@edx/paragon';
 import { Cancel as ErrorIcon } from '@edx/paragon/icons';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+
 import NotFoundPage from '../NotFoundPage';
 import ForbiddenPage from '../ForbiddenPage';
 
@@ -28,7 +30,7 @@ function renderErrorComponent(status, message) {
             variant="danger"
             icon={ErrorIcon}
           >
-            <Alert.Heading>Error</Alert.Heading>
+            <Alert.Heading><FormattedMessage id="adminPortal.error.title" defaultMessage="Error" /></Alert.Heading>
             {errorMessage}
           </Alert>
         </div>
