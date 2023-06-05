@@ -127,45 +127,41 @@ const CanvasConfigAuthorizePage = () => {
             open a new window to complete the process in Canvas. Return to this window
             following reauthorization to finish reconfiguring your integration.
           </Alert>)}
-        <Form.Group className="my-2.5">
+        <Form.Group className='mb-4'>
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className='mb-4.5'>
           <ValidatedFormControl
             formId={formFieldNames.CLIENT_ID}
-            className="mb-4"
             type="text"
             maxLength={255}
             floatingLabel="API Client ID"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className='mb-4.5'>
           <ValidatedFormControl
             formId={formFieldNames.CLIENT_SECRET}
-            className="my-4"
             type="password"
             maxLength={255}
             floatingLabel="API Client Secret"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className='mb-4.5'>
           <ValidatedFormControl
             formId={formFieldNames.ACCOUNT_ID}
-            className="my-4"
             type="number"
             maxLength={255}
             floatingLabel="Canvas Account Number"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group className='mb-4.5'>
           <ValidatedFormControl
             formId={formFieldNames.CANVAS_BASE_URL}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="Canvas Base URL"

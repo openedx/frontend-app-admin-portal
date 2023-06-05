@@ -120,7 +120,7 @@ export const BlackboardFormConfig = ({
       index: 1,
       formComponent: BlackboardConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: "Authorize",
+      stepName: "Configure",
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {
         let config = {
