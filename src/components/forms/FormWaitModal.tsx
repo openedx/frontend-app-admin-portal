@@ -19,7 +19,6 @@ const FormWaitModal = ({
   text,
 }: FormWaitModalType) => {
   const { stateMap }: FormContext = useFormContext();
-
   const isOpen = stateMap && stateMap[triggerState];
 
   return (

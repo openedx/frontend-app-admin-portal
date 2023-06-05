@@ -70,7 +70,7 @@ export const LMSFormWorkflowConfig = ({
       index: 0,
       formComponent: LMSSelectorPage(setLms),
       validations,
-      stepName: 'Enable',
+      stepName: 'Select',
       nextButtonConfig: () => ({
         buttonText: 'Next',
         opensNewWindow: false,

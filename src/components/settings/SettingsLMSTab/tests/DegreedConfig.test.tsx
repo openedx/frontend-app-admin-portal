@@ -1,5 +1,7 @@
 import React from 'react';
-import { act, render, fireEvent, screen, waitFor } from '@testing-library/react';
+import {
+  act, render, fireEvent, screen, waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -7,7 +9,7 @@ import DegreedConfig from '../LMSConfigs/Degreed/DegreedConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import FormContextWrapper from '../../../forms/FormContextWrapper';
-import { validationMessages } from "../LMSConfigs/Degreed/DegreedConfigEnablePage";
+import { validationMessages } from '../LMSConfigs/Degreed/DegreedConfigEnablePage';
 
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateDegreedConfig');
 const mockConfigResponseData = {
@@ -35,8 +37,8 @@ const existingConfigData = {
   displayName: 'foobar',
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
-  degreedBaseUrl: "https://foobarish.com",
-  degreedTokenFetchBaseUrl: "https://foobarish.com/fetch"
+  degreedBaseUrl: 'https://foobarish.com',
+  degreedTokenFetchBaseUrl: 'https://foobarish.com/fetch',
 };
 
 // Existing invalid data that will be validated on load
@@ -44,8 +46,8 @@ const invalidExistingData = {
   displayName: "your display name doesn't need to be this long stop it",
   clientId: '1',
   clientSecret: 'shhhitsasecret123',
-  degreedBaseUrl: "bad icky url",
-  degreedTokenFetchBaseUrl: "https://foobarish.com/fetch"
+  degreedBaseUrl: 'bad icky url',
+  degreedTokenFetchBaseUrl: 'https://foobarish.com/fetch',
 };
 
 const noConfigs = [];
@@ -77,7 +79,6 @@ function testDegreedConfigSetup(formData) {
         },
       })}
       onClickOut={mockOnClick}
-      onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
       dispatch={jest.fn()}
@@ -116,7 +117,7 @@ describe('<DegreedConfig />', () => {
     screen.getByLabelText('Degreed Base URL');
     screen.getByLabelText('Degreed Token Fetch Base URL');
   });
-  test("test error messages", async () => {
+  test('test error messages', async () => {
     render(testDegreedConfigSetup(noExistingData));
 
     const enableButton = screen.getByRole('button', { name: 'Enable' });
@@ -141,10 +142,10 @@ describe('<DegreedConfig />', () => {
     userEvent.click(enableButton);
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
-    userEvent.paste(screen.getByLabelText("Display Name"), "displayName");
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.paste(
-      screen.getByLabelText("Degreed Base URL"),
-      "https://www.test4.com"
+      screen.getByLabelText('Degreed Base URL'),
+      'https://www.test4.com',
     );
     userEvent.click(enableButton);
     expect(!screen.queryByText(INVALID_LINK));
@@ -205,7 +206,7 @@ describe('<DegreedConfig />', () => {
   test('validates poorly formatted existing data on load', async () => {
     render(testDegreedConfigSetup(invalidExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
-    userEvent.click(enableButton)
+    userEvent.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
   });
@@ -214,17 +215,22 @@ describe('<DegreedConfig />', () => {
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     // ensuring the existing data is prefilled
     expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
-      existingConfigData.displayName);
+      existingConfigData.displayName,
+    );
     expect((screen.getByLabelText('API Client ID') as HTMLInputElement).value).toEqual(
-      existingConfigData.clientId);
+      existingConfigData.clientId,
+    );
     expect((screen.getByLabelText('API Client Secret') as HTMLInputElement).value).toEqual(
-      existingConfigData.clientSecret);
+      existingConfigData.clientSecret,
+    );
     expect((screen.getByLabelText('Degreed Base URL') as HTMLInputElement).value).toEqual(
-      existingConfigData.degreedBaseUrl);
+      existingConfigData.degreedBaseUrl,
+    );
     expect((screen.getByLabelText('Degreed Token Fetch Base URL') as HTMLInputElement).value).toEqual(
-      existingConfigData.degreedTokenFetchBaseUrl)
+      existingConfigData.degreedTokenFetchBaseUrl,
+    );
 
-    userEvent.click(enableButton)
+    userEvent.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });

@@ -109,8 +109,7 @@ export async function handleSubmitHelper(
   const authorizeError = await handleSubmitAuthorize(lmsType, existingData, formFields, channelMap, dispatch);
   if (err) { errHandler?.(err); }
   if (authorizeError) { errHandler?.(authorizeError); }
-
-  return currentFormFields;
+  return formFields;
 }
 
 export async function afterSubmitHelper(

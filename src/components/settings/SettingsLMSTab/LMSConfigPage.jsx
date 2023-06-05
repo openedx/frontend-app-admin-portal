@@ -39,7 +39,7 @@ const LMSConfigPage = ({
       <FormContextWrapper
         formWorkflowConfig={formWorkflowConfig}
         onClickOut={handleCloseWorkflow}
-        onSubmit={setExistingConfigFormData}
+        // onSubmit={setExistingConfigFormData}
         formData={existingConfigFormData}
         isStepperOpen={isLmsStepperOpen}
       />

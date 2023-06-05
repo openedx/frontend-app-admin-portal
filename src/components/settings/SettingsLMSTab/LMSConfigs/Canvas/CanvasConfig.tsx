@@ -71,7 +71,8 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
+    const response = await afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
+    return response;
   };
 
   const onAwaitTimeout = async ({
@@ -95,7 +96,7 @@ export const CanvasFormConfig = ({
       index: 1,
       formComponent: CanvasConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: 'Authorize',
+      stepName: 'Configure',
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
         let config = {

@@ -100,54 +100,49 @@ const MoodleConfigEnablePage = () => (
       </h3>
     </span>
     <Form style={{ maxWidth: '60rem' }}>
-      <Form.Group className="my-2.5">
+      <Form.Group className="mb-4">
         <ValidatedFormControl
           formId={formFieldNames.DISPLAY_NAME}
           type="text"
           floatingLabel="Display Name"
-          fieldInstructions="Create a custom name for this LMS."
+          fieldInstructions="Create a custom name for this LMS"
         />
       </Form.Group>
-      <Form.Group>
+      <Form.Group className="mb-4.5">
         <ValidatedFormControl
           formId={formFieldNames.MOODLE_BASE_URL}
-          className="mb-4"
           type="text"
           maxLength={255}
           floatingLabel="Moodle Base URL"
         />
       </Form.Group>
-      <Form.Group>
+      <Form.Group className="mb-4.5">
         <ValidatedFormControl
           formId={formFieldNames.SERVICE_SHORT_NAME}
-          className="my-4"
           type="text"
           maxLength={255}
           floatingLabel="Webservice Short Name"
         />
       </Form.Group>
-      <Form.Group className="my-4">
+      <Form.Group className="mb-4.5">
         <ValidatedFormControl
           formId={formFieldNames.TOKEN}
-          className="my-4"
           type="text"
           maxLength={255}
           floatingLabel="Token"
         />
       </Form.Group>
-      <Form.Group className="my-4">
+      <Form.Group className="mb-4.5">
         <ValidatedFormControl
           formId={formFieldNames.USERNAME}
-          className="my-4"
           type="text"
           maxLength={255}
           floatingLabel="Username"
         />
       </Form.Group>
-      <Form.Group className="my-4">
+      <Form.Group className="mb-4.5">
         <ValidatedFormControl
           formId={formFieldNames.PASSWORD}
-          className="my-4"
           type="password"
           maxLength={255}
           floatingLabel="Password"

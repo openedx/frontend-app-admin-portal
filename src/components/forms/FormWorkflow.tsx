@@ -59,23 +59,20 @@ export type FormWorkflowConfig<FormData> = {
   getCurrentStep: () => FormWorkflowStep<FormData>;
 };
 
-export type FormWorkflowProps<FormData> = {
-  formWorkflowConfig: FormWorkflowConfig<FormData>;
+export type FormWorkflowProps<FormConfigData> = {
+  formWorkflowConfig: FormWorkflowConfig<FormConfigData>;
   onClickOut: (edited: boolean, msg?: string) => null;
   dispatch: Dispatch<FormActionArguments>;
-  onSubmit: (FormData: FormData) => void;
   isStepperOpen: boolean;
 };
 
 // Modal container for multi-step forms
-const FormWorkflow = ({
+const FormWorkflow = <FormConfigData extends unknown>({
   formWorkflowConfig,
   onClickOut,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onSubmit,
   isStepperOpen,
   dispatch,
-}: FormWorkflowProps<FormData>) => {
+}: FormWorkflowProps<FormConfigData>) => {
   const {
     formFields,
     currentStep: step,
@@ -106,6 +103,7 @@ const FormWorkflow = ({
   };
 
   const onNext = async () => {
+    console.log('on next');
     if (hasErrors && step) {
       dispatch(setShowErrorsAction({ showErrors: true }));
       // triggers rerender to have errors show up with
@@ -113,13 +111,16 @@ const FormWorkflow = ({
     } else {
       let advance = true;
       if (nextButtonConfig && nextButtonConfig.onClick) {
-        const newFormFields: FormData = await nextButtonConfig.onClick({
+        console.log('line 114 ', nextButtonConfig);
+        const newFormFields: FormConfigData = await nextButtonConfig.onClick({
           formFields,
           errHandler: setFormError,
           dispatch,
           formFieldsChanged: !!isEdited,
         });
+        console.log('awaitsuccess', nextButtonConfig?.awaitSuccess);
         if (nextButtonConfig?.awaitSuccess) {
+          console.log('await success');
           advance = await pollAsync(
             () => nextButtonConfig.awaitSuccess?.awaitCondition?.({
               formFields: newFormFields,
@@ -130,7 +131,9 @@ const FormWorkflow = ({
             nextButtonConfig.awaitSuccess.awaitTimeout,
             nextButtonConfig.awaitSuccess.awaitInterval,
           );
+          console.log('advance ', advance);
           if (!advance && nextButtonConfig?.awaitSuccess) {
+            console.log('!advance && nextButtonConfig?.awaitSuccess ');
             nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
               formFields: newFormFields,
               errHandler: setFormError,
@@ -140,6 +143,7 @@ const FormWorkflow = ({
           }
         }
         if (advance && step) {
+          console.log('advancing');
           dispatch(setShowErrorsAction({ showErrors: false }));
           const nextStep: number = step.index + 1;
           if (nextStep < formWorkflowConfig.steps.length) {
@@ -152,7 +156,7 @@ const FormWorkflow = ({
     }
   };
 
-  const stepBody = (currentStep: FormWorkflowStep<FormData>) => {
+  const stepBody = (currentStep: FormWorkflowStep<FormConfigData>) => {
     if (currentStep) {
       const FormComponent: DynamicComponent = currentStep?.formComponent;
       return (
@@ -170,6 +174,10 @@ const FormWorkflow = ({
     }
     return null;
   };
+
+  useEffect(() => {
+    console.log('awaitingasync ', awaitingAsyncAction);
+  }, [awaitingAsyncAction]);
 
   useEffect(() => {
     if (formFields?.channelCode) {
@@ -190,7 +198,7 @@ const FormWorkflow = ({
         exitWithoutSaving={() => onClickOut(false)}
         saveDraft={async () => {
           if (step?.saveChanges) {
-            await step?.saveChanges(formFields as FormData, setFormError);
+            await step?.saveChanges(formFields as FormConfigData, setFormError);
             onClickOut(true, SUBMIT_TOAST_MESSAGE);
           }
         }}
@@ -198,7 +206,7 @@ const FormWorkflow = ({
 
       {formWorkflowConfig.steps && (
         <FullscreenModal
-          title="New platform learning integration"
+          title="New learning platform integration"
           isOpen={isStepperOpen}
           onClose={onCancel}
           className="stepper-modal"

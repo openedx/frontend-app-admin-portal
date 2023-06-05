@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Alert, Container, Form, Image,
 } from '@edx/paragon';
@@ -59,12 +59,7 @@ export const validations: FormFieldValidation[] = [
 // Settings page of Blackboard LMS config workflow
 const BlackboardConfigAuthorizePage = () => {
   const { formFields, dispatch, stateMap } = useFormContext();
-  const [isExisting, setIsExisting] = useState(false);
-  useEffect(() => {
-    if (formFields?.id) {
-      setIsExisting(true);
-    }
-  }, [formFields?.id]);
+
   return (
     <Container size="md">
       <span className="d-flex pb-4">
@@ -84,7 +79,7 @@ const BlackboardConfigAuthorizePage = () => {
             or contact enterprise customer support.
           </Alert>
         )}
-        {isExisting && (
+        {formFields?.refreshToken && (
           <Alert variant="info" className="mb-4" icon={Info}>
             <h3>Form updates require reauthorization</h3>
             Your authorization is currently complete. By updating the form below,
@@ -98,7 +93,7 @@ const BlackboardConfigAuthorizePage = () => {
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
         <Form.Group className="my-4.5">

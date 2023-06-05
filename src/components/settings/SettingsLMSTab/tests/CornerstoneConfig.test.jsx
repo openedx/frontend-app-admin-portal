@@ -54,7 +54,6 @@ function testCornerstoneConfigSetup(formData) {
         },
       })}
       onClickOut={mockOnClick}
-      onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
       dispatch={jest.fn()}

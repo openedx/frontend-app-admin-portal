@@ -78,7 +78,7 @@ export const CornerstoneFormConfig = ({
       index: 1,
       formComponent: CornerstoneConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: 'Enable',
+      stepName: 'Configure',
       saveChanges,
       nextButtonConfig: () => {
         const config = {

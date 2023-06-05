@@ -55,7 +55,7 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
   return (
     <>
       <Form.Control {...formControlProps} />
-      {props.fieldInstructions && (
+      {props.fieldInstructions && !(showError && showErrors) && (
         <Form.Text>{props.fieldInstructions}</Form.Text>
       )}
       {showErrors && showError && (

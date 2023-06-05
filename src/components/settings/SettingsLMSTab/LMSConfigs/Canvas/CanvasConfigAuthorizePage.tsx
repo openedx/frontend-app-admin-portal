@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
   Alert, Container, Form, Image,
@@ -84,13 +84,6 @@ export const validations: FormFieldValidation[] = [
 // Settings page of Canvas LMS config workflow
 const CanvasConfigAuthorizePage = () => {
   const { formFields, dispatch, stateMap } = useFormContext();
-  const [isExisting, setIsExisting] = useState(false);
-  useEffect(() => {
-    if (formFields?.id) {
-      setIsExisting(true);
-    }
-  }, [formFields?.id]);
-
   return (
     <Container size="md">
       <span className="d-flex pb-4">
@@ -110,7 +103,7 @@ const CanvasConfigAuthorizePage = () => {
             or contact enterprise customer support.
           </Alert>
         )}
-        {isExisting && (
+        {formFields?.refreshToken && (
           <Alert variant="info" className="mb-4" icon={Info}>
             <h3>Form updates require reauthorization</h3>
             Your authorization is currently complete. By updating the form below,
@@ -119,45 +112,41 @@ const CanvasConfigAuthorizePage = () => {
             following reauthorization to finish reconfiguring your integration.
           </Alert>
         )}
-        <Form.Group className="my-2.5">
+        <Form.Group className="mb-4">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.CLIENT_ID}
-            className="mb-4"
             type="text"
             maxLength={255}
             floatingLabel="API Client ID"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.CLIENT_SECRET}
-            className="my-4"
             type="password"
             maxLength={255}
             floatingLabel="API Client Secret"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.ACCOUNT_ID}
-            className="my-4"
             type="number"
             maxLength={255}
             floatingLabel="Canvas Account Number"
           />
         </Form.Group>
-        <Form.Group className="my-4">
+        <Form.Group className="mb-4.5">
           <ValidatedFormControl
             formId={formFieldNames.CANVAS_BASE_URL}
-            className="my-4"
             type="text"
             maxLength={255}
             floatingLabel="Canvas Base URL"

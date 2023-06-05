@@ -5,6 +5,7 @@ import {
 } from '../FormWorkflow';
 import {
   setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction,
+  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP,
 } from './actions';
 import type { InitializeFormArguments } from './reducer';
 import { FormReducer, initializeForm } from './reducer';
@@ -68,12 +69,6 @@ const getTestInitializeFormArguments = () => {
   return testArgs;
 };
 
-const getTestExpectedState = () => ({
-  formFields: testFormFields,
-  currentStep: steps[0],
-  isEdited: false,
-});
-
 describe('Form reducer tests', () => {
   test('Initialize Workflow State', () => {
     const formFields: DummyFormFields = { address: '123 45th st', zip: 12345 };
@@ -93,13 +88,9 @@ describe('Form reducer tests', () => {
   test('Set form field with errors', () => {
     const action = setFormFieldAction({ fieldId: 'zip', value: 0 });
     const expected = {
-      ...getTestExpectedState(),
-      formFields: { address: '123 45th st', zip: 0 },
-      isEdited: true,
-      hasErrors: true,
-      errorMap: {
-        zip: ['Zip code should be positive nonzero number'],
-      },
+      type: SET_FORM_FIELD,
+      fieldId: 'zip',
+      value: 0,
     };
 
     expect(
@@ -113,10 +104,8 @@ describe('Form reducer tests', () => {
     });
 
     const expected = {
-      ...getTestExpectedState(),
       formFields: { zip: 54321, address: '543 21st st' },
-      hasErrors: false,
-      errorMap: {},
+      type: UPDATE_FORM_FIELDS,
     };
 
     expect(
@@ -128,10 +117,9 @@ describe('Form reducer tests', () => {
     const action = setWorkflowStateAction('TEST_STATE', 'Test State');
 
     const expected = {
-      ...getTestExpectedState(),
-      stateMap: { TEST_STATE: 'Test State' },
-      hasErrors: false,
-      errorMap: {},
+      name: 'TEST_STATE',
+      state: 'Test State',
+      type: SET_WORKFLOW_STATE,
     };
 
     expect(
@@ -143,10 +131,8 @@ describe('Form reducer tests', () => {
     const action = setStepAction({ step: steps[1] });
 
     const expected = {
-      ...getTestExpectedState(),
-      currentStep: steps[1],
-      hasErrors: false,
-      errorMap: {},
+      step: steps[1],
+      type: SET_STEP,
     };
 
     expect(

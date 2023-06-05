@@ -5,23 +5,21 @@ import {
   FormReducer, FormReducerType, initializeForm, InitializeFormArguments,
 } from './data/reducer';
 
-type FormWrapperProps<FormData> = FormWorkflowProps<FormData> & { formData: FormData };
+type FormWrapperProps<FormConfigData> = FormWorkflowProps<FormConfigData> & { formData: FormConfigData };
 
-// Context wrapper for multi-step form container
-const FormContextWrapper = ({
+const FormContextWrapper = <FormConfigData extends unknown>({
   formWorkflowConfig,
   onClickOut,
-  onSubmit,
   formData,
   isStepperOpen,
-}: FormWrapperProps<FormData>) => {
-  const initializeAction: InitializeFormArguments<FormData> = {
-    formFields: formData as FormData,
+}: FormWrapperProps<FormConfigData>) => {
+  const initializeAction: InitializeFormArguments<FormConfigData> = {
+    formFields: formData as FormConfigData,
     currentStep: formWorkflowConfig.getCurrentStep(),
   };
   const [formFieldsState, dispatch] = useReducer<
   FormReducerType,
-  InitializeFormArguments<FormData>
+  InitializeFormArguments<FormConfigData>
   >(
     FormReducer,
     initializeAction,
@@ -34,7 +32,7 @@ const FormContextWrapper = ({
     >
       <FormWorkflow
         {...{
-          formWorkflowConfig, onClickOut, onSubmit, isStepperOpen, dispatch,
+          formWorkflowConfig, onClickOut, isStepperOpen, dispatch,
         }}
       />
     </FormContextProvider>

@@ -208,23 +208,6 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     await waitFor(() => {
       expect(screen.queryByText('Authorize connection to Canvas')).toBeTruthy();
     });
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('API Client ID'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('API Client Secret'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Account Number'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
-        target: { value: '' },
-      });
-    });
 
     userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
     userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
@@ -235,8 +218,16 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
     await waitFor(() => {
+      screen.getByText('Authorization in progress');
+    });
+    const inProgress = screen.getByText('Authorization in progress');
+    await waitForElementToBeRemoved(inProgress);
+
+    screen.debug(undefined, 100000);
+    await waitFor(() => {
       expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
     });
+
     const expectedConfig = {
       active: false,
       canvas_base_url: 'https://www.test4.com',
@@ -265,24 +256,6 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     userEvent.click(screen.getByText('Next'));
     await waitFor(() => {
       expect(screen.queryByText('Authorize connection to Canvas')).toBeTruthy();
-    });
-
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('API Client ID'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('API Client Secret'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Account Number'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
-        target: { value: '' },
-      });
     });
 
     userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');

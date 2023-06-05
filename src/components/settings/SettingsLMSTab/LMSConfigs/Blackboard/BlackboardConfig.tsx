@@ -47,6 +47,7 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
+    console.log('in handle submit');
     const currentFormFields = formFields;
     const transformedConfig: BlackboardConfigSnakeCase = snakeCaseDict(
       formFields,
@@ -72,6 +73,7 @@ export const BlackboardFormConfig = ({
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
     const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
+    console.log('response in awaitaftersubmit', response);
     return response;
   };
 
@@ -96,7 +98,7 @@ export const BlackboardFormConfig = ({
       index: 1,
       formComponent: BlackboardConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: 'Authorize',
+      stepName: 'Configure',
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {
         let config = {

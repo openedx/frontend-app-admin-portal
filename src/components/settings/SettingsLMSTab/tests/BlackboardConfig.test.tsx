@@ -77,7 +77,6 @@ function testBlackboardConfigSetup(formData) {
         },
       })}
       onClickOut={mockOnClick}
-      onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
       dispatch={jest.fn()}
@@ -223,7 +222,6 @@ describe('<BlackboardConfig />', () => {
   });
   test('validates properly formatted existing data on load', () => {
     render(testBlackboardConfigSetup(existingConfigDataNoAuth));
-    expect(screen.getByText('Form updates require reauthorization'));
     // ensuring the existing data is prefilled
     expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
       existingConfigDataNoAuth.displayName,
