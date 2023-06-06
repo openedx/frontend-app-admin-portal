@@ -58,8 +58,8 @@ export const MoodleFormConfig = ({
       currentFormFields,
       MOODLE_TYPE,
       channelMap,
-      errHandler,
       dispatch,
+      errHandler,
     );
   };
 
@@ -67,7 +67,7 @@ export const MoodleFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<MoodleConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, MOODLE_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, MOODLE_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 

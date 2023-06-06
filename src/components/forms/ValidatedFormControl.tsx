@@ -12,7 +12,7 @@ type InheritedParagonControlProps = {
   className?: string;
   type: string;
   maxLength?: number;
-  floatingLabel: string | undefined;
+  floatingLabel?: string;
 };
 
 export type ValidatedFormControlProps = {

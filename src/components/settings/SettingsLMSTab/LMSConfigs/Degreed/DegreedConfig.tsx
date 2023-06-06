@@ -58,8 +58,8 @@ export const DegreedFormConfig = ({
       currentFormFields,
       DEGREED2_TYPE,
       channelMap,
-      errHandler,
       dispatch,
+      errHandler,
     );
   };
 
@@ -67,7 +67,7 @@ export const DegreedFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<DegreedConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, DEGREED2_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, DEGREED2_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 

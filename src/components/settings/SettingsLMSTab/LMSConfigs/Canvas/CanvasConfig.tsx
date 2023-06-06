@@ -61,8 +61,8 @@ export const CanvasFormConfig = ({
       currentFormFields,
       CANVAS_TYPE,
       channelMap,
-      errHandler,
       dispatch,
+      errHandler,
     );
   };
 
@@ -71,7 +71,7 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    const response = await afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
+    const response = await afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, dispatch, errHandler);
     return response;
   };
 
@@ -85,7 +85,7 @@ export const CanvasFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, CANVAS_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, CANVAS_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 

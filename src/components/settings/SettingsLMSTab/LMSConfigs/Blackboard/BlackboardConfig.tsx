@@ -61,8 +61,8 @@ export const BlackboardFormConfig = ({
       currentFormFields,
       BLACKBOARD_TYPE,
       channelMap,
-      errHandler,
       dispatch,
+      errHandler,
     );
   };
 
@@ -71,7 +71,7 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
+    const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, dispatch, errHandler);
     return response;
   };
 
@@ -85,7 +85,7 @@ export const BlackboardFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, BLACKBOARD_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, BLACKBOARD_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 

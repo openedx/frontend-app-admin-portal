@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import omit from 'lodash/omit';
 import isString from 'lodash/isString';
 
@@ -16,8 +16,8 @@ export type ValidatedFormRadioProps = {
   formId: string;
   // Inline Instructions inside form field when blank
   fieldInstructions?: string;
-  label: string | undefined;
-  options: string[][] | undefined
+  label?: string;
+  options?: string[][];
 } & InheritedParagonRadioProps;
 
 const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
@@ -49,8 +49,8 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
     }
   }, [dispatch, props.formId, formRadioProps.value]);
 
-  const createOptions = (options: string[][]) => {
-    const optionList: any = [];
+  const createOptions = (options: [string, string][]) => {
+    const optionList: ReactElement[] = [];
     options?.forEach(option => {
       const radioLabel = option[0];
       const radioValue = option[1];

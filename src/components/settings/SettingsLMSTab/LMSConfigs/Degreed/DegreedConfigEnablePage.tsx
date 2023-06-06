@@ -32,8 +32,6 @@ export const validations: FormFieldValidation[] = [
         return error ? INVALID_LINK : false;
       }
       return validationMessages.degreedUrlRequired;
-
-      return true;
     },
   },
   {

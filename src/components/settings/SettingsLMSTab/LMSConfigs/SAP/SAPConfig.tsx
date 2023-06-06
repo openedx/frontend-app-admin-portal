@@ -58,8 +58,8 @@ export const SAPFormConfig = ({
       currentFormFields,
       SAP_TYPE,
       channelMap,
-      errHandler,
       dispatch,
+      errHandler,
     );
   };
 
@@ -67,7 +67,7 @@ export const SAPFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<SAPConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, SAP_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, SAP_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 

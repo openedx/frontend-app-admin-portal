@@ -3,7 +3,7 @@ import { AlertModal, Spinner } from '@edx/paragon';
 import { useFormContext } from './FormContext';
 import type { FormContext } from './FormContext';
 
-type FormWaitModalType = {
+type FormWaitModalProps = {
   // FormContext state that when truthy, shows the modal
   triggerState: string;
   onClose: () => void;
@@ -17,7 +17,7 @@ const FormWaitModal = ({
   onClose,
   header,
   text,
-}: FormWaitModalType) => {
+}: FormWaitModalProps) => {
   const { stateMap }: FormContext = useFormContext();
   const isOpen = stateMap && stateMap[triggerState];
 

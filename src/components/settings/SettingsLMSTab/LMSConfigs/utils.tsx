@@ -72,8 +72,8 @@ export async function handleSubmitHelper(
   currentFormFields: any,
   lmsType: string,
   channelMap: Record<string, Record<string, any>>,
-  errHandler: FormWorkflowErrorHandler | undefined,
   dispatch: any,
+  errHandler?: FormWorkflowErrorHandler,
 ) {
   const config = transformedConfig;
   let formFields = currentFormFields;
@@ -116,8 +116,8 @@ export async function afterSubmitHelper(
   lmsType: string,
   formFields: any,
   channelMap: Record<string, Record<string, any>>,
-  errHandler: FormWorkflowErrorHandler | undefined,
   dispatch: any,
+  errHandler?: FormWorkflowErrorHandler,
 ) {
   if (formFields?.id) {
     let err = '';
@@ -199,9 +199,9 @@ export async function activateConfig(
   enterpriseCustomerUuid: string,
   channelMap: Record<string, Record<string, any>>,
   lmsType: string,
-  id: string | undefined,
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>,
-  errHandler: FormWorkflowErrorHandler | undefined,
+  id?: string,
+  errHandler?: FormWorkflowErrorHandler,
 ) {
   const configOptions = {
     active: true,

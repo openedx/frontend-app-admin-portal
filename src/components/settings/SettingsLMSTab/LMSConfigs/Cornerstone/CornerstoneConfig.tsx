@@ -58,8 +58,8 @@ export const CornerstoneFormConfig = ({
       currentFormFields,
       CORNERSTONE_TYPE,
       channelMap,
-      errHandler,
       dispatch,
+      errHandler,
     );
   };
 
@@ -67,7 +67,7 @@ export const CornerstoneFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<CornerstoneConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, CORNERSTONE_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, CORNERSTONE_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 

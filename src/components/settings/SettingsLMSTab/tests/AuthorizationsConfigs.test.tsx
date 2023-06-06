@@ -223,7 +223,6 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     const inProgress = screen.getByText('Authorization in progress');
     await waitForElementToBeRemoved(inProgress);
 
-    screen.debug(undefined, 100000);
     await waitFor(() => {
       expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
     });
