@@ -72,21 +72,11 @@ export const validations: FormFieldValidation[] = [
       const token = fields[formFieldNames.TOKEN];
       const username = fields[formFieldNames.USERNAME];
       const password = fields[formFieldNames.PASSWORD];
-      let error;
+      let error: boolean;
       if (!token) {
-        if (username && password) {
-          error = false;
-        } else if ((username && !password) || (!username && password)) {
-          error = true;
-        } else { // no fields filled out
-          error = true;
-        }
-      } else if (token) {
-        if (username || password) {
-          error = true;
-        } else {
-          error = false;
-        }
+        error = !(username && password);
+      } else {
+        error = !!(username || password);
       }
       return error && validationMessages.verificationRequired;
     },
