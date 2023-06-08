@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-// @ts-ignore
-import ConfigErrorModal from './ConfigErrorModal.tsx';
+import ConfigErrorModal from './ConfigErrorModal';
 
 const mockClose = jest.fn();
 

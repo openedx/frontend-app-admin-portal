@@ -1,22 +1,15 @@
 import React from 'react';
 import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
+  act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
-// @ts-ignore
-import MoodleConfig from '../LMSConfigs/Moodle/MoodleConfig.tsx';
+import MoodleConfig from '../LMSConfigs/Moodle/MoodleConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
-// @ts-ignore
-import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
-// @ts-ignore
-import { validationMessages } from '../LMSConfigs/Moodle/MoodleConfigEnablePage.tsx';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
+import { validationMessages } from '../LMSConfigs/Moodle/MoodleConfigEnablePage';
 
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateMoodleConfig');
 const mockConfigResponseData = {
@@ -86,7 +79,6 @@ function testMoodleConfigSetup(formData) {
         },
       })}
       onClickOut={mockOnClick}
-      onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
       dispatch={jest.fn()}

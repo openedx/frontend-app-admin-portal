@@ -1,25 +1,23 @@
-import React from "react";
+import React from 'react';
 
-import { Container, Form, Image } from "@edx/paragon";
+import { Container, Form, Image } from '@edx/paragon';
 
-// @ts-ignore
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-// @ts-ignore
-import ValidatedFormRadio from "../../../../forms/ValidatedFormRadio.tsx";
-import { channelMapping, urlValidation } from "../../../../../utils";
-import { INVALID_LINK, INVALID_NAME, SAP_TYPE } from "../../../data/constants";
+import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
+import ValidatedFormRadio from '../../../../forms/ValidatedFormRadio';
+import { channelMapping, urlValidation } from '../../../../../utils';
+import { INVALID_LINK, INVALID_NAME, SAP_TYPE } from '../../../data/constants';
 import type {
   FormFieldValidation,
-} from "../../../../forms/FormContext";
+} from '../../../../forms/FormContext';
 
 export const formFieldNames = {
-  DISPLAY_NAME: "displayName",
-  SAPSF_BASE_URL: "sapsfBaseUrl",
-  SAPSF_COMPANY_ID: "sapsfCompanyId",
-  SAPSF_USER_ID: "sapsfUserId",
-  KEY: "key",
-  SECRET: "secret",
-  USER_TYPE: "userType",
+  DISPLAY_NAME: 'displayName',
+  SAPSF_BASE_URL: 'sapsfBaseUrl',
+  SAPSF_COMPANY_ID: 'sapsfCompanyId',
+  SAPSF_USER_ID: 'sapsfUserId',
+  KEY: 'key',
+  SECRET: 'secret',
+  USER_TYPE: 'userType',
 };
 
 export const validationMessages = {
@@ -40,9 +38,8 @@ export const validations: FormFieldValidation[] = [
       if (sapUrl) {
         const error = !urlValidation(sapUrl);
         return error ? INVALID_LINK : false;
-      } else {
-        return true;
       }
+      return true;
     },
   },
   {
@@ -104,77 +101,75 @@ export const validations: FormFieldValidation[] = [
   },
 ];
 
-const SAPConfigEnablePage = () => {
-  return (
-    <Container size='md'>
-      <span className='d-flex pb-4'>
-        <Image
-          className="lms-icon mr-2"
-          src={channelMapping[SAP_TYPE].icon}
+const SAPConfigEnablePage = () => (
+  <Container size="md">
+    <span className="d-flex pb-4">
+      <Image
+        className="lms-icon mr-2"
+        src={channelMapping[SAP_TYPE].icon}
+      />
+      <h3>
+        Enable connection to SAP Success Factors
+      </h3>
+    </span>
+    <Form style={{ maxWidth: '60rem' }}>
+      <Form.Group className="mb-4">
+        <ValidatedFormControl
+          formId={formFieldNames.DISPLAY_NAME}
+          type="text"
+          floatingLabel="Display Name"
+          fieldInstructions="Create a custom name for this LMS"
         />
-        <h3>
-          Enable connection to SAP Success Factors
-        </h3>
-      </span>
-      <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group className="mb-4">
-          <ValidatedFormControl
-            formId={formFieldNames.DISPLAY_NAME}
-            type="text"
-            floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS"
-          />
-        </Form.Group>
-        <Form.Group className="mb-4.5">
-          <ValidatedFormControl
-            formId={formFieldNames.SAPSF_BASE_URL}
-            type="text"
-            maxLength={255}
-            floatingLabel="SAP Base URL"
-          />
-        </Form.Group>
-        <Form.Group className="mb-4.5">
-          <ValidatedFormControl
-            formId={formFieldNames.SAPSF_COMPANY_ID}
-            type="text"
-            maxLength={255}
-            floatingLabel="SAP Company ID"
-          />
-        </Form.Group>
-        <Form.Group className="mb-4.5">
-          <ValidatedFormControl
-            formId={formFieldNames.SAPSF_USER_ID}
-            type="text"
-            maxLength={255}
-            floatingLabel="SAP User ID"
-          />
-        </Form.Group>
-        <Form.Group className="mb-4.5">
-          <ValidatedFormControl
-            formId={formFieldNames.KEY}
-            type="text"
-            maxLength={255}
-            floatingLabel="OAuth Client ID"
-          />
-        </Form.Group>
-        <Form.Group className="mb-4.5">
-          <ValidatedFormControl
-            formId={formFieldNames.SECRET}
-            type="password"
-            maxLength={255}
-            floatingLabel="OAuth Client Secret"
-          />
-        </Form.Group>
-        <Form.Group className="mb-4.5">
-          <ValidatedFormRadio
-            formId={formFieldNames.USER_TYPE}
-            label="SAP User Type"
-            options={[["User", "user"],["Admin", "admin"]]}
-          />
-        </Form.Group>
-      </Form>
-    </Container>
-  );
-};
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.SAPSF_BASE_URL}
+          type="text"
+          maxLength={255}
+          floatingLabel="SAP Base URL"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.SAPSF_COMPANY_ID}
+          type="text"
+          maxLength={255}
+          floatingLabel="SAP Company ID"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.SAPSF_USER_ID}
+          type="text"
+          maxLength={255}
+          floatingLabel="SAP User ID"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.KEY}
+          type="text"
+          maxLength={255}
+          floatingLabel="OAuth Client ID"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.SECRET}
+          type="password"
+          maxLength={255}
+          floatingLabel="OAuth Client Secret"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormRadio
+          formId={formFieldNames.USER_TYPE}
+          label="SAP User Type"
+          options={[['User', 'user'], ['Admin', 'admin']]}
+        />
+      </Form.Group>
+    </Form>
+  </Container>
+);
 
 export default SAPConfigEnablePage;

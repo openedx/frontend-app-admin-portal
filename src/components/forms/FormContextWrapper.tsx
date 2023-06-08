@@ -1,35 +1,29 @@
-import React, { useReducer } from "react";
-// @ts-ignore
-import FormContextProvider from "./FormContext.tsx";
-import type { FormFields } from "./FormContext";
-// @ts-ignore
-import FormWorkflow from "./FormWorkflow.tsx";
-import type { FormWorkflowProps } from "./FormWorkflow";
-// @ts-ignore
-import {FormReducer, initializeForm } from "./data/reducer.ts";
-import type { FormActionArguments } from "./data/actions";
+import React, { useReducer } from 'react';
+import FormContextProvider from './FormContext';
+import FormWorkflow, { FormWorkflowProps } from './FormWorkflow';
+import {
+  FormReducer, FormReducerType, initializeForm, InitializeFormArguments,
+} from './data/reducer';
 
-// Context wrapper for multi-step form container
-function FormContextWrapper<FormData>({
+type FormWrapperProps<FormConfigData> = FormWorkflowProps<FormConfigData> & { formData: FormConfigData };
+
+const FormContextWrapper = <FormConfigData extends unknown>({
   formWorkflowConfig,
   onClickOut,
-  onSubmit,
   formData,
   isStepperOpen,
-}: FormWorkflowProps<FormData>) {
+}: FormWrapperProps<FormConfigData>) => {
+  const initializeAction: InitializeFormArguments<FormConfigData> = {
+    formFields: formData as FormConfigData,
+    currentStep: formWorkflowConfig.getCurrentStep(),
+  };
   const [formFieldsState, dispatch] = useReducer<
-    FormReducer,
-    FormActionArguments
+  FormReducerType,
+  InitializeFormArguments<FormConfigData>
   >(
     FormReducer,
-    initializeForm(
-      {},
-      {
-        formFields: formData as FormFields,
-        currentStep: formWorkflowConfig.getCurrentStep(),
-      }
-    ),
-    initializeForm
+    initializeAction,
+    initializeForm,
   );
   return (
     <FormContextProvider
@@ -37,10 +31,12 @@ function FormContextWrapper<FormData>({
       formContext={formFieldsState || {}}
     >
       <FormWorkflow
-        {...{ formWorkflowConfig, onClickOut, onSubmit, isStepperOpen, dispatch }}
+        {...{
+          formWorkflowConfig, onClickOut, isStepperOpen, dispatch,
+        }}
       />
     </FormContextProvider>
   );
-}
+};
 
 export default FormContextWrapper;

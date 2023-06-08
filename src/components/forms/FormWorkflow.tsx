@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from "react";
-import type { Dispatch } from "react";
-import { ActionRow, Button, FullscreenModal, Hyperlink, Stepper, useToggle } from "@edx/paragon";
-import { Launch } from "@edx/paragon/icons";
+import React, { useEffect, useState } from 'react';
+import type { Dispatch } from 'react';
+import {
+  ActionRow, Button, FullscreenModal, Hyperlink, Stepper, useToggle,
+} from '@edx/paragon';
+import { Launch } from '@edx/paragon/icons';
 
-// @ts-ignore
-import { FormFields, useFormContext } from "./FormContext.tsx";
-import type { FormFieldValidation, FormContext } from "./FormContext";
-// @ts-ignore
-import { setStepAction, setWorkflowStateAction, FORM_ERROR_MESSAGE, setShowErrorsAction } from "./data/actions.ts";
-import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from "../settings/data/constants";
-import { FormActionArguments } from "./data/actions";
-// @ts-ignore
-import UnsavedChangesModal from "../settings/SettingsLMSTab/UnsavedChangesModal.tsx";
-// @ts-ignore
-import ConfigErrorModal from "../settings/ConfigErrorModal.tsx";
-import { channelMapping, pollAsync } from "../../utils";
-// @ts-ignore
-import { InitializeFormArguments, initializeForm } from "./data/reducer.ts";
+import { useFormContext } from './FormContext';
+import type { FormFieldValidation, FormContext } from './FormContext';
+import {
+  FORM_ERROR_MESSAGE, FormActionArguments, setStepAction, setWorkflowStateAction, setShowErrorsAction,
+} from './data/actions';
+import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from '../settings/data/constants';
+import UnsavedChangesModal from '../settings/SettingsLMSTab/UnsavedChangesModal';
+import ConfigErrorModal from '../settings/ConfigErrorModal';
+import { channelMapping, pollAsync } from '../../utils';
 
-export const WAITING_FOR_ASYNC_OPERATION = "WAITING FOR ASYNC OPERATION";
+export const WAITING_FOR_ASYNC_OPERATION = 'WAITING FOR ASYNC OPERATION';
 
 export type FormWorkflowErrorHandler = (errMsg: string) => void;
 
@@ -39,7 +36,7 @@ export type FormWorkflowAwaitHandler<FormData> = {
 export type FormWorkflowButtonConfig<FormData> = {
   buttonText: string;
   opensNewWindow: boolean;
-  onClick: (args: FormWorkflowHandlerArgs<FormData>) => Promise<FormData>;
+  onClick?: (args: FormWorkflowHandlerArgs<FormData>) => Promise<FormData> | void;
   awaitSuccess?: FormWorkflowAwaitHandler<FormData>;
 };
 
@@ -50,7 +47,7 @@ export type FormWorkflowStep<FormData> = {
   stepName: string;
   formComponent: DynamicComponent;
   validations: FormFieldValidation[];
-  saveChanges: (
+  saveChanges?: (
     formData: FormData,
     errHandler: FormWorkflowErrorHandler
   ) => Promise<boolean>;
@@ -62,27 +59,24 @@ export type FormWorkflowConfig<FormData> = {
   getCurrentStep: () => FormWorkflowStep<FormData>;
 };
 
-export type FormWorkflowProps<FormData> = {
-  formWorkflowConfig: FormWorkflowConfig<FormData>;
+export type FormWorkflowProps<FormConfigData> = {
+  formWorkflowConfig: FormWorkflowConfig<FormConfigData>;
   onClickOut: (edited: boolean, msg?: string) => null;
-  formData: FormData;
   dispatch: Dispatch<FormActionArguments>;
-  onSubmit: (FormData: FormData) => void;
   isStepperOpen: boolean;
 };
 
 // Modal container for multi-step forms
-function FormWorkflow<FormData>({
+const FormWorkflow = <FormConfigData extends unknown>({
   formWorkflowConfig,
   onClickOut,
   isStepperOpen,
   dispatch,
-}: FormWorkflowProps<FormData>) {
+}: FormWorkflowProps<FormConfigData>) => {
   const {
     formFields,
     currentStep: step,
     hasErrors,
-    showErrors,
     isEdited,
     stateMap,
   }: FormContext = useFormContext();
@@ -98,7 +92,7 @@ function FormWorkflow<FormData>({
   const setFormError = (msg: string) => {
     dispatch(setWorkflowStateAction(FORM_ERROR_MESSAGE, msg));
   };
-  const clearFormError = () => setFormError("");
+  const clearFormError = () => setFormError('');
 
   const onCancel = () => {
     if (isEdited) {
@@ -111,12 +105,12 @@ function FormWorkflow<FormData>({
   const onNext = async () => {
     if (hasErrors && step) {
       dispatch(setShowErrorsAction({ showErrors: true }));
-      //triggers rerender to have errors show up with 
-      dispatch(setStepAction({ step: step }));
+      // triggers rerender to have errors show up with
+      dispatch(setStepAction({ step }));
     } else {
       let advance = true;
-      if (nextButtonConfig) {
-        let newFormFields: FormData = await nextButtonConfig.onClick({
+      if (nextButtonConfig && nextButtonConfig.onClick) {
+        const newFormFields: FormConfigData = await nextButtonConfig.onClick({
           formFields,
           errHandler: setFormError,
           dispatch,
@@ -124,15 +118,14 @@ function FormWorkflow<FormData>({
         });
         if (nextButtonConfig?.awaitSuccess) {
           advance = await pollAsync(
-            () =>
-              nextButtonConfig.awaitSuccess?.awaitCondition?.({
-                formFields: newFormFields,
-                errHandler: setFormError,
-                dispatch,
-                formFieldsChanged: !!isEdited,
-              }),
+            () => nextButtonConfig.awaitSuccess?.awaitCondition?.({
+              formFields: newFormFields,
+              errHandler: setFormError,
+              dispatch,
+              formFieldsChanged: !!isEdited,
+            }),
             nextButtonConfig.awaitSuccess.awaitTimeout,
-            nextButtonConfig.awaitSuccess.awaitInterval
+            nextButtonConfig.awaitSuccess.awaitInterval,
           );
           if (!advance && nextButtonConfig?.awaitSuccess) {
             nextButtonConfig.awaitSuccess?.onAwaitTimeout?.({
@@ -156,19 +149,23 @@ function FormWorkflow<FormData>({
     }
   };
 
-  const stepBody = (step: FormWorkflowStep<FormData>) => {
-    const FormComponent: DynamicComponent = step?.formComponent;
-    return (
-      <Stepper.Step
-        eventKey={step.index.toString()}
-        title={step.stepName}>
-        {/* there's a bug in paragon that reorders the steps when there's an error
+  const stepBody = (currentStep: FormWorkflowStep<FormConfigData>) => {
+    if (currentStep) {
+      const FormComponent: DynamicComponent = currentStep?.formComponent;
+      return (
+        <Stepper.Step
+          eventKey={currentStep.index.toString()}
+          title={currentStep.stepName}
+        >
+          {/* there's a bug in paragon that reorders the steps when there's an error
         so we can't comment this back in until that is fixed
         hasError={showError}
         description={showError ? 'Error' : ''}> */}
-        {step && step?.formComponent && <FormComponent />}
-      </Stepper.Step>
-    );
+          {step && step?.formComponent && <FormComponent />}
+        </Stepper.Step>
+      );
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -189,8 +186,10 @@ function FormWorkflow<FormData>({
         close={closeSavedChangesModal}
         exitWithoutSaving={() => onClickOut(false)}
         saveDraft={async () => {
-          await step?.saveChanges(formFields as FormData, setFormError);
-          onClickOut(true, SUBMIT_TOAST_MESSAGE);
+          if (step?.saveChanges) {
+            await step?.saveChanges(formFields as FormConfigData, setFormError);
+            onClickOut(true, SUBMIT_TOAST_MESSAGE);
+          }
         }}
       />
 
@@ -199,7 +198,7 @@ function FormWorkflow<FormData>({
           title="New learning platform integration"
           isOpen={isStepperOpen}
           onClose={onCancel}
-          className='stepper-modal'
+          className="stepper-modal"
           footerNode={(
             <ActionRow>
               <Hyperlink
@@ -228,6 +227,6 @@ function FormWorkflow<FormData>({
       )}
     </>
   );
-}
+};
 
 export default FormWorkflow;

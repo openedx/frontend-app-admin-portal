@@ -1,24 +1,23 @@
-import { useState } from "react";
-import isEmpty from "lodash/isEmpty";
+import { useState } from 'react';
+import isEmpty from 'lodash/isEmpty';
 
-import { CANVAS_TYPE } from "../data/constants";
-// @ts-ignore
-import type { FormWorkflowConfig, FormWorkflowStep } from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import BlackboardFormConfig, { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from "./LMSConfigs/Blackboard/BlackboardConfig.tsx";
-// @ts-ignore
-import CanvasFormConfig, { CanvasConfigCamelCase, CanvasConfigSnakeCase } from "./LMSConfigs/Canvas/CanvasConfig.tsx";
-// @ts-ignore
-import CornerstoneFormConfig, { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from "./LMSConfigs/Cornerstone/CornerstoneConfig.tsx";
-// @ts-ignore
-import DegreedFormConfig, { DegreedConfigCamelCase, DegreedConfigSnakeCase } from "./LMSConfigs/Degreed/DegreedConfig.tsx";
-// @ts-ignore
-import MoodleFormConfig, { MoodleConfigCamelCase, MoodleConfigSnakeCase } from "./LMSConfigs/Moodle/MoodleConfig.tsx";
-// @ts-ignore
-import SAPFormConfig, { SAPConfigCamelCase, SAPConfigSnakeCase } from "./LMSConfigs/SAP/SAPConfig.tsx";
-import { BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE } from "../data/constants";
-// @ts-ignore
-import { LMSSelectorPage, validations} from "./LMSSelectorPage.tsx";
+import {
+  CANVAS_TYPE, BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
+} from '../data/constants';
+import type { FormWorkflowConfig, FormWorkflowStep } from '../../forms/FormWorkflow';
+import BlackboardFormConfig from './LMSConfigs/Blackboard/BlackboardConfig';
+import type { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './LMSConfigs/Blackboard/BlackboardTypes';
+import CanvasFormConfig from './LMSConfigs/Canvas/CanvasConfig';
+import type { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './LMSConfigs/Canvas/CanvasTypes';
+import CornerstoneFormConfig from './LMSConfigs/Cornerstone/CornerstoneConfig';
+import type { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from './LMSConfigs/Cornerstone/CornerstoneTypes';
+import DegreedFormConfig from './LMSConfigs/Degreed/DegreedConfig';
+import type { DegreedConfigCamelCase, DegreedConfigSnakeCase } from './LMSConfigs/Degreed/DegreedTypes';
+import MoodleFormConfig from './LMSConfigs/Moodle/MoodleConfig';
+import type { MoodleConfigCamelCase, MoodleConfigSnakeCase } from './LMSConfigs/Moodle/MoodleTypes';
+import SAPFormConfig from './LMSConfigs/SAP/SAPConfig';
+import type { SAPConfigCamelCase, SAPConfigSnakeCase } from './LMSConfigs/SAP/SAPTypes';
+import { LMSSelectorPage, validations } from './LMSSelectorPage';
 
 const flowConfigs = {
   [BLACKBOARD_TYPE]: BlackboardFormConfig,
@@ -29,10 +28,10 @@ const flowConfigs = {
   [SAP_TYPE]: SAPFormConfig,
 };
 
-export type LMSConfigCamelCase = BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase | DegreedConfigCamelCase
-  | MoodleConfigCamelCase | SAPConfigCamelCase;
-export type LMSConfigSnakeCase = BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase | DegreedConfigSnakeCase
-  | MoodleConfigSnakeCase | SAPConfigSnakeCase;
+export type LMSConfigCamelCase = BlackboardConfigCamelCase | CanvasConfigCamelCase | CornerstoneConfigCamelCase
+| DegreedConfigCamelCase | MoodleConfigCamelCase | SAPConfigCamelCase;
+export type LMSConfigSnakeCase = BlackboardConfigSnakeCase | CanvasConfigSnakeCase | CornerstoneConfigSnakeCase
+| DegreedConfigSnakeCase | MoodleConfigSnakeCase | SAPConfigSnakeCase;
 
 export type LMSFormConfigProps = {
   enterpriseCustomerUuid: string;
@@ -53,28 +52,27 @@ export const LMSFormWorkflowConfig = ({
   channelMap,
   lmsType,
 }: LMSFormConfigProps): FormWorkflowConfig<LMSConfigCamelCase> => {
-  const [lms, setLms] = useState(lmsType ? lmsType : '');
+  const [lms, setLms] = useState(lmsType || '');
   // once an lms is selected by the user (or they are editing and existing one)
   // we dynamically render the correct FormConfig
-  const lmsConfig =
-    (lms && !isEmpty(lms)) &&
-    flowConfigs[lms]({
+  const lmsConfig = (lms && !isEmpty(lms))
+    && flowConfigs[lms]({
       enterpriseCustomerUuid,
       onSubmit,
       handleCloseClick,
       existingData,
       existingConfigNames,
-      channelMap
+      channelMap,
     });
 
   let steps: FormWorkflowStep<LMSConfigCamelCase>[] = [
     {
       index: 0,
       formComponent: LMSSelectorPage(setLms),
-      validations: validations,
-      stepName: "Select",
+      validations,
+      stepName: 'Select',
       nextButtonConfig: () => ({
-        buttonText: "Next",
+        buttonText: 'Next',
         opensNewWindow: false,
         onClick: () => {},
       }),
@@ -88,12 +86,24 @@ export const LMSFormWorkflowConfig = ({
     steps = steps.concat(
       {
         index: 1,
-        stepName: "Configure",
+        formComponent: LMSSelectorPage(setLms),
+        validations,
+        stepName: 'Activate',
+        nextButtonConfig: () => ({
+          buttonText: 'Next',
+          opensNewWindow: false,
+        }),
       },
       {
         index: 2,
-        stepName: "Activate",
-      }
+        formComponent: LMSSelectorPage(setLms),
+        validations,
+        stepName: 'Enable',
+        nextButtonConfig: () => ({
+          buttonText: 'Next',
+          opensNewWindow: false,
+        }),
+      },
     );
   }
 

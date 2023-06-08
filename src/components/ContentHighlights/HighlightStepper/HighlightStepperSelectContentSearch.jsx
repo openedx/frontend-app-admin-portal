@@ -25,44 +25,6 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const HighlightStepperSelectContent = ({ enterpriseId }) => {
-  const { setCurrentSelectedRowIds } = useContentHighlightsContext();
-  const currentSelectedRowIds = useContextSelector(
-    ContentHighlightsContext,
-    v => v[0].stepperModal.currentSelectedRowIds,
-  );
-  const searchClient = useContextSelector(
-    ContentHighlightsContext,
-    v => v[0].searchClient,
-  );
-    // TODO: replace testEnterpriseId with enterpriseId before push,
-    // uncomment out import and replace with testEnterpriseId to test
-  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
-
-  return (
-    <SearchData>
-      <InstantSearch
-        indexName={configuration.ALGOLIA.INDEX_NAME}
-        searchClient={searchClient}
-      >
-        <Configure
-          filters={searchFilters}
-          hitsPerPage={MAX_PAGE_SIZE}
-        />
-        <SearchHeader variant="default" />
-        <HighlightStepperSelectContentDataTable
-          selectedRowIds={currentSelectedRowIds}
-          onSelectedRowsChanged={setCurrentSelectedRowIds}
-        />
-      </InstantSearch>
-    </SearchData>
-  );
-};
-
-HighlightStepperSelectContent.propTypes = {
-  enterpriseId: PropTypes.string.isRequired,
-};
-
 const PriceTableCell = ({ row }) => {
   const contentPrice = row.original.firstEnrollablePaidSeatPrice;
   if (!contentPrice) {
@@ -175,5 +137,43 @@ BaseHighlightStepperSelectContentDataTable.defaultProps = {
 };
 
 const HighlightStepperSelectContentDataTable = connectStateResults(BaseHighlightStepperSelectContentDataTable);
+
+const HighlightStepperSelectContent = ({ enterpriseId }) => {
+  const { setCurrentSelectedRowIds } = useContentHighlightsContext();
+  const currentSelectedRowIds = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.currentSelectedRowIds,
+  );
+  const searchClient = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].searchClient,
+  );
+    // TODO: replace testEnterpriseId with enterpriseId before push,
+    // uncomment out import and replace with testEnterpriseId to test
+  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
+
+  return (
+    <SearchData>
+      <InstantSearch
+        indexName={configuration.ALGOLIA.INDEX_NAME}
+        searchClient={searchClient}
+      >
+        <Configure
+          filters={searchFilters}
+          hitsPerPage={MAX_PAGE_SIZE}
+        />
+        <SearchHeader variant="default" />
+        <HighlightStepperSelectContentDataTable
+          selectedRowIds={currentSelectedRowIds}
+          onSelectedRowsChanged={setCurrentSelectedRowIds}
+        />
+      </InstantSearch>
+    </SearchData>
+  );
+};
+
+HighlightStepperSelectContent.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
 
 export default HighlightStepperSelectContent;

@@ -146,7 +146,7 @@ describe('CodeAssignmentModal component', () => {
     expect(screen.getByText(initialProps.title)).toBeInTheDocument();
   });
   it('displays an error', () => {
-    // eslint-disable-next-line global-require, no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, global-require
     const { Field } = require('redux-form');
     const error = 'Errors ahoy!';
     const props = { ...initialProps, error: [error], submitFailed: true };

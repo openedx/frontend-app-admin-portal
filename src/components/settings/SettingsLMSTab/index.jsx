@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
   Alert, Button, Hyperlink, Toast, Skeleton, useToggle,
@@ -14,15 +15,11 @@ import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
 import NoConfigCard from './NoConfigCard';
 import {
-  HELP_CENTER_LINK,
-  ACTIVATE_TOAST_MESSAGE,
-  DELETE_TOAST_MESSAGE,
-  INACTIVATE_TOAST_MESSAGE,
-  SUBMIT_TOAST_MESSAGE,
+  HELP_CENTER_LINK, ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE,
+  INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE,
 } from '../data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
-// @ts-ignore
-import { useFormContext } from '../../forms/FormContext.tsx';
+import { useFormContext } from '../../forms/FormContext';
 
 const SettingsLMSTab = ({
   enterpriseId,

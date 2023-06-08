@@ -1,10 +1,10 @@
-import type { FormWorkflowStep } from "../FormWorkflow";
+import type { FormWorkflowStep } from '../FormWorkflow';
 
 export type FormActionArguments = {
   type?: string;
 };
 
-export const SET_FORM_FIELD = "SET FORM FIELD";
+export const SET_FORM_FIELD = 'SET FORM FIELD';
 export type SetFormFieldArguments = {
   // Id of form field
   fieldId: string;
@@ -21,7 +21,7 @@ export const setFormFieldAction = ({
   value,
 });
 
-export const UPDATE_FORM_FIELDS = "UPDATE FORM FIELDS";
+export const UPDATE_FORM_FIELDS = 'UPDATE FORM FIELDS';
 export type UpdateFormFieldArguments<FormData> = {
   formFields: FormData;
 } & FormActionArguments;
@@ -35,7 +35,7 @@ export function updateFormFieldsAction<FormData>({
   };
 }
 
-export const SET_SHOW_ERRORS = "SET SHOW ERRORS";
+export const SET_SHOW_ERRORS = 'SET SHOW ERRORS';
 export type SetShowErrorsArguments = {
   showErrors: boolean;
 } & FormActionArguments;
@@ -45,7 +45,7 @@ export const setShowErrorsAction = ({ showErrors }: SetShowErrorsArguments) => (
   showErrors,
 });
 
-export const SET_STEP = "SET STEP";
+export const SET_STEP = 'SET STEP';
 export type SetStepArguments<FormData> = {
   step: FormWorkflowStep<FormData>;
 } & FormActionArguments;
@@ -56,9 +56,9 @@ export const setStepAction = ({ step }: SetStepArguments<any>) => ({
 });
 
 // Global Workflow state keys
-export const FORM_ERROR_MESSAGE = "FORM ERROR MESSAGE";
+export const FORM_ERROR_MESSAGE = 'FORM ERROR MESSAGE';
 
-export const SET_WORKFLOW_STATE = "SET WORKFLOW STATE";
+export const SET_WORKFLOW_STATE = 'SET WORKFLOW STATE';
 export type SetWorkflowStateArguments<StateType> = {
   name: string;
   state: StateType;
@@ -66,7 +66,7 @@ export type SetWorkflowStateArguments<StateType> = {
 // Construct action for setting a flag for the workflow
 export function setWorkflowStateAction<StateType>(
   name: string,
-  state: StateType
+  state: StateType,
 ): SetWorkflowStateArguments<StateType> {
   return {
     type: SET_WORKFLOW_STATE,
