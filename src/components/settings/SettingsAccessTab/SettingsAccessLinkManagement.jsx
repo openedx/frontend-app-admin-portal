@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -6,7 +6,6 @@ import {
   Alert,
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
-import moment from 'moment';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
@@ -22,7 +21,7 @@ import DisableLinkManagementAlertModal from './DisableLinkManagementAlertModal';
 import { updatePortalConfigurationEvent } from '../../../data/actions/portalConfiguration';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
-import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { MAX_UNIVERSAL_LINKS } from '../data/constants';
 
 const SettingsAccessLinkManagement = ({
   enterpriseUUID,
@@ -35,31 +34,9 @@ const SettingsAccessLinkManagement = ({
     refreshLinks,
   } = useLinkManagement(enterpriseUUID);
 
-  const {
-    customerAgreement,
-    coupons,
-  } = useContext(EnterpriseSubsidiesContext);
-
   const [isLinkManagementAlertModalOpen, setIsLinkManagementAlertModalOpen] = useState(false);
   const [isLoadingLinkManagementEnabledChange, setIsLoadingLinkManagementEnabledChange] = useState(false);
   const [hasLinkManagementEnabledChangeError, setHasLinkManagementEnabledChangeError] = useState(false);
-
-  const formattedLinkExpirationDate = useMemo(
-    () => {
-      const expirationDates = [
-        ...coupons.map(coupon => moment(coupon.endDate)),
-        ...(customerAgreement?.subscriptions ?? []).map(subscription => moment(subscription.expirationDate).startOf('day')),
-      ];
-
-      if (expirationDates.length === 0 || moment.max(expirationDates) < moment()) {
-        return null;
-      }
-
-      const furthestExpirationDate = moment.max(expirationDates);
-      return furthestExpirationDate.format();
-    },
-    [coupons, customerAgreement],
-  );
 
   const toggleUniversalLink = async (newEnableUniversalLink) => {
     setIsLoadingLinkManagementEnabledChange(true);
@@ -67,10 +44,6 @@ const SettingsAccessLinkManagement = ({
       enterpriseUUID,
       enableUniversalLink: newEnableUniversalLink,
     };
-
-    if (newEnableUniversalLink && formattedLinkExpirationDate) {
-      args.expirationDate = formattedLinkExpirationDate;
-    }
 
     try {
       await LmsApiService.toggleEnterpriseCustomerUniversalLink(args);
@@ -130,7 +103,12 @@ const SettingsAccessLinkManagement = ({
         loading={isLoadingLinkManagementEnabledChange}
         disabled={isLoadingLinkManagementEnabledChange}
       >
-        <p>Generate a link to share with your learners.</p>
+        <p>Generate a link to share with your learners (up to a maximum of {MAX_UNIVERSAL_LINKS} links).</p>
+        {links.length >= MAX_UNIVERSAL_LINKS && (
+          <Alert icon={Info} variant="danger">
+            You generated the maximum of {MAX_UNIVERSAL_LINKS} links. No additional links may be generated.
+          </Alert>
+        )}
         <DataTable
           data={links}
           itemCount={links.length}
@@ -138,9 +116,9 @@ const SettingsAccessLinkManagement = ({
           tableActions={[
             <SettingsAccessGenerateLinkButton
               enterpriseUUID={enterpriseUUID}
-              formattedLinkExpirationDate={formattedLinkExpirationDate}
               onSuccess={handleGenerateLinkSuccess}
-              disabled={!isUniversalLinkEnabled || !formattedLinkExpirationDate || loadingLinks}
+              linksCount={links.length}
+              disabled={!isUniversalLinkEnabled || loadingLinks}
             />,
           ]}
           columns={[
