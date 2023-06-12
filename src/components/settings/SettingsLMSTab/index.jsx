@@ -62,17 +62,19 @@ const SettingsLMSTab = ({
     openLmsStepper();
   }, [dispatch, openLmsStepper]);
 
-  // we pass in params (configId and lmsType) from SyncHistory when user wants to edit that config
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
-    const fetchData = async () => channelMapping[query.get('lms')].fetch(query.get('id'));
-    fetchData()
-      .then((response) => {
-        editExistingConfig(camelCaseObject(response.data), query.get('id'));
-      })
-      .catch((err) => {
-        logError(err);
-      });
+    // if we have passed in params (lmsType and configId) from SyncHistory, user wants to edit that config
+    if (query.has('lms') && query.has('id')) {
+      const fetchData = async () => channelMapping[query.get('lms')].fetch(query.get('id'));
+      fetchData()
+        .then((response) => {
+          editExistingConfig(camelCaseObject(response.data), query.get('id'));
+        })
+        .catch((err) => {
+          logError(err);
+        });
+    }
   }, [editExistingConfig]);
 
   const fetchExistingConfigs = useCallback(() => {
