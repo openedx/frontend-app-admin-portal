@@ -1,5 +1,7 @@
 import _ from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -10,7 +12,7 @@ import {
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
-import { camelCaseDictArray, channelMapping } from '../../../utils';
+import { camelCaseDictArray, getChannelMap } from '../../../utils';
 import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
 import NoConfigCard from './NoConfigCard';
@@ -44,6 +46,7 @@ const SettingsLMSTab = ({
   const [isLmsStepperOpen, openLmsStepper, closeLmsStepper] = useToggle(false);
   const toastMessages = [ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE];
   const { dispatch } = useFormContext();
+  const channelMap = useMemo(() => getChannelMap(), []);
 
   // onClick function for existing config cards' edit action
   const editExistingConfig = useCallback((configData, configType) => {
@@ -66,7 +69,7 @@ const SettingsLMSTab = ({
     const query = new URLSearchParams(window.location.search);
     // if we have passed in params (lmsType and configId) from SyncHistory, user wants to edit that config
     if (query.has('lms') && query.has('id')) {
-      const fetchData = async () => channelMapping[query.get('lms')].fetch(query.get('id'));
+      const fetchData = async () => channelMap[query.get('lms')].fetch(query.get('id'));
       fetchData()
         .then((response) => {
           editExistingConfig(camelCaseObject(response.data), query.get('id'));
@@ -75,7 +78,7 @@ const SettingsLMSTab = ({
           logError(err);
         });
     }
-  }, [editExistingConfig]);
+  }, [channelMap, editExistingConfig]);
 
   const fetchExistingConfigs = useCallback(() => {
     const options = { enterprise_customer: enterpriseId };

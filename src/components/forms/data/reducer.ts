@@ -131,7 +131,6 @@ export const FormReducer: FormReducerType = (
         ...oldStateMap,
         [setStateArgs.name]: setStateArgs.state,
       };
-      console.log('setting state to ', newStateMap);
       return { ...state, stateMap: newStateMap };
     } default:
       return state;
