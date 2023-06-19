@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import last from 'lodash/last';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import CodeAssignmentModal from './index';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
@@ -67,13 +68,15 @@ const initialState = {
 const CodeAssignmentModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <CodeAssignmentModal
-        couponId={1}
-        title="AABBCC"
-        onClose={() => {}}
-        onSuccess={() => {}}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CodeAssignmentModal
+          couponId={1}
+          title="AABBCC"
+          onClose={() => {}}
+          onSuccess={() => {}}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

@@ -1,21 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import { Container, Form, Image } from "@edx/paragon";
+import { Container, Form, Image } from '@edx/paragon';
 
-import { DEGREED2_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
-// @ts-ignore
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { channelMapping, urlValidation } from "../../../../../utils";
-import type {
-  FormFieldValidation,
-} from "../../../../forms/FormContext";
+import { DEGREED2_TYPE, INVALID_LINK, INVALID_NAME } from '../../../data/constants';
+import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
+import { channelMapping, urlValidation } from '../../../../../utils';
+import type { FormFieldValidation } from '../../../../forms/FormContext';
 
 export const formFieldNames = {
-  DISPLAY_NAME: "displayName",
-  CLIENT_ID: "clientId",
-  CLIENT_SECRET: "clientSecret",
-  DEGREED_BASE_URL: "degreedBaseUrl",
-  DEGREED_TOKEN_FETCH_BASE_URL: "degreedTokenFetchBaseUrl",
+  DISPLAY_NAME: 'displayName',
+  CLIENT_ID: 'clientId',
+  CLIENT_SECRET: 'clientSecret',
+  DEGREED_BASE_URL: 'degreedBaseUrl',
+  DEGREED_TOKEN_FETCH_BASE_URL: 'degreedTokenFetchBaseUrl',
 };
 
 export const validationMessages = {
@@ -33,9 +30,8 @@ export const validations: FormFieldValidation[] = [
       if (degreedUrl) {
         const error = !urlValidation(degreedUrl);
         return error ? INVALID_LINK : false;
-      } else {
-        return validationMessages.degreedUrlRequired;
       }
+      return validationMessages.degreedUrlRequired;
     },
   },
   {
@@ -45,10 +41,9 @@ export const validations: FormFieldValidation[] = [
       if (degreedUrl) {
         const error = !urlValidation(degreedUrl);
         return error ? INVALID_LINK : false;
-      } else {
-        // fetch url is optional
-        return false;
       }
+      // fetch url is optional
+      return false;
     },
   },
   {
@@ -56,7 +51,7 @@ export const validations: FormFieldValidation[] = [
     validator: (fields) => {
       const error = !(fields[formFieldNames.DISPLAY_NAME]);
       return error && validationMessages.displayNameRequired;
-    }
+    },
   },
   {
     formFieldId: formFieldNames.DISPLAY_NAME,
@@ -83,67 +78,61 @@ export const validations: FormFieldValidation[] = [
 ];
 
 // Settings page of Degreed LMS config workflow
-const DegreedConfigEnablePage = () => {
-  return (
-    <Container size='md'>
-      <span className='d-flex pb-4'>
-        <Image
-          className="lms-icon mr-2"
-          src={channelMapping[DEGREED2_TYPE].icon}
+const DegreedConfigEnablePage = () => (
+  <Container size="md">
+    <span className="d-flex pb-4">
+      <Image
+        className="lms-icon mr-2"
+        src={channelMapping[DEGREED2_TYPE].icon}
+      />
+      <h3>
+        Enable connection to Degreed
+      </h3>
+    </span>
+    <Form style={{ maxWidth: '60rem' }}>
+      <Form.Group className="mb-4">
+        <ValidatedFormControl
+          formId={formFieldNames.DISPLAY_NAME}
+          type="text"
+          floatingLabel="Display Name"
+          fieldInstructions="Create a custom name for this LMS"
         />
-        <h3>
-          Enable connection to Degreed
-        </h3>
-      </span>
-      <Form style={{ maxWidth: "60rem" }}>
-        <Form.Group className="mt-2.5">
-          <ValidatedFormControl
-            formId={formFieldNames.DISPLAY_NAME}
-            type="text"
-            floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
-          />
-        </Form.Group>
-        <Form.Group>
-          <ValidatedFormControl
-            formId={formFieldNames.CLIENT_ID}
-            className="mb-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="API Client ID"
-          />
-        </Form.Group>
-        <Form.Group>
-          <ValidatedFormControl
-            formId={formFieldNames.CLIENT_SECRET}
-            className="my-4"
-            type="password"
-            maxLength={255}
-            floatingLabel="API Client Secret"
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <ValidatedFormControl
-            formId={formFieldNames.DEGREED_BASE_URL}
-            className="my-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Degreed Base URL"
-          />
-        </Form.Group>
-        <Form.Group className="my-4">
-          <ValidatedFormControl
-            formId={formFieldNames.DEGREED_TOKEN_FETCH_BASE_URL}
-            className="mt-4"
-            type="text"
-            maxLength={255}
-            floatingLabel="Degreed Token Fetch Base URL"
-            fieldInstructions="Optional: If provided, will be used as the url to fetch tokens."
-          />
-        </Form.Group>
-      </Form>
-    </Container>
-  );
-};
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.CLIENT_ID}
+          type="text"
+          maxLength={255}
+          floatingLabel="API Client ID"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.CLIENT_SECRET}
+          type="password"
+          maxLength={255}
+          floatingLabel="API Client Secret"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4.5">
+        <ValidatedFormControl
+          formId={formFieldNames.DEGREED_BASE_URL}
+          type="text"
+          maxLength={255}
+          floatingLabel="Degreed Base URL"
+        />
+      </Form.Group>
+      <Form.Group className="mb-4">
+        <ValidatedFormControl
+          formId={formFieldNames.DEGREED_TOKEN_FETCH_BASE_URL}
+          type="text"
+          maxLength={255}
+          floatingLabel="Degreed Token Fetch Base URL"
+          fieldInstructions="Optional: If provided, will be used as the url to fetch tokens"
+        />
+      </Form.Group>
+    </Form>
+  </Container>
+);
 
 export default DegreedConfigEnablePage;

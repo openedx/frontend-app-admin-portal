@@ -4,6 +4,8 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import AdminPage from '.';
 
 const mockStore = configureMockStore([thunk]);
@@ -37,7 +39,9 @@ describe('<AdminPage />', () => {
     wrapper = mount((
       <MemoryRouter>
         <Provider store={store}>
-          <AdminPage enterpriseSlug="test-enterprise" />
+          <IntlProvider locale="en">
+            <AdminPage enterpriseSlug="test-enterprise" />
+          </IntlProvider>
         </Provider>
       </MemoryRouter>
     )).find('Admin');

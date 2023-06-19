@@ -1,46 +1,17 @@
-import { useState, useEffect } from 'react';
 import _ from 'lodash';
-import { snakeCaseDict } from "../../../../../utils";
-import { 
+import { snakeCaseDict } from '../../../../../utils';
+import {
   CANVAS_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-} from "../../../data/constants";
-// @ts-ignore
-import CanvasConfigAuthorizePage, { validations } from "./CanvasConfigAuthorizePage.tsx";
+} from '../../../data/constants';
+import CanvasConfigAuthorizePage, { validations } from './CanvasConfigAuthorizePage';
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
-
-export type CanvasConfigCamelCase = {
-  lms: string;
-  canvasAccountId: string;
-  canvasBaseUrl: string;
-  displayName: string;
-  clientId: string;
-  clientSecret: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  refreshToken: string;
-};
-
-export type CanvasConfigSnakeCase = {
-  lms: string;
-  canvas_account_id: string;
-  canvas_base_url: string;
-  display_name: string;
-  client_id: string;
-  client_secret: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-  refresh_token: string;
-};
+} from '../../../../forms/FormWorkflow';
+import type { CanvasConfigCamelCase, CanvasConfigSnakeCase } from './CanvasTypes';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import {
+  activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper,
+} from '../utils';
 
 export type CanvasFormConfigProps = {
   enterpriseCustomerUuid: string;
@@ -59,13 +30,12 @@ export const CanvasFormConfig = ({
   existingConfigNames,
   channelMap,
 }: CanvasFormConfigProps): FormWorkflowConfig<CanvasConfigCamelCase> => {
-
   const saveChanges = async (
     formFields: CanvasConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
     const transformedConfig: CanvasConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, CANVAS_TYPE, channelMap, errHandler);
@@ -77,14 +47,23 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    let currentFormFields = formFields;
+    const currentFormFields = formFields;
     const transformedConfig: CanvasConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as CanvasConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, CANVAS_TYPE, channelMap, errHandler, dispatch);
+      enterpriseCustomerUuid,
+      transformedConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      CANVAS_TYPE,
+      channelMap,
+      dispatch,
+      errHandler,
+    );
   };
 
   const awaitAfterSubmit = async ({
@@ -92,7 +71,8 @@ export const CanvasFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    return afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, errHandler, dispatch);
+    const response = await afterSubmitHelper(CANVAS_TYPE, formFields, channelMap, dispatch, errHandler);
+    return response;
   };
 
   const onAwaitTimeout = async ({
@@ -105,7 +85,7 @@ export const CanvasFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<CanvasConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, CANVAS_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, CANVAS_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 
@@ -116,11 +96,11 @@ export const CanvasFormConfig = ({
       index: 1,
       formComponent: CanvasConfigAuthorizePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: "Authorize",
+      stepName: 'Configure',
       saveChanges,
       nextButtonConfig: (formFields: CanvasConfigCamelCase) => {
         let config = {
-          buttonText: "Authorize",
+          buttonText: 'Authorize',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
@@ -134,7 +114,7 @@ export const CanvasFormConfig = ({
                 awaitCondition: awaitAfterSubmit,
                 awaitInterval: LMS_CONFIG_OAUTH_POLLING_INTERVAL,
                 awaitTimeout: LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-                onAwaitTimeout: onAwaitTimeout,
+                onAwaitTimeout,
               },
             },
           };
@@ -146,16 +126,16 @@ export const CanvasFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<CanvasConfigCamelCase>;
-      }
+      },
     },
   ];
 

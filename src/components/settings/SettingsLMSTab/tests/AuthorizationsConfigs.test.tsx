@@ -1,6 +1,6 @@
 import React from 'react';
-import { 
-  act, fireEvent, screen, waitFor, waitForElementToBeRemoved 
+import {
+  act, fireEvent, screen, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
@@ -48,8 +48,8 @@ const mockCanvasResponseData = {
   canvas_account_id: 1,
   display_name: 'display name',
   canvas_base_url: 'https://foobar.com',
-  client_id: "wassap",
-  client_secret: "chewlikeyouhaveasecret",
+  client_id: 'wassap',
+  client_secret: 'chewlikeyouhaveasecret',
   active: false,
 };
 
@@ -59,11 +59,10 @@ const mockCanvasResponseDataActive = {
   canvas_account_id: 1,
   display_name: 'display name',
   canvas_base_url: 'https://foobar.com',
-  client_id: "wassap",
-  client_secret: "chewlikeyouhaveasecret",
+  client_id: 'wassap',
+  client_secret: 'chewlikeyouhaveasecret',
   active: true,
 };
-
 
 const mockStore = configureMockStore([thunk]);
 window.open = jest.fn();
@@ -75,7 +74,7 @@ const mockBlackboardFetchGlobal = jest.spyOn(LmsApiService, 'fetchBlackboardGlob
 mockBlackboardPost.mockResolvedValue({ data: mockBlackboardResponseData });
 mockBlackboardUpdate.mockResolvedValue({ data: mockBlackboardResponseData });
 mockBlackboardFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
-mockBlackboardFetchGlobal.mockReturnValue({ data: { results: [{ app_key: 1 }] } })
+mockBlackboardFetchGlobal.mockReturnValue({ data: { results: [{ app_key: 1 }] } });
 
 const SettingsBlackboardWrapper = () => (
   <IntlProvider locale="en">
@@ -98,7 +97,6 @@ mockCanvasPost.mockResolvedValue({ data: mockCanvasResponseData });
 mockCanvasUpdate.mockResolvedValue({ data: mockCanvasResponseData });
 mockCanvasFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 
-
 const SettingsCanvasWrapper = () => (
   <IntlProvider locale="en">
     <Provider store={mockStore({ ...initialState })}>
@@ -112,7 +110,6 @@ const SettingsCanvasWrapper = () => (
     </Provider>
   </IntlProvider>
 );
-
 
 describe('Test authorization flows for Blackboard and Canvas', () => {
   test('Blackboard properly authorizes', async () => {
@@ -129,14 +126,20 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     await waitFor(() => {
       expect(screen.queryByText('Authorize connection to Blackboard')).toBeTruthy();
     });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
     await waitFor(() => {
+      screen.getByText('Authorization in progress');
+    });
+    const inProgress = screen.getByText('Authorization in progress');
+    await waitForElementToBeRemoved(inProgress);
+
+    await waitFor(() => {
       expect(screen.queryByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeTruthy();
-    })
+    });
     const expectedConfig = {
       active: false,
       blackboard_base_url: 'https://www.test4.com',
@@ -148,7 +151,7 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     expect(window.open).toHaveBeenCalled();
     expect(mockBlackboardFetch).toHaveBeenCalledWith(1);
   });
-  // TODO: Figure out how to mock existing data deeper to test 
+  // TODO: Figure out how to mock existing data deeper to test
   // - Authorizing an existing, edited config will call update config endpoint
   // - Authorizing an existing config will not call update or create config endpoint
   test('Blackboard config is activated after last step', async () => {
@@ -174,21 +177,21 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
         target: { value: '' },
       });
     });
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
     await waitFor(() => {
       expect(screen.queryByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeTruthy();
-    })
+    });
 
     const activateButton = screen.getByRole('button', { name: 'Activate' });
     userEvent.click(activateButton);
     await waitFor(() => {
       expect(screen.queryByText('Learning platform integration successfully submitted.')).toBeTruthy();
-    })
-    expect(mockBlackboardUpdate).toHaveBeenCalledWith({"active": true, "enterprise_customer": enterpriseId}, 1);
+    });
+    expect(mockBlackboardUpdate).toHaveBeenCalledWith({ active: true, enterprise_customer: enterpriseId }, 1);
   });
   test('Canvas properly authorizes', async () => {
     renderWithRouter(<SettingsCanvasWrapper />);
@@ -205,35 +208,25 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     await waitFor(() => {
       expect(screen.queryByText('Authorize connection to Canvas')).toBeTruthy();
     });
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('API Client ID'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('API Client Secret'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Account Number'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
-        target: { value: '' },
-      });
-    });
 
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
     await waitFor(() => {
+      screen.getByText('Authorization in progress');
+    });
+    const inProgress = screen.getByText('Authorization in progress');
+    await waitForElementToBeRemoved(inProgress);
+
+    await waitFor(() => {
       expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
-    })
+    });
+
     const expectedConfig = {
       active: false,
       canvas_base_url: 'https://www.test4.com',
@@ -264,41 +257,23 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
       expect(screen.queryByText('Authorize connection to Canvas')).toBeTruthy();
     });
 
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText('API Client ID'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('API Client Secret'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Account Number'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Display Name'), {
-        target: { value: '' },
-      });
-      fireEvent.change(screen.getByLabelText('Canvas Base URL'), {
-        target: { value: '' },
-      });
-    });
-
-    userEvent.type(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.type(screen.getByLabelText('API Client ID'), 'test1');
-    userEvent.type(screen.getByLabelText('API Client Secret'), 'test2');
-    userEvent.type(screen.getByLabelText('Canvas Account Number'), '3');
-    userEvent.type(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
+    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
+    userEvent.paste(screen.getByLabelText('API Client ID'), 'test1');
+    userEvent.paste(screen.getByLabelText('API Client Secret'), 'test2');
+    userEvent.paste(screen.getByLabelText('Canvas Account Number'), '3');
+    userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
     await waitFor(() => {
       expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
-    })
+    });
 
     const activateButton = screen.getByRole('button', { name: 'Activate' });
     userEvent.click(activateButton);
     await waitFor(() => {
       expect(screen.queryByText('Learning platform integration successfully submitted.')).toBeTruthy();
-    })
-    expect(mockCanvasUpdate).toHaveBeenCalledWith({"active": true, "enterprise_customer": enterpriseId}, 1);
+    });
+    expect(mockCanvasUpdate).toHaveBeenCalledWith({ active: true, enterprise_customer: enterpriseId }, 1);
   });
 });

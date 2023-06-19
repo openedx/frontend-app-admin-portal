@@ -1,22 +1,15 @@
 import React from 'react';
 import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
+  act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
-// @ts-ignore
-import SAPConfig from '../LMSConfigs/SAP/SAPConfig.tsx';
+import SAPConfig from '../LMSConfigs/SAP/SAPConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
-// @ts-ignore
-import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
-// @ts-ignore
-import { validationMessages } from '../LMSConfigs/SAP/SAPConfigEnablePage.tsx';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
+import { validationMessages } from '../LMSConfigs/SAP/SAPConfigEnablePage';
 
 const mockUpdateConfigApi = jest.spyOn(LmsApiService, 'updateSuccessFactorsConfig');
 const mockConfigResponseData = {
@@ -90,7 +83,6 @@ function testSAPConfigSetup(formData) {
         },
       })}
       onClickOut={mockOnClick}
-      onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
       dispatch={jest.fn()}

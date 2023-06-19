@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Container, Form, Image } from "@edx/paragon";
-import { Info } from "@edx/paragon/icons";
+import React from 'react';
+import {
+  Alert, Container, Form, Image,
+} from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 
-// @ts-ignore
-import ValidatedFormControl from "../../../../forms/ValidatedFormControl.tsx";
-import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from "../../../data/constants";
-import { channelMapping, urlValidation } from "../../../../../utils";
-import type { FormFieldValidation } from "../../../../forms/FormContext";
-// @ts-ignore
-import { useFormContext } from "../../../../forms/FormContext.tsx";
-// @ts-ignore
-import FormWaitModal from "../../../../forms/FormWaitModal.tsx";
-// @ts-ignore
-import { WAITING_FOR_ASYNC_OPERATION } from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { setWorkflowStateAction } from "../../../../forms/data/actions.ts";
-// @ts-ignore
-import { LMS_AUTHORIZATION_FAILED } from "../utils.tsx";
+import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
+import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from '../../../data/constants';
+import { channelMapping, urlValidation } from '../../../../../utils';
+import type { FormFieldValidation } from '../../../../forms/FormContext';
+import { useFormContext } from '../../../../forms/FormContext';
+import FormWaitModal from '../../../../forms/FormWaitModal';
+import { WAITING_FOR_ASYNC_OPERATION } from '../../../../forms/FormWorkflow';
+import { setWorkflowStateAction } from '../../../../forms/data/actions';
+import { LMS_AUTHORIZATION_FAILED } from '../utils';
 
 export const formFieldNames = {
-  DISPLAY_NAME: "displayName",
-  BLACKBOARD_BASE_URL: "blackboardBaseUrl",
+  DISPLAY_NAME: 'displayName',
+  BLACKBOARD_BASE_URL: 'blackboardBaseUrl',
 };
 
 export const validationMessages = {
@@ -63,15 +59,10 @@ export const validations: FormFieldValidation[] = [
 // Settings page of Blackboard LMS config workflow
 const BlackboardConfigAuthorizePage = () => {
   const { formFields, dispatch, stateMap } = useFormContext();
-  const [isExisting, setIsExisting] = useState(false);
-  useEffect(() => {
-    if (formFields?.id) {
-      setIsExisting(true);
-    }
-  }, []);
+
   return (
-    <Container size='md'>
-      <span className='d-flex pb-4'>
+    <Container size="md">
+      <span className="d-flex pb-4">
         <Image
           className="lms-icon mr-2"
           src={channelMapping[BLACKBOARD_TYPE].icon}
@@ -80,28 +71,29 @@ const BlackboardConfigAuthorizePage = () => {
           Authorize connection to Blackboard
         </h3>
       </span>
-      <Form style={{ maxWidth: "60rem" }}>
+      <Form style={{ maxWidth: '60rem' }}>
         {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
-          <Alert variant="danger" className='mb-4' icon={Info}>
+          <Alert variant="danger" className="mb-4" icon={Info}>
             <h3>Enablement failed</h3>
             We were unable to enable your Blackboard integration. Please try again
             or contact enterprise customer support.
           </Alert>
         )}
-        {isExisting && (
-          <Alert variant="info" className='mb-4' icon={Info}>
+        {formFields?.refreshToken && (
+          <Alert variant="info" className="mb-4" icon={Info}>
             <h3>Form updates require reauthorization</h3>
             Your authorization is currently complete. By updating the form below,
             reauthorization will be required and advancing to the next step will
             open a new window to complete the process in Blackboard. Return to this window
             following reauthorization to finish reconfiguring your integration.
-          </Alert>)}
+          </Alert>
+        )}
         <Form.Group className="my-4.5">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
             floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS."
+            fieldInstructions="Create a custom name for this LMS"
           />
         </Form.Group>
         <Form.Group className="my-4.5">
@@ -120,11 +112,9 @@ const BlackboardConfigAuthorizePage = () => {
         </Alert>
         <FormWaitModal
           triggerState={WAITING_FOR_ASYNC_OPERATION}
-          onClose={() =>
-            dispatch?.(
-              setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false)
-            )
-          }
+          onClose={() => dispatch?.(
+            setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false),
+          )}
           header="Authorization in progress"
           text="Please confirm authorization through Blackboard and return to this window once complete."
         />

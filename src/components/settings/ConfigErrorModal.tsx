@@ -17,8 +17,7 @@ const ConfigErrorModal = ({
   isOpen,
   close,
   configTextOverride,
-}: ConfigErrorProps) => {
-  return (
+}: ConfigErrorProps) => (
   <AlertModal
     title="Something went wrong"
     isOpen={isOpen}
@@ -27,7 +26,6 @@ const ConfigErrorModal = ({
     footerNode={(
       <ActionRow>
         <ActionRow.Spacer />
-        {/* @ts-ignore */}
         <Button variant="primary">
           <Hyperlink style={{ color: 'white' }} destination={HELP_CENTER_LINK} target="_blank">Contact Support</Hyperlink>
         </Button>
@@ -45,6 +43,6 @@ const ConfigErrorModal = ({
     </p>
     )}
   </AlertModal>
-)};
+);
 
 export default ConfigErrorModal;

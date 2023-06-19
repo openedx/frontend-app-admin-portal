@@ -5,10 +5,8 @@ import {
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
-// @ts-ignore
-import CornerstoneConfig from '../LMSConfigs/Cornerstone/CornerstoneConfig.tsx';
-// @ts-ignore
-import FormContextWrapper from '../../../forms/FormContextWrapper.tsx';
+import CornerstoneConfig from '../LMSConfigs/Cornerstone/CornerstoneConfig';
+import FormContextWrapper from '../../../forms/FormContextWrapper';
 
 const enterpriseId = 'test-enterprise-id';
 const mockOnClick = jest.fn();
@@ -56,7 +54,6 @@ function testCornerstoneConfigSetup(formData) {
         },
       })}
       onClickOut={mockOnClick}
-      onSubmit={mockSetExistingConfigFormData}
       formData={formData}
       isStepperOpen
       dispatch={jest.fn()}
@@ -84,7 +81,7 @@ describe('<CornerstoneConfig />', () => {
     screen.getByLabelText('Display Name');
     screen.getByLabelText('Cornerstone Base URL');
   });
-  test('test button disable', async () => {
+  test('test error messages', async () => {
     render(testCornerstoneConfigSetup(noExistingData));
 
     const enableButton = screen.getByRole('button', { name: 'Enable' });
@@ -147,14 +144,16 @@ describe('<CornerstoneConfig />', () => {
     render(testCornerstoneConfigSetup(invalidExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     userEvent.click(enableButton);
+    expect(screen.getByLabelText('Display Name')).toHaveValue(invalidExistingData.displayName);
+    expect(screen.getByLabelText('Cornerstone Base URL')).toHaveValue(invalidExistingData.cornerstoneBaseUrl);
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
   });
   test('validates properly formatted existing data on load', () => {
     render(testCornerstoneConfigSetup(existingConfigData));
     // ensuring the existing data is prefilled
-    expect(screen.getByLabelText('Display Name').value).toEqual(existingConfigData.displayName);
-    expect(screen.getByLabelText('Cornerstone Base URL').value).toEqual(existingConfigData.cornerstoneBaseUrl);
+    expect(screen.getByLabelText('Display Name')).toHaveValue(existingConfigData.displayName);
+    expect(screen.getByLabelText('Cornerstone Base URL')).toHaveValue(existingConfigData.cornerstoneBaseUrl);
 
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();

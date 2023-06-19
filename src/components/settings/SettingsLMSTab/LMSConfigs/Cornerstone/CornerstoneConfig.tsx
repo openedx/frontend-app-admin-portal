@@ -1,34 +1,14 @@
-import { snakeCaseDict } from "../../../../../utils";
-import { CORNERSTONE_TYPE } from "../../../data/constants";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import CornerstoneConfigEnablePage, { validations } from "./CornerstoneConfigEnablePage.tsx";
-import type { 
-  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep,FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
-
-export type CornerstoneConfigCamelCase = {
-  lms: string;
-  displayName: string;
-  cornerstoneBaseUrl: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-};
-
-export type CornerstoneConfigSnakeCase = {
-  lms: string;
-  display_name: string;
-  cornerstone_base_url: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-};
+import { snakeCaseDict } from '../../../../../utils';
+import { CORNERSTONE_TYPE } from '../../../data/constants';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import CornerstoneConfigEnablePage, { validations } from './CornerstoneConfigEnablePage';
+import type {
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
+} from '../../../../forms/FormWorkflow';
+import {
+  activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper,
+} from '../utils';
+import type { CornerstoneConfigCamelCase, CornerstoneConfigSnakeCase } from './CornerstoneTypes';
 
 export type CornerstoneFormConfigProps = {
   enterpriseCustomerUuid: string;
@@ -47,17 +27,15 @@ export const CornerstoneFormConfig = ({
   existingConfigNames,
   channelMap,
 }: CornerstoneFormConfigProps): FormWorkflowConfig<CornerstoneConfigCamelCase> => {
-
   const saveChanges = async (
     formFields: CornerstoneConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
-    const transformedConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
-      formFields
+    const newConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
+      formFields,
     ) as CornerstoneConfigSnakeCase;
-    transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(
-      transformedConfig, existingData, formFields, onSubmit, CORNERSTONE_TYPE, channelMap, errHandler);
+    newConfig.enterprise_customer = enterpriseCustomerUuid;
+    return handleSaveHelper(newConfig, existingData, formFields, onSubmit, CORNERSTONE_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -66,21 +44,30 @@ export const CornerstoneFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<CornerstoneConfigCamelCase>) => {
-    let currentFormFields = formFields;
-    const transformedConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
-      formFields
+    const currentFormFields = formFields;
+    const snakeConfig: CornerstoneConfigSnakeCase = snakeCaseDict(
+      formFields,
     ) as CornerstoneConfigSnakeCase;
-    transformedConfig.enterprise_customer = enterpriseCustomerUuid;
+    snakeConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, CORNERSTONE_TYPE, channelMap, errHandler, dispatch);
+      enterpriseCustomerUuid,
+      snakeConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      CORNERSTONE_TYPE,
+      channelMap,
+      dispatch,
+      errHandler,
+    );
   };
 
   const activate = async ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<CornerstoneConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, CORNERSTONE_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, CORNERSTONE_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 
@@ -89,13 +76,13 @@ export const CornerstoneFormConfig = ({
   const steps: FormWorkflowStep<CornerstoneConfigCamelCase>[] = [
     {
       index: 1,
-      formComponent: CornerstoneConfigEnablePage, 
+      formComponent: CornerstoneConfigEnablePage,
       validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
-      stepName: "Enable",
+      stepName: 'Configure',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Enable",
+        const config = {
+          buttonText: 'Enable',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
@@ -106,16 +93,16 @@ export const CornerstoneFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<CornerstoneConfigCamelCase>;
-      }
+      },
     },
   ];
 
