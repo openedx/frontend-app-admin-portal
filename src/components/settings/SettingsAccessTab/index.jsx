@@ -67,7 +67,6 @@ const SettingsAccessTab = ({
         <Col lg={8} xl={9}>
           <p>
             Allow learners without a subsidy to browse the catalog and request enrollment to courses.
-            Browsing on demand will expire at the end of your latest purchase.
           </p>
         </Col>
         <Col md="auto">
