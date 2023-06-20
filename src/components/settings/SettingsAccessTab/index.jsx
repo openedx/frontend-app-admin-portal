@@ -91,47 +91,43 @@ const SettingsAccessTab = ({
           )}
         </div>
       )}
-      {hasConfiguredSubsidyType && (
-        <>
-          <div className="mb-5">
-            <h3>Select access channel</h3>
-            <p>
-              Channels determine how learners access the catalog(s).
-              You can select one or both and change your selection at any time.
-            </p>
-            {isUniversalLinkEnabled && (
-              <div className="mb-4">
-                <SettingsAccessLinkManagement />
-              </div>
-            )}
-            {identityProvider && (
-              <SettingsAccessSSOManagement
-                enterpriseId={enterpriseId}
-                enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
-                identityProvider={identityProvider}
-                updatePortalConfiguration={updatePortalConfiguration}
-              />
-            )}
+      <div className="mb-5">
+        <h3>Select access channel</h3>
+        <p>
+          Channels determine how learners access the catalog(s).
+          You can select one or both and change your selection at any time.
+        </p>
+        {isUniversalLinkEnabled && (
+          <div className="mb-4">
+            <SettingsAccessLinkManagement />
           </div>
-          {subsidyTypeLabelAndRoute && (
-            <div>
-              <div className="d-flex justify-content-between">
-                <h3>Manage course requests</h3>
-                <SettingsAccessSubsidyRequestManagement
-                  subsidyRequestConfiguration={subsidyRequestConfiguration}
-                  updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
-                  disabled={!hasActiveAccessChannel}
-                />
-              </div>
-              <p>
-                Allow learners to request a {subsidyTypeLabelAndRoute.label} to access courses. You
-                will see the requests under{' '}
-                <Link to={subsidyTypeLabelAndRoute.route.path}>{subsidyTypeLabelAndRoute.route.label}</Link>.
-                Disabling this feature will not affect learners&apos; ability to browse.
-              </p>
-            </div>
-          )}
-        </>
+        )}
+        {identityProvider && (
+          <SettingsAccessSSOManagement
+            enterpriseId={enterpriseId}
+            enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
+            identityProvider={identityProvider}
+            updatePortalConfiguration={updatePortalConfiguration}
+          />
+        )}
+      </div>
+      {subsidyTypeLabelAndRoute && (
+        <div>
+          <div className="d-flex justify-content-between">
+            <h3>Manage course requests</h3>
+            <SettingsAccessSubsidyRequestManagement
+              subsidyRequestConfiguration={subsidyRequestConfiguration}
+              updateSubsidyRequestConfiguration={updateSubsidyRequestConfiguration}
+              disabled={!hasActiveAccessChannel}
+            />
+          </div>
+          <p>
+            Allow learners to request a {subsidyTypeLabelAndRoute.label} to access courses. You
+            will see the requests under{' '}
+            <Link to={subsidyTypeLabelAndRoute.route.path}>{subsidyTypeLabelAndRoute.route.label}</Link>.
+            Disabling this feature will not affect learners&apos; ability to browse.
+          </p>
+        </div>
       )}
     </div>
   );
