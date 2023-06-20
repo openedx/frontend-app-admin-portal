@@ -21,18 +21,14 @@ exports[`<ForbiddenPage /> renders correctly 1`] = `
       <p>
         For assistance, please contact the edX Customer Success team at
          
-        <span
-          className="pgn__mailtolink"
+        <a
+          className="pgn__hyperlink default-link standalone-link pgn__mailtolink"
+          href="mailto:customersuccess@edx.org"
+          onClick={null}
+          target="_self"
         >
-          <a
-            className="pgn__hyperlink default-link standalone-link"
-            href="mailto:customersuccess@edx.org"
-            onClick={null}
-            target="_self"
-          >
-            customersuccess@edx.org
-          </a>
-        </span>
+          customersuccess@edx.org
+        </a>
         .
       </p>
     </div>
