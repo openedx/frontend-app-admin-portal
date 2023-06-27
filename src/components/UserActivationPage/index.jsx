@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import {
@@ -6,6 +7,7 @@ import {
 } from '@edx/paragon';
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { LoginRedirect } from '@edx/frontend-enterprise-logistration';
+import { configuration } from '../../config';
 
 import { useInterval } from '../../hooks';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
@@ -63,7 +65,10 @@ const UserActivationPage = ({ match }) => {
           onClose={() => setShowToast(false)}
           show={showToast}
         >
-          Your edX administrator account was successfully activated.
+          <FormattedMessage
+            defaultMessage="Your edX administrator account was successfully activated."
+            id="adminPortal.account.activation.success"
+          />
         </Toast>
       </>
     );
@@ -78,16 +83,21 @@ const UserActivationPage = ({ match }) => {
         <Col xs lg={8} offset={1}>
           <Alert variant="warning">
             <p>
-              In order to continue, you must verify your email address to activate
-              your edX account. Please stay on this page as it will automatically refresh
-              once your account is activated.
+              <FormattedMessage
+                defaultMessage="In order to continue, you must verify your email address to activate your {platform_name} account. Please once your account is activated."
+                id="adminPortal.account.activation.required"
+                values={{ platform_name: configuration.PLATFORM_NAME }}
+              />
             </p>
             <p className="mb-0">
-              If you run into further issues, please contact the edX Customer
-              Success team at{' '}
-              <MailtoLink className="alert-link" to="customersuccess@edx.org">
-                customersuccess@edx.org
-              </MailtoLink>.
+              <FormattedMessage
+                defaultMessage="If you run into further issues, please contact the {support_name} at {support_link}."
+                id="adminPortal.account.activation.support"
+                values={{
+                  support_name: configuration.CUSTOMER_SUPPORT_NAME,
+                  support_link: <MailtoLink className="alert-link" to={configuration.CUSTOMER_SUPPORT_EMAIL}>{configuration.CUSTOMER_SUPPORT_EMAIL}</MailtoLink>,
+                }}
+              />
             </p>
           </Alert>
         </Col>

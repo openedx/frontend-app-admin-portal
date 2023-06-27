@@ -1,54 +1,85 @@
 import React from 'react';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
+
 import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPassedTimestamp, formatPercentage } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
 const EnrollmentsTable = () => {
+  const intl = useIntl();
+
   const enrollmentTableColumns = [
     {
-      Header: 'Email',
-      accessor: 'user_email',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.user_email',
+        defaultMessage: 'Email',
+      }),
+      key: 'user_email',
       columnSortable: true,
     },
     {
-      Header: 'Course Title',
-      accessor: 'course_title',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.courseTitle',
+        defaultMessage: 'Course Title',
+      }),
+      key: 'course_title',
       columnSortable: true,
     },
     {
-      Header: 'Course Price',
-      accessor: 'course_list_price',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.courseListPrice',
+        defaultMessage: 'Course Price',
+      }),
+      key: 'course_list_price',
       columnSortable: true,
     },
     {
-      Header: 'Start Date',
-      accessor: 'course_start_date',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.courseStartDate',
+        defaultMessage: 'Start Date',
+      }),
+      key: 'course_start_date',
       columnSortable: true,
     },
     {
-      Header: 'End Date',
-      accessor: 'course_end_date',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.courseEndDate',
+        defaultMessage: 'End Date',
+      }),
+      key: 'course_end_date',
       columnSortable: true,
     },
     {
-      Header: 'Passed Date',
-      accessor: 'passed_date',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.passedDate',
+        defaultMessage: 'Passed Date',
+      }),
+      key: 'passed_date',
       columnSortable: true,
     },
     {
-      Header: 'Current Grade',
-      accessor: 'current_grade',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.currentGrade',
+        defaultMessage: 'Current Grade',
+      }),
+      key: 'current_grade',
       columnSortable: true,
     },
     {
-      Header: 'Progress Status',
-      accessor: 'progress_status',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.progressStatus',
+        defaultMessage: 'Progress Status',
+      }),
+      key: 'progress_status',
       columnSortable: true,
     },
     {
-      Header: 'Last Activity Date',
-      accessor: 'last_activity_date',
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.lastActivityDate',
+        defaultMessage: 'Last Activity Date',
+      }),
+      key: 'last_activity_date',
       columnSortable: true,
     },
   ];

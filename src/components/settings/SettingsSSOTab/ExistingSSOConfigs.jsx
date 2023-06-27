@@ -8,7 +8,7 @@ import {
   Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
 } from '@edx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
-import ConfigError from '../ConfigError';
+import ConfigErrorModal from '../ConfigErrorModal';
 import handleErrors from '../utils';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { errorToggleModalText, errorDeleteConfigModalText, errorDeleteDataModalText } from '../data/constants';
@@ -79,7 +79,7 @@ const ExistingSSOConfigs = ({
 
   return (
     <span>
-      <ConfigError
+      <ConfigErrorModal
         isOpen={errorIsOpen}
         close={closeError}
         configTextOverride={errorModalText}

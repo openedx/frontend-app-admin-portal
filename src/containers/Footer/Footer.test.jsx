@@ -4,6 +4,7 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../config';
 
 import Footer from './index';
@@ -12,10 +13,12 @@ const mockStore = configureMockStore([thunk]);
 
 const FooterWrapper = props => (
   <MemoryRouter>
-    <Footer
-      store={props.store}
-      {...props}
-    />
+    <IntlProvider locale="en">
+      <Footer
+        store={props.store}
+        {...props}
+      />
+    </IntlProvider>
   </MemoryRouter>
 );
 

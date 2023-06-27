@@ -3,6 +3,8 @@ import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
+import isNumber from 'lodash/isNumber';
+import isString from 'lodash/isString';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -11,7 +13,9 @@ import { history } from '@edx/frontend-platform/initialize';
 import { features } from './config';
 
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE,
+  HELP_CENTER_BLACKBOARD, HELP_CENTER_CANVAS, HELP_CENTER_CORNERSTONE,
+  HELP_CENTER_DEGREED, HELP_CENTER_MOODLE, HELP_CENTER_SAP, MOODLE_TYPE, SAP_TYPE,
 } from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';
@@ -105,9 +109,17 @@ const isTriggerKey = ({ triggerKeys, action, key }) => (
 // Validation functions
 const isRequired = (value = '') => (isEmpty(value) ? 'This field is required.' : undefined);
 const isValidEmail = (value = '') => (!isEmail(value) ? 'Must be a valid email address.' : undefined);
-const isValidNumber = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : undefined);
+const isNotValidNumberString = (value = '') => (!isEmpty(value) && !isNumeric(value, { no_symbols: true }) ? 'Must be a valid number.' : undefined);
 const maxLength = max => value => (value && value.length > max ? 'Must be 512 characters or less' : undefined);
 const maxLength512 = maxLength(512);
+const isValidNumber = (value) => {
+  // Verify is a valid number, whether it's a javascript number or string representation of a number
+  let isValidNum = isNumber(value);
+  if (!isValidNum && isString(value)) {
+    isValidNum = !isNotValidNumberString(value);
+  }
+  return isValidNum;
+};
 
 /** camelCase <--> snake_case functions
  * Because responses from django come as snake_cased JSON, its best
@@ -241,48 +253,110 @@ function urlValidation(urlString) {
 
 const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);
 
-const channelMapping = {
+// this is needed for annoying testing mock reasons
+export const getChannelMap = () => ({
   [BLACKBOARD_TYPE]: {
     displayName: 'Blackboard',
     icon: BlackboardIcon,
+    post: LmsApiService.postNewBlackboardConfig,
     update: LmsApiService.updateBlackboardConfig,
     delete: LmsApiService.deleteBlackboardConfig,
+    fetch: LmsApiService.fetchSingleBlackboardConfig,
+    fetchGlobal: LmsApiService.fetchBlackboardGlobalConfig,
   },
   [CANVAS_TYPE]: {
     displayName: 'Canvas',
     icon: CanvasIcon,
+    post: LmsApiService.postNewCanvasConfig,
     update: LmsApiService.updateCanvasConfig,
     delete: LmsApiService.deleteCanvasConfig,
+    fetch: LmsApiService.fetchSingleCanvasConfig,
   },
   [CORNERSTONE_TYPE]: {
     displayName: 'Cornerstone',
     icon: CornerstoneIcon,
+    post: LmsApiService.postNewCornerstoneConfig,
     update: LmsApiService.updateCornerstoneConfig,
     delete: LmsApiService.deleteCornerstoneConfig,
   },
-  [DEGREED_TYPE]: {
+  [DEGREED2_TYPE]: {
     displayName: 'Degreed',
     icon: DegreedIcon,
-    update: LmsApiService.updateDegreedConfig,
-    delete: LmsApiService.deleteDegreedConfig,
-  },
-  [DEGREED2_TYPE]: {
-    displayName: 'Degreed2',
-    icon: DegreedIcon,
+    post: LmsApiService.postNewDegreed2Config,
     update: LmsApiService.updateDegreed2Config,
     delete: LmsApiService.deleteDegreed2Config,
   },
   [MOODLE_TYPE]: {
     displayName: 'Moodle',
     icon: MoodleIcon,
+    post: LmsApiService.postNewMoodleConfig,
     update: LmsApiService.updateMoodleConfig,
     delete: LmsApiService.deleteMoodleConfig,
   },
   [SAP_TYPE]: {
-    displayName: 'SAP',
+    displayName: 'SAP Success Factors',
     icon: SAPIcon,
+    post: LmsApiService.postNewSuccessFactorsConfig,
     update: LmsApiService.updateSuccessFactorsConfig,
     delete: LmsApiService.deleteSuccessFactorsConfig,
+  },
+});
+
+const channelMapping = {
+  [BLACKBOARD_TYPE]: {
+    displayName: 'Blackboard',
+    icon: BlackboardIcon,
+    helpCenter: HELP_CENTER_BLACKBOARD,
+    delete: LmsApiService.deleteBlackboardConfig,
+    fetch: LmsApiService.fetchSingleBlackboardConfig,
+    fetchGlobal: LmsApiService.fetchBlackboardGlobalConfig,
+    post: LmsApiService.postNewBlackboardConfig,
+    update: LmsApiService.updateBlackboardConfig,
+  },
+  [CANVAS_TYPE]: {
+    displayName: 'Canvas',
+    icon: CanvasIcon,
+    helpCenter: HELP_CENTER_CANVAS,
+    delete: LmsApiService.deleteCanvasConfig,
+    fetch: LmsApiService.fetchSingleCanvasConfig,
+    post: LmsApiService.postNewCanvasConfig,
+    update: LmsApiService.updateCanvasConfig,
+  },
+  [CORNERSTONE_TYPE]: {
+    displayName: 'Cornerstone',
+    icon: CornerstoneIcon,
+    helpCenter: HELP_CENTER_CORNERSTONE,
+    delete: LmsApiService.deleteCornerstoneConfig,
+    fetch: LmsApiService.fetchSingleCornerstoneConfig,
+    post: LmsApiService.postNewCornerstoneConfig,
+    update: LmsApiService.updateCornerstoneConfig,
+  },
+  [DEGREED2_TYPE]: {
+    displayName: 'Degreed',
+    icon: DegreedIcon,
+    helpCenter: HELP_CENTER_DEGREED,
+    delete: LmsApiService.deleteDegreed2Config,
+    fetch: LmsApiService.fetchSingleDegreed2Config,
+    post: LmsApiService.postNewDegreed2Config,
+    update: LmsApiService.updateDegreed2Config,
+  },
+  [MOODLE_TYPE]: {
+    displayName: 'Moodle',
+    icon: MoodleIcon,
+    helpCenter: HELP_CENTER_MOODLE,
+    delete: LmsApiService.deleteMoodleConfig,
+    fetch: LmsApiService.fetchSingleMoodleConfig,
+    post: LmsApiService.postNewMoodleConfig,
+    update: LmsApiService.updateMoodleConfig,
+  },
+  [SAP_TYPE]: {
+    displayName: 'SAP Success Factors',
+    icon: SAPIcon,
+    helpCenter: HELP_CENTER_SAP,
+    delete: LmsApiService.deleteSuccessFactorsConfig,
+    fetch: LmsApiService.fetchSingleSuccessFactorsConfig,
+    post: LmsApiService.postNewSuccessFactorsConfig,
+    update: LmsApiService.updateSuccessFactorsConfig,
   },
 };
 
@@ -310,6 +384,20 @@ const isNull = (value) => {
 const isDefinedAndNotNull = (value) => {
   const values = createArrayFromValue(value);
   return values.every(item => isDefined(item) && !isNull(item));
+};
+
+const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
+  const startTime = new Date().getTime();
+  while (new Date().getTime() - startTime < timeout) {
+    // eslint-disable-next-line no-await-in-loop
+    const result = await pollFunc();
+    if (checkFunc ? checkFunc(result) : !!result) {
+      return result;
+    }
+    // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
+    await new Promise(resolve => setTimeout(resolve, interval));
+  }
+  return false;
 };
 
 export {
@@ -343,4 +431,6 @@ export {
   urlValidation,
   normalizeFileUpload,
   capitalizeFirstLetter,
+  pollAsync,
+  isNotValidNumberString,
 };

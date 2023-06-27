@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { shallow, mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { MULTI_USE } from '../../data/constants/coupons';
 
@@ -47,10 +48,12 @@ const initialCouponData = {
 const CouponWrapper = props => (
   <MemoryRouter>
     <Provider store={store}>
-      <Coupon
-        data={initialCouponData}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <Coupon
+          data={initialCouponData}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

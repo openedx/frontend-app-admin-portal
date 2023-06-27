@@ -5,7 +5,7 @@ export default function buttonBool(config) {
   Object.entries(config).forEach(entry => {
     const [key, value] = entry;
     // check whether or not the field is an optional value
-    if ((key !== 'displayName' && key !== 'degreedFetchUrl') && !value) {
+    if ((key !== 'displayName' && key !== 'degreedTokenFetchBaseUrl') && !value) {
       returnVal = false;
     }
   });
