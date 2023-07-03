@@ -400,6 +400,12 @@ const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
   return false;
 };
 
+const getCourseProductLineText = (courseProductLine) => {
+  let courseProductLineText = '';
+  courseProductLineText = courseProductLine === 'OCM' ? 'Open Courses' : courseProductLine;
+  return courseProductLineText;
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -433,4 +439,5 @@ export {
   capitalizeFirstLetter,
   pollAsync,
   isNotValidNumberString,
+  getCourseProductLineText,
 };
