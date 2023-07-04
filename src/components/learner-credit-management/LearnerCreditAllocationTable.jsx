@@ -7,6 +7,7 @@ import moment from 'moment';
 
 import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
+import { getCourseProductLineText } from '../../utils';
 
 export const PAGE_SIZE = 20;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
@@ -52,6 +53,11 @@ const LearnerCreditAllocationTable = ({
           Cell: ({ row }) => moment(row.values.enrollmentDate).format('MMMM DD, YYYY'),
           disableFilters: true,
         },
+        {
+          Header: 'Product',
+          accessor: 'courseProductLine',
+          Cell: ({ row }) => getCourseProductLineText(row.values.courseProductLine),
+        },
       ]}
       initialTableOptions={{
         getRowId: row => row?.uuid?.toString(),
@@ -89,6 +95,7 @@ LearnerCreditAllocationTable.propTypes = {
       courseTitle: PropTypes.string.isRequired,
       courseListPrice: PropTypes.number.isRequired,
       enrollmentDate: PropTypes.string.isRequired,
+      courseProductLine: PropTypes.string.isRequired,
     })),
     itemCount: PropTypes.number.isRequired,
     pageCount: PropTypes.number.isRequired,

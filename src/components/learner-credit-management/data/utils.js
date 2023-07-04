@@ -58,6 +58,7 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
+  courseProductLine: result.courseProductLine,
   uuid: uuidv4(),
 }));
 
