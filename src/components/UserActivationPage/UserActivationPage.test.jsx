@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
-import { Router, Route } from 'react-router-dom';
+import {
+  MemoryRouter as Router, Routes, Route, mockNavigate,
+} from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
@@ -14,17 +16,34 @@ const initialHistory = createMemoryHistory({
   initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`],
 });
 
+jest.mock('react-router-dom', () => {
+  const mockNavigation = jest.fn();
+
+  // eslint-disable-next-line react/prop-types
+  const Navigate = ({ to }) => {
+    mockNavigation(to);
+    return <div />;
+  };
+
+  return {
+    ...jest.requireActual('react-router-dom'),
+    Navigate,
+    mockNavigate: mockNavigation,
+  };
+});
+
 const UserActivationPageWrapper = ({
   history,
   ...rest
 }) => (
-  <Router history={history}>
+  <Router initialEntries={[`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`]}>
     <IntlProvider locale="en">
-      <Route
-        exact
-        path="/:enterpriseSlug/admin/register/activate"
-        render={routeProps => <UserActivationPage {...routeProps} {...rest} />}
-      />
+      <Routes>
+        <Route
+          path="/:enterpriseSlug/admin/register/activate"
+          element={<UserActivationPage {...rest} />}
+        />
+      </Routes>
     </IntlProvider>
   </Router>
 
@@ -65,7 +84,7 @@ describe('<UserActivationPage />', () => {
 
     mount(<UserActivationPageWrapper history={history} />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register`;
-    expect(history.location.pathname).toEqual(expectedRedirectRoute);
+    expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute);
   });
 
   it('displays loading skeleton when user is authenticated, has "enterprise_admin" JWT role, and is pending user hydration', () => {
@@ -102,6 +121,6 @@ describe('<UserActivationPage />', () => {
 
     mount(<UserActivationPageWrapper history={history} />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/learners`;
-    expect(history.location.pathname).toEqual(expectedRedirectRoute);
+    expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute);
   });
 });

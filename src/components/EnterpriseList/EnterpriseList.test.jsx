@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Redirect } from 'react-router-dom';
+import { MemoryRouter, mockNavigate } from 'react-router-dom';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -13,6 +13,22 @@ import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../LoadingMessage';
 
 import LmsApiServices from '../../data/services/LmsApiService';
+
+jest.mock('react-router-dom', () => {
+  const mockNavigation = jest.fn();
+
+  // eslint-disable-next-line react/prop-types
+  const Navigate = ({ to }) => {
+    mockNavigation(to);
+    return <div />;
+  };
+
+  return {
+    ...jest.requireActual('react-router-dom'),
+    Navigate,
+    mockNavigate: mockNavigation,
+  };
+});
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -160,8 +176,7 @@ describe('<EnterpriseList />', () => {
           </Provider>
         </MemoryRouter>
       ));
-      const expectedRedirect = <Redirect to="/enterprise-99/admin/learners" />;
-      expect(wrapper.containsMatchingElement(expectedRedirect)).toEqual(true);
+      expect(mockNavigate).toHaveBeenCalledWith('/enterprise-99/admin/learners');
     });
   });
 

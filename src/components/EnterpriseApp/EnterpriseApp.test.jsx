@@ -10,6 +10,7 @@ import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
+import { renderWithRouter } from '../test/testUtils';
 
 features.SETTINGS_PAGE = true;
 
@@ -37,9 +38,15 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   __esModule: true,
   // eslint-disable-next-line react/prop-types
-  Route: (props) => <span>{props.path}</span>,
-  Switch: (props) => props.children,
-  Redirect: () => 'Redirect',
+  Route: (props) => <span>{props.keyName}</span>,
+  Routes: (props) => props.children,
+  Navigate: () => 'Navigate',
+  useLocation: () => ({
+    pathname: '/',
+  }),
+  useParams: () => ({
+    enterpriseAppPage: 'settings',
+  }),
 }));
 
 jest.mock('../ProductTours/ProductTours', () => ({
@@ -60,18 +67,7 @@ jest.mock('../../containers/Sidebar', () => ({
 
 describe('<EnterpriseApp />', () => {
   const basicProps = {
-    match: {
-      url: '',
-      params: {
-        enterpriseSlug: 'foo',
-      },
-    },
-    location: {
-      pathname: '/',
-    },
-    history: {
-      replace: jest.fn(),
-    },
+    enterpriseSlug: 'foo',
     fetchPortalConfiguration: jest.fn(),
     toggleSidebarToggle: jest.fn(),
     loading: false,
@@ -99,7 +95,7 @@ describe('<EnterpriseApp />', () => {
   });
 
   it('should show settings page if there is at least one visible tab', () => {
-    render(<EnterpriseApp {...basicProps} />);
+    renderWithRouter(<EnterpriseApp {...basicProps} />);
     expect(screen.getByText('/admin/settings'));
   });
 

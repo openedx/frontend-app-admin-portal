@@ -61,7 +61,7 @@
     "react-markdown": "6.0.0",
     "react-redux": "7.1.1",
     "react-router": "5.2.0",
-    "react-router-dom": "5.2.0",
+    "react-router-dom": "^6.5.0",
     "react-textarea-autosize": "7.1.2",
     "react-truncate": "^2.4.0",
     "redux": "4.0.4",

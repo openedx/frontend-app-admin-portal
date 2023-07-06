@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { SubsidyRequestsContext } from '../subsidy-requests';
@@ -52,13 +51,11 @@ const initialSubsidyRequestContextValue = {
 const EmbeddedSubscriptionWrapper = () => (
   <IntlProvider locale="en">
     <AppContextProvider>
-      <MemoryRouter initialEntries={['/test-enterprise/admin/subscriptions/1234']}>
-        <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
-          <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
-            <EmbeddedSubscription />
-          </MockSubscriptionContext>
-        </SubsidyRequestsContext.Provider>
-      </MemoryRouter>
+      <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
+        <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
+          <EmbeddedSubscription />
+        </MockSubscriptionContext>
+      </SubsidyRequestsContext.Provider>
     </AppContextProvider>
   </IntlProvider>
 );

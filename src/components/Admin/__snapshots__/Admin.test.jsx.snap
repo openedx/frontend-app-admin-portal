@@ -137,7 +137,9 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          />
+          >
+            
+          </div>
         </div>
         <div
           className="row"
@@ -221,7 +223,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon25"
+                  id="Icon29"
                 />
               </h3>
               <p
@@ -258,7 +260,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon26"
+                      id="Icon30"
                     />
                     <span
                       className="sr-only"
@@ -314,7 +316,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon27"
+                  id="Icon31"
                 />
               </h3>
               <p
@@ -351,7 +353,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon28"
+                      id="Icon32"
                     />
                     <span
                       className="sr-only"
@@ -423,7 +425,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon29"
+                  id="Icon33"
                 />
               </h3>
               <p
@@ -460,7 +462,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon30"
+                      id="Icon34"
                     />
                     <span
                       className="sr-only"
@@ -548,7 +550,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon31"
+                  id="Icon35"
                 />
               </h3>
               <p
@@ -585,7 +587,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon32"
+                      id="Icon36"
                     />
                     <span
                       className="sr-only"
@@ -670,25 +672,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             <h2
               className="table-title"
             >
-              Number of Courses Enrolled by Learners
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon33"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -727,10 +717,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon34"
+                id="Icon37"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field38"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field38"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field39"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field39"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-40"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-40"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -800,7 +963,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon75"
+                  id="Icon99"
                 />
               </h3>
               <p
@@ -837,7 +1000,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon76"
+                      id="Icon100"
                     />
                     <span
                       className="sr-only"
@@ -893,7 +1056,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon77"
+                  id="Icon101"
                 />
               </h3>
               <p
@@ -930,7 +1093,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon78"
+                      id="Icon102"
                     />
                     <span
                       className="sr-only"
@@ -1002,7 +1165,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon79"
+                  id="Icon103"
                 />
               </h3>
               <p
@@ -1039,7 +1202,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon80"
+                      id="Icon104"
                     />
                     <span
                       className="sr-only"
@@ -1127,7 +1290,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon81"
+                  id="Icon105"
                 />
               </h3>
               <p
@@ -1164,7 +1327,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon82"
+                      id="Icon106"
                     />
                     <span
                       className="sr-only"
@@ -1249,25 +1412,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             <h2
               className="table-title"
             >
-              Number of Courses Completed by Learner
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon83"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -1306,10 +1457,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon84"
+                id="Icon107"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field108"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field108"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field109"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field109"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-110"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-110"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -1379,7 +1703,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon85"
+                  id="Icon113"
                 />
               </h3>
               <p
@@ -1416,7 +1740,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon86"
+                      id="Icon114"
                     />
                     <span
                       className="sr-only"
@@ -1472,7 +1796,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon87"
+                  id="Icon115"
                 />
               </h3>
               <p
@@ -1509,7 +1833,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon88"
+                      id="Icon116"
                     />
                     <span
                       className="sr-only"
@@ -1581,7 +1905,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon89"
+                  id="Icon117"
                 />
               </h3>
               <p
@@ -1618,7 +1942,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon90"
+                      id="Icon118"
                     />
                     <span
                       className="sr-only"
@@ -1706,7 +2030,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon91"
+                  id="Icon119"
                 />
               </h3>
               <p
@@ -1743,7 +2067,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon92"
+                      id="Icon120"
                     />
                     <span
                       className="sr-only"
@@ -1828,25 +2152,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             <h2
               className="table-title"
             >
-              Number of Courses Completed by Learner
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon93"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -1854,11 +2166,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         >
           <div
             className="col"
-          >
-            <h3>
-              Past Week
-            </h3>
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -1889,10 +2197,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon94"
+                id="Icon121"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field122"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field122"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field123"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field123"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-124"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-124"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -1962,7 +2443,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon95"
+                  id="Icon127"
                 />
               </h3>
               <p
@@ -1999,7 +2480,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon96"
+                      id="Icon128"
                     />
                     <span
                       className="sr-only"
@@ -2055,7 +2536,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon97"
+                  id="Icon129"
                 />
               </h3>
               <p
@@ -2092,7 +2573,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon98"
+                      id="Icon130"
                     />
                     <span
                       className="sr-only"
@@ -2164,7 +2645,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon99"
+                  id="Icon131"
                 />
               </h3>
               <p
@@ -2201,7 +2682,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon100"
+                      id="Icon132"
                     />
                     <span
                       className="sr-only"
@@ -2289,7 +2770,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon101"
+                  id="Icon133"
                 />
               </h3>
               <p
@@ -2326,7 +2807,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon102"
+                      id="Icon134"
                     />
                     <span
                       className="sr-only"
@@ -2416,7 +2897,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          />
+          >
+            
+          </div>
         </div>
         <div
           className="row"
@@ -2454,7 +2937,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon103"
+                id="Icon135"
               />
               Download full report (CSV)
             </button>
@@ -2477,7 +2960,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field104"
+                    htmlFor="form-field136"
                   >
                     Filter by course
                   </label>
@@ -2486,7 +2969,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <select
                       className="form-control"
-                      id="form-field104"
+                      id="form-field136"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -2508,7 +2991,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field105"
+                    htmlFor="form-field137"
                   >
                     Filter by start date
                     <svg
@@ -2540,7 +3023,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <select
                       className="form-control"
                       disabled={true}
-                      id="form-field105"
+                      id="form-field137"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -2575,7 +3058,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-106"
+                      htmlFor="pgn-searchfield-input-138"
                     >
                       <span
                         className="sr-only"
@@ -2587,7 +3070,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                       className="form-control"
                       data-hj-suppress={true}
                       disabled={false}
-                      id="pgn-searchfield-input-106"
+                      id="pgn-searchfield-input-138"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -3154,7 +3637,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          />
+          >
+            
+          </div>
         </div>
         <div
           className="row"
@@ -3438,7 +3923,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon65"
+                  id="Icon85"
                 />
               </h3>
               <p
@@ -3475,7 +3960,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon66"
+                      id="Icon86"
                     />
                     <span
                       className="sr-only"
@@ -3531,7 +4016,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon67"
+                  id="Icon87"
                 />
               </h3>
               <p
@@ -3568,7 +4053,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon68"
+                      id="Icon88"
                     />
                     <span
                       className="sr-only"
@@ -3640,7 +4125,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon69"
+                  id="Icon89"
                 />
               </h3>
               <p
@@ -3677,7 +4162,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon70"
+                      id="Icon90"
                     />
                     <span
                       className="sr-only"
@@ -3765,7 +4250,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon71"
+                  id="Icon91"
                 />
               </h3>
               <p
@@ -3802,7 +4287,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon72"
+                      id="Icon92"
                     />
                     <span
                       className="sr-only"
@@ -3887,25 +4372,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             <h2
               className="table-title"
             >
-              Learners Enrolled in a Course
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon73"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -3913,11 +4386,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <div
             className="col"
-          >
-            <h3>
-              Not Active in Past Month
-            </h3>
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -3948,10 +4417,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon74"
+                id="Icon93"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field94"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field94"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field95"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field95"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-96"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-96"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -4021,7 +4663,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon55"
+                  id="Icon71"
                 />
               </h3>
               <p
@@ -4058,7 +4700,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon56"
+                      id="Icon72"
                     />
                     <span
                       className="sr-only"
@@ -4114,7 +4756,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon57"
+                  id="Icon73"
                 />
               </h3>
               <p
@@ -4151,7 +4793,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon58"
+                      id="Icon74"
                     />
                     <span
                       className="sr-only"
@@ -4223,7 +4865,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon59"
+                  id="Icon75"
                 />
               </h3>
               <p
@@ -4260,7 +4902,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon60"
+                      id="Icon76"
                     />
                     <span
                       className="sr-only"
@@ -4348,7 +4990,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon61"
+                  id="Icon77"
                 />
               </h3>
               <p
@@ -4385,7 +5027,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon62"
+                      id="Icon78"
                     />
                     <span
                       className="sr-only"
@@ -4470,25 +5112,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             <h2
               className="table-title"
             >
-              Learners Enrolled in a Course
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon63"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -4496,11 +5126,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <div
             className="col"
-          >
-            <h3>
-              Not Active in Past Week
-            </h3>
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -4531,10 +5157,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon64"
+                id="Icon79"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field80"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field80"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field81"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field81"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-82"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-82"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -4604,7 +5403,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon35"
+                  id="Icon43"
                 />
               </h3>
               <p
@@ -4641,7 +5440,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon36"
+                      id="Icon44"
                     />
                     <span
                       className="sr-only"
@@ -4697,7 +5496,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon37"
+                  id="Icon45"
                 />
               </h3>
               <p
@@ -4734,7 +5533,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon38"
+                      id="Icon46"
                     />
                     <span
                       className="sr-only"
@@ -4806,7 +5605,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon39"
+                  id="Icon47"
                 />
               </h3>
               <p
@@ -4843,7 +5642,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon40"
+                      id="Icon48"
                     />
                     <span
                       className="sr-only"
@@ -4931,7 +5730,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon41"
+                  id="Icon49"
                 />
               </h3>
               <p
@@ -4968,7 +5767,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon42"
+                      id="Icon50"
                     />
                     <span
                       className="sr-only"
@@ -5053,25 +5852,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             <h2
               className="table-title"
             >
-              Learners Not Enrolled in an Active Course
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon43"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -5079,11 +5866,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         >
           <div
             className="col"
-          >
-            <p>
-              Learners who have completed all of their courses and/or courses have ended.
-            </p>
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -5114,10 +5897,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon44"
+                id="Icon51"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field52"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field52"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field53"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field53"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-54"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-54"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -5636,25 +6592,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             <h2
               className="table-title"
             >
-              Registered Learners Not Yet Enrolled in a Course
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon23"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -5693,10 +6637,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon24"
+                id="Icon23"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field24"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field24"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field25"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field25"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-26"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-26"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -5766,7 +6883,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon45"
+                  id="Icon57"
                 />
               </h3>
               <p
@@ -5803,7 +6920,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon46"
+                      id="Icon58"
                     />
                     <span
                       className="sr-only"
@@ -5859,7 +6976,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon47"
+                  id="Icon59"
                 />
               </h3>
               <p
@@ -5896,7 +7013,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon48"
+                      id="Icon60"
                     />
                     <span
                       className="sr-only"
@@ -5968,7 +7085,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon49"
+                  id="Icon61"
                 />
               </h3>
               <p
@@ -6005,7 +7122,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon50"
+                      id="Icon62"
                     />
                     <span
                       className="sr-only"
@@ -6093,7 +7210,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 <span
                   aria-hidden={true}
                   className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon51"
+                  id="Icon63"
                 />
               </h3>
               <p
@@ -6130,7 +7247,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     <span
                       aria-hidden={true}
                       className="fa fa-caret-down"
-                      id="Icon52"
+                      id="Icon64"
                     />
                     <span
                       className="sr-only"
@@ -6215,25 +7332,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             <h2
               className="table-title"
             >
-              Learners Enrolled in a Course
+              Full Report
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            <a
-              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
-              href="/"
-              onClick={[Function]}
-            >
-              <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon53"
-              />
-              Reset to 
-              Full Report
-            </a>
+            
           </div>
         </div>
         <div
@@ -6241,11 +7346,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         >
           <div
             className="col"
-          >
-            <h3>
-              Top Active Learners
-            </h3>
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -6276,10 +7377,183 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               <span
                 aria-hidden={true}
                 className="fa mr-2 fa-download"
-                id="Icon54"
+                id="Icon65"
               />
-              Download current report (CSV)
+              Download full report (CSV)
             </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field66"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field66"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field67"
+                  >
+                    Filter by start date
+                    <svg
+                      alt="More information"
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
+                      data-icon="info-circle"
+                      data-prefix="fas"
+                      focusable="false"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                      role="img"
+                      style={Object {}}
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                        fill="currentColor"
+                        style={Object {}}
+                      />
+                    </svg>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field67"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-68"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-68"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -6348,7 +7622,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                 <span
                   aria-hidden={true}
                   className="fa fa-times-circle"
-                  id="Icon109"
+                  id="Icon141"
                 />
               </div>
               <div
@@ -6404,7 +7678,9 @@ exports[`<Admin /> renders correctly with error state 1`] = `
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          />
+          >
+            
+          </div>
         </div>
         <div
           className="row"
@@ -6567,7 +7843,9 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          />
+          >
+            
+          </div>
         </div>
         <div
           className="row"

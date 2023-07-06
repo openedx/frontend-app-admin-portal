@@ -5,11 +5,11 @@ import thunk from 'redux-thunk';
 import {
   screen,
   cleanup,
+  render,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
-import { Route } from 'react-router-dom';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { Routes, Route, MemoryRouter } from 'react-router-dom';
 
 import SubscriptionTabs from '../SubscriptionTabs';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
@@ -49,8 +49,6 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
 
-const INITIAL_ROUTER_ENTRY = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
-
 const SubscriptionTabsWrapper = ({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
@@ -61,11 +59,18 @@ const SubscriptionTabsWrapper = ({
   );
   return (
     <Provider store={store}>
-      <Route path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab">
-        <SubsidyRequestsContext.Provider value={value}>
-          <SubscriptionTabs />
-        </SubsidyRequestsContext.Provider>
-      </Route>
+      <MemoryRouter initialEntries={[`/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`]}>
+        <Routes>
+          <Route
+            path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab"
+            element={(
+              <SubsidyRequestsContext.Provider value={value}>
+                <SubscriptionTabs />
+              </SubsidyRequestsContext.Provider>
+            )}
+          />
+        </Routes>
+      </MemoryRouter>
     </Provider>
   );
 };
@@ -98,7 +103,7 @@ describe('<SubscriptionTabs />', () => {
   });
 
   it('Clicking on a tab changes content via router', async () => {
-    renderWithRouter(<SubscriptionTabsWrapper />, { route: INITIAL_ROUTER_ENTRY });
+    render(<SubscriptionTabsWrapper />);
     // assert "manage learners" and "manage requests" tabs are visible
     const manageLearnersTab = screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]);
     const manageRequestsTab = screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]);
@@ -116,41 +121,39 @@ describe('<SubscriptionTabs />', () => {
   });
 
   it('Clicking on default tab does not change content', async () => {
-    renderWithRouter(<SubscriptionTabsWrapper />, { route: INITIAL_ROUTER_ENTRY });
+    render(<SubscriptionTabsWrapper />);
     const manageLearnersTab = screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]);
     userEvent.click(manageLearnersTab);
     await screen.findByText(MANAGE_LEARNERS_MOCK_CONTENT);
   });
 
   it('When configured subsidy request is not license, hide "Manage Requests" tab', async () => {
-    renderWithRouter(<SubscriptionTabsWrapper subsidyRequestConfiguration={{ subsidyType: 'coupon' }} />, { route: INITIAL_ROUTER_ENTRY });
+    render(<SubscriptionTabsWrapper subsidyRequestConfiguration={{ subsidyType: 'coupon' }} />);
     screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]);
     expect(screen.queryByText(SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB])).toBeFalsy();
   });
 
   it('When subsidy requests are not enabled, hide "Manage Requests" tab', async () => {
-    renderWithRouter(
+    render(
       <SubscriptionTabsWrapper
         subsidyRequestConfiguration={{
           subsidyRequestsEnabled: false,
           subsidyType: 'license',
         }}
       />,
-      { route: INITIAL_ROUTER_ENTRY },
     );
     screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]);
     expect(screen.queryByText(SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB])).toBeFalsy();
   });
 
   it('Show notification bubble on "Manage Requests" tab with outstanding license requests', () => {
-    renderWithRouter(
+    render(
       <SubscriptionTabsWrapper
         subsidyRequestsCounts={{
           subscriptionLicenses: 12,
           couponCodes: undefined,
         }}
       />,
-      { route: INITIAL_ROUTER_ENTRY },
     );
     screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]);
     screen.getByText(12);
