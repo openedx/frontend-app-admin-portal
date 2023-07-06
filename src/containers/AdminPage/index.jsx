@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import {
   clearDashboardAnalytics,
@@ -35,4 +34,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Admin));
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);

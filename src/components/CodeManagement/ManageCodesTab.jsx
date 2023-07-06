@@ -21,6 +21,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NewFeatureAlertBrowseAndRequest from '../NewFeatureAlertBrowseAndRequest';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
+import { withLocation, withNavigate } from '../../hoc';
 
 class ManageCodesTab extends React.Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class ManageCodesTab extends React.Component {
   }
 
   componentDidMount() {
-    const { enterpriseId, location, history } = this.props;
+    const { enterpriseId, location, navigate } = this.props;
     const queryParams = new URLSearchParams(location.search);
 
     if (enterpriseId) {
@@ -48,10 +49,7 @@ class ManageCodesTab extends React.Component {
         hasRequestedCodes: location.state.hasRequestedCodes,
       });
 
-      history.replace({
-        ...location.pathname,
-        state: {},
-      });
+      navigate(location.pathname, { state: {}, replace: true });
     }
 
     // To fetch active email templates for assign, remind, and revoke
@@ -342,12 +340,7 @@ ManageCodesTab.propTypes = {
     }),
     pathname: PropTypes.string,
   }).isRequired,
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    replace: PropTypes.func.isRequired,
-  }).isRequired,
+  navigate: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   coupons: PropTypes.shape({
@@ -378,4 +371,4 @@ const mapDispatchToProps = dispatch => ({
 
 ManageCodesTab.contextType = SubsidyRequestsContext;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCodesTab);
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigate(withLocation((ManageCodesTab))));

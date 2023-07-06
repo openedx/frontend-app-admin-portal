@@ -2,31 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Switch,
+  Routes,
   Route,
-  Redirect,
+  Navigate,
 } from 'react-router-dom';
 
 import NotFoundPage from '../NotFoundPage';
 import CouponCodeTabs from './CouponCodeTabs';
 import {
   DEFAULT_TAB,
-  COUPON_CODES_PARAM_MATCH,
+  COUPON_CODE_TAB_PARAM,
 } from './data/constants';
 
 const CodeManagementRoutes = ({ enterpriseSlug }) => (
-  <Switch>
-    <Redirect
-      exact
-      from={`/${enterpriseSlug}/admin/coupons`}
-      to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`}
+  <Routes>
+    <Route
+      path="/"
+      element={<Navigate to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`} />}
     />
     <Route
-      path={`/${enterpriseSlug}/admin/coupons/${COUPON_CODES_PARAM_MATCH}`}
-      component={CouponCodeTabs}
+      path={`/:${COUPON_CODE_TAB_PARAM}?/*`}
+      element={<CouponCodeTabs />}
     />
-    <Route path="" component={NotFoundPage} />
-  </Switch>
+    <Route path="*" element={<NotFoundPage />} />
+  </Routes>
 );
 
 CodeManagementRoutes.propTypes = {

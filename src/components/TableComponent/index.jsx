@@ -9,6 +9,7 @@ import TableLoadingSkeleton from './TableLoadingSkeleton';
 import TableLoadingOverlay from '../TableLoadingOverlay';
 import StatusAlert from '../StatusAlert';
 import { updateUrl } from '../../utils';
+import { withLocation } from '../../hoc';
 
 class TableComponent extends React.Component {
   componentDidMount() {
@@ -197,4 +198,4 @@ TableComponent.defaultProps = {
   loading: false,
 };
 
-export default TableComponent;
+export default withLocation(TableComponent);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { withRouter } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Icon } from '@edx/paragon';
 
 import { isValidEmail } from '../../utils';
@@ -92,8 +92,8 @@ const CodeSearchResultsTable = ({
   shouldRefreshTable,
   onRemindSuccess,
   onRevokeSuccess,
-  location,
 }) => {
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const formatSearchResultsData = (results) => {
     const transformedSearchResults = transformSearchResults(results);
@@ -167,9 +167,6 @@ CodeSearchResultsTable.propTypes = {
   shouldRefreshTable: PropTypes.bool.isRequired,
   onRemindSuccess: PropTypes.func.isRequired,
   onRevokeSuccess: PropTypes.func.isRequired,
-  location: PropTypes.shape({
-    search: PropTypes.string,
-  }).isRequired,
 };
 
-export default withRouter(CodeSearchResultsTable);
+export default CodeSearchResultsTable;

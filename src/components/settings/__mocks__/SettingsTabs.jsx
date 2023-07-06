@@ -1,22 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import { useCurrentSettingsTab } from '../data/hooks';
 
-const MockSettingsTabs = ({ match }) => {
+const MockSettingsTabs = () => {
   const tab = useCurrentSettingsTab();
+  const location = useLocation();
 
   return (
     <>
-      <p>{match.path}</p>
+      <p>{location.pathname.replace('/', '')}</p>
       <p>{tab}</p>
     </>
   );
-};
-
-MockSettingsTabs.propTypes = {
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 export default MockSettingsTabs;

@@ -6,7 +6,6 @@ import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 import EnterpriseAppRoutes from './EnterpriseAppRoutes';
 
 const EnterpriseAppContent = ({
-  baseUrl,
   email,
   enterpriseId,
   enterpriseName,
@@ -25,7 +24,6 @@ const EnterpriseAppContent = ({
 
   return (
     <EnterpriseAppRoutes
-      baseUrl={baseUrl}
       email={email}
       enterpriseId={enterpriseId}
       enterpriseName={enterpriseName}
@@ -39,7 +37,6 @@ const EnterpriseAppContent = ({
 };
 
 EnterpriseAppContent.propTypes = {
-  baseUrl: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string.isRequired,

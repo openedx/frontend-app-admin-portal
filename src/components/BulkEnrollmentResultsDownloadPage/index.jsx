@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
@@ -54,7 +54,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
         >
           Your download is not ready yet.
         </Toast>
-        <Redirect to={`/${enterpriseSlug}/admin/learners`} />
+        <Navigate to={`/${enterpriseSlug}/admin/learners`} />
       </>
     );
   }
@@ -67,7 +67,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
         >
           There was a problem with your request.
         </Toast>
-        <Redirect to={`/${enterpriseSlug}/admin/learners`} />
+        <Navigate to={`/${enterpriseSlug}/admin/learners`} />
       </>
     );
   }

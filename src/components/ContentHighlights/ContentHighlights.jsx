@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightRoutes from './ContentHighlightRoutes';
 import Hero from '../Hero';
 import ContentHighlightsContextProvider from './ContentHighlightsContext';
 import ContentHighlightToast from './ContentHighlightToast';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import { withLocation } from '../../hoc';
 
-const ContentHighlights = () => {
-  const history = useHistory();
-  const { location } = history;
+const ContentHighlights = ({ location }) => {
+  const navigate = useNavigate();
   const { state: locationState } = location;
   const [toasts, setToasts] = useState([]);
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
@@ -21,7 +22,7 @@ const ContentHighlights = () => {
       }]);
       const newState = { ...locationState };
       delete newState.highlightToast;
-      history.replace({ ...location, state: newState });
+      navigate(location.pathname, { ...location, state: newState, replace: true });
     }
     if (locationState?.deletedHighlightSet) {
       setToasts((prevState) => [...prevState, {
@@ -30,7 +31,7 @@ const ContentHighlights = () => {
       }]);
       const newState = { ...locationState };
       delete newState.deletedHighlightSet;
-      history.replace({ ...location, state: newState });
+      navigate(location.pathname, { ...location, state: newState, replace: true });
     }
     if (locationState?.addHighlightSet) {
       setToasts((prevState) => [...prevState, {
@@ -39,9 +40,9 @@ const ContentHighlights = () => {
       }]);
       const newState = { ...locationState };
       delete newState.addHighlightSet;
-      history.replace({ ...location, state: newState });
+      navigate(location.pathname, { ...location, state: newState, replace: true });
     }
-  }, [enterpriseCuration?.toastText, history, location, locationState]);
+  }, [enterpriseCuration?.toastText, navigate, location, locationState]);
   return (
     <ContentHighlightsContextProvider>
       <Hero title="Highlights" />
@@ -51,4 +52,15 @@ const ContentHighlights = () => {
   );
 };
 
-export default ContentHighlights;
+ContentHighlights.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    state: PropTypes.shape({
+      addHighlightSet: PropTypes.bool,
+      deletedHighlightSet: PropTypes.bool,
+      highlightToast: PropTypes.bool,
+    }),
+  }),
+};
+
+export default withLocation(ContentHighlights);

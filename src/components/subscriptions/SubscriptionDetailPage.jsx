@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import SubscriptionExpirationModals from './expiration/SubscriptionExpirationModals';
@@ -12,12 +12,13 @@ import SubscriptionDetailsSkeleton from './SubscriptionDetailsSkeleton';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
 
-export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
-  const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
+export const SubscriptionDetailPage = ({ enterpriseSlug }) => {
+  const { subscriptionUUID } = useParams();
+  const [subscription, loadingSubscription] = useSubscriptionFromParams({ subscriptionUUID });
 
   if (!subscription && !loadingSubscription) {
     return (
-      <Redirect
+      <Navigate
         to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`}
       />
     );
@@ -38,11 +39,6 @@ export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
 };
 
 SubscriptionDetailPage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      subscriptionUUID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
 };
 

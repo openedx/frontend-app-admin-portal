@@ -24,6 +24,7 @@ import { formatTimestamp } from '../../utils';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
+import { withLocation, withParams } from '../../hoc';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -168,7 +169,7 @@ class Admin extends React.Component {
   }
 
   displaySearchBar() {
-    return !this.props.match.params.actionSlug;
+    return !this.props.actionSlug;
   }
 
   isTableDataMissing(id) {
@@ -204,8 +205,7 @@ class Admin extends React.Component {
   }
 
   renderDownloadButton() {
-    const { match } = this.props;
-    const { params: { actionSlug } } = match;
+    const { actionSlug } = this.props;
     const tableMetadata = this.getMetadataForAction(actionSlug);
     return (
       <DownloadCsvButton
@@ -218,7 +218,7 @@ class Admin extends React.Component {
   }
 
   renderUrlResetButton() {
-    const { match: { url } } = this.props;
+    const url = this.props.location.pathname;
 
     // Remove the slug from the url so it renders the full report
     const path = url.split('/').slice(0, -1).join('/');
@@ -277,11 +277,9 @@ class Admin extends React.Component {
       lastUpdatedDate,
       loading,
       enterpriseId,
-      match,
+      actionSlug,
       location: { search },
     } = this.props;
-
-    const { params: { actionSlug } } = match;
 
     const queryParams = new URLSearchParams(search || '');
     const queryParamsLength = Array.from(queryParams.entries()).length;
@@ -400,6 +398,7 @@ Admin.defaultProps = {
   },
   csv: null,
   table: null,
+  actionSlug: '',
 };
 
 Admin.propTypes = {
@@ -422,13 +421,8 @@ Admin.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   csv: PropTypes.shape({}),
-  match: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      actionSlug: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
+  actionSlug: PropTypes.string,
   table: PropTypes.shape({}),
 };
 
-export default Admin;
+export default withParams(withLocation(Admin));

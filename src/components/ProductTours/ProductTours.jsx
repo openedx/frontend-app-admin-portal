@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
 import browseAndRequestTour from './browseAndRequestTour';
@@ -30,7 +30,7 @@ const ProductTours = ({
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
-  const history = useHistory();
+  const navigate = useNavigate();
   const enabledFeatures = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance })[0],
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal })[0],
@@ -40,19 +40,19 @@ const ProductTours = ({
   const newFeatureTourCheckpoints = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
-      history,
+      navigate,
     }),
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({
       enterpriseSlug,
-      history,
+      navigate,
     }),
     [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({
       enterpriseSlug,
-      history,
+      navigate,
     }),
     [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({
       enterpriseSlug,
-      history,
+      navigate,
     }),
   };
   const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
