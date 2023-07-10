@@ -14,6 +14,7 @@ const LicenseAllocationHeader = () => {
   // don't show alert if the enterprise already has subsidy requests enabled
   const isBrowseAndRequestFeatureAlertShown = subsidyRequestConfiguration?.subsidyType
     === SUPPORTED_SUBSIDY_TYPES.license && !subsidyRequestConfiguration?.subsidyRequestsEnabled;
+  const activatedAndAssigned = (subscription.licenses?.activated ?? 0) + (subscription.licenses?.assigned ?? 0);
   return (
     <>
       {isBrowseAndRequestFeatureAlertShown && <NewFeatureAlertBrowseAndRequest />}
@@ -25,7 +26,7 @@ const LicenseAllocationHeader = () => {
         </Badge>
         <Badge variant="light">Activated: {subscription.licenses?.activated}
           {' of '}
-          {subscription.licenses?.assigned} assigned
+          {activatedAndAssigned} assigned
         </Badge>
       </div>
     </>
