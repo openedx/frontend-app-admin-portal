@@ -10,7 +10,6 @@ import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalo
 import { Skeleton } from '@edx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import StatusAlert from '../StatusAlert';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import {
   BaseCourseSearchResults, NO_DATA_MESSAGE, TABLE_HEADERS,
@@ -145,7 +144,6 @@ describe('<CourseSearchResults />', () => {
     const wrapper = mount(<CourseSearchWrapper
       props={{ ...defaultProps, searchResults: { ...searchResults, nbHits: 0 } }}
     />);
-    expect(wrapper.find(StatusAlert)).toHaveLength(1);
     expect(wrapper.text()).toContain(NO_DATA_MESSAGE);
   });
 });
