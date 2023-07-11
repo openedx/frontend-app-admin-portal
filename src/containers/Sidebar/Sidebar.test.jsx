@@ -270,7 +270,7 @@ describe('<Sidebar />', () => {
     });
 
     render(<SidebarWrapper store={store} />);
-    const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' }, { exact: false });
+    const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' });
     expect(subscriptionManagementLink).toBeNull();
   });
 
@@ -284,7 +284,7 @@ describe('<Sidebar />', () => {
       },
     });
     render(<SidebarWrapper store={store} />);
-    const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' }, { exact: false });
+    const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' });
     expect(subscriptionManagementLink).toBeInTheDocument();
     expect(subscriptionManagementLink).toHaveAttribute('href', '/test-enterprise-slug/admin/subscriptions');
   });
@@ -300,7 +300,7 @@ describe('<Sidebar />', () => {
     });
     features.REPORTING_CONFIGURATIONS = true;
     render(<SidebarWrapper store={store} />);
-    const enableReportingConfigScreenLink = screen.queryByRole('link', { name: 'Reporting Configurations' }, { exact: false });
+    const enableReportingConfigScreenLink = screen.queryByRole('link', { name: 'Reporting Configurations' });
     expect(enableReportingConfigScreenLink).toBeNull();
   });
 
@@ -315,7 +315,7 @@ describe('<Sidebar />', () => {
     });
     features.REPORTING_CONFIGURATIONS = true;
     render(<SidebarWrapper store={store} enableReportingConfigScreen />);
-    const enableReportingConfigScreenLink = screen.getByRole('link', { name: 'Reporting Configurations' }, { exact: false });
+    const enableReportingConfigScreenLink = screen.getByRole('link', { name: 'Reporting Configurations' });
     expect(enableReportingConfigScreenLink).toBeInTheDocument();
     expect(enableReportingConfigScreenLink).toHaveAttribute('href', '/test-enterprise-slug/admin/reporting');
   });
@@ -345,7 +345,7 @@ describe('<Sidebar />', () => {
     });
 
     render(<SidebarWrapper store={store} />);
-    const enableLearnerCreditLink = screen.getByRole('link', { name: 'Learner Credit Management' }, { exact: false });
+    const enableLearnerCreditLink = screen.getByRole('link', { name: 'Learner Credit Management' });
     expect(enableLearnerCreditLink).toBeInTheDocument();
     expect(enableLearnerCreditLink).toHaveAttribute('href', '/test-enterprise-slug/admin/learner-credit');
   });
