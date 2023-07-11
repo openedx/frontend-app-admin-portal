@@ -11,7 +11,7 @@ const IconWithTooltip = ({
   return (
     <OverlayTrigger
       trigger={trigger}
-      placement={width >= breakpoint ? placementSm : placementLg}
+      placement={placement}
       data-testid={`tooltip-${placement}`}
       overlay={(
         <Tooltip id={`tooltip-${placement}`}>
