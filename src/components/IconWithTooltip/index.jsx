@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OverlayTrigger, Tooltip } from '@edx/paragon';
-import useWindowSize from '../../hooks/useWindowSize';
+import { OverlayTrigger, Tooltip, useWindowSize } from '@edx/paragon';
 
 const IconWithTooltip = ({
   icon, altText, tooltipText, placementSm = 'right', placementLg = 'top', trigger = ['hover', 'focus'], breakpoint = 768, iconClassNames = 'ml-1',
 }) => {
-  const windowSize = useWindowSize();
-  const placement = windowSize.width >= breakpoint ? placementSm : placementLg;
+  const { width } = useWindowSize();
+  const placement = width >= breakpoint ? placementSm : placementLg;
   return (
     <OverlayTrigger
       trigger={trigger}
-      placement={windowSize.width >= breakpoint ? placementSm : placementLg}
+      placement={width >= breakpoint ? placementSm : placementLg}
       data-testid={`tooltip-${placement}`}
       overlay={(
         <Tooltip id={`tooltip-${placement}`}>
