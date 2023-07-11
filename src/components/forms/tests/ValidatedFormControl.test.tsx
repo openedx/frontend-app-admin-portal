@@ -28,8 +28,8 @@ const ValidatedFormControlWrapper = ({
     formFields: { [formId]: formValue },
   };
   if (formError) {
-    contextValue = 
-    { ...contextValue, 
+    contextValue = {
+      ...contextValue,
       errorMap: { [formId]: [formError] },
       showErrors: true,
     };
