@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
 import {
-  Form, StatefulButton, Icon, Button,
+  ValidationFormGroup, Input, StatefulButton, Icon, Button,
 } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
@@ -178,7 +178,6 @@ class ReportingConfigForm extends React.Component {
       enableCompression,
       submitState,
     } = this.state;
-
     const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
     const dataTypesOptions = reportingConfigTypes.dataType.map((item, index) => ({
       key: index, label: item[1], value: item[0],
@@ -186,214 +185,228 @@ class ReportingConfigForm extends React.Component {
     const dataTypesOptionsValues = dataTypesOptions.map(item => item.value);
     const selectedDataTypesOption = config ? [{ label: config.dataType, value: config.dataType, hidden: true }] : [];
     return (
-      <Form>
-        <Form.Row>
-          <Form.Group>
-            <Form.Checkbox
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          this.handleSubmit(formData, config);
+        }}
+        onChange={() => this.setState({ submitState: SUBMIT_STATES.DEFAULT })}
+      >
+        <div className="col">
+          <ValidationFormGroup
+            for="active"
+          >
+            <label htmlFor="active">Active</label>
+            <Input
+              type="checkbox"
               id="active"
+              name="active"
+              className="ml-3"
               checked={active}
               onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
-            >Active
-            </Form.Checkbox>
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group>
-            <Form.Control
-              floatingLabel="Data type"
-              id="dataType"
-              disabled={config && !dataTypesOptionsValues.includes(config.dataType)}
-              as="select"
-            >
-              {dataTypesOptions.map(({ label, value }) => <option key={value} value={value}>{label}</option>)}
-              {selectedDataTypesOption.map(({ label, value }) => <option key={value} value={value}>{label}</option>)}
-            </Form.Control>
-            <Form.Text>
-              The type of data this report should contain. If this is an old report, you will not be able
-              to change this field, and should create a new report
-            </Form.Text>
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              floatingLabel="Report type"
-              id="reportType"
-              disabled={config && !dataTypesOptionsValues.includes(config.dataType)}
-              as="select"
-              defaultValue={config ? config.reportType : reportingConfigTypes.reportType[0][0]}
-            >
-              {reportingConfigTypes.reportType.map(
-                (item => <option key={item[0]} value={item[0]}>{item[1]}</option>),
-              )}
-            </Form.Control>
-            <Form.Text>
-              The type this report should be sent as, e.g. CSV
-            </Form.Text>
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group>
-            <Form.Control
-              floatingLabel="Delivery method"
-              id="deliveryMethod"
-              as="select"
-              disabled={config}
-              defaultValue={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
-              onChange={e => this.setState({ deliveryMethod: e.target.value })}
-            >
-              {reportingConfigTypes.deliveryMethod.map(
-                item => (<option key={item[0]} data-testid={`delivery-method-${item[0]}`} value={item[0]}>{item[1]}</option>),
-              )}
-            </Form.Control>
-            <Form.Text>
-              The method in which the data should be sent
-            </Form.Text>
-            {!!APIErrors.deliveryMethod && (
-              <Form.Control.Feedback type="invalid">
-                {APIErrors.deliveryMethod}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              as="select"
-              floatingLabel="Frequency"
-              id="frequency"
-              disabled={config}
-              defaultValue={frequency}
-              onChange={e => this.setState({ frequency: e.target.value })}
-            >
-              {reportingConfigTypes.frequency.map(item => (<option key={item[0]} value={item[0]}>{item[1]}</option>))}
-            </Form.Control>
-            <Form.Text>
-              The frequency interval (daily, weekly, or monthly) that the report should be sent
-            </Form.Text>
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group>
-            <Form.Control
-              floatingLabel="Day of the month"
-              type="number"
-              id="dayOfWeek"
-              max={MONTHLY_MAX}
-              min={MONTHLY_MIN}
-              disabled={!(frequency === 'monthly')}
-              defaultValue={config ? config.dayOfMonth : 1}
             />
-            <Form.Text>
-              The hour of the day to send the report, in Eastern Standard Time (EST).
-              This is required for all frequency settings
-            </Form.Text>
-            {(frequency === 'monthly' && invalidFields.dayOfMonth) && (
-            <Form.Control.Feedback type="invalid">
-              The day of the month to send the report. This field is required
-              and only valid when the frequency is monthly
-            </Form.Control.Feedback>
-            )}
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              floatingLabel="Day of the week"
-              type="number"
-              id="dayOfWeek"
-              disabled={!(frequency === 'weekly')}
-              defaultValue={config ? config.dayOfWeek : undefined}
-              as="select"
+          </ValidationFormGroup>
+        </div>
+        <div className="row">
+          <div className="col col-6">
+            <ValidationFormGroup
+              for="dataType"
+              helpText="The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report"
             >
-              {reportingConfigTypes.dayOfWeek.map(item => (<option key={item[0]} value={item[0]}>{item[1]}</option>))}
-            </Form.Control>
-            <Form.Text>
-              The day of the week to send the report. This field is required and only valid when the frequency is weekly
-            </Form.Text>
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              as="select"
-              floatingLabel="Hour of the day"
-              type="number"
-              id="hourOfDay"
-              disabled={!(frequency === 'weekly')}
-              defaultValue={config ? config.dayOfWeek : undefined}
+              <label htmlFor="dataType">Data Type</label>
+              <Input
+                type="select"
+                id="dataType"
+                name="dataType"
+                defaultValue={config ? config.dataType : reportingConfigTypes.dataType[0][0]}
+                disabled={config && !dataTypesOptionsValues.includes(config.dataType)}
+                options={[...dataTypesOptions, ...selectedDataTypesOption]}
+              />
+            </ValidationFormGroup>
+            <ValidationFormGroup
+              for="reportType"
+              helpText="The type this report should be sent as, e.g. CSV"
             >
-              {reportingConfigTypes.dayOfWeek.map(item => (<option key={item[0]} value={item[0]}>{item[1]}</option>))}
-            </Form.Control>
-            <Form.Text>
-              The hour of the day to send the report, in Eastern Standard Time (EST).
-              This is required for all frequency settings
-            </Form.Text>
-            {invalidFields.hourOfDay && (
-            <Form.Control.Feedback type="invalid">
-              Required for all frequency types
-            </Form.Control.Feedback>
-            )}
-          </Form.Group>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group>
-            <Form.Control
-              id="pgpEncryptionKey"
-              floatingLabel="PGP Encryption Key"
-              as="textarea"
-              defaultValue={config ? config.pgpEncryptionKey : undefined}
-            />
-            <Form.Text>
-              The key for encryption, if PGP encrypted file is required
-            </Form.Text>
-            {!!APIErrors.pgpEncryptionKey && (
-            <Form.Control.Feedback type="invalid">
-              {APIErrors.pgpEncryptionKey}
-            </Form.Control.Feedback>
-            )}
-          </Form.Group>
-          {deliveryMethod === 'email' && (
-            <EmailDeliveryMethodForm
-              config={config}
-              invalidFields={invalidFields}
-              handleBlur={this.handleBlur}
-            />
-          )}
-          {deliveryMethod === 'sftp' && (
-            <SFTPDeliveryMethodForm
-              config={config}
-              invalidFields={invalidFields}
-            />
-          )}
-        </Form.Row>
-        <Form.Row>
-          <Form.Group>
-            <Form.Checkbox
+              <label htmlFor="reportType">Report Type</label>
+              <Input
+                type="select"
+                id="reportType"
+                name="reportType"
+                defaultValue={config ? config.reportType : reportingConfigTypes.reportType[0][0]}
+                options={reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] }))}
+              />
+            </ValidationFormGroup>
+          </div>
+          <div className="col col-6">
+            <ValidationFormGroup
+              for="deliveryMethod"
+              helpText="The method in which the data should be sent"
+              invalid={!!APIErrors.deliveryMethod}
+              invalidMessage={APIErrors.deliveryMethod}
+            >
+              <label htmlFor="deliveryMethod">Delivery Method</label>
+              <Input
+                type="select"
+                id="deliveryMethod"
+                name="deliveryMethod"
+                defaultValue={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
+                options={reportingConfigTypes.deliveryMethod.map(item => ({ label: item[1], value: item[0] }))}
+                onChange={e => this.setState({ deliveryMethod: e.target.value })}
+                disabled={config}
+              />
+              <input
+                type="hidden"
+                name="deliveryMethod"
+                value={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
+                disabled={!config}
+              />
+            </ValidationFormGroup>
+            <ValidationFormGroup
+              for="frequency"
+              helpText="The frequency interval (daily, weekly, or monthly) that the report should be sent"
+            >
+              <label htmlFor="frequency">Frequency</label>
+              <Input
+                type="select"
+                id="frequency"
+                name="frequency"
+                defaultValue={frequency}
+                options={reportingConfigTypes.frequency.map(item => ({ label: item[1], value: item[0] }))}
+                onChange={e => this.setState({ frequency: e.target.value })}
+              />
+            </ValidationFormGroup>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <ValidationFormGroup
+              for="dayOfMonth"
+              helpText="The day of the month to send the report. This field is required and only valid when the frequency is monthly"
+              invalid={frequency === 'monthly' && invalidFields.dayOfMonth}
+            >
+              <label htmlFor="dayOfMonth">Day of Month</label>
+              <Input
+                type="number"
+                max={MONTHLY_MAX}
+                min={MONTHLY_MIN}
+                disabled={!(frequency === 'monthly')}
+                id="dayOfMonth"
+                name="dayOfMonth"
+                defaultValue={config ? config.dayOfMonth : 1}
+                onBlur={e => this.handleBlur(e)}
+              />
+            </ValidationFormGroup>
+          </div>
+          <div className="col">
+            <ValidationFormGroup
+              for="dayOfWeek"
+              helpText="The day of the week to send the report. This field is required and only valid when the frequency is weekly"
+            >
+              <label htmlFor="dayOfWeek">Day of Week</label>
+              <Input
+                type="select"
+                id="dayOfWeek"
+                name="dayOfWeek"
+                disabled={!(frequency === 'weekly')}
+                options={reportingConfigTypes.dayOfWeek.map(item => ({ label: item[1], value: item[0] }))}
+                defaultValue={config ? config.dayOfWeek : undefined}
+              />
+            </ValidationFormGroup>
+          </div>
+          <div className="col">
+            <ValidationFormGroup
+              for="hourOfDay"
+              helpText="The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings"
+              invalid={invalidFields.hourOfDay}
+              invalidMessage="Required for all frequency types"
+            >
+              <label htmlFor="hourOfDay">Hour of Day</label>
+              <Input
+                type="number"
+                id="hourOfDay"
+                name="hourOfDay"
+                defaultValue={config ? config.hourOfDay : undefined}
+                onBlur={e => this.handleBlur(e)}
+              />
+            </ValidationFormGroup>
+          </div>
+        </div>
+        <ValidationFormGroup
+          for="pgpEncryptionKey"
+          helpText="The key for encryption, if PGP encrypted file is required"
+          invalid={!!APIErrors.pgpEncryptionKey}
+          invalidMessage={APIErrors.pgpEncryptionKey}
+        >
+          <label htmlFor="pgpEncryptionKey">PGP Encryption Key</label>
+          <Input
+            type="textarea"
+            id="pgpEncryptionKey"
+            name="pgpEncryptionKey"
+            defaultValue={config ? config.pgpEncryptionKey : undefined}
+            data-hj-suppress
+            onBlur={e => this.handleBlur(e)}
+          />
+        </ValidationFormGroup>
+        {deliveryMethod === 'email' && (
+          <EmailDeliveryMethodForm
+            config={config}
+            invalidFields={invalidFields}
+            handleBlur={this.handleBlur}
+          />
+        )}
+        {deliveryMethod === 'sftp' && (
+          <SFTPDeliveryMethodForm
+            config={config}
+            invalidFields={invalidFields}
+            handleBlur={this.handleBlur}
+          />
+        )}
+        <div className="col">
+          <ValidationFormGroup
+            for="enableCompression"
+            helpText="Specifies whether report should be compressed. Without compression files will not be password protected or encrypted."
+            invalid={!!APIErrors.enableCompression}
+            invalidMessage={APIErrors.enableCompression}
+          >
+            <label htmlFor="enableCompression">Enable Compression</label>
+            <Input
+              type="checkbox"
               id="enableCompression"
+              name="enableCompression"
+              className="ml-3"
               checked={enableCompression}
               onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
-            >Enable compression
-            </Form.Checkbox>
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              floatingLabel="Enterprise Customer Catalogs"
+            />
+          </ValidationFormGroup>
+        </div>
+        <div className="col">
+          <ValidationFormGroup
+            for="enterpriseCustomerCatalogs"
+            helpText="The catalogs that should be included in the report. No selection means all catalogs will be included."
+          >
+            <label htmlFor="enterpriseCustomerCatalogs">Enterprise Customer Catalogs</label>
+            <Input
+              type="select"
               id="enterpriseCustomerCatalogs"
-              as="select"
+              name="enterpriseCustomerCatalogUuids"
               multiple
-            >
-              {availableCatalogs && availableCatalogs.map(item => (
-                <option
-                  key={item.uuid}
-                  value={item.uuid}
-                  selected={selectedCatalogs.includes(item.uuid)}
-                >
-                  {`Catalog "${item.title}" with UUID "${item.uuid}"`}
-                </option>
-              ))}
-            </Form.Control>
-            <Form.Text>
-              The catalogs that should be included in the report. No selection means all catalogs will be included.
-            </Form.Text>
-          </Form.Group>
-        </Form.Row>
-        <Form.Row className="justify-content-between align-items-center">
-          <Form.Control
-            id="submitButton"
-            as="button"
+              defaultValue={selectedCatalogs}
+              options={
+                availableCatalogs && availableCatalogs.map(item => ({
+                  value: item.uuid,
+                  label: `Catalog "${item.title}" with UUID "${item.uuid}"`,
+                }))
+              }
+            />
+          </ValidationFormGroup>
+        </div>
+        <div className="row justify-content-between align-items-center form-group">
+          <ValidationFormGroup
+            for="submitButton"
+            invalidMessage="There was an error submitting, please try again."
+            invalid={submitState === SUBMIT_STATES.ERROR}
+            className="mb-0"
           >
             <StatefulButton
               state={submitState}
@@ -412,16 +425,10 @@ class ReportingConfigForm extends React.Component {
                 error: <Icon className="fa fa-times" />,
               }}
               disabledStates={[SUBMIT_STATES.PENDING]}
-              onClick={() => this.handleSubmit()}
               className="ml-3 col"
               variant="primary"
             />
-          </Form.Control>
-          {submitState === SUBMIT_STATES.ERROR && (
-          <Form.Control.Feedback type="invalid">
-            There was an error submitting, please try again.
-          </Form.Control.Feedback>
-          )}
+          </ValidationFormGroup>
           {config && (
             <Button
               className="btn-outline-danger  mr-3"
@@ -430,8 +437,8 @@ class ReportingConfigForm extends React.Component {
               <Icon className="fa fa-times danger" /> Delete
             </Button>
           )}
-        </Form.Row>
-      </Form>
+        </div>
+      </form>
     );
   }
 }
