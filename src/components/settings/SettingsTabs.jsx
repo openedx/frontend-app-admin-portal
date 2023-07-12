@@ -25,6 +25,7 @@ import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
 import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
+import SettingsApiCredentialsTab from './SettingsApiCredentialsTab';
 
 const SettingsTabs = ({
   enterpriseId,
@@ -39,7 +40,11 @@ const SettingsTabs = ({
   enterpriseBranding,
 }) => {
   const [hasSSOConfig, setHasSSOConfig] = useState(false);
-  const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB, SETTINGS_PAGE_APPEARANCE_TAB } = features;
+  const {
+    FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB,
+    SETTINGS_PAGE_APPEARANCE_TAB,
+    FEATURE_API_CREDENTIALS_TAB,
+  } = features;
 
   const tab = useCurrentSettingsTab();
 
@@ -113,9 +118,21 @@ const SettingsTabs = ({
         </Tab>,
       );
     }
+    if (FEATURE_API_CREDENTIALS_TAB) {
+      initialTabs.push(
+        <Tab
+          key={SETTINGS_TABS_VALUES.api_credentials}
+          eventKey={SETTINGS_TABS_VALUES.api_credentials}
+          title={SETTINGS_TAB_LABELS.api_credentials}
+        >
+          <SettingsApiCredentialsTab />
+        </Tab>,
+      );
+    }
     return initialTabs;
   }, [
     FEATURE_SSO_SETTINGS_TAB,
+    FEATURE_API_CREDENTIALS_TAB,
     SETTINGS_PAGE_APPEARANCE_TAB,
     SETTINGS_PAGE_LMS_TAB,
     enableIntegratedCustomerLearnerPortalSearch,

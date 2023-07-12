@@ -5,11 +5,13 @@ const ACCESS_TAB = 'access';
 const LMS_TAB = 'lms';
 const SSO_TAB = 'sso';
 const APPEARANCE_TAB = 'appearance';
+const API_CREDENTIALS_TAB = 'api_credentials';
 
 const ACCESS_TAB_LABEL = 'Configure Access';
 const LMS_TAB_LABEL = 'Learning Platform';
 const SSO_TAB_LABEL = 'Single Sign On (SSO)';
 const APPEARANCE_TAB_LABEL = 'Portal Appearance';
+const API_CREDENTIALS_TAB_LABEL = 'API Credentials';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
 export const HELP_CENTER_BLACKBOARD = 'https://business-support.edx.org/hc/en-us/sections/4405096719895-Blackboard';
@@ -58,6 +60,7 @@ export const SETTINGS_TABS_VALUES = {
   [LMS_TAB]: LMS_TAB,
   [SSO_TAB]: SSO_TAB,
   [APPEARANCE_TAB]: APPEARANCE_TAB,
+  [API_CREDENTIALS_TAB]: API_CREDENTIALS_TAB,
 };
 
 /**
@@ -68,6 +71,7 @@ export const SETTINGS_TAB_LABELS = {
   [LMS_TAB]: LMS_TAB_LABEL,
   [SSO_TAB]: SSO_TAB_LABEL,
   [APPEARANCE_TAB]: APPEARANCE_TAB_LABEL,
+  [API_CREDENTIALS_TAB]: API_CREDENTIALS_TAB_LABEL,
 };
 
 /** Default tab when no parameter is given */

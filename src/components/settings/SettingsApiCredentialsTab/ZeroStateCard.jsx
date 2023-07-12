@@ -7,9 +7,7 @@ const ZeroStateCard = ({
   setShowZeroStateCard,
 }) => {
   const handleClick = () => {
-    // setShowZeroStateCard(false);
-    // eslint-disable-next-line no-console
-    console.log('ss');
+    
   };
 
   return (

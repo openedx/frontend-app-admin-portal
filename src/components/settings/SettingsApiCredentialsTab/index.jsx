@@ -14,7 +14,7 @@ const SettingsApiCredentialsTab = () => (
         Help Center: Credentials
       </Hyperlink>
     </h2>
-    <Success />
+    <ZeroStateCard />
 
   </div>
 );
