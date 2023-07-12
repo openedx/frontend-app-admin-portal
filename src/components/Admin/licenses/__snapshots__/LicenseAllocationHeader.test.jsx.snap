@@ -28,7 +28,7 @@ exports[`LicenseAllocationHeader renders without crashing 1`] = `
     Activated: 
     1
      of 
-    1
+    2
      assigned
   </span>
 </div>
