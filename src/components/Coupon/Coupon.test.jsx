@@ -1,13 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import {
+  fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
-import { screen } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import thunk from 'redux-thunk';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { shallow } from '@edx/react-unit-test-utils';
 
 import { MULTI_USE } from '../../data/constants/coupons';
 
@@ -62,22 +63,36 @@ const CouponWrapper = props => (
 describe('<Coupon />', () => {
   describe('renders correctly', () => {
     it('with max uses', () => {
-      const coupon = shallow(<CouponWrapper />);
-      expect(coupon.snapshot).toMatchSnapshot();
+      const coupon = renderer.create((<CouponWrapper />)).toJSON();
+      expect(coupon).toMatchSnapshot();
     });
 
-    it('without max uses', () => {
-      const coupon = shallow(<CouponWrapper data={{
-        ...initialCouponData, max_uses: null,
-      }}/>);
-      expect(coupon.snapshot).toMatchSnapshot();
+    it("without max uses", () => {
+      const coupon = renderer
+        .create(
+          <CouponWrapper
+            data={{
+              ...initialCouponData,
+              max_uses: null,
+            }}
+          />
+        )
+        .toJSON();
+      expect(coupon).toMatchSnapshot();
     });
 
-    it('with error state', () => {
-      const coupon = shallow(<CouponWrapper data={{
-        ...initialCouponData, errors: [{ code: 'test-code', user_email: 'test@example.com' }],
-      }}/>);
-      expect(coupon.snapshot).toMatchSnapshot();
+    it("with error state", () => {
+      const coupon = renderer
+        .create(
+          <CouponWrapper
+            data={{
+              ...initialCouponData,
+              errors: [{ code: "test-code", user_email: "test@example.com" }],
+            }}
+          />
+        )
+        .toJSON();
+      expect(coupon).toMatchSnapshot();
     });
   });
 
@@ -103,28 +118,30 @@ describe('<Coupon />', () => {
     it('expands on keydown of expanded coupon', () => {
       const mockOnExpand = jest.fn();
       render(<CouponWrapper onExpand={mockOnExpand} />);
-      screen.debug();
-      fireEvent.keyDown(screen.getByRole('button'), {key: 'Enter', code: 'Enter', charCode: 13})
+      fireEvent.keyDown(screen.getByRole('button'), { key: 'Enter', code: 'Enter', charCode: 13 });
       expect(mockOnExpand).toBeCalledTimes(1);
     });
 
     it('collapses on keydown of expanded coupon', () => {
       const mockOnCollapse = jest.fn();
       render(<CouponWrapper onCollapse={mockOnCollapse} />);
-      
-      fireEvent.keyDown(screen.getByRole('button'), {key: 'Enter', code: 'Enter', charCode: 13})
-      fireEvent.keyDown(screen.getAllByRole('button')[0], {key: 'Enter', code: 'Enter', charCode: 13})
+
+      fireEvent.keyDown(screen.getByRole('button'), { key: 'Enter', code: 'Enter', charCode: 13 });
+      fireEvent.keyDown(screen.getAllByRole('button')[0], { key: 'Enter', code: 'Enter', charCode: 13 });
       expect(mockOnCollapse).toBeCalledTimes(1);
     });
 
     it('does not handle unknown keydown event', () => {
       const mockOnExpandOrOnCollapse = jest.fn();
 
-      render(<CouponWrapper 
-        onExpand={mockOnExpandOrOnCollapse}
-        onCollapse={mockOnExpandOrOnCollapse} />);
+      render(
+        <CouponWrapper
+          onExpand={mockOnExpandOrOnCollapse}
+          onCollapse={mockOnExpandOrOnCollapse}
+        />
+      );
 
-      fireEvent.keyDown(screen.getByRole('button'), {key: 'A', code: 'KeyA'})
+      fireEvent.keyDown(screen.getByRole('button'), { key: 'A', code: 'KeyA' });
       expect(mockOnExpandOrOnCollapse).toBeCalledTimes(0);
     });
   });

@@ -55,7 +55,7 @@ class ReportingConfigForm extends React.Component {
    * @param {FormData} formData
    * @param {[String]} requiredFields
    */
-  validateReportingForm = (formData, requiredFields) => {
+  validateReportingForm = (config, formData, requiredFields) => {
     const invalidFields = requiredFields
       .filter(field => !formData.get(field))
       .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
@@ -63,7 +63,7 @@ class ReportingConfigForm extends React.Component {
     // Password is conditionally required only when pgp key will not be present
     // and delivery method is email
     if (!formData.get('pgpEncryptionKey') && formData.get('deliveryMethod') === 'email') {
-      if (!formData.get('encryptedPassword')) {
+      if (!formData.get('encryptedPassword') && !config?.encryptedPassword) {
         invalidFields.encryptedPassword = true;
       }
     }
@@ -131,7 +131,7 @@ class ReportingConfigForm extends React.Component {
       requiredFields = config ? [...REQUIRED_SFTP_FIELDS] : [...REQUIRED_NEW_SFTP_FEILDS];
     }
     // validate the form
-    const invalidFields = this.validateReportingForm(formData, requiredFields);
+    const invalidFields = this.validateReportingForm(config, formData, requiredFields);
     // if there are invalid fields, reflect that in the UI
     if (!isEmpty(invalidFields)) {
       this.setState((state) => ({
