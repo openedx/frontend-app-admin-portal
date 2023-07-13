@@ -45,6 +45,7 @@ const initialState = {
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
+    enableReportingConfigScreenLink: true,
   },
 };
 
@@ -269,7 +270,7 @@ describe('<Sidebar />', () => {
     });
 
     render(<SidebarWrapper store={store} />);
-    const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' }, { exact: false });
+    const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' });
     expect(subscriptionManagementLink).toBeNull();
   });
 
@@ -283,8 +284,40 @@ describe('<Sidebar />', () => {
       },
     });
     render(<SidebarWrapper store={store} />);
-    const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' }, { exact: false });
+    const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' });
     expect(subscriptionManagementLink).toBeInTheDocument();
+    expect(subscriptionManagementLink).toHaveAttribute('href', '/test-enterprise-slug/admin/subscriptions');
+  });
+
+  it('renders correctly when enableReportingConfigScreen is false', () => {
+    const store = mockStore({
+      sidebar: {
+        ...initialState.sidebar,
+      },
+      portalConfiguration: {
+        enableReportingConfigScreen: false,
+      },
+    });
+    features.REPORTING_CONFIGURATIONS = true;
+    render(<SidebarWrapper store={store} />);
+    const enableReportingConfigScreenLink = screen.queryByRole('link', { name: 'Reporting Configurations' });
+    expect(enableReportingConfigScreenLink).toBeNull();
+  });
+
+  it('renders correctly when enableReportingConfigScreen is enabled', async () => {
+    const store = mockStore({
+      sidebar: {
+        ...initialState.sidebar,
+      },
+      portalConfiguration: {
+        enableReportingConfigScreen: true,
+      },
+    });
+    features.REPORTING_CONFIGURATIONS = true;
+    render(<SidebarWrapper store={store} enableReportingConfigScreen />);
+    const enableReportingConfigScreenLink = screen.getByRole('link', { name: 'Reporting Configurations' });
+    expect(enableReportingConfigScreenLink).toBeInTheDocument();
+    expect(enableReportingConfigScreenLink).toHaveAttribute('href', '/test-enterprise-slug/admin/reporting');
   });
 
   it('renders settings link if the settings page has visible tabs.', () => {
@@ -298,7 +331,9 @@ describe('<Sidebar />', () => {
     features.SETTINGS_PAGE = true;
 
     render(<SidebarWrapper store={store} />);
-    expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
+    const settingsLink = screen.getByRole('link', { name: 'Settings' });
+    expect(settingsLink).toBeInTheDocument();
+    expect(settingsLink).toHaveAttribute('href', '/test-enterprise-slug/admin/settings');
   });
 
   it('renders manage learner credit link if the canManageLearnerCredit = true.', () => {
@@ -310,7 +345,9 @@ describe('<Sidebar />', () => {
     });
 
     render(<SidebarWrapper store={store} />);
-    expect(screen.getByRole('link', { name: 'Learner Credit Management' })).toBeInTheDocument();
+    const enableLearnerCreditLink = screen.getByRole('link', { name: 'Learner Credit Management' });
+    expect(enableLearnerCreditLink).toBeInTheDocument();
+    expect(enableLearnerCreditLink).toHaveAttribute('href', '/test-enterprise-slug/admin/learner-credit');
   });
 
   it('hides manage learner credit link if the canManageLearnerCredit = false.', () => {
