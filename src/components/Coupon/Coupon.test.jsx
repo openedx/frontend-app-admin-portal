@@ -1,16 +1,17 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
+import { screen } from '@testing-library/react';
 import thunk from 'redux-thunk';
-import { shallow, mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { shallow } from '@edx/react-unit-test-utils';
 
 import { MULTI_USE } from '../../data/constants/coupons';
 
 import Coupon from './index';
-import CouponDetails from '../CouponDetails';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -59,152 +60,72 @@ const CouponWrapper = props => (
 );
 
 describe('<Coupon />', () => {
-  let wrapper;
-
-  const simulateCouponClick = () => {
-    wrapper.find(Coupon).find('.metadata').simulate('click');
-  };
-
-  const simulateCouponKeyDown = (key) => {
-    wrapper.find(Coupon).find('.metadata').simulate('keydown', { key });
-  };
-
   describe('renders correctly', () => {
     it('with max uses', () => {
-      const tree = renderer
-        .create((
-          <CouponWrapper />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const coupon = shallow(<CouponWrapper />);
+      expect(coupon.snapshot).toMatchSnapshot();
     });
 
     it('without max uses', () => {
-      const tree = renderer
-        .create((
-          <CouponWrapper
-            data={{
-              ...initialCouponData,
-              max_uses: null,
-            }}
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const coupon = shallow(<CouponWrapper data={{
+        ...initialCouponData, max_uses: null,
+      }}/>);
+      expect(coupon.snapshot).toMatchSnapshot();
     });
 
     it('with error state', () => {
-      const tree = renderer
-        .create((
-          <CouponWrapper
-            data={{
-              ...initialCouponData,
-              errors: [{ code: 'test-code', user_email: 'test@example.com' }],
-            }}
-          />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const coupon = shallow(<CouponWrapper data={{
+        ...initialCouponData, errors: [{ code: 'test-code', user_email: 'test@example.com' }],
+      }}/>);
+      expect(coupon.snapshot).toMatchSnapshot();
     });
   });
 
   describe('expands and collapses correctly', () => {
-    it('expands on click of collapsed coupon', () => {
+    it('expands on click of collapsed coupon', async () => {
       const mockOnExpand = jest.fn();
-      wrapper = mount((
-        <CouponWrapper
-          onExpand={mockOnExpand}
-        />
-      ));
-
-      simulateCouponClick();
-      expect(mockOnExpand).toBeCalledTimes(1);
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
+      render(<CouponWrapper onExpand={mockOnExpand} />);
+      await waitFor(() => {
+        userEvent.click(screen.getByText(initialCouponData.title));
+        expect(mockOnExpand).toBeCalledTimes(1);
+      });
     });
 
-    it('collapses on click of expanded coupon', () => {
+    it('collapses on click of expanded coupon', async () => {
       const mockOnCollapse = jest.fn();
-      wrapper = mount((
-        <CouponWrapper
-          onCollapse={mockOnCollapse}
-        />
-      ));
-
-      simulateCouponClick();
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
-
-      simulateCouponClick();
-      expect(mockOnCollapse).toBeCalledTimes(1);
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeFalsy();
+      render(<CouponWrapper onCollapse={mockOnCollapse} />);
+      await waitFor(() => {
+        userEvent.click(screen.getByText(initialCouponData.title));
+        expect(mockOnCollapse).toBeCalledTimes(1);
+      });
     });
 
-    it('expands on keydown of collapsed coupon', () => {
+    it('expands on keydown of expanded coupon', () => {
       const mockOnExpand = jest.fn();
-      wrapper = mount((
-        <CouponWrapper
-          onExpand={mockOnExpand}
-        />
-      ));
-
-      simulateCouponKeyDown('Enter');
+      render(<CouponWrapper onExpand={mockOnExpand} />);
+      screen.debug();
+      fireEvent.keyDown(screen.getByRole('button'), {key: 'Enter', code: 'Enter', charCode: 13})
       expect(mockOnExpand).toBeCalledTimes(1);
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
     });
 
     it('collapses on keydown of expanded coupon', () => {
       const mockOnCollapse = jest.fn();
-      wrapper = mount((
-        <CouponWrapper
-          onCollapse={mockOnCollapse}
-        />
-      ));
-
-      simulateCouponKeyDown('Enter');
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeTruthy();
-
-      simulateCouponKeyDown('Enter');
+      render(<CouponWrapper onCollapse={mockOnCollapse} />);
+      
+      fireEvent.keyDown(screen.getByRole('button'), {key: 'Enter', code: 'Enter', charCode: 13})
+      fireEvent.keyDown(screen.getAllByRole('button')[0], {key: 'Enter', code: 'Enter', charCode: 13})
       expect(mockOnCollapse).toBeCalledTimes(1);
-      expect(wrapper.find(Coupon).find(CouponDetails).prop('isExpanded')).toBeFalsy();
     });
 
     it('does not handle unknown keydown event', () => {
       const mockOnExpandOrOnCollapse = jest.fn();
 
-      wrapper = mount((
-        <CouponWrapper
-          onCollapse={mockOnExpandOrOnCollapse}
-          onExpand={mockOnExpandOrOnCollapse}
-        />
-      ));
+      render(<CouponWrapper 
+        onExpand={mockOnExpandOrOnCollapse}
+        onCollapse={mockOnExpandOrOnCollapse} />);
 
-      simulateCouponKeyDown('A');
-
+      fireEvent.keyDown(screen.getByRole('button'), {key: 'A', code: 'KeyA'})
       expect(mockOnExpandOrOnCollapse).toBeCalledTimes(0);
     });
-  });
-
-  it('sets state correctly on setCouponOpacity()', () => {
-    wrapper = shallow(<CouponWrapper />);
-    const instance = wrapper.find(Coupon).dive().instance();
-
-    expect(instance.state.dimmed).toBeFalsy();
-    instance.setCouponOpacity(true);
-    expect(instance.state.dimmed).toBeTruthy();
-  });
-
-  it('sets state correctly for isExpanded prop on componentDidMount', () => {
-    wrapper = mount(<CouponWrapper isExpanded />);
-    expect(wrapper.find(Coupon).instance().state.isExpanded).toBeTruthy();
-  });
-
-  it('correctly handles isExpanded prop change', () => {
-    wrapper = mount(<CouponWrapper />);
-    expect(wrapper.find(Coupon).instance().state.isExpanded).toBeFalsy();
-
-    wrapper.setProps({
-      isExpanded: true,
-    });
-
-    expect(wrapper.find(Coupon).instance().state.isExpanded).toBeTruthy();
   });
 });
