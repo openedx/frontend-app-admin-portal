@@ -53,6 +53,8 @@ class TableComponent extends React.Component {
       id,
       loading,
       enterpriseId,
+      defaultSortIndex,
+      defaultSortType,
     } = this.props;
 
     const sortByColumn = (column, direction) => {
@@ -76,8 +78,8 @@ class TableComponent extends React.Component {
     let sortColumn;
 
     if (tableSortable) {
-      sortDirection = ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc';
-      sortColumn = (ordering && ordering.replace('-', '')) || columnConfig[0].key;
+      sortDirection = defaultSortType || (ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc');
+      sortColumn = (ordering && ordering.replace('-', '')) || columnConfig[defaultSortIndex].key;
     }
 
     return (
@@ -169,6 +171,8 @@ TableComponent.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   formatData: PropTypes.func.isRequired,
   tableSortable: PropTypes.bool,
+  defaultSortIndex: PropTypes.number,
+  defaultSortType: PropTypes.string,
 
   // Props expected from TableContainer / redux store
   enterpriseId: PropTypes.string.isRequired,
@@ -188,6 +192,8 @@ TableComponent.propTypes = {
 
 TableComponent.defaultProps = {
   className: null,
+  defaultSortIndex: 0,
+  defaultSortType: undefined,
   tableSortable: false,
   data: undefined,
   ordering: undefined,
