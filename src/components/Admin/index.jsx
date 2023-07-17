@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Icon } from '@edx/paragon';
+import { Alert, Icon } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
-import StatusAlert from '../StatusAlert';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
@@ -250,24 +250,26 @@ class Admin extends React.Component {
 
   renderErrorMessage() {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to load overview"
-        message={`Try refreshing your screen (${this.props.error.message})`}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <Alert.Heading>Hey, nice to see you</Alert.Heading>
+        <p>Try refreshing your screen {this.props.error.message}</p>
+      </Alert>
     );
   }
 
   renderCsvErrorMessage(message) {
     return (
-      <StatusAlert
+      <Alert
+        variant="danger"
         className="mt-3"
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to Generate CSV Report"
-        message={`Please try again. (${message})`}
-      />
+        icon={Error}
+      >
+        <Alert.Heading>Unable to generate CSV report</Alert.Heading>
+        <p>Please try again. {message}</p>
+      </Alert>
     );
   }
 

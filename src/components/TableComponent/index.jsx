@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import { Pagination, Table } from '@edx/paragon';
+import { Alert, Pagination, Table } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
+
 import 'font-awesome/css/font-awesome.css';
 
 import TableLoadingSkeleton from './TableLoadingSkeleton';
 import TableLoadingOverlay from '../TableLoadingOverlay';
-import StatusAlert from '../StatusAlert';
 import { updateUrl } from '../../utils';
 
 class TableComponent extends React.Component {
@@ -126,22 +127,24 @@ class TableComponent extends React.Component {
 
   renderErrorMessage() {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to load data"
-        message={`Try refreshing your screen (${this.props.error.message})`}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <Alert.Heading>Unable to load data</Alert.Heading>
+        <p>Try refreshing your screen {this.props.error.message}</p>
+      </Alert>
     );
   }
 
   renderEmptyDataMessage() {
     return (
-      <StatusAlert
-        alertType="warning"
-        iconClassName="fa fa-exclamation-circle"
-        message="There are no results."
-      />
+      <Alert
+        variant="warning"
+        icon={Error}
+      >
+        There are no results.
+      </Alert>
     );
   }
 
