@@ -109,6 +109,8 @@ const EnrollmentsTable = () => {
       fetchMethod={EnterpriseDataApiService.fetchCourseEnrollments}
       columns={enrollmentTableColumns}
       formatData={formatEnrollmentData}
+      defaultSortIndex={8}
+      defaultSortType="desc"
       tableSortable
     />
   );
