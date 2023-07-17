@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Icon } from '@edx/paragon';
+import { Alert, Button, Icon } from '@edx/paragon';
 
 import RenderField from '../RenderField';
-import StatusAlert from '../StatusAlert';
 
 import {
   isRequired, isValidEmail, isNotValidNumberString, maxLength512,
@@ -14,7 +13,6 @@ import {
 class RequestCodesForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.renderRedirect = this.renderRedirect.bind(this);
   }
 
@@ -29,13 +27,14 @@ class RequestCodesForm extends React.Component {
     const { error: { message } } = this.props;
 
     return (
-      <StatusAlert
+      <Alert
         className="mt-3"
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to request more codes"
-        message={`Try refreshing your screen (${message})`}
-      />
+        variant="danger"
+        icon={Error}
+      >
+        <Alert.Heading>Unable to request more codes</Alert.Heading>
+        <p>Try refreshing your screen {message}</p>
+      </Alert>
     );
   }
 

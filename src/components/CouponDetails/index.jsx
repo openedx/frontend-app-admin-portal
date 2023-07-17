@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
-  Button, CheckBox, Icon,
+  Alert, Button, CheckBox, Icon,
 } from '@edx/paragon';
+import { CheckCircle, Error } from '@edx/paragon/icons';
 
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import CodeAssignmentModal from '../../containers/CodeAssignmentModal';
 import CodeReminderModal from '../../containers/CodeReminderModal';
 import CodeRevokeModal from '../../containers/CodeRevokeModal';
-import StatusAlert from '../StatusAlert';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import { updateUrl } from '../../utils';
@@ -475,12 +475,13 @@ class CouponDetails extends React.Component {
 
   renderErrorMessage({ title, message }) {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title={title}
-        message={message}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <Alert.Heading>{title}</Alert.Heading>
+        <p>{message}</p>
+      </Alert>
     );
   }
 
@@ -491,15 +492,16 @@ class CouponDetails extends React.Component {
     } = this.props;
 
     return (
-      <StatusAlert
-        alertType="success"
+      <Alert
+        variant="success"
+        icon={CheckCircle}
         className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
-        iconClassName="fa fa-check"
-        title={title}
-        message={message}
         onClose={this.resetCodeActionStatus}
         dismissible
-      />
+      >
+        <Alert.Heading>{title}</Alert.Heading>
+        <p>{message}</p>
+      </Alert>
     );
   }
 
@@ -510,12 +512,13 @@ class CouponDetails extends React.Component {
     } = this.props;
 
     return (
-      <StatusAlert
-        alertType="info"
+      <Alert
+        variant="info"
         className={classNames({ 'mt-2': errors.length > 0 || couponOverviewError })}
-        title={title}
-        message={message}
-      />
+      >
+        <Alert.Heading>{title}</Alert.Heading>
+        <p>{message}</p>
+      </Alert>
     );
   }
 
