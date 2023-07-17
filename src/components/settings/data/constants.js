@@ -20,6 +20,7 @@ export const HELP_CENTER_CORNERSTONE = 'https://business-support.edx.org/hc/en-u
 export const HELP_CENTER_DEGREED = 'https://business-support.edx.org/hc/en-us/sections/360000868494-Degreed';
 export const HELP_CENTER_MOODLE = 'https://business-support.edx.org/hc/en-us/sections/1500002758722-Moodle';
 export const HELP_CENTER_SAP = 'https://business-support.edx.org/hc/en-us/sections/360000868534-SuccessFactors';
+export const HELP_CENTER_API_GUIDE = '';
 
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
 export const HELP_CENTER_SAP_IDP_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005205314';

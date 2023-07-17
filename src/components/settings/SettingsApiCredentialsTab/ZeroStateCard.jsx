@@ -1,13 +1,34 @@
 import { Card, Button } from '@edx/paragon';
-import { Add } from '@edx/paragon/icons';
+import { Add, SpinnerSimple } from '@edx/paragon/icons';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { logError } from '@edx/frontend-platform/logging';
 import cardImage from '../../../data/images/ZeroState.svg';
 
-const ZeroStateCard = ({
-  setShowZeroStateCard,
-}) => {
+const ZeroStateCard = ({ onClickStateChange }) => {
+  const apiService = 'https://dummyjson.com/products/1';
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  // const [isSuccessPageOpen, openSuccessPage, closeSuccessPage] = useToggle(false);
+
+  async function fetchData() {
+    try {
+      const response = await fetch(apiService);
+      const responseData = await response.json();
+      setData(responseData);
+      onClickStateChange(true);
+    } catch (err) {
+      logError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   const handleClick = () => {
-    
+    setIsLoading(true);
+    fetchData();
   };
 
   return (
@@ -20,8 +41,11 @@ const ZeroStateCard = ({
       <Card.Section className="text-center">
         <h2>You don&apos;t hava API credentials yet.</h2>
         <p>
-          edX for business API credentials will provide access to the following edX API endpoints:
-          reporting dashboard, dashboard, and catalog administration.
+          This page allows you to generate API credentials to send to&nbsp;
+          your developers so they can work on integration projects.
+          If you believe you are seeing this page in error, contact Enterprise Customer Support.
+          edX for Business API credentials credentials will provide access&nbsp;
+          to the following edX API endpoints: reporting dashboard, dashboard, and catalog administration.
           <br />
           <br />
           By clicking the button below, you and your organization accept the {'\n'}
@@ -30,11 +54,11 @@ const ZeroStateCard = ({
         <Button
           variant="primary"
           size="lg"
-          iconBefore={Add}
+          iconBefore={isLoading ? SpinnerSimple : Add}
           onClick={handleClick}
           block
         >
-          Generate API Credentials
+          {isLoading ? 'Generating...' : 'Generate API Credentials'}
         </Button>
       </Card.Section>
     </Card>
@@ -42,7 +66,7 @@ const ZeroStateCard = ({
 };
 
 ZeroStateCard.propTypes = {
-  setShowZeroStateCard: PropTypes.func.isRequired,
+  onClickStateChange: PropTypes.func.isRequired,
 };
 
 export default ZeroStateCard;
