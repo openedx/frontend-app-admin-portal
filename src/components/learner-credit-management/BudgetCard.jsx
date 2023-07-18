@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { useHistory } from 'react-router-dom';
 import {
   Card,
   Button,
   Stack,
   Row,
   Col,
+  Breadcrumb,
 } from '@edx/paragon';
 
-import { useOfferSummary } from './data/hooks';
+import { useOfferRedemptions, useOfferSummary } from './data/hooks';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
+import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 
 const BudgetCard = ({
@@ -29,16 +30,27 @@ const BudgetCard = ({
     offerSummary,
   } = useOfferSummary(enterpriseUUID, offer);
 
+  const {
+    isLoading: isLoadingOfferRedemptions,
+    offerRedemptions,
+    fetchOfferRedemptions,
+  } = useOfferRedemptions(enterpriseUUID, offer?.id);
+  const [detailPage, setDetailPage] = useState(false);
+  const [activeLabel, setActiveLabel] = useState('');
+  const links = [
+    { label: 'Budgets', url: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
+  ];
   const formattedStartDate = moment(start).format('MMMM D, YYYY');
   const formattedExpirationDate = moment(end).format('MMMM D, YYYY');
-  const history = useHistory();
-  const navigateToBudgetRedemptions = () => {
-    history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`);
+  const navigateToBudgetRedemptions = (budgetType) => {
+    setDetailPage(true);
+    links.push({ label: budgetType, url: `/${enterpriseSlug}/admin/learner-credit` });
+    setActiveLabel(budgetType);
   };
 
   const renderActions = (budgetType) => (
     <Button
-      onClick={navigateToBudgetRedemptions}
+      onClick={() => navigateToBudgetRedemptions(budgetType)}
     >
       View Budget
     </Button>
@@ -98,28 +110,50 @@ const BudgetCard = ({
 
   return (
     <Stack>
-      {renderCardAggregate()}
-      <h2>Budgets</h2>
-      <Card
-        orientation="horizontal"
-      >
-        <Card.Body>
-          <Stack gap={4}>
-            {renderCardHeader('Open Courses Marketplace')}
-            {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsOcm)}
-          </Stack>
-        </Card.Body>
-      </Card>
-      <Card
-        orientation="horizontal"
-      >
-        <Card.Body>
-          <Stack gap={4}>
-            {renderCardHeader('Executive Education')}
-            {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsExecEd)}
-          </Stack>
-        </Card.Body>
-      </Card>
+      <Row className="m-3">
+        <Col xs="12">
+          <Breadcrumb
+            ariaLabel="Breadcrumb is active"
+            links={links}
+            activeLabel={activeLabel}
+          />
+        </Col>
+      </Row>
+      {!detailPage
+        ? (
+          <>
+            {renderCardAggregate()}
+            <h2>Budgets</h2>
+            <Card
+              orientation="horizontal"
+            >
+              <Card.Body>
+                <Stack gap={4}>
+                  {renderCardHeader('Open Courses Marketplace')}
+                  {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsOcm)}
+                </Stack>
+              </Card.Body>
+            </Card>
+            <Card
+              orientation="horizontal"
+            >
+              <Card.Body>
+                <Stack gap={4}>
+                  {renderCardHeader('Executive Education')}
+                  {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsExecEd)}
+                </Stack>
+              </Card.Body>
+            </Card>
+          </>
+        )
+        : (
+          <LearnerCreditAllocationTable
+            isLoading={isLoadingOfferRedemptions}
+            tableData={offerRedemptions}
+            fetchTableData={fetchOfferRedemptions}
+            enterpriseUUID={enterpriseUUID}
+          />
+        )}
     </Stack>
   );
 };
