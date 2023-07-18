@@ -68,6 +68,8 @@ describe('useOfferSummary', () => {
     const expectedResult = {
       totalFunds: 5000,
       redeemedFunds: 200,
+      redeemedFundsExecEd: NaN,
+      redeemedFundsOcm: NaN,
       remainingFunds: 4800,
       percentUtilized: 0.04,
     };
