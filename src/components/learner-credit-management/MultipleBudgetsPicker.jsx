@@ -15,11 +15,6 @@ const MultipleBudgetsPicker = ({
 }) => (
   <Stack>
     <Row>
-      <Col xs="6">
-        <h2>Budget Overview</h2>
-      </Col>
-    </Row>
-    <Row>
       <Col lg="10">
         {offers.map(offer => (
           <BudgetCard
