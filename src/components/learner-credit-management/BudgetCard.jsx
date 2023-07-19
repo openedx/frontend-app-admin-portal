@@ -50,6 +50,7 @@ const BudgetCard = ({
 
   const renderActions = (budgetType) => (
     <Button
+      data-testid="view-budget"
       onClick={() => navigateToBudgetRedemptions(budgetType)}
     >
       View Budget
@@ -59,7 +60,7 @@ const BudgetCard = ({
   const renderCardHeader = (budgetType) => {
     const subtitle = (
       <div className="d-flex flex-wrap align-items-center">
-        <span>
+        <span data-testid="offer-date">
           {formattedStartDate} - {formattedExpirationDate}
         </span>
       </div>
