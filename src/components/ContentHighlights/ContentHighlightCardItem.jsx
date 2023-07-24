@@ -1,5 +1,5 @@
 import React from 'react';
-import Truncate from 'react-truncate';
+import LinesEllipsis from 'react-lines-ellipsis';
 import PropTypes from 'prop-types';
 import { Card, Hyperlink } from '@edx/paragon';
 import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
@@ -19,14 +19,24 @@ const ContentHighlightCardItem = ({
     cardImgSrc: cardImageUrl,
     cardLogoSrc: partners.length === 1 ? partners[0].logoImageUrl : undefined,
     cardLogoAlt: partners.length === 1 ? `${partners[0].name}'s logo` : undefined,
-    cardTitle: <Truncate lines={3} title={title}>{title}</Truncate>,
+    cardTitle:  <LinesEllipsis
+    text={title}
+    title={title}
+    maxLine={3}
+    trimWhitespace
+  />,
     cardSubtitle: partners.map(p => p.name).join(', '),
     cardFooter: getContentHighlightCardFooter({ price, contentType }),
   };
   if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
       <Hyperlink onClick={hyperlinkAttrs.onClick} destination={hyperlinkAttrs.href} target={hyperlinkAttrs.target} data-testid="hyperlink-title">
-        <Truncate lines={3} title={title}>{title}</Truncate>
+        <LinesEllipsis
+          text={title}
+          title={title}
+          maxLine={3}
+          trimWhitespace
+        />
       </Hyperlink>
     );
   }
@@ -41,7 +51,13 @@ const ContentHighlightCardItem = ({
       />
       <Card.Header
         title={cardInfo.cardTitle}
-        subtitle={<Truncate lines={2} title={cardInfo.cardSubtitle}>{cardInfo.cardSubtitle}</Truncate>}
+        subtitle={
+        <LinesEllipsis
+          text={cardInfo.cardSubtitle}
+          title={cardInfo.cardSubtitle}
+          maxLine={2}
+        />
+      }
       />
       {contentType && (
         <>
