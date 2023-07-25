@@ -19,12 +19,12 @@ const ContentHighlightCardItem = ({
     cardImgSrc: cardImageUrl,
     cardLogoSrc: partners.length === 1 ? partners[0].logoImageUrl : undefined,
     cardLogoAlt: partners.length === 1 ? `${partners[0].name}'s logo` : undefined,
-    cardTitle:  <LinesEllipsis
-    text={title}
-    title={title}
-    maxLine={3}
-    trimWhitespace
-  />,
+    cardTitle: <LinesEllipsis
+      text={title}
+      title={title}
+      maxLine={3}
+      trimWhitespace
+    />,
     cardSubtitle: partners.map(p => p.name).join(', '),
     cardFooter: getContentHighlightCardFooter({ price, contentType }),
   };
@@ -51,13 +51,13 @@ const ContentHighlightCardItem = ({
       />
       <Card.Header
         title={cardInfo.cardTitle}
-        subtitle={
-        <LinesEllipsis
-          text={cardInfo.cardSubtitle}
-          title={cardInfo.cardSubtitle}
-          maxLine={2}
-        />
-      }
+        subtitle={(
+          <LinesEllipsis
+            text={cardInfo.cardSubtitle}
+            title={cardInfo.cardSubtitle}
+            maxLine={2}
+          />
+        )}
       />
       {contentType && (
         <>
