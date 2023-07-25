@@ -2,7 +2,7 @@ import React, {
   useContext, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import {
