@@ -16,7 +16,6 @@ const ZeroStateCard = () => {
   async function fetchData() {
     try {
       const response = await LmsApiService.createNewAPICredentials();
-      console.log(response);
       dataContext(response.data);
       zeroStateContextHandler(false);
       showToastContext(true);

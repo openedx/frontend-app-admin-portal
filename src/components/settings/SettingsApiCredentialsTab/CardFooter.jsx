@@ -21,5 +21,5 @@ CardFooter.propTypes = {
   hasError: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };
-export default CardFooter;
 
+export default CardFooter;
