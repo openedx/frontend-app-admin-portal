@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -7,10 +8,9 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { logError } from '@edx/frontend-platform/logging';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import moment from 'moment';
+import { logError } from '@edx/frontend-platform/logging';
 
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRemindModal from '../LicenseManagementRemindModal';
@@ -38,7 +38,7 @@ const basicProps = {
   onSubmit: onSubmitMock,
   subscription: {
     uuid: 'lorem',
-    expirationDate: moment().add(1, 'days').format(), // tomorrow
+    expirationDate: dayjs().add(1, 'days').format(), // tomorrow
   },
   usersToRemind: [],
   activeFilters: [],

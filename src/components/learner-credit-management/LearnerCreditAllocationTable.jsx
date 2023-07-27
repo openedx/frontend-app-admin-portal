@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import {
   DataTable, useMediaQuery, breakpoints,
 } from '@edx/paragon';
-import moment from 'moment';
 
 import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
@@ -50,7 +50,7 @@ const LearnerCreditAllocationTable = ({
         {
           Header: 'Date Spent',
           accessor: 'enrollmentDate',
-          Cell: ({ row }) => moment(row.values.enrollmentDate).format('MMMM DD, YYYY'),
+          Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
           disableFilters: true,
         },
         {

@@ -1,5 +1,5 @@
+import dayjs from 'dayjs';
 import { renderHook } from '@testing-library/react-hooks/dom';
-import moment from 'moment';
 import { useApplicableCatalogs, useApplicableSubscriptions, useApplicableCoupons } from '../data/hooks';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 
@@ -116,21 +116,21 @@ describe('useApplicableCoupons', () => {
       id: 1,
       numUnassigned: 1,
       enterpriseCatalogUuid: TEST_CATALOG_UUID,
-      endDate: moment().add(1, 'days').toISOString(),
+      endDate: dayjs().add(1, 'days').toISOString(),
       maxUses: 3,
     },
     {
       id: 2,
       numUnassigned: 1,
       enterpriseCatalogUuid: 'abc',
-      endDate: moment().add(1, 'days').toISOString(),
+      endDate: dayjs().add(1, 'days').toISOString(),
       maxUses: 3,
     },
     {
       id: 3,
       numUnassigned: 3,
       enterpriseCatalogUuid: TEST_CATALOG_UUID,
-      endDate: moment().subtract(1, 'days').toISOString(),
+      endDate: dayjs().subtract(1, 'days').toISOString(),
       maxUses: 3,
     }],
   };
