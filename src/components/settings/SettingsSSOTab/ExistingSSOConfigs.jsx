@@ -8,13 +8,10 @@ import {
   Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
 } from '@edx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
-import ConfigError from '../ConfigError';
+import ConfigErrorModal from '../ConfigErrorModal';
 import handleErrors from '../utils';
 import LmsApiService from '../../../data/services/LmsApiService';
-
-const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
-const errorDeleteConfigModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
-const errorDeleteDataModalText = 'We were unable to delete your provider data. Please try removing again or contact support for help.';
+import { errorToggleModalText, errorDeleteConfigModalText, errorDeleteDataModalText } from '../data/constants';
 
 const ExistingSSOConfigs = ({
   configs, refreshBool, setRefreshBool, enterpriseId, providerData,
@@ -82,7 +79,7 @@ const ExistingSSOConfigs = ({
 
   return (
     <span>
-      <ConfigError
+      <ConfigErrorModal
         isOpen={errorIsOpen}
         close={closeError}
         configTextOverride={errorModalText}
@@ -91,7 +88,7 @@ const ExistingSSOConfigs = ({
         Enabling single sign-on for your edX account allows quick access to
         your organization’s learning catalog
       </p>
-      <h4 className="mt-5 mb-4">Existing configurationss</h4>
+      <h4 className="mt-5 mb-4">Existing configurations</h4>
       <CardGrid
         className="mb-3 mr-3"
         columnSizes={{

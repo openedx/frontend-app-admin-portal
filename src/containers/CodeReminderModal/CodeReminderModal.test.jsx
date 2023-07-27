@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import last from 'lodash/last';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import CodeReminderModal from './index';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
@@ -123,13 +124,15 @@ const codeReminderRequestData = (numCodes, selectedToggle) => {
 const CodeReminderModalWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <CodeReminderModal
-        couponId={couponId}
-        title="AABBCC"
-        onClose={() => {}}
-        onSuccess={() => {}}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CodeReminderModal
+          couponId={couponId}
+          title="AABBCC"
+          onClose={() => {}}
+          onSuccess={() => {}}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

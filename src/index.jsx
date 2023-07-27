@@ -12,10 +12,9 @@ import {
 } from '@edx/frontend-platform';
 import { ErrorPage } from '@edx/frontend-platform/react';
 import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
-import { messages as paragonMessages } from '@edx/paragon';
 
+import messages from './i18n';
 import App from './components/App';
-
 import './index.scss';
 
 subscribe(APP_READY, () => {
@@ -39,12 +38,11 @@ initialize({
         ENTERPRISE_LEARNER_PORTAL_URL: process.env.ENTERPRISE_LEARNER_PORTAL_URL || null,
         FEATURE_LEARNER_CREDIT_MANAGEMENT: process.env.FEATURE_LEARNER_CREDIT_MANAGEMENT || hasFeatureFlagEnabled('LEARNER_CREDIT_MANAGEMENT') || null,
         FEATURE_CONTENT_HIGHLIGHTS: process.env.FEATURE_CONTENT_HIGHLIGHTS || hasFeatureFlagEnabled('CONTENT_HIGHLIGHTS') || null,
+        ENTERPRISE_SUPPORT_PROGRAM_OPTIMIZATION_URL: process.env.ENTERPRISE_SUPPORT_PROGRAM_OPTIMIZATION_URL || null,
       });
     },
   },
-  messages: [
-    paragonMessages,
-  ],
+  messages,
   requireAuthenticatedUser: false,
   hydrateAuthenticatedUser: true,
 });

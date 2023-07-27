@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRouteMatch } from 'react-router-dom';
 import {
-  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover,
+  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon,
+  IconButton, Image, OverlayTrigger, Popover,
 } from '@edx/paragon';
-import { MoreVert } from '@edx/paragon/icons';
+import {
+  CheckCircle, Error, MoreVert, Sync,
+} from '@edx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { features } from '../../../config';
 import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';
-import { TOGGLE_SUCCESS_LABEL, DELETE_SUCCESS_LABEL } from '../data/constants';
+import { getTimeAgo } from './ErrorReporting/utils';
 
-const errorToggleModalText = 'We were unable to toggle your configuration. Please try submitting again or contact support for help.';
-const errorDeleteModalText = 'We were unable to delete your configuration. Please try removing again or contact support for help.';
-const INCOMPLETE = 'incomplete';
-const ACTIVE = 'active';
-const INACTIVE = 'inactive';
+import {
+  ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE,
+  errorDeleteConfigModalText, errorToggleModalText,
+} from '../data/constants';
+
+const INCOMPLETE = 'Incomplete';
+const ACTIVE = 'Active';
+const INACTIVE = 'Inactive';
 
 const ExistingCard = ({
   config,
@@ -22,18 +29,13 @@ const ExistingCard = ({
   enterpriseCustomerUuid,
   onClick,
   openError,
-  openReport,
-  setReportConfig,
   setErrorModalText,
   getStatus,
 }) => {
+  const redirectPath = `${useRouteMatch().url}`;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
-
-  const openModalButton = () => {
-    setReportConfig(config);
-    openReport();
-  };
+  const showErrorReporting = isEdxStaff && features.FEATURE_INTEGRATION_REPORTING;
 
   const toggleConfig = async (id, channelType, toggle) => {
     const configOptions = {
@@ -50,7 +52,7 @@ const ExistingCard = ({
       setErrorModalText(errorToggleModalText);
       openError();
     } else {
-      onClick(TOGGLE_SUCCESS_LABEL);
+      onClick(toggle ? ACTIVATE_TOAST_MESSAGE : INACTIVATE_TOAST_MESSAGE);
     }
   };
 
@@ -62,10 +64,10 @@ const ExistingCard = ({
       err = handleErrors(error);
     }
     if (err) {
-      setErrorModalText(errorDeleteModalText);
+      setErrorModalText(errorDeleteConfigModalText);
       openError();
     } else {
-      onClick(DELETE_SUCCESS_LABEL);
+      onClick(DELETE_TOAST_MESSAGE);
       setShowDeleteModal(false);
     }
   };
@@ -99,8 +101,8 @@ const ExistingCard = ({
   const getCardButton = () => {
     switch (getStatus(config)) {
       case ACTIVE:
-        if (isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) {
-          return <Button variant="outline-primary" onClick={() => openModalButton(config)}>View sync history</Button>;
+        if (showErrorReporting) {
+          return <Button variant="outline-primary" href={`${redirectPath}${config.channelCode}/${config.id}`}>View sync history</Button>;
         }
         return null;
       case INCOMPLETE:
@@ -112,13 +114,24 @@ const ExistingCard = ({
     }
   };
 
+  const getLastSync = () => {
+    if (config.lastSyncErroredAt != null) {
+      const timeStamp = getTimeAgo(config.lastSyncErroredAt);
+      return <>Recent sync error:&nbsp; {timeStamp}<Icon className="small-icon text-danger-500" src={Error} /></>;
+    }
+    if (config.lastSyncAttemptedAt != null) {
+      const timeStamp = getTimeAgo(config.lastSyncAttemptedAt);
+      return <>Last sync:&nbsp; {timeStamp}<Icon className="small-icon text-success-500" src={CheckCircle} /></>;
+    }
+    return <>Sync not yet attempted</>;
+  };
+
   const isActive = getStatus(config) === ACTIVE;
   const isInactive = getStatus(config) === INACTIVE;
   const isIncomplete = getStatus(config) === INCOMPLETE;
 
   return (
     <>
-      {/* TODO: Figure out how to get rid of scroll bar */}
       <AlertModal
         title="Delete integration?"
         isOpen={showDeleteModal}
@@ -167,10 +180,10 @@ const ExistingCard = ({
                 alt="Actions dropdown"
               />
               <Dropdown.Menu>
-                {(isInactive && isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) && (
+                {(isInactive && showErrorReporting) && (
                   <div className="d-flex">
                     <Dropdown.Item
-                      onClick={() => openModalButton(config)}
+                      href={`${redirectPath}${config.channelCode}/${config.id}`}
                       data-testid="dropdown-sync-history-item"
                     >
                       View sync history
@@ -190,7 +203,7 @@ const ExistingCard = ({
                 {(isInactive || isIncomplete) && (
                   <div className="d-flex">
                     <Dropdown.Item
-                      // Ask before deleting an inactive project
+                      // Ask before deleting an inactive config
                       onClick={() => handleClickDelete(isInactive)}
                       data-testid="dropdown-delete-item"
                     >
@@ -214,7 +227,7 @@ const ExistingCard = ({
             <div className="ml-1 d-flex">
               <Image
                 className="lms-icon mr-2"
-                src={channelMapping[config.channelCode].icon}
+                src={channelMapping[config.channelCode]?.icon}
               />
               <div className="lms-card-title-overflow">
                 <span>{config.displayName}</span>
@@ -247,7 +260,15 @@ const ExistingCard = ({
             </div>
         )}
         />
-        <Card.Footer className="pt-2 pb-2 justify-content-end">
+        <Card.Footer className="pt-2 pb-2 justify-content-between">
+          <div className="x-small d-flex align-items-center">
+            {showErrorReporting && (
+            <>
+              <Icon className="small-icon" src={Sync} />
+              {getLastSync()}
+            </>
+            )}
+          </div>
           {getCardButton()}
         </Card.Footer>
       </Card>
@@ -267,13 +288,13 @@ ExistingCard.propTypes = {
     channelCode: PropTypes.string,
     id: PropTypes.number,
     displayName: PropTypes.string,
+    lastSyncAttemptedAt: PropTypes.string,
+    lastSyncErroredAt: PropTypes.string,
   }).isRequired,
   editExistingConfig: PropTypes.func.isRequired,
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   openError: PropTypes.func.isRequired,
-  openReport: PropTypes.func.isRequired,
-  setReportConfig: PropTypes.func.isRequired,
   setErrorModalText: PropTypes.func.isRequired,
   getStatus: PropTypes.func.isRequired,
 };

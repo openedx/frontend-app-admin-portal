@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LicenseAllocationHeader renders without crashing 1`] = `
+<div
+  className="ml-4"
+>
+  <h4
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
+  >
+    Licenses:
+  </h4>
+  <span
+    className="mr-2 ml-2 badge badge-light"
+  >
+    Unassigned: 
+    1
+     of 
+    2
+     total
+  </span>
+  <span
+    className="badge badge-light"
+  >
+    Activated: 
+    1
+     of 
+    2
+     assigned
+  </span>
+</div>
+`;

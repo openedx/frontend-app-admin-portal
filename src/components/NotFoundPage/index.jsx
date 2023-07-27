@@ -1,14 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-const NotFoundPage = () => (
-  <main role="main">
-    <div className="container-fluid mt-3">
-      <NotFound />
-    </div>
-  </main>
-);
-
 export const NotFound = () => (
   <>
     <Helmet>
@@ -20,6 +12,14 @@ export const NotFound = () => (
       <p>Either something went wrong or the page doesn&apos;t exist anymore.</p>
     </div>
   </>
+);
+
+const NotFoundPage = () => (
+  <main role="main">
+    <div className="container-fluid mt-3">
+      <NotFound />
+    </div>
+  </main>
 );
 
 export default NotFoundPage;

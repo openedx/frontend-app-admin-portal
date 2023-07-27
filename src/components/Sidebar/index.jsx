@@ -40,7 +40,6 @@ const Sidebar = ({
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
   const getSidebarWidth = useCallback(() => {
@@ -63,22 +62,18 @@ const Sidebar = ({
   useEffect(() => {
     const sideBarWidth = getSidebarWidth();
     if (widthRef.current !== sideBarWidth) {
-      onWidthChange(sideBarWidth);
+      if (!isExpanded) {
+        onWidthChange(sideBarWidth);
+      }
       widthRef.current = sideBarWidth;
     }
-  }, [getSidebarWidth, isExpandedByToggle, isMobile, onWidthChange]);
+  }, [getSidebarWidth, isExpanded, isExpandedByToggle, isMobile, onWidthChange]);
 
   const getMenuItems = () => [
     {
       title: 'Learner Progress Report',
       to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
       icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
-    },
-    {
-      title: 'Tableau Analytics',
-      to: `${baseUrl}/admin/${ROUTE_NAMES.tableau_analytics}`,
-      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
-      hidden: !features.TABLEAU_ANALYTICS || !enableAnalyticsScreen,
     },
     {
       title: 'Analytics',

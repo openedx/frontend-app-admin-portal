@@ -63,7 +63,14 @@ const selectedEmails = userEmails.map(
   (email, index) => ({ id: index, values: { userEmail: email } }),
 );
 const selectedCourses = courseNames.map(
-  (course) => ({ id: course }),
+  (course) => ({
+    values: {
+      contentKey: course,
+      advertisedCourseRun: {
+        key: course,
+      },
+    },
+  }),
 );
 const bulkEnrollWithAllSelectedRows = {
   emails: [selectedEmails, emailsDispatch],
@@ -165,8 +172,7 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('tests button is disabled when courses are not selected but emails are', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -176,12 +182,10 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     expect(button).toBeDisabled();
-    await act(() => mockPromiseResolve);
   });
 
   it('tests button is disabled when emails are not selected but courses are', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -191,12 +195,10 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     expect(button).toBeDisabled();
-    await act(() => mockPromiseResolve);
   });
 
   it('tests passing correct data to api call', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -213,18 +215,18 @@ describe('BulkEnrollmentSubmit', () => {
       notify: true,
     };
 
-    expect(LicenseManagerApiService.licenseBulkEnroll).toHaveBeenCalledWith(
-      defaultProps.enterpriseId,
-      defaultProps.subscription.uuid,
-      expectedParams,
-    );
-    expect(logError).toBeCalledTimes(0);
-    await act(() => mockPromiseResolve);
+    await waitFor(() => {
+      expect(LicenseManagerApiService.licenseBulkEnroll).toHaveBeenCalledWith(
+        defaultProps.enterpriseId,
+        defaultProps.subscription.uuid,
+        expectedParams,
+      );
+      expect(logError).toBeCalledTimes(0);
+    });
   });
 
   it('tests notify toggle disables param to api service', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -242,18 +244,19 @@ describe('BulkEnrollmentSubmit', () => {
       course_run_keys: courseNames,
       notify: false,
     };
-    expect(LicenseManagerApiService.licenseBulkEnroll).toHaveBeenCalledWith(
-      defaultProps.enterpriseId,
-      defaultProps.subscription.uuid,
-      expectedParams,
-    );
-    expect(logError).toBeCalledTimes(0);
-    await act(() => mockPromiseResolve);
+
+    await waitFor(() => {
+      expect(LicenseManagerApiService.licenseBulkEnroll).toHaveBeenCalledWith(
+        defaultProps.enterpriseId,
+        defaultProps.subscription.uuid,
+        expectedParams,
+      );
+      expect(logError).toBeCalledTimes(0);
+    });
   });
 
   it('test component clears selected emails and courses after successful submit', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -262,24 +265,23 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    await userEvent.click(button);
+    userEvent.click(button);
 
-    expect(emailsDispatch).toBeCalledTimes(1);
-    expect(coursesDispatch).toBeCalledTimes(1);
-
-    expect(emailsDispatch).toHaveBeenCalledWith(
-      clearSelectionAction(),
-    );
-    expect(coursesDispatch).toHaveBeenCalledWith(
-      clearSelectionAction(),
-    );
-    expect(logError).toBeCalledTimes(0);
-    await act(() => mockPromiseResolve);
+    await waitFor(() => {
+      expect(emailsDispatch).toBeCalledTimes(1);
+      expect(coursesDispatch).toBeCalledTimes(1);
+      expect(emailsDispatch).toHaveBeenCalledWith(
+        clearSelectionAction(),
+      );
+      expect(coursesDispatch).toHaveBeenCalledWith(
+        clearSelectionAction(),
+      );
+      expect(logError).toBeCalledTimes(0);
+    });
   });
 
   it('tests component creates toast after successful submit', async () => {
-    const mockPromiseResolve = Promise.resolve({ data: {} });
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseResolve);
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -288,11 +290,12 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    await userEvent.click(button);
+    userEvent.click(button);
 
-    expect(logError).toBeCalledTimes(0);
-    expect(screen.getByText('been enrolled', { exact: false })).toBeInTheDocument();
-    await act(() => mockPromiseResolve);
+    await waitFor(() => {
+      expect(logError).toBeCalledTimes(0);
+      expect(screen.getByText('been enrolled', { exact: false })).toBeInTheDocument();
+    });
   });
 
   it('tests component logs error response on unsuccessful api call', async () => {
@@ -361,7 +364,7 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    await userEvent.click(button);
+    userEvent.click(button);
     await waitFor(() => {
       expect(screen.getByText('been enrolled', { exact: false })).toBeInTheDocument();
       expect(defaultProps.onEnrollComplete).toHaveBeenCalledTimes(1);

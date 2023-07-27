@@ -12,6 +12,13 @@ import { features } from '../../../../config';
 
 jest.mock('../../../../data/services/LmsApiService');
 
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useRouteMatch: () => ({
+    url: 'https://www.test.com/',
+  }),
+}));
+
 const enterpriseCustomerUuid = 'test-enterprise-id';
 const mockEditExistingConfigFn = jest.fn();
 const mockOnClick = jest.fn();
@@ -22,6 +29,12 @@ const configData = [
     isValid: [{ missing: [] }, { incorrect: [] }],
     active: true,
     displayName: 'foobar',
+    lastSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastContentSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
   },
 ];
 
@@ -32,6 +45,12 @@ const inactiveConfigData = [
     isValid: [{ missing: [] }, { incorrect: [] }],
     active: false,
     displayName: 'foobar',
+    lastSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastContentSyncAttemptedAt: null,
+    lastLearnerSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastSyncErroredAt: '2022-11-22T20:59:56Z',
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: '2022-11-22T20:59:56Z',
   },
 ];
 
@@ -42,6 +61,12 @@ const disabledConfigData = [
     isValid: [{ missing: [] }, { incorrect: [] }],
     active: false,
     displayName: 'foobar',
+    lastSyncAttemptedAt: null,
+    lastContentSyncAttemptedAt: null,
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
   },
 ];
 
@@ -52,6 +77,12 @@ const incompleteConfigData = [
     isValid: [{ missing: ['client_id', 'refresh_token'] }, { incorrect: ['blackboard_base_url'] }],
     active: false,
     displayName: 'barfoo',
+    lastSyncAttemptedAt: null,
+    lastContentSyncAttemptedAt: null,
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
   },
 ];
 
@@ -62,6 +93,12 @@ const singleInvalidFieldConfigData = [
     isValid: [{ missing: ['client_id', 'refresh_token'] }, { incorrect: [] }],
     active: false,
     displayName: 'barfoo',
+    lastSyncAttemptedAt: null,
+    lastContentSyncAttemptedAt: null,
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
   },
 ];
 
@@ -72,6 +109,12 @@ const needsRefreshTokenConfigData = [
     isValid: [{ missing: ['refresh_token'] }, { incorrect: [] }],
     active: false,
     displayName: 'barfoo',
+    lastSyncAttemptedAt: null,
+    lastContentSyncAttemptedAt: null,
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
   },
 ];
 
@@ -96,6 +139,7 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('Active')).toBeInTheDocument();
     expect(screen.getByText('foobar')).toBeInTheDocument();
     expect(screen.getByText('View sync history'));
+    expect(screen.getByText('Last sync:'));
 
     userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
     expect(screen.getByText('Disable'));
@@ -114,6 +158,7 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('Disabled')).toBeInTheDocument();
     expect(screen.getByText('foobar')).toBeInTheDocument();
     expect(screen.getByText('Enable'));
+    expect(screen.getByText('Recent sync error:'));
 
     userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
     expect(screen.getByText('Configure'));
@@ -188,6 +233,7 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
     expect(screen.getByText('barfoo')).toBeInTheDocument();
     expect(screen.getByText('Configure'));
+    expect(screen.getByText('Sync not yet attempted'));
 
     await waitFor(() => userEvent.hover(screen.getByText('Incomplete')));
     expect(screen.getByText('Next Steps')).toBeInTheDocument();
@@ -316,5 +362,20 @@ describe('<ExistingLMSCardDeck />', () => {
       />,
     );
     expect(screen.queryByText('View sync history')).not.toBeInTheDocument();
+  });
+  it('viewing sync history redirects to detail page', () => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
+    render(
+      <ExistingLMSCardDeck
+        configData={configData}
+        editExistingConfig={mockEditExistingConfigFn}
+        onClick={mockOnClick}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+    const link = 'https://www.test.com/BLACKBOARD/1';
+    expect(screen.getByText('View sync history')).toHaveAttribute('href', link);
   });
 });

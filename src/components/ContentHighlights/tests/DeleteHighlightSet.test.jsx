@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import DeleteHighlightSet from '../DeleteHighlightSet';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
@@ -17,6 +17,14 @@ import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCu
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -86,6 +94,7 @@ describe('<DeleteHighlightSet />', () => {
       { route: initialRouterEntry },
     );
     clickDeleteHighlightBtn();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it('cancelling confirmation modal closes modal', () => {
@@ -94,7 +103,9 @@ describe('<DeleteHighlightSet />', () => {
       { route: initialRouterEntry },
     );
     clickDeleteHighlightBtn();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     userEvent.click(screen.getByText('Cancel'));
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
   });
 
@@ -106,15 +117,21 @@ describe('<DeleteHighlightSet />', () => {
       { route: initialRouterEntry },
     );
     clickDeleteHighlightBtn();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     userEvent.click(screen.getByTestId('delete-confirmation-button'));
     expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
 
     await waitFor(() => {
       expect(mockDispatchFn).toHaveBeenCalledWith(
+        enterpriseCurationActions.setHighlightSetToast(highlightSetUUID),
+      );
+    });
+    await waitFor(() => {
+      expect(mockDispatchFn).toHaveBeenCalledWith(
         enterpriseCurationActions.deleteHighlightSet(highlightSetUUID),
       );
     });
-
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
     expect(history.location.pathname).toEqual(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`);
     expect(history.location.state).toEqual(
@@ -138,6 +155,7 @@ describe('<DeleteHighlightSet />', () => {
     await waitFor(() => {
       expect(logError).toHaveBeenCalled();
     });
+
     expect(mockDispatchFn).not.toHaveBeenCalledWith(
       enterpriseCurationActions.deleteHighlightSet(highlightSetUUID),
     );

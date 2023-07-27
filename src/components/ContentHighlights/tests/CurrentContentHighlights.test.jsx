@@ -1,14 +1,16 @@
-import { useMemo } from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { useState } from 'react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import algoliasearch from 'algoliasearch/lite';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { useStepperModalState } from '../data/hooks';
+import { BUTTON_TEXT } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { configuration } from '../../../config';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -26,41 +28,46 @@ const initialEnterpriseAppContextValue = {
   },
 };
 
+const searchClient = algoliasearch(
+  configuration.ALGOLIA.APP_ID,
+  configuration.ALGOLIA.SEARCH_API_KEY,
+);
+
 /* eslint-disable react/prop-types */
 const CurrentContentHighlightsWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
 }) => {
 /* eslint-enable react/prop-types */
-  const { setIsModalOpen, isModalOpen } = useStepperModalState();
-  const defaultValue = useMemo(() => ({
-    setIsModalOpen,
-    isModalOpen,
-  }), [setIsModalOpen, isModalOpen]);
+  const contextValue = useState({
+    stepperModal: {
+      isOpen: false,
+      highlightTitle: null,
+      titleStepValidationError: null,
+      currentSelectedRowIds: {},
+    },
+    contentHighlights: [],
+    searchClient,
+  });
   return (
-    <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-      <ContentHighlightsContext.Provider value={defaultValue}>
-        <Provider store={mockStore(initialState)}>
+    <Provider store={mockStore(initialState)}>
+      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+        <ContentHighlightsContext.Provider value={contextValue}>
           <CurrentContentHighlights {...props} />
-        </Provider>
-      </ContentHighlightsContext.Provider>
-    </EnterpriseAppContext.Provider>
+        </ContentHighlightsContext.Provider>
+      </EnterpriseAppContext.Provider>
+    </Provider>
   );
 };
 
 describe('<CurrentContentHighlights>', () => {
   it('Displays the header title', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('Highlight collections')).toBeInTheDocument();
+    expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
   });
   it('Displays the header button', () => {
     renderWithRouter(<CurrentContentHighlightsWrapper />);
-    expect(screen.getByText('New')).toBeInTheDocument();
-  });
-  it('Displays the stepper modal on click of the header button', () => {
-    renderWithRouter(<CurrentContentHighlightsWrapper />);
-    fireEvent.click(screen.getByText('New'));
-    expect(screen.getByText('Create a title for the highlight collection')).toBeInTheDocument();
+    expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
   });
 
   describe('ContentHighlightSetCardContainer', () => {

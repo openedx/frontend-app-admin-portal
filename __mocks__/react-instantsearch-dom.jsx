@@ -7,7 +7,7 @@ const MockReactInstantSearch = jest.genMockFromModule(
   'react-instantsearch-dom',
 );
 
-// eslint-disable-next-line camelcase
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const advertised_course_run = {
   start: '2020-09-09T04:00:00Z',
   key: 'course-v1:edX+Bee101+3T2020',
@@ -15,8 +15,8 @@ const advertised_course_run = {
 
 /* eslint-disable camelcase */
 const fakeHits = [
-  { objectID: '1', title: 'bla', advertised_course_run, key: 'Bees101' },
-  { objectID: '2', title: 'blp', advertised_course_run, key: 'Wasps200' },
+  { objectID: '1', aggregation_key: 'course:Bees101', title: 'bla', advertised_course_run, key: 'Bees101' },
+  { objectID: '2', aggregation_key: 'course:Wasps200', title: 'blp', advertised_course_run, key: 'Wasps200' },
 ];
 /* eslint-enable camelcase */
 
@@ -74,10 +74,12 @@ MockReactInstantSearch.connectPagination = Component => function connectPaginati
 };
 
 MockReactInstantSearch.InstantSearch = function InstantSearch({ children }) {
-  return children;
+  return (
+    <div data-testid="algolia__InstantSearch">{children}</div>
+  );
 };
 MockReactInstantSearch.Configure = function Configure() {
-  return <div>CONFIGURED</div>;
+  return <div data-testid="algolia__Configure">CONFIGURED</div>;
 };
 
 module.exports = MockReactInstantSearch;

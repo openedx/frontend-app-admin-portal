@@ -44,6 +44,24 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
     }
   }, [enterpriseId]);
 
+  const updateEnterpriseCuration = useCallback(async (options) => {
+    try {
+      const response = await EnterpriseCatalogApiService.updateEnterpriseCurationConfig(
+        enterpriseCuration.uuid,
+        options,
+      );
+      const result = camelCaseObject(response?.data);
+      setEnterpriseCuration(result);
+      return result;
+    } catch (error) {
+      logError(error);
+      setFetchError(error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [enterpriseCuration]);
+
   useEffect(() => {
     if (!enterpriseId || !config.FEATURE_CONTENT_HIGHLIGHTS) {
       setIsLoading(false);
@@ -75,6 +93,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
     isLoading,
     enterpriseCuration,
     fetchError,
+    updateEnterpriseCuration,
   };
 }
 

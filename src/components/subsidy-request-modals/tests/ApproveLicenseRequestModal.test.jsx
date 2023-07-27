@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   render,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ApproveLicenseRequestModal } from '../ApproveLicenseRequestModal';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import * as hooks from '../data/hooks';
@@ -112,12 +112,12 @@ describe('<ApproveLicenseRequestModal />', () => {
     );
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    fireEvent.click(subscriptionChoiceRadio);
+    userEvent.click(subscriptionChoiceRadio);
 
     const approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    fireEvent.click(approveBtn);
+    userEvent.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({
@@ -137,12 +137,12 @@ describe('<ApproveLicenseRequestModal />', () => {
     );
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    fireEvent.click(subscriptionChoiceRadio);
+    userEvent.click(subscriptionChoiceRadio);
 
     let approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    fireEvent.click(approveBtn);
+    userEvent.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({

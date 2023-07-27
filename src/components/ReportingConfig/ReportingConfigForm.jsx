@@ -33,7 +33,6 @@ const REQUIRED_NEW_SFTP_FEILDS = [
 ];
 const REQUIRED_NEW_EMAIL_FIELDS = [
   ...REQUIRED_EMAIL_FIELDS,
-  'encryptedPassword',
 ];
 const MONTHLY_MAX = 31;
 const MONTHLY_MIN = 1;
@@ -46,6 +45,7 @@ class ReportingConfigForm extends React.Component {
     invalidFields: {},
     APIErrors: {},
     active: this.props.config ? this.props.config.active : false,
+    enableCompression: this.props.config ? this.props.config.enableCompression : true,
     submitState: SUBMIT_STATES.DEFAULT,
   };
 
@@ -55,10 +55,18 @@ class ReportingConfigForm extends React.Component {
    * @param {FormData} formData
    * @param {[String]} requiredFields
    */
-  validateReportingForm = (formData, requiredFields) => {
+  validateReportingForm = (config, formData, requiredFields) => {
     const invalidFields = requiredFields
       .filter(field => !formData.get(field))
       .reduce((prevFields, currField) => ({ ...prevFields, [currField]: true }), {});
+
+    // Password is conditionally required only when pgp key will not be present
+    // and delivery method is email
+    if (!formData.get('pgpEncryptionKey') && formData.get('deliveryMethod') === 'email') {
+      if (!formData.get('encryptedPassword') && !config?.encryptedPassword) {
+        invalidFields.encryptedPassword = true;
+      }
+    }
     return invalidFields;
   };
 
@@ -123,7 +131,7 @@ class ReportingConfigForm extends React.Component {
       requiredFields = config ? [...REQUIRED_SFTP_FIELDS] : [...REQUIRED_NEW_SFTP_FEILDS];
     }
     // validate the form
-    const invalidFields = this.validateReportingForm(formData, requiredFields);
+    const invalidFields = this.validateReportingForm(config, formData, requiredFields);
     // if there are invalid fields, reflect that in the UI
     if (!isEmpty(invalidFields)) {
       this.setState((state) => ({
@@ -167,6 +175,7 @@ class ReportingConfigForm extends React.Component {
       APIErrors,
       deliveryMethod,
       active,
+      enableCompression,
       submitState,
     } = this.state;
     const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
@@ -233,6 +242,8 @@ class ReportingConfigForm extends React.Component {
             <ValidationFormGroup
               for="deliveryMethod"
               helpText="The method in which the data should be sent"
+              invalid={!!APIErrors.deliveryMethod}
+              invalidMessage={APIErrors.deliveryMethod}
             >
               <label htmlFor="deliveryMethod">Delivery Method</label>
               <Input
@@ -242,6 +253,13 @@ class ReportingConfigForm extends React.Component {
                 defaultValue={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
                 options={reportingConfigTypes.deliveryMethod.map(item => ({ label: item[1], value: item[0] }))}
                 onChange={e => this.setState({ deliveryMethod: e.target.value })}
+                disabled={config}
+              />
+              <input
+                type="hidden"
+                name="deliveryMethod"
+                value={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
+                disabled={!config}
               />
             </ValidationFormGroup>
             <ValidationFormGroup
@@ -346,6 +364,24 @@ class ReportingConfigForm extends React.Component {
         )}
         <div className="col">
           <ValidationFormGroup
+            for="enableCompression"
+            helpText="Specifies whether report should be compressed. Without compression files will not be password protected or encrypted."
+            invalid={!!APIErrors.enableCompression}
+            invalidMessage={APIErrors.enableCompression}
+          >
+            <label htmlFor="enableCompression">Enable Compression</label>
+            <Input
+              type="checkbox"
+              id="enableCompression"
+              name="enableCompression"
+              className="ml-3"
+              checked={enableCompression}
+              onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
+            />
+          </ValidationFormGroup>
+        </div>
+        <div className="col">
+          <ValidationFormGroup
             for="enterpriseCustomerCatalogs"
             helpText="The catalogs that should be included in the report. No selection means all catalogs will be included."
           >
@@ -416,6 +452,7 @@ ReportingConfigForm.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   config: PropTypes.shape({
     active: PropTypes.bool,
+    enableCompression: PropTypes.bool,
     dataType: PropTypes.string,
     dayOfMonth: PropTypes.number,
     dayOfWeek: PropTypes.number,

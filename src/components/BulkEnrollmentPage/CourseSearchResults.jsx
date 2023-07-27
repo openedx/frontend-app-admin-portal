@@ -1,18 +1,21 @@
 import React, {
+  useCallback,
   useContext,
   useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
-import { DataTable, Skeleton } from '@edx/paragon';
+import { Alert, DataTable, Skeleton } from '@edx/paragon';
+import { Error, ErrorOutline } from '@edx/paragon/icons';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 
-import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';
 
 import BaseSelectionStatus from './table/BaseSelectionStatus';
-import { BaseSelectWithContext, BaseSelectWithContextHeader } from './table/BulkEnrollSelect';
+import { BaseSelectWithContext } from './table/BulkEnrollSelect';
+import { NUM_CONTENT_ITEMS_PER_PAGE } from './stepper/constants';
+import { setSelectedRowsAction } from './data/actions';
 
 const ERROR_MESSAGE = 'An error occured while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
@@ -32,11 +35,9 @@ const AddCoursesSelectionStatus = (props) => {
 
 const SelectWithContext = (props) => <BaseSelectWithContext contextKey="courses" {...props} />;
 
-const SelectWithContextHeader = (props) => <BaseSelectWithContextHeader contextKey="courses" {...props} />;
-
 const selectColumn = {
   id: 'selection',
-  Header: SelectWithContextHeader,
+  Header: () => null,
   Cell: SelectWithContext,
   disableSortBy: true,
 };
@@ -64,7 +65,6 @@ export const BaseCourseSearchResults = (props) => {
   const { refinements } = useContext(SearchContext);
 
   const columns = useMemo(() => [
-    selectColumn,
     {
       Header: TABLE_HEADERS.courseName,
       accessor: 'title',
@@ -99,7 +99,31 @@ export const BaseCourseSearchResults = (props) => {
     [searchState, refinements],
   );
 
-  const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
+  const { courses: [selectedCourses, coursesDispatch] } = useContext(BulkEnrollContext);
+  const transformedSelectedRowIds = useMemo(
+    () => {
+      const selectedRowIds = {};
+      selectedCourses.forEach((row) => {
+        selectedRowIds[row.id] = true;
+      });
+      return selectedRowIds;
+    },
+    [selectedCourses],
+  );
+
+  const onSelectedRowsChanged = useCallback(
+    (selectedRowIds) => {
+      const selectedFlatRowIds = Object.keys(selectedRowIds).map(selectedRowId => selectedRowId);
+      const transformedSelectedFlatRowIds = selectedFlatRowIds.map(rowId => ({
+        id: rowId,
+        values: {
+          aggregationKey: rowId,
+        },
+      }));
+      coursesDispatch(setSelectedRowsAction(transformedSelectedFlatRowIds));
+    },
+    [coursesDispatch],
+  );
 
   if (isSearchStalled) {
     return (
@@ -112,20 +136,21 @@ export const BaseCourseSearchResults = (props) => {
 
   if (!isSearchStalled && error) {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        message={`${ERROR_MESSAGE} ${error.message}`}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <p>{ERROR_MESSAGE} {error.message}</p>
+      </Alert>
     );
   }
   if (!isSearchStalled && searchResults?.nbHits === 0) {
     return (
-      <StatusAlert
-        alertType="warning"
-        iconClassName="fa fa-exclamation-circle"
-        message={NO_DATA_MESSAGE}
-      />
+      <Alert
+        variant="warning"
+        icon={ErrorOutline}
+      ><p>{NO_DATA_MESSAGE}</p>
+      </Alert>
     );
   }
 
@@ -135,12 +160,19 @@ export const BaseCourseSearchResults = (props) => {
         columns={columns}
         data={searchResults?.hits || []}
         itemCount={searchResults?.nbHits}
+        isSelectable
+        isPaginated
+        manualSelectColumn={selectColumn}
+        onSelectedRowsChanged={onSelectedRowsChanged}
         SelectionStatusComponent={AddCoursesSelectionStatus}
         pageCount={searchResults?.nbPages || 1}
-        pageSize={searchResults?.hitsPerPage || 0}
-        selectedFlatRows={selectedCourses}
+        initialState={{
+          pageIndex: 0,
+          pageSize: NUM_CONTENT_ITEMS_PER_PAGE,
+          selectedRowIds: transformedSelectedRowIds,
+        }}
         initialTableOptions={{
-          getRowId: (row) => row.key,
+          getRowId: row => row.aggregation_key,
         }}
       >
         <DataTable.TableControlBar />

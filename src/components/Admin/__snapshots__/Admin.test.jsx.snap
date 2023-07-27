@@ -100,6 +100,24 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -616,6 +634,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -1181,6 +1217,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -1738,6 +1792,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -2303,6 +2375,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -3027,6 +3117,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -3747,6 +3855,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -4308,6 +4434,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -4877,6 +5021,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -5442,6 +5604,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -6003,6 +6183,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -6134,37 +6332,63 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         className="col"
       >
         <div
-          className="alert fade alert-danger show"
-          hidden={false}
+          className="fade alert-content alert alert-danger show"
           role="alert"
         >
+          <span
+            className="pgn__icon alert-icon"
+          >
+            <svg
+              aria-hidden={true}
+              fill="none"
+              focusable={false}
+              height={24}
+              role="img"
+              viewBox="0 0 24 24"
+              width={24}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
           <div
-            className="alert-dialog"
+            className="pgn__alert-message-wrapper"
           >
             <div
-              className="d-flex"
+              className="alert-message-content"
             >
               <div
-                className="icon mr-2"
+                className="alert-heading h4"
               >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-times-circle"
-                  id="Icon109"
-                />
+                Hey, nice to see you
               </div>
-              <div
-                className="message"
-              >
-                <span
-                  className="title"
-                >
-                  Unable to load overview
-                </span>
-                Try refreshing your screen (Network Error)
-              </div>
+              <p>
+                Try refreshing your screen 
+                Network Error
+              </p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -6309,6 +6533,24 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
               ‌
             </span>
             <br />
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
           </span>
         </div>
       </div>

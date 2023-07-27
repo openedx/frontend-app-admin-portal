@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
-
+import { act, waitFor } from '@testing-library/react';
 import { mergeConfig } from '@edx/frontend-platform/config';
 import useEnterpriseCuration from './useEnterpriseCuration';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
@@ -13,6 +13,7 @@ const mockEnterpriseCurationConfig = {
   uuid: 'fake-uuid',
   title: TEST_ENTERPRISE_NAME,
   isHighlightFeatureActive: true,
+  canOnlyViewHighlightSets: false,
   highlightSets: [],
   created: '2022-10-31',
   modified: '2022-10-31',
@@ -40,6 +41,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
       expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
     });
@@ -59,6 +61,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
       expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
     });
@@ -78,6 +81,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -93,6 +97,49 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
+        updateEnterpriseCuration: expect.any(Function),
+      });
+    });
+
+    it('should update enterprise configuration', async () => {
+      const updatedEnterpriseCuration = {
+        ...mockEnterpriseCurationConfig,
+        canOnlyViewHighlightSets: true,
+      };
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
+        data: mockEnterpriseCurationConfigResponse,
+      });
+      EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValueOnce({
+        data: updatedEnterpriseCuration,
+      });
+
+      const args = {
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        curationTitleForCreation: TEST_ENTERPRISE_NAME,
+      };
+
+      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+
+      await waitForNextUpdate();
+
+      const { updateEnterpriseCuration } = result.current;
+
+      expect(
+        EnterpriseCatalogApiService.getEnterpriseCurationConfig,
+      ).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+
+      updateEnterpriseCuration(updatedEnterpriseCuration);
+      await waitFor(() => {
+        expect(
+          EnterpriseCatalogApiService.updateEnterpriseCurationConfig,
+        ).toHaveBeenCalledWith(mockEnterpriseCurationConfig.uuid, updatedEnterpriseCuration);
+      });
+
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: null,
+        enterpriseCuration: updatedEnterpriseCuration,
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
 
@@ -117,6 +164,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -132,6 +180,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
 
@@ -149,6 +198,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -161,6 +211,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: mockErrorMessage,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
 
@@ -184,6 +235,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
       });
 
       await waitForNextUpdate();
@@ -196,6 +248,43 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: mockErrorMessage,
         enterpriseCuration: null,
+        updateEnterpriseCuration: expect.any(Function),
+      });
+    });
+
+    it('should handle fetch error while updating enterprise curation config', async () => {
+      const mockErrorMessage = 'oh noes!';
+      EnterpriseCatalogApiService.getEnterpriseCurationConfig.mockResolvedValueOnce({
+        data: mockEnterpriseCurationConfigResponse,
+      });
+      EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockRejectedValueOnce(mockErrorMessage);
+
+      const args = {
+        enterpriseId: TEST_ENTERPRISE_UUID,
+        curationTitleForCreation: TEST_ENTERPRISE_NAME,
+      };
+
+      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+
+      await waitForNextUpdate();
+
+      const { updateEnterpriseCuration } = result.current;
+
+      expect(
+        EnterpriseCatalogApiService.getEnterpriseCurationConfig,
+      ).toHaveBeenCalledWith(TEST_ENTERPRISE_UUID);
+
+      await waitFor(() => act(() => updateEnterpriseCuration(mockEnterpriseCurationConfig)));
+
+      expect(
+        EnterpriseCatalogApiService.updateEnterpriseCurationConfig,
+      ).toHaveBeenCalledWith(mockEnterpriseCurationConfig.uuid, mockEnterpriseCurationConfig);
+
+      expect(result.current).toEqual({
+        isLoading: false,
+        fetchError: mockErrorMessage,
+        enterpriseCuration: undefined,
+        updateEnterpriseCuration: expect.any(Function),
       });
     });
   });

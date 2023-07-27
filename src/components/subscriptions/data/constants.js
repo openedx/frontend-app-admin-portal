@@ -1,4 +1,11 @@
 export const PAGE_SIZE = 20;
+export const LPR_SUBSCRIPTION_PAGE_SIZE = 5;
+export const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
+  emailLabel: 'user_email',
+  statusBadge: 'status',
+  recentAction: 'activation_date',
+};
+export const LPR_DEFAULT_SORT = '-status';
 
 // Subscription license statuses as defined on the backend
 export const ACTIVATED = 'activated';

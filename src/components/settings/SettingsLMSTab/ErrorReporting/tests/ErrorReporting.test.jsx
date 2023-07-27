@@ -1,34 +1,59 @@
 import React from 'react';
 import {
-  act, fireEvent, render, screen, waitFor,
+  act, cleanup, fireEvent, render, screen, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
-import ExistingLMSCardDeck from '../../ExistingLMSCardDeck';
 import LmsApiService from '../../../../../data/services/LmsApiService';
 import { features } from '../../../../../config';
+import SyncHistory from '../SyncHistory';
 
 const enterpriseCustomerUuid = 'test-enterprise-id';
-const mockEditExistingConfigFn = jest.fn();
-const mockOnClick = jest.fn();
 
 // file-saver mocks
 jest.mock('file-saver', () => ({ saveAs: jest.fn() }));
 // eslint-disable-next-line func-names
 global.Blob = function (content, options) { return ({ content, options }); };
 
-const configData = [
-  {
+const configData = {
+  data: {
     channelCode: 'BLACKBOARD',
     id: 1,
     isValid: [{ missing: [] }, { incorrect: [] }],
     active: true,
     displayName: 'foobar',
+    enterpriseCustomer: enterpriseCustomerUuid,
+    lastSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastContentSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
+    lastModifiedAt: '2023-05-05T14:51:53.473144Z',
   },
-];
+};
+
+const configDataDisabled = {
+  data: {
+    channelCode: 'BLACKBOARD',
+    id: 1,
+    isValid: [{ missing: [] }, { incorrect: [] }],
+    active: false,
+    displayName: 'foobar',
+    enterpriseCustomer: enterpriseCustomerUuid,
+    lastSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastContentSyncAttemptedAt: '2022-11-22T20:59:56Z',
+    lastLearnerSyncAttemptedAt: null,
+    lastSyncErroredAt: null,
+    lastContentSyncErroredAt: null,
+    lastLearnerSyncErroredAt: null,
+    lastModifiedAt: '2023-05-05T14:51:53.473144Z',
+  },
+};
 
 const contentSyncData = {
   data: {
@@ -59,9 +84,9 @@ const contentSyncData = {
       {
         content_title: 'Demo4',
         content_id: 'DemoX-4',
-        sync_status: 'pending',
+        sync_status: 'error',
         sync_last_attempted_at: '2022-09-26T19:27:18.127225Z',
-        friendly_status_message: 'The request was unauthorized, check your credentials.',
+        friendly_status_message: null,
       },
       {
         content_title: 'Demo5',
@@ -113,8 +138,8 @@ const contentSyncData = {
 
 const learnerSyncData = {
   data: {
-    count: 2,
-    pages_count: 1,
+    count: 11,
+    pages_count: 2,
     results: [
       {
         user_email: 'totallynormalemail@example.com',
@@ -132,6 +157,70 @@ const learnerSyncData = {
         sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
         friendly_status_message: 'The server is temporarily unavailable.',
       },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooookier',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooookiest',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooki-some',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spookilittle',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'mega-spooky',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spook',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spooky?',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
+      {
+        user_email: 'jlantern@example.com',
+        content_title: 'spork',
+        progress_status: 'pending',
+        sync_status: 'error',
+        sync_last_attempted_at: '2022-10-31T03:00:00.277596Z',
+        friendly_status_message: 'The server is temporarily unavailable.',
+      },
     ],
   },
   status: 200,
@@ -140,152 +229,76 @@ const learnerSyncData = {
 
 describe('<ExistingLMSCardDeck />', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
     features.FEATURE_INTEGRATION_REPORTING = true;
+    const baseUrl = 'http://dummy.com';
+    const pathName = '/test-enterprise/admin/settings/lms';
+    Object.defineProperty(window, 'location', {
+      value: {
+        pathname: `${pathName}/${configData.data.channelCode}/${configData.data.id}`,
+        href: `${baseUrl}${pathName}/${configData.data.channelCode}/${configData.data.id}`,
+      },
+      writable: true,
+    });
   });
-  it('opens error reporting modal', () => {
+  afterEach(() => {
+    cleanup();
+    jest.clearAllMocks();
+  });
+  it('basic lms config detail screen', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configData);
     render(
       <IntlProvider locale="en">
-        <ExistingLMSCardDeck
-          configData={configData}
-          editExistingConfig={mockEditExistingConfigFn}
-          onClick={mockOnClick}
-          enterpriseCustomerUuid={enterpriseCustomerUuid}
-        />
+        <SyncHistory />
       </IntlProvider>,
     );
-    userEvent.click(screen.queryByText('View sync history'));
-    expect(screen.getByText('foobar Sync History')).toBeInTheDocument();
-    expect(screen.getAllByText('Course')).toHaveLength(2);
-    expect(screen.getByText('Course key')).toBeInTheDocument();
+
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    expect(mockFetchSingleConfig).toHaveBeenCalledWith('1');
+    expect(screen.getByText('Disable')).toBeInTheDocument();
+    expect(screen.getByText('Configure')).toBeInTheDocument();
+    expect(screen.getByText('Last modified on May 5, 2023')).toBeInTheDocument();
+    expect(screen.getByText('Last sync:')).toBeInTheDocument();
+
+    await waitFor(() => expect(screen.getByText('Course key')).toBeInTheDocument());
     expect(screen.getAllByText('Sync status')).toHaveLength(2);
     expect(screen.getAllByText('Sync attempt time')).toHaveLength(2);
 
     expect(screen.getAllByText('No results found')).toHaveLength(2);
   });
-  it('populates with content sync data', async () => {
-    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
-    mockFetchCmits.mockResolvedValue(contentSyncData);
-
+  it('check disabled config', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configDataDisabled);
     render(
       <IntlProvider locale="en">
-        <ExistingLMSCardDeck
-          configData={configData}
-          editExistingConfig={mockEditExistingConfigFn}
-          onClick={mockOnClick}
-          enterpriseCustomerUuid={enterpriseCustomerUuid}
-        />
+        <SyncHistory />
       </IntlProvider>,
     );
-    userEvent.click(screen.queryByText('View sync history'));
 
-    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
-
-    expect(screen.getByText('Demo1')).toBeInTheDocument();
-    expect(screen.getByText('Success')).toBeInTheDocument();
-
-    expect(screen.getByText('Demo2')).toBeInTheDocument();
-    expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
-
-    expect(screen.getByText('Demo3')).toBeInTheDocument();
-    expect(screen.getByText('Error')).toBeInTheDocument();
-
-    await waitFor(() => userEvent.click(screen.queryByText('Read')));
-    expect(screen.getByText('The request was unauthorized, check your credentials.')).toBeInTheDocument();
-  });
-  it('paginates over data', async () => {
-    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
-    mockFetchCmits.mockResolvedValue(contentSyncData);
-
-    render(
-      <IntlProvider locale="en">
-        <ExistingLMSCardDeck
-          configData={configData}
-          editExistingConfig={mockEditExistingConfigFn}
-          onClick={mockOnClick}
-          enterpriseCustomerUuid={enterpriseCustomerUuid}
-        />
-      </IntlProvider>,
-    );
-    userEvent.click(screen.queryByText('View sync history'));
-
-    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
-    expect(screen.getAllByLabelText('Next, Page 2')[0]).not.toBeDisabled();
-    act(() => {
-      fireEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
-    });
-
-    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
-  });
-  it('adds filters to the backend url query params', async () => {
-    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
-    mockFetchCmits.mockResolvedValue(contentSyncData);
-
-    render(
-      <IntlProvider locale="en">
-        <ExistingLMSCardDeck
-          configData={configData}
-          editExistingConfig={mockEditExistingConfigFn}
-          onClick={mockOnClick}
-          enterpriseCustomerUuid={enterpriseCustomerUuid}
-        />
-      </IntlProvider>,
-    );
-    userEvent.click(screen.queryByText('View sync history'));
-
-    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
-    fireEvent.change(screen.getByLabelText('Search course key'), {
-      target: { value: 'ayylmao' },
-    });
-
-    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' }));
-  });
-  test('csv download works', async () => {
-    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
-    mockFetchCmits.mockResolvedValue(contentSyncData);
-
-    render(
-      <IntlProvider locale="en">
-        <ExistingLMSCardDeck
-          configData={configData}
-          editExistingConfig={mockEditExistingConfigFn}
-          onClick={mockOnClick}
-          enterpriseCustomerUuid={enterpriseCustomerUuid}
-        />
-      </IntlProvider>,
-    );
-    userEvent.click(screen.queryByText('View sync history'));
-    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
-
-    // Expect to be in the default state
-    expect(screen.getAllByText('Download history')).toHaveLength(2);
-
-    // Click the button
-    await act(async () => {
-      const input = screen.getByTestId('content-download');
-      userEvent.click(input);
-    });
-    // Expect to have updated the state to complete
-    expect(screen.queryByText('Downloaded')).toBeInTheDocument();
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    expect(mockFetchSingleConfig).toHaveBeenCalledWith('1');
+    expect(screen.getByText('Enable')).toBeInTheDocument();
+    expect(screen.getByText('Configure')).toBeInTheDocument();
+    expect(screen.getByText('Delete')).toBeInTheDocument();
   });
   it('populates with learner sync data', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configData);
     const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
     mockFetchLmits.mockResolvedValue(learnerSyncData);
 
     render(
       <IntlProvider locale="en">
-        <ExistingLMSCardDeck
-          configData={configData}
-          editExistingConfig={mockEditExistingConfigFn}
-          onClick={mockOnClick}
-          enterpriseCustomerUuid={enterpriseCustomerUuid}
-        />
+        <SyncHistory />
       </IntlProvider>,
     );
-    await waitFor(() => userEvent.click(screen.queryByText('View sync history')));
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
     await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
 
     expect(screen.getByText('Learner email')).toBeInTheDocument();
@@ -299,7 +312,183 @@ describe('<ExistingLMSCardDeck />', () => {
 
     expect(screen.getByText('spooooky')).toBeInTheDocument();
     expect(screen.getByText('Passed')).toBeInTheDocument();
-    await waitFor(() => userEvent.click(screen.queryByText('Read')));
+    await waitFor(() => userEvent.click(screen.queryAllByText('Read')[1]));
     expect(screen.getByText('The server is temporarily unavailable.')).toBeInTheDocument();
+  });
+  it('paginates over learner data', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configData);
+    const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
+    mockFetchLmits.mockResolvedValue(learnerSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
+    await waitFor(() => expect(screen.getByText('spooooky')).toBeInTheDocument());
+    expect(screen.getAllByLabelText('Next, Page 2')[1]).not.toBeDisabled();
+    act(() => {
+      fireEvent.click(screen.getAllByLabelText('Next, Page 2')[1]);
+    });
+    await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
+  });
+  it('metadata data reporting modal calls fetchContentMetadataItemTransmission with extended page size', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configData);
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => userEvent.click(screen.getByTestId('content-download')));
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: contentSyncData.data.count }));
+  });
+  it('learner data reporting modal calls fetchLearnerMetadataItemTransmission with extended page size', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configData);
+    const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
+    mockFetchLmits.mockResolvedValue(learnerSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
+    await waitFor(() => userEvent.click(screen.getByTestId('learner-download')));
+
+    await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: learnerSyncData.data.count }));
+  });
+  it('populates with content sync data', async () => {
+    const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
+    mockFetchSingleConfig.mockResolvedValue(configData);
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    expect(mockFetchSingleConfig).toHaveBeenCalledWith('1');
+    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
+
+    expect(screen.getByText('Demo1')).toBeInTheDocument();
+    expect(screen.getByText('Success')).toBeInTheDocument();
+
+    expect(screen.getByText('Demo2')).toBeInTheDocument();
+    expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
+
+    expect(screen.getByText('Demo3')).toBeInTheDocument();
+    expect(screen.getAllByText('Error')[0]).toBeInTheDocument();
+
+    const readLinks = screen.queryAllByText('Read');
+    await waitFor(() => userEvent.click(readLinks[0]));
+    expect(screen.getByText('The request was unauthorized, check your credentials.')).toBeInTheDocument();
+    // Click away to close message
+    await waitFor(() => userEvent.click(readLinks[0]));
+    await waitFor(() => userEvent.click(readLinks[1]));
+    expect(screen.getByText(/Something went wrong.*Please contact enterprise customer support/)).toBeInTheDocument();
+  });
+  it('paginates over metadata data', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+
+    await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
+    expect(screen.getAllByLabelText('Next, Page 2')[0]).not.toBeDisabled();
+    act(() => {
+      userEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
+    });
+
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
+  });
+  it('adds filters to the backend url query params', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+
+    fireEvent.change(screen.getByLabelText('Search course key'), {
+      target: { value: 'ayylmao' },
+    });
+
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' }));
+  });
+  test('csv download works', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+
+    // Expect to be in the default state
+    expect(screen.getAllByText('Download history')).toHaveLength(2);
+
+    // Click the button
+    await act(async () => {
+      const input = screen.getByTestId('content-download');
+      userEvent.click(input);
+    });
+    // Expect to have updated the state to complete
+    expect(screen.queryByText('Downloaded')).toBeInTheDocument();
+  });
+  it('metadata data reporting modal calls fetchContentMetadataItemTransmission with extended page size', async () => {
+    const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
+    mockFetchCmits.mockResolvedValue(contentSyncData);
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => userEvent.click(screen.getByTestId('content-download')));
+    await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: contentSyncData.data.count }));
+  });
+  it('learner data reporting modal calls fetchLearnerMetadataItemTransmission with extended page size', async () => {
+    const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
+    mockFetchLmits.mockResolvedValue(learnerSyncData);
+    render(
+      <IntlProvider locale="en">
+        <SyncHistory />
+      </IntlProvider>,
+    );
+    const skeleton = screen.getAllByTestId('skeleton');
+    await waitForElementToBeRemoved(skeleton);
+    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
+    await waitFor(() => userEvent.click(screen.getByTestId('learner-download')));
+
+    await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: learnerSyncData.data.count }));
   });
 });

@@ -1,10 +1,6 @@
 import * as timeago from 'timeago.js';
-import {
-  Hyperlink, OverlayTrigger, Popover,
-} from '@edx/paragon';
-import {
-  CheckCircle, Error, Sync,
-} from '@edx/paragon/icons';
+import { Hyperlink, OverlayTrigger, Popover } from '@edx/paragon';
+import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
 
 timeago.register('time-locale');
 /**
@@ -42,11 +38,11 @@ export function getSyncStatus(status, statusMessage) {
             <Popover variant="danger" id="error-popover">
               <Popover.Content>
                 <h5 className="mb-2"><Error className="text-danger-500 mr-1" />Error<br /></h5>
-                {statusMessage}
+                {statusMessage || 'Something went wrong.  Please contact enterprise customer support.'}
               </Popover.Content>
             </Popover>
       )}
-        ><Hyperlink className="ml-3"><u>Read</u></Hyperlink>
+        ><Hyperlink className="ml-3" style={{ cursor: 'pointer' }}><u>Read</u></Hyperlink>
         </OverlayTrigger>
       </>
       )}
@@ -55,7 +51,7 @@ export function getSyncStatus(status, statusMessage) {
   );
 }
 
-export function getSyncTime(time) {
+export function getTimeAgo(time) {
   if (!time) {
     return null;
   }

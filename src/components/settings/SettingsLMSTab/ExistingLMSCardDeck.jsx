@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import {
-  CardGrid, useToggle,
-} from '@edx/paragon';
-import ConfigError from '../ConfigError';
-import ErrorReportingModal from './ErrorReporting/ErrorReportingModal';
+import { CardGrid, useToggle } from '@edx/paragon';
+import { getStatus } from './utils';
 import ExistingCard from './ExistingCard';
+import ConfigErrorModal from '../ConfigErrorModal';
 
 const ExistingLMSCardDeck = ({
   configData,
@@ -15,29 +12,10 @@ const ExistingLMSCardDeck = ({
   onClick,
 }) => {
   const [errorIsOpen, openError, closeError] = useToggle(false);
-  const [errorReportIsOpen, openReport, closeReport] = useToggle(false);
-  const [reportConfig, setReportConfig] = useState();
   const [errorModalText, setErrorModalText] = useState();
 
   // Map the existing config data to individual cards
-
-  const getStatus = (config) => {
-    const INCOMPLETE = 'incomplete';
-    const ACTIVE = 'active';
-    const INACTIVE = 'inactive';
-    if (!isEmpty(config.isValid[0].missing)
-        || !isEmpty(config.isValid[1].incorrect)) {
-      return INCOMPLETE;
-    }
-
-    if (config.active) {
-      return ACTIVE;
-    }
-    return INACTIVE;
-  };
-
-  // const listItems = timeSort(configData).map((config) => (
-  const listActive = configData.filter(config => getStatus(config) === 'active').map(config => (
+  const listActive = configData.filter(config => getStatus(config) === 'Active').map(config => (
     <ExistingCard
       key={`${config.channelCode}${config.id}`}
       config={config}
@@ -45,13 +23,11 @@ const ExistingLMSCardDeck = ({
       enterpriseCustomerUuid={enterpriseCustomerUuid}
       onClick={onClick}
       openError={openError}
-      openReport={openReport}
-      setReportConfig={setReportConfig}
       setErrorModalText={setErrorModalText}
       getStatus={getStatus}
     />
   ));
-  const listInactive = configData.filter(config => getStatus(config) !== 'active').map(config => (
+  const listInactive = configData.filter(config => getStatus(config) !== 'Active').map(config => (
     <ExistingCard
       key={`${config.channelCode}${config.id}`}
       config={config}
@@ -59,8 +35,6 @@ const ExistingLMSCardDeck = ({
       enterpriseCustomerUuid={enterpriseCustomerUuid}
       onClick={onClick}
       openError={openError}
-      openReport={openReport}
-      setReportConfig={setReportConfig}
       setErrorModalText={setErrorModalText}
       getStatus={getStatus}
     />
@@ -68,16 +42,10 @@ const ExistingLMSCardDeck = ({
 
   return (
     <span>
-      <ConfigError
+      <ConfigErrorModal
         isOpen={errorIsOpen}
         close={closeError}
         configTextOverride={errorModalText}
-      />
-      <ErrorReportingModal
-        isOpen={errorReportIsOpen}
-        close={closeReport}
-        config={reportConfig}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
       />
       { listActive.length > 0 && (
       <>

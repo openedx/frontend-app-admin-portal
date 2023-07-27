@@ -1,108 +1,381 @@
 import React, {
-  useState, useEffect, useContext,
+  useCallback, useState, useContext, useEffect,
 } from 'react';
-import {
-  Stepper, FullscreenModal, Button,
-} from '@edx/paragon';
 import PropTypes from 'prop-types';
-import HighlightStepperTitle from './HighlightStepperTitle';
-import HighlightStepperSelectCourses from './HighlightStepperSelectCourses';
-import HighlightStepperConfirmCourses from './HighlightStepperConfirmCourses';
-import HighlightStepperConfirmHighlight from './HighlightStepperConfirmHighlight';
-import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
+import { useContextSelector } from 'use-context-selector';
+import { connect } from 'react-redux';
+import {
+  Stepper,
+  FullscreenModal,
+  Button,
+  StatefulButton,
+  useToggle,
+  AlertModal,
+  ActionRow,
+} from '@edx/paragon';
+import { logError } from '@edx/frontend-platform/logging';
+import { camelCaseObject } from '@edx/frontend-platform';
+
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { useHistory } from 'react-router-dom';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
+import HighlightStepperTitle from './HighlightStepperTitle';
+import HighlightStepperSelectContent from './HighlightStepperSelectContent';
+import HighlightStepperConfirmContent from './HighlightStepperConfirmContent';
+import HighlightStepperFooterHelpLink from './HighlightStepperFooterHelpLink';
+import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
+import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
+import { useContentHighlightsContext } from '../data/hooks';
+import EVENT_NAMES from '../../../eventTracking';
+import { STEPPER_STEP_LABELS, STEPPER_STEP_TEXT } from '../data/constants';
+
+const steps = [
+  STEPPER_STEP_LABELS.CREATE_TITLE,
+  STEPPER_STEP_LABELS.SELECT_CONTENT,
+  STEPPER_STEP_LABELS.CONFIRM_PUBLISH,
+];
+
 /**
- * Stepper Modal Currently accessible from:
- *  - ContentHighlightSetCard
- *  - CurrentContentHighlightHeader
- *  - ZeroStateHighlights
- *
- * @param {object} args Arugments
- * @param {boolean} args.isOpen Whether the modal containing the stepper is currently open.
- * @returns
+ * Stepper to support create user flow for a highlight set.
  */
-const ContentHighlightStepper = ({ isOpen }) => {
-  const { setIsModalOpen } = useContext(ContentHighlightsContext);
-  /* eslint-disable no-unused-vars */
-  const steps = ['Title', 'Select courses', 'Confirm and Publish', 'All Set'];
+const ContentHighlightStepper = ({ enterpriseId }) => {
+  const {
+    enterpriseCuration: {
+      dispatch: dispatchEnterpriseCuration,
+    },
+  } = useContext(EnterpriseAppContext);
+  const history = useHistory();
+  const { location } = history;
   const [currentStep, setCurrentStep] = useState(steps[0]);
-  const [modalState, setModalState] = useState(isOpen);
-  useEffect(() => {
-    setModalState(isOpen);
-  }, [isOpen]);
-  const submitAndReset = () => {
-    if (steps.indexOf(currentStep) === steps.length - 1) {
-      /* TODO: submit data to api if confirmed */
-      setCurrentStep(steps[0]);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [isCloseAlertOpen, openCloseAlert, closeCloseAlert] = useToggle(false);
+  const { resetStepperModal } = useContentHighlightsContext();
+  const isStepperModalOpen = useContextSelector(ContentHighlightsContext, v => v[0].stepperModal.isOpen);
+  const titleStepValidationError = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.titleStepValidationError,
+  );
+  const highlightTitle = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.highlightTitle,
+  );
+  const currentSelectedRowIds = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].stepperModal.currentSelectedRowIds,
+  );
+
+  const closeStepperModal = useCallback(() => {
+    if (isCloseAlertOpen) {
+      closeCloseAlert();
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_STEPPER_INCOMPLETE}`,
+        {},
+      );
     }
-    setIsModalOpen(false);
+    resetStepperModal();
+    setCurrentStep(steps[0]);
+  }, [isCloseAlertOpen, resetStepperModal, closeCloseAlert, enterpriseId]);
+
+  const handlePublish = async () => {
+    setIsPublishing(true);
+    try {
+      const newHighlightSet = {
+        title: highlightTitle,
+        isPublished: true,
+        content_keys: Object.keys(currentSelectedRowIds).map(key => key.split(':')[1]),
+      };
+      const response = await EnterpriseCatalogApiService.createHighlightSet(enterpriseId, newHighlightSet);
+      const result = camelCaseObject(response.data);
+      const transformedHighlightSet = {
+        cardImageUrl: result.cardImageUrl,
+        isPublished: result.isPublished,
+        title: result.title,
+        uuid: result.uuid,
+        highlightedContentUuids: result.highlightedContent || [],
+      };
+      dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
+      dispatchEnterpriseCuration(enterpriseCurationActions.setHighlightSetToast(transformedHighlightSet.uuid));
+      history.push(location.pathname, {
+        addHighlightSet: true,
+      });
+      closeStepperModal();
+      const handlePublishTrackEvent = () => {
+        const trackInfo = {
+          is_published: transformedHighlightSet.isPublished,
+          highlight_set_uuid: transformedHighlightSet.uuid,
+          highlighted_content_uuids: transformedHighlightSet.highlightedContentUuids.map(highlight => ({
+            uuid: highlight.uuid,
+            aggregationKey: highlight.aggregationKey,
+          })),
+        };
+        sendEnterpriseTrackEvent(
+          enterpriseId,
+          `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_PUBLISH}`,
+          trackInfo,
+        );
+      };
+      handlePublishTrackEvent();
+    } catch (error) {
+      logError(error);
+    } finally {
+      setIsPublishing(false);
+    }
   };
+  /**
+   * Handles the navigation to the next step in the stepper from the createTitle step of the stepper.
+   */
+  const handleNavigateToSelectContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) + 1],
+      current_step_position: steps.indexOf(currentStep) + 2,
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CREATE_TITLE_NEXT}`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
+  /**
+   * Handles the navigation to the previous step in the stepper from the selectContent step of the stepper.
+   */
+  const handleNavigateFromSelectContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) - 1],
+      current_step_position: steps.indexOf(currentStep),
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT_BACK}`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
+  };
+  /**
+   * Handles the navigation to the next step in the stepper from the selectContent step of the stepper.
+   */
+  const handleNavigateToConfirmContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) + 1],
+      current_step_position: steps.indexOf(currentStep) + 2,
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_SELECT_CONTENT_NEXT}`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) + 1]);
+  };
+  /**
+   * Handles the navigation to the previous step in the stepper from the confirmContent step of the stepper.
+   */
+  const handleNavigateFromConfirmContent = () => {
+    const trackInfo = {
+      prev_step: currentStep,
+      prev_step_position: steps.indexOf(currentStep) + 1,
+      current_step: steps[steps.indexOf(currentStep) - 1],
+      current_step_position: steps.indexOf(currentStep),
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_STEP_CONFIRM_CONTENT_BACK}`,
+      trackInfo,
+    );
+    setCurrentStep(steps[steps.indexOf(currentStep) - 1]);
+  };
+
+  const openCloseConfirmationModal = () => {
+    openCloseAlert();
+    const trackInfo = {
+      current_step: steps[steps.indexOf(currentStep)],
+      current_step_position: steps.indexOf(currentStep) + 1,
+      highlight_title: highlightTitle,
+      current_selected_row_ids: currentSelectedRowIds,
+      current_selected_row_ids_length: Object.keys(currentSelectedRowIds).length,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL}`,
+      trackInfo,
+    );
+  };
+
+  const cancelCloseModal = () => {
+    closeCloseAlert();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.CONTENT_HIGHLIGHTS.STEPPER_CLOSE_HIGHLIGHT_MODAL_CANCEL}`,
+      {},
+    );
+  };
+  /**
+   * This section triggers browser response to unsaved items when the stepper modal is open/active
+   *
+   * Mandatory requirements to trigger response by browser, event.preventDefault && event.returnValue
+   * A return value is required to trigger the browser unsaved data blocking modal response
+   *
+   * Conditional MUST be set on event listener initialization.
+   * Failure to provide conditional will trigger browser event on all elements
+   * within ContentHighlightRoutes.jsx (essentially all of highlights)
+   * */
+  useEffect(() => {
+    const preventUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = 'Are you sure? Your data will not be saved.';
+    };
+
+    if (isStepperModalOpen) {
+      global.addEventListener('beforeunload', preventUnload);
+    }
+    // Added safety to force remove the 'beforeunload' event on the global window
+    return () => {
+      global.removeEventListener('beforeunload', preventUnload);
+    };
+  }, [isStepperModalOpen]);
+
   return (
-    <Stepper activeKey={currentStep}>
-      <FullscreenModal
-        title="New highlight"
-        className="bg-light-200"
-        isOpen={modalState}
-        onClose={() => {
-          submitAndReset();
-        }}
-        beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
-        footerNode={(
-          <>
-            <Stepper.ActionRow eventKey="Title">
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              {/* Eventually would need a check to see if the user has made any changes
-                to the form before allowing them to close the modal without saving. Ln 58 onClick */}
-              <Button variant="tertiary" onClick={() => setIsModalOpen(false)}>Back</Button>
-              <Button variant="primary" onClick={() => setCurrentStep(steps[1])}>Next</Button>
-            </Stepper.ActionRow>
+    <>
+      <Stepper activeKey={currentStep}>
+        <FullscreenModal
+          title="New highlight"
+          className="bg-light-200"
+          isOpen={isStepperModalOpen}
+          onClose={openCloseConfirmationModal}
+          beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}
+          footerNode={(
+            <>
+              <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}>
+                <HighlightStepperFooterHelpLink />
+                <Stepper.ActionRow.Spacer />
+                {/* TODO: Eventually would need a check to see if the user has made any changes
+                to the form before allowing them to close the modal without saving. */}
+                <Button
+                  variant="tertiary"
+                  onClick={openCloseConfirmationModal}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleNavigateToSelectContent}
+                  disabled={!!titleStepValidationError || !highlightTitle}
+                >
+                  Next
+                </Button>
+              </Stepper.ActionRow>
 
-            <Stepper.ActionRow eventKey="Select courses">
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(steps[0])}>Back</Button>
-              <Button variant="primary" onClick={() => setCurrentStep(steps[2])}>Next</Button>
-            </Stepper.ActionRow>
+              <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}>
+                <HighlightStepperFooterHelpLink />
+                <Stepper.ActionRow.Spacer />
+                <Button
+                  variant="tertiary"
+                  onClick={handleNavigateFromSelectContent}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleNavigateToConfirmContent}
+                  disabled={Object.keys(currentSelectedRowIds).length === 0}
+                >
+                  Next
+                </Button>
+              </Stepper.ActionRow>
 
-            <Stepper.ActionRow eventKey="Confirm and Publish">
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(steps[1])}>Back</Button>
-              <Button variant="primary" onClick={() => setCurrentStep(steps[3])}>Next</Button>
-            </Stepper.ActionRow>
+              <Stepper.ActionRow eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}>
+                <HighlightStepperFooterHelpLink />
+                <Stepper.ActionRow.Spacer />
+                <Button
+                  variant="tertiary"
+                  onClick={handleNavigateFromConfirmContent}
+                >
+                  Back
+                </Button>
+                <StatefulButton
+                  labels={{
+                    default: 'Publish',
+                    pending: 'Publishing...',
+                  }}
+                  variant="primary"
+                  onClick={handlePublish}
+                  state={isPublishing ? 'pending' : 'default'}
+                />
+              </Stepper.ActionRow>
+            </>
 
-            <Stepper.ActionRow eventKey="All Set">
-              <HighlightStepperFooterHelpLink />
-              <Stepper.ActionRow.Spacer />
-              <Button variant="tertiary" onClick={() => setCurrentStep(steps[2])}>Back</Button>
-              <Button variant="primary" onClick={() => submitAndReset()}>Confirm</Button>
-            </Stepper.ActionRow>
-          </>
           )}
+        >
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
+            title={STEPPER_STEP_LABELS.CREATE_TITLE}
+            hasError={!!titleStepValidationError}
+            description={titleStepValidationError || ''}
+            index={steps.indexOf(STEPPER_STEP_LABELS.CREATE_TITLE)}
+          >
+            <HighlightStepperTitle />
+          </Stepper.Step>
+
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.SELECT_CONTENT}
+            title={STEPPER_STEP_LABELS.SELECT_CONTENT}
+            index={steps.indexOf(STEPPER_STEP_LABELS.SELECT_CONTENT)}
+          >
+            <HighlightStepperSelectContent enterpriseId={enterpriseId} />
+          </Stepper.Step>
+
+          <Stepper.Step
+            eventKey={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+            title={STEPPER_STEP_LABELS.CONFIRM_PUBLISH}
+            index={steps.indexOf(STEPPER_STEP_LABELS.CONFIRM_PUBLISH)}
+          >
+            <HighlightStepperConfirmContent />
+          </Stepper.Step>
+        </FullscreenModal>
+      </Stepper>
+      {/* Alert Modal for StepperModal Close Confirmation */}
+      <AlertModal
+        title={STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.title}
+        isOpen={isCloseAlertOpen}
+        onClose={closeCloseAlert}
       >
-        <Stepper.Step eventKey="Title" title={steps[0]}>
-          <HighlightStepperTitle />
-        </Stepper.Step>
-
-        <Stepper.Step eventKey="Select courses" title={steps[1]}>
-          <HighlightStepperSelectCourses />
-        </Stepper.Step>
-
-        <Stepper.Step eventKey="Confirm and Publish" title={steps[2]}>
-          <HighlightStepperConfirmCourses />
-        </Stepper.Step>
-
-        <Stepper.Step eventKey="All Set" title={steps[3]}>
-          <HighlightStepperConfirmHighlight />
-        </Stepper.Step>
-      </FullscreenModal>
-    </Stepper>
+        <p>
+          {STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.content}
+        </p>
+        <ActionRow>
+          <Button variant="tertiary" onClick={cancelCloseModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.cancel}</Button>
+          <Button variant="primary" onClick={closeStepperModal}>{STEPPER_STEP_TEXT.ALERT_MODAL_TEXT.buttons.exit}</Button>
+        </ActionRow>
+      </AlertModal>
+    </>
   );
 };
 
 ContentHighlightStepper.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
-export default ContentHighlightStepper;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(ContentHighlightStepper);

@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Card } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { ContentHighlightsContext } from './ContentHighlightsContext';
+import { useContentHighlightsContext } from './data/hooks';
 
 const ContentHighlightSetCard = ({
   imageCapSrc,
@@ -13,25 +14,27 @@ const ContentHighlightSetCard = ({
   isPublished,
   enterpriseSlug,
   itemCount,
+  onClick,
 }) => {
   const history = useHistory();
   /* Stepper Draft Logic (See Hook) - Start */
-  const {
-    setIsModalOpen,
-  } = useContext(ContentHighlightsContext);
+  const { openStepperModal } = useContentHighlightsContext();
   /* Stepper Draft Logic (See Hook) - End */
   const handleHighlightSetClick = () => {
     if (isPublished) {
-      // redirect to individual highlighted courses based on uuid
-      return history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
+      onClick();
+      // redirect to individual highlighted set based on uuid
+      history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
+      return;
     }
-    return setIsModalOpen(true);
+    openStepperModal();
   };
 
   return (
     <Card
       isClickable
       onClick={handleHighlightSetClick}
+      data-testid="highlight-set-card"
     >
       <Card.ImageCap src={imageCapSrc} srcAlt="" />
       <Card.Header title={title} />
@@ -49,6 +52,7 @@ ContentHighlightSetCard.propTypes = {
   isPublished: PropTypes.bool.isRequired,
   itemCount: PropTypes.number.isRequired,
   imageCapSrc: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

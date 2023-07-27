@@ -159,6 +159,20 @@ export const useStylesForCustomBrandColors = (branding) => {
       .border-brand-primary {
         border-color: ${brandColors.primary.regular.hex()} !important;
       }
+      .color-brand-tertiary {
+        color: ${brandColors.tertiary.regular.hex()} !important;
+      }
+      .secondary-background {
+        background: ${brandColors.secondary.regular.hex()} !important;
+      }
+      .stepper-modal .pgn__modal-header {
+        background-color: ${brandColors.secondary.regular.hex()} !important;
+        border-color: ${brandColors.tertiary.regular.hex()} !important;
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
+      .stepper-modal .pgn__modal-close-button {
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
     `),
   });
 
