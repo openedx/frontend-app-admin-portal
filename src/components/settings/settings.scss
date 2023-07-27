@@ -161,3 +161,14 @@
 .stepper-modal .pgn__modal-header {
   border-bottom: solid 7px;
 }
+
+.warning-icon {
+  color: #F0CC00;
+}
+
+.alert-block-header {
+  background: $danger-100;
+  .error-icon {
+    color: $danger-600;
+  }
+}

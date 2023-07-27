@@ -23,9 +23,9 @@ import SettingsAccessTab from './SettingsAccessTab';
 import { SettingsAppearanceTab } from './SettingsAppearanceTab';
 import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
+import SettingsApiCredentialsTab from './SettingsApiCredentialsTab';
 import { features } from '../../config';
 import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
-import SettingsApiCredentialsTab from './SettingsApiCredentialsTab';
 
 const SettingsTabs = ({
   enterpriseId,
@@ -125,7 +125,10 @@ const SettingsTabs = ({
           eventKey={SETTINGS_TABS_VALUES.api_credentials}
           title={SETTINGS_TAB_LABELS.api_credentials}
         >
-          <SettingsApiCredentialsTab />
+          <SettingsApiCredentialsTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+          />
         </Tab>,
       );
     }

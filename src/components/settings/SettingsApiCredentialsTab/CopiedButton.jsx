@@ -4,13 +4,12 @@ import { Button } from '@edx/paragon';
 import { ContentCopy } from '@edx/paragon/icons';
 import CopiedToast from './CopiedToast';
 
-const CopiedButton = () => {
+const CopiedButton = (api_credentials) => {
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
   const hasClipboard = !!navigator.clipboard;
-  const text = [];
-  const addToClipboard = async () => {
+  const addToClipboard = async (data) => {
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(data);
       setIsCopyLinkToastOpen(true);
     } catch (error) {
       logError(error);
@@ -20,13 +19,14 @@ const CopiedButton = () => {
     if (!hasClipboard) {
       return;
     }
-    addToClipboard();
+    const jsonString = JSON.stringify(api_credentials);
+    addToClipboard(jsonString);
   };
   const handleCloseLinkCopyToast = () => {
     setIsCopyLinkToastOpen(false);
   };
   return (
-    <div>
+    <>
       <Button
         variant="primary"
         iconAfter={ContentCopy}
@@ -34,8 +34,8 @@ const CopiedButton = () => {
       >
         Copy credentials to clipboard
       </Button>
-      <CopiedToast content="Copied" show={isCopyLinkToastOpen} onClose={handleCloseLinkCopyToast} />
-    </div>
+      <CopiedToast content="Copied Successfully" show={isCopyLinkToastOpen} onClose={handleCloseLinkCopyToast} />
+    </>
   );
 };
 

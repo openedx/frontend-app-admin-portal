@@ -4,7 +4,7 @@ import { Toast } from '@edx/paragon';
 
 const CopiedToast = ({ content, ...rest }) => (
   <Toast {...rest}>
-    content
+    {content}
   </Toast>
 );
 CopiedToast.propTypes = {

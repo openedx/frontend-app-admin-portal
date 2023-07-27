@@ -1,31 +1,32 @@
-import { Card, Button } from '@edx/paragon';
-import { Add, SpinnerSimple } from '@edx/paragon/icons';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { logError } from '@edx/frontend-platform/logging';
+import { Card, Button, Icon } from '@edx/paragon';
+import { Add, SpinnerSimple, Error } from '@edx/paragon/icons';
+import React, { useState, useContext } from 'react';
 import cardImage from '../../../data/images/ZeroState.svg';
+import { ZeroStateHandlerContext, ShowSuccessToast, DataContext } from './Context';
+import LmsApiService from '../../../data/services/LmsApiService';
+import { API_TERMS_OF_SERVICE } from '../data/constants';
 
-const ZeroStateCard = ({ onClickStateChange }) => {
-  const apiService = 'https://dummyjson.com/products/1';
-
+const ZeroStateCard = () => {
+  const zeroStateContextHandler = useContext(ZeroStateHandlerContext);
+  const showToastContext = useContext(ShowSuccessToast);
+  const dataContext = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState([]);
-
-  // const [isSuccessPageOpen, openSuccessPage, closeSuccessPage] = useToggle(false);
+  const [displayFailureAlert, setFailureAlert] = useState(false);
 
   async function fetchData() {
     try {
-      const response = await fetch(apiService);
-      const responseData = await response.json();
-      setData(responseData);
-      onClickStateChange(true);
+      const response = await LmsApiService.createNewAPICredentials();
+      console.log(response);
+      dataContext(response.data);
+      zeroStateContextHandler(false);
+      showToastContext(true);
     } catch (err) {
-      logError(err);
+      setFailureAlert(true);
+      zeroStateContextHandler(true);
     } finally {
       setIsLoading(false);
     }
   }
-
   const handleClick = () => {
     setIsLoading(true);
     fetchData();
@@ -40,17 +41,31 @@ const ZeroStateCard = ({ onClickStateChange }) => {
       />
       <Card.Section className="text-center">
         <h2>You don&apos;t hava API credentials yet.</h2>
+        { !displayFailureAlert && (
         <p>
           This page allows you to generate API credentials to send to&nbsp;
           your developers so they can work on integration projects.
           If you believe you are seeing this page in error, contact Enterprise Customer Support.
+
+        </p>
+        )}
+        <p>
           edX for Business API credentials credentials will provide access&nbsp;
           to the following edX API endpoints: reporting dashboard, dashboard, and catalog administration.
-          <br />
-          <br />
-          By clicking the button below, you and your organization accept the {'\n'}
-          <a href="https://courses.edx.org/api-admin/terms-of-service/">edX API terms of service</a>.
         </p>
+        <p>
+          By clicking the button below, you and your organization accept the {'\n'}
+          <a href={API_TERMS_OF_SERVICE}>edX API terms of service</a>.
+        </p>
+      </Card.Section>
+      <Card.Footer className={displayFailureAlert ? 'error-footer d-table-row' : ''}>
+        { displayFailureAlert && (
+        <p className="d-flex small">
+          <Icon className="error-icon" src={Error} />
+          Something went wrong while generating your credentials.
+          Please try again. If the issue continues, contact Enterprise Customer Support.
+        </p>
+        )}
         <Button
           variant="primary"
           size="lg"
@@ -60,13 +75,9 @@ const ZeroStateCard = ({ onClickStateChange }) => {
         >
           {isLoading ? 'Generating...' : 'Generate API Credentials'}
         </Button>
-      </Card.Section>
+      </Card.Footer>
     </Card>
   );
-};
-
-ZeroStateCard.propTypes = {
-  onClickStateChange: PropTypes.func.isRequired,
 };
 
 export default ZeroStateCard;

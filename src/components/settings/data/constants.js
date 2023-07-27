@@ -20,11 +20,15 @@ export const HELP_CENTER_CORNERSTONE = 'https://business-support.edx.org/hc/en-u
 export const HELP_CENTER_DEGREED = 'https://business-support.edx.org/hc/en-us/sections/360000868494-Degreed';
 export const HELP_CENTER_MOODLE = 'https://business-support.edx.org/hc/en-us/sections/1500002758722-Moodle';
 export const HELP_CENTER_SAP = 'https://business-support.edx.org/hc/en-us/sections/360000868534-SuccessFactors';
-export const HELP_CENTER_API_GUIDE = '';
+export const HELP_CENTER_API_GUIDE = 'https://edx-enterprise-api.readthedocs.io/en/latest/index.html';
 
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
 export const HELP_CENTER_SAP_IDP_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005205314';
 export const HELP_CENTER_BRANDING_LINK = 'https://business-support.edx.org/hc/en-us/sections/8739219372183';
+
+export const API_CLIENT_DOCUMENTATION = 'https://edx-enterprise-api.readthedocs.io/en/latest/index.html';
+export const API_TERMS_OF_SERVICE = 'https://courses.edx.org/api-admin/terms-of-service/';
+export const ENTERPRISE_CUSTOMER_SUPPORT_EMAIL = 'enterprise-support@edx.org';
 
 export const ACTIVATE_TOAST_MESSAGE = 'Learning platform integration successfully activated.';
 export const DELETE_TOAST_MESSAGE = 'Learning platform integration successfully removed.';
