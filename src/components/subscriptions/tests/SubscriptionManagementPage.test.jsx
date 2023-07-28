@@ -6,7 +6,6 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-
 import {
   TEST_ENTERPRISE_CUSTOMER_SLUG, createMockStore,
 } from './TestUtilities';

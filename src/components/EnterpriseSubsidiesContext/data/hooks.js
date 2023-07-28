@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 
 import { logError } from '@edx/frontend-platform/logging';
 import { getConfig } from '@edx/frontend-platform/config';
@@ -14,8 +16,8 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
   const [isLoading, setIsLoading] = useState(true);
   const [canManageLearnerCredit, setCanManageLearnerCredit] = useState(false);
 
-  var isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
-  dayjs.extend(isSameOrBefore)
+  dayjs.extend(isSameOrBefore);
+  dayjs.extend(isSameOrAfter);
 
   useEffect(() => {
     setIsLoading(true);
