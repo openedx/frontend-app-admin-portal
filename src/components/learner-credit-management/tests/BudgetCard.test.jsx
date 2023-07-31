@@ -12,6 +12,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BudgetCard from '../BudgetCard';
 import { useOfferSummary, useOfferRedemptions } from '../data/hooks';
 
@@ -29,7 +30,6 @@ useOfferRedemptions.mockReturnValue({
   },
   fetchOfferRedemptions: jest.fn(),
 });
-
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -55,7 +55,9 @@ const mockOfferSummary = {
 
 const BudgetCardWrapper = ({ ...rest }) => (
   <Provider store={store}>
-    <BudgetCard {...rest} />
+    <IntlProvider locale="en">
+      <BudgetCard {...rest} />
+    </IntlProvider>
   </Provider>
 );
 

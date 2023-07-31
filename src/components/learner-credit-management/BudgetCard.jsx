@@ -10,6 +10,7 @@ import {
   Breadcrumb,
 } from '@edx/paragon';
 
+import { getCourseProductLineAbbreviation } from '../../utils';
 import { useOfferRedemptions, useOfferSummary } from './data/hooks';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
@@ -153,6 +154,7 @@ const BudgetCard = ({
             tableData={offerRedemptions}
             fetchTableData={fetchOfferRedemptions}
             enterpriseUUID={enterpriseUUID}
+            budgetType={getCourseProductLineAbbreviation(activeLabel)}
           />
         )}
     </Stack>
