@@ -4,7 +4,7 @@ import {
 } from '@edx/paragon';
 import { Warning } from '@edx/paragon/icons';
 import PropTypes from 'prop-types';
-import { ErrorContext, DataContext, ShowSuccessToast } from './Context';
+import { DataContext, ErrorContext, ShowSuccessToast } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const RegenerateCredentialWarningModal = ({
@@ -14,17 +14,17 @@ const RegenerateCredentialWarningModal = ({
   setRedirectURIs,
 }) => {
   const [isOn, setOn, setOff] = useToggle(false);
-  const hasErrorContext = useContext(ErrorContext);
-  const dataContext = useContext(DataContext);
-  const showSuccessToast = useContext(ShowSuccessToast);
+  const [, setHasError] = useContext(ErrorContext);
+  const [, setData] = useContext(DataContext);
+  const [, setShowSuccessToast] = useContext(ShowSuccessToast);
   const handleOnClickRegeneration = async () => {
     try {
       const response = await LmsApiService.regenerateAPICredentials(redirectURLs);
-      dataContext(response.data);
-      showSuccessToast(true);
+      setData(response.data);
+      setShowSuccessToast(true);
       setRedirectURIs('');
     } catch (error) {
-      hasErrorContext(true);
+      setHasError(true);
     } finally {
       setOff(true);
     }
@@ -48,7 +48,7 @@ const RegenerateCredentialWarningModal = ({
         isFullscreenOnMobile
         isFullscreenScroll
       >
-        <ModalDialog.Header className="warning-header">
+        <ModalDialog.Header>
           <ModalDialog.Title>
             <div className="d-flex">
               <Icon src={Warning} className="warning-icon mr-2 align-items-baseline-center" />

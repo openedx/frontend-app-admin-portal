@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-export const ZeroStateHandlerContext = createContext(true);
-export const ErrorContext = createContext(false);
-export const ShowSuccessToast = createContext(false);
+export const ZeroStateHandlerContext = createContext(null);
+export const ErrorContext = createContext(null);
+export const ShowSuccessToast = createContext(null);
 export const DataContext = createContext(null);

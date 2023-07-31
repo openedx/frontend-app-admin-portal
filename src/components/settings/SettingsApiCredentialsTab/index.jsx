@@ -1,6 +1,6 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useState, useEffect } from 'react';
 import { ActionRow, Toast } from '@edx/paragon';
-import { logError } from '@edx/frontend-platform/logging';
 import ZeroStateCard from './ZeroStateCard';
 import APICredentialsPage from './APICredrentialsPage';
 import FailedAlert from './FailedAlert';
@@ -14,7 +14,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 const SettingsApiCredentialsTab = () => {
   const [displayZeroState, setDisplayZeroState] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [existingData, setExistingData] = useState({});
+  const [existingData, setExistingData] = useState(null);
   const fetchExistingAPICredentials = async () => {
     setIsLoading(false);
     try {
@@ -32,7 +32,6 @@ const SettingsApiCredentialsTab = () => {
       setDisplayZeroState(false);
     } catch (error) {
       setDisplayZeroState(true);
-      logError(error);
     }
   };
   const [hasRegenerationError, setHasRegenerationError] = useState(false);
@@ -42,10 +41,10 @@ const SettingsApiCredentialsTab = () => {
   }, []);
 
   return (
-    <ZeroStateHandlerContext.Provider value={setDisplayZeroState}>
-      <ErrorContext.Provider value={setHasRegenerationError}>
-        <ShowSuccessToast.Provider value={setShowToast}>
-          <DataContext.Provider value={setExistingData}>
+    <ZeroStateHandlerContext.Provider value={[displayZeroState, setDisplayZeroState]}>
+      <ErrorContext.Provider value={[hasRegenerationError, setHasRegenerationError]}>
+        <ShowSuccessToast.Provider value={[showToast, setShowToast]}>
+          <DataContext.Provider value={[existingData, setExistingData]}>
             { hasRegenerationError && <FailedAlert /> }
             <ActionRow>
               <h2>API credentials</h2>
@@ -58,9 +57,7 @@ const SettingsApiCredentialsTab = () => {
               {!isLoading
                   && (
                     !displayZeroState ? (
-                      <APICredentialsPage
-                        data={existingData}
-                      />
+                      <APICredentialsPage />
                     ) : (<ZeroStateCard />)
                   )}
             </div>

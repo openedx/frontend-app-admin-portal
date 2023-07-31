@@ -1,26 +1,23 @@
-import React, { useState } from 'react';
-import { logError } from '@edx/frontend-platform/logging';
+import React, { useContext, useState } from 'react';
 import { Button } from '@edx/paragon';
 import { ContentCopy } from '@edx/paragon/icons';
 import CopiedToast from './CopiedToast';
+import { DataContext } from './Context';
 
-const CopiedButton = (api_credentials) => {
+const CopiedButton = () => {
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
-  const hasClipboard = !!navigator.clipboard;
-  const addToClipboard = async (data) => {
+  const [data] = useContext(DataContext);
+  const [copiedError, setCopiedError] = useState(false);
+
+  const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(data);
-      setIsCopyLinkToastOpen(true);
+      const jsonString = JSON.stringify(data);
+      await navigator.clipboard.writeText(jsonString);
     } catch (error) {
-      logError(error);
+      setCopiedError(true);
+    } finally {
+      setIsCopyLinkToastOpen(true);
     }
-  };
-  const handleCopyLink = () => {
-    if (!hasClipboard) {
-      return;
-    }
-    const jsonString = JSON.stringify(api_credentials);
-    addToClipboard(jsonString);
   };
   const handleCloseLinkCopyToast = () => {
     setIsCopyLinkToastOpen(false);
@@ -34,7 +31,11 @@ const CopiedButton = (api_credentials) => {
       >
         Copy credentials to clipboard
       </Button>
-      <CopiedToast content="Copied Successfully" show={isCopyLinkToastOpen} onClose={handleCloseLinkCopyToast} />
+      <CopiedToast
+        content={copiedError ? 'Cannot copied to the clipboard' : 'Copied Successfully'}
+        show={isCopyLinkToastOpen}
+        onClose={handleCloseLinkCopyToast}
+      />
     </>
   );
 };

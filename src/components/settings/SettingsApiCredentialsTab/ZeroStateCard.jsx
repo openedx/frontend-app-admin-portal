@@ -7,28 +7,26 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { API_TERMS_OF_SERVICE } from '../data/constants';
 
 const ZeroStateCard = () => {
-  const zeroStateContextHandler = useContext(ZeroStateHandlerContext);
-  const showToastContext = useContext(ShowSuccessToast);
-  const dataContext = useContext(DataContext);
+  const [, setZeroState] = useContext(ZeroStateHandlerContext);
+  const [, setShowToast] = useContext(ShowSuccessToast);
+  const [, setData] = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [displayFailureAlert, setFailureAlert] = useState(false);
 
-  async function fetchData() {
+  const handleClick = async () => {
+    setIsLoading(true);
     try {
       const response = await LmsApiService.createNewAPICredentials();
-      dataContext(response.data);
-      zeroStateContextHandler(false);
-      showToastContext(true);
+      setData(response.data);
+      setIsLoading(false);
+      setZeroState(false);
+      setShowToast(true);
     } catch (err) {
       setFailureAlert(true);
-      zeroStateContextHandler(true);
-    } finally {
+      setIsLoading(false);
+      setZeroState(true);
       setIsLoading(false);
     }
-  }
-  const handleClick = () => {
-    setIsLoading(true);
-    fetchData();
   };
 
   return (
@@ -45,7 +43,6 @@ const ZeroStateCard = () => {
           This page allows you to generate API credentials to send to&nbsp;
           your developers so they can work on integration projects.
           If you believe you are seeing this page in error, contact Enterprise Customer Support.
-
         </p>
         )}
         <p>
