@@ -32,8 +32,8 @@ describe('<IconWithTooltip />', () => {
 
       act(async () => {
         await userEvent.hover(icon);
-        expect(await screen.findByText(defaultTooltipText)).toBeTruthy();
-        expect(await screen.findByTestId(`tooltip-${data.expectedLocation}`)).toBeTruthy();
+        expect(screen.findByText(defaultTooltipText)).toBeTruthy();
+        expect(screen.findByTestId(`tooltip-${data.expectedLocation}`)).toBeTruthy();
       });
     });
   });

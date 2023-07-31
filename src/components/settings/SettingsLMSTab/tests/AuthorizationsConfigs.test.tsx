@@ -116,9 +116,9 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     renderWithRouter(<SettingsBlackboardWrapper />);
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => {
+    await waitFor(async () => {
       userEvent.click(screen.getByText('New learning platform integration'));
-      expect(screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
+      expect(await screen.findByText(channelMapping[BLACKBOARD_TYPE].displayName));
     });
     const blackboardCard = screen.getByText(channelMapping[BLACKBOARD_TYPE].displayName);
     userEvent.click(blackboardCard);
@@ -197,9 +197,9 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     renderWithRouter(<SettingsCanvasWrapper />);
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => {
+    await waitFor(async () => {
       userEvent.click(screen.getByText('New learning platform integration'));
-      expect(screen.findByText(channelMapping[CANVAS_TYPE].displayName));
+      expect(await screen.findByText(channelMapping[CANVAS_TYPE].displayName));
     });
     const canvasCard = screen.getByText(channelMapping[CANVAS_TYPE].displayName);
     userEvent.click(canvasCard);
