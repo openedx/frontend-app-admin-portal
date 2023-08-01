@@ -36,10 +36,10 @@ describe('<SettingsPage />', () => {
     jest.clearAllMocks();
   });
 
-  it('Redirects to access tab when no param given', () => {
+  it('Redirects to appearance tab when no param given', () => {
     render(settingsPageWithRouter('/settings'));
     expect(screen.queryByText('404')).toBeFalsy();
-    expect(screen.queryByText('access')).toBeTruthy();
+    expect(screen.queryByText('appearance')).toBeTruthy();
   });
 
   it('Does not redirect when access is passed', () => {
