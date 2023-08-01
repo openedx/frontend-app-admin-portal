@@ -94,6 +94,7 @@ describe('useEnterpriseOffers', () => {
       title: 'offer-name',
       active_datetime: '2021-05-15T19:56:09Z',
       expiration_datetime: '2100-05-15T19:56:09Z',
+      is_active: true,
     }];
     SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValueOnce({
       data: {
@@ -119,25 +120,79 @@ describe('useEnterpriseOffers', () => {
     });
   });
 
-  it('should set canManageLearnerCredit to false if enterprise offer or subsidy does not have exactly 1 offer', async () => {
+  it('should set canManageLearnerCredit to false if active enterprise offer or subsidy not found', async () => {
     const mockOffers = [{ subsidyUuid: 'offer-1' }, { subsidyUuid: 'offer-2' }];
     const mockSubsidyServiceResponse = [
       {
         uuid: 'offer-1',
         title: 'offer-name',
-        active_datetime: '2021-05-15T19:56:09Z',
-        expiration_datetime: '2100-05-15T19:56:09Z',
+        active_datetime: '2005-05-15T19:56:09Z',
+        expiration_datetime: '2006-05-15T19:56:09Z',
+        is_active: false,
       },
       {
         uuid: 'offer-2',
+        title: 'offer-name-2',
+        active_datetime: '2006-05-15T19:56:09Z',
+        expiration_datetime: '2007-05-15T19:56:09Z',
+        is_active: false,
+      },
+    ];
+    const mockOfferData = [];
+
+    EcommerceApiService.fetchEnterpriseOffers.mockResolvedValueOnce({
+      data: {
+        results: mockOffers,
+      },
+    });
+    SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValueOnce({
+      data: {
+        results: mockSubsidyServiceResponse,
+      },
+    });
+
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({
+      enablePortalLearnerCreditManagementScreen: true,
+      enterpriseId: TEST_ENTERPRISE_UUID,
+    }));
+
+    await waitForNextUpdate();
+
+    expect(SubsidyApiService.getSubsidyByCustomerUUID).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_UUID,
+      { subsidyType: 'learner_credit' },
+    );
+    expect(result.current).toEqual({
+      offers: mockOfferData,
+      isLoading: false,
+      canManageLearnerCredit: false,
+    });
+  });
+
+  it('should return the active enterprise offer or subsidy when multiple available', async () => {
+    const mockOffers = [{ subsidyUuid: 'offer-1' }, { subsidyUuid: 'offer-2' }];
+    const mockSubsidyServiceResponse = [
+      {
+        uuid: 'offer-1',
+        title: 'offer-name',
+        active_datetime: '2005-05-15T19:56:09Z',
+        expiration_datetime: '2006-05-15T19:56:09Z',
+        is_active: false,
+      },
+      {
+        uuid: 'offer-2',
+        title: 'offer-name-2',
+        active_datetime: '2006-05-15T19:56:09Z',
+        expiration_datetime: '2099-05-15T19:56:09Z',
+        is_active: true,
       },
     ];
     const mockOfferData = [
       {
-        id: 'offer-1',
-        name: 'offer-name',
-        start: '2021-05-15T19:56:09Z',
-        end: '2100-05-15T19:56:09Z',
+        id: 'offer-2',
+        name: 'offer-name-2',
+        start: '2006-05-15T19:56:09Z',
+        end: '2099-05-15T19:56:09Z',
         isCurrent: true,
       },
     ];
@@ -167,7 +222,7 @@ describe('useEnterpriseOffers', () => {
     expect(result.current).toEqual({
       offers: mockOfferData,
       isLoading: false,
-      canManageLearnerCredit: false,
+      canManageLearnerCredit: true,
     });
   });
 });
