@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "fedx-scripts webpack",
+    "i18n_extract": "BABEL_ENV=i18n fedx-scripts babel src --quiet > /dev/null",
     "build:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && fedx-scripts webpack",
     "check-types": "tsc --noemit",
     "lint": "fedx-scripts eslint --ext .js --ext .jsx .; npm run check-types",
