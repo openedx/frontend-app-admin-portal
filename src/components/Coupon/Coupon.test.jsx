@@ -67,7 +67,7 @@ describe('<Coupon />', () => {
       expect(coupon).toMatchSnapshot();
     });
 
-    it("without max uses", () => {
+    it('without max uses', () => {
       const coupon = renderer
         .create(
           <CouponWrapper
@@ -75,21 +75,21 @@ describe('<Coupon />', () => {
               ...initialCouponData,
               max_uses: null,
             }}
-          />
+          />,
         )
         .toJSON();
       expect(coupon).toMatchSnapshot();
     });
 
-    it("with error state", () => {
+    it('with error state', () => {
       const coupon = renderer
         .create(
           <CouponWrapper
             data={{
               ...initialCouponData,
-              errors: [{ code: "test-code", user_email: "test@example.com" }],
+              errors: [{ code: 'test-code', user_email: 'test@example.com' }],
             }}
-          />
+          />,
         )
         .toJSON();
       expect(coupon).toMatchSnapshot();
@@ -138,7 +138,7 @@ describe('<Coupon />', () => {
         <CouponWrapper
           onExpand={mockOnExpandOrOnCollapse}
           onCollapse={mockOnExpandOrOnCollapse}
-        />
+        />,
       );
 
       fireEvent.keyDown(screen.getByRole('button'), { key: 'A', code: 'KeyA' });

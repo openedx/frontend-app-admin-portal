@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import { Alert } from '@edx/paragon';
 
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';
 
 export const NoAvailableCodesBanner = ({ coupons }) => {
@@ -16,8 +16,8 @@ export const NoAvailableCodesBanner = ({ coupons }) => {
     return null;
   }
 
-  const now = moment();
-  const nonExpiredCoupons = coupons.filter(coupon => moment(coupon.endDate) > now);
+  const now = dayjs();
+  const nonExpiredCoupons = coupons.filter(coupon => dayjs(coupon.endDate) > now);
 
   const renderAlert = (heading, body) => (
     <Alert

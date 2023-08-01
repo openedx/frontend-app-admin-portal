@@ -1,12 +1,9 @@
 import React from 'react';
-import {
-  screen,
-  render,
-} from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import '@testing-library/jest-dom/extend-expect';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -55,7 +52,7 @@ const basicProps = {
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
     enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
     enterpriseCatalogUuid: TEST_ENTERPRISE_CUSTOMER_CATALOG_UUID,
-    expirationDate: moment().add(1, 'year').toISOString(),
+    expirationDate: dayjs().add(1, 'year').toISOString(),
     isRevocationCapEnabled: false,
   },
   onRevokeSuccess: mockOnRevokeSuccess,

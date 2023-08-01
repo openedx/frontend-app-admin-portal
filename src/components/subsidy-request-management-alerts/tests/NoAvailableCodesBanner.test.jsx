@@ -3,9 +3,9 @@ import {
   render,
   waitFor,
 } from '@testing-library/react';
-import moment from 'moment';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
+import dayjs from 'dayjs';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { NoAvailableCodesBanner } from '../NoAvailableCodesBanner';
 
 const NoAvailableCodesBannerWrapper = (props) => (
@@ -26,7 +26,7 @@ describe('<NoAvailableCodesBanner />', () => {
         coupons={[
           {
             numUnassigned: 1,
-            endDate: moment().subtract(1, 'days').toISOString(),
+            endDate: dayjs().subtract(1, 'days').toISOString(),
           },
         ]}
       />,
@@ -41,11 +41,11 @@ describe('<NoAvailableCodesBanner />', () => {
         coupons={[
           {
             numUnassigned: 0,
-            endDate: moment().add(1, 'days').toISOString(),
+            endDate: dayjs().add(1, 'days').toISOString(),
           },
           {
             numUnassigned: 1,
-            endDate: moment().subtract(1, 'days').toISOString(),
+            endDate: dayjs().subtract(1, 'days').toISOString(),
           },
         ]}
       />
@@ -59,11 +59,11 @@ describe('<NoAvailableCodesBanner />', () => {
         coupons={[
           {
             numUnassigned: 0,
-            endDate: moment().add(1, 'days').toISOString(),
+            endDate: dayjs().add(1, 'days').toISOString(),
           },
           {
             numUnassigned: 1,
-            endDate: moment().add(1, 'days').toISOString(),
+            endDate: dayjs().add(1, 'days').toISOString(),
           },
         ]}
       />,
@@ -71,12 +71,12 @@ describe('<NoAvailableCodesBanner />', () => {
     expect(container.childElementCount).toEqual(0);
   });
 
-  it('should dimiss banner', async () => {
+  it('should dismiss banner', async () => {
     const { getByText, container } = render((
       <NoAvailableCodesBannerWrapper
         coupons={[{
           numUnassigned: 1,
-          endDate: moment().subtract(1, 'days').toISOString(),
+          endDate: dayjs().subtract(1, 'days').toISOString(),
         }]}
       />
     ));

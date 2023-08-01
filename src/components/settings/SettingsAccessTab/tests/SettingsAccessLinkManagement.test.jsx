@@ -1,14 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import {
-  screen,
-  render,
-  act,
-} from '@testing-library/react';
+import dayjs from 'dayjs';
+import { screen, render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import moment from 'moment';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import LmsApiService from '../../../../data/services/LmsApiService';
 import MockSettingsContext, { MOCK_CONSTANTS, generateStore } from './TestUtils';
 import SettingsAccessLinkManagement from '../SettingsAccessLinkManagement';
@@ -110,8 +108,8 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
   test('Toggle Universal Link On', async () => {
     LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
-    const subExpirationDate = moment().add(1, 'days').format();
-    const couponExpirationDate = moment().add(3, 'days').format();
+    const subExpirationDate = dayjs().add(1, 'days').format();
+    const couponExpirationDate = dayjs().add(3, 'days').format();
     render(
       <SettingsAccessLinkManagementWrapper
         store={generateStore({
