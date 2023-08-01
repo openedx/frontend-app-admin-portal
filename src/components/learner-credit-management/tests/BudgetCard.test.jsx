@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -99,7 +99,7 @@ describe('<BudgetCard />', () => {
       expect(screen.getByText('Open Courses Marketplace'));
       expect(screen.getByText('Executive Education'));
       expect(screen.getByText(`$${mockOfferSummary.redeemedFunds.toLocaleString()}`));
-      const formattedString = `${moment(mockOffer.start).format('MMMM D, YYYY')} - ${moment(mockOffer.end).format('MMMM D, YYYY')}`;
+      const formattedString = `${dayjs(mockOffer.start).format('MMMM D, YYYY')} - ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
       const elementsWithTestId = screen.getAllByTestId('offer-date');
       const firstElementWithTestId = elementsWithTestId[0];
       expect(firstElementWithTestId).toHaveTextContent(formattedString);

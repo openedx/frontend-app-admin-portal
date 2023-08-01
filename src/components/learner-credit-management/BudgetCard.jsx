@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   Card,
   Button,
@@ -41,8 +41,8 @@ const BudgetCard = ({
   const links = [
     { label: 'Budgets', url: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
   ];
-  const formattedStartDate = moment(start).format('MMMM D, YYYY');
-  const formattedExpirationDate = moment(end).format('MMMM D, YYYY');
+  const formattedStartDate = dayjs(start).format('MMMM D, YYYY');
+  const formattedExpirationDate = dayjs(end).format('MMMM D, YYYY');
   const navigateToBudgetRedemptions = (budgetType) => {
     setDetailPage(true);
     links.push({ label: budgetType, url: `/${enterpriseSlug}/admin/learner-credit` });
