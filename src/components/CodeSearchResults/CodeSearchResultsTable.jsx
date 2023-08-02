@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { withRouter } from 'react-router-dom';
 import { Icon } from '@edx/paragon';
 
@@ -42,7 +42,7 @@ const getFormattedDate = (date) => {
   if (!date) {
     return null;
   }
-  return moment(date).format('MMMM D, YYYY');
+  return dayjs(date).format('MMMM D, YYYY');
 };
 
 const transformSearchResults = results => results.map(({

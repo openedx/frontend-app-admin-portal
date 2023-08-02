@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -101,7 +101,7 @@ class AdminSearchForm extends React.Component {
                       value={date}
                       key={date}
                     >
-                      {moment(date).format('MMMM D, YYYY')}
+                      {dayjs(date).format('MMMM D, YYYY')}
                     </option>
                   ))}
                 </Form.Control>

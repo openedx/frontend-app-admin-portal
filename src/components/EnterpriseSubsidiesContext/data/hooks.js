@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+
 import { logError } from '@edx/frontend-platform/logging';
 import { getConfig } from '@edx/frontend-platform/config';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
-import moment from 'moment';
 
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
@@ -12,6 +15,9 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
   const [offers, setOffers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [canManageLearnerCredit, setCanManageLearnerCredit] = useState(false);
+
+  dayjs.extend(isSameOrBefore);
+  dayjs.extend(isSameOrAfter);
 
   useEffect(() => {
     setIsLoading(true);
@@ -37,8 +43,8 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
           const subsidy = results[0];
           const isCurrent = source === 'ecommerceApi'
             ? subsidy.isCurrent
-            : moment().isSameOrBefore(subsidy.expirationDatetime)
-            && moment().isSameOrAfter(subsidy.activeDatetime);
+            : dayjs().isSameOrBefore(subsidy.expirationDatetime)
+            && dayjs().isSameOrAfter(subsidy.activeDatetime);
           const offerData = {
             id: subsidy.uuid || subsidy.id,
             name: subsidy.title || subsidy.displayName,
