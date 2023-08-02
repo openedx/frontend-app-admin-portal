@@ -38,25 +38,29 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
           results = camelCaseObject(ecommerceApiResponse.data.results);
           source = 'ecommerceApi';
         }
-
+        let activeSubsidyFound = false;
         if (results.length !== 0) {
-          const subsidy = results[0];
-          const isCurrent = source === 'ecommerceApi'
-            ? subsidy.isCurrent
-            : dayjs().isSameOrBefore(subsidy.expirationDatetime)
-            && dayjs().isSameOrAfter(subsidy.activeDatetime);
-          const offerData = {
-            id: subsidy.uuid || subsidy.id,
-            name: subsidy.title || subsidy.displayName,
-            start: subsidy.activeDatetime || subsidy.startDatetime,
-            end: subsidy.expirationDatetime || subsidy.endDatetime,
-            isCurrent,
-          };
-          setOffers([offerData]);
-        }
-        // We only released learner credit management to customers with 1 offer for the MVP.
-        if (results.length === 1) {
-          setCanManageLearnerCredit(true);
+          let subsidy = results[0];
+          for (let i = 0; i < results.length; i++) {
+            subsidy = results[i];
+            activeSubsidyFound = source === 'ecommerceApi'
+              ? subsidy.isCurrent
+              : subsidy.isActive;
+            if (activeSubsidyFound === true) {
+              break;
+            }
+          }
+          if (activeSubsidyFound === true) {
+            const offerData = {
+              id: subsidy.uuid || subsidy.id,
+              name: subsidy.title || subsidy.displayName,
+              start: subsidy.activeDatetime || subsidy.startDatetime,
+              end: subsidy.expirationDatetime || subsidy.endDatetime,
+              isCurrent: activeSubsidyFound,
+            };
+            setOffers([offerData]);
+            setCanManageLearnerCredit(true);
+          }
         }
       } catch (error) {
         logError(error);
