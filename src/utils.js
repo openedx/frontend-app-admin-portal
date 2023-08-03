@@ -406,6 +406,12 @@ const getCourseProductLineText = (courseProductLine) => {
   return courseProductLineText;
 };
 
+const getCourseProductLineAbbreviation = (courseProductLine) => {
+  let courseProductLineText = '';
+  courseProductLineText = courseProductLine === 'Open Courses Marketplace' ? 'OCM' : 'Executive Education';
+  return courseProductLineText;
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -440,4 +446,5 @@ export {
   pollAsync,
   isNotValidNumberString,
   getCourseProductLineText,
+  getCourseProductLineAbbreviation,
 };
