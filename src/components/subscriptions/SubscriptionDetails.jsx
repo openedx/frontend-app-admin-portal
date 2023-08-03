@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import {
-  Button, Row, Col, Toast, Icon
+  Button, Row, Col, Toast, Icon,
 } from '@edx/paragon';
 import { ArrowBackIos } from '@edx/paragon/icons';
 
