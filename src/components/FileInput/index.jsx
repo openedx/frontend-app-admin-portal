@@ -137,7 +137,7 @@ class FileInput extends React.Component {
                 this.setState({ fileName: null });
               }}
             >
-              <Close className="mr-1"/>
+              <Close className="mr-1" />
               Remove
             </Button>
           )}
