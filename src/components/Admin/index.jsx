@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Alert, Icon } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Error, Undo } from '@edx/paragon/icons';
 import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
@@ -225,7 +225,7 @@ class Admin extends React.Component {
 
     return (
       <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
-        <Icon className="fa fa-undo mr-2" />
+        <Icon src={Undo} className="mr-2" />
         Reset to {this.getMetadataForAction().title}
       </Link>
     );
@@ -242,7 +242,7 @@ class Admin extends React.Component {
     const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
     return (
       <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
-        <Icon className="fa fa-undo mr-2" />
+        <Icon src={Undo} className="mr-2" />
         Reset Filters
       </Link>
     );

@@ -414,7 +414,7 @@ class CouponDetails extends React.Component {
       code: <span data-hj-suppress>{code.code}</span>,
       assigned_to: code.error ? (
         <span className="text-danger">
-          <Icon className="fa fa-exclamation-circle mr-2" screenReaderText="Error" />
+          <Icon className="mr-2" screenReaderText="Error" src={Error} />
           {code.error}
         </span>
       ) : code.assigned_to,

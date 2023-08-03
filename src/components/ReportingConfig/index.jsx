@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapsible, Icon } from '@edx/paragon';
+import { Check, Close } from '@edx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import LMSApiService from '../../data/services/LmsApiService';
@@ -142,9 +143,17 @@ class ReportingConfig extends React.Component {
                 className="shadow"
                 title={(
                   <div className="row justify-content-around flex-fill">
-                    <Icon
-                      className={`col-1 ${config.active ? ' fa fa-check text-success-300' : ' fa fa-times text-danger-300'}`}
-                    />
+                    {config.active ? (
+                      <Icon
+                        className="col-1 justify-left text-success-300"
+                        src={Check}
+                      />
+                    ) : (
+                      <Icon
+                        className="col-1 justify-left text-danger-300"
+                        src={Close}
+                      />
+                    )}
                     <div className="col">
                       <h3 className="h6">Report Type:</h3>
                       <p>{config.data_type}</p>
