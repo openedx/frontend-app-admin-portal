@@ -120,7 +120,7 @@ class RequestCodesForm extends React.Component {
                 className="btn-primary"
               >
                 <>
-                  {submitting && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
+                  {submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
                   Request Codes
                 </>
               </Button>
