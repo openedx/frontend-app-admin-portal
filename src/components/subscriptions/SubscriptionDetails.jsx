@@ -37,7 +37,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
         <Row className="ml-0 mb-3">
           <Link to={backToSubscriptionsPath}>
             <Button variant="outline-primary">
-              <Icon src={ArrowBackIos} className="mr-2" /> 
+              <Icon src={ArrowBackIos} className="mr-2" />
               Back to subscriptions
             </Button>
           </Link>
