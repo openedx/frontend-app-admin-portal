@@ -17,8 +17,11 @@ const LearnerCreditAllocationTable = ({
   tableData,
   fetchTableData,
   enterpriseUUID,
+  budgetType,
 }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
+  const defaultFilter = budgetType ? [{ id: 'courseProductLine', value: budgetType }] : [];
+
   return (
     <DataTable
       isSortable
@@ -57,6 +60,7 @@ const LearnerCreditAllocationTable = ({
           Header: 'Product',
           accessor: 'courseProductLine',
           Cell: ({ row }) => getCourseProductLineText(row.values.courseProductLine),
+          disableFilters: true,
         },
       ]}
       initialTableOptions={{
@@ -68,6 +72,7 @@ const LearnerCreditAllocationTable = ({
         sortBy: [
           { id: 'enrollmentDate', desc: true },
         ],
+        filters: defaultFilter,
       }}
       fetchData={fetchTableData}
       data={tableData.results}
@@ -85,6 +90,9 @@ const LearnerCreditAllocationTable = ({
     />
   );
 };
+LearnerCreditAllocationTable.defaultProps = {
+  budgetType: null,
+};
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
@@ -101,6 +109,7 @@ LearnerCreditAllocationTable.propTypes = {
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
+  budgetType: PropTypes.string,
 };
 
 export default LearnerCreditAllocationTable;

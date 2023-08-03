@@ -16,6 +16,8 @@ describe('transformOfferSummary', () => {
     expect(transformOfferSummary(offerSummary)).toEqual({
       totalFunds: 1,
       redeemedFunds: 1,
+      redeemedFundsExecEd: NaN,
+      redeemedFundsOcm: NaN,
       remainingFunds: 0.0,
       percentUtilized: 1.0,
     });
