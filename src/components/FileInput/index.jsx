@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { clearFields } from 'redux-form';
-import { Button, Icon, ValidationFormGroup } from '@edx/paragon';
+import { Button, ValidationFormGroup } from '@edx/paragon';
 import { Close } from '@edx/paragon/icons';
 
 class FileInput extends React.Component {
@@ -137,7 +137,7 @@ class FileInput extends React.Component {
                 this.setState({ fileName: null });
               }}
             >
-              <Icon src={Close} />
+              <Close className="mr-1"/>
               Remove
             </Button>
           )}
