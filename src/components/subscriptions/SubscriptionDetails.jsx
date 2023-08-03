@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import {
-  Button, Row, Col, Toast,
+  Button, Row, Col, Toast, Icon
 } from '@edx/paragon';
 import { ArrowBackIos } from '@edx/paragon/icons';
 
@@ -37,7 +37,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
         <Row className="ml-0 mb-3">
           <Link to={backToSubscriptionsPath}>
             <Button variant="outline-primary">
-              <ArrowBackIos className="mr-2" />
+              <Icon src={ArrowBackIos} className="mr-2" />
               Back to subscriptions
             </Button>
           </Link>
