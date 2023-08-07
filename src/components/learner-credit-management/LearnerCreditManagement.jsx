@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   Badge,
   Container,
@@ -86,7 +86,7 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
         {isLoadingOfferSummary || isLoadingOfferRedemptions ? (
           <Skeleton width={320} />
         ) : (
-          <LearnerCreditDisclaimer offerLastUpdated={moment(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)} />
+          <LearnerCreditDisclaimer offerLastUpdated={dayjs(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)} />
         )}
         <div className="mb-4.5 d-flex flex-wrap mx-n3">
           <LearnerCreditAggregateCards

@@ -14,7 +14,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 
 const enterpriseId = 'an-id-1';
 
-let entepriseBranding = {
+let enterpriseBranding = {
   primary_color: SCHOLAR_THEME.button,
   secondary_color: SCHOLAR_THEME.banner,
   tertiary_color: SCHOLAR_THEME.accent,
@@ -49,7 +49,7 @@ describe('Portal Appearance Tab', () => {
         <Provider store={store}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
-            enterpriseBranding={entepriseBranding}
+            enterpriseBranding={enterpriseBranding}
             updatePortalConfiguration={mockPortalUpdate}
           />
         </Provider>
@@ -66,7 +66,7 @@ describe('Portal Appearance Tab', () => {
         <Provider store={store}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
-            enterpriseBranding={entepriseBranding}
+            enterpriseBranding={enterpriseBranding}
             updatePortalConfiguration={mockPortalUpdate}
           />
         </Provider>
@@ -85,7 +85,7 @@ describe('Portal Appearance Tab', () => {
         <Provider store={store}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
-            enterpriseBranding={entepriseBranding}
+            enterpriseBranding={enterpriseBranding}
             updatePortalConfiguration={mockPortalUpdate}
           />
         </Provider>
@@ -110,7 +110,7 @@ describe('Portal Appearance Tab', () => {
         <Provider store={store}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
-            enterpriseBranding={entepriseBranding}
+            enterpriseBranding={enterpriseBranding}
             updatePortalConfiguration={mockPortalUpdate}
           />
         </Provider>
@@ -130,7 +130,7 @@ describe('Portal Appearance Tab', () => {
     });
   });
   test('autoselects correct brand card', async () => {
-    entepriseBranding = {
+    enterpriseBranding = {
       primary_color: SAGE_THEME.button,
       secondary_color: SAGE_THEME.banner,
       tertiary_color: SAGE_THEME.accent,
@@ -141,7 +141,7 @@ describe('Portal Appearance Tab', () => {
         <Provider store={store}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
-            enterpriseBranding={entepriseBranding}
+            enterpriseBranding={enterpriseBranding}
             updatePortalConfiguration={mockPortalUpdate}
           />
         </Provider>
@@ -152,7 +152,7 @@ describe('Portal Appearance Tab', () => {
   });
   test('creating custom theme card', async () => {
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseCustomerBranding');
-    entepriseBranding = {
+    enterpriseBranding = {
       primary_color: SAGE_THEME.button,
       secondary_color: SAGE_THEME.banner,
       tertiary_color: SAGE_THEME.accent,
@@ -163,7 +163,7 @@ describe('Portal Appearance Tab', () => {
         <Provider store={store}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
-            enterpriseBranding={entepriseBranding}
+            enterpriseBranding={enterpriseBranding}
             updatePortalConfiguration={mockPortalUpdate}
           />
         </Provider>
@@ -175,7 +175,7 @@ describe('Portal Appearance Tab', () => {
     });
     expect(screen.getByText('Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.')).toBeInTheDocument();
     userEvent.type(screen.getByLabelText('Banner color'), 'bad number');
-    expect(screen.getByText('Must be hexidecimal starting with # (Ex: #1e0b57)')).toBeInTheDocument();
+    expect(screen.getByText('Must be hexadecimal starting with # (Ex: #1e0b57)')).toBeInTheDocument();
     userEvent.type(screen.getByLabelText('Button color'), '#023E8A');
     userEvent.type(screen.getByLabelText('Accent color'), '#0077b6');
     expect(screen.getByText('Add theme')).toBeDisabled();
@@ -199,7 +199,7 @@ describe('Portal Appearance Tab', () => {
     });
   });
   test('editing and deleting custom card', async () => {
-    entepriseBranding = {
+    enterpriseBranding = {
       primary_color: '#03045e',
       secondary_color: '#023E8A',
       tertiary_color: '#0077b6',
@@ -210,7 +210,7 @@ describe('Portal Appearance Tab', () => {
         <Provider store={store}>
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
-            enterpriseBranding={entepriseBranding}
+            enterpriseBranding={enterpriseBranding}
             updatePortalConfiguration={mockPortalUpdate}
           />
         </Provider>

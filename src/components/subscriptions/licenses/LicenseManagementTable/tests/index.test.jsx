@@ -7,7 +7,7 @@ import {
   fireEvent,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
@@ -121,9 +121,9 @@ describe('<LicenseManagementTable />', () => {
         mockSubscriptionHooks(
           subscriptionPlan,
           [{
-            activationDate: moment(),
+            activationDate: dayjs(),
             activationKey: 'test-activation-key',
-            lastRemindDate: moment(),
+            lastRemindDate: dayjs(),
             revokedDate: null,
             status: 'activated',
             subscriptionPlan: {},

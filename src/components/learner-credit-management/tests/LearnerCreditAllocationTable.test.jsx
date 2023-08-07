@@ -18,6 +18,7 @@ describe('<LearnerCreditAllocationTable />', () => {
     const props = {
       enterpriseUUID: 'test-enterprise-id',
       isLoading: false,
+      budgetType: 'OCM',
       tableData: {
         results: [{
           userEmail: 'test@example.com',
@@ -46,5 +47,23 @@ describe('<LearnerCreditAllocationTable />', () => {
       exact: false,
     }));
     expect(screen.getByText('February', { exact: false }));
+  });
+  it('renders with empty table data', () => {
+    const props = {
+      enterpriseUUID: 'test-enterprise-id',
+      isLoading: false,
+      budgetType: 'OCM',
+      tableData: {
+        results: [],
+        itemCount: 0,
+        pageCount: 0,
+      },
+      fetchTableData: jest.fn(),
+    };
+    props.fetchTableData.mockReturnValue(props.tableData);
+
+    render(<LearnerCreditAllocationTableWrapper {...props} />);
+
+    expect(screen.getByText('No results found', { exact: false }));
   });
 });

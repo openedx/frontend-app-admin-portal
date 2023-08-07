@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
@@ -28,7 +28,7 @@ import LmsApiService from './data/services/LmsApiService';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
-    return moment(timestamp).format(format);
+    return dayjs(timestamp).format(format);
   }
   return null;
 };
@@ -406,6 +406,12 @@ const getCourseProductLineText = (courseProductLine) => {
   return courseProductLineText;
 };
 
+const getCourseProductLineAbbreviation = (courseProductLine) => {
+  let courseProductLineText = '';
+  courseProductLineText = courseProductLine === 'Open Courses Marketplace' ? 'OCM' : 'Executive Education';
+  return courseProductLineText;
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -440,4 +446,5 @@ export {
   pollAsync,
   isNotValidNumberString,
   getCourseProductLineText,
+  getCourseProductLineAbbreviation,
 };

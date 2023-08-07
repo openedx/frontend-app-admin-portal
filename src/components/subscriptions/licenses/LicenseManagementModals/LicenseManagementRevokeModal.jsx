@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
+
 import {
   Alert,
   StatefulButton,
@@ -13,7 +15,6 @@ import {
   RemoveCircle,
 } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
-import moment from 'moment';
 
 import { useRequestState } from './LicenseManagementModalHook';
 import { configuration } from '../../../../config';
@@ -74,7 +75,7 @@ const LicenseManagementRevokeModal = ({
 
   const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
 
-  const isExpired = moment().isAfter(subscription.expirationDate);
+  const isExpired = dayjs().isAfter(subscription.expirationDate);
 
   const handleSubmit = useCallback(async () => {
     if (onSubmit) {
