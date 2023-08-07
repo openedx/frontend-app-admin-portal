@@ -6,6 +6,7 @@ import { Warning } from '@edx/paragon/icons';
 import PropTypes from 'prop-types';
 import { DataContext, ErrorContext, ShowSuccessToast } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { API_CLIENT_DOCUMENTATION } from '../data/constants';
 
 const RegenerateCredentialWarningModal = ({
   modalSize,
@@ -20,7 +21,8 @@ const RegenerateCredentialWarningModal = ({
   const handleOnClickRegeneration = async () => {
     try {
       const response = await LmsApiService.regenerateAPICredentials(redirectURLs);
-      setData(response.data);
+      const data = { ...response.data, api_client_documentation: API_CLIENT_DOCUMENTATION };
+      setData(data);
       setShowSuccessToast(true);
       setRedirectURIs('');
     } catch (error) {
