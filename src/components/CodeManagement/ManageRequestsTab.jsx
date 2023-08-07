@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import dayjs from 'dayjs';
+
 import { Stack } from '@edx/paragon';
-import moment from 'moment';
 import { camelCaseObject } from '@edx/frontend-platform';
 
 import SubsidyRequestManagementTable, {
@@ -41,9 +42,9 @@ const ManageRequestsTab = ({
     return <LoadingMessage className="coupons mt-3" />;
   }
 
-  const now = moment();
+  const now = dayjs();
   const coupons = couponsData.results;
-  const hasAvailableCodes = coupons.some(coupon => moment(coupon.endDate) > now && coupon.numUnassigned > 0);
+  const hasAvailableCodes = coupons.some(coupon => dayjs(coupon.endDate) > now && coupon.numUnassigned > 0);
 
   return (
     <Stack gap={2}>

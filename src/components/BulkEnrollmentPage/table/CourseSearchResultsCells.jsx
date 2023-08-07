@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Popover, Button, OverlayTrigger } from '@edx/paragon';
+import dayjs from 'dayjs';
 
-import moment from 'moment';
+import { Popover, Button, OverlayTrigger } from '@edx/paragon';
 
 import { configuration } from '../../../config';
 
@@ -51,7 +51,7 @@ CourseNameCell.propTypes = {
 
 export const FormattedDateCell = ({ startValue, endValue }) => (
   <span>
-    {moment(startValue).format('MMM D, YYYY')} - {moment(endValue).format('MMM D, YYYY')}
+    {dayjs(startValue).format('MMM D, YYYY')} - {dayjs(endValue).format('MMM D, YYYY')}
   </span>
 );
 

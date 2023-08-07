@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -165,7 +165,7 @@ describe('<LearnerCreditManagement />', () => {
       expect(screen.getByText(mockOffer.start));
       expect(screen.getByText(mockOffer.end));
 
-      expect(screen.getByText(`Data last updated on ${moment(mockOfferRedemption.created).format(DATE_FORMAT)}`, { exact: false }));
+      expect(screen.getByText(`Data last updated on ${dayjs(mockOfferRedemption.created).format(DATE_FORMAT)}`, { exact: false }));
 
       expect(screen.getByTestId('learner-credit-allocation--is-loading')).toHaveTextContent('is NOT loading');
       expect(screen.getByTestId('learner-credit-allocation--table-data')).toHaveTextContent(mockOfferRedemption.enterpriseEnrollmentId);

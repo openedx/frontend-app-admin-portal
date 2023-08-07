@@ -71,7 +71,7 @@ export const SETTINGS_TAB_LABELS = {
 };
 
 /** Default tab when no parameter is given */
-export const DEFAULT_TAB = ACCESS_TAB;
+export const DEFAULT_TAB = APPEARANCE_TAB;
 
 /**
  * Url parameter that the set in the router

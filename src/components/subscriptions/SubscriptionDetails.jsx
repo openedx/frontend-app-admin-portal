@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -74,7 +74,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                   <small>Purchase Date</small>
                 </div>
                 <div className="lead">
-                  {moment(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
+                  {dayjs(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
                 </div>
               </div>
             )}
@@ -83,7 +83,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 <small>Start Date</small>
               </div>
               <div className="lead">
-                {moment(subscription.startDate).format('MMMM D, YYYY')}
+                {dayjs(subscription.startDate).format('MMMM D, YYYY')}
               </div>
             </div>
             <div>
@@ -91,7 +91,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 <small>End Date</small>
               </div>
               <div className="lead">
-                {moment(subscription.expirationDate).format('MMMM D, YYYY')}
+                {dayjs(subscription.expirationDate).format('MMMM D, YYYY')}
               </div>
             </div>
           </div>
