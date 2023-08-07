@@ -114,7 +114,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     }).then(data => data));
 
     expect(EnterpriseCatalogApiService.updateEnterpriseCurationConfig).toHaveBeenCalledTimes(1);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
   it('Spinner 1 shows on radio 1 click', async () => {
     EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValue({
@@ -154,6 +154,6 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     }).then(data => data));
 
     expect(EnterpriseCatalogApiService.updateEnterpriseCurationConfig).toHaveBeenCalledTimes(1);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 });
