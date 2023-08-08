@@ -145,12 +145,12 @@ class ReportingConfig extends React.Component {
                   <div className="row justify-content-around flex-fill">
                     {config.active ? (
                       <Icon
-                        className="col-1 justify-left text-success-300"
+                        className="col-1 text-success-300"
                         src={Check}
                       />
                     ) : (
                       <Icon
-                        className="col-1 justify-left text-danger-300"
+                        className="col-1 text-danger-300"
                         src={Close}
                       />
                     )}
