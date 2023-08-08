@@ -849,7 +849,7 @@ Array [
             className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
           >
             <span
-              className="pgn__icon align-right text-primary"
+              className="pgn__icon d-inline-block text-primary"
             >
               <svg
                 aria-hidden={true}
@@ -980,7 +980,7 @@ Array [
             className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
           >
             <span
-              className="pgn__icon align-right text-primary"
+              className="pgn__icon d-inline-block text-primary"
             >
               <svg
                 aria-hidden={true}
