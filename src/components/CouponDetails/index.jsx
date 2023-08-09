@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
-  Alert, Button, CheckBox, Icon,
+  Alert, Button, Icon, Form,
 } from '@edx/paragon';
 import { CheckCircle, Error } from '@edx/paragon/icons';
 
@@ -242,16 +242,14 @@ class CouponDetails extends React.Component {
   getNewColumns(selectedToggle) {
     const selectColumn = {
       label: (
-        <CheckBox
+        <Form.Checkbox
           id="select-all-codes"
           name="select all codes"
-          label={
-            <div className="sr-only">{this.getSelectAllCheckBoxLabel()}</div>
-            }
-          onChange={(checked) => {
-            this.hasAllTableRowsSelected = checked;
-            this.handleSelectAllCodes(checked);
+          onChange={(event) => {
+            this.hasAllTableRowsSelected = event.target.checked;
+            this.handleSelectAllCodes(event.target.checked);
           }}
+          checked={this.hasAllTableRowsSelected}
           ref={this.selectAllCheckBoxRef}
         />
       ),
@@ -297,20 +295,6 @@ class CouponDetails extends React.Component {
       },
     }));
   }
-
-  getSelectAllCheckBoxLabel = () => {
-    if (this.hasAllTableRowsSelected) {
-      return 'unselect all codes';
-    }
-    return 'select all codes';
-  };
-
-  getLabelForCodeCheckBox = (code) => {
-    if (this.selectedTableRows[code]) {
-      return `unselect code ${code}`;
-    }
-    return `select code ${code}`;
-  };
 
   reset() {
     this.resetModals();
@@ -386,7 +370,7 @@ class CouponDetails extends React.Component {
     // TODO: Paragon now has an IndeterminateCheckbox that can be used here.
     const selectAllCheckBoxRef = selectColumn.label.ref && selectColumn.label.ref.current;
     const selectAllCheckBoxDOM = (
-      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props.id)
+      selectAllCheckBoxRef && document.getElementById(selectAllCheckBoxRef.props?.id)
     );
 
     if (selectAllCheckBoxDOM && hasPartialSelection) {
@@ -430,16 +414,13 @@ class CouponDetails extends React.Component {
         setModalState={this.setModalState}
       />,
       select: (
-        <CheckBox
+        <Form.Checkbox
           name={`select code ${code.code}`}
-          label={
-            <div className="sr-only">{this.getLabelForCodeCheckBox(code.code)}</div>
-          }
-          onChange={(checked) => {
-            this.handleCodeSelection({ checked, code });
-            if (checked && !this.selectedTableRows[code.code]) {
+          onChange={(event) => {
+            this.handleCodeSelection({ checked: event.target.checked, code });
+            if (event.target.checked && !this.selectedTableRows[code.code]) {
               this.selectedTableRows[code.code] = true;
-            } else if (!checked && this.selectedTableRows[code.code]) {
+            } else if (!event.target.checked && this.selectedTableRows[code.code]) {
               delete this.selectedTableRows[code.code];
             }
           }}
