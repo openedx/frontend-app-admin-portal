@@ -6,11 +6,23 @@ import {
 } from '@edx/paragon';
 
 import TableTextFilter from './TableTextFilter';
-import EmailAddressTableCell from './EmailAddressTableCell';
-import { getCourseProductLineText } from '../../utils';
+import DescriptionCell from './DescriptionCell';
 
 export const PAGE_SIZE = 20;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
+
+const getDescriptionAccessor = row => ({
+  courseTitle: row.courseTitle,
+  userEmail: row.userEmail,
+});
+
+function renderDescriptionCell(enterpriseUUID) {
+  return function DescriptionCellRenderer(props) {
+    return <DescriptionCell {...props} enterpriseUUID={enterpriseUUID} />;
+  };
+}
+
+const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
 const LearnerCreditAllocationTable = ({
   isLoading,
@@ -21,6 +33,27 @@ const LearnerCreditAllocationTable = ({
 }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
   const defaultFilter = budgetType ? [{ id: 'courseProductLine', value: budgetType }] : [];
+  const columns = [
+    {
+      Header: 'Date',
+      accessor: 'enrollmentDate',
+      // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
+      Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
+      disableFilters: true,
+    },
+    {
+      Header: 'Description',
+      accessor: getDescriptionAccessor,
+      Cell: renderDescriptionCell(enterpriseUUID),
+      disableFilters: true,
+    },
+    {
+      Header: 'Amount',
+      accessor: 'courseListPrice',
+      Cell: ({ row }) => `$${row.values.courseListPrice}`,
+      disableFilters: true,
+    },
+  ];
 
   return (
     <DataTable
@@ -33,36 +66,8 @@ const LearnerCreditAllocationTable = ({
       showFiltersInSidebar={isDesktopTable}
       isLoading={isLoading}
       defaultColumnValues={{ Filter: TableTextFilter }}
-      columns={[
-        {
-          Header: 'Email Address',
-          accessor: 'userEmail',
-          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
-          Cell: ({ row }) => <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />,
-        },
-        {
-          Header: 'Course Name',
-          accessor: 'courseTitle',
-        },
-        {
-          Header: 'Course Price',
-          accessor: 'courseListPrice',
-          Cell: ({ row }) => `$${row.values.courseListPrice}`,
-          disableFilters: true,
-        },
-        {
-          Header: 'Date Spent',
-          accessor: 'enrollmentDate',
-          Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
-          disableFilters: true,
-        },
-        {
-          Header: 'Product',
-          accessor: 'courseProductLine',
-          Cell: ({ row }) => getCourseProductLineText(row.values.courseProductLine),
-          disableFilters: true,
-        },
-      ]}
+      FilterStatusComponent={FilterStatus}
+      columns={columns}
       initialTableOptions={{
         getRowId: row => row?.uuid?.toString(),
       }}
