@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { Info } from '@edx/paragon/icons';
 import IconWithTooltip from './index';
 
 const defaultAltText = 'infoooo';
 const defaultTooltipText = 'Tooool';
 const DEFAULT_PROPS = {
-  icon: faInfoCircle,
+  icon: Info,
   altText: defaultAltText,
   tooltipText: defaultTooltipText,
 };
@@ -17,7 +17,7 @@ describe('<IconWithTooltip />', () => {
     global.innerWidth = 800;
     global.dispatchEvent(new Event('resize'));
     const { container } = render(<IconWithTooltip {...DEFAULT_PROPS} />);
-    expect(container.querySelector(`[data-icon=${faInfoCircle.iconName}]`)).toBeTruthy();
+    expect(container.querySelector('svg')).toBeTruthy();
   });
   [
     { windowSize: 800, expectedLocation: 'right' },
@@ -27,7 +27,7 @@ describe('<IconWithTooltip />', () => {
       global.innerWidth = data.windowSize;
       global.dispatchEvent(new Event('resize'));
       const { container } = render(<IconWithTooltip {...DEFAULT_PROPS} />);
-      const icon = container.querySelector(`[data-icon=${faInfoCircle.iconName}]`);
+      const icon = container.querySelector('svg');
       expect(icon).toBeTruthy();
 
       act(async () => {
