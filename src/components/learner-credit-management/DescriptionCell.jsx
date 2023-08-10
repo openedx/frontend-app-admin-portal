@@ -5,7 +5,7 @@ import EmailAddressTableCell from './EmailAddressTableCell';
 const DescriptionCell = ({ value, row, enterpriseUUID }) => (
   <>
     <div>{value.courseTitle}</div>
-    <EmailAddressTableCell row={row} enterpiseUUID={enterpriseUUID} />
+    <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
   </>
 );
 

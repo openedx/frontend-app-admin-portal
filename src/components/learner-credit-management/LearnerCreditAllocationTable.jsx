@@ -6,7 +6,7 @@ import {
 } from '@edx/paragon';
 
 import TableTextFilter from './TableTextFilter';
-import DescriptionCell from './DescriptionCell';
+import EmailAddressTableCell from './EmailAddressTableCell';
 
 export const PAGE_SIZE = 20;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
@@ -33,27 +33,6 @@ const LearnerCreditAllocationTable = ({
 }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
   const defaultFilter = budgetType ? [{ id: 'courseProductLine', value: budgetType }] : [];
-  const columns = [
-    {
-      Header: 'Date',
-      accessor: 'enrollmentDate',
-      // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
-      Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
-      disableFilters: true,
-    },
-    {
-      Header: 'Description',
-      accessor: getDescriptionAccessor,
-      Cell: renderDescriptionCell(enterpriseUUID),
-      disableFilters: true,
-    },
-    {
-      Header: 'Amount',
-      accessor: 'courseListPrice',
-      Cell: ({ row }) => `$${row.values.courseListPrice}`,
-      disableFilters: true,
-    },
-  ];
 
   return (
     <DataTable
@@ -67,7 +46,32 @@ const LearnerCreditAllocationTable = ({
       isLoading={isLoading}
       defaultColumnValues={{ Filter: TableTextFilter }}
       FilterStatusComponent={FilterStatus}
-      columns={columns}
+      columns={[
+        {
+          Header: 'Date',
+          accessor: 'enrollmentDate',
+          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
+          Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
+          disableFilters: true,
+        },
+        {
+          Header: 'Description',
+          accessor: getDescriptionAccessor,
+          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
+          Cell: ({ row }) => (
+          <>
+            <div>{row.original.courseTitle}</div>
+            <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
+          </>),
+          disableFilters: true,
+        },
+        {
+          Header: 'Amount',
+          accessor: 'courseListPrice',
+          Cell: ({ row }) => `$${row.values.courseListPrice}`,
+          disableFilters: true,
+        },
+      ]}
       initialTableOptions={{
         getRowId: row => row?.uuid?.toString(),
       }}
