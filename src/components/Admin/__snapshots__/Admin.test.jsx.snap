@@ -100,6 +100,24 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -201,10 +219,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon25"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -238,14 +270,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon26"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -294,10 +340,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon27"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -331,14 +391,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon28"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -403,10 +477,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon29"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -440,14 +528,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon30"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -528,10 +630,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon31"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -565,14 +681,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon32"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -620,6 +750,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -646,10 +794,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon33"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -688,11 +850,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon34"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -762,10 +932,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon75"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -799,14 +983,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon76"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -855,10 +1053,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon77"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -892,14 +1104,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon78"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -964,10 +1190,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon79"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -1001,14 +1241,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon80"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -1089,10 +1343,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon81"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -1126,14 +1394,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon82"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -1181,6 +1463,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -1207,10 +1507,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon83"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -1249,11 +1563,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon84"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -1323,10 +1645,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon85"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -1360,14 +1696,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon86"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -1416,10 +1766,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon87"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -1453,14 +1817,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon88"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -1525,10 +1903,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon89"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -1562,14 +1954,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon90"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -1650,10 +2056,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon91"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -1687,14 +2107,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon92"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -1742,6 +2176,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -1768,10 +2220,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon93"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -1814,11 +2280,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon94"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -1888,10 +2362,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon95"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -1925,14 +2413,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon96"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -1981,10 +2483,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon97"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -2018,14 +2534,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon98"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -2090,10 +2620,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon99"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -2127,14 +2671,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon100"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -2215,10 +2773,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon101"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -2252,14 +2824,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon102"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -2303,6 +2889,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -2361,11 +2965,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon103"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download full report (CSV)
             </button>
           </div>
@@ -2387,7 +2999,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field104"
+                    htmlFor="form-field6"
                   >
                     Filter by course
                   </label>
@@ -2396,7 +3008,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <select
                       className="form-control"
-                      id="form-field104"
+                      id="form-field6"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -2418,31 +3030,33 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field105"
+                    htmlFor="form-field7"
                   >
                     Filter by start date
-                    <svg
+                    <span
                       alt="More information"
-                      aria-hidden="true"
-                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
-                      data-icon="info-circle"
-                      data-prefix="fas"
-                      focusable="false"
+                      className="pgn__icon ml-1"
                       onBlur={[Function]}
                       onFocus={[Function]}
                       onMouseOut={[Function]}
                       onMouseOver={[Function]}
-                      role="img"
-                      style={Object {}}
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path
-                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
-                        fill="currentColor"
-                        style={Object {}}
-                      />
-                    </svg>
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
                   </label>
                   <div
                     className="pgn__form-control-decorator-group w-100"
@@ -2450,7 +3064,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <select
                       className="form-control"
                       disabled={true}
-                      id="form-field105"
+                      id="form-field7"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -2485,7 +3099,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-106"
+                      htmlFor="pgn-searchfield-input-8"
                     >
                       <span
                         className="sr-only"
@@ -2497,7 +3111,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                       className="form-control"
                       data-hj-suppress={true}
                       disabled={false}
-                      id="pgn-searchfield-input-106"
+                      id="pgn-searchfield-input-8"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -2608,10 +3222,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon1"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -2645,14 +3273,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon2"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -2701,10 +3343,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon3"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -2738,14 +3394,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon4"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -2810,10 +3480,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon5"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -2847,14 +3531,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon6"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -2935,10 +3633,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon7"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -2972,14 +3684,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon8"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -3023,6 +3749,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -3081,11 +3825,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon9"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download full report (CSV)
             </button>
           </div>
@@ -3107,7 +3859,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field10"
+                    htmlFor="form-field1"
                   >
                     Filter by course
                   </label>
@@ -3116,7 +3868,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   >
                     <select
                       className="form-control"
-                      id="form-field10"
+                      id="form-field1"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -3138,31 +3890,33 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field11"
+                    htmlFor="form-field2"
                   >
                     Filter by start date
-                    <svg
+                    <span
                       alt="More information"
-                      aria-hidden="true"
-                      className="svg-inline--fa fa-info-circle fa-w-16 ml-1"
-                      data-icon="info-circle"
-                      data-prefix="fas"
-                      focusable="false"
+                      className="pgn__icon ml-1"
                       onBlur={[Function]}
                       onFocus={[Function]}
                       onMouseOut={[Function]}
                       onMouseOver={[Function]}
-                      role="img"
-                      style={Object {}}
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path
-                        d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
-                        fill="currentColor"
-                        style={Object {}}
-                      />
-                    </svg>
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
                   </label>
                   <div
                     className="pgn__form-control-decorator-group w-100"
@@ -3170,7 +3924,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     <select
                       className="form-control"
                       disabled={true}
-                      id="form-field11"
+                      id="form-field2"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -3205,7 +3959,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-12"
+                      htmlFor="pgn-searchfield-input-3"
                     >
                       <span
                         className="sr-only"
@@ -3217,7 +3971,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                       className="form-control"
                       data-hj-suppress={true}
                       disabled={false}
-                      id="pgn-searchfield-input-12"
+                      id="pgn-searchfield-input-3"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -3328,10 +4082,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon65"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -3365,14 +4133,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon66"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -3421,10 +4203,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon67"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -3458,14 +4254,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon68"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -3530,10 +4340,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon69"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -3567,14 +4391,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon70"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -3655,10 +4493,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon71"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -3692,14 +4544,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon72"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -3747,6 +4613,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -3773,10 +4657,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon73"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -3819,11 +4717,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon74"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -3893,10 +4799,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon55"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -3930,14 +4850,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon56"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -3986,10 +4920,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon57"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -4023,14 +4971,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon58"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -4095,10 +5057,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon59"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -4132,14 +5108,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon60"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -4220,10 +5210,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon61"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -4257,14 +5261,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon62"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -4312,6 +5330,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -4338,10 +5374,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon63"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -4384,11 +5434,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon64"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -4458,10 +5516,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon35"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -4495,14 +5567,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon36"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -4551,10 +5637,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon37"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -4588,14 +5688,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon38"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -4660,10 +5774,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon39"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -4697,14 +5825,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon40"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -4785,10 +5927,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon41"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -4822,14 +5978,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon42"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -4877,6 +6047,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -4903,10 +6091,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon43"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -4949,11 +6151,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon44"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -5023,10 +6233,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon15"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5060,14 +6284,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon16"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -5116,10 +6354,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon17"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5153,14 +6405,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon18"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -5225,10 +6491,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon19"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5262,14 +6542,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon20"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -5350,10 +6644,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon21"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5387,14 +6695,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon22"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -5442,6 +6764,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -5468,10 +6808,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon23"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -5510,11 +6864,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon24"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -5584,10 +6946,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   3
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-users"
-                  id="Icon45"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5621,14 +6997,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon46"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -5677,10 +7067,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-check"
-                  id="Icon47"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5714,14 +7118,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon48"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -5786,10 +7204,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-eye"
-                  id="Icon49"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5823,14 +7255,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon50"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -5911,10 +7357,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   1
                 </span>
                 <span
-                  aria-hidden={true}
-                  className="d-flex align-items-center justify-content-center fa fa-trophy"
-                  id="Icon51"
-                />
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
               </h3>
               <p
                 className="card-text"
@@ -5948,14 +7408,28 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   </div>
                   <div>
                     <span
-                      aria-hidden={true}
-                      className="fa fa-caret-down"
-                      id="Icon52"
-                    />
-                    <span
-                      className="sr-only"
+                      className="pgn__icon"
                     >
-                      Show details
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5H7z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -6003,6 +7477,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       </div>
     </div>
     <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
       className="row mt-4"
     >
       <div
@@ -6029,10 +7521,24 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               onClick={[Function]}
             >
               <span
-                aria-hidden={true}
-                className="fa fa-undo mr-2"
-                id="Icon53"
-              />
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               Reset to 
               Full Report
             </a>
@@ -6075,11 +7581,19 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               onClick={[Function]}
               type="button"
             >
-              <span
-                aria-hidden={true}
-                className="fa mr-2 fa-download"
-                id="Icon54"
-              />
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
               Download current report (CSV)
             </button>
           </div>
@@ -6134,37 +7648,63 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         className="col"
       >
         <div
-          className="alert fade alert-danger show"
-          hidden={false}
+          className="fade alert-content alert alert-danger show"
           role="alert"
         >
+          <span
+            className="pgn__icon alert-icon"
+          >
+            <svg
+              aria-hidden={true}
+              fill="none"
+              focusable={false}
+              height={24}
+              role="img"
+              viewBox="0 0 24 24"
+              width={24}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
           <div
-            className="alert-dialog"
+            className="pgn__alert-message-wrapper"
           >
             <div
-              className="d-flex"
+              className="alert-message-content"
             >
               <div
-                className="icon mr-2"
+                className="alert-heading h4"
               >
-                <span
-                  aria-hidden={true}
-                  className="fa fa-times-circle"
-                  id="Icon109"
-                />
+                Hey, nice to see you
               </div>
-              <div
-                className="message"
-              >
-                <span
-                  className="title"
-                >
-                  Unable to load overview
-                </span>
-                Try refreshing your screen (Network Error)
-              </div>
+              <p>
+                Try refreshing your screen 
+                Network Error
+              </p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
         </div>
       </div>
     </div>
@@ -6309,6 +7849,24 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
               ‌
             </span>
             <br />
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
           </span>
         </div>
       </div>

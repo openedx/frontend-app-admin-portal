@@ -1,32 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import _ from 'lodash';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  Alert, Button, Hyperlink, CardGrid, Toast, Skeleton,
+  Alert, Button, Hyperlink, Toast, Skeleton, useToggle,
 } from '@edx/paragon';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
-import { camelCaseDictArray } from '../../../utils';
-import LMSCard from './LMSCard';
+import { camelCaseDictArray, getChannelMap } from '../../../utils';
 import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
 import NoConfigCard from './NoConfigCard';
 import {
-  BLACKBOARD_TYPE,
-  CANVAS_TYPE,
-  CORNERSTONE_TYPE,
-  DEGREED2_TYPE,
-  HELP_CENTER_LINK,
-  MOODLE_TYPE,
-  SAP_TYPE,
-  ACTIVATE_TOAST_MESSAGE,
-  DELETE_TOAST_MESSAGE,
-  INACTIVATE_TOAST_MESSAGE,
-  SUBMIT_TOAST_MESSAGE,
+  HELP_CENTER_LINK, ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE,
+  INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE,
 } from '../data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { useFormContext } from '../../forms/FormContext';
 
 const SettingsLMSTab = ({
   enterpriseId,
@@ -40,29 +35,50 @@ const SettingsLMSTab = ({
 
   const [existingConfigsData, setExistingConfigsData] = useState({});
   const [configsExist, setConfigsExist] = useState(false);
-  const [showNewConfigButtons, setShowNewConfigButtons] = useState(false);
   const [showNoConfigCard, setShowNoConfigCard] = useState(true);
   const [configsLoading, setConfigsLoading] = useState(true);
-  const [displayNames, setDisplayNames] = useState([]);
+  const [displayNames, setDisplayNames] = useState(new Map());
 
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
   const [displayNeedsSSOAlert, setDisplayNeedsSSOAlert] = useState(false);
+  const [lmsType, setLmsType] = useState('');
+  const [isLmsStepperOpen, openLmsStepper, closeLmsStepper] = useToggle(false);
   const toastMessages = [ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE];
+  const { dispatch } = useFormContext();
+  const channelMap = useMemo(() => getChannelMap(), []);
 
   // onClick function for existing config cards' edit action
-  const editExistingConfig = (configData, configType) => {
+  const editExistingConfig = useCallback((configData, configType) => {
     setConfigsLoading(false);
+    // Setting this allows us to skip the selection step in the stepper
+    dispatch?.setFormFieldAction({ fieldId: 'lms', value: configData.channelCode });
+    setLmsType(configData.channelCode);
     // Set the form data to the card's associated config data
-    setExistingConfigFormData(configData);
+    setExistingConfigFormData(_.cloneDeep(configData));
     // Set the config type to the card's type
     setConfig(configType);
     // Hide the create new configs button
-    setShowNewConfigButtons(false);
     setShowNoConfigCard(false);
     // Since the user is editing, hide the existing config cards
     setConfigsExist(false);
-  };
+    openLmsStepper();
+  }, [dispatch, openLmsStepper]);
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    // if we have passed in params (lmsType and configId) from SyncHistory, user wants to edit that config
+    if (query.has('lms') && query.has('id')) {
+      const fetchData = async () => channelMap[query.get('lms')].fetch(query.get('id'));
+      fetchData()
+        .then((response) => {
+          editExistingConfig(camelCaseObject(response.data), query.get('id'));
+        })
+        .catch((err) => {
+          logError(err);
+        });
+    }
+  }, [channelMap, editExistingConfig]);
 
   const fetchExistingConfigs = useCallback(() => {
     const options = { enterprise_customer: enterpriseId };
@@ -76,8 +92,6 @@ const SettingsLMSTab = ({
           setShowNoConfigCard(false);
           // toggle the existing configs bool
           setConfigsExist(true);
-          // Hide the create cards and show the create button
-          setShowNewConfigButtons(false);
         } else {
           setShowNoConfigCard(true);
         }
@@ -90,9 +104,9 @@ const SettingsLMSTab = ({
   }, [enterpriseId]);
 
   const onClick = (input) => {
-    // Either we're creating a new config (a create config card was clicked), or we're navigating
-    // back to the landing state from a form (submit or cancel was hit on the forms). In both cases,
-    // we want to clear existing config form data.
+    // Either we're creating a new config, or we're navigating back to
+    // the landing state from a form (submit or cancel was hit on the forms).
+    // In both cases, we want to clear existing config form data.
     setExistingConfigFormData({});
     // If either the user has submit or canceled
     if (input === '' || toastMessages.includes(input)) {
@@ -104,22 +118,17 @@ const SettingsLMSTab = ({
       setShowToast(true);
       setConfig('');
       setToastMessage(input);
+      closeLmsStepper(true);
     } else {
-      // Otherwise the user has clicked a create card and we need to set existing config bool to
-      // false and set the config type to the card that was clicked type
-      setShowNewConfigButtons(false);
+      // Otherwise the user has clicked to create an lms and we need to open the stepper
       setConfigsExist(false);
       setConfig(input);
+      openLmsStepper();
     }
   };
 
-  // onClick function for the show create cards button
-  const showCreateConfigCards = () => {
-    setShowNewConfigButtons(true);
-  };
-
   useEffect(() => {
-    // On load fetch potential existing configs
+    // On load, fetch potential existing configs
     fetchExistingConfigs();
   }, [fetchExistingConfigs]);
 
@@ -130,9 +139,11 @@ const SettingsLMSTab = ({
 
   useEffect(() => {
     // update list of used display names to prevent duplicates
+    const updatedMap = new Map();
     if (existingConfigsData[0]) {
-      setDisplayNames(existingConfigsData?.map((existingConfig) => existingConfig.displayName));
+      existingConfigsData?.forEach((existingConfig) => updatedMap.set(existingConfig.displayName, existingConfig.id));
     }
+    setDisplayNames(updatedMap);
   }, [existingConfigsData]);
 
   return (
@@ -146,16 +157,16 @@ const SettingsLMSTab = ({
           Help Center: Integrations
         </Hyperlink>
         <div className="mt-3" style={{ pointerEvents: null }}>
-          {!showNewConfigButtons && !configsLoading && !config && (
-          <Button
-            variant="primary"
-            className="side-button"
-            iconBefore={Add}
-            disabled={displayNeedsSSOAlert && !hasSSOConfig}
-            onClick={showCreateConfigCards}
-          >
-            New
-          </Button>
+          {!configsLoading && !config && (
+            <Button
+              variant="primary"
+              className="side-button"
+              iconBefore={Add}
+              disabled={displayNeedsSSOAlert && !hasSSOConfig}
+              onClick={openLmsStepper}
+            >
+              New
+            </Button>
           )}
         </div>
       </h2>
@@ -191,41 +202,20 @@ const SettingsLMSTab = ({
         <NoConfigCard
           enterpriseSlug={enterpriseSlug}
           setShowNoConfigCard={setShowNoConfigCard}
-          createNewConfig={setShowNewConfigButtons}
+          openLmsStepper={openLmsStepper}
           hasSSOConfig={hasSSOConfig}
         />
       )}
-      {showNewConfigButtons && !configsLoading && (
-        <span>
-          <h4 className="mt-1">New configurations</h4>
-          <p className="mb-4">Click on a card to start a new configuration</p>
-
-          <CardGrid
-            columnSizes={{
-              xs: 6,
-              s: 5,
-              m: 4,
-              l: 4,
-              xl: 3,
-            }}
-          >
-            <LMSCard LMSType={BLACKBOARD_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={CANVAS_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={CORNERSTONE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={DEGREED2_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={MOODLE_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-            <LMSCard LMSType={SAP_TYPE} disabled={displayNeedsSSOAlert} onClick={onClick} />
-          </CardGrid>
-        </span>
-      )}
-      {config && (
+      {isLmsStepperOpen && (
         <span>
           <LMSConfigPage
-            LMSType={config}
             onClick={onClick}
             existingConfigFormData={existingConfigFormData}
             existingConfigs={displayNames}
             setExistingConfigFormData={setExistingConfigFormData}
+            isLmsStepperOpen={isLmsStepperOpen}
+            closeLmsStepper={closeLmsStepper}
+            lmsType={lmsType}
           />
         </span>
       )}

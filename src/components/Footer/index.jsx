@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+
 import { configuration } from '../../config';
 
 import Img from '../Img';
+import messages from './messages';
 import './Footer.scss';
 
 class Footer extends React.Component {
@@ -39,6 +42,8 @@ class Footer extends React.Component {
   render() {
     const { enterpriseLogoNotFound } = this.state;
     const { enterpriseLogo } = this.props;
+    const { formatMessage } = this.props.intl;
+
     return (
       <footer className="container-fluid py-4 border-top">
         <div className="row justify-content-between align-items-center">
@@ -53,12 +58,12 @@ class Footer extends React.Component {
               <ul className="nav justify-content-end small">
                 <li className="nav-item border-right">
                   <a className="nav-link px-2" href="https://www.edx.org/edx-terms-service">
-                    Terms of Service
+                    {formatMessage(messages.termsOfService)}
                   </a>
                 </li>
                 <li className="nav-item border-right">
                   <a className="nav-link px-2" href="https://www.edx.org/edx-privacy-policy">
-                    Privacy Policy
+                    {formatMessage(messages.privacyPolicy)}
                   </a>
                 </li>
                 <li className="nav-item">
@@ -67,7 +72,7 @@ class Footer extends React.Component {
                     to={{ pathname: configuration.ENTERPRISE_SUPPORT_URL }}
                     target="_blank"
                   >
-                    Support
+                    {formatMessage(messages.support)}
                   </Link>
                 </li>
               </ul>
@@ -83,6 +88,7 @@ Footer.propTypes = {
   enterpriseName: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   enterpriseLogo: PropTypes.string,
+  intl: intlShape.isRequired, // injected by injectIntl
 };
 
 Footer.defaultProps = {
@@ -91,4 +97,4 @@ Footer.defaultProps = {
   enterpriseLogo: null,
 };
 
-export default Footer;
+export default injectIntl(Footer);

@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OverlayTrigger, Tooltip } from '@edx/paragon';
-import useWindowSize from '../../hooks/useWindowSize';
+import {
+  Icon, OverlayTrigger, Tooltip, useWindowSize,
+} from '@edx/paragon';
 
 const IconWithTooltip = ({
   icon, altText, tooltipText, placementSm = 'right', placementLg = 'top', trigger = ['hover', 'focus'], breakpoint = 768, iconClassNames = 'ml-1',
 }) => {
-  const windowSize = useWindowSize();
-  const placement = windowSize.width >= breakpoint ? placementSm : placementLg;
+  const { width } = useWindowSize();
+  const placement = width >= breakpoint ? placementSm : placementLg;
   return (
     <OverlayTrigger
       trigger={trigger}
-      placement={windowSize.width >= breakpoint ? placementSm : placementLg}
+      placement={placement}
       data-testid={`tooltip-${placement}`}
       overlay={(
         <Tooltip id={`tooltip-${placement}`}>
@@ -20,13 +20,13 @@ const IconWithTooltip = ({
         </Tooltip>
       )}
     >
-      <FontAwesomeIcon className={iconClassNames} icon={icon} alt={altText} />
+      <Icon className={iconClassNames} src={icon} alt={altText} />
     </OverlayTrigger>
   );
 };
 
 IconWithTooltip.propTypes = {
-  icon: PropTypes.shape({}).isRequired,
+  icon: PropTypes.func.isRequired,
   altText: PropTypes.string.isRequired,
   tooltipText: PropTypes.string.isRequired,
   // These props have defaults above

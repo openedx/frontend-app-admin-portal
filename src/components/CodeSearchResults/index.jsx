@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TransitionReplace } from '@edx/paragon';
+import { Alert, TransitionReplace } from '@edx/paragon';
+import { CheckCircle } from '@edx/paragon/icons';
 
 import { updateUrl } from '../../utils';
 
-import StatusAlert from '../StatusAlert';
 import CodeSearchResultsHeading from './CodeSearchResultsHeading';
 import CodeSearchResultsTable from './CodeSearchResultsTable';
 
@@ -57,14 +57,15 @@ class CodeSearchResults extends React.Component {
     });
   };
 
-  renderSuccessMessage = options => (
-    <StatusAlert
-      alertType="success"
-      iconClassName="fa fa-check"
+  renderSuccessMessage = message => (
+    <Alert
+      variant="success"
+      icon={CheckCircle}
       onClose={this.resetCodeActionMessages}
       dismissible
-      {...options}
-    />
+    >
+      <p>{message}</p>
+    </Alert>
   );
 
   render() {
@@ -82,12 +83,12 @@ class CodeSearchResults extends React.Component {
               searchQuery={searchQuery}
               onClose={onClose}
             />
-            {isCodeReminderSuccessful && this.renderSuccessMessage({
-              message: `A reminder was successfully sent to ${searchQuery}.`,
-            })}
-            {isCodeRevokeSuccessful && this.renderSuccessMessage({
-              message: 'Successfully revoked code(s)',
-            })}
+            {isCodeReminderSuccessful && this.renderSuccessMessage(
+              `A reminder was successfully sent to ${searchQuery}.`,
+            )}
+            {isCodeRevokeSuccessful && this.renderSuccessMessage(
+              'Successfully revoked code(s)',
+            )}
             <CodeSearchResultsTable
               searchQuery={searchQuery}
               shouldRefreshTable={shouldRefreshTable}

@@ -4,6 +4,7 @@ import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EnrollmentsTable from './index';
 // import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
@@ -32,9 +33,11 @@ const store = mockStore({
 const EnrollmentsWrapper = props => (
   <MemoryRouter>
     <Provider store={store}>
-      <EnrollmentsTable
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <EnrollmentsTable
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

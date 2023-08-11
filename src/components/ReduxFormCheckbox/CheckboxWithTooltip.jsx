@@ -26,7 +26,7 @@ CheckboxWithTooltip.defaultProps = {
 CheckboxWithTooltip.propTypes = {
   className: PropTypes.string,
   // Icon should be a paragon icon
-  icon: PropTypes.shape().isRequired,
+  icon: PropTypes.func.isRequired,
   altText: PropTypes.string.isRequired,
   tooltipText: PropTypes.string.isRequired,
 };

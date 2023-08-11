@@ -15,11 +15,15 @@ export const transformOfferSummary = (offerSummary) => {
 
   const totalFunds = offerSummary.maxDiscount && parseFloat(offerSummary.maxDiscount);
   let redeemedFunds = offerSummary.amountOfOfferSpent && parseFloat(offerSummary.amountOfOfferSpent);
+  let redeemedFundsOcm = offerSummary.amountOfferSpentOcm && parseFloat(offerSummary.amountOfferSpentOcm);
+  let redeemedFundsExecEd = offerSummary.amountOfferSpentExecEd && parseFloat(offerSummary.amountOfferSpentExecEd);
 
   // cap redeemed funds at the maximum funds available (`maxDiscount`), if applicable, so we
   // don't display redeemed funds > funds available.
   if (totalFunds) {
     redeemedFunds = Math.min(redeemedFunds, totalFunds);
+    redeemedFundsOcm = Math.min(redeemedFundsOcm, totalFunds);
+    redeemedFundsExecEd = Math.min(redeemedFundsExecEd, totalFunds);
   }
 
   let remainingFunds = offerSummary.remainingBalance && parseFloat(offerSummary.remainingBalance);
@@ -37,6 +41,8 @@ export const transformOfferSummary = (offerSummary) => {
   return {
     totalFunds,
     redeemedFunds,
+    redeemedFundsOcm,
+    redeemedFundsExecEd,
     remainingFunds,
     percentUtilized,
   };
@@ -58,6 +64,7 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
+  courseProductLine: result.courseProductLine,
   uuid: uuidv4(),
 }));
 

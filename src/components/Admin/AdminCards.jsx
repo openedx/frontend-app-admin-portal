@@ -1,58 +1,97 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import {
+  Award, Check, Groups, RemoveRedEye,
+} from '@edx/paragon/icons';
+
 import NumberCard from '../NumberCard';
 
 class AdminCards extends React.Component {
   constructor(props) {
     super(props);
+    const { intl } = this.props;
 
     this.cards = {
       numberOfUsers: {
         ref: React.createRef(),
-        description: 'total number of learners registered',
-        iconClassName: 'fa fa-users',
+        description: intl.formatMessage({
+          id: 'adminPortal.cards.registeredLearners',
+          defaultMessage: 'total number of learners registered',
+        }),
+        icon: Groups,
         actions: [{
-          label: 'Which learners are registered but not yet enrolled in any courses?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.registeredUnenrolledLearners',
+            defaultMessage: 'Which learners are registered but not yet enrolled in any courses?',
+          }),
           slug: 'registered-unenrolled-learners',
         }],
       },
       enrolledLearners: {
         ref: React.createRef(),
-        description: 'learners enrolled in at least one course',
-        iconClassName: 'fa fa-check',
+        description: intl.formatMessage({
+          id: 'adminPortal.cards.enrolledOneCourse',
+          defaultMessage: 'learners enrolled in at least one course',
+        }),
+        icon: Check,
         actions: [{
-          label: 'How many courses are learners enrolled in?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.enrolledLearners',
+            defaultMessage: 'How many courses are learners enrolled in?',
+          }),
           slug: 'enrolled-learners',
         }, {
-          label: 'Who is no longer enrolled in a current course?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.enrolledLearnersInactiveCourses',
+            defaultMessage: 'Who is no longer enrolled in a current course?',
+          }),
           slug: 'enrolled-learners-inactive-courses',
         }],
       },
       activeLearners: {
         ref: React.createRef(),
-        description: 'active learners in the past week',
-        iconClassName: 'fa fa-eye',
+        description: intl.formatMessage({
+          id: 'adminPortal.cards.activeLearnersPastWeek',
+          defaultMessage: 'active learners in the past week',
+        }),
+        icon: RemoveRedEye,
         actions: [{
-          label: 'Who are my top active learners?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.learnersActiveWeek',
+            defaultMessage: 'Who are my top active learners?',
+          }),
           slug: 'learners-active-week',
         }, {
-          label: 'Who has not been active for over a week?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.learnersInactiveWeek',
+            defaultMessage: 'Who has not been active for over a week?',
+          }),
           slug: 'learners-inactive-week',
         }, {
-          label: 'Who has not been active for over a month?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.learnersInactiveMonth',
+            defaultMessage: 'Who has not been active for over a month?',
+          }),
           slug: 'learners-inactive-month',
         }],
       },
       courseCompletions: {
         ref: React.createRef(),
         description: 'course completions',
-        iconClassName: 'fa fa-trophy',
+        icon: Award,
         actions: [{
-          label: 'How many courses have been completed by learners?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.completedLearners',
+            defaultMessage: 'How many courses have been completed by learners?',
+          }),
           slug: 'completed-learners',
         }, {
-          label: 'Who completed a course in the past week?',
+          label: intl.formatMessage({
+            id: 'adminPortal.cards.completedLearnersWeek',
+            defaultMessage: 'Who completed a course in the past week?',
+          }),
           slug: 'completed-learners-week',
         }],
       },
@@ -71,7 +110,7 @@ class AdminCards extends React.Component {
           id={cardKey}
           title={title}
           description={card.description}
-          iconClassName={card.iconClassName}
+          icon={card.icon}
           detailActions={card.actions}
         />
       </div>
@@ -110,6 +149,8 @@ AdminCards.propTypes = {
   numberOfUsers: PropTypes.number.isRequired,
   courseCompletions: PropTypes.number.isRequired,
   enrolledLearners: PropTypes.number.isRequired,
+  // injected
+  intl: intlShape.isRequired,
 };
 
-export default AdminCards;
+export default injectIntl(AdminCards);

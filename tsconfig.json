@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "lib": ["dom", "es6", "dom.iterable"],
+    "isolatedModules": true,
+    "module": "ES6",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictFunctionTypes": false,
+    "target": "ES6",
+    "rootDir": ".",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*", "__mocks__/**/*"],
+  "exclude": ["dist", "src/icons/*"]
+}

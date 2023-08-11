@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -11,7 +11,7 @@ import { MANAGE_LEARNERS_TAB } from './data/constants';
 
 const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
   const multipleSubsCreateActions = (subscription) => {
-    const now = moment();
+    const now = dayjs();
     const isScheduled = now.isBefore(subscription.startDate);
     const isExpired = now.isAfter(subscription.expirationDate);
     const buttonText = `${isExpired ? 'View' : 'Manage'} learners`;

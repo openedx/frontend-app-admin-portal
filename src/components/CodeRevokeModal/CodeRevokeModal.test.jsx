@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -16,7 +17,6 @@ import { displayCode, displaySelectedCodes } from '../CodeModal/codeModalHelpers
 import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
 } from '../../data/constants/emailTemplate';
-import { EMAIL_FORM_NAME } from '../EmailTemplateForm';
 
 const sampleCodeData = {
   code: 'test-code-1',
@@ -120,10 +120,12 @@ const initialState = {
 const CodeRevokeModalWrapper = (props) => (
   <MemoryRouter>
     <Provider store={mockStore(initialState)}>
-      <CodeRevokeModal
-        {...initialProps}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CodeRevokeModal
+          {...initialProps}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
@@ -144,7 +146,7 @@ describe('CodeRevokeModal component', () => {
   });
   it('renders an email template form', () => {
     render(<CodeRevokeModalWrapper />);
-    expect(screen.getByText(EMAIL_FORM_NAME)).toBeInTheDocument();
+    expect(screen.getByText('Email Template')).toBeInTheDocument();
   });
   it('renders a auto-reminder checkbox', () => {
     render(<CodeRevokeModalWrapper />);

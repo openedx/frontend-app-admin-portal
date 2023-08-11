@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import dayjs from 'dayjs';
 import {
   Alert,
   StatefulButton,
@@ -10,8 +12,6 @@ import {
   Hyperlink,
 } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
-import { connect } from 'react-redux';
-import moment from 'moment';
 
 import { useRequestState } from './LicenseManagementModalHook';
 import { validateEmailTemplateForm } from '../../../../data/validation/email';
@@ -63,7 +63,7 @@ const LicenseManagementRemindModal = ({
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
   const [emailTemplate, setEmailTemplate] = useState(generateEmailTemplate(contactEmail));
-  const isExpired = moment().isAfter(subscription.expirationDate);
+  const isExpired = dayjs().isAfter(subscription.expirationDate);
 
   const buttonLabels = generateRemindModalSubmitLabel(totalToRemind);
 

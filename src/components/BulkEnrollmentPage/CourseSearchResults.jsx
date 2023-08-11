@@ -5,10 +5,10 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
-import { DataTable, Skeleton } from '@edx/paragon';
+import { Alert, DataTable, Skeleton } from '@edx/paragon';
+import { Error, ErrorOutline } from '@edx/paragon/icons';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 
-import StatusAlert from '../StatusAlert';
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';
 import { BulkEnrollContext } from './BulkEnrollmentContext';
 
@@ -136,20 +136,21 @@ export const BaseCourseSearchResults = (props) => {
 
   if (!isSearchStalled && error) {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        message={`${ERROR_MESSAGE} ${error.message}`}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <p>{ERROR_MESSAGE} {error.message}</p>
+      </Alert>
     );
   }
   if (!isSearchStalled && searchResults?.nbHits === 0) {
     return (
-      <StatusAlert
-        alertType="warning"
-        iconClassName="fa fa-exclamation-circle"
-        message={NO_DATA_MESSAGE}
-      />
+      <Alert
+        variant="warning"
+        icon={ErrorOutline}
+      ><p>{NO_DATA_MESSAGE}</p>
+      </Alert>
     );
   }
 

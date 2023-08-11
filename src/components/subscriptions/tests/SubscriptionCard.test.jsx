@@ -1,10 +1,8 @@
-import {
-  screen,
-} from '@testing-library/react';
+import React from 'react';
+import dayjs from 'dayjs';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import React from 'react';
-import moment from 'moment';
 import {
   breakpoints,
   ResponsiveContext,
@@ -30,11 +28,11 @@ const defaultProps = {
 };
 const responsiveContextValue = { width: breakpoints.extraSmall.maxWidth };
 
-jest.mock('moment', () => (date) => {
+jest.mock('dayjs', () => (date) => {
   if (date) {
-    return jest.requireActual('moment')(date);
+    return jest.requireActual('dayjs')(date);
   }
-  return jest.requireActual('moment')('2020-01-01T00:00:00.000Z');
+  return jest.requireActual('dayjs')('2020-01-01T00:00:00.000Z');
 });
 
 describe('SubscriptionCard', () => {
@@ -45,10 +43,10 @@ describe('SubscriptionCard', () => {
   });
 
   it.each([
-    [moment().add(1, 'days').toISOString(), '1 day'],
-    [moment().add(3, 'days').toISOString(), '3 days'],
-    [moment().add(1, 'hours').toISOString(), '1 hour'],
-    [moment().add(3, 'hours').toISOString(), '3 hours'],
+    [dayjs().add(1, 'days').toISOString(), '1 day'],
+    [dayjs().add(3, 'days').toISOString(), '3 days'],
+    [dayjs().add(1, 'hours').toISOString(), '1 hour'],
+    [dayjs().add(3, 'hours').toISOString(), '3 hours'],
   ])('displays days until plan starts text if there are no actions and the plan is scheduled', (startDate, expectedText) => {
     renderWithRouter(
       <ResponsiveContext.Provider value={responsiveContextValue}>
