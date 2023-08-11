@@ -268,7 +268,7 @@ describe('ManageCodesTabWrapper', () => {
     const store = mockStore({ ...initialState });
     const wrapper = mount(<ManageCodesTabWrapper store={store} />);
     store.clearActions();
-    wrapper.find('.fa-refresh').hostNodes().simulate('click');
+    wrapper.find('[data-testid="refresh-data"]').hostNodes().simulate('click');
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
   });
 

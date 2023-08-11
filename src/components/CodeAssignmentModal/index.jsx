@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, Modal, Form,
+  Button, Modal, Form, Spinner,
 } from '@edx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
@@ -418,7 +418,7 @@ export class BaseCodeAssignmentModal extends React.Component {
             data-testid={SUBMIT_BUTTON_TEST_ID}
           >
             <>
-              {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+              {mode === MODAL_TYPES.assign && submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
               {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
             </>
           </Button>,

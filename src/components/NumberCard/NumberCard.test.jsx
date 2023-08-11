@@ -2,6 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
+import { Groups } from '@edx/paragon/icons';
 
 import NumberCard from './index';
 
@@ -14,7 +15,7 @@ const NumberCardWrapper = props => (
       className="test-class"
       title={10}
       description="This describes the data!"
-      iconClassName="fa fa-users"
+      icon={Groups}
       {...props}
     />
   </MemoryRouter>
@@ -136,10 +137,9 @@ describe('<NumberCard />', () => {
           }]}
         />
       ));
-
       wrapper.setProps({ detailsExpanded: true });
       const action = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes().first();
-      expect(action.find('.fa-spinner').exists()).toBeTruthy();
+      expect(action.find('.ml-2').exists()).toBeTruthy();
     });
   });
 });

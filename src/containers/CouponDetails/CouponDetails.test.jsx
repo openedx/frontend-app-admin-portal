@@ -163,7 +163,7 @@ describe('CouponDetails container', () => {
 
   const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
     const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
-    selectAllCheckbox.simulate('change', { target: { value: isSelected } });
+    selectAllCheckbox.simulate('change', { target: { checked: isSelected } });
     expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
   };
 
@@ -594,8 +594,8 @@ describe('CouponDetails container', () => {
     it('handles individual code selection within table', () => {
       const checkboxes = wrapper.find('table').find('input[type=\'checkbox\']').slice(1);
 
-      checkboxes.first().simulate('change', { target: { value: true } });
-      checkboxes.last().simulate('change', { target: { value: true } });
+      checkboxes.first().simulate('change', { target: { checked: true } });
+      checkboxes.last().simulate('change', { target: { checked: true } });
 
       expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(2);
 

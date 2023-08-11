@@ -7,8 +7,6 @@ $modal-max-width: 650px;
 @import "~@edx/frontend-enterprise-catalog-search";
 @import "~@edx/brand/paragon/overrides";
 
-$fa-font-path: "~font-awesome/fonts";
-@import "~font-awesome/scss/font-awesome";
 
 @import "./components/EnterpriseApp/EnterpriseApp";
 @import "./components/CodeSearchResults/CodeSearchResults";
@@ -26,7 +24,6 @@ $fa-font-path: "~font-awesome/fonts";
 @import "./components/BulkEnrollmentPage/BulkEnrollment";
 @import "./components/Admin/Admin";
 @import "./components/settings/settings";
-
 
 body {
   overflow-x: hidden;

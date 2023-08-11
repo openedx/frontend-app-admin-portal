@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import { Button, Modal, Spinner } from '@edx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
@@ -229,7 +229,7 @@ export class BaseCodeReminderModal extends React.Component {
             className="code-remind-save-btn"
             onClick={handleSubmit(this.handleModalSubmit)}
           >
-            {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+            {mode === REMIND_MODE && submitting && <Spinner animation="border" variant="primary" size="sm" />}
             Remind
           </Button>,
           <SaveTemplateButton
