@@ -14,6 +14,7 @@ import { useContentHighlightsContext } from '../data/hooks';
 import { BUTTON_TEXT, HEADER_TEXT } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import EVENT_NAMES from '../../../eventTracking';
+import { extractHighlightSetUUID } from '../data/utils';
 
 const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   const { openStepperModal } = useContentHighlightsContext();
@@ -28,7 +29,7 @@ const ZeroStateHighlights = ({ enterpriseId, cardClassName }) => {
   const handleNewHighlightClick = () => {
     openStepperModal();
     const trackInfo = {
-      existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
+      existing_highlight_set_uuids: extractHighlightSetUUID(highlightSets),
       existing_highlight_set_count: highlightSets.length,
     };
     sendEnterpriseTrackEvent(

@@ -25,7 +25,7 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const PriceTableCell = ({ row }) => {
+export const PriceTableCell = ({ row }) => {
   const contentPrice = row.original.firstEnrollablePaidSeatPrice;
   if (!contentPrice) {
     return null;

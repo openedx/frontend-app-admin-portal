@@ -1,89 +1,34 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import algoliasearch from 'algoliasearch/lite';
-import {
-  BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT,
-} from '../data/constants';
+import { BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
-import { ContentHighlightsContext } from '../ContentHighlightsContext';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
-import { configuration } from '../../../config';
+import {
+  initialStateValue,
+  ContentHighlightsContext,
+  testHighlightSet,
+} from '../../../data/tests/ContentHighlightsTestData';
+import { initialStateValue as initialEnterpriseAppContextValue } from '../../../data/tests/EnterpriseAppTestData/context';
 import ContentHighlightStepper from '../HighlightStepper/ContentHighlightStepper';
 
-const mockStore = configureMockStore([thunk]);
-
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise',
-    enterpriseId: 'test-enterprise-id',
-  },
-};
-
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: [],
-    },
-  },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
+const ContentHighlightsDashboardWrapper = ({
+  value = initialStateValue,
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  props,
+}) => (
+  <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
+    <ContentHighlightsDashboard {...props} />
+    <ContentHighlightStepper />
+  </ContentHighlightsContext>
 );
 
-const exampleHighlightSet = {
-  uuid: 'fake-uuid',
-  title: 'Test Highlight Set',
-  isPublished: false,
-  highlightedContentUuids: [],
-};
-
-/* eslint-disable react/prop-types */
-const ContentHighlightsDashboardWrapper = ({
-  enterpriseAppContextValue = initialEnterpriseAppContextValue,
-  ...props
-}) => {
-  /* eslint-enable react/prop-types */
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: {},
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <ContentHighlightsContext.Provider value={contextValue}>
-            <ContentHighlightsDashboard {...props} />
-            <ContentHighlightStepper />
-          </ContentHighlightsContext.Provider>
-        </EnterpriseAppContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-};
-
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
-  return {
-    ...originalModule,
-    sendEnterpriseTrackEvent: jest.fn(),
-  };
-});
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {
@@ -103,26 +48,32 @@ describe('<ContentHighlightsDashboard>', () => {
     renderWithRouter(
       <ContentHighlightsDashboardWrapper
         enterpriseAppContextValue={{
-          enterpriseCuration: {
+          value: {
             enterpriseCuration: {
-              highlightSets: [exampleHighlightSet],
+              enterpriseCuration: {
+                highlightSets: [testHighlightSet],
+              },
             },
           },
         }}
       />,
     );
-    expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
+    expect(screen.getByText(testHighlightSet.title)).toBeInTheDocument();
   });
   it('Allows selection between tabs of dashboard, when highlight set exist', () => {
     renderWithRouter(
       <ContentHighlightsDashboardWrapper
-        enterpriseAppContextValue={{
-          enterpriseCuration: {
-            enterpriseCuration: {
-              highlightSets: [exampleHighlightSet],
+        enterpriseAppContextValue={
+          {
+            value: {
+              enterpriseCuration: {
+                enterpriseCuration: {
+                  highlightSets: [testHighlightSet],
+                },
+              },
             },
-          },
-        }}
+          }
+      }
       />,
     );
     const [highlightTab, catalogVisibilityTab] = screen.getAllByRole('tab');

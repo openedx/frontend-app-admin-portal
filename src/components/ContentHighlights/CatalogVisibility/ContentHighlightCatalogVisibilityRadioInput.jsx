@@ -1,7 +1,9 @@
 import {
   Form, Container, Spinner,
 } from '@edx/paragon';
-import { useState, useContext, useEffect } from 'react';
+import {
+  useState, useContext, useEffect, useCallback,
+} from 'react';
 import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -32,21 +34,21 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
    * Sets enterpriseCuration.canOnlyViewHighlightSets to false if there are no highlight sets
    * when the user enters content highlights dashboard.
    */
+  const setDefault = useCallback(async () => {
+    try {
+      await updateEnterpriseCuration({
+        canOnlyViewHighlightSets: false,
+      });
+    } catch (error) {
+      logError(`${error}: Error updating enterprise curation setting with no highlight sets,
+       ContentHighlightCatalogVsibiilityRadioInput`);
+    }
+  }, [updateEnterpriseCuration]);
   useEffect(() => {
     if (highlightSets.length < 1 && canOnlyViewHighlightSets) {
-      const setDefault = async () => {
-        try {
-          await updateEnterpriseCuration({
-            canOnlyViewHighlightSets: false,
-          });
-        } catch (error) {
-          logError(`${error}: Error updating enterprise curation setting with no highlight sets,
-           ContentHighlightCatalogVsibiilityRadioInput`);
-        }
-      };
       setDefault();
     }
-  }, [canOnlyViewHighlightSets, highlightSets.length, updateEnterpriseCuration]);
+  }, [canOnlyViewHighlightSets, highlightSets.length, setDefault, updateEnterpriseCuration]);
   // Sets default radio button based on number of highlight sets && catalog visibility setting
   const catalogVisibilityValue = !canOnlyViewHighlightSets || highlightSets.length < 1
     ? LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value

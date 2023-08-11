@@ -10,6 +10,7 @@ import { useContentHighlightsContext } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
+import { extractHighlightSetUUID } from '../data/utils';
 
 const ContentHighlightCatalogVisibilityAlert = () => {
   const { openStepperModal } = useContentHighlightsContext();
@@ -26,7 +27,7 @@ const ContentHighlightCatalogVisibilityAlert = () => {
   );
   const handleNewHighlightClick = () => {
     const trackInfo = {
-      existing_highlight_set_uuids: highlightSets.map(set => set.uuid),
+      existing_highlight_set_uuids: extractHighlightSetUUID(highlightSets),
       existing_highlight_set_count: highlightSets.length,
     };
     sendEnterpriseTrackEvent(

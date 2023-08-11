@@ -1,32 +1,13 @@
 /* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { useHistory } from 'react-router';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlights from '../ContentHighlights';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
-
-const mockStore = configureMockStore([thunk]);
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: [],
-    },
-  },
-};
-const initialState = {
-  portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-    },
-};
+import { EnterpriseAppContext, initialStateValue } from '../../../data/tests/EnterpriseAppTestData/context';
 
 const ContentHighlightsWrapper = ({
-  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  value = initialStateValue,
   highlightToast = false,
   addToast = false,
   deleteToast = false,
@@ -43,13 +24,9 @@ const ContentHighlightsWrapper = ({
     history.push(location.pathname, { deletedHighlightSet: true });
   }
   return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <ContentHighlights />
-        </EnterpriseAppContext.Provider>
-      </Provider>
-    </IntlProvider>
+    <EnterpriseAppContext value={value}>
+      <ContentHighlights />
+    </EnterpriseAppContext>
   );
 };
 
@@ -74,7 +51,7 @@ describe('<ContentHighlights>', () => {
         },
       },
     };
-    renderWithRouter(<ContentHighlightsWrapper enterpriseAppContextValue={toastMessage} highlightToast />);
+    renderWithRouter(<ContentHighlightsWrapper value={toastMessage} highlightToast />);
     expect(screen.getByText('highlighted', { exact: false })).toBeInTheDocument();
   });
 });

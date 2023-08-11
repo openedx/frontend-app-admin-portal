@@ -1,22 +1,18 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import algoliasearch from 'algoliasearch/lite';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
+import renderer from 'react-test-renderer';
+import HighlightStepperSelectContent, { PriceTableCell } from '../HighlightStepperSelectContentSearch';
 import {
-  testCourseAggregation,
   testCourseData,
-} from '../../data/constants';
-import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { configuration } from '../../../../config';
-import HighlightStepperSelectContent from '../HighlightStepperSelectContentSearch';
+  ContentHighlightsContext,
+  initialStateValue,
+  testCourseAggregation,
+} from '../../../../data/tests/ContentHighlightsTestData';
+import 'jest-canvas-mock';
 
-const mockStore = configureMockStore([thunk]);
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -24,42 +20,6 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
     sendEnterpriseTrackEvent: jest.fn(),
   });
 });
-const enterpriseId = 'test-enterprise-id';
-const initialState = {
-  portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-      enterpriseId,
-    },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
-
-// eslint-disable-next-line react/prop-types
-const HighlightStepperSelectContentSearchWrapper = ({ children, currentSelectedRowIds = [] }) => {
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds,
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          {children}
-        </ContentHighlightsContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-};
 
 const mockCourseData = [...testCourseData];
 
@@ -88,30 +48,83 @@ jest.mock('react-instantsearch-dom', () => ({
 describe('HighlightStepperSelectContentSearch', () => {
   test('renders the search results with nothing selected', async () => {
     renderWithRouter(
-      <HighlightStepperSelectContentSearchWrapper>
+      <ContentHighlightsContext>
         <HighlightStepperSelectContent />
-      </HighlightStepperSelectContentSearchWrapper>,
+      </ContentHighlightsContext>,
     );
     expect(screen.getByText(`Showing ${mockCourseData.length} of ${mockCourseData.length}`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText('Search courses')).toBeInTheDocument();
   });
   test('renders the search results with all selected', async () => {
     renderWithRouter(
-      <HighlightStepperSelectContentSearchWrapper currentSelectedRowIds={testCourseAggregation}>
+      <ContentHighlightsContext value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+      >
         <HighlightStepperSelectContent />
-      </HighlightStepperSelectContentSearchWrapper>,
+      </ContentHighlightsContext>,
     );
     expect(screen.getByText(`${mockCourseData.length} selected (${mockCourseData.length} shown below)`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText('Clear selection')).toBeInTheDocument();
   });
   test('sends track event on click', async () => {
     renderWithRouter(
-      <HighlightStepperSelectContentSearchWrapper currentSelectedRowIds={testCourseAggregation}>
+      <ContentHighlightsContext>
         <HighlightStepperSelectContent />
-      </HighlightStepperSelectContentSearchWrapper>,
+      </ContentHighlightsContext>,
     );
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
     userEvent.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+  test('Control bar toggles', () => {
+    renderWithRouter(
+      <ContentHighlightsContext value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+      >
+        <HighlightStepperSelectContent />
+      </ContentHighlightsContext>,
+    );
+    const controlBar = screen.getByTestId('icon-btn-val-list');
+    expect(controlBar.getAttribute('aria-selected')).toEqual('false');
+    userEvent.click(controlBar);
+    expect(controlBar.getAttribute('aria-selected')).toEqual('true');
+  });
+});
+describe('PriceTableCell', () => {
+  it('renders correctly', () => {
+    const row = {
+      original: {
+        firstEnrollablePaidSeatPrice: 100,
+      },
+    };
+    const tree = renderer
+      .create(<PriceTableCell row={row} />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+  it('returns null', () => {
+    const row = {
+      original: {
+        firstEnrollablePaidSeatPrice: null,
+      },
+    };
+    const tree = renderer
+      .create(<PriceTableCell row={row} />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });

@@ -1,49 +1,29 @@
+/* eslint-disable react/prop-types */
 import { screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import { useState } from 'react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import algoliasearch from 'algoliasearch/lite';
-import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import configureMockStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
   BUTTON_TEXT,
   DEFAULT_ERROR_MESSAGE,
   MAX_HIGHLIGHT_TITLE_LENGTH,
   STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT,
   STEPPER_STEP_TEXT,
-  testCourseAggregation,
-  testCourseData,
 } from '../../data/constants';
-import { configuration } from '../../../../config';
 import ContentHighlightsDashboard from '../../ContentHighlightsDashboard';
-import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
+import 'jest-canvas-mock';
+import {
+  testCourseData,
+  ContentHighlightsContext,
+  initialStateValue,
+  testCourseAggregation,
+  rawTestCourseHighlights,
+} from '../../../../data/tests/ContentHighlightsTestData';
+import { initialStateValue as initialEnterpriseAppContextValue } from '../../../../data/tests/EnterpriseAppTestData/context';
+import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 import ContentHighlightStepper from '../ContentHighlightStepper';
 
-const mockStore = configureMockStore([thunk]);
-
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise',
-    enterpriseId: 'test-enterprise-id',
-  },
-};
-
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: [],
-    },
-  },
-};
-
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
+jest.mock('../../../../data/services/EnterpriseCatalogApiService');
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -53,35 +33,17 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-/* eslint-disable react/prop-types */
+const mockDispatchFn = jest.fn();
+
 const ContentHighlightStepperWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
-  ...props
-}) => {
-  /* eslint-enable react/prop-types */
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: testCourseAggregation,
-    },
-    contentHighlights: [],
-    searchClient,
-  });
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <ContentHighlightsContext.Provider value={contextValue}>
-            <ContentHighlightsDashboard {...props} />
-            <ContentHighlightStepper />
-          </ContentHighlightsContext.Provider>
-        </EnterpriseAppContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-};
+  value = initialStateValue,
+}) => (
+  <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
+    <ContentHighlightsDashboard />
+    <ContentHighlightStepper />
+  </ContentHighlightsContext>
+);
 
 const mockCourseData = [...testCourseData];
 jest.mock('react-instantsearch-dom', () => ({
@@ -119,7 +81,16 @@ describe('<ContentHighlightStepper>', () => {
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
   it('Displays the stepper and test all back and next buttons', () => {
-    renderWithRouter(<ContentHighlightStepperWrapper />);
+    renderWithRouter(<ContentHighlightStepperWrapper value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
     // open stepper --> title
     const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
@@ -196,7 +167,16 @@ describe('<ContentHighlightStepper>', () => {
     expect(screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`)).toBeInTheDocument();
   });
   it('Displays the stepper and closes the stepper on confirm', async () => {
-    renderWithRouter(<ContentHighlightStepperWrapper />);
+    renderWithRouter(<ContentHighlightStepperWrapper value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
 
     const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     userEvent.click(stepper);
@@ -297,6 +277,78 @@ describe('<ContentHighlightStepper>', () => {
     const footerLink = screen.getByText(STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT);
     userEvent.click(footerLink);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+  it('Publishes the content', () => {
+    EnterpriseCatalogApiService.createHighlightSet.mockResolvedValueOnce({
+      data: rawTestCourseHighlights[0],
+    });
+    const updatedEnterpriseAppContextValue = {
+      value: {
+        ...initialEnterpriseAppContextValue,
+        enterpriseCuration: {
+          ...initialEnterpriseAppContextValue.enterpriseCuration,
+          dispatch: mockDispatchFn,
+        },
+      },
+    };
+    renderWithRouter(<ContentHighlightStepperWrapper
+      enterpriseAppContextValue={updatedEnterpriseAppContextValue}
+      value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
+    // open stepper --> title
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    // title --> select content
+    const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
+    userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    // select content --> confirm content
+    const nextButton2 = screen.getByText('Next');
+    userEvent.click(nextButton2);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
+    // confirm content --> publish
+    const nextButton3 = screen.getByText('Publish');
+    userEvent.click(nextButton3);
+
+    expect(EnterpriseCatalogApiService.createHighlightSet).toHaveBeenCalledTimes(1);
+  });
+  it('Clear selection button removing checked items', () => {
+    renderWithRouter(<ContentHighlightStepperWrapper value={
+        {
+          ...initialStateValue,
+          stepperModal: {
+            ...initialStateValue.stepperModal,
+            currentSelectedRowIds: testCourseAggregation,
+          },
+        }
+      }
+    />);
+    // open stepper --> title
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    // title --> select content
+    const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
+    userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+
+    const clearSelectionButton = screen.getByTestId('clear-selection');
+    expect(clearSelectionButton).toBeInTheDocument();
+
+    userEvent.click(clearSelectionButton);
   });
   it('removes title validation after exiting the stepper and revisiting', () => {
     renderWithRouter(<ContentHighlightStepperWrapper />);

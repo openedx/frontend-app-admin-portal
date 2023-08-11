@@ -1,78 +1,44 @@
 /* eslint-disable react/prop-types */
 import { screen } from '@testing-library/dom';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import React, { useState } from 'react';
-import thunk from 'redux-thunk';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import configureMockStore from 'redux-mock-store';
-import { Provider } from 'react-redux';
-import { camelCaseObject } from '@edx/frontend-platform';
+import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
-import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
-  BUTTON_TEXT, ALERT_TEXT, TEST_COURSE_HIGHLIGHTS_DATA, STEPPER_STEP_TEXT,
+  BUTTON_TEXT, ALERT_TEXT, STEPPER_STEP_TEXT,
 } from '../../data/constants';
 import ContentHighlightCatalogVisibilityAlert from '../ContentHighlightCatalogVisibilityAlert';
 import ContentHighlightStepper from '../../HighlightStepper/ContentHighlightStepper';
+import { initialStateValue as initialEnterpriseAppContextValue } from '../../../../data/tests/EnterpriseAppTestData/context';
+import {
+  ContentHighlightsContext, testCourseHighlightsData, initialStateValue,
+} from '../../../../data/tests/ContentHighlightsTestData';
 
-const mockStore = configureMockStore([thunk]);
-const mockHighlightSetResponse = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA);
-
-const initialState = {
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise',
-    enterpriseId: 'test-enterprise-id',
-  },
-};
-
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: mockHighlightSetResponse,
-      canOnlyViewHighlightSets: false,
-    },
-  },
-};
-const noHighlightsAppContext = {
-  ...initialEnterpriseAppContextValue,
-  enterpriseCuration: {
-    enterpriseCuration: {
-      highlightSets: [],
-    },
-  },
-};
+const mockHighlightSetResponse = testCourseHighlightsData;
 
 const ContentHighlightCatalogVisibilityAlertWrapper = ({
-  enterpriseAppContextValue = initialEnterpriseAppContextValue,
-  highlightSets = [],
-  catalogVisibility = false,
-}) => {
-  const contextValue = useState({
-    contentHighlights: highlightSets,
-    catalogVisibilityAlertOpen: catalogVisibility,
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds: {},
+  enterpriseAppContextValue = {
+    value: {
+      ...initialEnterpriseAppContextValue,
+      enterpriseCuration: {
+        ...initialEnterpriseAppContextValue.enterpriseCuration,
+        enterpriseCuration: {
+          ...initialEnterpriseAppContextValue.enterpriseCuration.enterpriseCuration,
+          highlightSets: mockHighlightSetResponse,
+          canOnlyViewHighlightSets: false,
+        },
+      },
     },
-  });
-
-  return (
-    <IntlProvider locale="en">
-      <Provider store={mockStore(initialState)}>
-        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-          <ContentHighlightsContext.Provider value={contextValue}>
-            <ContentHighlightCatalogVisibilityAlert />
-            <ContentHighlightStepper />
-          </ContentHighlightsContext.Provider>
-        </EnterpriseAppContext.Provider>
-      </Provider>
-    </IntlProvider>
-  );
-};
-
+  },
+  value = {
+    ...initialStateValue,
+    contentHighlights: mockHighlightSetResponse,
+  },
+}) => (
+  <ContentHighlightsContext enterpriseAppContextValue={enterpriseAppContextValue} value={value}>
+    <ContentHighlightCatalogVisibilityAlert />
+    <ContentHighlightStepper />
+  </ContentHighlightsContext>
+);
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -84,14 +50,20 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 describe('ContentHighlightCatalogVisibilityAlert', () => {
   it('renders API response failure when catalogVisibilityAlertOpen context true', () => {
     renderWithRouter(
-      <ContentHighlightCatalogVisibilityAlertWrapper catalogVisibility />,
+      <ContentHighlightCatalogVisibilityAlertWrapper value={
+        {
+          ...initialStateValue,
+          catalogVisibilityAlertOpen: true,
+        }
+      }
+      />,
     );
     expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibilityAPI)).toBeTruthy();
     expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibilityAPI)).toBeTruthy();
   });
   it('renders no highlights alert when highlight sets length is 0', () => {
     renderWithRouter(
-      <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={noHighlightsAppContext} />,
+      <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={initialEnterpriseAppContextValue} />,
     );
     expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibility)).toBeTruthy();
     expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibility)).toBeTruthy();
@@ -104,7 +76,7 @@ describe('ContentHighlightCatalogVisibilityAlert', () => {
   });
   it('renders no highlight sets alert and opens stepper modal', () => {
     renderWithRouter(
-      <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={noHighlightsAppContext} />,
+      <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={initialEnterpriseAppContextValue} />,
     );
     expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibility)).toBeTruthy();
     expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibility)).toBeTruthy();

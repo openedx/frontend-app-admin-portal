@@ -3,18 +3,15 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 import { logError } from '@edx/frontend-platform/logging';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { Provider } from 'react-redux';
 import { Route } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import DeleteHighlightSet from '../DeleteHighlightSet';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { EnterpriseAppContext, initialStateValue } from '../../../data/tests/EnterpriseAppTestData/context';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
+import { TEST_ENTERPRISE_SLUG } from '../../../data/tests/constants';
 
 jest.mock('../../../data/services/EnterpriseCatalogApiService');
 
@@ -26,41 +23,30 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-const mockStore = configureMockStore([thunk]);
-const initialState = {
-  portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
-    },
-};
-
 const highlightSetUUID = 'fake-uuid';
 
 const mockDispatchFn = jest.fn();
-const initialEnterpriseAppContextValue = {
-  enterpriseCuration: {
-    dispatch: mockDispatchFn,
-  },
-};
 
-const initialRouterEntry = `/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`;
+const initialRouterEntry = `/${TEST_ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`;
 
 /* eslint-disable react/prop-types */
 const DeleteHighlightSetWrapper = ({
-  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  value = {
+    ...initialStateValue,
+    enterpriseCuration: {
+      ...initialStateValue.enterpriseCuration,
+      dispatch: mockDispatchFn,
+    },
+  },
   ...props
 }) => (
 /* eslint-enable react/prop-types */
-  <IntlProvider locale="en">
-    <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <Route
-          path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
-          render={routeProps => <DeleteHighlightSet {...routeProps} {...props} />}
-        />
-      </EnterpriseAppContext.Provider>
-    </Provider>
-  </IntlProvider>
+  <EnterpriseAppContext value={value}>
+    <Route
+      path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
+      render={routeProps => <DeleteHighlightSet {...routeProps} {...props} />}
+    />
+  </EnterpriseAppContext>
 );
 
 describe('<DeleteHighlightSet />', () => {
@@ -133,7 +119,7 @@ describe('<DeleteHighlightSet />', () => {
     });
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
-    expect(history.location.pathname).toEqual(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`);
+    expect(history.location.pathname).toEqual(`/${TEST_ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.contentHighlights}`);
     expect(history.location.state).toEqual(
       expect.objectContaining({
         deletedHighlightSet: true,
