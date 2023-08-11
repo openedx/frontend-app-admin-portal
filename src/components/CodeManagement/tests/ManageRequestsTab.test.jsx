@@ -3,13 +3,9 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import userEvent from '@testing-library/user-event';
-import {
-  screen,
-  render,
-  cleanup,
-} from '@testing-library/react';
+import { screen, render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import ManageRequestsTab from '../ManageRequestsTab';
@@ -254,7 +250,7 @@ describe('<ManageRequestsTab />', () => {
         loading: false,
         data: {
           results: [{
-            endDate: moment().add(1, 'days').toISOString(),
+            endDate: dayjs().add(1, 'days').toISOString(),
             numUnassigned: 3,
           }],
         },
@@ -274,7 +270,7 @@ describe('<ManageRequestsTab />', () => {
         loading: false,
         data: {
           results: [{
-            endDate: moment().add(1, 'days').toISOString(),
+            endDate: dayjs().add(1, 'days').toISOString(),
             numUnassigned: 3,
           }],
         },
@@ -312,7 +308,7 @@ describe('<ManageRequestsTab />', () => {
         loading: false,
         data: {
           results: [{
-            endDate: moment().add(1, 'days').toISOString(),
+            endDate: dayjs().add(1, 'days').toISOString(),
             numUnassigned: 3,
           }],
         },
@@ -374,7 +370,7 @@ describe('<ManageRequestsTab />', () => {
         loading: false,
         data: {
           results: [{
-            endDate: moment().add(1, 'days').toISOString(),
+            endDate: dayjs().add(1, 'days').toISOString(),
             numUnassigned: 3,
           }],
         },

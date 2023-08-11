@@ -8,6 +8,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
+import { MAX_UNIVERSAL_LINKS } from '../data/constants';
 
 const BUTTON_PROPS = {
   labels: {
@@ -21,8 +22,8 @@ const BUTTON_PROPS = {
 
 const SettingsAccessGenerateLinkButton = ({
   enterpriseUUID,
-  formattedLinkExpirationDate,
   onSuccess,
+  linksCount,
   disabled,
 }) => {
   const [loadingLinkCreation, setLoadingLinkCreation] = useState(false);
@@ -32,10 +33,7 @@ const SettingsAccessGenerateLinkButton = ({
   const handleGenerateLink = async () => {
     setLoadingLinkCreation(true);
     try {
-      if (!formattedLinkExpirationDate) {
-        throw new Error('Attempted to generate universal link without an expiration date');
-      }
-      const response = await LmsApiService.createEnterpriseCustomerLink(enterpriseUUID, formattedLinkExpirationDate);
+      const response = await LmsApiService.createEnterpriseCustomerLink(enterpriseUUID);
       onSuccess(response);
     } catch (error) {
       logError(error);
@@ -50,7 +48,7 @@ const SettingsAccessGenerateLinkButton = ({
 
   return (
     <StatefulButton
-      disabled={disabled}
+      disabled={disabled || linksCount >= MAX_UNIVERSAL_LINKS}
       {...BUTTON_PROPS}
       state={buttonState}
       onClick={handleGenerateLink}
@@ -60,15 +58,11 @@ const SettingsAccessGenerateLinkButton = ({
 
 SettingsAccessGenerateLinkButton.defaultProps = {
   disabled: false,
-  formattedLinkExpirationDate: null,
+  linksCount: 0,
 };
 SettingsAccessGenerateLinkButton.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  formattedLinkExpirationDate: (props) => {
-    if (!props.disabled && !props.formattedLinkExpirationDate) {
-      throw new Error('Please provide a formattedLinkExpirationDate if the button is not disabled!');
-    }
-  },
+  linksCount: PropTypes.number,
   disabled: PropTypes.bool,
   onSuccess: PropTypes.func.isRequired,
 };

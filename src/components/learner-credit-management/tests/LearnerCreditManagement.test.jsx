@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -128,9 +128,9 @@ describe('<LearnerCreditManagement />', () => {
     it('displays correctly', () => {
       const mockOffer = {
         id: mockEnterpriseOfferId,
-        displayName: mockOfferDisplayName,
-        startDatetime: '2022-01-01',
-        endDatetime: '2023-01-01',
+        name: mockOfferDisplayName,
+        start: '2022-01-01',
+        end: '2023-01-01',
       };
       const mockOfferRedemption = {
         created: '2022-02-01',
@@ -160,12 +160,12 @@ describe('<LearnerCreditManagement />', () => {
       render(<LearnerCreditManagementWrapper enterpriseSubsidiesContextValue={subsidiesContextValue} />);
       expect(screen.queryByTestId('404-page-not-found')).toBeFalsy();
       expect(screen.getByText('Learner Credit Management'));
-      expect(screen.getByText(mockOffer.displayName));
+      expect(screen.getByText(mockOffer.name));
 
-      expect(screen.getByText(mockOffer.startDatetime));
-      expect(screen.getByText(mockOffer.endDatetime));
+      expect(screen.getByText(mockOffer.start));
+      expect(screen.getByText(mockOffer.end));
 
-      expect(screen.getByText(`Data last updated on ${moment(mockOfferRedemption.created).format(DATE_FORMAT)}`, { exact: false }));
+      expect(screen.getByText(`Data last updated on ${dayjs(mockOfferRedemption.created).format(DATE_FORMAT)}`, { exact: false }));
 
       expect(screen.getByTestId('learner-credit-allocation--is-loading')).toHaveTextContent('is NOT loading');
       expect(screen.getByTestId('learner-credit-allocation--table-data')).toHaveTextContent(mockOfferRedemption.enterpriseEnrollmentId);

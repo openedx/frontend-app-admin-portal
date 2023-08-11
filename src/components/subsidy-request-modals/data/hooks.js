@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
-import moment from 'moment';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 
 /**
@@ -91,11 +91,11 @@ export const useApplicableCoupons = ({
 
   useEffect(() => {
     if (applicableCatalogs.length > 0 && coupons.results.length > 0) {
-      const now = moment();
+      const now = dayjs();
       const applicableCoups = coupons.results.filter(
         coupon => applicableCatalogs.includes(
           coupon.enterpriseCatalogUuid,
-        ) && moment(coupon.endDate) > now && coupon.numUnassigned > 0,
+        ) && dayjs(coupon.endDate) > now && coupon.numUnassigned > 0,
       );
 
       setApplicableCoupons(applicableCoups);

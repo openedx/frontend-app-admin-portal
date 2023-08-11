@@ -384,6 +384,38 @@ describe('<ReportingConfigForm />', () => {
     wrapper.find('.form-control').forEach(input => input.simulate('blur'));
     expect(wrapper.find('input#encryptedPassword').hasClass('is-invalid')).toBeTruthy();
   });
+  it('Password is not required while updating if it is already present and delivery method is email', async () => {
+    const updateConfigMock = jest.fn().mockResolvedValue();
+    const initialConfig = {
+      ...defaultConfig,
+    };
+    initialConfig.encryptedPassword = 'some_pass';
+    initialConfig.pgpEncryptionKey = '';
+    initialConfig.hourOfDay = 4;
+    const requiredFields = ['hourOfDay', 'emailRaw'];
+    const wrapper = mount(
+      <ReportingConfigForm
+        config={initialConfig}
+        createConfig={createConfig}
+        updateConfig={updateConfigMock}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />,
+    );
+
+    const updatedFormData = new FormData();
+    updatedFormData.append('deliveryMethod', 'email');
+    updatedFormData.append('pgpEncryptionKey', '');
+    updatedFormData.append('encryptedPassword', '');
+
+    const invalidFields = await wrapper.instance().validateReportingForm(
+      initialConfig,
+      updatedFormData,
+      requiredFields,
+    );
+    expect('encryptedPassword' in invalidFields).toBe(false);
+  });
   it('Submit enterprise uuid upon report config creation', async () => {
     const wrapper = mount((
       <ReportingConfigForm

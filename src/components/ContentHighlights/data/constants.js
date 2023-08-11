@@ -157,6 +157,6 @@ export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
 export const DEFAULT_ERROR_MESSAGE = {
   EMPTY_HIGHLIGHT_SET: 'There is no highlighted content for this highlight collection.',
   // eslint-disable-next-line quotes
-  EMPTY_SELECTEDROWIDS: `You don't have any highlighted content selected. Go back to the previous step to select content.`,
+  EMPTY_SELECTEDROWIDS: 'You don\'t have any highlighted content selected. Go back to the previous step to select content.',
   EXCEEDS_HIGHLIGHT_TITLE_LENGTH: `Titles may only be ${MAX_HIGHLIGHT_TITLE_LENGTH} characters or less`,
 };

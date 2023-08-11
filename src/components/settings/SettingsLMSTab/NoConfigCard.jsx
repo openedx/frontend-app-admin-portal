@@ -8,11 +8,11 @@ import { Add, Error } from '@edx/paragon/icons';
 import cardImage from '../../../data/images/NoConfig.svg';
 
 const NoConfigCard = ({
-  enterpriseSlug, setShowNoConfigCard, createNewConfig, hasSSOConfig,
+  enterpriseSlug, setShowNoConfigCard, openLmsStepper, hasSSOConfig,
 }) => {
   const onClick = () => {
     setShowNoConfigCard(false);
-    createNewConfig(true);
+    openLmsStepper();
   };
 
   return (
@@ -52,7 +52,7 @@ const NoConfigCard = ({
 NoConfigCard.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   setShowNoConfigCard: PropTypes.func.isRequired,
-  createNewConfig: PropTypes.func.isRequired,
+  openLmsStepper: PropTypes.func.isRequired,
   hasSSOConfig: PropTypes.bool.isRequired,
 };
 

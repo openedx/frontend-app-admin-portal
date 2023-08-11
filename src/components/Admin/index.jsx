@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Icon } from '@edx/paragon';
+import { Alert, Icon } from '@edx/paragon';
+import { Error, Undo } from '@edx/paragon/icons';
 import { Link } from 'react-router-dom';
 
-import { getConfig } from '@edx/frontend-platform/config';
 import Hero from '../Hero';
-import StatusAlert from '../StatusAlert';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
@@ -25,7 +24,6 @@ import { formatTimestamp } from '../../utils';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
-import { isExperimentVariant } from '../../optimizely';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -227,7 +225,7 @@ class Admin extends React.Component {
 
     return (
       <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
-        <Icon className="fa fa-undo mr-2" />
+        <Icon src={Undo} className="mr-2" />
         Reset to {this.getMetadataForAction().title}
       </Link>
     );
@@ -244,7 +242,7 @@ class Admin extends React.Component {
     const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
     return (
       <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
-        <Icon className="fa fa-undo mr-2" />
+        <Icon src={Undo} className="mr-2" />
         Reset Filters
       </Link>
     );
@@ -252,24 +250,26 @@ class Admin extends React.Component {
 
   renderErrorMessage() {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to load overview"
-        message={`Try refreshing your screen (${this.props.error.message})`}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <Alert.Heading>Hey, nice to see you</Alert.Heading>
+        <p>Try refreshing your screen {this.props.error.message}</p>
+      </Alert>
     );
   }
 
   renderCsvErrorMessage(message) {
     return (
-      <StatusAlert
+      <Alert
+        variant="danger"
         className="mt-3"
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to Generate CSV Report"
-        message={`Please try again. (${message})`}
-      />
+        icon={Error}
+      >
+        <Alert.Heading>Unable to generate CSV report</Alert.Heading>
+        <p>Please try again. {message}</p>
+      </Alert>
     );
   }
 
@@ -297,11 +297,6 @@ class Admin extends React.Component {
       searchDateQuery: queryParams.get('search_start_date') || '',
     };
 
-    const config = getConfig();
-
-    // Only users buckted in `Variation 1` can see the Subscription Management UI on LPR.
-    const isExperimentVariation1 = isExperimentVariant(config.EXPERIMENT_1_ID, config.EXPERIMENT_1_VARIANT_1_ID);
-
     return (
       <main role="main" className="learner-progress-report">
         {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
@@ -325,16 +320,13 @@ class Admin extends React.Component {
                 )}
               </div>
 
-              {isExperimentVariation1
-                  && (
-                  <div className="row">
-                    <div className="col mb-4.5">
-                      <SubscriptionData enterpriseId={enterpriseId}>
-                        <EmbeddedSubscription />
-                      </SubscriptionData>
-                    </div>
-                  </div>
-                  )}
+              <div className="row">
+                <div className="col mb-4.5">
+                  <SubscriptionData enterpriseId={enterpriseId}>
+                    <EmbeddedSubscription />
+                  </SubscriptionData>
+                </div>
+              </div>
 
               <div className="row mt-4">
                 <div className="col">

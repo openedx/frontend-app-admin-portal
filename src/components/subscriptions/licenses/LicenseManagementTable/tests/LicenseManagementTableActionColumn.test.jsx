@@ -6,7 +6,7 @@ import {
   cleanup,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -51,7 +51,7 @@ const basicProps = {
   subscription: {
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
     enterpriseCustomerUuid: TEST_ENTERPRISE_CUSTOMER_UUID,
-    expirationDate: moment().add(1, 'days').format(),
+    expirationDate: dayjs().add(1, 'days').format(),
     isRevocationCapEnabled: false,
     revocations: {
       applied: 0,

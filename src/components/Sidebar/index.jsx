@@ -3,13 +3,10 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { faFile, faLifeRing } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCreditCard, faTags, faChartLine, faChartBar, faCog,
-} from '@fortawesome/free-solid-svg-icons';
 import { Icon } from '@edx/paragon';
-import { MoneyOutline, BookOpen } from '@edx/paragon/icons';
+import {
+  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
+} from '@edx/paragon/icons';
 
 import { getConfig } from '@edx/frontend-platform/config';
 import IconLink from './IconLink';
@@ -73,25 +70,25 @@ const Sidebar = ({
     {
       title: 'Learner Progress Report',
       to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
-      icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
+      icon: <Icon src={TrendingUp} fixedWidth />,
     },
     {
       title: 'Analytics',
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
-      icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
+      icon: <Icon src={InsertChartOutlined} fixedWidth />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
     },
     {
       title: 'Code Management',
       to: `${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`,
-      icon: <FontAwesomeIcon icon={faTags} fixedWidth />,
+      icon: <Icon src={Tag} fixedWidth />,
       hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
       notification: !!subsidyRequestsCounts.couponCodes,
     },
     {
       title: 'Subscription Management',
       to: `${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-      icon: <FontAwesomeIcon icon={faCreditCard} fixedWidth />,
+      icon: <Icon src={CreditCard} fixedWidth />,
       hidden: !enableSubscriptionManagementScreen,
       notification: !!subsidyRequestsCounts.subscriptionLicenses,
     },
@@ -112,20 +109,20 @@ const Sidebar = ({
     {
       title: 'Reporting Configurations',
       to: `${baseUrl}/admin/${ROUTE_NAMES.reporting}`,
-      icon: <FontAwesomeIcon icon={faFile} fixedWidth />,
+      icon: <Icon src={Description} fixedWidth />,
       hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
     },
     {
       title: 'Settings',
       id: TOUR_TARGETS.SETTINGS_SIDEBAR,
       to: `${baseUrl}/admin/${ROUTE_NAMES.settings}`,
-      icon: <FontAwesomeIcon icon={faCog} fixedWidth />,
+      icon: <Icon src={Settings} fixedWidth />,
     },
     // NOTE: keep "Support" link the last nav item
     {
       title: 'Support',
       to: configuration.ENTERPRISE_SUPPORT_URL,
-      icon: <FontAwesomeIcon icon={faLifeRing} fixedWidth />,
+      icon: <Icon src={Support} fixedWidth />,
       hidden: !features.SUPPORT,
       external: true,
     },

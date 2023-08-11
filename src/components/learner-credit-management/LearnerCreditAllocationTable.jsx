@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import {
   DataTable, useMediaQuery, breakpoints,
 } from '@edx/paragon';
-import moment from 'moment';
 
 import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
+import { getCourseProductLineText } from '../../utils';
 
 export const PAGE_SIZE = 20;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
@@ -16,8 +17,11 @@ const LearnerCreditAllocationTable = ({
   tableData,
   fetchTableData,
   enterpriseUUID,
+  budgetType,
 }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
+  const defaultFilter = budgetType ? [{ id: 'courseProductLine', value: budgetType }] : [];
+
   return (
     <DataTable
       isSortable
@@ -49,7 +53,13 @@ const LearnerCreditAllocationTable = ({
         {
           Header: 'Date Spent',
           accessor: 'enrollmentDate',
-          Cell: ({ row }) => moment(row.values.enrollmentDate).format('MMMM DD, YYYY'),
+          Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
+          disableFilters: true,
+        },
+        {
+          Header: 'Product',
+          accessor: 'courseProductLine',
+          Cell: ({ row }) => getCourseProductLineText(row.values.courseProductLine),
           disableFilters: true,
         },
       ]}
@@ -62,6 +72,7 @@ const LearnerCreditAllocationTable = ({
         sortBy: [
           { id: 'enrollmentDate', desc: true },
         ],
+        filters: defaultFilter,
       }}
       fetchData={fetchTableData}
       data={tableData.results}
@@ -79,6 +90,9 @@ const LearnerCreditAllocationTable = ({
     />
   );
 };
+LearnerCreditAllocationTable.defaultProps = {
+  budgetType: null,
+};
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
@@ -89,11 +103,13 @@ LearnerCreditAllocationTable.propTypes = {
       courseTitle: PropTypes.string.isRequired,
       courseListPrice: PropTypes.number.isRequired,
       enrollmentDate: PropTypes.string.isRequired,
+      courseProductLine: PropTypes.string.isRequired,
     })),
     itemCount: PropTypes.number.isRequired,
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
+  budgetType: PropTypes.string,
 };
 
 export default LearnerCreditAllocationTable;

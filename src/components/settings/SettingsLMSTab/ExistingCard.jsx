@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRouteMatch } from 'react-router-dom';
 import {
-  useRouteMatch,
-} from 'react-router-dom';
-import {
-  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover,
+  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon,
+  IconButton, Image, OverlayTrigger, Popover,
 } from '@edx/paragon';
 import {
   CheckCircle, Error, MoreVert, Sync,
@@ -36,6 +35,7 @@ const ExistingCard = ({
   const redirectPath = `${useRouteMatch().url}`;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
+  const showErrorReporting = isEdxStaff && features.FEATURE_INTEGRATION_REPORTING;
 
   const toggleConfig = async (id, channelType, toggle) => {
     const configOptions = {
@@ -101,7 +101,7 @@ const ExistingCard = ({
   const getCardButton = () => {
     switch (getStatus(config)) {
       case ACTIVE:
-        if (isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) {
+        if (showErrorReporting) {
           return <Button variant="outline-primary" href={`${redirectPath}${config.channelCode}/${config.id}`}>View sync history</Button>;
         }
         return null;
@@ -180,7 +180,7 @@ const ExistingCard = ({
                 alt="Actions dropdown"
               />
               <Dropdown.Menu>
-                {(isInactive && isEdxStaff && features.FEATURE_INTEGRATION_REPORTING) && (
+                {(isInactive && showErrorReporting) && (
                   <div className="d-flex">
                     <Dropdown.Item
                       href={`${redirectPath}${config.channelCode}/${config.id}`}
@@ -227,7 +227,7 @@ const ExistingCard = ({
             <div className="ml-1 d-flex">
               <Image
                 className="lms-icon mr-2"
-                src={channelMapping[config.channelCode].icon}
+                src={channelMapping[config.channelCode]?.icon}
               />
               <div className="lms-card-title-overflow">
                 <span>{config.displayName}</span>
@@ -262,8 +262,12 @@ const ExistingCard = ({
         />
         <Card.Footer className="pt-2 pb-2 justify-content-between">
           <div className="x-small d-flex align-items-center">
-            <Icon className="small-icon" src={Sync} />
-            {getLastSync()}
+            {showErrorReporting && (
+            <>
+              <Icon className="small-icon" src={Sync} />
+              {getLastSync()}
+            </>
+            )}
           </div>
           {getCardButton()}
         </Card.Footer>

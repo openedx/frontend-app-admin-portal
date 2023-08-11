@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   Row, Col, Toast, Button,
 } from '@edx/paragon';
@@ -37,7 +37,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
           <div className="mt-3 d-flex align-items-center">
             <div className="mr-5">
               <span>
-                {moment(subscription.startDate).format('MMMM D, YYYY')} - {moment(subscription.expirationDate).format('MMMM D, YYYY')}
+                {dayjs(subscription.startDate).format('MMMM D, YYYY')} - {dayjs(subscription.expirationDate).format('MMMM D, YYYY')}
               </span>
             </div>
           </div>

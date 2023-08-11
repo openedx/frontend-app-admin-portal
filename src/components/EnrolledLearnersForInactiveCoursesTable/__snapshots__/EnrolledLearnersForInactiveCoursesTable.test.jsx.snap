@@ -2,30 +2,35 @@
 
 exports[`EnrolledLearnersForInactiveCoursesTable renders empty state correctly 1`] = `
 <div
-  className="alert fade alert-warning show"
-  hidden={false}
+  className="fade alert-content alert alert-warning show"
   role="alert"
 >
+  <span
+    className="pgn__icon alert-icon"
+  >
+    <svg
+      aria-hidden={true}
+      fill="none"
+      focusable={false}
+      height={24}
+      role="img"
+      viewBox="0 0 24 24"
+      width={24}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+        fill="currentColor"
+      />
+    </svg>
+  </span>
   <div
-    className="alert-dialog"
+    className="pgn__alert-message-wrapper"
   >
     <div
-      className="d-flex"
+      className="alert-message-content"
     >
-      <div
-        className="icon mr-2"
-      >
-        <span
-          aria-hidden={true}
-          className="fa fa-exclamation-circle"
-          id="Icon1"
-        />
-      </div>
-      <div
-        className="message"
-      >
-        There are no results.
-      </div>
+      There are no results.
     </div>
   </div>
 </div>

@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, Modal, Form,
+  Button, Modal, Form, Spinner,
 } from '@edx/paragon';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+
 import isEmail from 'validator/lib/isEmail';
 
 import BulkAssignFields from './BulkAssignFields';
@@ -27,9 +29,9 @@ import EmailTemplateForm from '../EmailTemplateForm';
 import {
   EMAIL_TEMPLATE_NUDGE_EMAIL_ID,
   ASSIGNMENT_ERROR_TITLES,
-  ASSIGNMENT_MODAL_FIELDS,
   NOTIFY_LEARNERS_CHECKBOX_TEST_ID,
   SUBMIT_BUTTON_TEST_ID,
+  getAssignmentModalFields,
 } from './constants';
 import { getErrors } from './validation';
 
@@ -339,6 +341,7 @@ export class BaseCodeAssignmentModal extends React.Component {
       isBulkAssign,
       submitFailed,
       error,
+      intl: { formatMessage },
     } = this.props;
 
     const { mode, notify } = this.state;
@@ -376,7 +379,7 @@ export class BaseCodeAssignmentModal extends React.Component {
           { notify && (
             <EmailTemplateForm
               emailTemplateType={MODAL_TYPES.assign}
-              fields={ASSIGNMENT_MODAL_FIELDS}
+              fields={getAssignmentModalFields(formatMessage)}
               currentEmail={this.props.currentEmail}
             />
           )}
@@ -415,7 +418,7 @@ export class BaseCodeAssignmentModal extends React.Component {
             data-testid={SUBMIT_BUTTON_TEST_ID}
           >
             <>
-              {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+              {mode === MODAL_TYPES.assign && submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
               {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
             </>
           </Button>,
@@ -478,8 +481,11 @@ BaseCodeAssignmentModal.propTypes = {
     unassignedCodes: PropTypes.number,
     remainingUses: PropTypes.number,
   }),
+
+  // injected
+  intl: intlShape.isRequired,
 };
 
 export default reduxForm({
   form: 'code-assignment-modal-form',
-})(BaseCodeAssignmentModal);
+})(injectIntl(BaseCodeAssignmentModal));

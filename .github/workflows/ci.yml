@@ -9,18 +9,15 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
-        npm: [8.5.x]
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+    - name: Setup Nodejs Env
+      run: echo "NODE_VER=`cat .nvmrc`" >> $GITHUB_ENV
     - name: Setup Nodejs
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node }}
-    - run: npm install -g npm@${{ matrix.npm }}
+        node-version: ${{ env.NODE_VER }}
     - name: Validate no uncommitted package-lock changes
       run: make validate-no-uncommitted-package-lock-changes
     - name: Install dependencies

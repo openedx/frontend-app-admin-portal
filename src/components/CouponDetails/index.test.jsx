@@ -6,6 +6,8 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import { renderWithRouter } from '../test/testUtils';
 import CouponDetails from './index';
 import { COUPON_FILTERS, DEFAULT_TABLE_COLUMNS } from './constants';
@@ -135,9 +137,11 @@ const defaultProps = {
 const CouponDetailsWrapper = props => (
   <MemoryRouter>
     <Provider store={mockStore(reduxState)}>
-      <CouponDetails
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <CouponDetails
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
