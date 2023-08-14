@@ -41,7 +41,8 @@ const SettingsApiCredentialsTab = ({
   const [showToast, setShowToast] = useState(false);
   useEffect(() => {
     fetchExistingAPICredentials();
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <EnterpriseId.Provider value={enterpriseId}>
