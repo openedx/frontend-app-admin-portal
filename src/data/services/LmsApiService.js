@@ -332,19 +332,19 @@ class LmsApiService {
     return LmsApiService.apiClient().patch(url, formData);
   }
 
-  static fetchAPICredentials() {
-    return LmsApiService.apiClient().get(`${LmsApiService.apiCredentialsUrl}`);
+  static fetchAPICredentials(enterpriseUUID) {
+    return LmsApiService.apiClient().get(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/`);
   }
 
-  static createNewAPICredentials() {
-    return LmsApiService.apiClient().post(`${LmsApiService.apiCredentialsUrl}`);
+  static createNewAPICredentials(enterpriseUUID) {
+    return LmsApiService.apiClient().post(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/`);
   }
 
-  static regenerateAPICredentials(redirectURLs) {
+  static regenerateAPICredentials(redirectURLs, enterpriseUUID) {
     const requestData = {
       redirect_uris: redirectURLs,
     };
-    return LmsApiService.apiClient().patch(`${LmsApiService.apiCredentialsUrl}regenerate_credentials/`, requestData);
+    return LmsApiService.apiClient().patch(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/regenerate_credentials/`, requestData);
   }
 }
 

@@ -16,7 +16,7 @@ jest.mock('../../../../data/services/LmsApiService', () => ({
   regenerateAPICredentials: jest.fn(),
 }));
 
-const name = 'The Whinery Spirits Company';
+const name = "edx's Enterprise Credentials";
 const clientId = 'y0TCvOEvvIs6ll95irirzCJ5EaF0RnSbBIIXuNJE';
 const clientSecret = '1G896sVeT67jtjHO6FNd5qFqayZPIV7BtnW01P8zaAd4mDfmBVVVsUP33u';
 const apiClientDocumentation = API_CLIENT_DOCUMENTATION;
@@ -48,6 +48,12 @@ describe('API Credentials Tab', () => {
     jest.clearAllMocks();
   });
 
+  const basicProps = {
+    enterpriseId: 'test-enterprise-uuid',
+  };
+
+  const enterpriseId = 'test-enterprise-uuid';
+
   test('renders zero state page when having no api credentials', async () => {
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
     const mockCreatFn = jest.spyOn(LmsApiService, 'createNewAPICredentials');
@@ -56,7 +62,7 @@ describe('API Credentials Tab', () => {
 
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
     expect(screen.getByText('API credentials')).toBeInTheDocument();
@@ -78,7 +84,7 @@ describe('API Credentials Tab', () => {
     mockFetchFn.mockResolvedValue({ data: returnResponse });
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
 
@@ -101,7 +107,7 @@ describe('API Credentials Tab', () => {
 
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
 
@@ -130,7 +136,7 @@ describe('API Credentials Tab', () => {
 
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
 
@@ -173,7 +179,7 @@ describe('API Credentials Tab', () => {
 
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
 
@@ -194,7 +200,7 @@ describe('API Credentials Tab', () => {
 
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
@@ -209,7 +215,7 @@ describe('API Credentials Tab', () => {
     const confirmedButton = screen.getByText('Regenerate');
     userEvent.click(confirmedButton);
     await waitFor(() => {
-      expect(mockPatchFn).toHaveBeenCalledWith(redirectUris);
+      expect(mockPatchFn).toHaveBeenCalledWith(redirectUris, enterpriseId);
     });
     expect(screen.getByRole('heading', { name: `Application name: ${name}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
@@ -228,7 +234,7 @@ describe('API Credentials Tab', () => {
 
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
@@ -243,7 +249,7 @@ describe('API Credentials Tab', () => {
     const confirmedButton = screen.getByText('Regenerate');
     userEvent.click(confirmedButton);
     await waitFor(() => {
-      expect(mockPatchFn).toHaveBeenCalledWith(redirectUris);
+      expect(mockPatchFn).toHaveBeenCalledWith(redirectUris, enterpriseId);
     });
     expect(screen.getByRole('heading', { name: 'Allowed URIs:' }).toBeInTheDocument);
     expect(screen.getByText('Something went wrong while generating your credentials. Please try again. If the issue continues, contact Enterprise Customer Support.'))
@@ -257,7 +263,7 @@ describe('API Credentials Tab', () => {
 
     render(
       <IntlProvider locale="en">
-        <SettingsApiCredentialsTab />
+        <SettingsApiCredentialsTab {...basicProps} />
       </IntlProvider>,
     );
 
@@ -273,7 +279,7 @@ describe('API Credentials Tab', () => {
     const cancelButton = screen.getByText('Cancel');
     userEvent.click(cancelButton);
     await waitFor(() => {
-      expect(mockPatchFn).not.toHaveBeenCalledWith(redirectUris);
+      expect(mockPatchFn).not.toHaveBeenCalledWith(redirectUris, enterpriseId);
     });
     expect(screen.getByRole('heading', { name: 'Allowed URIs:' }).toBeInTheDocument);
   });

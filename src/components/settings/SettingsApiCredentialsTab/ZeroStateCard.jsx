@@ -2,7 +2,9 @@ import { Card, Button, Icon } from '@edx/paragon';
 import { Add, SpinnerSimple, Error } from '@edx/paragon/icons';
 import React, { useState, useContext } from 'react';
 import cardImage from '../../../data/images/ZeroState.svg';
-import { ZeroStateHandlerContext, ShowSuccessToast, DataContext } from './Context';
+import {
+  ZeroStateHandlerContext, ShowSuccessToast, DataContext, EnterpriseId,
+} from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { API_TERMS_OF_SERVICE } from '../data/constants';
 
@@ -12,11 +14,11 @@ const ZeroStateCard = () => {
   const [, setData] = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [displayFailureAlert, setFailureAlert] = useState(false);
-
+  const enterpriseId = useContext(EnterpriseId);
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      const response = await LmsApiService.createNewAPICredentials();
+      const response = await LmsApiService.createNewAPICredentials(enterpriseId);
       setData(response.data);
       setIsLoading(false);
       setZeroState(false);

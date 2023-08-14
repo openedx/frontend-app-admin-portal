@@ -4,7 +4,10 @@ import {
 } from '@edx/paragon';
 import { Warning } from '@edx/paragon/icons';
 import PropTypes from 'prop-types';
-import { DataContext, ErrorContext, ShowSuccessToast } from './Context';
+import {
+  DataContext, ErrorContext,
+  ShowSuccessToast, EnterpriseId,
+} from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { API_CLIENT_DOCUMENTATION } from '../data/constants';
 
@@ -18,9 +21,10 @@ const RegenerateCredentialWarningModal = ({
   const [, setHasError] = useContext(ErrorContext);
   const [, setData] = useContext(DataContext);
   const [, setShowSuccessToast] = useContext(ShowSuccessToast);
+  const enterpriseId = useContext(EnterpriseId);
   const handleOnClickRegeneration = async () => {
     try {
-      const response = await LmsApiService.regenerateAPICredentials(redirectURLs);
+      const response = await LmsApiService.regenerateAPICredentials(redirectURLs, enterpriseId);
       const data = { ...response.data, api_client_documentation: API_CLIENT_DOCUMENTATION };
       setData(data);
       setShowSuccessToast(true);
