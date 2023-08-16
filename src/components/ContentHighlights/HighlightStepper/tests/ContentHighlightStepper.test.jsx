@@ -371,4 +371,33 @@ describe('<ContentHighlightStepper>', () => {
     closeStepper();
     expect(history.location.search).toEqual('');
   });
+  it('Dispatch Called', () => {
+    EnterpriseCatalogApiService.createHighlightSet.mockResolvedValueOnce({
+      data: TEST_COURSE_HIGHLIGHTS_DATA,
+    });
+    const { history } = renderWithRouter(<ContentHighlightStepperWrapper />, {
+      route: '/admin/test-enterprise-slug/highlights?highlightId=123',
+    });
+    // open stepper --> title
+    const stepper = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
+    userEvent.click(stepper);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    // title --> select content
+    const nextButton1 = screen.getByText('Next');
+    const input = screen.getByTestId('stepper-title-input');
+    fireEvent.change(input, { target: { value: 'test-title' } });
+    userEvent.click(nextButton1);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    // select content --> confirm content
+    const nextButton2 = screen.getByText('Next');
+    userEvent.click(nextButton2);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
+    // confirm content --> select content
+    expect(history.location.search).toEqual('?highlightId=123');
+    const publishButton = screen.getByText('Publish');
+    expect(publishButton).toBeInTheDocument();
+    userEvent.click(publishButton);
+    waitFor(() => expect(publishButton).not.toBeInTheDocument());
+    waitFor(() => expect(mockDispatchFn).toHaveBeenCalledTimes(2));
+  });
 });

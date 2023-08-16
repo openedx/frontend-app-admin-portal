@@ -102,7 +102,6 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         addHighlightSet: true,
       });
       closeStepperModal();
-      history.replace(location.pathname, location.state);
       const handlePublishTrackEvent = () => {
         const trackInfo = {
           is_published: transformedHighlightSet.isPublished,
