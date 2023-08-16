@@ -6,7 +6,7 @@ import {
   ZeroStateHandlerContext, ShowSuccessToast, DataContext, EnterpriseId,
 } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
-import { API_TERMS_OF_SERVICE } from '../data/constants';
+import { API_TERMS_OF_SERVICE, API_CLIENT_DOCUMENTATION } from '../data/constants';
 
 const ZeroStateCard = () => {
   const [, setZeroState] = useContext(ZeroStateHandlerContext);
@@ -19,7 +19,8 @@ const ZeroStateCard = () => {
     setIsLoading(true);
     try {
       const response = await LmsApiService.createNewAPICredentials(enterpriseId);
-      setData(response.data);
+      const data = { ...response.data, api_client_documentation: API_CLIENT_DOCUMENTATION };
+      setData(data);
       setIsLoading(false);
       setZeroState(false);
       setShowToast(true);
