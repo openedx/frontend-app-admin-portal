@@ -63,17 +63,14 @@ const applySortByToOptions = (sortBy, options) => {
 };
 
 const applyFiltersToOptions = (filters, options) => {
-  const userSearchQuery = filters?.find(filter => filter.id === 'userEmail')?.value;
-  const courseTitleSearchQuery = filters?.find(filter => filter.id === 'courseTitle')?.value;
   const courseProductLineSearchQuery = filters?.find(filter => filter.id === 'courseProductLine')?.value;
-  if (userSearchQuery) {
-    Object.assign(options, { search: userSearchQuery });
-  }
-  if (courseTitleSearchQuery) {
-    Object.assign(options, { searchCourse: courseTitleSearchQuery });
-  }
+  const searchQuery = filters?.find(filter => filter.id.toLowerCase() === 'description')?.value;
+
   if (courseProductLineSearchQuery) {
     Object.assign(options, { courseProductLine: courseProductLineSearchQuery });
+  }
+  if (searchQuery) {
+    Object.assign(options, { searchAll: searchQuery });
   }
 };
 

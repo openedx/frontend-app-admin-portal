@@ -105,8 +105,7 @@ describe('useOfferRedemptions', () => {
           { id: 'enrollmentDate', desc: true },
         ],
         filters: [
-          { id: 'userEmail', value: mockOfferEnrollments[0].user_email },
-          { id: 'courseTitle', value: mockOfferEnrollments[0].course_title },
+          { id: 'Description', value: mockOfferEnrollments[0].user_email },
         ],
       });
     });
@@ -118,8 +117,7 @@ describe('useOfferRedemptions', () => {
       pageSize: 20,
       offerId: mockEnterpriseOffer.id,
       ordering: '-enrollment_date', // default sort order
-      search: mockOfferEnrollments[0].user_email,
-      searchCourse: mockOfferEnrollments[0].course_title,
+      searchAll: mockOfferEnrollments[0].user_email,
       ignoreNullCourseListPrice: true,
     };
     expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(

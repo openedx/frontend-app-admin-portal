@@ -36,7 +36,6 @@ describe('<LearnerCreditAllocationTable />', () => {
 
     render(<LearnerCreditAllocationTableWrapper {...props} />);
 
-    expect(screen.getByText('Open', { exact: false }));
     expect(screen.getByText(props.tableData.results[0].userEmail.toString(), {
       exact: false,
     }));

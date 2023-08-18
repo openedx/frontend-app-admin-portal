@@ -16,12 +16,6 @@ const getDescriptionAccessor = row => ({
   userEmail: row.userEmail,
 });
 
-function renderDescriptionCell(enterpriseUUID) {
-  return function DescriptionCellRenderer(props) {
-    return <DescriptionCell {...props} enterpriseUUID={enterpriseUUID} />;
-  };
-}
-
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
 const LearnerCreditAllocationTable = ({
@@ -59,11 +53,13 @@ const LearnerCreditAllocationTable = ({
           accessor: getDescriptionAccessor,
           // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
           Cell: ({ row }) => (
-          <>
-            <div>{row.original.courseTitle}</div>
-            <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
-          </>),
-          disableFilters: true,
+            <>
+              <div>{row.original.courseTitle}</div>
+              <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
+            </>
+          ),
+          disableFilters: false,
+          disableSortBy: true,
         },
         {
           Header: 'Amount',
