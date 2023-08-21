@@ -41,26 +41,26 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
         let activeSubsidyFound = false;
         if (results.length !== 0) {
           let subsidy = results[0];
+          const offerData = [];
+          let activeSubsidyData = {};
           for (let i = 0; i < results.length; i++) {
             subsidy = results[i];
             activeSubsidyFound = source === 'ecommerceApi'
               ? subsidy.isCurrent
               : subsidy.isActive;
             if (activeSubsidyFound === true) {
-              break;
+              activeSubsidyData = {
+                id: subsidy.uuid || subsidy.id,
+                name: subsidy.title || subsidy.displayName,
+                start: subsidy.activeDatetime || subsidy.startDatetime,
+                end: subsidy.expirationDatetime || subsidy.endDatetime,
+                isCurrent: activeSubsidyFound,
+              };
+              offerData.push(activeSubsidyData);
+              setCanManageLearnerCredit(true);
             }
           }
-          if (activeSubsidyFound === true) {
-            const offerData = {
-              id: subsidy.uuid || subsidy.id,
-              name: subsidy.title || subsidy.displayName,
-              start: subsidy.activeDatetime || subsidy.startDatetime,
-              end: subsidy.expirationDatetime || subsidy.endDatetime,
-              isCurrent: activeSubsidyFound,
-            };
-            setOffers([offerData]);
-            setCanManageLearnerCredit(true);
-          }
+          setOffers(offerData);
         }
       } catch (error) {
         logError(error);
