@@ -14,3 +14,5 @@ export const LOW_REMAINING_BALANCE_PERCENT_THRESHOLD = 0.75;
 export const NO_BALANCE_REMAINING_DOLLAR_THRESHOLD = 100;
 
 export const DATE_FORMAT = 'MMMM DD, YYYY';
+
+export const EXEC_ED_OFFER_TYPE = 'learner_credit';
