@@ -15,6 +15,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BudgetCard from '../BudgetCard';
 import { useOfferSummary, useOfferRedemptions } from '../data/hooks';
+import { EXEC_ED_OFFER_TYPE } from '../data/constants';
 
 jest.mock('../data/hooks');
 useOfferSummary.mockReturnValue({
@@ -51,6 +52,7 @@ const mockOfferSummary = {
   redeemedFunds: 200,
   remainingFunds: 4800,
   percentUtilized: 0.04,
+  offerType: EXEC_ED_OFFER_TYPE,
 };
 
 const BudgetCardWrapper = ({ ...rest }) => (
@@ -67,7 +69,7 @@ describe('<BudgetCard />', () => {
       jest.clearAllMocks();
     });
 
-    it('displays correctly', () => {
+    it('displays correctly for all offers', () => {
       const mockOffer = {
         id: mockEnterpriseOfferId,
         name: mockOfferDisplayName,
@@ -98,6 +100,50 @@ describe('<BudgetCard />', () => {
       />);
       expect(screen.getByText('Open Courses Marketplace'));
       expect(screen.getByText('Executive Education'));
+      expect(screen.getByText(`$${mockOfferSummary.redeemedFunds.toLocaleString()}`));
+      const formattedString = `${dayjs(mockOffer.start).format('MMMM D, YYYY')} - ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
+      const elementsWithTestId = screen.getAllByTestId('offer-date');
+      const firstElementWithTestId = elementsWithTestId[0];
+      expect(firstElementWithTestId).toHaveTextContent(formattedString);
+    });
+
+    it('displays correctly for Offer type Site', () => {
+      const mockOffer = {
+        id: mockEnterpriseOfferId,
+        name: mockOfferDisplayName,
+        start: '2022-01-01',
+        end: '2023-01-01',
+      };
+      const mockOfferRedemption = {
+        created: '2022-02-01',
+        enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
+      };
+      useOfferSummary.mockReturnValue({
+        isLoading: false,
+        offerSummary: {
+          totalFunds: 5000,
+          redeemedFunds: 200,
+          remainingFunds: 4800,
+          percentUtilized: 0.04,
+          offerType: 'Site',
+        },
+      });
+      useOfferRedemptions.mockReturnValue({
+        isLoading: false,
+        offerRedemptions: {
+          results: [mockOfferRedemption],
+          itemCount: 1,
+          pageCount: 1,
+        },
+        fetchOfferRedemptions: jest.fn(),
+      });
+      render(<BudgetCardWrapper
+        offer={mockOffer}
+        enterpriseUUID={enterpriseUUID}
+        enterpriseSlug={enterpriseId}
+      />);
+      expect(screen.getByText('Open Courses Marketplace'));
+      expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
       expect(screen.getByText(`$${mockOfferSummary.redeemedFunds.toLocaleString()}`));
       const formattedString = `${dayjs(mockOffer.start).format('MMMM D, YYYY')} - ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
       const elementsWithTestId = screen.getAllByTestId('offer-date');
