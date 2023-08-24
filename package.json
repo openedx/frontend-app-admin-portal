@@ -33,7 +33,7 @@
     "@edx/frontend-enterprise-utils": "3.4.0",
     "@edx/frontend-platform": "4.4.0",
     "@edx/paragon": "20.45.5",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
+    "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "algoliasearch": "4.8.3",
     "axios-mock-adapter": "1.19.0",
     "classnames": "2.2.6",
