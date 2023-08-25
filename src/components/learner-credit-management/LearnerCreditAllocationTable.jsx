@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import {
   DataTable, useMediaQuery, breakpoints,
 } from '@edx/paragon';
-import moment from 'moment';
 
 import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
@@ -19,6 +19,8 @@ const LearnerCreditAllocationTable = ({
   enterpriseUUID,
 }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
+  const defaultFilter = [];
+
   return (
     <DataTable
       isSortable
@@ -50,13 +52,14 @@ const LearnerCreditAllocationTable = ({
         {
           Header: 'Date Spent',
           accessor: 'enrollmentDate',
-          Cell: ({ row }) => moment(row.values.enrollmentDate).format('MMMM DD, YYYY'),
+          Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
           disableFilters: true,
         },
         {
           Header: 'Product',
           accessor: 'courseProductLine',
           Cell: ({ row }) => getCourseProductLineText(row.values.courseProductLine),
+          disableFilters: true,
         },
       ]}
       initialTableOptions={{
@@ -68,6 +71,7 @@ const LearnerCreditAllocationTable = ({
         sortBy: [
           { id: 'enrollmentDate', desc: true },
         ],
+        filters: defaultFilter,
       }}
       fetchData={fetchTableData}
       data={tableData.results}

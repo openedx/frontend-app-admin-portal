@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+
 import { logError } from '@edx/frontend-platform/logging';
 import { getConfig } from '@edx/frontend-platform/config';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
-import moment from 'moment';
 
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
@@ -12,6 +15,9 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
   const [offers, setOffers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [canManageLearnerCredit, setCanManageLearnerCredit] = useState(false);
+
+  dayjs.extend(isSameOrBefore);
+  dayjs.extend(isSameOrAfter);
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,25 +38,29 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
           results = camelCaseObject(ecommerceApiResponse.data.results);
           source = 'ecommerceApi';
         }
-
+        let activeSubsidyFound = false;
         if (results.length !== 0) {
-          const subsidy = results[0];
-          const isCurrent = source === 'ecommerceApi'
-            ? subsidy.isCurrent
-            : moment().isSameOrBefore(subsidy.expirationDatetime)
-            && moment().isSameOrAfter(subsidy.activeDatetime);
-          const offerData = {
-            id: subsidy.uuid || subsidy.id,
-            name: subsidy.title || subsidy.displayName,
-            start: subsidy.activeDatetime || subsidy.startDatetime,
-            end: subsidy.expirationDatetime || subsidy.endDatetime,
-            isCurrent,
-          };
-          setOffers([offerData]);
-        }
-        // We only released learner credit management to customers with 1 offer for the MVP.
-        if (results.length === 1) {
-          setCanManageLearnerCredit(true);
+          let subsidy = results[0];
+          const offerData = [];
+          let activeSubsidyData = {};
+          for (let i = 0; i < results.length; i++) {
+            subsidy = results[i];
+            activeSubsidyFound = source === 'ecommerceApi'
+              ? subsidy.isCurrent
+              : subsidy.isActive;
+            if (activeSubsidyFound === true) {
+              activeSubsidyData = {
+                id: subsidy.uuid || subsidy.id,
+                name: subsidy.title || subsidy.displayName,
+                start: subsidy.activeDatetime || subsidy.startDatetime,
+                end: subsidy.expirationDatetime || subsidy.endDatetime,
+                isCurrent: activeSubsidyFound,
+              };
+              offerData.push(activeSubsidyData);
+              setCanManageLearnerCredit(true);
+            }
+          }
+          setOffers(offerData);
         }
       } catch (error) {
         logError(error);

@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -8,7 +9,6 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
-import moment from 'moment';
 
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRevokeModal from '../LicenseManagementRevokeModal';
@@ -30,7 +30,7 @@ const basicProps = {
   onSubmit: onSubmitMock,
   subscription: {
     uuid: 'lorem',
-    expirationDate: moment().add(1, 'days').format(), // tomorrow
+    expirationDate: dayjs().add(1, 'days').format(), // tomorrow
     isRevocationCapEnabled: false,
     revocations: {
       applied: 1,

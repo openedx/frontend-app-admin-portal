@@ -2,17 +2,18 @@ import _ from 'lodash';
 import React, {
   useCallback, useMemo, useContext, useState,
 } from 'react';
+import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
+import dayjs from 'dayjs';
+
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import {
   DataTable,
   TextFilter,
   CheckboxFilter,
   Toast,
 } from '@edx/paragon';
-import debounce from 'lodash.debounce';
-import moment from 'moment';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import PropTypes from 'prop-types';
 import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';
 import { SubscriptionDetailContext } from '../../../subscriptions/SubscriptionDetailContextProvider';
 import {
@@ -77,7 +78,7 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
     setUserStatusFilter,
   } = useContext(SubscriptionDetailContext);
 
-  const isExpired = moment().isAfter(subscription.expirationDate);
+  const isExpired = dayjs().isAfter(subscription.expirationDate);
 
   const sendStatusFilterEvent = useCallback((statusFilter) => {
     sendEnterpriseTrackEvent(

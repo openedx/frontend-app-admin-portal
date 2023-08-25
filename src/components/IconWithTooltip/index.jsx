@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OverlayTrigger, Tooltip, useWindowSize } from '@edx/paragon';
+import {
+  Icon, OverlayTrigger, Tooltip, useWindowSize,
+} from '@edx/paragon';
 
 const IconWithTooltip = ({
   icon, altText, tooltipText, placementSm = 'right', placementLg = 'top', trigger = ['hover', 'focus'], breakpoint = 768, iconClassNames = 'ml-1',
@@ -19,13 +20,13 @@ const IconWithTooltip = ({
         </Tooltip>
       )}
     >
-      <FontAwesomeIcon className={iconClassNames} icon={icon} alt={altText} />
+      <Icon className={iconClassNames} src={icon} alt={altText} />
     </OverlayTrigger>
   );
 };
 
 IconWithTooltip.propTypes = {
-  icon: PropTypes.shape({}).isRequired,
+  icon: PropTypes.func.isRequired,
   altText: PropTypes.string.isRequired,
   tooltipText: PropTypes.string.isRequired,
   // These props have defaults above

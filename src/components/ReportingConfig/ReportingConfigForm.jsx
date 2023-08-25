@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon, Button,
+  ValidationFormGroup, Input, StatefulButton, Icon, Button, Spinner,
 } from '@edx/paragon';
+import { Check, Close, Download } from '@edx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';
@@ -419,10 +420,10 @@ class ReportingConfigForm extends React.Component {
                 error: 'Error',
               }}
               icons={{
-                default: <Icon className="fa fa-download" />,
-                pending: <Icon className="fa fa-spinner fa-spin" />,
-                complete: <Icon className="fa fa-check" />,
-                error: <Icon className="fa fa-times" />,
+                default: <Icon src={Download} />,
+                pending: <Spinner animation="border" variant="light" size="sm" />,
+                complete: <Icon src={Check} />,
+                error: <Icon src={Close} />,
               }}
               disabledStates={[SUBMIT_STATES.PENDING]}
               className="ml-3 col"
@@ -434,7 +435,7 @@ class ReportingConfigForm extends React.Component {
               className="btn-outline-danger  mr-3"
               onClick={() => this.props.deleteConfig(config.uuid)}
             >
-              <Icon className="fa fa-times danger" /> Delete
+              <Icon src={Close} className="danger" /> Delete
             </Button>
           )}
         </div>
