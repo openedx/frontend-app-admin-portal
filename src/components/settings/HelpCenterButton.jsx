@@ -1,10 +1,8 @@
 import React from 'react';
 import { Hyperlink } from '@edx/paragon';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 const HelpCenterButton = ({
-  variant,
   url,
   children,
   ...rest
@@ -15,7 +13,7 @@ const HelpCenterButton = ({
     <Hyperlink
       {...rest}
       target="_blank"
-      className={classNames('btn', `btn-${variant}`)}
+      className="btn btn-outline-primary side-button"
       destination={destinationUrl}
     >
       {children}
@@ -25,12 +23,10 @@ const HelpCenterButton = ({
 
 HelpCenterButton.defaultProps = {
   children: 'Help Center',
-  variant: 'outline-primary',
 };
 
 HelpCenterButton.propTypes = {
   children: PropTypes.node,
-  variant: PropTypes.string,
   url: PropTypes.string,
 };
 

@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ActionRow, Toast } from '@edx/paragon';
 import ZeroStateCard from './ZeroStateCard';
-import APICredentialsPage from './APICredrentialsPage';
+import APICredentialsPage from './APICredentialsPage';
 import FailedAlert from './FailedAlert';
 import { HELP_CENTER_API_GUIDE, API_CLIENT_DOCUMENTATION } from '../data/constants';
-import HelpCenterButton from './HelpCenterButton';
+import HelpCenterButton from '../HelpCenterButton';
 import {
   ZeroStateHandlerContext, ErrorContext, ShowSuccessToast, DataContext, EnterpriseId,
 } from './Context';

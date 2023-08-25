@@ -66,9 +66,9 @@ describe('API Credentials Tab', () => {
       </IntlProvider>,
     );
     expect(screen.getByText('API credentials')).toBeInTheDocument();
-    expect(screen.queryByText("You don't hava API credentials yet.")).toBeNull();
+    expect(screen.queryByText("You don't have API credentials yet.")).toBeNull();
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
-    expect(screen.getByText("You don't hava API credentials yet.")).toBeInTheDocument();
+    expect(screen.getByText("You don't have API credentials yet.")).toBeInTheDocument();
     expect(screen.queryByText('Help Center: EdX Enterprise API Guide')).toBeInTheDocument();
     const helpLink = screen.getByText('Help Center: EdX Enterprise API Guide');
     expect(helpLink.getAttribute('href')).toBe(HELP_CENTER_API_GUIDE);

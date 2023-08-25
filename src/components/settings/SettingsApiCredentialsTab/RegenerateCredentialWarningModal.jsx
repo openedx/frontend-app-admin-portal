@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
-  ActionRow, Button, ModalDialog, useToggle, Icon,
+  ActionRow, Button, Icon, ModalDialog, useToggle,
 } from '@edx/paragon';
 import { Warning } from '@edx/paragon/icons';
-import PropTypes from 'prop-types';
+
 import {
   DataContext, ErrorContext,
   ShowSuccessToast, EnterpriseId,
@@ -14,7 +15,7 @@ import { API_CLIENT_DOCUMENTATION } from '../data/constants';
 const RegenerateCredentialWarningModal = ({
   modalSize,
   modalVariant,
-  redirectURLs,
+  redirectURIs,
   setRedirectURIs,
 }) => {
   const [isOn, setOn, setOff] = useToggle(false);
@@ -24,7 +25,7 @@ const RegenerateCredentialWarningModal = ({
   const enterpriseId = useContext(EnterpriseId);
   const handleOnClickRegeneration = async () => {
     try {
-      const response = await LmsApiService.regenerateAPICredentials(redirectURLs, enterpriseId);
+      const response = await LmsApiService.regenerateAPICredentials(redirectURIs, enterpriseId);
       const data = { ...response.data, api_client_documentation: API_CLIENT_DOCUMENTATION };
       setData(data);
       setShowSuccessToast(true);
@@ -97,7 +98,7 @@ RegenerateCredentialWarningModal.defaultProps = {
 RegenerateCredentialWarningModal.propTypes = {
   modalSize: PropTypes.string,
   modalVariant: PropTypes.string,
-  redirectURLs: PropTypes.string.isRequired,
+  redirectURIs: PropTypes.string.isRequired,
   setRedirectURIs: PropTypes.func.isRequired,
 };
 

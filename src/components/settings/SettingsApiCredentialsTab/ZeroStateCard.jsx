@@ -1,6 +1,9 @@
-import { Card, Button, Icon } from '@edx/paragon';
-import { Add, SpinnerSimple, Error } from '@edx/paragon/icons';
 import React, { useState, useContext } from 'react';
+import {
+  Button, Card, Icon, Spinner,
+} from '@edx/paragon';
+import { Add, Error } from '@edx/paragon/icons';
+
 import cardImage from '../../../data/images/ZeroState.svg';
 import {
   ZeroStateHandlerContext, ShowSuccessToast, DataContext, EnterpriseId,
@@ -26,7 +29,6 @@ const ZeroStateCard = () => {
       setShowToast(true);
     } catch (err) {
       setFailureAlert(true);
-      setIsLoading(false);
       setZeroState(true);
       setIsLoading(false);
     }
@@ -40,7 +42,7 @@ const ZeroStateCard = () => {
         srcAlt="Card image"
       />
       <Card.Section className="text-center">
-        <h2>You don&apos;t hava API credentials yet.</h2>
+        <h2>You don&apos;t have API credentials yet.</h2>
         { !displayFailureAlert && (
         <p>
           This page allows you to generate API credentials to send to&nbsp;
@@ -68,10 +70,11 @@ const ZeroStateCard = () => {
         <Button
           variant="primary"
           size="lg"
-          iconBefore={isLoading ? SpinnerSimple : Add}
+          iconBefore={isLoading ? null : Add}
           onClick={handleClick}
           block
         >
+          {isLoading && <Spinner animation="border mr-2" />}
           {isLoading ? 'Generating...' : 'Generate API Credentials'}
         </Button>
       </Card.Footer>

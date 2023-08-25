@@ -20,29 +20,29 @@ const APICredentialsPage = () => {
           Copy and paste the following credential information and send it to your API developer(s).
         </p>
       </div>
-      <div className="mb-4">
+      <div className="mb-4 api-cred-fields">
         <h4>
-          Application name:&nbsp;
-          <span style={{ fontWeight: 'normal' }}>{data?.name}</span>
+          Application name:
+          <span>data?.name</span>
         </h4>
         <h4>
-          Allowed URIs:&nbsp;
-          <span style={{ fontWeight: 'normal' }}>{data?.redirect_uris}</span>
+          Allowed URIs:
+          <span>data?.redirect_uris</span>
         </h4>
         <h4>
-          API client ID:&nbsp;
-          <span style={{ fontWeight: 'normal' }}>{data?.client_id}</span>
+          API client ID:
+          <span>{data?.client_id}</span>
         </h4>
         <h4>
-          API client secret:&nbsp;
-          <span style={{ fontWeight: 'normal' }}>{data?.client_secret}</span>
+          API client secret:
+          <span>{data?.client_secret}</span>
         </h4>
-        <h4>API client documentation:&nbsp;
-          <span style={{ fontWeight: 'normal' }}>{data?.api_client_documentation}</span>
+        <h4>API client documentation:
+          <span>{data?.api_client_documentation}</span>
         </h4>
         <h4>
-          Last generated on:&nbsp;
-          <span style={{ fontWeight: 'normal' }}>{data?.updated}</span>
+          Last generated on:
+          <span>{data?.updated}</span>
         </h4>
         <div className="my-3">
           <CopiedButton />
@@ -61,10 +61,10 @@ const APICredentialsPage = () => {
           data-testid="form-control"
         />
         <p>
-          Allowed URI&apos;s list, space separated
+          Allowed URIs list, space separated
         </p>
         <RegenerateCredentialWarningModal
-          redirectURLs={formValue}
+          redirectURIs={formValue}
           setRedirectURIs={setFormValue}
         />
       </div>

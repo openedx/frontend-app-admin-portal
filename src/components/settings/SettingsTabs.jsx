@@ -53,21 +53,6 @@ const SettingsTabs = ({
 
   const tabArray = useMemo(() => {
     const initialTabs = [];
-    if (SETTINGS_PAGE_APPEARANCE_TAB) {
-      initialTabs.push(
-        <Tab
-          key={SETTINGS_TABS_VALUES.appearance}
-          eventKey={SETTINGS_TABS_VALUES.appearance}
-          title={SETTINGS_TAB_LABELS.appearance}
-        >
-          <SettingsAppearanceTab
-            enterpriseId={enterpriseId}
-            enterpriseBranding={enterpriseBranding}
-            updatePortalConfiguration={updatePortalConfiguration}
-          />
-        </Tab>,
-      );
-    }
     if (enableLearnerPortal) {
       initialTabs.push(
         <Tab
