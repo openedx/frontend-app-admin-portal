@@ -54,6 +54,7 @@ const LearnerCreditAllocationTable = ({
           // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
           Cell: ({ row }) => (
             <>
+              {/* eslint-disable-next-line react/prop-types  */}
               <div>{row.original.courseTitle}</div>
               <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
             </>
@@ -64,11 +65,13 @@ const LearnerCreditAllocationTable = ({
         {
           Header: 'Amount',
           accessor: 'courseListPrice',
+          // eslint-disable-next-line react/prop-types
           Cell: ({ row }) => `$${row.values.courseListPrice}`,
           disableFilters: true,
         },
       ]}
       initialTableOptions={{
+        // eslint-disable-next-line react/prop-types
         getRowId: row => row?.uuid?.toString(),
       }}
       initialState={{
