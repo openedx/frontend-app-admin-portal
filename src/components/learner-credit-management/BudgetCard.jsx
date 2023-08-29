@@ -15,6 +15,7 @@ import { useOfferRedemptions, useOfferSummary } from './data/hooks';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { EXEC_ED_OFFER_TYPE } from './data/constants';
 
 const BudgetCard = ({
   offer,
@@ -136,16 +137,19 @@ const BudgetCard = ({
                 </Stack>
               </Card.Body>
             </Card>
-            <Card
-              orientation="horizontal"
-            >
-              <Card.Body>
-                <Stack gap={4}>
-                  {renderCardHeader('Executive Education')}
-                  {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsExecEd)}
-                </Stack>
-              </Card.Body>
-            </Card>
+            {offerSummary?.offerType === EXEC_ED_OFFER_TYPE
+              && (
+              <Card
+                orientation="horizontal"
+              >
+                <Card.Body>
+                  <Stack gap={4}>
+                    {renderCardHeader('Executive Education')}
+                    {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsExecEd)}
+                  </Stack>
+                </Card.Body>
+              </Card>
+              )}
           </>
         )
         : (

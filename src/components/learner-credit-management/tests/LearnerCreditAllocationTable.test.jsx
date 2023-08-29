@@ -4,28 +4,17 @@ import {
   render,
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
 
 import LearnerCreditAllocationTable from '../LearnerCreditAllocationTable';
-
-const mockStore = configureMockStore();
-const store = mockStore({
-  portalConfiguration: {
-    enterpriseSlug: 'test-enterprise-slug',
-  },
-});
 
 jest.mock('@edx/frontend-platform/config', () => ({
   getConfig: () => ({ ENTERPRISE_LEARNER_PORTAL_URL: 'https://enterprise.edx.org' }),
 }));
 
 const LearnerCreditAllocationTableWrapper = (props) => (
-  <Provider store={store}>
-    <IntlProvider locale="en">
-      <LearnerCreditAllocationTable {...props} />
-    </IntlProvider>
-  </Provider>
+  <IntlProvider locale="en">
+    <LearnerCreditAllocationTable {...props} />
+  </IntlProvider>
 );
 
 describe('<LearnerCreditAllocationTable />', () => {
@@ -34,6 +23,7 @@ describe('<LearnerCreditAllocationTable />', () => {
       enterpriseUUID: 'test-enterprise-id',
       isLoading: false,
       budgetType: 'OCM',
+      enterpriseSlug: 'test-enterprise-slug',
       tableData: {
         results: [{
           userEmail: 'test@example.com',
@@ -60,7 +50,7 @@ describe('<LearnerCreditAllocationTable />', () => {
     expect(screen.getByText(props.tableData.results[0].courseListPrice.toString(), {
       exact: false,
     }));
-    expect(screen.getByText('February', { exact: false }));
+    expect(screen.getByText('Feb', { exact: false }));
   });
   it('renders with empty table data', () => {
     const props = {
@@ -86,6 +76,7 @@ describe('<LearnerCreditAllocationTable />', () => {
       enterpriseUUID: 'test-enterprise-id',
       isLoading: false,
       budgetType: 'OCM',
+      enterpriseSlug: 'test-enterprise-slug',
       tableData: {
         results: [{
           userEmail: 'test@example.com',

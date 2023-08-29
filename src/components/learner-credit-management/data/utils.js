@@ -37,6 +37,7 @@ export const transformOfferSummary = (offerSummary) => {
   if (percentUtilized) {
     percentUtilized = Math.min(percentUtilized, 1.0);
   }
+  const { offerType } = offerSummary;
 
   return {
     totalFunds,
@@ -45,6 +46,7 @@ export const transformOfferSummary = (offerSummary) => {
     redeemedFundsExecEd,
     remainingFunds,
     percentUtilized,
+    offerType,
   };
 };
 

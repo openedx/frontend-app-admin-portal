@@ -1,4 +1,4 @@
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { Info } from '@edx/paragon/icons';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 import { getTemplateEmailFields } from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';
@@ -20,7 +20,7 @@ export const getAssignmentModalFields = formatMessage => {
       id: EMAIL_TEMPLATE_NUDGE_EMAIL_ID,
       component: CheckboxWithTooltip,
       className: 'auto-reminder-wrapper',
-      icon: faInfoCircle,
+      icon: Info,
       altText: formatMessage(messages.modalAltText),
       tooltipText: formatMessage(messages.modalTooltipText),
       label: formatMessage(messages.modalFieldLabel),

@@ -38,18 +38,17 @@ const LearnerCreditAllocationTable = ({
       showFiltersInSidebar={isDesktopTable}
       isLoading={isLoading}
       defaultColumnValues={{ Filter: TableTextFilter }}
+      /* eslint-disable */
       columns={[
         {
           Header: 'Date',
           accessor: 'enrollmentDate',
-          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
           Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMM D, YYYY'),
           disableFilters: true,
         },
         {
           Header: 'Description',
           accessor: getDescriptionAccessor,
-          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
           Cell: ({ row }) => (
             <>
               <Avatar size="xs" />{' '}
@@ -72,13 +71,11 @@ const LearnerCreditAllocationTable = ({
         {
           Header: 'Amount',
           accessor: 'courseListPrice',
-          // eslint-disable-next-line react/prop-types
           Cell: ({ row }) => `$${row.values.courseListPrice}`,
           disableFilters: true,
         },
       ]}
       initialTableOptions={{
-        // eslint-disable-next-line react/prop-types
         getRowId: row => row?.uuid?.toString(),
       }}
       initialState={{
@@ -94,7 +91,6 @@ const LearnerCreditAllocationTable = ({
       itemCount={tableData.itemCount}
       pageCount={tableData.pageCount}
       EmptyTableComponent={
-        // eslint-disable-next-line react/no-unstable-nested-components
         () => {
           if (isLoading) {
             return null;
@@ -105,6 +101,7 @@ const LearnerCreditAllocationTable = ({
     />
   );
 };
+/* eslint-enable */
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,

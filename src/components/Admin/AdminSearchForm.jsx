@@ -2,9 +2,9 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Form } from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
@@ -80,7 +80,7 @@ class AdminSearchForm extends React.Component {
                 <Form.Label className="search-label mb-2">
                   Filter by start date
                   <IconWithTooltip
-                    icon={faInfoCircle}
+                    icon={Info}
                     altText="More information"
                     tooltipText="A start date can be selected after the course name is selected."
                   />
