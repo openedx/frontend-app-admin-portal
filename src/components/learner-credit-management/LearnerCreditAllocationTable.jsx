@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import {
   Avatar, DataTable, Hyperlink, useMediaQuery, breakpoints,
 } from '@edx/paragon';
-import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
 import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
@@ -18,18 +17,15 @@ const getDescriptionAccessor = row => ({
   courseKey: row.courseKey,
 });
 
-const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
-
 const LearnerCreditAllocationTable = ({
   isLoading,
   tableData,
   fetchTableData,
   enterpriseUUID,
   enterpriseSlug,
-  budgetType,
 }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
-  const defaultFilter = budgetType ? [{ id: 'courseProductLine', value: budgetType }] : [];
+  const defaultFilter = [];
 
   return (
     <DataTable
@@ -42,7 +38,6 @@ const LearnerCreditAllocationTable = ({
       showFiltersInSidebar={isDesktopTable}
       isLoading={isLoading}
       defaultColumnValues={{ Filter: TableTextFilter }}
-      FilterStatusComponent={FilterStatus}
       columns={[
         {
           Header: 'Date',
@@ -110,9 +105,6 @@ const LearnerCreditAllocationTable = ({
     />
   );
 };
-LearnerCreditAllocationTable.defaultProps = {
-  budgetType: null,
-};
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
@@ -130,11 +122,6 @@ LearnerCreditAllocationTable.propTypes = {
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
-  budgetType: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connect(mapStateToProps)(LearnerCreditAllocationTable);
+export default LearnerCreditAllocationTable;
