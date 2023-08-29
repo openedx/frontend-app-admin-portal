@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import {
-  DataTable, useMediaQuery, breakpoints,
+  Avatar, DataTable, Hyperlink, useMediaQuery, breakpoints,
 } from '@edx/paragon';
-
+import { connect } from 'react-redux';
+import { getConfig } from '@edx/frontend-platform/config';
 import TableTextFilter from './TableTextFilter';
 import EmailAddressTableCell from './EmailAddressTableCell';
 
@@ -14,6 +15,7 @@ export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 const getDescriptionAccessor = row => ({
   courseTitle: row.courseTitle,
   userEmail: row.userEmail,
+  courseKey: row.courseKey,
 });
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
@@ -23,6 +25,7 @@ const LearnerCreditAllocationTable = ({
   tableData,
   fetchTableData,
   enterpriseUUID,
+  enterpriseSlug,
   budgetType,
 }) => {
   const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
@@ -45,7 +48,7 @@ const LearnerCreditAllocationTable = ({
           Header: 'Date',
           accessor: 'enrollmentDate',
           // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
-          Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMMM DD, YYYY'),
+          Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMM D, YYYY'),
           disableFilters: true,
         },
         {
@@ -54,9 +57,18 @@ const LearnerCreditAllocationTable = ({
           // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
           Cell: ({ row }) => (
             <>
-              {/* eslint-disable-next-line react/prop-types  */}
-              <div>{row.original.courseTitle}</div>
+              <Avatar size="xs" />{' '}
               <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
+              <div>
+                <Hyperlink
+                  // eslint-disable-next-line react/prop-types
+                  destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.courseKey}`}
+                  target="_blank"
+                >
+                  {/* eslint-disable-next-line react/prop-types */}
+                  {row.original.courseTitle}
+                </Hyperlink>
+              </div>
             </>
           ),
           disableFilters: false,
@@ -104,6 +116,7 @@ LearnerCreditAllocationTable.defaultProps = {
 
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({
@@ -120,4 +133,8 @@ LearnerCreditAllocationTable.propTypes = {
   budgetType: PropTypes.string,
 };
 
-export default LearnerCreditAllocationTable;
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(LearnerCreditAllocationTable);
