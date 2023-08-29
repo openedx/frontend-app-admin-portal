@@ -23,11 +23,11 @@ const APICredentialsPage = () => {
       <div className="mb-4 api-cred-fields">
         <h4>
           Application name:
-          <span>data?.name</span>
+          <span>{data?.name}</span>
         </h4>
         <h4>
           Allowed URIs:
-          <span>data?.redirect_uris</span>
+          <span>{data?.redirect_uris}</span>
         </h4>
         <h4>
           API client ID:

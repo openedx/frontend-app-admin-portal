@@ -28,6 +28,7 @@ const returnResponse = {
     client_id: clientId,
     client_secret: clientSecret,
     api_client_documentation: apiClientDocumentation,
+    redirect_uris: redirectUris,
     updated,
   }],
 };
@@ -36,6 +37,7 @@ const data = {
   client_id: clientId,
   client_secret: clientSecret,
   api_client_documentation: apiClientDocumentation,
+  redirect_uris: redirectUris,
   updated,
 };
 const regenerationDate = {
@@ -91,7 +93,7 @@ describe('API Credentials Tab', () => {
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
 
     expect(screen.getByRole('heading', { name: `Application name: ${name}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: 'Allowed URIs:' }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client documentation: ${apiClientDocumentation}` }).toBeInTheDocument);
@@ -152,7 +154,7 @@ describe('API Credentials Tab', () => {
     });
 
     expect(screen.getByRole('heading', { name: `Application name: ${name}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: 'Allowed URIs:' }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client documentation: ${apiClientDocumentation}` }).toBeInTheDocument);
