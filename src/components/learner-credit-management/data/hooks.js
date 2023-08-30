@@ -64,7 +64,7 @@ const applySortByToOptions = (sortBy, options) => {
 
 const applyFiltersToOptions = (filters, options) => {
   const courseProductLineSearchQuery = filters?.find(filter => filter.id === 'courseProductLine')?.value;
-  const searchQuery = filters?.find(filter => filter.id.toLowerCase() === 'description')?.value;
+  const searchQuery = filters?.find(filter => filter.id.toLowerCase() === 'enrollment details')?.value;
 
   if (courseProductLineSearchQuery) {
     Object.assign(options, { courseProductLine: courseProductLineSearchQuery });

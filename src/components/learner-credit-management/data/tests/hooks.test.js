@@ -105,7 +105,7 @@ describe('useOfferRedemptions', () => {
           { id: 'enrollmentDate', desc: true },
         ],
         filters: [
-          { id: 'Description', value: mockOfferEnrollments[0].user_email },
+          { id: 'Enrollment Details', value: mockOfferEnrollments[0].user_email },
         ],
       });
     });
