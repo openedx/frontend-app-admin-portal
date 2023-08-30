@@ -12,6 +12,7 @@ import handleErrors from '../../utils';
 import {
   INVALID_ODATA_API_TIMEOUT_INTERVAL, INVALID_SAPSF_OAUTH_ROOT_URL, INVALID_API_ROOT_URL,
 } from '../../data/constants';
+import { features } from '../../../../config';
 
 jest.mock('../data/actions');
 jest.mock('../../utils');
@@ -70,6 +71,7 @@ const contextValue = {
 
 describe('SAML Config Tab', () => {
   afterEach(() => {
+    features.AUTH0_SELF_SERVICE_INTEGRATION = false;
     jest.clearAllMocks();
   });
   test('canceling connect step', async () => {
@@ -305,6 +307,25 @@ describe('SAML Config Tab', () => {
         ),
       ).toBeInTheDocument();
       expect(screen.getByText('Next')).not.toBeDisabled();
+    }, []);
+  });
+  test('show new SSO stepper placeholder when feature flag enabled', async () => {
+    // Setup
+    features.AUTH0_SELF_SERVICE_INTEGRATION = true;
+    contextValue.ssoState.currentStep = 'idp';
+    render(
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>,
+    );
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          'Connect to a SAML identity provider for single sign-on'
+          + ' to allow quick access to your organization\'s learning catalog.',
+        ),
+      ).toBeInTheDocument();
+      expect(screen.queryByText('Next')).not.toBeInTheDocument();
     }, []);
   });
   test('idp step fetches and displays existing idp data fields', async () => {
