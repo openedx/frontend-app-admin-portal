@@ -143,6 +143,7 @@ const BudgetCard = ({
             tableData={offerRedemptions}
             fetchTableData={fetchOfferRedemptions}
             enterpriseUUID={enterpriseUUID}
+            enterpriseSlug={enterpriseSlug}
           />
         )}
     </Stack>

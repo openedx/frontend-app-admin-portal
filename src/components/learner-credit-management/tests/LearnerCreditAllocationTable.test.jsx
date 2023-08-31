@@ -7,6 +7,10 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import LearnerCreditAllocationTable from '../LearnerCreditAllocationTable';
 
+jest.mock('@edx/frontend-platform/config', () => ({
+  getConfig: () => ({ ENTERPRISE_LEARNER_PORTAL_URL: 'https://enterprise.edx.org' }),
+}));
+
 const LearnerCreditAllocationTableWrapper = (props) => (
   <IntlProvider locale="en">
     <LearnerCreditAllocationTable {...props} />
@@ -19,6 +23,7 @@ describe('<LearnerCreditAllocationTable />', () => {
       enterpriseUUID: 'test-enterprise-id',
       isLoading: false,
       budgetType: 'OCM',
+      enterpriseSlug: 'test-enterprise-slug',
       tableData: {
         results: [{
           userEmail: 'test@example.com',
@@ -36,7 +41,6 @@ describe('<LearnerCreditAllocationTable />', () => {
 
     render(<LearnerCreditAllocationTableWrapper {...props} />);
 
-    expect(screen.getByText('Open', { exact: false }));
     expect(screen.getByText(props.tableData.results[0].userEmail.toString(), {
       exact: false,
     }));
@@ -46,7 +50,7 @@ describe('<LearnerCreditAllocationTable />', () => {
     expect(screen.getByText(props.tableData.results[0].courseListPrice.toString(), {
       exact: false,
     }));
-    expect(screen.getByText('February', { exact: false }));
+    expect(screen.getByText('Feb', { exact: false }));
   });
   it('renders with empty table data', () => {
     const props = {
@@ -65,5 +69,35 @@ describe('<LearnerCreditAllocationTable />', () => {
     render(<LearnerCreditAllocationTableWrapper {...props} />);
 
     expect(screen.getByText('No results found', { exact: false }));
+  });
+
+  it('constructs the correct URL for the course', () => {
+    const props = {
+      enterpriseUUID: 'test-enterprise-id',
+      isLoading: false,
+      budgetType: 'OCM',
+      enterpriseSlug: 'test-enterprise-slug',
+      tableData: {
+        results: [{
+          userEmail: 'test@example.com',
+          courseTitle: 'course-title',
+          courseKey: 'course-v1:edX=CTL.SC101x.3T2019',
+          courseListPrice: 100,
+          enrollmentDate: '2-2-23',
+          courseProductLine: 'OCM',
+        }],
+        itemCount: 1,
+        pageCount: 1,
+      },
+      fetchTableData: jest.fn(),
+    };
+    props.fetchTableData.mockReturnValue(props.tableData);
+
+    render(<LearnerCreditAllocationTableWrapper {...props} />);
+
+    const expectedLink = 'https://enterprise.edx.org/test-enterprise-slug/course/course-v1:edX=CTL.SC101x.3T2019';
+    const courseLinkElement = screen.getByText('course-title');
+
+    expect(courseLinkElement.getAttribute('href')).toBe(expectedLink);
   });
 });
