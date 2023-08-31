@@ -24,6 +24,7 @@ describe('<LearnerCreditAllocationTable />', () => {
       isLoading: false,
       budgetType: 'OCM',
       enterpriseSlug: 'test-enterprise-slug',
+      enableLearnerPortal: true,
       tableData: {
         results: [{
           userEmail: 'test@example.com',
@@ -77,6 +78,7 @@ describe('<LearnerCreditAllocationTable />', () => {
       isLoading: false,
       budgetType: 'OCM',
       enterpriseSlug: 'test-enterprise-slug',
+      enableLearnerPortal: true,
       tableData: {
         results: [{
           userEmail: 'test@example.com',
@@ -99,5 +101,33 @@ describe('<LearnerCreditAllocationTable />', () => {
     const courseLinkElement = screen.getByText('course-title');
 
     expect(courseLinkElement.getAttribute('href')).toBe(expectedLink);
+  });
+
+  it('does not render the course link if the learner portal is disabled', () => {
+    const props = {
+      enterpriseUUID: 'test-enterprise-id',
+      isLoading: false,
+      budgetType: 'OCM',
+      enterpriseSlug: 'test-enterprise-slug',
+      enableLearnerPortal: false,
+      tableData: {
+        results: [{
+          userEmail: 'test@example.com',
+          courseTitle: 'course-title',
+          courseKey: 'course-v1:edX=CTL.SC101x.3T2019',
+          courseListPrice: 100,
+          enrollmentDate: '2-2-23',
+          courseProductLine: 'OCM',
+        }],
+        itemCount: 1,
+        pageCount: 1,
+      },
+      fetchTableData: jest.fn(),
+    };
+    props.fetchTableData.mockReturnValue(props.tableData);
+
+    render(<LearnerCreditAllocationTableWrapper {...props} />);
+    const courseTitleElement = screen.queryByText('course-title');
+    expect(courseTitleElement.closest('a')).toBeNull();
   });
 });

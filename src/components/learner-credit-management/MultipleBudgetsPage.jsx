@@ -22,6 +22,7 @@ const PAGE_TITLE = 'Learner Credit';
 const MultipleBudgetsPage = ({
   enterpriseUUID,
   enterpriseSlug,
+  enableLearnerPortal,
 }) => {
   const { offers, isLoading } = useContext(EnterpriseSubsidiesContext);
 
@@ -66,6 +67,7 @@ const MultipleBudgetsPage = ({
         offers={offers}
         enterpriseUUID={enterpriseUUID}
         enterpriseSlug={enterpriseSlug}
+        enableLearnerPortal={enableLearnerPortal}
       />
     </>
   );
@@ -74,11 +76,13 @@ const MultipleBudgetsPage = ({
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
 });
 
 MultipleBudgetsPage.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(MultipleBudgetsPage);

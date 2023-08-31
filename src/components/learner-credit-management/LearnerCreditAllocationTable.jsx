@@ -16,12 +16,15 @@ const getEnrollmentDetailsAccessor = row => ({
   courseKey: row.courseKey,
 });
 
+const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
+
 const LearnerCreditAllocationTable = ({
   isLoading,
   tableData,
   fetchTableData,
   enterpriseUUID,
   enterpriseSlug,
+  enableLearnerPortal,
 }) => {
   const defaultFilter = [];
 
@@ -35,6 +38,7 @@ const LearnerCreditAllocationTable = ({
       manualFilters
       isLoading={isLoading}
       defaultColumnValues={{ Filter: TableTextFilter }}
+      FilterStatusComponent={FilterStatus}
       /* eslint-disable */
       columns={[
         {
@@ -50,12 +54,16 @@ const LearnerCreditAllocationTable = ({
             <>
               <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />
               <div>
+                {enableLearnerPortal ? (
                 <Hyperlink
                   destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.courseKey}`}
                   target="_blank"
                 >
                   {row.original.courseTitle}
                 </Hyperlink>
+                ) : (
+                  row.original.courseTitle
+                )}
               </div>
             </>
           ),
@@ -106,6 +114,7 @@ const LearnerCreditAllocationTable = ({
 LearnerCreditAllocationTable.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({
