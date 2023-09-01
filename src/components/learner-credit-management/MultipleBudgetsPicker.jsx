@@ -12,6 +12,7 @@ const MultipleBudgetsPicker = ({
   offers,
   enterpriseUUID,
   enterpriseSlug,
+  enableLearnerPortal,
 }) => (
   <Stack>
     <Row>
@@ -22,6 +23,7 @@ const MultipleBudgetsPicker = ({
             offer={offer}
             enterpriseUUID={enterpriseUUID}
             enterpriseSlug={enterpriseSlug}
+            enableLearnerPortal={enableLearnerPortal}
           />
         ))}
       </Col>
@@ -33,6 +35,7 @@ MultipleBudgetsPicker.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
 export default MultipleBudgetsPicker;
