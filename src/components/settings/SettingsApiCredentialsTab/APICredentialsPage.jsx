@@ -1,14 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { MailtoLink, Form } from '@edx/paragon';
 import RegenerateCredentialWarningModal from './RegenerateCredentialWarningModal';
 import CopiedButton from './CopiedButton';
 import { ENTERPRISE_CUSTOMER_SUPPORT_EMAIL } from '../data/constants';
-import { DataContext } from './Context';
 
-const APICredentialsPage = () => {
+const APICredentialsPage = ({ data }) => {
   const [formValue, setFormValue] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [data, setData] = useContext(DataContext);
   const handleFormChange = (e) => {
     setFormValue(e.target.value);
   };
@@ -73,13 +72,28 @@ const APICredentialsPage = () => {
         <p>
           To troubleshoot your API credentialing, or to request additional API endpoints to your
           credentials,&nbsp;
-          <MailtoLink to={ENTERPRISE_CUSTOMER_SUPPORT_EMAIL} target="_blank">
+          <MailtoLink to={ENTERPRISE_CUSTOMER_SUPPORT_EMAIL} target="_blank" rel="noopener noreferrer">
             contact Enterprise Customer Support.
           </MailtoLink>
         </p>
       </div>
     </div>
   );
+};
+
+APICredentialsPage.defaultProps = {
+  data: null,
+};
+
+APICredentialsPage.propTypes = {
+  data: PropTypes.shape({
+    name: PropTypes.string,
+    redirect_uris: PropTypes.string,
+    client_id: PropTypes.string,
+    client_secret: PropTypes.string,
+    api_client_documentation: PropTypes.string,
+    updated: PropTypes.bool,
+  }),
 };
 
 export default APICredentialsPage;

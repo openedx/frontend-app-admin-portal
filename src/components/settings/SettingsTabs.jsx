@@ -35,6 +35,7 @@ const SettingsTabs = ({
   enableLmsConfigurationsScreen,
   enableSamlConfigurationScreen,
   enableUniversalLink,
+  enableApiCredentialGeneration,
   identityProvider,
   updatePortalConfiguration,
   enterpriseBranding,
@@ -118,7 +119,7 @@ const SettingsTabs = ({
         </Tab>,
       );
     }
-    if (FEATURE_API_CREDENTIALS_TAB) {
+    if (FEATURE_API_CREDENTIALS_TAB && enableApiCredentialGeneration) {
       initialTabs.push(
         <Tab
           key={SETTINGS_TABS_VALUES.api_credentials}
@@ -142,6 +143,7 @@ const SettingsTabs = ({
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableApiCredentialGeneration,
     enableUniversalLink,
     enterpriseId,
     enterpriseSlug,
@@ -188,6 +190,7 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableApiCredentialGeneration,
     enableUniversalLink,
     identityProvider,
     enterpriseBranding,
@@ -200,6 +203,7 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableApiCredentialGeneration,
     enableUniversalLink,
     identityProvider,
     enterpriseBranding,
@@ -222,6 +226,7 @@ SettingsTabs.propTypes = {
   enableLearnerPortal: PropTypes.bool.isRequired,
   enableLmsConfigurationsScreen: PropTypes.bool.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
+  enableApiCredentialGeneration: PropTypes.bool.isRequired,
   enableUniversalLink: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
   updatePortalConfiguration: PropTypes.func.isRequired,

@@ -35,7 +35,7 @@ class LmsApiService {
 
   static enterpriseCustomerInviteKeyUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-invite-key/`;
 
-  static apiCredentialsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_api_credentials/`;
+  static apiCredentialsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-api-credentials/`;
 
   static fetchEnterpriseList(options) {
     const queryParams = new URLSearchParams({
@@ -344,7 +344,7 @@ class LmsApiService {
     const requestData = {
       redirect_uris: redirectURLs,
     };
-    return LmsApiService.apiClient().patch(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/regenerate_credentials/`, requestData);
+    return LmsApiService.apiClient().patch(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/regenerate_credentials`, requestData);
   }
 }
 

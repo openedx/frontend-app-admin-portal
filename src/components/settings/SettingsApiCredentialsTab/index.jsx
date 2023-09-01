@@ -1,14 +1,15 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { ActionRow, Toast } from '@edx/paragon';
 import ZeroStateCard from './ZeroStateCard';
 import APICredentialsPage from './APICredentialsPage';
 import FailedAlert from './FailedAlert';
-import { HELP_CENTER_API_GUIDE, API_CLIENT_DOCUMENTATION } from '../data/constants';
+import { API_CLIENT_DOCUMENTATION, HELP_CENTER_API_GUIDE } from '../data/constants';
 import HelpCenterButton from '../HelpCenterButton';
 import {
-  ZeroStateHandlerContext, ErrorContext, ShowSuccessToast, DataContext, EnterpriseId,
+  DataContext, EnterpriseId, ErrorContext, ShowSuccessToast, ZeroStateHandlerContext,
 } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
 
@@ -18,31 +19,35 @@ const SettingsApiCredentialsTab = ({
   const [displayZeroState, setDisplayZeroState] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [existingData, setExistingData] = useState(null);
-  const fetchExistingAPICredentials = async () => {
-    setIsLoading(false);
-    try {
-      const response = await LmsApiService.fetchAPICredentials(enterpriseId);
-      const { results } = response.data;
-      const result = results[0];
-      setExistingData({
-        name: result.name,
-        redirect_uris: result.redirect_uris,
-        client_id: result.client_id,
-        client_secret: result.client_secret,
-        api_client_documentation: API_CLIENT_DOCUMENTATION,
-        updated: result.updated,
-      });
-      setDisplayZeroState(false);
-    } catch (error) {
-      setDisplayZeroState(true);
-    }
-  };
+  const [data, setData] = useState();
   const [hasRegenerationError, setHasRegenerationError] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
   useEffect(() => {
+    const fetchExistingAPICredentials = async () => {
+      try {
+        const response = await LmsApiService.fetchAPICredentials(enterpriseId);
+        console.log('response ', response);
+        const { results } = response.data;
+        const result = results[0];
+        setExistingData({
+          name: result.name,
+          redirect_uris: result.redirect_uris,
+          client_id: result.client_id,
+          client_secret: result.client_secret,
+          api_client_documentation: API_CLIENT_DOCUMENTATION,
+          updated: result.updated,
+        });
+        setIsLoading(false);
+        setDisplayZeroState(false);
+      } catch (error) {
+        setIsLoading(false);
+        setDisplayZeroState(true);
+      }
+    };
+    console.log('here kira');
     fetchExistingAPICredentials();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [enterpriseId]);
 
   return (
     <EnterpriseId.Provider value={enterpriseId}>
@@ -62,8 +67,8 @@ const SettingsApiCredentialsTab = ({
                 {!isLoading
                   && (
                     !displayZeroState ? (
-                      <APICredentialsPage />
-                    ) : (<ZeroStateCard />)
+                      <APICredentialsPage data={data} />
+                    ) : (<ZeroStateCard setData={setData} />)
                   )}
               </div>
               <div />

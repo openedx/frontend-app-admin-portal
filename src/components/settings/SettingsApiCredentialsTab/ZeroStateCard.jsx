@@ -1,20 +1,23 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
+
 import {
-  Button, Card, Icon, Spinner,
+  Button, Card, Icon, MailtoLink, Spinner,
 } from '@edx/paragon';
 import { Add, Error } from '@edx/paragon/icons';
 
 import cardImage from '../../../data/images/ZeroState.svg';
 import {
-  ZeroStateHandlerContext, ShowSuccessToast, DataContext, EnterpriseId,
+  EnterpriseId, ShowSuccessToast, ZeroStateHandlerContext,
 } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
-import { API_TERMS_OF_SERVICE, API_CLIENT_DOCUMENTATION } from '../data/constants';
+import {
+  API_CLIENT_DOCUMENTATION, API_TERMS_OF_SERVICE, ENTERPRISE_CUSTOMER_SUPPORT_EMAIL,
+} from '../data/constants';
 
-const ZeroStateCard = () => {
+const ZeroStateCard = ({ setData }) => {
   const [, setZeroState] = useContext(ZeroStateHandlerContext);
   const [, setShowToast] = useContext(ShowSuccessToast);
-  const [, setData] = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [displayFailureAlert, setFailureAlert] = useState(false);
   const enterpriseId = useContext(EnterpriseId);
@@ -47,7 +50,10 @@ const ZeroStateCard = () => {
         <p>
           This page allows you to generate API credentials to send to&nbsp;
           your developers so they can work on integration projects.
-          If you believe you are seeing this page in error, contact Enterprise Customer Support.
+          If you believe you are seeing this page in error,&nbsp;
+          <MailtoLink to={ENTERPRISE_CUSTOMER_SUPPORT_EMAIL} target="_blank" rel="noopener noreferrer">
+            contact Enterprise Customer Support.
+          </MailtoLink>
         </p>
         )}
         <p>
@@ -80,6 +86,10 @@ const ZeroStateCard = () => {
       </Card.Footer>
     </Card>
   );
+};
+
+ZeroStateCard.propTypes = {
+  setData: PropTypes.func.isRequired,
 };
 
 export default ZeroStateCard;
