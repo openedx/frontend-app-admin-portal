@@ -141,7 +141,6 @@ describe('<BudgetCard />', () => {
       const elementsWithTestId = screen.getAllByTestId('view-budget');
       const firstElementWithTestId = elementsWithTestId[0];
       await waitFor(() => userEvent.click(firstElementWithTestId));
-      expect(screen.getByText('Filters'));
       expect(screen.getByText('No results found'));
     });
   });

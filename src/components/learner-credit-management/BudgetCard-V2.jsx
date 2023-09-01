@@ -19,6 +19,7 @@ const BudgetCard = ({
   offer,
   enterpriseUUID,
   enterpriseSlug,
+  enableLearnerPortal,
 }) => {
   const {
     start,
@@ -143,6 +144,8 @@ const BudgetCard = ({
             tableData={offerRedemptions}
             fetchTableData={fetchOfferRedemptions}
             enterpriseUUID={enterpriseUUID}
+            enterpriseSlug={enterpriseSlug}
+            enableLearnerPortal={enableLearnerPortal}
           />
         )}
     </Stack>
@@ -158,6 +161,7 @@ BudgetCard.propTypes = {
   }).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
 export default BudgetCard;
