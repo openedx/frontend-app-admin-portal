@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Button } from '@edx/paragon';
 import { ContentCopy } from '@edx/paragon/icons';
 import CopiedToast from './CopiedToast';
-import { DataContext } from './Context';
 
-const CopiedButton = () => {
+const CopyButton = ({ data }) => {
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
-  const [data] = useContext(DataContext);
   const [copiedError, setCopiedError] = useState(false);
 
   const handleCopyLink = async () => {
@@ -40,4 +40,15 @@ const CopiedButton = () => {
   );
 };
 
-export default CopiedButton;
+CopyButton.propTypes = {
+  data: PropTypes.shape({
+    name: PropTypes.string,
+    redirect_uris: PropTypes.string,
+    client_id: PropTypes.string,
+    client_secret: PropTypes.string,
+    api_client_documentation: PropTypes.string,
+    updated: PropTypes.bool,
+  }),
+};
+
+export default CopyButton;

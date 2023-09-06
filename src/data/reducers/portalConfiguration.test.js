@@ -18,6 +18,7 @@ const initialState = {
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
   enableIntegratedCustomerLearnerPortalSearch: false,
+  enableApiCredentialGeneration: false,
   enableLearnerPortal: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,

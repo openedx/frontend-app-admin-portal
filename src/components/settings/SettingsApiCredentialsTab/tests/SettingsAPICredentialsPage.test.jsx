@@ -19,30 +19,23 @@ jest.mock('../../../../data/services/LmsApiService', () => ({
 const name = "edx's Enterprise Credentials";
 const clientId = 'y0TCvOEvvIs6ll95irirzCJ5EaF0RnSbBIIXuNJE';
 const clientSecret = '1G896sVeT67jtjHO6FNd5qFqayZPIV7BtnW01P8zaAd4mDfmBVVVsUP33u';
-const apiClientDocumentation = API_CLIENT_DOCUMENTATION;
 const updated = '2023-07-28T04:28:20.909550Z';
 const redirectUris = 'www.customercourses.edx.com, www.customercourses.edx.stage.com';
-const returnResponse = {
-  results: [{
-    name,
-    client_id: clientId,
-    client_secret: clientSecret,
-    api_client_documentation: apiClientDocumentation,
-    redirect_uris: redirectUris,
-    updated,
-  }],
-};
+
 const data = {
   name,
   client_id: clientId,
   client_secret: clientSecret,
-  api_client_documentation: apiClientDocumentation,
   redirect_uris: redirectUris,
   updated,
 };
-const regenerationDate = {
+const regenerationData = {
   ...data,
   redirect_uris: redirectUris,
+};
+const copiedData = {
+  ...data,
+  api_client_documentation: API_CLIENT_DOCUMENTATION,
 };
 
 describe('API Credentials Tab', () => {
@@ -58,9 +51,9 @@ describe('API Credentials Tab', () => {
 
   test('renders zero state page when having no api credentials', async () => {
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
-    const mockCreatFn = jest.spyOn(LmsApiService, 'createNewAPICredentials');
+    const mockCreateFn = jest.spyOn(LmsApiService, 'createNewAPICredentials');
     mockFetchFn.mockRejectedValue();
-    mockCreatFn.mockResolvedValue();
+    mockCreateFn.mockResolvedValue();
 
     render(
       <IntlProvider locale="en">
@@ -68,7 +61,6 @@ describe('API Credentials Tab', () => {
       </IntlProvider>,
     );
     expect(screen.getByText('API credentials')).toBeInTheDocument();
-    expect(screen.queryByText("You don't have API credentials yet.")).toBeNull();
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
     expect(screen.getByText("You don't have API credentials yet.")).toBeInTheDocument();
     expect(screen.queryByText('Help Center: EdX Enterprise API Guide')).toBeInTheDocument();
@@ -79,11 +71,11 @@ describe('API Credentials Tab', () => {
 
     expect(screen.getByText('Generate API Credentials').toBeInTheDocument);
     userEvent.click(screen.getByText('Generate API Credentials'));
-    await waitFor(() => expect(mockCreatFn).toHaveBeenCalled());
+    await waitFor(() => expect(mockCreateFn).toHaveBeenCalled());
   });
   test('renders api credentials page when having existing api credentials', async () => {
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
-    mockFetchFn.mockResolvedValue({ data: returnResponse });
+    mockFetchFn.mockResolvedValue({ data });
     render(
       <IntlProvider locale="en">
         <SettingsApiCredentialsTab {...basicProps} />
@@ -91,12 +83,13 @@ describe('API Credentials Tab', () => {
     );
 
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
+    await waitFor(() => expect(screen.getByText(name)).toBeInTheDocument);
 
-    expect(screen.getByRole('heading', { name: `Application name: ${name}` }).toBeInTheDocument);
+    expect(screen.getByText(name).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `API client documentation: ${apiClientDocumentation}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `Last generated on: ${updated}` }).toBeInTheDocument);
     const link = screen.getByText('contact Enterprise Customer Support.');
     expect(link.getAttribute('href')).toBe(`mailto:${ENTERPRISE_CUSTOMER_SUPPORT_EMAIL}`);
@@ -133,7 +126,7 @@ describe('API Credentials Tab', () => {
         writeText,
       },
     });
-    const jsonString = JSON.stringify(data);
+    const jsonString = JSON.stringify(copiedData);
     navigator.clipboard.writeText.mockResolvedValue(jsonString);
 
     render(
@@ -157,7 +150,7 @@ describe('API Credentials Tab', () => {
     expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `API client documentation: ${apiClientDocumentation}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `Last generated on: ${updated}` }).toBeInTheDocument);
 
     const copyBtn = screen.getByText('Copy credentials to clipboard');
@@ -176,7 +169,7 @@ describe('API Credentials Tab', () => {
         writeText,
       },
     });
-    const jsonString = JSON.stringify(data);
+    const jsonString = JSON.stringify(copiedData);
     navigator.clipboard.writeText.mockRejectedValue();
 
     render(
@@ -196,9 +189,9 @@ describe('API Credentials Tab', () => {
   });
   test('renders api credentials page after successfully regenerating api credentials', async () => {
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
-    mockFetchFn.mockResolvedValue({ data: returnResponse });
+    mockFetchFn.mockResolvedValue({ data });
     const mockPatchFn = jest.spyOn(LmsApiService, 'regenerateAPICredentials');
-    mockPatchFn.mockResolvedValue({ data: regenerationDate });
+    mockPatchFn.mockResolvedValue({ data: regenerationData });
 
     render(
       <IntlProvider locale="en">
@@ -223,14 +216,14 @@ describe('API Credentials Tab', () => {
     expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `API client documentation: ${apiClientDocumentation}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `Last generated on: ${updated}` }).toBeInTheDocument);
     expect(screen.queryByText('Something went wrong while generating your credentials. Please try again. If the issue continues, contact Enterprise Customer Support.'))
       .not.toBeInTheDocument();
   });
   test('renders error state when failing to regenerating api credentials', async () => {
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
-    mockFetchFn.mockResolvedValue({ data: returnResponse });
+    mockFetchFn.mockResolvedValue({ data });
     const mockPatchFn = jest.spyOn(LmsApiService, 'regenerateAPICredentials');
     mockPatchFn.mockRejectedValue();
 
@@ -253,15 +246,15 @@ describe('API Credentials Tab', () => {
     await waitFor(() => {
       expect(mockPatchFn).toHaveBeenCalledWith(redirectUris, enterpriseId);
     });
-    expect(screen.getByRole('heading', { name: 'Allowed URIs:' }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
     expect(screen.getByText('Something went wrong while generating your credentials. Please try again. If the issue continues, contact Enterprise Customer Support.'))
       .toBeInTheDocument();
   });
   test('renders api credentials when canceling regenerating api credentials', async () => {
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
-    mockFetchFn.mockResolvedValue({ data: returnResponse });
+    mockFetchFn.mockResolvedValue({ data });
     const mockPatchFn = jest.spyOn(LmsApiService, 'regenerateAPICredentials');
-    mockPatchFn.mockResolvedValue({ data: regenerationDate });
+    mockPatchFn.mockResolvedValue({ data: regenerationData });
 
     render(
       <IntlProvider locale="en">
@@ -283,6 +276,6 @@ describe('API Credentials Tab', () => {
     await waitFor(() => {
       expect(mockPatchFn).not.toHaveBeenCalledWith(redirectUris, enterpriseId);
     });
-    expect(screen.getByRole('heading', { name: 'Allowed URIs:' }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
   });
 });

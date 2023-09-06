@@ -344,7 +344,7 @@ class LmsApiService {
     const requestData = {
       redirect_uris: redirectURLs,
     };
-    return LmsApiService.apiClient().patch(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/regenerate_credentials`, requestData);
+    return LmsApiService.apiClient().put(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/regenerate_credentials`, requestData);
   }
 }
 

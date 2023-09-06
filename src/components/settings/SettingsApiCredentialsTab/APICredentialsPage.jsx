@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import { MailtoLink, Form } from '@edx/paragon';
 import RegenerateCredentialWarningModal from './RegenerateCredentialWarningModal';
-import CopiedButton from './CopiedButton';
-import { ENTERPRISE_CUSTOMER_SUPPORT_EMAIL } from '../data/constants';
+import CopyButton from './CopyButton';
+import { API_CLIENT_DOCUMENTATION, ENTERPRISE_CUSTOMER_SUPPORT_EMAIL } from '../data/constants';
 
-const APICredentialsPage = ({ data }) => {
+const APICredentialsPage = ({ data, setData }) => {
   const [formValue, setFormValue] = useState('');
   const handleFormChange = (e) => {
     setFormValue(e.target.value);
@@ -37,14 +37,14 @@ const APICredentialsPage = ({ data }) => {
           <span>{data?.client_secret}</span>
         </h4>
         <h4>API client documentation:
-          <span>{data?.api_client_documentation}</span>
+          <span>{API_CLIENT_DOCUMENTATION}</span>
         </h4>
         <h4>
           Last generated on:
           <span>{data?.updated}</span>
         </h4>
         <div className="my-3">
-          <CopiedButton />
+          <CopyButton data={data} />
         </div>
       </div>
       <div className="mb-4">
@@ -64,7 +64,8 @@ const APICredentialsPage = ({ data }) => {
         </p>
         <RegenerateCredentialWarningModal
           redirectURIs={formValue}
-          setRedirectURIs={setFormValue}
+          data={data}
+          setData={setData}
         />
       </div>
       <div className="mb-4">
@@ -94,6 +95,7 @@ APICredentialsPage.propTypes = {
     api_client_documentation: PropTypes.string,
     updated: PropTypes.bool,
   }),
+  setData: PropTypes.func.isRequired,
 };
 
 export default APICredentialsPage;

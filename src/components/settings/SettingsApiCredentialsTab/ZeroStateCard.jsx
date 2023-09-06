@@ -8,16 +8,14 @@ import { Add, Error } from '@edx/paragon/icons';
 
 import cardImage from '../../../data/images/ZeroState.svg';
 import {
-  EnterpriseId, ShowSuccessToast, ZeroStateHandlerContext,
+  EnterpriseId,
 } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
 import {
   API_CLIENT_DOCUMENTATION, API_TERMS_OF_SERVICE, ENTERPRISE_CUSTOMER_SUPPORT_EMAIL,
 } from '../data/constants';
 
-const ZeroStateCard = ({ setData }) => {
-  const [, setZeroState] = useContext(ZeroStateHandlerContext);
-  const [, setShowToast] = useContext(ShowSuccessToast);
+const ZeroStateCard = ({ setShowToast, setData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [displayFailureAlert, setFailureAlert] = useState(false);
   const enterpriseId = useContext(EnterpriseId);
@@ -27,13 +25,9 @@ const ZeroStateCard = ({ setData }) => {
       const response = await LmsApiService.createNewAPICredentials(enterpriseId);
       const data = { ...response.data, api_client_documentation: API_CLIENT_DOCUMENTATION };
       setData(data);
-      setIsLoading(false);
-      setZeroState(false);
       setShowToast(true);
     } catch (err) {
       setFailureAlert(true);
-      setZeroState(true);
-      setIsLoading(false);
     }
   };
 
@@ -89,6 +83,7 @@ const ZeroStateCard = ({ setData }) => {
 };
 
 ZeroStateCard.propTypes = {
+  setShowToast: PropTypes.func.isRequired,
   setData: PropTypes.func.isRequired,
 };
 

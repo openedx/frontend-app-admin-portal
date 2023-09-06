@@ -6,36 +6,35 @@ import {
 import { Warning } from '@edx/paragon/icons';
 
 import {
-  DataContext, ErrorContext,
+  ErrorContext,
   ShowSuccessToast, EnterpriseId,
 } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
-import { API_CLIENT_DOCUMENTATION } from '../data/constants';
 
 const RegenerateCredentialWarningModal = ({
-  modalSize,
-  modalVariant,
   redirectURIs,
-  setRedirectURIs,
+  data,
+  setData,
 }) => {
   const [isOn, setOn, setOff] = useToggle(false);
   const [, setHasError] = useContext(ErrorContext);
-  const [, setData] = useContext(DataContext);
   const [, setShowSuccessToast] = useContext(ShowSuccessToast);
   const enterpriseId = useContext(EnterpriseId);
   const handleOnClickRegeneration = async () => {
     try {
       const response = await LmsApiService.regenerateAPICredentials(redirectURIs, enterpriseId);
-      const data = { ...response.data, api_client_documentation: API_CLIENT_DOCUMENTATION };
-      setData(data);
+      const newURIs = response.data.redirect_uris;
       setShowSuccessToast(true);
-      setRedirectURIs('');
+      const updatedData = data;
+      updatedData.redirect_uris = newURIs;
+      setData(updatedData);
     } catch (error) {
       setHasError(true);
     } finally {
       setOff(true);
     }
   };
+
   return (
     <>
       <Button
@@ -47,8 +46,7 @@ const RegenerateCredentialWarningModal = ({
       </Button>
       <ModalDialog
         title="Warning Message"
-        size={modalSize}
-        variant={modalVariant}
+        size="md"
         isOpen={isOn}
         onClose={setOff}
         hasCloseButton
@@ -90,16 +88,17 @@ const RegenerateCredentialWarningModal = ({
   );
 };
 
-RegenerateCredentialWarningModal.defaultProps = {
-  modalSize: 'md',
-  modalVariant: 'default',
-};
-
 RegenerateCredentialWarningModal.propTypes = {
-  modalSize: PropTypes.string,
-  modalVariant: PropTypes.string,
   redirectURIs: PropTypes.string.isRequired,
-  setRedirectURIs: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    name: PropTypes.string,
+    redirect_uris: PropTypes.string,
+    client_id: PropTypes.string,
+    client_secret: PropTypes.string,
+    api_client_documentation: PropTypes.string,
+    updated: PropTypes.bool,
+  }),
+  setData: PropTypes.func.isRequired,
 };
 
 export default RegenerateCredentialWarningModal;
