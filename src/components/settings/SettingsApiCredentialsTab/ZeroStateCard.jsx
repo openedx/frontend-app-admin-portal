@@ -2,17 +2,16 @@ import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Button, Card, Icon, MailtoLink, Spinner,
+  Button, Card, Hyperlink, Icon, Spinner,
 } from '@edx/paragon';
 import { Add, Error } from '@edx/paragon/icons';
 
+import { credentialErrorMessage } from './constants';
 import cardImage from '../../../data/images/ZeroState.svg';
-import {
-  EnterpriseId,
-} from './Context';
+import { EnterpriseId } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
 import {
-  API_CLIENT_DOCUMENTATION, API_TERMS_OF_SERVICE, ENTERPRISE_CUSTOMER_SUPPORT_EMAIL,
+  API_CLIENT_DOCUMENTATION, API_TERMS_OF_SERVICE, HELP_CENTER_LINK,
 } from '../data/constants';
 
 const ZeroStateCard = ({ setShowToast, setData }) => {
@@ -45,9 +44,12 @@ const ZeroStateCard = ({ setShowToast, setData }) => {
           This page allows you to generate API credentials to send to&nbsp;
           your developers so they can work on integration projects.
           If you believe you are seeing this page in error,&nbsp;
-          <MailtoLink to={ENTERPRISE_CUSTOMER_SUPPORT_EMAIL} target="_blank" rel="noopener noreferrer">
+          <Hyperlink
+            variant="muted"
+            destination={HELP_CENTER_LINK}
+          >
             contact Enterprise Customer Support.
-          </MailtoLink>
+          </Hyperlink>
         </p>
         )}
         <p>
@@ -63,8 +65,7 @@ const ZeroStateCard = ({ setShowToast, setData }) => {
         { displayFailureAlert && (
         <p className="d-flex small">
           <Icon className="error-icon" src={Error} />
-          Something went wrong while generating your credentials.
-          Please try again. If the issue continues, contact Enterprise Customer Support.
+          {credentialErrorMessage}
         </p>
         )}
         <Button

@@ -10,6 +10,7 @@ import {
   ShowSuccessToast, EnterpriseId,
 } from './Context';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { dataPropType } from './constants';
 
 const RegenerateCredentialWarningModal = ({
   redirectURIs,
@@ -90,14 +91,7 @@ const RegenerateCredentialWarningModal = ({
 
 RegenerateCredentialWarningModal.propTypes = {
   redirectURIs: PropTypes.string.isRequired,
-  data: PropTypes.shape({
-    name: PropTypes.string,
-    redirect_uris: PropTypes.string,
-    client_id: PropTypes.string,
-    client_secret: PropTypes.string,
-    api_client_documentation: PropTypes.string,
-    updated: PropTypes.bool,
-  }),
+  data: PropTypes.shape(dataPropType),
   setData: PropTypes.func.isRequired,
 };
 

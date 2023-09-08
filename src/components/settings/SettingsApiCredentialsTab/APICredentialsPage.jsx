@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { MailtoLink, Form } from '@edx/paragon';
+import { Form, Hyperlink } from '@edx/paragon';
+import { dataPropType } from './constants';
 import RegenerateCredentialWarningModal from './RegenerateCredentialWarningModal';
 import CopyButton from './CopyButton';
-import { API_CLIENT_DOCUMENTATION, ENTERPRISE_CUSTOMER_SUPPORT_EMAIL } from '../data/constants';
+import { API_CLIENT_DOCUMENTATION, HELP_CENTER_LINK } from '../data/constants';
 
 const APICredentialsPage = ({ data, setData }) => {
   const [formValue, setFormValue] = useState('');
@@ -73,9 +74,12 @@ const APICredentialsPage = ({ data, setData }) => {
         <p>
           To troubleshoot your API credentialing, or to request additional API endpoints to your
           credentials,&nbsp;
-          <MailtoLink to={ENTERPRISE_CUSTOMER_SUPPORT_EMAIL} target="_blank" rel="noopener noreferrer">
+          <Hyperlink
+            variant="muted"
+            destination={HELP_CENTER_LINK}
+          >
             contact Enterprise Customer Support.
-          </MailtoLink>
+          </Hyperlink>
         </p>
       </div>
     </div>
@@ -87,14 +91,7 @@ APICredentialsPage.defaultProps = {
 };
 
 APICredentialsPage.propTypes = {
-  data: PropTypes.shape({
-    name: PropTypes.string,
-    redirect_uris: PropTypes.string,
-    client_id: PropTypes.string,
-    client_secret: PropTypes.string,
-    api_client_documentation: PropTypes.string,
-    updated: PropTypes.bool,
-  }),
+  data: PropTypes.shape(dataPropType),
   setData: PropTypes.func.isRequired,
 };
 

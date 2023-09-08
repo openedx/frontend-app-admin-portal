@@ -7,7 +7,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import SettingsApiCredentialsTab from '../index';
 import {
-  API_CLIENT_DOCUMENTATION, HELP_CENTER_API_GUIDE, API_TERMS_OF_SERVICE, ENTERPRISE_CUSTOMER_SUPPORT_EMAIL,
+  API_CLIENT_DOCUMENTATION, HELP_CENTER_API_GUIDE, API_TERMS_OF_SERVICE, HELP_CENTER_LINK,
 } from '../../data/constants';
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
@@ -92,7 +92,7 @@ describe('API Credentials Tab', () => {
     expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `Last generated on: ${updated}` }).toBeInTheDocument);
     const link = screen.getByText('contact Enterprise Customer Support.');
-    expect(link.getAttribute('href')).toBe(`mailto:${ENTERPRISE_CUSTOMER_SUPPORT_EMAIL}`);
+    expect(link.getAttribute('href')).toBe(HELP_CENTER_LINK);
   });
   test('renders error stage while creating new api credentials through clicking generation button', async () => {
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');

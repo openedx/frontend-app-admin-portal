@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 import { ContentCopy } from '@edx/paragon/icons';
 import CopiedToast from './CopiedToast';
+import { dataPropType } from './constants';
 
 const CopyButton = ({ data }) => {
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
@@ -41,14 +42,7 @@ const CopyButton = ({ data }) => {
 };
 
 CopyButton.propTypes = {
-  data: PropTypes.shape({
-    name: PropTypes.string,
-    redirect_uris: PropTypes.string,
-    client_id: PropTypes.string,
-    client_secret: PropTypes.string,
-    api_client_documentation: PropTypes.string,
-    updated: PropTypes.bool,
-  }),
+  data: PropTypes.shape(dataPropType),
 };
 
 export default CopyButton;
