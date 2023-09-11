@@ -7,11 +7,12 @@ import PropTypes from 'prop-types';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  Alert, Button, Hyperlink, Toast, Skeleton, useToggle,
+  Alert, Button, Toast, Skeleton, useToggle,
 } from '@edx/paragon';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
+import HelpCenterButton from '../HelpCenterButton';
 import { camelCaseDictArray, getChannelMap } from '../../../utils';
 import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
@@ -149,13 +150,9 @@ const SettingsLMSTab = ({
   return (
     <div>
       <h2 className="py-2">Learning Platform Integrations
-        <Hyperlink
-          destination={HELP_CENTER_LINK}
-          className="btn btn-outline-primary side-button"
-          target="_blank"
-        >
+        <HelpCenterButton url={HELP_CENTER_LINK}>
           Help Center: Integrations
-        </Hyperlink>
+        </HelpCenterButton>
         <div className="mt-3" style={{ pointerEvents: null }}>
           {!configsLoading && !config && (
             <Button

@@ -18,6 +18,7 @@ const initialState = {
   enableReportingConfigScreen: false,
   enableSubscriptionManagementScreen: false,
   enableIntegratedCustomerLearnerPortalSearch: false,
+  enableApiCredentialGeneration: false,
   enableLearnerPortal: false,
   enableSamlConfigurationScreen: false,
   enableAnalyticsScreen: false,
@@ -50,6 +51,7 @@ const enterpriseData = {
   enable_portal_lms_configurations_screen: true,
   enable_universal_link: true,
   enable_browse_and_request: true,
+  enable_generation_of_api_credentials: true,
 };
 
 describe('portalConfiguration reducer', () => {
@@ -78,6 +80,7 @@ describe('portalConfiguration reducer', () => {
       enableLmsConfigurationsScreen: enterpriseData.enable_portal_lms_configurations_screen,
       enableUniversalLink: enterpriseData.enable_universal_link,
       enablePortalLearnerCreditManagementScreen: enterpriseData.enable_portal_learner_credit_management_screen,
+      enableApiCredentialGeneration: enterpriseData.enable_generation_of_api_credentials,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
