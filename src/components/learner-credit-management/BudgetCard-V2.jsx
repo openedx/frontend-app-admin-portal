@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import {
@@ -7,58 +7,45 @@ import {
   Stack,
   Row,
   Col,
-  Breadcrumb,
 } from '@edx/paragon';
 
-import { useOfferRedemptions, useOfferSummary } from './data/hooks';
+import { useHistory } from 'react-router-dom';
+import { useOfferSummary } from './data/hooks';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
-import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { ROUTE_NAMES } from "../EnterpriseApp/data/constants";
 
 const BudgetCard = ({
   offer,
   enterpriseUUID,
   enterpriseSlug,
-  enableLearnerPortal,
 }) => {
   const {
     start,
     end,
   } = offer;
+  const history = useHistory();
 
   const {
     isLoading: isLoadingOfferSummary,
     offerSummary,
   } = useOfferSummary(enterpriseUUID, offer);
 
-  const {
-    isLoading: isLoadingOfferRedemptions,
-    offerRedemptions,
-    fetchOfferRedemptions,
-  } = useOfferRedemptions(enterpriseUUID, offer?.id);
-  const [detailPage, setDetailPage] = useState(false);
-  const [activeLabel, setActiveLabel] = useState('');
-  const links = [
-    { label: 'Budgets', url: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
-  ];
   const formattedStartDate = dayjs(start).format('MMMM D, YYYY');
   const formattedExpirationDate = dayjs(end).format('MMMM D, YYYY');
-  const navigateToBudgetRedemptions = (budgetType) => {
-    setDetailPage(true);
-    links.push({ label: budgetType, url: `/${enterpriseSlug}/admin/learner-credit` });
-    setActiveLabel(budgetType);
+  const navigateToBudgetRedemptions = (id) => {
+    history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${id}`);
   };
 
-  const renderActions = (budgetType) => (
+  const renderActions = (id) => (
     <Button
       data-testid="view-budget"
-      onClick={() => navigateToBudgetRedemptions(budgetType)}
+      onClick={() => navigateToBudgetRedemptions(id)}
     >
       View Budget
     </Button>
   );
 
-  const renderCardHeader = (budgetType) => {
+  const renderCardHeader = (budgetType, id) => {
     const subtitle = (
       <div className="d-flex flex-wrap align-items-center">
         <span data-testid="offer-date">
@@ -73,7 +60,7 @@ const BudgetCard = ({
         subtitle={subtitle}
         actions={(
           <div>
-            {renderActions(budgetType)}
+            {renderActions(id)}
           </div>
                 )}
       />
@@ -112,42 +99,22 @@ const BudgetCard = ({
 
   return (
     <Stack>
-      <Row className="m-3">
-        <Col xs="12">
-          <Breadcrumb
-            ariaLabel="Breadcrumb"
-            links={links}
-            activeLabel={activeLabel}
-          />
-        </Col>
-      </Row>
-      {!detailPage
-        ? (
-          <>
-            {renderCardAggregate()}
-            <h2>Budgets</h2>
-            <Card
-              orientation="horizontal"
-            >
-              <Card.Body>
-                <Stack gap={4}>
-                  {renderCardHeader('Overview')}
-                  {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFunds)}
-                </Stack>
-              </Card.Body>
-            </Card>
-          </>
-        )
-        : (
-          <LearnerCreditAllocationTable
-            isLoading={isLoadingOfferRedemptions}
-            tableData={offerRedemptions}
-            fetchTableData={fetchOfferRedemptions}
-            enterpriseUUID={enterpriseUUID}
-            enterpriseSlug={enterpriseSlug}
-            enableLearnerPortal={enableLearnerPortal}
-          />
-        )}
+
+      <>
+        {renderCardAggregate()}
+        <h2>Budgets</h2>
+        <Card
+          orientation="horizontal"
+        >
+          <Card.Body>
+            <Stack gap={4}>
+              {/*{renderCardHeader('Overview', 'f25682b2-62ce-42a7-b596-8acc86811cc9')}*/}
+              {renderCardHeader('Overview', '256829')}
+              {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFunds)}
+            </Stack>
+          </Card.Body>
+        </Card>
+      </>
     </Stack>
   );
 };
