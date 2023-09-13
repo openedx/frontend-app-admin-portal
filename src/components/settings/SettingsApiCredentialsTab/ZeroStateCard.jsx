@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -41,24 +41,33 @@ const ZeroStateCard = ({ setShowToast, setData }) => {
         <h2>You don&apos;t have API credentials yet.</h2>
         { !displayFailureAlert && (
         <p>
-          This page allows you to generate API credentials to send to&nbsp;
+          This page allows you to generate API credentials to send to
           your developers so they can work on integration projects.
           If you believe you are seeing this page in error,&nbsp;
           <Hyperlink
             variant="muted"
             destination={HELP_CENTER_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             contact Enterprise Customer Support.
           </Hyperlink>
         </p>
         )}
         <p>
-          edX for Business API credentials credentials will provide access&nbsp;
-          to the following edX API endpoints: reporting dashboard, dashboard, and catalog administration.
+          edX for Business API credentials will provide access to the following
+          edX API endpoints: reporting dashboard, dashboard, and catalog administration.
         </p>
         <p>
-          By clicking the button below, you and your organization accept the {'\n'}
-          <a href={API_TERMS_OF_SERVICE}>edX API terms of service</a>.
+          By clicking the button below, you and your organization accept the&nbsp;
+          <Hyperlink
+            variant="muted"
+            destination={API_TERMS_OF_SERVICE}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            edX API terms of service.
+          </Hyperlink>
         </p>
       </Card.Section>
       <Card.Footer className={displayFailureAlert ? 'error-footer d-table-row' : ''}>
