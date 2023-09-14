@@ -103,7 +103,6 @@ describe('EnterpriseAccessApiService', () => {
     EnterpriseAccessApiService.getSubsidyRequestConfiguration({ enterpriseId: mockEnterpriseUUID });
     expect(axios.get).toBeCalledWith(
       `${enterpriseAccessBaseUrl}/api/v1/customer-configurations/${mockEnterpriseUUID}/`,
-      { clearCacheEntry: false },
     );
   });
 
