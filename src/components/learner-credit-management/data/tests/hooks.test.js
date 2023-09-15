@@ -73,7 +73,7 @@ describe('useOfferSummary', () => {
       remainingFunds: 4800,
       percentUtilized: 0.04,
       offerId: 1,
-      budgetsSumary: [],
+      budgetsSummary: [],
       offerType: undefined,
     };
     expect(result.current).toEqual({
