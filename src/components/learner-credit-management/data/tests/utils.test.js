@@ -23,6 +23,8 @@ describe('transformOfferSummary', () => {
       remainingFunds: 0.0,
       percentUtilized: 1.0,
       offerType: EXEC_ED_OFFER_TYPE,
+      budgetsSumary: [],
+      offerId: undefined,
     });
   });
 
@@ -33,6 +35,8 @@ describe('transformOfferSummary', () => {
       remainingBalance: null,
       percentOfOfferSpent: null,
       offerType: 'Site',
+      offerId: '123',
+      budgetsSumary: [],
     };
 
     expect(transformOfferSummary(offerSummary)).toEqual({
@@ -41,6 +45,10 @@ describe('transformOfferSummary', () => {
       remainingFunds: null,
       percentUtilized: null,
       offerType: 'Site',
+      redeemedFundsExecEd: undefined,
+      redeemedFundsOcm: undefined,
+      offerId: '123',
+      budgetsSumary: [],
     });
   });
 });

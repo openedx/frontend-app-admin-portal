@@ -30,38 +30,51 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
           }),
         ]);
 
-        // If there are no subsidies in enterprise, fall back to the e-commerce API.
-        let { results } = camelCaseObject(enterpriseSubsidyResponse.data);
-        let source = 'subsidyApi';
+        // We have to conside both type of offers active and inactive.
 
-        if (results.length === 0) {
-          results = camelCaseObject(ecommerceApiResponse.data.results);
-          source = 'ecommerceApi';
-        }
-        let activeSubsidyFound = false;
-        if (results.length !== 0) {
-          let subsidy = results[0];
-          const offerData = [];
-          let activeSubsidyData = {};
-          for (let i = 0; i < results.length; i++) {
-            subsidy = results[i];
-            activeSubsidyFound = source === 'ecommerceApi'
-              ? subsidy.isCurrent
-              : subsidy.isActive;
-            if (activeSubsidyFound === true) {
-              activeSubsidyData = {
-                id: subsidy.uuid || subsidy.id,
-                name: subsidy.title || subsidy.displayName,
-                start: subsidy.activeDatetime || subsidy.startDatetime,
-                end: subsidy.expirationDatetime || subsidy.endDatetime,
-                isCurrent: activeSubsidyFound,
-              };
-              offerData.push(activeSubsidyData);
-              setCanManageLearnerCredit(true);
-            }
+        const enterpriseResults = camelCaseObject(enterpriseSubsidyResponse.data).results;
+        const ecommerceResults = camelCaseObject(ecommerceApiResponse.data.results);
+
+        const offerData = [];
+
+        for (let i = 0; i < enterpriseResults.length; i++) {
+          const subsidy = enterpriseResults[i];
+          const source = 'subsidyApi';
+          const { isActive } = subsidy; // Always check isActive for enterprise subsidies
+          const isCurrent = isActive; // You can adjust this based on your specific requirements
+          const activeSubsidyData = {
+            id: subsidy.uuid || subsidy.id,
+            name: subsidy.title || subsidy.displayName,
+            start: subsidy.activeDatetime || subsidy.startDatetime,
+            end: subsidy.expirationDatetime || subsidy.endDatetime,
+            isCurrent,
+            source,
+          };
+          offerData.push(activeSubsidyData);
+          if (isActive) {
+            setCanManageLearnerCredit(true);
           }
-          setOffers(offerData);
         }
+
+        for (let i = 0; i < ecommerceResults.length; i++) {
+          const subsidy = ecommerceResults[i];
+          const source = 'ecommerceApi';
+          const { isCurrent } = subsidy;
+          const activeSubsidyData = {
+            id: subsidy.uuid || subsidy.id,
+            name: subsidy.title || subsidy.displayName,
+            start: subsidy.activeDatetime || subsidy.startDatetime,
+            end: subsidy.expirationDatetime || subsidy.endDatetime,
+            isCurrent,
+            source,
+          };
+          offerData.push(activeSubsidyData);
+          if (isCurrent) {
+            setCanManageLearnerCredit(true);
+          }
+        }
+
+        setOffers(offerData);
       } catch (error) {
         logError(error);
       } finally {

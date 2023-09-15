@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -12,10 +10,14 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import BudgetCard from '../BudgetCard-V2';
-import { useOfferSummary, useOfferRedemptions } from '../data/hooks';
+import { MemoryRouter } from 'react-router-dom';
+import BudgetDetailPage from '../../../learner-credit-management/BudgetDetailPage';
+import { useOfferSummary, useOfferRedemptions } from '../../../learner-credit-management/data/hooks';
+import { EXEC_ED_OFFER_TYPE } from '../../../learner-credit-management/data/constants';
+import { EnterpriseSubsidiesContext } from '../..';
 
-jest.mock('../data/hooks');
+jest.mock('../../../learner-credit-management/data/hooks');
+
 useOfferSummary.mockReturnValue({
   isLoading: false,
   offerSummary: null,
@@ -37,82 +39,77 @@ const enterpriseUUID = '1234';
 const initialStore = {
   portalConfiguration: {
     enterpriseId,
+    enterpriseSlug: enterpriseId,
+
   },
 };
 const store = getMockStore({ ...initialStore });
 
 const mockEnterpriseOfferId = '123';
-const mockEnterpriseOfferEnrollmentId = 456;
 
 const mockOfferDisplayName = 'Test Enterprise Offer';
+const mockOfferSummary = {
+  totalFunds: 5000,
+  redeemedFunds: 200,
+  remainingFunds: 4800,
+  percentUtilized: 0.04,
+  offerType: EXEC_ED_OFFER_TYPE,
+};
 
-const BudgetCardWrapper = ({ ...rest }) => (
-  <MemoryRouter initialEntries={['/test-enterprise/admin/learner-credit']}>
+const defaultEnterpriseSubsidiesContextValue = {
+  isLoading: false,
+};
+
+const BudgetDetailPageWrapper = ({
+  enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+  ...rest
+}) => (
+  <MemoryRouter initialEntries={['/test-enterprise/admin/learner-credit/1234']}>
+
     <Provider store={store}>
       <IntlProvider locale="en">
-        <BudgetCard {...rest} />
+        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+          <BudgetDetailPage {...rest} />
+        </EnterpriseSubsidiesContext.Provider>
       </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
 
-describe('<BudgetCard />', () => {
+describe('<BudgetDetailPage />', () => {
   describe('with enterprise offer', () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    it('displays correctly for Offers', () => {
+    it('displays table on clicking view budget', async () => {
       const mockOffer = {
         id: mockEnterpriseOfferId,
         name: mockOfferDisplayName,
         start: '2022-01-01',
         end: '2023-01-01',
       };
-      const mockOfferRedemption = {
-        created: '2022-02-01',
-        enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
-      };
       useOfferSummary.mockReturnValue({
         isLoading: false,
-        offerSummary: {
-          totalFunds: 5000,
-          redeemedFunds: 200,
-          remainingFunds: 4800,
-          percentUtilized: 0.04,
-          offerType: 'Site',
-          budgetsSumary: [
-            {
-              id: 123,
-              start: '2022-01-01',
-              end: '2022-01-01',
-              available: 200,
-              spent: 100,
-              enterpriseSlug: enterpriseId,
-            },
-          ],
-        },
+        offerSummary: mockOfferSummary,
       });
       useOfferRedemptions.mockReturnValue({
         isLoading: false,
         offerRedemptions: {
-          results: [mockOfferRedemption],
-          itemCount: 1,
-          pageCount: 1,
+          itemCount: 0,
+          pageCount: 0,
+          results: [],
         },
         fetchOfferRedemptions: jest.fn(),
       });
-      render(<BudgetCardWrapper
-        offer={mockOffer}
+      render(<BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
         enterpriseSlug={enterpriseId}
+        offer={mockOffer}
       />);
+      expect(screen.getByText('Learner Credit Budget Detail'));
       expect(screen.getByText('Overview'));
-      expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
-      const formattedString = `${dayjs(mockOffer.start).format('MMMM D, YYYY')} - ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
-      const elementsWithTestId = screen.getAllByTestId('offer-date');
-      const firstElementWithTestId = elementsWithTestId[0];
-      expect(firstElementWithTestId).toHaveTextContent(formattedString);
+      expect(screen.getByText('No results found'));
     });
   });
 });
