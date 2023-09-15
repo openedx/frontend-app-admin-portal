@@ -7,12 +7,15 @@ import { Form } from '@edx/paragon';
 import { setFormFieldAction } from './data/actions';
 import { useFormContext } from './FormContext';
 
+// TODO: Get from Paragon
 type InheritedParagonControlProps = {
   autoFocus?: boolean;
   className?: string;
   type: string;
+  as?: string;
   maxLength?: number;
   floatingLabel?: string;
+  rows?: number;
 };
 
 export type ValidatedFormControlProps = {

@@ -166,6 +166,7 @@ const SAPConfigEnablePage = () => (
           formId={formFieldNames.USER_TYPE}
           label="SAP User Type"
           options={[['User', 'user'], ['Admin', 'admin']]}
+          isInline
         />
       </Form.Group>
     </Form>
