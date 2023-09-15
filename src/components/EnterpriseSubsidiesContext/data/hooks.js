@@ -43,10 +43,10 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
           const { isActive } = subsidy; // Always check isActive for enterprise subsidies
           const isCurrent = isActive; // You can adjust this based on your specific requirements
           const activeSubsidyData = {
-            id: subsidy.uuid || subsidy.id,
-            name: subsidy.title || subsidy.displayName,
-            start: subsidy.activeDatetime || subsidy.startDatetime,
-            end: subsidy.expirationDatetime || subsidy.endDatetime,
+            id: subsidy.uuid,
+            name: subsidy.title,
+            start: subsidy.activeDatetime,
+            end: subsidy.expirationDatetime,
             isCurrent,
             source,
           };
@@ -61,10 +61,10 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
           const source = 'ecommerceApi';
           const { isCurrent } = subsidy;
           const activeSubsidyData = {
-            id: subsidy.uuid || subsidy.id,
-            name: subsidy.title || subsidy.displayName,
-            start: subsidy.activeDatetime || subsidy.startDatetime,
-            end: subsidy.expirationDatetime || subsidy.endDatetime,
+            id: subsidy.id,
+            name: subsidy.displayName,
+            start: subsidy.startDatetime,
+            end: subsidy.endDatetime,
             isCurrent,
             source,
           };

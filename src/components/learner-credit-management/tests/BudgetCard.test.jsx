@@ -81,7 +81,7 @@ describe('<BudgetCard />', () => {
           remainingFunds: 4800,
           percentUtilized: 0.04,
           offerType: 'Site',
-          budgetsSumary: [
+          budgetsSummary: [
             {
               id: 123,
               start: '2022-01-01',
