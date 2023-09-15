@@ -74,7 +74,7 @@ const applyFiltersToOptions = (filters, options) => {
   }
 };
 
-export const useOfferRedemptions = (enterpriseUUID, offerId= null, budgetId = null) => {
+export const useOfferRedemptions = (enterpriseUUID, offerId = null, budgetId = null) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [offerRedemptions, setOfferRedemptions] = useState({
