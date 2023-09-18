@@ -237,7 +237,7 @@ export class BaseCodeReminderModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <>
-                {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === REMIND_MODE && submitting && <Spinner animation="border" variant="primary" size="sm" />}
                 Remind
               </>
             </Button>,

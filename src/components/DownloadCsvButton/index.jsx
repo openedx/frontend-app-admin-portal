@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from '@edx/paragon';
+import { Button, Spinner } from '@edx/paragon';
+import { FileDownload } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
@@ -22,7 +23,6 @@ class DownloadCsvButton extends React.Component {
       id,
     } = this.props;
 
-    const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
     return (
       <Button
         variant="outline-primary"
@@ -36,7 +36,7 @@ class DownloadCsvButton extends React.Component {
         }}
       >
         <>
-          <Icon className={`fa mr-2 ${downloadButtonIconClasses.join(' ')}`} />
+          {csvLoading ? <Spinner animation="border" variant="primary" className="mr-2" size="sm" /> : <FileDownload className="mr-2" />}
           {buttonLabel || <FormattedMessage id="adminPortal.csv.download" defaultMessage="Download full report (CSV)" />}
         </>
       </Button>

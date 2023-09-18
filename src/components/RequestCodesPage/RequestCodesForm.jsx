@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Link, Redirect } from 'react-router-dom';
-import { Alert, Button, Icon } from '@edx/paragon';
+import { Alert, Button, Spinner } from '@edx/paragon';
 
 import RenderField from '../RenderField';
 
@@ -120,7 +120,7 @@ class RequestCodesForm extends React.Component {
                 className="btn-primary"
               >
                 <>
-                  {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                  {submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
                   Request Codes
                 </>
               </Button>

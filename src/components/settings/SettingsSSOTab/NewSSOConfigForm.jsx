@@ -4,16 +4,19 @@ import { WarningFilled } from '@edx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOStepper from './SSOStepper';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
+import { features } from '../../../config';
+import NewSSOStepper from './NewSSOStepper';
 
 const NewSSOConfigForm = () => {
   const { ssoState: { currentError } } = useContext(SSOConfigContext);
+  const { AUTH0_SELF_SERVICE_INTEGRATION } = features;
   return (
     <div className="sso-create-form mt-4.5">
       <span>
         Connect to a SAML identity provider for single sign-on
         to allow quick access to your organization&apos;s learning catalog.
       </span>
-      <SSOStepper />
+      {AUTH0_SELF_SERVICE_INTEGRATION ? <NewSSOStepper /> : <SSOStepper />}
       {currentError && (
       <Alert
         variant="warning"

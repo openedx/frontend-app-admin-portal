@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Dispatch } from 'react';
 import {
-  ActionRow, Button, FullscreenModal, Hyperlink, Stepper, useToggle,
+  ActionRow, Button, FullscreenModal, Stepper, useToggle,
 } from '@edx/paragon';
 import { Launch } from '@edx/paragon/icons';
 
@@ -14,6 +14,7 @@ import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from '../settings/data/constan
 import UnsavedChangesModal from '../settings/SettingsLMSTab/UnsavedChangesModal';
 import ConfigErrorModal from '../settings/ConfigErrorModal';
 import { channelMapping, pollAsync } from '../../utils';
+import HelpCenterButton from '../settings/HelpCenterButton';
 
 export const WAITING_FOR_ASYNC_OPERATION = 'WAITING FOR ASYNC OPERATION';
 
@@ -201,13 +202,9 @@ const FormWorkflow = <FormConfigData extends unknown>({
           className="stepper-modal"
           footerNode={(
             <ActionRow>
-              <Hyperlink
-                destination={helpCenterLink}
-                className="btn btn-outline-tertiary"
-                target="_blank"
-              >
+              <HelpCenterButton url={helpCenterLink}>
                 Help Center: Integrations
-              </Hyperlink>
+              </HelpCenterButton>
               <ActionRow.Spacer />
               <Button variant="tertiary" onClick={onCancel}>Cancel</Button>
               {nextButtonConfig && (

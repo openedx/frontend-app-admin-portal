@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { clearFields } from 'redux-form';
 import { Button, Icon, ValidationFormGroup } from '@edx/paragon';
+import { Close } from '@edx/paragon/icons';
 
 class FileInput extends React.Component {
   constructor(props) {
@@ -136,7 +137,7 @@ class FileInput extends React.Component {
                 this.setState({ fileName: null });
               }}
             >
-              <Icon className="fa fa-times mr-1" />
+              <Icon src={Close} className="mr-1" />
               Remove
             </Button>
           )}

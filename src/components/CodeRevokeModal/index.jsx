@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, Icon, ModalDialog, ActionRow,
 } from '@edx/paragon';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { Info } from '@edx/paragon/icons';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
@@ -191,7 +191,7 @@ class CodeRevokeModal extends React.Component {
             label="Do not email"
             checked={doNotEmail}
             id="doNotEmailCheckbox"
-            icon={faInfoCircle}
+            icon={Info}
             altText="More information"
             tooltipText="By clicking this box, you can revoke this coupon code without emailing the learner."
             onChange={(event, newValue) => {
@@ -245,7 +245,7 @@ class CodeRevokeModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <>
-                {mode === MODAL_TYPES.revoke && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+                {mode === MODAL_TYPES.revoke && submitting && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
                 Revoke
               </>
             </Button>,

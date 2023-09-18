@@ -423,7 +423,7 @@ export class BaseCodeAssignmentModal extends React.Component {
               data-testid={SUBMIT_BUTTON_TEST_ID}
             >
               <>
-                {mode === MODAL_TYPES.assign && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+              {mode === MODAL_TYPES.assign && submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
                 {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
               </>
             </Button>,

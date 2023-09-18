@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import dayjs from 'dayjs';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import {
-  Button, Row, Col, Toast,
+  Button, Row, Col, Toast, Icon,
 } from '@edx/paragon';
+import { ArrowBackIos } from '@edx/paragon/icons';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
@@ -38,7 +37,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
         <Row className="ml-0 mb-3">
           <Link to={backToSubscriptionsPath}>
             <Button variant="outline-primary">
-              <FontAwesomeIcon icon={faAngleLeft} className="mr-2" />
+              <Icon src={ArrowBackIos} className="mr-2" />
               Back to subscriptions
             </Button>
           </Link>

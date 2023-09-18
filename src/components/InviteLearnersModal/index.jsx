@@ -200,7 +200,7 @@ class InviteLearnersModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <>
-                {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+              {submitting && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
                 Invite learners
               </>
             </Button>,
