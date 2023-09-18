@@ -1,49 +1,19 @@
-import { snakeCaseDict } from "../../../../../utils";
-import { SAP_TYPE } from "../../../data/constants";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import SAPConfigEnablePage, { validations } from "./SAPConfigEnablePage.tsx";
+import { snakeCaseDict } from '../../../../../utils';
+import { SAP_TYPE } from '../../../data/constants';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import SAPConfigEnablePage, { validations } from './SAPConfigEnablePage';
 import type {
   FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper } from "../utils.tsx";
-
-export type SAPConfigCamelCase = {
-  lms: string;
-  displayName: string;
-  sapBaseUrl: string;
-  sapCompanyId: string;
-  sapUserId: string;
-  oauthClientId: string;
-  oauthClientSecret: string;
-  sapUserType: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-};
-
-export type SAPConfigSnakeCase = {
-  lms: string;
-  display_name: string;
-  sap_base_url: string;
-  sap_company_id: string;
-  sap_user_id: string;
-  oauth_client_id: string;
-  oauth_client_secret: string;
-  sap_user_type: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-};
+} from '../../../../forms/FormWorkflow';
+import {
+  activateConfig, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper,
+} from '../utils';
+import type { SAPConfigCamelCase, SAPConfigSnakeCase } from './SAPTypes';
 
 export type SAPFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: SAPConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (sapConfig: SAPConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>;
@@ -57,13 +27,12 @@ export const SAPFormConfig = ({
   existingConfigNames,
   channelMap,
 }: SAPFormConfigProps): FormWorkflowConfig<SAPConfigCamelCase> => {
-
   const saveChanges = async (
     formFields: SAPConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
     const transformedConfig: SAPConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as SAPConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, SAP_TYPE, channelMap, errHandler);
@@ -75,24 +44,32 @@ export const SAPFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<SAPConfigCamelCase>) => {
-    let currentFormFields = formFields;
+    const currentFormFields = formFields;
     const transformedConfig: SAPConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as SAPConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, SAP_TYPE, channelMap, errHandler, dispatch);
+      enterpriseCustomerUuid,
+      transformedConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      SAP_TYPE,
+      channelMap,
+      dispatch,
+      errHandler,
+    );
   };
 
   const activate = async ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<SAPConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, SAP_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, SAP_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
-
 
   const activatePage = () => ConfigActivatePage(SAP_TYPE);
 
@@ -100,12 +77,12 @@ export const SAPFormConfig = ({
     {
       index: 1,
       formComponent: SAPConfigEnablePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
-      stepName: "Enable",
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
+      stepName: 'Configure',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Enable",
+        const config = {
+          buttonText: 'Enable',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
@@ -116,16 +93,16 @@ export const SAPFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<SAPConfigCamelCase>;
-      }
+      },
     },
   ];
 

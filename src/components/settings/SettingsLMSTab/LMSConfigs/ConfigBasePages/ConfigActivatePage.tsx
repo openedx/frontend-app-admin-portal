@@ -6,14 +6,14 @@ import { channelMapping } from '../../../../../utils';
 
 const ConfigActivatePage = (lmsType: string) => {
   let verb = 'enabled';
-  if (lmsType == CANVAS_TYPE || lmsType == BLACKBOARD_TYPE) {
-    verb = 'authorized'
+  if (lmsType === CANVAS_TYPE || lmsType === BLACKBOARD_TYPE) {
+    verb = 'authorized';
   }
   const lmsName = channelMapping[lmsType].displayName;
   return (
-    <Container size='md'>
-      <Form style={{ maxWidth: '60rem' }}>  
-        <span className='d-flex pb-4'>
+    <Container size="md">
+      <Form style={{ maxWidth: '60rem' }}>
+        <span className="d-flex pb-4">
           <Image
             className="lms-icon mr-2"
             src={channelMapping[lmsType].icon}
@@ -33,7 +33,7 @@ const ConfigActivatePage = (lmsType: string) => {
         </p>
       </Form>
     </Container>
-  )
+  );
 };
 
 export default ConfigActivatePage;

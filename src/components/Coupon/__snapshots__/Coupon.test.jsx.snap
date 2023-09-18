@@ -98,24 +98,52 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
       className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
     >
       <span
-        aria-hidden={true}
-        className="fa fa-exclamation-circle text-danger mr-2"
-        id="Icon3"
-      />
-      <span
-        className="sr-only"
+        className="pgn__icon text-danger mr-2 d-inline-block"
       >
-        Coupon has an error.
+        <svg
+          aria-hidden={true}
+          fill="none"
+          focusable={false}
+          height={24}
+          role="img"
+          viewBox="0 0 24 24"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+            fill="currentColor"
+          />
+        </svg>
+        <span
+          className="sr-only"
+        >
+          Coupon has an error.
+        </span>
       </span>
       <span
-        aria-hidden={true}
-        className="fa fa-chevron-down text-primary"
-        id="Icon4"
-      />
-      <span
-        className="sr-only"
+        className="pgn__icon d-inline-block text-primary"
       >
-        Open coupon details
+        <svg
+          aria-hidden={true}
+          fill="none"
+          focusable={false}
+          height={24}
+          role="img"
+          viewBox="0 0 24 24"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"
+            fill="currentColor"
+          />
+        </svg>
+        <span
+          className="sr-only"
+        >
+          Open coupon details
+        </span>
       </span>
     </div>
   </div>
@@ -228,14 +256,28 @@ exports[`<Coupon /> renders correctly with max uses 1`] = `
       className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
     >
       <span
-        aria-hidden={true}
-        className="fa fa-chevron-down text-primary"
-        id="Icon1"
-      />
-      <span
-        className="sr-only"
+        className="pgn__icon d-inline-block text-primary"
       >
-        Open coupon details
+        <svg
+          aria-hidden={true}
+          fill="none"
+          focusable={false}
+          height={24}
+          role="img"
+          viewBox="0 0 24 24"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"
+            fill="currentColor"
+          />
+        </svg>
+        <span
+          className="sr-only"
+        >
+          Open coupon details
+        </span>
       </span>
     </div>
   </div>
@@ -343,14 +385,28 @@ exports[`<Coupon /> renders correctly without max uses 1`] = `
       className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
     >
       <span
-        aria-hidden={true}
-        className="fa fa-chevron-down text-primary"
-        id="Icon2"
-      />
-      <span
-        className="sr-only"
+        className="pgn__icon d-inline-block text-primary"
       >
-        Open coupon details
+        <svg
+          aria-hidden={true}
+          fill="none"
+          focusable={false}
+          height={24}
+          role="img"
+          viewBox="0 0 24 24"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"
+            fill="currentColor"
+          />
+        </svg>
+        <span
+          className="sr-only"
+        >
+          Open coupon details
+        </span>
       </span>
     </div>
   </div>

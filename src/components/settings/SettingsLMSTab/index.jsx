@@ -1,27 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import _ from 'lodash';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  Alert, Button, Hyperlink, Toast, Skeleton, useToggle,
+  Alert, Button, Toast, Skeleton, useToggle,
 } from '@edx/paragon';
 import { Add, Info } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
-import { camelCaseDictArray, channelMapping } from '../../../utils';
+import HelpCenterButton from '../HelpCenterButton';
+import { camelCaseDictArray, getChannelMap } from '../../../utils';
 import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
 import NoConfigCard from './NoConfigCard';
 import {
-  HELP_CENTER_LINK,
-  ACTIVATE_TOAST_MESSAGE,
-  DELETE_TOAST_MESSAGE,
-  INACTIVATE_TOAST_MESSAGE,
-  SUBMIT_TOAST_MESSAGE,
+  HELP_CENTER_LINK, ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE,
+  INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE,
 } from '../data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
-// @ts-ignore
-import { useFormContext } from '../../forms/FormContext.tsx';
+import { useFormContext } from '../../forms/FormContext';
 
 const SettingsLMSTab = ({
   enterpriseId,
@@ -37,7 +38,7 @@ const SettingsLMSTab = ({
   const [configsExist, setConfigsExist] = useState(false);
   const [showNoConfigCard, setShowNoConfigCard] = useState(true);
   const [configsLoading, setConfigsLoading] = useState(true);
-  const [displayNames, setDisplayNames] = useState([]);
+  const [displayNames, setDisplayNames] = useState(new Map());
 
   const [existingConfigFormData, setExistingConfigFormData] = useState({});
   const [toastMessage, setToastMessage] = useState();
@@ -46,6 +47,7 @@ const SettingsLMSTab = ({
   const [isLmsStepperOpen, openLmsStepper, closeLmsStepper] = useToggle(false);
   const toastMessages = [ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE];
   const { dispatch } = useFormContext();
+  const channelMap = useMemo(() => getChannelMap(), []);
 
   // onClick function for existing config cards' edit action
   const editExistingConfig = useCallback((configData, configType) => {
@@ -54,7 +56,7 @@ const SettingsLMSTab = ({
     dispatch?.setFormFieldAction({ fieldId: 'lms', value: configData.channelCode });
     setLmsType(configData.channelCode);
     // Set the form data to the card's associated config data
-    setExistingConfigFormData(configData);
+    setExistingConfigFormData(_.cloneDeep(configData));
     // Set the config type to the card's type
     setConfig(configType);
     // Hide the create new configs button
@@ -64,18 +66,20 @@ const SettingsLMSTab = ({
     openLmsStepper();
   }, [dispatch, openLmsStepper]);
 
-  // we pass in params (configId and lmsType) from SyncHistory when user wants to edit that config
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
-    const fetchData = async () => channelMapping[query.get('lms')].fetch(query.get('id'));
-    fetchData()
-      .then((response) => {
-        editExistingConfig(camelCaseObject(response.data), query.get('id'));
-      })
-      .catch((err) => {
-        logError(err);
-      });
-  }, [editExistingConfig]);
+    // if we have passed in params (lmsType and configId) from SyncHistory, user wants to edit that config
+    if (query.has('lms') && query.has('id')) {
+      const fetchData = async () => channelMap[query.get('lms')].fetch(query.get('id'));
+      fetchData()
+        .then((response) => {
+          editExistingConfig(camelCaseObject(response.data), query.get('id'));
+        })
+        .catch((err) => {
+          logError(err);
+        });
+    }
+  }, [channelMap, editExistingConfig]);
 
   const fetchExistingConfigs = useCallback(() => {
     const options = { enterprise_customer: enterpriseId };
@@ -136,21 +140,19 @@ const SettingsLMSTab = ({
 
   useEffect(() => {
     // update list of used display names to prevent duplicates
+    const updatedMap = new Map();
     if (existingConfigsData[0]) {
-      setDisplayNames(existingConfigsData?.map((existingConfig) => existingConfig.displayName));
+      existingConfigsData?.forEach((existingConfig) => updatedMap.set(existingConfig.displayName, existingConfig.id));
     }
+    setDisplayNames(updatedMap);
   }, [existingConfigsData]);
 
   return (
     <div>
       <h2 className="py-2">Learning Platform Integrations
-        <Hyperlink
-          destination={HELP_CENTER_LINK}
-          className="btn btn-outline-primary side-button"
-          target="_blank"
-        >
+        <HelpCenterButton url={HELP_CENTER_LINK}>
           Help Center: Integrations
-        </Hyperlink>
+        </HelpCenterButton>
         <div className="mt-3" style={{ pointerEvents: null }}>
           {!configsLoading && !config && (
             <Button

@@ -1,3 +1,3 @@
-import LearnerCreditManagement from './LearnerCreditManagement';
+import MultipleBudgetsPage from './MultipleBudgetsPage';
 
-export default LearnerCreditManagement;
+export default MultipleBudgetsPage;

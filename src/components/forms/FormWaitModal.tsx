@@ -1,10 +1,9 @@
-import React from "react";
-import { AlertModal, Spinner } from "@edx/paragon";
-// @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
-import type { FormContext } from "./FormContext";
+import React from 'react';
+import { AlertModal, Spinner } from '@edx/paragon';
+import { useFormContext } from './FormContext';
+import type { FormContext } from './FormContext';
 
-type FormWaitModal = {
+type FormWaitModalProps = {
   // FormContext state that when truthy, shows the modal
   triggerState: string;
   onClose: () => void;
@@ -18,9 +17,8 @@ const FormWaitModal = ({
   onClose,
   header,
   text,
-}: FormWaitModal) => {
+}: FormWaitModalProps) => {
   const { stateMap }: FormContext = useFormContext();
-
   const isOpen = stateMap && stateMap[triggerState];
 
   return (

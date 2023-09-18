@@ -1,14 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import {
-  Card,
-  Badge,
-  Button,
-  Stack,
-  Row,
-  Col,
+  Card, Badge, Button, Stack, Row, Col,
 } from '@edx/paragon';
 
 import classNames from 'classnames';
@@ -26,8 +21,8 @@ const SubscriptionCard = ({
     licenses = {},
   } = subscription;
 
-  const formattedStartDate = moment(startDate).format('MMMM D, YYYY');
-  const formattedExpirationDate = moment(expirationDate).format('MMMM D, YYYY');
+  const formattedStartDate = dayjs(startDate).format('MMMM D, YYYY');
+  const formattedExpirationDate = dayjs(expirationDate).format('MMMM D, YYYY');
   const subscriptionStatus = getSubscriptionStatus(subscription);
 
   const renderDaysUntilPlanStartText = (className) => {
@@ -35,8 +30,8 @@ const SubscriptionCard = ({
       return null;
     }
 
-    const now = moment();
-    const planStart = moment(startDate);
+    const now = dayjs();
+    const planStart = dayjs(startDate);
     const daysUntilPlanStart = planStart.diff(now, 'days');
     const hoursUntilPlanStart = planStart.diff(now, 'hours');
 

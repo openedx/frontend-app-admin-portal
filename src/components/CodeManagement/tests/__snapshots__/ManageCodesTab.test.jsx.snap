@@ -91,10 +91,25 @@ Array [
         type="button"
       >
         <span
-          aria-hidden={true}
-          className="fa fa-refresh mr-2"
-          id="Icon2"
-        />
+          className="pgn__icon mr-2"
+          data-testid="refresh-data"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 8l-4 4h3c0 3.31-2.69 6-6 6a5.87 5.87 0 01-2.8-.7l-1.46 1.46A7.93 7.93 0 0012 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46A7.93 7.93 0 0012 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Refresh data
       </button>
       <a
@@ -103,10 +118,24 @@ Array [
         onClick={[Function]}
       >
         <span
-          aria-hidden={true}
-          className="fa fa-plus mr-2"
-          id="Icon3"
-        />
+          className="pgn__icon"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Request more codes
       </a>
     </div>
@@ -201,7 +230,7 @@ Array [
         >
           <label
             className="m-0"
-            htmlFor="pgn-searchfield-input-12"
+            htmlFor="pgn-searchfield-input-4"
           >
             <span
               className="sr-only"
@@ -213,7 +242,7 @@ Array [
             className="form-control"
             data-hj-suppress={true}
             disabled={false}
-            id="pgn-searchfield-input-12"
+            id="pgn-searchfield-input-4"
             name="searchfield-input"
             onBlur={[Function]}
             onChange={[Function]}
@@ -266,10 +295,25 @@ Array [
         type="button"
       >
         <span
-          aria-hidden={true}
-          className="fa fa-refresh mr-2"
-          id="Icon13"
-        />
+          className="pgn__icon mr-2"
+          data-testid="refresh-data"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 8l-4 4h3c0 3.31-2.69 6-6 6a5.87 5.87 0 01-2.8-.7l-1.46 1.46A7.93 7.93 0 0012 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46A7.93 7.93 0 0012 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Refresh data
       </button>
       <a
@@ -278,10 +322,24 @@ Array [
         onClick={[Function]}
       >
         <span
-          aria-hidden={true}
-          className="fa fa-plus mr-2"
-          id="Icon14"
-        />
+          className="pgn__icon"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Request more codes
       </a>
     </div>
@@ -381,7 +439,7 @@ Array [
         >
           <label
             className="m-0"
-            htmlFor="pgn-searchfield-input-9"
+            htmlFor="pgn-searchfield-input-3"
           >
             <span
               className="sr-only"
@@ -393,7 +451,7 @@ Array [
             className="form-control"
             data-hj-suppress={true}
             disabled={false}
-            id="pgn-searchfield-input-9"
+            id="pgn-searchfield-input-3"
             name="searchfield-input"
             onBlur={[Function]}
             onChange={[Function]}
@@ -446,10 +504,25 @@ Array [
         type="button"
       >
         <span
-          aria-hidden={true}
-          className="fa fa-refresh mr-2"
-          id="Icon10"
-        />
+          className="pgn__icon mr-2"
+          data-testid="refresh-data"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 8l-4 4h3c0 3.31-2.69 6-6 6a5.87 5.87 0 01-2.8-.7l-1.46 1.46A7.93 7.93 0 0012 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46A7.93 7.93 0 0012 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Refresh data
       </button>
       <a
@@ -458,10 +531,24 @@ Array [
         onClick={[Function]}
       >
         <span
-          aria-hidden={true}
-          className="fa fa-plus mr-2"
-          id="Icon11"
-        />
+          className="pgn__icon"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Request more codes
       </a>
     </div>
@@ -529,7 +616,7 @@ Array [
         >
           <label
             className="m-0"
-            htmlFor="pgn-searchfield-input-4"
+            htmlFor="pgn-searchfield-input-2"
           >
             <span
               className="sr-only"
@@ -541,7 +628,7 @@ Array [
             className="form-control"
             data-hj-suppress={true}
             disabled={false}
-            id="pgn-searchfield-input-4"
+            id="pgn-searchfield-input-2"
             name="searchfield-input"
             onBlur={[Function]}
             onChange={[Function]}
@@ -594,10 +681,25 @@ Array [
         type="button"
       >
         <span
-          aria-hidden={true}
-          className="fa fa-refresh mr-2"
-          id="Icon5"
-        />
+          className="pgn__icon mr-2"
+          data-testid="refresh-data"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 8l-4 4h3c0 3.31-2.69 6-6 6a5.87 5.87 0 01-2.8-.7l-1.46 1.46A7.93 7.93 0 0012 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46A7.93 7.93 0 0012 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Refresh data
       </button>
       <a
@@ -606,10 +708,24 @@ Array [
         onClick={[Function]}
       >
         <span
-          aria-hidden={true}
-          className="fa fa-plus mr-2"
-          id="Icon6"
-        />
+          className="pgn__icon"
+        >
+          <svg
+            aria-hidden={true}
+            fill="none"
+            focusable={false}
+            height={24}
+            role="img"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
         Request more codes
       </a>
     </div>
@@ -733,14 +849,28 @@ Array [
             className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
           >
             <span
-              aria-hidden={true}
-              className="fa fa-chevron-down text-primary"
-              id="Icon7"
-            />
-            <span
-              className="sr-only"
+              className="pgn__icon d-inline-block text-primary"
             >
-              Open coupon details
+              <svg
+                aria-hidden={true}
+                fill="none"
+                focusable={false}
+                height={24}
+                role="img"
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span
+                className="sr-only"
+              >
+                Open coupon details
+              </span>
             </span>
           </div>
         </div>
@@ -850,14 +980,28 @@ Array [
             className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
           >
             <span
-              aria-hidden={true}
-              className="fa fa-chevron-down text-primary"
-              id="Icon8"
-            />
-            <span
-              className="sr-only"
+              className="pgn__icon d-inline-block text-primary"
             >
-              Open coupon details
+              <svg
+                aria-hidden={true}
+                fill="none"
+                focusable={false}
+                height={24}
+                role="img"
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span
+                className="sr-only"
+              >
+                Open coupon details
+              </span>
             </span>
           </div>
         </div>

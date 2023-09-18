@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   Badge,
   Container,
@@ -69,7 +69,7 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
           remainingFunds={offerSummary?.remainingFunds}
           enterpriseUUID={enterpriseUUID}
         />
-        <OfferNameHeading name={enterpriseOffer.displayName} />
+        <OfferNameHeading name={enterpriseOffer.name} />
         <div className="d-flex flex-wrap align-items-center mb-3.5">
           <Stack direction="horizontal" gap={3}>
             {enterpriseOffer.isCurrent ? (
@@ -78,15 +78,15 @@ const LearnerCreditManagement = ({ enterpriseUUID }) => {
               <Badge variant="light">Ended</Badge>
             )}
             <OfferDates
-              start={enterpriseOffer.startDatetime}
-              end={enterpriseOffer.endDatetime}
+              start={enterpriseOffer.start}
+              end={enterpriseOffer.end}
             />
           </Stack>
         </div>
         {isLoadingOfferSummary || isLoadingOfferRedemptions ? (
           <Skeleton width={320} />
         ) : (
-          <LearnerCreditDisclaimer offerLastUpdated={moment(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)} />
+          <LearnerCreditDisclaimer offerLastUpdated={dayjs(offerDataLastUpdatedTimestamp).format(DATE_FORMAT)} />
         )}
         <div className="mb-4.5 d-flex flex-wrap mx-n3">
           <LearnerCreditAggregateCards

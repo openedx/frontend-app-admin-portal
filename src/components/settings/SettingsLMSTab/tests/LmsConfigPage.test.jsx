@@ -12,12 +12,8 @@ import { Provider } from 'react-redux';
 
 import { renderWithRouter } from '../../../test/testUtils';
 import {
-  BLACKBOARD_TYPE,
-  CANVAS_TYPE,
-  CORNERSTONE_TYPE,
-  DEGREED2_TYPE,
-  MOODLE_TYPE,
-  SAP_TYPE,
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE,
+  MOODLE_TYPE, SAP_TYPE,
 } from '../../data/constants';
 import { channelMapping } from '../../../../utils';
 

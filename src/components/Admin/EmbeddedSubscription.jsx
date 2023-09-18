@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
+import dayjs from 'dayjs';
 import { useParams, Link } from 'react-router-dom';
 import { Form, Icon } from '@edx/paragon';
-import moment from 'moment';
 import { Lightbulb, ArrowOutward } from '@edx/paragon/icons';
 import ConnectedSubscriptionDetailPage from './SubscriptionDetailPage';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
@@ -15,7 +15,7 @@ const EmbeddedSubscription = () => {
   const [subscriptionUUID, setSubscriptionUUID] = useState(null);
   const [firstLoad, setFirstLoad] = useState(true);
   const sortedSubscriptions = sortSubscriptionsByStatus(subscriptions);
-  const activeSubscriptions = sortedSubscriptions.filter(c => !moment().isAfter(c.expirationDate));
+  const activeSubscriptions = sortedSubscriptions.filter(c => !dayjs().isAfter(c.expirationDate));
   const match = { params: { subscriptionUUID } };
   if (!loading && activeSubscriptions.length > 0 && firstLoad) {
     match.params.subscriptionUUID = activeSubscriptions[0].uuid;

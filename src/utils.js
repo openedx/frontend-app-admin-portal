@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
@@ -13,7 +13,9 @@ import { history } from '@edx/frontend-platform/initialize';
 import { features } from './config';
 
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE,
+  HELP_CENTER_BLACKBOARD, HELP_CENTER_CANVAS, HELP_CENTER_CORNERSTONE,
+  HELP_CENTER_DEGREED, HELP_CENTER_MOODLE, HELP_CENTER_SAP, MOODLE_TYPE, SAP_TYPE,
 } from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';
@@ -26,7 +28,7 @@ import LmsApiService from './data/services/LmsApiService';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
-    return moment(timestamp).format(format);
+    return dayjs(timestamp).format(format);
   }
   return null;
 };
@@ -251,6 +253,7 @@ function urlValidation(urlString) {
 
 const normalizeFileUpload = (value) => value && value.split(/\r\n|\n/);
 
+// this is needed for annoying testing mock reasons
 export const getChannelMap = () => ({
   [BLACKBOARD_TYPE]: {
     displayName: 'Blackboard',
@@ -303,6 +306,7 @@ const channelMapping = {
   [BLACKBOARD_TYPE]: {
     displayName: 'Blackboard',
     icon: BlackboardIcon,
+    helpCenter: HELP_CENTER_BLACKBOARD,
     delete: LmsApiService.deleteBlackboardConfig,
     fetch: LmsApiService.fetchSingleBlackboardConfig,
     fetchGlobal: LmsApiService.fetchBlackboardGlobalConfig,
@@ -312,6 +316,7 @@ const channelMapping = {
   [CANVAS_TYPE]: {
     displayName: 'Canvas',
     icon: CanvasIcon,
+    helpCenter: HELP_CENTER_CANVAS,
     delete: LmsApiService.deleteCanvasConfig,
     fetch: LmsApiService.fetchSingleCanvasConfig,
     post: LmsApiService.postNewCanvasConfig,
@@ -320,6 +325,7 @@ const channelMapping = {
   [CORNERSTONE_TYPE]: {
     displayName: 'Cornerstone',
     icon: CornerstoneIcon,
+    helpCenter: HELP_CENTER_CORNERSTONE,
     delete: LmsApiService.deleteCornerstoneConfig,
     fetch: LmsApiService.fetchSingleCornerstoneConfig,
     post: LmsApiService.postNewCornerstoneConfig,
@@ -328,6 +334,7 @@ const channelMapping = {
   [DEGREED2_TYPE]: {
     displayName: 'Degreed',
     icon: DegreedIcon,
+    helpCenter: HELP_CENTER_DEGREED,
     delete: LmsApiService.deleteDegreed2Config,
     fetch: LmsApiService.fetchSingleDegreed2Config,
     post: LmsApiService.postNewDegreed2Config,
@@ -336,6 +343,7 @@ const channelMapping = {
   [MOODLE_TYPE]: {
     displayName: 'Moodle',
     icon: MoodleIcon,
+    helpCenter: HELP_CENTER_MOODLE,
     delete: LmsApiService.deleteMoodleConfig,
     fetch: LmsApiService.fetchSingleMoodleConfig,
     post: LmsApiService.postNewMoodleConfig,
@@ -344,6 +352,7 @@ const channelMapping = {
   [SAP_TYPE]: {
     displayName: 'SAP Success Factors',
     icon: SAPIcon,
+    helpCenter: HELP_CENTER_SAP,
     delete: LmsApiService.deleteSuccessFactorsConfig,
     fetch: LmsApiService.fetchSingleSuccessFactorsConfig,
     post: LmsApiService.postNewSuccessFactorsConfig,
@@ -391,6 +400,18 @@ const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
   return false;
 };
 
+const getCourseProductLineText = (courseProductLine) => {
+  let courseProductLineText = '';
+  courseProductLineText = courseProductLine === 'OCM' ? 'Open Courses' : courseProductLine;
+  return courseProductLineText;
+};
+
+const getCourseProductLineAbbreviation = (courseProductLine) => {
+  let courseProductLineText = '';
+  courseProductLineText = courseProductLine === 'Open Courses Marketplace' ? 'OCM' : 'Executive Education';
+  return courseProductLineText;
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -424,4 +445,6 @@ export {
   capitalizeFirstLetter,
   pollAsync,
   isNotValidNumberString,
+  getCourseProductLineText,
+  getCourseProductLineAbbreviation,
 };

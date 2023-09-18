@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import {
-  screen,
-  render,
-  act,
-} from '@testing-library/react';
+import dayjs from 'dayjs';
+import { screen, render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import moment from 'moment';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
 import MockSettingsContext, { MOCK_CONSTANTS, generateStore } from './TestUtils';
@@ -15,6 +13,7 @@ import SettingsAccessLinkManagement from '../SettingsAccessLinkManagement';
 import * as hooks from '../../data/hooks';
 import { SETTINGS_ACCESS_EVENTS } from '../../../../eventTracking';
 import * as couponActions from '../../../../data/actions/coupons';
+import { MAX_UNIVERSAL_LINKS } from '../../data/constants';
 
 jest.mock('../../../../data/actions/coupons');
 
@@ -57,7 +56,9 @@ const SettingsAccessLinkManagementWrapper = ({
       store={store}
       enterpriseSubsidiesContextValue={enterpriseSubsidiesContextValue}
     >
-      <SettingsAccessLinkManagement />
+      <IntlProvider locale="en">
+        <SettingsAccessLinkManagement />
+      </IntlProvider>
     </MockSettingsContext>
   );
 };
@@ -107,8 +108,8 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
   test('Toggle Universal Link On', async () => {
     LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
-    const subExpirationDate = moment().add(1, 'days').format();
-    const couponExpirationDate = moment().add(3, 'days').format();
+    const subExpirationDate = dayjs().add(1, 'days').format();
+    const couponExpirationDate = dayjs().add(3, 'days').format();
     render(
       <SettingsAccessLinkManagementWrapper
         store={generateStore({
@@ -128,12 +129,10 @@ describe('<SettingsAccessLinkManagement/>', () => {
     await act(async () => { userEvent.click(switchInput); });
     expect(screen.queryByText('Are you sure?')).toBeFalsy();
 
-    // It calls api with the furthest subsidy expiration date
     expect(LmsApiService.toggleEnterpriseCustomerUniversalLink).toHaveBeenCalledTimes(1);
     expect(LmsApiService.toggleEnterpriseCustomerUniversalLink).toHaveBeenCalledWith({
       enterpriseUUID: MOCK_CONSTANTS.ENTERPRISE_ID,
       enableUniversalLink: true,
-      expirationDate: couponExpirationDate,
     });
 
     // Links are refreshed
@@ -147,12 +146,16 @@ describe('<SettingsAccessLinkManagement/>', () => {
     );
   });
 
-  test('Generate link button is disabled if there are no coupons or subscriptions', async () => {
+  test('Generate link button is enabled if there are less than MAX_UNIVERSAL_LINKS', async () => {
     render(
       <SettingsAccessLinkManagementWrapper
         store={generateStore({
           portalConfiguration: { enableUniversalLink: true },
         })}
+        links={Array.from({ length: MAX_UNIVERSAL_LINKS - 1 }, () => ({
+          usageCount: 0,
+          usageLimit: 1,
+        }))}
         enterpriseSubsidiesContextValue={{
           coupons: [],
           customerAgreement: {
@@ -164,21 +167,23 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
     const button = screen.queryByText('Generate link').closest('button');
     expect(button).toBeTruthy();
-    expect(button).toHaveProperty('disabled', true);
+    expect(button).toHaveProperty('disabled', false);
   });
 
-  test('Generate link button is disabled if link expiration date is in the past', async () => {
-    const subExpirationDate = moment().subtract(1, 'days').format();
-
+  test('Generate link button is disabled if MAX_UNIVERSAL_LINKS is exceeded', async () => {
     render(
       <SettingsAccessLinkManagementWrapper
         store={generateStore({
           portalConfiguration: { enableUniversalLink: true },
         })}
+        links={Array.from({ length: MAX_UNIVERSAL_LINKS }, () => ({
+          usageCount: 0,
+          usageLimit: 1,
+        }))}
         enterpriseSubsidiesContextValue={{
           coupons: [],
           customerAgreement: {
-            subscriptions: [{ expirationDate: subExpirationDate }],
+            subscriptions: [],
           },
         }}
       />,

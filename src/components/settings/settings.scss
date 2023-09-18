@@ -69,7 +69,7 @@
 
 .existing-lms-card {
   width: 70rem !important;
-  .pgn__card-header .pgn__card-header-content{
+  .pgn__card-header .pgn__card-header-content {
     margin-top: 0 !important;
     justify-content: center;
   }
@@ -156,4 +156,19 @@
   vertical-align: middle;
   font-size: 1rem; 
   font-weight: 500;
+}
+
+.stepper-modal .pgn__modal-header {
+  border-bottom: solid 7px;
+}
+
+.warning-icon {
+  color: #F0CC00;
+}
+
+.api-cred-fields {
+  span {
+    font-weight: normal;
+    margin-left: 0.25rem;
+  }
 }

@@ -6,6 +6,7 @@ import { MemoryRouter, Link } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
@@ -40,26 +41,28 @@ const store = mockStore({
 const AdminWrapper = props => (
   <MemoryRouter>
     <Provider store={store}>
-      <Admin
-        enterpriseId="test-enterprise"
-        enterpriseSlug="test-enterprise"
-        clearDashboardAnalytics={() => {}}
-        fetchDashboardAnalytics={() => {}}
-        fetchPortalConfiguration={() => {}}
-        fetchCsv={() => {}}
-        searchEnrollmentsList={() => {}}
-        tableData={[
-          {
-            course_title: 'Bears 101',
-            course_start: Date.now(),
-          },
-        ]}
-        match={{
-          params: {},
-          url: '/',
-        }}
-        {...props}
-      />
+      <IntlProvider locale="en">
+        <Admin
+          enterpriseId="test-enterprise"
+          enterpriseSlug="test-enterprise"
+          clearDashboardAnalytics={() => {}}
+          fetchDashboardAnalytics={() => {}}
+          fetchPortalConfiguration={() => {}}
+          fetchCsv={() => {}}
+          searchEnrollmentsList={() => {}}
+          tableData={[
+            {
+              course_title: 'Bears 101',
+              course_start: Date.now(),
+            },
+          ]}
+          match={{
+            params: {},
+            url: '/',
+          }}
+          {...props}
+        />
+      </IntlProvider>
     </Provider>
   </MemoryRouter>
 );

@@ -165,6 +165,14 @@ export const useStylesForCustomBrandColors = (branding) => {
       .secondary-background {
         background: ${brandColors.secondary.regular.hex()} !important;
       }
+      .stepper-modal .pgn__modal-header {
+        background-color: ${brandColors.secondary.regular.hex()} !important;
+        border-color: ${brandColors.tertiary.regular.hex()} !important;
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
+      .stepper-modal .pgn__modal-close-button {
+        color: ${brandColors.secondary.textColor.hex()} !important;
+      }
     `),
   });
 

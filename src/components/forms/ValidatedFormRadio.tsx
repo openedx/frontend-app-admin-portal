@@ -1,13 +1,11 @@
-import React from "react";
-import omit from "lodash/omit";
-import isString from "lodash/isString";
+import React, { ReactElement, useEffect } from 'react';
+import omit from 'lodash/omit';
+import isString from 'lodash/isString';
 
-import { Form } from "@edx/paragon";
+import { Form } from '@edx/paragon';
 
-// @ts-ignore
-import { setFormFieldAction } from "./data/actions.ts";
-// @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
+import { setFormFieldAction } from './data/actions';
+import { useFormContext } from './FormContext';
 
 type InheritedParagonRadioProps = {
   className?: string;
@@ -18,46 +16,56 @@ export type ValidatedFormRadioProps = {
   formId: string;
   // Inline Instructions inside form field when blank
   fieldInstructions?: string;
-  label: string;
-  options: string[][]
+  label?: string;
+  options?: string[][];
 } & InheritedParagonRadioProps;
 
 const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
-  const { formFields, errorMap, dispatch } = useFormContext();
+  const {
+    showErrors, formFields, errorMap, dispatch,
+  } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch && dispatch(
-      setFormFieldAction({ fieldId: props.formId, value: e.target.value })
-    );
+    if (dispatch) {
+      dispatch(setFormFieldAction({ fieldId: props.formId, value: e.target.value }));
+    }
   };
 
   const errors = errorMap?.[props.formId];
   // Show error message if an error message was part of any detected errors
   const showError = errors?.find?.(error => isString(error));
   const formRadioProps = {
-    ...omit(props, ["formId"]),
+    ...omit(props, ['formId']),
     onChange,
-    isInvalid: showError,
+    isInvalid: showErrors && showError,
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
+  // we need to set the original values on load in order to trigger the validation
+  useEffect(() => {
+    if (dispatch) {
+      dispatch(
+        setFormFieldAction({ fieldId: props.formId, value: formRadioProps.value }),
+      );
+    }
+  }, [dispatch, props.formId, formRadioProps.value]);
 
-  const createOptions = (options: string[][]) => {
-    const optionList: any = []
-    options?.forEach(option => {   
-      const radioLabel = option[0]
-      const radioValue = option[1]
+  const createOptions = (options: [string, string][]) => {
+    const optionList: ReactElement[] = [];
+    options?.forEach(option => {
+      const radioLabel = option[0];
+      const radioValue = option[1];
       optionList.push(
         <Form.Radio key={`radio-selection-${radioValue}`} value={radioValue}>
           {radioLabel}
-        </Form.Radio>
-      )
-    })
-    return optionList
-  }
+        </Form.Radio>,
+      );
+    });
+    return optionList;
+  };
 
   return (
     <>
-      <Form.Label>{formRadioProps.label}</Form.Label>
+      <Form.Label {...formRadioProps}>{formRadioProps.label}</Form.Label>
       <Form.RadioSet
         name={formRadioProps.id}
         onChange={formRadioProps.onChange}
@@ -68,7 +76,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
       {formRadioProps.fieldInstructions && (
         <Form.Text>{formRadioProps.fieldInstructions}</Form.Text>
       )}
-      {showError && (
+      {showErrors && showError && (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
       )}
     </>

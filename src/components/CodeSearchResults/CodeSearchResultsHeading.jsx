@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from '@edx/paragon';
+import { Close } from '@edx/paragon/icons';
 
 const CodeSearchResultsHeading = ({ searchQuery, onClose }) => (
   <div className="d-flex align-items-center justify-content-between mb-3">
@@ -15,7 +16,7 @@ const CodeSearchResultsHeading = ({ searchQuery, onClose }) => (
         className="close-search-results-btn"
         onClick={onClose}
       >
-        <Icon className="fa fa-times mr-2" />
+        <Icon className="mr-2" src={Close} />
         Close search results
       </Button>
     </div>

@@ -11,6 +11,9 @@ dist/
 
 # emacs
 *~
+.projectile
 
 # edx
 .env.private
+src/i18n/
+temp/

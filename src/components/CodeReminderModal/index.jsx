@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { Button, Icon, Modal } from '@edx/paragon';
+import { Button, Modal, Spinner } from '@edx/paragon';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
 
 import { EMAIL_TEMPLATE_SUBJECT_KEY } from '../../data/constants/emailTemplate';
@@ -10,17 +12,10 @@ import ModalError from '../CodeModal/ModalError';
 import { configuration, features } from '../../config';
 import './CodeReminderModal.scss';
 import CodeDetails from './CodeDetails';
-import EmailTemplateForm, { EMAIL_TEMPLATE_FIELDS } from '../EmailTemplateForm';
+import EmailTemplateForm, { getTemplateEmailFields } from '../EmailTemplateForm';
 import { EMAIL_TEMPLATE_FILES_ID, MODAL_TYPES } from '../EmailTemplateForm/constants';
 import { appendUserCodeDetails } from '../CodeModal';
 
-const REMINDER_EMAIL_TEMPLATE_FIELDS = {
-  ...EMAIL_TEMPLATE_FIELDS,
-  'email-template-body': {
-    ...EMAIL_TEMPLATE_FIELDS['email-template-body'],
-    disabled: true,
-  },
-};
 const REMIND_MODE = MODAL_TYPES.remind;
 
 const ERROR_MESSAGE_TITLES = {
@@ -169,13 +164,21 @@ export class BaseCodeReminderModal extends React.Component {
     const {
       data,
       isBulkRemind,
+      intl: { formatMessage },
       submitFailed,
       error,
     } = this.props;
     const { mode } = this.state;
 
     const numberOfSelectedCodes = this.getNumberOfSelectedCodes();
-
+    const emailTemplateFields = getTemplateEmailFields(formatMessage);
+    const reminderEmailTemplateFields = {
+      ...emailTemplateFields,
+      'email-template-body': {
+        ...emailTemplateFields['email-template-body'],
+        disabled: true,
+      },
+    };
     return (
       <>
         {submitFailed && (
@@ -193,7 +196,7 @@ export class BaseCodeReminderModal extends React.Component {
         />
         <EmailTemplateForm
           emailTemplateType={MODAL_TYPES.remind}
-          fields={REMINDER_EMAIL_TEMPLATE_FIELDS}
+          fields={reminderEmailTemplateFields}
         />
       </>
     );
@@ -226,7 +229,7 @@ export class BaseCodeReminderModal extends React.Component {
             className="code-remind-save-btn"
             onClick={handleSubmit(this.handleModalSubmit)}
           >
-            {mode === REMIND_MODE && submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+            {mode === REMIND_MODE && submitting && <Spinner animation="border" variant="primary" size="sm" />}
             Remind
           </Button>,
           <SaveTemplateButton
@@ -282,8 +285,10 @@ BaseCodeReminderModal.propTypes = {
     code: PropTypes.string,
     email: PropTypes.string,
   }),
+  // injected
+  intl: intlShape.isRequired,
 };
 
 export default reduxForm({
   form: 'code-reminder-modal-form',
-})(BaseCodeReminderModal);
+})(injectIntl(BaseCodeReminderModal));

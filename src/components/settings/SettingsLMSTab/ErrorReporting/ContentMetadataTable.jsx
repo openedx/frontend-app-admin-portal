@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { DataTable, TextFilter } from '@edx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../../data/services/LmsApiService';

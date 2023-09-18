@@ -9,7 +9,9 @@ import {
   Icon,
   Pagination,
 } from '@edx/paragon';
-import { CheckCircle, Info, WarningFilled } from '@edx/paragon/icons';
+import {
+  CheckCircle, Info, Plus, SpinnerIcon, WarningFilled,
+} from '@edx/paragon/icons';
 
 import SearchBar from '../SearchBar';
 import CodeSearchResults from '../CodeSearchResults';
@@ -277,7 +279,7 @@ class ManageCodesTab extends React.Component {
               disabled={loading}
             >
               <>
-                <Icon className="fa fa-refresh mr-2" />
+                <Icon data-testid="refresh-data" className="mr-2" src={SpinnerIcon} />
                 Refresh data
               </>
             </Button>
@@ -286,7 +288,7 @@ class ManageCodesTab extends React.Component {
               to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.codeManagement}/request-codes`}
             >
               <>
-                <Icon className="fa fa-plus mr-2" />
+                <Icon src={Plus} />
                 Request more codes
               </>
             </Link>

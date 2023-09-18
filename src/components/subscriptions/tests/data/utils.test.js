@@ -1,19 +1,19 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { ACTIVE, SCHEDULED, ENDED } from '../../data/constants';
 import { sortSubscriptionsByStatus, getSubscriptionStatus } from '../../data/utils';
 
 describe('utils', () => {
   const scheduledSub = {
-    startDate: moment().add(1, 'days'),
-    expirationDate: moment().add(10, 'days'),
+    startDate: dayjs().add(1, 'days'),
+    expirationDate: dayjs().add(10, 'days'),
   };
   const activeSub = {
-    startDate: moment().subtract(1, 'days'),
-    expirationDate: moment().add(10, 'days'),
+    startDate: dayjs().subtract(1, 'days'),
+    expirationDate: dayjs().add(10, 'days'),
   };
   const expiredSub = {
-    startDate: moment().subtract(10, 'days'),
-    expirationDate: moment().subtract(1, 'days'),
+    startDate: dayjs().subtract(10, 'days'),
+    expirationDate: dayjs().subtract(1, 'days'),
   };
 
   describe('getSubscriptionStatus', () => {
@@ -34,8 +34,8 @@ describe('utils', () => {
 
     it('should sort subscriptions by start date after status', () => {
       const activeSub2 = {
-        startDate: moment().subtract(2, 'days'),
-        expirationDate: moment().add(10, 'days'),
+        startDate: dayjs().subtract(2, 'days'),
+        expirationDate: dayjs().add(10, 'days'),
       };
       const initialOrder = [expiredSub, activeSub, scheduledSub, activeSub2];
       const expectedOrder = [activeSub2, activeSub, scheduledSub, expiredSub];

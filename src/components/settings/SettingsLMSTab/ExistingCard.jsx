@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRouteMatch } from 'react-router-dom';
 import {
-  useRouteMatch,
-} from 'react-router-dom';
-import {
-  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon, IconButton, Image, OverlayTrigger, Popover,
+  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon,
+  IconButton, Image, OverlayTrigger, Popover,
 } from '@edx/paragon';
 import {
   CheckCircle, Error, MoreVert, Sync,

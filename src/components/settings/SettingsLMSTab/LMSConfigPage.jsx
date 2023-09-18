@@ -1,10 +1,11 @@
+import _ from 'lodash';
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import FormContextWrapper from '../../forms/FormContextWrapper.tsx';
+import FormContextWrapper from '../../forms/FormContextWrapper';
 import { getChannelMap } from '../../../utils';
-import LMSFormWorkflowConfig from './LMSFormWorkflowConfig.tsx';
+import { LMSFormWorkflowConfig } from './LMSFormWorkflowConfig';
 
 const LMSConfigPage = ({
   onClick,
@@ -27,7 +28,7 @@ const LMSConfigPage = ({
     enterpriseCustomerUuid,
     onSubmit: setExistingConfigFormData,
     handleCloseClick: handleCloseWorkflow,
-    existingData: existingConfigFormData,
+    existingData: _.cloneDeep(existingConfigFormData),
     existingConfigNames: existingConfigs,
     channelMap,
     lmsType,
@@ -38,7 +39,6 @@ const LMSConfigPage = ({
       <FormContextWrapper
         formWorkflowConfig={formWorkflowConfig}
         onClickOut={handleCloseWorkflow}
-        onSubmit={setExistingConfigFormData}
         formData={existingConfigFormData}
         isStepperOpen={isLmsStepperOpen}
       />
@@ -50,7 +50,7 @@ const mapStateToProps = (state) => ({
 });
 
 LMSConfigPage.defaultProps = {
-  existingConfigs: [],
+  existingConfigs: {},
   lmsType: '',
 };
 
@@ -58,7 +58,7 @@ LMSConfigPage.propTypes = {
   enterpriseCustomerUuid: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   existingConfigFormData: PropTypes.shape({}).isRequired,
-  existingConfigs: PropTypes.arrayOf(PropTypes.string),
+  existingConfigs: PropTypes.shape({}),
   setExistingConfigFormData: PropTypes.func.isRequired,
   isLmsStepperOpen: PropTypes.bool.isRequired,
   closeLmsStepper: PropTypes.func.isRequired,

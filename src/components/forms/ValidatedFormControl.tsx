@@ -1,20 +1,18 @@
-import React from "react";
-import omit from "lodash/omit";
-import isString from "lodash/isString";
+import React, { useEffect } from 'react';
+import omit from 'lodash/omit';
+import isString from 'lodash/isString';
 
-import { Form } from "@edx/paragon";
+import { Form } from '@edx/paragon';
 
-// @ts-ignore
-import { setFormFieldAction } from "./data/actions.ts";
-// @ts-ignore
-import { useFormContext } from "./FormContext.tsx";
+import { setFormFieldAction } from './data/actions';
+import { useFormContext } from './FormContext';
 
-// TODO: Add Form.Control props.  Does Paragon export?
 type InheritedParagonControlProps = {
+  autoFocus?: boolean;
   className?: string;
   type: string;
   maxLength?: number;
-  floatingLabel: string;
+  floatingLabel?: string;
 };
 
 export type ValidatedFormControlProps = {
@@ -26,29 +24,41 @@ export type ValidatedFormControlProps = {
 
 // Control that reads from/writes to form context store
 const ValidatedFormControl = (props: ValidatedFormControlProps) => {
-  const { formFields, errorMap, dispatch } = useFormContext();
+  const {
+    showErrors, formFields, errorMap, dispatch,
+  } = useFormContext();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch && dispatch(
-      setFormFieldAction({ fieldId: props.formId, value: e.target.value })
-    );
+    if (dispatch) {
+      dispatch(
+        setFormFieldAction({ fieldId: props.formId, value: e.target.value }),
+      );
+    }
   };
   const errors = errorMap?.[props.formId];
   // Show error message if an error message was part of any detected errors
   const showError = errors?.find?.(error => isString(error));
   const formControlProps = {
-    ...omit(props, ["formId"]),
+    ...omit(props, ['formId']),
     onChange,
-    isInvalid: showError,
+    isInvalid: showErrors && showError,
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
+  // we need to set the original values on load in order to trigger the validation
+  useEffect(() => {
+    if (dispatch) {
+      dispatch(
+        setFormFieldAction({ fieldId: props.formId, value: formControlProps.value }),
+      );
+    }
+  }, [dispatch, props.formId, formControlProps.value]);
   return (
     <>
       <Form.Control {...formControlProps} />
-      {props.fieldInstructions && (
+      {props.fieldInstructions && !(showError && showErrors) && (
         <Form.Text>{props.fieldInstructions}</Form.Text>
       )}
-      {showError && (
+      {showErrors && showError && (
         <Form.Control.Feedback type="invalid">{showError}</Form.Control.Feedback>
       )}
     </>

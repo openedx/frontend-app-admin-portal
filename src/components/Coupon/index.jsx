@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon } from '@edx/paragon';
+import { Error, ExpandLess, ExpandMore } from '@edx/paragon/icons';
 
 import CouponDetails from '../../containers/CouponDetails';
 
@@ -83,12 +84,13 @@ class Coupon extends React.Component {
 
   renderExpandCollapseIcon() {
     const { isExpanded } = this.state;
-    const iconClass = isExpanded ? 'fa-chevron-up' : 'fa-chevron-down';
+    const icon = isExpanded ? ExpandLess : ExpandMore;
     const iconColor = isExpanded ? 'text-white' : 'text-primary';
     const screenReaderText = isExpanded ? 'Close' : 'Open';
     return (
       <Icon
-        className={classNames('fa', iconClass, iconColor)}
+        className={classNames('d-inline-block', iconColor)}
+        src={icon}
         screenReaderText={`${screenReaderText} coupon details`}
       />
     );
@@ -97,7 +99,8 @@ class Coupon extends React.Component {
   renderErrorIcon() {
     return (
       <Icon
-        className="fa fa-exclamation-circle text-danger mr-2"
+        className="text-danger mr-2 d-inline-block"
+        src={Error}
         screenReaderText="Coupon has an error."
       />
     );

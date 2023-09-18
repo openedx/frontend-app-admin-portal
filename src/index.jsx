@@ -12,10 +12,9 @@ import {
 } from '@edx/frontend-platform';
 import { ErrorPage } from '@edx/frontend-platform/react';
 import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
-import { messages as paragonMessages } from '@edx/paragon';
 
+import messages from './i18n';
 import App from './components/App';
-
 import './index.scss';
 
 subscribe(APP_READY, () => {
@@ -43,9 +42,7 @@ initialize({
       });
     },
   },
-  messages: [
-    paragonMessages,
-  ],
+  messages,
   requireAuthenticatedUser: false,
   hydrateAuthenticatedUser: true,
 });

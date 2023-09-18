@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import DownloadCsvButton from './index';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
@@ -31,7 +32,9 @@ describe('<DownloadCsvButton />', () => {
     wrapper = mount((
       <MemoryRouter>
         <Provider store={store}>
-          <DownloadCsvButton id="enrollments" />
+          <IntlProvider locale="en">
+            <DownloadCsvButton id="enrollments" />
+          </IntlProvider>
         </Provider>
       </MemoryRouter>
     )).find('DownloadCsvButton');

@@ -1,6 +1,9 @@
-import React, { createContext, useContext, Context, ReactNode, Dispatch } from "react";
-import type { FormActionArguments } from "./data/actions";
-import type { FormWorkflowStep } from "./FormWorkflow";
+import React, {
+  Context, Dispatch, createContext, ReactNode, useContext, useMemo,
+} from 'react';
+
+import type { FormActionArguments } from './data/actions';
+import type { FormWorkflowStep } from './FormWorkflow';
 
 export type FormFields = { [name: string]: any };
 export type FormValidatorResult = boolean | string;
@@ -15,6 +18,7 @@ export type FormContext = {
   formFields?: FormFields;
   isEdited?: boolean;
   hasErrors?: boolean;
+  showErrors?: boolean;
   errorMap?: { [name: string]: string[] };
   stateMap?: { [name: string]: any };
   currentStep?: FormWorkflowStep<any>;
@@ -38,8 +42,11 @@ const FormContextProvider = ({
   dispatch,
   formContext,
 }: FormContextProps) => {
+  const memoValue = useMemo(() => (
+    { ...formContext, dispatch }
+  ), [formContext, dispatch]);
   return (
-    <FormContextObject.Provider value={{ ...formContext, dispatch }}>
+    <FormContextObject.Provider value={memoValue}>
       {children}
     </FormContextObject.Provider>
   );

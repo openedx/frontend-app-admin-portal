@@ -1,51 +1,22 @@
-import { snakeCaseDict } from "../../../../../utils";
+import _ from 'lodash';
+import { snakeCaseDict } from '../../../../../utils';
 import {
-  BLACKBOARD_TYPE,
-  LMS_CONFIG_OAUTH_POLLING_INTERVAL,
-  LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-} from "../../../data/constants";
-// @ts-ignore
-import ConfigActivatePage from "../ConfigBasePages/ConfigActivatePage.tsx";
-// @ts-ignore
-import BlackboardConfigAuthorizePage, { validations } from "./BlackboardConfigAuthorizePage.tsx";
+  BLACKBOARD_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
+} from '../../../data/constants';
+import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
+import BlackboardConfigAuthorizePage, { validations } from './BlackboardConfigAuthorizePage';
 import type {
-  FormWorkflowButtonConfig,
-  FormWorkflowConfig,
-  FormWorkflowStep,
-  FormWorkflowHandlerArgs,
-  // @ts-ignore
-} from "../../../../forms/FormWorkflow.tsx";
-// @ts-ignore
-import { activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper } from "../utils.tsx";
-
-export type BlackboardConfigCamelCase = {
-  lms: string;
-  blackboardAccountId: string;
-  blackboardBaseUrl: string;
-  displayName: string;
-  clientId: string;
-  clientSecret: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  refreshToken: string;
-};
-
-export type BlackboardConfigSnakeCase = {
-  lms: string;
-  blackboard_base_url: string;
-  display_name: string;
-  id: string;
-  active: boolean;
-  uuid: string;
-  enterprise_customer: string;
-  refresh_token: string;
-};
+  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
+} from '../../../../forms/FormWorkflow';
+import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './BlackboardTypes';
+import {
+  activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper,
+} from '../utils';
 
 export type BlackboardFormConfigProps = {
   enterpriseCustomerUuid: string;
   existingData: BlackboardConfigCamelCase;
-  existingConfigNames: string[];
+  existingConfigNames: Map<string, string>;
   onSubmit: (blackboardConfig: BlackboardConfigCamelCase) => void;
   handleCloseClick: (submitted: boolean, status: string) => Promise<boolean>;
   channelMap: Record<string, Record<string, any>>,
@@ -59,16 +30,15 @@ export const BlackboardFormConfig = ({
   existingConfigNames,
   channelMap,
 }: BlackboardFormConfigProps): FormWorkflowConfig<BlackboardConfigCamelCase> => {
-
   const saveChanges = async (
     formFields: BlackboardConfigCamelCase,
-    errHandler: (errMsg: string) => void
+    errHandler: (errMsg: string) => void,
   ) => {
-    const transformedConfig: BlackboardConfigSnakeCase = snakeCaseDict(
-      formFields
+    const snakeConfig: BlackboardConfigSnakeCase = snakeCaseDict(
+      formFields,
     ) as BlackboardConfigSnakeCase;
-    transformedConfig.enterprise_customer = enterpriseCustomerUuid;
-    return handleSaveHelper(transformedConfig, existingData, formFields, onSubmit, BLACKBOARD_TYPE, channelMap, errHandler);
+    snakeConfig.enterprise_customer = enterpriseCustomerUuid;
+    return handleSaveHelper(snakeConfig, existingData, formFields, onSubmit, BLACKBOARD_TYPE, channelMap, errHandler);
   };
 
   const handleSubmit = async ({
@@ -77,14 +47,23 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    let currentFormFields = formFields;
+    const currentFormFields = formFields;
     const transformedConfig: BlackboardConfigSnakeCase = snakeCaseDict(
-      formFields
+      formFields,
     ) as BlackboardConfigSnakeCase;
     transformedConfig.enterprise_customer = enterpriseCustomerUuid;
     return handleSubmitHelper(
-      enterpriseCustomerUuid, transformedConfig, existingData, onSubmit, formFieldsChanged,
-      currentFormFields, BLACKBOARD_TYPE, channelMap, errHandler, dispatch);
+      enterpriseCustomerUuid,
+      transformedConfig,
+      existingData,
+      onSubmit,
+      formFieldsChanged,
+      currentFormFields,
+      BLACKBOARD_TYPE,
+      channelMap,
+      dispatch,
+      errHandler,
+    );
   };
 
   const awaitAfterSubmit = async ({
@@ -92,7 +71,7 @@ export const BlackboardFormConfig = ({
     errHandler,
     dispatch,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, errHandler, dispatch);
+    const response = await afterSubmitHelper(BLACKBOARD_TYPE, formFields, channelMap, dispatch, errHandler);
     return response;
   };
 
@@ -106,7 +85,7 @@ export const BlackboardFormConfig = ({
     formFields,
     errHandler,
   }: FormWorkflowHandlerArgs<BlackboardConfigCamelCase>) => {
-    activateConfig(enterpriseCustomerUuid, channelMap, BLACKBOARD_TYPE, formFields?.id, handleCloseClick, errHandler);
+    activateConfig(enterpriseCustomerUuid, channelMap, BLACKBOARD_TYPE, handleCloseClick, formFields?.id, errHandler);
     return formFields;
   };
 
@@ -116,16 +95,17 @@ export const BlackboardFormConfig = ({
     {
       index: 1,
       formComponent: BlackboardConfigAuthorizePage,
-      validations: validations.concat([checkForDuplicateNames(existingConfigNames, existingData)]),
-      stepName: "Authorize",
+      validations: validations.concat([checkForDuplicateNames(existingConfigNames)]),
+      stepName: 'Configure',
       saveChanges,
       nextButtonConfig: (formFields: BlackboardConfigCamelCase) => {
         let config = {
-          buttonText: "Authorize",
+          buttonText: 'Authorize',
           opensNewWindow: false,
           onClick: handleSubmit,
         };
-        if (!formFields.refreshToken) {
+        // if they've never authorized it or if they've changed the form
+        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{
@@ -134,7 +114,7 @@ export const BlackboardFormConfig = ({
                 awaitCondition: awaitAfterSubmit,
                 awaitInterval: LMS_CONFIG_OAUTH_POLLING_INTERVAL,
                 awaitTimeout: LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
-                onAwaitTimeout: onAwaitTimeout,
+                onAwaitTimeout,
               },
             },
           };
@@ -146,16 +126,16 @@ export const BlackboardFormConfig = ({
       index: 2,
       formComponent: activatePage,
       validations: [],
-      stepName: "Activate",
+      stepName: 'Activate',
       saveChanges,
       nextButtonConfig: () => {
-        let config = {
-          buttonText: "Activate",
+        const config = {
+          buttonText: 'Activate',
           opensNewWindow: false,
           onClick: activate,
         };
         return config as FormWorkflowButtonConfig<BlackboardConfigCamelCase>;
-      }
+      },
     },
   ];
 
