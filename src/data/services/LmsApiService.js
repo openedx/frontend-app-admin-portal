@@ -1,4 +1,5 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+
 import { configuration } from '../../config';
 import generateFormattedStatusUrl from './apiServiceUtils';
 
@@ -53,8 +54,10 @@ class LmsApiService {
       .then((response) => {
         const { data } = response;
         const results = data?.results;
+        const enterpriseFeatures = data?.enterprise_features;
         return {
-          data: results?.length && results[0],
+          data: results?.[0],
+          enterpriseFeatures,
         };
       });
   }
