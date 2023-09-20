@@ -77,7 +77,6 @@ const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 MultipleBudgetsPage.propTypes = {
