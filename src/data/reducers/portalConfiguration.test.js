@@ -54,9 +54,7 @@ const enterpriseData = {
   enable_browse_and_request: true,
   enable_generation_of_api_credentials: true,
 };
-const mockEnterpriseFeatures = {
-  feature_A: true,
-};
+const mockEnterpriseFeatures = { featureA: true };
 
 describe('portalConfiguration reducer', () => {
   it('has initial state', () => {

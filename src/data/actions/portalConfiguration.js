@@ -37,6 +37,7 @@ const fetchPortalConfiguration = slug => (
     dispatch(fetchPortalConfigurationRequest());
     return LmsApiService.fetchEnterpriseBySlug(slug)
       .then((response) => {
+        console.log('fetchPortalConfiguration!!!', response);
         dispatch(fetchPortalConfigurationSuccess(response));
       })
       .catch((error) => {

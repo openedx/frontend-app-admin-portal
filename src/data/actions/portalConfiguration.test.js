@@ -14,6 +14,18 @@ jest.mock('@edx/frontend-platform/logging');
 
 const mockStore = configureMockStore([thunk]);
 
+const mockEnterpriseCustomer = {
+  uuid: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
+  name: 'Test Enterprise',
+  slug: 'test-enterprise',
+  branding_configuration: {
+    enterprise_customer: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
+    enterprise_slug: 'test-enterprise',
+    logo: 'https://s3...',
+  },
+};
+const mockEnterpriseFeatures = { featureA: true };
+
 describe('actions', () => {
   afterEach(() => {
     axiosMock.reset();
@@ -21,20 +33,19 @@ describe('actions', () => {
 
   it('dispatches success action after fetching portalConfiguration', () => {
     const slug = 'test-enterprise';
-    const responseData = {
-      uuid: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
-      name: 'Test Enterprise',
-      slug: 'test-enterprise',
-      branding_configuration: {
-        enterprise_customer: 'd749b244-dceb-47bb-951c-5184a6e6d36a',
-        enterprise_slug: 'test-enterprise',
-        logo: 'https://s3...',
-      },
+    const mockResponseData = {
+      data: mockEnterpriseCustomer,
+      enterpriseFeatures: mockEnterpriseFeatures,
     };
 
     const expectedActions = [
-      { type: FETCH_PORTAL_CONFIGURATION_REQUEST },
-      { type: FETCH_PORTAL_CONFIGURATION_SUCCESS, payload: { data: responseData } },
+      {
+        type: FETCH_PORTAL_CONFIGURATION_REQUEST,
+      },
+      {
+        type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
+        payload: { data: mockResponseData.data, enterpriseFeatures: mockEnterpriseFeatures },
+      },
     ];
     const store = mockStore();
     const queryParams = new URLSearchParams({
@@ -43,7 +54,13 @@ describe('actions', () => {
       enterprise_slug: slug,
     });
     axiosMock.onGet(`http://localhost:18000/enterprise/api/v1/enterprise-customer/dashboard_list/?${queryParams.toString()}`)
-      .replyOnce(200, JSON.stringify({ results: [responseData] }));
+      .replyOnce(
+        200,
+        JSON.stringify({
+          results: [mockResponseData.data],
+          enterprise_features: mockResponseData.enterpriseFeatures,
+        }),
+      );
 
     return store.dispatch(fetchPortalConfiguration(slug)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
