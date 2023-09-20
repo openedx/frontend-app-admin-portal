@@ -1,5 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import { clearPortalConfiguration, fetchPortalConfiguration } from './portalConfiguration';
 import {
@@ -24,7 +25,7 @@ const mockEnterpriseCustomer = {
     logo: 'https://s3...',
   },
 };
-const mockEnterpriseFeatures = { featureA: true };
+const mockEnterpriseFeatures = { feature_a: true };
 
 describe('actions', () => {
   afterEach(() => {
@@ -44,7 +45,7 @@ describe('actions', () => {
       },
       {
         type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
-        payload: { data: mockResponseData.data, enterpriseFeatures: mockEnterpriseFeatures },
+        payload: { data: mockResponseData.data, enterpriseFeatures: camelCaseObject(mockEnterpriseFeatures) },
       },
     ];
     const store = mockStore();

@@ -1,4 +1,5 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import { configuration } from '../../config';
 import generateFormattedStatusUrl from './apiServiceUtils';
@@ -54,7 +55,7 @@ class LmsApiService {
       .then((response) => {
         const { data } = response;
         const results = data?.results;
-        const enterpriseFeatures = data?.enterprise_features;
+        const enterpriseFeatures = camelCaseObject(data?.enterprise_features);
         return {
           data: results?.[0],
           enterpriseFeatures,
