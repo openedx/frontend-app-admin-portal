@@ -24,6 +24,8 @@ const MultipleBudgetsPicker = ({
             enterpriseUUID={enterpriseUUID}
             enterpriseSlug={enterpriseSlug}
             enableLearnerPortal={enableLearnerPortal}
+            offerType={offer.source}
+            displayName={offer.name}
           />
         ))}
       </Col>

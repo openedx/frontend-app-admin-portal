@@ -74,7 +74,7 @@ const applyFiltersToOptions = (filters, options) => {
   }
 };
 
-export const useOfferRedemptions = (enterpriseUUID, offerId) => {
+export const useOfferRedemptions = (enterpriseUUID, offerId = null, budgetId = null) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [offerRedemptions, setOfferRedemptions] = useState({
@@ -90,9 +90,14 @@ export const useOfferRedemptions = (enterpriseUUID, offerId) => {
         const options = {
           page: args.pageIndex + 1, // `DataTable` uses zero-indexed array
           pageSize: args.pageSize,
-          offerId,
           ignoreNullCourseListPrice: true,
         };
+        if (budgetId !== null) {
+          options.budgetId = budgetId;
+        }
+        if (offerId !== null) {
+          options.offerId = offerId;
+        }
         if (args.sortBy?.length > 0) {
           applySortByToOptions(args.sortBy, options);
         }
@@ -129,10 +134,10 @@ export const useOfferRedemptions = (enterpriseUUID, offerId) => {
         setIsLoading(false);
       }
     };
-    if (offerId) {
+    if (offerId || budgetId) {
       fetch();
     }
-  }, [enterpriseUUID, offerId, shouldTrackFetchEvents]);
+  }, [enterpriseUUID, offerId, budgetId, shouldTrackFetchEvents]);
 
   const debouncedFetchOfferRedemptions = useMemo(() => debounce(fetchOfferRedemptions, 300), [fetchOfferRedemptions]);
 
