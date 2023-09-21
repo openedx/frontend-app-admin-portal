@@ -6,7 +6,7 @@ import {
   Col,
 } from '@edx/paragon';
 
-import BudgetCard from './BudgetCard-V2';
+import BudgetCard from './BudgetCard-V3';
 
 const MultipleBudgetsPicker = ({
   offers,
