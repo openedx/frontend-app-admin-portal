@@ -14,6 +14,7 @@ import {
   INVALID_ODATA_API_TIMEOUT_INTERVAL, INVALID_SAPSF_OAUTH_ROOT_URL, INVALID_API_ROOT_URL,
 } from '../../data/constants';
 import { features } from '../../../../config';
+import { getButtonElement } from '../../../test/testUtils';
 
 jest.mock('../data/actions');
 jest.mock('../../utils');
@@ -69,9 +70,6 @@ const contextValue = {
   setProviderConfig: mockSetProviderConfig,
   setRefreshBool: jest.fn(),
 };
-
-// TODO: Put this in helper library?
-const getButtonElement = (buttonText) => screen.getByRole('button', { name: buttonText });
 
 const setupNewSSOStepper = () => {
   features.AUTH0_SELF_SERVICE_INTEGRATION = true;
@@ -412,6 +410,32 @@ describe('SAML Config Tab', () => {
     userEvent.click(getBackButton());
     await waitFor(() => {
       expect(screen.queryByText('Authorize edX as a Service Provider')).toBeInTheDocument();
+    }, []);
+  });
+  test('cancel out of new SSO workflow', async () => {
+    setupNewSSOStepper();
+    // Connect Step
+    await waitFor(() => {
+      expect(getButtonElement('Cancel')).toBeInTheDocument();
+    }, []);
+    userEvent.click(getButtonElement('Cancel'));
+    await waitFor(() => {
+      expect(getButtonElement('Cancel')).toBeInTheDocument();
+    }, []);
+
+    await waitFor(() => {
+      const exitButton = getButtonElement('Exit without saving');
+      expect(exitButton).toBeInTheDocument();
+      userEvent.click(exitButton);
+    }, []);
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          'Connect to a SAML identity provider for single sign-on'
+          + ' to allow quick access to your organization\'s learning catalog.',
+        ),
+      ).toBeInTheDocument();
     }, []);
   });
   test('idp step fetches and displays existing idp data fields', async () => {
