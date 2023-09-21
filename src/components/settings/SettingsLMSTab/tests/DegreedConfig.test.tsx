@@ -78,6 +78,7 @@ function testDegreedConfigSetup(formData) {
           },
         },
       })}
+      workflowTitle="New learning platform integration"
       onClickOut={mockOnClick}
       formData={formData}
       isStepperOpen
