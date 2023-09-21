@@ -64,7 +64,7 @@ describe('useSubsidyRequestConfiguration', () => {
     await waitForNextUpdate();
 
     expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(
-      { clearCacheEntry: false, enterpriseId: TEST_ENTERPRISE_UUID },
+      { enterpriseId: TEST_ENTERPRISE_UUID },
     );
     expect(result.current.subsidyRequestConfiguration).toEqual(
       camelCaseObject(TEST_CONFIGURATION_RESPONSE.data),
@@ -230,7 +230,7 @@ describe('useSubsidyRequestConfiguration', () => {
       });
 
       expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(
-        { clearCacheEntry: true, enterpriseId: TEST_ENTERPRISE_UUID },
+        { enterpriseId: TEST_ENTERPRISE_UUID },
       );
     });
 
