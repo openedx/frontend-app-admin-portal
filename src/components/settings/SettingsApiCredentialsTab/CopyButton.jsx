@@ -12,6 +12,8 @@ const CopyButton = ({ data }) => {
 
   const handleCopyLink = async () => {
     try {
+      const newData = data;
+      ['user', 'id'].forEach(prop => delete newData[prop]);
       const jsonString = JSON.stringify(data);
       await navigator.clipboard.writeText(jsonString);
     } catch (error) {
