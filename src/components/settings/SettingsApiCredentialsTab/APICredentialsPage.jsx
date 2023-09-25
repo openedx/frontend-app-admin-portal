@@ -8,7 +8,7 @@ import CopyButton from './CopyButton';
 import { API_CLIENT_DOCUMENTATION, HELP_CENTER_LINK } from '../data/constants';
 
 const APICredentialsPage = ({ data, setData }) => {
-  const [formValue, setFormValue] = useState('');
+  const [formValue, setFormValue] = useState(data?.redirect_uris);
   const handleFormChange = (e) => {
     setFormValue(e.target.value);
   };
@@ -48,7 +48,7 @@ const APICredentialsPage = ({ data, setData }) => {
           <CopyButton data={data} />
         </div>
       </div>
-      <div className="mb-4">
+      <div className="my-5">
         <h3>Redirect URIs (optional)</h3>
         <p>
           If you need additional redirect URIs, add them below and regenerate your API credentials.
@@ -77,6 +77,7 @@ const APICredentialsPage = ({ data, setData }) => {
           <Hyperlink
             variant="muted"
             destination={HELP_CENTER_LINK}
+            target="_blank"
           >
             contact Enterprise Customer Support.
           </Hyperlink>

@@ -39,6 +39,35 @@ class LmsApiService {
 
   static apiCredentialsUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-api-credentials/`;
 
+  static enterpriseSsoOrchestrationUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_sso_configuration/`;
+
+  static fetchEnterpriseSsoOrchestrationRecord(configurationUuid) {
+    const enterpriseSsoOrchestrationFetchUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}${configurationUuid}`;
+    return LmsApiService.apiClient().get(enterpriseSsoOrchestrationFetchUrl);
+  }
+
+  static listEnterpriseSsoOrchestration(enterpriseCustomerUuid) {
+    const enterpriseSsoOrchestrationListUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}`;
+    if (enterpriseCustomerUuid) {
+      return LmsApiService.apiClient().get(`${enterpriseSsoOrchestrationListUrl}?enterprise_customer=${enterpriseCustomerUuid}`);
+    }
+    return LmsApiService.apiClient().get(enterpriseSsoOrchestrationListUrl);
+  }
+
+  static createEnterpriseSsoOrchestrationRecord(formData) {
+    return LmsApiService.apiClient().post(LmsApiService.enterpriseSsoOrchestrationUrl, formData);
+  }
+
+  static updateEnterpriseSsoOrchestrationRecord(formData, configurationUuid) {
+    const enterpriseSsoOrchestrationUpdateUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}${configurationUuid}`;
+    return LmsApiService.apiClient().put(enterpriseSsoOrchestrationUpdateUrl, formData);
+  }
+
+  static deleteEnterpriseSsoOrchestrationRecord(configurationUuid) {
+    const enterpriseSsoOrchestrationDeleteUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}${configurationUuid}`;
+    return LmsApiService.apiClient().delete(enterpriseSsoOrchestrationDeleteUrl);
+  }
+
   static fetchEnterpriseList(options) {
     const queryParams = new URLSearchParams({
       page: 1,

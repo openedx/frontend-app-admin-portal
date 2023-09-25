@@ -18,6 +18,7 @@ export type ValidatedFormRadioProps = {
   fieldInstructions?: string;
   label?: string;
   options?: string[][];
+  isInline?: boolean;
 } & InheritedParagonRadioProps;
 
 const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
@@ -69,7 +70,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
       <Form.RadioSet
         name={formRadioProps.id}
         onChange={formRadioProps.onChange}
-        isInline
+        isInline={formRadioProps.isInline}
       >
         {createOptions(formRadioProps.options)}
       </Form.RadioSet>
