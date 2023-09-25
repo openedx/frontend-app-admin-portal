@@ -14,6 +14,7 @@ import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import LearnerCreditManagement from '../learner-credit-management';
+import BudgetDetailPage from '../learner-credit-management/BudgetDetailPage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
 
@@ -105,6 +106,11 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
+        <Route
+        exact
+        path={`${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}/:id`}
+        component={BudgetDetailPage}
+      />
       {enableContentHighlightsPage && (
         <Route
           path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
