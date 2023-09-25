@@ -14,7 +14,7 @@ export const sanitizeAndParseHTML = (htmlString) => {
 // Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
 // Test will fail as additional check to ensure this is set to false before pushing PR
 export const TEST_FLAG = false;
-// Test entepriseId for Content Highlights to display card selections and confirmation
+// Test enterpriseId for Content Highlights to display card selections and confirmation
 export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
 // function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
 export const ENABLE_TESTING = (enterpriseId, enableTest = TEST_FLAG) => {
@@ -42,7 +42,7 @@ export const TAB_TITLES = {
 // Max length of highlight title in stepper
 export const MAX_HIGHLIGHT_TITLE_LENGTH = 60;
 
-// Max highlight sets per enteprise curation
+// Max highlight sets per enterprise curation
 export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 12;
 
 // Max number of content items per highlight set

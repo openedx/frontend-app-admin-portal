@@ -39,9 +39,6 @@ const Sidebar = ({
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
 
-  console.log(canManageLearnerCredit);
-  console.log('hi');
-
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
       const { width } = navRef.current.getBoundingClientRect();
