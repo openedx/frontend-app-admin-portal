@@ -22,6 +22,109 @@ export const BaseCatalogSearchResults = ({
   searchState,
   setNoContent,
 }) => {
+<<<<<<< HEAD
+=======
+  const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
+  const [isProgramType, setIsProgramType] = useState();
+  const [isCourseType, setIsCourseType] = useState();
+  const [isExecEdType, setIsExecEdType] = useState();
+
+  useEffect(() => {
+    setIsProgramType(contentType === CONTENT_TYPE_PROGRAM);
+    setIsCourseType(contentType === CONTENT_TYPE_COURSE);
+    setIsExecEdType(contentType === EXEC_ED_TITLE);
+  }, [contentType]);
+
+  const TABLE_HEADERS = useMemo(
+    () => ({
+      courseName: intl.formatMessage(
+        messages['catalogSearchResults.table.courseName'],
+      ),
+      partner: intl.formatMessage(
+        messages['catalogSearchResults.table.partner'],
+      ),
+      price: intl.formatMessage(messages['catalogSearchResults.table.price']),
+      availability: intl.formatMessage(
+        messages['catalogSearchResults.table.availability'],
+      ),
+      catalogs: intl.formatMessage(
+        messages['catalogSearchResults.table.catalogs'],
+      ),
+      programName: intl.formatMessage(
+        messages['catalogSearchResults.table.programName'],
+      ),
+      numCourses: intl.formatMessage(
+        messages['catalogSearchResults.table.numCourses'],
+      ),
+      programType: intl.formatMessage(
+        messages['catalogSearchResults.table.programType'],
+      ),
+    }),
+    [intl],
+  );
+
+  const { refinements, dispatch } = useContext(SearchContext);
+  const nbHits = useNbHitsFromSearchResults(searchResults);
+  const linkText = `See all (${nbHits}) >`;
+
+  const [setSelectedCourse] = useSelectedCourse();
+
+  const [cardView, setCardView] = useState(true);
+
+  const cardClicked = useCallback(
+    (card) => {
+      if (isProgramType) {
+        setSelectedCourse(mapAlgoliaObjectToProgram(card));
+      } else if (isExecEdType) {
+        setSelectedCourse(mapAlgoliaObjectToExecEd(card, intl, messages));
+      } else {
+        setSelectedCourse(mapAlgoliaObjectToCourse(card, intl, messages));
+      }
+    },
+    [intl, isProgramType, setSelectedCourse, isExecEdType],
+  );
+
+  const refinementClick = () => {
+    if (isCourseType) {
+      dispatch(
+        setRefinementAction(LEARNING_TYPE_REFINEMENT, [CONTENT_TYPE_COURSE]),
+      );
+    } else if (isExecEdType) {
+      dispatch(
+        setRefinementAction(LEARNING_TYPE_REFINEMENT, [
+          EXEC_ED_TITLE,
+        ]),
+      );
+    } else {
+      dispatch(
+        setRefinementAction(LEARNING_TYPE_REFINEMENT, [CONTENT_TYPE_PROGRAM]),
+      );
+    }
+  };
+
+  const renderCardComponent = (props) => {
+    if (contentType === CONTENT_TYPE_COURSE) {
+      return <CourseCard {...props} learningType={contentType} onClick={cardClicked} />;
+    }
+    if (contentType === EXEC_ED_TITLE) {
+      return <CourseCard {...props} learningType={contentType} onClick={cardClicked} />;
+    }
+    return null;
+    // return <ProgramCard {...props} onClick={cardClicked} />;
+  };
+
+  const availabilityColumn = {
+    id: 'availability-column',
+    Header: TABLE_HEADERS.availability,
+    accessor: 'advertised_course_run',
+    // Cell: ({ row }) => formatDate(row.values.advertised_course_run),
+    Cell: ({ row }) => row.values.advertised_course_run,
+
+  };
+
+  // NOTE: Cell is not explicity supported in DataTable, which leads to lint errors regarding {row}. However, we needed
+  // to use the accessor functionality instead of just adding in additionalColumns like the Paragon documentation.
+>>>>>>> 4d0484f0 (feat: search results cards)
   const courseColumns = useMemo(
     () => [
       {

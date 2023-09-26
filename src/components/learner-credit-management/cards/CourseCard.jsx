@@ -17,7 +17,7 @@ import CARD_TEXT from '../constants';
 import defaultCardHeader from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
- learningType, onClick, original,
+  onClick, original, learningType,
 }) => {
   const {
     availability,
@@ -53,10 +53,10 @@ const CourseCard = ({
 
   const altText = `${title} course image`;
 
-  const execEdRegistrationInfo = `Starts ${formatDate(normalized_metadata?.start_date)} •
-  ${REGISTRATION.text} ${formatDate(normalized_metadata?.enroll_by_date)}`;
+  const execEdRegistrationInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
+  ${REGISTRATION.text} ${formatDate(normalized_metadata.enroll_by_date)}`;
 
-  const courseRegistrationInfo = `${availability} • ${REGISTRATION.text} ${formatDate(normalized_metadata?.enroll_by_date)}`;
+  const courseRegistrationInfo = `${availability} • ${REGISTRATION.text} ${formatDate(normalized_metadata.enroll_by_date)}`;
   const isExecEd = course_type === EXEC_COURSE_TYPE;
 
   // TODO: Implementations to follow
@@ -80,7 +80,7 @@ const CourseCard = ({
       <div className="card-container">
         <div className="section-1 mb-1">
           <p className="mb-1 lead font-weight-bold">{title}</p>
-          <p>{partners[0]?.name}</p>
+          <p>{partners[0].name}</p>
           {isExecEd ? (
             <Badge variant="light" className="mb-4 ml-0">
               {BADGE.execEd}
@@ -99,7 +99,7 @@ const CourseCard = ({
         </div>
         <Card.Section className="section-2">
           <p className="lead font-weight-bold mb-0">{priceText}</p>
-          <p className="x-small mb-6">{PRICE.subText}</p>
+          <p className="x-small mb-5.5">{PRICE.subText}</p>
           <Card.Footer orientation="horizontal" className="footer">
             <Button onClick={handleViewCourse} variant="outline-primary">{BUTTON_ACTION.viewCourse}<Icon className="ml-1" src={Launch} /></Button>
             <Button onClick={handleAssign}>{BUTTON_ACTION.assign}</Button>
@@ -124,6 +124,7 @@ CourseCard.propTypes = {
     entitlements: PropTypes.arrayOf(PropTypes.shape()),
     first_enrollable_paid_seat_price: PropTypes.number,
     normalized_metadata: PropTypes.shape(),
+    original_image_url: PropTypes.string,
     partners: PropTypes.arrayOf(
       PropTypes.shape({
         logo_image_url: PropTypes.string,

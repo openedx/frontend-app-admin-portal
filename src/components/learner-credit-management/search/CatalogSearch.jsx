@@ -10,7 +10,27 @@ import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
 
 const CatalogSearch = () => {
+<<<<<<< HEAD
   const { budgetId } = useParams();
+=======
+  function convertLearningTypesToFilters(types) {
+    return types.reduce((learningFacets, type) => {
+      if (type === EXEC_ED_TITLE) {
+        learningFacets.push(`"${type}"`);
+      } else {
+        learningFacets.push(type);
+      }
+      return learningFacets;
+    }, []).join(' OR ');
+  }
+
+  const {
+    refinements: {
+      [LEARNING_TYPE_REFINEMENT]: learningType,
+      enterprise_catalog_query_titles: enterpriseCatalogQueryTitles,
+    },
+  } = useContext(SearchContext);
+>>>>>>> 4d0484f0 (feat: search results cards)
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
 
   const searchFilters = `enterprise_catalog_query_uuids:${budgetId}`;
