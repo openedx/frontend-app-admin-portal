@@ -82,7 +82,7 @@ const validateEmailAddresses = (emails) => {
   return result;
 };
 
-// Each row in textarea or csv can contain email plus an optional salesforce id
+// Each row in textarea and csv can contain email plus an optional salesforce id
 // Email and salesforce id will be separated by comma. This function will read
 // each row, split it by comma and then return an object with three properties:
 //      textEmails: All emails extracted from textarea
