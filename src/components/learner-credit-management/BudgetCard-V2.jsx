@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import {
   Breadcrumb, Button, Card, Col, Row, Stack, Tabs, Tab,
 } from '@edx/paragon';
-import { SearchData } from '@edx/frontend-enterprise-catalog-search';
+import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
 
 import CatalogSearch from './search/CatalogSearch';
 import { configuration } from '../../config';
@@ -14,6 +14,23 @@ import { useOfferRedemptions, useOfferSummary } from './data/hooks';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT } from '../../data/constants/learnerCredit';
+
+const language = {
+  attribute: LANGUAGE_REFINEMENT,
+  title: 'Language',
+};
+const learningType = {
+  attribute: LEARNING_TYPE_REFINEMENT,
+  title: 'Learning Type',
+};
+// Add search facet filters if they don't exist in the list yet
+if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === LANGUAGE_REFINEMENT)) {
+  SEARCH_FACET_FILTERS.push(language);
+}
+if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === LEARNING_TYPE_REFINEMENT)) {
+  SEARCH_FACET_FILTERS.push(learningType);
+}
 
 const BudgetCard = ({
   offer,
@@ -77,11 +94,7 @@ const BudgetCard = ({
       <Card.Header
         title={budgetType}
         subtitle={subtitle}
-        actions={(
-          <div>
-            {renderActions(budgetType)}
-          </div>
-                )}
+        actions={(<div>{renderActions(budgetType)}</div>)}
       />
     );
   };
@@ -163,9 +176,9 @@ const BudgetCard = ({
         </Stack>
       </Tab>
       <Tab eventKey="catalog" title="Catalog" className="mt-4">
-        <h4>Executive Education catalog</h4>
-
-        <SearchData>
+        <SearchData
+          searchFacetFilters={[...SEARCH_FACET_FILTERS]}
+        >
           <InstantSearch
             indexName={configuration.ALGOLIA.INDEX_NAME}
             searchClient={searchClient}

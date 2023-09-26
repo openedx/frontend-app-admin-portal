@@ -26,7 +26,7 @@ const CatalogSearch = ({ offerId }) => {
     <section>
       <FormattedMessage
         id="catalogs.enterpriseCatalogs.header"
-        defaultMessage="Search courses and programs"
+        defaultMessage="Executive Education catalog"
         description="Search dialogue."
         tagName="h2"
       />
