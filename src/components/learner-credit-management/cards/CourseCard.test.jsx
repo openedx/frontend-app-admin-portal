@@ -62,6 +62,18 @@ describe('Course card works as expected', () => {
     expect(screen.queryByText('View Course')).toBeInTheDocument();
     expect(screen.queryByText('Assign')).toBeInTheDocument();
   });
+  test('exec ed card renders as expected', () => {
+    render(
+      <IntlProvider locale="en">
+        <CourseCard {...execEdProps} />
+      </IntlProvider>,
+    );
+    expect(screen.queryByText(execEdProps.original.title)).toBeInTheDocument();
+    expect(
+      screen.queryByText(execEdProps.original.partners[0].name),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Exec Ed Course Title')).toBeInTheDocument();
+  });
 
   test('test card renders default image', async () => {
     render(
