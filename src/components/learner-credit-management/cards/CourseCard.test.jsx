@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseCard from './CourseCard';
-import { CONTENT_TYPE_COURSE, EXEC_ED_TITLE } from '../../constants';
+import { CONTENT_TYPE_COURSE, EXEC_ED_TITLE } from '../../../data/constants/learnerCredit';
 
 jest.mock('@edx/frontend-platform', () => ({
   ...jest.requireActual('@edx/frontend-platform'),

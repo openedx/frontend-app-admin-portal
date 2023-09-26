@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Configure, InstantSearch } from 'react-instantsearch-dom';
+import { InstantSearch } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch/lite';
 import dayjs from 'dayjs';
@@ -49,8 +49,6 @@ const BudgetCard = ({
     links.push({ label: budgetType, url: `/${enterpriseSlug}/admin/learner-credit` });
     setActiveLabel(budgetType);
   };
-  const searchFilters = `enterprise_catalog_query_uuids:${offer?.id}`;
-  // + `OR enterprise_catalog_query_uuids:${offerSummary?.budgets.the_catalog_uuid}`;
 
   const searchClient = algoliasearch(
     configuration.ALGOLIA.APP_ID,
@@ -172,10 +170,7 @@ const BudgetCard = ({
             indexName={configuration.ALGOLIA.INDEX_NAME}
             searchClient={searchClient}
           >
-            <Configure
-              filters={searchFilters}
-            />
-            <CatalogSearch />
+            <CatalogSearch offerId={offer?.id} />
           </InstantSearch>
         </SearchData>
       </Tab>

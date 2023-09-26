@@ -3,16 +3,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Badge, Button, Card, Icon } from '@edx/paragon';
+import {
+  Badge, Button, Card, Icon,
+} from '@edx/paragon';
 import { Launch } from '@edx/paragon/icons';
-import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
-import messages from './CourseCard.messages';
-import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
+import { EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
 import defaultCardHeader from '../../../static/default-card-header-light.png';
 import { formatDate } from '../utils';
 
 const CourseCard = ({
-  intl, onClick, original, learningType,
+  onClick, original,
 }) => {
   const {
     title,
@@ -27,16 +27,6 @@ const CourseCard = ({
 
   let rowPrice;
   let priceText;
-
-  console.log(original);
-
-  if (learningType === CONTENT_TYPE_COURSE) {
-    rowPrice = first_enrollable_paid_seat_price;
-    priceText = rowPrice != null ? `$${rowPrice.toString()}` : 'N/A';
-  } else {
-    [rowPrice] = entitlements || [null];
-    priceText = rowPrice != null ? `$${Math.trunc(rowPrice.price)?.toString()}` : 'N/A';
-  }
 
   const imageSrc = card_image_url || defaultCardHeader;
   const altText = `${title} course image`;
@@ -68,8 +58,8 @@ const CourseCard = ({
             <p className="spacer" />
           )}
           <p className={`small ${course_type !== EXEC_COURSE_TYPE ? 'mt-5 mb-0' : ''}`}>
-            Starts {formatDate(original.normalized_metadata.start_date)} •
-            Learner must register by {formatDate(original.normalized_metadata.enroll_by_date)}
+            Starts {formatDate(original.normalized_metadata?.start_date)} •
+            Learner must register by {formatDate(original.normalized_metadata?.enroll_by_date)}
           </p>
         </div>
         <Card.Section className="section-2">
@@ -90,9 +80,7 @@ CourseCard.defaultProps = {
 };
 
 CourseCard.propTypes = {
-  intl: intlShape.isRequired,
   onClick: PropTypes.func,
-  learningType: PropTypes.string.isRequired,
   original: PropTypes.shape({
     title: PropTypes.string,
     card_image_url: PropTypes.string,
@@ -111,4 +99,4 @@ CourseCard.propTypes = {
   }).isRequired,
 };
 
-export default injectIntl(CourseCard);
+export default CourseCard;
