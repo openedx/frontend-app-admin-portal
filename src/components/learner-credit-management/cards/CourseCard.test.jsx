@@ -4,22 +4,20 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseCard from './CourseCard';
-import { CONTENT_TYPE_COURSE, EXEC_ED_TITLE } from '../../constants';
-
-jest.mock('@edx/frontend-platform', () => ({
-  ...jest.requireActual('@edx/frontend-platform'),
-}));
-
-const TEST_CATALOG = ['ayylmao'];
+import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
 
 const originalData = {
-  title: 'Course Title',
+  availability: 'Upcoming',
   card_image_url: undefined,
-  partners: [{ logo_image_url: '', name: 'Course Provider' }],
+  course_type: 'course',
   first_enrollable_paid_seat_price: 100,
+  normalized_metadata: {
+    enroll_by_date: '2016-02-18T04:00:00Z',
+    start_date: '2016-04-18T04:00:00Z',
+  },
   original_image_url: '',
-  enterprise_catalog_query_titles: TEST_CATALOG,
-  advertised_course_run: { pacing_type: 'self_paced' },
+  partners: [{ logo_image_url: '', name: 'Course Provider' }],
+  title: 'Course Title',
 };
 
 const defaultProps = {
@@ -28,25 +26,26 @@ const defaultProps = {
 };
 
 const execEdData = {
-  title: 'Course Title',
   card_image_url: undefined,
-  partners: [{ logo_image_url: '', name: 'Course Provider' }],
-  first_enrollable_paid_seat_price: 100,
-  original_image_url: '',
-  enterprise_catalog_query_titles: TEST_CATALOG,
-  advertised_course_run: { pacing_type: 'instructor_paced' },
+  course_type: 'executive-education-2u',
   entitlements: [{ price: '999.00' }],
+  first_enrollable_paid_seat_price: 100,
+  normalized_metadata: {
+    enroll_by_date: '2016-02-18T04:00:00Z',
+    start_date: '2016-04-18T04:00:00Z',
+  },
+  original_image_url: '',
+  partners: [{ logo_image_url: '', name: 'Course Provider' }],
+  title: 'Exec Ed Title',
 };
 
 const execEdProps = {
+  learningType: EXEC_COURSE_TYPE,
   original: execEdData,
-  learningType: EXEC_ED_TITLE,
 };
 
 describe('Course card works as expected', () => {
-  test('card renders as expected', () => {
-    process.env.EDX_FOR_BUSINESS_TITLE = 'ayylmao';
-    process.env.EDX_ENTERPRISE_ALACARTE_TITLE = 'baz';
+  test('course card renders', () => {
     render(
       <IntlProvider locale="en">
         <CourseCard {...defaultProps} />
@@ -56,9 +55,14 @@ describe('Course card works as expected', () => {
     expect(
       screen.queryByText(defaultProps.original.partners[0].name),
     ).toBeInTheDocument();
-    expect(screen.queryByText('$100 • Self paced')).toBeInTheDocument();
-    expect(screen.queryByText('Business')).toBeInTheDocument();
+    expect(screen.queryByText('$100')).toBeInTheDocument();
+    expect(screen.queryByText('Per learner price')).toBeInTheDocument();
+    expect(screen.queryByText('Upcoming • Learner must register by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.queryByText('Course')).toBeInTheDocument();
+    expect(screen.queryByText('View Course')).toBeInTheDocument();
+    expect(screen.queryByText('Assign')).toBeInTheDocument();
   });
+
   test('test card renders default image', async () => {
     render(
       <IntlProvider locale="en">
@@ -69,17 +73,15 @@ describe('Course card works as expected', () => {
     fireEvent.error(screen.getByAltText(imageAltText));
     await expect(screen.getByAltText(imageAltText).src).not.toBeUndefined;
   });
-  test('exec ed card renders correct price from entitlement', async () => {
-    process.env.EDX_FOR_BUSINESS_TITLE = 'ayylmao';
-    process.env.EDX_ENTERPRISE_ALACARTE_TITLE = 'baz';
+
+  test('exec ed card renders', async () => {
     render(
       <IntlProvider locale="en">
         <CourseCard {...execEdProps} />
       </IntlProvider>,
     );
-    expect(screen.queryByText(execEdProps.original.title)).toBeInTheDocument();
-    // price decimal should be truncated
-    expect(screen.queryByText('$999 • Instructor led')).toBeInTheDocument();
-    expect(screen.queryByText('Business')).toBeInTheDocument();
+    expect(screen.queryByText('$999')).toBeInTheDocument();
+    expect(screen.queryByText('Starts Apr 18, 2016 • Learner must register by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).toBeInTheDocument();
   });
 });

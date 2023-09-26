@@ -130,7 +130,7 @@ export const BaseCatalogSearchResults = ({
   const nbHits = useNbHitsFromSearchResults(searchResults);
   const linkText = `See all (${nbHits}) >`;
 
-  const [selectedCourse, setSelectedCourse, isProgram, isCourse] = useSelectedCourse();
+  const [setSelectedCourse] = useSelectedCourse();
 
   const [cardView, setCardView] = useState(true);
 

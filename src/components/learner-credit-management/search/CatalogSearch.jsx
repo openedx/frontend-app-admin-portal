@@ -37,8 +37,7 @@ const CatalogSearch = () => {
       return learningFacets;
     }, []).join(' OR ');
   }
-  console.log(`${LEARNING_TYPE_REFINEMENT}`);
-  console.log(useContext(SearchContext));
+
   const {
     refinements: {
       [LEARNING_TYPE_REFINEMENT]: learningType,
