@@ -13,3 +13,14 @@ export const ROUTE_NAMES = {
   subscriptionManagement: 'subscriptions',
   contentHighlights: 'content-highlights',
 };
+
+export const BUDGET_STATUSES = {
+  active: 'Active',
+  expired: 'Expired',
+  upcoming: 'Upcoming',
+};
+
+export const BUDGET_TYPES = {
+  ecommerce: 'ecommerce',
+  subsidy: 'subsidy',
+};
