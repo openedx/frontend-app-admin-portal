@@ -24,7 +24,7 @@ const CatalogSearch = () => {
         tagName="h2"
       />
       <InstantSearch indexName={configuration.ALGOLIA.INDEX_NAME} searchClient={searchClient}>
-        <div className="enterprise-catalogs-header">
+        <div>
           <Configure
             // filters={searchFilters}
             facetingAfterDistinct
