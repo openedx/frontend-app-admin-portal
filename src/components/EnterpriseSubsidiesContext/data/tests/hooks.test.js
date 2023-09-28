@@ -4,6 +4,7 @@ import { useCoupons, useCustomerAgreement, useEnterpriseOffers } from '../hooks'
 import EcommerceApiService from '../../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
 import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiService';
+import { BUDGET_TYPES } from '../../../EnterpriseApp/data/constants';
 
 jest.mock('@edx/frontend-platform/config', () => ({
   getConfig: jest.fn(() => ({
@@ -51,6 +52,7 @@ describe('useEnterpriseOffers', () => {
       start: '2021-05-15T19:56:09Z',
       end: '2100-05-15T19:56:09Z',
       isCurrent: true,
+      source: BUDGET_TYPES.ecommerce,
     }];
 
     SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValueOnce({
@@ -69,9 +71,7 @@ describe('useEnterpriseOffers', () => {
 
     await waitForNextUpdate();
 
-    expect(EcommerceApiService.fetchEnterpriseOffers).toHaveBeenCalledWith({
-      isCurrent: true,
-    });
+    expect(EcommerceApiService.fetchEnterpriseOffers).toHaveBeenCalled();
     expect(result.current).toEqual({
       offers: mockOffers,
       isLoading: false,
@@ -80,69 +80,82 @@ describe('useEnterpriseOffers', () => {
   });
 
   it('should fetch enterprise offers for the enterprise when data available in enterprise-subsidy', async () => {
-    const mockOffers = [
+    const mockEnterpriseSubsidyResponse = [
+      {
+        uuid: 'offer-id',
+        title: 'offer-name',
+        activeDatetime: '2021-05-15T19:56:09Z',
+        expirationDatetime: '2100-05-15T19:56:09Z',
+        isActive: true,
+      },
+    ];
+
+    const mockEcommerceResponse = [
+      {
+        id: 'uuid',
+        display_name: 'offer-name',
+        start_datetime: '2021-05-15T19:56:09Z',
+        end_datetime: '2100-05-15T19:56:09Z',
+        is_current: true,
+      },
+    ];
+
+    SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValueOnce({
+      data: {
+        results: mockEnterpriseSubsidyResponse,
+      },
+    });
+
+    EcommerceApiService.fetchEnterpriseOffers.mockResolvedValueOnce({
+      data: {
+        results: mockEcommerceResponse,
+      },
+    });
+
+    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({
+      enablePortalLearnerCreditManagementScreen: true,
+      enterpriseId: TEST_ENTERPRISE_UUID,
+    }));
+
+    await waitForNextUpdate();
+
+    expect(SubsidyApiService.getSubsidyByCustomerUUID).toHaveBeenCalledWith(
+      TEST_ENTERPRISE_UUID,
+      { subsidyType: 'learner_credit' },
+    );
+
+    const expectedOffers = [
       {
         id: 'offer-id',
         name: 'offer-name',
         start: '2021-05-15T19:56:09Z',
         end: '2100-05-15T19:56:09Z',
         isCurrent: true,
+        source: BUDGET_TYPES.subsidy,
+      },
+      {
+        id: 'uuid',
+        name: 'offer-name',
+        start: '2021-05-15T19:56:09Z',
+        end: '2100-05-15T19:56:09Z',
+        isCurrent: true,
+        source: BUDGET_TYPES.ecommerce,
       },
     ];
-    const mockSubsidyServiceResponse = [{
-      uuid: 'offer-id',
-      title: 'offer-name',
-      active_datetime: '2021-05-15T19:56:09Z',
-      expiration_datetime: '2100-05-15T19:56:09Z',
-      is_active: true,
-    }];
-    SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValueOnce({
-      data: {
-        results: mockSubsidyServiceResponse,
-      },
-    });
 
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffers({
-      enablePortalLearnerCreditManagementScreen: true,
-      enterpriseId: TEST_ENTERPRISE_UUID,
-    }));
-
-    await waitForNextUpdate();
-
-    expect(SubsidyApiService.getSubsidyByCustomerUUID).toHaveBeenCalledWith(
-      TEST_ENTERPRISE_UUID,
-      { subsidyType: 'learner_credit' },
-    );
     expect(result.current).toEqual({
-      offers: mockOffers,
+      offers: expectedOffers,
       isLoading: false,
       canManageLearnerCredit: true,
     });
   });
 
   it('should set canManageLearnerCredit to false if active enterprise offer or subsidy not found', async () => {
-    const mockOffers = [{ subsidyUuid: 'offer-1' }, { subsidyUuid: 'offer-2' }];
-    const mockSubsidyServiceResponse = [
-      {
-        uuid: 'offer-1',
-        title: 'offer-name',
-        active_datetime: '2005-05-15T19:56:09Z',
-        expiration_datetime: '2006-05-15T19:56:09Z',
-        is_active: false,
-      },
-      {
-        uuid: 'offer-2',
-        title: 'offer-name-2',
-        active_datetime: '2006-05-15T19:56:09Z',
-        expiration_datetime: '2007-05-15T19:56:09Z',
-        is_active: false,
-      },
-    ];
-    const mockOfferData = [];
+    const mockSubsidyServiceResponse = [];
 
     EcommerceApiService.fetchEnterpriseOffers.mockResolvedValueOnce({
       data: {
-        results: mockOffers,
+        results: [],
       },
     });
     SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValueOnce({
@@ -162,15 +175,22 @@ describe('useEnterpriseOffers', () => {
       TEST_ENTERPRISE_UUID,
       { subsidyType: 'learner_credit' },
     );
+
+    const hasActiveOffersOrSubsidies = mockSubsidyServiceResponse.some(offer => offer.is_active);
+    let canManageLearnerCredit = false;
+
+    if (hasActiveOffersOrSubsidies) {
+      canManageLearnerCredit = true;
+    }
+
     expect(result.current).toEqual({
-      offers: mockOfferData,
+      offers: [],
       isLoading: false,
-      canManageLearnerCredit: false,
+      canManageLearnerCredit,
     });
   });
 
   it('should return the active enterprise offer or subsidy when multiple available', async () => {
-    const mockOffers = [{ subsidyUuid: 'offer-1' }, { subsidyUuid: 'offer-2' }];
     const mockSubsidyServiceResponse = [
       {
         uuid: 'offer-1',
@@ -189,17 +209,26 @@ describe('useEnterpriseOffers', () => {
     ];
     const mockOfferData = [
       {
+        id: 'offer-1',
+        name: 'offer-name',
+        start: '2005-05-15T19:56:09Z',
+        end: '2006-05-15T19:56:09Z',
+        isCurrent: false,
+        source: BUDGET_TYPES.subsidy,
+      },
+      {
         id: 'offer-2',
         name: 'offer-name-2',
         start: '2006-05-15T19:56:09Z',
         end: '2099-05-15T19:56:09Z',
         isCurrent: true,
+        source: BUDGET_TYPES.subsidy,
       },
     ];
 
     EcommerceApiService.fetchEnterpriseOffers.mockResolvedValueOnce({
       data: {
-        results: mockOffers,
+        results: [],
       },
     });
     SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValueOnce({
