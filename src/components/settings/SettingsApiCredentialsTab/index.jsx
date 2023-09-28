@@ -34,34 +34,36 @@ const SettingsApiCredentialsTab = ({
   }, [enterpriseId]);
 
   return (
-    <EnterpriseId.Provider value={enterpriseId}>
-      <ErrorContext.Provider value={[hasRegenerationError, setHasRegenerationError]}>
-        <ShowSuccessToast.Provider value={[showToast, setShowToast]}>
-          { hasRegenerationError && <FailedAlert /> }
-          <ActionRow>
-            <h2>API credentials</h2>
-            <ActionRow.Spacer />
-            <HelpCenterButton url={HELP_CENTER_API_GUIDE}>
-              Help Center: EdX Enterprise API Guide
-            </HelpCenterButton>
-          </ActionRow>
-          <div className="mt-4">
-            {!data ? (
-              <ZeroStateCard setShowToast={setShowToast} setData={setData} />
-            ) : (<APICredentialsPage data={data} setData={setData} />)}
-          </div>
-          <div />
-          { showToast && (
+    <p className="m-3">
+      <EnterpriseId.Provider value={enterpriseId}>
+        <ErrorContext.Provider value={[hasRegenerationError, setHasRegenerationError]}>
+          <ShowSuccessToast.Provider value={[showToast, setShowToast]}>
+            { hasRegenerationError && <FailedAlert /> }
+            <ActionRow>
+              <h2>API credentials</h2>
+              <ActionRow.Spacer />
+              <HelpCenterButton url={HELP_CENTER_API_GUIDE}>
+                Help Center: EdX Enterprise API Guide
+              </HelpCenterButton>
+            </ActionRow>
+            <div className="mt-4">
+              {!data ? (
+                <ZeroStateCard setShowToast={setShowToast} setData={setData} />
+              ) : (<APICredentialsPage data={data} setData={setData} />)}
+            </div>
+            <div />
+            { showToast && (
             <Toast
               onClose={() => setShowToast(false)}
               show={showToast}
             >
               API credentials successfully generated
             </Toast>
-          )}
-        </ShowSuccessToast.Provider>
-      </ErrorContext.Provider>
-    </EnterpriseId.Provider>
+            )}
+          </ShowSuccessToast.Provider>
+        </ErrorContext.Provider>
+      </EnterpriseId.Provider>
+    </p>
   );
 };
 SettingsApiCredentialsTab.propTypes = {

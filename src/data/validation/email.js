@@ -82,6 +82,33 @@ const validateEmailAddresses = (emails) => {
   return result;
 };
 
+// Each row in textarea or csv can contain email plus an optional salesforce id
+// Email and salesforce id will be separated by comma. This function will read
+// each row, split it by comma and then return an object with three properties:
+//      textEmails: All emails extracted from textarea
+//      csvEmails: All emails extracted from CSV
+//      allEmails: Concatenation of `textEmails` and `csvEmails`
+const extractEmails = (formData) => {
+  let textEmails = [];
+  let csvEmails = [];
+  let allEmails = [];
+
+  if (formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].length) {
+    textEmails = formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/).map(item => item.split(',')[0]);
+  }
+  if (formData[EMAIL_ADDRESS_CSV_FORM_DATA] && formData[EMAIL_ADDRESS_CSV_FORM_DATA].length) {
+    csvEmails = formData[EMAIL_ADDRESS_CSV_FORM_DATA].map(item => item.split(',')[0]);
+  }
+
+  allEmails = [...textEmails, ...csvEmails];
+
+  return {
+    textEmails,
+    csvEmails,
+    allEmails,
+  };
+};
+
 const validateEmailAddressesFields = (formData) => {
   // Validate that email address fields contain valid-looking emails.
   // Expects Redux form data
@@ -90,11 +117,11 @@ const validateEmailAddressesFields = (formData) => {
     _error: [],
   };
 
-  const textAreaEmails = formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/);
-  const csvEmails = formData[EMAIL_ADDRESS_CSV_FORM_DATA];
+  const { csvEmails, textEmails } = extractEmails(formData);
+  const emails = textEmails.length ? textEmails : csvEmails;
   let {
     invalidEmailIndices,
-  } = validateEmailAddresses(textAreaEmails || csvEmails);
+  } = validateEmailAddresses(emails);
 
   // 1 is added to every index to fix off-by-one error in messages shown to the user.
   invalidEmailIndices = invalidEmailIndices.map(i => i + 1);
@@ -105,7 +132,7 @@ const validateEmailAddressesFields = (formData) => {
 ${invalidEmailIndices.length !== 0 ? `and ${lastEmail}` : `${lastEmail}`} \
 is invalid. Please try again.`;
 
-    errorsDict[textAreaEmails ? EMAIL_ADDRESS_TEXT_FORM_DATA : EMAIL_ADDRESS_CSV_FORM_DATA] = message;
+    errorsDict[textEmails.length ? EMAIL_ADDRESS_TEXT_FORM_DATA : EMAIL_ADDRESS_CSV_FORM_DATA] = message;
     errorsDict._error.push(message);
   }
 
@@ -155,19 +182,49 @@ const returnValidatedEmails = (formData) => {
   if (errorsDict._error.length > 0) {
     throw new SubmissionError(errorsDict);
   }
-  let emails = [];
-  if (formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].length) {
-    emails.push(...formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/));
-  }
-  if (formData[EMAIL_ADDRESS_CSV_FORM_DATA] && formData[EMAIL_ADDRESS_CSV_FORM_DATA].length) {
-    emails.push(...formData[EMAIL_ADDRESS_CSV_FORM_DATA]);
-  }
-  emails = _.union(emails); // Dedup emails
+
+  const emails = _.union(extractEmails(formData).allEmails); // Dedup emails
   return validateEmailAddresses(emails).validEmails;
+};
+
+// Combine all the rows from textarea and CSV and then make a map of email to salesforce id
+const getSalesforceIdsByEmail = (formData) => {
+  const rows = [];
+  const allRecords = {};
+
+  if (formData[EMAIL_ADDRESS_TEXT_FORM_DATA] && formData[EMAIL_ADDRESS_TEXT_FORM_DATA].length) {
+    rows.push(...formData[EMAIL_ADDRESS_TEXT_FORM_DATA].split(/\r\n|\n/));
+  }
+
+  if (formData[EMAIL_ADDRESS_CSV_FORM_DATA] && formData[EMAIL_ADDRESS_CSV_FORM_DATA].length) {
+    rows.push(...formData[EMAIL_ADDRESS_CSV_FORM_DATA]);
+  }
+
+  rows.forEach((row) => {
+    const [email, salesforceId] = row.split(',').map(item => item.trim());
+    allRecords[email] = salesforceId;
+  });
+
+  return allRecords;
+};
+
+// Extract salesforce ids for all validated emails
+const extractSalesforceIds = (formData, userEmails) => {
+  const salesforceIdsByEmail = getSalesforceIdsByEmail(formData);
+  const ids = [];
+
+  userEmails.forEach((email) => {
+    ids.push(salesforceIdsByEmail[email]);
+  });
+
+  // check if `ids` array contain non-empty, not-null values
+  const noIdsPresent = ids.every(item => !item);
+  return noIdsPresent ? undefined : ids;
 };
 /* eslint-enable no-underscore-dangle */
 
 export {
+  extractSalesforceIds,
   validateEmailAddresses,
   validateEmailAddressesFields,
   validateEmailTemplateForm,

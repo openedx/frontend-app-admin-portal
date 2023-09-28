@@ -6,6 +6,7 @@ import {
   Col,
   Card,
   Hyperlink,
+  Container,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -17,7 +18,7 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { configuration } from '../../config';
 
-const PAGE_TITLE = 'Learner Credit';
+const PAGE_TITLE = 'Learner Credit Management';
 
 const MultipleBudgetsPage = ({
   enterpriseUUID,
@@ -63,12 +64,14 @@ const MultipleBudgetsPage = ({
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <MultipleBudgetsPicker
-        offers={offers}
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-        enableLearnerPortal={enableLearnerPortal}
-      />
+      <Container className="py-3" fluid>
+        <MultipleBudgetsPicker
+          offers={offers}
+          enterpriseUUID={enterpriseUUID}
+          enterpriseSlug={enterpriseSlug}
+          enableLearnerPortal={enableLearnerPortal}
+        />
+      </Container>
     </>
   );
 };

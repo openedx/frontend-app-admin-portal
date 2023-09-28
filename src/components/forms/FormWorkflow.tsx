@@ -53,6 +53,8 @@ export type FormWorkflowStep<FormData> = {
     errHandler: FormWorkflowErrorHandler
   ) => Promise<boolean>;
   nextButtonConfig: (FormData: FormData) => FormWorkflowButtonConfig<FormData>;
+  showBackButton?: boolean;
+  showCancelButton?: boolean;
 };
 
 export type FormWorkflowConfig<FormData> = {
@@ -61,14 +63,16 @@ export type FormWorkflowConfig<FormData> = {
 };
 
 export type FormWorkflowProps<FormConfigData> = {
+  workflowTitle: string;
   formWorkflowConfig: FormWorkflowConfig<FormConfigData>;
-  onClickOut: (edited: boolean, msg?: string) => null;
+  onClickOut: (() => void) | ((edited?: boolean, msg?: string) => null);
   dispatch: Dispatch<FormActionArguments>;
   isStepperOpen: boolean;
 };
 
 // Modal container for multi-step forms
 const FormWorkflow = <FormConfigData extends unknown>({
+  workflowTitle,
   formWorkflowConfig,
   onClickOut,
   isStepperOpen,
@@ -150,6 +154,15 @@ const FormWorkflow = <FormConfigData extends unknown>({
     }
   };
 
+  const onBack = () => {
+    if (step?.index !== undefined) {
+      const previousStep: number = step.index - 1;
+      if (previousStep >= 0) {
+        dispatch(setStepAction({ step: formWorkflowConfig.steps[previousStep] }));
+      }
+    }
+  };
+
   const stepBody = (currentStep: FormWorkflowStep<FormConfigData>) => {
     if (currentStep) {
       const FormComponent: DynamicComponent = currentStep?.formComponent;
@@ -175,6 +188,10 @@ const FormWorkflow = <FormConfigData extends unknown>({
     }
   }, [formFields]);
 
+  // Show back button only if showBackButton === true
+  const showBackButton = (step?.index !== undefined) && (step.index > 0) && step.showBackButton;
+  // Show cancel button by default
+  const showCancelButton = step?.showCancelButton === undefined || step?.showCancelButton;
   return (
     <>
       <ConfigErrorModal
@@ -191,12 +208,13 @@ const FormWorkflow = <FormConfigData extends unknown>({
             await step?.saveChanges(formFields as FormConfigData, setFormError);
             onClickOut(true, SUBMIT_TOAST_MESSAGE);
           }
+          onClickOut(false, 'No changes saved');
         }}
       />
 
       {formWorkflowConfig.steps && (
         <FullscreenModal
-          title="New learning platform integration"
+          title={workflowTitle}
           isOpen={isStepperOpen}
           onClose={onCancel}
           className="stepper-modal"
@@ -206,7 +224,8 @@ const FormWorkflow = <FormConfigData extends unknown>({
                 Help Center: Integrations
               </HelpCenterButton>
               <ActionRow.Spacer />
-              <Button variant="tertiary" onClick={onCancel}>Cancel</Button>
+              {showCancelButton && <Button variant="tertiary" onClick={onCancel}>Cancel</Button>}
+              {showBackButton && <Button variant="tertiary" onClick={onBack}>Back</Button>}
               {nextButtonConfig && (
                 <Button onClick={onNext} disabled={awaitingAsyncAction}>
                   {nextButtonConfig.buttonText}

@@ -26,6 +26,7 @@ const initialState = {
   enableUniversalLink: false,
   enablePortalLearnerCreditManagementScreen: false,
   enableApiCredentialGeneration: false,
+  enterpriseFeatures: {},
 };
 
 const portalConfiguration = (state = initialState, action) => {
@@ -58,6 +59,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableUniversalLink: action.payload.data.enable_universal_link,
         enablePortalLearnerCreditManagementScreen: action.payload.data.enable_portal_learner_credit_management_screen,
         enableApiCredentialGeneration: action.payload.data.enable_generation_of_api_credentials,
+        enterpriseFeatures: action.payload.enterpriseFeatures,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
       return {
@@ -81,6 +83,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableUniversalLink: false,
         enablePortalLearnerCreditManagementScreen: false,
         enableApiCredentialGeneration: false,
+        enterpriseFeatures: {},
       };
     case CLEAR_PORTAL_CONFIGURATION:
       return {
@@ -102,6 +105,7 @@ const portalConfiguration = (state = initialState, action) => {
         enableUniversalLink: false,
         enablePortalLearnerCreditManagementScreen: false,
         enableApiCredentialGeneration: false,
+        enterpriseFeatures: {},
       };
     case UPDATE_PORTAL_CONFIGURATION:
       return {
