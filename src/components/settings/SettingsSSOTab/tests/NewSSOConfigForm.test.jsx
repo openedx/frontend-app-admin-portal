@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { Provider } from 'react-redux';
 import NewSSOConfigForm from '../NewSSOConfigForm';
@@ -12,6 +13,8 @@ import handleErrors from '../../utils';
 import {
   INVALID_ODATA_API_TIMEOUT_INTERVAL, INVALID_SAPSF_OAUTH_ROOT_URL, INVALID_API_ROOT_URL,
 } from '../../data/constants';
+import { features } from '../../../../config';
+import { getButtonElement } from '../../../test/testUtils';
 
 jest.mock('../data/actions');
 jest.mock('../../utils');
@@ -68,8 +71,20 @@ const contextValue = {
   setRefreshBool: jest.fn(),
 };
 
+const setupNewSSOStepper = () => {
+  features.AUTH0_SELF_SERVICE_INTEGRATION = true;
+  return render(
+    <IntlProvider locale="en">
+      <SSOConfigContext.Provider value={contextValue}>
+        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+      </SSOConfigContext.Provider>
+    </IntlProvider>,
+  );
+};
+
 describe('SAML Config Tab', () => {
   afterEach(() => {
+    features.AUTH0_SELF_SERVICE_INTEGRATION = false;
     jest.clearAllMocks();
   });
   test('canceling connect step', async () => {
@@ -305,6 +320,122 @@ describe('SAML Config Tab', () => {
         ),
       ).toBeInTheDocument();
       expect(screen.getByText('Next')).not.toBeDisabled();
+    }, []);
+  });
+  test('navigate through new sso workflow skeleton', async () => {
+    setupNewSSOStepper();
+    // Connect Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('New SSO integration')).toBeInTheDocument();
+    expect(screen.queryByText('Connect')).toBeInTheDocument();
+    expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
+    userEvent.click(getButtonElement('Next'));
+
+    // Configure Step
+    await waitFor(() => {
+      expect(getButtonElement('Configure')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('Enter integration details')).toBeInTheDocument();
+    userEvent.click(getButtonElement('Configure'));
+
+    // Authorize Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('Authorize edX as a Service Provider')).toBeInTheDocument();
+    userEvent.click(getButtonElement('Next'));
+
+    // Confirm and Test Step
+    await waitFor(() => {
+      expect(getButtonElement('Finish')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('Wait for SSO configuration confirmation')).toBeInTheDocument();
+  });
+  test('show correct metadata entry based on selection', async () => {
+    setupNewSSOStepper();
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+
+    const enterUrlText = 'Find the URL in your Identity Provider portal or website.';
+    const uploadXmlText = 'Drag and drop your file here or click to upload.';
+
+    // Verify metadata selectors are hidden initially
+    expect(screen.queryByText(enterUrlText)).not.toBeInTheDocument();
+    expect(screen.queryByText(uploadXmlText)).not.toBeInTheDocument();
+
+    // Verify metadata selectors appear with their respective selections
+    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await waitFor(() => {
+      expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText(uploadXmlText)).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByText('Upload Identity Provider Metadata XML file'));
+    await waitFor(() => {
+      expect(screen.queryByText(uploadXmlText)).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText(enterUrlText)).not.toBeInTheDocument();
+  });
+  test('back button shown on pages after first page', async () => {
+    const getBackButton = () => getButtonElement('Back');
+    setupNewSSOStepper();
+    // Connect Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByRole('button', { name: 'Back' })).not.toBeInTheDocument();
+    userEvent.click(getButtonElement('Next'));
+
+    // Configure Step
+    await waitFor(() => {
+      expect(getButtonElement('Configure')).toBeInTheDocument();
+    }, []);
+    expect(getBackButton()).toBeInTheDocument();
+    userEvent.click(getButtonElement('Configure'));
+
+    // Authorize Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    expect(getBackButton()).toBeInTheDocument();
+    userEvent.click(getButtonElement('Next'));
+
+    // Back from Confirm and Test Step
+    await waitFor(() => {
+      expect(getButtonElement('Finish')).toBeInTheDocument();
+    }, []);
+    userEvent.click(getBackButton());
+    await waitFor(() => {
+      expect(screen.queryByText('Authorize edX as a Service Provider')).toBeInTheDocument();
+    }, []);
+  });
+  test('cancel out of new SSO workflow', async () => {
+    setupNewSSOStepper();
+    // Connect Step
+    await waitFor(() => {
+      expect(getButtonElement('Cancel')).toBeInTheDocument();
+    }, []);
+    userEvent.click(getButtonElement('Cancel'));
+    await waitFor(() => {
+      expect(getButtonElement('Cancel')).toBeInTheDocument();
+    }, []);
+
+    await waitFor(() => {
+      const exitButton = getButtonElement('Exit without saving');
+      expect(exitButton).toBeInTheDocument();
+      userEvent.click(exitButton);
+    }, []);
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          'Connect to a SAML identity provider for single sign-on'
+          + ' to allow quick access to your organization\'s learning catalog.',
+        ),
+      ).toBeInTheDocument();
     }, []);
   });
   test('idp step fetches and displays existing idp data fields', async () => {

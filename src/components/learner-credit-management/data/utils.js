@@ -3,6 +3,7 @@ import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
 } from './constants';
+import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 /**
  * Transforms offer summary from API for display in the UI, guarding
  * against bad data (e.g., accounting for refunds).
@@ -12,6 +13,20 @@ import {
  */
 export const transformOfferSummary = (offerSummary) => {
   if (!offerSummary) { return null; }
+  const budgetsSummary = [];
+  if (offerSummary?.budgets) {
+    const budgets = offerSummary?.budgets;
+    for (let i = 0; i < budgets.length; i++) {
+      const redeemedFunds = budgets[i].amountOfPolicySpent && parseFloat(budgets[i].amountOfPolicySpent);
+      const remainingFunds = budgets[i].remainingBalance && parseFloat(budgets[i].remainingBalance);
+      const updatedBudgetDetail = {
+        redeemedFunds,
+        remainingFunds,
+        ...budgets[i],
+      };
+      budgetsSummary.push(updatedBudgetDetail);
+    }
+  }
 
   const totalFunds = offerSummary.maxDiscount && parseFloat(offerSummary.maxDiscount);
   let redeemedFunds = offerSummary.amountOfOfferSpent && parseFloat(offerSummary.amountOfOfferSpent);
@@ -38,7 +53,7 @@ export const transformOfferSummary = (offerSummary) => {
     percentUtilized = Math.min(percentUtilized, 1.0);
   }
   const { offerType } = offerSummary;
-
+  const { offerId } = offerSummary;
   return {
     totalFunds,
     redeemedFunds,
@@ -47,6 +62,8 @@ export const transformOfferSummary = (offerSummary) => {
     remainingFunds,
     percentUtilized,
     offerType,
+    offerId,
+    budgetsSummary,
   };
 };
 
@@ -68,6 +85,7 @@ export const transformUtilizationTableResults = results => results.map(result =>
   enrollmentDate: result.enrollmentDate,
   courseProductLine: result.courseProductLine,
   uuid: uuidv4(),
+  courseKey: result.courseKey,
 }));
 
 /**
@@ -89,4 +107,30 @@ export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
     variant = 'error'; // red
   }
   return variant;
+};
+
+//  Utility function to check if the ID is a UUID
+export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
+
+//  Utility function to check the budget status
+export const getBudgetStatus = (startDateStr, endDateStr) => {
+  const currentDate = new Date();
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  if (currentDate < startDate) {
+    return BUDGET_STATUSES.upcoming;
+  }
+  if (currentDate >= startDate && currentDate <= endDate) {
+    return BUDGET_STATUSES.active;
+  }
+  return BUDGET_STATUSES.expired;
+};
+
+export const formatPrice = (price) => {
+  const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+  return USDollar.format(Math.abs(price));
 };

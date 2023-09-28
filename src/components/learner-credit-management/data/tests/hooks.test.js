@@ -72,6 +72,9 @@ describe('useOfferSummary', () => {
       redeemedFundsOcm: NaN,
       remainingFunds: 4800,
       percentUtilized: 0.04,
+      offerId: 1,
+      budgetsSummary: [],
+      offerType: undefined,
     };
     expect(result.current).toEqual({
       offerSummary: expectedResult,
@@ -83,9 +86,11 @@ describe('useOfferSummary', () => {
 describe('useOfferRedemptions', () => {
   it('should fetch enrollment/redemptions metadata for enterprise offer', async () => {
     EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValueOnce({ data: mockOfferEnrollmentsResponse });
+    const budgetId = 'test-budget-id';
     const { result, waitForNextUpdate } = renderHook(() => useOfferRedemptions(
       TEST_ENTERPRISE_UUID,
       mockEnterpriseOffer.id,
+      budgetId,
     ));
 
     expect(result.current).toMatchObject({
@@ -105,8 +110,7 @@ describe('useOfferRedemptions', () => {
           { id: 'enrollmentDate', desc: true },
         ],
         filters: [
-          { id: 'userEmail', value: mockOfferEnrollments[0].user_email },
-          { id: 'courseTitle', value: mockOfferEnrollments[0].course_title },
+          { id: 'Enrollment Details', value: mockOfferEnrollments[0].user_email },
         ],
       });
     });
@@ -118,9 +122,9 @@ describe('useOfferRedemptions', () => {
       pageSize: 20,
       offerId: mockEnterpriseOffer.id,
       ordering: '-enrollment_date', // default sort order
-      search: mockOfferEnrollments[0].user_email,
-      searchCourse: mockOfferEnrollments[0].course_title,
+      searchAll: mockOfferEnrollments[0].user_email,
       ignoreNullCourseListPrice: true,
+      budgetId,
     };
     expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(
       TEST_ENTERPRISE_UUID,
@@ -135,5 +139,7 @@ describe('useOfferRedemptions', () => {
       isLoading: false,
       fetchOfferRedemptions: expect.any(Function),
     });
+
+    expect(expectedApiOptions.budgetId).toBe(budgetId);
   });
 });

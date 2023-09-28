@@ -31,7 +31,7 @@ ContactCustomerSupportButton.propTypes = {
 
 ContactCustomerSupportButton.defaultProps = {
   children: 'Contact support',
-  variant: 'btn-outline-primary',
+  variant: 'outline-primary',
 };
 
 export default ContactCustomerSupportButton;

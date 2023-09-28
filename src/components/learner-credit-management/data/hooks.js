@@ -63,21 +63,18 @@ const applySortByToOptions = (sortBy, options) => {
 };
 
 const applyFiltersToOptions = (filters, options) => {
-  const userSearchQuery = filters?.find(filter => filter.id === 'userEmail')?.value;
-  const courseTitleSearchQuery = filters?.find(filter => filter.id === 'courseTitle')?.value;
   const courseProductLineSearchQuery = filters?.find(filter => filter.id === 'courseProductLine')?.value;
-  if (userSearchQuery) {
-    Object.assign(options, { search: userSearchQuery });
-  }
-  if (courseTitleSearchQuery) {
-    Object.assign(options, { searchCourse: courseTitleSearchQuery });
-  }
+  const searchQuery = filters?.find(filter => filter.id.toLowerCase() === 'enrollment details')?.value;
+
   if (courseProductLineSearchQuery) {
     Object.assign(options, { courseProductLine: courseProductLineSearchQuery });
   }
+  if (searchQuery) {
+    Object.assign(options, { searchAll: searchQuery });
+  }
 };
 
-export const useOfferRedemptions = (enterpriseUUID, offerId) => {
+export const useOfferRedemptions = (enterpriseUUID, offerId = null, budgetId = null) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [offerRedemptions, setOfferRedemptions] = useState({
@@ -93,9 +90,14 @@ export const useOfferRedemptions = (enterpriseUUID, offerId) => {
         const options = {
           page: args.pageIndex + 1, // `DataTable` uses zero-indexed array
           pageSize: args.pageSize,
-          offerId,
           ignoreNullCourseListPrice: true,
         };
+        if (budgetId !== null) {
+          options.budgetId = budgetId;
+        }
+        if (offerId !== null) {
+          options.offerId = offerId;
+        }
         if (args.sortBy?.length > 0) {
           applySortByToOptions(args.sortBy, options);
         }
@@ -132,10 +134,10 @@ export const useOfferRedemptions = (enterpriseUUID, offerId) => {
         setIsLoading(false);
       }
     };
-    if (offerId) {
+    if (offerId || budgetId) {
       fetch();
     }
-  }, [enterpriseUUID, offerId, shouldTrackFetchEvents]);
+  }, [enterpriseUUID, offerId, budgetId, shouldTrackFetchEvents]);
 
   const debouncedFetchOfferRedemptions = useMemo(() => debounce(fetchOfferRedemptions, 300), [fetchOfferRedemptions]);
 

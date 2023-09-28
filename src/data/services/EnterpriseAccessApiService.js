@@ -7,11 +7,9 @@ class EnterpriseAccessApiService {
 
   static apiClient = getAuthenticatedHttpClient;
 
-  static getSubsidyRequestConfiguration({ enterpriseId, clearCacheEntry = false }) {
+  static getSubsidyRequestConfiguration({ enterpriseId }) {
     const url = `${EnterpriseAccessApiService.baseUrl}/customer-configurations/${enterpriseId}/`;
-    return EnterpriseAccessApiService.apiClient({
-      useCache: configuration.USE_API_CACHE,
-    }).get(url, { clearCacheEntry });
+    return EnterpriseAccessApiService.apiClient().get(url);
   }
 
   static createSubsidyRequestConfiguration({

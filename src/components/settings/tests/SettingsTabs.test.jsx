@@ -20,6 +20,7 @@ import '@testing-library/jest-dom/extend-expect';
 const ACCESS_MOCK_CONTENT = 'access';
 const LMS_MOCK_CONTENT = 'lms';
 const SSO_MOCK_CONTENT = 'sso';
+const API_CREDENTIALS_CONTENT = 'credentials';
 
 jest.mock('../../../data/services/LmsApiService', () => ({
   updateEnterpriseCustomerBranding: jest.fn(),
@@ -43,6 +44,13 @@ jest.mock(
   '../SettingsSSOTab/',
   () => function SettingsSSOTab() {
     return <div>{SSO_MOCK_CONTENT}</div>;
+  },
+);
+
+jest.mock(
+  '../SettingsApiCredentialsTab/',
+  () => function SettingsAccessTab() {
+    return <div>{API_CREDENTIALS_CONTENT}</div>;
   },
 );
 
@@ -115,5 +123,11 @@ describe('<SettingsTabs />', () => {
     const accessTab = screen.getByText(SETTINGS_TAB_LABELS.access);
     await act(async () => { userEvent.click(accessTab); });
     expect(screen.queryByText(ACCESS_MOCK_CONTENT)).toBeTruthy();
+  });
+
+  test('Api credentials tab is not rendered if FEATURE_API_CREDENTIALS_TAB = false', () => {
+    features.FEATURE_API_CREDENTIALS_TAB = false;
+    render(<SettingsTabsWithRouter />);
+    expect(screen.queryByText(API_CREDENTIALS_CONTENT)).not.toBeInTheDocument();
   });
 });

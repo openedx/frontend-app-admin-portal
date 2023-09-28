@@ -10,6 +10,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
+import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 
 export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen, enterpriseId }) => {
   const [offers, setOffers] = useState([]);
@@ -25,42 +26,40 @@ export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen,
       try {
         const [enterpriseSubsidyResponse, ecommerceApiResponse] = await Promise.all([
           SubsidyApiService.getSubsidyByCustomerUUID(enterpriseId, { subsidyType: 'learner_credit' }),
-          EcommerceApiService.fetchEnterpriseOffers({
-            isCurrent: true,
-          }),
+          EcommerceApiService.fetchEnterpriseOffers(),
         ]);
 
-        // If there are no subsidies in enterprise, fall back to the e-commerce API.
-        let { results } = camelCaseObject(enterpriseSubsidyResponse.data);
-        let source = 'subsidyApi';
+        // We have to consider both type of offers active and inactive.
 
-        if (results.length === 0) {
-          results = camelCaseObject(ecommerceApiResponse.data.results);
-          source = 'ecommerceApi';
-        }
-        let activeSubsidyFound = false;
-        if (results.length !== 0) {
-          let subsidy = results[0];
-          const offerData = [];
-          let activeSubsidyData = {};
-          for (let i = 0; i < results.length; i++) {
-            subsidy = results[i];
-            activeSubsidyFound = source === 'ecommerceApi'
-              ? subsidy.isCurrent
-              : subsidy.isActive;
-            if (activeSubsidyFound === true) {
-              activeSubsidyData = {
-                id: subsidy.uuid || subsidy.id,
-                name: subsidy.title || subsidy.displayName,
-                start: subsidy.activeDatetime || subsidy.startDatetime,
-                end: subsidy.expirationDatetime || subsidy.endDatetime,
-                isCurrent: activeSubsidyFound,
-              };
-              offerData.push(activeSubsidyData);
-              setCanManageLearnerCredit(true);
-            }
-          }
-          setOffers(offerData);
+        const enterpriseSubsidyResults = camelCaseObject(enterpriseSubsidyResponse.data).results;
+        const ecommerceOffersResults = camelCaseObject(ecommerceApiResponse.data.results);
+
+        const offerData = [];
+
+        enterpriseSubsidyResults.forEach((result) => {
+          offerData.push({
+            source: BUDGET_TYPES.subsidy,
+            id: result.uuid,
+            name: result.title,
+            start: result.activeDatetime,
+            end: result.expirationDatetime,
+            isCurrent: result.isActive,
+          });
+        });
+
+        ecommerceOffersResults.forEach((result) => {
+          offerData.push({
+            source: BUDGET_TYPES.ecommerce,
+            id: (result.id).toString(),
+            name: result.displayName,
+            start: result.startDatetime,
+            end: result.endDatetime,
+            isCurrent: result.isCurrent,
+          });
+        });
+        setOffers(offerData);
+        if (offerData.length > 0) {
+          setCanManageLearnerCredit(true);
         }
       } catch (error) {
         logError(error);

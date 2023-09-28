@@ -3,7 +3,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 export function renderWithRouter(
   ui,
@@ -30,3 +30,5 @@ export function findElementWithText(container, type, text) {
   const elements = container.querySelectorAll(type);
   return [...elements].find((elem) => elem.innerHTML.includes(text));
 }
+
+export const getButtonElement = (buttonText) => screen.getByRole('button', { name: buttonText });

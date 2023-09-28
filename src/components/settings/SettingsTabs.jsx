@@ -23,6 +23,7 @@ import SettingsAccessTab from './SettingsAccessTab';
 import { SettingsAppearanceTab } from './SettingsAppearanceTab';
 import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
+import SettingsApiCredentialsTab from './SettingsApiCredentialsTab';
 import { features } from '../../config';
 import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
 
@@ -34,12 +35,17 @@ const SettingsTabs = ({
   enableLmsConfigurationsScreen,
   enableSamlConfigurationScreen,
   enableUniversalLink,
+  enableApiCredentialGeneration,
   identityProvider,
   updatePortalConfiguration,
   enterpriseBranding,
 }) => {
   const [hasSSOConfig, setHasSSOConfig] = useState(false);
-  const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB, SETTINGS_PAGE_APPEARANCE_TAB } = features;
+  const {
+    FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB,
+    SETTINGS_PAGE_APPEARANCE_TAB,
+    FEATURE_API_CREDENTIALS_TAB,
+  } = features;
 
   const tab = useCurrentSettingsTab();
 
@@ -48,21 +54,6 @@ const SettingsTabs = ({
 
   const tabArray = useMemo(() => {
     const initialTabs = [];
-    if (SETTINGS_PAGE_APPEARANCE_TAB) {
-      initialTabs.push(
-        <Tab
-          key={SETTINGS_TABS_VALUES.appearance}
-          eventKey={SETTINGS_TABS_VALUES.appearance}
-          title={SETTINGS_TAB_LABELS.appearance}
-        >
-          <SettingsAppearanceTab
-            enterpriseId={enterpriseId}
-            enterpriseBranding={enterpriseBranding}
-            updatePortalConfiguration={updatePortalConfiguration}
-          />
-        </Tab>,
-      );
-    }
     if (enableLearnerPortal) {
       initialTabs.push(
         <Tab
@@ -113,15 +104,46 @@ const SettingsTabs = ({
         </Tab>,
       );
     }
+    if (SETTINGS_PAGE_APPEARANCE_TAB) {
+      initialTabs.push(
+        <Tab
+          key={SETTINGS_TABS_VALUES.appearance}
+          eventKey={SETTINGS_TABS_VALUES.appearance}
+          title={SETTINGS_TAB_LABELS.appearance}
+        >
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={enterpriseBranding}
+            updatePortalConfiguration={updatePortalConfiguration}
+          />
+        </Tab>,
+      );
+    }
+    if (FEATURE_API_CREDENTIALS_TAB && enableApiCredentialGeneration) {
+      initialTabs.push(
+        <Tab
+          key={SETTINGS_TABS_VALUES.api_credentials}
+          eventKey={SETTINGS_TABS_VALUES.api_credentials}
+          title={SETTINGS_TAB_LABELS.api_credentials}
+        >
+          <SettingsApiCredentialsTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+          />
+        </Tab>,
+      );
+    }
     return initialTabs;
   }, [
     FEATURE_SSO_SETTINGS_TAB,
+    FEATURE_API_CREDENTIALS_TAB,
     SETTINGS_PAGE_APPEARANCE_TAB,
     SETTINGS_PAGE_LMS_TAB,
     enableIntegratedCustomerLearnerPortalSearch,
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableApiCredentialGeneration,
     enableUniversalLink,
     enterpriseId,
     enterpriseSlug,
@@ -168,6 +190,7 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableApiCredentialGeneration,
     enableUniversalLink,
     identityProvider,
     enterpriseBranding,
@@ -180,6 +203,7 @@ const mapStateToProps = state => {
     enableLearnerPortal,
     enableLmsConfigurationsScreen,
     enableSamlConfigurationScreen,
+    enableApiCredentialGeneration,
     enableUniversalLink,
     identityProvider,
     enterpriseBranding,
@@ -202,6 +226,7 @@ SettingsTabs.propTypes = {
   enableLearnerPortal: PropTypes.bool.isRequired,
   enableLmsConfigurationsScreen: PropTypes.bool.isRequired,
   enableSamlConfigurationScreen: PropTypes.bool.isRequired,
+  enableApiCredentialGeneration: PropTypes.bool.isRequired,
   enableUniversalLink: PropTypes.bool.isRequired,
   identityProvider: PropTypes.string,
   updatePortalConfiguration: PropTypes.func.isRequired,

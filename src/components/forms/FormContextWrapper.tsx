@@ -8,6 +8,7 @@ import {
 type FormWrapperProps<FormConfigData> = FormWorkflowProps<FormConfigData> & { formData: FormConfigData };
 
 const FormContextWrapper = <FormConfigData extends unknown>({
+  workflowTitle,
   formWorkflowConfig,
   onClickOut,
   formData,
@@ -32,7 +33,7 @@ const FormContextWrapper = <FormConfigData extends unknown>({
     >
       <FormWorkflow
         {...{
-          formWorkflowConfig, onClickOut, isStepperOpen, dispatch,
+          workflowTitle, formWorkflowConfig, onClickOut, isStepperOpen, dispatch,
         }}
       />
     </FormContextProvider>

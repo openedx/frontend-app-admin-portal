@@ -6,6 +6,7 @@ import {
   Col,
   Card,
   Hyperlink,
+  Container,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -17,11 +18,12 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { configuration } from '../../config';
 
-const PAGE_TITLE = 'Learner Credit';
+const PAGE_TITLE = 'Learner Credit Management';
 
 const MultipleBudgetsPage = ({
   enterpriseUUID,
   enterpriseSlug,
+  enableLearnerPortal,
 }) => {
   const { offers, isLoading } = useContext(EnterpriseSubsidiesContext);
 
@@ -62,11 +64,14 @@ const MultipleBudgetsPage = ({
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <MultipleBudgetsPicker
-        offers={offers}
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-      />
+      <Container className="py-3" fluid>
+        <MultipleBudgetsPicker
+          offers={offers}
+          enterpriseUUID={enterpriseUUID}
+          enterpriseSlug={enterpriseSlug}
+          enableLearnerPortal={enableLearnerPortal}
+        />
+      </Container>
     </>
   );
 };
@@ -74,11 +79,13 @@ const MultipleBudgetsPage = ({
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
 });
 
 MultipleBudgetsPage.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(MultipleBudgetsPage);
