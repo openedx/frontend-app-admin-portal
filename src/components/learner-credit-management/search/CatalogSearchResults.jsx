@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
-import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalog-search';
+import { SearchPagination, SearchContext, useNbHitsFromSearchResults, setRefinementAction } from '@edx/frontend-enterprise-catalog-search';
 import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
 import {
   Alert, CardView, DataTable, Skeleton, TextFilter
@@ -15,6 +15,11 @@ const ERROR_MESSAGE = 'An error occurred while retrieving data';
 const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 export const BaseCatalogSearchResults = ({
+  searchResults,
+  searchState,
+  // algolia recommends this prop instead of searching
+  isSearchStalled,
+  paginationComponent: PaginationComponent,
   error,
   isSearchStalled,
   paginationComponent: SearchPagination,
@@ -22,8 +27,6 @@ export const BaseCatalogSearchResults = ({
   searchState,
   setNoContent,
 }) => {
-<<<<<<< HEAD
-=======
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
   const [isProgramType, setIsProgramType] = useState();
   const [isCourseType, setIsCourseType] = useState();
@@ -124,7 +127,6 @@ export const BaseCatalogSearchResults = ({
 
   // NOTE: Cell is not explicity supported in DataTable, which leads to lint errors regarding {row}. However, we needed
   // to use the accessor functionality instead of just adding in additionalColumns like the Paragon documentation.
->>>>>>> 4d0484f0 (feat: search results cards)
   const courseColumns = useMemo(
     () => [
       {
@@ -151,11 +153,10 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  
-  // TODO: handle onClick
+  console.log(tableData)
   const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
   const { refinements } = useContext(SearchContext);
-
+  // const nbHits = useNbHitsFromSearchResults(inititalSearchResults);
   const page = refinements.page || (searchState ? searchState.page : 0);
 
   useEffect(() => {
@@ -181,41 +182,37 @@ export const BaseCatalogSearchResults = ({
       </Alert>
     );
   }
-
+  console.log(searchResults)
   return (
-    <DataTable
-      columns={courseColumns}
-      data={tableData}
-      defaultColumnValues={{ Filter: TextFilter }}
-      initialState={{
-        pageSize: 15,
-        pageIndex: 0,
-      }}
-      isPaginated
-      isSortable
-      itemCount={searchResults?.nbHits || 0}
-      manualFilters
-      manualPagination
-      manualSortBy
-      pageCount={searchResults?.nbPages || 0}
-      pageSize={searchResults?.hitsPerPage || 0}
-    >
-      <DataTable.TableControlBar />
-      <CardView
-        columnSizes={{
-          xs: 12,
-          sm: 12,
-          md: 12,
-          lg: 12,
-          xl: 12,
+    <div className="mb-5">
+      <DataTable
+        columns={courseColumns}
+        data={tableData}
+        defaultColumnValues={{ Filter: TextFilter }}
+        initialState={{
+          pageSize: 15,
+          pageIndex: 0,
         }}
-        CardComponent={(props) => renderCardComponent(props)}
-      />
-      <DataTable.EmptyTable content="No results found" />
-      <DataTable.TableFooter className="justify-content-center">
-        <SearchPagination defaultRefinement={page} />
-      </DataTable.TableFooter>
-    </DataTable>
+        isPaginated
+        isSortable
+        itemCount={searchResults?.nbHits || 0}
+        manualFilters
+        manualPagination
+        manualSortBy
+        pageCount={searchResults?.nbPages || 0}
+        pageSize={searchResults?.hitsPerPage || 0}
+      >
+        <DataTable.TableControlBar />
+        <CardView
+          columnSizes={{ xs: 12 }}
+          CardComponent={(props) => renderCardComponent(props)}
+        />
+        <DataTable.EmptyTable content="No results found" />
+        <DataTable.TableFooter className="justify-content-center">
+          <PaginationComponent defaultRefinement={page}/>
+        </DataTable.TableFooter>
+      </DataTable>
+    </div>
   );
 };
 

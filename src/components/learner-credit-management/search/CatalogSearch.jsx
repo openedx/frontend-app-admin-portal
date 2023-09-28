@@ -10,9 +10,6 @@ import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
 
 const CatalogSearch = () => {
-<<<<<<< HEAD
-  const { budgetId } = useParams();
-=======
   function convertLearningTypesToFilters(types) {
     return types.reduce((learningFacets, type) => {
       if (type === EXEC_ED_TITLE) {
@@ -30,10 +27,16 @@ const CatalogSearch = () => {
       enterprise_catalog_query_titles: enterpriseCatalogQueryTitles,
     },
   } = useContext(SearchContext);
->>>>>>> 4d0484f0 (feat: search results cards)
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
 
-  const searchFilters = `enterprise_catalog_query_uuids:${budgetId}`;
+  const config = getConfig();
+  const courseIndex = useMemo(() => {
+    const cIndex = searchClient.initIndex(config.ALGOLIA_INDEX_NAME);
+    return cIndex;
+  }, [config.ALGOLIA_INDEX_NAME, searchClient]);
+
+  // const searchFilters = `enterprise_catalog_query_uuids:${offerId}`;
+  // + `OR enterprise_catalog_query_uuids:${offerSummary?.budgets.the_catalog_uuid}`;
 
   return (
     <section>

@@ -18,7 +18,15 @@ import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
-const BudgetDetailPage = ({ enterpriseSlug }) => {
+const BudgetDetailPage = ({
+  enterpriseUUID,
+  enterpriseSlug,
+  enableLearnerPortal,
+}) => {
+  // const { budgetId } = useParams();
+  // const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
+  // const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
+
   const { isLoading } = useContext(EnterpriseSubsidiesContext);
   if (isLoading) {
     return <LoadingMessage className="offers" />;
