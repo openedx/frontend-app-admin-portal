@@ -99,7 +99,7 @@ const CourseCard = ({
         </div>
         <Card.Section className="section-2">
           <p className="lead font-weight-bold mb-0">{priceText}</p>
-          <p className="x-small mb-5.5">{PRICE.subText}</p>
+          <p className="x-small mb-6">{PRICE.subText}</p>
           <Card.Footer orientation="horizontal" className="footer">
             <Button onClick={handleViewCourse} variant="outline-primary">{BUTTON_ACTION.viewCourse}<Icon className="ml-1" src={Launch} /></Button>
             <Button onClick={handleAssign}>{BUTTON_ACTION.assign}</Button>
