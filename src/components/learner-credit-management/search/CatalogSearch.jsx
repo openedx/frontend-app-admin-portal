@@ -19,7 +19,7 @@ const CatalogSearch = ({ offerId }) => {
     return cIndex;
   }, [config.ALGOLIA_INDEX_NAME, searchClient]);
 
-  const searchFilters = `enterprise_catalog_query_uuids:${offerId}`;
+  // const searchFilters = `enterprise_catalog_query_uuids:${offerId}`;
   // + `OR enterprise_catalog_query_uuids:${offerSummary?.budgets.the_catalog_uuid}`;
 
   return (
@@ -33,7 +33,7 @@ const CatalogSearch = ({ offerId }) => {
       <InstantSearch indexName={configuration.ALGOLIA.INDEX_NAME} searchClient={searchClient}>
         <div className="enterprise-catalogs-header">
           <Configure
-            filters={searchFilters}
+            // filters={searchFilters}
             facetingAfterDistinct
           />
           <SearchHeader

@@ -26,9 +26,9 @@ const BudgetDetailPage = ({
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
-  const { budgetId } = useParams();
-  const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
-  const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
+  // const { budgetId } = useParams();
+  // const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
+  // const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
 
   const { isLoading } = useContext(EnterpriseSubsidiesContext);
   const {
