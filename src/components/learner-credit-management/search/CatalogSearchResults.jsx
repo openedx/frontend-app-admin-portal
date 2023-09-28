@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
-import { SearchPagination } from '@edx/frontend-enterprise-catalog-search';
+import { SearchPagination, SearchContext, useNbHitsFromSearchResults, setRefinementAction } from '@edx/frontend-enterprise-catalog-search';
 import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
 import {
-  Alert, CardView, DataTable, Skeleton,
+  Alert, CardView, DataTable, Skeleton, TextFilter
 } from '@edx/paragon';
 
 import CourseCard from '../cards/CourseCard';
@@ -27,8 +27,10 @@ export const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 export const BaseCatalogSearchResults = ({
   searchResults,
+  searchState,
   // algolia recommends this prop instead of searching
   isSearchStalled,
+  paginationComponent: PaginationComponent,
   error,
   setNoContent,
 }) => {
@@ -58,8 +60,11 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-
+  console.log(tableData)
   const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
+  const { refinements } = useContext(SearchContext);
+  // const nbHits = useNbHitsFromSearchResults(inititalSearchResults);
+  const page = refinements.page || (searchState ? searchState.page : 0);
 
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
@@ -84,16 +89,24 @@ export const BaseCatalogSearchResults = ({
       </Alert>
     );
   }
-
+  console.log(searchResults)
   return (
     <div className="mb-5">
       <DataTable
-        isPaginated
-        manualPagination
         columns={courseColumns}
         data={tableData}
+        defaultColumnValues={{ Filter: TextFilter }}
+        initialState={{
+          pageSize: 15,
+          pageIndex: 0,
+        }}
+        isPaginated
+        isSortable
         itemCount={searchResults?.nbHits || 0}
-        pageCount={searchResults?.nbPages || 1}
+        manualFilters
+        manualPagination
+        manualSortBy
+        pageCount={searchResults?.nbPages || 0}
         pageSize={searchResults?.hitsPerPage || 0}
       >
         <DataTable.TableControlBar />
@@ -102,7 +115,9 @@ export const BaseCatalogSearchResults = ({
           CardComponent={(props) => renderCardComponent(props)}
         />
         <DataTable.EmptyTable content="No results found" />
-        <DataTable.TableFooter />
+        <DataTable.TableFooter className="justify-content-center">
+          <PaginationComponent defaultRefinement={page}/>
+        </DataTable.TableFooter>
       </DataTable>
     </div>
   );
