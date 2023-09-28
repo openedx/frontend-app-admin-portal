@@ -264,13 +264,18 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
     userEvent.paste(screen.getByLabelText('Canvas Base URL'), 'https://www.test4.com');
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-    userEvent.click(authorizeButton);
-    setTimeout(() => {
-      expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
+    act(async () => {
+      userEvent.click(authorizeButton);
+      await waitFor(() => {
+        expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
+      });
+
       const activateButton = screen.getByRole('button', { name: 'Activate' });
       userEvent.click(activateButton);
-      expect(screen.queryByText('Learning platform integration successfully submitted.')).toBeTruthy();
+      await waitFor(() => {
+        expect(screen.queryByText('Learning platform integration successfully submitted.')).toBeTruthy();
+      });
       expect(mockCanvasUpdate).toHaveBeenCalledWith({ active: true, enterprise_customer: enterpriseId }, 1);
-    }, 0);
+    });
   });
 });
