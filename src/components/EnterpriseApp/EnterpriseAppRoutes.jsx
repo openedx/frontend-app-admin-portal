@@ -98,8 +98,9 @@ const EnterpriseAppRoutes = ({
       />
 
       {canManageLearnerCredit && (
-        <LearnerCreditManagementRoutes
-          baseUrl={baseUrl}
+        <Route
+          path={`${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`}
+          component={LearnerCreditManagementRoutes}
         />
       )}
 
@@ -110,7 +111,7 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
-      <Route path="" component={NotFoundPage} />
+      <Route path="*" component={NotFoundPage} />
     </Switch>
   );
 };
