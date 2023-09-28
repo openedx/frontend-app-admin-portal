@@ -53,10 +53,10 @@ const CourseCard = ({
 
   const altText = `${title} course image`;
 
-  const execEdRegistrationInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
-  ${REGISTRATION.text} ${formatDate(normalized_metadata.enroll_by_date)}`;
+  const execEdRegistrationInfo = `Starts ${formatDate(normalized_metadata?.start_date)} •
+  ${REGISTRATION.text} ${formatDate(normalized_metadata?.enroll_by_date)}`;
 
-  const courseRegistrationInfo = `${availability} • ${REGISTRATION.text} ${formatDate(normalized_metadata.enroll_by_date)}`;
+  const courseRegistrationInfo = `${availability} • ${REGISTRATION.text} ${formatDate(normalized_metadata?.enroll_by_date)}`;
   const isExecEd = course_type === EXEC_COURSE_TYPE;
 
   // TODO: Implementations to follow
