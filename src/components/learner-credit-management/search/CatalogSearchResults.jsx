@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
-import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalog-search';
+import { SearchPagination, SearchContext, useNbHitsFromSearchResults, setRefinementAction } from '@edx/frontend-enterprise-catalog-search';
 import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
 import {
   Alert, CardView, DataTable, Skeleton, TextFilter
@@ -15,114 +15,16 @@ const ERROR_MESSAGE = 'An error occurred while retrieving data';
 const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 export const BaseCatalogSearchResults = ({
-  error,
+  searchResults,
+  searchState,
+  // algolia recommends this prop instead of searching
   isSearchStalled,
+  paginationComponent: PaginationComponent,
   paginationComponent: SearchPagination,
   searchResults,
   searchState,
   setNoContent,
 }) => {
-  const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-  const [isProgramType, setIsProgramType] = useState();
-  const [isCourseType, setIsCourseType] = useState();
-  const [isExecEdType, setIsExecEdType] = useState();
-
-  useEffect(() => {
-    setIsProgramType(contentType === CONTENT_TYPE_PROGRAM);
-    setIsCourseType(contentType === CONTENT_TYPE_COURSE);
-    setIsExecEdType(contentType === EXEC_ED_TITLE);
-  }, [contentType]);
-
-  const TABLE_HEADERS = useMemo(
-    () => ({
-      courseName: intl.formatMessage(
-        messages['catalogSearchResults.table.courseName'],
-      ),
-      partner: intl.formatMessage(
-        messages['catalogSearchResults.table.partner'],
-      ),
-      price: intl.formatMessage(messages['catalogSearchResults.table.price']),
-      availability: intl.formatMessage(
-        messages['catalogSearchResults.table.availability'],
-      ),
-      catalogs: intl.formatMessage(
-        messages['catalogSearchResults.table.catalogs'],
-      ),
-      programName: intl.formatMessage(
-        messages['catalogSearchResults.table.programName'],
-      ),
-      numCourses: intl.formatMessage(
-        messages['catalogSearchResults.table.numCourses'],
-      ),
-      programType: intl.formatMessage(
-        messages['catalogSearchResults.table.programType'],
-      ),
-    }),
-    [intl],
-  );
-
-  const { refinements, dispatch } = useContext(SearchContext);
-  const nbHits = useNbHitsFromSearchResults(searchResults);
-  const linkText = `See all (${nbHits}) >`;
-
-  const [setSelectedCourse] = useSelectedCourse();
-
-  const [cardView, setCardView] = useState(true);
-
-  const cardClicked = useCallback(
-    (card) => {
-      if (isProgramType) {
-        setSelectedCourse(mapAlgoliaObjectToProgram(card));
-      } else if (isExecEdType) {
-        setSelectedCourse(mapAlgoliaObjectToExecEd(card, intl, messages));
-      } else {
-        setSelectedCourse(mapAlgoliaObjectToCourse(card, intl, messages));
-      }
-    },
-    [intl, isProgramType, setSelectedCourse, isExecEdType],
-  );
-
-  const refinementClick = () => {
-    if (isCourseType) {
-      dispatch(
-        setRefinementAction(LEARNING_TYPE_REFINEMENT, [CONTENT_TYPE_COURSE]),
-      );
-    } else if (isExecEdType) {
-      dispatch(
-        setRefinementAction(LEARNING_TYPE_REFINEMENT, [
-          EXEC_ED_TITLE,
-        ]),
-      );
-    } else {
-      dispatch(
-        setRefinementAction(LEARNING_TYPE_REFINEMENT, [CONTENT_TYPE_PROGRAM]),
-      );
-    }
-  };
-
-  const renderCardComponent = (props) => {
-    if (contentType === CONTENT_TYPE_COURSE) {
-      return <CourseCard {...props} learningType={contentType} onClick={cardClicked} />;
-    }
-    if (contentType === EXEC_ED_TITLE) {
-      return <CourseCard {...props} learningType={contentType} onClick={cardClicked} />;
-    }
-    return null;
-    // return <ProgramCard {...props} onClick={cardClicked} />;
-  };
-
-  const availabilityColumn = {
-    id: 'availability-column',
-    Header: TABLE_HEADERS.availability,
-    accessor: 'advertised_course_run',
-    // Cell: ({ row }) => formatDate(row.values.advertised_course_run),
-    Cell: ({ row }) => row.values.advertised_course_run,
-
-  };
-
-  // NOTE: Cell is not explicity supported in DataTable, which leads to lint errors regarding {row}. However, we needed
-  // to use the accessor functionality instead of just adding in additionalColumns like the Paragon documentation.
-  const courseColumns = useMemo(
     () => [
       {
         Header: 'Course name',
@@ -148,11 +50,10 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  
-  // TODO: handle onClick
+  console.log(tableData)
   const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
   const { refinements } = useContext(SearchContext);
-
+  // const nbHits = useNbHitsFromSearchResults(inititalSearchResults);
   const page = refinements.page || (searchState ? searchState.page : 0);
 
   useEffect(() => {
@@ -178,41 +79,37 @@ export const BaseCatalogSearchResults = ({
       </Alert>
     );
   }
-
+  console.log(searchResults)
   return (
-    <DataTable
-      columns={courseColumns}
-      data={tableData}
-      defaultColumnValues={{ Filter: TextFilter }}
-      initialState={{
-        pageSize: 15,
-        pageIndex: 0,
-      }}
-      isPaginated
-      isSortable
-      itemCount={searchResults?.nbHits || 0}
-      manualFilters
-      manualPagination
-      manualSortBy
-      pageCount={searchResults?.nbPages || 0}
-      pageSize={searchResults?.hitsPerPage || 0}
-    >
-      <DataTable.TableControlBar />
-      <CardView
-        columnSizes={{
-          xs: 12,
-          sm: 12,
-          md: 12,
-          lg: 12,
-          xl: 12,
+    <div className="mb-5">
+      <DataTable
+        columns={courseColumns}
+        data={tableData}
+        defaultColumnValues={{ Filter: TextFilter }}
+        initialState={{
+          pageSize: 15,
+          pageIndex: 0,
         }}
-        CardComponent={(props) => renderCardComponent(props)}
-      />
-      <DataTable.EmptyTable content="No results found" />
-      <DataTable.TableFooter className="justify-content-center">
-        <SearchPagination defaultRefinement={page} />
-      </DataTable.TableFooter>
-    </DataTable>
+        isPaginated
+        isSortable
+        itemCount={searchResults?.nbHits || 0}
+        manualFilters
+        manualPagination
+        manualSortBy
+        pageCount={searchResults?.nbPages || 0}
+        pageSize={searchResults?.hitsPerPage || 0}
+      >
+        <DataTable.TableControlBar />
+        <CardView
+          columnSizes={{ xs: 12 }}
+          CardComponent={(props) => renderCardComponent(props)}
+        />
+        <DataTable.EmptyTable content="No results found" />
+        <DataTable.TableFooter className="justify-content-center">
+          <PaginationComponent defaultRefinement={page}/>
+        </DataTable.TableFooter>
+      </DataTable>
+    </div>
   );
 };
 
