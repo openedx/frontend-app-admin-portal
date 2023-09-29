@@ -184,7 +184,7 @@ const BudgetCard = ({
             indexName={configuration.ALGOLIA.INDEX_NAME}
             searchClient={searchClient}
           >
-            <CatalogSearch offerId={offer?.id} />
+            <CatalogSearch offerId={offer?.id} displayName={displayName}/>
           </InstantSearch>
         </SearchData>
       </Tab>

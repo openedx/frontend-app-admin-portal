@@ -10,7 +10,7 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
 
-const CatalogSearch = ({ offerId }) => {
+const CatalogSearch = ({ offerId, displayName }) => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
 
   const config = getConfig();
@@ -26,7 +26,7 @@ const CatalogSearch = ({ offerId }) => {
     <section>
       <FormattedMessage
         id="catalogs.enterpriseCatalogs.header"
-        defaultMessage="Executive Education catalog"
+        defaultMessage={displayName}
         description="Search dialogue."
         tagName="h2"
       />
