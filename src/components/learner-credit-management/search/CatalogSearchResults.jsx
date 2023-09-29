@@ -15,12 +15,11 @@ const ERROR_MESSAGE = 'An error occurred while retrieving data';
 const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 export const BaseCatalogSearchResults = ({
-  searchResults,
-  searchState,
-  // algolia recommends this prop instead of searching
+  error,
   isSearchStalled,
   paginationComponent: SearchPagination,
-  error,
+  searchResults,
+  searchState,
   setNoContent,
 }) => {
     () => [
@@ -48,7 +47,8 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  console.log(tableData)
+  
+  // TODO: handle onClick
   const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
   const { refinements } = useContext(SearchContext);
 
