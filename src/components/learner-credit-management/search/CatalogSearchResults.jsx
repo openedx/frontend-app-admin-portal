@@ -15,11 +15,6 @@ const ERROR_MESSAGE = 'An error occurred while retrieving data';
 const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 export const BaseCatalogSearchResults = ({
-  searchResults,
-  searchState,
-  // algolia recommends this prop instead of searching
-  isSearchStalled,
-  paginationComponent: SearchPagination,
   error,
   isSearchStalled,
   paginationComponent: SearchPagination,
@@ -153,7 +148,8 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  console.log(tableData)
+  
+  // TODO: handle onClick
   const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
   const { refinements } = useContext(SearchContext);
 
@@ -225,8 +221,9 @@ BaseCatalogSearchResults.defaultProps = {
   error: null,
   paginationComponent: SearchPagination,
   preview: false,
+  row: null,
+  searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
   setNoContent: () => { },
-  courseType: null,
 };
 
 BaseCatalogSearchResults.propTypes = {
