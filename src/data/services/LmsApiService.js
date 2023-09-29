@@ -46,7 +46,7 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseSsoOrchestrationFetchUrl);
   }
 
-  static listEnterpriseSsoOrchestration(enterpriseCustomerUuid) {
+  static listEnterpriseSsoOrchestrationRecords(enterpriseCustomerUuid) {
     const enterpriseSsoOrchestrationListUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}`;
     if (enterpriseCustomerUuid) {
       return LmsApiService.apiClient().get(`${enterpriseSsoOrchestrationListUrl}?enterprise_customer=${enterpriseCustomerUuid}`);
