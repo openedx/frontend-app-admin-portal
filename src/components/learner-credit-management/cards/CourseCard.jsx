@@ -2,7 +2,6 @@
 // variables taken from algolia not in camelcase
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Badge,
   Button,
@@ -18,7 +17,7 @@ import CARD_TEXT from '../constants';
 import defaultCardHeader from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
-  onClick, original, learningType,
+ learningType, onClick, original,
 }) => {
   const {
     availability,
@@ -125,7 +124,6 @@ CourseCard.propTypes = {
     entitlements: PropTypes.arrayOf(PropTypes.shape()),
     first_enrollable_paid_seat_price: PropTypes.number,
     normalized_metadata: PropTypes.shape(),
-    original_image_url: PropTypes.string,
     partners: PropTypes.arrayOf(
       PropTypes.shape({
         logo_image_url: PropTypes.string,

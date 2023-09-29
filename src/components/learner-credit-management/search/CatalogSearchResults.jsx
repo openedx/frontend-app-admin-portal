@@ -10,28 +10,16 @@ import {
 
 import CourseCard from '../cards/CourseCard';
 
-export const ERROR_MESSAGE = 'An error occurred while retrieving data';
+const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
-export const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
-
-/**
- * The core search results rendering component.
- *
- * Wrapping this in `connectStateResults()` will inject the first few props.
- *
- * @param {object} args arguments
- * @param {object} args.searchResults Results of search (see: `connectStateResults``)
- * @param {Boolean} args.isSearchStalled Whether search is stalled (see: `connectStateResults`)
- * @param {object} args.error Error with `message` field if available (see: `connectStateResults``)
- */
+const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 export const BaseCatalogSearchResults = ({
-  searchResults,
-  searchState,
-  // algolia recommends this prop instead of searching
+  error,
   isSearchStalled,
   paginationComponent: SearchPagination,
-  error,
+  searchResults,
+  searchState,
   setNoContent,
 }) => {
   const courseColumns = useMemo(
@@ -60,7 +48,8 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  console.log(tableData)
+  
+  // TODO: handle onClick
   const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
   const { refinements } = useContext(SearchContext);
 
@@ -128,42 +117,39 @@ export const BaseCatalogSearchResults = ({
 };
 
 BaseCatalogSearchResults.defaultProps = {
-  searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
+  courseType: null,
   error: null,
   paginationComponent: SearchPagination,
-  row: null,
   preview: false,
+  row: null,
+  searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
   setNoContent: () => { },
-  courseType: null,
 };
 
 BaseCatalogSearchResults.propTypes = {
-  // from Algolia
+  contentType: PropTypes.string.isRequired,
+  courseType: PropTypes.string,
+  error: PropTypes.shape({
+    message: PropTypes.string,
+  }),
+  isSearchStalled: PropTypes.bool.isRequired,
+  paginationComponent: PropTypes.func,
+  preview: PropTypes.bool,
+  row: PropTypes.string,
   searchResults: PropTypes.shape({
     _state: PropTypes.shape({
       disjunctiveFacetsRefinements: PropTypes.shape({}),
     }),
     disjunctiveFacetsRefinements: PropTypes.arrayOf(PropTypes.shape({})),
-    nbHits: PropTypes.number,
     hits: PropTypes.arrayOf(PropTypes.shape({})),
-    nbPages: PropTypes.number,
     hitsPerPage: PropTypes.number,
+    nbHits: PropTypes.number,
+    nbPages: PropTypes.number,
     page: PropTypes.number,
   }),
-  isSearchStalled: PropTypes.bool.isRequired,
-  error: PropTypes.shape({
-    message: PropTypes.string,
-  }),
-
   searchState: PropTypes.shape({
     page: PropTypes.number,
   }).isRequired,
-  paginationComponent: PropTypes.func,
-  // eslint-disable-next-line react/no-unused-prop-types
-  row: PropTypes.string,
-  contentType: PropTypes.string.isRequired,
-  courseType: PropTypes.string,
-  preview: PropTypes.bool,
   setNoContent: PropTypes.func,
 };
 
