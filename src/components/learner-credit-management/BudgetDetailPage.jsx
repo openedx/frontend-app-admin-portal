@@ -18,6 +18,7 @@ import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { useOfferRedemptions } from './data/hooks';
 import { isUUID } from './data/utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import NoBudgetActivityCard from './NoBudgetActivityCard';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
@@ -42,6 +43,10 @@ const BudgetDetailPage = ({
   const links = [
     { label: 'Budgets', to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
   ];
+
+  const isWaffleFlagEnabled = true;
+  const hasPendingAssignments = false;
+  const hasCompletedTransactions = false;
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -57,14 +62,36 @@ const BudgetDetailPage = ({
             />
           </Col>
         </Row>
-        <LearnerCreditAllocationTable
-          isLoading={isLoadingOfferRedemptions}
-          tableData={offerRedemptions}
-          fetchTableData={fetchOfferRedemptions}
-          enterpriseUUID={enterpriseUUID}
-          enterpriseSlug={enterpriseSlug}
-          enableLearnerPortal={enableLearnerPortal}
-        />
+        {isWaffleFlagEnabled ? (
+          <>
+            {(!hasPendingAssignments && !hasCompletedTransactions) && <NoBudgetActivityCard />}
+            {(!hasPendingAssignments && hasCompletedTransactions) && (
+              <>
+                <NoBudgetActivityCard />
+                <LearnerCreditAllocationTable
+                  isLoading={isLoadingOfferRedemptions}
+                  tableData={offerRedemptions}
+                  fetchTableData={fetchOfferRedemptions}
+                  enterpriseUUID={enterpriseUUID}
+                  enterpriseSlug={enterpriseSlug}
+                  enableLearnerPortal={enableLearnerPortal}
+                />
+              </>
+            )}
+            {(hasPendingAssignments && !hasCompletedTransactions) && (
+              <h4>Assignments Table</h4>
+            )}
+          </>
+        ) : (
+          <LearnerCreditAllocationTable
+            isLoading={isLoadingOfferRedemptions}
+            tableData={offerRedemptions}
+            fetchTableData={fetchOfferRedemptions}
+            enterpriseUUID={enterpriseUUID}
+            enterpriseSlug={enterpriseSlug}
+            enableLearnerPortal={enableLearnerPortal}
+          />
+        )}
       </Container>
     </>
   );
