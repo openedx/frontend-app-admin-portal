@@ -110,7 +110,7 @@ describe('<BudgetCard />', () => {
       />);
       expect(screen.getByText('Overview'));
       expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
-      const formattedString = `${dayjs(mockOffer.start).format('MMMM D, YYYY')} - ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
+      const formattedString = `Expired ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
       const elementsWithTestId = screen.getAllByTestId('offer-date');
       const firstElementWithTestId = elementsWithTestId[0];
       expect(firstElementWithTestId).toHaveTextContent(formattedString);
