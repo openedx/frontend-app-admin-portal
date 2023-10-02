@@ -96,14 +96,16 @@ describe('getBudgetStatus', () => {
   it('should return "upcoming" when the current date is before the start date', () => {
     const startDateStr = '2023-09-30';
     const endDateStr = '2023-10-30';
-    const result = getBudgetStatus(startDateStr, endDateStr);
+    const currentDateStr = '2023-09-28';
+    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
     expect(result).toEqual('Upcoming');
   });
 
   it('should return "active" when the current date is between the start and end dates', () => {
     const startDateStr = '2023-09-01';
     const endDateStr = '2023-09-30';
-    const result = getBudgetStatus(startDateStr, endDateStr);
+    const currentDateStr = '2023-09-05';
+    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
     expect(result).toEqual('Active');
   });
 
