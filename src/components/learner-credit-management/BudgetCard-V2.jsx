@@ -60,6 +60,7 @@ const BudgetCard = ({
       onSelect={(k) => setTab(k)}
     >
       <Tab eventKey="activity" title="Activity">
+        <h2 className="pt-3">Budgets</h2>
         {offerType === BUDGET_TYPES.ecommerce ? (
           <SubBudgetCard
             isLoading={isLoadingOfferSummary}
@@ -97,7 +98,7 @@ const BudgetCard = ({
             indexName={configuration.ALGOLIA.INDEX_NAME}
             searchClient={searchClient}
           >
-            <CatalogSearch offerId={offer?.id} />
+            <CatalogSearch offerId={offerSummary?.offerId} />
           </InstantSearch>
         </SearchData>
       </Tab>

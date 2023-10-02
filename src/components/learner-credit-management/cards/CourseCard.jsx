@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 // variables taken from algolia not in camelcase
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -17,15 +17,11 @@ const CourseCard = ({
   const {
     title,
     card_image_url,
-    partners,
-    first_enrollable_paid_seat_price,
-    enterprise_catalog_query_titles,
-    entitlements,
-    advertised_course_run,
     course_type,
+    normalized_metadata,
+    partners,
   } = original;
 
-  let rowPrice;
   let priceText;
 
   const imageSrc = card_image_url || defaultCardHeader;
@@ -58,8 +54,8 @@ const CourseCard = ({
             <p className="spacer" />
           )}
           <p className={`small ${course_type !== EXEC_COURSE_TYPE ? 'mt-5 mb-0' : ''}`}>
-            Starts {formatDate(original.normalized_metadata?.start_date)} •
-            Learner must register by {formatDate(original.normalized_metadata?.enroll_by_date)}
+            Starts {formatDate(normalized_metadata?.start_date)} •
+            Learner must register by {formatDate(normalized_metadata?.enroll_by_date)}
           </p>
         </div>
         <Card.Section className="section-2">
@@ -84,8 +80,6 @@ CourseCard.propTypes = {
   original: PropTypes.shape({
     title: PropTypes.string,
     card_image_url: PropTypes.string,
-    entitlements: PropTypes.arrayOf(PropTypes.shape()),
-    advertised_course_run: PropTypes.shape(),
     partners: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
@@ -93,9 +87,7 @@ CourseCard.propTypes = {
       }),
     ),
     normalized_metadata: PropTypes.shape(),
-    first_enrollable_paid_seat_price: PropTypes.number,
-    enterprise_catalog_query_titles: PropTypes.arrayOf(PropTypes.string),
-    original_image_url: PropTypes.string,
+    course_type: PropTypes.string,
   }).isRequired,
 };
 

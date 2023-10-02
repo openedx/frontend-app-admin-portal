@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
 
-import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform/config';
 import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
@@ -20,7 +20,6 @@ const CatalogSearch = ({ offerId }) => {
   }, [config.ALGOLIA_INDEX_NAME, searchClient]);
 
   const searchFilters = `enterprise_catalog_query_uuids:${offerId}`;
-  // + `OR enterprise_catalog_query_uuids:${offerSummary?.budgets.the_catalog_uuid}`;
 
   return (
     <section>
@@ -57,4 +56,4 @@ CatalogSearch.propTypes = {
   offerId: PropTypes.string,
 };
 
-export default injectIntl(CatalogSearch);
+export default CatalogSearch;

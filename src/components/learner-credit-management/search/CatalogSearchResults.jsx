@@ -121,7 +121,6 @@ BaseCatalogSearchResults.defaultProps = {
   row: null,
   preview: false,
   setNoContent: () => {},
-  courseType: null,
 };
 
 BaseCatalogSearchResults.propTypes = {
@@ -149,7 +148,6 @@ BaseCatalogSearchResults.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   row: PropTypes.string,
   contentType: PropTypes.string.isRequired,
-  courseType: PropTypes.string,
   preview: PropTypes.bool,
   setNoContent: PropTypes.func,
 };

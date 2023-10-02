@@ -20,11 +20,9 @@ export const COURSE_TYPE_REFINEMENT = 'course_type';
 export const LEARNING_TYPE_REFINEMENT = 'learning_type';
 export const LANGUAGE_REFINEMENT = 'language';
 
-
 // Learning types
 export const CONTENT_TYPE_COURSE = 'course';
 export const CONTENT_TYPE_PROGRAM = 'program';
 export const EXEC_ED_TITLE = 'Executive Education';
-
 
 export const EXEC_COURSE_TYPE = 'executive-education-2u';

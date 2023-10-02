@@ -16,9 +16,6 @@ const MultipleBudgetsPicker = ({
 }) => (
   <Stack gap={4}>
     <Row>
-      <Col lg="12"><h2>Budgets</h2></Col>
-    </Row>
-    <Row>
       <Col lg="12">
         <Stack gap={4}>
           {offers.map(offer => (
