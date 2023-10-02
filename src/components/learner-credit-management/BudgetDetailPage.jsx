@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Row,
   Col,
   Breadcrumb,
   Container,
+  Tab,
+  Tabs,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -26,10 +28,12 @@ const BudgetDetailPage = ({
   enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
+  enterpriseFeatures,
 }) => {
   const { budgetId } = useParams();
   const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
   const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
+  const [activeTab, setActiveTab] = useState('activity');
 
   const { isLoading } = useContext(EnterpriseSubsidiesContext);
   const {
@@ -44,9 +48,11 @@ const BudgetDetailPage = ({
     { label: 'Budgets', to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
   ];
 
-  const isWaffleFlagEnabled = true;
-  const hasPendingAssignments = false;
-  const hasCompletedTransactions = false;
+  const isTopDownAssignmentRealTimeLcmEnabled = enterpriseFeatures?.top_down_assignment_real_time_lcm || true;
+  // assignments.length > 0 && subsidyAccessPolicyType === 'PerLearnerSpendCreditAccessPolicy'
+  const hasPendingAssignments = true;
+  const hasCompletedTransactions = offerRedemptions.length > 0;
+
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -62,36 +68,60 @@ const BudgetDetailPage = ({
             />
           </Col>
         </Row>
-        {isWaffleFlagEnabled ? (
-          <>
-            {(!hasPendingAssignments && !hasCompletedTransactions) && <NoBudgetActivityCard />}
-            {(!hasPendingAssignments && hasCompletedTransactions) && (
+        <Tabs
+          id="controlled-tab-example"
+          activeKey={activeTab}
+          onSelect={(k) => setActiveTab(k)}
+        >
+          <Tab eventKey="activity" title="Activity">
+            {isTopDownAssignmentRealTimeLcmEnabled ? (
               <>
-                <NoBudgetActivityCard />
-                <LearnerCreditAllocationTable
-                  isLoading={isLoadingOfferRedemptions}
-                  tableData={offerRedemptions}
-                  fetchTableData={fetchOfferRedemptions}
-                  enterpriseUUID={enterpriseUUID}
-                  enterpriseSlug={enterpriseSlug}
-                  enableLearnerPortal={enableLearnerPortal}
-                />
+                {(!hasPendingAssignments && !hasCompletedTransactions) && <NoBudgetActivityCard />}
+                {(!hasPendingAssignments && hasCompletedTransactions) && (
+                  <>
+                    <NoBudgetActivityCard />
+                    <LearnerCreditAllocationTable
+                      isLoading={isLoadingOfferRedemptions}
+                      tableData={offerRedemptions}
+                      fetchTableData={fetchOfferRedemptions}
+                      enterpriseUUID={enterpriseUUID}
+                      enterpriseSlug={enterpriseSlug}
+                      enableLearnerPortal={enableLearnerPortal}
+                    />
+                  </>
+                )}
+                {(hasPendingAssignments && !hasCompletedTransactions) && (
+                  <h4>Assignments Table</h4>
+                )}
+                {(hasPendingAssignments && hasCompletedTransactions) && (
+                  <>
+                    <h4>Assignments Table</h4>
+                    <LearnerCreditAllocationTable
+                      isLoading={isLoadingOfferRedemptions}
+                      tableData={offerRedemptions}
+                      fetchTableData={fetchOfferRedemptions}
+                      enterpriseUUID={enterpriseUUID}
+                      enterpriseSlug={enterpriseSlug}
+                      enableLearnerPortal={enableLearnerPortal}
+                    />
+                  </>
+                )}
               </>
+            ) : (
+              <LearnerCreditAllocationTable
+                isLoading={isLoadingOfferRedemptions}
+                tableData={offerRedemptions}
+                fetchTableData={fetchOfferRedemptions}
+                enterpriseUUID={enterpriseUUID}
+                enterpriseSlug={enterpriseSlug}
+                enableLearnerPortal={enableLearnerPortal}
+              />
             )}
-            {(hasPendingAssignments && !hasCompletedTransactions) && (
-              <h4>Assignments Table</h4>
-            )}
-          </>
-        ) : (
-          <LearnerCreditAllocationTable
-            isLoading={isLoadingOfferRedemptions}
-            tableData={offerRedemptions}
-            fetchTableData={fetchOfferRedemptions}
-            enterpriseUUID={enterpriseUUID}
-            enterpriseSlug={enterpriseSlug}
-            enableLearnerPortal={enableLearnerPortal}
-          />
-        )}
+          </Tab>
+          <Tab eventKey="catalog" title="Catalog">
+            <h4>Catalog Table</h4>
+          </Tab>
+        </Tabs>
       </Container>
     </>
   );
@@ -101,12 +131,16 @@ const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 BudgetDetailPage.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    top_down_assignment_real_time_lcm: PropTypes.bool,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailPage);

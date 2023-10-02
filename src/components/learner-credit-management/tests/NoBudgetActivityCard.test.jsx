@@ -10,9 +10,17 @@ describe('NoBudgetActivityCard', () => {
   });
 
   it('should render three course images', () => {
-    render(<NoBudgetActivityCard />);
-    expect(screen.getAllByAltText('placeholder')).toHaveLength(3);
+    const { getAllByRole } = render(<NoBudgetActivityCard />);
+    const images = getAllByRole('img');
+    expect(images.length).toBe(3);
   });
+
+  it('has the correct alt text for images', () => {
+    render(<NoBudgetActivityCard />);
+    expect(screen.getByAltText('Illustration for finding the right course')).toBeInTheDocument();
+    expect(screen.getByAltText('Illustration for naming your learner')).toBeInTheDocument();
+    expect(screen.getByAltText('Illustration for confirming spend')).toBeInTheDocument();
+  })
 
   it('should render three steps with their respective titles and descriptions', () => {
     render(<NoBudgetActivityCard />);

@@ -54,6 +54,8 @@ export const transformOfferSummary = (offerSummary) => {
   }
   const { offerType } = offerSummary;
   const { offerId } = offerSummary;
+  const { subsidyAccessPolicyType } = offerSummary;
+
   return {
     totalFunds,
     redeemedFunds,
@@ -64,6 +66,7 @@ export const transformOfferSummary = (offerSummary) => {
     offerType,
     offerId,
     budgetsSummary,
+    subsidyAccessPolicyType,
   };
 };
 

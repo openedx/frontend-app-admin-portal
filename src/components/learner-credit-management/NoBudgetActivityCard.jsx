@@ -1,5 +1,7 @@
 import React from 'react';
-import { Card, Row, Col } from '@edx/paragon';
+import {
+  Button, Card, Row, Col,
+} from '@edx/paragon';
 import confirmSpend from '../../images/confirmSpend.png';
 import findTheRightCourse from '../../images/findTheRightCourse.png';
 import nameYourLearner from '../../images/nameYourLearner.png';
@@ -12,13 +14,13 @@ const NoBudgetActivityCard = () => (
       </h4>
       <Row>
         <Col>
-          <img src={findTheRightCourse} alt="placeholder" />
+          <img src={findTheRightCourse} alt="Illustration for finding the right course" />
         </Col>
         <Col>
-          <img src={nameYourLearner} alt="placeholder" />
+          <img src={nameYourLearner} alt="Illustration for naming your learner" />
         </Col>
         <Col>
-          <img src={confirmSpend} alt="placeholder" />
+          <img src={confirmSpend} alt="Illustration for confirming spend" />
         </Col>
       </Row>
     </Card.Section>
@@ -45,6 +47,7 @@ const NoBudgetActivityCard = () => (
             You will be prompted to enter email addresses for the learner or
             learners you want to assign.
           </p>
+          <Button variant="primary">Get started</Button>
         </Col>
         <Col>
           <h5>
