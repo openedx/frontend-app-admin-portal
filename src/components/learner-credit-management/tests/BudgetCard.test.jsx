@@ -13,10 +13,14 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BudgetCard from '../BudgetCard-V2';
-import { useOfferSummary, useOfferRedemptions } from '../data/hooks';
+import { useOfferSummary, useOfferRedemptions } from '../data';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 
-jest.mock('../data/hooks');
+jest.mock('../data', () => ({
+  ...jest.requireActual('../data'),
+  useOfferSummary: jest.fn(),
+  useOfferRedemptions: jest.fn(),
+}));
 useOfferSummary.mockReturnValue({
   isLoading: false,
   offerSummary: null,

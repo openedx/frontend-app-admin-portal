@@ -8,15 +8,19 @@ import {
   render,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { MemoryRouter } from 'react-router-dom';
+
 import BudgetDetailPage from '../../../learner-credit-management/BudgetDetailPage';
-import { useOfferSummary, useOfferRedemptions } from '../../../learner-credit-management/data/hooks';
+import { useOfferSummary, useOfferRedemptions } from '../../../learner-credit-management/data';
 import { EXEC_ED_OFFER_TYPE } from '../../../learner-credit-management/data/constants';
 import { EnterpriseSubsidiesContext } from '../..';
 
-jest.mock('../../../learner-credit-management/data/hooks');
+jest.mock('../../../learner-credit-management/data', () => ({
+  ...jest.requireActual('../../../learner-credit-management/data'),
+  useOfferSummary: jest.fn(),
+  useOfferRedemptions: jest.fn(),
+}));
 
 useOfferSummary.mockReturnValue({
   isLoading: false,
@@ -36,14 +40,16 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const enterpriseId = 'test-enterprise';
 const enterpriseUUID = '1234';
-const initialStore = {
+const initialStoreState = {
   portalConfiguration: {
     enterpriseId,
     enterpriseSlug: enterpriseId,
-
+    enableLearnerPortal: true,
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
   },
 };
-const store = getMockStore({ ...initialStore });
 
 const mockEnterpriseOfferId = '123';
 
@@ -61,20 +67,21 @@ const defaultEnterpriseSubsidiesContextValue = {
 };
 
 const BudgetDetailPageWrapper = ({
+  initialState = initialStoreState,
   enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
   ...rest
-}) => (
-  <MemoryRouter initialEntries={['/test-enterprise/admin/learner-credit/1234']}>
-
-    <Provider store={store}>
-      <IntlProvider locale="en">
+}) => {
+  const store = getMockStore({ ...initialState });
+  return (
+    <IntlProvider locale="en">
+      <Provider store={store}>
         <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
           <BudgetDetailPage {...rest} />
         </EnterpriseSubsidiesContext.Provider>
-      </IntlProvider>
-    </Provider>
-  </MemoryRouter>
-);
+      </Provider>
+    </IntlProvider>
+  );
+};
 
 describe('<BudgetDetailPage />', () => {
   describe('with enterprise offer', () => {
@@ -82,7 +89,7 @@ describe('<BudgetDetailPage />', () => {
       jest.clearAllMocks();
     });
 
-    it('displays table on clicking view budget', async () => {
+    it('displays spend table with empty results', async () => {
       const mockOffer = {
         id: mockEnterpriseOfferId,
         name: mockOfferDisplayName,
@@ -102,37 +109,32 @@ describe('<BudgetDetailPage />', () => {
         },
         fetchOfferRedemptions: jest.fn(),
       });
-      render(<BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
-        offer={mockOffer}
-      />);
+      const Component = () => (
+        <BudgetDetailPageWrapper
+          enterpriseUUID={enterpriseUUID}
+          enterpriseSlug={enterpriseId}
+          offer={mockOffer}
+        />
+      );
+      renderWithRouter(<Component />, { route: '/test-enterprise/admin/learner-credit/1234/activity' });
+      // Hero
       expect(screen.getByText('Learner Credit Management'));
+      // Breadcrumb
       expect(screen.getByText('Overview'));
+      // Spend table
       expect(screen.getByText('No results found'));
     });
 
     it('displays loading message while loading data', async () => {
-      useOfferSummary.mockReturnValue({
-        isLoading: true,
-        offerSummary: null,
-      });
-      useOfferRedemptions.mockReturnValue({
-        isLoading: true,
-        offerRedemptions: {
-          itemCount: 0,
-          pageCount: 0,
-          results: [],
-        },
-        fetchOfferRedemptions: jest.fn(),
-      });
-
       render(<BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
         enterpriseSlug={enterpriseId}
+        enterpriseSubsidiesContextValue={{
+          ...defaultEnterpriseSubsidiesContextValue,
+          isLoading: true,
+        }}
       />);
-
-      expect(screen.getByText('loading'));
+      expect(screen.getByText('Loading'));
     });
   });
 });

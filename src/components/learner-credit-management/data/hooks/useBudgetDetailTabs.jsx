@@ -7,12 +7,14 @@ import {
   BUDGET_DETAIL_CATALOG_TAB,
   BUDGET_DETAIL_TAB_LABELS,
 } from '../constants';
-import BudgetDetailActivityTabContents from '../../BudgetDetailActivityTabContents';
-import BudgetDetailCatalogTabContents from '../../BudgetDetailCatalogTabContents';
 
 const TAB_CLASS_NAME = 'pt-4.5';
 
-export const useBudgetDetailTabs = ({ enterpriseFeatures }) => {
+export const useBudgetDetailTabs = ({
+  enterpriseFeatures,
+  ActivityTabElement,
+  CatalogTabElement,
+}) => {
   const routeMatch = useRouteMatch();
 
   const tabs = useMemo(() => {
@@ -29,7 +31,7 @@ export const useBudgetDetailTabs = ({ enterpriseFeatures }) => {
             `${routeMatch.path}`,
             `${routeMatch.path}/${BUDGET_DETAIL_ACTIVITY_TAB}`,
           ]}
-          component={BudgetDetailActivityTabContents}
+          component={ActivityTabElement}
           exact
         />
       </Tab>,
@@ -44,14 +46,14 @@ export const useBudgetDetailTabs = ({ enterpriseFeatures }) => {
         >
           <Route
             path={`${routeMatch.path}/${BUDGET_DETAIL_CATALOG_TAB}`}
-            component={BudgetDetailCatalogTabContents}
+            component={CatalogTabElement}
             exact
           />
         </Tab>,
       );
     }
     return tabsArray;
-  }, [routeMatch.path, enterpriseFeatures]);
+  }, [routeMatch.path, enterpriseFeatures, ActivityTabElement, CatalogTabElement]);
 
   return tabs;
 };

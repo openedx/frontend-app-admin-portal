@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { useOfferRedemptions } from './data/hooks';
+import { useOfferRedemptions } from './data';
 
 const BudgetDetailActivityTabContents = ({
   enterpriseUUID,

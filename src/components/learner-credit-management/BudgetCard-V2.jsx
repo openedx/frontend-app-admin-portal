@@ -1,8 +1,6 @@
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable no-nested-ternary */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useOfferSummary } from './data/hooks';
+import { useOfferSummary } from './data';
 import SubBudgetCard from './SubBudgetCard';
 import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
 
@@ -13,48 +11,41 @@ const BudgetCard = ({
   offerType,
   displayName,
 }) => {
-  const {
-    start,
-    end,
-  } = offer;
+  const { start, end } = offer;
 
   const {
     isLoading: isLoadingOfferSummary,
     offerSummary,
   } = useOfferSummary(enterpriseUUID, offer);
 
-  return (
-    <>
-      {offerType === BUDGET_TYPES.ecommerce ? (
-        <SubBudgetCard
-          isLoading={isLoadingOfferSummary}
-          id={offerSummary?.offerId}
-          start={start}
-          end={end}
-          available={offerSummary?.remainingFunds}
-          spent={offerSummary?.redeemedFunds}
-          displayName={displayName}
-          enterpriseSlug={enterpriseSlug}
-        />
-      ) : (
-        <>
-          {offerSummary?.budgetsSummary?.map((budget) => (
-            <SubBudgetCard
-              isLoading={isLoadingOfferSummary}
-              key={budget?.subsidyAccessPolicyUuid}
-              id={budget?.subsidyAccessPolicyUuid}
-              start={start}
-              end={end}
-              available={budget?.remainingFunds}
-              spent={budget?.redeemedFunds}
-              displayName={budget?.subsidyAccessPolicyDisplayName}
-              enterpriseSlug={enterpriseSlug}
-            />
-          ))}
-        </>
-      )}
-    </>
-  );
+  if (offerType === BUDGET_TYPES.ecommerce) {
+    return (
+      <SubBudgetCard
+        isLoading={isLoadingOfferSummary}
+        id={offerSummary?.offerId}
+        start={start}
+        end={end}
+        available={offerSummary?.remainingFunds}
+        spent={offerSummary?.redeemedFunds}
+        displayName={displayName}
+        enterpriseSlug={enterpriseSlug}
+      />
+    );
+  }
+
+  return offerSummary?.budgetsSummary?.map((budget) => (
+    <SubBudgetCard
+      isLoading={isLoadingOfferSummary}
+      key={budget?.subsidyAccessPolicyUuid}
+      id={budget?.subsidyAccessPolicyUuid}
+      start={start}
+      end={end}
+      available={budget?.remainingFunds}
+      spent={budget?.redeemedFunds}
+      displayName={budget?.subsidyAccessPolicyDisplayName}
+      enterpriseSlug={enterpriseSlug}
+    />
+  ));
 };
 
 BudgetCard.propTypes = {

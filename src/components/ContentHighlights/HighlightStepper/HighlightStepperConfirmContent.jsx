@@ -91,7 +91,7 @@ export const SelectedContent = ({ enterpriseId }) => {
   /* eslint-enable max-len */
   const algoliaFilters = useMemo(() => {
     // import testEnterpriseId from the existing ../data/constants folder and replace with enterpriseId to test locally
-    let filterString = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
+    let filterString = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId, true)}`;
     if (currentSelectedRowIds.length > 0) {
       filterString += ' AND (';
       currentSelectedRowIds.forEach((selectedRowId, index) => {

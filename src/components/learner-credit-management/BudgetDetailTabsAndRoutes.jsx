@@ -9,10 +9,12 @@ import {
   BUDGET_DETAIL_ACTIVITY_TAB,
   BUDGET_DETAIL_CATALOG_TAB,
 } from './data/constants';
-import { useBudgetDetailTabs } from './data/hooks';
+import { useBudgetDetailTabs } from './data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
+import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
+import BudgetDetailCatalogTabContents from './BudgetDetailCatalogTabContents';
 
 const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 
@@ -62,7 +64,11 @@ const BudgetDetailTabsAndRoutes = ({
     );
   };
 
-  const tabs = useBudgetDetailTabs({ enterpriseFeatures });
+  const tabs = useBudgetDetailTabs({
+    enterpriseFeatures,
+    ActivityTabElement: BudgetDetailActivityTabContents,
+    CatalogTabElement: BudgetDetailCatalogTabContents,
+  });
 
   if (!isSupportedTabKey({
     tabKey: routeActiveTabKey || activeTabKey,

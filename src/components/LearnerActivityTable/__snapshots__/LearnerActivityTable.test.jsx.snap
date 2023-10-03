@@ -437,7 +437,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
                       fill="currentColor"
                     />
                   </svg>
@@ -473,7 +473,7 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
                       fill="currentColor"
                     />
                   </svg>
@@ -507,7 +507,7 @@ exports[`LearnerActivityTable renders empty state correctly 1`] = `
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
         fill="currentColor"
       />
     </svg>
@@ -923,7 +923,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
                       fill="currentColor"
                     />
                   </svg>
@@ -959,7 +959,7 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1373,7 +1373,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1409,7 +1409,7 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                      d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
                       fill="currentColor"
                     />
                   </svg>
