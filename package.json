@@ -32,7 +32,7 @@
     "@edx/frontend-enterprise-logistration": "3.2.0",
     "@edx/frontend-enterprise-utils": "3.2.0",
     "@edx/frontend-platform": "4.0.1",
-    "@edx/paragon": "20.39.2",
+    "@edx/paragon": "20.46.2",
     "algoliasearch": "4.8.3",
     "axios-mock-adapter": "1.19.0",
     "classnames": "2.2.6",
