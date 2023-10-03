@@ -18,7 +18,6 @@ const LearnerCreditAllocationTable = ({
   fetchTableData,
 }) => {
   const defaultFilter = [];
-
   return (
     <>
       <h3 className="mb-3">Spent</h3>
@@ -45,6 +44,7 @@ const LearnerCreditAllocationTable = ({
           },
           {
             Header: 'Enrollment details',
+            accessor: 'enrollmentDetails',
             Cell: SpendTableEnrollmentDetails,
             disableFilters: false,
             disableSortBy: true,

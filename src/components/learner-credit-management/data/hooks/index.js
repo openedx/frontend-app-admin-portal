@@ -6,12 +6,13 @@ import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import debounce from 'lodash.debounce';
 
-import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+import useBudgetDetailTabs from './useBudgetDetailTabs';
+import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 import {
   transformOfferSummary,
   transformUtilizationTableResults,
-} from './utils';
-import { API_FIELDS_BY_TABLE_COLUMN_ACCESSOR } from './constants';
+} from '../utils';
+import { API_FIELDS_BY_TABLE_COLUMN_ACCESSOR } from '../constants';
 
 export const useOfferSummary = (enterpriseUUID, enterpriseOffer) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -146,4 +147,8 @@ export const useOfferRedemptions = (enterpriseUUID, offerId = null, budgetId = n
     offerRedemptions,
     fetchOfferRedemptions: debouncedFetchOfferRedemptions,
   };
+};
+
+export {
+  useBudgetDetailTabs,
 };

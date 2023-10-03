@@ -2,23 +2,32 @@ import { useMemo } from 'react';
 import { Tab } from '@edx/paragon';
 import { Route, useRouteMatch } from 'react-router-dom';
 
+import {
+  BUDGET_DETAIL_ACTIVITY_TAB,
+  BUDGET_DETAIL_CATALOG_TAB,
+  BUDGET_DETAIL_TAB_LABELS,
+} from '../constants';
 import BudgetDetailActivityTabContents from '../../BudgetDetailActivityTabContents';
 import BudgetDetailCatalogTabContents from '../../BudgetDetailCatalogTabContents';
+
+const TAB_CLASS_NAME = 'pt-4.5';
 
 export const useBudgetDetailTabs = ({ enterpriseFeatures }) => {
   const routeMatch = useRouteMatch();
 
-  console.log('routeMatch', routeMatch);
-
   const tabs = useMemo(() => {
     const tabsArray = [];
-    const tabsClassName = 'pt-3';
     tabsArray.push(
-      <Tab key="activity" eventKey="activity" title="Activity" className={tabsClassName}>
+      <Tab
+        key={BUDGET_DETAIL_ACTIVITY_TAB}
+        eventKey={BUDGET_DETAIL_ACTIVITY_TAB}
+        title={BUDGET_DETAIL_TAB_LABELS.activity}
+        className={TAB_CLASS_NAME}
+      >
         <Route
           path={[
             `${routeMatch.path}`,
-            `${routeMatch.path}/activity`,
+            `${routeMatch.path}/${BUDGET_DETAIL_ACTIVITY_TAB}`,
           ]}
           component={BudgetDetailActivityTabContents}
           exact
@@ -27,9 +36,14 @@ export const useBudgetDetailTabs = ({ enterpriseFeatures }) => {
     );
     if (enterpriseFeatures.topDownAssignmentRealTimeLcm) {
       tabsArray.push(
-        <Tab key="catalog" eventKey="catalog" title="Catalog" className={tabsClassName}>
+        <Tab
+          key={BUDGET_DETAIL_CATALOG_TAB}
+          eventKey={BUDGET_DETAIL_CATALOG_TAB}
+          title={BUDGET_DETAIL_TAB_LABELS.catalog}
+          className={TAB_CLASS_NAME}
+        >
           <Route
-            path={`${routeMatch.path}/catalog`}
+            path={`${routeMatch.path}/${BUDGET_DETAIL_CATALOG_TAB}`}
             component={BudgetDetailCatalogTabContents}
             exact
           />

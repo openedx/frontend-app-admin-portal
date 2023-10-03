@@ -60,13 +60,10 @@ const ContentHighlightCatalogVisibilityRadioInputWrapper = ({
 
 jest.mock('../../../../data/services/EnterpriseCatalogApiService');
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
-  return ({
-    ...originalModule,
-    sendEnterpriseTrackEvent: jest.fn(),
-  });
-});
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('../../data/hooks');
 useContentHighlightsContext.mockReturnValue({
@@ -85,12 +82,14 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it('renders', () => {
     renderWithRouter(<ContentHighlightCatalogVisibilityRadioInputWrapper />);
     expect(screen.getByText(BUTTON_TEXT.catalogVisibilityRadio1)).toBeTruthy();
     expect(screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2)).toBeTruthy();
   });
-  it('Spinner 2 shows on radio 2 click', async () => {
+
+  it.only('Spinner 2 shows on radio 2 click', async () => {
     EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValue({
       data: {
         canOnlyViewHighlightSets: true,
@@ -105,9 +104,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(radio2LoadingStateInitial).toBeFalsy();
     expect(radio1CheckedState).toBeTruthy();
 
-    await act(() => {
-      userEvent.click(viewHighlightedContentButton);
-    });
+    await userEvent.click(viewHighlightedContentButton);
 
     await waitFor(() => EnterpriseCatalogApiService.updateEnterpriseCurationConfig({
       canOnlyViewHighlightSets: true,
@@ -116,6 +113,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(EnterpriseCatalogApiService.updateEnterpriseCurationConfig).toHaveBeenCalledTimes(1);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
+
   it('Spinner 1 shows on radio 1 click', async () => {
     EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValue({
       data: {

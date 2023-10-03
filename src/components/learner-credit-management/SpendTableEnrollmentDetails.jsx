@@ -22,7 +22,7 @@ const SpendTableEnrollmentDetailsContents = ({
           {row.original.courseTitle}
         </Hyperlink>
       ) : (
-        <span className="text-light-900">row.original.courseTitle</span>
+        <span className="text-light-900">{row.original.courseTitle}</span>
       )}
     </div>
   </>
