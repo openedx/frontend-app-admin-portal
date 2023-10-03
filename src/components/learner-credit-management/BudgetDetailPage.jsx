@@ -1,12 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Row,
   Col,
   Breadcrumb,
   Container,
-  Tab,
-  Tabs,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -16,11 +14,10 @@ import Hero from '../Hero';
 import LoadingMessage from '../LoadingMessage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
-import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { useOfferRedemptions } from './data/hooks';
 import { isUUID } from './data/utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import NoBudgetActivityCard from './NoBudgetActivityCard';
+import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
@@ -33,7 +30,6 @@ const BudgetDetailPage = ({
   const { budgetId } = useParams();
   const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
   const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
-  const [activeTab, setActiveTab] = useState('activity');
 
   const { isLoading } = useContext(EnterpriseSubsidiesContext);
   const {
@@ -48,10 +44,10 @@ const BudgetDetailPage = ({
     { label: 'Budgets', to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
   ];
 
-  const isTopDownAssignmentRealTimeLcmEnabled = enterpriseFeatures?.top_down_assignment_real_time_lcm || true;
-  // assignments.length > 0 && subsidyAccessPolicyType === 'PerLearnerSpendCreditAccessPolicy'
+  const isTopDownAssignmentRealTimeLcmEnabled = enterpriseFeatures?.topDownAssignmentRealTimeLcm;
+  // assignments.length > 0 && subsidyAccessPolicyType === 'AssignedLearnerCreditAccessPolicy'
   const hasPendingAssignments = true;
-  const hasCompletedTransactions = offerRedemptions.length > 0;
+  const hasCompletedTransactions = true; //offerRedemptions.length > 0;
 
   return (
     <>
@@ -68,60 +64,17 @@ const BudgetDetailPage = ({
             />
           </Col>
         </Row>
-        <Tabs
-          id="controlled-tab-example"
-          activeKey={activeTab}
-          onSelect={(k) => setActiveTab(k)}
-        >
-          <Tab eventKey="activity" title="Activity">
-            {isTopDownAssignmentRealTimeLcmEnabled ? (
-              <>
-                {(!hasPendingAssignments && !hasCompletedTransactions) && <NoBudgetActivityCard />}
-                {(!hasPendingAssignments && hasCompletedTransactions) && (
-                  <>
-                    <NoBudgetActivityCard />
-                    <LearnerCreditAllocationTable
-                      isLoading={isLoadingOfferRedemptions}
-                      tableData={offerRedemptions}
-                      fetchTableData={fetchOfferRedemptions}
-                      enterpriseUUID={enterpriseUUID}
-                      enterpriseSlug={enterpriseSlug}
-                      enableLearnerPortal={enableLearnerPortal}
-                    />
-                  </>
-                )}
-                {(hasPendingAssignments && !hasCompletedTransactions) && (
-                  <h4>Assignments Table</h4>
-                )}
-                {(hasPendingAssignments && hasCompletedTransactions) && (
-                  <>
-                    <h4>Assignments Table</h4>
-                    <LearnerCreditAllocationTable
-                      isLoading={isLoadingOfferRedemptions}
-                      tableData={offerRedemptions}
-                      fetchTableData={fetchOfferRedemptions}
-                      enterpriseUUID={enterpriseUUID}
-                      enterpriseSlug={enterpriseSlug}
-                      enableLearnerPortal={enableLearnerPortal}
-                    />
-                  </>
-                )}
-              </>
-            ) : (
-              <LearnerCreditAllocationTable
-                isLoading={isLoadingOfferRedemptions}
-                tableData={offerRedemptions}
-                fetchTableData={fetchOfferRedemptions}
-                enterpriseUUID={enterpriseUUID}
-                enterpriseSlug={enterpriseSlug}
-                enableLearnerPortal={enableLearnerPortal}
-              />
-            )}
-          </Tab>
-          <Tab eventKey="catalog" title="Catalog">
-            <h4>Catalog Table</h4>
-          </Tab>
-        </Tabs>
+        <BudgetDetailActivityTabContents
+          isTopDownAssignmentRealTimeLcmEnabled={isTopDownAssignmentRealTimeLcmEnabled}
+          hasPendingAssignments={hasPendingAssignments}
+          hasCompletedTransactions={hasCompletedTransactions}
+          isLoadingOfferRedemptions={isLoadingOfferRedemptions}
+          fetchOfferRedemptions={fetchOfferRedemptions}
+          offerRedemptions={offerRedemptions}
+          enterpriseUUID={enterpriseUUID}
+          enterpriseSlug={enterpriseSlug}
+          enterpriseLearnerPortal={enableLearnerPortal}
+        />
       </Container>
     </>
   );
@@ -139,7 +92,7 @@ BudgetDetailPage.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    top_down_assignment_real_time_lcm: PropTypes.bool,
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
 };
 
