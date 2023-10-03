@@ -65,6 +65,7 @@ const BudgetDetailTabsAndRoutes = ({
   };
 
   const tabs = useBudgetDetailTabs({
+    activeTabKey,
     enterpriseFeatures,
     ActivityTabElement: BudgetDetailActivityTabContents,
     CatalogTabElement: BudgetDetailCatalogTabContents,

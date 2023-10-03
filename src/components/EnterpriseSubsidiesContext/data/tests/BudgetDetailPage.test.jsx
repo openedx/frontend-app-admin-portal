@@ -3,12 +3,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import {
-  screen,
-  render,
-} from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { useRouteMatch } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
@@ -16,12 +12,6 @@ import BudgetDetailPage from '../../../learner-credit-management/BudgetDetailPag
 import { useOfferSummary, useOfferRedemptions } from '../../../learner-credit-management/data';
 import { EXEC_ED_OFFER_TYPE } from '../../../learner-credit-management/data/constants';
 import { EnterpriseSubsidiesContext } from '../..';
-import { ROUTE_NAMES } from '../../../EnterpriseApp/data/constants';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useRouteMatch: jest.fn(),
-}));
 
 jest.mock('../../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../../learner-credit-management/data'),
@@ -116,9 +106,6 @@ describe('<BudgetDetailPage />', () => {
         },
         fetchOfferRedemptions: jest.fn(),
       });
-      useRouteMatch.mockReturnValue({
-        path: `/test-enterprise/admin/${ROUTE_NAMES.learnerCredit}/${mockEnterpriseOfferId}`,
-      });
       renderWithRouter(
         <BudgetDetailPageWrapper
           enterpriseUUID={enterpriseUUID}
@@ -135,7 +122,7 @@ describe('<BudgetDetailPage />', () => {
     });
 
     it('displays loading message while loading data', async () => {
-      render(
+      renderWithRouter(
         <BudgetDetailPageWrapper
           enterpriseUUID={enterpriseUUID}
           enterpriseSlug={enterpriseId}
