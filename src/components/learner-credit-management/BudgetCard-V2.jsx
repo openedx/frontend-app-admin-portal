@@ -23,12 +23,11 @@ const learningType = {
   title: 'Learning Type',
 };
 // Add search facet filters if they don't exist in the list yet
-if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === LANGUAGE_REFINEMENT)) {
-  SEARCH_FACET_FILTERS.push(language);
-}
-if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === LEARNING_TYPE_REFINEMENT)) {
-  SEARCH_FACET_FILTERS.push(learningType);
-}
+[language, learningType].forEach((refinement) => {
+  if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === refinement.attribute)) {
+    SEARCH_FACET_FILTERS.push(refinement);
+  }
+});
 
 const BudgetCard = ({
   offer,

@@ -15,8 +15,8 @@ const advertised_course_run = {
 
 /* eslint-disable camelcase */
 const fakeHits = [
-  { objectID: '1', aggregation_key: 'course:Bees101', title: 'bla', advertised_course_run, key: 'Bees101' },
-  { objectID: '2', aggregation_key: 'course:Wasps200', title: 'blp', advertised_course_run, key: 'Wasps200' },
+  { objectID: '1', aggregation_key: 'course:Bees101', title: 'bla', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Bees101' },
+  { objectID: '2', aggregation_key: 'course:Wasps200', title: 'blp', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Wasps200' },
 ];
 /* eslint-enable camelcase */
 

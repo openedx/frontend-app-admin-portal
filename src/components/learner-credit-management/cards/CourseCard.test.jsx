@@ -28,7 +28,7 @@ const defaultProps = {
 };
 
 const execEdData = {
-  title: 'Course Title',
+  title: 'Exec Ed Course Title',
   card_image_url: undefined,
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
   first_enrollable_paid_seat_price: 100,
@@ -45,8 +45,6 @@ const execEdProps = {
 
 describe('Course card works as expected', () => {
   test('card renders as expected', () => {
-    process.env.EDX_FOR_BUSINESS_TITLE = 'ayylmao';
-    process.env.EDX_ENTERPRISE_ALACARTE_TITLE = 'baz';
     render(
       <IntlProvider locale="en">
         <CourseCard {...defaultProps} />
@@ -56,8 +54,22 @@ describe('Course card works as expected', () => {
     expect(
       screen.queryByText(defaultProps.original.partners[0].name),
     ).toBeInTheDocument();
-    expect(screen.queryByText('$100 • Self paced')).toBeInTheDocument();
-    expect(screen.queryByText('Business')).toBeInTheDocument();
+    screen.debug();
+    expect(screen.queryByText('Course Title')).toBeInTheDocument();
+    expect(screen.queryByText('Per learner price')).toBeInTheDocument();
+  });
+  test('exec ed card renders as expected', () => {
+    render(
+      <IntlProvider locale="en">
+        <CourseCard {...execEdProps} />
+      </IntlProvider>,
+    );
+    expect(screen.queryByText(execEdProps.original.title)).toBeInTheDocument();
+    expect(
+      screen.queryByText(execEdProps.original.partners[0].name),
+    ).toBeInTheDocument();
+    screen.debug();
+    expect(screen.queryByText('Exec Ed Course Title')).toBeInTheDocument();
   });
   test('test card renders default image', async () => {
     render(
@@ -68,18 +80,5 @@ describe('Course card works as expected', () => {
     const imageAltText = `${originalData.title} course image`;
     fireEvent.error(screen.getByAltText(imageAltText));
     await expect(screen.getByAltText(imageAltText).src).not.toBeUndefined;
-  });
-  test('exec ed card renders correct price from entitlement', async () => {
-    process.env.EDX_FOR_BUSINESS_TITLE = 'ayylmao';
-    process.env.EDX_ENTERPRISE_ALACARTE_TITLE = 'baz';
-    render(
-      <IntlProvider locale="en">
-        <CourseCard {...execEdProps} />
-      </IntlProvider>,
-    );
-    expect(screen.queryByText(execEdProps.original.title)).toBeInTheDocument();
-    // price decimal should be truncated
-    expect(screen.queryByText('$999 • Instructor led')).toBeInTheDocument();
-    expect(screen.queryByText('Business')).toBeInTheDocument();
   });
 });

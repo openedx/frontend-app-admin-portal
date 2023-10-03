@@ -49,7 +49,7 @@ export function useTimeout(callback, delay) {
 export const useSelectedCourse = () => {
   const [course, setCourse] = useState(null);
   const isProgram = useMemo(
-    () => course && course.contentType === CONTENT_TYPE_PROGRAM,
+    () => course?.contentType === CONTENT_TYPE_PROGRAM,
     [course],
   );
   const isCourse = useMemo(
