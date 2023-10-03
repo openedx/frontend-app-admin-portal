@@ -113,8 +113,7 @@ export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
 export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
 
 //  Utility function to check the budget status
-export const getBudgetStatus = (startDateStr, endDateStr) => {
-  const currentDate = new Date();
+export const getBudgetStatus = (startDateStr, endDateStr, currentDate = new Date()) => {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
