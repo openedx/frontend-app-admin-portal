@@ -8,13 +8,20 @@ import {
   render,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { useRouteMatch } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import BudgetDetailPage from '../../../learner-credit-management/BudgetDetailPage';
 import { useOfferSummary, useOfferRedemptions } from '../../../learner-credit-management/data';
 import { EXEC_ED_OFFER_TYPE } from '../../../learner-credit-management/data/constants';
 import { EnterpriseSubsidiesContext } from '../..';
+import { ROUTE_NAMES } from '../../../EnterpriseApp/data/constants';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useRouteMatch: jest.fn(),
+}));
 
 jest.mock('../../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../../learner-credit-management/data'),
@@ -109,14 +116,16 @@ describe('<BudgetDetailPage />', () => {
         },
         fetchOfferRedemptions: jest.fn(),
       });
-      const Component = () => (
+      useRouteMatch.mockReturnValue({
+        path: `/test-enterprise/admin/${ROUTE_NAMES.learnerCredit}/${mockEnterpriseOfferId}`,
+      });
+      renderWithRouter(
         <BudgetDetailPageWrapper
           enterpriseUUID={enterpriseUUID}
           enterpriseSlug={enterpriseId}
           offer={mockOffer}
-        />
+        />,
       );
-      renderWithRouter(<Component />, { route: '/test-enterprise/admin/learner-credit/1234/activity' });
       // Hero
       expect(screen.getByText('Learner Credit Management'));
       // Breadcrumb
@@ -126,14 +135,16 @@ describe('<BudgetDetailPage />', () => {
     });
 
     it('displays loading message while loading data', async () => {
-      render(<BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
-        enterpriseSubsidiesContextValue={{
-          ...defaultEnterpriseSubsidiesContextValue,
-          isLoading: true,
-        }}
-      />);
+      render(
+        <BudgetDetailPageWrapper
+          enterpriseUUID={enterpriseUUID}
+          enterpriseSlug={enterpriseId}
+          enterpriseSubsidiesContextValue={{
+            ...defaultEnterpriseSubsidiesContextValue,
+            isLoading: true,
+          }}
+        />,
+      );
       expect(screen.getByText('Loading'));
     });
   });

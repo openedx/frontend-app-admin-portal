@@ -33,7 +33,11 @@ const BudgetCard = ({
     );
   }
 
-  return offerSummary?.budgetsSummary?.map((budget) => (
+  if (!offerSummary?.budgetsSummary) {
+    return null;
+  }
+
+  return offerSummary.budgetsSummary.map((budget) => (
     <SubBudgetCard
       isLoading={isLoadingOfferSummary}
       key={budget?.subsidyAccessPolicyUuid}
