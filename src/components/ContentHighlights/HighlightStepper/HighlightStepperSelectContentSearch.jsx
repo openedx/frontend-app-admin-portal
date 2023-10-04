@@ -150,7 +150,7 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
   );
     // TODO: replace testEnterpriseId with enterpriseId before push,
     // uncomment out import and replace with testEnterpriseId to test
-  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId, true)}`;
+  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
 
   return (
     <SearchData>
