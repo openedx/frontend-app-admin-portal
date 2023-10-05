@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { useOfferRedemptions } from './data';
+import { useOfferRedemptions, isUUID } from './data';
 
 const BudgetDetailActivityTabContents = ({
   enterpriseUUID,
@@ -12,11 +12,13 @@ const BudgetDetailActivityTabContents = ({
   enableLearnerPortal,
 }) => {
   const { budgetId } = useParams();
+  const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
+  const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
   const {
     isLoading: isLoadingOfferRedemptions,
     offerRedemptions,
     fetchOfferRedemptions,
-  } = useOfferRedemptions(enterpriseUUID, budgetId);
+  } = useOfferRedemptions(enterpriseUUID, enterpriseOfferId, subsidyAccessPolicyId);
 
   return (
     <LearnerCreditAllocationTable

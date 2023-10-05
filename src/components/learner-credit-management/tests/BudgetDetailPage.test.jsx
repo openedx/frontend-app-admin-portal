@@ -45,12 +45,12 @@ useOfferRedemptions.mockReturnValue({
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
-const enterpriseId = 'test-enterprise';
+const enterpriseSlug = 'test-enterprise';
 const enterpriseUUID = '1234';
 const initialStoreState = {
   portalConfiguration: {
-    enterpriseId,
-    enterpriseSlug: enterpriseId,
+    enterpriseId: enterpriseUUID,
+    enterpriseSlug,
     enableLearnerPortal: true,
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
@@ -59,6 +59,7 @@ const initialStoreState = {
 };
 
 const mockEnterpriseOfferId = '123';
+const mockSubsidyAccessPolicyUUID = 'c17de32e-b80b-468f-b994-85e68fd32751';
 
 const mockOfferDisplayName = 'Test Enterprise Offer';
 const mockOfferSummary = {
@@ -102,13 +103,29 @@ describe('<BudgetDetailPage />', () => {
     });
   });
 
-  it('displays spend table in "Activity" tab with empty results', async () => {
+  it.each([
+    {
+      budgetId: mockEnterpriseOfferId,
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null],
+    },
+    {
+      budgetId: mockSubsidyAccessPolicyUUID,
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID],
+    },
+  ])('displays spend table in "Activity" tab with empty results (%s)', async ({
+    budgetId,
+    expectedUseOfferRedemptionsArgs,
+  }) => {
     const mockOffer = {
-      id: mockEnterpriseOfferId,
+      id: budgetId,
       name: mockOfferDisplayName,
       start: '2022-01-01',
       end: '2023-01-01',
     };
+    useParams.mockReturnValue({
+      budgetId,
+      activeTabKey: 'activity',
+    });
     useOfferSummary.mockReturnValue({
       isLoading: false,
       offerSummary: mockOfferSummary,
@@ -125,10 +142,14 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
         offer={mockOffer}
       />,
     );
+
+    expect(useOfferRedemptions).toHaveBeenCalledTimes(1);
+    expect(useOfferRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
+
     // Hero
     expect(screen.getByText('Learner Credit Management'));
     // Breadcrumb
@@ -149,7 +170,7 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
       />,
     );
     // Catalog tab exists and is active
@@ -169,7 +190,7 @@ describe('<BudgetDetailPage />', () => {
       <BudgetDetailPageWrapper
         initialState={initialState}
         enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
       />,
     );
     // Catalog tab does NOT exist
@@ -184,7 +205,7 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
       />,
     );
     // Activity tab exists and is active
@@ -199,7 +220,7 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
       />,
     );
     expect(screen.getByText('404')).toBeInTheDocument();
@@ -210,7 +231,7 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
       />,
     );
     const catalogTab = screen.getByText('Catalog');
@@ -228,7 +249,7 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
         enterpriseSubsidiesContextValue={{
           ...defaultEnterpriseSubsidiesContextValue,
           isLoading: true,
