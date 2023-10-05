@@ -15,7 +15,7 @@ export const sanitizeAndParseHTML = (htmlString) => {
 // Test will fail as additional check to ensure this is set to false before pushing PR
 export const TEST_FLAG = false;
 // Test entepriseId for Content Highlights to display card selections and confirmation
-export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
+export const testEnterpriseId = '943b1234-58cf-4376-b8e0-0efcbf4bfdf9';
 // function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
 export const ENABLE_TESTING = (enterpriseId, enableTest = TEST_FLAG) => {
   if (enableTest) {
