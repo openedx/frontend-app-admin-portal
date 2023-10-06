@@ -13,6 +13,7 @@ import licenseRevoke from './licenseRevoke';
 import emailTemplate from './emailTemplate';
 import licenseRemind from './licenseRemind';
 import userSubscription from './userSubscription';
+import dashboardInsights from './dashboardInsights';
 
 const identityReducer = (state) => {
   const newState = { ...state };
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   emailTemplate,
   licenseRemind,
   userSubscription,
+  dashboardInsights,
 });
 
 export default rootReducer;

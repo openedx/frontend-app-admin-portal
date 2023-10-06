@@ -91,6 +91,7 @@ const initialState = {
     isExpanded: false,
     isExpandedByToggle: false,
   },
+  dashboardInsights: {},
 };
 
 // eslint-disable-next-line react/prop-types
