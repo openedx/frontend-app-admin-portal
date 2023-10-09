@@ -8,14 +8,12 @@ import {
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Hero from '../Hero';
 
 import LoadingMessage from '../LoadingMessage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
-import { useOfferRedemptions } from './data/hooks';
-import { isUUID } from './data/utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
 
@@ -27,16 +25,8 @@ const BudgetDetailPage = ({
   enableLearnerPortal,
   enterpriseFeatures,
 }) => {
-  const { budgetId } = useParams();
-  const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
-  const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
-
   const { isLoading } = useContext(EnterpriseSubsidiesContext);
-  const {
-    isLoading: isLoadingOfferRedemptions,
-    offerRedemptions,
-    fetchOfferRedemptions,
-  } = useOfferRedemptions(enterpriseUUID, enterpriseOfferId, subsidyAccessPolicyId);
+
   if (isLoading) {
     return <LoadingMessage className="offers" />;
   }
@@ -68,9 +58,6 @@ const BudgetDetailPage = ({
           isTopDownAssignmentRealTimeLcmEnabled={isTopDownAssignmentRealTimeLcmEnabled}
           hasPendingAssignments={hasPendingAssignments}
           hasCompletedTransactions={hasCompletedTransactions}
-          isLoadingOfferRedemptions={isLoadingOfferRedemptions}
-          fetchOfferRedemptions={fetchOfferRedemptions}
-          offerRedemptions={offerRedemptions}
           enterpriseUUID={enterpriseUUID}
           enterpriseSlug={enterpriseSlug}
           enterpriseLearnerPortal={enableLearnerPortal}
