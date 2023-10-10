@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
 
@@ -10,7 +10,8 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
 
-const CatalogSearch = ({ offerId }) => {
+const CatalogSearch = () => {
+  const { budgetId } = useParams();
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
 
   const config = getConfig();
@@ -19,7 +20,7 @@ const CatalogSearch = ({ offerId }) => {
     return cIndex;
   }, [config.ALGOLIA_INDEX_NAME, searchClient]);
 
-  const searchFilters = `enterprise_catalog_query_uuids:${offerId}`;
+  const searchFilters = `enterprise_catalog_query_uuids:${budgetId}`;
 
   return (
     <section>
@@ -46,14 +47,6 @@ const CatalogSearch = ({ offerId }) => {
       </InstantSearch>
     </section>
   );
-};
-
-CatalogSearch.defaultProps = {
-  offerId: null,
-};
-
-CatalogSearch.propTypes = {
-  offerId: PropTypes.string,
 };
 
 export default CatalogSearch;

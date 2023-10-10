@@ -13,10 +13,14 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BudgetCard from '../BudgetCard-V2';
-import { useOfferSummary, useOfferRedemptions } from '../data/hooks';
+import { useOfferSummary, useOfferRedemptions } from '../data';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 
-jest.mock('../data/hooks');
+jest.mock('../data', () => ({
+  ...jest.requireActual('../data'),
+  useOfferSummary: jest.fn(),
+  useOfferRedemptions: jest.fn(),
+}));
 useOfferSummary.mockReturnValue({
   isLoading: false,
   offerSummary: null,
@@ -111,7 +115,7 @@ describe('<BudgetCard />', () => {
       screen.debug();
       expect(screen.getByText('Overview'));
       expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
-      const formattedString = `${dayjs(mockOffer.start).format('MMMM D, YYYY')} - ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
+      const formattedString = `Expired ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
       const elementsWithTestId = screen.getAllByTestId('offer-date');
       const firstElementWithTestId = elementsWithTestId[0];
       expect(firstElementWithTestId).toHaveTextContent(formattedString);

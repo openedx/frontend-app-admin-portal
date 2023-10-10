@@ -44,7 +44,7 @@ const CourseCard = ({
       <div className="card-container">
         <div className="section-1">
           <p className="mb-1 lead font-weight-bold">{title}</p>
-          <p>{partners[0].name}</p>
+          <p>{partners[0]?.name}</p>
           {course_type === EXEC_COURSE_TYPE && (
             <Badge variant="light" className="mb-4">
               Executive Education

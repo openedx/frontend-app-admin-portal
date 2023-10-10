@@ -1,34 +1,17 @@
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { InstantSearch } from 'react-instantsearch-dom';
-import algoliasearch from 'algoliasearch/lite';
-
-import { Tabs, Tab } from '@edx/paragon';
-import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
-import { useOfferSummary } from './data/hooks';
-import { configuration } from '../../config';
-import CatalogSearch from './search/CatalogSearch';
+import { useOfferSummary } from './data';
 import SubBudgetCard from './SubBudgetCard';
 import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
-import { LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT } from '../../data/constants/learnerCredit';
 
-const language = {
-  attribute: LANGUAGE_REFINEMENT,
-  title: 'Language',
-};
-const learningType = {
-  attribute: LEARNING_TYPE_REFINEMENT,
-  title: 'Learning Type',
-};
-// Add search facet filters if they don't exist in the list yet
-[language, learningType].forEach((refinement) => {
-  if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === refinement.attribute)) {
-    SEARCH_FACET_FILTERS.push(refinement);
-  }
-});
-
+/**
+ * Renders one or more budget cards for the given offer (enterprise or Subsidy from enterprise-subsidy). If the offer is
+ * an enterprise offer, it will render a single card. If the offer is a Subsidy, it will render one card for
+ * each associated budget.
+ *
+ * @param {*} offer Represents either an enterprise offer or a Subsidy (enterprise-subsidy).
+ * @returns Budget card component(s).
+ */
 const BudgetCard = ({
   offer,
   enterpriseUUID,
@@ -36,73 +19,49 @@ const BudgetCard = ({
   offerType,
   displayName,
 }) => {
-  const {
-    start,
-    end,
-  } = offer;
+  const { start, end } = offer;
 
-  const [tab, setTab] = useState('activity');
   const {
     isLoading: isLoadingOfferSummary,
     offerSummary,
   } = useOfferSummary(enterpriseUUID, offer);
 
-  const searchClient = algoliasearch(
-    configuration.ALGOLIA.APP_ID,
-    configuration.ALGOLIA.SEARCH_API_KEY,
-  );
+  // Enterprise Offers will always have a single budget, so we can render a single card.
+  if (offerType === BUDGET_TYPES.ecommerce) {
+    return (
+      <SubBudgetCard
+        isLoading={isLoadingOfferSummary}
+        id={offerSummary?.offerId}
+        start={start}
+        end={end}
+        available={offerSummary?.remainingFunds}
+        spent={offerSummary?.redeemedFunds}
+        displayName={displayName}
+        enterpriseSlug={enterpriseSlug}
+      />
+    );
+  }
 
-  return (
-    <Tabs
-      id="budget-tabs"
-      activeKey={tab}
-      onSelect={(k) => setTab(k)}
-    >
-      <Tab eventKey="activity" title="Activity">
-        <h2 className="pt-3">Budgets</h2>
-        {offerType === BUDGET_TYPES.ecommerce ? (
-          <SubBudgetCard
-            isLoading={isLoadingOfferSummary}
-            id={offerSummary?.offerId}
-            start={start}
-            end={end}
-            available={offerSummary?.remainingFunds}
-            spent={offerSummary?.redeemedFunds}
-            displayName={displayName}
-            enterpriseSlug={enterpriseSlug}
-          />
-        ) : (
-          <>
-            {offerSummary?.budgetsSummary?.map((budget) => (
-              <SubBudgetCard
-                isLoading={isLoadingOfferSummary}
-                key={budget?.subsidyAccessPolicyUuid}
-                id={budget?.subsidyAccessPolicyUuid}
-                start={start}
-                end={end}
-                available={budget?.remainingFunds}
-                spent={budget?.redeemedFunds}
-                displayName={budget?.subsidyAccessPolicyDisplayName}
-                enterpriseSlug={enterpriseSlug}
-              />
-            ))}
-          </>
-        )}
-      </Tab>
-      <Tab eventKey="catalog" title="Catalog" className="mt-4">
-        <SearchData
-          searchFacetFilters={[...SEARCH_FACET_FILTERS]}
-        >
-          <InstantSearch
-            indexName={configuration.ALGOLIA.INDEX_NAME}
-            searchClient={searchClient}
-          >
-            <CatalogSearch offerId={offerSummary?.offerId} />
-          </InstantSearch>
-        </SearchData>
-      </Tab>
-    </Tabs>
-  );
+  // We're now dealing with a Subsidy (enterprise-subsidy), but the analytics API isn't aware of any
+  // associated budgets; nothing should display.
+  if (!offerSummary?.budgetsSummary) {
+    return null;
+  }
+
+  // Render a card for each associated budget with the Subsidy (enterprise-subsidy)
+  return offerSummary.budgetsSummary.map((budget) => (
+    <SubBudgetCard
+      isLoading={isLoadingOfferSummary}
+      key={budget?.subsidyAccessPolicyUuid}
+      id={budget?.subsidyAccessPolicyUuid}
+      start={start}
+      end={end}
+      available={budget?.remainingFunds}
+      spent={budget?.redeemedFunds}
+      displayName={budget?.subsidyAccessPolicyDisplayName}
+      enterpriseSlug={enterpriseSlug}
+    />
+  ));
 };
 
 BudgetCard.propTypes = {

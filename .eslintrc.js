@@ -23,6 +23,13 @@ config.overrides =  [
       ]
     }
   },
+  {
+    files: ['*.test.js', '*.test.jsx'],
+    rules: {
+      'react/prop-types': 'off',
+      'react/jsx-no-constructed-context-values': 'off',
+    },
+  },
 ];
 
 
