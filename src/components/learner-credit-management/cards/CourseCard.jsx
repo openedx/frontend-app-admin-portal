@@ -3,40 +3,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { camelCaseObject } from '@edx/frontend-platform';
+import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 import {
-  Badge, Button, Card, Icon,
+  Badge, Button, Card, Hyperlink,
 } from '@edx/paragon';
-import { Launch } from '@edx/paragon/icons';
-import { EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
-import defaultCardHeader from '../../../static/default-card-header-light.png';
-import { formatDate } from '../utils';
+import { EXEC_COURSE_TYPE } from '../data/constants';
+import { formatDate } from '../data/utils';
 
 const CourseCard = ({
   onClick, original,
 }) => {
   const {
     title,
-    card_image_url,
-    course_type,
-    normalized_metadata,
+    cardImageUrl,
+    courseType,
+    normalizedMetadata,
     partners,
-  } = original;
+  } = camelCaseObject(original);
 
   let priceText;
-
-  const imageSrc = card_image_url || defaultCardHeader;
   const altText = `${title} course image`;
 
   return (
     <Card
-      isClickable
       className="course-card"
-      tabIndex="0"
       onClick={() => onClick(original)}
       orientation="horizontal"
+      tabIndex="0"
     >
       <Card.ImageCap
-        src={imageSrc}
+        src={cardImageUrl || cardFallbackImg}
+        fallbackSrc={cardFallbackImg}
         logoSrc={partners[0]?.logo_image_url}
         srcAlt={altText}
         logoAlt={partners[0]?.name}
@@ -45,24 +43,25 @@ const CourseCard = ({
         <div className="section-1">
           <p className="mb-1 lead font-weight-bold">{title}</p>
           <p>{partners[0]?.name}</p>
-          {course_type === EXEC_COURSE_TYPE && (
+          {courseType === EXEC_COURSE_TYPE && (
             <Badge variant="light" className="mb-4">
               Executive Education
             </Badge>
           )}
-          {course_type !== EXEC_COURSE_TYPE && (
+          {courseType !== EXEC_COURSE_TYPE && (
             <p className="spacer" />
           )}
-          <p className={`small ${course_type !== EXEC_COURSE_TYPE ? 'mt-5 mb-0' : ''}`}>
-            Starts {formatDate(normalized_metadata?.start_date)} •
-            Learner must register by {formatDate(normalized_metadata?.enroll_by_date)}
+          <p className={`small ${courseType !== EXEC_COURSE_TYPE ? 'mt-5 mb-0' : ''}`}>
+            Starts {formatDate(normalizedMetadata?.start_date)} •
+            Learner must register by {formatDate(normalizedMetadata?.enroll_by_date)}
           </p>
         </div>
         <Card.Section className="section-2">
           <p className="lead font-weight-bold mb-0">{priceText}</p>
-          <p className="x-small mb-5.5">Per learner price</p>
+          <p className="micro mb-5.5">Per learner price</p>
           <Card.Footer orientation="horizontal" className="footer">
-            <Button variant="outline-primary">View course<Icon className="ml-1" src={Launch} /></Button>
+            <Button as={Hyperlink} destination="https://edx.org" target="_blank">View course</Button>
+
             <Button>Assign</Button>
           </Card.Footer>
         </Card.Section>
@@ -79,15 +78,19 @@ CourseCard.propTypes = {
   onClick: PropTypes.func,
   original: PropTypes.shape({
     title: PropTypes.string,
-    card_image_url: PropTypes.string,
+    cardImageUrl: PropTypes.string,
     partners: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
         logo_image_url: PropTypes.string,
       }),
     ),
-    normalized_metadata: PropTypes.shape(),
-    course_type: PropTypes.string,
+    normalizedMetadata: PropTypes.shape({
+      startDate: PropTypes.string,
+      endDate: PropTypes.string,
+      enrollByDate: PropTypes.string,
+    }),
+    courseType: PropTypes.string,
   }).isRequired,
 };
 

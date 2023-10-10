@@ -5,7 +5,7 @@ import { Row, Col } from '@edx/paragon';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
 import CatalogSearch from './search/CatalogSearch';
-import { LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT } from '../../data/constants/learnerCredit';
+import { LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT } from './data';
 import { configuration } from '../../config';
 
 const BudgetDetailCatalogTabContents = () => {

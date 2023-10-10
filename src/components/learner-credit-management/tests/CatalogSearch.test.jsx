@@ -17,7 +17,6 @@ jest.mock('react-instantsearch-dom', () => ({
 
 const DEFAULT_SEARCH_CONTEXT_VALUE = { refinements: {} };
 
-// eslint-disable-next-line react/prop-types
 const SearchDataWrapper = ({ children, searchContextValue }) => (
   <IntlProvider locale="en">
     <SearchContext.Provider

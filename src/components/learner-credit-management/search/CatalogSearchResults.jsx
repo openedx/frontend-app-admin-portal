@@ -98,13 +98,7 @@ export const BaseCatalogSearchResults = ({
       >
         <DataTable.TableControlBar />
         <CardView
-          columnSizes={{
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 12,
-            xl: 12,
-          }}
+          columnSizes={{ xs: 12 }}
           CardComponent={(props) => renderCardComponent(props)}
         />
         <DataTable.EmptyTable content="No results found" />

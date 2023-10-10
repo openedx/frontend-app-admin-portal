@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseCard from './CourseCard';
-import { CONTENT_TYPE_COURSE, EXEC_ED_TITLE } from '../../../data/constants/learnerCredit';
+import { CONTENT_TYPE_COURSE, EXEC_ED_TITLE } from '../data/constants';
 
 jest.mock('@edx/frontend-platform', () => ({
   ...jest.requireActual('@edx/frontend-platform'),
@@ -54,7 +54,6 @@ describe('Course card works as expected', () => {
     expect(
       screen.queryByText(defaultProps.original.partners[0].name),
     ).toBeInTheDocument();
-    screen.debug();
     expect(screen.queryByText('Course Title')).toBeInTheDocument();
     expect(screen.queryByText('Per learner price')).toBeInTheDocument();
   });
@@ -68,7 +67,6 @@ describe('Course card works as expected', () => {
     expect(
       screen.queryByText(execEdProps.original.partners[0].name),
     ).toBeInTheDocument();
-    screen.debug();
     expect(screen.queryByText('Exec Ed Course Title')).toBeInTheDocument();
   });
   test('test card renders default image', async () => {

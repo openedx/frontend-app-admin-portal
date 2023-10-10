@@ -112,7 +112,6 @@ describe('<BudgetCard />', () => {
         enterpriseUUID={enterpriseUUID}
         enterpriseSlug={enterpriseId}
       />);
-      screen.debug();
       expect(screen.getByText('Overview'));
       expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
       const formattedString = `Expired ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;

@@ -9,7 +9,7 @@ import { BaseCatalogSearchResults, SKELETON_DATA_TESTID } from '../search/Catalo
 
 import { renderWithRouter } from '../../test/testUtils';
 
-import { CONTENT_TYPE_COURSE } from '../../../data/constants/learnerCredit';
+import { CONTENT_TYPE_COURSE } from '../data/constants';
 
 // Mocking this connected component so as not to have to mock the algolia Api
 const PAGINATE_ME = 'PAGINATE ME :)';
@@ -25,9 +25,9 @@ jest.mock('react-instantsearch-dom', () => ({
 const DEFAULT_SEARCH_CONTEXT_VALUE = { refinements: {} };
 
 const SearchDataWrapper = ({
-  // eslint-disable-next-line react/prop-types
+
   children,
-  // eslint-disable-next-line react/prop-types
+
   searchContextValue = DEFAULT_SEARCH_CONTEXT_VALUE,
 }) => (
   <SearchContext.Provider value={searchContextValue}>
@@ -137,8 +137,6 @@ describe('Main Catalogs view works as expected', () => {
         ,
       </SearchDataWrapper>,
     );
-    screen.debug();
-
     expect(screen.queryByText(TEST_COURSE_NAME)).toBeInTheDocument();
     expect(screen.queryByText(TEST_COURSE_NAME_2)).toBeInTheDocument();
     expect(screen.getAllByText('Showing 2 of 2.')[0]).toBeInTheDocument();
