@@ -77,6 +77,7 @@ const mapStateToProps = state => ({
 });
 
 BudgetDetailPage.propTypes = {
+  enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({

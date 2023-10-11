@@ -90,11 +90,6 @@ BudgetDetailActivityTabContents.propTypes = {
   isTopDownAssignmentRealTimeLcmEnabled: PropTypes.bool.isRequired,
   hasPendingAssignments: PropTypes.bool.isRequired,
   hasCompletedTransactions: PropTypes.bool.isRequired,
-  offerRedemptions: PropTypes.shape({
-    itemCount: PropTypes.number,
-    pageCount: PropTypes.number,
-    results: PropTypes.arrayOf(PropTypes.object),
-  }).isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailActivityTabContents);
