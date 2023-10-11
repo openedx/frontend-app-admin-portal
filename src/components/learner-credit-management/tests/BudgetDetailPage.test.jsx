@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -11,8 +11,7 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
 
 import BudgetDetailPage from '../BudgetDetailPage';
-import { useOfferSummary, useOfferRedemptions } from '../data';
-import { EXEC_ED_OFFER_TYPE } from '../data/constants';
+import { useOfferRedemptions, useBudgetContentAssignments } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 jest.mock('react-router-dom', () => ({
@@ -25,13 +24,18 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
-  useOfferSummary: jest.fn(),
   useOfferRedemptions: jest.fn(),
+  useBudgetContentAssignments: jest.fn(),
 }));
 
-useOfferSummary.mockReturnValue({
+useBudgetContentAssignments.mockReturnValue({
   isLoading: false,
-  offerSummary: null,
+  contentAssignments: {
+    count: 0,
+    results: [],
+    numPages: 1,
+  },
+  fetchContentAssignments: jest.fn(),
 });
 useOfferRedemptions.mockReturnValue({
   isLoading: false,
@@ -60,15 +64,6 @@ const initialStoreState = {
 
 const mockEnterpriseOfferId = '123';
 const mockSubsidyAccessPolicyUUID = 'c17de32e-b80b-468f-b994-85e68fd32751';
-
-const mockOfferDisplayName = 'Test Enterprise Offer';
-const mockOfferSummary = {
-  totalFunds: 5000,
-  redeemedFunds: 200,
-  remainingFunds: 4800,
-  percentUtilized: 0.04,
-  offerType: EXEC_ED_OFFER_TYPE,
-};
 
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
@@ -116,19 +111,9 @@ describe('<BudgetDetailPage />', () => {
     budgetId,
     expectedUseOfferRedemptionsArgs,
   }) => {
-    const mockOffer = {
-      id: budgetId,
-      name: mockOfferDisplayName,
-      start: '2022-01-01',
-      end: '2023-01-01',
-    };
     useParams.mockReturnValue({
       budgetId,
       activeTabKey: 'activity',
-    });
-    useOfferSummary.mockReturnValue({
-      isLoading: false,
-      offerSummary: mockOfferSummary,
     });
     useOfferRedemptions.mockReturnValue({
       isLoading: false,
@@ -139,13 +124,7 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchOfferRedemptions: jest.fn(),
     });
-    renderWithRouter(
-      <BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-        offer={mockOffer}
-      />,
-    );
+    renderWithRouter(<BudgetDetailPageWrapper enterpriseSlug={enterpriseSlug} />);
 
     expect(useOfferRedemptions).toHaveBeenCalledTimes(1);
     expect(useOfferRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
@@ -154,12 +133,19 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('Learner Credit Management'));
     // Breadcrumb
     expect(screen.getByText('Overview'));
+
     // Activity tab exists and is active
     expect(screen.getByText('Activity').getAttribute('aria-selected')).toBe('true');
-    // Spend table is visible within Activity tab contents
-    expect(screen.getByText('No results found'));
     // Catalog tab exists and is NOT active
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
+
+    // Assigned table is visible within Activity tab contents
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    expect(assignedSection.getByText('No results found')).toBeInTheDocument();
+
+    // Spent table is visible within Activity tab contents
+    const spentSection = within(screen.getByText('Spent').closest('section'));
+    expect(spentSection.getByText('No results found')).toBeInTheDocument();
   });
 
   it('renders with catalog tab active on initial load', async () => {

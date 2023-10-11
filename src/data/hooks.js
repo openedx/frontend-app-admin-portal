@@ -1,8 +1,4 @@
-import {
-  useEffect, useMemo, useState, useRef,
-} from 'react';
-
-import { CONTENT_TYPE_COURSE } from '../components/learner-credit-management/data/constants';
+import { useEffect, useRef } from 'react';
 
 export function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -45,12 +41,3 @@ export function useTimeout(callback, delay) {
     timeoutIdRef.current = null;
   }, [callback, delay]);
 }
-
-export const useSelectedCourse = () => {
-  const [course, setCourse] = useState(null);
-  const isCourse = useMemo(
-    () => course?.contentType === CONTENT_TYPE_COURSE,
-    [course],
-  );
-  return [course, setCourse, isCourse];
-};

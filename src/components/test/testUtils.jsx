@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -12,6 +11,7 @@ export function renderWithRouter(
     history = createMemoryHistory({ initialEntries: [route] }),
   } = {},
 ) {
+  // eslint-disable-next-line react/prop-types
   const Wrapper = ({ children }) => (
     <Router history={history}>{children}</Router>
   );
