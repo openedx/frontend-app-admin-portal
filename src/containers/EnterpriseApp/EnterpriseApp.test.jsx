@@ -91,6 +91,7 @@ const initialState = {
     isExpanded: false,
     isExpandedByToggle: false,
   },
+  dashboardInsights: {},
 };
 
 const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
