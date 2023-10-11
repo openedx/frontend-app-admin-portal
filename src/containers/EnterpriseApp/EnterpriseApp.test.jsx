@@ -47,13 +47,13 @@ const EnterpriseAppContextProvider = ({
 jest.mock('../../components/EnterpriseApp/EnterpriseAppContextProvider', () => ({
   __esModule: true,
   ...jest.requireActual('../../components/EnterpriseApp/EnterpriseAppContextProvider'),
-  // eslint-disable-next-line react/prop-types
+
   default: ({ children }) => <EnterpriseAppContextProvider>{children}</EnterpriseAppContextProvider>,
 }));
 
 jest.mock('../Sidebar', () => ({
   __esModule: true,
-  // eslint-disable-next-line react/prop-types
+
   default: ({ children }) => <div>{children}</div>,
 }));
 
@@ -94,7 +94,6 @@ const initialState = {
   dashboardInsights: {},
 };
 
-// eslint-disable-next-line react/prop-types
 const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
   <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
     <Provider store={store}>

@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
+
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
@@ -181,3 +183,7 @@ export const orderOffers = (offers) => {
 
   return offers;
 };
+
+export function formatDate(date) {
+  return dayjs(date).format('MMM D, YYYY');
+}

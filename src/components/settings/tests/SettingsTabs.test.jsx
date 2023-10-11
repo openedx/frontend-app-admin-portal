@@ -76,7 +76,6 @@ const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const defaultStore = getMockStore({ ...initialStore });
 
-// eslint-disable-next-line react/prop-types
 const SettingsTabsWithRouter = ({ store = defaultStore }) => (
   <IntlProvider locale="en">
     <MemoryRouter initialEntries={['settings/']}>
