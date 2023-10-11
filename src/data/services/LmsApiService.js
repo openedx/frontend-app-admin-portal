@@ -381,7 +381,7 @@ class LmsApiService {
   }
 
   static generateAIAnalyticsSummary(enterpriseUUID, formData) {
-    const url = `${LmsApiService.baseUrl}/enterprise/api/v1/analytics-summary/${enterpriseUUID}/`;
+    const url = `${LmsApiService.baseUrl}/enterprise/api/v1/analytics-summary/${enterpriseUUID}`;
     return LmsApiService.apiClient().post(url, formData);
   }
 }
