@@ -1,4 +1,4 @@
-import { transformOfferSummary, getBudgetStatus } from '../utils';
+import { transformOfferSummary, getBudgetStatus, orderOffers } from '../utils';
 import { EXEC_ED_OFFER_TYPE } from '../constants';
 
 describe('transformOfferSummary', () => {
@@ -93,24 +93,77 @@ describe('transformOfferSummary', () => {
 });
 
 describe('getBudgetStatus', () => {
-  it('should return "upcoming" when the current date is before the start date', () => {
-    const startDateStr = '2023-09-30';
-    const endDateStr = '2023-10-30';
-    const result = getBudgetStatus(startDateStr, endDateStr);
-    expect(result).toEqual('Upcoming');
+  it('should return "Scheduled" when the current date is before the start date', () => {
+    const startDateStr = '2024-09-30';
+    const endDateStr = '2027-10-30';
+    const currentDateStr = '2023-09-28';
+    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
+    expect(result.status).toEqual('Scheduled');
   });
 
-  it('should return "active" when the current date is between the start and end dates', () => {
-    const startDateStr = '2023-09-01';
-    const endDateStr = '2023-09-30';
-    const result = getBudgetStatus(startDateStr, endDateStr);
-    expect(result).toEqual('Active');
+  it('should return "Active" when the current date is between the start and end dates', () => {
+    const startDateStr = '2023-08-01';
+    const endDateStr = '2027-10-30';
+    const currentDateStr = '2023-09-28';
+    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
+    expect(result.status).toEqual('Active');
   });
 
-  it('should return "expired" when the current date is after the end date', () => {
+  it('should return "Expired" when the current date is after the end date', () => {
     const startDateStr = '2023-08-01';
     const endDateStr = '2023-08-31';
-    const result = getBudgetStatus(startDateStr, endDateStr);
-    expect(result).toEqual('Expired');
+    const currentDateStr = '2023-09-28';
+    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
+    expect(result.status).toEqual('Expired');
+  });
+});
+
+// Example offer objects for testing
+const offers = [
+  {
+    name: 'Offer 1',
+    start: '2023-01-01T00:00:00Z',
+    end: '2023-01-10T00:00:00Z',
+  },
+  {
+    name: 'Offer 2',
+    start: '2022-12-01T00:00:00Z',
+    end: '2022-12-20T00:00:00Z',
+  },
+  {
+    name: 'Offer 3',
+    start: '2023-02-01T00:00:00Z',
+    end: '2023-02-15T00:00:00Z',
+  },
+  {
+    name: 'Offer 4',
+    start: '2023-01-15T00:00:00Z',
+    end: '2023-01-25T00:00:00Z',
+  },
+];
+
+describe('orderOffers', () => {
+  it('should sort offers correctly', () => {
+    const sortedOffers = orderOffers(offers);
+
+    // Expected order: Active offers (Offer 2), Upcoming offers (Offer 1, Offer 4), Expired offers (Offer 3)
+    expect(sortedOffers.map((offer) => offer.name)).toEqual(['Offer 2', 'Offer 1', 'Offer 4', 'Offer 3']);
+  });
+
+  it('should handle empty input', () => {
+    const sortedOffers = orderOffers([]);
+    expect(sortedOffers).toEqual([]);
+  });
+
+  it('should handle offers with the same status and end date', () => {
+    const duplicateOffers = [
+      { name: 'Offer A', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
+      { name: 'Offer B', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
+    ];
+
+    const sortedOffers = orderOffers(duplicateOffers);
+
+    // Since both offers have the same status ("active") and end date, they should be sorted alphabetically by name.
+    expect(sortedOffers.map((offer) => offer.name)).toEqual(['Offer A', 'Offer B']);
   });
 });

@@ -4,8 +4,27 @@ import {
   render,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import configureMockStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
 
 import EmailAddressTableCell from '../EmailAddressTableCell';
+
+const mockStore = configureMockStore();
+
+const mockInitialState = {
+  portalConfiguration: {
+    enterpriseId: 'test-enterprise',
+  },
+};
+
+const EmailAddressTableCellWrapper = ({
+  initialStoreState = mockInitialState,
+  ...props
+}) => (
+  <Provider store={mockStore(initialStoreState)}>
+    <EmailAddressTableCell {...props} />
+  </Provider>
+);
 
 describe('<EmailAddressTableCell />', () => {
   it('with email is present, display it', () => {
@@ -15,7 +34,7 @@ describe('<EmailAddressTableCell />', () => {
         userEmail,
       },
     };
-    render(<EmailAddressTableCell row={row} />);
+    render(<EmailAddressTableCellWrapper row={row} />);
     expect(screen.getByText(userEmail));
   });
 
@@ -25,9 +44,9 @@ describe('<EmailAddressTableCell />', () => {
         userEmail: null,
       },
     };
-    render(<EmailAddressTableCell row={row} />);
+    render(<EmailAddressTableCellWrapper row={row} />);
     expect(screen.getByText('Email hidden'));
     userEvent.click(screen.getByLabelText('More details'));
-    await screen.findByText('Learner data disabled', { exact: false });
+    expect(await screen.findByText('Learner data disabled', { exact: false }));
   });
 });

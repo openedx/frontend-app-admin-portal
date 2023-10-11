@@ -14,7 +14,7 @@ const LearnerCreditManagementRoutes = ({ match }) => (
 
     <Route
       exact
-      path={`${match.path}/:budgetId`}
+      path={`${match.path}/:budgetId/:activeTabKey?`}
       component={BudgetDetailPage}
     />
   </>

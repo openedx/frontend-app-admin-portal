@@ -31,7 +31,10 @@ const BudgetDetailPage = ({
     return <LoadingMessage className="offers" />;
   }
   const links = [
-    { label: 'Budgets', to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
+    {
+      label: 'Budgets',
+      to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`,
+    },
   ];
 
   const isTopDownAssignmentRealTimeLcmEnabled = enterpriseFeatures?.topDownAssignmentRealTimeLcm;
@@ -44,8 +47,8 @@ const BudgetDetailPage = ({
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       <Container className="py-3" fluid>
-        <Row className="m-3">
-          <Col xs="12">
+        <Row>
+          <Col className="small">
             <Breadcrumb
               ariaLabel="Learner Credit Management breadcrumb navigation"
               links={links}
@@ -68,14 +71,12 @@ const BudgetDetailPage = ({
 };
 
 const mapStateToProps = state => ({
-  enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 BudgetDetailPage.propTypes = {
-  enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
