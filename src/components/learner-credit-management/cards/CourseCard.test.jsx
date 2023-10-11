@@ -2,15 +2,23 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseCard from './CourseCard';
 import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn().mockReturnValue({ enterpriseSlug: 'test-enterprise-slug' }),
+}));
+
 const originalData = {
   availability: 'Upcoming',
   card_image_url: undefined,
+  content_type: 'course',
   course_type: 'course',
   first_enrollable_paid_seat_price: 100,
+  key: 'course-123x',
   normalized_metadata: {
     enroll_by_date: '2016-02-18T04:00:00Z',
     start_date: '2016-04-18T04:00:00Z',
@@ -44,11 +52,20 @@ const execEdProps = {
   original: execEdData,
 };
 
+const LEARNER_PORTAL_URL = 'https://enterprise.stage.edx.org';
+
 describe('Course card works as expected', () => {
   test('course card renders', () => {
     render(
       <IntlProvider locale="en">
-        <CourseCard {...defaultProps} />
+        <AppContext.Provider
+          value={{
+            config: { ENTERPRISE_LEARNER_PORTAL_URL: LEARNER_PORTAL_URL },
+          }}
+        >
+          <CourseCard {...defaultProps} />
+        </AppContext.Provider>
+
       </IntlProvider>,
     );
     expect(screen.queryByText(defaultProps.original.title)).toBeInTheDocument();
@@ -66,7 +83,13 @@ describe('Course card works as expected', () => {
   test('test card renders default image', async () => {
     render(
       <IntlProvider locale="en">
-        <CourseCard {...defaultProps} />
+        <AppContext.Provider
+          value={{
+            config: { ENTERPRISE_LEARNER_PORTAL_URL: LEARNER_PORTAL_URL },
+          }}
+        >
+          <CourseCard {...defaultProps} />
+        </AppContext.Provider>
       </IntlProvider>,
     );
     const imageAltText = `${originalData.title} course image`;
@@ -77,11 +100,36 @@ describe('Course card works as expected', () => {
   test('exec ed card renders', async () => {
     render(
       <IntlProvider locale="en">
-        <CourseCard {...execEdProps} />
+        <AppContext.Provider
+          value={{
+            config: { ENTERPRISE_LEARNER_PORTAL_URL: LEARNER_PORTAL_URL },
+          }}
+        >
+          <CourseCard {...execEdProps} />
+        </AppContext.Provider>
       </IntlProvider>,
     );
     expect(screen.queryByText('$999')).toBeInTheDocument();
     expect(screen.queryByText('Starts Apr 18, 2016 • Learner must register by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.queryByText('Executive Education')).toBeInTheDocument();
+  });
+
+  test('sets correct course hyperlink', async () => {
+    render(
+      <IntlProvider locale="en">
+        <AppContext.Provider
+          value={{
+            config: { ENTERPRISE_LEARNER_PORTAL_URL: LEARNER_PORTAL_URL },
+          }}
+        >
+          <CourseCard {...defaultProps} />
+        </AppContext.Provider>
+      </IntlProvider>,
+    );
+
+    const hyperlink = screen.getByRole('link', {
+      name: 'View Course Opens in a new tab',
+    });
+    expect(hyperlink.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/course/course-123x');
   });
 });

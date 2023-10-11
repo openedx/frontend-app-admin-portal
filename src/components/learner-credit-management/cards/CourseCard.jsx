@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 // variables taken from algolia not in camelcase
-import React from 'react';
+import React, { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Badge,
   Button,
   Card,
-  Icon,
+  Hyperlink,
 } from '@edx/paragon';
 import { injectIntl } from '@edx/frontend-platform/i18n';
-import { Launch } from '@edx/paragon/icons';
+import { AppContext } from '@edx/frontend-platform/react';
 
 import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
 import { formatCurrency, formatDate } from '../utils';
@@ -17,17 +18,20 @@ import CARD_TEXT from '../constants';
 import defaultCardHeader from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
- learningType, onClick, original,
+  learningType, original,
 }) => {
   const {
     availability,
     card_image_url,
+    content_type,
     course_type,
     entitlements,
     first_enrollable_paid_seat_price,
+    key,
     normalized_metadata,
     partners,
     title,
+    uuid,
   } = original;
 
   const {
@@ -39,6 +43,9 @@ const CourseCard = ({
 
   let rowPrice;
   let priceText;
+
+  const { config: { ENTERPRISE_LEARNER_PORTAL_URL } } = useContext(AppContext);
+  const { enterpriseSlug } = useParams();
 
   if (learningType === CONTENT_TYPE_COURSE) {
     rowPrice = first_enrollable_paid_seat_price;
@@ -59,8 +66,16 @@ const CourseCard = ({
   const courseRegistrationInfo = `${availability} • ${REGISTRATION.text} ${formatDate(normalized_metadata?.enroll_by_date)}`;
   const isExecEd = course_type === EXEC_COURSE_TYPE;
 
+  let linkToCourse;
+  if (content_type === 'program') {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/program/${uuid}`;
+  } else if (content_type === 'course') {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
+  } else {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/search/${uuid}`;
+  }
+
   // TODO: Implementations to follow
-  const handleViewCourse = () => {};
   const handleAssign = () => {};
 
   return (
@@ -68,7 +83,6 @@ const CourseCard = ({
       isClickable
       className="course-card"
       tabIndex="0"
-      onClick={() => onClick(original)}
       orientation="horizontal"
     >
       <Card.ImageCap
@@ -101,7 +115,15 @@ const CourseCard = ({
           <p className="lead font-weight-bold mb-0">{priceText}</p>
           <p className="x-small mb-6">{PRICE.subText}</p>
           <Card.Footer orientation="horizontal" className="footer">
-            <Button onClick={handleViewCourse} variant="outline-primary">{BUTTON_ACTION.viewCourse}<Icon className="ml-1" src={Launch} /></Button>
+            <Button
+              as={Hyperlink}
+              data-testid="hyperlink-view-course"
+              destination={linkToCourse}
+              target="_blank"
+              variant="outline-primary"
+            >
+              {BUTTON_ACTION.viewCourse}
+            </Button>
             <Button onClick={handleAssign}>{BUTTON_ACTION.assign}</Button>
           </Card.Footer>
         </Card.Section>
@@ -110,19 +132,16 @@ const CourseCard = ({
   );
 };
 
-CourseCard.defaultProps = {
-  onClick: () => {},
-};
-
 CourseCard.propTypes = {
   learningType: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
   original: PropTypes.shape({
     availability: PropTypes.string,
     card_image_url: PropTypes.string,
+    content_type: PropTypes.string,
     course_type: PropTypes.string,
     entitlements: PropTypes.arrayOf(PropTypes.shape()),
     first_enrollable_paid_seat_price: PropTypes.number,
+    key: PropTypes.string,
     normalized_metadata: PropTypes.shape(),
     partners: PropTypes.arrayOf(
       PropTypes.shape({
@@ -131,6 +150,7 @@ CourseCard.propTypes = {
       }),
     ),
     title: PropTypes.string,
+    uuid: PropTypes.string,
   }).isRequired,
 };
 
