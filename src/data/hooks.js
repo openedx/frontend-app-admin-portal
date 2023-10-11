@@ -2,7 +2,7 @@ import {
   useEffect, useMemo, useState, useRef,
 } from 'react';
 
-import { CONTENT_TYPE_COURSE, CONTENT_TYPE_PROGRAM } from './constants/learnerCredit';
+import { CONTENT_TYPE_COURSE } from '../components/learner-credit-management/data/constants';
 
 export function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -48,13 +48,9 @@ export function useTimeout(callback, delay) {
 
 export const useSelectedCourse = () => {
   const [course, setCourse] = useState(null);
-  const isProgram = useMemo(
-    () => course && course.contentType === CONTENT_TYPE_PROGRAM,
-    [course],
-  );
   const isCourse = useMemo(
-    () => course && course.contentType === CONTENT_TYPE_COURSE,
+    () => course?.contentType === CONTENT_TYPE_COURSE,
     [course],
   );
-  return [course, setCourse, isProgram, isCourse];
+  return [course, setCourse, isCourse];
 };

@@ -153,6 +153,5 @@ describe('Test sync history page full flow', () => {
     await waitFor(() => expect(mockFetch).toHaveBeenCalledWith('1'));
     // opens stepper
     await waitFor(() => expect(screen.getByText('New learning platform integration')));
-    screen.debug(undefined, 100000);
   });
 });

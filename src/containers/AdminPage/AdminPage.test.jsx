@@ -28,6 +28,10 @@ const store = mockStore({
   table: {
     enrollments: {},
   },
+  dashboardInsights: {
+    loading: null,
+    insights: null,
+  },
 });
 
 describe('<AdminPage />', () => {

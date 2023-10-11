@@ -39,7 +39,6 @@ const initialStore = mockStore({
   },
 });
 
-// eslint-disable-next-line react/prop-types
 const RevokeBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
   <Provider store={store}>
     <RevokeBulkAction {...rest} />

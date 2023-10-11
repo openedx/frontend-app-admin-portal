@@ -58,7 +58,6 @@ const expiredSubscriptionPlan = (
   };
 };
 
-// eslint-disable-next-line react/prop-types
 const LicenseManagementTableWrapper = ({ subscriptionPlan, ...props }) => (
   <IntlProvider locale="en">
     <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>

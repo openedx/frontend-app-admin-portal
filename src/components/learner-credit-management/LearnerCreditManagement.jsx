@@ -21,7 +21,7 @@ import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
 import LearnerCreditDisclaimer from './LearnerCreditDisclaimer';
 import OfferDates from './OfferDates';
 import OfferNameHeading from './OfferNameHeading';
-import { useOfferSummary, useOfferRedemptions } from './data/hooks';
+import { useOfferSummary, useOfferRedemptions } from './data';
 import { DATE_FORMAT } from './data/constants';
 import OfferUtilizationAlerts from './OfferUtilizationAlerts';
 
