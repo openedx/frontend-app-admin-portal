@@ -7750,7 +7750,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
             Summarize Analytics
           </button>
           <button
-            className="d-sm-inline btn btn-outline-primary"
+            className="d-none btn btn-outline-primary"
             data-testid="track-progress"
             disabled={false}
             onClick={[Function]}
