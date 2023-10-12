@@ -1,18 +1,16 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
-import { SearchPagination } from '@edx/frontend-enterprise-catalog-search';
+import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
 import {
-  Alert, CardView, DataTable, Skeleton,
+  Alert, CardView, DataTable, TextFilter,
 } from '@edx/paragon';
 
 import CourseCard from '../cards/CourseCard';
 
 export const ERROR_MESSAGE = 'An error occurred while retrieving data';
-
-export const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 /**
  * The core search results rendering component.
@@ -27,8 +25,10 @@ export const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
 
 export const BaseCatalogSearchResults = ({
   searchResults,
+  searchState,
   // algolia recommends this prop instead of searching
   isSearchStalled,
+  paginationComponent: PaginationComponent,
   error,
   setNoContent,
 }) => {
@@ -58,20 +58,14 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-
   const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
+  const { refinements } = useContext(SearchContext);
+  const page = refinements.page || (searchState ? searchState.page : 0);
 
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
   }, [searchResults, setNoContent]);
 
-  if (isSearchStalled) {
-    return (
-      <div data-testid={SKELETON_DATA_TESTID}>
-        <Skeleton className="m-1 loading-skeleton" height={25} count={5} />
-      </div>
-    );
-  }
   if (error) {
     return (
       <Alert className="mt-2" variant="warning">
@@ -88,21 +82,38 @@ export const BaseCatalogSearchResults = ({
   return (
     <div className="mb-5">
       <DataTable
-        isPaginated
-        manualPagination
         columns={courseColumns}
         data={tableData}
+        defaultColumnValues={{ Filter: TextFilter }}
+        initialState={{
+          pageSize: 15,
+          pageIndex: 0,
+        }}
+        isLoading={isSearchStalled}
+        isPaginated
+        isSortable
         itemCount={searchResults?.nbHits || 0}
-        pageCount={searchResults?.nbPages || 1}
+        manualFilters
+        manualPagination
+        manualSortBy
+        pageCount={searchResults?.nbPages || 0}
         pageSize={searchResults?.hitsPerPage || 0}
       >
         <DataTable.TableControlBar />
         <CardView
-          columnSizes={{ xs: 12 }}
+          columnSizes={{
+            xs: 12,
+            sm: 12,
+            md: 12,
+            lg: 12,
+            xl: 12,
+          }}
           CardComponent={(props) => renderCardComponent(props)}
         />
         <DataTable.EmptyTable content="No results found" />
-        <DataTable.TableFooter />
+        <DataTable.TableFooter className="justify-content-center">
+          <PaginationComponent defaultRefinement={page} />
+        </DataTable.TableFooter>
       </DataTable>
     </div>
   );
@@ -115,6 +126,7 @@ BaseCatalogSearchResults.defaultProps = {
   row: null,
   preview: false,
   setNoContent: () => {},
+  courseType: null,
 };
 
 BaseCatalogSearchResults.propTypes = {
@@ -142,6 +154,7 @@ BaseCatalogSearchResults.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   row: PropTypes.string,
   contentType: PropTypes.string.isRequired,
+  courseType: PropTypes.string,
   preview: PropTypes.bool,
   setNoContent: PropTypes.func,
 };

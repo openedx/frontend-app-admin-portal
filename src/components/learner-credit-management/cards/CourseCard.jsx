@@ -3,95 +3,150 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { camelCaseObject } from '@edx/frontend-platform';
-import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 import {
-  Badge, Button, Card, Hyperlink,
+  Badge,
+  Button,
+  Card,
+  Stack,
+  Hyperlink,
+  useMediaQuery,
+  breakpoints,
 } from '@edx/paragon';
-import { EXEC_COURSE_TYPE } from '../data/constants';
-import { formatDate } from '../data/utils';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+
+import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../data';
+import { formatCurrency, formatDate, getRegistrationDeadline } from '../data/utils';
+import CARD_TEXT from '../constants';
+import defaultLogoImg from '../../../static/default-card-header-dark.png';
+import defaultCardImg from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
-  onClick, original,
+  original, learningType,
 }) => {
   const {
-    title,
-    cardImageUrl,
-    courseType,
-    normalizedMetadata,
+    availability,
+    card_image_url,
+    course_type,
+    entitlements,
+    first_enrollable_paid_seat_price,
+    normalized_metadata,
     partners,
-  } = camelCaseObject(original);
+    title,
+  } = original;
 
+  const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
+  const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
+
+  const {
+    BADGE,
+    BUTTON_ACTION,
+    PRICE,
+    REGISTRATION,
+  } = CARD_TEXT;
+
+  let rowPrice;
   let priceText;
+
+  if (learningType === CONTENT_TYPE_COURSE) {
+    rowPrice = first_enrollable_paid_seat_price;
+    priceText = rowPrice != null ? `${formatCurrency(rowPrice)}` : 'N/A';
+  } else {
+    [rowPrice] = entitlements || [null];
+    priceText = rowPrice != null ? `${formatCurrency(rowPrice?.price)}` : 'N/A';
+  }
+
+  const imageSrc = card_image_url || defaultCardImg;
+  const logoSrc = partners[0]?.logo_image_url || defaultLogoImg;
+
   const altText = `${title} course image`;
+
+  const formatAvailability = availability.length ? availability.join(', ') : null;
+
+  const registrationDeadline = getRegistrationDeadline(normalized_metadata?.enroll_by_date);
+
+  let courseRegistrationInfo;
+  if (normalized_metadata?.enroll_by_date) {
+    courseRegistrationInfo = `${formatAvailability} • ${REGISTRATION.text} ${registrationDeadline}`;
+  } else {
+    courseRegistrationInfo = formatAvailability;
+  }
+
+  let execEdRegistrationInfo;
+  if (normalized_metadata?.enroll_by_date) {
+    execEdRegistrationInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
+    ${REGISTRATION.text} ${registrationDeadline}`;
+  } else {
+    execEdRegistrationInfo = formatAvailability;
+  }
+
+  const isExecEd = course_type === EXEC_COURSE_TYPE;
 
   return (
     <Card
-      className="course-card"
-      onClick={() => onClick(original)}
-      orientation="horizontal"
-      tabIndex="0"
+      isClickable
+      orientation={isSmall ? 'vertical' : 'horizontal'}
     >
       <Card.ImageCap
-        src={cardImageUrl || cardFallbackImg}
-        fallbackSrc={cardFallbackImg}
-        logoSrc={partners[0]?.logo_image_url}
+        src={imageSrc}
+        logoSrc={logoSrc}
         srcAlt={altText}
         logoAlt={partners[0]?.name}
       />
-      <div className="card-container">
-        <div className="section-1">
-          <p className="mb-1 lead font-weight-bold">{title}</p>
-          <p>{partners[0]?.name}</p>
-          {courseType === EXEC_COURSE_TYPE && (
-            <Badge variant="light" className="mb-4">
-              Executive Education
-            </Badge>
+      <Card.Body>
+        <Card.Header
+          title={title}
+          className="mb-0 mt-0"
+          subtitle={partners[0]?.name}
+          actions={(
+            <Stack gap={1} className="text-right">
+              <p className="h4 mt-2.5 mb-0">{priceText}</p>
+              <span className="micro">{PRICE.subText}</span>
+            </Stack>
           )}
-          {courseType !== EXEC_COURSE_TYPE && (
-            <p className="spacer" />
-          )}
-          <p className={`small ${courseType !== EXEC_COURSE_TYPE ? 'mt-5 mb-0' : ''}`}>
-            Starts {formatDate(normalizedMetadata?.start_date)} •
-            Learner must register by {formatDate(normalizedMetadata?.enroll_by_date)}
-          </p>
-        </div>
-        <Card.Section className="section-2">
-          <p className="lead font-weight-bold mb-0">{priceText}</p>
-          <p className="micro mb-5.5">Per learner price</p>
-          <Card.Footer orientation="horizontal" className="footer">
-            <Button as={Hyperlink} destination="https://edx.org" target="_blank">View course</Button>
-
-            <Button>Assign</Button>
-          </Card.Footer>
+        />
+        <Card.Section>
+          <Badge variant="light" className="ml-0">
+            {isExecEd ? BADGE.execEd : BADGE.course}
+          </Badge>
         </Card.Section>
-      </div>
+        <Card.Footer
+          orientation={isExtraSmall ? 'horizontal' : 'vertical'}
+          textElement={isExecEd ? execEdRegistrationInfo : courseRegistrationInfo}
+        >
+          <Button
+            // TODO: Implementation to follow in ENT-7594
+            as={Hyperlink}
+            destination="https://enterprise.stage.edx.org"
+            target="_blank"
+            variant="outline-primary"
+          >
+            {BUTTON_ACTION.viewCourse}
+          </Button>
+          <Button>{BUTTON_ACTION.assign}</Button>
+        </Card.Footer>
+      </Card.Body>
     </Card>
   );
 };
 
-CourseCard.defaultProps = {
-  onClick: () => {},
-};
-
 CourseCard.propTypes = {
-  onClick: PropTypes.func,
+  learningType: PropTypes.string.isRequired,
   original: PropTypes.shape({
-    title: PropTypes.string,
-    cardImageUrl: PropTypes.string,
+    availability: PropTypes.string,
+    card_image_url: PropTypes.string,
+    course_type: PropTypes.string,
+    entitlements: PropTypes.arrayOf(PropTypes.shape()),
+    first_enrollable_paid_seat_price: PropTypes.number,
+    normalized_metadata: PropTypes.shape(),
+    original_image_url: PropTypes.string,
     partners: PropTypes.arrayOf(
       PropTypes.shape({
-        name: PropTypes.string,
         logo_image_url: PropTypes.string,
+        name: PropTypes.string,
       }),
     ),
-    normalizedMetadata: PropTypes.shape({
-      startDate: PropTypes.string,
-      endDate: PropTypes.string,
-      enrollByDate: PropTypes.string,
-    }),
-    courseType: PropTypes.string,
+    title: PropTypes.string,
   }).isRequired,
 };
 
-export default CourseCard;
+export default injectIntl(CourseCard);

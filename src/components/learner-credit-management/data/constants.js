@@ -34,3 +34,6 @@ export const CONTENT_TYPE_COURSE = 'course';
 export const EXEC_ED_TITLE = 'Executive Education';
 
 export const EXEC_COURSE_TYPE = 'executive-education-2u';
+
+// Learner must register within 90 days of assignment
+export const ASSIGNMENT_REGISTRATION_DEADLINE = 90;

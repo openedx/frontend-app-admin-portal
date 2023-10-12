@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+  ASSIGNMENT_REGISTRATION_DEADLINE,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 /**
@@ -186,4 +187,23 @@ export const orderOffers = (offers) => {
 
 export function formatDate(date) {
   return dayjs(date).format('MMM D, YYYY');
+}
+
+export function formatCurrency(currency) {
+  const currencyUS = Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+  });
+
+  return currencyUS.format(currency);
+}
+
+export function getRegistrationDeadline(enrollByDate) {
+  const currentDate = new Date();
+  const registrationDeadline = new Date(currentDate.setDate(currentDate.getDate() + ASSIGNMENT_REGISTRATION_DEADLINE));
+  const courseEnrollByDate = new Date(enrollByDate);
+  return Date.parse(registrationDeadline) > Date.parse(courseEnrollByDate)
+    ? formatDate(courseEnrollByDate)
+    : formatDate(registrationDeadline);
 }
