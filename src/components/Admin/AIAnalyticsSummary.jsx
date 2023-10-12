@@ -71,9 +71,10 @@ const AIAnalyticsSummary = ({ enterpriseId, insights }) => {
             <FormattedMessage id="adminPortal.summarizeAnalytics" defaultMessage="Summarize Analytics" />
           </>
         </Button>
+        {/* Track Progress is currently hidden due to data inconsistency. It will be addressed as part of ENT-7812 */}
         <Button
           variant="outline-primary"
-          className="d-sm-inline"
+          className="d-none"
           onClick={() => {
             showTrackProgressCard(true);
             hideSummarizeCard(true);
