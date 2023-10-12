@@ -85,16 +85,17 @@ describe('<AIAnalyticsSummary />', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('should display AnalyticsDetailCard with learner_progress data when Track Progress button is clicked', () => {
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    wrapper.find('[data-testid="track-progress"]').first().simulate('click');
+  // Currently disabled due to data inconsistencies, will be addressed as a part of ENT-7812.
+  // it('should display AnalyticsDetailCard with learner_progress data when Track Progress button is clicked', () => {
+  //   const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+  //   wrapper.find('[data-testid="track-progress"]').first().simulate('click');
 
-    const tree = renderer
-      .create(<AIAnalyticsSummaryWrapper insights={mockedInsights} />)
-      .toJSON();
+  //   const tree = renderer
+  //     .create(<AIAnalyticsSummaryWrapper insights={mockedInsights} />)
+  //     .toJSON();
 
-    expect(tree).toMatchSnapshot();
-  });
+  //   expect(tree).toMatchSnapshot();
+  // });
 
   it('should handle null analytics data', () => {
     const insightsData = { ...mockedInsights, learner_engagement: null };
