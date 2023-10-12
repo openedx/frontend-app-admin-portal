@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MultipleBudgetsPage from './MultipleBudgetsPage';
+import './learner-credit.scss';
 import BudgetDetailPage from './BudgetDetailPage';
 
 const LearnerCreditManagementRoutes = ({ match }) => (
