@@ -15,7 +15,7 @@ import {
 import { injectIntl } from '@edx/frontend-platform/i18n';
 
 import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../data';
-import { formatCurrency, formatDate, getRegistrationDeadline } from '../data/utils';
+import { formatCurrency, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
 import defaultLogoImg from '../../../static/default-card-header-dark.png';
 import defaultCardImg from '../../../static/default-card-header-light.png';
@@ -41,7 +41,7 @@ const CourseCard = ({
     BADGE,
     BUTTON_ACTION,
     PRICE,
-    REGISTRATION,
+    ENROLLMENT,
   } = CARD_TEXT;
 
   let rowPrice;
@@ -62,21 +62,21 @@ const CourseCard = ({
 
   const formatAvailability = availability?.length ? availability.join(', ') : null;
 
-  const registrationDeadline = getRegistrationDeadline(normalized_metadata?.enroll_by_date);
+  const enrollmentDeadline = getEnrollmentDeadline(normalized_metadata?.enroll_by_date);
 
-  let courseRegistrationInfo;
+  let courseEnrollmentInfo;
   if (normalized_metadata?.enroll_by_date) {
-    courseRegistrationInfo = `${formatAvailability} • ${REGISTRATION.text} ${registrationDeadline}`;
+    courseEnrollmentInfo = `${formatAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
   } else {
-    courseRegistrationInfo = formatAvailability;
+    courseEnrollmentInfo = formatAvailability;
   }
 
-  let execEdRegistrationInfo;
+  let execEdEnrollmentInfo;
   if (normalized_metadata?.enroll_by_date) {
-    execEdRegistrationInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
-    ${REGISTRATION.text} ${registrationDeadline}`;
+    execEdEnrollmentInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
+    ${ENROLLMENT.text} ${enrollmentDeadline}`;
   } else {
-    execEdRegistrationInfo = formatAvailability;
+    execEdEnrollmentInfo = formatAvailability;
   }
 
   const isExecEd = course_type === EXEC_COURSE_TYPE;
@@ -111,7 +111,7 @@ const CourseCard = ({
         </Card.Section>
         <Card.Footer
           orientation={isExtraSmall ? 'horizontal' : 'vertical'}
-          textElement={isExecEd ? execEdRegistrationInfo : courseRegistrationInfo}
+          textElement={isExecEd ? execEdEnrollmentInfo : courseEnrollmentInfo}
         >
           <Button
             // TODO: Implementation to follow in ENT-7594

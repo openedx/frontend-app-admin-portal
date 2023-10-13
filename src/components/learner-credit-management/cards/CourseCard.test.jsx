@@ -58,7 +58,7 @@ describe('Course card works as expected', () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('$100')).toBeInTheDocument();
     expect(screen.queryByText('Per learner price')).toBeInTheDocument();
-    expect(screen.queryByText('Upcoming • Learner must register by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.queryByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.queryByText('Course')).toBeInTheDocument();
     expect(screen.queryByText('View Course')).toBeInTheDocument();
     expect(screen.queryByText('Assign')).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('Course card works as expected', () => {
       </IntlProvider>,
     );
     expect(screen.queryByText('$999')).toBeInTheDocument();
-    expect(screen.queryByText('Starts Apr 18, 2016 • Learner must register by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.queryByText('Starts Apr 18, 2016 • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.queryByText('Executive Education')).toBeInTheDocument();
   });
 });

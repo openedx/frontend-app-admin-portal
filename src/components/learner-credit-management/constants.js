@@ -7,8 +7,8 @@ const CARD_TEXT = {
     viewCourse: 'View Course',
     assign: 'Assign',
   },
-  REGISTRATION: {
-    text: 'Learner must register by',
+  ENROLLMENT: {
+    text: 'Learner must enroll by',
   },
   PRICE: {
     subText: 'Per learner price',
