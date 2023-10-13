@@ -55,10 +55,9 @@ const TestWrapper = ({
       </Provider>
     </IntlProvider>
   );
-}
+};
 
 const renderWithProviders = (ui, options) => render(ui, { wrapper: TestWrapper, ...options });
-
 
 describe('BudgetDetailActivityTabContents', () => {
   const defaultProps = {
@@ -82,23 +81,52 @@ describe('BudgetDetailActivityTabContents', () => {
   });
 
   it('renders LearnerCreditAllocationTable when isTopDownAssignmentRealTimeLcmEnabled is false', () => {
-    renderWithProviders(<BudgetDetailActivityTabContents {...defaultProps} isTopDownAssignmentRealTimeLcmEnabled={false} />);
-    expect(screen.getByText(/Spent activity is driven by completed enrollments/)).toBeInTheDocument();
+    renderWithProviders(
+      <BudgetDetailActivityTabContents
+        {...defaultProps}
+        isTopDownAssignmentRealTimeLcmEnabled={false}
+      />,
+    );
+    expect(
+      screen.getByText(/Spent activity is driven by completed enrollments/),
+    ).toBeInTheDocument();
   });
 
   it('renders NoBudgetActivityCard when hasPendingAssignments and hasCompletedTransactions are false', () => {
-    renderWithProviders(<BudgetDetailActivityTabContents {...defaultProps} hasPendingAssignments={false} hasCompletedTransactions={false}/>);
-    expect(screen.getByText('No budget activity yet? Assign a course!')).toBeInTheDocument();
+    renderWithProviders(
+      <BudgetDetailActivityTabContents
+        {...defaultProps}
+        hasPendingAssignments={false}
+        hasCompletedTransactions={false}
+      />,
+    );
+    expect(
+      screen.getByText('No budget activity yet? Assign a course!'),
+    ).toBeInTheDocument();
   });
 
-  it('renders NoBudgetActivityCard and LearnerCreditAllocationTable when hasPendingAssignments is false and hasCompletedTransactions is true', () => {
-    renderWithProviders(<BudgetDetailActivityTabContents {...defaultProps} hasPendingAssignments={false} hasCompletedTransactions={true}/>);
-    expect(screen.getByText('No budget activity yet? Assign a course!')).toBeInTheDocument();
+  it('renders AssignMoreCoursesCard and LearnerCreditAllocationTable when hasPendingAssignments is false and hasCompletedTransactions is true', () => {
+    renderWithProviders(
+      <BudgetDetailActivityTabContents
+        {...defaultProps}
+        hasPendingAssignments={false}
+        hasCompletedTransactions={true}
+      />,
+    );
+    expect(
+      screen.getByText('Assign more courses to maximize your budget.'),
+    ).toBeInTheDocument();
     expect(screen.getByRole('table')).toBeInTheDocument();
   });
 
   it('renders Assignments Table and LearnerCreditAllocationTable when hasPendingAssignments is true', () => {
-    renderWithProviders(<BudgetDetailActivityTabContents {...defaultProps} hasPendingAssignments={true} hasCompletedTransactions={false}/>);
+    renderWithProviders(
+      <BudgetDetailActivityTabContents
+        {...defaultProps}
+        hasPendingAssignments={true}
+        hasCompletedTransactions={false}
+      />,
+    );
     expect(screen.getByText('Assignments Table')).toBeInTheDocument();
     expect(screen.getByRole('table')).toBeInTheDocument();
   });

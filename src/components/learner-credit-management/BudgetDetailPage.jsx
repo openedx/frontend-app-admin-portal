@@ -15,6 +15,7 @@ import LoadingMessage from '../LoadingMessage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
 
 const PAGE_TITLE = 'Learner Credit Management';
@@ -39,9 +40,9 @@ const BudgetDetailPage = ({
 
   const isTopDownAssignmentRealTimeLcmEnabled = enterpriseFeatures?.topDownAssignmentRealTimeLcm;
   // assignments.length > 0 && subsidyAccessPolicyType === 'AssignedLearnerCreditAccessPolicy'
-  const hasPendingAssignments = true;
-  const hasCompletedTransactions = true; //offerRedemptions.length > 0;
-
+  const hasPendingAssignments = false;
+  // offerRedemptions.length > 0;
+  const hasCompletedTransactions = true;
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -57,6 +58,7 @@ const BudgetDetailPage = ({
             />
           </Col>
         </Row>
+        {/* <BudgetDetailTabsAndRoutes /> */}
         <BudgetDetailActivityTabContents
           isTopDownAssignmentRealTimeLcmEnabled={isTopDownAssignmentRealTimeLcmEnabled}
           hasPendingAssignments={hasPendingAssignments}

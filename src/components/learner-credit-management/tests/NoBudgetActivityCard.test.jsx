@@ -20,7 +20,7 @@ describe('NoBudgetActivityCard', () => {
     expect(screen.getByAltText('Illustration for finding the right course')).toBeInTheDocument();
     expect(screen.getByAltText('Illustration for naming your learner')).toBeInTheDocument();
     expect(screen.getByAltText('Illustration for confirming spend')).toBeInTheDocument();
-  })
+  });
 
   it('should render three steps with their respective titles and descriptions', () => {
     render(<NoBudgetActivityCard />);

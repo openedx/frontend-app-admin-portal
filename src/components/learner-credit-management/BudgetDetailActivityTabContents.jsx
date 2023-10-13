@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import NoBudgetActivityCard from './NoBudgetActivityCard';
 import { useOfferRedemptions, isUUID } from './data';
+import AssignMoreCoursesCard from './AssignMoreCoursesCard';
 
 const BudgetDetailActivityTabContents = ({
   isTopDownAssignmentRealTimeLcmEnabled,
@@ -42,7 +43,7 @@ const BudgetDetailActivityTabContents = ({
   if (!hasPendingAssignments && hasCompletedTransactions) {
     return (
       <>
-        <NoBudgetActivityCard />
+        <AssignMoreCoursesCard balance="14,004" expirationDate="Dec 31, 2023" />
         <LearnerCreditAllocationTable
           isLoading={isLoadingOfferRedemptions}
           tableData={offerRedemptions}
