@@ -7,6 +7,7 @@ import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import NoBudgetActivityCard from './NoBudgetActivityCard';
 import { useOfferRedemptions, isUUID } from './data';
 import AssignMoreCoursesCard from './AssignMoreCoursesCard';
+import LoadingMessage from '../LoadingMessage';
 
 const BudgetDetailActivityTabContents = ({
   isTopDownAssignmentRealTimeLcmEnabled,
@@ -25,10 +26,13 @@ const BudgetDetailActivityTabContents = ({
     fetchOfferRedemptions,
   } = useOfferRedemptions(enterpriseUUID, enterpriseOfferId, subsidyAccessPolicyId);
 
+  if (isLoadingOfferRedemptions) {
+    return <LoadingMessage className="offers" />;
+  }
+
   if (!isTopDownAssignmentRealTimeLcmEnabled) {
     return (
       <LearnerCreditAllocationTable
-        isLoading={isLoadingOfferRedemptions}
         tableData={offerRedemptions}
         fetchTableData={fetchOfferRedemptions}
         enterpriseUUID={enterpriseUUID}
@@ -45,7 +49,6 @@ const BudgetDetailActivityTabContents = ({
       <>
         <AssignMoreCoursesCard balance="14,004" expirationDate="Dec 31, 2023" />
         <LearnerCreditAllocationTable
-          isLoading={isLoadingOfferRedemptions}
           tableData={offerRedemptions}
           fetchTableData={fetchOfferRedemptions}
           enterpriseUUID={enterpriseUUID}
@@ -64,7 +67,6 @@ const BudgetDetailActivityTabContents = ({
       <>
         <h4>Assignments Table</h4>
         <LearnerCreditAllocationTable
-          isLoading={isLoadingOfferRedemptions}
           tableData={offerRedemptions}
           fetchTableData={fetchOfferRedemptions}
           enterpriseUUID={enterpriseUUID}

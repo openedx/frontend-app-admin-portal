@@ -13,7 +13,6 @@ export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
 const LearnerCreditAllocationTable = ({
-  isLoading,
   tableData,
   fetchTableData,
 }) => {
@@ -32,7 +31,6 @@ const LearnerCreditAllocationTable = ({
         manualPagination
         isFilterable
         manualFilters
-        isLoading={isLoading}
         defaultColumnValues={{ Filter: TableTextFilter }}
         FilterStatusComponent={FilterStatus}
         columns={[
@@ -84,7 +82,6 @@ const LearnerCreditAllocationTable = ({
 };
 
 LearnerCreditAllocationTable.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({
       userEmail: PropTypes.string,
