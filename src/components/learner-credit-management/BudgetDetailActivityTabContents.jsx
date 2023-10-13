@@ -7,7 +7,7 @@ import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import NoBudgetActivityCard from './NoBudgetActivityCard';
 import { useOfferRedemptions, isUUID } from './data';
 import AssignMoreCoursesCard from './AssignMoreCoursesCard';
-import LoadingMessage from '../LoadingMessage';
+import { Skeleton } from '@edx/paragon';
 
 const BudgetDetailActivityTabContents = ({
   isTopDownAssignmentRealTimeLcmEnabled,
@@ -26,15 +26,22 @@ const BudgetDetailActivityTabContents = ({
     fetchOfferRedemptions,
   } = useOfferRedemptions(enterpriseUUID, enterpriseOfferId, subsidyAccessPolicyId);
 
+  const [isInitialLoad, setIsInitialLoad] = React.useState(true);
   if (isLoadingOfferRedemptions) {
-    return <LoadingMessage className="offers" />;
+    return <Skeleton height="100%" className="sr-only" />;
   }
+
+  const handleFetchTableData = async (...args) => {
+    setIsInitialLoad(false);
+    await fetchOfferRedemptions(...args);
+  };
 
   if (!isTopDownAssignmentRealTimeLcmEnabled) {
     return (
       <LearnerCreditAllocationTable
+        isLoading={isInitialLoad ? false : isLoadingOfferRedemptions}
         tableData={offerRedemptions}
-        fetchTableData={fetchOfferRedemptions}
+        fetchTableData={handleFetchTableData}
         enterpriseUUID={enterpriseUUID}
         enterpriseSlug={enterpriseSlug}
         enableLearnerPortal={enableLearnerPortal}
@@ -49,8 +56,9 @@ const BudgetDetailActivityTabContents = ({
       <>
         <AssignMoreCoursesCard balance="14,004" expirationDate="Dec 31, 2023" />
         <LearnerCreditAllocationTable
+          isLoading={isInitialLoad ? false : isLoadingOfferRedemptions}
           tableData={offerRedemptions}
-          fetchTableData={fetchOfferRedemptions}
+          fetchTableData={handleFetchTableData}
           enterpriseUUID={enterpriseUUID}
           enterpriseSlug={enterpriseSlug}
           enableLearnerPortal={enableLearnerPortal}
@@ -67,8 +75,9 @@ const BudgetDetailActivityTabContents = ({
       <>
         <h4>Assignments Table</h4>
         <LearnerCreditAllocationTable
+          isLoading={isInitialLoad ? false : isLoadingOfferRedemptions}
           tableData={offerRedemptions}
-          fetchTableData={fetchOfferRedemptions}
+          fetchTableData={handleFetchTableData}
           enterpriseUUID={enterpriseUUID}
           enterpriseSlug={enterpriseSlug}
           enableLearnerPortal={enableLearnerPortal}

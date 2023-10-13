@@ -5,13 +5,13 @@ import {
   Col,
   Breadcrumb,
   Container,
+  Skeleton,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Hero from '../Hero';
 
-import LoadingMessage from '../LoadingMessage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
@@ -29,7 +29,7 @@ const BudgetDetailPage = ({
   const { isLoading } = useContext(EnterpriseSubsidiesContext);
 
   if (isLoading) {
-    return <LoadingMessage className="offers" />;
+    return <Skeleton height="100%" className="sr-only" />;
   }
   const links = [
     {
