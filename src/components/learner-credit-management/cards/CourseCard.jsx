@@ -60,7 +60,7 @@ const CourseCard = ({
 
   const altText = `${title} course image`;
 
-  const formatAvailability = availability.length ? availability.join(', ') : null;
+  const formatAvailability = availability?.length ? availability.join(', ') : null;
 
   const registrationDeadline = getRegistrationDeadline(normalized_metadata?.enroll_by_date);
 
