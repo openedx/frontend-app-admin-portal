@@ -44,15 +44,13 @@ const CourseCard = ({
     ENROLLMENT,
   } = CARD_TEXT;
 
-  let rowPrice;
   let priceText;
 
   if (learningType === CONTENT_TYPE_COURSE) {
-    rowPrice = first_enrollable_paid_seat_price;
-    priceText = rowPrice != null ? `${formatCurrency(rowPrice)}` : 'N/A';
+    priceText = first_enrollable_paid_seat_price != null ? `${formatCurrency(first_enrollable_paid_seat_price)}` : 'N/A';
   } else {
-    [rowPrice] = entitlements || [null];
-    priceText = rowPrice != null ? `${formatCurrency(rowPrice?.price)}` : 'N/A';
+    const [firstEntitlement] = entitlements || [null];
+    priceText = firstEntitlement != null ? `${formatCurrency(firstEntitlement?.price)}` : 'N/A';
   }
 
   const imageSrc = card_image_url || defaultCardImg;
@@ -65,17 +63,13 @@ const CourseCard = ({
   const enrollmentDeadline = getEnrollmentDeadline(normalized_metadata?.enroll_by_date);
 
   let courseEnrollmentInfo;
-  if (normalized_metadata?.enroll_by_date) {
-    courseEnrollmentInfo = `${formatAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
-  } else {
-    courseEnrollmentInfo = formatAvailability;
-  }
-
   let execEdEnrollmentInfo;
   if (normalized_metadata?.enroll_by_date) {
+    courseEnrollmentInfo = `${formatAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
     execEdEnrollmentInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
     ${ENROLLMENT.text} ${enrollmentDeadline}`;
   } else {
+    courseEnrollmentInfo = formatAvailability;
     execEdEnrollmentInfo = formatAvailability;
   }
 

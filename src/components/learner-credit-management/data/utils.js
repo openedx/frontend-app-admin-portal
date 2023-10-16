@@ -199,11 +199,13 @@ export function formatCurrency(currency) {
   return currencyUS.format(currency);
 }
 
+// Exec ed and open courses cards should display either the enrollment deadline
+// or 90 days from the present date on user pageload, whichever is sooner.
 export function getEnrollmentDeadline(enrollByDate) {
   const currentDate = new Date();
   const enrollmentDeadline = new Date(currentDate.setDate(currentDate.getDate() + ASSIGNMENT_ENROLLMENT_DEADLINE));
   const courseEnrollByDate = new Date(enrollByDate);
-  return Date.parse(enrollmentDeadline) > Date.parse(courseEnrollByDate)
+  return enrollmentDeadline > courseEnrollByDate
     ? formatDate(courseEnrollByDate)
     : formatDate(enrollmentDeadline);
 }
