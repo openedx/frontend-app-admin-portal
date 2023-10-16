@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
@@ -11,7 +12,11 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
 
 import BudgetDetailPage from '../BudgetDetailPage';
-import { useOfferRedemptions, useBudgetContentAssignments } from '../data';
+import {
+  useSubsidyAccessPolicy,
+  useOfferRedemptions,
+  useBudgetContentAssignments,
+} from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 jest.mock('react-router-dom', () => ({
@@ -26,8 +31,17 @@ jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
   useOfferRedemptions: jest.fn(),
   useBudgetContentAssignments: jest.fn(),
+  useSubsidyAccessPolicy: jest.fn(),
 }));
 
+useSubsidyAccessPolicy.mockReturnValue({
+  isInitialLoading: false,
+  data: {
+    uuid: 'test-budget-uuid',
+    policyType: 'PerLearnerSpendCreditAccessPolicy',
+    displayName: null,
+  },
+});
 useBudgetContentAssignments.mockReturnValue({
   isLoading: false,
   contentAssignments: {
@@ -69,6 +83,8 @@ const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
 
+const queryClient = new QueryClient();
+
 const BudgetDetailPageWrapper = ({
   initialState = initialStoreState,
   enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
@@ -76,13 +92,15 @@ const BudgetDetailPageWrapper = ({
 }) => {
   const store = getMockStore({ ...initialState });
   return (
-    <IntlProvider locale="en">
-      <Provider store={store}>
-        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-          <BudgetDetailPage {...rest} />
-        </EnterpriseSubsidiesContext.Provider>
-      </Provider>
-    </IntlProvider>
+    <QueryClientProvider client={queryClient}>
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <BudgetDetailPage {...rest} />
+          </EnterpriseSubsidiesContext.Provider>
+        </Provider>
+      </IntlProvider>
+    </QueryClientProvider>
   );
 };
 
@@ -132,25 +150,51 @@ describe('<BudgetDetailPage />', () => {
     // Hero
     expect(screen.getByText('Learner Credit Management'));
     // Breadcrumb
-    expect(screen.getByText('Overview'));
+    expect(screen.getByText('Overview', { selector: 'li' }));
+    // Page heading
+    expect(screen.getByText('Overview', { selector: 'h2' }));
 
     // Activity tab exists and is active
     expect(screen.getByText('Activity').getAttribute('aria-selected')).toBe('true');
-    // Catalog tab exists and is NOT active
-    expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
-
-    // Assigned table is visible within Activity tab contents
-    const assignedSection = within(screen.getByText('Assigned').closest('section'));
-    expect(assignedSection.getByText('No results found')).toBeInTheDocument();
+    // Catalog tab does NOT exist
+    expect(screen.queryByText('Catalog')).not.toBeInTheDocument();
 
     // Spent table is visible within Activity tab contents
     const spentSection = within(screen.getByText('Spent').closest('section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
   });
 
-  it('renders with catalog tab active on initial load', async () => {
+  it('renders with assigned table and catalog tab available for assignable budgets', () => {
     useParams.mockReturnValue({
-      budgetId: '123',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+        policyType: 'AssignedLearnerCreditAccessPolicy',
+        isAssignable: true,
+      },
+    });
+    renderWithRouter(
+      <BudgetDetailPageWrapper
+        enterpriseUUID={enterpriseUUID}
+        enterpriseSlug={enterpriseSlug}
+      />,
+    );
+
+    // Assigned table is visible within Activity tab contents
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    expect(assignedSection.getByText('No results found')).toBeInTheDocument();
+
+    // Catalog tab exists and is NOT active
+    expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
+  });
+
+  it('renders with catalog tab active on initial load for assignable budgets', async () => {
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
       activeTabKey: 'catalog',
     });
     renderWithRouter(
@@ -231,7 +275,12 @@ describe('<BudgetDetailPage />', () => {
     });
   });
 
-  it('displays loading message while loading data', () => {
+  it('displays loading message while loading subsidy access policy metadata from API', () => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: true,
+      data: undefined,
+    });
+
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
@@ -242,6 +291,7 @@ describe('<BudgetDetailPage />', () => {
         }}
       />,
     );
-    expect(screen.getByText('Loading'));
+
+    expect(screen.getByText('loading budget details')).toBeInTheDocument();
   });
 });

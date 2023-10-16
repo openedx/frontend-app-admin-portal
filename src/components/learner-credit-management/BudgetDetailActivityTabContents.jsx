@@ -28,7 +28,7 @@ const BudgetDetailActivityTabContents = ({
     contentAssignments,
     fetchContentAssignments,
   } = useBudgetContentAssignments({
-    assignmentConfigurationUUID: subsidyAccessPolicy?.assignmentConfiguration,
+    assignmentConfigurationUUID: subsidyAccessPolicy?.assignmentConfiguration?.uuid,
     isEnabled: subsidyAccessPolicy?.isAssignable && isTopDownAssignmentEnabled,
   });
 
