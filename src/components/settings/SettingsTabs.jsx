@@ -1,5 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import {
   Container,
   Tabs,
   Tab,
@@ -26,6 +30,12 @@ import SettingsSSOTab from './SettingsSSOTab';
 import SettingsApiCredentialsTab from './SettingsApiCredentialsTab';
 import { features } from '../../config';
 import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
+
+const queryClient = new QueryClient({
+  queries: {
+    retry: true, // optional: you may disable automatic query retries for all queries or on a per-query basis.
+  },
+});
 
 const SettingsTabs = ({
   enterpriseId,
@@ -80,10 +90,12 @@ const SettingsTabs = ({
           eventKey={SETTINGS_TABS_VALUES.sso}
           title={SETTINGS_TAB_LABELS.sso}
         >
-          <SettingsSSOTab
-            enterpriseId={enterpriseId}
-            setHasSSOConfig={setHasSSOConfig}
-          />
+          <QueryClientProvider client={queryClient}>
+            <SettingsSSOTab
+              enterpriseId={enterpriseId}
+              setHasSSOConfig={setHasSSOConfig}
+            />
+          </QueryClientProvider>
         </Tab>,
       );
     }
