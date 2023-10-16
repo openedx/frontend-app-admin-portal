@@ -42,8 +42,8 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     />);
     const firstTitle = testHighlightSet[0].title;
     const lastTitle = testHighlightSet[testHighlightSet.length - 1].title;
-    waitFor(() => expect(screen.getByText(firstTitle)).toBeInTheDocument());
-    waitFor(() => expect(screen.getByText(lastTitle)).toBeInTheDocument());
+    expect(screen.getByText(firstTitle)).toBeInTheDocument();
+    expect(screen.getByText(lastTitle)).toBeInTheDocument();
   });
 
   it('Displays all content data content types', () => {
