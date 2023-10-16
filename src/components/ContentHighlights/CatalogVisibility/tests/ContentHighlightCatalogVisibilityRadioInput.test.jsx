@@ -130,9 +130,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
 
     await waitFor(() => {
       expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);
-      /* Upgrading the @edx/paragon version from 20.41.0 to 20.42.0
-    caused this function to be called twice. Setting this to 2 in order to fix the test */
-      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     });
   });
   it('Spinner 1 shows on radio 1 click', async () => {
@@ -175,9 +173,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
 
     await waitFor(() => {
       expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);
-      /* Upgrading the @edx/paragon version from 20.41.0 to 20.42.0
-    caused this function to be called twice. Setting this to 2 in order to fix the test */
-      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     });
   });
 });
