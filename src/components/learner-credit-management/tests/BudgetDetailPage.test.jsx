@@ -40,6 +40,7 @@ useSubsidyAccessPolicy.mockReturnValue({
     uuid: 'test-budget-uuid',
     policyType: 'PerLearnerSpendCreditAccessPolicy',
     displayName: null,
+    isAssignable: false,
   },
 });
 useBudgetContentAssignments.mockReturnValue({
@@ -117,6 +118,29 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it.each([
+    { displayName: null },
+    { displayName: 'Test Budget Display Name' },
+  ])('renders budget header data', ({ displayName }) => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+        policyType: 'AssignedLearnerCreditAccessPolicy',
+        displayName,
+      },
+    });
+    const expectedDisplayName = displayName || 'Overview';
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Hero
+    expect(screen.getByText('Learner Credit Management'));
+    // Breadcrumb
+    expect(screen.getByText(expectedDisplayName, { selector: 'li' }));
+    // Page heading
+    expect(screen.getByText(expectedDisplayName, { selector: 'h2' }));
+  });
+
+  it.each([
     {
       budgetId: mockEnterpriseOfferId,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null],
@@ -142,21 +166,14 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchOfferRedemptions: jest.fn(),
     });
-    renderWithRouter(<BudgetDetailPageWrapper enterpriseSlug={enterpriseSlug} />);
+    renderWithRouter(<BudgetDetailPageWrapper />);
 
     expect(useOfferRedemptions).toHaveBeenCalledTimes(1);
     expect(useOfferRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
 
-    // Hero
-    expect(screen.getByText('Learner Credit Management'));
-    // Breadcrumb
-    expect(screen.getByText('Overview', { selector: 'li' }));
-    // Page heading
-    expect(screen.getByText('Overview', { selector: 'h2' }));
-
     // Activity tab exists and is active
     expect(screen.getByText('Activity').getAttribute('aria-selected')).toBe('true');
-    // Catalog tab does NOT exist
+    // Catalog tab does NOT exist since the budget is not assignable
     expect(screen.queryByText('Catalog')).not.toBeInTheDocument();
 
     // Spent table is visible within Activity tab contents
@@ -164,7 +181,7 @@ describe('<BudgetDetailPage />', () => {
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
   });
 
-  it('renders with assigned table and catalog tab available for assignable budgets', () => {
+  it('renders with empty assigned table and catalog tab available for assignable budgets', () => {
     useParams.mockReturnValue({
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
       activeTabKey: 'activity',
@@ -177,12 +194,7 @@ describe('<BudgetDetailPage />', () => {
         isAssignable: true,
       },
     });
-    renderWithRouter(
-      <BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-      />,
-    );
+    renderWithRouter(<BudgetDetailPageWrapper />);
 
     // Assigned table is visible within Activity tab contents
     const assignedSection = within(screen.getByText('Assigned').closest('section'));
@@ -192,22 +204,70 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
   });
 
+  it('renders with assigned table data', () => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+        policyType: 'AssignedLearnerCreditAccessPolicy',
+        isAssignable: true,
+      },
+    });
+    const mockLearnerEmail = 'edx@example.com';
+    const mockCourseKey = 'edX+DemoX';
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [
+          {
+            uuid: 'test-uuid',
+            learnerEmail: mockLearnerEmail,
+            contentKey: mockCourseKey,
+          },
+        ],
+        numPages: 1,
+        currentPage: 1,
+      },
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Assigned table is visible within Activity tab contents
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    expect(assignedSection.queryByText('No results found')).not.toBeInTheDocument();
+    expect(assignedSection.getByText(mockLearnerEmail)).toBeInTheDocument();
+    const viewCourseCTA = assignedSection.getByText('View course', { selector: 'a' });
+    expect(viewCourseCTA).toBeInTheDocument();
+    expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
+  });
+
   it('renders with catalog tab active on initial load for assignable budgets', async () => {
     useParams.mockReturnValue({
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
       activeTabKey: 'catalog',
     });
-    renderWithRouter(
-      <BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-      />,
-    );
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
     // Catalog tab exists and is active
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('true');
   });
 
-  it('hides catalog tab when enterpriseFeatures.topDownAssignmentRealTimeLcm is false', () => {
+  it('hides catalog tab when budget is not assignable', () => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+        policyType: 'PerLearnerSpendCreditAccessPolicy',
+        isAssignable: false,
+      },
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Catalog tab does NOT exist
+    expect(screen.queryByText('Catalog')).toBeFalsy();
+  });
+
+  it('hides catalog tab when enterpriseFeatures.topDownAssignmentRealTimeLcm', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
@@ -216,13 +276,8 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     };
-    renderWithRouter(
-      <BudgetDetailPageWrapper
-        initialState={initialState}
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-      />,
-    );
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+
     // Catalog tab does NOT exist
     expect(screen.queryByText('Catalog')).toBeFalsy();
   });
@@ -232,12 +287,8 @@ describe('<BudgetDetailPage />', () => {
       budgetId: '123',
       activeTabKey: undefined,
     });
-    renderWithRouter(
-      <BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-      />,
-    );
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
     // Activity tab exists and is active
     expect(screen.getByText('Activity').getAttribute('aria-selected')).toBe('true');
   });
@@ -247,23 +298,21 @@ describe('<BudgetDetailPage />', () => {
       budgetId: '123',
       activeTabKey: 'invalid',
     });
-    renderWithRouter(
-      <BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-      />,
-    );
+    renderWithRouter(<BudgetDetailPageWrapper />);
     expect(screen.getByText('404')).toBeInTheDocument();
     expect(screen.getByText('something went wrong', { exact: false })).toBeInTheDocument();
   });
 
   it('handles user switching to catalog tab', async () => {
-    renderWithRouter(
-      <BudgetDetailPageWrapper
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-      />,
-    );
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+        policyType: 'AssignedLearnerCreditAccessPolicy',
+        isAssignable: true,
+      },
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
     const catalogTab = screen.getByText('Catalog');
 
     await act(async () => {

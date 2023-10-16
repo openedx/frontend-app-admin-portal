@@ -14,10 +14,13 @@ import MultipleBudgetsPage from '../MultipleBudgetsPage';
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
-const enterpriseId = 'test-enterprise';
+const enterpriseId = 'test-enterprise-uuid';
+const enterpriseSlug = 'test-enterprise-slug';
 const initialStore = {
   portalConfiguration: {
     enterpriseId,
+    enterpriseSlug,
+    enableLearnerPortal: true,
   },
 };
 const store = getMockStore({ ...initialStore });
