@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
 
 const BudgetDetailAssignments = ({
+  isEnabled,
   isLoading,
   tableData,
   fetchTableData,
-  enterpriseFeatures,
 }) => {
-  if (!enterpriseFeatures?.topDownAssignmentRealTimeLcm) {
+  if (!isEnabled) {
     return null;
   }
+
   return (
     <section>
       <h3 className="mb-3">Assigned</h3>
@@ -28,17 +28,11 @@ const BudgetDetailAssignments = ({
   );
 };
 
-const mapStateToProps = state => ({
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
-});
-
 BudgetDetailAssignments.propTypes = {
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
-  }),
+  isEnabled: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   tableData: PropTypes.shape().isRequired,
   fetchTableData: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(BudgetDetailAssignments);
+export default BudgetDetailAssignments;

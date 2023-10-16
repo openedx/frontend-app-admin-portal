@@ -29,7 +29,8 @@ const useBudgetContentAssignments = ({
   const [contentAssignments, setContentAssignments] = useState(initialContentAssignmentsState);
 
   const fetchContentAssignments = useCallback((args) => {
-    if (!isEnabled) {
+    if (!isEnabled || !assignmentConfigurationUUID) {
+      setIsLoading(false);
       return;
     }
     const getContentAssignments = async () => {

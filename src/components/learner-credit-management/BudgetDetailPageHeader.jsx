@@ -11,7 +11,7 @@ import { BudgetDetailPageContext } from './BudgetDetailPageContextProvider';
 
 const BudgetDetailPageHeader = ({ enterpriseSlug }) => {
   const { subsidyAccessPolicy } = useContext(BudgetDetailPageContext);
-  const budgetDisplayName = subsidyAccessPolicy?.displayName;
+  const budgetDisplayName = subsidyAccessPolicy?.displayName || 'Overview';
   return (
     <Stack gap={2}>
       <Row>

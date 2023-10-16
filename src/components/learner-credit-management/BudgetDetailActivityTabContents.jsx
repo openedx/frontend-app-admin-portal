@@ -28,13 +28,14 @@ const BudgetDetailActivityTabContents = ({
     contentAssignments,
     fetchContentAssignments,
   } = useBudgetContentAssignments({
-    assignmentConfigurationUUID: subsidyAccessPolicy.assignmentConfiguration,
+    assignmentConfigurationUUID: subsidyAccessPolicy?.assignmentConfiguration,
     isEnabled: subsidyAccessPolicy?.isAssignable && isTopDownAssignmentEnabled,
   });
 
   return (
     <Stack gap={5}>
       <BudgetDetailAssignments
+        isEnabled={!!subsidyAccessPolicy?.isAssignable && isTopDownAssignmentEnabled}
         isLoading={isLoadingContentAssignments}
         tableData={contentAssignments}
         fetchTableData={fetchContentAssignments}
