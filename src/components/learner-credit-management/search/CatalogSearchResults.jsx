@@ -78,10 +78,6 @@ export const BaseCatalogSearchResults = ({
       </Alert>
     );
   }
-  console.log({
-    results: searchResults?.nbPages,
-    pageSize: searchResults?.hitsPerPage,
-  })
 
   return (
     <div className="mb-5">
