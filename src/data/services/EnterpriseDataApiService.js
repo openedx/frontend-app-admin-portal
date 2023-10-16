@@ -9,6 +9,8 @@ class EnterpriseDataApiService {
 
   static enterpriseBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/enterprise/`;
 
+  static enterpriseAdminBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/`;
+
   static fetchDashboardAnalytics(enterpriseId) {
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
     return EnterpriseDataApiService.apiClient().get(url);
@@ -109,6 +111,11 @@ class EnterpriseDataApiService {
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchDashboardInsights(enterpriseId) {
+    const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseId}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 }

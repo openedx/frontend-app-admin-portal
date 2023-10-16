@@ -12,7 +12,6 @@ export function renderWithRouter(
     history = createMemoryHistory({ initialEntries: [route] }),
   } = {},
 ) {
-  // eslint-disable-next-line react/prop-types
   const Wrapper = ({ children }) => (
     <Router history={history}>{children}</Router>
   );

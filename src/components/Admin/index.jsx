@@ -24,12 +24,15 @@ import { formatTimestamp } from '../../utils';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
+import AIAnalyticsSummary from './AIAnalyticsSummary';
+import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
 
 class Admin extends React.Component {
   componentDidMount() {
     const { enterpriseId } = this.props;
     if (enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardInsights(enterpriseId);
     }
   }
 
@@ -37,12 +40,14 @@ class Admin extends React.Component {
     const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardInsights(enterpriseId);
     }
   }
 
   componentWillUnmount() {
     // Clear the overview data
     this.props.clearDashboardAnalytics();
+    this.props.clearDashboardInsights();
   }
 
   getMetadataForAction(actionSlug) {
@@ -281,6 +286,8 @@ class Admin extends React.Component {
       enterpriseId,
       match,
       location: { search },
+      insights,
+      insightsLoading,
     } = this.props;
 
     const { params: { actionSlug } } = match;
@@ -307,6 +314,13 @@ class Admin extends React.Component {
               <div className="row mt-4">
                 <div className="col">
                   <h2>Overview</h2>
+                </div>
+              </div>
+              <div className="row mt-4">
+                <div className="col">
+                  {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
+                    insights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                  )}
                 </div>
               </div>
               <div className="row mt-3">
@@ -402,11 +416,15 @@ Admin.defaultProps = {
   },
   csv: null,
   table: null,
+  insightsLoading: false,
+  insights: null,
 };
 
 Admin.propTypes = {
   fetchDashboardAnalytics: PropTypes.func.isRequired,
   clearDashboardAnalytics: PropTypes.func.isRequired,
+  fetchDashboardInsights: PropTypes.func.isRequired,
+  clearDashboardInsights: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
@@ -431,6 +449,8 @@ Admin.propTypes = {
     }).isRequired,
   }).isRequired,
   table: PropTypes.shape({}),
+  insightsLoading: PropTypes.bool,
+  insights: PropTypes.objectOf(PropTypes.shape),
 };
 
 export default Admin;

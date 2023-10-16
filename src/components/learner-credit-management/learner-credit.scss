@@ -1,0 +1,25 @@
+.card-container {
+  display: flex;
+  padding: 1rem;
+  flex-grow: 1;
+  justify-content: space-between;
+
+  .section-1 {
+    flex-direction: column;
+  }
+  .section-2 {
+    margin-left: 0;
+    text-align: end !important;
+    min-width: 400px;
+    padding-right: 0;
+    justify-content: space-between;
+    .footer {
+      justify-content: end;
+      padding: 0;
+    }
+  }
+}
+
+.badge {
+  margin: 4px;
+}

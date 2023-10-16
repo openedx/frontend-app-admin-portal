@@ -379,6 +379,11 @@ class LmsApiService {
     };
     return LmsApiService.apiClient().put(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/regenerate_credentials`, requestData);
   }
+
+  static generateAIAnalyticsSummary(enterpriseUUID, formData) {
+    const url = `${LmsApiService.baseUrl}/enterprise/api/v1/analytics-summary/${enterpriseUUID}`;
+    return LmsApiService.apiClient().post(url, formData);
+  }
 }
 
 export default LmsApiService;

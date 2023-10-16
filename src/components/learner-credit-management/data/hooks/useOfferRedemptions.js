@@ -1,50 +1,17 @@
 import {
-  useCallback, useEffect, useState, useMemo, useRef,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import debounce from 'lodash.debounce';
 
-import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
-import {
-  transformOfferSummary,
-  transformUtilizationTableResults,
-} from './utils';
-import { API_FIELDS_BY_TABLE_COLUMN_ACCESSOR } from './constants';
-
-export const useOfferSummary = (enterpriseUUID, enterpriseOffer) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [offerSummary, setOfferSummary] = useState();
-
-  useEffect(() => {
-    if (!enterpriseOffer) {
-      setIsLoading(false);
-      return;
-    }
-
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await EnterpriseDataApiService.fetchEnterpriseOfferSummary(enterpriseUUID, enterpriseOffer.id);
-        const data = camelCaseObject(response.data);
-        const transformedOfferSummary = transformOfferSummary(data);
-        setOfferSummary(transformedOfferSummary);
-      } catch (error) {
-        logError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [enterpriseUUID, enterpriseOffer]);
-
-  return {
-    isLoading,
-    offerSummary,
-  };
-};
+import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
+import { API_FIELDS_BY_TABLE_COLUMN_ACCESSOR } from '../constants';
+import { transformUtilizationTableResults } from '../utils';
 
 const applySortByToOptions = (sortBy, options) => {
   const orderingStrings = sortBy.map(({ id, desc }) => {
@@ -74,7 +41,7 @@ const applyFiltersToOptions = (filters, options) => {
   }
 };
 
-export const useOfferRedemptions = (enterpriseUUID, offerId = null, budgetId = null) => {
+const useOfferRedemptions = (enterpriseUUID, offerId = null, budgetId = null) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [offerRedemptions, setOfferRedemptions] = useState({
@@ -147,3 +114,5 @@ export const useOfferRedemptions = (enterpriseUUID, offerId = null, budgetId = n
     fetchOfferRedemptions: debouncedFetchOfferRedemptions,
   };
 };
+
+export default useOfferRedemptions;

@@ -16,3 +16,21 @@ export const NO_BALANCE_REMAINING_DOLLAR_THRESHOLD = 100;
 export const DATE_FORMAT = 'MMMM DD, YYYY';
 
 export const EXEC_ED_OFFER_TYPE = 'learner_credit';
+
+// Budget Detail Page Tabs
+export const BUDGET_DETAIL_ACTIVITY_TAB = 'activity';
+export const BUDGET_DETAIL_CATALOG_TAB = 'catalog';
+export const BUDGET_DETAIL_TAB_LABELS = {
+  [BUDGET_DETAIL_ACTIVITY_TAB]: 'Activity',
+  [BUDGET_DETAIL_CATALOG_TAB]: 'Catalog',
+};
+
+// Facet filters
+export const LEARNING_TYPE_REFINEMENT = 'learning_type';
+export const LANGUAGE_REFINEMENT = 'language';
+
+// Learning types
+export const CONTENT_TYPE_COURSE = 'course';
+export const EXEC_ED_TITLE = 'Executive Education';
+
+export const EXEC_COURSE_TYPE = 'executive-education-2u';

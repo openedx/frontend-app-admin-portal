@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Stack, OverlayTrigger, IconButton, Icon, Popover,
 } from '@edx/paragon';
@@ -65,4 +66,8 @@ EmailAddressTableCell.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
 };
 
-export default EmailAddressTableCell;
+const mapStateToProps = state => ({
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(EmailAddressTableCell);
