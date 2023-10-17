@@ -5,10 +5,19 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import { render, screen, waitFor } from '@testing-library/react';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
-import { getMockStore, initialStore } from '../testutils';
-import NewSSOConfigAlerts from '../NewSSOConfigAlerts';
+import { getMockStore } from '../testutils';
+import NewSSOConfigAlerts, { SSO_SETUP_COMPLETION_COOKIE_NAME } from '../NewSSOConfigAlerts';
 
-const store = getMockStore({ contactEmail: 'foobar', ...initialStore });
+const enterpriseId = 'an-id-1';
+const initialStore = {
+  portalConfiguration: {
+    enterpriseId,
+    enterpriseSlug: 'sluggy',
+    enterpriseName: 'sluggyent',
+    contactEmail: 'foobar',
+  },
+};
+const store = getMockStore({ ...initialStore });
 const mockSetProviderConfig = jest.fn();
 const contextValue = {
   ...SSO_INITIAL_STATE,
@@ -35,6 +44,9 @@ const contextValue = {
 };
 
 describe('New SSO Config Alerts Tests', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
   test('displays inProgress alert properly', async () => {
     render(
       <IntlProvider locale="en">
@@ -118,6 +130,10 @@ describe('New SSO Config Alerts Tests', () => {
     ).not.toBeInTheDocument();
   });
   test('displays live alert properly', () => {
+    Object.defineProperty(window.document, 'cookie', {
+      writable: true,
+      value: `${SSO_SETUP_COMPLETION_COOKIE_NAME}=false`,
+    });
     render(
       <IntlProvider locale="en">
         <SSOConfigContext.Provider value={contextValue}>
@@ -161,5 +177,31 @@ describe('New SSO Config Alerts Tests', () => {
     }, []).then(() => {
       expect(mockCloseAlerts).toHaveBeenCalled();
     });
+  });
+  test('hides live alert properly after dismissing', () => {
+    Object.defineProperty(window.document, 'cookie', {
+      writable: true,
+      value: `${SSO_SETUP_COMPLETION_COOKIE_NAME}=true`,
+    });
+    render(
+      <IntlProvider locale="en">
+        <SSOConfigContext.Provider value={contextValue}>
+          <Provider store={store}>
+            <NewSSOConfigAlerts
+              liveConfigs={[{ display_name: 'live' }]}
+              inProgressConfigs={[]}
+              untestedConfigs={[]}
+              notConfigured={[]}
+              closeAlerts={jest.fn()}
+            />,
+          </Provider>
+        </SSOConfigContext.Provider>
+      </IntlProvider>,
+    );
+    expect(
+      screen.queryByText(
+        'Your SSO integration is live!',
+      ),
+    ).not.toBeInTheDocument();
   });
 });
