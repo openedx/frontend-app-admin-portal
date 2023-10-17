@@ -153,7 +153,7 @@ describe('<BudgetDetailPage />', () => {
     // Hero
     expect(screen.getByText('Learner Credit Management'));
     // Breadcrumb
-    expect(screen.getByText('Overview'));
+    expect(screen.getAllByText('Overview'));
     // Activity tab exists and is active
     expect(screen.getByText('Activity').getAttribute('aria-selected')).toBe('true');
     // Spend table is visible within Activity tab contents

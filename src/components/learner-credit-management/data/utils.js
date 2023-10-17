@@ -187,3 +187,44 @@ export const orderOffers = (offers) => {
 export function formatDate(date) {
   return dayjs(date).format('MMM D, YYYY');
 }
+
+export const transformBudgetsData = (offer, offerDetails) => {
+  if (!offerDetails) {
+    return null;
+  }
+
+  const { start, end } = offer;
+  const budgetsSummary = [];
+
+  const getBudgetDetail = (data) => {
+    const {
+      amountOfPolicySpent,
+      remainingBalance,
+      startingBalance,
+      percentOfPolicySpent,
+      subsidyAccessPolicyUuid,
+      subsidyAccessPolicyDisplayName,
+    } = data;
+
+    return {
+      start,
+      end,
+      id: subsidyAccessPolicyUuid || data.offerId,
+      redeemedFunds: parseFloat(amountOfPolicySpent || data.amountOfOfferSpent),
+      remainingFunds: parseFloat(remainingBalance),
+      totalFunds: parseFloat(startingBalance || data.maxDiscount),
+      percentUtilized: parseFloat(percentOfPolicySpent || data.percentOfOfferSpent),
+      displayName: subsidyAccessPolicyDisplayName || offer.name,
+    };
+  };
+
+  if (offerDetails.budgets?.length > 0) {
+    offerDetails.budgets.forEach((budget) => {
+      budgetsSummary.push(getBudgetDetail(budget));
+    });
+  } else {
+    budgetsSummary.push(getBudgetDetail(offerDetails));
+  }
+
+  return budgetsSummary;
+};

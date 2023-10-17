@@ -4,6 +4,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
   useOfferSummary,
   useOfferRedemptions,
+  useOffersBudgets,
 } from '../hooks';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
@@ -16,6 +17,8 @@ jest.mock('../../../../data/services/EnterpriseDataApiService');
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_ENTERPRISE_OFFER_ID = 1;
+const TEST_ENTERPRISE_SUBSIDY_UUID_1 = 'test-enterprise-subsidy-uuid-1';
+const TEST_ENTERPRISE_SUBSIDY_UUID_2 = 'test-enterprise-subsidy-uuid-2';
 
 const mockOfferSummary = {
   offer_id: TEST_ENTERPRISE_OFFER_ID,
@@ -26,9 +29,33 @@ const mockOfferSummary = {
   percent_of_offer_spent: 0.04,
   remaining_balance: 4800.00,
 };
-const mockEnterpriseOffer = {
-  id: TEST_ENTERPRISE_OFFER_ID,
+const mockallBudgetsData = {
+  offer_id: TEST_ENTERPRISE_OFFER_ID,
+  budgets: [
+    {
+      subsidy_access_policy_uuid: TEST_ENTERPRISE_SUBSIDY_UUID_1,
+      subsidy_access_policy_display_name: 'Demo offer 1',
+      starting_balance: 1000,
+      amount_of_policy_spent: 500,
+      remaining_balance: 500,
+      percent_of_policy_spent: 0.50,
+    },
+    {
+      subsidy_access_policy_uuid: TEST_ENTERPRISE_SUBSIDY_UUID_2,
+      subsidy_access_policy_display_name: 'Demo offer 2',
+      starting_balance: 1000,
+      amount_of_policy_spent: 500,
+      remaining_balance: 500,
+      percent_of_policy_spent: 0.50,
+    },
+  ],
 };
+
+const mockEnterpriseOffer = [{
+  id: TEST_ENTERPRISE_OFFER_ID,
+  start: 'Jan 03, 2023',
+  end: 'Jan 03, 2024',
+}];
 const mockOfferEnrollments = [{
   user_email: 'edx@example.com',
   course_title: 'Test Course Title',
@@ -43,6 +70,55 @@ const mockOfferEnrollmentsResponse = {
   results: mockOfferEnrollments,
 };
 
+describe('useOffersBudgets', () => {
+  it('should handle null enterprise offer', async () => {
+    const { result } = renderHook(() => useOffersBudgets(TEST_ENTERPRISE_UUID));
+    expect(result.current).toEqual({
+      allBudgets: [],
+      isLoading: false,
+    });
+  });
+
+  it('should fetch all budgets of all enterprise offers', async () => {
+    EnterpriseDataApiService.fetchEnterpriseOfferSummary.mockResolvedValueOnce({ data: mockallBudgetsData });
+    const { result, waitForNextUpdate } = renderHook(() => useOffersBudgets(TEST_ENTERPRISE_UUID, mockEnterpriseOffer));
+
+    expect(result.current).toEqual({
+      allBudgets: [],
+      isLoading: true,
+    });
+
+    await waitForNextUpdate(); // You can adjust the timeout value as needed
+
+    expect(EnterpriseDataApiService.fetchEnterpriseOfferSummary).toHaveBeenCalled();
+    const expectedResult = [
+      {
+        start: 'Jan 03, 2023',
+        end: 'Jan 03, 2024',
+        id: TEST_ENTERPRISE_SUBSIDY_UUID_1,
+        redeemedFunds: 500,
+        remainingFunds: 500,
+        totalFunds: 1000,
+        percentUtilized: 0.50,
+        displayName: 'Demo offer 1',
+      },
+      {
+        start: 'Jan 03, 2023',
+        end: 'Jan 03, 2024',
+        id: TEST_ENTERPRISE_SUBSIDY_UUID_2,
+        redeemedFunds: 500,
+        remainingFunds: 500,
+        totalFunds: 1000,
+        percentUtilized: 0.50,
+        displayName: 'Demo offer 2',
+      },
+    ];
+    expect(result.current).toEqual({
+      allBudgets: expectedResult,
+      isLoading: false,
+    });
+  });
+});
 describe('useOfferSummary', () => {
   it('should handle null enterprise offer', async () => {
     const { result } = renderHook(() => useOfferSummary(TEST_ENTERPRISE_UUID));

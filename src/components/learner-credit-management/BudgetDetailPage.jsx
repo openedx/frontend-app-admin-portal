@@ -15,11 +15,13 @@ import LoadingMessage from '../LoadingMessage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
+import BudgetAggregates from './BudgetAggregates';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
 const BudgetDetailPage = ({ enterpriseSlug }) => {
-  const { isLoading } = useContext(EnterpriseSubsidiesContext);
+  const { isLoading, offers } = useContext(EnterpriseSubsidiesContext);
+
   if (isLoading) {
     return <LoadingMessage className="offers" />;
   }
@@ -44,6 +46,7 @@ const BudgetDetailPage = ({ enterpriseSlug }) => {
             />
           </Col>
         </Row>
+        <BudgetAggregates offers={offers} />
         <BudgetDetailTabsAndRoutes />
       </Container>
     </>
