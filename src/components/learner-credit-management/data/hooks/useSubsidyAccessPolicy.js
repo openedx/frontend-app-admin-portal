@@ -8,8 +8,15 @@ const determineBudgetAssignability = (policyType) => {
   return assignableSubsidyAccessPolicyTypes.includes(policyType);
 };
 
+/**
+ * Retrieves a subsidy access policy by UUID from the API.
+ *
+ * @param {*} queryKey The queryKey from the associated `useQuery` call.
+ * @returns The subsidy access policy object, with the `isAssignable` property added.
+ */
 const getSubsidyAccessPolicy = async ({ queryKey }) => {
-  const response = await EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(queryKey[2]);
+  const subsidyAccessPolicyUUID = queryKey[2];
+  const response = await EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID);
   const subsidyAccessPolicy = camelCaseObject(response.data);
   subsidyAccessPolicy.isAssignable = determineBudgetAssignability(subsidyAccessPolicy.policyType);
   return subsidyAccessPolicy;

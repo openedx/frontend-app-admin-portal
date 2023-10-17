@@ -12,7 +12,7 @@ const initialContentAssignmentsState = {
 };
 
 const applyFiltersToOptions = (filters, options) => {
-  if (!filters?.length === 0) {
+  if (!filters || filters.length === 0) {
     return;
   }
   const searchQuery = filters.find(filter => filter.id === 'assignmentDetails')?.value;
