@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,10 +7,11 @@ import {
 } from '@edx/paragon';
 
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { BudgetDetailPageContext } from './BudgetDetailPageContextProvider';
+import { useBudgetId, useSubsidyAccessPolicy } from './data';
 
 const BudgetDetailPageHeader = ({ enterpriseSlug }) => {
-  const { subsidyAccessPolicy } = useContext(BudgetDetailPageContext);
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const budgetDisplayName = subsidyAccessPolicy?.displayName || 'Overview';
   return (
     <Stack gap={2}>

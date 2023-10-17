@@ -22,10 +22,11 @@ const getSubsidyAccessPolicy = async ({ queryKey }) => {
   return subsidyAccessPolicy;
 };
 
-const useSubsidyAccessPolicy = (subsidyAccessPolicyId) => useQuery({
-  queryKey: ['learner-credit-management', 'policy', subsidyAccessPolicyId],
+const useSubsidyAccessPolicy = (subsidyAccessPolicyId, { queryOptions } = {}) => useQuery({
+  queryKey: ['learner-credit-management', 'subsidy-access-policy', subsidyAccessPolicyId],
   queryFn: getSubsidyAccessPolicy,
   enabled: !!subsidyAccessPolicyId,
+  ...queryOptions,
 });
 
 export default useSubsidyAccessPolicy;

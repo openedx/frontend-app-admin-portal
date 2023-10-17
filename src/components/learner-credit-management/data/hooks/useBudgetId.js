@@ -6,6 +6,7 @@ const useBudgetId = () => {
   const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
   const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
   return {
+    budgetId,
     enterpriseOfferId,
     subsidyAccessPolicyId,
   };

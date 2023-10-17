@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -9,13 +9,12 @@ import {
   BUDGET_DETAIL_ACTIVITY_TAB,
   BUDGET_DETAIL_CATALOG_TAB,
 } from './data/constants';
-import { useBudgetDetailTabs } from './data';
+import { useBudgetDetailTabs, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
 import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
 import BudgetDetailCatalogTabContents from './BudgetDetailCatalogTabContents';
-import { BudgetDetailPageContext } from './BudgetDetailPageContextProvider';
 
 const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 
@@ -44,11 +43,12 @@ const BudgetDetailTabsAndRoutes = ({
   enterpriseSlug,
   enterpriseFeatures,
 }) => {
-  const { subsidyAccessPolicy } = useContext(BudgetDetailPageContext);
+  const { activeTabKey: routeActiveTabKey } = useParams();
+  const { budgetId, subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const isBudgetAssignable = !!subsidyAccessPolicy?.isAssignable;
 
   const history = useHistory();
-  const { budgetId, activeTabKey: routeActiveTabKey } = useParams();
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
     { enterpriseFeatures, isBudgetAssignable },

@@ -1,19 +1,25 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Stack } from '@edx/paragon';
 
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
-import { useOfferRedemptions, useBudgetContentAssignments, useBudgetId } from './data';
-import { BudgetDetailPageContext } from './BudgetDetailPageContextProvider';
+import {
+  useOfferRedemptions,
+  useBudgetContentAssignments,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from './data';
 
 const BudgetDetailActivityTabContents = ({
   enterpriseUUID,
   enterpriseFeatures,
 }) => {
-  const { subsidyAccessPolicy } = useContext(BudgetDetailPageContext);
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
+  const {
+    data: subsidyAccessPolicy,
+  } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
   const isTopDownAssignmentEnabled = enterpriseFeatures?.topDownAssignmentRealTimeLcm;
 

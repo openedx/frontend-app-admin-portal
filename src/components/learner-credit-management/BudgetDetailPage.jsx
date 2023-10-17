@@ -4,7 +4,6 @@ import { Skeleton, Stack } from '@edx/paragon';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailPageWrapper from './BudgetDetailPageWrapper';
-import BudgetDetailPageContextProvider from './BudgetDetailPageContextProvider';
 import BudgetDetailPageHeader from './BudgetDetailPageHeader';
 
 const BudgetDetailPage = () => {
@@ -27,17 +26,12 @@ const BudgetDetailPage = () => {
   }
 
   return (
-    <BudgetDetailPageContextProvider
-      isLoadingSubsidyAccessPolicy={isInitialLoadingSubsidyAccessPolicy}
-      subsidyAccessPolicy={subsidyAccessPolicy}
-    >
-      <BudgetDetailPageWrapper subsidyAccessPolicy={subsidyAccessPolicy}>
-        <Stack gap={4}>
-          <BudgetDetailPageHeader />
-          <BudgetDetailTabsAndRoutes />
-        </Stack>
-      </BudgetDetailPageWrapper>
-    </BudgetDetailPageContextProvider>
+    <BudgetDetailPageWrapper subsidyAccessPolicy={subsidyAccessPolicy}>
+      <Stack gap={4}>
+        <BudgetDetailPageHeader />
+        <BudgetDetailTabsAndRoutes />
+      </Stack>
+    </BudgetDetailPageWrapper>
   );
 };
 
