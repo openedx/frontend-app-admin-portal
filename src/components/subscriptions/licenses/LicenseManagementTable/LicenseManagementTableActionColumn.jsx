@@ -65,12 +65,12 @@ const LicenseManagementTableActionColumn = ({
 
   const handleRevokeSuccess = () => {
     setRevokeModal(modalZeroState);
-    onRevokeSuccess(clearSelection)();
+    onRevokeSuccess(clearSelection());
   };
 
   const handleRemindSuccess = () => {
     setRemindModal(modalZeroState);
-    onRemindSuccess(clearSelection)();
+    onRemindSuccess(clearSelection());
   };
 
   const handleRevokeSubmit = () => {
