@@ -11,6 +11,7 @@ exports[`<ReduxFormCheckbox /> renders checked correctly 1`] = `
       checked={true}
       className="pgn__form-checkbox-input"
       defaultValue={false}
+      disabled={false}
       id="id"
       type="checkbox"
     />
@@ -35,6 +36,7 @@ exports[`<ReduxFormCheckbox /> renders unchecked correctly 1`] = `
       checked={false}
       className="pgn__form-checkbox-input"
       defaultValue={false}
+      disabled={false}
       id="id"
       type="checkbox"
     />

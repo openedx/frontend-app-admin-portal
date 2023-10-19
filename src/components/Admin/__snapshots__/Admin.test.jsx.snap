@@ -246,7 +246,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -297,7 +297,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -367,7 +367,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -418,7 +418,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -555,7 +555,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -657,7 +657,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -708,7 +708,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -821,7 +821,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -966,7 +966,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1017,7 +1017,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1087,7 +1087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1138,7 +1138,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1275,7 +1275,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1377,7 +1377,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1428,7 +1428,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1541,7 +1541,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -1686,7 +1686,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1737,7 +1737,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1807,7 +1807,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1858,7 +1858,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1995,7 +1995,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2097,7 +2097,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2148,7 +2148,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2261,7 +2261,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -2410,7 +2410,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2461,7 +2461,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2531,7 +2531,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2582,7 +2582,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2719,7 +2719,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2821,7 +2821,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2872,7 +2872,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3087,7 +3087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3175,7 +3175,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -3277,7 +3277,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -3328,7 +3328,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3398,7 +3398,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -3449,7 +3449,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3586,7 +3586,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3688,7 +3688,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -3739,7 +3739,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3954,7 +3954,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4042,7 +4042,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -4144,7 +4144,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4195,7 +4195,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4265,7 +4265,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4316,7 +4316,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4453,7 +4453,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4555,7 +4555,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4606,7 +4606,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4719,7 +4719,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -4868,7 +4868,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4919,7 +4919,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4989,7 +4989,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5040,7 +5040,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5177,7 +5177,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5279,7 +5279,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5330,7 +5330,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5443,7 +5443,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -5592,7 +5592,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5643,7 +5643,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5713,7 +5713,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5764,7 +5764,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5901,7 +5901,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6003,7 +6003,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -6054,7 +6054,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6167,7 +6167,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -6316,7 +6316,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -6367,7 +6367,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6437,7 +6437,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -6488,7 +6488,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6625,7 +6625,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6727,7 +6727,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -6778,7 +6778,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6891,7 +6891,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -7036,7 +7036,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7087,7 +7087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7157,7 +7157,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7208,7 +7208,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7345,7 +7345,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7447,7 +7447,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7498,7 +7498,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7611,7 +7611,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -7743,7 +7743,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M20 7l.94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-1.59-2.67l-4.24-4.24L1.59 18.17l4.24 4.24L18.41 9.83zm-4.2 1.38L12.8 9.8l1.38-1.38 1.41 1.41-1.38 1.38z"
+                d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-1.59-2.67-4.24-4.24L1.59 18.17l4.24 4.24L18.41 9.83zm-4.2 1.38L12.8 9.8l1.38-1.38 1.41 1.41-1.38 1.38z"
                 fill="currentColor"
               />
             </svg>
@@ -7765,7 +7765,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                 fill="currentColor"
               />
             </svg>
@@ -7809,7 +7809,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7860,7 +7860,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7930,7 +7930,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7981,7 +7981,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -8118,7 +8118,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -8220,7 +8220,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -8271,7 +8271,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -8486,7 +8486,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -8574,7 +8574,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -8665,7 +8665,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
                 fill="currentColor"
               />
             </svg>
@@ -9045,7 +9045,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -9096,7 +9096,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -9166,7 +9166,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -9217,7 +9217,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -9354,7 +9354,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -9456,7 +9456,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -9507,7 +9507,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -9722,7 +9722,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -9810,7 +9810,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
                             fill="currentColor"
                           />
                         </svg>

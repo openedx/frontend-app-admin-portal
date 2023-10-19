@@ -59,7 +59,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
+                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
                   fill="currentColor"
                 />
               </svg>
@@ -86,7 +86,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
               fill="currentColor"
             />
           </svg>
@@ -165,7 +165,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
+                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
                   fill="currentColor"
                 />
               </svg>
@@ -192,7 +192,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
               fill="currentColor"
             />
           </svg>
@@ -279,7 +279,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
+                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
                   fill="currentColor"
                 />
               </svg>
@@ -650,7 +650,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
+                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
                   fill="currentColor"
                 />
               </svg>
@@ -754,7 +754,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                            d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -857,7 +857,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                            d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -979,7 +979,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -1015,7 +1015,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -1092,7 +1092,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
+                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
                   fill="currentColor"
                 />
               </svg>
@@ -1283,7 +1283,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -1319,7 +1319,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+                            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
                             fill="currentColor"
                           />
                         </svg>
