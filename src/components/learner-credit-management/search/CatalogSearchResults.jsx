@@ -125,7 +125,6 @@ BaseCatalogSearchResults.defaultProps = {
   paginationComponent: SearchPagination,
   preview: false,
   setNoContent: () => {},
-  courseType: null,
 };
 
 BaseCatalogSearchResults.propTypes = {
