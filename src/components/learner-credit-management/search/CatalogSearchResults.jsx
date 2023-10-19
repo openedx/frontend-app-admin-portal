@@ -123,7 +123,6 @@ BaseCatalogSearchResults.defaultProps = {
   searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
   error: null,
   paginationComponent: SearchPagination,
-  row: null,
   preview: false,
   setNoContent: () => {},
   courseType: null,
@@ -146,15 +145,10 @@ BaseCatalogSearchResults.propTypes = {
   error: PropTypes.shape({
     message: PropTypes.string,
   }),
-
   searchState: PropTypes.shape({
     page: PropTypes.number,
   }).isRequired,
   paginationComponent: PropTypes.func,
-  // eslint-disable-next-line react/no-unused-prop-types
-  row: PropTypes.string,
-  contentType: PropTypes.string.isRequired,
-  courseType: PropTypes.string,
   preview: PropTypes.bool,
   setNoContent: PropTypes.func,
 };

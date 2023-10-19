@@ -12,17 +12,24 @@ const SpendTableEnrollmentDetailsContents = ({
   enterpriseSlug,
 }) => (
   <>
-    <EmailAddressTableCell row={row} />
+    <EmailAddressTableCell
+      tableId="spent"
+      userEmail={row.original.userEmail}
+      enterpriseEnrollmentId={row.original.enterpriseEnrollmentId}
+      fulfillmentIdentifier={row.original.fulfillmentIdentifier}
+    />
     <div>
       {enableLearnerPortal ? (
         <Hyperlink
+          className="x-small"
           destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.courseKey}`}
           target="_blank"
+          isInline
         >
           {row.original.courseTitle}
         </Hyperlink>
       ) : (
-        <span className="text-light-900">{row.original.courseTitle}</span>
+        <span className="x-small text-light-900">{row.original.courseTitle}</span>
       )}
     </div>
   </>
@@ -32,6 +39,9 @@ const rowPropType = PropTypes.shape({
   original: PropTypes.shape({
     courseKey: PropTypes.string.isRequired,
     courseTitle: PropTypes.string.isRequired,
+    userEmail: PropTypes.string.isRequired,
+    enterpriseEnrollmentId: PropTypes.number,
+    fulfillmentIdentifier: PropTypes.string,
   }).isRequired,
 }).isRequired;
 

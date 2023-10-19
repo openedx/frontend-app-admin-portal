@@ -11,6 +11,7 @@ const TAB_CLASS_NAME = 'pt-4.5';
 
 export const useBudgetDetailTabs = ({
   activeTabKey,
+  isBudgetAssignable,
   enterpriseFeatures,
   ActivityTabElement,
   CatalogTabElement,
@@ -29,7 +30,7 @@ export const useBudgetDetailTabs = ({
         )}
       </Tab>,
     );
-    if (enterpriseFeatures.topDownAssignmentRealTimeLcm) {
+    if (enterpriseFeatures.topDownAssignmentRealTimeLcm && isBudgetAssignable) {
       tabsArray.push(
         <Tab
           key={BUDGET_DETAIL_CATALOG_TAB}
@@ -44,7 +45,7 @@ export const useBudgetDetailTabs = ({
       );
     }
     return tabsArray;
-  }, [activeTabKey, enterpriseFeatures, ActivityTabElement, CatalogTabElement]);
+  }, [activeTabKey, enterpriseFeatures, ActivityTabElement, CatalogTabElement, isBudgetAssignable]);
 
   return tabs;
 };

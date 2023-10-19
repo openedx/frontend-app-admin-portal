@@ -20,7 +20,7 @@ const CatalogSearch = () => {
         id="catalogs.enterpriseCatalogs.header"
         defaultMessage="Budget associated catalog"
         description="Search dialogue."
-        tagName="h2"
+        tagName="h3"
       />
       <InstantSearch indexName={configuration.ALGOLIA.INDEX_NAME} searchClient={searchClient}>
         <div className="enterprise-catalogs-header">

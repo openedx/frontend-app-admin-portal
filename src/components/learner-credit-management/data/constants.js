@@ -32,8 +32,11 @@ export const LANGUAGE_REFINEMENT = 'language';
 // Learning types
 export const CONTENT_TYPE_COURSE = 'course';
 export const EXEC_ED_TITLE = 'Executive Education';
-
 export const EXEC_COURSE_TYPE = 'executive-education-2u';
 
 // Learner must enroll within 90 days of assignment
 export const ASSIGNMENT_ENROLLMENT_DEADLINE = 90;
+
+// Number of items to display per page in Budget Detail assignment/spend tables
+export const PAGE_SIZE = 25;
+export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
