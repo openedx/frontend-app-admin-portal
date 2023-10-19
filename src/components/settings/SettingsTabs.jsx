@@ -134,8 +134,6 @@ const SettingsTabs = ({
       );
     }
 
-    console.log('SettingsTabs', 'initialTabs', initialTabs);
-
     return initialTabs;
   }, [
     FEATURE_SSO_SETTINGS_TAB,
