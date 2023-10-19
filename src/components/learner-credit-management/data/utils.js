@@ -143,10 +143,11 @@ export const getBudgetStatus = (startDateStr, endDateStr, currentDate = new Date
   };
 };
 
-export const formatPrice = (price) => {
+export const formatPrice = (price, options = {}) => {
   const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    ...options,
   });
   return USDollar.format(Math.abs(price));
 };

@@ -1,47 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Stack } from '@edx/paragon';
 
-import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { useOfferRedemptions, isUUID } from './data';
+import BudgetDetailRedemptions from './BudgetDetailRedemptions';
+import BudgetDetailAssignments from './BudgetDetailAssignments';
+import {
+  useOfferRedemptions,
+  useBudgetContentAssignments,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from './data';
 
 const BudgetDetailActivityTabContents = ({
   enterpriseUUID,
-  enterpriseSlug,
-  enableLearnerPortal,
+  enterpriseFeatures,
 }) => {
-  const { budgetId } = useParams();
-  const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
-  const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
+  const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
+  const {
+    data: subsidyAccessPolicy,
+  } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+
+  const isTopDownAssignmentEnabled = enterpriseFeatures?.topDownAssignmentRealTimeLcm;
+
   const {
     isLoading: isLoadingOfferRedemptions,
     offerRedemptions,
     fetchOfferRedemptions,
   } = useOfferRedemptions(enterpriseUUID, enterpriseOfferId, subsidyAccessPolicyId);
 
+  const {
+    isLoading: isLoadingContentAssignments,
+    contentAssignments,
+    fetchContentAssignments,
+  } = useBudgetContentAssignments({
+    assignmentConfigurationUUID: subsidyAccessPolicy?.assignmentConfiguration?.uuid,
+    isEnabled: subsidyAccessPolicy?.isAssignable && isTopDownAssignmentEnabled,
+  });
+
   return (
-    <LearnerCreditAllocationTable
-      isLoading={isLoadingOfferRedemptions}
-      tableData={offerRedemptions}
-      fetchTableData={fetchOfferRedemptions}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
-      enableLearnerPortal={enableLearnerPortal}
-    />
+    <Stack gap={5}>
+      <BudgetDetailAssignments
+        isEnabled={!!subsidyAccessPolicy?.isAssignable && isTopDownAssignmentEnabled}
+        isLoading={isLoadingContentAssignments}
+        tableData={contentAssignments}
+        fetchTableData={fetchContentAssignments}
+      />
+      <BudgetDetailRedemptions
+        isLoading={isLoadingOfferRedemptions}
+        offerRedemptions={offerRedemptions}
+        fetchOfferRedemptions={fetchOfferRedemptions}
+      />
+    </Stack>
   );
 };
 
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 BudgetDetailActivityTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  enterpriseSlug: PropTypes.string.isRequired,
-  enableLearnerPortal: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }),
 };
 
 export default connect(mapStateToProps)(BudgetDetailActivityTabContents);

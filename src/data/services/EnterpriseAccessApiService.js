@@ -1,4 +1,5 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { configuration } from '../../config';
 
@@ -139,6 +140,30 @@ class EnterpriseAccessApiService {
       ...options,
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/coupon-code-requests/overview/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  /**
+   * List content assignments for a specific AssignmentConfiguration.
+   */
+  static listContentAssignments(assignmentConfigurationUUID, options = {}) {
+    const params = new URLSearchParams({
+      page: 1,
+      page_size: 25,
+      // Only include assignments with allocated or errored states. The table should NOT
+      // include assignments in the cancelled or accepted states.
+      state__in: 'allocated,errored',
+      ...snakeCaseObject(options),
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  /**
+   * Retrieve a specific subsidy access policy.
+   */
+  static retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
 }
