@@ -7,12 +7,13 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
+import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 
 const CatalogSearch = () => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-
-  // UUID is hardcoded because this is pending completion of ENT-7610
-  const searchFilters = 'enterprise_catalog_uuids:ead5dbb2-096f-4c73-832f-5fd37e67849c';
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const searchFilters = `enterprise_catalog_uuids:${subsidyAccessPolicy?.catalogUuid}`;
 
   return (
     <section>
