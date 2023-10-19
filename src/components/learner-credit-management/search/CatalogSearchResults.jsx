@@ -60,16 +60,13 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  const renderCardComponent = (props) => {
-    return (
-      <CourseCard
-        {...props}
-        onClick={null}
-        catalogUuid={catalogUuid}
-        enterpriseSlug={enterpriseSlug}
-      />
-    )
-  };
+  const renderCardComponent = (props) => (
+    <CourseCard
+      {...props}
+      catalogUuid={catalogUuid}
+      enterpriseSlug={enterpriseSlug}
+    />
+  );
   const { refinements } = useContext(SearchContext);
   const page = refinements.page || (searchState ? searchState.page : 0);
 
