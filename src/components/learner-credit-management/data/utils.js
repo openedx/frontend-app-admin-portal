@@ -1,7 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
+
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+  ASSIGNMENT_ENROLLMENT_DEADLINE,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 /**
@@ -113,24 +116,97 @@ export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
 export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
 
 //  Utility function to check the budget status
-export const getBudgetStatus = (startDateStr, endDateStr) => {
-  const currentDate = new Date();
+export const getBudgetStatus = (startDateStr, endDateStr, currentDate = new Date()) => {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
   if (currentDate < startDate) {
-    return BUDGET_STATUSES.upcoming;
+    return {
+      status: BUDGET_STATUSES.scheduled,
+      badgeVariant: 'secondary',
+      term: 'Starts',
+      date: startDateStr,
+    };
   }
   if (currentDate >= startDate && currentDate <= endDate) {
-    return BUDGET_STATUSES.active;
+    return {
+      status: BUDGET_STATUSES.active,
+      badgeVariant: 'primary',
+      term: 'Expires',
+      date: endDateStr,
+    };
   }
-  return BUDGET_STATUSES.expired;
+  return {
+    status: BUDGET_STATUSES.expired,
+    badgeVariant: 'light',
+    term: 'Expired',
+    date: endDateStr,
+  };
 };
 
-export const formatPrice = (price) => {
+export const formatPrice = (price, options = {}) => {
   const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    ...options,
   });
   return USDollar.format(Math.abs(price));
 };
+
+/**
+ * Orders a list of offers based on their status, end date, and name.
+ * Active offers come first, followed by scheduled offers, and then expired offers.
+ * Within each status, offers are sorted by their end date and name.
+ *
+ * @param {Array} offers - An array of offer objects.
+ * @returns {Array} - The sorted array of offer objects.
+ */
+export const orderOffers = (offers) => {
+  const statusOrder = {
+    Active: 0,
+    Scheduled: 1,
+    Expired: 2,
+  };
+
+  offers?.sort((offerA, offerB) => {
+    const statusA = getBudgetStatus(offerA.start, offerA.end).status;
+    const statusB = getBudgetStatus(offerB.start, offerB.end).status;
+
+    if (statusOrder[statusA] !== statusOrder[statusB]) {
+      return statusOrder[statusA] - statusOrder[statusB];
+    }
+
+    if (offerA.end !== offerB.end) {
+      return offerA.end.localeCompare(offerB.end);
+    }
+
+    return offerA.name.localeCompare(offerB.name);
+  });
+
+  return offers;
+};
+
+export function formatDate(date) {
+  return dayjs(date).format('MMM D, YYYY');
+}
+
+export function formatCurrency(currency) {
+  const currencyUS = Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+  });
+
+  return currencyUS.format(currency);
+}
+
+// Exec ed and open courses cards should display either the enrollment deadline
+// or 90 days from the present date on user pageload, whichever is sooner.
+export function getEnrollmentDeadline(enrollByDate) {
+  const currentDate = new Date();
+  const enrollmentDeadline = new Date(currentDate.setDate(currentDate.getDate() + ASSIGNMENT_ENROLLMENT_DEADLINE));
+  const courseEnrollByDate = new Date(enrollByDate);
+  return enrollmentDeadline > courseEnrollByDate
+    ? formatDate(courseEnrollByDate)
+    : formatDate(enrollmentDeadline);
+}

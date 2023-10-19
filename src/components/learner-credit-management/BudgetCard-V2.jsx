@@ -1,37 +1,17 @@
-import React, { useState } from 'react';
-import { InstantSearch } from 'react-instantsearch-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
-import algoliasearch from 'algoliasearch/lite';
-import dayjs from 'dayjs';
-import {
-  Breadcrumb, Button, Card, Col, Row, Stack, Tabs, Tab,
-} from '@edx/paragon';
-import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
+import { useOfferSummary } from './data';
+import SubBudgetCard from './SubBudgetCard';
+import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
 
-import CatalogSearch from './search/CatalogSearch';
-import { configuration } from '../../config';
-import { useOfferRedemptions, useOfferSummary } from './data/hooks';
-import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
-import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT } from '../../data/constants/learnerCredit';
-
-const language = {
-  attribute: LANGUAGE_REFINEMENT,
-  title: 'Language',
-};
-const learningType = {
-  attribute: LEARNING_TYPE_REFINEMENT,
-  title: 'Learning Type',
-};
-// Add search facet filters if they don't exist in the list yet
-if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === LANGUAGE_REFINEMENT)) {
-  SEARCH_FACET_FILTERS.push(language);
-}
-if (!SEARCH_FACET_FILTERS.some((filter) => filter.attribute === LEARNING_TYPE_REFINEMENT)) {
-  SEARCH_FACET_FILTERS.push(learningType);
-}
-
+/**
+ * Renders one or more budget cards for the given offer (enterprise or Subsidy from enterprise-subsidy). If the offer is
+ * an enterprise offer, it will render a single card. If the offer is a Subsidy, it will render one card for
+ * each associated budget.
+ *
+ * @param {*} offer Represents either an enterprise offer or a Subsidy (enterprise-subsidy).
+ * @returns Budget card component(s).
+ */
 const BudgetCard = ({
   offer,
   enterpriseUUID,
@@ -39,158 +19,49 @@ const BudgetCard = ({
   offerType,
   displayName,
 }) => {
-  const {
-    start,
-    end,
-  } = offer;
+  const { start, end } = offer;
 
   const {
     isLoading: isLoadingOfferSummary,
     offerSummary,
   } = useOfferSummary(enterpriseUUID, offer);
 
-  const {
-    isLoading: isLoadingOfferRedemptions,
-    offerRedemptions,
-    fetchOfferRedemptions,
-  } = useOfferRedemptions(enterpriseUUID, offer?.id);
-  const [tab, setTab] = useState('activity');
-  const [detailPage, setDetailPage] = useState(false);
-  const [activeLabel, setActiveLabel] = useState('');
-  const links = [
-    { label: 'Budgets', url: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
-  ];
-  const formattedStartDate = dayjs(start).format('MMMM D, YYYY');
-  const formattedExpirationDate = dayjs(end).format('MMMM D, YYYY');
-  const navigateToBudgetRedemptions = (budgetType) => {
-    setDetailPage(true);
-    links.push({ label: budgetType, url: `/${enterpriseSlug}/admin/learner-credit` });
-    setActiveLabel(budgetType);
-  };
-
-  const searchClient = algoliasearch(
-    configuration.ALGOLIA.APP_ID,
-    configuration.ALGOLIA.SEARCH_API_KEY,
-  );
-
-  const renderActions = (budgetType) => (
-    <Button
-      data-testid="view-budget"
-      onClick={() => navigateToBudgetRedemptions(budgetType)}
-    >
-      View Budget
-    </Button>
-  );
-
-  const renderCardHeader = (budgetType) => {
-    const subtitle = (
-      <div className="d-flex flex-wrap align-items-center">
-        <span data-testid="offer-date">
-          {formattedStartDate} - {formattedExpirationDate}
-        </span>
-      </div>
-    );
-
+  // Enterprise Offers will always have a single budget, so we can render a single card.
+  if (offerType === BUDGET_TYPES.ecommerce) {
     return (
-      <Card.Header
-        title={budgetType}
-        subtitle={subtitle}
-        actions={(<div>{renderActions(budgetType)}</div>)}
+      <SubBudgetCard
+        isLoading={isLoadingOfferSummary}
+        id={offerSummary?.offerId}
+        start={start}
+        end={end}
+        available={offerSummary?.remainingFunds}
+        spent={offerSummary?.redeemedFunds}
+        displayName={displayName}
+        enterpriseSlug={enterpriseSlug}
       />
     );
-  };
+  }
 
-  const renderCardSection = (available, spent) => (
-    <Card.Section
-      title="Balance"
-      muted
-    >
-      <Row className="d-flex flex-row justify-content-start w-md-75">
-        <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0">
-          <span className="small">Available</span>
-          <span>{available}</span>
-        </Col>
-        <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0">
-          <span className="small">Spent</span>
-          <span>{spent}</span>
-        </Col>
-      </Row>
-    </Card.Section>
-  );
+  // We're now dealing with a Subsidy (enterprise-subsidy), but the analytics API isn't aware of any
+  // associated budgets; nothing should display.
+  if (!offerSummary?.budgetsSummary) {
+    return null;
+  }
 
-  const renderCardAggregate = () => (
-    <div className="mb-4.5 d-flex flex-wrap mx-n3">
-      <LearnerCreditAggregateCards
-        isLoading={isLoadingOfferSummary}
-        totalFunds={offerSummary?.totalFunds}
-        redeemedFunds={offerSummary?.redeemedFunds}
-        remainingFunds={offerSummary?.remainingFunds}
-        percentUtilized={offerSummary?.percentUtilized}
-      />
-    </div>
-  );
-
-  return (
-    <Tabs
-      id="budget-tabs"
-      activeKey={tab}
-      onSelect={(k) => setTab(k)}
-    >
-      <Tab eventKey="activity" title="Activity">
-        <Stack>
-          <Row className="m-3">
-            <Col xs="12">
-              <Breadcrumb
-                ariaLabel="Breadcrumb"
-                links={links}
-                activeLabel={activeLabel}
-              />
-            </Col>
-          </Row>
-          {!detailPage
-            ? (
-              <>
-                {renderCardAggregate()}
-                <h2>Budgets</h2>
-                <Card
-                  orientation="horizontal"
-                >
-                  <Card.Body>
-                    <Stack gap={4}>
-                      {renderCardHeader('Overview')}
-                      {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFunds)}
-                    </Stack>
-                  </Card.Body>
-                </Card>
-              </>
-            )
-            : (
-              <LearnerCreditAllocationTable
-                isLoading={isLoadingOfferRedemptions}
-                tableData={offerRedemptions}
-                fetchTableData={fetchOfferRedemptions}
-                enterpriseUUID={enterpriseUUID}
-                enterpriseSlug={enterpriseSlug}
-                enableLearnerPortal={enableLearnerPortal}
-              />
-            )}
-        </Stack>
-      </Tab>
-      <Tab eventKey="catalog" title="Catalog" className="mt-4">
-        <SearchData
-          searchFacetFilters={[...SEARCH_FACET_FILTERS]}
-        >
-          <InstantSearch
-            indexName={configuration.ALGOLIA.INDEX_NAME}
-            searchClient={searchClient}
-          >
-            <CatalogSearch offerId={offer?.id} displayName={displayName}/>
-          </InstantSearch>
-        </SearchData>
-      </Tab>
-    </Tabs>
-
-  );
+  // Render a card for each associated budget with the Subsidy (enterprise-subsidy)
+  return offerSummary.budgetsSummary.map((budget) => (
+    <SubBudgetCard
+      isLoading={isLoadingOfferSummary}
+      key={budget?.subsidyAccessPolicyUuid}
+      id={budget?.subsidyAccessPolicyUuid}
+      start={start}
+      end={end}
+      available={budget?.remainingFunds}
+      spent={budget?.redeemedFunds}
+      displayName={budget?.subsidyAccessPolicyDisplayName}
+      enterpriseSlug={enterpriseSlug}
+    />
+  ));
 };
 
 BudgetCard.propTypes = {

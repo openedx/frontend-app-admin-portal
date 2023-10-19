@@ -17,7 +17,7 @@ export const ROUTE_NAMES = {
 export const BUDGET_STATUSES = {
   active: 'Active',
   expired: 'Expired',
-  upcoming: 'Upcoming',
+  scheduled: 'Scheduled',
 };
 
 export const BUDGET_TYPES = {

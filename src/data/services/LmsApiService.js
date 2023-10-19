@@ -46,7 +46,7 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseSsoOrchestrationFetchUrl);
   }
 
-  static listEnterpriseSsoOrchestration(enterpriseCustomerUuid) {
+  static listEnterpriseSsoOrchestrationRecords(enterpriseCustomerUuid) {
     const enterpriseSsoOrchestrationListUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}`;
     if (enterpriseCustomerUuid) {
       return LmsApiService.apiClient().get(`${enterpriseSsoOrchestrationListUrl}?enterprise_customer=${enterpriseCustomerUuid}`);
@@ -378,6 +378,11 @@ class LmsApiService {
       redirect_uris: redirectURLs,
     };
     return LmsApiService.apiClient().put(`${LmsApiService.apiCredentialsUrl}${enterpriseUUID}/regenerate_credentials`, requestData);
+  }
+
+  static generateAIAnalyticsSummary(enterpriseUUID, formData) {
+    const url = `${LmsApiService.baseUrl}/enterprise/api/v1/analytics-summary/${enterpriseUUID}`;
+    return LmsApiService.apiClient().post(url, formData);
   }
 }
 

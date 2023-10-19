@@ -78,7 +78,6 @@ const defaultProps = {
 
 const refinements = {};
 
-// eslint-disable-next-line react/prop-types
 const CourseSearchWrapper = ({ value = { refinements }, props = defaultProps }) => (
   <Provider store={mockStore()}>
     <IntlProvider locale="en">

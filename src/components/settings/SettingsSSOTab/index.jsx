@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Alert, Hyperlink, Toast, Skeleton,
+  Alert, ActionRow, Button, Hyperlink, ModalDialog, Toast, Skeleton, useToggle,
 } from '@edx/paragon';
-import { WarningFilled } from '@edx/paragon/icons';
+import { Add, WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs, useExistingProviderData } from './hooks';
 import NoSSOCard from './NoSSOCard';
 import ExistingSSOConfigs from './ExistingSSOConfigs';
+import NewExistingSSOConfigs from './NewExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
+import LmsApiService from '../../../data/services/LmsApiService';
+import { features } from '../../../config';
 
 const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const {
@@ -21,22 +24,133 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const [existingProviderData, pdError, pdIsLoading] = useExistingProviderData(enterpriseId, refreshBool);
   const [showNewSSOForm, setShowNewSSOForm] = useState(false);
   const [showNoSSOCard, setShowNoSSOCard] = useState(false);
+  const { AUTH0_SELF_SERVICE_INTEGRATION } = features;
+  const [isOpen, open, close] = useToggle(false);
+
+  const newConfigurationButtonOnClick = async () => {
+    Promise.all(existingConfigs.map(config => LmsApiService.updateEnterpriseSsoOrchestrationRecord(
+      { active: false, is_removed: true },
+      config.uuid,
+    ))).then(() => {
+      setRefreshBool(!refreshBool);
+      close();
+    });
+  };
 
   useEffect(() => {
-    let validConfigExists = false;
-    existingConfigs.forEach(config => {
-      if (config.was_valid_at) {
-        validConfigExists = true;
-      }
-    });
+    if (AUTH0_SELF_SERVICE_INTEGRATION) {
+      setHasSSOConfig(existingConfigs.some(config => config.validated_at));
+    } else {
+      setHasSSOConfig(existingConfigs.some(config => config.was_valid_at));
+    }
     if (!existingConfigs || existingConfigs?.length < 1) {
       setShowNoSSOCard(true);
     } else {
       setShowNoSSOCard(false);
     }
-    setHasSSOConfig(validConfigExists);
-  }, [existingConfigs, setHasSSOConfig]);
+  }, [AUTH0_SELF_SERVICE_INTEGRATION, existingConfigs, setHasSSOConfig]);
 
+  if (AUTH0_SELF_SERVICE_INTEGRATION) {
+    return (
+      <div>
+        <ModalDialog
+          title="New SSO Configuration Dialog"
+          isOpen={isOpen}
+          onClose={close}
+          size="md"
+          hasCloseButton
+          isFullscreenOnMobile
+        >
+          <ModalDialog.Header>
+            <ModalDialog.Title>
+              Create new SSO configuration?
+            </ModalDialog.Title>
+          </ModalDialog.Header>
+          <ModalDialog.Body>
+            <p>
+              Only one SSO integration is supported at a time. <br />
+              <br />
+              To continue updating and editing your SSO integration, select &quot;Cancel&quot; and then
+              &quot;Configure&quot; on the integration card. Creating a new SSO configuration will overwrite and delete
+              your existing SSO configuration.
+            </p>
+          </ModalDialog.Body>
+          <ModalDialog.Footer>
+            <ActionRow>
+              <ModalDialog.CloseButton variant="tertiary">
+                Cancel
+              </ModalDialog.CloseButton>
+              <Button
+                variant="primary"
+                onClick={newConfigurationButtonOnClick}
+              >
+                Create new SSO
+              </Button>
+            </ActionRow>
+          </ModalDialog.Footer>
+        </ModalDialog>
+        <div className="d-flex">
+          <h2 className="py-2">Single Sign-On (SSO) Integrations</h2>
+          <div className="mr-0 ml-auto flex-column d-flex">
+            {existingConfigs?.length > 0 && (providerConfig === null) && (
+              <Button
+                className="btn btn-outline-primary mb-1"
+                iconBefore={Add}
+                onClick={open}
+              >
+                New
+              </Button>
+            )}
+            <Hyperlink
+              destination={HELP_CENTER_SAML_LINK}
+              className="btn btn-outline-primary my-2"
+              target="_blank"
+            >
+              Help Center: Single Sign-On
+            </Hyperlink>
+          </div>
+        </div>
+        {(!isLoading || !pdIsLoading) && (
+          <div>
+            {/* providerConfig represents the currently selected config to edit/create, if there are
+            existing configs but no providerConfig then we can safely render the listings page */}
+            {existingConfigs?.length > 0 && (providerConfig === null) && (
+              <NewExistingSSOConfigs
+                providerData={existingProviderData}
+                configs={existingConfigs}
+                refreshBool={refreshBool}
+                setRefreshBool={setRefreshBool}
+              />
+            )}
+            {/* Nothing found so guide user to creation/edit form */}
+            {showNoSSOCard && <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />}
+            {/* Since we found a selected providerConfig we know we are in editing mode and can safely
+            render the create/edit form */}
+            {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
+            {error && (
+            <Alert variant="warning" icon={WarningFilled}>
+              An error occurred loading the SAML configs: <p>{error?.message}</p>
+            </Alert>
+            )}
+            {pdError && (
+            <Alert variant="warning" icon={WarningFilled}>
+              An error occurred loading the SAML data: <p>{pdError?.message}</p>
+            </Alert>
+            )}
+            {infoMessage && (
+              <Toast
+                onClose={() => setInfoMessage(null)}
+                show={infoMessage.length > 0}
+              >
+                {infoMessage}
+              </Toast>
+            )}
+          </div>
+        )}
+        {(isLoading || pdIsLoading) && <Skeleton count={5} height={10} />}
+      </div>
+    );
+  }
   return (
     <div>
       <div className="d-flex">

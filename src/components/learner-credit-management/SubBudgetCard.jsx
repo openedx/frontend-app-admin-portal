@@ -6,6 +6,8 @@ import {
   Button,
   Row,
   Col,
+  Badge,
+  Stack,
 } from '@edx/paragon';
 
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
@@ -21,9 +23,8 @@ const SubBudgetCard = ({
   enterpriseSlug,
   isLoading,
 }) => {
-  const formattedStartDate = dayjs(start).format('MMMM D, YYYY');
-  const formattedExpirationDate = dayjs(end).format('MMMM D, YYYY');
-  const budgetStatus = getBudgetStatus(start, end);
+  const budgetLabel = getBudgetStatus(start, end);
+  const formattedDate = dayjs(budgetLabel?.date).format('MMMM D, YYYY');
 
   const renderActions = (budgetId) => (
     <Button
@@ -37,11 +38,12 @@ const SubBudgetCard = ({
 
   const renderCardHeader = (budgetType, budgetId) => {
     const subtitle = (
-      <div className="d-flex flex-wrap align-items-center">
+      <Stack direction="horizontal" gap={2.5}>
+        <Badge variant={budgetLabel.badgeVariant}>{budgetLabel.status}</Badge>
         <span data-testid="offer-date">
-          {formattedStartDate} - {formattedExpirationDate}
+          {budgetLabel.term} {formattedDate}
         </span>
-      </div>
+      </Stack>
     );
 
     return (
@@ -50,10 +52,10 @@ const SubBudgetCard = ({
         subtitle={subtitle}
         className="mb-3"
         actions={
-                    budgetStatus !== BUDGET_STATUSES.upcoming
-                      ? renderActions(budgetId)
-                      : undefined
-                }
+          budgetLabel.status !== BUDGET_STATUSES.scheduled
+            ? renderActions(budgetId)
+            : undefined
+        }
       />
     );
   };
@@ -83,7 +85,7 @@ const SubBudgetCard = ({
     >
       <Card.Body>
         {renderCardHeader(displayName || 'Overview', id)}
-        {budgetStatus !== BUDGET_STATUSES.upcoming && renderCardSection(available, spent)}
+        {budgetLabel.status !== BUDGET_STATUSES.scheduled && renderCardSection(available, spent)}
       </Card.Body>
     </Card>
   );
