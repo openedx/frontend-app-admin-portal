@@ -1,19 +1,17 @@
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
+import PropTypes from 'prop-types';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
-import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 
-const CatalogSearch = () => {
+const CatalogSearch = ({ catalogUuid }) => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-  const { subsidyAccessPolicyId } = useBudgetId();
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const searchFilters = `enterprise_catalog_uuids:${subsidyAccessPolicy?.catalogUuid}`;
+  const searchFilters = `enterprise_catalog_uuids:${catalogUuid}`;
 
   return (
     <section>
@@ -39,6 +37,10 @@ const CatalogSearch = () => {
       </InstantSearch>
     </section>
   );
+};
+
+CatalogSearch.propTypes = {
+  catalogUuid: PropTypes.string,
 };
 
 export default CatalogSearch;

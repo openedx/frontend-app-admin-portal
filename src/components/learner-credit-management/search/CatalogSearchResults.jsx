@@ -24,6 +24,7 @@ export const ERROR_MESSAGE = 'An error occurred while retrieving data';
  */
 
 export const BaseCatalogSearchResults = ({
+  catalogUuid,
   searchResults,
   searchState,
   // algolia recommends this prop instead of searching
@@ -58,7 +59,7 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
+  const renderCardComponent = (props) => <CourseCard {...props} onClick={null} catalogUuid={catalogUuid} />;
   const { refinements } = useContext(SearchContext);
   const page = refinements.page || (searchState ? searchState.page : 0);
 
@@ -128,6 +129,7 @@ BaseCatalogSearchResults.defaultProps = {
 };
 
 BaseCatalogSearchResults.propTypes = {
+  catalogUuid: PropTypes.string.isRequired,
   // from Algolia
   searchResults: PropTypes.shape({
     _state: PropTypes.shape({
