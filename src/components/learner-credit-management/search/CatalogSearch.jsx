@@ -8,13 +8,10 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
-import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 
-const CatalogSearch = ({ enterpriseSlug }) => {
+const CatalogSearch = ({ catalogUuid, enterpriseSlug }) => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-  const { subsidyAccessPolicyId } = useBudgetId();
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const searchFilters = `enterprise_catalog_uuids:${subsidyAccessPolicy?.catalogUuid}`;
+  const searchFilters = `enterprise_catalog_uuids:${catalogUuid}`;
 
   return (
     <section>
@@ -44,6 +41,7 @@ const CatalogSearch = ({ enterpriseSlug }) => {
 
 CatalogSearch.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  catalogUuid: PropTypes.string,
 };
 
 export default CatalogSearch;
