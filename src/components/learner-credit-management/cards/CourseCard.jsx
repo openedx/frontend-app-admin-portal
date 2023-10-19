@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 // variables taken from algolia not in camelcase
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -13,6 +13,7 @@ import {
   breakpoints,
 } from '@edx/paragon';
 import { injectIntl } from '@edx/frontend-platform/i18n';
+import { AppContext } from '@edx/frontend-platform/react';
 
 import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../data';
 import { formatCurrency, formatDate, getEnrollmentDeadline } from '../data/utils';
@@ -21,19 +22,23 @@ import defaultLogoImg from '../../../static/default-card-header-dark.png';
 import defaultCardImg from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
-  original, learningType,
+  enterpriseSlug, learningType, original,
 }) => {
   const {
     availability,
     card_image_url,
+    content_type,
     course_type,
     entitlements,
     first_enrollable_paid_seat_price,
+    key,
     normalized_metadata,
     partners,
     title,
+    uuid,
   } = original;
 
+  const { config: { ENTERPRISE_LEARNER_PORTAL_URL } } = useContext(AppContext);
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
 
@@ -75,6 +80,15 @@ const CourseCard = ({
 
   const isExecEd = course_type === EXEC_COURSE_TYPE;
 
+  let linkToCourse;
+  if (content_type === 'program') {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/program/${uuid}`;
+  } else if (content_type === 'course') {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
+  } else {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/search/${uuid}`;
+  }
+
   return (
     <Card
       isClickable
@@ -108,9 +122,9 @@ const CourseCard = ({
           textElement={isExecEd ? execEdEnrollmentInfo : courseEnrollmentInfo}
         >
           <Button
-            // TODO: Implementation to follow in ENT-7594
             as={Hyperlink}
-            destination="https://enterprise.stage.edx.org"
+            data-testid="hyperlink-view-course"
+            destination={linkToCourse}
             target="_blank"
             variant="outline-primary"
           >
@@ -124,13 +138,16 @@ const CourseCard = ({
 };
 
 CourseCard.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   learningType: PropTypes.string.isRequired,
   original: PropTypes.shape({
     availability: PropTypes.string,
     card_image_url: PropTypes.string,
+    content_type: PropTypes.string,
     course_type: PropTypes.string,
     entitlements: PropTypes.arrayOf(PropTypes.shape()),
     first_enrollable_paid_seat_price: PropTypes.number,
+    key: PropTypes.string,
     normalized_metadata: PropTypes.shape(),
     original_image_url: PropTypes.string,
     partners: PropTypes.arrayOf(
@@ -140,6 +157,7 @@ CourseCard.propTypes = {
       }),
     ),
     title: PropTypes.string,
+    uuid: PropTypes.string,
   }).isRequired,
 };
 
