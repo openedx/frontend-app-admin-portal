@@ -14,8 +14,8 @@ describe('New SSO Config Card Tests', () => {
           uuid: 'ecc16800-c1cc-4cdb-93aa-186f71b026ca',
           active: true,
           modified: '2021-08-05T15:00:00Z',
-          validated_at: '2021-08-05T15:00:00Z',
-          configured_at: '2021-08-05T15:00:00Z',
+          validated_at: '2021-08-07T15:00:00Z',
+          configured_at: '2021-08-06T15:00:00Z',
           submitted_at: '2021-08-05T15:00:00Z',
         }}
         setLoading={jest.fn()}
@@ -39,7 +39,7 @@ describe('New SSO Config Card Tests', () => {
           modified: '2021-08-05T15:00:00Z',
           validated_at: null,
           configured_at: '2021-08-05T15:00:00Z',
-          submitted_at: '2021-08-05T15:00:00Z',
+          submitted_at: '2021-08-04T15:00:00Z',
         }}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
@@ -48,11 +48,11 @@ describe('New SSO Config Card Tests', () => {
     );
     expect(
       screen.getByTestId(
-        'existing-sso-config-card-not-validated-icon',
+        'existing-sso-config-card-off-not-validated-icon',
       ),
     ).toBeInTheDocument();
   });
-  test('displays not validated status icon properly', async () => {
+  test('displays key off icon status icon properly', async () => {
     render(
       <NewSSOConfigCard
         config={{
@@ -71,7 +71,7 @@ describe('New SSO Config Card Tests', () => {
     );
     expect(
       screen.getByTestId(
-        'existing-sso-config-card-not-active-icon',
+        'existing-sso-config-card-off-icon',
       ),
     ).toBeInTheDocument();
   });
