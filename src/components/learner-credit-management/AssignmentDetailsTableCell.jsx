@@ -22,7 +22,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
           target="_blank"
           isInline
         >
-          View course
+          {row.original.contentTitle}
         </Hyperlink>
       </div>
     </>
@@ -39,6 +39,7 @@ AssignmentDetailsTableCell.propTypes = {
       uuid: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string.isRequired,
       contentKey: PropTypes.string.isRequired,
+      contentTitle: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   enterpriseSlug: PropTypes.string,
