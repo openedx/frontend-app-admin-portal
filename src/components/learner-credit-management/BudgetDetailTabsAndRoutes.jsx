@@ -9,7 +9,7 @@ import {
   BUDGET_DETAIL_ACTIVITY_TAB,
   BUDGET_DETAIL_CATALOG_TAB,
 } from './data/constants';
-import { useBudgetDetailTabs } from './data';
+import { useBudgetDetailTabs, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
@@ -18,17 +18,18 @@ import BudgetDetailCatalogTabContents from './BudgetDetailCatalogTabContents';
 
 const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 
-function isSupportedTabKey({ tabKey, enterpriseFeatures }) {
+function isSupportedTabKey({ tabKey, isBudgetAssignable, enterpriseFeatures }) {
   const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB];
-  if (enterpriseFeatures.topDownAssignmentRealTimeLcm) {
+  if (enterpriseFeatures.topDownAssignmentRealTimeLcm && isBudgetAssignable) {
     supportedTabs.push(BUDGET_DETAIL_CATALOG_TAB);
   }
   return supportedTabs.includes(tabKey);
 }
 
-function getInitialTabKey(routeActiveTabKey, { enterpriseFeatures }) {
+function getInitialTabKey(routeActiveTabKey, { isBudgetAssignable, enterpriseFeatures }) {
   const isValidTabKey = isSupportedTabKey({
     tabKey: routeActiveTabKey,
+    isBudgetAssignable,
     enterpriseFeatures,
   });
   if (!isValidTabKey) {
@@ -42,16 +43,27 @@ const BudgetDetailTabsAndRoutes = ({
   enterpriseSlug,
   enterpriseFeatures,
 }) => {
+  const { activeTabKey: routeActiveTabKey } = useParams();
+  const { budgetId, subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const isBudgetAssignable = !!subsidyAccessPolicy?.isAssignable;
+
   const history = useHistory();
-  const { budgetId, activeTabKey: routeActiveTabKey } = useParams();
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
-    { enterpriseFeatures },
+    { enterpriseFeatures, isBudgetAssignable },
   ));
 
+  /**
+   * Ensure the active tab in the UI reflects the active tab in the URL.
+   */
   useEffect(() => {
-    setActiveTabKey(getInitialTabKey(routeActiveTabKey, { enterpriseFeatures }));
-  }, [routeActiveTabKey, enterpriseFeatures]);
+    const initialTabKey = getInitialTabKey(
+      routeActiveTabKey,
+      { enterpriseFeatures, isBudgetAssignable },
+    );
+    setActiveTabKey(initialTabKey);
+  }, [routeActiveTabKey, enterpriseFeatures, isBudgetAssignable]);
 
   const handleTabSelect = (nextActiveTabKey) => {
     setActiveTabKey(nextActiveTabKey);
@@ -66,6 +78,7 @@ const BudgetDetailTabsAndRoutes = ({
 
   const tabs = useBudgetDetailTabs({
     activeTabKey,
+    isBudgetAssignable,
     enterpriseFeatures,
     ActivityTabElement: BudgetDetailActivityTabContents,
     CatalogTabElement: BudgetDetailCatalogTabContents,
@@ -73,6 +86,7 @@ const BudgetDetailTabsAndRoutes = ({
 
   if (!isSupportedTabKey({
     tabKey: routeActiveTabKey || activeTabKey,
+    isBudgetAssignable,
     enterpriseFeatures,
   })) {
     return <NotFoundPage />;

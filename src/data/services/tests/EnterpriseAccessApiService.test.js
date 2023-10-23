@@ -17,6 +17,8 @@ const enterpriseAccessBaseUrl = `${process.env.ENTERPRISE_ACCESS_BASE_URL}`;
 const mockEnterpriseUUID = 'test-enterprise-id';
 const mockLicenseRequestUUID = 'test-license-request-uuid';
 const mockCouponCodeRequestUUID = 'test-coupon-code-request-uuid';
+const mockAssignmentConfigurationUUID = 'test-assignment-configuration-uuid';
+const mockSubsidyAccessPolicyUUID = 'test-subsidy-access-policy-uuid';
 
 describe('EnterpriseAccessApiService', () => {
   beforeEach(() => {
@@ -130,5 +132,24 @@ describe('EnterpriseAccessApiService', () => {
       subsidy_requests_enabled: true,
       subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
     });
+  });
+
+  test('listContentAssignments calls enterprise-access to fetch content assignments', () => {
+    EnterpriseAccessApiService.listContentAssignments(mockAssignmentConfigurationUUID);
+    const expectedParams = new URLSearchParams({
+      page: 1,
+      page_size: 25,
+      state__in: 'allocated,errored',
+    }).toString();
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/?${expectedParams}`,
+    );
+  });
+
+  test('retrieveSubsidyAccessPolicy calls enterprise-access to fetch subsidy access policy', () => {
+    EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(mockSubsidyAccessPolicyUUID);
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/subsidy-access-policies/${mockSubsidyAccessPolicyUUID}/`,
+    );
   });
 });

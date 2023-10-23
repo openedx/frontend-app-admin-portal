@@ -49,9 +49,16 @@ const NewSSOConfigCard = ({
     });
   };
 
+  const renderKeyOffIcon = (dataTestId) => (
+    <KeyOff
+      className="bg-danger-500 rounded-circle text-white mr-2 p-1"
+      data-testid={dataTestId}
+    />
+  );
+
   const renderCardStatusIcon = () => (
     <>
-      {VALIDATED && ENABLED && (
+      {VALIDATED && ENABLED && CONFIGURED && (
         <OverlayTrigger
           id="tooltip-enabled"
           placement="top"
@@ -63,25 +70,21 @@ const NewSSOConfigCard = ({
           />
         </OverlayTrigger>
       )}
-      {!VALIDATED && (
+      {!VALIDATED && CONFIGURED && (
         <OverlayTrigger
           id="tooltip-not-validated"
           placement="top"
-          overlay={CONFIGURED && (
+          overlay={
             <Tooltip id="not-validated-tooltip" variant="light">This integration has not been validated. Please follow the testing instructions to validate your integration.</Tooltip>
-          )}
+          }
         >
-          <KeyOff
-            className="bg-danger-500 rounded-circle text-white mr-2 p-1"
-            data-testid="existing-sso-config-card-not-validated-icon"
-          />
+          {renderKeyOffIcon('existing-sso-config-card-off-not-validated-icon')}
         </OverlayTrigger>
       )}
-      {VALIDATED && !ENABLED && (
-        <KeyOff
-          className="bg-danger-500 rounded-circle text-white mr-2 p-1"
-          data-testid="existing-sso-config-card-not-active-icon"
-        />
+      {(!ENABLED || !CONFIGURED) && (
+        <>
+          {renderKeyOffIcon('existing-sso-config-card-off-icon')}
+        </>
       )}
     </>
   );
