@@ -132,7 +132,13 @@ export const useStylesForCustomBrandColors = (branding) => {
       .btn-brand:focus:before {
         border-color: ${brandColors.secondary.regular.hex()} !important;
       }
+      .btn-primary {
+        background-color: ${brandColors.primary.regular.hex()} !important;
+        border-color: ${brandColors.primary.regular.hex()} !important;
+        color: ${brandColors.primary.textColor.hex()} !important;
+      }
       .btn-primary:hover {
+        background-color: ${brandColors.primary.dark.hex()} !important;
         border-color: ${brandColors.primary.dark.hex()} !important;
       }
       .btn-brand-primary {

@@ -13,9 +13,10 @@ import {
   breakpoints,
 } from '@edx/paragon';
 import { injectIntl } from '@edx/frontend-platform/i18n';
+import { camelCaseObject } from '@edx/frontend-platform';
 
 import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../data';
-import { formatCurrency, formatDate, getEnrollmentDeadline } from '../data/utils';
+import { formatPrice, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
 import defaultLogoImg from '../../../static/default-card-header-dark.png';
 import defaultCardImg from '../../../static/default-card-header-light.png';
@@ -25,14 +26,14 @@ const CourseCard = ({
 }) => {
   const {
     availability,
-    card_image_url,
-    course_type,
+    cardImageUrl,
+    courseType,
     entitlements,
-    first_enrollable_paid_seat_price,
-    normalized_metadata,
+    firstEnrollablePaidSeatPrice,
+    normalizedMetadata,
     partners,
     title,
-  } = original;
+  } = camelCaseObject(original);
 
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
@@ -47,33 +48,33 @@ const CourseCard = ({
   let priceText;
 
   if (learningType === CONTENT_TYPE_COURSE) {
-    priceText = first_enrollable_paid_seat_price != null ? `${formatCurrency(first_enrollable_paid_seat_price)}` : 'N/A';
+    priceText = firstEnrollablePaidSeatPrice != null ? `${formatPrice(firstEnrollablePaidSeatPrice, {minimumFractionDigits: 0})}` : 'N/A';
   } else {
     const [firstEntitlement] = entitlements || [null];
-    priceText = firstEntitlement != null ? `${formatCurrency(firstEntitlement?.price)}` : 'N/A';
+    priceText = firstEntitlement != null ? `${formatPrice(firstEntitlement?.price,{ minimumFractionDigits: 0})}` : 'N/A';
   }
 
-  const imageSrc = card_image_url || defaultCardImg;
-  const logoSrc = partners[0]?.logo_image_url || defaultLogoImg;
+  const imageSrc = cardImageUrl || defaultCardImg;
+  const logoSrc = partners[0]?.logoImageUrl || defaultLogoImg;
 
   const altText = `${title} course image`;
 
-  const formatAvailability = availability?.length ? availability.join(', ') : null;
+  const formattedAvailability = availability?.length ? availability.join(', ') : null;
 
-  const enrollmentDeadline = getEnrollmentDeadline(normalized_metadata?.enroll_by_date);
+  const enrollmentDeadline = getEnrollmentDeadline(normalizedMetadata?.enrollByDate);
 
   let courseEnrollmentInfo;
   let execEdEnrollmentInfo;
-  if (normalized_metadata?.enroll_by_date) {
-    courseEnrollmentInfo = `${formatAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
-    execEdEnrollmentInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
+  if (normalizedMetadata?.enrollByDate) {
+    courseEnrollmentInfo = `${formattedAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
+    execEdEnrollmentInfo = `Starts ${formatDate(normalizedMetadata.startDate)} •
     ${ENROLLMENT.text} ${enrollmentDeadline}`;
   } else {
-    courseEnrollmentInfo = formatAvailability;
-    execEdEnrollmentInfo = formatAvailability;
+    courseEnrollmentInfo = formattedAvailability;
+    execEdEnrollmentInfo = formattedAvailability;
   }
 
-  const isExecEd = course_type === EXEC_COURSE_TYPE;
+  const isExecEd = courseType === EXEC_COURSE_TYPE;
 
   return (
     <Card
@@ -124,18 +125,18 @@ const CourseCard = ({
 };
 
 CourseCard.propTypes = {
-  learningType: PropTypes.string.isRequired,
+  learningType: PropTypes.string,
   original: PropTypes.shape({
-    availability: PropTypes.string,
-    card_image_url: PropTypes.string,
-    course_type: PropTypes.string,
+    availability: PropTypes.arrayOf(PropTypes.string),
+    cardImageUrl: PropTypes.string,
+    courseType: PropTypes.string,
     entitlements: PropTypes.arrayOf(PropTypes.shape()),
-    first_enrollable_paid_seat_price: PropTypes.number,
-    normalized_metadata: PropTypes.shape(),
-    original_image_url: PropTypes.string,
+    firstEnrollablePaidSeatPrice: PropTypes.number,
+    normalizedMetadata: PropTypes.shape(),
+    originalImageUrl: PropTypes.string,
     partners: PropTypes.arrayOf(
       PropTypes.shape({
-        logo_image_url: PropTypes.string,
+        logoImageUrl: PropTypes.string,
         name: PropTypes.string,
       }),
     ),

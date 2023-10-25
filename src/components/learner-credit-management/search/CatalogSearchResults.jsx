@@ -9,6 +9,7 @@ import {
 } from '@edx/paragon';
 
 import CourseCard from '../cards/CourseCard';
+import { SEARCH_RESULT_PAGE_SIZE } from '../data';
 
 export const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
@@ -87,7 +88,7 @@ export const BaseCatalogSearchResults = ({
         data={tableData}
         defaultColumnValues={{ Filter: TextFilter }}
         initialState={{
-          pageSize: 15,
+          pageSize: SEARCH_RESULT_PAGE_SIZE,
           pageIndex: 0,
         }}
         isLoading={isSearchStalled}
