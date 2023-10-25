@@ -48,10 +48,10 @@ const CourseCard = ({
   let priceText;
 
   if (learningType === CONTENT_TYPE_COURSE) {
-    priceText = firstEnrollablePaidSeatPrice != null ? `${formatPrice(firstEnrollablePaidSeatPrice, {minimumFractionDigits: 0})}` : 'N/A';
+    priceText = firstEnrollablePaidSeatPrice != null ? `${formatPrice(firstEnrollablePaidSeatPrice, { minimumFractionDigits: 0 })}` : 'N/A';
   } else {
     const [firstEntitlement] = entitlements || [null];
-    priceText = firstEntitlement != null ? `${formatPrice(firstEntitlement?.price,{ minimumFractionDigits: 0})}` : 'N/A';
+    priceText = firstEntitlement != null ? `${formatPrice(firstEntitlement?.price, { minimumFractionDigits: 0 })}` : 'N/A';
   }
 
   const imageSrc = cardImageUrl || defaultCardImg;
