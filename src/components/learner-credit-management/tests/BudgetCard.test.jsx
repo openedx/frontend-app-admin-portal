@@ -12,7 +12,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import BudgetCard from '../BudgetCard-V2';
+import BudgetCard from '../BudgetCard';
 import { useOfferSummary, useOfferRedemptions } from '../data';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 

@@ -1,168 +1,67 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import dayjs from 'dayjs';
-import {
-  Card,
-  Button,
-  Stack,
-  Row,
-  Col,
-  Breadcrumb,
-} from '@edx/paragon';
+import { useOfferSummary } from './data';
+import SubBudgetCard from './SubBudgetCard';
+import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
 
-import { getCourseProductLineAbbreviation } from '../../utils';
-import { useOfferRedemptions, useOfferSummary } from './data';
-import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
-import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { EXEC_ED_OFFER_TYPE } from './data/constants';
-
+/**
+ * Renders one or more budget cards for the given offer (enterprise or Subsidy from enterprise-subsidy). If the offer is
+ * an enterprise offer, it will render a single card. If the offer is a Subsidy, it will render one card for
+ * each associated budget.
+ *
+ * @param {*} offer Represents either an enterprise offer or a Subsidy (enterprise-subsidy).
+ * @returns Budget card component(s).
+ */
 const BudgetCard = ({
   offer,
   enterpriseUUID,
   enterpriseSlug,
+  offerType,
+  displayName,
 }) => {
-  const {
-    start,
-    end,
-  } = offer;
+  const { start, end } = offer;
 
   const {
     isLoading: isLoadingOfferSummary,
     offerSummary,
   } = useOfferSummary(enterpriseUUID, offer);
 
-  const {
-    isLoading: isLoadingOfferRedemptions,
-    offerRedemptions,
-    fetchOfferRedemptions,
-  } = useOfferRedemptions(enterpriseUUID, offer?.id);
-  const [detailPage, setDetailPage] = useState(false);
-  const [activeLabel, setActiveLabel] = useState('');
-  const links = [
-    { label: 'Budgets', url: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}` },
-  ];
-  const formattedStartDate = dayjs(start).format('MMMM D, YYYY');
-  const formattedExpirationDate = dayjs(end).format('MMMM D, YYYY');
-  const navigateToBudgetRedemptions = (budgetType) => {
-    setDetailPage(true);
-    links.push({ label: budgetType, url: `/${enterpriseSlug}/admin/learner-credit` });
-    setActiveLabel(budgetType);
-  };
-
-  const renderActions = (budgetType) => (
-    <Button
-      data-testid="view-budget"
-      onClick={() => navigateToBudgetRedemptions(budgetType)}
-    >
-      View Budget
-    </Button>
-  );
-
-  const renderCardHeader = (budgetType) => {
-    const subtitle = (
-      <div className="d-flex flex-wrap align-items-center">
-        <span data-testid="offer-date">
-          {formattedStartDate} - {formattedExpirationDate}
-        </span>
-      </div>
-    );
-
+  // Enterprise Offers will always have a single budget, so we can render a single card.
+  if (offerType === BUDGET_TYPES.ecommerce) {
     return (
-      <Card.Header
-        title={budgetType}
-        subtitle={subtitle}
-        actions={(
-          <div>
-            {renderActions(budgetType)}
-          </div>
-        )}
+      <SubBudgetCard
+        isLoading={isLoadingOfferSummary}
+        id={offerSummary?.offerId}
+        start={start}
+        end={end}
+        available={offerSummary?.remainingFunds}
+        spent={offerSummary?.redeemedFunds}
+        displayName={displayName}
+        enterpriseSlug={enterpriseSlug}
       />
     );
-  };
+  }
 
-  const renderCardSection = (available, spent) => (
-    <Card.Section
-      title="Balance"
-      muted
-    >
-      <Row className="d-flex flex-row justify-content-start w-md-75">
-        <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0">
-          <span className="small">Available</span>
-          <span>{available}</span>
-        </Col>
-        <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0">
-          <span className="small">Spent</span>
-          <span>{spent}</span>
-        </Col>
-      </Row>
-    </Card.Section>
-  );
+  // We're now dealing with a Subsidy (enterprise-subsidy), but the analytics API isn't aware of any
+  // associated budgets; nothing should display.
+  if (!offerSummary?.budgetsSummary) {
+    return null;
+  }
 
-  const renderCardAggregate = () => (
-    <div className="mb-4.5 d-flex flex-wrap mx-n3">
-      <LearnerCreditAggregateCards
-        isLoading={isLoadingOfferSummary}
-        totalFunds={offerSummary?.totalFunds}
-        redeemedFunds={offerSummary?.redeemedFunds}
-        remainingFunds={offerSummary?.remainingFunds}
-        percentUtilized={offerSummary?.percentUtilized}
-      />
-    </div>
-  );
-
-  return (
-    <Stack>
-      <Row className="m-3">
-        <Col xs="12">
-          <Breadcrumb
-            ariaLabel="Breadcrumb is active"
-            links={links}
-            activeLabel={activeLabel}
-          />
-        </Col>
-      </Row>
-      {!detailPage
-        ? (
-          <>
-            {renderCardAggregate()}
-            <h2>Budgets</h2>
-            <Card
-              orientation="horizontal"
-            >
-              <Card.Body>
-                <Stack gap={4}>
-                  {renderCardHeader('Open Courses Marketplace')}
-                  {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsOcm)}
-                </Stack>
-              </Card.Body>
-            </Card>
-            {offerSummary?.offerType === EXEC_ED_OFFER_TYPE
-              && (
-              <Card
-                orientation="horizontal"
-              >
-                <Card.Body>
-                  <Stack gap={4}>
-                    {renderCardHeader('Executive Education')}
-                    {renderCardSection(offerSummary?.remainingFunds, offerSummary?.redeemedFundsExecEd)}
-                  </Stack>
-                </Card.Body>
-              </Card>
-              )}
-          </>
-        )
-        : (
-          <LearnerCreditAllocationTable
-            isLoading={isLoadingOfferRedemptions}
-            tableData={offerRedemptions}
-            fetchTableData={fetchOfferRedemptions}
-            enterpriseUUID={enterpriseUUID}
-            budgetType={getCourseProductLineAbbreviation(activeLabel)}
-          />
-        )}
-    </Stack>
-  );
+  // Render a card for each associated budget with the Subsidy (enterprise-subsidy)
+  return offerSummary.budgetsSummary.map((budget) => (
+    <SubBudgetCard
+      isLoading={isLoadingOfferSummary}
+      key={budget?.subsidyAccessPolicyUuid}
+      id={budget?.subsidyAccessPolicyUuid}
+      start={start}
+      end={end}
+      available={budget?.remainingFunds}
+      spent={budget?.redeemedFunds}
+      displayName={budget?.subsidyAccessPolicyDisplayName}
+      enterpriseSlug={enterpriseSlug}
+    />
+  ));
 };
 
 BudgetCard.propTypes = {
@@ -174,6 +73,8 @@ BudgetCard.propTypes = {
   }).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  offerType: PropTypes.oneOf(Object.values(BUDGET_TYPES)).isRequired,
+  displayName: PropTypes.string,
 };
 
 export default BudgetCard;
