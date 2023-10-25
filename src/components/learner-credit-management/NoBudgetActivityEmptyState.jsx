@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import {
   breakpoints, Button, Card, Row, Col, useMediaQuery,
 } from '@edx/paragon';
@@ -9,33 +10,46 @@ import nameYourLearners from './assets/nameYourLearners.svg';
 import findTheRightCourse from './assets/findTheRightCourse.svg';
 import confirmSpend from './assets/confirmSpend.svg';
 
+const FindTheRightCourseIllustration = (props) => (
+  <img src={findTheRightCourse} alt="" {...props} />
+);
+
+const NameYourLearnersIllustration = (props) => (
+  <img src={nameYourLearners} alt="" {...props} />
+);
+
+const ConfirmSpendIllustration = (props) => (
+  <img src={confirmSpend} alt="" {...props} />
+);
+
 const NoBudgetActivityEmptyState = () => {
   const pathToCatalogTab = usePathToCatalogTab();
   const isLargeOrGreater = useMediaQuery({ query: `(min-width: ${breakpoints.large.minWidth}px)` });
 
   return (
     <Card>
-      <Card.Section className="bg-light-300 text-center">
-        <h3 className="mb-4.5">No budget activity yet? Assign a course!</h3>
-        <Row>
-          <Col>
-            <img src={findTheRightCourse} alt="" />
-          </Col>
-          {isLargeOrGreater && (
-            <>
-              <Col>
-                <img src={nameYourLearners} alt="" />
-              </Col>
-              <Col>
-                <img src={confirmSpend} alt="" />
-              </Col>
-            </>
-          )}
-        </Row>
+      <Card.Section className={classNames('text-center', { 'bg-light-300': isLargeOrGreater })}>
+        <h3 className={classNames({ 'mb-4.5': isLargeOrGreater })}>
+          No budget activity yet? Assign a course!
+        </h3>
+        {isLargeOrGreater && (
+          <Row>
+            <Col>
+              <FindTheRightCourseIllustration />
+            </Col>
+            <Col>
+              <NameYourLearnersIllustration />
+            </Col>
+            <Col>
+              <ConfirmSpendIllustration />
+            </Col>
+          </Row>
+        )}
       </Card.Section>
       <Card.Section className="text-center">
-        <Row className="mb-4.5">
-          <Col className="mb-4.5 mb-lg-0">
+        <Row className={classNames({ 'mb-5': isLargeOrGreater })}>
+          <Col className="mb-5 mb-lg-0">
+            {!isLargeOrGreater && <FindTheRightCourseIllustration className="mb-5" />}
             <h4>
               <span className="d-block text-brand mb-2">01</span>
               Find the right course
@@ -45,7 +59,8 @@ const NoBudgetActivityEmptyState = () => {
               want to assign to learners.
             </span>
           </Col>
-          <Col className="mb-4.5 mb-lg-0">
+          <Col className="mb-5 mb-lg-0">
+            {!isLargeOrGreater && <NameYourLearnersIllustration className="mb-5" />}
             <h4>
               <span className="d-block text-brand mb-2">02</span>
               Name your learners
@@ -55,7 +70,8 @@ const NoBudgetActivityEmptyState = () => {
               learners you want to assign.
             </span>
           </Col>
-          <Col className="mb-4.5 mb-lg-0">
+          <Col className="mb-5 mb-lg-0">
+            {!isLargeOrGreater && <ConfirmSpendIllustration className="mb-5" />}
             <h4>
               <span className="d-block text-brand mb-2">03</span>
               Confirm spend

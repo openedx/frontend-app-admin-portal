@@ -27,7 +27,8 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
 
   // If there is no activity whatsoever (no assignments, no spent transactions), show the
   // full empty state.
-  if (!hasContentAssignments && !hasSpentTransactions) {
+  if (true) {
+  // if (!hasContentAssignments && !hasSpentTransactions) {
     return (
       <NoBudgetActivityEmptyState />
     );
