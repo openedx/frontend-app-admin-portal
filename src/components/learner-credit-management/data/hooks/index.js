@@ -4,3 +4,5 @@ export { default as useOfferRedemptions } from './useOfferRedemptions';
 export { default as useBudgetContentAssignments } from './useBudgetContentAssignments';
 export { default as useBudgetId } from './useBudgetId';
 export { default as useSubsidyAccessPolicy } from './useSubsidyAccessPolicy';
+export { default as usePathToCatalogTab } from './usePathToCatalogTab';
+export { default as useBudgetDetailActivityOverview } from './useBudgetDetailActivityOverview';

@@ -3,9 +3,11 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 
-const determineBudgetAssignability = (policyType) => {
+const determineBudgetAssignability = (subsidyAccessPolicy) => {
+  const policyType = subsidyAccessPolicy?.policyType;
+  const isAssignable = !!subsidyAccessPolicy?.assignmentConfiguration;
   const assignableSubsidyAccessPolicyTypes = ['AssignedLearnerCreditAccessPolicy'];
-  return assignableSubsidyAccessPolicyTypes.includes(policyType);
+  return isAssignable && assignableSubsidyAccessPolicyTypes.includes(policyType);
 };
 
 /**
@@ -18,7 +20,7 @@ const getSubsidyAccessPolicy = async ({ queryKey }) => {
   const subsidyAccessPolicyUUID = queryKey[2];
   const response = await EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID);
   const subsidyAccessPolicy = camelCaseObject(response.data);
-  subsidyAccessPolicy.isAssignable = determineBudgetAssignability(subsidyAccessPolicy.policyType);
+  subsidyAccessPolicy.isAssignable = determineBudgetAssignability(subsidyAccessPolicy);
   return subsidyAccessPolicy;
 };
 

@@ -1,11 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
+import { camelCaseObject } from '@edx/frontend-platform';
 
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
+import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+
 /**
  * Transforms offer summary from API for display in the UI, guarding
  * against bad data (e.g., accounting for refunds).
@@ -147,6 +151,7 @@ export const formatPrice = (price, options = {}) => {
   const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    minimumFractionDigits: 0,
     ...options,
   });
   return USDollar.format(Math.abs(price));
@@ -185,6 +190,101 @@ export const orderOffers = (offers) => {
   return offers;
 };
 
+/**
+ * Formats a date string to MMM D, YYYY format.
+ * @param {string} date Date string.
+ * @returns Formatted date string.
+ */
 export function formatDate(date) {
   return dayjs(date).format('MMM D, YYYY');
+}
+
+/**
+ * Retrieves content assignments for the given budget's assignment configuration UUID (retrieved from the associated
+ * subsidy access policy).
+ *
+ * @param {String} assignmentConfigurationUUID The UUID of the assignment configuration.
+ * @param {Object} options Optional options object to pass/override query parameters.
+ *
+ * @returns Camelcased response from the content assignments.
+ */
+export async function fetchContentAssignments(assignmentConfigurationUUID, options = {}) {
+  const response = await EnterpriseAccessApiService.listContentAssignments(assignmentConfigurationUUID, options);
+  return camelCaseObject(response.data);
+}
+
+/**
+ * Retrieves spent transactions for the given budget (either a subsidy access
+ * policy or an enterprise offer), if any.
+ *
+ * @param {Object} args An object containing various arguments.
+ * @param {String} args.enterpriseUUID The UUID of the enterprise customer.
+ * @param {String} args.subsidyAccessPolicyId The UUID of a subsidy access policy, if any.
+ * @param {String} args.enterpriseOfferId The UUID of an enterprise offer, if any.
+ *
+ * @returns Camelcased response from the spent transactions.
+ */
+export async function fetchSpentTransactions({
+  enterpriseUUID,
+  subsidyAccessPolicyId,
+  enterpriseOfferId,
+}) {
+  const options = {
+    page: 1,
+    pageSize: 25,
+    ignoreNullCourseListPrice: true,
+  };
+
+  if (subsidyAccessPolicyId) {
+    options.budgetId = subsidyAccessPolicyId;
+  } else if (enterpriseOfferId) {
+    options.offerId = enterpriseOfferId;
+  }
+
+  const response = await EnterpriseDataApiService.fetchCourseEnrollments(
+    enterpriseUUID,
+    options,
+  );
+  return camelCaseObject(response.data);
+}
+
+/**
+ * Retrieves the requisite overview budget detail activity from relevant APIs, including spent transactions
+ * and (if applicable) any content assignments for the budget. Content assignments are only fetched when the
+ * budget is a subsidy access policy that is assignable and the top-down assignment feature is enabled.
+ *
+ * @param {Object} args An object containing various arguments.
+ * @param {Array} args.queryKey The query key for the query. Passed by `useQuery`.
+ * @param {Object} [args.subsidyAccessPolicy] The subsidy access policy metadata, if any. Not
+ *  applicable when the budget is an enterprise offer.
+ * @param {String} args.enterpriseUUID The UUID of the enterprise customer.
+ * @param {Boolean} args.isTopDownAssignmentEnabled Whether the top-down assignment feature is enabled.
+ * @returns An object containing the first page of spent transactions and (if applicable) content assignments.
+ */
+export async function retrieveBudgetDetailActivityOverview({
+  queryKey,
+  subsidyAccessPolicy,
+  enterpriseUUID,
+  isTopDownAssignmentEnabled,
+}) {
+  const isBudgetAssignable = !!(isTopDownAssignmentEnabled && subsidyAccessPolicy?.isAssignable);
+  const budgetId = queryKey[4];
+  const promisesToFulfill = [
+    fetchSpentTransactions({
+      enterpriseUUID,
+      subsidyAccessPolicyId: subsidyAccessPolicy?.uuid,
+      enterpriseOfferId: budgetId,
+    }),
+  ];
+  if (isBudgetAssignable) {
+    promisesToFulfill.push(fetchContentAssignments(subsidyAccessPolicy.assignmentConfiguration.uuid));
+  }
+  const responses = await Promise.allSettled(promisesToFulfill);
+  const result = {
+    spentTransactions: responses[0].value,
+  };
+  if (isBudgetAssignable) {
+    result.contentAssignments = responses[1].value;
+  }
+  return result;
 }
