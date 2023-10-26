@@ -14,12 +14,11 @@ import {
 } from '@edx/paragon';
 import { injectIntl } from '@edx/frontend-platform/i18n';
 import { camelCaseObject } from '@edx/frontend-platform';
+import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
 import { EXEC_COURSE_TYPE } from '../data';
 import { formatPrice, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
-import defaultLogoImg from '../../../static/default-card-header-dark.png';
-import defaultCardImg from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
   original,
@@ -45,8 +44,8 @@ const CourseCard = ({
 
   const price = normalizedMetadata?.contentPrice ? formatPrice(normalizedMetadata.contentPrice, { minimumFractionDigits: 0 }) : 'N/A';
 
-  const imageSrc = cardImageUrl || defaultCardImg;
-  const logoSrc = partners[0]?.logoImageUrl || defaultLogoImg;
+  const imageSrc = cardImageUrl || cardFallbackImg;
+  const logoSrc = partners[0]?.logoImageUrl;
 
   const altText = `${title} course image`;
 
@@ -69,7 +68,6 @@ const CourseCard = ({
 
   return (
     <Card
-      isClickable
       orientation={isSmall ? 'vertical' : 'horizontal'}
     >
       <Card.ImageCap
@@ -91,7 +89,7 @@ const CourseCard = ({
           )}
         />
         <Card.Section>
-          <Badge variant="light" className="ml-0">
+          <Badge variant="light">
             {isExecEd ? BADGE.execEd : BADGE.course}
           </Badge>
         </Card.Section>

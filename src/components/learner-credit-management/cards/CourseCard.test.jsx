@@ -4,7 +4,6 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseCard from './CourseCard';
-import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../data';
 
 const originalData = {
   availability: ['Upcoming'],
@@ -58,7 +57,7 @@ describe('Course card works as expected', () => {
     expect(screen.queryByText('Per learner price')).toBeInTheDocument();
     expect(screen.queryByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.queryByText('Course')).toBeInTheDocument();
-    expect(screen.queryByText('View Course')).toBeInTheDocument();
+    expect(screen.queryByText('View course')).toBeInTheDocument();
     expect(screen.queryByText('Assign')).toBeInTheDocument();
   });
 

@@ -25,7 +25,6 @@ export const ERROR_MESSAGE = 'An error occurred while retrieving data';
  */
 
 export const BaseCatalogSearchResults = ({
-  catalogUuid,
   searchResults,
   searchState,
   // algolia recommends this prop instead of searching
@@ -60,9 +59,8 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  const renderCardComponent = (props) => <CourseCard {...props} onClick={null} catalogUuid={catalogUuid} />;
   const { refinements } = useContext(SearchContext);
-  const page = refinements.page || (searchState ? searchState.page : 0);
+  const page = refinements.page || (searchState.page || 0);
 
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
@@ -93,24 +91,15 @@ export const BaseCatalogSearchResults = ({
         }}
         isLoading={isSearchStalled}
         isPaginated
-        isSortable
         itemCount={searchResults?.nbHits || 0}
         manualFilters
         manualPagination
-        manualSortBy
         pageCount={searchResults?.nbPages || 0}
-        pageSize={searchResults?.hitsPerPage || 0}
       >
         <DataTable.TableControlBar />
         <CardView
-          columnSizes={{
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 12,
-            xl: 12,
-          }}
-          CardComponent={(props) => renderCardComponent(props)}
+          columnSizes={{ xs: 12 }}
+          CardComponent={CourseCard}
         />
         <DataTable.EmptyTable content="No results found" />
         <DataTable.TableFooter className="justify-content-center">
@@ -125,12 +114,10 @@ BaseCatalogSearchResults.defaultProps = {
   searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
   error: null,
   paginationComponent: SearchPagination,
-  preview: false,
   setNoContent: () => {},
 };
 
 BaseCatalogSearchResults.propTypes = {
-  catalogUuid: PropTypes.string.isRequired,
   // from Algolia
   searchResults: PropTypes.shape({
     _state: PropTypes.shape({
@@ -151,7 +138,6 @@ BaseCatalogSearchResults.propTypes = {
     page: PropTypes.number,
   }).isRequired,
   paginationComponent: PropTypes.func,
-  preview: PropTypes.bool,
   setNoContent: PropTypes.func,
 };
 
