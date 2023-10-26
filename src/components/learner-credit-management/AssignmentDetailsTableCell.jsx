@@ -23,7 +23,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
           showLaunchIcon={false}
           isInline
         >
-          {row.original.contentTitle}
+          {row.original?.contentTitle || 'View Course'}
         </Hyperlink>
       </div>
     </>
@@ -40,7 +40,7 @@ AssignmentDetailsTableCell.propTypes = {
       uuid: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string.isRequired,
       contentKey: PropTypes.string.isRequired,
-      contentTitle: PropTypes.string.isRequired,
+      contentTitle: PropTypes.string,
     }).isRequired,
   }).isRequired,
   enterpriseSlug: PropTypes.string,
