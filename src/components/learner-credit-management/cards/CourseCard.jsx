@@ -15,21 +15,19 @@ import {
 import { injectIntl } from '@edx/frontend-platform/i18n';
 import { camelCaseObject } from '@edx/frontend-platform';
 
-import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../data';
+import { EXEC_COURSE_TYPE } from '../data';
 import { formatPrice, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
 import defaultLogoImg from '../../../static/default-card-header-dark.png';
 import defaultCardImg from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
-  original, learningType,
+  original,
 }) => {
   const {
     availability,
     cardImageUrl,
     courseType,
-    entitlements,
-    firstEnrollablePaidSeatPrice,
     normalizedMetadata,
     partners,
     title,
@@ -45,14 +43,7 @@ const CourseCard = ({
     ENROLLMENT,
   } = CARD_TEXT;
 
-  let priceText;
-
-  if (learningType === CONTENT_TYPE_COURSE) {
-    priceText = firstEnrollablePaidSeatPrice != null ? `${formatPrice(firstEnrollablePaidSeatPrice, { minimumFractionDigits: 0 })}` : 'N/A';
-  } else {
-    const [firstEntitlement] = entitlements || [null];
-    priceText = firstEntitlement != null ? `${formatPrice(firstEntitlement?.price, { minimumFractionDigits: 0 })}` : 'N/A';
-  }
+  const price = normalizedMetadata?.contentPrice ? formatPrice(normalizedMetadata.contentPrice, { minimumFractionDigits: 0 }) : 'N/A';
 
   const imageSrc = cardImageUrl || defaultCardImg;
   const logoSrc = partners[0]?.logoImageUrl || defaultLogoImg;
@@ -94,7 +85,7 @@ const CourseCard = ({
           subtitle={partners[0]?.name}
           actions={(
             <Stack gap={1} className="text-right">
-              <p className="h4 mt-2.5 mb-0">{priceText}</p>
+              <p className="h4 mt-2.5 mb-0">{price}</p>
               <span className="micro">{PRICE.subText}</span>
             </Stack>
           )}
@@ -125,13 +116,10 @@ const CourseCard = ({
 };
 
 CourseCard.propTypes = {
-  learningType: PropTypes.string,
   original: PropTypes.shape({
     availability: PropTypes.arrayOf(PropTypes.string),
     cardImageUrl: PropTypes.string,
     courseType: PropTypes.string,
-    entitlements: PropTypes.arrayOf(PropTypes.shape()),
-    firstEnrollablePaidSeatPrice: PropTypes.number,
     normalizedMetadata: PropTypes.shape(),
     originalImageUrl: PropTypes.string,
     partners: PropTypes.arrayOf(

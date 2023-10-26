@@ -10,10 +10,10 @@ const originalData = {
   availability: ['Upcoming'],
   card_image_url: undefined,
   course_type: 'course',
-  first_enrollable_paid_seat_price: 100,
   normalized_metadata: {
     enroll_by_date: '2016-02-18T04:00:00Z',
     start_date: '2016-04-18T04:00:00Z',
+    content_price: 100,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
@@ -30,10 +30,10 @@ const execEdData = {
   card_image_url: undefined,
   course_type: 'executive-education-2u',
   entitlements: [{ price: '999.00' }],
-  first_enrollable_paid_seat_price: 100,
   normalized_metadata: {
     enroll_by_date: '2016-02-18T04:00:00Z',
     start_date: '2016-04-18T04:00:00Z',
+    content_price: 999,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
