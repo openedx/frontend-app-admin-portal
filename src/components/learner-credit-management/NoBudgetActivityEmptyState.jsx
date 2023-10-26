@@ -1,30 +1,30 @@
 import React from 'react';
 import classNames from 'classnames';
 import {
-  breakpoints, Button, Card, Row, Col, useMediaQuery,
+  Button, Card, Row, Col,
 } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
-import { usePathToCatalogTab } from './data';
+import { useIsLargeOrGreater, usePathToCatalogTab } from './data';
 import nameYourLearners from './assets/nameYourLearners.svg';
 import findTheRightCourse from './assets/findTheRightCourse.svg';
 import confirmSpend from './assets/confirmSpend.svg';
 
 const FindTheRightCourseIllustration = (props) => (
-  <img src={findTheRightCourse} alt="" {...props} />
+  <img data-testid="find-the-right-course-illustration" src={findTheRightCourse} alt="" {...props} />
 );
 
 const NameYourLearnersIllustration = (props) => (
-  <img src={nameYourLearners} alt="" {...props} />
+  <img data-testid="name-your-learners-illustration" src={nameYourLearners} alt="" {...props} />
 );
 
 const ConfirmSpendIllustration = (props) => (
-  <img src={confirmSpend} alt="" {...props} />
+  <img data-testid="confirm-spend-illustration" src={confirmSpend} alt="" {...props} />
 );
 
 const NoBudgetActivityEmptyState = () => {
   const pathToCatalogTab = usePathToCatalogTab();
-  const isLargeOrGreater = useMediaQuery({ query: `(min-width: ${breakpoints.large.minWidth}px)` });
+  const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
     <Card>

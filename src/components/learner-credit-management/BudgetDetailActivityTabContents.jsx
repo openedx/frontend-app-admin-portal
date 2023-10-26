@@ -19,7 +19,12 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   });
 
   if (isBudgetActivityOverviewLoading || !budgetActivityOverview) {
-    return <Skeleton count={2} height={180} />;
+    return (
+      <>
+        <Skeleton count={2} height={180} />
+        <span className="sr-only">loading budget activity overview</span>
+      </>
+    );
   }
 
   const hasContentAssignments = !!budgetActivityOverview.contentAssignments?.count > 0;

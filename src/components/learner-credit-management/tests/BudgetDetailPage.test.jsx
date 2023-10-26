@@ -17,12 +17,20 @@ import {
   useOfferRedemptions,
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
+  useIsLargeOrGreater,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import {
+  mockAssignableSubsidyAccessPolicy,
+  mockPerLearnerSpendLimitSubsidyAccessPolicy,
+  mockSubsidyAccessPolicyUUID,
+  mockEnterpriseOfferId,
+} from '../data/tests/constants';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: jest.fn(),
+  useMediaQuery: jest.fn(),
 }));
 
 jest.mock('../data', () => ({
@@ -31,6 +39,7 @@ jest.mock('../data', () => ({
   useBudgetContentAssignments: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
   useBudgetDetailActivityOverview: jest.fn(),
+  useIsLargeOrGreater: jest.fn().mockReturnValue(true),
 }));
 
 const mockStore = configureMockStore([thunk]);
@@ -48,29 +57,6 @@ const initialStoreState = {
   },
 };
 
-const mockEnterpriseOfferId = '123';
-const mockSubsidyAccessPolicyUUID = 'c17de32e-b80b-468f-b994-85e68fd32751';
-const mockAssignableSubsidyAccessPolicy = {
-  uuid: mockSubsidyAccessPolicyUUID,
-  policyType: 'AssignedLearnerCreditAccessPolicy',
-  assignmentConfiguration: {
-    uuid: 'test-uuid',
-  },
-  displayName: 'Assignable Learner Credit',
-  aggregates: {
-    spendAvailableUsd: 10000,
-  },
-  isAssignable: true,
-};
-const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
-  uuid: mockSubsidyAccessPolicyUUID,
-  policyType: 'PerLearnerSpendCreditAccessPolicy',
-  displayName: 'Per Learner Spend Limit',
-  aggregates: {
-    spendAvailableUsd: 10000,
-  },
-  isAssignable: false,
-};
 const mockEmptyStateBudgetDetailActivityOverview = {
   contentAssignments: { count: 0 },
   spentTransactions: { count: 0 },
@@ -136,6 +122,32 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText(expectedDisplayName, { selector: 'li' }));
     // Page heading
     expect(screen.getByText(expectedDisplayName, { selector: 'h2' }));
+  });
+
+  it.each([
+    { isLargeViewport: true },
+    { isLargeViewport: false },
+  ])('displays budget activity overview empty state', ({ isLargeViewport }) => {
+    useIsLargeOrGreater.mockReturnValue(isLargeViewport);
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Overview empty state (no content assignments, no spent transactions)
+    expect(screen.getByText('No budget activity yet? Assign a course!')).toBeInTheDocument();
+    const illustrationTestIds = ['find-the-right-course-illustration', 'name-your-learners-illustration', 'confirm-spend-illustration'];
+    illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
+    expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
   });
 
   it.each([
@@ -447,5 +459,26 @@ describe('<BudgetDetailPage />', () => {
     );
 
     expect(screen.getByText('loading budget details')).toBeInTheDocument();
+  });
+
+  it.each([
+    { isActivityOverviewLoading: true },
+    { isActivityOverviewLoading: false },
+  ])('displays loading skeletons while fetching budget detail activity overview data from API endpoints (%s)', ({ isActivityOverviewLoading }) => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: isActivityOverviewLoading,
+      data: undefined,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    expect(screen.getByText('loading budget activity overview')).toBeInTheDocument();
   });
 });
