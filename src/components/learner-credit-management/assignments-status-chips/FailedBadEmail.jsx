@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Chip, Hyperlink, useToggle } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 
@@ -49,6 +50,14 @@ const FailedBadEmail = ({ learnerEmail }) => {
       </BaseModalPopup>
     </>
   );
+};
+
+FailedBadEmail.propTypes = {
+  learnerEmail: PropTypes.string,
+};
+
+FailedBadEmail.defaultProps = {
+  learnerEmail: undefined,
 };
 
 export default FailedBadEmail;
