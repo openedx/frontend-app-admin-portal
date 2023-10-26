@@ -22,7 +22,6 @@ const originalData = {
 
 const defaultProps = {
   original: originalData,
-  learningType: CONTENT_TYPE_COURSE,
 };
 
 const execEdData = {
@@ -41,7 +40,6 @@ const execEdData = {
 };
 
 const execEdProps = {
-  learningType: EXEC_COURSE_TYPE,
   original: execEdData,
 };
 
