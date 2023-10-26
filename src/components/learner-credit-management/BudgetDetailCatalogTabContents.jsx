@@ -24,7 +24,7 @@ const BudgetDetailCatalogTabContents = () => {
     title: 'Language',
   };
   const learningType = {
-    attribute: `${LEARNING_TYPE_REFINEMENT}:course`,
+    attribute: LEARNING_TYPE_REFINEMENT,
     title: 'Learning Type',
   };
   // Add search facet filters if they don't exist in the list yet

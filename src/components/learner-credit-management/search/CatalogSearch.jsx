@@ -12,7 +12,7 @@ import { SEARCH_RESULT_PAGE_SIZE } from '../data';
 
 const CatalogSearch = ({ catalogUuid }) => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-  const searchFilters = `enterprise_catalog_uuids:${catalogUuid}`;
+  const searchFilters = `enterprise_catalog_uuids:${catalogUuid} AND learning_type:'course'`;
 
   return (
     <section>
