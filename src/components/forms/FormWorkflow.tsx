@@ -8,10 +8,14 @@ import { Launch } from '@edx/paragon/icons';
 import { useFormContext } from './FormContext';
 import type { FormFieldValidation, FormContext } from './FormContext';
 import {
-  FORM_ERROR_MESSAGE, FormActionArguments, setStepAction, setWorkflowStateAction, setShowErrorsAction,
+  FORM_ERROR_MESSAGE,
+  FormActionArguments,
+  setStepAction,
+  setWorkflowStateAction,
+  setShowErrorsAction,
+  updateFormFieldsAction,
 } from './data/actions';
 import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from '../settings/data/constants';
-import UnsavedChangesModal from '../settings/SettingsLMSTab/UnsavedChangesModal';
 import ConfigErrorModal from '../settings/ConfigErrorModal';
 import { channelMapping, pollAsync } from '../../utils';
 import HelpCenterButton from '../settings/HelpCenterButton';
@@ -21,7 +25,7 @@ export const WAITING_FOR_ASYNC_OPERATION = 'WAITING FOR ASYNC OPERATION';
 export type FormWorkflowErrorHandler = (errMsg: string) => void;
 
 export type FormWorkflowHandlerArgs<FormData> = {
-  formFields?: FormData;
+  formFields: FormData;
   formFieldsChanged: boolean;
   errHandler?: FormWorkflowErrorHandler;
   dispatch?: Dispatch<FormData>;
@@ -41,12 +45,15 @@ export type FormWorkflowButtonConfig<FormData> = {
   awaitSuccess?: FormWorkflowAwaitHandler<FormData>;
 };
 
-type DynamicComponent = React.FunctionComponent | React.ComponentClass | React.ElementType;
+export type DynamicComponent<Props> =
+  | React.FunctionComponent<Props>
+  | React.ComponentClass<Props>
+  | React.ElementType<Props>;
 
 export type FormWorkflowStep<FormData> = {
   index: number;
   stepName: string;
-  formComponent: DynamicComponent;
+  formComponent: DynamicComponent<any>;
   validations: FormFieldValidation[];
   saveChanges?: (
     formData: FormData,
@@ -62,12 +69,20 @@ export type FormWorkflowConfig<FormData> = {
   getCurrentStep: () => FormWorkflowStep<FormData>;
 };
 
+export type UnsavedChangesModalProps = {
+  isOpen: boolean;
+  close: () => void;
+  exitWithoutSaving?: () => void;
+  saveDraft?: () => void
+};
+
 export type FormWorkflowProps<FormConfigData> = {
   workflowTitle: string;
   formWorkflowConfig: FormWorkflowConfig<FormConfigData>;
   onClickOut: (() => void) | ((edited?: boolean, msg?: string) => null);
   dispatch: Dispatch<FormActionArguments>;
   isStepperOpen: boolean;
+  UnsavedChangesModal?: DynamicComponent<UnsavedChangesModalProps>;
 };
 
 // Modal container for multi-step forms
@@ -77,6 +92,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
   onClickOut,
   isStepperOpen,
   dispatch,
+  UnsavedChangesModal,
 }: FormWorkflowProps<FormConfigData>) => {
   const {
     formFields,
@@ -121,6 +137,9 @@ const FormWorkflow = <FormConfigData extends unknown>({
           dispatch,
           formFieldsChanged: !!isEdited,
         });
+        if (newFormFields) {
+          dispatch(updateFormFieldsAction({ formFields: newFormFields }));
+        }
         if (nextButtonConfig?.awaitSuccess) {
           advance = await pollAsync(
             () => nextButtonConfig.awaitSuccess?.awaitCondition?.({
@@ -165,7 +184,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
 
   const stepBody = (currentStep: FormWorkflowStep<FormConfigData>) => {
     if (currentStep) {
-      const FormComponent: DynamicComponent = currentStep?.formComponent;
+      const FormComponent: DynamicComponent<any> = currentStep?.formComponent;
       return (
         <Stepper.Step
           eventKey={currentStep.index.toString()}
@@ -199,6 +218,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
         close={clearFormError}
         configTextOverride={stateMap && stateMap[FORM_ERROR_MESSAGE]}
       />
+      {/* @ts-ignore JSX element type 'UnsavedChangesModal' does not have any construct or call signatures. */}
       <UnsavedChangesModal
         isOpen={savedChangesModalIsOpen}
         close={closeSavedChangesModal}

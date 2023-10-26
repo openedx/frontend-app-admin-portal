@@ -86,9 +86,7 @@ export function initializeForm<FormFields>(action: InitializeFormArguments<FormF
   if (action?.currentStep) {
     initialFormState.currentStep = action.currentStep;
   }
-  return {
-    ...initialFormState,
-  };
+  return processFormErrors(initialFormState);
 }
 
 export type FormReducerType = (FormActionArguments, FormContext) => FormContext;
@@ -120,7 +118,8 @@ export const FormReducer: FormReducerType = (
       };
     } case SET_STEP: {
       const setStepArgs = action as SetStepArguments<FormFields>;
-      return { ...state, currentStep: setStepArgs.step };
+      const newStepState = { ...state, currentStep: setStepArgs.step };
+      return processFormErrors(newStepState);
     } case SET_SHOW_ERRORS: {
       const SetShowErrorsArgs = action as SetShowErrorsArguments;
       return { ...state, showErrors: SetShowErrorsArgs.showErrors };

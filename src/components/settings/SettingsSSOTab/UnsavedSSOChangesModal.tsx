@@ -2,16 +2,10 @@ import React from 'react';
 import { ModalDialog, ActionRow, Button } from '@edx/paragon';
 import { UnsavedChangesModalProps } from '../../forms/FormWorkflow';
 
-const MODAL_TITLE = 'Exit configuration';
-const MODAL_TEXT = 'Your configuration data will be saved under your Learning Platform settings';
-
-// will have to pass in individual saveDraft method and config when
-// drafting is allowed
-const UnsavedChangesModal = ({
+const UnsavedSSOChangesModal = ({
   isOpen,
   close,
   exitWithoutSaving,
-  saveDraft,
 }: UnsavedChangesModalProps) => (
   <ModalDialog
     title="Cancel Modal"
@@ -20,18 +14,18 @@ const UnsavedChangesModal = ({
     variant="default"
   >
     <ModalDialog.Header>
-      <ModalDialog.Title>{MODAL_TITLE}</ModalDialog.Title>
+      <ModalDialog.Title>Exit configuration?</ModalDialog.Title>
     </ModalDialog.Header>
-    <ModalDialog.Body>{MODAL_TEXT}</ModalDialog.Body>
+    <ModalDialog.Body>
+      <p>Your in-progress data will not be saved.</p>
+      <p>Your SSO connection will not be active until you restart and complete the SSO configuration process.</p>
+    </ModalDialog.Body>
     <ModalDialog.Footer>
       <ActionRow>
         <Button onClick={close} variant="outline-primary">
           Cancel
         </Button>
-        <Button onClick={exitWithoutSaving} variant="outline-primary">
-          Exit without saving
-        </Button>
-        <Button onClick={saveDraft} variant="primary">
+        <Button onClick={exitWithoutSaving} variant="primary">
           Exit
         </Button>
       </ActionRow>
@@ -39,4 +33,4 @@ const UnsavedChangesModal = ({
   </ModalDialog>
 );
 
-export default UnsavedChangesModal;
+export default UnsavedSSOChangesModal;
