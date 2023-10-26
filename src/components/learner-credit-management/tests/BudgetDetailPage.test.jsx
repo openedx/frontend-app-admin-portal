@@ -214,6 +214,7 @@ describe('<BudgetDetailPage />', () => {
       },
     });
     const mockLearnerEmail = 'edx@example.com';
+    const mockContentTitle = 'edx Demo';
     const mockCourseKey = 'edX+DemoX';
     useBudgetContentAssignments.mockReturnValue({
       isLoading: false,
@@ -224,6 +225,7 @@ describe('<BudgetDetailPage />', () => {
             uuid: 'test-uuid',
             learnerEmail: mockLearnerEmail,
             contentKey: mockCourseKey,
+            contentTitle: mockContentTitle,
           },
         ],
         numPages: 1,
@@ -236,7 +238,7 @@ describe('<BudgetDetailPage />', () => {
     const assignedSection = within(screen.getByText('Assigned').closest('section'));
     expect(assignedSection.queryByText('No results found')).not.toBeInTheDocument();
     expect(assignedSection.getByText(mockLearnerEmail)).toBeInTheDocument();
-    const viewCourseCTA = assignedSection.getByText('View course', { selector: 'a' });
+    const viewCourseCTA = assignedSection.getByText('edx Demo', { selector: 'a' });
     expect(viewCourseCTA).toBeInTheDocument();
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
   });

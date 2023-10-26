@@ -20,6 +20,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
           className="x-small"
           destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.contentKey}`}
           target="_blank"
+          showLaunchIcon={false}
           isInline
         >
           {row.original.contentTitle}
