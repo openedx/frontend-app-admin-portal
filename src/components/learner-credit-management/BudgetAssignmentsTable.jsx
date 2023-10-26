@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DataTable } from '@edx/paragon';
-
 import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
 import AssignmentDetailsTableCell from './AssignmentDetailsTableCell';
 import AssignmentStatusTableCell from './AssignmentStatusTableCell';
+import AssignmentRowActionTableCell from './AssignmentRowActionTableCell';
+import AssignmentTableRemindAction from './AssignmentTableRemind';
+import AssignmentTableCancelAction from './AssignmentTableCancel';
 import { DEFAULT_PAGE, PAGE_SIZE, formatPrice } from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 
@@ -18,6 +20,7 @@ const BudgetAssignmentsTable = ({
 }) => (
   <DataTable
     isSortable
+    isSelectable
     manualSortBy
     isPaginated
     manualPagination
@@ -49,6 +52,13 @@ const BudgetAssignmentsTable = ({
         disableFilters: true,
       },
     ]}
+    additionalColumns={[
+      {
+        Header: '',
+        Cell: AssignmentRowActionTableCell,
+        id: 'action',
+      },
+    ]}
     initialTableOptions={{
       getRowId: row => row?.uuid?.toString(),
     }}
@@ -63,6 +73,10 @@ const BudgetAssignmentsTable = ({
     itemCount={tableData?.count || 0}
     pageCount={tableData?.numPages || 1}
     EmptyTableComponent={CustomDataTableEmptyState}
+    bulkActions={[
+      <AssignmentTableRemindAction />,
+      <AssignmentTableCancelAction />,
+    ]}
   />
 );
 
