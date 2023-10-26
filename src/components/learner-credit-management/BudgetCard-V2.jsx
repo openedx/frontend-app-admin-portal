@@ -73,7 +73,7 @@ BudgetCard.propTypes = {
   }).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  offerType: PropTypes.string.isRequired,
+  offerType: PropTypes.oneOf(Object.values(BUDGET_TYPES)).isRequired,
   displayName: PropTypes.string,
 };
 

@@ -16,15 +16,13 @@ import {
   useSubsidyAccessPolicy,
   useOfferRedemptions,
   useBudgetContentAssignments,
+  useBudgetDetailActivityOverview,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({
-    budgetId: '123',
-    activeTabKey: 'activity',
-  }),
+  useParams: jest.fn(),
 }));
 
 jest.mock('../data', () => ({
@@ -32,35 +30,8 @@ jest.mock('../data', () => ({
   useOfferRedemptions: jest.fn(),
   useBudgetContentAssignments: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
+  useBudgetDetailActivityOverview: jest.fn(),
 }));
-
-useSubsidyAccessPolicy.mockReturnValue({
-  isInitialLoading: false,
-  data: {
-    uuid: 'test-budget-uuid',
-    policyType: 'PerLearnerSpendCreditAccessPolicy',
-    displayName: null,
-    isAssignable: false,
-  },
-});
-useBudgetContentAssignments.mockReturnValue({
-  isLoading: false,
-  contentAssignments: {
-    count: 0,
-    results: [],
-    numPages: 1,
-  },
-  fetchContentAssignments: jest.fn(),
-});
-useOfferRedemptions.mockReturnValue({
-  isLoading: false,
-  offerRedemptions: {
-    itemCount: 0,
-    pageCount: 0,
-    results: [],
-  },
-  fetchOfferRedemptions: jest.fn(),
-});
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -79,6 +50,36 @@ const initialStoreState = {
 
 const mockEnterpriseOfferId = '123';
 const mockSubsidyAccessPolicyUUID = 'c17de32e-b80b-468f-b994-85e68fd32751';
+const mockAssignableSubsidyAccessPolicy = {
+  uuid: mockSubsidyAccessPolicyUUID,
+  policyType: 'AssignedLearnerCreditAccessPolicy',
+  assignmentConfiguration: {
+    uuid: 'test-uuid',
+  },
+  displayName: 'Assignable Learner Credit',
+  aggregates: {
+    spendAvailableUsd: 10000,
+  },
+  isAssignable: true,
+};
+const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
+  uuid: mockSubsidyAccessPolicyUUID,
+  policyType: 'PerLearnerSpendCreditAccessPolicy',
+  displayName: 'Per Learner Spend Limit',
+  aggregates: {
+    spendAvailableUsd: 10000,
+  },
+  isAssignable: false,
+};
+const mockEmptyStateBudgetDetailActivityOverview = {
+  contentAssignments: { count: 0 },
+  spentTransactions: { count: 0 },
+};
+const mockEmptyOfferRedemptions = {
+  itemCount: 0,
+  pageCount: 0,
+  results: [],
+};
 
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
@@ -107,27 +108,24 @@ const BudgetDetailPageWrapper = ({
 
 describe('<BudgetDetailPage />', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  afterEach(() => {
-    useParams.mockReturnValue({
-      budgetId: '123',
-      activeTabKey: 'activity',
-    });
+    jest.resetAllMocks();
   });
 
   it.each([
     { displayName: null },
     { displayName: 'Test Budget Display Name' },
-  ])('renders budget header data', ({ displayName }) => {
+  ])('renders budget header data (%s)', ({ displayName }) => {
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
-      data: {
-        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
-        policyType: 'AssignedLearnerCreditAccessPolicy',
-        displayName,
-      },
+      data: { ...mockAssignableSubsidyAccessPolicy, displayName },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
     });
     const expectedDisplayName = displayName || 'Overview';
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -157,13 +155,29 @@ describe('<BudgetDetailPage />', () => {
       budgetId,
       activeTabKey: 'activity',
     });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: undefined,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: undefined,
+        spentTransactions: { count: 1 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 0,
+        results: [],
+        numPages: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
     useOfferRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: {
-        itemCount: 0,
-        pageCount: 0,
-        results: [],
-      },
+      offerRedemptions: mockEmptyOfferRedemptions,
       fetchOfferRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -181,40 +195,65 @@ describe('<BudgetDetailPage />', () => {
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
   });
 
-  it('renders with empty assigned table and catalog tab available for assignable budgets', () => {
+  it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', () => {
     useParams.mockReturnValue({
-      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
       data: {
-        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
-        policyType: 'AssignedLearnerCreditAccessPolicy',
-        isAssignable: true,
+        contentAssignments: { count: 0 },
+        spentTransactions: { count: 1 },
       },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 0,
+        results: [],
+        numPages: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
-    // Assigned table is visible within Activity tab contents
-    const assignedSection = within(screen.getByText('Assigned').closest('section'));
-    expect(assignedSection.getByText('No results found')).toBeInTheDocument();
+    // Assigned table empty state is visible within Activity tab contents
+    expect(screen.getByText('Assign more courses to maximize your budget.')).toBeInTheDocument();
+    expect(screen.getByText('available balance of $10,000', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('Assign courses', { selector: 'a' })).toBeInTheDocument();
 
     // Catalog tab exists and is NOT active
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
   });
 
   it('renders with assigned table data', () => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
-      data: {
-        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
-        policyType: 'AssignedLearnerCreditAccessPolicy',
-        isAssignable: true,
-      },
+      data: mockAssignableSubsidyAccessPolicy,
     });
     const mockLearnerEmail = 'edx@example.com';
     const mockCourseKey = 'edX+DemoX';
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 1 },
+      },
+    });
     useBudgetContentAssignments.mockReturnValue({
       isLoading: false,
       contentAssignments: {
@@ -229,6 +268,12 @@ describe('<BudgetDetailPage />', () => {
         numPages: 1,
         currentPage: 1,
       },
+      fetchContentAssignments: jest.fn(),
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -243,8 +288,16 @@ describe('<BudgetDetailPage />', () => {
 
   it('renders with catalog tab active on initial load for assignable budgets', async () => {
     useParams.mockReturnValue({
-      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'catalog',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValueOnce({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -253,12 +306,19 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('hides catalog tab when budget is not assignable', () => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
       data: {
-        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
-        policyType: 'PerLearnerSpendCreditAccessPolicy',
-        isAssignable: false,
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
       },
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -267,7 +327,7 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.queryByText('Catalog')).toBeFalsy();
   });
 
-  it('hides catalog tab when enterpriseFeatures.topDownAssignmentRealTimeLcm', () => {
+  it('hides catalog tab when enterpriseFeatures.topDownAssignmentRealTimeLcm is disabled', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
@@ -276,6 +336,21 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     };
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
 
     // Catalog tab does NOT exist
@@ -284,8 +359,19 @@ describe('<BudgetDetailPage />', () => {
 
   it('defaults to activity tab is no activeTabKey is provided', () => {
     useParams.mockReturnValue({
-      budgetId: '123',
+      budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: undefined,
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -295,8 +381,16 @@ describe('<BudgetDetailPage />', () => {
 
   it('displays not found message is invalid activeTabKey is provided', () => {
     useParams.mockReturnValue({
-      budgetId: '123',
+      budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'invalid',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
     expect(screen.getByText('404')).toBeInTheDocument();
@@ -304,13 +398,17 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('handles user switching to catalog tab', async () => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
-      data: {
-        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
-        policyType: 'AssignedLearnerCreditAccessPolicy',
-        isAssignable: true,
-      },
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
     const catalogTab = screen.getByText('Catalog');
@@ -325,11 +423,18 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('displays loading message while loading subsidy access policy metadata from API', () => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: true,
       data: undefined,
     });
-
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
     renderWithRouter(
       <BudgetDetailPageWrapper
         enterpriseUUID={enterpriseUUID}
