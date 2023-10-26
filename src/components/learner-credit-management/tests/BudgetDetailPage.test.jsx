@@ -30,7 +30,6 @@ import {
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: jest.fn(),
-  useMediaQuery: jest.fn(),
 }));
 
 jest.mock('../data', () => ({
