@@ -10,7 +10,7 @@ import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
 import { SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy } from '../data';
 
-const CatalogSearch = ({ catalogUuid, enterpriseSlug }) => {
+const CatalogSearch = ({ enterpriseSlug }) => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
   const { subsidyAccessPolicyId } = useBudgetId();
   const {
@@ -46,7 +46,6 @@ const CatalogSearch = ({ catalogUuid, enterpriseSlug }) => {
 };
 
 CatalogSearch.propTypes = {
-  catalogUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
 };
 

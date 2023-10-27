@@ -73,7 +73,7 @@ const CourseCard = ({
     execEdEnrollmentInfo = formattedAvailability;
   }
 
-  const isExecEd = courseType === EXEC_COURSE_TYPE;
+  const isExecEd = courseType === EXEC_ED_COURSE_TYPE;
 
   const linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
 
