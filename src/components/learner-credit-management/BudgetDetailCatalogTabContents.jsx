@@ -14,7 +14,6 @@ import {
 import { configuration } from '../../config';
 
 const BudgetDetailCatalogTabContents = ({ enterpriseSlug }) => {
-
   const language = {
     attribute: LANGUAGE_REFINEMENT,
     title: 'Language',
