@@ -43,3 +43,13 @@ export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 
 // Number of items to display per page in Budget Catalog tab
 export const SEARCH_RESULT_PAGE_SIZE = 15;
+
+// Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
+// Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
+export const learnerCreditManagementQueryKeys = {
+  all: ['learner-credit-management'],
+  budgets: () => [...learnerCreditManagementQueryKeys.all, 'budgets'],
+  budget: (budgetId) => [...learnerCreditManagementQueryKeys.all, 'budget', budgetId],
+  budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
+  budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],
+};
