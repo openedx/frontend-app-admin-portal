@@ -5,11 +5,13 @@ import { Stack, Skeleton } from '@edx/paragon';
 
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
-import { useBudgetDetailActivityOverview } from './data';
+import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoBudgetActivityEmptyState from './NoBudgetActivityEmptyState';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
     isLoading: isBudgetActivityOverviewLoading,
     data: budgetActivityOverview,
@@ -25,6 +27,10 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
         <span className="sr-only">loading budget activity overview</span>
       </>
     );
+  }
+
+  if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
+    return <BudgetDetailRedemptions />;
   }
 
   const hasContentAssignments = !!budgetActivityOverview.contentAssignments?.count > 0;
