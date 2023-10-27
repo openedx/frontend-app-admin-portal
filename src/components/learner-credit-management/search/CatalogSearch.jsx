@@ -43,6 +43,7 @@ const CatalogSearch = ({ catalogUuid, enterpriseSlug }) => {
 
 CatalogSearch.propTypes = {
   catalogUuid: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 export default CatalogSearch;

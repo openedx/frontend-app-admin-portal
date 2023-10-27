@@ -10,6 +10,7 @@ const originalData = {
   availability: ['Upcoming'],
   card_image_url: undefined,
   course_type: 'course',
+  key: 'course-123x',
   normalized_metadata: {
     enroll_by_date: '2016-02-18T04:00:00Z',
     start_date: '2016-04-18T04:00:00Z',
@@ -22,15 +23,7 @@ const originalData = {
 
 const defaultProps = {
   original: originalData,
-};
-
-const programProps = {
-  ...defaultProps,
-  original: {
-    ...defaultProps.original,
-    content_type: 'program',
-    uuid: 'program-123x',
-  },
+  enterpriseSlug: 'test-enterprise-slug',
 };
 
 const mockLearnerPortal = 'https://enterprise.stage.edx.org';
@@ -127,26 +120,8 @@ describe('Course card works as expected', () => {
     );
 
     const hyperlink = screen.getByRole('link', {
-      name: 'View Course Opens in a new tab',
+      name: 'View course Opens in a new tab',
     });
     expect(hyperlink.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/course/course-123x');
-  });
-
-  test('sets correct course hyperlink for program', async () => {
-    render(
-      <IntlProvider locale="en">
-        <AppContext.Provider
-          value={{
-            config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
-          }}
-        >
-          <CourseCard {...programProps} />
-        </AppContext.Provider>
-      </IntlProvider>,
-    );
-    const hyperlink = screen.getByRole('link', {
-      name: 'View Course Opens in a new tab',
-    });
-    expect(hyperlink.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/program/program-123x');
   });
 });

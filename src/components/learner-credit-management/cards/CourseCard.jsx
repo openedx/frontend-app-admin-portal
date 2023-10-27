@@ -2,6 +2,7 @@
 // variables taken from algolia not in camelcase
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { AppContext } from '@edx/frontend-platform/react';
 
 import {
   Badge,
@@ -21,12 +22,13 @@ import { formatPrice, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
 
 const CourseCard = ({
-  original,
+  original, enterpriseSlug,
 }) => {
   const {
     availability,
     cardImageUrl,
     courseType,
+    key,
     normalizedMetadata,
     partners,
     title,
@@ -67,14 +69,7 @@ const CourseCard = ({
 
   const isExecEd = courseType === EXEC_COURSE_TYPE;
 
-  let linkToCourse;
-  if (content_type === 'program') {
-    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/program/${uuid}`;
-  } else if (content_type === 'course') {
-    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
-  } else {
-    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/search/${uuid}`;
-  }
+  const linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
 
   return (
     <Card
@@ -124,10 +119,12 @@ const CourseCard = ({
 };
 
 CourseCard.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   original: PropTypes.shape({
     availability: PropTypes.arrayOf(PropTypes.string),
     cardImageUrl: PropTypes.string,
     courseType: PropTypes.string,
+    key: PropTypes.string,
     normalizedMetadata: PropTypes.shape(),
     originalImageUrl: PropTypes.string,
     partners: PropTypes.arrayOf(
