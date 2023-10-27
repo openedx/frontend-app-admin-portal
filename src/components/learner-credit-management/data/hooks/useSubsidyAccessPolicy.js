@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import { learnerCreditManagementQueryKeys } from '../constants';
 
 const determineBudgetAssignability = (subsidyAccessPolicy) => {
   const policyType = subsidyAccessPolicy?.policyType;
@@ -25,7 +26,7 @@ const getSubsidyAccessPolicy = async ({ queryKey }) => {
 };
 
 const useSubsidyAccessPolicy = (subsidyAccessPolicyId, { queryOptions } = {}) => useQuery({
-  queryKey: ['learner-credit-management', 'subsidy-access-policy', subsidyAccessPolicyId],
+  queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
   queryFn: getSubsidyAccessPolicy,
   enabled: !!subsidyAccessPolicyId,
   ...queryOptions,

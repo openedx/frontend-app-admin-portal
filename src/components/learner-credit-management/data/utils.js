@@ -253,8 +253,9 @@ export async function fetchSpentTransactions({
  * and (if applicable) any content assignments for the budget. Content assignments are only fetched when the
  * budget is a subsidy access policy that is assignable and the top-down assignment feature is enabled.
  *
- * @param {Object} args An object containing various arguments.
- * @param {Array} args.queryKey The query key for the query. Passed by `useQuery`.
+ * @param {Object} args An object containing various arguments. Note: `@tanstack/reat-query` passes
+ *  additional arguments.
+ * @param {Array} args.budgetId The budget id for the currently viewing budget.
  * @param {Object} [args.subsidyAccessPolicy] The subsidy access policy metadata, if any. Not
  *  applicable when the budget is an enterprise offer.
  * @param {String} args.enterpriseUUID The UUID of the enterprise customer.
@@ -262,13 +263,12 @@ export async function fetchSpentTransactions({
  * @returns An object containing the first page of spent transactions and (if applicable) content assignments.
  */
 export async function retrieveBudgetDetailActivityOverview({
-  queryKey,
+  budgetId,
   subsidyAccessPolicy,
   enterpriseUUID,
   isTopDownAssignmentEnabled,
 }) {
   const isBudgetAssignable = !!(isTopDownAssignmentEnabled && subsidyAccessPolicy?.isAssignable);
-  const budgetId = queryKey[4];
   const promisesToFulfill = [
     fetchSpentTransactions({
       enterpriseUUID,
