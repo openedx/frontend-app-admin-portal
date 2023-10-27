@@ -97,7 +97,7 @@ const CourseCard = ({
           textElement={isExecEd ? execEdEnrollmentInfo : courseEnrollmentInfo}
         >
           <Button
-            // TODO: Implementation to follow in ENT-7594
+            // @TODO: Implementation to follow in ENT-7594
             as={Hyperlink}
             destination="https://enterprise.stage.edx.org"
             target="_blank"
