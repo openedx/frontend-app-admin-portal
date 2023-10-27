@@ -39,7 +39,7 @@ const rowPropType = PropTypes.shape({
   original: PropTypes.shape({
     courseKey: PropTypes.string.isRequired,
     courseTitle: PropTypes.string.isRequired,
-    userEmail: PropTypes.string.isRequired,
+    userEmail: PropTypes.string,
     enterpriseEnrollmentId: PropTypes.number,
     fulfillmentIdentifier: PropTypes.string,
   }).isRequired,
