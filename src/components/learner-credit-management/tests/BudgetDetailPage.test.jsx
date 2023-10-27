@@ -390,6 +390,9 @@ describe('<BudgetDetailPage />', () => {
 
     // Catalog tab does NOT exist
     expect(screen.queryByText('Catalog')).toBeFalsy();
+
+    // Ensure no assignments-related empty states are rendered
+    expect(screen.queryByText('No budget activity yet? Assign a course!')).not.toBeInTheDocument();
   });
 
   it('hides catalog tab when enterpriseFeatures.topDownAssignmentRealTimeLcm is disabled', () => {
