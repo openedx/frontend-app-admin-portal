@@ -24,6 +24,7 @@ $modal-max-width: 650px;
 @import "./components/BulkEnrollmentPage/BulkEnrollment";
 @import "./components/Admin/Admin";
 @import "./components/settings/settings";
+@import "./components/learner-credit-management/styles/AssignMoreCoursesEmptyStateMinimal";
 
 body {
   overflow-x: hidden;

@@ -47,9 +47,9 @@ const BudgetAssignmentsTable = ({
       filters: [],
     }}
     fetchData={fetchTableData}
-    data={tableData.results}
-    itemCount={tableData.count}
-    pageCount={tableData.numPages}
+    data={tableData?.results || []}
+    itemCount={tableData?.count || 0}
+    pageCount={tableData?.numPages || 1}
     EmptyTableComponent={CustomDataTableEmptyState}
   />
 );

@@ -1,15 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
+import AssignMoreCoursesEmptyStateMinimal from './AssignMoreCoursesEmptyStateMinimal';
+import { useBudgetContentAssignments, useBudgetId, useSubsidyAccessPolicy } from './data';
 
 const BudgetDetailAssignments = ({
-  isEnabled,
-  isLoading,
-  tableData,
-  fetchTableData,
+  hasContentAssignments,
+  hasSpentTransactions,
+  enterpriseFeatures,
 }) => {
-  if (!isEnabled) {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
+  const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
+  const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
+  const {
+    isLoading,
+    contentAssignments,
+    fetchContentAssignments,
+  } = useBudgetContentAssignments({
+    isEnabled: isAssignableBudget && hasContentAssignments,
+    assignmentConfigurationUUID,
+  });
+
+  if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
     return null;
+  }
+
+  if (!hasContentAssignments && hasSpentTransactions) {
+    return (
+      <AssignMoreCoursesEmptyStateMinimal />
+    );
   }
 
   return (
@@ -21,18 +44,23 @@ const BudgetDetailAssignments = ({
       </p>
       <BudgetAssignmentsTable
         isLoading={isLoading}
-        tableData={tableData}
-        fetchTableData={fetchTableData}
+        tableData={contentAssignments}
+        fetchTableData={fetchContentAssignments}
       />
     </section>
   );
 };
 
+const mapStateToProps = state => ({
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+});
+
 BudgetDetailAssignments.propTypes = {
-  isEnabled: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  tableData: PropTypes.shape().isRequired,
-  fetchTableData: PropTypes.func.isRequired,
+  hasContentAssignments: PropTypes.bool.isRequired,
+  hasSpentTransactions: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
 };
 
-export default BudgetDetailAssignments;
+export default connect(mapStateToProps)(BudgetDetailAssignments);
