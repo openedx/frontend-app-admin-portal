@@ -8,10 +8,11 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
+import { SEARCH_RESULT_PAGE_SIZE } from '../data';
 
 const CatalogSearch = ({ catalogUuid, enterpriseSlug }) => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-  const searchFilters = `enterprise_catalog_uuids:${catalogUuid}`;
+  const searchFilters = `enterprise_catalog_uuids:${catalogUuid} AND learning_type:'course'`;
 
   return (
     <section>
@@ -26,6 +27,7 @@ const CatalogSearch = ({ catalogUuid, enterpriseSlug }) => {
           <Configure
             filters={searchFilters}
             facetingAfterDistinct
+            hitsPerPage={SEARCH_RESULT_PAGE_SIZE}
           />
           <SearchHeader
             hideTitle
@@ -40,8 +42,7 @@ const CatalogSearch = ({ catalogUuid, enterpriseSlug }) => {
 };
 
 CatalogSearch.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-  catalogUuid: PropTypes.string,
+  catalogUuid: PropTypes.string.isRequired,
 };
 
 export default CatalogSearch;

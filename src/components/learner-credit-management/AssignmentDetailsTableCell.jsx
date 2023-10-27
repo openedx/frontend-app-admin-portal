@@ -20,9 +20,10 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
           className="x-small"
           destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.contentKey}`}
           target="_blank"
+          showLaunchIcon={false}
           isInline
         >
-          View course
+          {row.original?.contentTitle || 'View Course'}
         </Hyperlink>
       </div>
     </>
@@ -39,6 +40,7 @@ AssignmentDetailsTableCell.propTypes = {
       uuid: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string.isRequired,
       contentKey: PropTypes.string.isRequired,
+      contentTitle: PropTypes.string,
     }).isRequired,
   }).isRequired,
   enterpriseSlug: PropTypes.string,
