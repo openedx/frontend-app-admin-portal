@@ -350,7 +350,7 @@ describe('<BudgetDetailPage />', () => {
             uuid: 'test-uuid',
             learnerEmail: mockLearnerEmail,
             contentKey: mockCourseKey,
-            contentTitle: mockContentTitle,
+            contentTitle: null,
             contentQuantity: -19900,
             learnerState: 'waiting',
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
