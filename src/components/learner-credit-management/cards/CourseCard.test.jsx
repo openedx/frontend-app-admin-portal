@@ -4,16 +4,15 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseCard from './CourseCard';
-import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
 
 const originalData = {
-  availability: 'Upcoming',
+  availability: ['Upcoming'],
   card_image_url: undefined,
   course_type: 'course',
-  first_enrollable_paid_seat_price: 100,
   normalized_metadata: {
     enroll_by_date: '2016-02-18T04:00:00Z',
     start_date: '2016-04-18T04:00:00Z',
+    content_price: 100,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
@@ -22,17 +21,17 @@ const originalData = {
 
 const defaultProps = {
   original: originalData,
-  learningType: CONTENT_TYPE_COURSE,
 };
 
 const execEdData = {
+  availability: ['Upcoming'],
   card_image_url: undefined,
   course_type: 'executive-education-2u',
   entitlements: [{ price: '999.00' }],
-  first_enrollable_paid_seat_price: 100,
   normalized_metadata: {
     enroll_by_date: '2016-02-18T04:00:00Z',
     start_date: '2016-04-18T04:00:00Z',
+    content_price: 999,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
@@ -40,7 +39,6 @@ const execEdData = {
 };
 
 const execEdProps = {
-  learningType: EXEC_COURSE_TYPE,
   original: execEdData,
 };
 
@@ -57,9 +55,9 @@ describe('Course card works as expected', () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('$100')).toBeInTheDocument();
     expect(screen.queryByText('Per learner price')).toBeInTheDocument();
-    expect(screen.queryByText('Upcoming • Learner must register by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.queryByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.queryByText('Course')).toBeInTheDocument();
-    expect(screen.queryByText('View Course')).toBeInTheDocument();
+    expect(screen.queryByText('View course')).toBeInTheDocument();
     expect(screen.queryByText('Assign')).toBeInTheDocument();
   });
 
@@ -81,7 +79,7 @@ describe('Course card works as expected', () => {
       </IntlProvider>,
     );
     expect(screen.queryByText('$999')).toBeInTheDocument();
-    expect(screen.queryByText('Starts Apr 18, 2016 • Learner must register by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.queryByText('Starts Apr 18, 2016 • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.queryByText('Executive Education')).toBeInTheDocument();
   });
 });

@@ -35,6 +35,13 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -198,6 +205,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -232,7 +246,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -283,7 +297,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -353,7 +367,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -404,7 +418,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -541,7 +555,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -643,7 +657,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -694,7 +708,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -807,7 +821,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -911,6 +925,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -945,7 +966,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -996,7 +1017,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1066,7 +1087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1117,7 +1138,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1254,7 +1275,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1356,7 +1377,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1407,7 +1428,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1520,7 +1541,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -1624,6 +1645,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -1658,7 +1686,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1709,7 +1737,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1779,7 +1807,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -1830,7 +1858,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -1967,7 +1995,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2069,7 +2097,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2120,7 +2148,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2233,7 +2261,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -2341,6 +2369,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -2375,7 +2410,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2426,7 +2461,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2496,7 +2531,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2547,7 +2582,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2684,7 +2719,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -2786,7 +2821,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -2837,7 +2872,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3052,7 +3087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3140,7 +3175,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -3201,6 +3236,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -3235,7 +3277,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -3286,7 +3328,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3356,7 +3398,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -3407,7 +3449,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3544,7 +3586,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3646,7 +3688,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -3697,7 +3739,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -3912,7 +3954,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4000,7 +4042,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
                             fill="currentColor"
                           />
                         </svg>
@@ -4061,6 +4103,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -4095,7 +4144,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4146,7 +4195,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4216,7 +4265,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4267,7 +4316,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4404,7 +4453,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4506,7 +4555,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4557,7 +4606,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4670,7 +4719,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -4778,6 +4827,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -4812,7 +4868,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4863,7 +4919,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -4933,7 +4989,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -4984,7 +5040,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5121,7 +5177,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5223,7 +5279,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5274,7 +5330,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5387,7 +5443,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -5495,6 +5551,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -5529,7 +5592,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5580,7 +5643,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5650,7 +5713,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5701,7 +5764,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5838,7 +5901,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -5940,7 +6003,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -5991,7 +6054,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6104,7 +6167,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -6212,6 +6275,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -6246,7 +6316,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -6297,7 +6367,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6367,7 +6437,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -6418,7 +6488,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6555,7 +6625,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6657,7 +6727,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -6708,7 +6778,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -6821,7 +6891,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -6925,6 +6995,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -6959,7 +7036,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 000 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0020 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7010,7 +7087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7080,7 +7157,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7131,7 +7208,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7268,7 +7345,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7370,7 +7447,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
                       fill="currentColor"
                     />
                   </svg>
@@ -7421,7 +7498,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M7 10l5 5 5-5H7z"
+                          d="m7 10 5 5 5-5H7Z"
                           fill="currentColor"
                         />
                       </svg>
@@ -7534,7 +7611,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
                     fill="currentColor"
                   />
                 </svg>
@@ -7607,6 +7684,922 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
 </main>
 `;
 
+exports[`<Admin /> renders correctly with dashboard insights data renders dashboard insights data correctly 1`] = `
+<main
+  className="learner-progress-report"
+  role="main"
+>
+  <div
+    className="hero hero-brand"
+  >
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="container-fluid"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2>
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="pgn__hstack pgn__stack-gap--3"
+        >
+          <button
+            className="d-sm-inline btn btn-outline-primary"
+            data-testid="summarize-analytics"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="mr-2"
+              fill="none"
+              height={24}
+              viewBox="0 0 24 24"
+              width={24}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-1.59-2.67-4.24-4.24L1.59 18.17l4.24 4.24L18.41 9.83zm-4.2 1.38L12.8 9.8l1.38-1.38 1.41 1.41-1.38 1.38z"
+                fill="currentColor"
+              />
+            </svg>
+            Summarize Analytics
+          </button>
+          <button
+            className="d-none btn btn-outline-primary"
+            data-testid="track-progress"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="mr-2"
+              fill="none"
+              height={24}
+              viewBox="0 0 24 24"
+              width={24}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                fill="currentColor"
+              />
+            </svg>
+            Track Progress
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-3"
+    >
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  3
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                total number of learners registered
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-numberOfUsers"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-numberOfUsers"
+            >
+              <a
+                className="btn btn-link"
+                href="/registered-unenrolled-learners"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Which learners are registered but not yet enrolled in any courses?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  1
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                learners enrolled in at least one course
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-enrolledLearners"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-enrolledLearners"
+            >
+              <a
+                className="btn btn-link"
+                href="/enrolled-learners"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    How many courses are learners enrolled in?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/enrolled-learners-inactive-courses"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who is no longer enrolled in a current course?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  1
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                active learners in the past week
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-activeLearners"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-activeLearners"
+            >
+              <a
+                className="btn btn-link"
+                href="/learners-active-week"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who are my top active learners?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/learners-inactive-week"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who has not been active for over a week?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/learners-inactive-month"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who has not been active for over a month?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  1
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                course completions
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-courseCompletions"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-courseCompletions"
+            >
+              <a
+                className="btn btn-link"
+                href="/completed-learners"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    How many courses have been completed by learners?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/completed-learners-week"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who completed a course in the past week?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Full Report
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row pb-3"
+        >
+          <div
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
+          >
+            Showing data as of 
+            July 31, 2018
+          </div>
+          <div
+            className="col-12 col-md-6 col-xl-8"
+          >
+            <button
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+              disabled={true}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
+              Download full report (CSV)
+            </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field16"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field16"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field17"
+                  >
+                    Filter by start date
+                    <span
+                      alt="More information"
+                      className="pgn__icon ml-1"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field17"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-18"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-18"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        />
+      </div>
+    </div>
+  </div>
+</main>
+`;
+
 exports[`<Admin /> renders correctly with error state 1`] = `
 <main
   className="learner-progress-report"
@@ -7642,6 +8635,13 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       </div>
     </div>
     <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
       className="row mt-3"
     >
       <div
@@ -7665,7 +8665,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
                 fill="currentColor"
               />
             </svg>
@@ -7787,6 +8787,13 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           Overview
         </h2>
       </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
     </div>
     <div
       className="row mt-3"
@@ -7959,5 +8966,872 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
     </span>
     <br />
   </span>
+</main>
+`;
+
+exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
+<main
+  className="learner-progress-report"
+  role="main"
+>
+  <div
+    className="hero hero-brand"
+  >
+    <div>
+      <h1>
+        Learner Progress Report
+      </h1>
+    </div>
+    <div>
+      <img
+        alt="edX logo"
+        src="https://edx-cdn.org/v3/prod/logo.svg"
+      />
+    </div>
+  </div>
+  <div
+    className="container-fluid"
+  >
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <h2>
+          Overview
+        </h2>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      />
+    </div>
+    <div
+      className="row mt-3"
+    >
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  3
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.56 1.76 2.73V18H6v-1.61c0-1.18.68-2.26 1.76-2.73 1.17-.52 2.61-.91 4.24-.91zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                total number of learners registered
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-numberOfUsers"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-numberOfUsers"
+            >
+              <a
+                className="btn btn-link"
+                href="/registered-unenrolled-learners"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Which learners are registered but not yet enrolled in any courses?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  1
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                learners enrolled in at least one course
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-enrolledLearners"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-enrolledLearners"
+            >
+              <a
+                className="btn btn-link"
+                href="/enrolled-learners"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    How many courses are learners enrolled in?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/enrolled-learners-inactive-courses"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who is no longer enrolled in a current course?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  1
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                active learners in the past week
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-activeLearners"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-activeLearners"
+            >
+              <a
+                className="btn btn-link"
+                href="/learners-active-week"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who are my top active learners?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/learners-inactive-week"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who has not been active for over a week?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/learners-inactive-month"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who has not been active for over a month?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+      >
+        <div
+          className="number-card w-100 has-details"
+        >
+          <div
+            className="card"
+          >
+            <div
+              className="card-body"
+            >
+              <h3
+                className="card-title d-flex align-items-center justify-content-between"
+              >
+                <span>
+                  1
+                </span>
+                <span
+                  className="pgn__icon d-flex align-items-center justify-content-center"
+                >
+                  <svg
+                    aria-hidden={true}
+                    fill="none"
+                    focusable={false}
+                    height={24}
+                    role="img"
+                    viewBox="0 0 24 24"
+                    width={24}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2ZM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8Zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </h3>
+              <p
+                className="card-text"
+              >
+                course completions
+              </p>
+            </div>
+          </div>
+          <div
+            className="card-footer"
+          >
+            <div
+              className="footer-title"
+            >
+              <button
+                aria-controls="footer-body-courseCompletions"
+                aria-expanded={false}
+                className="toggle-collapse btn-block btn btn-link"
+                disabled={false}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <div
+                    className="details-btn-text mr-1"
+                  >
+                    Details
+                  </div>
+                  <div>
+                    <span
+                      className="pgn__icon"
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="m7 10 5 5 5-5H7Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span
+                        className="sr-only"
+                      >
+                        Show details
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="footer-body mt-1 d-none"
+              id="footer-body-courseCompletions"
+            >
+              <a
+                className="btn btn-link"
+                href="/completed-learners"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    How many courses have been completed by learners?
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-link"
+                href="/completed-learners-week"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                >
+                  <span
+                    className="label"
+                  >
+                    Who completed a course in the past week?
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col mb-4.5"
+      >
+        <div
+          className="loading d-flex align-items-center justify-content-center subscriptions"
+        >
+          Loading...
+          <span
+            className="sr-only"
+          >
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row mt-4"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0"
+          >
+            <h2
+              className="table-title"
+            >
+              Full Report
+            </h2>
+          </div>
+          <div
+            className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row pb-3"
+        >
+          <div
+            className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
+          >
+            Showing data as of 
+            July 31, 2018
+          </div>
+          <div
+            className="col-12 col-md-6 col-xl-8"
+          >
+            <button
+              className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+              disabled={true}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="mr-2"
+                fill="none"
+                height={24}
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+                  fill="currentColor"
+                />
+              </svg>
+              Download full report (CSV)
+            </button>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-12 pr-md-0 mb-0"
+          >
+            <div
+              className="row w-100 m-0"
+            >
+              <div
+                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field11"
+                  >
+                    Filter by course
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      id="form-field11"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        All Courses
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label search-label mb-2"
+                    htmlFor="form-field12"
+                  >
+                    Filter by start date
+                    <span
+                      alt="More information"
+                      className="pgn__icon ml-1"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onMouseOut={[Function]}
+                      onMouseOver={[Function]}
+                    >
+                      <svg
+                        aria-hidden={true}
+                        fill="none"
+                        focusable={false}
+                        height={24}
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width={24}
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group w-100"
+                  >
+                    <select
+                      className="form-control"
+                      disabled={true}
+                      id="form-field12"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      value=""
+                    >
+                      <option
+                        value=""
+                      >
+                        Choose a course
+                      </option>
+                      
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+              >
+                <label
+                  className="pgn__form-label mb-2"
+                  id="search-email-label"
+                >
+                  Filter by email
+                </label>
+                <div
+                  className="pgn__searchfield d-flex py-0"
+                >
+                  <form
+                    className="d-flex align-items-center w-100"
+                    onReset={[Function]}
+                    onSubmit={[Function]}
+                    role="search"
+                  >
+                    <label
+                      className="m-0"
+                      htmlFor="pgn-searchfield-input-13"
+                    >
+                      <span
+                        className="sr-only"
+                      >
+                        search
+                      </span>
+                    </label>
+                    <input
+                      className="form-control"
+                      data-hj-suppress={true}
+                      disabled={false}
+                      id="pgn-searchfield-input-13"
+                      name="searchfield-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      placeholder="Search by email..."
+                      role="searchbox"
+                      type="text"
+                      value=""
+                    />
+                    <button
+                      className="btn"
+                      disabled={false}
+                      type="submit"
+                    >
+                      <span
+                        className="pgn__icon"
+                      >
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        className="sr-only"
+                      >
+                        submit search
+                      </span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="mt-3 mb-5"
+        />
+      </div>
+    </div>
+  </div>
 </main>
 `;

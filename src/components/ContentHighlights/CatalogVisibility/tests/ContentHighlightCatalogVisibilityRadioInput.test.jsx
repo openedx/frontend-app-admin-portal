@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-test-renderer';
+import { act } from 'react-dom/test-utils';
 import { useContentHighlightsContext } from '../../data/hooks';
 import ContentHighlightCatalogVisibilityRadioInput from '../ContentHighlightCatalogVisibilityRadioInput';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
@@ -34,7 +34,6 @@ const initialEnterpriseAppContextValue = {
     updateEnterpriseCuration: jest.fn(),
     dispatch: jest.fn(),
   },
-
 };
 
 const ContentHighlightCatalogVisibilityRadioInputWrapper = ({
@@ -60,17 +59,14 @@ const ContentHighlightCatalogVisibilityRadioInputWrapper = ({
 
 jest.mock('../../../../data/services/EnterpriseCatalogApiService');
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
-  return ({
-    ...originalModule,
-    sendEnterpriseTrackEvent: jest.fn(),
-  });
-});
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('../../data/hooks');
 useContentHighlightsContext.mockReturnValue({
-  setCatalogVisibilityAlert: false,
+  setCatalogVisibilityAlert: jest.fn(),
   enterpriseCuration: {
     enterpriseCuration: {
       highlightSets: [],
@@ -80,6 +76,15 @@ useContentHighlightsContext.mockReturnValue({
     dispatch: jest.fn(),
   },
 });
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useHistory: jest.fn().mockReturnValue({
+    location: {
+      pathname: '/enterprise/test-enterprise/content-highlights',
+    },
+  }),
+}));
 
 describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
   beforeEach(() => {
@@ -91,12 +96,26 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2)).toBeTruthy();
   });
   it('Spinner 2 shows on radio 2 click', async () => {
-    EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValue({
-      data: {
-        canOnlyViewHighlightSets: true,
+    const mockUpdateEnterpriseCuration = jest.fn();
+    const mockEnterpriseAppContextValue = {
+      enterpriseCuration: {
+        ...initialEnterpriseAppContextValue.enterpriseCuration,
+        enterpriseCuration: {
+          ...initialEnterpriseAppContextValue.enterpriseCuration.enterpriseCuration,
+          highlightSets: [{ uuid: 'test-uuid' }],
+        },
+        updateEnterpriseCuration: mockUpdateEnterpriseCuration,
       },
+    };
+    mockUpdateEnterpriseCuration.mockResolvedValue({
+      canOnlyViewHighlightSets: true,
     });
-    renderWithRouter(<ContentHighlightCatalogVisibilityRadioInputWrapper highlightSets={mockHighlightSetResponse} />);
+    renderWithRouter((
+      <ContentHighlightCatalogVisibilityRadioInputWrapper
+        highlightSets={mockHighlightSetResponse}
+        enterpriseAppContextValue={mockEnterpriseAppContextValue}
+      />
+    ));
 
     const viewHighlightedContentButton = screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2);
     const radio2LoadingStateInitial = screen.queryByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`);
@@ -105,16 +124,14 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(radio2LoadingStateInitial).toBeFalsy();
     expect(radio1CheckedState).toBeTruthy();
 
-    await act(() => {
+    await act(async () => {
       userEvent.click(viewHighlightedContentButton);
     });
 
-    await waitFor(() => EnterpriseCatalogApiService.updateEnterpriseCurationConfig({
-      canOnlyViewHighlightSets: true,
-    }).then(data => data));
-
-    expect(EnterpriseCatalogApiService.updateEnterpriseCurationConfig).toHaveBeenCalledTimes(1);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    });
   });
   it('Spinner 1 shows on radio 1 click', async () => {
     EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValue({
@@ -122,6 +139,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
         canOnlyViewHighlightSets: false,
       },
     });
+    const mockUpdateEnterpriseCuration = jest.fn();
     const viewingOnlyHighlightedContentContext = {
       ...initialEnterpriseAppContextValue,
       enterpriseCuration: {
@@ -130,8 +148,12 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
           ...initialEnterpriseAppContextValue.enterpriseCuration.enterpriseCuration,
           canOnlyViewHighlightSets: true,
         },
+        updateEnterpriseCuration: mockUpdateEnterpriseCuration,
       },
     };
+    mockUpdateEnterpriseCuration.mockResolvedValue({
+      canOnlyViewHighlightSets: true,
+    });
     renderWithRouter(
       <ContentHighlightCatalogVisibilityRadioInputWrapper
         enterpriseAppContextValue={viewingOnlyHighlightedContentContext}
@@ -145,15 +167,13 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(radio1LoadingStateInitial).toBeFalsy();
     expect(radio2CheckedState).toBeTruthy();
 
-    await act(() => {
+    await act(async () => {
       userEvent.click(viewAllContentButton);
     });
 
-    await waitFor(() => EnterpriseCatalogApiService.updateEnterpriseCurationConfig({
-      canOnlyViewHighlightSets: false,
-    }).then(data => data));
-
-    expect(EnterpriseCatalogApiService.updateEnterpriseCurationConfig).toHaveBeenCalledTimes(1);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    });
   });
 });

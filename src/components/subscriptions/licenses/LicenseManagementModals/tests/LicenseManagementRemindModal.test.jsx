@@ -31,10 +31,12 @@ jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
 }));
 
 const onSubmitMock = jest.fn();
+const onSuccessMock = jest.fn();
+
 const basicProps = {
   isOpen: true,
   onClose: () => {},
-  onSuccess: () => {},
+  onSuccess: onSuccessMock,
   onSubmit: onSubmitMock,
   subscription: {
     uuid: 'lorem',
@@ -110,6 +112,7 @@ describe('<LicenseManagementRemindModal />', () => {
       const button = screen.getByText('Remind (1)');
       await act(async () => { userEvent.click(button); });
       expect(onSubmitMock).toBeCalledTimes(1);
+      expect(onSuccessMock).toBeCalledTimes(1);
 
       expect(screen.queryByText('Remind (1)')).toBeFalsy();
       expect(screen.queryByText('Done')).toBeTruthy();
@@ -127,6 +130,7 @@ describe('<LicenseManagementRemindModal />', () => {
       const button = screen.getByText('Remind (1)');
       await act(async () => { userEvent.click(button); });
       expect(onSubmitMock).toBeCalledTimes(1);
+      expect(onSuccessMock).toBeCalledTimes(0);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();

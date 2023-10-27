@@ -50,7 +50,6 @@ const initialStore = mockStore({
   },
 });
 
-// eslint-disable-next-line react/prop-types
 const EnrollBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
   <Provider store={store}>
     <EnrollBulkAction {...rest} />

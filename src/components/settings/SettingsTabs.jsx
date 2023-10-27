@@ -133,6 +133,7 @@ const SettingsTabs = ({
         </Tab>,
       );
     }
+
     return initialTabs;
   }, [
     FEATURE_SSO_SETTINGS_TAB,

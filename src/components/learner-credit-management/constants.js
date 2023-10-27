@@ -4,11 +4,11 @@ const CARD_TEXT = {
     execEd: 'Executive Education',
   },
   BUTTON_ACTION: {
-    viewCourse: 'View Course',
+    viewCourse: 'View course',
     assign: 'Assign',
   },
-  REGISTRATION: {
-    text: 'Learner must register by',
+  ENROLLMENT: {
+    text: 'Learner must enroll by',
   },
   PRICE: {
     subText: 'Per learner price',

@@ -6,70 +6,68 @@ import {
   Badge,
   Button,
   Card,
-  Icon,
+  Stack,
+  Hyperlink,
+  useMediaQuery,
+  breakpoints,
 } from '@edx/paragon';
 import { injectIntl } from '@edx/frontend-platform/i18n';
-import { Launch } from '@edx/paragon/icons';
+import { camelCaseObject } from '@edx/frontend-platform';
+import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
-import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../../../data/constants/learnerCredit';
-import { formatCurrency, formatDate } from '../utils';
+import { EXEC_COURSE_TYPE } from '../data';
+import { formatPrice, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
-import defaultCardHeader from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
- learningType, onClick, original,
+  original,
 }) => {
   const {
     availability,
-    card_image_url,
-    course_type,
-    entitlements,
-    first_enrollable_paid_seat_price,
-    normalized_metadata,
+    cardImageUrl,
+    courseType,
+    normalizedMetadata,
     partners,
     title,
-  } = original;
+  } = camelCaseObject(original);
+
+  const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
+  const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
 
   const {
     BADGE,
     BUTTON_ACTION,
     PRICE,
-    REGISTRATION,
+    ENROLLMENT,
   } = CARD_TEXT;
 
-  let rowPrice;
-  let priceText;
+  const price = normalizedMetadata?.contentPrice ? formatPrice(normalizedMetadata.contentPrice, { minimumFractionDigits: 0 }) : 'N/A';
 
-  if (learningType === CONTENT_TYPE_COURSE) {
-    rowPrice = first_enrollable_paid_seat_price;
-    priceText = rowPrice != null ? `${formatCurrency(rowPrice)}` : 'N/A';
-  } else {
-    [rowPrice] = entitlements || [null];
-    priceText = rowPrice != null ? `${formatCurrency(rowPrice?.price)}` : 'N/A';
-  }
-
-  const imageSrc = card_image_url || defaultCardHeader;
-  const logoSrc = partners[0]?.logo_image_url || defaultCardHeader;
+  const imageSrc = cardImageUrl || cardFallbackImg;
+  const logoSrc = partners[0]?.logoImageUrl;
 
   const altText = `${title} course image`;
 
-  const execEdRegistrationInfo = `Starts ${formatDate(normalized_metadata?.start_date)} •
-  ${REGISTRATION.text} ${formatDate(normalized_metadata?.enroll_by_date)}`;
+  const formattedAvailability = availability?.length ? availability.join(', ') : null;
 
-  const courseRegistrationInfo = `${availability} • ${REGISTRATION.text} ${formatDate(normalized_metadata?.enroll_by_date)}`;
-  const isExecEd = course_type === EXEC_COURSE_TYPE;
+  const enrollmentDeadline = getEnrollmentDeadline(normalizedMetadata?.enrollByDate);
 
-  // TODO: Implementations to follow
-  const handleViewCourse = () => {};
-  const handleAssign = () => {};
+  let courseEnrollmentInfo;
+  let execEdEnrollmentInfo;
+  if (normalizedMetadata?.enrollByDate) {
+    courseEnrollmentInfo = `${formattedAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
+    execEdEnrollmentInfo = `Starts ${formatDate(normalizedMetadata.startDate)} •
+    ${ENROLLMENT.text} ${enrollmentDeadline}`;
+  } else {
+    courseEnrollmentInfo = formattedAvailability;
+    execEdEnrollmentInfo = formattedAvailability;
+  }
+
+  const isExecEd = courseType === EXEC_COURSE_TYPE;
 
   return (
     <Card
-      isClickable
-      className="course-card"
-      tabIndex="0"
-      onClick={() => onClick(original)}
-      orientation="horizontal"
+      orientation={isSmall ? 'vertical' : 'horizontal'}
     >
       <Card.ImageCap
         src={imageSrc}
@@ -77,56 +75,53 @@ const CourseCard = ({
         srcAlt={altText}
         logoAlt={partners[0]?.name}
       />
-      <div className="card-container">
-        <div className="section-1 mb-1">
-          <p className="mb-1 lead font-weight-bold">{title}</p>
-          <p>{partners[0]?.name}</p>
-          {isExecEd ? (
-            <Badge variant="light" className="mb-4 ml-0">
-              {BADGE.execEd}
-            </Badge>
-          ) : (
-            <Badge variant="light" className="mb-4 ml-0">
-              {BADGE.course}
-            </Badge>
+      <Card.Body>
+        <Card.Header
+          title={title}
+          className="mb-0 mt-0"
+          subtitle={partners[0]?.name}
+          actions={(
+            <Stack gap={1} className="text-right">
+              <p className="h4 mt-2.5 mb-0">{price}</p>
+              <span className="micro">{PRICE.subText}</span>
+            </Stack>
           )}
-          {course_type !== EXEC_COURSE_TYPE && (
-            <p className="spacer" />
-          )}
-          <p className="small mt-5">
-            {isExecEd ? execEdRegistrationInfo : courseRegistrationInfo}
-          </p>
-        </div>
-        <Card.Section className="section-2">
-          <p className="lead font-weight-bold mb-0">{priceText}</p>
-          <p className="x-small mb-6">{PRICE.subText}</p>
-          <Card.Footer orientation="horizontal" className="footer">
-            <Button onClick={handleViewCourse} variant="outline-primary">{BUTTON_ACTION.viewCourse}<Icon className="ml-1" src={Launch} /></Button>
-            <Button onClick={handleAssign}>{BUTTON_ACTION.assign}</Button>
-          </Card.Footer>
+        />
+        <Card.Section>
+          <Badge variant="light">
+            {isExecEd ? BADGE.execEd : BADGE.course}
+          </Badge>
         </Card.Section>
-      </div>
+        <Card.Footer
+          orientation={isExtraSmall ? 'horizontal' : 'vertical'}
+          textElement={isExecEd ? execEdEnrollmentInfo : courseEnrollmentInfo}
+        >
+          <Button
+            // TODO: Implementation to follow in ENT-7594
+            as={Hyperlink}
+            destination="https://enterprise.stage.edx.org"
+            target="_blank"
+            variant="outline-primary"
+          >
+            {BUTTON_ACTION.viewCourse}
+          </Button>
+          <Button>{BUTTON_ACTION.assign}</Button>
+        </Card.Footer>
+      </Card.Body>
     </Card>
   );
 };
 
-CourseCard.defaultProps = {
-  onClick: () => {},
-};
-
 CourseCard.propTypes = {
-  learningType: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
   original: PropTypes.shape({
-    availability: PropTypes.string,
-    card_image_url: PropTypes.string,
-    course_type: PropTypes.string,
-    entitlements: PropTypes.arrayOf(PropTypes.shape()),
-    first_enrollable_paid_seat_price: PropTypes.number,
-    normalized_metadata: PropTypes.shape(),
+    availability: PropTypes.arrayOf(PropTypes.string),
+    cardImageUrl: PropTypes.string,
+    courseType: PropTypes.string,
+    normalizedMetadata: PropTypes.shape(),
+    originalImageUrl: PropTypes.string,
     partners: PropTypes.arrayOf(
       PropTypes.shape({
-        logo_image_url: PropTypes.string,
+        logoImageUrl: PropTypes.string,
         name: PropTypes.string,
       }),
     ),

@@ -11,7 +11,7 @@ import {
 } from '@edx/paragon';
 
 import { getCourseProductLineAbbreviation } from '../../utils';
-import { useOfferRedemptions, useOfferSummary } from './data/hooks';
+import { useOfferRedemptions, useOfferSummary } from './data';
 import LearnerCreditAggregateCards from './LearnerCreditAggregateCards';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';

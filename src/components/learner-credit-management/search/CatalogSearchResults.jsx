@@ -5,21 +5,32 @@ import PropTypes from 'prop-types';
 import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
 import {
-  Alert, CardView, DataTable, Skeleton, TextFilter
+  Alert, CardView, DataTable, TextFilter,
 } from '@edx/paragon';
 
 import CourseCard from '../cards/CourseCard';
+import { SEARCH_RESULT_PAGE_SIZE } from '../data';
 
-const ERROR_MESSAGE = 'An error occurred while retrieving data';
+export const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
-const SKELETON_DATA_TESTID = 'enterprise-catalog-skeleton';
+/**
+ * The core search results rendering component.
+ *
+ * Wrapping this in `connectStateResults()` will inject the first few props.
+ *
+ * @param {object} args arguments
+ * @param {object} args.searchResults Results of search (see: `connectStateResults``)
+ * @param {Boolean} args.isSearchStalled Whether search is stalled (see: `connectStateResults`)
+ * @param {object} args.error Error with `message` field if available (see: `connectStateResults``)
+ */
 
 export const BaseCatalogSearchResults = ({
-  error,
-  isSearchStalled,
-  paginationComponent: SearchPagination,
   searchResults,
   searchState,
+  // algolia recommends this prop instead of searching
+  isSearchStalled,
+  paginationComponent: PaginationComponent,
+  error,
   setNoContent,
 }) => {
   const courseColumns = useMemo(
@@ -48,24 +59,13 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  
-  // TODO: handle onClick
-  const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
   const { refinements } = useContext(SearchContext);
-
-  const page = refinements.page || (searchState ? searchState.page : 0);
+  const page = refinements.page || (searchState.page || 0);
 
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
   }, [searchResults, setNoContent]);
 
-  if (isSearchStalled) {
-    return (
-      <div data-testid={SKELETON_DATA_TESTID}>
-        <Skeleton className="m-1 loading-skeleton" height={25} count={5} />
-      </div>
-    );
-  }
   if (error) {
     return (
       <Alert className="mt-2" variant="warning">
@@ -80,76 +80,64 @@ export const BaseCatalogSearchResults = ({
   }
 
   return (
-    <DataTable
-      columns={courseColumns}
-      data={tableData}
-      defaultColumnValues={{ Filter: TextFilter }}
-      initialState={{
-        pageSize: 15,
-        pageIndex: 0,
-      }}
-      isPaginated
-      isSortable
-      itemCount={searchResults?.nbHits || 0}
-      manualFilters
-      manualPagination
-      manualSortBy
-      pageCount={searchResults?.nbPages || 0}
-      pageSize={searchResults?.hitsPerPage || 0}
-    >
-      <DataTable.TableControlBar />
-      <CardView
-        columnSizes={{
-          xs: 12,
-          sm: 12,
-          md: 12,
-          lg: 12,
-          xl: 12,
+    <div className="mb-5">
+      <DataTable
+        columns={courseColumns}
+        data={tableData}
+        defaultColumnValues={{ Filter: TextFilter }}
+        initialState={{
+          pageSize: SEARCH_RESULT_PAGE_SIZE,
+          pageIndex: 0,
         }}
-        CardComponent={(props) => renderCardComponent(props)}
-      />
-      <DataTable.EmptyTable content="No results found" />
-      <DataTable.TableFooter className="justify-content-center">
-        <SearchPagination defaultRefinement={page} />
-      </DataTable.TableFooter>
-    </DataTable>
+        isLoading={isSearchStalled}
+        isPaginated
+        itemCount={searchResults?.nbHits || 0}
+        manualFilters
+        manualPagination
+        pageCount={searchResults?.nbPages || 0}
+      >
+        <DataTable.TableControlBar />
+        <CardView
+          columnSizes={{ xs: 12 }}
+          CardComponent={CourseCard}
+        />
+        <DataTable.EmptyTable content="No results found" />
+        <DataTable.TableFooter className="justify-content-center">
+          <PaginationComponent defaultRefinement={page} />
+        </DataTable.TableFooter>
+      </DataTable>
+    </div>
   );
 };
 
 BaseCatalogSearchResults.defaultProps = {
-  courseType: null,
+  searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
   error: null,
   paginationComponent: SearchPagination,
-  preview: false,
-  row: null,
-  searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
-  setNoContent: () => { },
+  setNoContent: () => {},
 };
 
 BaseCatalogSearchResults.propTypes = {
-  contentType: PropTypes.string.isRequired,
-  courseType: PropTypes.string,
-  error: PropTypes.shape({
-    message: PropTypes.string,
-  }),
-  isSearchStalled: PropTypes.bool.isRequired,
-  paginationComponent: PropTypes.func,
-  preview: PropTypes.bool,
-  row: PropTypes.string,
+  // from Algolia
   searchResults: PropTypes.shape({
     _state: PropTypes.shape({
       disjunctiveFacetsRefinements: PropTypes.shape({}),
     }),
     disjunctiveFacetsRefinements: PropTypes.arrayOf(PropTypes.shape({})),
-    hits: PropTypes.arrayOf(PropTypes.shape({})),
-    hitsPerPage: PropTypes.number,
     nbHits: PropTypes.number,
+    hits: PropTypes.arrayOf(PropTypes.shape({})),
     nbPages: PropTypes.number,
+    hitsPerPage: PropTypes.number,
     page: PropTypes.number,
+  }),
+  isSearchStalled: PropTypes.bool.isRequired,
+  error: PropTypes.shape({
+    message: PropTypes.string,
   }),
   searchState: PropTypes.shape({
     page: PropTypes.number,
   }).isRequired,
+  paginationComponent: PropTypes.func,
   setNoContent: PropTypes.func,
 };
 

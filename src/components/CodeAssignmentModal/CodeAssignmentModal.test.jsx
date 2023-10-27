@@ -20,7 +20,7 @@ import {
 
 jest.mock('redux-form', () => ({
   ...jest.requireActual('redux-form'),
-  // eslint-disable-next-line react/prop-types
+
   Field: ({ label, ...rest }) => <div {...rest}>{label}</div>,
 }));
 

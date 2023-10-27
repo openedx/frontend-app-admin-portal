@@ -45,7 +45,7 @@ const searchClient = algoliasearch(
 );
 
 const ContentHighlightContentCardWrapper = ({
-  // eslint-disable-next-line react/prop-types
+
   store = mockStore(initialState),
 }) => {
   const contextValue = useState({

@@ -42,7 +42,6 @@ const initialStore = mockStore({
   },
 });
 
-// eslint-disable-next-line react/prop-types
 const RemindBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
   <Provider store={store}>
     <RemindBulkAction {...rest} />
