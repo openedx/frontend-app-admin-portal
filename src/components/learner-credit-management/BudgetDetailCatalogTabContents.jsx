@@ -8,17 +8,10 @@ import CatalogSearch from './search/CatalogSearch';
 import {
   LANGUAGE_REFINEMENT,
   LEARNING_TYPE_REFINEMENT,
-  useBudgetId,
-  useSubsidyAccessPolicy,
 } from './data';
 import { configuration } from '../../config';
 
 const BudgetDetailCatalogTabContents = () => {
-  const { subsidyAccessPolicyId } = useBudgetId();
-  const {
-    data: subsidyAccessPolicy,
-  } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-
   const language = {
     attribute: LANGUAGE_REFINEMENT,
     title: 'Language',
@@ -48,7 +41,7 @@ const BudgetDetailCatalogTabContents = () => {
             indexName={configuration.ALGOLIA.INDEX_NAME}
             searchClient={searchClient}
           >
-            <CatalogSearch catalogUuid={subsidyAccessPolicy?.catalogUuid} />
+            <CatalogSearch />
           </InstantSearch>
         </SearchData>
       </Col>
