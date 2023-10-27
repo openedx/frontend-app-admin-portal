@@ -15,12 +15,12 @@ const WaitingForLearner = ({ learnerEmail }) => {
         ref={setTarget}
         iconBefore={Timelapse}
         onClick={open}
+        onKeyPress={open}
+        tabIndex={0}
       >
         Waiting for learner
       </Chip>
       <BaseModalPopup
-        hasArrow
-        placement="top"
         positionRef={target}
         isOpen={isOpen}
         onClose={close}

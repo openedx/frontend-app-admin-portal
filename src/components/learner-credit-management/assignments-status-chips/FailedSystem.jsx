@@ -14,12 +14,12 @@ const FailedSystem = () => {
         ref={setTarget}
         iconBefore={Error}
         onClick={open}
+        onKeyPress={open}
+        tabIndex={0}
       >
         Failed: System
       </Chip>
       <BaseModalPopup
-        hasArrow
-        placement="top"
         positionRef={target}
         isOpen={isOpen}
         onClose={close}

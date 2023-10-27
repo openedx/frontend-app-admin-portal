@@ -14,12 +14,12 @@ const NotifyingLearner = ({ learnerEmail }) => {
         ref={setTarget}
         iconBefore={Send}
         onClick={open}
+        onKeyPress={open}
+        tabIndex={0}
       >
         Notifying learner
       </Chip>
       <BaseModalPopup
-        hasArrow
-        placement="top"
         positionRef={target}
         isOpen={isOpen}
         onClose={close}
@@ -29,7 +29,7 @@ const NotifyingLearner = ({ learnerEmail }) => {
         </BaseModalPopup.Heading>
         <BaseModalPopup.Content>
           <p>
-            Our system is busy emailing {learnerEmail}! Refresh in a few minutes to
+            Our system is busy emailing {learnerEmail ?? 'the learner'}! Refresh in a few minutes to
             confirm the assignment notification was successful.
           </p>
         </BaseModalPopup.Content>

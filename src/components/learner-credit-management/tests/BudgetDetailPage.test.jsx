@@ -18,6 +18,7 @@ import {
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
   useIsLargeOrGreater,
+  formatDate,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
@@ -59,6 +60,7 @@ const initialStoreState = {
 const mockLearnerEmail = 'edx@example.com';
 const mockCourseKey = 'edX+DemoX';
 const mockContentTitle = 'edx Demo';
+
 const mockEmptyStateBudgetDetailActivityOverview = {
   contentAssignments: { count: 0 },
   spentTransactions: { count: 0 },
@@ -67,6 +69,24 @@ const mockEmptyOfferRedemptions = {
   itemCount: 0,
   pageCount: 0,
   results: [],
+};
+const mockSuccessfulNotifiedAction = {
+  uuid: 'test-assignment-action-uuid',
+  actionType: 'notified',
+  completedAt: '2023-10-27',
+  errorReason: null,
+};
+
+const mockFailedNotifiedAction = {
+  ...mockSuccessfulNotifiedAction,
+  completedAt: null,
+  errorReason: 'bad_email',
+};
+
+const mockFailedLinkedLearnerAction = {
+  ...mockFailedNotifiedAction,
+  actionType: 'learner_linked',
+  errorReason: 'internal_api_error',
 };
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
@@ -275,6 +295,10 @@ describe('<BudgetDetailPage />', () => {
             learnerEmail: mockLearnerEmail,
             contentKey: mockCourseKey,
             contentTitle: mockContentTitle,
+            contentQuantity: -19900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions: [mockSuccessfulNotifiedAction],
           },
         ],
         numPages: 1,
@@ -296,6 +320,9 @@ describe('<BudgetDetailPage />', () => {
     const viewCourseCTA = assignedSection.getByText(mockContentTitle, { selector: 'a' });
     expect(viewCourseCTA).toBeInTheDocument();
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
+    expect(assignedSection.getByText('-$199')).toBeInTheDocument();
+    expect(assignedSection.getByText('Waiting for learner')).toBeInTheDocument();
+    expect(assignedSection.getByText(`Assigned: ${formatDate('2023-10-27')}`)).toBeInTheDocument();
   });
 
   it('renders with assigned table data "View Course" hyperlink default when content title is null', () => {
@@ -323,6 +350,11 @@ describe('<BudgetDetailPage />', () => {
             uuid: 'test-uuid',
             learnerEmail: mockLearnerEmail,
             contentKey: mockCourseKey,
+            contentTitle: mockContentTitle,
+            contentQuantity: -19900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions: [mockSuccessfulNotifiedAction],
           },
         ],
         numPages: 1,
@@ -344,6 +376,121 @@ describe('<BudgetDetailPage />', () => {
     const viewCourseCTA = assignedSection.getByText('View Course', { selector: 'a' });
     expect(viewCourseCTA).toBeInTheDocument();
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
+  });
+
+  it.each([
+    {
+      learnerState: 'notifying',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Notifying learner',
+      expectedModalPopupMessage: `Notifying ${mockLearnerEmail}`,
+      actions: [],
+    },
+    {
+      learnerState: 'notifying',
+      hasLearnerEmail: false,
+      expectedChipStatus: 'Notifying learner',
+      expectedModalPopupMessage: 'Notifying learner',
+      actions: [],
+    },
+    {
+      learnerState: 'waiting',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Waiting for learner',
+      expectedModalPopupMessage: `Waiting for ${mockLearnerEmail}`,
+      actions: [mockSuccessfulNotifiedAction],
+    },
+    {
+      learnerState: 'waiting',
+      hasLearnerEmail: false,
+      expectedChipStatus: 'Waiting for learner',
+      expectedModalPopupMessage: 'Waiting for learner',
+      actions: [mockSuccessfulNotifiedAction],
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: Bad email',
+      expectedModalPopupMessage: 'Failed: Bad email',
+      actions: [mockFailedNotifiedAction],
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: false,
+      expectedChipStatus: 'Failed: Bad email',
+      expectedModalPopupMessage: 'Failed: Bad email',
+      actions: [mockFailedNotifiedAction],
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: System',
+      expectedModalPopupMessage: 'Failed: System',
+      actions: [mockFailedLinkedLearnerAction],
+    },
+  ])('renders correct status chips with assigned table data (%s)', ({
+    learnerState,
+    hasLearnerEmail,
+    expectedChipStatus,
+    expectedModalPopupMessage,
+    actions,
+  }) => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [
+          {
+            uuid: 'test-uuid',
+            learnerEmail: hasLearnerEmail ? mockLearnerEmail : null,
+            contentKey: mockCourseKey,
+            contentQuantity: -19900,
+            learnerState,
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions,
+          },
+        ],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Assigned table is visible within Activity tab contents
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    if (hasLearnerEmail) {
+      expect(assignedSection.getByText(mockLearnerEmail)).toBeInTheDocument();
+    } else {
+      expect(assignedSection.getByText('Email hidden')).toBeInTheDocument();
+    }
+    const statusChip = assignedSection.getByText(expectedChipStatus);
+    expect(statusChip).toBeInTheDocument();
+    userEvent.click(statusChip);
+
+    // Modal popup is visible with expected text
+    const modalPopupContents = within(screen.getByTestId('assignment-status-modalpopup-contents'));
+    expect(modalPopupContents.getByText(expectedModalPopupMessage)).toBeInTheDocument();
   });
 
   it('renders with catalog tab active on initial load for assignable budgets', async () => {

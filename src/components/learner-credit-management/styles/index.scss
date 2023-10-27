@@ -1,7 +1,8 @@
 .budget-detail-assignments {
   // This is a (temporary) workaround to ensure the `Chip` modal popups within the "Assigned" table status column
-  // is properly overlaying the underlying `DataTable`.
-  .pgn__data-table-container {
+  // properly overlays the underlying `DataTable`.
+  .pgn__data-table-container,
+  .pgn__data-table-layout-wrapper {
     overflow-x: visible;
   }
 

@@ -38,7 +38,7 @@ const BaseModalPopup = ({
     onClose={onClose}
     {...rest}
   >
-    <div className="small shadow border rounded bg-white" style={{ maxWidth: ASSIGNMENT_STATUS_MODAL_MAX_WIDTH }}>
+    <div data-testid="assignment-status-modalpopup-contents" className="small shadow border rounded bg-white" style={{ maxWidth: ASSIGNMENT_STATUS_MODAL_MAX_WIDTH }}>
       <div className="px-2.5">
         {children}
       </div>
@@ -64,7 +64,7 @@ BaseModalPopupContent.propTypes = {
 };
 
 BaseModalPopup.propTypes = {
-  placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right', 'auto']),
+  placement: PropTypes.string,
   positionRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
@@ -72,6 +72,11 @@ BaseModalPopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
+};
+
+BaseModalPopup.defaultProps = {
+  placement: 'auto',
+  positionRef: null,
 };
 
 export default BaseModalPopup;
