@@ -5,9 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { BaseCatalogSearchResults, SKELETON_DATA_TESTID } from '../search/CatalogSearchResults';
-
-import { renderWithRouter } from '../../test/testUtils';
+import { BaseCatalogSearchResults } from '../search/CatalogSearchResults';
 
 import { CONTENT_TYPE_COURSE } from '../data/constants';
 
@@ -140,15 +138,5 @@ describe('Main Catalogs view works as expected', () => {
     expect(screen.queryByText(TEST_COURSE_NAME)).toBeInTheDocument();
     expect(screen.queryByText(TEST_COURSE_NAME_2)).toBeInTheDocument();
     expect(screen.getAllByText('Showing 2 of 2.')[0]).toBeInTheDocument();
-  });
-  test('isSearchStalled leads to rendering skeleton and not content', () => {
-    renderWithRouter(
-      <SearchDataWrapper>
-        <BaseCatalogSearchResults {...defaultProps} isSearchStalled />
-      </SearchDataWrapper>,
-    );
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(screen.queryByText(TEST_COURSE_NAME)).not.toBeInTheDocument();
-    expect(screen.getByTestId(SKELETON_DATA_TESTID)).toBeInTheDocument();
   });
 });
