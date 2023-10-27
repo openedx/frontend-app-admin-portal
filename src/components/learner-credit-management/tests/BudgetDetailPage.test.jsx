@@ -383,56 +383,64 @@ describe('<BudgetDetailPage />', () => {
       learnerState: 'notifying',
       hasLearnerEmail: true,
       expectedChipStatus: 'Notifying learner',
-      expectedModalPopupMessage: `Notifying ${mockLearnerEmail}`,
+      expectedModalPopupHeading: `Notifying ${mockLearnerEmail}`,
+      expectedModalPopupContent: `Our system is busy emailing ${mockLearnerEmail}!`,
       actions: [],
     },
     {
       learnerState: 'notifying',
       hasLearnerEmail: false,
       expectedChipStatus: 'Notifying learner',
-      expectedModalPopupMessage: 'Notifying learner',
+      expectedModalPopupHeading: 'Notifying learner',
+      expectedModalPopupContent: 'Our system is busy emailing the learner!',
       actions: [],
     },
     {
       learnerState: 'waiting',
       hasLearnerEmail: true,
       expectedChipStatus: 'Waiting for learner',
-      expectedModalPopupMessage: `Waiting for ${mockLearnerEmail}`,
+      expectedModalPopupHeading: `Waiting for ${mockLearnerEmail}`,
+      expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
       actions: [mockSuccessfulNotifiedAction],
     },
     {
       learnerState: 'waiting',
       hasLearnerEmail: false,
       expectedChipStatus: 'Waiting for learner',
-      expectedModalPopupMessage: 'Waiting for learner',
+      expectedModalPopupHeading: 'Waiting for learner',
+      expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
       actions: [mockSuccessfulNotifiedAction],
     },
     {
       learnerState: 'failed',
       hasLearnerEmail: true,
       expectedChipStatus: 'Failed: Bad email',
-      expectedModalPopupMessage: 'Failed: Bad email',
+      expectedModalPopupHeading: 'Failed: Bad email',
+      expectedModalPopupContent: `This course assignment failed because a notification to ${mockLearnerEmail} could not be sent.`,
       actions: [mockFailedNotifiedAction],
     },
     {
       learnerState: 'failed',
       hasLearnerEmail: false,
       expectedChipStatus: 'Failed: Bad email',
-      expectedModalPopupMessage: 'Failed: Bad email',
+      expectedModalPopupHeading: 'Failed: Bad email',
+      expectedModalPopupContent: 'This course assignment failed because a notification to the learner could not be sent.',
       actions: [mockFailedNotifiedAction],
     },
     {
       learnerState: 'failed',
       hasLearnerEmail: true,
       expectedChipStatus: 'Failed: System',
-      expectedModalPopupMessage: 'Failed: System',
+      expectedModalPopupHeading: 'Failed: System',
+      expectedModalPopupContent: 'Something went wrong behind the scenes.',
       actions: [mockFailedLinkedLearnerAction],
     },
   ])('renders correct status chips with assigned table data (%s)', ({
     learnerState,
     hasLearnerEmail,
     expectedChipStatus,
-    expectedModalPopupMessage,
+    expectedModalPopupHeading,
+    expectedModalPopupContent,
     actions,
   }) => {
     useParams.mockReturnValue({
@@ -490,7 +498,8 @@ describe('<BudgetDetailPage />', () => {
 
     // Modal popup is visible with expected text
     const modalPopupContents = within(screen.getByTestId('assignment-status-modalpopup-contents'));
-    expect(modalPopupContents.getByText(expectedModalPopupMessage)).toBeInTheDocument();
+    expect(modalPopupContents.getByText(expectedModalPopupHeading)).toBeInTheDocument();
+    expect(modalPopupContents.getByText(expectedModalPopupContent, { exact: false })).toBeInTheDocument();
   });
 
   it('renders with catalog tab active on initial load for assignable budgets', async () => {
