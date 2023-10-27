@@ -32,7 +32,7 @@ export const LANGUAGE_REFINEMENT = 'language';
 // Learning types
 export const CONTENT_TYPE_COURSE = 'course';
 export const EXEC_ED_TITLE = 'Executive Education';
-export const EXEC_COURSE_TYPE = 'executive-education-2u';
+export const EXEC_ED_COURSE_TYPE = 'executive-education-2u';
 
 // Learner must enroll within 90 days of assignment
 export const ASSIGNMENT_ENROLLMENT_DEADLINE = 90;
