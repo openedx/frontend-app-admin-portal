@@ -190,23 +190,13 @@ export function formatDate(date) {
   return dayjs(date).format('MMM D, YYYY');
 }
 
-export function formatCurrency(currency) {
-  const currencyUS = Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  });
-
-  return currencyUS.format(currency);
-}
-
 // Exec ed and open courses cards should display either the enrollment deadline
 // or 90 days from the present date on user pageload, whichever is sooner.
 export function getEnrollmentDeadline(enrollByDate) {
-  const currentDate = new Date();
-  const enrollmentDeadline = new Date(currentDate.setDate(currentDate.getDate() + ASSIGNMENT_ENROLLMENT_DEADLINE));
-  const courseEnrollByDate = new Date(enrollByDate);
-  return enrollmentDeadline > courseEnrollByDate
+  const courseEnrollByDate = dayjs(enrollByDate);
+  const assignmentEnrollmentDeadline = dayjs().add(ASSIGNMENT_ENROLLMENT_DEADLINE, 'days');
+
+  return courseEnrollByDate <= assignmentEnrollmentDeadline
     ? formatDate(courseEnrollByDate)
-    : formatDate(enrollmentDeadline);
+    : formatDate(assignmentEnrollmentDeadline);
 }

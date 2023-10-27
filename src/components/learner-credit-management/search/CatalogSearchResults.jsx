@@ -9,6 +9,7 @@ import {
 } from '@edx/paragon';
 
 import CourseCard from '../cards/CourseCard';
+import { SEARCH_RESULT_PAGE_SIZE } from '../data';
 
 export const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
@@ -58,9 +59,8 @@ export const BaseCatalogSearchResults = ({
     () => searchResults?.hits || [],
     [searchResults?.hits],
   );
-  const renderCardComponent = (props) => <CourseCard {...props} onClick={null} />;
   const { refinements } = useContext(SearchContext);
-  const page = refinements.page || (searchState ? searchState.page : 0);
+  const page = refinements.page || (searchState.page || 0);
 
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
@@ -86,29 +86,20 @@ export const BaseCatalogSearchResults = ({
         data={tableData}
         defaultColumnValues={{ Filter: TextFilter }}
         initialState={{
-          pageSize: 15,
+          pageSize: SEARCH_RESULT_PAGE_SIZE,
           pageIndex: 0,
         }}
         isLoading={isSearchStalled}
         isPaginated
-        isSortable
         itemCount={searchResults?.nbHits || 0}
         manualFilters
         manualPagination
-        manualSortBy
         pageCount={searchResults?.nbPages || 0}
-        pageSize={searchResults?.hitsPerPage || 0}
       >
         <DataTable.TableControlBar />
         <CardView
-          columnSizes={{
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 12,
-            xl: 12,
-          }}
-          CardComponent={(props) => renderCardComponent(props)}
+          columnSizes={{ xs: 12 }}
+          CardComponent={CourseCard}
         />
         <DataTable.EmptyTable content="No results found" />
         <DataTable.TableFooter className="justify-content-center">
@@ -123,7 +114,6 @@ BaseCatalogSearchResults.defaultProps = {
   searchResults: { disjunctiveFacetsRefinements: [], nbHits: 0, hits: [] },
   error: null,
   paginationComponent: SearchPagination,
-  preview: false,
   setNoContent: () => {},
 };
 
@@ -148,7 +138,6 @@ BaseCatalogSearchResults.propTypes = {
     page: PropTypes.number,
   }).isRequired,
   paginationComponent: PropTypes.func,
-  preview: PropTypes.bool,
   setNoContent: PropTypes.func,
 };
 

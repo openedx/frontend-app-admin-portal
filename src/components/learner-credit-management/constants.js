@@ -4,7 +4,7 @@ const CARD_TEXT = {
     execEd: 'Executive Education',
   },
   BUTTON_ACTION: {
-    viewCourse: 'View Course',
+    viewCourse: 'View course',
     assign: 'Assign',
   },
   ENROLLMENT: {

@@ -40,3 +40,6 @@ export const ASSIGNMENT_ENROLLMENT_DEADLINE = 90;
 // Number of items to display per page in Budget Detail assignment/spend tables
 export const PAGE_SIZE = 25;
 export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
+
+// Number of items to display per page in Budget Catalog tab
+export const SEARCH_RESULT_PAGE_SIZE = 15;

@@ -13,26 +13,24 @@ import {
   breakpoints,
 } from '@edx/paragon';
 import { injectIntl } from '@edx/frontend-platform/i18n';
+import { camelCaseObject } from '@edx/frontend-platform';
+import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
-import { CONTENT_TYPE_COURSE, EXEC_COURSE_TYPE } from '../data';
-import { formatCurrency, formatDate, getEnrollmentDeadline } from '../data/utils';
+import { EXEC_COURSE_TYPE } from '../data';
+import { formatPrice, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
-import defaultLogoImg from '../../../static/default-card-header-dark.png';
-import defaultCardImg from '../../../static/default-card-header-light.png';
 
 const CourseCard = ({
-  original, learningType,
+  original,
 }) => {
   const {
     availability,
-    card_image_url,
-    course_type,
-    entitlements,
-    first_enrollable_paid_seat_price,
-    normalized_metadata,
+    cardImageUrl,
+    courseType,
+    normalizedMetadata,
     partners,
     title,
-  } = original;
+  } = camelCaseObject(original);
 
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
@@ -44,40 +42,32 @@ const CourseCard = ({
     ENROLLMENT,
   } = CARD_TEXT;
 
-  let priceText;
+  const price = normalizedMetadata?.contentPrice ? formatPrice(normalizedMetadata.contentPrice, { minimumFractionDigits: 0 }) : 'N/A';
 
-  if (learningType === CONTENT_TYPE_COURSE) {
-    priceText = first_enrollable_paid_seat_price != null ? `${formatCurrency(first_enrollable_paid_seat_price)}` : 'N/A';
-  } else {
-    const [firstEntitlement] = entitlements || [null];
-    priceText = firstEntitlement != null ? `${formatCurrency(firstEntitlement?.price)}` : 'N/A';
-  }
-
-  const imageSrc = card_image_url || defaultCardImg;
-  const logoSrc = partners[0]?.logo_image_url || defaultLogoImg;
+  const imageSrc = cardImageUrl || cardFallbackImg;
+  const logoSrc = partners[0]?.logoImageUrl;
 
   const altText = `${title} course image`;
 
-  const formatAvailability = availability?.length ? availability.join(', ') : null;
+  const formattedAvailability = availability?.length ? availability.join(', ') : null;
 
-  const enrollmentDeadline = getEnrollmentDeadline(normalized_metadata?.enroll_by_date);
+  const enrollmentDeadline = getEnrollmentDeadline(normalizedMetadata?.enrollByDate);
 
   let courseEnrollmentInfo;
   let execEdEnrollmentInfo;
-  if (normalized_metadata?.enroll_by_date) {
-    courseEnrollmentInfo = `${formatAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
-    execEdEnrollmentInfo = `Starts ${formatDate(normalized_metadata.start_date)} •
+  if (normalizedMetadata?.enrollByDate) {
+    courseEnrollmentInfo = `${formattedAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
+    execEdEnrollmentInfo = `Starts ${formatDate(normalizedMetadata.startDate)} •
     ${ENROLLMENT.text} ${enrollmentDeadline}`;
   } else {
-    courseEnrollmentInfo = formatAvailability;
-    execEdEnrollmentInfo = formatAvailability;
+    courseEnrollmentInfo = formattedAvailability;
+    execEdEnrollmentInfo = formattedAvailability;
   }
 
-  const isExecEd = course_type === EXEC_COURSE_TYPE;
+  const isExecEd = courseType === EXEC_COURSE_TYPE;
 
   return (
     <Card
-      isClickable
       orientation={isSmall ? 'vertical' : 'horizontal'}
     >
       <Card.ImageCap
@@ -93,13 +83,13 @@ const CourseCard = ({
           subtitle={partners[0]?.name}
           actions={(
             <Stack gap={1} className="text-right">
-              <p className="h4 mt-2.5 mb-0">{priceText}</p>
+              <p className="h4 mt-2.5 mb-0">{price}</p>
               <span className="micro">{PRICE.subText}</span>
             </Stack>
           )}
         />
         <Card.Section>
-          <Badge variant="light" className="ml-0">
+          <Badge variant="light">
             {isExecEd ? BADGE.execEd : BADGE.course}
           </Badge>
         </Card.Section>
@@ -124,18 +114,15 @@ const CourseCard = ({
 };
 
 CourseCard.propTypes = {
-  learningType: PropTypes.string.isRequired,
   original: PropTypes.shape({
-    availability: PropTypes.string,
-    card_image_url: PropTypes.string,
-    course_type: PropTypes.string,
-    entitlements: PropTypes.arrayOf(PropTypes.shape()),
-    first_enrollable_paid_seat_price: PropTypes.number,
-    normalized_metadata: PropTypes.shape(),
-    original_image_url: PropTypes.string,
+    availability: PropTypes.arrayOf(PropTypes.string),
+    cardImageUrl: PropTypes.string,
+    courseType: PropTypes.string,
+    normalizedMetadata: PropTypes.shape(),
+    originalImageUrl: PropTypes.string,
     partners: PropTypes.arrayOf(
       PropTypes.shape({
-        logo_image_url: PropTypes.string,
+        logoImageUrl: PropTypes.string,
         name: PropTypes.string,
       }),
     ),
