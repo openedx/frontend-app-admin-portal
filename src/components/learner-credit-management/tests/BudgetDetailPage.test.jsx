@@ -280,6 +280,7 @@ describe('<BudgetDetailPage />', () => {
         numPages: 1,
         currentPage: 1,
       },
+      fetchContentAssignments: jest.fn(),
     });
     useOfferRedemptions.mockReturnValue({
       isLoading: false,
@@ -380,6 +381,11 @@ describe('<BudgetDetailPage />', () => {
         spentTransactions: { count: 0 },
       },
     });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     // Catalog tab does NOT exist
@@ -410,10 +416,18 @@ describe('<BudgetDetailPage />', () => {
         spentTransactions: { count: 0 },
       },
     });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
 
     // Catalog tab does NOT exist
     expect(screen.queryByText('Catalog')).toBeFalsy();
+
+    // Ensure no assignments-related empty states are rendered
+    expect(screen.queryByText('No budget activity yet? Assign a course!')).not.toBeInTheDocument();
   });
 
   it('defaults to activity tab is no activeTabKey is provided', () => {
