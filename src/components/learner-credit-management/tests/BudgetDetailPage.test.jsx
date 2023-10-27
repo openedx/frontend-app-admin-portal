@@ -257,6 +257,45 @@ describe('<BudgetDetailPage />', () => {
       data: mockAssignableSubsidyAccessPolicy,
     });
     const mockLearnerEmail = 'edx@example.com';
+    const mockContentTitle = 'edx Demo';
+    const mockCourseKey = 'edX+DemoX';
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [
+          {
+            uuid: 'test-uuid',
+            learnerEmail: mockLearnerEmail,
+            contentKey: mockCourseKey,
+            contentTitle: mockContentTitle,
+          },
+        ],
+        numPages: 1,
+        currentPage: 1,
+      },
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Assigned table is visible within Activity tab contents
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    expect(assignedSection.queryByText('No results found')).not.toBeInTheDocument();
+    expect(assignedSection.getByText(mockLearnerEmail)).toBeInTheDocument();
+    const viewCourseCTA = assignedSection.getByText('edx Demo', { selector: 'a' });
+    expect(viewCourseCTA).toBeInTheDocument();
+    expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
+  });
+
+  it('renders with assigned table data "View Course" hyperlink default when content title is null', () => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        uuid: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+        policyType: 'AssignedLearnerCreditAccessPolicy',
+        isAssignable: true,
+      },
+    });
+    const mockLearnerEmail = 'edx@example.com';
     const mockCourseKey = 'edX+DemoX';
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -292,7 +331,7 @@ describe('<BudgetDetailPage />', () => {
     const assignedSection = within(screen.getByText('Assigned').closest('section'));
     expect(assignedSection.queryByText('No results found')).not.toBeInTheDocument();
     expect(assignedSection.getByText(mockLearnerEmail)).toBeInTheDocument();
-    const viewCourseCTA = assignedSection.getByText('View course', { selector: 'a' });
+    const viewCourseCTA = assignedSection.getByText('View Course', { selector: 'a' });
     expect(viewCourseCTA).toBeInTheDocument();
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
   });
