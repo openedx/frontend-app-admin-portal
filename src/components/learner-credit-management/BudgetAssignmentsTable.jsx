@@ -5,7 +5,9 @@ import { DataTable } from '@edx/paragon';
 import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
 import AssignmentDetailsTableCell from './AssignmentDetailsTableCell';
+import AssignmentStatusTableCell from './AssignmentStatusTableCell';
 import { DEFAULT_PAGE, PAGE_SIZE, formatPrice } from './data';
+import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -36,6 +38,16 @@ const BudgetAssignmentsTable = ({
         Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100, { maximumFractionDigits: 0 })}`,
         disableFilters: true,
       },
+      {
+        Header: 'Status',
+        Cell: AssignmentStatusTableCell,
+        disableFilters: true,
+      },
+      {
+        Header: 'Recent action',
+        Cell: AssignmentRecentActionTableCell,
+        disableFilters: true,
+      },
     ]}
     initialTableOptions={{
       getRowId: row => row?.uuid?.toString(),
@@ -47,9 +59,9 @@ const BudgetAssignmentsTable = ({
       filters: [],
     }}
     fetchData={fetchTableData}
-    data={tableData.results}
-    itemCount={tableData.count}
-    pageCount={tableData.numPages}
+    data={tableData?.results || []}
+    itemCount={tableData?.count || 0}
+    pageCount={tableData?.numPages || 1}
     EmptyTableComponent={CustomDataTableEmptyState}
   />
 );

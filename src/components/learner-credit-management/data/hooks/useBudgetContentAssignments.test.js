@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useBudgetContentAssignments from './useBudgetContentAssignments'; // Import the hook
+import useBudgetContentAssignments from './useBudgetContentAssignments';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 
 describe('useBudgetContentAssignments', () => {

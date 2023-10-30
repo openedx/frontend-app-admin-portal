@@ -32,7 +32,7 @@ export const LANGUAGE_REFINEMENT = 'language';
 // Learning types
 export const CONTENT_TYPE_COURSE = 'course';
 export const EXEC_ED_TITLE = 'Executive Education';
-export const EXEC_COURSE_TYPE = 'executive-education-2u';
+export const EXEC_ED_COURSE_TYPE = 'executive-education-2u';
 
 // Learner must enroll within 90 days of assignment
 export const ASSIGNMENT_ENROLLMENT_DEADLINE = 90;
@@ -43,3 +43,16 @@ export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
 
 // Number of items to display per page in Budget Catalog tab
 export const SEARCH_RESULT_PAGE_SIZE = 15;
+
+// Max width of Assigned table status column's modalpopup dialog; matches `Popover`.
+export const ASSIGNMENT_STATUS_MODAL_MAX_WIDTH = 480;
+
+// Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
+// Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
+export const learnerCreditManagementQueryKeys = {
+  all: ['learner-credit-management'],
+  budgets: () => [...learnerCreditManagementQueryKeys.all, 'budgets'],
+  budget: (budgetId) => [...learnerCreditManagementQueryKeys.all, 'budget', budgetId],
+  budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
+  budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],
+};

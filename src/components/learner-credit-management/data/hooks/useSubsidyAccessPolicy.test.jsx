@@ -5,6 +5,7 @@ import useSubsidyAccessPolicy from './useSubsidyAccessPolicy'; // Import the hoo
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 
 const mockSubsidyAccessPolicyUUID = '9af340a9-48de-4d94-976d-e2282b9eb7f3';
+const mockAssignmentConfiguration = { uuid: 'test-assignment-configuration-uuid' };
 
 // Mock the EnterpriseAccessApiService
 jest.mock('../../../../data/services/EnterpriseAccessApiService', () => ({
@@ -43,6 +44,7 @@ describe('useSubsidyAccessPolicy', () => {
       data: {
         uuid: mockSubsidyAccessPolicyUUID,
         policyType: isAssignable ? 'AssignedLearnerCreditAccessPolicy' : 'PerLearnerCreditSpendLimitAccessPolicy',
+        assignmentConfiguration: isAssignable ? mockAssignmentConfiguration : undefined,
         // Other properties...
       },
     });
@@ -59,6 +61,7 @@ describe('useSubsidyAccessPolicy', () => {
       uuid: mockSubsidyAccessPolicyUUID,
       policyType: isAssignable ? 'AssignedLearnerCreditAccessPolicy' : 'PerLearnerCreditSpendLimitAccessPolicy',
       isAssignable,
+      assignmentConfiguration: isAssignable ? mockAssignmentConfiguration : undefined,
       // Other expected properties...
     });
   });
@@ -89,6 +92,7 @@ describe('useSubsidyAccessPolicy', () => {
       expectedData: {
         uuid: mockSubsidyAccessPolicyUUID,
         policyType: 'AssignedLearnerCreditAccessPolicy',
+        assignmentConfiguration: mockAssignmentConfiguration,
         isAssignable: true,
         // Other expected properties...
       },
@@ -102,6 +106,7 @@ describe('useSubsidyAccessPolicy', () => {
       data: {
         uuid: mockSubsidyAccessPolicyUUID,
         policyType: 'AssignedLearnerCreditAccessPolicy',
+        assignmentConfiguration: mockAssignmentConfiguration,
         // Other properties...
       },
     });

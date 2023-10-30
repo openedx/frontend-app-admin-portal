@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 // variables taken from algolia not in camelcase
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { AppContext } from '@edx/frontend-platform/react';
+import { connect } from 'react-redux';
 
 import {
   Badge,
@@ -16,22 +18,24 @@ import { injectIntl } from '@edx/frontend-platform/i18n';
 import { camelCaseObject } from '@edx/frontend-platform';
 import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
-import { EXEC_COURSE_TYPE } from '../data';
+import { EXEC_ED_COURSE_TYPE } from '../data';
 import { formatPrice, formatDate, getEnrollmentDeadline } from '../data/utils';
 import CARD_TEXT from '../constants';
 
 const CourseCard = ({
-  original,
+  original, enterpriseSlug,
 }) => {
   const {
     availability,
     cardImageUrl,
     courseType,
+    key,
     normalizedMetadata,
     partners,
     title,
   } = camelCaseObject(original);
 
+  const { config: { ENTERPRISE_LEARNER_PORTAL_URL } } = useContext(AppContext);
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
 
@@ -45,7 +49,13 @@ const CourseCard = ({
   const price = normalizedMetadata?.contentPrice ? formatPrice(normalizedMetadata.contentPrice, { minimumFractionDigits: 0 }) : 'N/A';
 
   const imageSrc = cardImageUrl || cardFallbackImg;
-  const logoSrc = partners[0]?.logoImageUrl;
+
+  let logoSrc;
+  let logoAlt;
+  if (partners.length === 1) {
+    logoSrc = partners[0]?.logoImageUrl;
+    logoAlt = `${partners[0]?.name}'s logo`;
+  }
 
   const altText = `${title} course image`;
 
@@ -64,7 +74,14 @@ const CourseCard = ({
     execEdEnrollmentInfo = formattedAvailability;
   }
 
-  const isExecEd = courseType === EXEC_COURSE_TYPE;
+  const isExecEd = courseType === EXEC_ED_COURSE_TYPE;
+
+  let linkToCourse;
+  if (isExecEd) {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
+  } else {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
+  }
 
   return (
     <Card
@@ -72,9 +89,9 @@ const CourseCard = ({
     >
       <Card.ImageCap
         src={imageSrc}
-        logoSrc={logoSrc}
         srcAlt={altText}
-        logoAlt={partners[0]?.name}
+        logoSrc={logoSrc}
+        logoAlt={logoAlt}
       />
       <Card.Body>
         <Card.Header
@@ -98,9 +115,9 @@ const CourseCard = ({
           textElement={isExecEd ? execEdEnrollmentInfo : courseEnrollmentInfo}
         >
           <Button
-            // TODO: Implementation to follow in ENT-7594
             as={Hyperlink}
-            destination="https://enterprise.stage.edx.org"
+            data-testid="hyperlink-view-course"
+            destination={linkToCourse}
             target="_blank"
             variant="outline-primary"
           >
@@ -114,6 +131,7 @@ const CourseCard = ({
 };
 
 CourseCard.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
   original: PropTypes.shape({
     availability: PropTypes.arrayOf(PropTypes.string),
     cardImageUrl: PropTypes.string,
@@ -130,4 +148,8 @@ CourseCard.propTypes = {
   }).isRequired,
 };
 
-export default injectIntl(CourseCard);
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(injectIntl(CourseCard));
