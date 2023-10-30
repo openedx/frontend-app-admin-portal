@@ -5,7 +5,9 @@ import { DataTable } from '@edx/paragon';
 import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
 import AssignmentDetailsTableCell from './AssignmentDetailsTableCell';
+import AssignmentStatusTableCell from './AssignmentStatusTableCell';
 import { DEFAULT_PAGE, PAGE_SIZE, formatPrice } from './data';
+import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -34,6 +36,16 @@ const BudgetAssignmentsTable = ({
       {
         Header: 'Amount',
         Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100, { maximumFractionDigits: 0 })}`,
+        disableFilters: true,
+      },
+      {
+        Header: 'Status',
+        Cell: AssignmentStatusTableCell,
+        disableFilters: true,
+      },
+      {
+        Header: 'Recent action',
+        Cell: AssignmentRecentActionTableCell,
         disableFilters: true,
       },
     ]}
