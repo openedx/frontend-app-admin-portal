@@ -5,10 +5,20 @@ import { Row, Col } from '@edx/paragon';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
 import CatalogSearch from './search/CatalogSearch';
-import { LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT } from './data';
+import {
+  LANGUAGE_REFINEMENT,
+  LEARNING_TYPE_REFINEMENT,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from './data';
 import { configuration } from '../../config';
 
 const BudgetDetailCatalogTabContents = () => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const {
+    data: subsidyAccessPolicy,
+  } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+
   const language = {
     attribute: LANGUAGE_REFINEMENT,
     title: 'Language',
@@ -38,7 +48,7 @@ const BudgetDetailCatalogTabContents = () => {
             indexName={configuration.ALGOLIA.INDEX_NAME}
             searchClient={searchClient}
           >
-            <CatalogSearch />
+            <CatalogSearch catalogUuid={subsidyAccessPolicy?.catalogUuid} />
           </InstantSearch>
         </SearchData>
       </Col>

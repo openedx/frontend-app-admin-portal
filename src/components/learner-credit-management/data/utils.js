@@ -5,6 +5,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+  ASSIGNMENT_ENROLLMENT_DEADLINE,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -199,6 +200,16 @@ export function formatDate(date) {
   return dayjs(date).format('MMM D, YYYY');
 }
 
+// Exec ed and open courses cards should display either the enrollment deadline
+// or 90 days from the present date on user pageload, whichever is sooner.
+export function getEnrollmentDeadline(enrollByDate) {
+  const courseEnrollByDate = dayjs(enrollByDate);
+  const assignmentEnrollmentDeadline = dayjs().add(ASSIGNMENT_ENROLLMENT_DEADLINE, 'days');
+
+  return courseEnrollByDate <= assignmentEnrollmentDeadline
+    ? formatDate(courseEnrollByDate)
+    : formatDate(assignmentEnrollmentDeadline);
+}
 /**
  * Retrieves content assignments for the given budget's assignment configuration UUID (retrieved from the associated
  * subsidy access policy).
