@@ -1,18 +1,21 @@
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
-import PropTypes from 'prop-types';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
-import { SEARCH_RESULT_PAGE_SIZE } from '../data';
+import { SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy } from '../data';
 
-const CatalogSearch = ({ catalogUuid }) => {
+const CatalogSearch = () => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-  const searchFilters = `enterprise_catalog_uuids:${catalogUuid} AND content_type:course`;
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const {
+    data: subsidyAccessPolicy,
+  } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const searchFilters = `enterprise_catalog_uuids:${subsidyAccessPolicy.catalogUuid} AND content_type:course`;
 
   return (
     <section>
@@ -39,10 +42,6 @@ const CatalogSearch = ({ catalogUuid }) => {
       </InstantSearch>
     </section>
   );
-};
-
-CatalogSearch.propTypes = {
-  catalogUuid: PropTypes.string.isRequired,
 };
 
 export default CatalogSearch;

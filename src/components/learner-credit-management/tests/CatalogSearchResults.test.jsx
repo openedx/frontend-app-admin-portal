@@ -1,6 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import configureMockStore from 'redux-mock-store';
 
 import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -21,17 +24,28 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 const DEFAULT_SEARCH_CONTEXT_VALUE = { refinements: {} };
+const mockStore = configureMockStore([thunk]);
+const getMockStore = store => mockStore(store);
+const enterpriseSlug = 'test-enterprise-slug';
+const initialStoreState = {
+  portalConfiguration: {
+    enterpriseSlug,
+  },
+};
 
 const SearchDataWrapper = ({
-
   children,
-
   searchContextValue = DEFAULT_SEARCH_CONTEXT_VALUE,
-}) => (
-  <SearchContext.Provider value={searchContextValue}>
-    {children}
-  </SearchContext.Provider>
-);
+}) => {
+  const store = getMockStore({ ...initialStoreState });
+  return (
+    <Provider store={store}>
+      <SearchContext.Provider value={searchContextValue}>
+        {children}
+      </SearchContext.Provider>
+    </Provider>
+  );
+};
 
 const mockConfig = () => ({
   EDX_FOR_BUSINESS_TITLE: 'ayylmao',
@@ -106,13 +120,13 @@ const defaultProps = {
   // mock i18n requirements
   intl: {
     formatMessage: (header) => header.defaultMessage,
-    formatDate: () => {},
-    formatTime: () => {},
-    formatRelative: () => {},
-    formatNumber: () => {},
-    formatPlural: () => {},
-    formatHTMLMessage: () => {},
-    now: () => {},
+    formatDate: () => { },
+    formatTime: () => { },
+    formatRelative: () => { },
+    formatNumber: () => { },
+    formatPlural: () => { },
+    formatHTMLMessage: () => { },
+    now: () => { },
   },
 };
 
