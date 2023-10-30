@@ -75,7 +75,7 @@ BaseModalPopup.propTypes = {
 };
 
 BaseModalPopup.defaultProps = {
-  placement: 'auto',
+  placement: 'top',
   positionRef: null,
 };
 
