@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   FullscreenModal,
@@ -84,6 +84,7 @@ const ManagingThisAssignment = () => (
 
 const NewAssignmentModalButton = ({ course, children }) => {
   const [isOpen, open, close] = useToggle(false);
+  const [emailAddresses, setEmailAddresses] = useState('');
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
@@ -115,28 +116,29 @@ const NewAssignmentModalButton = ({ course, children }) => {
               </Col>
             </Row>
             <Row>
-              <Col xs={12} lg={6}>
+              <Col xs={12} lg={5}>
                 <h4 className="mb-4">Assign to</h4>
                 <Form.Group className="mb-5">
                   <Form.Control
                     as="textarea"
-                    value=""
-                    onChange={() => {}}
+                    value={emailAddresses}
+                    onChange={(e) => setEmailAddresses(e.target.value)}
                     floatingLabel="Learner email addresses"
                     rows={10}
+                    data-hj-suppress
                   />
                   <Form.Control.Feedback>
                     To add more than one learner, enter one email address per line.
                   </Form.Control.Feedback>
                 </Form.Group>
-                <h5 className="mb-4">How assigning this course works</h5>
+                <h5 className="mb-3">How assigning this course works</h5>
                 <Stack gap={1}>
                   <NextStepsForAssignedLearners />
                   <ImpactOnYourLearnerCreditBudget />
                   <ManagingThisAssignment />
                 </Stack>
               </Col>
-              <Col xs={12} lg={6}>
+              <Col xs={12} lg={{ span: 5, offset: 2 }}>
                 <h4 className="mb-4">Pay by Learner Credit</h4>
                 <h5 className="mb-4">Summary</h5>
                 <Card className="rounded-0 shadow-none">
