@@ -25,6 +25,7 @@ const TextAreaAutoSize = ({
         isValid={touched && !error}
         isInvalid={hasError}
         rows={3}
+        autoResize
         data-hj-suppress
       />
       {hasError && <FormControl.Feedback type="invalid">{error}</FormControl.Feedback>}
