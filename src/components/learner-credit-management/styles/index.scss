@@ -1,22 +1,31 @@
-.budget-detail-assignments {
-  // This is a (temporary) workaround to ensure the `Chip` modal popups within the "Assigned" table status column
-  // properly overlays the underlying `DataTable`.
-  .pgn__data-table-container,
-  .pgn__data-table-layout-wrapper {
-    overflow-x: visible;
-  }
+.learner-credit-management {
+  .budget-detail-assignments {
+    // This is a (temporary) workaround to ensure the `Chip` modal popups within the "Assigned" table status column
+    // properly overlays the underlying `DataTable`.
+    .pgn__data-table-container,
+    .pgn__data-table-layout-wrapper {
+      overflow-x: visible;
+    }
 
-  // The `Card` component in Paragon does not seem to properly let consumers customize the width of the `Card.Body`
-  // contents when in the horizontal card orientation without custom CSS. As a result, both the `Card.Footer` and
-  // `Card.Body` incorrectly get equal column widths when the preference is that the `Card.Body` has more width than
-  // the `Card.Footer`. The below styles force the `Card.Body` to have appropriately more width than the `Card.Footer` when
-  // the `Card` is in the horizontal orientation.
-  .assign-more-courses-empty-state-minimal {
-    .assign-more-courses__card-body {
-        flex: 3;
-    }
-    .assign-more-courses__card-footer {
-        flex: 1;
+    // The `Card` component in Paragon does not seem to properly let consumers customize the width of the `Card.Body`
+    // contents when in the horizontal card orientation without custom CSS. As a result, both the `Card.Footer` and
+    // `Card.Body` incorrectly get equal column widths when the preference is that the `Card.Body` has more width than
+    // the `Card.Footer`. The below styles (temporary) force the `Card.Body` to have appropriately more width than the
+    // `Card.Footer` when the `Card` is in the horizontal orientation.
+    .assign-more-courses-empty-state-minimal {
+      .assign-more-courses__card-body {
+          flex: 3;
+      }
+      .assign-more-courses__card-footer {
+          flex: 1;
+      }
     }
   }
+}
+
+
+// Must be defined outside of `.learner-credit-management` to ensure the styles are applied to the contents of
+// the `FullscreenModal`, which renders in a React Portal.
+.assignment-modal-collapsible-trigger {
+  text-decoration: underline;
 }
