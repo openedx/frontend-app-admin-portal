@@ -6,8 +6,11 @@ import {
 } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderWithRouter } from '../../test/testUtils';
 import CatalogSearch from '../search/CatalogSearch';
+
+import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 
 jest.mock('react-instantsearch-dom', () => ({
   ...jest.requireActual('react-instantsearch-dom'),
@@ -15,23 +18,36 @@ jest.mock('react-instantsearch-dom', () => ({
   Index: () => <div>SEARCH</div>,
 }));
 
+jest.mock('../data');
+
 const DEFAULT_SEARCH_CONTEXT_VALUE = { refinements: {} };
+const queryClient = new QueryClient();
 
 const SearchDataWrapper = ({ children, searchContextValue }) => (
-  <IntlProvider locale="en">
-    <SearchContext.Provider
-      value={searchContextValue}
-      searchFacetFilters={[
-        ...SEARCH_FACET_FILTERS,
-      ]}
-    >
-      {children}
-    </SearchContext.Provider>
-  </IntlProvider>
+  <QueryClientProvider client={queryClient}>
+    <IntlProvider locale="en">
+      <SearchContext.Provider
+        value={searchContextValue}
+        searchFacetFilters={[
+          ...SEARCH_FACET_FILTERS,
+        ]}
+      >
+        {children}
+      </SearchContext.Provider>
+    </IntlProvider>
+  </QueryClientProvider>
 );
 
 describe('Catalog Search component', () => {
   it('properly renders component', () => {
+    useBudgetId.mockReturnValue({
+      subsidyAccessPolicyId: 'test-id',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      data: {
+        catalogUuid: '123',
+      },
+    });
     renderWithRouter(
       <SearchDataWrapper searchContextValue={DEFAULT_SEARCH_CONTEXT_VALUE}>
         <CatalogSearch />

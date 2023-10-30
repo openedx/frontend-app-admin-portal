@@ -25,7 +25,6 @@ export const ERROR_MESSAGE = 'An error occurred while retrieving data';
  */
 
 export const BaseCatalogSearchResults = ({
-  enterpriseSlug,
   searchResults,
   searchState,
   // algolia recommends this prop instead of searching
@@ -62,13 +61,6 @@ export const BaseCatalogSearchResults = ({
   );
   const { refinements } = useContext(SearchContext);
   const page = refinements.page || (searchState.page || 0);
-
-  const renderCardComponent = (props) => (
-    <CourseCard
-      {...props}
-      enterpriseSlug={enterpriseSlug}
-    />
-  );
 
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
@@ -107,7 +99,7 @@ export const BaseCatalogSearchResults = ({
         <DataTable.TableControlBar />
         <CardView
           columnSizes={{ xs: 12 }}
-          CardComponent={(props) => renderCardComponent(props)}
+          CardComponent={CourseCard}
         />
         <DataTable.EmptyTable content="No results found" />
         <DataTable.TableFooter className="justify-content-center">
@@ -126,7 +118,6 @@ BaseCatalogSearchResults.defaultProps = {
 };
 
 BaseCatalogSearchResults.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
   // from Algolia
   searchResults: PropTypes.shape({
     _state: PropTypes.shape({

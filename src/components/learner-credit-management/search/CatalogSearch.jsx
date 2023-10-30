@@ -1,7 +1,6 @@
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
-import PropTypes from 'prop-types';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
@@ -10,7 +9,7 @@ import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
 import { SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy } from '../data';
 
-const CatalogSearch = ({ enterpriseSlug }) => {
+const CatalogSearch = () => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
   const { subsidyAccessPolicyId } = useBudgetId();
   const {
@@ -39,14 +38,10 @@ const CatalogSearch = ({ enterpriseSlug }) => {
             disableSuggestionRedirect
           />
         </div>
-        <CatalogSearchResults enterpriseSlug={enterpriseSlug} />
+        <CatalogSearchResults />
       </InstantSearch>
     </section>
   );
-};
-
-CatalogSearch.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 export default CatalogSearch;

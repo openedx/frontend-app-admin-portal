@@ -2,8 +2,6 @@ import React from 'react';
 import { InstantSearch } from 'react-instantsearch-dom';
 import algoliasearch from 'algoliasearch/lite';
 import { Row, Col } from '@edx/paragon';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
 import CatalogSearch from './search/CatalogSearch';
@@ -13,7 +11,7 @@ import {
 } from './data';
 import { configuration } from '../../config';
 
-const BudgetDetailCatalogTabContents = ({ enterpriseSlug }) => {
+const BudgetDetailCatalogTabContents = () => {
   const language = {
     attribute: LANGUAGE_REFINEMENT,
     title: 'Language',
@@ -43,7 +41,7 @@ const BudgetDetailCatalogTabContents = ({ enterpriseSlug }) => {
             indexName={configuration.ALGOLIA.INDEX_NAME}
             searchClient={searchClient}
           >
-            <CatalogSearch enterpriseSlug={enterpriseSlug} />
+            <CatalogSearch />
           </InstantSearch>
         </SearchData>
       </Col>
@@ -51,12 +49,4 @@ const BudgetDetailCatalogTabContents = ({ enterpriseSlug }) => {
   );
 };
 
-BudgetDetailCatalogTabContents.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connect(mapStateToProps)(BudgetDetailCatalogTabContents);
+export default BudgetDetailCatalogTabContents;

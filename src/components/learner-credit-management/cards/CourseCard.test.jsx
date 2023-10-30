@@ -1,7 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import configureMockStore from 'redux-mock-store';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseCard from './CourseCard';
@@ -23,7 +25,6 @@ const originalData = {
 
 const defaultProps = {
   original: originalData,
-  enterpriseSlug: 'test-enterprise-slug',
 };
 
 const mockLearnerPortal = 'https://enterprise.stage.edx.org';
@@ -32,6 +33,7 @@ const execEdData = {
   availability: ['Upcoming'],
   card_image_url: undefined,
   course_type: 'executive-education-2u',
+  key: 'exec-ed-course-123x',
   entitlements: [{ price: '999.00' }],
   normalized_metadata: {
     enroll_by_date: '2016-02-18T04:00:00Z',
@@ -47,19 +49,41 @@ const execEdProps = {
   original: execEdData,
 };
 
-describe('Course card works as expected', () => {
-  test('course card renders', () => {
-    render(
-      <IntlProvider locale="en">
+const mockStore = configureMockStore([thunk]);
+const getMockStore = store => mockStore(store);
+const enterpriseSlug = 'test-enterprise-slug';
+const enterpriseUUID = '1234';
+const initialStoreState = {
+  portalConfiguration: {
+    enterpriseId: enterpriseUUID,
+    enterpriseSlug,
+  },
+};
+
+const CourseCardWrapper = ({
+  initialState = initialStoreState,
+  ...rest
+}) => {
+  const store = getMockStore({ ...initialState });
+
+  return (
+    <IntlProvider locale="en">
+      <Provider store={store}>
         <AppContext.Provider
           value={{
             config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
           }}
         >
-          <CourseCard {...defaultProps} />
+          <CourseCard {...rest} />
         </AppContext.Provider>
-      </IntlProvider>,
-    );
+      </Provider>
+    </IntlProvider>
+  );
+};
+
+describe('Course card works as expected', () => {
+  test('course card renders', () => {
+    render(<CourseCardWrapper {...defaultProps} />);
     expect(screen.queryByText(defaultProps.original.title)).toBeInTheDocument();
     expect(
       screen.queryByText(defaultProps.original.partners[0].name),
@@ -70,58 +94,27 @@ describe('Course card works as expected', () => {
     expect(screen.queryByText('Course')).toBeInTheDocument();
     expect(screen.queryByText('View course')).toBeInTheDocument();
     expect(screen.queryByText('Assign')).toBeInTheDocument();
+    const hyperlink = screen.getByRole('link', {
+      name: 'View course Opens in a new tab',
+    });
+    expect(hyperlink.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/course/course-123x');
   });
 
   test('test card renders default image', async () => {
-    render(
-      <IntlProvider locale="en">
-        <AppContext.Provider
-          value={{
-            config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
-          }}
-        >
-          <CourseCard {...defaultProps} />
-        </AppContext.Provider>
-      </IntlProvider>,
-    );
+    render(<CourseCardWrapper {...defaultProps} />);
     const imageAltText = `${originalData.title} course image`;
     fireEvent.error(screen.getByAltText(imageAltText));
     await expect(screen.getByAltText(imageAltText).src).not.toBeUndefined;
   });
 
   test('exec ed card renders', async () => {
-    render(
-      <IntlProvider locale="en">
-        <AppContext.Provider
-          value={{
-            config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
-          }}
-        >
-          <CourseCard {...execEdProps} />
-        </AppContext.Provider>
-      </IntlProvider>,
-    );
+    render(<CourseCardWrapper {...execEdProps} />);
     expect(screen.queryByText('$999')).toBeInTheDocument();
     expect(screen.queryByText('Starts Apr 18, 2016 • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.queryByText('Executive Education')).toBeInTheDocument();
-  });
-
-  test('sets correct course hyperlink for course', async () => {
-    render(
-      <IntlProvider locale="en">
-        <AppContext.Provider
-          value={{
-            config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
-          }}
-        >
-          <CourseCard {...defaultProps} />
-        </AppContext.Provider>
-      </IntlProvider>,
-    );
-
     const hyperlink = screen.getByRole('link', {
       name: 'View course Opens in a new tab',
     });
-    expect(hyperlink.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/course/course-123x');
+    expect(hyperlink.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
   });
 });

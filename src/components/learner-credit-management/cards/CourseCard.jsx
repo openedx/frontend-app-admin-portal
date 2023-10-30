@@ -3,6 +3,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { AppContext } from '@edx/frontend-platform/react';
+import { connect } from 'react-redux';
 
 import {
   Badge,
@@ -75,7 +76,12 @@ const CourseCard = ({
 
   const isExecEd = courseType === EXEC_ED_COURSE_TYPE;
 
-  const linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
+  let linkToCourse;
+  if (isExecEd) {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
+  } else {
+    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
+  }
 
   return (
     <Card
@@ -142,4 +148,8 @@ CourseCard.propTypes = {
   }).isRequired,
 };
 
-export default injectIntl(CourseCard);
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(injectIntl(CourseCard));
