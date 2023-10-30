@@ -111,7 +111,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
             <Row>
               <Col>
                 <h3 className="mb-4">Use Learner Credit to assign this course</h3>
-                <BaseCourseCard original={course} />
+                <BaseCourseCard original={course} className="rounded-0 shadow-none" />
               </Col>
             </Row>
             <Row>
