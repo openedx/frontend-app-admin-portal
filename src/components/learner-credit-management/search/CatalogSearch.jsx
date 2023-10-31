@@ -16,12 +16,13 @@ const CatalogSearch = () => {
     data: subsidyAccessPolicy,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const searchFilters = `enterprise_catalog_uuids:${subsidyAccessPolicy.catalogUuid} AND content_type:course`;
+  const displayName = subsidyAccessPolicy.displayName ? `${subsidyAccessPolicy.displayName} catalog` : 'Overview';
 
   return (
     <section>
       <FormattedMessage
         id="catalogs.enterpriseCatalogs.header"
-        defaultMessage="Budget associated catalog"
+        defaultMessage={displayName}
         description="Search dialogue."
         tagName="h3"
       />
