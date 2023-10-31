@@ -520,23 +520,27 @@ describe('<BudgetDetailPage />', () => {
     expect(modalPopupContents.getByText(expectedModalPopupContent, { exact: false })).toBeInTheDocument();
   });
 
-  it('renders with catalog tab active on initial load for assignable budgets', async () => {
+  it.each([
+    { displayName: null },
+    { displayName: 'Test Budget Display Name' },
+  ])('renders with catalog tab active on initial load for assignable budgets with %s display name', ({ displayName }) => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'catalog',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
+      data: { ...mockAssignableSubsidyAccessPolicy, displayName },
     });
     useBudgetDetailActivityOverview.mockReturnValueOnce({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
-
+    const expectedDisplayName = displayName ? `${displayName} catalog` : 'Overview';
     // Catalog tab exists and is active
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('true');
+    expect(screen.getByText(expectedDisplayName, { selector: 'h3' }));
   });
 
   it('hides catalog tab when budget is not assignable', () => {
