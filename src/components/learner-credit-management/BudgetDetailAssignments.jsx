@@ -36,7 +36,7 @@ const BudgetDetailAssignments = ({
   }
 
   return (
-    <section>
+    <section className="budget-detail-assignments">
       <h3 className="mb-3">Assigned</h3>
       <p className="small mb-4">
         Assigned activity earmarks funds in your budget so you can&apos;t overspend. For funds to move
