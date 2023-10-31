@@ -9,7 +9,7 @@ import {
 } from '@edx/paragon';
 
 import CourseCard from '../cards/CourseCard';
-import { SEARCH_RESULT_PAGE_SIZE } from '../data';
+import { DEFAULT_PAGE, SEARCH_RESULT_PAGE_SIZE } from '../data';
 
 export const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
@@ -87,7 +87,7 @@ export const BaseCatalogSearchResults = ({
         defaultColumnValues={{ Filter: TextFilter }}
         initialState={{
           pageSize: SEARCH_RESULT_PAGE_SIZE,
-          pageIndex: 0,
+          pageIndex: DEFAULT_PAGE,
         }}
         isLoading={isSearchStalled}
         isPaginated
