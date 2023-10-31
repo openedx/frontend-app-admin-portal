@@ -17,7 +17,7 @@ const BaseCourseCard = ({
   original,
   footerActions: CardFooterActions,
   enterpriseSlug,
-  ...rest
+  cardClassName,
 }) => {
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
@@ -40,7 +40,7 @@ const BaseCourseCard = ({
   const { BADGE, PRICE } = CARD_TEXT;
 
   return (
-    <Card orientation={isSmall ? 'vertical' : 'horizontal'} {...rest}>
+    <Card orientation={isSmall ? 'vertical' : 'horizontal'} className={cardClassName}>
       <Card.ImageCap
         src={imageSrc}
         srcAlt={altText}
@@ -95,6 +95,7 @@ BaseCourseCard.propTypes = {
     title: PropTypes.string,
   }).isRequired,
   footerActions: PropTypes.elementType,
+  cardClassName: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(BaseCourseCard);

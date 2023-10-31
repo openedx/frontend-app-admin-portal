@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Hyperlink } from '@edx/paragon';
 
-import NewAssignmentModalButton from '../NewAssignmentModalButton';
+import NewAssignmentModalButton from './NewAssignmentModalButton';
 import CARD_TEXT from '../constants';
 import BaseCourseCard from './BaseCourseCard';
 
@@ -13,6 +13,7 @@ const CourseCardFooterActions = (course) => {
 
   return [
     <Button
+      key="link-to-course"
       as={Hyperlink}
       data-testid="hyperlink-view-course"
       destination={linkToCourse}
@@ -21,7 +22,7 @@ const CourseCardFooterActions = (course) => {
     >
       {BUTTON_ACTION.viewCourse}
     </Button>,
-    <NewAssignmentModalButton course={course}>
+    <NewAssignmentModalButton key="assignment-modal-trigger" course={course}>
       {BUTTON_ACTION.assign}
     </NewAssignmentModalButton>,
   ];
