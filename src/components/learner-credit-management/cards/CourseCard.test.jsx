@@ -192,9 +192,14 @@ describe('Course card works as expected', () => {
     expect(modalCourseCard.queryByText('View course', { selector: 'a' })).not.toBeInTheDocument();
     expect(modalCourseCard.queryByText('Assign', { selector: 'button' })).not.toBeInTheDocument();
 
-    // Verify empty state
+    // Verify empty state and textarea can accept emails
     expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
-    expect(assignmentModal.getByLabelText('Learner email addresses')).toBeInTheDocument();
+    const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
+    expect(textareaInputLabel).toBeInTheDocument();
+    const textareaInput = textareaInputLabel.closest('textarea');
+    expect(textareaInput).toBeInTheDocument();
+    userEvent.type(textareaInput, 'hello@example.com{enter}world@example.com');
+    expect(textareaInput).toHaveValue('hello@example.com\nworld@example.com');
     expect(assignmentModal.getByText('To add more than one learner, enter one email address per line.')).toBeInTheDocument();
     expect(assignmentModal.getByText('Pay by Learner Credit')).toBeInTheDocument();
     expect(assignmentModal.getByText('Summary')).toBeInTheDocument();
