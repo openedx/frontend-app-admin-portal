@@ -19,6 +19,8 @@ import {
   useBudgetDetailActivityOverview,
   useIsLargeOrGreater,
   formatDate,
+  DEFAULT_PAGE,
+  PAGE_SIZE,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
@@ -269,7 +271,7 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
   });
 
-  it('renders with assigned table data', () => {
+  it('renders with assigned table data and handles table refresh', () => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -285,6 +287,7 @@ describe('<BudgetDetailPage />', () => {
         spentTransactions: { count: 0 },
       },
     });
+    const mockFetchContentAssignments = jest.fn();
     useBudgetContentAssignments.mockReturnValue({
       isLoading: false,
       contentAssignments: {
@@ -304,7 +307,7 @@ describe('<BudgetDetailPage />', () => {
         numPages: 1,
         currentPage: 1,
       },
-      fetchContentAssignments: jest.fn(),
+      fetchContentAssignments: mockFetchContentAssignments,
     });
     useOfferRedemptions.mockReturnValue({
       isLoading: false,
@@ -323,6 +326,21 @@ describe('<BudgetDetailPage />', () => {
     expect(assignedSection.getByText('-$199')).toBeInTheDocument();
     expect(assignedSection.getByText('Waiting for learner')).toBeInTheDocument();
     expect(assignedSection.getByText(`Assigned: ${formatDate('2023-10-27')}`)).toBeInTheDocument();
+
+    // Verify "Refresh" behavior
+    const expectedRefreshArgs = {
+      pageIndex: DEFAULT_PAGE,
+      pageSize: PAGE_SIZE,
+      filters: [],
+      sortBy: [],
+    };
+    expect(mockFetchContentAssignments).toHaveBeenCalledTimes(1); // called once on initial render
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(expect.objectContaining(expectedRefreshArgs));
+    const refreshCTA = assignedSection.getByText('Refresh', { selector: 'button' });
+    expect(refreshCTA).toBeInTheDocument();
+    userEvent.click(refreshCTA);
+    expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
+    expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedRefreshArgs));
   });
 
   it('renders with assigned table data "View Course" hyperlink default when content title is null', () => {
@@ -502,23 +520,27 @@ describe('<BudgetDetailPage />', () => {
     expect(modalPopupContents.getByText(expectedModalPopupContent, { exact: false })).toBeInTheDocument();
   });
 
-  it('renders with catalog tab active on initial load for assignable budgets', async () => {
+  it.each([
+    { displayName: null },
+    { displayName: 'Test Budget Display Name' },
+  ])('renders with catalog tab active on initial load for assignable budgets with %s display name', ({ displayName }) => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'catalog',
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
+      data: { ...mockAssignableSubsidyAccessPolicy, displayName },
     });
     useBudgetDetailActivityOverview.mockReturnValueOnce({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
-
+    const expectedDisplayName = displayName ? `${displayName} catalog` : 'Overview';
     // Catalog tab exists and is active
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('true');
+    expect(screen.getByText(expectedDisplayName, { selector: 'h3' }));
   });
 
   it('hides catalog tab when budget is not assignable', () => {

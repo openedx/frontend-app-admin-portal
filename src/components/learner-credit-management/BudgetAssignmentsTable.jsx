@@ -8,6 +8,7 @@ import AssignmentDetailsTableCell from './AssignmentDetailsTableCell';
 import AssignmentStatusTableCell from './AssignmentStatusTableCell';
 import { DEFAULT_PAGE, PAGE_SIZE, formatPrice } from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
+import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -35,7 +36,8 @@ const BudgetAssignmentsTable = ({
       },
       {
         Header: 'Amount',
-        Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100, { maximumFractionDigits: 0 })}`,
+        accessor: 'amount',
+        Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100)}`,
         disableFilters: true,
       },
       {
@@ -48,6 +50,9 @@ const BudgetAssignmentsTable = ({
         Cell: AssignmentRecentActionTableCell,
         disableFilters: true,
       },
+    ]}
+    tableActions={[
+      <AssignmentsTableRefreshAction refresh={fetchTableData} />,
     ]}
     initialTableOptions={{
       getRowId: row => row?.uuid?.toString(),

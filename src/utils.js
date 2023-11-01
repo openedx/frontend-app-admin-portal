@@ -400,18 +400,6 @@ const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
   return false;
 };
 
-const getCourseProductLineText = (courseProductLine) => {
-  let courseProductLineText = '';
-  courseProductLineText = courseProductLine === 'OCM' ? 'Open Courses' : courseProductLine;
-  return courseProductLineText;
-};
-
-const getCourseProductLineAbbreviation = (courseProductLine) => {
-  let courseProductLineText = '';
-  courseProductLineText = courseProductLine === 'Open Courses Marketplace' ? 'OCM' : 'Executive Education';
-  return courseProductLineText;
-};
-
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -445,6 +433,4 @@ export {
   capitalizeFirstLetter,
   pollAsync,
   isNotValidNumberString,
-  getCourseProductLineText,
-  getCourseProductLineAbbreviation,
 };
