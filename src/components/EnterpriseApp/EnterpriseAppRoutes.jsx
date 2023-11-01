@@ -29,6 +29,7 @@ const EnterpriseAppRoutes = ({
   enableContentHighlightsPage,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
+  console.log('EnterpriseAppRoutes!!!');
   return (
     <Switch>
       <Route

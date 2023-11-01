@@ -4,6 +4,7 @@ import { Chip, Hyperlink, useToggle } from '@edx/paragon';
 import { Timelapse } from '@edx/paragon/icons';
 
 import BaseModalPopup from './BaseModalPopup';
+import { ASSIGNMENT_ENROLLMENT_DEADLINE } from '../data';
 
 const WaitingForLearner = ({ learnerEmail }) => {
   const [isOpen, open, close] = useToggle(false);
@@ -31,7 +32,8 @@ const WaitingForLearner = ({ learnerEmail }) => {
         <BaseModalPopup.Content>
           <p>
             This learner must create an edX account and complete enrollment in the course before the
-            enrollment deadline or within 90 days of assignment, whichever is sooner.
+            enrollment deadline or within {ASSIGNMENT_ENROLLMENT_DEADLINE} days of assignment, whichever
+            is sooner.
           </p>
           <div className="micro">
             <p className="h6">Need help?</p>

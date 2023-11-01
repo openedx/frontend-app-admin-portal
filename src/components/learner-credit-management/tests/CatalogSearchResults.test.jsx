@@ -88,6 +88,12 @@ const searchResults = {
         upgrade_deadline: 1892678399,
         pacing_type: 'self_paced',
       },
+      normalized_metadata: {
+        start_date: '2020-09-09T04:00:00Z',
+        end_date: '2021-09-09T04:00:00Z',
+        enroll_by_date: '2020-09-15T04:00:00Z',
+        content_price: 199,
+      },
     },
     {
       title: TEST_COURSE_NAME_2,
@@ -103,6 +109,12 @@ const searchResults = {
         end: '2080-01-01T17:00:00Z',
         upgrade_deadline: 1892678399,
         pacing_type: 'self_paced',
+      },
+      normalized_metadata: {
+        start_date: '2020-09-09T04:00:00Z',
+        end_date: '2021-09-09T04:00:00Z',
+        enroll_by_date: '2020-09-15T04:00:00Z',
+        content_price: 199,
       },
     },
   ],
