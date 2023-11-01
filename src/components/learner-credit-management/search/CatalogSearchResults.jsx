@@ -33,6 +33,7 @@ export const BaseCatalogSearchResults = ({
   error,
   setNoContent,
 }) => {
+  console.log('BaseCatalogSearchResults!!!', searchResults);
   const courseColumns = useMemo(
     () => [
       {

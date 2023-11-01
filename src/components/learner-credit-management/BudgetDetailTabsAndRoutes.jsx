@@ -43,6 +43,9 @@ const BudgetDetailTabsAndRoutes = ({
   enterpriseSlug,
   enterpriseFeatures,
 }) => {
+
+  console.log('BudgetDetailTabsAndRoutes!!!');
+
   const { activeTabKey: routeActiveTabKey } = useParams();
   const { budgetId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);

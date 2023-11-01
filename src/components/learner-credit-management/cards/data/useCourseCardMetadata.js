@@ -26,7 +26,7 @@ const useCourseCardMetadata = ({
     partners,
     title,
   } = course;
-  const price = normalizedMetadata?.contentPrice ? formatPrice(normalizedMetadata.contentPrice) : 'N/A';
+  const price = (normalizedMetadata.contentPrice || normalizedMetadata.contentPrice === 0) ? formatPrice(normalizedMetadata.contentPrice) : 'N/A';
   const imageSrc = cardImageUrl || cardFallbackImg;
 
   let logoSrc;
@@ -38,7 +38,7 @@ const useCourseCardMetadata = ({
 
   const altText = `${title} course image`;
   const formattedAvailability = availability?.length ? availability.join(', ') : null;
-  const enrollmentDeadline = getEnrollmentDeadline(normalizedMetadata?.enrollByDate);
+  const enrollmentDeadline = getEnrollmentDeadline(normalizedMetadata.enrollByDate);
 
   let courseEnrollmentInfo = '';
   if (formattedAvailability) {
