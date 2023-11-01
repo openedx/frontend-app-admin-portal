@@ -10,6 +10,7 @@ import AssignmentTableRemindAction from './AssignmentTableRemind';
 import AssignmentTableCancelAction from './AssignmentTableCancel';
 import { DEFAULT_PAGE, PAGE_SIZE, formatPrice } from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
+import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -38,7 +39,8 @@ const BudgetAssignmentsTable = ({
       },
       {
         Header: 'Amount',
-        Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100, { maximumFractionDigits: 0 })}`,
+        accessor: 'amount',
+        Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100)}`,
         disableFilters: true,
       },
       {
@@ -58,6 +60,9 @@ const BudgetAssignmentsTable = ({
         Cell: AssignmentRowActionTableCell,
         id: 'action',
       },
+    ]}
+    tableActions={[
+      <AssignmentsTableRefreshAction refresh={fetchTableData} />,
     ]}
     initialTableOptions={{
       getRowId: row => row?.uuid?.toString(),
