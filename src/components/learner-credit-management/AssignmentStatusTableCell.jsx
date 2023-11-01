@@ -31,7 +31,8 @@ const AssignmentStatusTableCell = ({ row }) => {
   if (learnerState === 'failed') {
     // Determine the failure reason based on the actions.
     const { actions } = row.original;
-    const mostRecentAction = actions[0]; // API returns actions in reverse chronological order.
+    const mostRecentAction = actions[actions.length - 1]; // API returns actions in chronological order.
+
     const isBadEmailError = mostRecentAction.actionType === 'notified' && !!mostRecentAction.errorReason;
 
     if (isBadEmailError) {
