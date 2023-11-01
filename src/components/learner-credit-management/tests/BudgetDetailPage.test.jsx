@@ -78,13 +78,17 @@ const mockSuccessfulNotifiedAction = {
   completedAt: '2023-10-27',
   errorReason: null,
 };
-
+const mockSuccessfulLinkedLearnerAction = {
+  uuid: 'test-assignment-action-uuid',
+  actionType: 'notified',
+  completedAt: '2023-10-27',
+  errorReason: null,
+};
 const mockFailedNotifiedAction = {
   ...mockSuccessfulNotifiedAction,
   completedAt: null,
   errorReason: 'bad_email',
 };
-
 const mockFailedLinkedLearnerAction = {
   ...mockFailedNotifiedAction,
   actionType: 'learner_linked',
@@ -419,7 +423,7 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Waiting for learner',
       expectedModalPopupHeading: `Waiting for ${mockLearnerEmail}`,
       expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
-      actions: [mockSuccessfulNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
     },
     {
       learnerState: 'waiting',
@@ -427,7 +431,7 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Waiting for learner',
       expectedModalPopupHeading: 'Waiting for learner',
       expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
-      actions: [mockSuccessfulNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
     },
     {
       learnerState: 'failed',
@@ -435,7 +439,7 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Failed: Bad email',
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: `This course assignment failed because a notification to ${mockLearnerEmail} could not be sent.`,
-      actions: [mockFailedNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
     },
     {
       learnerState: 'failed',
@@ -443,7 +447,7 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Failed: Bad email',
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: 'This course assignment failed because a notification to the learner could not be sent.',
-      actions: [mockFailedNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
     },
     {
       learnerState: 'failed',
