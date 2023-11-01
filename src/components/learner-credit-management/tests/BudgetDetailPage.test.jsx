@@ -87,7 +87,7 @@ const mockSuccessfulLinkedLearnerAction = {
 const mockFailedNotifiedAction = {
   ...mockSuccessfulNotifiedAction,
   completedAt: null,
-  errorReason: 'bad_email',
+  errorReason: 'email_error',
 };
 const mockFailedLinkedLearnerAction = {
   ...mockFailedNotifiedAction,
