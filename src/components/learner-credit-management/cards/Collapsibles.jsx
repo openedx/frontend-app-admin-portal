@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Collapsible } from '@edx/paragon';
 
-export const NextStepsForAssignedLearners = () => (
+import { ASSIGNMENT_ENROLLMENT_DEADLINE } from '../data';
+
+export const NextStepsForAssignedLearners = ({ course }) => (
   <Collapsible
     styling="basic"
     title={<h6 className="mb-0">Next steps for assigned learners</h6>}
@@ -13,9 +16,9 @@ export const NextStepsForAssignedLearners = () => (
           Learners will be notified of this course assignment by email.
         </li>
         <li>
-          Learners must complete enrollment for this assignment by Jun 27, 2023. This deadline
-          is calculated based on the course enrollment deadline or 90 days past the date of
-          assignment, whichever is sooner.
+          Learners must complete enrollment for this assignment by {course.enrollmentDeadline}. This deadline
+          is calculated based on the course enrollment deadline or {ASSIGNMENT_ENROLLMENT_DEADLINE}
+          days past the date of assignment, whichever is sooner.
         </li>
         <li>
           Learners will receive automated reminder emails every 10-15 days until the enrollment
@@ -25,6 +28,12 @@ export const NextStepsForAssignedLearners = () => (
     </div>
   </Collapsible>
 );
+
+NextStepsForAssignedLearners.propTypes = {
+  course: PropTypes.shape({
+    enrollmentDeadline: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export const ImpactOnYourLearnerCreditBudget = () => (
   <Collapsible

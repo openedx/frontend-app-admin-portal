@@ -27,6 +27,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
             </Button>
             <ActionRow.Spacer />
             <Button variant="tertiary" onClick={close}>Cancel</Button>
+            {/* TODO: https://2u-internal.atlassian.net/browse/ENT-7826 */}
             <Button>Assign</Button>
           </ActionRow>
         )}

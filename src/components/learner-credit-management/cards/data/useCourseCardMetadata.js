@@ -65,6 +65,7 @@ const useCourseCardMetadata = ({
     altText,
     logoSrc,
     logoAlt,
+    enrollmentDeadline,
     courseEnrollmentInfo,
     execEdEnrollmentInfo,
     linkToCourse,

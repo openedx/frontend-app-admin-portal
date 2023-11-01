@@ -45,7 +45,7 @@ const AssignmentModalContent = ({ course }) => {
             </Form.Group>
             <h5 className="mb-3">How assigning this course works</h5>
             <Stack gap={1}>
-              <NextStepsForAssignedLearners />
+              <NextStepsForAssignedLearners course={course} />
               <ImpactOnYourLearnerCreditBudget />
               <ManagingThisAssignment />
             </Stack>
