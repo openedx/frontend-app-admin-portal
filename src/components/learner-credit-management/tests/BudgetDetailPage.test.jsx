@@ -306,6 +306,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState: 'waiting',
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
           },
         ],
         numPages: 1,
@@ -377,6 +378,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState: 'waiting',
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
           },
         ],
         numPages: 1,
@@ -408,6 +410,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: `Notifying ${mockLearnerEmail}`,
       expectedModalPopupContent: `Our system is busy emailing ${mockLearnerEmail}!`,
       actions: [],
+      errorReason: null,
     },
     {
       learnerState: 'notifying',
@@ -416,6 +419,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Notifying learner',
       expectedModalPopupContent: 'Our system is busy emailing the learner!',
       actions: [],
+      errorReason: null,
     },
     {
       learnerState: 'waiting',
@@ -424,6 +428,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: `Waiting for ${mockLearnerEmail}`,
       expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
       actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
+      errorReason: null,
     },
     {
       learnerState: 'waiting',
@@ -432,6 +437,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Waiting for learner',
       expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
       actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
+      errorReason: null,
     },
     {
       learnerState: 'failed',
@@ -440,6 +446,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: `This course assignment failed because a notification to ${mockLearnerEmail} could not be sent.`,
       actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
+      errorReason: 'email_error',
     },
     {
       learnerState: 'failed',
@@ -448,6 +455,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: 'This course assignment failed because a notification to the learner could not be sent.',
       actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
+      errorReason: 'email_error',
     },
     {
       learnerState: 'failed',
@@ -456,6 +464,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: System',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',
       actions: [mockFailedLinkedLearnerAction],
+      errorReason: 'internal_api_error',
     },
   ])('renders correct status chips with assigned table data (%s)', ({
     learnerState,
@@ -464,6 +473,7 @@ describe('<BudgetDetailPage />', () => {
     expectedModalPopupHeading,
     expectedModalPopupContent,
     actions,
+    errorReason,
   }) => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
@@ -493,6 +503,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState,
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions,
+            errorReason,
           },
         ],
         numPages: 1,
@@ -761,6 +772,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState: 'active',
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions: [],
+            errorReason: null,
             state: 'allocated',
           },
         ],
