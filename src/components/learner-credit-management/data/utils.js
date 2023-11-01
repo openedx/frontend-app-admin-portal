@@ -203,9 +203,11 @@ export function formatDate(date) {
 // Exec ed and open courses cards should display either the enrollment deadline
 // or 90 days from the present date on user pageload, whichever is sooner.
 export function getEnrollmentDeadline(enrollByDate) {
-  const courseEnrollByDate = dayjs(enrollByDate);
   const assignmentEnrollmentDeadline = dayjs().add(ASSIGNMENT_ENROLLMENT_DEADLINE, 'days');
-
+  if (!enrollByDate) {
+    return formatDate(assignmentEnrollmentDeadline);
+  }
+  const courseEnrollByDate = dayjs(enrollByDate);
   return courseEnrollByDate <= assignmentEnrollmentDeadline
     ? formatDate(courseEnrollByDate)
     : formatDate(assignmentEnrollmentDeadline);

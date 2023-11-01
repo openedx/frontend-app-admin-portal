@@ -17,8 +17,8 @@ export const NextStepsForAssignedLearners = ({ course }) => (
         </li>
         <li>
           Learners must complete enrollment for this assignment by {course.enrollmentDeadline}. This deadline
-          is calculated based on the course enrollment deadline or {ASSIGNMENT_ENROLLMENT_DEADLINE}
-          days past the date of assignment, whichever is sooner.
+          is calculated based on the course enrollment deadline or {ASSIGNMENT_ENROLLMENT_DEADLINE} days
+          past the date of assignment, whichever is sooner.
         </li>
         <li>
           Learners will receive automated reminder emails every 10-15 days until the enrollment

@@ -40,21 +40,18 @@ const useCourseCardMetadata = ({
   const formattedAvailability = availability?.length ? availability.join(', ') : null;
   const enrollmentDeadline = getEnrollmentDeadline(normalizedMetadata?.enrollByDate);
 
-  let courseEnrollmentInfo = formattedAvailability;
-  let execEdEnrollmentInfo = formattedAvailability;
-  if (normalizedMetadata?.enrollByDate) {
-    courseEnrollmentInfo = `${formattedAvailability} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
-    execEdEnrollmentInfo = `Starts ${formatDate(normalizedMetadata.startDate)} •
-    ${ENROLLMENT.text} ${enrollmentDeadline}`;
+  let courseEnrollmentInfo = '';
+  if (formattedAvailability) {
+    courseEnrollmentInfo = `${formattedAvailability} • `;
   }
+  courseEnrollmentInfo += `${ENROLLMENT.text} ${enrollmentDeadline}`;
+  const execEdEnrollmentInfo = `Starts ${formatDate(normalizedMetadata.startDate)} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
 
   const isExecEdCourseType = courseType === EXEC_ED_COURSE_TYPE;
 
-  let linkToCourse;
+  let linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
   if (isExecEdCourseType) {
     linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
-  } else {
-    linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${key}`;
   }
 
   return {
