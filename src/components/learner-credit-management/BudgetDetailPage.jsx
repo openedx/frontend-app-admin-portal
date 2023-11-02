@@ -13,8 +13,6 @@ const BudgetDetailPage = () => {
     data: subsidyAccessPolicy,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
-  console.log('BudgetDetailPage!!!');
-
   if (isInitialLoadingSubsidyAccessPolicy) {
     return (
       <BudgetDetailPageWrapper>

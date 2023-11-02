@@ -97,7 +97,7 @@ describe('<DeleteHighlightSet />', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
-  it('cancelling confirmation modal closes modal', () => {
+  it('canceling confirmation modal closes modal', () => {
     renderWithRouter(
       <DeleteHighlightSetWrapper />,
       { route: initialRouterEntry },

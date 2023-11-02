@@ -724,7 +724,7 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('loading budget activity overview')).toBeInTheDocument();
   });
 
-  it('displays remind row and bulk actions when allocated', async () => {
+  it('displays remind and cancel row and bulk actions when allocated', async () => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -741,7 +741,7 @@ describe('<BudgetDetailPage />', () => {
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
-        contentAssignments: { count: 1 },
+        contentAssignments: { count: 2 },
         spentTransactions: { count: 0 },
       },
     });
@@ -754,7 +754,7 @@ describe('<BudgetDetailPage />', () => {
             uuid: 'test-uuid',
             contentKey: mockCourseKey,
             contentQuantity: -19900,
-            learnerState: 'active',
+            learnerState: 'waiting',
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions: [],
             state: 'allocated',
@@ -774,12 +774,58 @@ describe('<BudgetDetailPage />', () => {
     const checkBox = screen.getByTestId('datatable-select-column-checkbox-cell');
     expect(checkBox).toBeInTheDocument();
     userEvent.click(checkBox);
-    await waitFor(() => {
-      expect(screen.getByText('Remind (1)')).toBeInTheDocument();
+    expect(await screen.findByText('Remind (1)')).toBeInTheDocument();
+    expect(await screen.findByText('Cancel (1)')).toBeInTheDocument();
+  });
+
+  it('only allows cancel and not remind in certain states', async () => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
     });
-    await waitFor(() => {
-      expect(screen.getByText('Cancel (1)')).toBeInTheDocument();
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
     });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 2 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [
+          {
+            uuid: 'test-uuid',
+            contentKey: mockCourseKey,
+            contentQuantity: -19900,
+            learnerState: 'notifying',
+            recentAction: { actionType: 'reminded', timestamp: '2023-10-27' },
+            actions: [],
+            state: 'allocated',
+          },
+        ],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    const checkBox = screen.getByTestId('datatable-select-column-checkbox-cell');
+    expect(checkBox).toBeInTheDocument();
+    userEvent.click(checkBox);
+    expect(await screen.findByText('Remind (0)')).toBeInTheDocument();
+    expect(await screen.findByText('Remind (0)')).toBeDisabled();
+    expect(await screen.findByText('Cancel (1)')).toBeInTheDocument();
   });
 
   it('hides remind row and bulk actions when allocated', () => {

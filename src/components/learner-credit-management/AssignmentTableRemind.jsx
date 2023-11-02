@@ -4,16 +4,15 @@ import { Button } from '@edx/paragon';
 import { Mail } from '@edx/paragon/icons';
 
 const AssignmentTableRemindAction = ({ selectedFlatRows, ...rest }) => {
-  const hideRemindAction = selectedFlatRows.some(
-    row => row.original.state !== 'allocated',
-  );
-  if (hideRemindAction) {
-    return null;
-  }
+  const selectedEnrollableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').length;
   return (
-    // eslint-disable-next-line no-console
-    <Button iconBefore={Mail} onClick={() => console.log('Remind', selectedFlatRows, rest)}>
-      {`Remind (${selectedFlatRows.length})`}
+    <Button
+      disabled={selectedEnrollableRows === 0}
+      iconBefore={Mail}
+      // eslint-disable-next-line no-console
+      onClick={() => console.log('Remind', selectedFlatRows, rest)}
+    >
+      {`Remind (${selectedEnrollableRows})`}
     </Button>
   );
 };
