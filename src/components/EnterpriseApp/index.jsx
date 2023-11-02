@@ -34,11 +34,9 @@ class EnterpriseApp extends React.Component {
     } = this.props;
     this.props.fetchPortalConfiguration(enterpriseSlug);
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is in header
-
-    console.log('EnterpriseApp componentDidMount!!!');
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const {
       location: { pathname },
     } = this.props;
@@ -46,8 +44,6 @@ class EnterpriseApp extends React.Component {
     if (pathname !== prevProps.location.pathname) {
       this.handleSidebarMenuItemClick();
     }
-
-    console.log('EnterpriseApp componentDidUpdate!!!', { prevProps, prevState, currentProps: this.props, currentState: this.state });
   }
 
   componentWillUnmount() {
