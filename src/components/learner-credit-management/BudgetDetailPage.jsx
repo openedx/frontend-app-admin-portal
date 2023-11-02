@@ -5,17 +5,19 @@ import { useBudgetId, useSubsidyAccessPolicy } from './data';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailPageWrapper from './BudgetDetailPageWrapper';
 import BudgetDetailPageHeader from './BudgetDetailPageHeader';
+import NotFoundPage from '../NotFoundPage';
 
 const BudgetDetailPage = () => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const {
-    isInitialLoading: isInitialLoadingSubsidyAccessPolicy,
     data: subsidyAccessPolicy,
+    isInitialLoading: isSubsidyAccessPolicyInitialLoading,
+    isError: isSubsidyAccessPolicyError,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
-  if (isInitialLoadingSubsidyAccessPolicy) {
+  if (isSubsidyAccessPolicyInitialLoading) {
     return (
-      <BudgetDetailPageWrapper>
+      <BudgetDetailPageWrapper includeHero={false}>
         <Skeleton height={25} />
         <Skeleton height={50} />
         <Skeleton height={360} />
@@ -23,6 +25,10 @@ const BudgetDetailPage = () => {
         <span className="sr-only">loading budget details</span>
       </BudgetDetailPageWrapper>
     );
+  }
+
+  if (subsidyAccessPolicyId && isSubsidyAccessPolicyError) {
+    return <NotFoundPage />;
   }
 
   return (

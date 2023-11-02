@@ -67,7 +67,7 @@ const BaseCourseCard = ({
           orientation={isExtraSmall ? 'horizontal' : 'vertical'}
           textElement={isExecEdCourseType ? execEdEnrollmentInfo : courseEnrollmentInfo}
         >
-          {CardFooterActions && <CardFooterActions {...courseCardMetadata} />}
+          {CardFooterActions && <CardFooterActions course={courseCardMetadata} />}
         </Card.Footer>
       </Card.Body>
     </Card>

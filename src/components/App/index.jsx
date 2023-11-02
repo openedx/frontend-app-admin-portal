@@ -33,6 +33,15 @@ const queryClient = new QueryClient({
       // per-query, as needed, if certain queries expect to be more up-to-date than others. Allows
       // `useQuery` to be used as a state manager.
       staleTime: 1000 * 20,
+      // Globally modifying the retry behavior of queries to retry up to max 3 times (default) or if
+      // if the error returned by the query is a 404 HTTP status code (not found). This configuration
+      // may be overridden per-query, as needed.
+      retry: (failureCount, err) => {
+        if (failureCount === 3 || err?.customAttributes?.httpErrorStatus === 404) {
+          return false;
+        }
+        return true;
+      },
     },
   },
 });

@@ -7,7 +7,11 @@ import Hero from '../Hero';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
-const BudgetDetailPageWrapper = ({ subsidyAccessPolicy, children }) => {
+const BudgetDetailPageWrapper = ({
+  subsidyAccessPolicy,
+  includeHero,
+  children,
+}) => {
   // display name is an optional field, and may not be set for all budgets so fallback to "Overview"
   // similar to the display name logic for budgets on the overview page route.
   const budgetDisplayName = subsidyAccessPolicy?.displayName || 'Overview';
@@ -15,7 +19,7 @@ const BudgetDetailPageWrapper = ({ subsidyAccessPolicy, children }) => {
   return (
     <>
       <Helmet title={helmetPageTitle} />
-      <Hero title={PAGE_TITLE} />
+      {includeHero && <Hero title={PAGE_TITLE} />}
       <Container className="py-3" fluid>
         {children}
       </Container>
@@ -26,6 +30,12 @@ const BudgetDetailPageWrapper = ({ subsidyAccessPolicy, children }) => {
 BudgetDetailPageWrapper.propTypes = {
   children: PropTypes.node.isRequired,
   subsidyAccessPolicy: PropTypes.shape(),
+  includeHero: PropTypes.bool,
+};
+
+BudgetDetailPageWrapper.defaultProps = {
+  includeHero: true,
+  subsidyAccessPolicy: undefined,
 };
 
 export default BudgetDetailPageWrapper;

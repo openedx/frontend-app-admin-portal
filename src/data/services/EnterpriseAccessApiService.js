@@ -166,6 +166,11 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
+
+  static allocateContentAssignments(subsidyAccessPolicyUUID, payload) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/policy-allocation/${subsidyAccessPolicyUUID}/allocate/`;
+    return EnterpriseAccessApiService.apiClient().post(url, payload);
+  }
 }
 
 export default EnterpriseAccessApiService;
