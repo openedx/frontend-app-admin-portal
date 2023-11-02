@@ -28,6 +28,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
   const routeMatch = useRouteMatch();
   const queryClient = useQueryClient();
   const { subsidyAccessPolicyId } = useBudgetId();
+
   const [isOpen, open, close] = useToggle(false);
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [assignButtonState, setAssignButtonState] = useState('default');
@@ -49,10 +50,15 @@ const NewAssignmentModalButton = ({ course, children }) => {
     setAssignButtonState('pending');
     mutate(mutationArgs, {
       onSuccess: () => {
+        setAssignButtonState('complete');
         queryClient.invalidateQueries({
           queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(subsidyAccessPolicyId),
         });
+        close();
         history.push(pathToActivityTab);
+      },
+      onError: () => {
+        setAssignButtonState('error');
       },
     });
   };
