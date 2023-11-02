@@ -131,7 +131,7 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       isError: true,
-      error: { customAttributes: { httpStatusCode: 404 } },
+      error: { customAttributes: { httpErrorStatus: 404 } },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
