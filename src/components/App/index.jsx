@@ -23,25 +23,18 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { defaultQueryClientRetryHandler } from '../../utils';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: defaultQueryClientRetryHandler,
       // Specifying a longer `staleTime` of 20 seconds means queries will not refetch their data
       // as often; mitigates making duplicate queries when within the `staleTime` window, instead
       // relying on the cached data until the `staleTime` window has exceeded. This may be modified
       // per-query, as needed, if certain queries expect to be more up-to-date than others. Allows
       // `useQuery` to be used as a state manager.
       staleTime: 1000 * 20,
-      // Globally modifying the retry behavior of queries to retry up to max 3 times (default) or if
-      // if the error returned by the query is a 404 HTTP status code (not found). This configuration
-      // may be overridden per-query, as needed.
-      retry: (failureCount, err) => {
-        if (failureCount === 3 || err?.customAttributes?.httpErrorStatus === 404) {
-          return false;
-        }
-        return true;
-      },
     },
   },
 });

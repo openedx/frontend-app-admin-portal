@@ -152,4 +152,15 @@ describe('EnterpriseAccessApiService', () => {
       `${enterpriseAccessBaseUrl}/api/v1/subsidy-access-policies/${mockSubsidyAccessPolicyUUID}/`,
     );
   });
+
+  test('allocateContentAssignments calls enterprise-access allocate POST API to create assignments', () => {
+    const payload = {
+      learner_emails: ['edx@example.com'],
+    };
+    EnterpriseAccessApiService.allocateContentAssignments(mockSubsidyAccessPolicyUUID, payload);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/policy-allocation/${mockSubsidyAccessPolicyUUID}/allocate/`,
+      payload,
+    );
+  });
 });

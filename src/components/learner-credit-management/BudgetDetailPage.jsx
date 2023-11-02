@@ -13,6 +13,7 @@ const BudgetDetailPage = () => {
     data: subsidyAccessPolicy,
     isInitialLoading: isSubsidyAccessPolicyInitialLoading,
     isError: isSubsidyAccessPolicyError,
+    error,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
   if (isSubsidyAccessPolicyInitialLoading) {
@@ -27,7 +28,9 @@ const BudgetDetailPage = () => {
     );
   }
 
-  if (subsidyAccessPolicyId && isSubsidyAccessPolicyError) {
+  // If the budget is intended to be a subsidy access policy (by presence of a policy UUID),
+  // and the subsidy access policy is not found, show 404 messaging.
+  if (subsidyAccessPolicyId && isSubsidyAccessPolicyError && error?.customAttributes.httpErrorStatus === 404) {
     return <NotFoundPage />;
   }
 

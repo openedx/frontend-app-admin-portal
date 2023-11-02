@@ -123,6 +123,24 @@ describe('<BudgetDetailPage />', () => {
     jest.resetAllMocks();
   });
 
+  it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      isError: true,
+      error: { customAttributes: { httpStatusCode: 404 } },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    expect(screen.getByText('404', { selector: 'h1' }));
+  });
+
   it.each([
     { displayName: null },
     { displayName: 'Test Budget Display Name' },

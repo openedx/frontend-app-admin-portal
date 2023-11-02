@@ -166,28 +166,34 @@ describe('Course card works as expected', () => {
   });
 
   test.each([
-    { shouldSubmitAssignments: true },
-    { shouldSubmitAssignments: false },
-  ])('opens assignment modal, submits assignments successfully (%s)', async ({ shouldSubmitAssignments }) => {
-    const mockAllocateContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'allocateContentAssignments').mockResolvedValue({
-      data: {
-        updated: [],
-        created: mockLearnerEmails.map(learnerEmail => ({
-          uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
-          assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
-          learner_email: learnerEmail,
-          lms_user_id: 0,
-          content_key: 'string',
-          content_title: 'string',
-          content_quantity: 0,
-          state: 'allocated',
-          transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
-          last_notification_at: '2019-08-24T14:15:22Z',
-          actions: [],
-        })),
-        no_change: [],
-      },
-    });
+    { shouldSubmitAssignments: true, hasAllocationException: true },
+    { shouldSubmitAssignments: true, hasAllocationException: false },
+    { shouldSubmitAssignments: false, hasAllocationException: false },
+  ])('opens assignment modal, submits assignments successfully (%s)', async ({ shouldSubmitAssignments, hasAllocationException }) => {
+    const mockAllocateContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'allocateContentAssignments');
+    if (hasAllocationException) {
+      mockAllocateContentAssignments.mockRejectedValue(new Error('oops'));
+    } else {
+      mockAllocateContentAssignments.mockResolvedValue({
+        data: {
+          updated: [],
+          created: mockLearnerEmails.map(learnerEmail => ({
+            uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
+            assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
+            learner_email: learnerEmail,
+            lms_user_id: 0,
+            content_key: 'string',
+            content_title: 'string',
+            content_quantity: 0,
+            state: 'allocated',
+            transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
+            last_notification_at: '2019-08-24T14:15:22Z',
+            actions: [],
+          })),
+          no_change: [],
+        },
+      });
+    }
     useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
     renderWithRouter(<CourseCardWrapper {...defaultProps} />);
     const assignCourseCTA = getButtonElement('Assign');
@@ -257,7 +263,6 @@ describe('Course card works as expected', () => {
       // Verify assignment is submitted successfully
       userEvent.click(submitAssignmentCTA);
       await waitFor(() => expect(mockAllocateContentAssignments).toHaveBeenCalledTimes(1));
-      expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
       expect(mockAllocateContentAssignments).toHaveBeenCalledWith(
         mockSubsidyAccessPolicy.uuid,
         expect.objectContaining({
@@ -267,10 +272,17 @@ describe('Course card works as expected', () => {
         }),
       );
 
-      // Verify modal closes
-      await waitFor(() => {
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-      });
+      if (hasAllocationException) {
+        // Verify error state
+        expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
+      } else {
+        // Verify success state
+        expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
+        // Verify modal closes
+        await waitFor(() => {
+          expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
+      }
     } else {
       // Otherwise, verify modal closes when cancel button is clicked
       userEvent.click(cancelAssignmentCTA);
