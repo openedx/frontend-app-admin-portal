@@ -9,13 +9,19 @@ import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedSystem from './assignments-status-chips/FailedSystem';
 
 const AssignmentStatusTableCell = ({ row }) => {
-  const { original: { learnerEmail, learnerState } } = row;
+  const { original } = row;
+  const {
+    learnerEmail,
+    learnerState,
+    errorReason,
+  } = original;
 
   // Learner state is not available for this assignment, so don't display anything.
   if (!learnerState) {
     return null;
   }
 
+  // Display the appropriate status chip based on the learner state.
   if (learnerState === 'notifying') {
     return (
       <NotifyingLearner learnerEmail={learnerEmail} />
@@ -29,12 +35,8 @@ const AssignmentStatusTableCell = ({ row }) => {
   }
 
   if (learnerState === 'failed') {
-    // Determine the failure reason based on the actions.
-    const { actions } = row.original;
-    const mostRecentAction = actions[0]; // API returns actions in reverse chronological order.
-    const isBadEmailError = mostRecentAction.actionType === 'notified' && !!mostRecentAction.errorReason;
-
-    if (isBadEmailError) {
+    // Determine which failure chip to display based on the error reason.
+    if (errorReason === 'email_error') {
       return (
         <FailedBadEmail learnerEmail={learnerEmail} />
       );
@@ -52,6 +54,7 @@ AssignmentStatusTableCell.propTypes = {
     original: PropTypes.shape({
       learnerEmail: PropTypes.string,
       learnerState: PropTypes.string.isRequired,
+      errorReason: PropTypes.string,
       actions: PropTypes.arrayOf(PropTypes.shape({
         actionType: PropTypes.string.isRequired,
         errorReason: PropTypes.string,
