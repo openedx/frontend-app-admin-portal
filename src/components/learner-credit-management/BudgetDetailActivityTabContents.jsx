@@ -14,13 +14,16 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
     isLoading: isBudgetActivityOverviewLoading,
+    isFetching: isBudgetActivityOverviewFetching,
     data: budgetActivityOverview,
   } = useBudgetDetailActivityOverview({
     enterpriseUUID,
     isTopDownAssignmentEnabled,
   });
 
-  if (isBudgetActivityOverviewLoading || !budgetActivityOverview) {
+  // // If the budget activity overview data is loading (either the initial request OR any
+  // // background re-fetching), show a skeleton.
+  if (isBudgetActivityOverviewLoading || isBudgetActivityOverviewFetching || !budgetActivityOverview) {
     return (
       <>
         <Skeleton count={2} height={180} />

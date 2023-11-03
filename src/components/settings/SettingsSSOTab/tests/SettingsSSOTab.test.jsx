@@ -1,10 +1,7 @@
 import {
   act, render, screen, waitFor,
 } from '@testing-library/react';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -15,6 +12,7 @@ import { HELP_CENTER_SAML_LINK } from '../../data/constants';
 import { features } from '../../../../config';
 import SettingsSSOTab from '..';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { queryClient } from '../../../test/testUtils';
 
 const enterpriseId = 'an-id-1';
 jest.mock('../../../../data/services/LmsApiService');
@@ -28,11 +26,6 @@ const initialStore = {
     contactEmail: 'foobar',
   },
 };
-const queryClient = new QueryClient({
-  queries: {
-    retry: true, // optional: you may disable automatic query retries for all queries or on a per-query basis.
-  },
-});
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = aStore => mockStore(aStore);
@@ -102,7 +95,7 @@ describe('SAML Config Tab', () => {
     }));
     await waitFor(() => render(
       <IntlProvider locale="en">
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient()}>
           <Provider store={store}>
             <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
           </Provider>,

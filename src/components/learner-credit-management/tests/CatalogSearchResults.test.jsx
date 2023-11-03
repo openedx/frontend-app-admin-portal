@@ -1,16 +1,17 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-
 import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { BaseCatalogSearchResults } from '../search/CatalogSearchResults';
-
 import { CONTENT_TYPE_COURSE } from '../data/constants';
+import { queryClient } from '../../test/testUtils';
 
 // Mocking this connected component so as not to have to mock the algolia Api
 const PAGINATE_ME = 'PAGINATE ME :)';
@@ -39,11 +40,13 @@ const SearchDataWrapper = ({
 }) => {
   const store = getMockStore({ ...initialStoreState });
   return (
-    <Provider store={store}>
-      <SearchContext.Provider value={searchContextValue}>
-        {children}
-      </SearchContext.Provider>
-    </Provider>
+    <QueryClientProvider client={queryClient()}>
+      <Provider store={store}>
+        <SearchContext.Provider value={searchContextValue}>
+          {children}
+        </SearchContext.Provider>
+      </Provider>
+    </QueryClientProvider>
   );
 };
 
@@ -153,7 +156,7 @@ describe('Main Catalogs view works as expected', () => {
   });
 
   test('all courses rendered when search results available', async () => {
-    render(
+    renderWithRouter(
       <SearchDataWrapper>
         <IntlProvider locale="en">
           <BaseCatalogSearchResults {...defaultProps} />

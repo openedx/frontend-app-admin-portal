@@ -13,10 +13,17 @@ import BaseCourseCard from './BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
 import { ImpactOnYourLearnerCreditBudget, ManagingThisAssignment, NextStepsForAssignedLearners } from './Collapsibles';
 
-const AssignmentModalContent = ({ course }) => {
-  const [emailAddresses, setEmailAddresses] = useState('');
+const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
+  const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+
+  const handleEmailAddressInputChange = (e) => {
+    const inputValue = e.target.value;
+    const emailAddresses = inputValue.split('\n').filter((email) => email.trim().length > 0);
+    setEmailAddressesInputValue(inputValue);
+    onEmailAddressesChange(emailAddresses);
+  };
 
   return (
     <Container size="lg" className="py-3">
@@ -24,7 +31,7 @@ const AssignmentModalContent = ({ course }) => {
         <Row>
           <Col>
             <h3 className="mb-4">Use Learner Credit to assign this course</h3>
-            <BaseCourseCard original={course} className="rounded-0 shadow-none" />
+            <BaseCourseCard original={course} cardClassName="shadow-none" />
           </Col>
         </Row>
         <Row>
@@ -33,8 +40,8 @@ const AssignmentModalContent = ({ course }) => {
             <Form.Group className="mb-5">
               <Form.Control
                 as="textarea"
-                value={emailAddresses}
-                onChange={(e) => setEmailAddresses(e.target.value)}
+                value={emailAddressesInputValue}
+                onChange={handleEmailAddressInputChange}
                 floatingLabel="Learner email addresses"
                 rows={10}
                 data-hj-suppress
@@ -78,6 +85,7 @@ const AssignmentModalContent = ({ course }) => {
 
 AssignmentModalContent.propTypes = {
   course: PropTypes.shape().isRequired, // Pass-thru prop to `BaseCourseCard`
+  onEmailAddressesChange: PropTypes.func.isRequired,
 };
 
 export default AssignmentModalContent;

@@ -1,8 +1,9 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useSubsidyAccessPolicy from './useSubsidyAccessPolicy'; // Import the hook
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import { queryClient } from '../../../test/testUtils';
 
 const mockSubsidyAccessPolicyUUID = '9af340a9-48de-4d94-976d-e2282b9eb7f3';
 const mockAssignmentConfiguration = { uuid: 'test-assignment-configuration-uuid' };
@@ -18,16 +19,8 @@ jest.mock('../../../../data/services/EnterpriseAccessApiService', () => ({
   }),
 }));
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
-
 const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
 );
 
 describe('useSubsidyAccessPolicy', () => {

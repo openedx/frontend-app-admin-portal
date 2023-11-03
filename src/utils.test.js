@@ -5,6 +5,7 @@ import {
   snakeCaseFormData,
   pollAsync,
   isValidNumber,
+  defaultQueryClientRetryHandler,
 } from './utils';
 
 describe('utils', () => {
@@ -91,6 +92,26 @@ describe('utils', () => {
       expect(isValidNumber('One')).toEqual(false);
       expect(isValidNumber({})).toEqual(false);
       expect(isValidNumber(undefined)).toEqual(false);
+    });
+  });
+
+  describe('defaultQueryClientRetryHandler', () => {
+    const mockError404 = { customAttributes: { httpErrorStatus: 404 } };
+    const mockError500 = { customAttributes: { httpErrorStatus: 500 } };
+
+    it.each([3, 4])('return false if failureCount >= 3 (failureCount: %s)', (failureCount) => {
+      const result = defaultQueryClientRetryHandler(failureCount, mockError500);
+      expect(result).toEqual(false);
+    });
+
+    it('return false if error is a 404 HTTP status code', () => {
+      const result = defaultQueryClientRetryHandler(1, mockError404);
+      expect(result).toEqual(false);
+    });
+
+    it.each([1, 2])('return true if first failure and error is not a 404 (failureCount: %s)', (failureCount) => {
+      const result = defaultQueryClientRetryHandler(failureCount, mockError500);
+      expect(result).toEqual(true);
     });
   });
 });
