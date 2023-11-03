@@ -6,38 +6,35 @@ import {
 import { Mail, DoNotDisturbOn } from '@edx/paragon/icons';
 
 const AssignmentRowActionTableCell = ({ row }) => {
-  const learnerStateBool = row.original.learnerState === 'waiting';
-  const cancelButtonMarginLeft = learnerStateBool ? 'ml-2.5' : 'ml-auto';
+  const isLearnerStateWaiting = row.original.learnerState === 'waiting';
   return (
-    <Stack direction="horizontal" gap="1">
-      {learnerStateBool && (
-      <OverlayTrigger
-        key="Remind"
-        placement="top"
-        overlay={<Tooltip variant="light" id="tooltip-remind">Remind learner</Tooltip>}
-      >
-        <IconButton
-          className="ml-auto mr-0"
-          src={Mail}
-          iconAs={Icon}
-          alt="Remind learner"
+    <Stack direction="horizontal" gap="3" className="align-content-end mr-2">
+      {isLearnerStateWaiting && (
+        <OverlayTrigger
+          key="Remind"
+          placement="top"
+          overlay={<Tooltip id={`tooltip-remind-${row.original.uuid}`}>Remind learner</Tooltip>}
+        >
+          <IconButton
+            src={Mail}
+            iconAs={Icon}
+            alt={`Remind learner ${row.original.learnerEmail}`}
               // eslint-disable-next-line no-console
-          onClick={() => console.log(`Reminding ${row.original.uuid}`)}
-          data-testid={`remind-assignment-${row.original.uuid}`}
-        />
-      </OverlayTrigger>
+            onClick={() => console.log(`Reminding ${row.original.uuid}`)}
+            data-testid={`remind-assignment-${row.original.uuid}`}
+          />
+        </OverlayTrigger>
       )}
       <OverlayTrigger
         key="Cancel"
         placement="top"
-        overlay={<Tooltip variant="light" id="tooltip-cancel">Cancel assignment</Tooltip>}
+        overlay={<Tooltip id={`tooltip-cancel-${row.original.uuid}`}>Cancel assignment</Tooltip>}
       >
         <IconButton
-          className={`${cancelButtonMarginLeft} mr-1`}
           variant="danger"
           src={DoNotDisturbOn}
           iconAs={Icon}
-          alt="Cancel assignment"
+          alt={`Cancel assignment ${row.original.learnerEmail}`}
           // eslint-disable-next-line no-console
           onClick={() => console.log(`Canceling ${row.original.uuid}`)}
           data-testid={`cancel-assignment-${row.original.uuid}`}
@@ -50,6 +47,7 @@ const AssignmentRowActionTableCell = ({ row }) => {
 AssignmentRowActionTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
+      learnerEmail: PropTypes.string.isRequired,
       learnerState: PropTypes.string.isRequired,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
