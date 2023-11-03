@@ -1,4 +1,4 @@
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useBudgetDetailActivityOverview from './useBudgetDetailActivityOverview';
@@ -12,22 +12,15 @@ import {
   mockEnterpriseOfferId,
   mockSubsidyAccessPolicyUUID,
 } from '../tests/constants';
+import { queryClient } from '../../../test/testUtils';
 
 jest.mock('./useBudgetId');
 jest.mock('./useSubsidyAccessPolicy');
 
 const mockEnterpriseUUID = 'mock-enterprise-uuid';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
-
 const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient()}>
     {children}
   </QueryClientProvider>
 );

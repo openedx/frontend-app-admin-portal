@@ -1,16 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRouteMatch, useHistory, generatePath } from 'react-router-dom';
 import {
   FullscreenModal,
   ActionRow,
   Button,
   useToggle,
   Hyperlink,
+  StatefulButton,
 } from '@edx/paragon';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
+
 import AssignmentModalContent from './AssignmentModalContent';
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
+import { learnerCreditManagementQueryKeys, useBudgetId } from '../data';
+
+const useAllocateContentAssignments = () => useMutation({
+  mutationFn: async ({
+    subsidyAccessPolicyId,
+    payload,
+  }) => EnterpriseAccessApiService.allocateContentAssignments(subsidyAccessPolicyId, payload),
+});
 
 const NewAssignmentModalButton = ({ course, children }) => {
+  const history = useHistory();
+  const routeMatch = useRouteMatch();
+  const queryClient = useQueryClient();
+  const { subsidyAccessPolicyId } = useBudgetId();
+
   const [isOpen, open, close] = useToggle(false);
+  const [learnerEmails, setLearnerEmails] = useState([]);
+  const [assignButtonState, setAssignButtonState] = useState('default');
+
+  const { mutate } = useAllocateContentAssignments();
+
+  const pathToActivityTab = generatePath(routeMatch.path, { budgetId: subsidyAccessPolicyId, activeTabKey: 'activity' });
+
+  const handleAllocateContentAssignments = () => {
+    const payload = snakeCaseObject({
+      contentPriceCents: course.normalizedMetadata.contentPrice * 100, // Convert to USD cents
+      contentKey: course.key,
+      learnerEmails,
+    });
+    const mutationArgs = {
+      subsidyAccessPolicyId,
+      payload,
+    };
+    setAssignButtonState('pending');
+    mutate(mutationArgs, {
+      onSuccess: () => {
+        setAssignButtonState('complete');
+        queryClient.invalidateQueries({
+          queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
+        });
+        close();
+        history.push(pathToActivityTab);
+      },
+      onError: () => {
+        setAssignButtonState('error');
+      },
+    });
+  };
 
   return (
     <>
@@ -27,12 +78,21 @@ const NewAssignmentModalButton = ({ course, children }) => {
             </Button>
             <ActionRow.Spacer />
             <Button variant="tertiary" onClick={close}>Cancel</Button>
-            {/* TODO: https://2u-internal.atlassian.net/browse/ENT-7826 */}
-            <Button>Assign</Button>
+            <StatefulButton
+              labels={{
+                default: 'Assign',
+                pending: 'Assigning...',
+                complete: 'Assigned',
+                error: 'Try again',
+              }}
+              variant="primary"
+              state={assignButtonState}
+              onClick={handleAllocateContentAssignments}
+            />
           </ActionRow>
         )}
       >
-        <AssignmentModalContent course={course} />
+        <AssignmentModalContent course={course} onEmailAddressesChange={setLearnerEmails} />
       </FullscreenModal>
     </>
   );

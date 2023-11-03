@@ -8,7 +8,7 @@ import BaseCourseCard from './BaseCourseCard';
 
 const { BUTTON_ACTION } = CARD_TEXT;
 
-const CourseCardFooterActions = (course) => {
+const CourseCardFooterActions = ({ course }) => {
   const { linkToCourse } = course;
 
   return [

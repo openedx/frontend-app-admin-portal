@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
@@ -29,6 +29,7 @@ import {
   mockSubsidyAccessPolicyUUID,
   mockEnterpriseOfferId,
 } from '../data/tests/constants';
+import { queryClient } from '../../test/testUtils';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -78,13 +79,17 @@ const mockSuccessfulNotifiedAction = {
   completedAt: '2023-10-27',
   errorReason: null,
 };
-
+const mockSuccessfulLinkedLearnerAction = {
+  uuid: 'test-assignment-action-uuid',
+  actionType: 'notified',
+  completedAt: '2023-10-27',
+  errorReason: null,
+};
 const mockFailedNotifiedAction = {
   ...mockSuccessfulNotifiedAction,
   completedAt: null,
-  errorReason: 'bad_email',
+  errorReason: 'email_error',
 };
-
 const mockFailedLinkedLearnerAction = {
   ...mockFailedNotifiedAction,
   actionType: 'learner_linked',
@@ -94,8 +99,6 @@ const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
 
-const queryClient = new QueryClient();
-
 const BudgetDetailPageWrapper = ({
   initialState = initialStoreState,
   enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
@@ -103,7 +106,7 @@ const BudgetDetailPageWrapper = ({
 }) => {
   const store = getMockStore({ ...initialState });
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
           <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
@@ -118,6 +121,24 @@ const BudgetDetailPageWrapper = ({
 describe('<BudgetDetailPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      isError: true,
+      error: { customAttributes: { httpErrorStatus: 404 } },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    expect(screen.getByText('404', { selector: 'h1' }));
   });
 
   it.each([
@@ -302,6 +323,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState: 'waiting',
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
           },
         ],
         numPages: 1,
@@ -373,6 +395,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState: 'waiting',
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
           },
         ],
         numPages: 1,
@@ -404,6 +427,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: `Notifying ${mockLearnerEmail}`,
       expectedModalPopupContent: `Our system is busy emailing ${mockLearnerEmail}!`,
       actions: [],
+      errorReason: null,
     },
     {
       learnerState: 'notifying',
@@ -412,6 +436,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Notifying learner',
       expectedModalPopupContent: 'Our system is busy emailing the learner!',
       actions: [],
+      errorReason: null,
     },
     {
       learnerState: 'waiting',
@@ -419,7 +444,8 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Waiting for learner',
       expectedModalPopupHeading: `Waiting for ${mockLearnerEmail}`,
       expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
-      actions: [mockSuccessfulNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
+      errorReason: null,
     },
     {
       learnerState: 'waiting',
@@ -427,7 +453,8 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Waiting for learner',
       expectedModalPopupHeading: 'Waiting for learner',
       expectedModalPopupContent: 'This learner must create an edX account and complete enrollment in the course',
-      actions: [mockSuccessfulNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
+      errorReason: null,
     },
     {
       learnerState: 'failed',
@@ -435,7 +462,8 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Failed: Bad email',
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: `This course assignment failed because a notification to ${mockLearnerEmail} could not be sent.`,
-      actions: [mockFailedNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
+      errorReason: 'email_error',
     },
     {
       learnerState: 'failed',
@@ -443,7 +471,8 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Failed: Bad email',
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: 'This course assignment failed because a notification to the learner could not be sent.',
-      actions: [mockFailedNotifiedAction],
+      actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
+      errorReason: 'email_error',
     },
     {
       learnerState: 'failed',
@@ -452,6 +481,7 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: System',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',
       actions: [mockFailedLinkedLearnerAction],
+      errorReason: 'internal_api_error',
     },
   ])('renders correct status chips with assigned table data (%s)', ({
     learnerState,
@@ -460,6 +490,7 @@ describe('<BudgetDetailPage />', () => {
     expectedModalPopupHeading,
     expectedModalPopupContent,
     actions,
+    errorReason,
   }) => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
@@ -489,6 +520,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState,
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions,
+            errorReason,
           },
         ],
         numPages: 1,
@@ -766,6 +798,7 @@ describe('<BudgetDetailPage />', () => {
             learnerState,
             recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions: [],
+            errorReason: null,
             state: 'allocated',
           },
         ],

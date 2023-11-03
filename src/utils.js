@@ -400,6 +400,18 @@ const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
   return false;
 };
 
+/**
+ * Modifies the retry behavior of queries to retry up to max 3 times (default) or if
+ * the error returned by the query is a 404 HTTP status code (not found). This configuration
+ * may be overridden per-query, as needed.
+ */
+function defaultQueryClientRetryHandler(failureCount, err) {
+  if (failureCount >= 3 || err.customAttributes.httpErrorStatus === 404) {
+    return false;
+  }
+  return true;
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -433,4 +445,5 @@ export {
   capitalizeFirstLetter,
   pollAsync,
   isNotValidNumberString,
+  defaultQueryClientRetryHandler,
 };
