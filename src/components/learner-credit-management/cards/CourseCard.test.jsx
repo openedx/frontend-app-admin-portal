@@ -1,17 +1,37 @@
 import React from 'react';
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import CourseCard from './CourseCard';
-import { formatPrice, useSubsidyAccessPolicy } from '../data';
+import {
+  formatPrice,
+  learnerCreditManagementQueryKeys,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from '../data';
+import { getButtonElement, queryClient } from '../../test/testUtils';
+
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
+
+jest.mock('@tanstack/react-query', () => ({
+  ...jest.requireActual('@tanstack/react-query'),
+  useQueryClient: jest.fn(),
+}));
+
+jest.mock('../data', () => ({
+  ...jest.requireActual('../data'),
+  useBudgetId: jest.fn(),
+  useSubsidyAccessPolicy: jest.fn(),
+}));
+jest.mock('../../../data/services/EnterpriseAccessApiService');
 
 const originalData = {
   availability: ['Upcoming'],
@@ -50,7 +70,6 @@ const execEdData = {
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
   title: 'Exec Ed Title',
 };
-
 const execEdProps = {
   original: execEdData,
 };
@@ -66,14 +85,6 @@ const initialStoreState = {
   },
 };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
-
 const mockSubsidyAccessPolicy = {
   uuid: 'test-subsidy-access-policy-uuid',
   displayName: 'Test Subsidy Access Policy',
@@ -81,11 +92,7 @@ const mockSubsidyAccessPolicy = {
     spendAvailableUsd: 50000,
   },
 };
-
-jest.mock('../data', () => ({
-  ...jest.requireActual('../data'),
-  useSubsidyAccessPolicy: jest.fn(),
-}));
+const mockLearnerEmails = ['hello@example.com', 'world@example.com'];
 
 const CourseCardWrapper = ({
   initialState = initialStoreState,
@@ -94,7 +101,7 @@ const CourseCardWrapper = ({
   const store = getMockStore({ ...initialState });
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
           <AppContext.Provider
@@ -116,6 +123,7 @@ describe('Course card works as expected', () => {
       data: mockSubsidyAccessPolicy,
       isLoading: false,
     });
+    useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
   });
 
   afterEach(() => {
@@ -139,7 +147,7 @@ describe('Course card works as expected', () => {
     const viewCourseCTA = screen.getByText('View course', { selector: 'a' });
     expect(viewCourseCTA).toBeInTheDocument();
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/course/course-123x');
-    const assignCourseCTA = screen.getByText('Assign', { selector: 'button' });
+    const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
   });
 
@@ -167,9 +175,42 @@ describe('Course card works as expected', () => {
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
   });
 
-  test('opens assignment modal', () => {
+  test.each([
+    { shouldSubmitAssignments: true, hasAllocationException: true },
+    { shouldSubmitAssignments: true, hasAllocationException: false },
+    { shouldSubmitAssignments: false, hasAllocationException: false },
+  ])('opens assignment modal, submits assignments successfully (%s)', async ({ shouldSubmitAssignments, hasAllocationException }) => {
+    const mockAllocateContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'allocateContentAssignments');
+    if (hasAllocationException) {
+      mockAllocateContentAssignments.mockRejectedValue(new Error('oops'));
+    } else {
+      mockAllocateContentAssignments.mockResolvedValue({
+        data: {
+          updated: [],
+          created: mockLearnerEmails.map(learnerEmail => ({
+            uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
+            assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
+            learner_email: learnerEmail,
+            lms_user_id: 0,
+            content_key: 'string',
+            content_title: 'string',
+            content_quantity: 0,
+            state: 'allocated',
+            transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
+            last_notification_at: '2019-08-24T14:15:22Z',
+            actions: [],
+          })),
+          no_change: [],
+        },
+      });
+    }
+    useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
+    const mockInvalidateQueries = jest.fn();
+    useQueryClient.mockReturnValue({
+      invalidateQueries: mockInvalidateQueries,
+    });
     renderWithRouter(<CourseCardWrapper {...defaultProps} />);
-    const assignCourseCTA = screen.getByText('Assign', { selector: 'button' });
+    const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
     userEvent.click(assignCourseCTA);
 
@@ -190,7 +231,7 @@ describe('Course card works as expected', () => {
     expect(cardImage).toBeInTheDocument();
     expect(cardImage.src).toBeDefined();
     expect(modalCourseCard.queryByText('View course', { selector: 'a' })).not.toBeInTheDocument();
-    expect(modalCourseCard.queryByText('Assign', { selector: 'button' })).not.toBeInTheDocument();
+    expect(getButtonElement('Assign', { screenOverride: modalCourseCard, isQueryByRole: true })).not.toBeInTheDocument();
 
     // Verify empty state and textarea can accept emails
     expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
@@ -227,13 +268,43 @@ describe('Course card works as expected', () => {
 
     // Verify modal footer
     expect(assignmentModal.getByText('Help Center: Course Assignments')).toBeInTheDocument();
-    const cancelAssignmentCTA = assignmentModal.getByText('Cancel', { selector: 'button' });
+    const cancelAssignmentCTA = getButtonElement('Cancel', { screenOverride: assignmentModal });
     expect(cancelAssignmentCTA).toBeInTheDocument();
-    const submitAssignmentCTA = assignmentModal.getByText('Assign', { selector: 'button' });
+    const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
     expect(submitAssignmentCTA).toBeInTheDocument();
 
-    // Verify modal closes
-    userEvent.click(cancelAssignmentCTA);
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    if (shouldSubmitAssignments) {
+      // Verify assignment is submitted successfully
+      userEvent.click(submitAssignmentCTA);
+      await waitFor(() => expect(mockAllocateContentAssignments).toHaveBeenCalledTimes(1));
+      expect(mockAllocateContentAssignments).toHaveBeenCalledWith(
+        mockSubsidyAccessPolicy.uuid,
+        expect.objectContaining({
+          content_price_cents: 10000,
+          content_key: 'course-123x',
+          learner_emails: mockLearnerEmails,
+        }),
+      );
+
+      if (hasAllocationException) {
+        // Verify error state
+        expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
+      } else {
+        // Verify success state
+        expect(mockInvalidateQueries).toHaveBeenCalledTimes(1);
+        expect(mockInvalidateQueries).toHaveBeenCalledWith({
+          queryKey: learnerCreditManagementQueryKeys.budget(mockSubsidyAccessPolicy.uuid),
+        });
+        expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
+        // Verify modal closes
+        await waitFor(() => {
+          expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
+      }
+    } else {
+      // Otherwise, verify modal closes when cancel button is clicked
+      userEvent.click(cancelAssignmentCTA);
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    }
   });
 });

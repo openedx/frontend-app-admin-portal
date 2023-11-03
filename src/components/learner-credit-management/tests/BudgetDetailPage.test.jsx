@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
@@ -29,6 +29,7 @@ import {
   mockSubsidyAccessPolicyUUID,
   mockEnterpriseOfferId,
 } from '../data/tests/constants';
+import { queryClient } from '../../test/testUtils';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -98,8 +99,6 @@ const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
 
-const queryClient = new QueryClient();
-
 const BudgetDetailPageWrapper = ({
   initialState = initialStoreState,
   enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
@@ -107,7 +106,7 @@ const BudgetDetailPageWrapper = ({
 }) => {
   const store = getMockStore({ ...initialState });
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
           <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
@@ -122,6 +121,24 @@ const BudgetDetailPageWrapper = ({
 describe('<BudgetDetailPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      isError: true,
+      error: { customAttributes: { httpErrorStatus: 404 } },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    expect(screen.getByText('404', { selector: 'h1' }));
   });
 
   it.each([

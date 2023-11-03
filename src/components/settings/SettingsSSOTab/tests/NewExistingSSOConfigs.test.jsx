@@ -1,9 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import userEvent from '@testing-library/user-event';
 import {
   act,
@@ -19,12 +16,7 @@ import { features } from '../../../../config';
 import NewExistingSSOConfigs from '../NewExistingSSOConfigs';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import LmsApiService from '../../../../data/services/LmsApiService';
-
-const queryClient = new QueryClient({
-  queries: {
-    retry: true, // optional: you may disable automatic query retries for all queries or on a per-query basis.
-  },
-});
+import { queryClient } from '../../../test/testUtils';
 
 jest.mock('../../utils');
 jest.mock('../../../../data/services/LmsApiService');
@@ -152,7 +144,7 @@ const setupNewExistingSSOConfigs = (configs) => {
   features.AUTH0_SELF_SERVICE_INTEGRATION = true;
   return render(
     <IntlProvider locale="en">
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient()}>
         <SSOConfigContext.Provider value={contextValue}>
           <Provider store={store}>
             <NewExistingSSOConfigs
