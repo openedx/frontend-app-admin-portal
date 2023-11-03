@@ -5,16 +5,26 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import CourseCard from './CourseCard';
-import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
+import {
+  formatPrice,
+  learnerCreditManagementQueryKeys,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from '../data';
 import { getButtonElement, queryClient } from '../../test/testUtils';
 
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
+
+jest.mock('@tanstack/react-query', () => ({
+  ...jest.requireActual('@tanstack/react-query'),
+  useQueryClient: jest.fn(),
+}));
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
@@ -195,6 +205,10 @@ describe('Course card works as expected', () => {
       });
     }
     useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
+    const mockInvalidateQueries = jest.fn();
+    useQueryClient.mockReturnValue({
+      invalidateQueries: mockInvalidateQueries,
+    });
     renderWithRouter(<CourseCardWrapper {...defaultProps} />);
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
@@ -277,6 +291,10 @@ describe('Course card works as expected', () => {
         expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
       } else {
         // Verify success state
+        expect(mockInvalidateQueries).toHaveBeenCalledTimes(1);
+        expect(mockInvalidateQueries).toHaveBeenCalledWith({
+          queryKey: learnerCreditManagementQueryKeys.budget(mockSubsidyAccessPolicy.uuid),
+        });
         expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
         // Verify modal closes
         await waitFor(() => {
