@@ -12,6 +12,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { BaseCatalogSearchResults } from '../search/CatalogSearchResults';
 import { CONTENT_TYPE_COURSE } from '../data/constants';
 import { queryClient } from '../../test/testUtils';
+import { useSubsidyAccessPolicy } from '../data';
 
 // Mocking this connected component so as not to have to mock the algolia Api
 const PAGINATE_ME = 'PAGINATE ME :)';
@@ -22,6 +23,19 @@ jest.mock('react-instantsearch-dom', () => ({
   ...jest.requireActual('react-instantsearch-dom'),
   InstantSearch: () => <div>Popular Courses</div>,
   Index: () => <div>Popular Courses</div>,
+}));
+
+jest.mock('../data', () => ({
+  ...jest.requireActual('../data'),
+  useSubsidyAccessPolicy: jest.fn().mockReturnValue({
+    data: {
+      uuid: 'test-uuid',
+      displayName: 'Test Budget',
+      aggregates: {
+        spendAvailableUsd: 100,
+      },
+    },
+  }),
 }));
 
 const DEFAULT_SEARCH_CONTEXT_VALUE = { refinements: {} };
