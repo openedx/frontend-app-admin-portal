@@ -156,6 +156,8 @@ describe('EnterpriseAccessApiService', () => {
   test('allocateContentAssignments calls enterprise-access allocate POST API to create assignments', () => {
     const payload = {
       learner_emails: ['edx@example.com'],
+      content_key: 'edX+DemoX',
+      content_price_cents: 19900,
     };
     EnterpriseAccessApiService.allocateContentAssignments(mockSubsidyAccessPolicyUUID, payload);
     expect(axios.post).toBeCalledWith(
