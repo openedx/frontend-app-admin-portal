@@ -52,7 +52,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
       onSuccess: () => {
         setAssignButtonState('complete');
         queryClient.invalidateQueries({
-          queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(subsidyAccessPolicyId),
+          queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
         });
         close();
         history.push(pathToActivityTab);
