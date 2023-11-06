@@ -13,9 +13,9 @@ const CreateAllocationErrorAlertModals = ({
   const [isCatalogError, openCatalogErrorModal, closeCatalogErrorModal] = useToggle(false);
   const [isSystemError, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
   const [isBalanceError, openBalanceErrorModal, closeBalanceErrorModal] = useToggle(false);
-  
+
   /**
-   * Close all error modals.
+   * Helper function to close all error modals.
    */
   const closeAllErrorModals = useCallback(() => {
     const closeFns = [closeCatalogErrorModal, closeBalanceErrorModal, closeSystemErrorModal];
@@ -25,7 +25,7 @@ const CreateAllocationErrorAlertModals = ({
   }, [closeCatalogErrorModal, closeBalanceErrorModal, closeSystemErrorModal]);
 
   /**
-   * Retry the original action that caused the error.
+   * Retry the original action that caused the error and close all error modals.
    */
   const handleErrorRetry = () => {
     retry();

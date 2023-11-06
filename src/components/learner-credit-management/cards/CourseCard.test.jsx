@@ -20,6 +20,7 @@ import {
 import { getButtonElement, queryClient } from '../../test/testUtils';
 
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
+import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -94,8 +95,17 @@ const mockSubsidyAccessPolicy = {
 };
 const mockLearnerEmails = ['hello@example.com', 'world@example.com'];
 
+const mockDisplaySuccessfulAssignmentToast = jest.fn();
+const defaultBudgetDetailPageContextValue = {
+  isSuccessfulAssignmentAllocationToastOpen: false,
+  totalLearnersAssigned: undefined,
+  displayToastForAssignmentAllocation: mockDisplaySuccessfulAssignmentToast,
+  closeToastForAssignmentAllocation: jest.fn(),
+};
+
 const CourseCardWrapper = ({
   initialState = initialStoreState,
+  budgetDetailPageContextValue = defaultBudgetDetailPageContextValue,
   ...rest
 }) => {
   const store = getMockStore({ ...initialState });
@@ -109,7 +119,9 @@ const CourseCardWrapper = ({
               config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
             }}
           >
-            <CourseCard {...rest} />
+            <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+              <CourseCard {...rest} />
+            </BudgetDetailPageContext.Provider>
           </AppContext.Provider>
         </Provider>
       </IntlProvider>
@@ -221,22 +233,26 @@ describe('Course card works as expected', () => {
       errorReason: 'not_enough_value_in_subsidy',
       shouldRetryAfterError: true,
     },
-    { shouldSubmitAssignments: true,
+    {
+      shouldSubmitAssignments: true,
       hasAllocationException: true,
       errorReason: 'policy_spend_limit_reached',
       shouldRetryAfterError: false,
     },
-    { shouldSubmitAssignments: true,
+    {
+      shouldSubmitAssignments: true,
       hasAllocationException: true,
       errorReason: 'policy_spend_limit_reached',
       shouldRetryAfterError: true,
     },
-    { shouldSubmitAssignments: true,
+    {
+      shouldSubmitAssignments: true,
       hasAllocationException: true,
       errorReason: null,
       shouldRetryAfterError: false,
     },
-    { shouldSubmitAssignments: true,
+    {
+      shouldSubmitAssignments: true,
       hasAllocationException: true,
       errorReason: null,
       shouldRetryAfterError: true,
@@ -363,7 +379,7 @@ describe('Course card works as expected', () => {
       // Verify error states
       if (hasAllocationException) {
         expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
-        
+
         // Assert the correct error modal is displayed
         if (errorReason === 'content_not_in_catalog') {
           const assignmentErrorModal = getAssignmentErrorModal();
@@ -393,7 +409,6 @@ describe('Course card works as expected', () => {
             await simulateClickErrorModalExit(assignmentErrorModal);
           }
         }
-
       } else {
         // Verify success state
         expect(mockInvalidateQueries).toHaveBeenCalledTimes(1);
@@ -401,9 +416,15 @@ describe('Course card works as expected', () => {
           queryKey: learnerCreditManagementQueryKeys.budget(mockSubsidyAccessPolicy.uuid),
         });
         expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
-        // Verify modal closes
         await waitFor(() => {
+          // Verify all modals close (error modal + assignment modal)
           expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+          // Verify toast notification was displayed
+          expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledTimes(1);
+          expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledWith({
+            totalLearnersAssigned: mockLearnerEmails.length,
+          });
         });
       }
     } else {

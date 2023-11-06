@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouteMatch, useHistory, generatePath } from 'react-router-dom';
 import {
@@ -16,6 +16,7 @@ import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys, useBudgetId } from '../data';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
+import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -33,6 +34,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
+  const { displayToastForAssignmentAllocation } = useContext(BudgetDetailPageContext);
 
   const { mutate } = useAllocateContentAssignments();
 
@@ -62,6 +64,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
           queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
         });
         handleCloseAssignmentModal();
+        displayToastForAssignmentAllocation({ totalLearnersAssigned: learnerEmails.length });
         history.push(pathToActivityTab);
       },
       onError: (err) => {
