@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import omit from 'lodash/omit';
 import isString from 'lodash/isString';
 
@@ -47,14 +47,6 @@ const ValidatedFormControl = (props: ValidatedFormControlProps) => {
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
-  // we need to set the original values on load in order to trigger the validation
-  useEffect(() => {
-    if (dispatch) {
-      dispatch(
-        setFormFieldAction({ fieldId: props.formId, value: formControlProps.value }),
-      );
-    }
-  }, [dispatch, props.formId, formControlProps.value]);
   return (
     <>
       <Form.Control {...formControlProps} />

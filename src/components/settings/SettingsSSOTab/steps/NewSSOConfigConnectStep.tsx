@@ -1,14 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Dropzone, Form } from '@edx/paragon';
 
 import ValidatedFormRadio from '../../../forms/ValidatedFormRadio';
 import ValidatedFormControl from '../../../forms/ValidatedFormControl';
-import { FormContext, useFormContext } from '../../../forms/FormContext';
+import { FormContext, FormFieldValidation, useFormContext } from '../../../forms/FormContext';
+import { setFormFieldAction } from '../../../forms/data/actions';
+import { urlValidation } from '../../../../utils';
+
+export const IDP_URL_SELECTION = 'idp_metadata_url';
+export const IDP_XML_SELECTION = 'idp_metadata_xml';
+const urlEntrySelected = (formFields) => formFields?.idpConnectOption === IDP_URL_SELECTION;
+const xmlEntrySelected = (formFields) => formFields?.idpConnectOption === IDP_XML_SELECTION;
+
+export const validations: FormFieldValidation[] = [
+  {
+    formFieldId: 'identityProvider',
+    validator: (fields) => !fields.identityProvider && 'Please select an SSO Identity Provider',
+  },
+  {
+    formFieldId: 'idpConnectOption',
+    validator: (fields) => !fields.idpConnectOption && 'Please select a connection method',
+  },
+  {
+    formFieldId: 'metadataUrl',
+    validator: (fields) => {
+      const error = urlEntrySelected(fields) && !urlValidation(fields.metadataUrl);
+      return error && 'Please enter an Identity Provider Metadata URL';
+    },
+  },
+  {
+    formFieldId: 'metadataXml',
+    validator: (fields) => {
+      const error = !fields.metadataXml && xmlEntrySelected(fields);
+      return error && 'Please upload an Identity Provider Metadata XML file';
+    },
+  },
+];
 
 const SSOConfigConnectStep = () => {
   const fiveGbInBytes = 5368709120;
   const ssoIdpOptions = [
-    ['Microsoft Azure Active Directory (Azure AD)', 'azure_ad'],
+    ['Microsoft Entra ID', 'microsoft_entra_id'],
     ['Google Workspace', 'google_workspace'],
     ['Okta', 'okta'],
     ['OneLogin', 'one_login'],
@@ -16,18 +48,25 @@ const SSOConfigConnectStep = () => {
     ['Other', 'other'],
   ];
   const idpConnectOptions = [
-    ['Enter identity Provider Metadata URL', 'idp_metadata_url'],
-    ['Upload Identity Provider Metadata XML file', 'idp_metadata_xml'],
+    ['Enter identity Provider Metadata URL', IDP_URL_SELECTION],
+    ['Upload Identity Provider Metadata XML file', IDP_XML_SELECTION],
   ];
 
   const {
-    formFields,
+    formFields, dispatch, showErrors, errorMap,
   }: FormContext = useFormContext();
-  const showUrlEntry = formFields?.idpConnectOption === 'idp_metadata_url';
-  const showXmlUpload = formFields?.idpConnectOption === 'idp_metadata_xml';
+  const [xmlUploadFileName, setXmlUploadFileName] = useState('');
+  const showUrlEntry = urlEntrySelected(formFields);
+  const showXmlUpload = xmlEntrySelected(formFields);
+  const xmlUploadError = errorMap?.metadataXml;
 
-  // TODO: Store uploaded XML data
-  const onUploadXml = () => null;
+  const onUploadXml = ({ fileData }) => {
+    const blob = fileData.get('file');
+    blob.text().then(xmlText => {
+      dispatch?.(setFormFieldAction({ fieldId: 'metadataXml', value: xmlText }));
+      setXmlUploadFileName(blob.name);
+    });
+  };
 
   return (
     <Container size="md">
@@ -38,13 +77,13 @@ const SSOConfigConnectStep = () => {
         What is your organization&apos;s SSO Identity Provider?
         <Form.Group className="mb-4.5">
           <ValidatedFormRadio
-            formId="DummyIDP"
+            formId="identityProvider"
             label=""
             options={ssoIdpOptions}
           />
         </Form.Group>
 
-        <h2>Connect edX to your Identity Provider</h2>
+        <h3>Connect edX to your Identity Provider</h3>
         Select a method to connect edX to your Identity Provider
         <Form.Group className="mb-4.5">
           <ValidatedFormRadio
@@ -57,7 +96,7 @@ const SSOConfigConnectStep = () => {
         {showUrlEntry && (
         <Form.Group className="mb-4">
           <ValidatedFormControl
-            formId="DummyIDPUrl"
+            formId="metadataUrl"
             type="text"
             floatingLabel="Identity Provider Metadata URL"
             fieldInstructions="Find the URL in your Identity Provider portal or website."
@@ -67,18 +106,27 @@ const SSOConfigConnectStep = () => {
 
         {showXmlUpload
         && (
-        <Dropzone
-          onProcessUpload={onUploadXml}
-          errorMessages={{
-            invalidType: 'Invalid file type, only xml images allowed.',
-            invalidSize: 'The file size must be under 5 gb.',
-            multipleDragged: 'Cannot upload more than one file.',
-          }}
-          maxSize={fiveGbInBytes}
-          accept={{
-            'text/xml': ['.xml'],
-          }}
-        />
+          <>
+            <Dropzone
+              onProcessUpload={onUploadXml}
+              errorMessages={{
+                invalidType: 'Invalid file type, only xml images allowed.',
+                invalidSize: 'The file size must be under 5 gb.',
+                multipleDragged: 'Cannot upload more than one file.',
+              }}
+              maxSize={fiveGbInBytes}
+              accept={{
+                'text/xml': ['.xml'],
+              }}
+            />
+            {xmlUploadFileName && (
+            <Form.Control.Feedback type="valid">
+              Uploaded{' '}
+              {xmlUploadFileName}
+            </Form.Control.Feedback>
+            )}
+            {showErrors && xmlUploadError && <Form.Control.Feedback type="invalid">{xmlUploadError}</Form.Control.Feedback>}
+          </>
         )}
       </Form>
     </Container>

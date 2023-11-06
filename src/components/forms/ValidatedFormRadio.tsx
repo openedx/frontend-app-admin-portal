@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import omit from 'lodash/omit';
 import isString from 'lodash/isString';
 
@@ -30,7 +30,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
       dispatch(setFormFieldAction({ fieldId: props.formId, value: e.target.value }));
     }
   };
-
+  const value = formFields?.[props?.formId];
   const errors = errorMap?.[props.formId];
   // Show error message if an error message was part of any detected errors
   const showError = errors?.find?.(error => isString(error));
@@ -41,14 +41,6 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
     id: props.formId,
     value: formFields && formFields[props.formId],
   };
-  // we need to set the original values on load in order to trigger the validation
-  useEffect(() => {
-    if (dispatch) {
-      dispatch(
-        setFormFieldAction({ fieldId: props.formId, value: formRadioProps.value }),
-      );
-    }
-  }, [dispatch, props.formId, formRadioProps.value]);
 
   const createOptions = (options: [string, string][]) => {
     const optionList: ReactElement[] = [];
@@ -71,6 +63,7 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
         name={formRadioProps.id}
         onChange={formRadioProps.onChange}
         isInline={formRadioProps.isInline}
+        value={value}
       >
         {createOptions(formRadioProps.options)}
       </Form.RadioSet>

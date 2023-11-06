@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import Router from 'react-router';
 
 import { Provider } from 'react-redux';
 import NewSSOConfigForm from '../NewSSOConfigForm';
@@ -43,6 +44,14 @@ jest.mock('../hooks', () => {
     useExistingSSOConfigs: () => [[{ hehe: 'haha' }], null, true],
   };
 });
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useParams: jest.fn(),
+}));
+
+// const enterUrlText = 'Find the URL in your Identity Provider portal or website.';
+const enterUrlText = 'Identity Provider Metadata URL';
+const uploadXmlText = 'Drag and drop your file here or click to upload.';
 
 const store = getMockStore({ ...initialStore });
 
@@ -71,11 +80,11 @@ const contextValue = {
   setRefreshBool: jest.fn(),
 };
 
-const setupNewSSOStepper = () => {
+const setupNewSSOStepper = (contextChanges = {}) => {
   features.AUTH0_SELF_SERVICE_INTEGRATION = true;
   return render(
     <IntlProvider locale="en">
-      <SSOConfigContext.Provider value={contextValue}>
+      <SSOConfigContext.Provider value={{ ...contextValue, ...contextChanges }}>
         <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
       </SSOConfigContext.Provider>
     </IntlProvider>,
@@ -322,45 +331,11 @@ describe('SAML Config Tab', () => {
       expect(screen.getByText('Next')).not.toBeDisabled();
     }, []);
   });
-  test('navigate through new sso workflow skeleton', async () => {
-    setupNewSSOStepper();
-    // Connect Step
-    await waitFor(() => {
-      expect(getButtonElement('Next')).toBeInTheDocument();
-    }, []);
-    expect(screen.queryByText('New SSO integration')).toBeInTheDocument();
-    expect(screen.queryByText('Connect')).toBeInTheDocument();
-    expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
-    userEvent.click(getButtonElement('Next'));
-
-    // Configure Step
-    await waitFor(() => {
-      expect(getButtonElement('Configure')).toBeInTheDocument();
-    }, []);
-    expect(screen.queryByText('Enter integration details')).toBeInTheDocument();
-    userEvent.click(getButtonElement('Configure'));
-
-    // Authorize Step
-    await waitFor(() => {
-      expect(getButtonElement('Next')).toBeInTheDocument();
-    }, []);
-    expect(screen.queryByText('Authorize edX as a Service Provider')).toBeInTheDocument();
-    userEvent.click(getButtonElement('Next'));
-
-    // Confirm and Test Step
-    await waitFor(() => {
-      expect(getButtonElement('Finish')).toBeInTheDocument();
-    }, []);
-    expect(screen.queryByText('Wait for SSO configuration confirmation')).toBeInTheDocument();
-  });
   test('show correct metadata entry based on selection', async () => {
     setupNewSSOStepper();
     await waitFor(() => {
       expect(getButtonElement('Next')).toBeInTheDocument();
     }, []);
-
-    const enterUrlText = 'Find the URL in your Identity Provider portal or website.';
-    const uploadXmlText = 'Drag and drop your file here or click to upload.';
 
     // Verify metadata selectors are hidden initially
     expect(screen.queryByText(enterUrlText)).not.toBeInTheDocument();
@@ -379,55 +354,153 @@ describe('SAML Config Tab', () => {
     }, []);
     expect(screen.queryByText(enterUrlText)).not.toBeInTheDocument();
   });
-  test('back button shown on pages after first page', async () => {
-    const getBackButton = () => getButtonElement('Back');
+  test('navigate through new non-SAP sso workflow', async () => {
     setupNewSSOStepper();
+    const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');
+    mockCreateEnterpriseSsoOrchestrationRecord.mockResolvedValue({ data: { record: 'fakeuuid', sp_metadata_url: 'https://fake.url' } });
+    jest.spyOn(Router, 'useParams').mockReturnValue({ enterpriseSlug: 'testslug' });
     // Connect Step
     await waitFor(() => {
       expect(getButtonElement('Next')).toBeInTheDocument();
     }, []);
-    expect(screen.queryByRole('button', { name: 'Back' })).not.toBeInTheDocument();
+    expect(screen.queryByText('New SSO integration')).toBeInTheDocument();
+    expect(screen.queryByText('Connect')).toBeInTheDocument();
+    expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
+    // Click provider
+    userEvent.click(screen.getByText('Okta'));
+    // Click Enter identity Provider Metadata URL
+    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await waitFor(() => {
+      expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
+    }, []);
+    userEvent.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
     userEvent.click(getButtonElement('Next'));
 
     // Configure Step
     await waitFor(() => {
       expect(getButtonElement('Configure')).toBeInTheDocument();
     }, []);
-    expect(getBackButton()).toBeInTheDocument();
+    expect(screen.queryByText('Enter integration details')).toBeInTheDocument();
+    // Verify SAP field not present
+    expect(screen.queryByText('OAuth Root URL')).not.toBeInTheDocument();
+
     userEvent.click(getButtonElement('Configure'));
 
     // Authorize Step
     await waitFor(() => {
       expect(getButtonElement('Next')).toBeInTheDocument();
     }, []);
-    expect(getBackButton()).toBeInTheDocument();
+    // Click checkbox to advance
+    const getAuthorizedCheckbox = () => screen.queryByRole('checkbox');
+    await waitFor(() => {
+      expect(getAuthorizedCheckbox()).toBeInTheDocument();
+    }, []);
+    userEvent.click(getAuthorizedCheckbox());
+    await waitFor(() => {
+      expect(getAuthorizedCheckbox()).toBeChecked();
+    }, []);
     userEvent.click(getButtonElement('Next'));
 
-    // Back from Confirm and Test Step
+    // Confirm and Test Step
     await waitFor(() => {
       expect(getButtonElement('Finish')).toBeInTheDocument();
     }, []);
-    userEvent.click(getBackButton());
+    expect(screen.queryByText('Wait for SSO configuration confirmation')).toBeInTheDocument();
+  });
+  test('cancel out of new SSO workflow', async () => {
+    setupNewSSOStepper();
+    // Connect Step Select an option to trigger cancel modal
+    userEvent.click(screen.getByText('Okta'));
+    userEvent.click(getButtonElement('Cancel'));
     await waitFor(() => {
-      expect(screen.queryByText('Authorize edX as a Service Provider')).toBeInTheDocument();
+      expect(getButtonElement('Exit')).toBeInTheDocument();
+    }, []);
+    userEvent.click(getButtonElement('Exit'));
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          'Connect to a SAML identity provider for single sign-on'
+          + ' to allow quick access to your organization\'s learning catalog.',
+        ),
+      ).toBeInTheDocument();
+    }, []);
+  });
+  test('new SSO workflow load existing metadata url config', async () => {
+    const testMetadataUrl = 'http://test.metadata';
+    const existingConfigContextValue = {
+      ssoState: {
+        providerConfig: {
+          uuid: 123,
+          metadataUrl: testMetadataUrl,
+        },
+      },
+    };
+    setupNewSSOStepper(existingConfigContextValue);
+    // Connect Step with metadata url selected
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          'Find the URL in your Identity Provider portal or website.',
+        ),
+      ).toBeInTheDocument();
+    }, []);
+    screen.queryByText(testMetadataUrl);
+  });
+  // TODO: Test case where we go SAP route
+  test('navigate through new SAP sso workflow', async () => {
+    setupNewSSOStepper();
+    const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');
+    mockCreateEnterpriseSsoOrchestrationRecord.mockResolvedValue({ data: { record: 'fakeuuid', sp_metadata_url: 'https://fake.url' } });
+    jest.spyOn(Router, 'useParams').mockReturnValue({ enterpriseSlug: 'testslug' });
+    // Connect Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('New SSO integration')).toBeInTheDocument();
+    expect(screen.queryByText('Connect')).toBeInTheDocument();
+    expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
+    // Click SAP provider
+    userEvent.click(screen.getByText('SAP SuccessFactors'));
+    // Click Enter identity Provider Metadata URL
+    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await waitFor(() => {
+      expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
+    }, []);
+    userEvent.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
+    userEvent.click(getButtonElement('Next'));
+
+    // Configure Step
+    await waitFor(() => {
+      expect(screen.queryByText('OAuth Root URL')).toBeInTheDocument();
+    }, []);
+    // Verify Configure does not advance until fields are filled out
+    userEvent.click(getButtonElement('Configure'));
+    expect(screen.queryByText('OAuth Root URL')).toBeInTheDocument();
+    const fieldEntries = [
+      ['OAuth Root URL', 'https://test'],
+      ['API Root URL', 'https://test'],
+      ['Company ID', 'test'],
+      ['Private Key', 'test'],
+      ['OAuth User ID', 'test'],
+    ];
+    fieldEntries.forEach(([fieldIdText, value]) => {
+      userEvent.type(screen.queryByText(fieldIdText), value);
+    });
+    userEvent.click(getButtonElement('Configure'));
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
     }, []);
   });
   test('cancel out of new SSO workflow', async () => {
     setupNewSSOStepper();
-    // Connect Step
-    await waitFor(() => {
-      expect(getButtonElement('Cancel')).toBeInTheDocument();
-    }, []);
+    // Connect Step Select an option to trigger cancel modal
+    userEvent.click(screen.getByText('Okta'));
     userEvent.click(getButtonElement('Cancel'));
     await waitFor(() => {
-      expect(getButtonElement('Cancel')).toBeInTheDocument();
+      expect(getButtonElement('Exit')).toBeInTheDocument();
     }, []);
-
-    await waitFor(() => {
-      const exitButton = getButtonElement('Exit without saving');
-      expect(exitButton).toBeInTheDocument();
-      userEvent.click(exitButton);
-    }, []);
+    userEvent.click(getButtonElement('Exit'));
 
     await waitFor(() => {
       expect(

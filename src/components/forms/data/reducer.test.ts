@@ -80,6 +80,8 @@ describe('Form reducer tests', () => {
     };
     expect(initializeForm(initializeFormArguments)).toEqual({
       formFields,
+      errorMap: {},
+      hasErrors: false,
       currentStep: steps[0],
       isEdited: false,
     });
