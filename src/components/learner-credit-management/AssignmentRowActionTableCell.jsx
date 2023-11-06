@@ -7,8 +7,9 @@ import { Mail, DoNotDisturbOn } from '@edx/paragon/icons';
 
 const AssignmentRowActionTableCell = ({ row }) => {
   const isLearnerStateWaiting = row.original.learnerState === 'waiting';
+  const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   return (
-    <Stack direction="horizontal" gap="3" className="align-content-end mr-2">
+    <Stack direction="horizontal" gap="3" className="justify-content-end">
       {isLearnerStateWaiting && (
         <OverlayTrigger
           key="Remind"
@@ -18,8 +19,8 @@ const AssignmentRowActionTableCell = ({ row }) => {
           <IconButton
             src={Mail}
             iconAs={Icon}
-            alt={`Remind learner ${row.original.learnerEmail}`}
-              // eslint-disable-next-line no-console
+            alt={`Send reminder ${emailAltText}`}
+            // eslint-disable-next-line no-console
             onClick={() => console.log(`Reminding ${row.original.uuid}`)}
             data-testid={`remind-assignment-${row.original.uuid}`}
           />
@@ -34,7 +35,7 @@ const AssignmentRowActionTableCell = ({ row }) => {
           variant="danger"
           src={DoNotDisturbOn}
           iconAs={Icon}
-          alt={`Cancel assignment ${row.original.learnerEmail}`}
+          alt={`Cancel assignment ${emailAltText}`}
           // eslint-disable-next-line no-console
           onClick={() => console.log(`Canceling ${row.original.uuid}`)}
           data-testid={`cancel-assignment-${row.original.uuid}`}
@@ -47,8 +48,8 @@ const AssignmentRowActionTableCell = ({ row }) => {
 AssignmentRowActionTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      learnerEmail: PropTypes.string.isRequired,
-      learnerState: PropTypes.string.isRequired,
+      learnerEmail: PropTypes.string,
+      learnerState: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,

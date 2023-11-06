@@ -4,15 +4,15 @@ import { Button } from '@edx/paragon';
 import { Mail } from '@edx/paragon/icons';
 
 const AssignmentTableRemindAction = ({ selectedFlatRows, ...rest }) => {
-  const selectedEnrollableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').length;
+  const selectedRemindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').length;
   return (
     <Button
-      disabled={selectedEnrollableRows === 0}
+      disabled={selectedRemindableRows === 0}
       iconBefore={Mail}
       // eslint-disable-next-line no-console
       onClick={() => console.log('Remind', selectedFlatRows, rest)}
     >
-      {`Remind (${selectedEnrollableRows})`}
+      {`Remind (${selectedRemindableRows})`}
     </Button>
   );
 };
