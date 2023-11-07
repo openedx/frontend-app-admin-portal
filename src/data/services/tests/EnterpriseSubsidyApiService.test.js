@@ -15,11 +15,16 @@ describe('EnterpriseSubsidyApiService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
+  test('fetchCustomerTransactions calls the API to fetch transactions by enterprise subsidy', () => {
+    const mockSubsidyUUID = 'test-subsidy-uuid';
+    const expectedUrl = `${SubsidyApiService.baseUrlV2}/subsidies/${mockSubsidyUUID}/transactions/?`;
+    SubsidyApiService.fetchCustomerTransactions(mockSubsidyUUID);
+    expect(axios.get).toBeCalledWith(expectedUrl);
+  });
   test('getSubsidyByCustomerUUID calls the API to fetch subsides by enterprise customer UUID', () => {
     const mockCustomerUUID = 'test-customer-uuid';
-    const expectedUrl = `${SubsidyApiService.baseUrl}/subsidies/?enterprise_customer_uuid=${mockCustomerUUID}`;
+    const expectedUrl = `${SubsidyApiService.baseUrlV1}/subsidies/?enterprise_customer_uuid=${mockCustomerUUID}`;
     SubsidyApiService.getSubsidyByCustomerUUID(mockCustomerUUID);
-    expect(axios.get).toBeCalledWith(expectedUrl, { clearCacheEntry: true });
+    expect(axios.get).toBeCalledWith(expectedUrl);
   });
 });

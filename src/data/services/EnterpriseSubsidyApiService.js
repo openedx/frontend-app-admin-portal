@@ -4,19 +4,29 @@ import { snakeCaseObject } from '@edx/frontend-platform';
 import { configuration } from '../../config';
 
 class SubsidyApiService {
-  static baseUrl = `${configuration.ENTERPRISE_SUBSIDY_BASE_URL}/api/v1`;
+  static baseUrl = `${configuration.ENTERPRISE_SUBSIDY_BASE_URL}/api`;
+
+  static baseUrlV1 = `${this.baseUrl}/v1`;
+
+  static baseUrlV2 = `${this.baseUrl}/v2`;
 
   static apiClient = getAuthenticatedHttpClient;
+
+  static fetchCustomerTransactions(subsidyUuid, options = {}) {
+    const queryParams = new URLSearchParams({
+      ...snakeCaseObject(options),
+    });
+    const url = `${SubsidyApiService.baseUrlV2}/subsidies/${subsidyUuid}/transactions/?${queryParams.toString()}`;
+    return SubsidyApiService.apiClient().get(url);
+  }
 
   static getSubsidyByCustomerUUID(uuid, options = {}) {
     const queryParams = new URLSearchParams({
       enterprise_customer_uuid: uuid,
       ...snakeCaseObject(options),
     });
-    const url = `${SubsidyApiService.baseUrl}/subsidies/?${queryParams.toString()}`;
-    return SubsidyApiService.apiClient({
-      useCache: configuration.USE_API_CACHE,
-    }).get(url, { clearCacheEntry: true });
+    const url = `${SubsidyApiService.baseUrlV1}/subsidies/?${queryParams.toString()}`;
+    return SubsidyApiService.apiClient().get(url);
   }
 }
 

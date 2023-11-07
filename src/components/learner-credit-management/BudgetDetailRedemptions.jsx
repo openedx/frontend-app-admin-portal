@@ -5,14 +5,18 @@ import { connect } from 'react-redux';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { useBudgetId, useOfferRedemptions } from './data';
 
-const BudgetDetailRedemptions = ({ enterpriseUUID }) => {
+const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const {
     isLoading,
     offerRedemptions,
     fetchOfferRedemptions,
-  } = useOfferRedemptions(enterpriseUUID, enterpriseOfferId, subsidyAccessPolicyId);
-
+  } = useOfferRedemptions(
+    enterpriseUUID,
+    enterpriseOfferId,
+    subsidyAccessPolicyId,
+    enterpriseFeatures.topDownAssignmentRealTimeLcm,
+  );
   return (
     <section>
       <h3 className="mb-3">Spent</h3>
@@ -30,11 +34,15 @@ const BudgetDetailRedemptions = ({ enterpriseUUID }) => {
 };
 
 const mapStateToProps = state => ({
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
   enterpriseUUID: state.portalConfiguration.enterpriseId,
 });
 
 BudgetDetailRedemptions.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailRedemptions);

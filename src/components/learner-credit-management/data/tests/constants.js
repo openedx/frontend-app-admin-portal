@@ -12,6 +12,7 @@ export const mockAssignableSubsidyAccessPolicy = {
     spendAvailableUsd: 10000,
   },
   isAssignable: true,
+  subsidyUuid: 'mock-subsidy-uuid',
 };
 
 export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
@@ -22,4 +23,5 @@ export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
     spendAvailableUsd: 10000,
   },
   isAssignable: false,
+  subsidyUuid: 'mock-subsidy-uuid',
 };
