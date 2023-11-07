@@ -9,7 +9,7 @@ const AssignmentRowActionTableCell = ({ row }) => {
   const isLearnerStateWaiting = row.original.learnerState === 'waiting';
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   return (
-    <Stack direction="horizontal" gap="3" className="justify-content-end">
+    <Stack direction="horizontal" gap={2} className="justify-content-end">
       {isLearnerStateWaiting && (
         <OverlayTrigger
           key="Remind"

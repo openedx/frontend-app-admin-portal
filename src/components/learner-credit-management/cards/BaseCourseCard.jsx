@@ -10,7 +10,7 @@ import {
 } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
-import useCourseCardMetadata from './data/useCourseCardMetadata';
+import { useCourseCardMetadata } from './data';
 import CARD_TEXT from '../constants';
 
 const BaseCourseCard = ({

@@ -118,6 +118,34 @@ const CourseCardWrapper = ({
 };
 
 describe('Course card works as expected', () => {
+  const mockAllocateContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'allocateContentAssignments');
+
+  // Helper function to find the assignment error modal after failed allocation attempt
+  const getAssignmentErrorModal = () => within(screen.queryAllByRole('dialog')[1]);
+
+  // Helper function to simulate clicking on "Try again" in error modal to retry allocation
+  const simulateClickErrorModalTryAgain = async (modalTitle, assignmentErrorModal) => {
+    const tryAgainCTA = getButtonElement('Try again', { screenOverride: assignmentErrorModal });
+    expect(tryAgainCTA).toBeInTheDocument();
+    userEvent.click(tryAgainCTA);
+    await waitFor(() => {
+      // Verify modal closes
+      expect(assignmentErrorModal.queryByText(modalTitle)).not.toBeInTheDocument();
+    });
+    expect(mockAllocateContentAssignments).toHaveBeenCalledTimes(2);
+  };
+
+  // Helper function to simulate clicking on "Exit and discard changes" in error modal to close ALL modals
+  const simulateClickErrorModalExit = async (assignmentErrorModal) => {
+    const exitCTA = getButtonElement('Exit and discard changes', { screenOverride: assignmentErrorModal });
+    userEvent.click(exitCTA);
+    await waitFor(() => {
+      // Verify all modals close (error modal + assignment modal)
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+    expect(mockAllocateContentAssignments).toHaveBeenCalledTimes(1);
+  };
+
   beforeEach(() => {
     useSubsidyAccessPolicy.mockReturnValue({
       data: mockSubsidyAccessPolicy,
@@ -176,13 +204,59 @@ describe('Course card works as expected', () => {
   });
 
   test.each([
-    { shouldSubmitAssignments: true, hasAllocationException: true },
+    {
+      shouldSubmitAssignments: true,
+      hasAllocationException: true,
+      errorReason: 'content_not_in_catalog',
+    },
+    {
+      shouldSubmitAssignments: true,
+      hasAllocationException: true,
+      errorReason: 'not_enough_value_in_subsidy',
+      shouldRetryAfterError: false,
+    },
+    {
+      shouldSubmitAssignments: true,
+      hasAllocationException: true,
+      errorReason: 'not_enough_value_in_subsidy',
+      shouldRetryAfterError: true,
+    },
+    { shouldSubmitAssignments: true,
+      hasAllocationException: true,
+      errorReason: 'policy_spend_limit_reached',
+      shouldRetryAfterError: false,
+    },
+    { shouldSubmitAssignments: true,
+      hasAllocationException: true,
+      errorReason: 'policy_spend_limit_reached',
+      shouldRetryAfterError: true,
+    },
+    { shouldSubmitAssignments: true,
+      hasAllocationException: true,
+      errorReason: null,
+      shouldRetryAfterError: false,
+    },
+    { shouldSubmitAssignments: true,
+      hasAllocationException: true,
+      errorReason: null,
+      shouldRetryAfterError: true,
+    },
     { shouldSubmitAssignments: true, hasAllocationException: false },
     { shouldSubmitAssignments: false, hasAllocationException: false },
-  ])('opens assignment modal, submits assignments successfully (%s)', async ({ shouldSubmitAssignments, hasAllocationException }) => {
-    const mockAllocateContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'allocateContentAssignments');
+  ])('opens assignment modal, submits assignments successfully (%s)', async ({
+    shouldSubmitAssignments,
+    hasAllocationException,
+    errorReason,
+    shouldRetryAfterError,
+  }) => {
     if (hasAllocationException) {
-      mockAllocateContentAssignments.mockRejectedValue(new Error('oops'));
+      // mock Axios error
+      mockAllocateContentAssignments.mockRejectedValue({
+        customAttributes: {
+          httpErrorStatus: errorReason ? 422 : 500,
+          httpErrorResponseData: JSON.stringify([{ reason: errorReason }]),
+        },
+      });
     } else {
       mockAllocateContentAssignments.mockResolvedValue({
         data: {
@@ -286,9 +360,40 @@ describe('Course card works as expected', () => {
         }),
       );
 
+      // Verify error states
       if (hasAllocationException) {
-        // Verify error state
         expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
+        
+        // Assert the correct error modal is displayed
+        if (errorReason === 'content_not_in_catalog') {
+          const assignmentErrorModal = getAssignmentErrorModal();
+          expect(assignmentErrorModal.getByText(`This course is not in your ${mockSubsidyAccessPolicy.displayName} budget's catalog`)).toBeInTheDocument();
+          const exitCTA = getButtonElement('Exit', { screenOverride: assignmentErrorModal });
+          userEvent.click(exitCTA);
+          await waitFor(() => {
+            // Verify all modals close (error modal + assignment modal)
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+          });
+        } else if (['not_enough_value_in_subsidy', 'policy_spend_limit_reached'].includes(errorReason)) {
+          const assignmentErrorModal = getAssignmentErrorModal();
+          const errorModalTitle = 'Not enough balance';
+          expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
+          if (shouldRetryAfterError) {
+            await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
+          } else {
+            await simulateClickErrorModalExit(assignmentErrorModal);
+          }
+        } else {
+          const assignmentErrorModal = getAssignmentErrorModal();
+          const errorModalTitle = 'Something went wrong';
+          expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
+          if (shouldRetryAfterError) {
+            await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
+          } else {
+            await simulateClickErrorModalExit(assignmentErrorModal);
+          }
+        }
+
       } else {
         // Verify success state
         expect(mockInvalidateQueries).toHaveBeenCalledTimes(1);

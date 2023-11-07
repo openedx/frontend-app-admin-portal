@@ -15,6 +15,7 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys, useBudgetId } from '../data';
+import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -28,14 +29,19 @@ const NewAssignmentModalButton = ({ course, children }) => {
   const routeMatch = useRouteMatch();
   const queryClient = useQueryClient();
   const { subsidyAccessPolicyId } = useBudgetId();
-
   const [isOpen, open, close] = useToggle(false);
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [assignButtonState, setAssignButtonState] = useState('default');
+  const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
 
   const { mutate } = useAllocateContentAssignments();
 
   const pathToActivityTab = generatePath(routeMatch.path, { budgetId: subsidyAccessPolicyId, activeTabKey: 'activity' });
+
+  const handleCloseAssignmentModal = () => {
+    close();
+    setAssignButtonState('default');
+  };
 
   const handleAllocateContentAssignments = () => {
     const payload = snakeCaseObject({
@@ -48,16 +54,27 @@ const NewAssignmentModalButton = ({ course, children }) => {
       payload,
     };
     setAssignButtonState('pending');
+    setCreateAssignmentsErrorReason(null);
     mutate(mutationArgs, {
       onSuccess: () => {
         setAssignButtonState('complete');
         queryClient.invalidateQueries({
           queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
         });
-        close();
+        handleCloseAssignmentModal();
         history.push(pathToActivityTab);
       },
-      onError: () => {
+      onError: (err) => {
+        const {
+          httpErrorStatus,
+          httpErrorResponseData,
+        } = err.customAttributes;
+        if (httpErrorStatus === 422) {
+          const responseData = JSON.parse(httpErrorResponseData);
+          setCreateAssignmentsErrorReason(responseData[0].reason);
+        } else {
+          setCreateAssignmentsErrorReason('system_error');
+        }
         setAssignButtonState('error');
       },
     });
@@ -70,7 +87,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
         className="bg-light-200 text-left"
         title="Assign this course"
         isOpen={isOpen}
-        onClose={close}
+        onClose={handleCloseAssignmentModal}
         footerNode={(
           <ActionRow>
             <Button variant="tertiary" as={Hyperlink} destination="https://edx.org" target="_blank">
@@ -92,8 +109,16 @@ const NewAssignmentModalButton = ({ course, children }) => {
           </ActionRow>
         )}
       >
-        <AssignmentModalContent course={course} onEmailAddressesChange={setLearnerEmails} />
+        <AssignmentModalContent
+          course={course}
+          onEmailAddressesChange={setLearnerEmails}
+        />
       </FullscreenModal>
+      <CreateAllocationErrorAlertModals
+        errorReason={createAssignmentsErrorReason}
+        retry={handleAllocateContentAssignments}
+        closeAssignmentModal={handleCloseAssignmentModal}
+      />
     </>
   );
 };
