@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import LmsApiService from '../../../data/services/LmsApiService';
 import NewSSOConfigAlerts from './NewSSOConfigAlerts';
 import NewSSOConfigCard from './NewSSOConfigCard';
+import { isInProgressConfig } from './utils';
 
 const FRESH_CONFIG_POLLING_INTERVAL = 30000;
 const UPDATED_CONFIG_POLLING_INTERVAL = 2000;
@@ -66,9 +67,7 @@ const NewExistingSSOConfigs = ({
 
   useEffect(() => {
     const [active, inactive] = _.partition(configs, config => config.active);
-    const inProgress = configs.filter(
-      config => (config.submitted_at && !config.configured_at) || (config.configured_at < config.submitted_at),
-    );
+    const inProgress = configs.filter(isInProgressConfig);
     const untested = configs.filter(config => !config.validated_at);
     const live = configs.filter(
       config => (config.validated_at && config.active && config.validated_at > config.configured_at),

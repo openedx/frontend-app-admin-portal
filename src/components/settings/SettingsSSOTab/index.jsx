@@ -13,6 +13,7 @@ import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { features } from '../../../config';
+import { isInProgressConfig } from './utils';
 
 const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const {
@@ -51,6 +52,8 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   }, [AUTH0_SELF_SERVICE_INTEGRATION, existingConfigs, setHasSSOConfig]);
 
   if (AUTH0_SELF_SERVICE_INTEGRATION) {
+    const newButtonVisible = existingConfigs?.length > 0 && (providerConfig === null);
+    const newButtonDisabled = existingConfigs.some(isInProgressConfig);
     return (
       <div>
         <ModalDialog
@@ -92,11 +95,12 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
         <div className="d-flex">
           <h2 className="py-2">Single Sign-On (SSO) Integrations</h2>
           <div className="mr-0 ml-auto flex-column d-flex">
-            {existingConfigs?.length > 0 && (providerConfig === null) && (
+            {newButtonVisible && (
               <Button
                 className="btn btn-outline-primary mb-1"
                 iconBefore={Add}
                 onClick={open}
+                disabled={newButtonDisabled}
               >
                 New
               </Button>
