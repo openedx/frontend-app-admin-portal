@@ -7,3 +7,4 @@ export { default as useSubsidyAccessPolicy } from './useSubsidyAccessPolicy';
 export { default as usePathToCatalogTab } from './usePathToCatalogTab';
 export { default as useBudgetDetailActivityOverview } from './useBudgetDetailActivityOverview';
 export { default as useIsLargeOrGreater } from './useIsLargeOrGreater';
+export { default as useSuccessfulAssignmentToastContextValue } from './useSuccessfulAssignmentToastContextValue';

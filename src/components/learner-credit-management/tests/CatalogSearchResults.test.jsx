@@ -12,7 +12,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { BaseCatalogSearchResults } from '../search/CatalogSearchResults';
 import { CONTENT_TYPE_COURSE } from '../data/constants';
 import { queryClient } from '../../test/testUtils';
-import { useSubsidyAccessPolicy } from '../data';
+import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 
 // Mocking this connected component so as not to have to mock the algolia Api
 const PAGINATE_ME = 'PAGINATE ME :)';
@@ -170,10 +170,18 @@ describe('Main Catalogs view works as expected', () => {
   });
 
   test('all courses rendered when search results available', async () => {
+    const budgetDetailPageContextValue = {
+      isSuccessfulAssignmentAllocationToastOpen: false,
+      totalLearnersAssigned: undefined,
+      displayToastForAssignmentAllocation: jest.fn(),
+      closeToastForAssignmentAllocation: jest.fn(),
+    };
     renderWithRouter(
       <SearchDataWrapper>
         <IntlProvider locale="en">
-          <BaseCatalogSearchResults {...defaultProps} />
+          <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+            <BaseCatalogSearchResults {...defaultProps} />
+          </BudgetDetailPageContext.Provider>
         </IntlProvider>
         ,
       </SearchDataWrapper>,
