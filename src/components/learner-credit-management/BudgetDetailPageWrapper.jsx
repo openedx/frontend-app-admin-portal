@@ -37,8 +37,8 @@ const BudgetDetailPageWrapper = ({
       {/**
         Successful assignment allocation Toast notification. It is rendered here to guarantee that the
         Toast component will not be unmounted when the user programmatically navigates to the "Activity"
-        tab, which will unmount the course cards that rendered the assignment modal. Thus, the Toast much
-        be rendered in the component tree that is common to both the "Activity" and "Overview" tabs.
+        tab, which will unmount the course cards that rendered the assignment modal. Thus, the Toast must
+        be rendered within the component tree that's common to both the "Activity" and "Overview" tabs.
       */}
       <Toast
         onClose={closeToastForAssignmentAllocation}
