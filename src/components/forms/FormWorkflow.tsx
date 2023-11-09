@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Dispatch } from 'react';
 import {
-  ActionRow, Button, FullscreenModal, Stepper, useToggle,
+  ActionRow, Button, FullscreenModal, Spinner, Stepper, useToggle,
 } from '@edx/paragon';
 import { Launch } from '@edx/paragon/icons';
 
@@ -19,6 +19,7 @@ import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from '../settings/data/constan
 import ConfigErrorModal from '../settings/ConfigErrorModal';
 import { channelMapping, pollAsync } from '../../utils';
 import HelpCenterButton from '../settings/HelpCenterButton';
+import './_FormWorkflow.scss';
 
 export const WAITING_FOR_ASYNC_OPERATION = 'WAITING FOR ASYNC OPERATION';
 
@@ -107,6 +108,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
     closeSavedChangesModal,
   ] = useToggle(false);
   const [helpCenterLink, setHelpCenterLink] = useState(HELP_CENTER_LINK);
+  const [nextInProgress, setNextInProgress] = useState(false);
   const nextButtonConfig = step?.nextButtonConfig(formFields);
   const awaitingAsyncAction = stateMap && stateMap[WAITING_FOR_ASYNC_OPERATION];
 
@@ -131,6 +133,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
     } else {
       let advance = true;
       if (nextButtonConfig && nextButtonConfig.onClick) {
+        setNextInProgress(true);
         const newFormFields: FormConfigData = await nextButtonConfig.onClick({
           formFields,
           errHandler: setFormError,
@@ -140,6 +143,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
         if (newFormFields) {
           dispatch(updateFormFieldsAction({ formFields: newFormFields }));
         }
+        setNextInProgress(false);
         if (nextButtonConfig?.awaitSuccess) {
           advance = await pollAsync(
             () => nextButtonConfig.awaitSuccess?.awaitCondition?.({
@@ -211,6 +215,16 @@ const FormWorkflow = <FormConfigData extends unknown>({
   const showBackButton = (step?.index !== undefined) && (step.index > 0) && step.showBackButton;
   // Show cancel button by default
   const showCancelButton = step?.showCancelButton === undefined || step?.showCancelButton;
+  let nextButtonContents = nextButtonConfig && (
+    <>
+      {nextButtonConfig.buttonText}
+      {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
+    </>
+  );
+  if (nextInProgress) {
+    // show spinner if Next button operation is ongoing
+    nextButtonContents = <Spinner animation="border" size="sm" />;
+  }
   return (
     <>
       <ConfigErrorModal
@@ -247,9 +261,8 @@ const FormWorkflow = <FormConfigData extends unknown>({
               {showCancelButton && <Button variant="tertiary" onClick={onCancel}>Cancel</Button>}
               {showBackButton && <Button variant="tertiary" onClick={onBack}>Back</Button>}
               {nextButtonConfig && (
-                <Button onClick={onNext} disabled={awaitingAsyncAction}>
-                  {nextButtonConfig.buttonText}
-                  {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
+                <Button className="next-button" onClick={onNext} disabled={nextInProgress || awaitingAsyncAction}>
+                  {nextButtonContents}
                 </Button>
               )}
             </ActionRow>
