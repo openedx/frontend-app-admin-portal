@@ -209,11 +209,11 @@ describe('<BudgetDetailPage />', () => {
   it.each([
     {
       budgetId: mockEnterpriseOfferId,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, true],
     },
     {
       budgetId: mockSubsidyAccessPolicyUUID,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],
     },
   ])('displays spend table in "Activity" tab with empty results (%s)', async ({
     budgetId,

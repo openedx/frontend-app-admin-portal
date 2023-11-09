@@ -95,6 +95,16 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseKey: result.courseKey,
 }));
 
+export const transformUtilizationTableSubsidyTransactionResults = results => results.map(result => ({
+  created: result.created,
+  enterpriseEnrollmentId: result.fulfillmentIdentifier,
+  userEmail: result.lmsUserEmail,
+  courseTitle: result.contentTitle,
+  courseListPrice: result.unit === 'usd_cents' ? -1 * (result.quantity / 100) : -1 * results.quantity,
+  uuid: result.uuid,
+  courseKey: result.contentKey,
+}));
+
 /**
  * Gets appropriate color variant for the annotated progress bar.
  *
