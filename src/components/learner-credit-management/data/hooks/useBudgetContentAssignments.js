@@ -9,6 +9,7 @@ const initialContentAssignmentsState = {
   count: 0,
   numPages: 0,
   currentPage: 1,
+  learnerStateCounts: [],
 };
 
 const applyFiltersToOptions = (filters, options) => {
@@ -19,6 +20,40 @@ const applyFiltersToOptions = (filters, options) => {
   if (searchQuery) {
     Object.assign(options, { search: searchQuery });
   }
+  const learnerStateFilter = filters.find(filter => filter.id === 'learnerState')?.value;
+  if (learnerStateFilter) {
+    Object.assign(options, { learnerState: learnerStateFilter.join(',') });
+  }
+};
+
+const applySortByToOptions = (sortBy, options) => {
+  if (!sortBy || sortBy.length === 0) {
+    return;
+  }
+  const apiFieldsForColumnAccessor = {
+    recentAction: { key: 'recent_action_time' },
+    learnerState: { key: 'learner_state_sort_order' },
+    amount: { key: 'content_quantity', isReversed: true },
+  };
+  const orderingStrings = sortBy.map(({ id, desc }) => {
+    const apiFieldForColumnAccessor = apiFieldsForColumnAccessor[id];
+    if (!apiFieldForColumnAccessor) {
+      return undefined;
+    }
+    const isApiFieldOrderingReversed = apiFieldForColumnAccessor.isReversed;
+    const apiFieldKey = apiFieldForColumnAccessor.key;
+    // Determine whether the API field ordering should be reversed based on the column accessor. This is
+    // necessary because the content_quantity field is a negative number, but if the column is sorted in a
+    // descending order, users would likely expect the larger contenr quantity to be at the top of the list,
+    // which is technically the smaller number since its negative.
+    if (isApiFieldOrderingReversed) {
+      return desc ? apiFieldKey : `-${apiFieldKey}`;
+    }
+    return desc ? `-${apiFieldKey}` : apiFieldKey;
+  }).filter(orderingString => !!orderingString);
+  Object.assign(options, {
+    ordering: orderingStrings.join(','),
+  });
 };
 
 const useBudgetContentAssignments = ({
@@ -40,6 +75,7 @@ const useBudgetContentAssignments = ({
         pageSize: args.pageSize,
       };
       applyFiltersToOptions(args.filters, options);
+      applySortByToOptions(args.sortBy, options);
       const assignmentsResponse = await EnterpriseAccessApiService.listContentAssignments(
         assignmentConfigurationUUID,
         options,

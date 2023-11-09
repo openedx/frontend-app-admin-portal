@@ -22,6 +22,7 @@ import {
   formatDate,
   DEFAULT_PAGE,
   PAGE_SIZE,
+  formatPrice,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
@@ -30,7 +31,7 @@ import {
   mockSubsidyAccessPolicyUUID,
   mockEnterpriseOfferId,
 } from '../data/tests/constants';
-import { queryClient } from '../../test/testUtils';
+import { getButtonElement, queryClient } from '../../test/testUtils';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -65,6 +66,7 @@ const initialStoreState = {
 };
 
 const mockLearnerEmail = 'edx@example.com';
+const mockSecondLearnerEmail = 'edx001@example.com';
 const mockCourseKey = 'edX+DemoX';
 const mockContentTitle = 'edx Demo';
 
@@ -99,6 +101,38 @@ const mockFailedLinkedLearnerAction = {
   actionType: 'learner_linked',
   errorReason: 'internal_api_error',
 };
+const mockLearnerContentAssignment = {
+  uuid: 'test-uuid',
+  learnerEmail: mockLearnerEmail,
+  contentKey: mockCourseKey,
+  contentTitle: mockContentTitle,
+  contentQuantity: -19900,
+  learnerState: 'waiting',
+  recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+  actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
+  errorReason: null,
+};
+const mockEnrollmentTransactionReversal = {
+  uuid: 'test-transaction-reversal-uuid',
+  created: '2023-10-31',
+};
+const mockEnrollmentTransaction = {
+  uuid: 'test-transaction-uuid',
+  enrollmentDate: '2023-10-28',
+  courseKey: mockCourseKey,
+  courseTitle: mockContentTitle,
+  userEmail: mockLearnerEmail,
+  fulfillmentIdentifier: 'test-fulfillment-identifier',
+  courseListPrice: 100,
+  reversal: null,
+};
+const mockEnrollmentTransactionWithReversal = {
+  ...mockEnrollmentTransaction,
+  uuid: 'test-transaction-with-reversal-uuid',
+  userEmail: mockSecondLearnerEmail,
+  reversal: mockEnrollmentTransactionReversal,
+};
+
 const mockFailedCancelledLearnerAction = {
   actionType: 'cancelled',
   completedAt: null,
@@ -206,11 +240,11 @@ describe('<BudgetDetailPage />', () => {
   it.each([
     {
       budgetId: mockEnterpriseOfferId,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, true],
     },
     {
       budgetId: mockSubsidyAccessPolicyUUID,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],
     },
   ])('displays spend table in "Activity" tab with empty results (%s)', async ({
     budgetId,
@@ -227,8 +261,8 @@ describe('<BudgetDetailPage />', () => {
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
-        contentAssignments: undefined,
-        spentTransactions: { count: 1 },
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
       },
     });
     useBudgetContentAssignments.mockReturnValue({
@@ -260,7 +294,7 @@ describe('<BudgetDetailPage />', () => {
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
   });
 
-  it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', () => {
+  it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', async () => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -273,7 +307,7 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       data: {
         contentAssignments: { count: 0 },
-        spentTransactions: { count: 1 },
+        spentTransactions: { count: 2 },
       },
     });
     useBudgetContentAssignments.mockReturnValue({
@@ -287,7 +321,11 @@ describe('<BudgetDetailPage />', () => {
     });
     useOfferRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
+      offerRedemptions: {
+        itemCount: 2,
+        pageCount: 1,
+        results: [mockEnrollmentTransaction, mockEnrollmentTransactionWithReversal],
+      },
       fetchOfferRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -299,6 +337,19 @@ describe('<BudgetDetailPage />', () => {
 
     // Catalog tab exists and is NOT active
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
+
+    // Spend table renders rows of data
+    const spentSection = within(screen.getByText('Spent').closest('section'));
+    expect(spentSection.queryByText('No results found')).not.toBeInTheDocument();
+    expect(spentSection.getByText(mockLearnerEmail)).toBeInTheDocument();
+    expect(spentSection.getByText(mockSecondLearnerEmail)).toBeInTheDocument();
+    expect(spentSection.queryAllByText(mockContentTitle, { selector: 'a' })).toHaveLength(2);
+    expect(spentSection.queryAllByText(`-${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toHaveLength(2);
+
+    // Includes reversal messaging on table row, when appropriate
+    const transactionRowWithReversal = within(spentSection.getByText(mockSecondLearnerEmail).closest('tr'));
+    expect(transactionRowWithReversal.getByText(`Refunded on ${formatDate(mockEnrollmentTransactionReversal.created)}`)).toBeInTheDocument();
+    expect(transactionRowWithReversal.getByText(`+${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toBeInTheDocument();
   });
 
   it('renders with assigned table data and handles table refresh', () => {
@@ -322,19 +373,8 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       contentAssignments: {
         count: 1,
-        results: [
-          {
-            uuid: 'test-uuid',
-            learnerEmail: mockLearnerEmail,
-            contentKey: mockCourseKey,
-            contentTitle: mockContentTitle,
-            contentQuantity: -19900,
-            learnerState: 'waiting',
-            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
-            actions: [mockSuccessfulNotifiedAction],
-            errorReason: null,
-          },
-        ],
+        results: [mockLearnerContentAssignment],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
         numPages: 1,
         currentPage: 1,
       },
@@ -358,20 +398,258 @@ describe('<BudgetDetailPage />', () => {
     expect(assignedSection.getByText('Waiting for learner')).toBeInTheDocument();
     expect(assignedSection.getByText(`Assigned: ${formatDate('2023-10-27')}`)).toBeInTheDocument();
 
-    // Verify "Refresh" behavior
-    const expectedRefreshArgs = {
+    const expectedTableFetchDataArgs = {
       pageIndex: DEFAULT_PAGE,
       pageSize: PAGE_SIZE,
       filters: [],
-      sortBy: [],
+      sortBy: [{ id: 'recentAction', desc: true }], // default table sort order
     };
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(1); // called once on initial render
-    expect(mockFetchContentAssignments).toHaveBeenCalledWith(expect.objectContaining(expectedRefreshArgs));
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
+
+    // Verify "Refresh" behavior
     const refreshCTA = assignedSection.getByText('Refresh', { selector: 'button' });
     expect(refreshCTA).toBeInTheDocument();
     userEvent.click(refreshCTA);
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
-    expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedRefreshArgs));
+    expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
+  });
+
+  it.each([
+    { sortByColumnHeader: 'Amount', expectedSortBy: [{ id: 'amount', desc: false }] },
+  ])('renders sortable assigned table data', async ({ sortByColumnHeader, expectedSortBy }) => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchContentAssignments = jest.fn();
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [mockLearnerContentAssignment],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: mockFetchContentAssignments,
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    const expectedDefaultTableFetchDataArgs = {
+      pageIndex: DEFAULT_PAGE,
+      pageSize: PAGE_SIZE,
+      filters: [],
+      sortBy: [{ id: 'recentAction', desc: true }], // default table sort order
+    };
+    const expectedDefaultTableFetchDataArgsAfterSort = {
+      ...expectedDefaultTableFetchDataArgs,
+      sortBy: expectedSortBy,
+    };
+
+    expect(mockFetchContentAssignments).toHaveBeenCalledTimes(1); // called once on initial render
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+      expect.objectContaining(expectedDefaultTableFetchDataArgs),
+    );
+
+    // Verify amount column sort
+    const amountColumnHeader = assignedSection.getByText(sortByColumnHeader);
+    userEvent.click(amountColumnHeader);
+
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+      expect.objectContaining(expectedDefaultTableFetchDataArgsAfterSort),
+    );
+  });
+
+  it.each([
+    {
+      filterBy: {
+        field: 'status',
+        value: ['waiting'],
+      },
+      expectedFilters: [{ id: 'learnerState', value: ['waiting'] }],
+    },
+    {
+      filterBy: {
+        field: 'search',
+        value: mockLearnerEmail,
+      },
+      expectedFilters: [{ id: 'assignmentDetails', value: mockLearnerEmail }],
+    },
+  ])('renders filterable assigned table data (%s)', async ({
+    filterBy,
+    expectedFilters,
+  }) => {
+    const { field, value } = filterBy;
+
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchContentAssignments = jest.fn();
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [mockLearnerContentAssignment],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: mockFetchContentAssignments,
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    const expectedDefaultTableFetchDataArgs = {
+      pageIndex: DEFAULT_PAGE,
+      pageSize: PAGE_SIZE,
+      filters: [],
+      sortBy: [{ id: 'recentAction', desc: true }], // default table sort order
+    };
+    const expectedTableFetchDataArgsAfterFilter = {
+      ...expectedDefaultTableFetchDataArgs,
+      filters: expectedFilters,
+    };
+    expect(mockFetchContentAssignments).toHaveBeenCalledTimes(1); // called once on initial render
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+      expect.objectContaining(expectedDefaultTableFetchDataArgs),
+    );
+
+    if (field === 'status') {
+      const filtersButton = getButtonElement('Filters', { screenOverride: assignedSection });
+      userEvent.click(filtersButton);
+      const filtersDropdown = screen.getByRole('group', { name: 'Status' });
+      const filtersDropdownContainer = within(filtersDropdown);
+      if (value.includes('waiting')) {
+        const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
+        expect(waitingForLearnerOption).toBeInTheDocument();
+        userEvent.click(waitingForLearnerOption);
+
+        await waitFor(() => {
+          expect(waitingForLearnerOption).toBeChecked();
+          expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+            expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
+          );
+        });
+      }
+    }
+
+    if (field === 'search') {
+      const assignmentDetailsInputField = assignedSection.getByLabelText('Search by assignment details');
+      userEvent.type(assignmentDetailsInputField, value);
+
+      await waitFor(() => {
+        expect(assignmentDetailsInputField).toHaveValue(value);
+        expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+          expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
+        );
+      });
+    }
+  });
+
+  it.each([
+    {
+      columnHeader: 'Amount',
+      columnId: 'amount',
+    },
+  ])('renders sortable assigned table data (%s)', async ({ columnHeader, columnId }) => {
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchContentAssignments = jest.fn();
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [mockLearnerContentAssignment],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: mockFetchContentAssignments,
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    const assignedSection = within(screen.getByText('Assigned').closest('section'));
+    const expectedDefaultTableFetchDataArgs = {
+      pageIndex: DEFAULT_PAGE,
+      pageSize: PAGE_SIZE,
+      filters: [],
+      sortBy: [{ id: 'recentAction', desc: true }], // default table sort order
+    };
+    const expectedTableFetchDataArgsAfterSortAsc = {
+      ...expectedDefaultTableFetchDataArgs,
+      sortBy: [{ id: columnId, desc: false }],
+    };
+    const expectedTableFetchDataArgsAfterSortDesc = {
+      ...expectedDefaultTableFetchDataArgs,
+      sortBy: [{ id: columnId, desc: true }],
+    };
+    expect(mockFetchContentAssignments).toHaveBeenCalledTimes(1); // called once on initial render
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+      expect.objectContaining(expectedDefaultTableFetchDataArgs),
+    );
+
+    const orderedColumnHeader = assignedSection.getByText(columnHeader);
+    userEvent.click(orderedColumnHeader);
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+      expect.objectContaining(expectedTableFetchDataArgsAfterSortAsc),
+    );
+    userEvent.click(orderedColumnHeader);
+    expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+      expect.objectContaining(expectedTableFetchDataArgsAfterSortDesc),
+    );
   });
 
   it('renders with assigned table data "View Course" hyperlink default when content title is null', () => {
@@ -394,19 +672,8 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       contentAssignments: {
         count: 1,
-        results: [
-          {
-            uuid: 'test-uuid',
-            learnerEmail: mockLearnerEmail,
-            contentKey: mockCourseKey,
-            contentTitle: null,
-            contentQuantity: -19900,
-            learnerState: 'waiting',
-            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
-            actions: [mockSuccessfulNotifiedAction],
-            errorReason: null,
-          },
-        ],
+        results: [{ ...mockLearnerContentAssignment, contentTitle: null }],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
         numPages: 1,
         currentPage: 1,
       },
@@ -540,16 +807,14 @@ describe('<BudgetDetailPage />', () => {
         count: 1,
         results: [
           {
-            uuid: 'test-uuid',
+            ...mockLearnerContentAssignment,
             learnerEmail: hasLearnerEmail ? mockLearnerEmail : null,
-            contentKey: mockCourseKey,
-            contentQuantity: -19900,
             learnerState,
-            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
             actions,
             errorReason,
           },
         ],
+        learnerStateCounts: [{ learnerState, count: 1 }],
         numPages: 1,
         currentPage: 1,
       },
@@ -819,16 +1084,11 @@ describe('<BudgetDetailPage />', () => {
         count: 1,
         results: [
           {
-            uuid: 'test-uuid',
-            contentKey: mockCourseKey,
-            contentQuantity: -19900,
+            ...mockLearnerContentAssignment,
             learnerState,
-            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
-            actions: [],
-            errorReason: null,
-            state: 'allocated',
           },
         ],
+        learnerStateCounts: [{ learnerState, count: 1 }],
         numPages: 1,
         currentPage: 1,
       },
