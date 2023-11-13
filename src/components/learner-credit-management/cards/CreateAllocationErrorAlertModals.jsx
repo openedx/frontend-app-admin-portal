@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useToggle } from '@edx/paragon';
-import SystemErrorAlertModal from './status-modals/SystemErrorAlertModal';
-import ContentNotInCatalogErrorAlertModal from './status-modals/ContentNotInCatalogErrorAlertModal';
-import NotEnoughBalanceAlertModal from './status-modals/NotEnoughBalanceAlertModal';
+import SystemErrorAlertModal from './assignment-allocation-status-modals/SystemErrorAlertModal';
+import ContentNotInCatalogErrorAlertModal from './assignment-allocation-status-modals/ContentNotInCatalogErrorAlertModal';
+import NotEnoughBalanceAlertModal from './assignment-allocation-status-modals/NotEnoughBalanceAlertModal';
 
 const CreateAllocationErrorAlertModals = ({
   errorReason,

@@ -323,14 +323,12 @@ describe('Course card works as expected', () => {
     expect(modalCourseCard.queryByText('View course', { selector: 'a' })).not.toBeInTheDocument();
     expect(getButtonElement('Assign', { screenOverride: modalCourseCard, isQueryByRole: true })).not.toBeInTheDocument();
 
-    // Verify empty state and textarea can accept emails
+    // Verify empty state
     expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
     const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
     expect(textareaInputLabel).toBeInTheDocument();
     const textareaInput = textareaInputLabel.closest('textarea');
     expect(textareaInput).toBeInTheDocument();
-    userEvent.type(textareaInput, 'hello@example.com{enter}world@example.com');
-    expect(textareaInput).toHaveValue('hello@example.com\nworld@example.com');
     expect(assignmentModal.getByText('To add more than one learner, enter one email address per line.')).toBeInTheDocument();
     expect(assignmentModal.getByText('Pay by Learner Credit')).toBeInTheDocument();
     expect(assignmentModal.getByText('Summary')).toBeInTheDocument();
@@ -364,6 +362,28 @@ describe('Course card works as expected', () => {
     expect(submitAssignmentCTA).toBeInTheDocument();
 
     if (shouldSubmitAssignments) {
+      // Verify textarea receives input
+      userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+      expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
+
+      // Verify assignment summary UI updates
+      await waitFor(() => {
+        expect(assignmentModal.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
+      });
+      expect(assignmentModal.queryByText('You haven\'t entered any learners yet.')).not.toBeInTheDocument();
+      expect(assignmentModal.queryByText('Add learner emails to get started.')).not.toBeInTheDocument();
+      mockLearnerEmails.forEach((learnerEmail) => {
+        expect(assignmentModal.getByText(learnerEmail)).toBeInTheDocument();
+      });
+      expect(assignmentModal.getByText('Total assignment cost')).toBeInTheDocument();
+      const expectedAssignmentCost = mockLearnerEmails.length * defaultProps.original.normalized_metadata.content_price;
+      expect(assignmentModal.getByText(formatPrice(expectedAssignmentCost))).toBeInTheDocument();
+      expect(assignmentModal.getByText('Remaining after assignment')).toBeInTheDocument();
+      const expectedBalanceAfterAssignment = (
+        mockSubsidyAccessPolicy.aggregates.spendAvailableUsd - expectedAssignmentCost
+      );
+      expect(assignmentModal.getByText(formatPrice(expectedBalanceAfterAssignment))).toBeInTheDocument();
+
       // Verify assignment is submitted successfully
       userEvent.click(submitAssignmentCTA);
       await waitFor(() => expect(mockAllocateContentAssignments).toHaveBeenCalledTimes(1));
