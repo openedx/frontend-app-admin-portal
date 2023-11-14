@@ -21,6 +21,7 @@ import { getButtonElement, queryClient } from '../../test/testUtils';
 
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
+import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from './data';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -369,7 +370,7 @@ describe('Course card works as expected', () => {
       // Verify assignment summary UI updates
       await waitFor(() => {
         expect(assignmentModal.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
-      });
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
       expect(assignmentModal.queryByText('You haven\'t entered any learners yet.')).not.toBeInTheDocument();
       expect(assignmentModal.queryByText('Add learner emails to get started.')).not.toBeInTheDocument();
       mockLearnerEmails.forEach((learnerEmail) => {
