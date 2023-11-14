@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
 
 export const getBudgetDisplayName = (subsidyAccessPolicy) => {
   let budgetDisplayName = 'budget';
@@ -7,3 +7,7 @@ export const getBudgetDisplayName = (subsidyAccessPolicy) => {
   }
   return budgetDisplayName;
 };
+
+export const hasLearnerEmailsSummaryListTruncation = (learnerEmails) => (
+  learnerEmails.length > MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT
+);

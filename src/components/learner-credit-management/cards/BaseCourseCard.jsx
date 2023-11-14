@@ -32,7 +32,7 @@ const BaseCourseCard = ({
     logoAlt,
     title,
     subtitle,
-    price,
+    formattedPrice,
     isExecEdCourseType,
     courseEnrollmentInfo,
     execEdEnrollmentInfo,
@@ -53,7 +53,7 @@ const BaseCourseCard = ({
           subtitle={subtitle}
           actions={(
             <Stack gap={1} className="text-right">
-              <div className="h4 mt-2.5 mb-0">{price}</div>
+              <div className="h4 mt-2.5 mb-0">{formattedPrice}</div>
               <span className="micro">{PRICE.subText}</span>
             </Stack>
           )}
