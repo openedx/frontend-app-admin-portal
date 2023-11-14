@@ -12,6 +12,7 @@ const AssignmentModalSummary = ({
 }) => {
   const learnerEmailsCount = learnerEmails.length;
   const hasLearnerEmails = learnerEmailsCount > 0;
+  const totalAssignmentCost = learnerEmailsCount * course.normalizedMetadata.contentPrice;
 
   let summaryHeading = 'Summary';
   if (hasLearnerEmails) {
@@ -37,7 +38,7 @@ const AssignmentModalSummary = ({
           <Card className="rounded-0 shadow-none">
             <Card.Section className="d-flex justify-content-between py-2">
               <div>Total assignment cost</div>
-              <div>{formatPrice(learnerEmailsCount * course.normalizedMetadata.contentPrice)}</div>
+              <div>{formatPrice(totalAssignmentCost)}</div>
             </Card.Section>
           </Card>
         )}
