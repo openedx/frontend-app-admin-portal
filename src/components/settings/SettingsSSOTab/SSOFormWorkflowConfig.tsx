@@ -77,7 +77,7 @@ type SSOConfigFormControlVariables = {
 
 type SSOConfigFormContextData = SSOConfigCamelCase & SSOConfigFormControlVariables;
 
-export const SSOFormWorkflowConfig = ({ enterpriseId }) => {
+export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
   const placeHolderButton = (buttonName?: string) => () => ({
     buttonText: buttonName || 'Next',
     opensNewWindow: false,
@@ -106,6 +106,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId }) => {
         updatedFormFields = updateResponse.data;
       } catch (error) {
         err = handleErrors(error);
+        setConfigureError(error);
       }
     } else {
       try {
@@ -114,6 +115,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId }) => {
         updatedFormFields.spMetadataUrl = createResponse.data.sp_metadata_url;
       } catch (error) {
         err = handleErrors(error);
+        setConfigureError(error);
       }
     }
     if (err && errHandler) {
