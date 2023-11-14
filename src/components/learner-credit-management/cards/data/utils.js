@@ -8,6 +8,6 @@ export const getBudgetDisplayName = (subsidyAccessPolicy) => {
   return budgetDisplayName;
 };
 
-export const determineLearnerEmailsSummaryListTruncation = (learnerEmails) => (
+export const hasLearnerEmailsSummaryListTruncation = (learnerEmails) => (
   learnerEmails.length > MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT
 );

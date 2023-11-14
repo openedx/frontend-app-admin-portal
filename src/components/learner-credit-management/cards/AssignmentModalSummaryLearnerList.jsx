@@ -6,18 +6,18 @@ import {
 } from '@edx/paragon';
 import { Person } from '@edx/paragon/icons';
 
-import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, determineLearnerEmailsSummaryListTruncation } from './data';
+import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, hasLearnerEmailsSummaryListTruncation } from './data';
 
 const AssignmentModalSummaryLearnerList = ({
   course,
   learnerEmails,
 }) => {
-  const [isTruncated, setIsTruncated] = useState(determineLearnerEmailsSummaryListTruncation(learnerEmails));
+  const [isTruncated, setIsTruncated] = useState(hasLearnerEmailsSummaryListTruncation(learnerEmails));
   const truncatedLearnerEmails = learnerEmails.slice(0, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT - 1);
   const displayedLearnerEmails = isTruncated ? truncatedLearnerEmails : learnerEmails;
 
   useEffect(() => {
-    setIsTruncated(determineLearnerEmailsSummaryListTruncation(learnerEmails));
+    setIsTruncated(hasLearnerEmailsSummaryListTruncation(learnerEmails));
   }, [learnerEmails]);
 
   const expandCollapseMessage = isTruncated
@@ -49,7 +49,7 @@ const AssignmentModalSummaryLearnerList = ({
           </li>
         ))}
       </Stack>
-      {learnerEmails.length > MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT && (
+      {hasLearnerEmailsSummaryListTruncation(learnerEmails) && (
         <Button
           variant="link"
           size="sm"
