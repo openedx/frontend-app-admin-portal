@@ -26,7 +26,7 @@ const useCourseCardMetadata = ({
     partners,
     title,
   } = course;
-  const price = (normalizedMetadata.contentPrice || normalizedMetadata.contentPrice === 0) ? formatPrice(normalizedMetadata.contentPrice) : 'N/A';
+  const formattedPrice = (normalizedMetadata.contentPrice || normalizedMetadata.contentPrice === 0) ? formatPrice(normalizedMetadata.contentPrice) : 'N/A';
   const imageSrc = cardImageUrl || cardFallbackImg;
 
   let logoSrc;
@@ -57,7 +57,7 @@ const useCourseCardMetadata = ({
   return {
     ...course,
     subtitle: partners.map(partner => partner.name).join(', '),
-    price,
+    formattedPrice,
     imageSrc,
     altText,
     logoSrc,
