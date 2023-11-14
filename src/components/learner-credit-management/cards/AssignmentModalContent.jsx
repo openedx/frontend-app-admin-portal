@@ -11,6 +11,7 @@ import {
   Form,
   Card,
 } from '@edx/paragon';
+import isEmail from 'validator/lib/isEmail';
 
 import BaseCourseCard from './BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
@@ -18,12 +19,34 @@ import { ImpactOnYourLearnerCreditBudget, ManagingThisAssignment, NextStepsForAs
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from './data';
 
+const isEmailAddressesInputValueValid = ({ learnerEmails, remainingBalance, contentPrice }) => {
+  const invalidEmails = learnerEmails.filter((email) => !isEmail(email));
+  const duplicateEmails = learnerEmails.filter((email, index) => learnerEmails.indexOf(email) !== index);
+  const hasEnoughBalanceForAssignments = remainingBalance >= learnerEmails.length * contentPrice;
+  const isValid = invalidEmails.length === 0 && duplicateEmails.length === 0 && hasEnoughBalanceForAssignments;
+  return {
+    isValid,
+    invalidEmails,
+    duplicateEmails,
+    hasEnoughBalanceForAssignments,
+  };
+};
+
 const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
+  const [inputValidationErrorMessage, setInputValidationErrorMessage] = useState();
+
+  const hasLearnerEmails = learnerEmails.length > 0;
+  const hasValidLearnerEmails = hasLearnerEmails && !inputValidationErrorMessage;
+  const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
+  const costToAssignLearners = learnerEmails.length * course.normalizedMetadata.contentPrice;
+  const remainingBalanceAfterAssignment = spendAvailable - costToAssignLearners;
+
+  const { contentPrice } = course.normalizedMetadata;
 
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
@@ -37,8 +60,35 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
     }
     const emails = value.split('\n').filter((email) => email.trim().length > 0);
     setLearnerEmails(emails);
-    onEmailAddressesChange(emails);
-  }, [onEmailAddressesChange]);
+
+    // Validate the emails textarea input
+    const {
+      isValid,
+      invalidEmails,
+      duplicateEmails,
+      hasEnoughBalanceForAssignments,
+    } = isEmailAddressesInputValueValid({
+      learnerEmails: emails,
+      contentPrice,
+      remainingBalance: spendAvailable,
+    });
+
+    if (isValid) {
+      setInputValidationErrorMessage(null);
+      onEmailAddressesChange(emails);
+    } else {
+      let validationErrorMessage;
+      if (invalidEmails.length > 0) {
+        validationErrorMessage = `${invalidEmails[0]} is not a valid email.`;
+      } else if (duplicateEmails.length > 0) {
+        validationErrorMessage = `${duplicateEmails[0]} has been entered more than once.`;
+      } else if (!hasEnoughBalanceForAssignments) {
+        validationErrorMessage = `The total assignment cost exceeds your available Learner Credit budget balance of ${formatPrice(spendAvailable)}. Please remove learners and try again.`;
+      }
+      setInputValidationErrorMessage(validationErrorMessage);
+      onEmailAddressesChange([]);
+    }
+  }, [onEmailAddressesChange, contentPrice, spendAvailable]);
 
   const debouncedHandleEmailAddressesChanged = useMemo(
     () => debounce(handleEmailAddressesChanged, EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY),
@@ -48,11 +98,6 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
   useEffect(() => {
     debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
   }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
-
-  const hasLearnerEmails = learnerEmails.length > 0;
-  const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
-  const costToAssignLearners = learnerEmails.length * course.normalizedMetadata.contentPrice;
-  const remainingBalanceAfterAssignment = spendAvailable - costToAssignLearners;
 
   return (
     <Container size="lg" className="py-3">
@@ -75,9 +120,15 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
                 rows={10}
                 data-hj-suppress
               />
-              <Form.Control.Feedback>
-                To add more than one learner, enter one email address per line.
-              </Form.Control.Feedback>
+              {inputValidationErrorMessage ? (
+                <Form.Control.Feedback type="invalid">
+                  {inputValidationErrorMessage}
+                </Form.Control.Feedback>
+              ) : (
+                <Form.Control.Feedback>
+                  To add more than one learner, enter one email address per line.
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
             <h5 className="mb-3">How assigning this course works</h5>
             <Stack gap={1}>
@@ -91,6 +142,8 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
             <AssignmentModalSummary
               course={course}
               learnerEmails={learnerEmails}
+              inputValidationErrorMessage={inputValidationErrorMessage}
+              hasEnoughBalanceForAssignments
             />
             <hr className="my-4" />
             <h5 className="mb-4">
@@ -104,7 +157,7 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
                       <div>Available balance</div>
                       <div>{formatPrice(spendAvailable)}</div>
                     </Stack>
-                    {hasLearnerEmails && (
+                    {hasValidLearnerEmails && (
                       <Stack direction="horizontal" className="justify-content-between">
                         <div>Total cost</div>
                         <div>-{formatPrice(costToAssignLearners)}</div>
@@ -113,7 +166,7 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
                   </Stack>
                 </Card.Section>
               </Card>
-              {hasLearnerEmails && (
+              {hasValidLearnerEmails && (
                 <Card className="rounded-0 shadow-none">
                   <Card.Section className="d-flex justify-content-between py-2">
                     <div>Remaining after assignment</div>
