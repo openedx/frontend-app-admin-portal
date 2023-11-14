@@ -52,6 +52,7 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
   const hasLearnerEmails = learnerEmails.length > 0;
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
   const costToAssignLearners = learnerEmails.length * course.normalizedMetadata.contentPrice;
+  const remainingBalanceAfterAssignment = spendAvailable - costToAssignLearners;
 
   return (
     <Container size="lg" className="py-3">
@@ -116,7 +117,7 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
                 <Card className="rounded-0 shadow-none">
                   <Card.Section className="d-flex justify-content-between py-2">
                     <div>Remaining after assignment</div>
-                    <div>{formatPrice(spendAvailable - costToAssignLearners)}</div>
+                    <div>{formatPrice(remainingBalanceAfterAssignment)}</div>
                   </Card.Section>
                 </Card>
               )}
