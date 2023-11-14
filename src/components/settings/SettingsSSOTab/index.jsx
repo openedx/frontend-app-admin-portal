@@ -7,6 +7,7 @@ import { Add, WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs, useExistingProviderData } from './hooks';
 import NoSSOCard from './NoSSOCard';
+import SsoErrorPage from './SsoErrorPage';
 import ExistingSSOConfigs from './ExistingSSOConfigs';
 import NewExistingSSOConfigs from './NewExistingSSOConfigs';
 import NewSSOConfigForm from './NewSSOConfigForm';
@@ -27,6 +28,7 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const [showNoSSOCard, setShowNoSSOCard] = useState(false);
   const { AUTH0_SELF_SERVICE_INTEGRATION } = features;
   const [isOpen, open, close] = useToggle(false);
+  const [pollingNetworkError, setPollingNetworkError] = useState(false);
 
   const newConfigurationButtonOnClick = async () => {
     Promise.all(existingConfigs.map(config => LmsApiService.updateEnterpriseSsoOrchestrationRecord(
@@ -115,41 +117,44 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
           </div>
         </div>
         {(!isLoading || !pdIsLoading) && (
-          <div>
-            {/* providerConfig represents the currently selected config to edit/create, if there are
-            existing configs but no providerConfig then we can safely render the listings page */}
-            {existingConfigs?.length > 0 && (providerConfig === null) && (
-              <NewExistingSSOConfigs
-                providerData={existingProviderData}
-                configs={existingConfigs}
-                refreshBool={refreshBool}
-                setRefreshBool={setRefreshBool}
-              />
+          <>
+            {!error && (
+              <div>
+                {/* providerConfig represents the currently selected config to edit/create, if there are
+                existing configs but no providerConfig then we can safely render the listings page */}
+                {existingConfigs?.length > 0 && (providerConfig === null) && (
+                  <NewExistingSSOConfigs
+                    providerData={existingProviderData}
+                    configs={existingConfigs}
+                    refreshBool={refreshBool}
+                    setRefreshBool={setRefreshBool}
+                    setPollingNetworkError={setPollingNetworkError}
+                  />
+                )}
+                {/* Nothing found so guide user to creation/edit form */}
+                {showNoSSOCard && (
+                  <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />
+                )}
+                {/* Since we found a selected providerConfig we know we are in editing mode and can safely
+                render the create/edit form */}
+                {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
+                {pdError && (
+                <Alert variant="warning" icon={WarningFilled}>
+                  An error occurred loading the SAML data: <p>{pdError?.message}</p>
+                </Alert>
+                )}
+                <Toast
+                  onClose={() => setInfoMessage(null)}
+                  show={infoMessage?.length > 0}
+                >
+                  {infoMessage}
+                </Toast>
+              </div>
             )}
-            {/* Nothing found so guide user to creation/edit form */}
-            {showNoSSOCard && <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />}
-            {/* Since we found a selected providerConfig we know we are in editing mode and can safely
-            render the create/edit form */}
-            {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
-            {error && (
-            <Alert variant="warning" icon={WarningFilled}>
-              An error occurred loading the SAML configs: <p>{error?.message}</p>
-            </Alert>
+            {(error || pollingNetworkError) && (
+              <SsoErrorPage isOpen={error !== null} />
             )}
-            {pdError && (
-            <Alert variant="warning" icon={WarningFilled}>
-              An error occurred loading the SAML data: <p>{pdError?.message}</p>
-            </Alert>
-            )}
-            {infoMessage && (
-              <Toast
-                onClose={() => setInfoMessage(null)}
-                show={infoMessage.length > 0}
-              >
-                {infoMessage}
-              </Toast>
-            )}
-          </div>
+          </>
         )}
         {(isLoading || pdIsLoading) && <Skeleton count={5} height={10} />}
       </div>
