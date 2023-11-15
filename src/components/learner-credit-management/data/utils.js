@@ -90,14 +90,15 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseTitle: result.courseTitle,
   courseListPrice: result.courseListPrice,
   enrollmentDate: result.enrollmentDate,
-  courseProductLine: result.courseProductLine,
   uuid: uuidv4(),
   courseKey: result.courseKey,
 }));
 
 export const transformUtilizationTableSubsidyTransactionResults = results => results.map(result => ({
   created: result.created,
-  enterpriseEnrollmentId: result.fulfillmentIdentifier,
+  enrollmentDate: result.created,
+  fulfillmentIdentifier: result.fulfillmentIdentifier,
+  reversal: result.reversal,
   userEmail: result.lmsUserEmail,
   courseTitle: result.contentTitle,
   courseListPrice: result.unit === 'usd_cents' ? -1 * (result.quantity / 100) : -1 * results.quantity,
