@@ -29,3 +29,11 @@
 .assignment-modal-collapsible-trigger {
   text-decoration: underline;
 }
+
+.assignment-modal-summary-card,
+.assignment-modal-total-assignment-cost-card {
+  &.invalid {
+    background-color: $danger-100;
+    border: 1px solid $danger;
+  }
+}

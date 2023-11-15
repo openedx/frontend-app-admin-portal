@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouteMatch, useHistory, generatePath } from 'react-router-dom';
 import {
@@ -32,6 +32,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const [isOpen, open, close] = useToggle(false);
   const [learnerEmails, setLearnerEmails] = useState([]);
+  const [canAllocateAssignments, setCanAllocateAssignments] = useState(false);
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
   const { displayToastForAssignmentAllocation } = useContext(BudgetDetailPageContext);
@@ -44,6 +45,17 @@ const NewAssignmentModalButton = ({ course, children }) => {
     close();
     setAssignButtonState('default');
   };
+
+  // Callback function for when emails are changed in the
+  // child AssignmentModalContent component. Must be memoized as
+  // the function is used within a `useEffect`'s dependency array.
+  const handleEmailAddressesChanged = useCallback((
+    value,
+    { canAllocate = false } = {},
+  ) => {
+    setLearnerEmails(value);
+    setCanAllocateAssignments(canAllocate);
+  }, []);
 
   const handleAllocateContentAssignments = () => {
     const payload = snakeCaseObject({
@@ -107,6 +119,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
               }}
               variant="primary"
               state={assignButtonState}
+              disabled={!canAllocateAssignments}
               onClick={handleAllocateContentAssignments}
             />
           </ActionRow>
@@ -114,7 +127,7 @@ const NewAssignmentModalButton = ({ course, children }) => {
       >
         <AssignmentModalContent
           course={course}
-          onEmailAddressesChange={setLearnerEmails}
+          onEmailAddressesChange={handleEmailAddressesChanged}
         />
       </FullscreenModal>
       <CreateAllocationErrorAlertModals

@@ -16,14 +16,18 @@ import BaseCourseCard from './BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
 import { ImpactOnYourLearnerCreditBudget, ManagingThisAssignment, NextStepsForAssignedLearners } from './Collapsibles';
 import AssignmentModalSummary from './AssignmentModalSummary';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from './data';
+import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isEmailAddressesInputValueValid } from './data';
 
 const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
 
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
+  const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
+
+  const { contentPrice } = course.normalizedMetadata;
 
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
@@ -34,10 +38,10 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
     if (!value) {
       setLearnerEmails([]);
       onEmailAddressesChange([]);
+      return;
     }
     const emails = value.split('\n').filter((email) => email.trim().length > 0);
     setLearnerEmails(emails);
-    onEmailAddressesChange(emails);
   }, [onEmailAddressesChange]);
 
   const debouncedHandleEmailAddressesChanged = useMemo(
@@ -49,10 +53,20 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
     debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
   }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
 
-  const hasLearnerEmails = learnerEmails.length > 0;
-  const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
-  const costToAssignLearners = learnerEmails.length * course.normalizedMetadata.contentPrice;
-  const remainingBalanceAfterAssignment = spendAvailable - costToAssignLearners;
+  // Validate the learner emails emails from user input whenever it changes
+  useEffect(() => {
+    const allocationMetadata = isEmailAddressesInputValueValid({
+      learnerEmails,
+      remainingBalance: spendAvailable,
+      contentPrice,
+    });
+    setAssignmentAllocationMetadata(allocationMetadata);
+    if (allocationMetadata.canAllocate) {
+      onEmailAddressesChange(learnerEmails, { canAllocate: true });
+    } else {
+      onEmailAddressesChange([]);
+    }
+  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable]);
 
   return (
     <Container size="lg" className="py-3">
@@ -75,9 +89,15 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
                 rows={10}
                 data-hj-suppress
               />
-              <Form.Control.Feedback>
-                To add more than one learner, enter one email address per line.
-              </Form.Control.Feedback>
+              {assignmentAllocationMetadata.validationError ? (
+                <Form.Control.Feedback type="invalid">
+                  {assignmentAllocationMetadata.validationError.message}
+                </Form.Control.Feedback>
+              ) : (
+                <Form.Control.Feedback>
+                  To add more than one learner, enter one email address per line.
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
             <h5 className="mb-3">How assigning this course works</h5>
             <Stack gap={1}>
@@ -91,6 +111,7 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
             <AssignmentModalSummary
               course={course}
               learnerEmails={learnerEmails}
+              assignmentAllocationMetadata={assignmentAllocationMetadata}
             />
             <hr className="my-4" />
             <h5 className="mb-4">
@@ -104,20 +125,20 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
                       <div>Available balance</div>
                       <div>{formatPrice(spendAvailable)}</div>
                     </Stack>
-                    {hasLearnerEmails && (
+                    {assignmentAllocationMetadata.canAllocate && (
                       <Stack direction="horizontal" className="justify-content-between">
                         <div>Total cost</div>
-                        <div>-{formatPrice(costToAssignLearners)}</div>
+                        <div>-{formatPrice(assignmentAllocationMetadata.totalAssignmentCost)}</div>
                       </Stack>
                     )}
                   </Stack>
                 </Card.Section>
               </Card>
-              {hasLearnerEmails && (
+              {assignmentAllocationMetadata.canAllocate && (
                 <Card className="rounded-0 shadow-none">
                   <Card.Section className="d-flex justify-content-between py-2">
                     <div>Remaining after assignment</div>
-                    <div>{formatPrice(remainingBalanceAfterAssignment)}</div>
+                    <div>{formatPrice(assignmentAllocationMetadata.remainingBalanceAfterAssignment)}</div>
                   </Card.Section>
                 </Card>
               )}
