@@ -66,29 +66,29 @@ describe('useOfferRedemptions', () => {
     {
       budgetId: 'test-budget-id',
       offerId: undefined,
-      shouldFetchSubsidyTransactions: true,
+      isTopDownAssignmentEnabled: true,
     },
     {
       budgetId: 'test-budget-id',
       offerId: undefined,
-      shouldFetchSubsidyTransactions: false,
+      isTopDownAssignmentEnabled: false,
     },
     {
       budgetId: undefined,
       offerId: mockEnterpriseOffer.id,
-      shouldFetchSubsidyTransactions: false,
+      isTopDownAssignmentEnabled: false,
     },
-  ])('should fetch enrollment/redemptions metadata for enterprise offer', async ({
+  ])('should fetch enrollment/redemptions metadata for budget (%s)', async ({
     budgetId,
     offerId,
-    shouldFetchSubsidyTransactions,
+    isTopDownAssignmentEnabled,
   }) => {
     EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValueOnce({ data: mockOfferEnrollmentsResponse });
     SubsidyApiService.fetchCustomerTransactions.mockResolvedValueOnce({ data: mockSubsidyTransactionResponse });
     useSubsidyAccessPolicy.mockReturnValue({ data: { subsidyUuid } });
 
     const { result, waitForNextUpdate } = renderHook(
-      () => useOfferRedemptions(TEST_ENTERPRISE_UUID, offerId, budgetId, shouldFetchSubsidyTransactions),
+      () => useOfferRedemptions(TEST_ENTERPRISE_UUID, offerId, budgetId, isTopDownAssignmentEnabled),
       { wrapper },
     );
 
@@ -116,15 +116,13 @@ describe('useOfferRedemptions', () => {
 
     await waitForNextUpdate();
 
-    if (budgetId && shouldFetchSubsidyTransactions) {
+    if (budgetId && isTopDownAssignmentEnabled) {
       const expectedApiOptions = {
         page: 1,
         pageSize: 20,
-        offerId,
         ordering: '-enrollment_date', // default sort order
         search: mockOfferEnrollments[0].user_email,
-        ignoreNullCourseListPrice: true,
-        budgetId,
+        subsidyAccessPolicyUuid: budgetId,
       };
       expect(SubsidyApiService.fetchCustomerTransactions).toHaveBeenCalledWith(
         subsidyUuid,
@@ -146,7 +144,7 @@ describe('useOfferRedemptions', () => {
       );
     }
 
-    const mockExpectedResultsObj = shouldFetchSubsidyTransactions ? [{
+    const mockExpectedResultsObj = isTopDownAssignmentEnabled ? [{
       courseListPrice: 10,
       courseTitle,
       userEmail,

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
-import { camelCaseObject } from '@edx/frontend-platform';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { logInfo } from '@edx/frontend-platform/logging';
 
 import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
@@ -10,6 +11,7 @@ import {
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
 
 /**
  * Transforms offer summary from API for display in the UI, guarding
@@ -250,25 +252,43 @@ export async function fetchContentAssignments(assignmentConfigurationUUID, optio
  */
 export async function fetchSpentTransactions({
   enterpriseUUID,
-  subsidyAccessPolicyId,
-  enterpriseOfferId,
+  subsidyAccessPolicy,
+  budgetId,
+  isTopDownAssignmentEnabled,
 }) {
   const options = {
     page: 1,
     pageSize: 25,
-    ignoreNullCourseListPrice: true,
   };
 
-  if (subsidyAccessPolicyId) {
-    options.budgetId = subsidyAccessPolicyId;
-  } else if (enterpriseOfferId) {
-    options.offerId = enterpriseOfferId;
+  let response;
+  const shouldFetchSubsidyTransactions = !!subsidyAccessPolicy && isTopDownAssignmentEnabled;
+  if (shouldFetchSubsidyTransactions) {
+    options.subsidyAccessPolicyUuid = budgetId;
+    // Feature flag is enabled and the budget is a subsidy access policy, so pull from
+    // the `transactions` API via enterprise-subsidy.
+    response = await SubsidyApiService.fetchCustomerTransactions(
+      subsidyAccessPolicy.subsidyUuid,
+      options,
+    );
+  } else {
+    // Feature flag disabled or budget is not a subsidy access policy; continue to call analytics API.
+    if (subsidyAccessPolicy) {
+      options.budgetId = budgetId;
+    } else {
+      options.offerId = budgetId;
+    }
+    options.ignoreNullCourseListPrice = true;
+    response = await EnterpriseDataApiService.fetchCourseEnrollments(
+      enterpriseUUID,
+      options,
+    );
   }
 
-  const response = await EnterpriseDataApiService.fetchCourseEnrollments(
-    enterpriseUUID,
-    options,
-  );
+  if (!response) {
+    logInfo('[fetchSpentTransactions] Spent transactions were not fetched from API. No budget identifier provided.');
+  }
+
   return camelCaseObject(response.data);
 }
 
@@ -296,8 +316,9 @@ export async function retrieveBudgetDetailActivityOverview({
   const promisesToFulfill = [
     fetchSpentTransactions({
       enterpriseUUID,
-      subsidyAccessPolicyId: subsidyAccessPolicy?.uuid,
-      enterpriseOfferId: budgetId,
+      subsidyAccessPolicy,
+      budgetId,
+      isTopDownAssignmentEnabled,
     }),
   ];
   if (isBudgetAssignable) {
