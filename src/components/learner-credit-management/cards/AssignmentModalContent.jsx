@@ -62,7 +62,7 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
     });
     setAssignmentAllocationMetadata(allocationMetadata);
     if (allocationMetadata.canAllocate) {
-      onEmailAddressesChange(learnerEmails);
+      onEmailAddressesChange(learnerEmails, { canAllocate: true });
     } else {
       onEmailAddressesChange([]);
     }
