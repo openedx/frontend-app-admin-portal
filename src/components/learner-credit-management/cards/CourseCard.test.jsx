@@ -160,11 +160,11 @@ describe('Course card works as expected', () => {
   };
 
   beforeEach(() => {
+    useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
     useSubsidyAccessPolicy.mockReturnValue({
       data: mockSubsidyAccessPolicy,
       isLoading: false,
     });
-    useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
   });
 
   afterEach(() => {
@@ -220,58 +220,59 @@ describe('Course card works as expected', () => {
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
-      errorReason: 'content_not_in_catalog',
+      allocationExceptionReason: 'content_not_in_catalog',
+      shouldRetryAllocationAfterException: false, // no ability to retry after this error
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
-      errorReason: 'not_enough_value_in_subsidy',
-      shouldRetryAfterError: false,
+      allocationExceptionReason: 'not_enough_value_in_subsidy',
+      shouldRetryAllocationAfterException: false,
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
-      errorReason: 'not_enough_value_in_subsidy',
-      shouldRetryAfterError: true,
+      allocationExceptionReason: 'not_enough_value_in_subsidy',
+      shouldRetryAllocationAfterException: true,
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
-      errorReason: 'policy_spend_limit_reached',
-      shouldRetryAfterError: false,
+      allocationExceptionReason: 'policy_spend_limit_reached',
+      shouldRetryAllocationAfterException: false,
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
-      errorReason: 'policy_spend_limit_reached',
-      shouldRetryAfterError: true,
+      allocationExceptionReason: 'policy_spend_limit_reached',
+      shouldRetryAllocationAfterException: true,
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
-      errorReason: null,
-      shouldRetryAfterError: false,
+      allocationExceptionReason: null,
+      shouldRetryAllocationAfterException: false,
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
-      errorReason: null,
-      shouldRetryAfterError: true,
+      allocationExceptionReason: null,
+      shouldRetryAllocationAfterException: true,
     },
     { shouldSubmitAssignments: true, hasAllocationException: false },
     { shouldSubmitAssignments: false, hasAllocationException: false },
-  ])('opens assignment modal, submits assignments successfully (%s)', async ({
+  ])('opens assignment modal, fills out information, and submits assignments accordingly - with success or with an exception (%s)', async ({
     shouldSubmitAssignments,
     hasAllocationException,
-    errorReason,
-    shouldRetryAfterError,
+    allocationExceptionReason,
+    shouldRetryAllocationAfterException,
   }) => {
     if (hasAllocationException) {
       // mock Axios error
       mockAllocateContentAssignments.mockRejectedValue({
         customAttributes: {
-          httpErrorStatus: errorReason ? 422 : 500,
-          httpErrorResponseData: JSON.stringify([{ reason: errorReason }]),
+          httpErrorStatus: allocationExceptionReason ? 422 : 500,
+          httpErrorResponseData: JSON.stringify([{ reason: allocationExceptionReason }]),
         },
       });
     } else {
@@ -295,7 +296,6 @@ describe('Course card works as expected', () => {
         },
       });
     }
-    useBudgetId.mockReturnValue({ subsidyAccessPolicyId: mockSubsidyAccessPolicy.uuid });
     const mockInvalidateQueries = jest.fn();
     useQueryClient.mockReturnValue({
       invalidateQueries: mockInvalidateQueries,
@@ -402,7 +402,7 @@ describe('Course card works as expected', () => {
         expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
 
         // Assert the correct error modal is displayed
-        if (errorReason === 'content_not_in_catalog') {
+        if (allocationExceptionReason === 'content_not_in_catalog') {
           const assignmentErrorModal = getAssignmentErrorModal();
           expect(assignmentErrorModal.getByText(`This course is not in your ${mockSubsidyAccessPolicy.displayName} budget's catalog`)).toBeInTheDocument();
           const exitCTA = getButtonElement('Exit', { screenOverride: assignmentErrorModal });
@@ -411,11 +411,11 @@ describe('Course card works as expected', () => {
             // Verify all modals close (error modal + assignment modal)
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
           });
-        } else if (['not_enough_value_in_subsidy', 'policy_spend_limit_reached'].includes(errorReason)) {
+        } else if (['not_enough_value_in_subsidy', 'policy_spend_limit_reached'].includes(allocationExceptionReason)) {
           const assignmentErrorModal = getAssignmentErrorModal();
           const errorModalTitle = 'Not enough balance';
           expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
-          if (shouldRetryAfterError) {
+          if (shouldRetryAllocationAfterException) {
             await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
           } else {
             await simulateClickErrorModalExit(assignmentErrorModal);
@@ -424,7 +424,7 @@ describe('Course card works as expected', () => {
           const assignmentErrorModal = getAssignmentErrorModal();
           const errorModalTitle = 'Something went wrong';
           expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
-          if (shouldRetryAfterError) {
+          if (shouldRetryAllocationAfterException) {
             await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
           } else {
             await simulateClickErrorModalExit(assignmentErrorModal);
@@ -453,5 +453,96 @@ describe('Course card works as expected', () => {
       userEvent.click(cancelAssignmentCTA);
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     }
+  });
+
+  it.each([
+    {
+      learnerEmails: ['a@a.com', 'b@bcom', 'c@c.com'],
+      spendAvailableUsd: 1000,
+      expectedValidationMessage: 'b@bcom is not a valid email.',
+    },
+    {
+      learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com', 'b@b.com'],
+      spendAvailableUsd: 1000,
+      expectedValidationMessage: 'b@b.com has been entered more than once.',
+    },
+    {
+      learnerEmails: ['a@a.com', 'b@bcom', 'c@c.com', 'a@a.com'],
+      spendAvailableUsd: 1000,
+      expectedValidationMessage: 'b@bcom is not a valid email.',
+    },
+    {
+      learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com'],
+      spendAvailableUsd: 100, // assignment allocation will exceed available spend
+      expectedValidationMessage: 'The total assignment cost exceeds your available Learner Credit budget balance of $100. Please remove learners and try again.',
+    },
+    {
+      learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com'],
+      spendAvailableUsd: 1000,
+      expectedValidationMessage: undefined, // no validation error
+    },
+  ])('opens assignment modal, fills out information, and handles client-side validation (%s)', async ({
+    learnerEmails,
+    spendAvailableUsd,
+    expectedValidationMessage,
+  }) => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      data: {
+        ...mockSubsidyAccessPolicy,
+        aggregates: {
+          ...mockSubsidyAccessPolicy.aggregates,
+          spendAvailableUsd,
+        },
+      },
+      isLoading: false,
+    });
+
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+
+    const assignmentModal = within(screen.getByRole('dialog'));
+
+    // Verify "Assign" CTA is disabled
+    expect(getButtonElement('Assign', { screenOverride: assignmentModal })).toBeDisabled();
+
+    // Verify textarea receives input
+    const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
+    expect(textareaInputLabel).toBeInTheDocument();
+    const textareaInput = textareaInputLabel.closest('textarea');
+    expect(textareaInput).toBeInTheDocument();
+    userEvent.type(textareaInput, learnerEmails.join('{enter}'));
+    expect(textareaInput).toHaveValue(learnerEmails.join('\n'));
+
+    await waitFor(() => {
+      if (expectedValidationMessage) {
+        expect(assignmentModal.getByText(expectedValidationMessage)).toBeInTheDocument();
+
+        // Verify assigment modal summary contents handle the input validation errors, based on whether
+        // the validation error relates to the email addresses entered or having sufficient available spend.
+        const assignmentAllocationCost = learnerEmails.length * originalData.normalized_metadata.content_price;
+        if (assignmentAllocationCost <= spendAvailableUsd) {
+          const assignmentSummaryCard = assignmentModal.getByText('Learners can\'t be assigned as entered.').closest('.assignment-modal-summary-card');
+          expect(assignmentSummaryCard).toBeInTheDocument();
+          expect(assignmentSummaryCard).toHaveClass('invalid');
+          expect(assignmentModal.getByText('Please check your learner emails and try again.')).toBeInTheDocument();
+          expect(assignmentModal.queryByText('You haven\'t entered any learners yet.')).not.toBeInTheDocument();
+          expect(assignmentModal.queryByText('Add learner emails to get started.')).not.toBeInTheDocument();
+          expect(assignmentModal.queryByText('Total assignment cost')).not.toBeInTheDocument();
+        } else {
+          const totalAssignmentCostCard = assignmentModal.getByText('Total assignment cost').closest('.assignment-modal-total-assignment-cost-card');
+          expect(totalAssignmentCostCard).toBeInTheDocument();
+          expect(totalAssignmentCostCard).toHaveClass('invalid');
+        }
+        expect(assignmentModal.queryByText('Remaining after assignment')).not.toBeInTheDocument();
+
+        // Verify "Assign" CTA is still disabled
+        expect(getButtonElement('Assign', { screenOverride: assignmentModal })).toBeDisabled();
+      } else {
+        // Verify "Assign" CTA is enabled
+        expect(getButtonElement('Assign', { screenOverride: assignmentModal })).not.toBeDisabled();
+      }
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
 });
