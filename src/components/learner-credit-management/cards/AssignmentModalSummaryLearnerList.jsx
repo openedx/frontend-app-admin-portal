@@ -30,13 +30,14 @@ const AssignmentModalSummaryLearnerList = ({
         {displayedLearnerEmails.map((emailAddress) => (
           <li key={uuidv4()} className="small">
             <div className="d-flex justify-content-between">
-              <div>
+              <div style={{ maxWidth: '85%' }}>
                 <Stack direction="horizontal" gap={2} className="align-items-center">
                   <Icon size="sm" src={Person} />
                   <div
                     className="text-nowrap overflow-hidden font-weight-bold"
                     style={{ textOverflow: 'ellipsis' }}
                     title={emailAddress}
+                    data-hj-suppress
                   >
                     {emailAddress}
                   </div>

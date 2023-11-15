@@ -1,18 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Stack } from '@edx/paragon';
+import classNames from 'classnames';
+import { Card, Stack, Icon } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
 
 import { formatPrice } from '../data';
 import AssignmentModalSummaryEmptyState from './AssignmentModalSummaryEmptyState';
 import AssignmentModalSummaryLearnerList from './AssignmentModalSummaryLearnerList';
+import AssignmentModalSummaryErrorState from './AssignmentModalSummaryErrorState';
+
+const AssignmentModalSummaryContents = ({
+  hasLearnerEmails,
+  learnerEmails,
+  course,
+  hasInputValidationError,
+}) => {
+  if (hasLearnerEmails) {
+    return (
+      <AssignmentModalSummaryLearnerList
+        course={course}
+        learnerEmails={learnerEmails}
+      />
+    );
+  }
+  if (hasInputValidationError) {
+    return <AssignmentModalSummaryErrorState />;
+  }
+  return <AssignmentModalSummaryEmptyState />;
+};
 
 const AssignmentModalSummary = ({
   course,
   learnerEmails,
+  assignmentAllocationMetadata,
 }) => {
-  const learnerEmailsCount = learnerEmails.length;
-  const hasLearnerEmails = learnerEmailsCount > 0;
-  const totalAssignmentCost = learnerEmailsCount * course.normalizedMetadata.contentPrice;
+  const {
+    isValidInput,
+    learnerEmailsCount,
+    totalAssignmentCost,
+    hasEnoughBalanceForAssigment,
+  } = assignmentAllocationMetadata;
+  const hasLearnerEmails = learnerEmailsCount > 0 && isValidInput;
 
   let summaryHeading = 'Summary';
   if (hasLearnerEmails) {
@@ -22,23 +50,36 @@ const AssignmentModalSummary = ({
     <>
       <h5 className="mb-4">{summaryHeading}</h5>
       <Stack gap={2.5}>
-        <Card className="rounded-0 shadow-none">
-          <Card.Section className="py-2">
-            {hasLearnerEmails ? (
-              <AssignmentModalSummaryLearnerList
-                course={course}
-                learnerEmails={learnerEmails}
-              />
-            ) : (
-              <AssignmentModalSummaryEmptyState />
-            )}
+        <Card
+          className={classNames(
+            'assignment-modal-summary-card rounded-0 shadow-none',
+            { invalid: !isValidInput },
+          )}
+        >
+          <Card.Section>
+            <AssignmentModalSummaryContents
+              learnerEmails={learnerEmails}
+              hasLearnerEmails={hasLearnerEmails}
+              course={course}
+              hasInputValidationError={!isValidInput}
+            />
           </Card.Section>
         </Card>
         {hasLearnerEmails && (
-          <Card className="rounded-0 shadow-none">
-            <Card.Section className="d-flex justify-content-between py-2">
-              <div>Total assignment cost</div>
-              <div>{formatPrice(totalAssignmentCost)}</div>
+          <Card
+            className={classNames(
+              'assignment-modal-total-assignment-cost-card rounded-0 shadow-none',
+              { invalid: !hasEnoughBalanceForAssigment },
+            )}
+          >
+            <Card.Section className="py-2">
+              <Stack direction="horizontal" gap={3}>
+                {!hasEnoughBalanceForAssigment && <Icon className="text-danger" src={Error} />}
+                <Stack direction="horizontal" className="justify-space-between flex-grow-1">
+                  <div>Total assignment cost</div>
+                  <div className="ml-auto">{formatPrice(totalAssignmentCost)}</div>
+                </Stack>
+              </Stack>
             </Card.Section>
           </Card>
         )}
@@ -47,13 +88,22 @@ const AssignmentModalSummary = ({
   );
 };
 
-AssignmentModalSummary.propTypes = {
-  course: PropTypes.shape({
-    normalizedMetadata: PropTypes.shape({
-      contentPrice: PropTypes.number.isRequired,
-    }).isRequired,
-  }).isRequired,
+AssignmentModalSummaryContents.propTypes = {
+  hasLearnerEmails: PropTypes.bool.isRequired,
   learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
+  course: PropTypes.shape().isRequired, // pass-thru prop to child component(s)
+  hasInputValidationError: PropTypes.bool.isRequired,
+};
+
+AssignmentModalSummary.propTypes = {
+  course: PropTypes.shape().isRequired, // pass-thru prop to child component(s)
+  learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
+  assignmentAllocationMetadata: PropTypes.shape({
+    isValidInput: PropTypes.bool,
+    learnerEmailsCount: PropTypes.number,
+    totalAssignmentCost: PropTypes.number,
+    hasEnoughBalanceForAssigment: PropTypes.bool,
+  }).isRequired,
 };
 
 export default AssignmentModalSummary;
