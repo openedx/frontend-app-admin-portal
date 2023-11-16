@@ -73,7 +73,7 @@ const useOfferRedemptions = (
           options.ignoreNullCourseListPrice = true;
         }
         if (budgetId !== null) {
-          options[isTopDownAssignmentEnabled ? 'subsidyAccessPolicyUuid' : 'budgetId'] = budgetId;
+          options[shouldFetchSubsidyTransactions ? 'subsidyAccessPolicyUuid' : 'budgetId'] = budgetId;
         }
         if (offerId !== null) {
           options.offerId = offerId;
@@ -86,7 +86,7 @@ const useOfferRedemptions = (
         }
         let data;
         let transformedTableResults;
-        if (budgetId && isTopDownAssignmentEnabled) {
+        if (shouldFetchSubsidyTransactions) {
           const response = await SubsidyApiService.fetchCustomerTransactions(
             subsidyAccessPolicy?.subsidyUuid,
             options,
