@@ -14,6 +14,7 @@ const NewSSOConfigCard = ({
   setLoading,
   setRefreshBool,
   refreshBool,
+  setUpdateError,
 }) => {
   const VALIDATED = config.validated_at;
   const ENABLED = config.active;
@@ -32,6 +33,9 @@ const NewSSOConfigCard = ({
     setLoading(true);
     LmsApiService.deleteEnterpriseSsoOrchestrationRecord(deletedConfig.uuid).then(() => {
       setRefreshBool(!refreshBool);
+    }).catch(() => {
+      setUpdateError({ config: config.uuid, action: 'delete' });
+      setLoading(false);
     });
   };
 
@@ -39,6 +43,9 @@ const NewSSOConfigCard = ({
     setLoading(true);
     LmsApiService.updateEnterpriseSsoOrchestrationRecord({ active: false }, disabledConfig.uuid).then(() => {
       setRefreshBool(!refreshBool);
+    }).catch(() => {
+      setUpdateError({ config: config.uuid, action: 'disable' });
+      setLoading(false);
     });
   };
 
@@ -46,6 +53,9 @@ const NewSSOConfigCard = ({
     setLoading(true);
     LmsApiService.updateEnterpriseSsoOrchestrationRecord({ active: true }, enabledConfig.uuid).then(() => {
       setRefreshBool(!refreshBool);
+    }).catch(() => {
+      setUpdateError({ config: config.uuid, action: 'enable' });
+      setLoading(false);
     });
   };
 
@@ -81,7 +91,7 @@ const NewSSOConfigCard = ({
           {renderKeyOffIcon('existing-sso-config-card-off-not-validated-icon')}
         </OverlayTrigger>
       )}
-      {(!ENABLED || !CONFIGURED) && (
+      {(!ENABLED || !CONFIGURED) && VALIDATED && (
         <>
           {renderKeyOffIcon('existing-sso-config-card-off-icon')}
         </>
@@ -213,6 +223,7 @@ NewSSOConfigCard.propTypes = {
   setLoading: PropTypes.func.isRequired,
   setRefreshBool: PropTypes.func.isRequired,
   refreshBool: PropTypes.bool.isRequired,
+  setUpdateError: PropTypes.func.isRequired,
 };
 
 export default NewSSOConfigCard;
