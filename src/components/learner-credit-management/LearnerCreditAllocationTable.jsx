@@ -9,8 +9,8 @@ import {
   PAGE_SIZE,
   DEFAULT_PAGE,
   formatDate,
-  formatPrice,
 } from './data';
+import SpendTableAmountContents from './SpendTableAmountContents';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -45,7 +45,7 @@ const LearnerCreditAllocationTable = ({
       {
         Header: 'Amount',
         accessor: 'courseListPrice',
-        Cell: ({ row }) => formatPrice(row.values.courseListPrice),
+        Cell: SpendTableAmountContents,
         disableFilters: true,
       },
     ]}
@@ -73,10 +73,9 @@ LearnerCreditAllocationTable.propTypes = {
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({
       userEmail: PropTypes.string,
-      courseTitle: PropTypes.string.isRequired,
+      courseTitle: PropTypes.string,
       courseListPrice: PropTypes.number.isRequired,
       enrollmentDate: PropTypes.string.isRequired,
-      courseProductLine: PropTypes.string.isRequired,
     })),
     itemCount: PropTypes.number.isRequired,
     pageCount: PropTypes.number.isRequired,
