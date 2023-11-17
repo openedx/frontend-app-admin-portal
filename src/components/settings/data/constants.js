@@ -57,6 +57,9 @@ export const INVALID_ODATA_API_TIMEOUT_INTERVAL = 'OData API timeout interval mu
 
 export const MAX_UNIVERSAL_LINKS = 100;
 
+export const ssoStepperNetworkErrorText = 'We were unable to configure your SSO due to an internal error.';
+export const ssoLPNetworkErrorText = 'We were unable to load your SSO details due to an internal error.';
+
 /**
  * Used as tab values and in router params
  */

@@ -106,4 +106,23 @@ describe('SAML Config Tab', () => {
       'Great news! Your test was successful and your new SSO integration is live and ready to use.',
     )).toBeInTheDocument();
   });
+  test('network errors trigger sso error page', async () => {
+    features.AUTH0_SELF_SERVICE_INTEGRATION = true;
+    const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
+    spy.mockRejectedValue({});
+    await waitFor(() => render(
+      <IntlProvider locale="en">
+        <QueryClientProvider client={queryClient()}>
+          <Provider store={store}>
+            <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
+          </Provider>,
+        </QueryClientProvider>
+      </IntlProvider>,
+    ));
+    await waitFor(() => expect(
+      screen.getByTestId(
+        'sso-network-error-image',
+      ),
+    ).toBeInTheDocument());
+  });
 });

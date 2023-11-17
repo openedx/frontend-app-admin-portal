@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import FormContextWrapper from '../../forms/FormContextWrapper';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOFormWorkflowConfig from './SSOFormWorkflowConfig';
+import SsoErrorPage from './SsoErrorPage';
 import { camelCaseDict } from '../../../utils';
 import UnsavedSSOChangesModal from './UnsavedSSOChangesModal';
 import { IDP_URL_SELECTION, IDP_XML_SELECTION } from './steps/NewSSOConfigConnectStep';
@@ -16,6 +17,7 @@ const NewSSOStepper = ({ enterpriseId }) => {
   } = useContext(SSOConfigContext);
   const providerConfigCamelCase = camelCaseDict(providerConfig || {});
   const [isStepperOpen, setIsStepperOpen] = useState(true);
+  const [configureError, setConfigureError] = useState(null);
   const handleCloseWorkflow = () => {
     setProviderConfig?.(null);
     setIsStepperOpen(false);
@@ -27,19 +29,24 @@ const NewSSOStepper = ({ enterpriseId }) => {
       : IDP_XML_SELECTION;
   }
 
-  return (isStepperOpen
-    && (
-    <div>
-      <FormContextWrapper
-        workflowTitle="New SSO integration"
-        formWorkflowConfig={SSOFormWorkflowConfig({ enterpriseId })}
-        onClickOut={handleCloseWorkflow}
-        formData={providerConfigCamelCase}
-        isStepperOpen={isStepperOpen}
-        UnsavedChangesModal={UnsavedSSOChangesModal}
-      />
-    </div>
-    )
+  return (
+    <>
+      {isStepperOpen && !configureError && (
+        <div>
+          <FormContextWrapper
+            workflowTitle="New SSO integration"
+            formWorkflowConfig={SSOFormWorkflowConfig({ enterpriseId, setConfigureError })}
+            onClickOut={handleCloseWorkflow}
+            formData={providerConfigCamelCase}
+            isStepperOpen={isStepperOpen}
+            UnsavedChangesModal={UnsavedSSOChangesModal}
+          />
+        </div>
+      )}
+      {isStepperOpen && configureError && (
+        <SsoErrorPage isOpen={configureError !== null} stepperError />
+      )}
+    </>
   );
 };
 

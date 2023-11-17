@@ -1,9 +1,11 @@
 import _ from 'lodash';
 import {
+  Alert,
   CardGrid,
   Skeleton,
   useToggle,
 } from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -17,7 +19,7 @@ const FRESH_CONFIG_POLLING_INTERVAL = 30000;
 const UPDATED_CONFIG_POLLING_INTERVAL = 2000;
 
 const NewExistingSSOConfigs = ({
-  configs, refreshBool, setRefreshBool, enterpriseId,
+  configs, refreshBool, setRefreshBool, enterpriseId, setPollingNetworkError,
 }) => {
   const [inactiveConfigs, setInactiveConfigs] = useState([]);
   const [activeConfigs, setActiveConfigs] = useState([]);
@@ -30,6 +32,7 @@ const NewExistingSSOConfigs = ({
   const [intervalMs, setIntervalMs] = React.useState(FRESH_CONFIG_POLLING_INTERVAL);
   const [loading, setLoading] = useState(false);
   const [showAlerts, openAlerts, closeAlerts] = useToggle(false);
+  const [updateError, setUpdateError] = useState(null);
 
   const queryClient = useQueryClient();
 
@@ -50,13 +53,32 @@ const NewExistingSSOConfigs = ({
             }}
           >
             {configList.map((config) => (
-              <NewSSOConfigCard
-                key={config.uuid}
-                config={config}
-                setLoading={setLoading}
-                setRefreshBool={setRefreshBool}
-                refreshBool={refreshBool}
-              />
+              <div className="flex-fill" key={config.uuid}>
+                <NewSSOConfigCard
+                  config={config}
+                  setLoading={setLoading}
+                  setRefreshBool={setRefreshBool}
+                  refreshBool={refreshBool}
+                  setUpdateError={setUpdateError}
+                />
+                {updateError?.config === config.uuid && (
+                  <div>
+                    <Alert
+                      variant="danger"
+                      dismissible
+                      icon={Info}
+                      onClose={() => (setUpdateError(null))}
+                    >
+                      <Alert.Heading>Something went wrong behind the scenes</Alert.Heading>
+                      <p>
+                        We were unable to {updateError?.action} your SSO configuration due to an internal error. Please
+                        {' '}try again in a couple of minutes. If the problem persists, contact enterprise customer
+                        {' '}support.
+                      </p>
+                    </Alert>
+                  </div>
+                )}
+              </div>
             ))}
           </CardGrid>
         </div>
@@ -106,7 +128,10 @@ const NewExistingSSOConfigs = ({
   useQuery({
     queryKey: ['ssoOrchestratorConfigPoll'],
     queryFn: async () => {
-      const res = await LmsApiService.listEnterpriseSsoOrchestrationRecords(enterpriseId);
+      const res = await LmsApiService.listEnterpriseSsoOrchestrationRecords(enterpriseId).catch(() => {
+        setPollingNetworkError(true);
+        return { data: [] };
+      });
       const inProgress = res.data.filter(
         config => (config.submitted_at && !config.configured_at) || (config.configured_at < config.submitted_at),
       );
@@ -171,6 +196,7 @@ NewExistingSSOConfigs.propTypes = {
   refreshBool: PropTypes.bool.isRequired,
   setRefreshBool: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  setPollingNetworkError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
