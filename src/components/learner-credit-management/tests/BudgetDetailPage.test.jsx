@@ -21,6 +21,7 @@ import {
   formatDate,
   DEFAULT_PAGE,
   PAGE_SIZE,
+  formatPrice,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
@@ -61,6 +62,7 @@ const initialStoreState = {
 };
 
 const mockLearnerEmail = 'edx@example.com';
+const mockSecondLearnerEmail = 'edx001@example.com';
 const mockCourseKey = 'edX+DemoX';
 const mockContentTitle = 'edx Demo';
 
@@ -105,6 +107,26 @@ const mockLearnerContentAssignment = {
   recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
   actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
   errorReason: null,
+};
+const mockEnrollmentTransactionReversal = {
+  uuid: 'test-transaction-reversal-uuid',
+  created: '2023-10-31',
+};
+const mockEnrollmentTransaction = {
+  uuid: 'test-transaction-uuid',
+  enrollmentDate: '2023-10-28',
+  courseKey: mockCourseKey,
+  courseTitle: mockContentTitle,
+  userEmail: mockLearnerEmail,
+  fulfillmentIdentifier: 'test-fulfillment-identifier',
+  courseListPrice: 100,
+  reversal: null,
+};
+const mockEnrollmentTransactionWithReversal = {
+  ...mockEnrollmentTransaction,
+  uuid: 'test-transaction-with-reversal-uuid',
+  userEmail: mockSecondLearnerEmail,
+  reversal: mockEnrollmentTransactionReversal,
 };
 
 const defaultEnterpriseSubsidiesContextValue = {
@@ -230,8 +252,8 @@ describe('<BudgetDetailPage />', () => {
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
-        contentAssignments: undefined,
-        spentTransactions: { count: 1 },
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
       },
     });
     useBudgetContentAssignments.mockReturnValue({
@@ -263,7 +285,7 @@ describe('<BudgetDetailPage />', () => {
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
   });
 
-  it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', () => {
+  it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', async () => {
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -276,7 +298,7 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       data: {
         contentAssignments: { count: 0 },
-        spentTransactions: { count: 1 },
+        spentTransactions: { count: 2 },
       },
     });
     useBudgetContentAssignments.mockReturnValue({
@@ -290,7 +312,11 @@ describe('<BudgetDetailPage />', () => {
     });
     useOfferRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
+      offerRedemptions: {
+        itemCount: 2,
+        pageCount: 1,
+        results: [mockEnrollmentTransaction, mockEnrollmentTransactionWithReversal],
+      },
       fetchOfferRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -302,6 +328,19 @@ describe('<BudgetDetailPage />', () => {
 
     // Catalog tab exists and is NOT active
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('false');
+
+    // Spend table renders rows of data
+    const spentSection = within(screen.getByText('Spent').closest('section'));
+    expect(spentSection.queryByText('No results found')).not.toBeInTheDocument();
+    expect(spentSection.getByText(mockLearnerEmail)).toBeInTheDocument();
+    expect(spentSection.getByText(mockSecondLearnerEmail)).toBeInTheDocument();
+    expect(spentSection.queryAllByText(mockContentTitle, { selector: 'a' })).toHaveLength(2);
+    expect(spentSection.queryAllByText(`-${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toHaveLength(2);
+
+    // Includes reversal messaging on table row, when appropriate
+    const transactionRowWithReversal = within(spentSection.getByText(mockSecondLearnerEmail).closest('tr'));
+    expect(transactionRowWithReversal.getByText(`Refunded on ${formatDate(mockEnrollmentTransactionReversal.created)}`)).toBeInTheDocument();
+    expect(transactionRowWithReversal.getByText(`+${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toBeInTheDocument();
   });
 
   it('renders with assigned table data and handles table refresh', () => {

@@ -13,6 +13,7 @@ import {
   mockSubsidyAccessPolicyUUID,
 } from '../tests/constants';
 import { queryClient } from '../../../test/testUtils';
+import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiService';
 
 jest.mock('./useBudgetId');
 jest.mock('./useSubsidyAccessPolicy');
@@ -102,26 +103,44 @@ describe('useBudgetDetailActivityOverview', () => {
         },
       });
     }
+    const mockFetchCustomerTransactions = jest.spyOn(SubsidyApiService, 'fetchCustomerTransactions');
     const mockFetchCourseEnrollments = jest.spyOn(EnterpriseDataApiService, 'fetchCourseEnrollments');
-    mockFetchCourseEnrollments.mockResolvedValue({
-      data: {
-        count: 1,
-        results: [{ id: 'mock-course-enrollment-id' }],
-      },
-    });
+    const mockSubsidyTransaction = { uuid: 'mock-transaction-uuid' };
+    const mockAnalyticsApiRedemption = { id: 'mock-course-enrollment-id' };
+
+    if (isTopDownAssignmentEnabled) {
+      mockFetchCustomerTransactions.mockResolvedValue({
+        data: {
+          count: 1,
+          results: [mockSubsidyTransaction],
+        },
+      });
+    } else {
+      mockFetchCourseEnrollments.mockResolvedValue({
+        data: {
+          count: 1,
+          results: [mockAnalyticsApiRedemption],
+        },
+      });
+    }
 
     const { result, waitForNextUpdate } = renderHook(
       () => useBudgetDetailActivityOverview({
         enterpriseUUID: mockEnterpriseUUID,
-        isTopDownAssignmentEnabled: true,
+        isTopDownAssignmentEnabled,
       }),
       { wrapper },
     );
 
     expect(useSubsidyAccessPolicy).toHaveBeenCalledWith(mockSubsidyAccessPolicyUUID);
 
-    expect(mockFetchCourseEnrollments).toHaveBeenCalledTimes(1);
-    if (hasAssignableBudget) {
+    if (isTopDownAssignmentEnabled) {
+      expect(mockFetchCustomerTransactions).toHaveBeenCalledTimes(1);
+    } else {
+      expect(mockFetchCourseEnrollments).toHaveBeenCalledTimes(1);
+    }
+
+    if (isTopDownAssignmentEnabled && hasAssignableBudget) {
       expect(mockListContentAssignments).toHaveBeenCalledTimes(1);
     } else {
       expect(mockListContentAssignments).not.toHaveBeenCalled();
@@ -132,7 +151,7 @@ describe('useBudgetDetailActivityOverview', () => {
     const expectedData = {
       spentTransactions: {
         count: 1,
-        results: [{ id: 'mock-course-enrollment-id' }],
+        results: [isTopDownAssignmentEnabled ? mockSubsidyTransaction : mockAnalyticsApiRedemption],
       },
     };
 
