@@ -13,17 +13,18 @@ import {
 } from '@edx/paragon';
 
 import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import BaseCourseCard from './BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isEmailAddressesInputValueValid } from './data';
 import CollapsibleStack from './StackedCollapsible';
+import EVENT_NAMES from '../../../eventTracking';
 
 const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
-  console.log(enterpriseId);
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
@@ -62,12 +63,19 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
       contentPrice,
     });
     setAssignmentAllocationMetadata(allocationMetadata);
+    if (allocationMetadata.validationError?.reason) {
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.EMAIL_ADDRESS_VALIDATION,
+        { validationErrorReason: allocationMetadata.validationError.reason },
+      );
+    }
     if (allocationMetadata.canAllocate) {
       onEmailAddressesChange(learnerEmails, { canAllocate: true });
     } else {
       onEmailAddressesChange([]);
     }
-  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable]);
+  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable, enterpriseId]);
 
   return (
     <Container size="lg" className="py-3">
