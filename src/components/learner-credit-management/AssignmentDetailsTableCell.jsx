@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Hyperlink } from '@edx/paragon';
+import { Stack, Hyperlink } from '@edx/paragon';
 
 import { configuration } from '../../config';
 import EmailAddressTableCell from './EmailAddressTableCell';
@@ -9,7 +9,7 @@ import EmailAddressTableCell from './EmailAddressTableCell';
 const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
   const { ENTERPRISE_LEARNER_PORTAL_URL } = configuration;
   return (
-    <>
+    <Stack gap={1}>
       <EmailAddressTableCell
         tableId="assigned"
         userEmail={row.original.learnerEmail}
@@ -25,7 +25,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
           {row.original.contentTitle || 'View Course'}
         </Hyperlink>
       </div>
-    </>
+    </Stack>
   );
 };
 

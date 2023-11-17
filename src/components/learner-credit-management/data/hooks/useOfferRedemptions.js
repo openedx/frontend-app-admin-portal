@@ -49,7 +49,7 @@ const useOfferRedemptions = (
   enterpriseUUID,
   offerId = null,
   budgetId = null,
-  shouldFetchSubsidyTransactions = false,
+  isTopDownAssignmentEnabled = false,
 ) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,14 +63,17 @@ const useOfferRedemptions = (
   const fetchOfferRedemptions = useCallback((args) => {
     const fetch = async () => {
       try {
+        const shouldFetchSubsidyTransactions = budgetId && isTopDownAssignmentEnabled;
         setIsLoading(true);
         const options = {
           page: args.pageIndex + 1, // `DataTable` uses zero-indexed array
           pageSize: args.pageSize,
-          ignoreNullCourseListPrice: true,
         };
+        if (!shouldFetchSubsidyTransactions) {
+          options.ignoreNullCourseListPrice = true;
+        }
         if (budgetId !== null) {
-          options.budgetId = budgetId;
+          options[shouldFetchSubsidyTransactions ? 'subsidyAccessPolicyUuid' : 'budgetId'] = budgetId;
         }
         if (offerId !== null) {
           options.offerId = offerId;
@@ -83,7 +86,7 @@ const useOfferRedemptions = (
         }
         let data;
         let transformedTableResults;
-        if (budgetId && shouldFetchSubsidyTransactions) {
+        if (shouldFetchSubsidyTransactions) {
           const response = await SubsidyApiService.fetchCustomerTransactions(
             subsidyAccessPolicy?.subsidyUuid,
             options,
@@ -131,7 +134,7 @@ const useOfferRedemptions = (
     offerId,
     budgetId,
     shouldTrackFetchEvents,
-    shouldFetchSubsidyTransactions,
+    isTopDownAssignmentEnabled,
     subsidyAccessPolicy?.subsidyUuid,
   ]);
 
