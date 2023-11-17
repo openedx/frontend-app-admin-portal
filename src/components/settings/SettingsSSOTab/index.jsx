@@ -29,6 +29,7 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const { AUTH0_SELF_SERVICE_INTEGRATION } = features;
   const [isOpen, open, close] = useToggle(false);
   const [pollingNetworkError, setPollingNetworkError] = useState(false);
+  const [isStepperOpen, setIsStepperOpen] = useState(true);
 
   const newConfigurationButtonOnClick = async () => {
     Promise.all(existingConfigs.map(config => LmsApiService.updateEnterpriseSsoOrchestrationRecord(
@@ -129,6 +130,7 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
                     refreshBool={refreshBool}
                     setRefreshBool={setRefreshBool}
                     setPollingNetworkError={setPollingNetworkError}
+                    setIsStepperOpen={setIsStepperOpen}
                   />
                 )}
                 {/* Nothing found so guide user to creation/edit form */}
@@ -137,11 +139,16 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
                 )}
                 {/* Since we found a selected providerConfig we know we are in editing mode and can safely
                 render the create/edit form */}
-                {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
+                {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (
+                  <NewSSOConfigForm
+                    setIsStepperOpen={setIsStepperOpen}
+                    isStepperOpen={isStepperOpen}
+                  />
+                )}
                 {pdError && (
-                <Alert variant="warning" icon={WarningFilled}>
-                  An error occurred loading the SAML data: <p>{pdError?.message}</p>
-                </Alert>
+                  <Alert variant="warning" icon={WarningFilled}>
+                    An error occurred loading the SAML data: <p>{pdError?.message}</p>
+                  </Alert>
                 )}
                 <Toast
                   onClose={() => setInfoMessage(null)}
@@ -178,12 +185,12 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
           existing configs but no providerConfig then we can safely render the listings page */}
           {existingConfigs?.length > 0 && (providerConfig === null)
             && (
-            <ExistingSSOConfigs
-              providerData={existingProviderData}
-              configs={existingConfigs}
-              refreshBool={refreshBool}
-              setRefreshBool={setRefreshBool}
-            />
+              <ExistingSSOConfigs
+                providerData={existingProviderData}
+                configs={existingConfigs}
+                refreshBool={refreshBool}
+                setRefreshBool={setRefreshBool}
+              />
             )}
           {/* Nothing found so guide user to creation/edit form */}
           {showNoSSOCard && <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />}
@@ -191,14 +198,14 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
           render the create/edit form */}
           {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
           {error && (
-          <Alert variant="warning" icon={WarningFilled}>
-            An error occurred loading the SAML configs: <p>{error?.message}</p>
-          </Alert>
+            <Alert variant="warning" icon={WarningFilled}>
+              An error occurred loading the SAML configs: <p>{error?.message}</p>
+            </Alert>
           )}
           {pdError && (
-          <Alert variant="warning" icon={WarningFilled}>
-            An error occurred loading the SAML data: <p>{pdError?.message}</p>
-          </Alert>
+            <Alert variant="warning" icon={WarningFilled}>
+              An error occurred loading the SAML data: <p>{pdError?.message}</p>
+            </Alert>
           )}
           {infoMessage && (
             <Toast

@@ -11,12 +11,11 @@ import { camelCaseDict } from '../../../utils';
 import UnsavedSSOChangesModal from './UnsavedSSOChangesModal';
 import { IDP_URL_SELECTION, IDP_XML_SELECTION } from './steps/NewSSOConfigConnectStep';
 
-const NewSSOStepper = ({ enterpriseId }) => {
+const NewSSOStepper = ({ enterpriseId, isStepperOpen, setIsStepperOpen }) => {
   const {
-    setProviderConfig, refreshBool, setRefreshBool, ssoState: { providerConfig },
+    setProviderConfig, setRefreshBool, ssoState: { providerConfig, refreshBool },
   } = useContext(SSOConfigContext);
   const providerConfigCamelCase = camelCaseDict(providerConfig || {});
-  const [isStepperOpen, setIsStepperOpen] = useState(true);
   const [configureError, setConfigureError] = useState(null);
   const handleCloseWorkflow = () => {
     setProviderConfig?.(null);
@@ -52,6 +51,8 @@ const NewSSOStepper = ({ enterpriseId }) => {
 
 NewSSOStepper.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  isStepperOpen: PropTypes.bool.isRequired,
+  setIsStepperOpen: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
