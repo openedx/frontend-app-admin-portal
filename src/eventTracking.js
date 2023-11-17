@@ -8,8 +8,6 @@
  * edx.ui.admin_portal.subscriptions.table.clicked
  */
 
-import {sendEnterpriseTrackEvent} from "@edx/frontend-enterprise-utils";
-
 /**
  * @constant PROJECT_NAME leading project identifier for event names
  */
