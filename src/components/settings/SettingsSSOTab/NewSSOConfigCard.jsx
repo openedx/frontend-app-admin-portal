@@ -15,6 +15,7 @@ const NewSSOConfigCard = ({
   setRefreshBool,
   refreshBool,
   setUpdateError,
+  setIsStepperOpen,
 }) => {
   const VALIDATED = config.validated_at;
   const ENABLED = config.active;
@@ -22,6 +23,11 @@ const NewSSOConfigCard = ({
   const SUBMITTED = config.submitted_at;
 
   const { setProviderConfig } = useContext(SSOConfigContext);
+
+  const onConfigureClick = (selectedConfig) => {
+    setProviderConfig(selectedConfig);
+    setIsStepperOpen(true);
+  };
 
   const convertToReadableDate = (date) => {
     const dateObj = new Date(date);
@@ -127,7 +133,7 @@ const NewSSOConfigCard = ({
       {!VALIDATED && CONFIGURED && (
         <Button
           className="float-right"
-          onClick={() => setProviderConfig(config)}
+          onClick={() => onConfigureClick(config)}
           variant="outline-primary"
           data-testid="existing-sso-config-card-configure-button"
         >
@@ -181,7 +187,7 @@ const NewSSOConfigCard = ({
               {VALIDATED && (
                 <Dropdown.Item
                   data-testid="existing-sso-config-configure-dropdown"
-                  onClick={() => setProviderConfig(config)}
+                  onClick={() => onConfigureClick(config)}
                 >
                   Configure
                 </Dropdown.Item>
@@ -224,6 +230,7 @@ NewSSOConfigCard.propTypes = {
   setRefreshBool: PropTypes.func.isRequired,
   refreshBool: PropTypes.bool.isRequired,
   setUpdateError: PropTypes.func.isRequired,
+  setIsStepperOpen: PropTypes.func.isRequired,
 };
 
 export default NewSSOConfigCard;

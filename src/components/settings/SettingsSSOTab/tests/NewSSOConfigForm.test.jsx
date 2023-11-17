@@ -80,12 +80,20 @@ const contextValue = {
   setRefreshBool: jest.fn(),
 };
 
+const setIsStepperOpen = jest.fn();
+
 const setupNewSSOStepper = (contextChanges = {}) => {
   features.AUTH0_SELF_SERVICE_INTEGRATION = true;
   return render(
     <IntlProvider locale="en">
       <SSOConfigContext.Provider value={{ ...contextValue, ...contextChanges }}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>
     </IntlProvider>,
   );
@@ -103,7 +111,11 @@ describe('SAML Config Tab', () => {
     render(
       <Provider store={store}>
         <SSOConfigContext.Provider value={contextValue}>
-          <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
         </SSOConfigContext.Provider>
       </Provider>,
     );
@@ -124,7 +136,11 @@ describe('SAML Config Tab', () => {
     render(
       <Provider store={store}>
         <SSOConfigContext.Provider value={contextValue}>
-          <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
         </SSOConfigContext.Provider>
       </Provider>,
     );
@@ -154,7 +170,13 @@ describe('SAML Config Tab', () => {
 
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -180,7 +202,13 @@ describe('SAML Config Tab', () => {
 
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -200,7 +228,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -224,7 +258,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -245,7 +285,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -271,7 +317,13 @@ describe('SAML Config Tab', () => {
 
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -298,7 +350,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -318,7 +376,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'idp';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     await waitFor(() => {
@@ -417,14 +481,7 @@ describe('SAML Config Tab', () => {
     }, []);
     userEvent.click(getButtonElement('Exit'));
 
-    await waitFor(() => {
-      expect(
-        screen.queryByText(
-          'Connect to a SAML identity provider for single sign-on'
-          + ' to allow quick access to your organization\'s learning catalog.',
-        ),
-      ).toBeInTheDocument();
-    }, []);
+    expect(setIsStepperOpen).toHaveBeenCalledWith(false);
   });
   test('new SSO workflow load existing metadata url config', async () => {
     const testMetadataUrl = 'http://test.metadata';
@@ -492,25 +549,6 @@ describe('SAML Config Tab', () => {
       expect(getButtonElement('Next')).toBeInTheDocument();
     }, []);
   });
-  test('cancel out of new SSO workflow', async () => {
-    setupNewSSOStepper();
-    // Connect Step Select an option to trigger cancel modal
-    userEvent.click(screen.getByText('Okta'));
-    userEvent.click(getButtonElement('Cancel'));
-    await waitFor(() => {
-      expect(getButtonElement('Exit')).toBeInTheDocument();
-    }, []);
-    userEvent.click(getButtonElement('Exit'));
-
-    await waitFor(() => {
-      expect(
-        screen.queryByText(
-          'Connect to a SAML identity provider for single sign-on'
-          + ' to allow quick access to your organization\'s learning catalog.',
-        ),
-      ).toBeInTheDocument();
-    }, []);
-  });
   test('idp step fetches and displays existing idp data fields', async () => {
     // Setup
     const mockGetProviderData = jest.spyOn(LmsApiService, 'getProviderData');
@@ -520,7 +558,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'idp';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -539,7 +583,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -612,7 +662,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -640,7 +696,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
