@@ -7,8 +7,7 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
-import {ENABLE_TESTING, SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy} from '../data';
-import {connect} from "react-redux";
+import { ENABLE_TESTING, SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy } from '../data';
 
 const CatalogSearch = () => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);

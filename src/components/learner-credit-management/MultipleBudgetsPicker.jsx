@@ -6,9 +6,9 @@ import {
   Col,
 } from '@edx/paragon';
 
+import { connect } from 'react-redux';
 import BudgetCard from './BudgetCard';
 import { orderOffers } from './data/utils';
-import {connect} from "react-redux";
 
 const MultipleBudgetsPicker = ({
   offers,

@@ -23,7 +23,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
-
+  console.log(enterpriseId);
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
