@@ -8,6 +8,7 @@ import {
 
 import BudgetCard from './BudgetCard';
 import { orderOffers } from './data/utils';
+import {connect} from "react-redux";
 
 const MultipleBudgetsPicker = ({
   offers,
@@ -16,6 +17,7 @@ const MultipleBudgetsPicker = ({
   enableLearnerPortal,
 }) => {
   const orderedOffers = orderOffers(offers);
+
   return (
     <Stack gap={4}>
       <Row>
@@ -49,4 +51,5 @@ MultipleBudgetsPicker.propTypes = {
   enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
-export default MultipleBudgetsPicker;
+const mapStateToProps = state => state.portalConfiguration.enterpriseUUID;
+export default connect(mapStateToProps)(MultipleBudgetsPicker);

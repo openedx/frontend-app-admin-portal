@@ -8,6 +8,8 @@
  * edx.ui.admin_portal.subscriptions.table.clicked
  */
 
+import {sendEnterpriseTrackEvent} from "@edx/frontend-enterprise-utils";
+
 /**
  * @constant PROJECT_NAME leading project identifier for event names
  */
@@ -94,6 +96,10 @@ export const SUBSCRIPTION_EVENTS = {
 
 export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   TAB_CHANGED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget-detail.tab.changed`,
+  VIEW_COURSE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.catalog-search.view-course.clicked`,
+  TOGGLE_NEXT_STEPS: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.next-steps-collapsible.toggled`,
+  TOGGLE_IMPACT_ON_YOUR_LEARNERS: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.impact-on-your-learners-collapsible.toggled`,
+  TOGGLE_MANAGING_THIS_ASSIGNMENT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.managing-this-assignment-collapsible.toggled`,
 };
 
 const EVENT_NAMES = {

@@ -7,7 +7,8 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
-import { SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy } from '../data';
+import {ENABLE_TESTING, SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy} from '../data';
+import {connect} from "react-redux";
 
 const CatalogSearch = () => {
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
@@ -15,9 +16,8 @@ const CatalogSearch = () => {
   const {
     data: subsidyAccessPolicy,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const searchFilters = `enterprise_catalog_uuids:${subsidyAccessPolicy.catalogUuid} AND content_type:course`;
+  const searchFilters = `enterprise_catalog_uuids:${ENABLE_TESTING(subsidyAccessPolicy.catalogUuid)} AND content_type:course`;
   const displayName = subsidyAccessPolicy.displayName ? `${subsidyAccessPolicy.displayName} catalog` : 'Overview';
-
   return (
     <section>
       <FormattedMessage
