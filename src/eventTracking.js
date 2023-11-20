@@ -93,7 +93,6 @@ export const SUBSCRIPTION_EVENTS = {
 };
 
 export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
-  //
   TAB_CHANGED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget-detail.tab.changed`,
   EMPTY_STATE_CTA: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget-detail.empty-state-cta-to-catalog.clicked`,
   VIEW_COURSE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.catalog-search.view-course.clicked`,

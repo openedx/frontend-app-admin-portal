@@ -58,6 +58,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const handleCloseAssignmentModal = () => {
     close();
     setAssignButtonState('default');
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL,
+      { isOpen: !isOpen },
+    );
   };
 
   // Callback function for when emails are changed in the
