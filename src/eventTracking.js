@@ -104,7 +104,7 @@ export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   CLOSE_ASSIGNMENT_MODAL_ASSIGNED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.close-modal-assigned.clicked`,
   CLOSE_ASSIGNMENT_MODAL_CANCEL: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.close-modal-cancel.clicked`,
   CLOSE_ASSIGNMENT_MODAL_EXIT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.close-modal-exit.clicked`,
-  CLOSE_ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.assignment-modal.exit-assignment-allocation-modal.clicked`,
+  CLOSE_ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.exit-assignment-allocation-modal.clicked`,
   // Successful allocation
   ASSIGNMENT_ALLOCATED_LEARNER_COUNT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment-modal.assignment-allocation.assigned`,
   // Input Validation and API error allocation
