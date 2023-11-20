@@ -16,7 +16,7 @@ class SubsidyApiService {
     const queryParams = new URLSearchParams({
       ...snakeCaseObject(options),
     });
-    const url = `${SubsidyApiService.baseUrlV2}/subsidies/${subsidyUuid}/transactions/?${queryParams.toString()}`;
+    const url = `${SubsidyApiService.baseUrlV2}/subsidies/${subsidyUuid}/admin/transactions/?${queryParams.toString()}`;
     return SubsidyApiService.apiClient().get(url);
   }
 
