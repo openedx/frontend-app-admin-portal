@@ -14,6 +14,7 @@ class SubsidyApiService {
 
   static fetchCustomerTransactions(subsidyUuid, options = {}) {
     const queryParams = new URLSearchParams({
+      state: 'committed',
       ...snakeCaseObject(options),
     });
     const url = `${SubsidyApiService.baseUrlV2}/subsidies/${subsidyUuid}/admin/transactions/?${queryParams.toString()}`;
