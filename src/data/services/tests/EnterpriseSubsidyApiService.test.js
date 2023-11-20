@@ -17,7 +17,7 @@ describe('EnterpriseSubsidyApiService', () => {
   });
   test('fetchCustomerTransactions calls the API to fetch transactions by enterprise subsidy', () => {
     const mockSubsidyUUID = 'test-subsidy-uuid';
-    const expectedUrl = `${SubsidyApiService.baseUrlV2}/subsidies/${mockSubsidyUUID}/transactions/?`;
+    const expectedUrl = `${SubsidyApiService.baseUrlV2}/subsidies/${mockSubsidyUUID}/admin/transactions/?`;
     SubsidyApiService.fetchCustomerTransactions(mockSubsidyUUID);
     expect(axios.get).toBeCalledWith(expectedUrl);
   });
