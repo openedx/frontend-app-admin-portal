@@ -160,6 +160,17 @@ class EnterpriseAccessApiService {
   }
 
   /**
+   * Cancel content assignments for a specific AssignmentConfiguration.
+   */
+  static cancelContentAssignments(assignmentConfigurationUUID, uuids) {
+    const options = {
+      assignment_uuids: Array.isArray(uuids) ?  uuids : [uuids],
+    }
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
    * Retrieve a specific subsidy access policy.
    */
   static retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID) {

@@ -57,7 +57,7 @@ const BudgetAssignmentsTable = ({
     additionalColumns={[
       {
         Header: '',
-        Cell: AssignmentRowActionTableCell,
+        Cell: ({ row, state: tableInstance }) => <AssignmentRowActionTableCell refresh={fetchTableData} row={row} tableInstance={tableInstance} />,
         id: 'action',
       },
     ]}
@@ -74,13 +74,15 @@ const BudgetAssignmentsTable = ({
       filters: [],
     }}
     fetchData={fetchTableData}
-    data={tableData?.results || []}
+    data={tableData?.results.filter(assignment => {
+      return assignment.state !== 'cancelled'
+    }) || []}
     itemCount={tableData?.count || 0}
     pageCount={tableData?.numPages || 1}
     EmptyTableComponent={CustomDataTableEmptyState}
     bulkActions={[
       <AssignmentTableRemindAction />,
-      <AssignmentTableCancelAction />,
+      <AssignmentTableCancelAction refresh={fetchTableData} />,
     ]}
   />
 );

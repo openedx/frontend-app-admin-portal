@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import {
   Icon, IconButton, OverlayTrigger, Stack, Tooltip,
 } from '@edx/paragon';
-import { Mail, DoNotDisturbOn } from '@edx/paragon/icons';
+import { Mail } from '@edx/paragon/icons';
+import PendingAssignmentCancelButton from './PendingAssignmentCancelButton';
 
-const AssignmentRowActionTableCell = ({ row }) => {
+const AssignmentRowActionTableCell = ({ refresh, row, tableInstance}) => {
   const isLearnerStateWaiting = row.original.learnerState === 'waiting';
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   return (
@@ -26,21 +27,7 @@ const AssignmentRowActionTableCell = ({ row }) => {
           />
         </OverlayTrigger>
       )}
-      <OverlayTrigger
-        key="Cancel"
-        placement="top"
-        overlay={<Tooltip id={`tooltip-cancel-${row.original.uuid}`}>Cancel assignment</Tooltip>}
-      >
-        <IconButton
-          variant="danger"
-          src={DoNotDisturbOn}
-          iconAs={Icon}
-          alt={`Cancel assignment ${emailAltText}`}
-          // eslint-disable-next-line no-console
-          onClick={() => console.log(`Canceling ${row.original.uuid}`)}
-          data-testid={`cancel-assignment-${row.original.uuid}`}
-        />
-      </OverlayTrigger>
+      <PendingAssignmentCancelButton refresh={refresh} row={row} tableInstance={tableInstance}/>
     </Stack>
   );
 };
