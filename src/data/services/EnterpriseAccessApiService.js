@@ -171,6 +171,12 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/policy-allocation/${subsidyAccessPolicyUUID}/allocate/`;
     return EnterpriseAccessApiService.apiClient().post(url, payload);
   }
+
+  static remindAssignments(assignmentConfigurationUUID, assignmentUuids) {
+    const payload = { assignment_uuids: assignmentUuids };
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind/`;
+    return EnterpriseAccessApiService.apiClient().post(url, payload);
+  }
 }
 
 export default EnterpriseAccessApiService;

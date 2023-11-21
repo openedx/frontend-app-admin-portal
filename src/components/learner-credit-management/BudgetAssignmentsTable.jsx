@@ -40,7 +40,6 @@ const BudgetAssignmentsTable = ({
       number: count,
       value: learnerState,
     }));
-
   return (
     <DataTable
       isSortable
@@ -84,7 +83,7 @@ const BudgetAssignmentsTable = ({
       additionalColumns={[
         {
           Header: '',
-          Cell: AssignmentRowActionTableCell,
+          Cell: ({ row, state: tableInstance }) => <AssignmentRowActionTableCell refresh={fetchTableData} row={row} tableInstance={tableInstance} />,
           id: 'action',
         },
       ]}

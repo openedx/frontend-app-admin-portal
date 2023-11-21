@@ -7,6 +7,7 @@ import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
 import WaitingForLearner from './assignments-status-chips/WaitingForLearner';
 import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedSystem from './assignments-status-chips/FailedSystem';
+import FailedReminder from './assignments-status-chips/FailedReminder';
 
 const AssignmentStatusTableCell = ({ row }) => {
   const { original } = row;
@@ -14,11 +15,20 @@ const AssignmentStatusTableCell = ({ row }) => {
     learnerEmail,
     learnerState,
     errorReason,
+    actions,
   } = original;
 
   // Learner state is not available for this assignment, so don't display anything.
   if (!learnerState) {
     return null;
+  }
+
+  // If the last action was an attempt to remind learner
+  if (actions[actions.length - 1].actionType === 'cancelled') {
+    if (actions[actions.length - 1].actionType === 'email_error'
+        || actions[actions.length - 1].actionType === 'internal_api_error') {
+      return <FailedReminder />;
+    }
   }
 
   // Display the appropriate status chip based on the learner state.
