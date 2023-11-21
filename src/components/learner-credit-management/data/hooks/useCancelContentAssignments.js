@@ -1,26 +1,30 @@
 import { useCallback, useState } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
-import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { useToggle } from '@edx/paragon';
+import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 
 const generateSuccessCancelMessage = (assignmentUuids) => {
-  if (Array.isArray(assignmentUuids)) { 
-    return `Assignments cancelled (${assignmentUuids.length})`; 
-  } else {
-    return `Assignment cancelled`; 
+  if (Array.isArray(assignmentUuids)) {
+    return `Assignments cancelled (${assignmentUuids.length})`;
   }
+
+  return 'Assignment cancelled';
 };
 
-const useCancelContentAssignments = (assignmentConfigurationUuid, refresh, tableInstance, uuids) => {
+const useCancelContentAssignments = (
+  assignmentConfigurationUuid,
+  refresh,
+  tableInstance,
+  uuids,
+) => {
   const [isOpen, open, close] = useToggle(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  
-  const handleRefresh = () => {
-    refresh(tableInstance);
-  };
 
   const cancelContentAssignments = useCallback(async () => {
+    const handleRefresh = () => {
+      refresh(tableInstance);
+    };
     try {
       const { status } = await EnterpriseAccessApiService.cancelContentAssignments(assignmentConfigurationUuid, uuids);
       if (status === 200) {
@@ -35,7 +39,7 @@ const useCancelContentAssignments = (assignmentConfigurationUuid, refresh, table
       logError(err);
       close(true);
     }
-  }, [assignmentConfigurationUuid, uuids]);
+  }, [assignmentConfigurationUuid, close, refresh, tableInstance, uuids]);
 
   return {
     cancelContentAssignments,

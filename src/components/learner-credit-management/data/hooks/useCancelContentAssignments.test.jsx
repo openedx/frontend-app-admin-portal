@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
-import { waitFor, act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 
 import { logError } from '@edx/frontend-platform/logging';
 
@@ -8,9 +8,9 @@ import useCancelContentAssignments from './useCancelContentAssignments';
 
 const TEST_ASSIGNMENT_CONFIGURATION_UUID = 'test-assignment-configuration-uuid';
 const TEST_PENDING_ASSIGNMENT_UUID_1 = 'test-pending-assignment-uuid_1';
-const TEST_PENDING_ASSIGNMENT_UUID_2 = 'test-pending-assignment-uuid_2'
-const mockRefreshFn = jest.fn()
-const mockTableInstance = {}
+const TEST_PENDING_ASSIGNMENT_UUID_2 = 'test-pending-assignment-uuid_2';
+const mockRefreshFn = jest.fn();
+const mockTableInstance = {};
 
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
 jest.mock('@edx/frontend-platform/logging', () => ({
@@ -24,8 +24,8 @@ describe('useCancelContentAssignments', () => {
       TEST_ASSIGNMENT_CONFIGURATION_UUID,
       mockRefreshFn,
       mockTableInstance,
-      TEST_PENDING_ASSIGNMENT_UUID_1),
-    );
+      TEST_PENDING_ASSIGNMENT_UUID_1,
+    ));
 
     expect(result.current).toEqual({
       cancelContentAssignments: expect.any(Function),
@@ -43,7 +43,6 @@ describe('useCancelContentAssignments', () => {
     ).toHaveBeenCalled();
     expect(logError).toBeCalledTimes(0);
 
-  
     expect(result.current).toEqual({
       cancelContentAssignments: expect.any(Function),
       close: expect.any(Function),
@@ -61,8 +60,8 @@ describe('useCancelContentAssignments', () => {
       TEST_ASSIGNMENT_CONFIGURATION_UUID,
       mockRefreshFn,
       mockTableInstance,
-      [TEST_PENDING_ASSIGNMENT_UUID_1, TEST_PENDING_ASSIGNMENT_UUID_2]),
-    );
+      [TEST_PENDING_ASSIGNMENT_UUID_1, TEST_PENDING_ASSIGNMENT_UUID_2],
+    ));
 
     expect(result.current).toEqual({
       cancelContentAssignments: expect.any(Function),
@@ -90,7 +89,7 @@ describe('useCancelContentAssignments', () => {
       toastMessage: 'Assignments cancelled (2)',
     });
   });
-  
+
   it('should handle error when fetching AI analytics summary data', async () => {
     const error = new Error('An error occurred');
     EnterpriseAccessApiService.cancelContentAssignments.mockRejectedValueOnce(error);
@@ -98,8 +97,8 @@ describe('useCancelContentAssignments', () => {
       TEST_ASSIGNMENT_CONFIGURATION_UUID,
       mockRefreshFn,
       mockTableInstance,
-      [TEST_PENDING_ASSIGNMENT_UUID_1, TEST_PENDING_ASSIGNMENT_UUID_2]),
-    );
+      [TEST_PENDING_ASSIGNMENT_UUID_1, TEST_PENDING_ASSIGNMENT_UUID_2],
+    ));
 
     expect(result.current).toEqual({
       cancelContentAssignments: expect.any(Function),
@@ -115,7 +114,7 @@ describe('useCancelContentAssignments', () => {
 
     expect(
       EnterpriseAccessApiService.cancelContentAssignments,
-    ).toHaveBeenCalled();    
+    ).toHaveBeenCalled();
     expect(logError).toBeCalledTimes(1);
 
     expect(result.current).toEqual({

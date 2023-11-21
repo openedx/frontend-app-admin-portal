@@ -27,7 +27,7 @@ const AssignmentTableCancelAction = ({ refresh, selectedFlatRows, ...rest }) => 
       <CancelAssignmentModal
         cancelContentAssignments={cancelContentAssignments}
         close={close}
-        isOpen={isOpen} 
+        isOpen={isOpen}
         uuidCount={uuids.length}
       />
       {toastMessage && <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>}

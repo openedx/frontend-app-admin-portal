@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Chip, useToggle, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
@@ -27,10 +26,10 @@ const FailedCancellation = () => {
         onClose={close}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger-500">
-          Failed Cancellation
+          Failed: Cancellation
         </BaseModalPopup.Heading>
         <BaseModalPopup.Content>
-        <p>This assignment was not canceled. Something went wrong behind the scenes.</p>
+          <p>This assignment was not canceled. Something went wrong behind the scenes.</p>
           <div className="micro">
             <p className="h6">Suggested resolution steps</p>
             <ul className="text-gray pl-3">

@@ -24,10 +24,12 @@ const AssignmentStatusTableCell = ({ row }) => {
   }
 
   // Determine if the last action was an attempt to cancel email
-  if (actions[actions.length - 1].actionType === 'cancelled') {
-    if (actions[actions.length - 1].actionType === 'email_error'
-      || actions[actions.length - 1].actionType === 'internal_api_error') {
-      return <FailedCancellation />;
+  if (actions[actions.length - 1]?.actionType === 'cancelled') {
+    if (actions[actions.length - 1].errorReason === 'email_error'
+      || actions[actions.length - 1].errorReason === 'internal_api_error') {
+      return (
+        <FailedCancellation />
+      );
     }
   }
 

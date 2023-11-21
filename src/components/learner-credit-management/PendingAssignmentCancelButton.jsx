@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Icon, IconButtonWithTooltip, Toast, useToggle
+  Icon, IconButtonWithTooltip, Toast,
 } from '@edx/paragon';
 import { DoNotDisturbOn } from '@edx/paragon/icons';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
@@ -17,31 +17,36 @@ const PendingAssignmentCancelButton = ({ refresh, row, tableInstance }) => {
     setShowToast,
     showToast,
     toastMessage,
-  } = useCancelContentAssignments(row.original.assignmentConfiguration, refresh, tableInstance, row.original.uuid)
+  } = useCancelContentAssignments(row.original.assignmentConfiguration, refresh, tableInstance, row.original.uuid);
   return (
-    <React.Fragment>
+    <>
       <IconButtonWithTooltip
         alt={`Cancel assignment ${emailAltText}`}
         data-testid={`cancel-assignment-${row.original.uuid}`}
         iconAs={Icon}
         onClick={open}
         src={DoNotDisturbOn}
-        tooltipContent='Cancel'
-        tooltipPlacement='top'
+        tooltipContent="Cancel"
+        tooltipPlacement="top"
         variant="danger"
       />
       <CancelAssignmentModal close={close} cancelContentAssignments={cancelContentAssignments} isOpen={isOpen} />
       {toastMessage && <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>}
-    </React.Fragment>
+    </>
   );
 };
 
 PendingAssignmentCancelButton.propTypes = {
+  refresh: PropTypes.func.isRequired,
   row: PropTypes.shape({
     original: PropTypes.shape({
+      assignmentConfiguration: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
+  }).isRequired,
+  tableInstance: PropTypes.shape({
+    state: PropTypes.shape(),
   }).isRequired,
 };
 
