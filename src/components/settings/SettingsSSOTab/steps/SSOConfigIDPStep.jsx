@@ -15,7 +15,7 @@ const SSOConfigIDPStep = ({ enterpriseId }) => {
   const {
     metadataURL, entityID, handleMetadataURLUpdate, handleEntityIDUpdate,
   } = useIdpState();
-  const { refreshBool } = useContext(SSOConfigContext);
+  const { ssoState: { refreshBool } } = useContext(SSOConfigContext);
   const [existingProviderData] = useExistingProviderData(enterpriseId, refreshBool);
 
   const TITLE = 'First provide your Identity Provider Metadata and fill out the corresponding fields.';
