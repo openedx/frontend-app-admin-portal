@@ -10,6 +10,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
@@ -44,7 +45,10 @@ jest.mock('../data', () => ({
   useSubsidyAccessPolicy: jest.fn(),
   useBudgetDetailActivityOverview: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
+  useCancelContentAssignments: jest.fn(),
 }));
+
+jest.mock('../../../data/services/EnterpriseAccessApiService');
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -129,6 +133,11 @@ const mockEnrollmentTransactionWithReversal = {
   reversal: mockEnrollmentTransactionReversal,
 };
 
+const mockFailedCancelledLearnerAction = {
+  actionType: 'cancelled',
+  completedAt: null,
+  errorReason: 'email_error',
+};
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
@@ -750,6 +759,24 @@ describe('<BudgetDetailPage />', () => {
       actions: [mockFailedLinkedLearnerAction],
       errorReason: 'internal_api_error',
     },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: Cancellation',
+      expectedModalPopupHeading: 'Failed: Cancellation',
+      expectedModalPopupContent: 'Something went wrong behind the scenes.',
+      actions: [mockFailedCancelledLearnerAction],
+      errorReason: 'email_error',
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: Cancellation',
+      expectedModalPopupHeading: 'Failed: Cancellation',
+      expectedModalPopupContent: 'Something went wrong behind the scenes.',
+      actions: [mockFailedCancelledLearnerAction],
+      errorReason: 'internal_api_error',
+    },
   ])('renders correct status chips with assigned table data (%s)', ({
     learnerState,
     hasLearnerEmail,
@@ -1086,5 +1113,128 @@ describe('<BudgetDetailPage />', () => {
       expect(remindButton).toBeInTheDocument();
       expect(remindButton).toBeDisabled();
     }
+  });
+
+  it('cancels assignments in bulk', async () => {
+    EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [
+          {
+            uuid: 'test-uuid',
+            contentKey: mockCourseKey,
+            contentQuantity: -19900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+          },
+        ],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    const cancelRowAction = screen.getByTestId('datatable-select-column-checkbox-header');
+    expect(cancelRowAction).toBeInTheDocument();
+
+    const checkBox = screen.getByTestId('datatable-select-column-checkbox-cell');
+    expect(checkBox).toBeInTheDocument();
+    userEvent.click(checkBox);
+    const cancelBulkActionButton = screen.getByText('Cancel (1)');
+    expect(cancelBulkActionButton).toBeInTheDocument();
+    userEvent.click(cancelBulkActionButton);
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    const cancelDialogButton = screen.getByRole('button', { name: 'Cancel assignments (1)' });
+    userEvent.click(cancelDialogButton);
+    expect(
+      EnterpriseAccessApiService.cancelContentAssignments,
+    ).toHaveBeenCalled();
+    await waitFor(
+      () => act(() => expect(screen.getByText('Assignments canceled (1)')).toBeInTheDocument()),
+    );
+  });
+
+  it('cancels a single assignment', async () => {
+    EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useOfferRedemptions.mockReturnValue({
+      isLoading: false,
+      offerRedemptions: mockEmptyOfferRedemptions,
+      fetchOfferRedemptions: jest.fn(),
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [
+          {
+            uuid: 'test-uuid',
+            contentKey: mockCourseKey,
+            contentQuantity: -19900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+          },
+        ],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    const cancelIconButton = screen.getByTestId('cancel-assignment-test-uuid');
+    expect(cancelIconButton).toBeInTheDocument();
+    userEvent.click(cancelIconButton);
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    const cancelDialogButton = screen.getByRole('button', { name: 'Cancel assignment' });
+    userEvent.click(cancelDialogButton);
+    await waitFor(
+      () => act(() => expect(screen.getByText('Assignment canceled')).toBeInTheDocument()),
+    );
   });
 });
