@@ -66,4 +66,16 @@ describe('<MultipleBudgetsPage />', () => {
     render(<MultipleBudgetsPageWrapper enterpriseUUID={enterpriseUUID} enterpriseSlug={enterpriseId} />);
     expect(screen.getByText('Budgets'));
   });
+  it('Shows loading spinner', () => {
+    const enterpriseSubsidiesContextValue = {
+      ...defaultEnterpriseSubsidiesContextValue,
+      isLoading: true,
+    };
+    render(<MultipleBudgetsPageWrapper
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+      enterpriseSubsidiesContextValue={enterpriseSubsidiesContextValue}
+    />);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
 });

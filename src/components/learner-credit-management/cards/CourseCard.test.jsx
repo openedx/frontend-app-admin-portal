@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import CourseCard from './CourseCard';
 import {
@@ -22,6 +22,14 @@ import { getButtonElement, queryClient } from '../../test/testUtils';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from './data';
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -346,13 +354,16 @@ describe('Course card works as expected', () => {
     expect(assignmentModal.getByText('Learners will be notified of this course assignment by email.')).toBeInTheDocument();
     const budgetImpact = assignmentModal.getByText('Impact on your Learner Credit budget');
     expect(budgetImpact).toBeInTheDocument();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(assignmentModal.queryByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).not.toBeInTheDocument();
     userEvent.click(budgetImpact);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(assignmentModal.getByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).toBeInTheDocument();
     const managingAssignment = assignmentModal.getByText('Managing this assignment');
     expect(managingAssignment).toBeInTheDocument();
     expect(assignmentModal.queryByText('You will be able to monitor the status of this assignment', { exact: false })).not.toBeInTheDocument();
     userEvent.click(managingAssignment);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
     expect(assignmentModal.getByText('You will be able to monitor the status of this assignment', { exact: false })).toBeInTheDocument();
 
     // Verify modal footer
@@ -465,6 +476,11 @@ describe('Course card works as expected', () => {
       learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com', 'b@b.com'],
       spendAvailableUsd: 1000,
       expectedValidationMessage: 'b@b.com has been entered more than once.',
+    },
+    {
+      learnerEmails: ['a@a.com', 'b@b.com', 'B@b.com', 'c@c.com', 'b@b.com'],
+      spendAvailableUsd: 1000,
+      expectedValidationMessage: 'B@b.com has been entered more than once.',
     },
     {
       learnerEmails: ['a@a.com', 'b@bcom', 'c@c.com', 'a@a.com'],
