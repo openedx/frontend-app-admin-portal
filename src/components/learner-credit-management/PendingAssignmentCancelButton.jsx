@@ -26,7 +26,7 @@ const PendingAssignmentCancelButton = ({ refresh, row, tableInstance }) => {
         iconAs={Icon}
         onClick={open}
         src={DoNotDisturbOn}
-        tooltipContent="Cancel"
+        tooltipContent="Cancel assignment"
         tooltipPlacement="top"
         variant="danger"
       />

@@ -118,7 +118,7 @@ const BudgetAssignmentsTable = ({
       EmptyTableComponent={CustomDataTableEmptyState}
       bulkActions={[
         <AssignmentTableRemindAction />,
-        <AssignmentTableCancelAction refresh={fetchTableData}/>,
+        <AssignmentTableCancelAction refresh={fetchTableData} />,
       ]}
     />
   );
