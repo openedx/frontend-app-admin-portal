@@ -50,7 +50,7 @@ describe('useCancelContentAssignments', () => {
       open: expect.any(Function),
       setShowToast: expect.any(Function),
       showToast: true,
-      toastMessage: 'Assignment cancelled',
+      toastMessage: 'Assignment canceled',
     });
   });
 
@@ -86,7 +86,7 @@ describe('useCancelContentAssignments', () => {
       open: expect.any(Function),
       setShowToast: expect.any(Function),
       showToast: true,
-      toastMessage: 'Assignments cancelled (2)',
+      toastMessage: 'Assignments canceled (2)',
     });
   });
 

@@ -5,10 +5,10 @@ import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAcce
 
 const generateSuccessCancelMessage = (assignmentUuids) => {
   if (Array.isArray(assignmentUuids)) {
-    return `Assignments cancelled (${assignmentUuids.length})`;
+    return `Assignments canceled (${assignmentUuids.length})`;
   }
 
-  return 'Assignment cancelled';
+  return 'Assignment canceled';
 };
 
 const useCancelContentAssignments = (
