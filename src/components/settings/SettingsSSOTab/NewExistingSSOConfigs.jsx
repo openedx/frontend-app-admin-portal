@@ -19,7 +19,7 @@ const FRESH_CONFIG_POLLING_INTERVAL = 30000;
 const UPDATED_CONFIG_POLLING_INTERVAL = 2000;
 
 const NewExistingSSOConfigs = ({
-  configs, refreshBool, setRefreshBool, enterpriseId, setPollingNetworkError,
+  configs, refreshBool, setRefreshBool, enterpriseId, setPollingNetworkError, setIsStepperOpen,
 }) => {
   const [inactiveConfigs, setInactiveConfigs] = useState([]);
   const [activeConfigs, setActiveConfigs] = useState([]);
@@ -60,6 +60,7 @@ const NewExistingSSOConfigs = ({
                   setRefreshBool={setRefreshBool}
                   refreshBool={refreshBool}
                   setUpdateError={setUpdateError}
+                  setIsStepperOpen={setIsStepperOpen}
                 />
                 {updateError?.config === config.uuid && (
                   <div>
@@ -197,6 +198,7 @@ NewExistingSSOConfigs.propTypes = {
   setRefreshBool: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   setPollingNetworkError: PropTypes.func.isRequired,
+  setIsStepperOpen: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

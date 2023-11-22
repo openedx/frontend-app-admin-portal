@@ -147,15 +147,20 @@ class EnterpriseAccessApiService {
    * List content assignments for a specific AssignmentConfiguration.
    */
   static listContentAssignments(assignmentConfigurationUUID, options = {}) {
-    const params = new URLSearchParams({
+    const { learnerState, ...optionsRest } = options;
+    const params = {
       page: 1,
       page_size: 25,
       // Only include assignments with allocated or errored states. The table should NOT
       // include assignments in the canceled or accepted states.
       state__in: 'allocated,errored',
-      ...snakeCaseObject(options),
-    });
-    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/?${params.toString()}`;
+      ...snakeCaseObject(optionsRest),
+    };
+    if (learnerState) {
+      params.learner_state__in = learnerState;
+    }
+    const urlParams = new URLSearchParams(params);
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/?${urlParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
 

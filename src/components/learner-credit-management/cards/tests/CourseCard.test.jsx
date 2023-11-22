@@ -224,6 +224,13 @@ describe('Course card works as expected', () => {
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
   });
 
+  test('view course sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...execEdProps} />);
+    const viewCourseCTA = screen.getByText('View course', { selector: 'a' });
+    userEvent.click(viewCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+
   test('card exits and sends segment events', () => {
     renderWithRouter(<CourseCardWrapper {...defaultProps} />);
 

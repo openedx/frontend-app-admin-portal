@@ -155,6 +155,7 @@ const setupNewExistingSSOConfigs = (configs) => {
               refreshBool={false}
               setRefreshBool={mockSetRefreshBool}
               setPollingNetworkError={mockSetPollingNetworkError}
+              setIsStepperOpen={jest.fn()}
             />
           </Provider>
         </SSOConfigContext.Provider>

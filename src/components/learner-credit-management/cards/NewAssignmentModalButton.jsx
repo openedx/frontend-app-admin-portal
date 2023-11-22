@@ -78,7 +78,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL_ASSIGNED,
       {
         isOpen: !isOpen,
-        assignButtonState,
       },
     );
     // add new fields for already assigned / created
@@ -88,6 +87,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       {
         allocatedLearners: learnerEmails.length,
         courseUUID: course.uuid,
+        assignButtonState,
       },
     );
   };
