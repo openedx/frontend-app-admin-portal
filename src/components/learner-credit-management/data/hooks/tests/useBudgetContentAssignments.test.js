@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useBudgetContentAssignments from './useBudgetContentAssignments';
-import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import useBudgetContentAssignments from '../useBudgetContentAssignments';
+import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
 
 describe('useBudgetContentAssignments', () => {
   it('does not call fetchContentAssignments if isEnabled is false', async () => {

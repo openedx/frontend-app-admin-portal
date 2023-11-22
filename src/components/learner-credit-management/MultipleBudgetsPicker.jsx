@@ -12,7 +12,7 @@ import { orderOffers } from './data/utils';
 
 const MultipleBudgetsPicker = ({
   offers,
-  enterpriseUUID,
+  enterpriseId,
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
@@ -30,7 +30,7 @@ const MultipleBudgetsPicker = ({
               <BudgetCard
                 key={offer.id}
                 offer={offer}
-                enterpriseUUID={enterpriseUUID}
+                enterpriseUUID={enterpriseId}
                 enterpriseSlug={enterpriseSlug}
                 enableLearnerPortal={enableLearnerPortal}
                 offerType={offer.source}
@@ -46,10 +46,13 @@ const MultipleBudgetsPicker = ({
 
 MultipleBudgetsPicker.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  enterpriseUUID: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => state.portalConfiguration.enterpriseUUID;
+const mapStateToProps = state => (
+  {
+    enterpriseId: state.portalConfiguration.enterpriseUUID,
+  });
 export default connect(mapStateToProps)(MultipleBudgetsPicker);

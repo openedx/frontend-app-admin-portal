@@ -4,10 +4,10 @@ import classNames from 'classnames';
 import {
   Button, Card, Row, Col,
 } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useIsLargeOrGreater, usePathToCatalogTab } from './data';
 import nameYourLearners from './assets/nameYourLearners.svg';
 import findTheRightCourse from './assets/findTheRightCourse.svg';

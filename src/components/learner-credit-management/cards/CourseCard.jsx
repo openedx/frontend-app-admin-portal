@@ -15,4 +15,4 @@ CourseCard.propTypes = {
   original: PropTypes.shape().isRequired, // pass-thru prop to `BaseCourseCard`
 };
 
-export default (CourseCard);
+export default CourseCard;

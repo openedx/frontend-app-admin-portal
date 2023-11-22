@@ -1,8 +1,9 @@
 import { Button, Hyperlink } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React from 'react';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import NewAssignmentModalButton from './NewAssignmentModalButton';
 import EVENT_NAMES from '../../../eventTracking';
 import CARD_TEXT from '../constants';

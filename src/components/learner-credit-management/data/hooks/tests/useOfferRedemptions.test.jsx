@@ -2,11 +2,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook } from '@testing-library/react-hooks/dom';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
-import useOfferRedemptions from './useOfferRedemptions';
-import useSubsidyAccessPolicy from './useSubsidyAccessPolicy';
-import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
-import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiService';
-import { queryClient } from '../../../test/testUtils';
+import useOfferRedemptions from '../useOfferRedemptions';
+import useSubsidyAccessPolicy from '../useSubsidyAccessPolicy';
+import EnterpriseDataApiService from '../../../../../data/services/EnterpriseDataApiService';
+import SubsidyApiService from '../../../../../data/services/EnterpriseSubsidyApiService';
+import { queryClient } from '../../../../test/testUtils';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_ENTERPRISE_OFFER_ID = 1;
@@ -49,9 +49,9 @@ const mockEnterpriseOffer = {
   id: TEST_ENTERPRISE_OFFER_ID,
 };
 
-jest.mock('./useSubsidyAccessPolicy');
-jest.mock('../../../../data/services/EnterpriseDataApiService');
-jest.mock('../../../../data/services/EnterpriseSubsidyApiService');
+jest.mock('../useSubsidyAccessPolicy');
+jest.mock('../../../../../data/services/EnterpriseDataApiService');
+jest.mock('../../../../../data/services/EnterpriseSubsidyApiService');
 
 const wrapper = ({ children }) => (
   <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>

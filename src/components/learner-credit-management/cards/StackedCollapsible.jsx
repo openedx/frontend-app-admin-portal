@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Collapsible, Stack } from '@edx/paragon';
-import React from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import React from 'react';
 import { ASSIGNMENT_ENROLLMENT_DEADLINE } from '../data';
 import EVENT_NAMES from '../../../eventTracking';
 

@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
 
-import useOfferSummary from './useOfferSummary';
-import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
+import useOfferSummary from '../useOfferSummary';
+import EnterpriseDataApiService from '../../../../../data/services/EnterpriseDataApiService';
 
 jest.mock('@edx/frontend-platform/config', () => ({
   getConfig: jest.fn(() => ({
     FEATURE_LEARNER_CREDIT_MANAGEMENT: true,
   })),
 }));
-jest.mock('../../../../data/services/EnterpriseDataApiService');
+jest.mock('../../../../../data/services/EnterpriseDataApiService');
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_ENTERPRISE_OFFER_ID = 1;

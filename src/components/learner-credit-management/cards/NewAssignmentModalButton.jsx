@@ -9,10 +9,10 @@ import {
   Hyperlink,
   StatefulButton,
 } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -58,11 +58,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const handleCloseAssignmentModal = () => {
     close();
     setAssignButtonState('default');
-    sendEnterpriseTrackEvent(
-      enterpriseId,
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL,
-      { isOpen: !isOpen },
-    );
   };
 
   // Callback function for when emails are changed in the
@@ -77,6 +72,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   }, []);
 
   const onSuccessEnterpriseTrackEvents = () => {
+    // inherently understood
     sendEnterpriseTrackEvent(
       enterpriseId,
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL_ASSIGNED,
@@ -85,6 +81,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
         assignButtonState,
       },
     );
+    // add new fields for already assigned / created
     sendEnterpriseTrackEvent(
       enterpriseId,
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATED_LEARNER_COUNT,
@@ -108,6 +105,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setAssignButtonState('pending');
     setCreateAssignmentsErrorReason(null);
     mutate(mutationArgs, {
+      // TODO: destructure response
       onSuccess: () => {
         setAssignButtonState('complete');
         queryClient.invalidateQueries({
@@ -124,13 +122,13 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           httpErrorStatus,
           httpErrorResponseData,
         } = err.customAttributes;
-        let locallyScopedErrorReason = 'system_error';
+        let errorReason = 'system_error';
         if (httpErrorStatus === 422) {
           const responseData = JSON.parse(httpErrorResponseData);
-          setCreateAssignmentsErrorReason(responseData[0].reason);
-          locallyScopedErrorReason = responseData[0].reason;
+          errorReason = responseData[0].reason;
+          setCreateAssignmentsErrorReason(errorReason);
         } else {
-          setCreateAssignmentsErrorReason('system_error');
+          setCreateAssignmentsErrorReason(errorReason);
         }
         setAssignButtonState('error');
         sendEnterpriseTrackEvent(
@@ -140,7 +138,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
             allocatedLearners: learnerEmails.length,
             courseUUID: course.uuid,
             errorStatus: httpErrorStatus,
-            errorReason: locallyScopedErrorReason,
+            errorReason,
           },
         );
       },
