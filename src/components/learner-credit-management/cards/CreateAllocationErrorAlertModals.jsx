@@ -31,7 +31,7 @@ const CreateAllocationErrorAlertModals = ({
   const closeAssignmentModalWithTrackEvent = () => {
     sendEnterpriseTrackEvent(
       enterpriseId,
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR,
       { errorReason },
     );
     closeAssignmentModal();

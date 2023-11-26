@@ -248,6 +248,21 @@ describe('Course card works as expected', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 
+  test('help center article link sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const helpCenterButton = screen.getByText('Help Center: Course Assignments');
+
+    expect(helpCenterButton).toBeInTheDocument();
+    userEvent.click(helpCenterButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+
   test.each([
     {
       shouldSubmitAssignments: true,

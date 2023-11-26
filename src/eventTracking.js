@@ -75,7 +75,7 @@ export const CONTENT_HIGHLIGHTS_EVENTS = {
   HIGHLIGHT_DASHBOARD_SET_CATALOG_VISIBILITY: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.set_catalog_visibility.clicked`,
   HIGHLIGHT_DASHBOARD_SELECT_TAB: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.tab.clicked`,
   // Highlight Creation
-  NEW_HIGHLIHT_MAX_REACHED: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.create_new_content_highlight.max_reached.clicked`,
+  NEW_HIGHLIGHT_MAX_REACHED: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.create_new_content_highlight.max_reached.clicked`,
   NEW_HIGHLIGHT: `${CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX}.create_new_content_highlight.clicked`,
 };
 
@@ -100,13 +100,13 @@ export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   TOGGLE_NEXT_STEPS: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.next_steps_collapsible.toggled`,
   TOGGLE_IMPACT_ON_YOUR_LEARNERS: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.impact_on_your_learners_collapsible.toggled`,
   TOGGLE_MANAGING_THIS_ASSIGNMENT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.managing_this_assignment_collapsible.toggled`,
-  OPEN_ASSIGNMENT_MODAL_ASSIGN_COURSE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.catalog_search.assign_course_cta.clicked`,
-  CLOSE_ASSIGNMENT_MODAL_ASSIGNED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.close_modal_assigned.clicked`,
-  CLOSE_ASSIGNMENT_MODAL_CANCEL: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.close_modal_cancel.clicked`,
-  CLOSE_ASSIGNMENT_MODAL_EXIT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.close_modal_exit.clicked`,
-  CLOSE_ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.exit_assignment_allocation_modal.clicked`,
+  ASSIGNMENT_MODAL_ASSIGN_COURSE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.catalog_search.assign_course_cta.clicked`,
+  ASSIGNMENT_MODAL_CANCEL: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.close_modal_cancel.clicked`,
+  ASSIGNMENT_MODAL_EXIT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.close_modal_exit.clicked`,
+  ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.exit_assignment_allocation_modal.clicked`,
+  ASSIGNMENT_MODAL_HELP_CENTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.help_center_article_course_assignments.clicked`,
   // Successful allocation
-  ASSIGNMENT_ALLOCATED_LEARNER_COUNT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.assignment_allocation.assigned`,
+  ASSIGNMENT_ALLOCATION_LEARNER_ASSIGNMENT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.assignment_allocation.assigned`,
   // Input Validation and API error allocation
   EMAIL_ADDRESS_VALIDATION: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.email_validation.changed`,
   ASSIGNMENT_ALLOCATION_ERROR: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.assignment_allocation.errored`,

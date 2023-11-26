@@ -11,7 +11,7 @@ import {
 } from '@edx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { snakeCaseObject } from '@edx/frontend-platform/utils';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { connect } from 'react-redux';
 import AssignmentModalContent from './AssignmentModalContent';
@@ -48,7 +48,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     open();
     sendEnterpriseTrackEvent(
       enterpriseId,
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.OPEN_ASSIGNMENT_MODAL_ASSIGN_COURSE,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_ASSIGN_COURSE,
       {
         isOpen: !isOpen,
         courseUUID: course.uuid,
@@ -71,24 +71,20 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setCanAllocateAssignments(canAllocate);
   }, []);
 
-  const onSuccessEnterpriseTrackEvents = () => {
-    // inherently understood
-    sendEnterpriseTrackEvent(
-      enterpriseId,
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL_ASSIGNED,
-      {
-        isOpen: !isOpen,
-      },
-    );
+  const onSuccessEnterpriseTrackEvents = ({ created, noChange, updated }) => {
     // add new fields for already assigned / created
+    const trackEventMetadata = {
+      totalAllocatedLearners: learnerEmails.length,
+      learnerAllocationCreated: created.length,
+      learnerAllocationNoChange: noChange.length,
+      learnerAllocationUpdated: updated.length,
+      courseUUID: course.uuid,
+      assignButtonState,
+    };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATED_LEARNER_COUNT,
-      {
-        allocatedLearners: learnerEmails.length,
-        courseUUID: course.uuid,
-        assignButtonState,
-      },
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_LEARNER_ASSIGNMENT,
+      trackEventMetadata,
     );
   };
 
@@ -106,14 +102,14 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setCreateAssignmentsErrorReason(null);
     mutate(mutationArgs, {
       // TODO: destructure response
-      onSuccess: () => {
+      onSuccess: (response) => {
+        const { created, noChange, updated } = camelCaseObject(response.data);
         setAssignButtonState('complete');
         queryClient.invalidateQueries({
           queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
         });
         handleCloseAssignmentModal();
-        // onSuccess segment
-        onSuccessEnterpriseTrackEvents();
+        onSuccessEnterpriseTrackEvents({ created, noChange, updated });
         displayToastForAssignmentAllocation({ totalLearnersAssigned: learnerEmails.length });
         history.push(pathToActivityTab);
       },
@@ -156,13 +152,23 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           handleCloseAssignmentModal();
           sendEnterpriseTrackEvent(
             enterpriseId,
-            EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL_EXIT,
+            EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_EXIT,
             { assignButtonState },
           );
         }}
         footerNode={(
           <ActionRow>
-            <Button variant="tertiary" as={Hyperlink} destination="https://edx.org" target="_blank">
+            <Button
+              variant="tertiary"
+              as={Hyperlink}
+              onClick={() => sendEnterpriseTrackEvent(
+                enterpriseId,
+                EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_HELP_CENTER,
+                {},
+              )}
+              destination="https://edx.org"
+              target="_blank"
+            >
               Help Center: Course Assignments
             </Button>
             <ActionRow.Spacer />
@@ -172,7 +178,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
                 handleCloseAssignmentModal();
                 sendEnterpriseTrackEvent(
                   enterpriseId,
-                  EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.CLOSE_ASSIGNMENT_MODAL_CANCEL,
+                  EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_CANCEL,
                   { assignButtonState },
                 );
               }}
