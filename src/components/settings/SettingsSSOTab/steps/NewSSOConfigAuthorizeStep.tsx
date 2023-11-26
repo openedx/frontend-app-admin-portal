@@ -9,12 +9,13 @@ import { createSAMLURLs } from '../utils';
 import { SSOConfigContext } from '../SSOConfigContext';
 import { setFormFieldAction } from '../../../forms/data/actions';
 import { FormFieldValidation, useFormContext } from '../../../forms/FormContext';
+import ValidatedFormCheckbox from '../../../forms/ValidatedFormCheckbox';
 
 export const validations: FormFieldValidation[] = [
   {
     formFieldId: 'confirmAuthorizedEdxServiceProvider',
     validator: (fields) => {
-      const ret = !fields.confirmAuthorizedEdxServiceProvider;
+      const ret = !fields.confirmAuthorizedEdxServiceProvider && 'Please verify authorization of edX as a Service Provider.';
       return ret;
     },
   },
@@ -51,12 +52,6 @@ const SSOConfigAuthorizeStep = () => {
     configuration, idpSlug, enterpriseSlug, learnerPortalEnabled,
   });
 
-  const handleCheck = (event) => {
-    dispatch?.(
-      setFormFieldAction({ fieldId: 'confirmAuthorizedEdxServiceProvider', value: event.target.checked }),
-    );
-  };
-
   return (
     <>
       <h2>Authorize edX as a Service Provider</h2>
@@ -85,10 +80,9 @@ const SSOConfigAuthorizeStep = () => {
       </p>
       <hr />
       <p>Return to this window and check the box once complete</p>
-
-      <Form.Checkbox className="mt-4" checked={formFields?.confirmAuthorizedEdxServiceProvider} onChange={handleCheck}>
+      <ValidatedFormCheckbox className="mt-4" formId="confirmAuthorizedEdxServiceProvider">
         I have authorized edX as a Service Provider
-      </Form.Checkbox>
+      </ValidatedFormCheckbox>
     </>
   );
 };
