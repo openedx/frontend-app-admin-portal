@@ -6,13 +6,12 @@ import {
   Col,
 } from '@edx/paragon';
 
-import { connect } from 'react-redux';
 import BudgetCard from './BudgetCard';
 import { orderOffers } from './data/utils';
 
 const MultipleBudgetsPicker = ({
   offers,
-  enterpriseId,
+  enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
@@ -30,7 +29,7 @@ const MultipleBudgetsPicker = ({
               <BudgetCard
                 key={offer.id}
                 offer={offer}
-                enterpriseUUID={enterpriseId}
+                enterpriseUUID={enterpriseUUID}
                 enterpriseSlug={enterpriseSlug}
                 enableLearnerPortal={enableLearnerPortal}
                 offerType={offer.source}
@@ -46,13 +45,9 @@ const MultipleBudgetsPicker = ({
 
 MultipleBudgetsPicker.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  enterpriseId: PropTypes.string.isRequired,
+  enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => (
-  {
-    enterpriseId: state.portalConfiguration.enterpriseUUID,
-  });
-export default connect(mapStateToProps)(MultipleBudgetsPicker);
+export default MultipleBudgetsPicker;

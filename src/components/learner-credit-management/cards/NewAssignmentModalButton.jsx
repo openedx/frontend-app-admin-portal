@@ -79,7 +79,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       learnerAllocationNoChange: noChange.length,
       learnerAllocationUpdated: updated.length,
       courseUUID: course.uuid,
-      assignButtonState,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
