@@ -94,6 +94,9 @@ export const SUBSCRIPTION_EVENTS = {
 
 export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   TAB_CHANGED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.tab.changed`,
+  // activity tab
+  BUDGET_DETAILS_DATATABLE_SORT_BY_OR_FILTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_details_datatable.sort_by_or_filter.changed`,
+  // catalog tab
   EMPTY_STATE_CTA: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.empty_state_cta_to_catalog.clicked`,
   VIEW_COURSE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.catalog_search.view_course.clicked`,
   // Assignment Modal

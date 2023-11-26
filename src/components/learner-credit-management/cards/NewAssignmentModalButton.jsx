@@ -130,7 +130,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           enterpriseId,
           EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_ERROR,
           {
-            allocatedLearners: learnerEmails.length,
+            totalAllocatedLearners: learnerEmails.length,
             courseUUID: course.uuid,
             errorStatus: httpErrorStatus,
             errorReason,

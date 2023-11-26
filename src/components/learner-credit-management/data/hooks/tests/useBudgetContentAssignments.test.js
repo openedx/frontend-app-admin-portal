@@ -1,13 +1,23 @@
 import { renderHook } from '@testing-library/react-hooks';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import useBudgetContentAssignments from '../useBudgetContentAssignments';
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 describe('useBudgetContentAssignments', () => {
   it('does not call fetchContentAssignments if isEnabled is false', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: false,
+      enterpriseId: 'test-enterprise-id',
     }));
     const { fetchContentAssignments } = result.current;
     const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
@@ -34,6 +44,7 @@ describe('useBudgetContentAssignments', () => {
     const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
+      enterpriseId: 'test-enterprise-id',
     }));
     const { fetchContentAssignments } = result.current;
     const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
@@ -91,10 +102,13 @@ describe('useBudgetContentAssignments', () => {
       ],
       hasSearchParam: false,
     },
-  ])('handles assignment details filter with search query parameter (%s)', async ({ filters, hasSearchParam }) => {
+  ])('handles assignment details filter with search query parameter (%s)', async ({
+    filters, sortBy, hasSearchParam,
+  }) => {
     const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
+      enterpriseId: 'test-enterprise-id',
     }));
     const { fetchContentAssignments } = result.current;
     const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
@@ -115,10 +129,10 @@ describe('useBudgetContentAssignments', () => {
       pageIndex: 0,
       pageSize: 10,
       filters,
+      sortBy,
     });
 
     await waitForNextUpdate();
-
     expect(mockListContentAssignments).toHaveBeenCalledWith(
       '123',
       {
@@ -152,6 +166,7 @@ describe('useBudgetContentAssignments', () => {
     const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
+      enterpriseId: 'test-enterprise-id',
     }));
     const { fetchContentAssignments } = result.current;
     const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
@@ -185,7 +200,7 @@ describe('useBudgetContentAssignments', () => {
       },
     );
   });
-
+  let currentTestIndex = 0;
   it.each([
     {
       sortBy: [
@@ -247,6 +262,7 @@ describe('useBudgetContentAssignments', () => {
     const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments({
       assignmentConfigurationUUID: '123',
       isEnabled: true,
+      enterpriseId: 'test-enterprise-id',
     }));
     const { fetchContentAssignments } = result.current;
     const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
@@ -279,5 +295,7 @@ describe('useBudgetContentAssignments', () => {
         ordering: orderingQueryParam,
       },
     );
+    currentTestIndex += 1;
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(currentTestIndex);
   });
 });

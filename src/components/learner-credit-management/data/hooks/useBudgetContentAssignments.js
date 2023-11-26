@@ -1,8 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import EVENT_NAMES from '../../../../eventTracking';
 
 const initialContentAssignmentsState = {
   results: [],
@@ -59,6 +61,7 @@ const applySortByToOptions = (sortBy, options) => {
 const useBudgetContentAssignments = ({
   assignmentConfigurationUUID,
   isEnabled,
+  enterpriseId,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [contentAssignments, setContentAssignments] = useState(initialContentAssignmentsState);
@@ -76,6 +79,20 @@ const useBudgetContentAssignments = ({
       };
       applyFiltersToOptions(args.filters, options);
       applySortByToOptions(args.sortBy, options);
+      // Checks if sortBy attribute exist to avoid sending multiple segment events
+      if (args.sortBy) {
+        const trackEventMetadata = {
+          learnerState: options.learnerState || '',
+          search: options.search || '',
+          sortBy: args.sortBy[0].id,
+          descending: args.sortBy[0].desc,
+        };
+        await sendEnterpriseTrackEvent(
+          enterpriseId,
+          EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_DATATABLE_SORT_BY_OR_FILTER,
+          trackEventMetadata,
+        );
+      }
       const assignmentsResponse = await EnterpriseAccessApiService.listContentAssignments(
         assignmentConfigurationUUID,
         options,
@@ -84,7 +101,7 @@ const useBudgetContentAssignments = ({
       setIsLoading(false);
     };
     getContentAssignments();
-  }, [isEnabled, assignmentConfigurationUUID]);
+  }, [isEnabled, assignmentConfigurationUUID, enterpriseId]);
 
   const debouncedFetchContentAssigments = useMemo(
     () => debounce(fetchContentAssignments, 300),

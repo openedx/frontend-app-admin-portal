@@ -10,6 +10,7 @@ const BudgetDetailAssignments = ({
   hasContentAssignments,
   hasSpentTransactions,
   enterpriseFeatures,
+  enterpriseId,
 }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -23,6 +24,7 @@ const BudgetDetailAssignments = ({
   } = useBudgetContentAssignments({
     isEnabled: isAssignableBudget && hasContentAssignments,
     assignmentConfigurationUUID,
+    enterpriseId,
   });
 
   if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
@@ -34,7 +36,6 @@ const BudgetDetailAssignments = ({
       <AssignMoreCoursesEmptyStateMinimal />
     );
   }
-
   return (
     <section className="budget-detail-assignments">
       <h3 className="mb-3">Assigned</h3>
@@ -52,10 +53,12 @@ const BudgetDetailAssignments = ({
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 BudgetDetailAssignments.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   hasContentAssignments: PropTypes.bool.isRequired,
   hasSpentTransactions: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
