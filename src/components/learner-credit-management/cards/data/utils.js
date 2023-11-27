@@ -53,7 +53,7 @@ export const isEmailAddressesInputValueValid = ({
   const hasEnoughBalanceForAssigment = remainingBalanceAfterAssignment >= 0;
 
   const invalidEmails = learnerEmails.filter((email) => !isEmail(email));
-  const duplicateEmails = learnerEmails.filter((email, index) => learnerEmails.indexOf(email.toLowerCase()) !== index);
+  const duplicateEmails = learnerEmails.filter((email, index) => learnerEmails.indexOf(email) !== index);
 
   const isValidInput = invalidEmails.length === 0 && duplicateEmails.length === 0;
   const canAllocate = learnerEmailsCount > 0 && hasEnoughBalanceForAssigment && isValidInput;
