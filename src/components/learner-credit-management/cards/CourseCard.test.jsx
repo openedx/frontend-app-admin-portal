@@ -467,6 +467,11 @@ describe('Course card works as expected', () => {
       expectedValidationMessage: 'b@b.com has been entered more than once.',
     },
     {
+      learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com', 'B@b.com'],
+      spendAvailableUsd: 1000,
+      expectedValidationMessage: 'B@b.com has been entered more than once.',
+    },
+    {
       learnerEmails: ['a@a.com', 'b@bcom', 'c@c.com', 'a@a.com'],
       spendAvailableUsd: 1000,
       expectedValidationMessage: 'b@bcom is not a valid email.',
