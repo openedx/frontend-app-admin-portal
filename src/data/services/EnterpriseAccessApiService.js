@@ -162,9 +162,9 @@ class EnterpriseAccessApiService {
   /**
    * Cancel content assignments for a specific AssignmentConfiguration.
    */
-  static cancelContentAssignments(assignmentConfigurationUUID, uuids) {
+  static cancelContentAssignments(assignmentConfigurationUUID, assignmentUuids) {
     const options = {
-      assignment_uuids: Array.isArray(uuids) ? uuids : [uuids],
+      assignment_uuids: assignmentUuids,
     };
     const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);

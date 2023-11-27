@@ -98,10 +98,12 @@ const mockLearnerEmails = ['hello@example.com', 'world@example.com'];
 
 const mockDisplaySuccessfulAssignmentToast = jest.fn();
 const defaultBudgetDetailPageContextValue = {
-  isSuccessfulAssignmentAllocationToastOpen: false,
-  totalLearnersAssigned: undefined,
-  displayToastForAssignmentAllocation: mockDisplaySuccessfulAssignmentToast,
-  closeToastForAssignmentAllocation: jest.fn(),
+  successfulAssignmentToast: {
+    isSuccessfulAssignmentAllocationToastOpen: false,
+    totalLearnersAssigned: undefined,
+    displayToastForAssignmentAllocation: mockDisplaySuccessfulAssignmentToast,
+    closeToastForAssignmentAllocation: jest.fn(),
+  },
 };
 
 const CourseCardWrapper = ({

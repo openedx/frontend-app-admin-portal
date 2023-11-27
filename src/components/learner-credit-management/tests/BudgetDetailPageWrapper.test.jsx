@@ -60,8 +60,10 @@ describe('<BudgetDetailPageWrapper />', () => {
   }) => {
     const ToastContextController = () => {
       const {
-        displayToastForAssignmentAllocation,
-        closeToastForAssignmentAllocation,
+        successfulAssignmentToast: {
+          displayToastForAssignmentAllocation,
+          closeToastForAssignmentAllocation,
+        },
       } = useContext(BudgetDetailPageContext);
 
       const handleDisplayToast = () => {

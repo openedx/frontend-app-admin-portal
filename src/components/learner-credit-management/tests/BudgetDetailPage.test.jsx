@@ -1140,10 +1140,10 @@ describe('<BudgetDetailPage />', () => {
     useBudgetContentAssignments.mockReturnValue({
       isLoading: false,
       contentAssignments: {
-        count: 1,
+        count: 2,
         results: [
           {
-            uuid: 'test-uuid',
+            uuid: 'test-uuid1',
             contentKey: mockCourseKey,
             contentQuantity: -19900,
             learnerState: 'waiting',
@@ -1152,8 +1152,21 @@ describe('<BudgetDetailPage />', () => {
             errorReason: null,
             state: 'allocated',
           },
+          {
+            uuid: 'test-uuid2',
+            contentKey: mockCourseKey,
+            contentQuantity: -29900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-11-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+          },
         ],
-        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        learnerStateCounts: [
+          { learnerState: 'waiting', count: 1 },
+          { learnerState: 'waiting', count: 1 },
+        ],
         numPages: 1,
         currentPage: 1,
       },
@@ -1162,22 +1175,19 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
     const cancelRowAction = screen.getByTestId('datatable-select-column-checkbox-header');
     expect(cancelRowAction).toBeInTheDocument();
-
-    const checkBox = screen.getByTestId('datatable-select-column-checkbox-cell');
-    expect(checkBox).toBeInTheDocument();
-    userEvent.click(checkBox);
-    const cancelBulkActionButton = screen.getByText('Cancel (1)');
+    userEvent.click(cancelRowAction);
+    const cancelBulkActionButton = screen.getByText('Cancel (2)');
     expect(cancelBulkActionButton).toBeInTheDocument();
     userEvent.click(cancelBulkActionButton);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
-    const cancelDialogButton = screen.getByRole('button', { name: 'Cancel assignments (1)' });
+    const cancelDialogButton = screen.getByRole('button', { name: 'Cancel assignments (2)' });
     userEvent.click(cancelDialogButton);
     expect(
       EnterpriseAccessApiService.cancelContentAssignments,
     ).toHaveBeenCalled();
     await waitFor(
-      () => act(() => expect(screen.getByText('Assignments canceled (1)')).toBeInTheDocument()),
+      () => act(() => expect(screen.getByText('Assignments canceled (2)')).toBeInTheDocument()),
     );
   });
 

@@ -16,7 +16,7 @@ const FailedCancellation = () => {
         onKeyPress={open}
         ref={setTarget}
         tabIndex={0}
-        variant="dark"
+        variant="light"
       >
         Failed: Cancellation
       </Chip>
@@ -25,7 +25,7 @@ const FailedCancellation = () => {
         isOpen={isOpen}
         onClose={close}
       >
-        <BaseModalPopup.Heading icon={Error} iconClassName="text-danger-500">
+        <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
           Failed: Cancellation
         </BaseModalPopup.Heading>
         <BaseModalPopup.Content>
@@ -41,9 +41,9 @@ const FailedCancellation = () => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination="https://edx.org" showLaunchIcon={false} target="_blank">
+                <Hyperlink destination="https://edx.org" target="_blank">
                   Help Center: Course Assignments
-                </Hyperlink>.
+                </Hyperlink>
               </li>
             </ul>
           </div>

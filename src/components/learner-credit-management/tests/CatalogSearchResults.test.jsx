@@ -171,10 +171,12 @@ describe('Main Catalogs view works as expected', () => {
 
   test('all courses rendered when search results available', async () => {
     const budgetDetailPageContextValue = {
-      isSuccessfulAssignmentAllocationToastOpen: false,
-      totalLearnersAssigned: undefined,
-      displayToastForAssignmentAllocation: jest.fn(),
-      closeToastForAssignmentAllocation: jest.fn(),
+      successfulAssignmentToast: {
+        isSuccessfulAssignmentAllocationToastOpen: false,
+        totalLearnersAssigned: undefined,
+        displayToastForAssignmentAllocation: jest.fn(),
+        closeToastForAssignmentAllocation: jest.fn(),
+      },
     };
     renderWithRouter(
       <SearchDataWrapper>

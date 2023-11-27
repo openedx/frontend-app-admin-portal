@@ -6,7 +6,7 @@ import {
 import { Mail } from '@edx/paragon/icons';
 import PendingAssignmentCancelButton from './PendingAssignmentCancelButton';
 
-const AssignmentRowActionTableCell = ({ refresh, row, tableInstance }) => {
+const AssignmentRowActionTableCell = ({ row }) => {
   const isLearnerStateWaiting = row.original.learnerState === 'waiting';
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   return (
@@ -27,22 +27,18 @@ const AssignmentRowActionTableCell = ({ refresh, row, tableInstance }) => {
           />
         </OverlayTrigger>
       )}
-      <PendingAssignmentCancelButton refresh={refresh} row={row} tableInstance={tableInstance} />
+      <PendingAssignmentCancelButton row={row} />
     </Stack>
   );
 };
 
 AssignmentRowActionTableCell.propTypes = {
-  refresh: PropTypes.func.isRequired,
   row: PropTypes.shape({
     original: PropTypes.shape({
       learnerEmail: PropTypes.string,
       learnerState: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
-  }).isRequired,
-  tableInstance: PropTypes.shape({
-    state: PropTypes.shape(),
   }).isRequired,
 };
 

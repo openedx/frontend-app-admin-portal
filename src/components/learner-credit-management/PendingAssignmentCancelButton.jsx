@@ -1,23 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Icon, IconButtonWithTooltip, Toast,
+  Icon, IconButtonWithTooltip,
 } from '@edx/paragon';
 import { DoNotDisturbOn } from '@edx/paragon/icons';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 import CancelAssignmentModal from './CancelAssignmentModal';
 
-const PendingAssignmentCancelButton = ({ refresh, row, tableInstance }) => {
+const PendingAssignmentCancelButton = ({ row }) => {
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   const {
+    assignButtonState,
     cancelContentAssignments,
     close,
     isOpen,
     open,
-    setShowToast,
-    showToast,
-    toastMessage,
-  } = useCancelContentAssignments(row.original.assignmentConfiguration, refresh, tableInstance, row.original.uuid);
+  } = useCancelContentAssignments(row.original.assignmentConfiguration, [row.original.uuid]);
   return (
     <>
       <IconButtonWithTooltip
@@ -30,23 +28,23 @@ const PendingAssignmentCancelButton = ({ refresh, row, tableInstance }) => {
         tooltipPlacement="top"
         variant="danger"
       />
-      <CancelAssignmentModal close={close} cancelContentAssignments={cancelContentAssignments} isOpen={isOpen} />
-      {toastMessage && <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>}
+      <CancelAssignmentModal
+        assignButtonState={assignButtonState}
+        close={close}
+        cancelContentAssignments={cancelContentAssignments}
+        isOpen={isOpen}
+      />
     </>
   );
 };
 
 PendingAssignmentCancelButton.propTypes = {
-  refresh: PropTypes.func.isRequired,
   row: PropTypes.shape({
     original: PropTypes.shape({
       assignmentConfiguration: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
-  }).isRequired,
-  tableInstance: PropTypes.shape({
-    state: PropTypes.shape(),
   }).isRequired,
 };
 
