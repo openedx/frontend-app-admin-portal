@@ -36,6 +36,7 @@ const BudgetDetailAssignments = ({
       <AssignMoreCoursesEmptyStateMinimal />
     );
   }
+
   return (
     <section className="budget-detail-assignments">
       <h3 className="mb-3">Assigned</h3>

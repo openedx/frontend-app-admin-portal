@@ -18,7 +18,7 @@ import BaseCourseCard from './BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isEmailAddressesInputValueValid } from './data';
-import CollapsibleStack from './StackedCollapsible';
+import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
 
 const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }) => {
@@ -109,7 +109,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
               )}
             </Form.Group>
             <h5 className="mb-3">How assigning this course works</h5>
-            <CollapsibleStack course={course} />
+            <AssignmentAllocationHelpCollapsibles course={course} />
           </Col>
           <Col xs={12} lg={{ span: 5, offset: 2 }}>
             <h4 className="mb-4">Pay by Learner Credit</h4>

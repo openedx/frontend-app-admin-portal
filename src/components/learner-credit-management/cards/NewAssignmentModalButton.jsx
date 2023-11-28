@@ -25,7 +25,10 @@ const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
     subsidyAccessPolicyId,
     payload,
-  }) => EnterpriseAccessApiService.allocateContentAssignments(subsidyAccessPolicyId, payload),
+  }) => {
+    const response = await EnterpriseAccessApiService.allocateContentAssignments(subsidyAccessPolicyId, payload);
+    return camelCaseObject(response.data);
+  },
 });
 
 const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
@@ -75,9 +78,9 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     // add new fields for already assigned / created
     const trackEventMetadata = {
       totalAllocatedLearners: learnerEmails.length,
-      learnerAllocationCreated: created.length,
-      learnerAllocationNoChange: noChange.length,
-      learnerAllocationUpdated: updated.length,
+      created: created.length,
+      noChange: noChange.length,
+      updated: updated.length,
       courseUUID: course.uuid,
     };
     sendEnterpriseTrackEvent(
@@ -100,9 +103,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setAssignButtonState('pending');
     setCreateAssignmentsErrorReason(null);
     mutate(mutationArgs, {
-      // TODO: destructure response
-      onSuccess: (response) => {
-        const { created, noChange, updated } = camelCaseObject(response.data);
+      onSuccess: ({ created, noChange, updated }) => {
         setAssignButtonState('complete');
         queryClient.invalidateQueries({
           queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
@@ -163,7 +164,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
               onClick={() => sendEnterpriseTrackEvent(
                 enterpriseId,
                 EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_HELP_CENTER,
-                {},
               )}
               destination="https://edx.org"
               target="_blank"

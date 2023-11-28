@@ -94,7 +94,6 @@ const NoBudgetActivityEmptyState = ({ enterpriseId }) => {
               onClick={() => sendEnterpriseTrackEvent(
                 enterpriseId,
                 EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.EMPTY_STATE_CTA,
-                {},
               )}
             >
               Get started

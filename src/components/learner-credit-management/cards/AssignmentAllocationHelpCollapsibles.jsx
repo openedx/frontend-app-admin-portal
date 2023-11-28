@@ -6,7 +6,7 @@ import React from 'react';
 import { ASSIGNMENT_ENROLLMENT_DEADLINE } from '../data';
 import EVENT_NAMES from '../../../eventTracking';
 
-const StackedCollapsible = ({ enterpriseId, course }) => (
+const AssignmentAllocationHelpCollapsibles = ({ enterpriseId, course }) => (
   <Stack gap={1}>
     <Collapsible
       styling="basic"
@@ -84,7 +84,7 @@ const StackedCollapsible = ({ enterpriseId, course }) => (
   </Stack>
 );
 
-StackedCollapsible.propTypes = {
+AssignmentAllocationHelpCollapsibles.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   course: PropTypes.shape({
     enrollmentDeadline: PropTypes.string.isRequired,
@@ -95,4 +95,4 @@ const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
-export default connect(mapStateToProps)(StackedCollapsible);
+export default connect(mapStateToProps)(AssignmentAllocationHelpCollapsibles);

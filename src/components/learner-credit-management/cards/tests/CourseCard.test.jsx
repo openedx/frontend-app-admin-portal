@@ -23,13 +23,10 @@ import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAcce
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../data';
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
-  return ({
-    ...originalModule,
-    sendEnterpriseTrackEvent: jest.fn(),
-  });
-});
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),

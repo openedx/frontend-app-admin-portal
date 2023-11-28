@@ -11,13 +11,10 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import userEvent from '@testing-library/user-event';
 import NoBudgetActivityEmptyState from '../NoBudgetActivityEmptyState';
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
-  return ({
-    ...originalModule,
-    sendEnterpriseTrackEvent: jest.fn(),
-  });
-});
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
