@@ -411,6 +411,7 @@ describe('<BudgetDetailPage />', () => {
     userEvent.click(refreshCTA);
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
     expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it.each([

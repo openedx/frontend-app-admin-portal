@@ -75,7 +75,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   }, []);
 
   const onSuccessEnterpriseTrackEvents = ({ created, noChange, updated }) => {
-    // add new fields for already assigned / created
     const trackEventMetadata = {
       totalAllocatedLearners: learnerEmails.length,
       created: created.length,

@@ -284,7 +284,6 @@ describe('useBudgetContentAssignments', () => {
     });
 
     await waitForNextUpdate();
-
     expect(mockListContentAssignments).toHaveBeenCalledWith(
       '123',
       {
@@ -293,6 +292,66 @@ describe('useBudgetContentAssignments', () => {
         ordering: orderingQueryParam,
       },
     );
+
+    // expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+  it('calls enterprise track event', async () => {
+    const mockUseBudgetContentAssignmentsData = {
+      assignmentConfigurationUUID: '123',
+      isEnabled: true,
+      enterpriseId: 'test-enterprise-id',
+    };
+    const mockListContentAssignmentsData = {
+      data: {
+        results: [
+          {
+            id: 1,
+            name: 'test',
+          },
+        ],
+        count: 1,
+        numPages: 1,
+        currentPage: 1,
+      },
+    };
+    const initialSortByMetadata = {
+      id: 'amount',
+      desc: true,
+    };
+    const modifiedSortByMetaData = {
+      id: 'amount',
+      desc: false,
+    };
+
+    // Perform first render where currentArgsRef.current = null, no track event called
+    const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments(
+      mockUseBudgetContentAssignmentsData,
+    ));
+    const { fetchContentAssignments } = result.current;
+    const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
+    mockListContentAssignments.mockResolvedValue(mockListContentAssignmentsData);
+    await fetchContentAssignments({
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [initialSortByMetadata],
+    });
+
+    await waitForNextUpdate();
+
+    expect(sendEnterpriseTrackEvent).not.toHaveBeenCalled();
+
+    // Perform second render after the currentArgsRef.current has been hydrated
+    renderHook(() => useBudgetContentAssignments(mockUseBudgetContentAssignmentsData));
+    const mockSecondListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
+    mockSecondListContentAssignments.mockResolvedValue(mockListContentAssignmentsData);
+    await fetchContentAssignments({
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [modifiedSortByMetaData],
+    });
+
+    await waitForNextUpdate();
+
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 });
