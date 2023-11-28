@@ -1082,8 +1082,8 @@ describe('<BudgetDetailPage />', () => {
       const remindRowAction = screen.getByTestId('remind-assignment-test-uuid');
       expect(remindRowAction).toBeInTheDocument();
     }
-
-    const checkBox = screen.getByTestId('datatable-select-column-checkbox-cell');
+    // 2 checkboxes exist; the first is the "Select all" checkbox; the 2nd is the checkbox for the first row
+    const checkBox = screen.getAllByRole('checkbox')[1];
     expect(checkBox).toBeInTheDocument();
     userEvent.click(checkBox);
     expect(await screen.findByText('Cancel (1)')).toBeInTheDocument();
