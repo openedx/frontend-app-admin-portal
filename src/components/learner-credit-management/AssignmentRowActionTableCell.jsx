@@ -1,13 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Icon, IconButton, OverlayTrigger, Stack, Tooltip, DataTableContext,
+  Icon, IconButton, OverlayTrigger, Stack, Tooltip,
 } from '@edx/paragon';
 import { Mail, DoNotDisturbOn } from '@edx/paragon/icons';
 
 const AssignmentRowActionTableCell = ({ row }) => {
-  const dataTableContext = useContext(DataTableContext);
-  console.log('dataTableContext', dataTableContext);
   const isLearnerStateWaiting = row.original.learnerState === 'waiting';
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   return (
