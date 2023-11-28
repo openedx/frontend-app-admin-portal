@@ -6,10 +6,11 @@ import { Add } from '@edx/paragon/icons';
 import cardImage from '../../../data/images/NoSSO.svg';
 
 const NoSSOCard = ({
-  setShowNoSSOCard, setShowNewSSOForm,
+  setShowNoSSOCard, setShowNewSSOForm, setIsStepperOpen,
 }) => {
   const onClick = () => {
     setShowNoSSOCard(false);
+    setIsStepperOpen(true);
     setShowNewSSOForm(true);
   };
 
@@ -38,6 +39,7 @@ const NoSSOCard = ({
 NoSSOCard.propTypes = {
   setShowNoSSOCard: PropTypes.func.isRequired,
   setShowNewSSOForm: PropTypes.func.isRequired,
+  setIsStepperOpen: PropTypes.func.isRequired,
 };
 
 export default NoSSOCard;
