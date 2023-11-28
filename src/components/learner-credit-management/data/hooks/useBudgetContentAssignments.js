@@ -1,4 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
+import {
+  useCallback, useMemo, useState,
+} from 'react';
 import debounce from 'lodash.debounce';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -46,7 +48,7 @@ const applySortByToOptions = (sortBy, options) => {
     const apiFieldKey = apiFieldForColumnAccessor.key;
     // Determine whether the API field ordering should be reversed based on the column accessor. This is
     // necessary because the content_quantity field is a negative number, but if the column is sorted in a
-    // descending order, users would likely expect the larger contenr quantity to be at the top of the list,
+    // descending order, users would likely expect the larger content quantity to be at the top of the list,
     // which is technically the smaller number since its negative.
     if (isApiFieldOrderingReversed) {
       return desc ? apiFieldKey : `-${apiFieldKey}`;
@@ -80,19 +82,20 @@ const useBudgetContentAssignments = ({
       applyFiltersToOptions(args.filters, options);
       applySortByToOptions(args.sortBy, options);
       // Checks if sortBy attribute exist to avoid sending multiple segment events
-      if (args.sortBy) {
-        const trackEventMetadata = {
-          learnerState: options.learnerState || '',
-          search: options.search || '',
-          sortBy: args.sortBy[0].id,
-          descending: args.sortBy[0].desc,
-        };
-        await sendEnterpriseTrackEvent(
-          enterpriseId,
-          EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_DATATABLE_SORT_BY_OR_FILTER,
-          trackEventMetadata,
-        );
-      }
+      const trackEventMetadata = {
+        filters: {
+          learnerState: options?.learnerState || null,
+          search: options?.search || null,
+        },
+        ordering: options.ordering,
+        page: options.page,
+        pageSize: options.pageSize,
+      };
+      await sendEnterpriseTrackEvent(
+        enterpriseId,
+        EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_ASSIGNED_DATATABLE_SORT_BY_OR_FILTER,
+        trackEventMetadata,
+      );
       const assignmentsResponse = await EnterpriseAccessApiService.listContentAssignments(
         assignmentConfigurationUUID,
         options,

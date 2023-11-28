@@ -18,11 +18,21 @@ const SETTINGS_PREFIX = `${PROJECT_NAME}.settings`;
 const CONTENT_HIGHLIGHTS_PREFIX = `${PROJECT_NAME}.content_highlights`;
 const LEARNER_CREDIT_MANAGEMENT_PREFIX = `${PROJECT_NAME}.learner_credit_management`;
 
+// Sub-prefixes
+// Subscriptions
 const SUBSCRIPTION_TABLE_PREFIX = `${SUBSCRIPTION_PREFIX}.table`;
+
+// ContentHighlights
 const CONTENT_HIGHLIGHT_STEPPER_BASE_PREFIX = `${CONTENT_HIGHLIGHTS_PREFIX}.stepper`;
 const CONTENT_HIGHLIGHTS_STEPPER_STEP_PREFIX = `${CONTENT_HIGHLIGHT_STEPPER_BASE_PREFIX}_step`;
 const CONTENT_HIGHLIGHTS_DASHBOARD_PREFIX = `${CONTENT_HIGHLIGHTS_PREFIX}.dashboard`;
 const CONTENT_HIGHLIGHTS_DELETE_CONTENT_PREFIX = `${CONTENT_HIGHLIGHTS_PREFIX}.delete_content_highlight`;
+
+// learner-credit-management
+const BUDGET_DETAIL_ACTIVITY_TAB_PREFIX = `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.activity`;
+const BUDGET_DETAIL_CATALOG_TAB_PREFIX = `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.catalog`;
+const BUDGET_DETAIL_SEARCH_PREFIX = `${BUDGET_DETAIL_CATALOG_TAB_PREFIX}.search`;
+const BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX = `${BUDGET_DETAIL_CATALOG_TAB_PREFIX}.assignment_modal`;
 
 export const SUBSCRIPTION_TABLE_EVENTS = {
   // Pagination
@@ -94,25 +104,26 @@ export const SUBSCRIPTION_EVENTS = {
 
 export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   TAB_CHANGED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.tab.changed`,
-  // activity tab
-  BUDGET_DETAILS_DATATABLE_SORT_BY_OR_FILTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_details_datatable.sort_by_or_filter.changed`,
-  // catalog tab
-  EMPTY_STATE_CTA: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.empty_state_cta_to_catalog.clicked`,
-  VIEW_COURSE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.catalog_search.view_course.clicked`,
-  // Assignment Modal
-  TOGGLE_NEXT_STEPS: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.next_steps_collapsible.toggled`,
-  TOGGLE_IMPACT_ON_YOUR_LEARNERS: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.impact_on_your_learners_collapsible.toggled`,
-  TOGGLE_MANAGING_THIS_ASSIGNMENT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.managing_this_assignment_collapsible.toggled`,
-  ASSIGNMENT_MODAL_ASSIGN_COURSE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.catalog_search.assign_course_cta.clicked`,
-  ASSIGNMENT_MODAL_CANCEL: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.close_modal_cancel.clicked`,
-  ASSIGNMENT_MODAL_EXIT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.close_modal_exit.clicked`,
-  ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.exit_assignment_allocation_modal.clicked`,
-  ASSIGNMENT_MODAL_HELP_CENTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.help_center_article_course_assignments.clicked`,
-  // Successful allocation
-  ASSIGNMENT_ALLOCATION_LEARNER_ASSIGNMENT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.assignment_allocation.assigned`,
-  // Input Validation and API error allocation
-  EMAIL_ADDRESS_VALIDATION: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.email_validation.changed`,
-  ASSIGNMENT_ALLOCATION_ERROR: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.assignment_modal.assignment_allocation.errored`,
+  // Activity tab
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_SORT_BY_OR_FILTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table.changed`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_ACTIONS_REFRESH: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_refresh.clicked`,
+  BUDGET_DETAILS_SPENT_DATATABLE_SORT_BY_OR_FILTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.spent_table.changed`,
+  EMPTY_STATE_CTA: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.empty_state_cta_to_catalog.clicked`,
+  // Catalog tab
+  // Catalog tab search
+  VIEW_COURSE: `${BUDGET_DETAIL_SEARCH_PREFIX}.view_course.clicked`,
+  ASSIGN_COURSE: `${BUDGET_DETAIL_SEARCH_PREFIX}.assign_course_cta.clicked`,
+  // Catalog tab - Assignment Modal
+  TOGGLE_NEXT_STEPS: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.next_steps_collapsible.toggled`,
+  TOGGLE_IMPACT_ON_YOUR_LEARNERS: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.impact_on_your_learners_collapsible.toggled`,
+  TOGGLE_MANAGING_THIS_ASSIGNMENT: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.managing_this_assignment_collapsible.toggled`,
+  ASSIGNMENT_MODAL_CANCEL: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.close_modal_cancel.clicked`,
+  ASSIGNMENT_MODAL_EXIT: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.close_modal_exit.clicked`,
+  ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.exit_assignment_allocation_modal.clicked`,
+  ASSIGNMENT_MODAL_HELP_CENTER: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.help_center_article_course_assignments.clicked`,
+  ASSIGNMENT_ALLOCATION_LEARNER_ASSIGNMENT: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.assignment_allocation.assigned`,
+  EMAIL_ADDRESS_VALIDATION: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.email_validation.changed`,
+  ASSIGNMENT_ALLOCATION_ERROR: `${BUDGET_DETAIL_ASSIGNMENT_MODAL_PREFIX}.assignment_allocation.errored`,
 };
 
 const EVENT_NAMES = {

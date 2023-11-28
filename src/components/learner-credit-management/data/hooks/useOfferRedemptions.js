@@ -14,6 +14,7 @@ import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiSer
 import { API_FIELDS_BY_TABLE_COLUMN_ACCESSOR } from '../constants';
 import { transformUtilizationTableResults, transformUtilizationTableSubsidyTransactionResults } from '../utils';
 import useSubsidyAccessPolicy from './useSubsidyAccessPolicy';
+import EVENT_NAMES from '../../../../eventTracking';
 
 const applySortByToOptions = (sortBy, options) => {
   const orderingStrings = sortBy.map(({ id, desc }) => {
@@ -113,7 +114,7 @@ const useOfferRedemptions = (
           // send all table state as event properties.
           sendEnterpriseTrackEvent(
             enterpriseUUID,
-            'edx.ui.enterprise.admin_portal.learner-credit-management.table.data.changed',
+            EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_SPENT_DATATABLE_SORT_BY_OR_FILTER,
             options,
           );
         } else {
