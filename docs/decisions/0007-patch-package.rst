@@ -25,7 +25,7 @@ Decisions
 
 We will use ``patch-package`` to temporarily create a patch of Paragon's ``DataTable`` component to shows the correct number in the "Select all X" label count until we can upgrade to the latest version of Paragon containing a fix for this issue.
 
-We will keep the ``patch-package`` devDependency installed and running in the ``postinstall`` NPM script. However, we should only reach for ``patch-package`` only when necessary, and should not use it as a crutch for not upgrading to the latest version of a dependency or making a contribution to the upstream third-party dependency (e.g., ``@edx/paragon``).
+We will keep the ``patch-package`` devDependency installed and running in the ``postinstall`` NPM script. However, we should only reach for ``patch-package`` when necessary, and should not use it as a crutch for not upgrading to the latest version of a dependency or making a contribution to the upstream third-party dependency (e.g., ``@edx/paragon``).
 
 Consequences
 ************

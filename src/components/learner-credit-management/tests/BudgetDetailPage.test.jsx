@@ -10,6 +10,8 @@ import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
+import { v4 as uuidv4 } from 'uuid';
+import { faker } from '@faker-js/faker';
 
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
@@ -113,6 +115,11 @@ const mockLearnerContentAssignment = {
   actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
   errorReason: null,
 };
+const createMockLearnerContentAssignment = () => ({
+  ...mockLearnerContentAssignment,
+  uuid: uuidv4(),
+  learnerEmail: faker.internet.email(),
+});
 const mockEnrollmentTransactionReversal = {
   uuid: 'test-transaction-reversal-uuid',
   created: '2023-10-31',
@@ -384,6 +391,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('renders with assigned table data and handles table refresh', () => {
+    const NUMBER_OF_ASSIGNMENTS_TO_GENERATE = 60;
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -395,18 +403,23 @@ describe('<BudgetDetailPage />', () => {
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
-        contentAssignments: { count: 1 },
+        contentAssignments: { count: NUMBER_OF_ASSIGNMENTS_TO_GENERATE },
         spentTransactions: { count: 0 },
       },
     });
     const mockFetchContentAssignments = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockAssignmentsList = [
+      mockLearnerContentAssignment,
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockLearnerContentAssignment),
+    ];
     useBudgetContentAssignments.mockReturnValue({
       isLoading: false,
       contentAssignments: {
-        count: 1,
-        results: [mockLearnerContentAssignment],
-        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
-        numPages: 1,
+        count: NUMBER_OF_ASSIGNMENTS_TO_GENERATE,
+        results: mockAssignmentsList,
+        learnerStateCounts: [{ learnerState: 'waiting', count: NUMBER_OF_ASSIGNMENTS_TO_GENERATE }],
+        numPages: Math.floor(NUMBER_OF_ASSIGNMENTS_TO_GENERATE / PAGE_SIZE),
         currentPage: 1,
       },
       fetchContentAssignments: mockFetchContentAssignments,
@@ -422,12 +435,23 @@ describe('<BudgetDetailPage />', () => {
     const assignedSection = within(screen.getByText('Assigned').closest('section'));
     expect(assignedSection.queryByText('No results found')).not.toBeInTheDocument();
     expect(assignedSection.getByText(mockLearnerEmail)).toBeInTheDocument();
-    const viewCourseCTA = assignedSection.getByText(mockContentTitle, { selector: 'a' });
+    const viewCourseCTA = assignedSection.queryAllByText(mockContentTitle, { selector: 'a' })[0];
     expect(viewCourseCTA).toBeInTheDocument();
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
-    expect(assignedSection.getByText('-$199')).toBeInTheDocument();
-    expect(assignedSection.getByText('Waiting for learner')).toBeInTheDocument();
-    expect(assignedSection.getByText(`Assigned: ${formatDate('2023-10-27')}`)).toBeInTheDocument();
+    expect(assignedSection.queryAllByText('-$199')).toHaveLength(PAGE_SIZE);
+    expect(assignedSection.queryAllByText('Waiting for learner')).toHaveLength(PAGE_SIZE);
+    expect(assignedSection.queryAllByText(`Assigned: ${formatDate('2023-10-27')}`)).toHaveLength(PAGE_SIZE);
+
+    // Assert the "Select all X" label count is correct, after selecting a row. This verifies the
+    // temporary patch of Paragon is working as intended. If this test fails, it may mean Paragon
+    // was upgraded to a version that does not yet contain a fix for the underlying bug related to
+    // the incorrect "Select all X" count.
+    const selectAllCheckbox = assignedSection.queryAllByRole('checkbox')[0];
+    userEvent.click(selectAllCheckbox);
+    expect(getButtonElement(`Select all ${NUMBER_OF_ASSIGNMENTS_TO_GENERATE}`, { screenOverride: assignedSection })).toBeInTheDocument();
+
+    // Unselect the checkbox the "Refresh" table action appears
+    userEvent.click(selectAllCheckbox);
 
     const expectedTableFetchDataArgs = {
       pageIndex: DEFAULT_PAGE,
