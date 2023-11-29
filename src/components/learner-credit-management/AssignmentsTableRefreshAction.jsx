@@ -13,19 +13,19 @@ const AssignmentsTableRefreshAction = ({ enterpriseId, tableInstance, refresh })
 
     // Construct track event data with a identical syntax to useBudgetContentAssignments
     const options = {
-      page: dataTableState.pageIndex + 1, // `DataTable` uses zeo-indexed array
+      page: dataTableState.pageIndex + 1, // `DataTable` uses zero-indexed array
       pageSize: dataTableState.pageSize,
     };
     applyFiltersToOptions(dataTableState.filters, options);
     applySortByToOptions(dataTableState.sortBy, options);
     const trackEventMetadata = {
       filters: {
-        learnerState: options?.learnerState || null,
-        search: options?.search || null,
+        learnerState: options.learnerState || null,
+        search: options.search || null,
       },
-      ordering: options.ordering,
-      page: options.page,
-      pageSize: options.pageSize,
+      ordering: options.ordering || null,
+      page: options.page || null,
+      pageSize: options.pageSize || null,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,

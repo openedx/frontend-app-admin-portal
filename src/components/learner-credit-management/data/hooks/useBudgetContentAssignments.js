@@ -82,26 +82,26 @@ const useBudgetContentAssignments = ({
       applyFiltersToOptions(args.filters, options);
       applySortByToOptions(args.sortBy, options);
 
-      const argsCopy = {
-        pageIndex: args?.pageIndex,
-        pageSize: args?.pageSize,
-        filters: args?.filters,
-        sortBy: args?.sortBy,
-      };
       /* This logic in conjunction with useRef is being used to prevent track events
       from being called when the page re-renders without the specifically selected
       arguments (argCopy) being changed */
+      const argsCopy = {
+        pageIndex: args.pageIndex,
+        pageSize: args.pageSize,
+        filters: args.filters,
+        sortBy: args.sortBy,
+      };
       const shouldEmitSegmentEvent = !!currentArgsRef.current && (
         JSON.stringify(argsCopy) !== JSON.stringify(currentArgsRef.current));
       if (shouldEmitSegmentEvent) {
         const trackEventMetadata = {
           filters: {
-            learnerState: options?.learnerState || null,
-            search: options?.search || null,
+            learnerState: options.learnerState || null,
+            search: options.search || null,
           },
-          ordering: options.ordering,
-          page: options.page,
-          pageSize: options.pageSize,
+          ordering: options.ordering || null,
+          page: options.page || null,
+          pageSize: options.pageSize || null,
         };
         await sendEnterpriseTrackEvent(
           enterpriseId,

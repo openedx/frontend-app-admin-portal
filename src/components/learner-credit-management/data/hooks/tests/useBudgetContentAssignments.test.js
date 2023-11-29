@@ -292,8 +292,6 @@ describe('useBudgetContentAssignments', () => {
         ordering: orderingQueryParam,
       },
     );
-
-    // expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
   it('calls enterprise track event', async () => {
     const mockUseBudgetContentAssignmentsData = {
@@ -324,9 +322,10 @@ describe('useBudgetContentAssignments', () => {
     };
 
     // Perform first render where currentArgsRef.current = null, no track event called
-    const { result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments(
+    const { rerender, result, waitForNextUpdate } = renderHook(() => useBudgetContentAssignments(
       mockUseBudgetContentAssignmentsData,
     ));
+
     const { fetchContentAssignments } = result.current;
     const mockListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
     mockListContentAssignments.mockResolvedValue(mockListContentAssignmentsData);
@@ -340,8 +339,9 @@ describe('useBudgetContentAssignments', () => {
 
     expect(sendEnterpriseTrackEvent).not.toHaveBeenCalled();
 
-    // Perform second render after the currentArgsRef.current has been hydrated
-    renderHook(() => useBudgetContentAssignments(mockUseBudgetContentAssignmentsData));
+    // Performs a `rerender` of the first renderHook call after the currentArgsRef.current has been hydrated
+    rerender(mockUseBudgetContentAssignmentsData);
+
     const mockSecondListContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'listContentAssignments');
     mockSecondListContentAssignments.mockResolvedValue(mockListContentAssignmentsData);
     await fetchContentAssignments({
