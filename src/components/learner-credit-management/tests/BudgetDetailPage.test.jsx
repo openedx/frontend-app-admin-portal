@@ -381,6 +381,9 @@ describe('<BudgetDetailPage />', () => {
     const transactionRowWithReversal = within(spentSection.getByText(mockSecondLearnerEmail).closest('tr'));
     expect(transactionRowWithReversal.getByText(`Refunded on ${formatDate(mockEnrollmentTransactionReversal.created)}`)).toBeInTheDocument();
     expect(transactionRowWithReversal.getByText(`+${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toBeInTheDocument();
+
+    userEvent.click(spentSection.queryAllByText(mockContentTitle, { selector: 'a' })[0]);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it('renders with assigned table data and handles table refresh', () => {
