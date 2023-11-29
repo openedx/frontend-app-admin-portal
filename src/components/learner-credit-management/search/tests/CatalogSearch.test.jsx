@@ -7,10 +7,10 @@ import {
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { screen } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient, renderWithRouter } from '../../test/testUtils';
-import CatalogSearch from '../search/CatalogSearch';
+import { queryClient, renderWithRouter } from '../../../test/testUtils';
+import CatalogSearch from '../CatalogSearch';
 
-import { useBudgetId, useSubsidyAccessPolicy } from '../data';
+import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
 
 jest.mock('react-instantsearch-dom', () => ({
   ...jest.requireActual('react-instantsearch-dom'),
@@ -18,7 +18,7 @@ jest.mock('react-instantsearch-dom', () => ({
   Index: () => <div>SEARCH</div>,
 }));
 
-jest.mock('../data');
+jest.mock('../../data');
 
 const DEFAULT_SEARCH_CONTEXT_VALUE = { refinements: {} };
 

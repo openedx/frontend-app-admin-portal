@@ -138,4 +138,21 @@ describe('<LearnerCreditAllocationTable />', () => {
     const courseTitleElement = screen.queryByText('course-title');
     expect(courseTitleElement.closest('a')).toBeNull();
   });
+  it('displays isLoading state component', () => {
+    const store = mockStore({
+      portalConfiguration: {
+        enterpriseId: 'test-enterprise-id',
+        enterpriseSlug: 'test-enterprise-slug',
+        enableLearnerPortal: false,
+      },
+    });
+    const props = {
+      isLoading: true,
+      tableData: {
+        results: [],
+      },
+    };
+    render(<LearnerCreditAllocationTableWrapper store={store} {...props} />);
+    expect(screen.getByText('loading')).toBeTruthy();
+  });
 });

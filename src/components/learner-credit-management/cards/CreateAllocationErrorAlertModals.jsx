@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useToggle } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { connect } from 'react-redux';
 import SystemErrorAlertModal from './assignment-allocation-status-modals/SystemErrorAlertModal';
 import ContentNotInCatalogErrorAlertModal from './assignment-allocation-status-modals/ContentNotInCatalogErrorAlertModal';
 import NotEnoughBalanceAlertModal from './assignment-allocation-status-modals/NotEnoughBalanceAlertModal';
+import EVENT_NAMES from '../../../eventTracking';
 
 const CreateAllocationErrorAlertModals = ({
+  enterpriseId,
   errorReason,
   retry,
   closeAssignmentModal,
@@ -23,6 +27,15 @@ const CreateAllocationErrorAlertModals = ({
       closeFn();
     });
   }, [closeCatalogErrorModal, closeBalanceErrorModal, closeSystemErrorModal]);
+
+  const closeAssignmentModalWithTrackEvent = () => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_ASSIGNMENT_ALLOCATION_ERROR,
+      { errorReason },
+    );
+    closeAssignmentModal();
+  };
 
   /**
    * Retry the original action that caused the error and close all error modals.
@@ -57,18 +70,18 @@ const CreateAllocationErrorAlertModals = ({
       <ContentNotInCatalogErrorAlertModal
         isErrorModalOpen={isCatalogError}
         closeErrorModal={closeCatalogErrorModal}
-        closeAssignmentModal={closeAssignmentModal}
+        closeAssignmentModal={closeAssignmentModalWithTrackEvent}
       />
       <NotEnoughBalanceAlertModal
         isErrorModalOpen={isBalanceError}
         closeErrorModal={closeBalanceErrorModal}
-        closeAssignmentModal={closeAssignmentModal}
+        closeAssignmentModal={closeAssignmentModalWithTrackEvent}
         retry={handleErrorRetry}
       />
       <SystemErrorAlertModal
         isErrorModalOpen={isSystemError}
         closeErrorModal={closeSystemErrorModal}
-        closeAssignmentModal={closeAssignmentModal}
+        closeAssignmentModal={closeAssignmentModalWithTrackEvent}
         retry={handleErrorRetry}
       />
     </>
@@ -76,9 +89,14 @@ const CreateAllocationErrorAlertModals = ({
 };
 
 CreateAllocationErrorAlertModals.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   closeAssignmentModal: PropTypes.func.isRequired,
   retry: PropTypes.func.isRequired,
   errorReason: PropTypes.string,
 };
 
-export default CreateAllocationErrorAlertModals;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(CreateAllocationErrorAlertModals);

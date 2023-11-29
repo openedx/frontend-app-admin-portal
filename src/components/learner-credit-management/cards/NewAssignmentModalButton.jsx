@@ -9,23 +9,29 @@ import {
   Hyperlink,
   StatefulButton,
 } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { snakeCaseObject } from '@edx/frontend-platform/utils';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 
+import { connect } from 'react-redux';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys, useBudgetId } from '../data';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
+import EVENT_NAMES from '../../../eventTracking';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
     subsidyAccessPolicyId,
     payload,
-  }) => EnterpriseAccessApiService.allocateContentAssignments(subsidyAccessPolicyId, payload),
+  }) => {
+    const response = await EnterpriseAccessApiService.allocateContentAssignments(subsidyAccessPolicyId, payload);
+    return camelCaseObject(response.data);
+  },
 });
 
-const NewAssignmentModalButton = ({ course, children }) => {
+const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const history = useHistory();
   const routeMatch = useRouteMatch();
   const queryClient = useQueryClient();
@@ -41,6 +47,17 @@ const NewAssignmentModalButton = ({ course, children }) => {
 
   const pathToActivityTab = generatePath(routeMatch.path, { budgetId: subsidyAccessPolicyId, activeTabKey: 'activity' });
 
+  const handleOpenAssignmentModal = () => {
+    open();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_ASSIGN_COURSE,
+      {
+        isOpen: !isOpen,
+        courseUUID: course.uuid,
+      },
+    );
+  };
   const handleCloseAssignmentModal = () => {
     close();
     setAssignButtonState('default');
@@ -57,6 +74,21 @@ const NewAssignmentModalButton = ({ course, children }) => {
     setCanAllocateAssignments(canAllocate);
   }, []);
 
+  const onSuccessEnterpriseTrackEvents = ({ created, noChange, updated }) => {
+    const trackEventMetadata = {
+      totalAllocatedLearners: learnerEmails.length,
+      created: created.length,
+      noChange: noChange.length,
+      updated: updated.length,
+      courseUUID: course.uuid,
+    };
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_LEARNER_ASSIGNMENT,
+      trackEventMetadata,
+    );
+  };
+
   const handleAllocateContentAssignments = () => {
     const payload = snakeCaseObject({
       contentPriceCents: course.normalizedMetadata.contentPrice * 100, // Convert to USD cents
@@ -70,12 +102,13 @@ const NewAssignmentModalButton = ({ course, children }) => {
     setAssignButtonState('pending');
     setCreateAssignmentsErrorReason(null);
     mutate(mutationArgs, {
-      onSuccess: () => {
+      onSuccess: ({ created, noChange, updated }) => {
         setAssignButtonState('complete');
         queryClient.invalidateQueries({
           queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
         });
         handleCloseAssignmentModal();
+        onSuccessEnterpriseTrackEvents({ created, noChange, updated });
         displayToastForAssignmentAllocation({ totalLearnersAssigned: learnerEmails.length });
         history.push(pathToActivityTab);
       },
@@ -84,32 +117,72 @@ const NewAssignmentModalButton = ({ course, children }) => {
           httpErrorStatus,
           httpErrorResponseData,
         } = err.customAttributes;
+        let errorReason = 'system_error';
         if (httpErrorStatus === 422) {
           const responseData = JSON.parse(httpErrorResponseData);
-          setCreateAssignmentsErrorReason(responseData[0].reason);
+          errorReason = responseData[0].reason;
+          setCreateAssignmentsErrorReason(errorReason);
         } else {
-          setCreateAssignmentsErrorReason('system_error');
+          setCreateAssignmentsErrorReason(errorReason);
         }
         setAssignButtonState('error');
+        sendEnterpriseTrackEvent(
+          enterpriseId,
+          EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_ERROR,
+          {
+            totalAllocatedLearners: learnerEmails.length,
+            courseUUID: course.uuid,
+            errorStatus: httpErrorStatus,
+            errorReason,
+          },
+        );
       },
     });
   };
 
   return (
     <>
-      <Button onClick={open}>{children}</Button>
+      <Button onClick={handleOpenAssignmentModal}>{children}</Button>
       <FullscreenModal
         className="bg-light-200 text-left"
         title="Assign this course"
         isOpen={isOpen}
-        onClose={handleCloseAssignmentModal}
+        onClose={() => {
+          handleCloseAssignmentModal();
+          sendEnterpriseTrackEvent(
+            enterpriseId,
+            EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_EXIT,
+            { assignButtonState },
+          );
+        }}
         footerNode={(
           <ActionRow>
-            <Button variant="tertiary" as={Hyperlink} destination="https://edx.org" target="_blank">
+            <Button
+              variant="tertiary"
+              as={Hyperlink}
+              onClick={() => sendEnterpriseTrackEvent(
+                enterpriseId,
+                EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_HELP_CENTER,
+              )}
+              destination="https://edx.org"
+              target="_blank"
+            >
               Help Center: Course Assignments
             </Button>
             <ActionRow.Spacer />
-            <Button variant="tertiary" onClick={close}>Cancel</Button>
+            <Button
+              variant="tertiary"
+              onClick={() => {
+                handleCloseAssignmentModal();
+                sendEnterpriseTrackEvent(
+                  enterpriseId,
+                  EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_CANCEL,
+                  { assignButtonState },
+                );
+              }}
+            >
+              Cancel
+            </Button>
             <StatefulButton
               labels={{
                 default: 'Assign',
@@ -140,8 +213,13 @@ const NewAssignmentModalButton = ({ course, children }) => {
 };
 
 NewAssignmentModalButton.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   course: PropTypes.shape().isRequired, // Pass-thru prop to `BaseCourseCard`
   children: PropTypes.node.isRequired, // Represents the button text
 };
 
-export default NewAssignmentModalButton;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(NewAssignmentModalButton);

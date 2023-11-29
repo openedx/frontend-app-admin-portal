@@ -8,32 +8,37 @@ import configureMockStore from 'redux-mock-store';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import CourseCard from './CourseCard';
+import CourseCard from '../CourseCard';
 import {
   formatPrice,
   learnerCreditManagementQueryKeys,
   useBudgetId,
   useSubsidyAccessPolicy,
-} from '../data';
-import { getButtonElement, queryClient } from '../../test/testUtils';
+} from '../../data';
+import { getButtonElement, queryClient } from '../../../test/testUtils';
 
-import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from './data';
+import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
+import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../data';
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQueryClient: jest.fn(),
 }));
 
-jest.mock('../data', () => ({
-  ...jest.requireActual('../data'),
+jest.mock('../../data', () => ({
+  ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
 }));
-jest.mock('../../../data/services/EnterpriseAccessApiService');
+jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
 const originalData = {
   availability: ['Upcoming'],
@@ -216,6 +221,45 @@ describe('Course card works as expected', () => {
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
   });
 
+  test('view course sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...execEdProps} />);
+    const viewCourseCTA = screen.getByText('View course', { selector: 'a' });
+    userEvent.click(viewCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+
+  test('card exits and sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const assignmentModal = within(screen.getByRole('dialog'));
+    expect(assignmentModal.getByText('Assign this course')).toBeInTheDocument();
+
+    const closeButton = screen.getByRole('button', { name: 'Close' });
+    userEvent.click(closeButton);
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+
+  test('help center article link sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const helpCenterButton = screen.getByText('Help Center: Course Assignments');
+
+    expect(helpCenterButton).toBeInTheDocument();
+    userEvent.click(helpCenterButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+
   test.each([
     {
       shouldSubmitAssignments: true,
@@ -346,15 +390,20 @@ describe('Course card works as expected', () => {
     expect(assignmentModal.getByText('Learners will be notified of this course assignment by email.')).toBeInTheDocument();
     const budgetImpact = assignmentModal.getByText('Impact on your Learner Credit budget');
     expect(budgetImpact).toBeInTheDocument();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(assignmentModal.queryByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).not.toBeInTheDocument();
     userEvent.click(budgetImpact);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(assignmentModal.getByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).toBeInTheDocument();
     const managingAssignment = assignmentModal.getByText('Managing this assignment');
     expect(managingAssignment).toBeInTheDocument();
     expect(assignmentModal.queryByText('You will be able to monitor the status of this assignment', { exact: false })).not.toBeInTheDocument();
     userEvent.click(managingAssignment);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
     expect(assignmentModal.getByText('You will be able to monitor the status of this assignment', { exact: false })).toBeInTheDocument();
-
+    const nextSteps = assignmentModal.getByText('Next steps for assigned learners');
+    userEvent.click(nextSteps);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
     // Verify modal footer
     expect(assignmentModal.getByText('Help Center: Course Assignments')).toBeInTheDocument();
     const cancelAssignmentCTA = getButtonElement('Cancel', { screenOverride: assignmentModal });
@@ -426,8 +475,10 @@ describe('Course card works as expected', () => {
           expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
           if (shouldRetryAllocationAfterException) {
             await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
+            expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
           } else {
             await simulateClickErrorModalExit(assignmentErrorModal);
+            expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
           }
         }
       } else {

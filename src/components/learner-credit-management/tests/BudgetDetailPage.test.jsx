@@ -8,7 +8,7 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
 
 import BudgetDetailPage from '../BudgetDetailPage';
@@ -31,6 +31,11 @@ import {
   mockEnterpriseOfferId,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -205,7 +210,7 @@ describe('<BudgetDetailPage />', () => {
   it.each([
     { isLargeViewport: true },
     { isLargeViewport: false },
-  ])('displays budget activity overview empty state', ({ isLargeViewport }) => {
+  ])('displays budget activity overview empty state', async ({ isLargeViewport }) => {
     useIsLargeOrGreater.mockReturnValue(isLargeViewport);
     useParams.mockReturnValue({
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
@@ -226,6 +231,8 @@ describe('<BudgetDetailPage />', () => {
     const illustrationTestIds = ['find-the-right-course-illustration', 'name-your-learners-illustration', 'confirm-spend-illustration'];
     illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
     expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
+    userEvent.click(screen.getByText('Get started'));
+    await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
   });
 
   it.each([
@@ -404,6 +411,7 @@ describe('<BudgetDetailPage />', () => {
     userEvent.click(refreshCTA);
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
     expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it.each([
