@@ -28,6 +28,13 @@ const getLearnerStateDisplayName = (learnerState) => {
   return undefined;
 };
 
+const selectColumn = {
+  id: 'selection',
+  Header: DataTable.ControlledSelectHeader,
+  Cell: DataTable.ControlledSelect,
+  disableSortBy: true,
+};
+
 const BudgetAssignmentsTable = ({
   isLoading,
   tableData,
@@ -40,7 +47,6 @@ const BudgetAssignmentsTable = ({
       number: count,
       value: learnerState,
     }));
-
   return (
     <DataTable
       isSortable
@@ -52,7 +58,9 @@ const BudgetAssignmentsTable = ({
       manualFilters
       isLoading={isLoading}
       defaultColumnValues={{ Filter: TableTextFilter }}
+      manualSelectColumn={selectColumn}
       FilterStatusComponent={FilterStatus}
+      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       columns={[
         {
           Header: 'Assignment details',

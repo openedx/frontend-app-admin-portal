@@ -16,6 +16,7 @@ const MultipleBudgetsPicker = ({
   enableLearnerPortal,
 }) => {
   const orderedOffers = orderOffers(offers);
+
   return (
     <Stack gap={4}>
       <Row>
