@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Stack, Hyperlink } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform';
-
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
 import EmailAddressTableCell from './EmailAddressTableCell';
 import { formatDate } from './data';
 import EVENT_NAMES from '../../eventTracking';
