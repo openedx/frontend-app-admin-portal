@@ -23,9 +23,9 @@ const AssignmentsTableRefreshAction = ({ enterpriseId, tableInstance, refresh })
         learnerState: options?.learnerState || null,
         search: options?.search || null,
       },
-      ordering: options.ordering,
-      page: options.page,
-      pageSize: options.pageSize,
+      ordering: options?.ordering || null,
+      page: options?.page || null,
+      pageSize: options?.pageSize || null,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
