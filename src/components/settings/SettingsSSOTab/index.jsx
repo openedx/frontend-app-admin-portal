@@ -135,7 +135,11 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
                 )}
                 {/* Nothing found so guide user to creation/edit form */}
                 {showNoSSOCard && (
-                  <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />
+                  <NoSSOCard
+                    setShowNoSSOCard={setShowNoSSOCard}
+                    setShowNewSSOForm={setShowNewSSOForm}
+                    setIsStepperOpen={setIsStepperOpen}
+                  />
                 )}
                 {/* Since we found a selected providerConfig we know we are in editing mode and can safely
                 render the create/edit form */}
@@ -193,7 +197,15 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
               />
             )}
           {/* Nothing found so guide user to creation/edit form */}
-          {showNoSSOCard && <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />}
+          {/* Because NoSSOCard is shared component between old and new sso steppers, setIsStepperOpen is a placeholder
+          for now. This whole tree is scheduled to be deleted soon */}
+          {showNoSSOCard && (
+            <NoSSOCard
+              setShowNoSSOCard={setShowNoSSOCard}
+              setShowNewSSOForm={setShowNewSSOForm}
+              setIsStepperOpen={() => { }}
+            />
+          )}
           {/* Since we found a selected providerConfig we know we are in editing mode and can safely
           render the create/edit form */}
           {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (
