@@ -3,11 +3,20 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Stack, Hyperlink } from '@edx/paragon';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { configuration } from '../../config';
 import EmailAddressTableCell from './EmailAddressTableCell';
+import EVENT_NAMES from '../../eventTracking';
 
-const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
+const AssignmentDetailsTableCell = ({ row, enterpriseSlug, enterpriseId }) => {
   const { ENTERPRISE_LEARNER_PORTAL_URL } = configuration;
+  const handleOnClick = () => sendEnterpriseTrackEvent(
+    enterpriseId,
+    EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_ASSIGNED_DATATABLE_VIEW_COURSE,
+    {
+      courseUUID: row.original.uuid,
+    },
+  );
   return (
     <Stack gap={1}>
       <EmailAddressTableCell
@@ -19,6 +28,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
         <Hyperlink
           className="x-small"
           destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.contentKey}`}
+          onClick={handleOnClick}
           target="_blank"
           isInline
         >
@@ -30,6 +40,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug }) => {
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
@@ -43,6 +54,7 @@ AssignmentDetailsTableCell.propTypes = {
     }).isRequired,
   }).isRequired,
   enterpriseSlug: PropTypes.string,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(AssignmentDetailsTableCell);

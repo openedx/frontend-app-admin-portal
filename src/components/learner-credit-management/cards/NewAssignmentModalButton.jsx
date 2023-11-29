@@ -51,7 +51,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     open();
     sendEnterpriseTrackEvent(
       enterpriseId,
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_ASSIGN_COURSE,
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGN_COURSE,
       {
         isOpen: !isOpen,
         courseUUID: course.uuid,
