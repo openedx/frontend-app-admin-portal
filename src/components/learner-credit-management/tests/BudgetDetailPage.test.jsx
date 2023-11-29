@@ -238,14 +238,27 @@ describe('<BudgetDetailPage />', () => {
   it.each([
     {
       budgetId: mockEnterpriseOfferId,
+      isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, true],
     },
     {
+      budgetId: mockEnterpriseOfferId,
+      isTopDownAssignmentEnabled: false,
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, false],
+    },
+    {
       budgetId: mockSubsidyAccessPolicyUUID,
+      isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],
+    },
+    {
+      budgetId: mockSubsidyAccessPolicyUUID,
+      isTopDownAssignmentEnabled: false,
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, false],
     },
   ])('displays spend table in "Activity" tab with empty results (%s)', async ({
     budgetId,
+    isTopDownAssignmentEnabled,
     expectedUseOfferRedemptionsArgs,
   }) => {
     useParams.mockReturnValue({
@@ -277,7 +290,17 @@ describe('<BudgetDetailPage />', () => {
       offerRedemptions: mockEmptyOfferRedemptions,
       fetchOfferRedemptions: jest.fn(),
     });
-    renderWithRouter(<BudgetDetailPageWrapper />);
+    const storeState = {
+      ...initialStoreState,
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          ...initialStoreState.portalConfiguration.enterpriseFeatures,
+          topDownAssignmentRealTimeLcm: isTopDownAssignmentEnabled,
+        },
+      },
+    };
+    renderWithRouter(<BudgetDetailPageWrapper initialState={storeState} />);
 
     expect(useOfferRedemptions).toHaveBeenCalledTimes(1);
     expect(useOfferRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
@@ -287,9 +310,19 @@ describe('<BudgetDetailPage />', () => {
     // Catalog tab does NOT exist since the budget is not assignable
     expect(screen.queryByText('Catalog')).not.toBeInTheDocument();
 
-    // Spent table is visible within Activity tab contents
+    // Spent table and messaging is visible within Activity tab contents
     const spentSection = within(screen.getByText('Spent').closest('section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
+    expect(spentSection.getByText('Spent activity is driven by completed enrollments.', { exact: false })).toBeInTheDocument();
+    const isSubsidyAccessPolicyWithAnalyicsApi = (
+      budgetId === mockSubsidyAccessPolicyUUID && !isTopDownAssignmentEnabled
+    );
+    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyicsApi) {
+      // This copy is only present when the "Spent" table is backed by the
+      // analytics API (i.e., budget is an enterprise offer or a subsidy access
+      // policy with the LC2 feature flag disabled).
+      expect(spentSection.getByText('Enrollment data is automatically updated every 12 hours.', { exact: false })).toBeInTheDocument();
+    }
   });
 
   it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', async () => {
