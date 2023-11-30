@@ -10,7 +10,7 @@ import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
  * it will render one card for each associated budget. If the budget is a Policy,
  * it will also render a single card.
  *
- * @param {*} budget Represents either:
+ * @param {Object} budget Represents either:
  *  - Enterprise Offer
  *  - Subsidy (enterprise-subsidy)
  *  - Policy (enterprise-access)
@@ -27,7 +27,7 @@ const BudgetCard = ({
     subsidySummary: subsidySummaryAnalyticsApi,
   } = useSubsidySummaryAnalyticsApi(enterpriseUUID, budget);
 
-  // Subsidy Access Policies will always a single budget, so we can render a single card
+  // Subsidy Access Policies will always have a single budget, so we can render a single card
   // without relying on `useSubsidySummaryAnalyticsApi`.
   if (budget.source === BUDGET_TYPES.policy) {
     return (
