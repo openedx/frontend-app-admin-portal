@@ -16,7 +16,7 @@ import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 import { connect } from 'react-redux';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { learnerCreditManagementQueryKeys, useBudgetId } from '../data';
+import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy } from '../data';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
@@ -43,8 +43,24 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
   const { displayToastForAssignmentAllocation } = useContext(BudgetDetailPageContext);
 
-  const { mutate } = useAllocateContentAssignments();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const {
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid,
+  } = subsidyAccessPolicy;
+  const sharedEnterpriseTrackEventMetadata = {
+    subsidyAccessPolicyId,
+    catalogUuid,
+    subsidyUuid,
+    isSubsidyActive,
+    isAssignable,
+    contentPriceCents: course.normalizedMetadata.contentPrice * 100,
+    contentKey: course.key,
+    courseUuid: course.uuid,
+    assignmentConfigurationUuid: assignmentConfiguration.uuid,
+    assignmentConfigurationActive: assignmentConfiguration.active,
+  };
 
+  const { mutate } = useAllocateContentAssignments();
   const pathToActivityTab = generatePath(routeMatch.path, { budgetId: subsidyAccessPolicyId, activeTabKey: 'activity' });
 
   const handleOpenAssignmentModal = () => {
@@ -54,7 +70,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGN_COURSE,
       {
         isOpen: !isOpen,
-        courseUUID: course.uuid,
+        courseUuid: course.uuid,
       },
     );
   };
@@ -74,13 +90,15 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setCanAllocateAssignments(canAllocate);
   }, []);
 
-  const onSuccessEnterpriseTrackEvents = ({ created, noChange, updated }) => {
+  const onSuccessEnterpriseTrackEvents = ({
+    created, noChange, updated,
+  }) => {
     const trackEventMetadata = {
+      ...sharedEnterpriseTrackEventMetadata,
       totalAllocatedLearners: learnerEmails.length,
       created: created.length,
       noChange: noChange.length,
       updated: updated.length,
-      courseUUID: course.uuid,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
@@ -108,7 +126,9 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
         });
         handleCloseAssignmentModal();
-        onSuccessEnterpriseTrackEvents({ created, noChange, updated });
+        onSuccessEnterpriseTrackEvents({
+          created, noChange, updated,
+        });
         displayToastForAssignmentAllocation({ totalLearnersAssigned: learnerEmails.length });
         history.push(pathToActivityTab);
       },
@@ -130,8 +150,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           enterpriseId,
           EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_ERROR,
           {
+            ...sharedEnterpriseTrackEventMetadata,
             totalAllocatedLearners: learnerEmails.length,
-            courseUUID: course.uuid,
             errorStatus: httpErrorStatus,
             errorReason,
           },
