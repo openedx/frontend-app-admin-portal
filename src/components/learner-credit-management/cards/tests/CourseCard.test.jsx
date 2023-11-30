@@ -95,6 +95,10 @@ const initialStoreState = {
 const mockSubsidyAccessPolicy = {
   uuid: 'test-subsidy-access-policy-uuid',
   displayName: 'Test Subsidy Access Policy',
+  assignmentConfiguration: {
+    uuid: 'test-assignment-configuration-uuid',
+    active: true,
+  },
   aggregates: {
     spendAvailableUsd: 50000,
   },

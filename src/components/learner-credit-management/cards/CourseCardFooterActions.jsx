@@ -16,7 +16,7 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.VIEW_COURSE,
-      { courseUUID: uuid },
+      { courseUuid: uuid },
     );
   };
   return [

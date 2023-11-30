@@ -388,6 +388,9 @@ describe('<BudgetDetailPage />', () => {
     const transactionRowWithReversal = within(spentSection.getByText(mockSecondLearnerEmail).closest('tr'));
     expect(transactionRowWithReversal.getByText(`Refunded on ${formatDate(mockEnrollmentTransactionReversal.created)}`)).toBeInTheDocument();
     expect(transactionRowWithReversal.getByText(`+${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toBeInTheDocument();
+
+    userEvent.click(spentSection.queryAllByText(mockContentTitle, { selector: 'a' })[0]);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it('renders with assigned table data and handles table refresh', () => {
@@ -466,9 +469,12 @@ describe('<BudgetDetailPage />', () => {
     const refreshCTA = assignedSection.getByText('Refresh', { selector: 'button' });
     expect(refreshCTA).toBeInTheDocument();
     userEvent.click(refreshCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
     expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    userEvent.click(viewCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 
   it.each([
