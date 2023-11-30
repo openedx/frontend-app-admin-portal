@@ -10,7 +10,7 @@ import EVENT_NAMES from '../../eventTracking';
 
 const AssignmentDetailsTableCell = ({ row, enterpriseSlug, enterpriseId }) => {
   const { ENTERPRISE_LEARNER_PORTAL_URL } = configuration;
-  const handleOnClick = () => sendEnterpriseTrackEvent(
+  const handleOnViewCourseClick = () => sendEnterpriseTrackEvent(
     enterpriseId,
     EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_ASSIGNED_DATATABLE_VIEW_COURSE,
     {
@@ -32,7 +32,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug, enterpriseId }) => {
         <Hyperlink
           className="x-small"
           destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.contentKey}`}
-          onClick={handleOnClick}
+          onClick={handleOnViewCourseClick}
           target="_blank"
           isInline
         >

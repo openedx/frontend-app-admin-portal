@@ -56,7 +56,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     contentKey: course.key,
     courseUuid: course.uuid,
     assignmentConfigurationUuid: assignmentConfiguration.uuid,
-    assignmentConfigurationActive: assignmentConfiguration.active,
   };
 
   const { mutate } = useAllocateContentAssignments();
@@ -68,8 +67,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       enterpriseId,
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGN_COURSE,
       {
+        ...sharedEnterpriseTrackEventMetadata,
         isOpen: !isOpen,
-        courseUuid: course.uuid,
       },
     );
   };
