@@ -5,7 +5,7 @@ import MultipleBudgetsPage from './MultipleBudgetsPage';
 import BudgetDetailPage from './BudgetDetailPage';
 
 const LearnerCreditManagementRoutes = ({ match }) => (
-  <div className="learner-credit-management">
+  <main className="learner-credit-management">
     <Route
       exact
       path={match.path}
@@ -17,7 +17,7 @@ const LearnerCreditManagementRoutes = ({ match }) => (
       path={`${match.path}/:budgetId/:activeTabKey?`}
       component={BudgetDetailPage}
     />
-  </div>
+  </main>
 );
 
 LearnerCreditManagementRoutes.propTypes = {

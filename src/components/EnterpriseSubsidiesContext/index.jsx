@@ -1,15 +1,26 @@
 import { createContext, useMemo } from 'react';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
-import { useCoupons, useCustomerAgreement, useEnterpriseOffers } from './data/hooks';
+import { useCoupons, useCustomerAgreement, useEnterpriseBudgets } from './data/hooks';
 
 export const EnterpriseSubsidiesContext = createContext();
 
-export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagementScreen, enterpriseId }) => {
+export const useEnterpriseSubsidiesContext = ({
+  enablePortalLearnerCreditManagementScreen,
+  enterpriseId,
+  isTopDownAssignmentEnabled,
+}) => {
   const {
-    offers,
-    canManageLearnerCredit,
-    isLoading: isLoadingOffers,
-  } = useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen, enterpriseId });
+    isLoading: isLoadingBudgets,
+    data: budgetsOverview,
+  } = useEnterpriseBudgets({
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseId,
+    isTopDownAssignmentEnabled,
+  });
+  const {
+    budgets = [],
+    canManageLearnerCredit = false,
+  } = budgetsOverview || {};
 
   const {
     customerAgreement,
@@ -24,8 +35,8 @@ export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagem
   const enterpriseSubsidyTypes = useMemo(() => {
     const subsidyTypes = [];
 
-    if (offers.length > 0) {
-      subsidyTypes.push(SUBSIDY_TYPES.offer);
+    if (budgets.length > 0) {
+      subsidyTypes.push(SUBSIDY_TYPES.budget);
     }
 
     if (coupons.length > 0) {
@@ -36,18 +47,18 @@ export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagem
       subsidyTypes.push(SUBSIDY_TYPES.license);
     }
     return subsidyTypes;
-  }, [offers.length, coupons.length, customerAgreement]);
+  }, [budgets.length, coupons.length, customerAgreement]);
 
-  const isLoading = isLoadingOffers || isLoadingCustomerAgreement || isLoadingCoupons;
+  const isLoading = isLoadingBudgets || isLoadingCustomerAgreement || isLoadingCoupons;
 
   const context = useMemo(() => ({
-    offers,
+    budgets,
     customerAgreement,
     coupons,
     canManageLearnerCredit,
     enterpriseSubsidyTypes,
     isLoading,
-  }), [offers, customerAgreement, coupons, canManageLearnerCredit, enterpriseSubsidyTypes, isLoading]);
+  }), [budgets, customerAgreement, coupons, canManageLearnerCredit, enterpriseSubsidyTypes, isLoading]);
 
   return context;
 };

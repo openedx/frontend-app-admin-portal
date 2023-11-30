@@ -164,14 +164,30 @@ class EnterpriseAccessApiService {
     return EnterpriseAccessApiService.apiClient().get(url);
   }
 
+  static listSubsidyAccessPolicies(enterpriseCustomerId) {
+    const queryParams = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseCustomerId,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/?${queryParams.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
   /**
    * Retrieve a specific subsidy access policy.
+   * @param {string} subsidyAccessPolicyUUID The UUID of the subsidy access policy to retrieve.
+   * @returns {Promise} - A promise that resolves to the response from the API.
    */
   static retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID) {
     const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
 
+  /**
+   * ALlocates assignments for a specific subsidy access policy.
+   * @param {String} subsidyAccessPolicyUUID The UUID of the subsidy access policy to allocate content assignments for.
+   * @param {Object} payload The metadata to send to the API, including learner emails and the content key.
+   * @returns {Promise} - A promise that resolves to the response from the API.
+   */
   static allocateContentAssignments(subsidyAccessPolicyUUID, payload) {
     const url = `${EnterpriseAccessApiService.baseUrl}/policy-allocation/${subsidyAccessPolicyUUID}/allocate/`;
     return EnterpriseAccessApiService.apiClient().post(url, payload);

@@ -2,7 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook } from '@testing-library/react-hooks/dom';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
-import useOfferRedemptions from '../useOfferRedemptions';
+import useBudgetRedemptions from '../useBudgetRedemptions';
 import useSubsidyAccessPolicy from '../useSubsidyAccessPolicy';
 import EnterpriseDataApiService from '../../../../../data/services/EnterpriseDataApiService';
 import SubsidyApiService from '../../../../../data/services/EnterpriseSubsidyApiService';
@@ -57,7 +57,7 @@ const wrapper = ({ children }) => (
   <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
 );
 
-describe('useOfferRedemptions', () => {
+describe('useBudgetRedemptions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -88,21 +88,21 @@ describe('useOfferRedemptions', () => {
     useSubsidyAccessPolicy.mockReturnValue({ data: { subsidyUuid } });
 
     const { result, waitForNextUpdate } = renderHook(
-      () => useOfferRedemptions(TEST_ENTERPRISE_UUID, offerId, budgetId, isTopDownAssignmentEnabled),
+      () => useBudgetRedemptions(TEST_ENTERPRISE_UUID, offerId, budgetId, isTopDownAssignmentEnabled),
       { wrapper },
     );
 
     expect(result.current).toMatchObject({
-      offerRedemptions: {
+      budgetRedemptions: {
         itemCount: 0,
         pageCount: 0,
         results: [],
       },
       isLoading: true,
-      fetchOfferRedemptions: expect.any(Function),
+      fetchBudgetRedemptions: expect.any(Function),
     });
     act(() => {
-      result.current.fetchOfferRedemptions({
+      result.current.fetchBudgetRedemptions({
         pageIndex: 0, // `DataTable` uses zero-based indexing
         pageSize: 20,
         sortBy: [
@@ -151,13 +151,13 @@ describe('useOfferRedemptions', () => {
     }] : camelCaseObject(mockOfferEnrollments);
 
     expect(result.current).toMatchObject({
-      offerRedemptions: {
+      budgetRedemptions: {
         itemCount: 100,
         pageCount: 5,
         results: mockExpectedResultsObj,
       },
       isLoading: false,
-      fetchOfferRedemptions: expect.any(Function),
+      fetchBudgetRedemptions: expect.any(Function),
     });
   });
 });

@@ -487,9 +487,12 @@ describe('Course card works as expected', () => {
         }
       } else {
         // Verify success state
-        expect(mockInvalidateQueries).toHaveBeenCalledTimes(1);
+        expect(mockInvalidateQueries).toHaveBeenCalledTimes(2);
         expect(mockInvalidateQueries).toHaveBeenCalledWith({
           queryKey: learnerCreditManagementQueryKeys.budget(mockSubsidyAccessPolicy.uuid),
+        });
+        expect(mockInvalidateQueries).toHaveBeenCalledWith({
+          queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseUUID),
         });
         expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
         await waitFor(() => {

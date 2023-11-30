@@ -27,11 +27,11 @@ const store = getMockStore({ ...initialStore });
 const enterpriseUUID = '1234';
 
 const emptyOffersContextValue = {
-  offers: [], // Empty offers array
+  budgets: [], // Empty offers array
 };
 
 const defaultEnterpriseSubsidiesContextValue = {
-  offers: [{
+  budgets: [{
     source: 'subsidy',
     id: '392f1fe1-ee91-4f44-b174-13ecf59866eb',
     name: 'Subsidy 2 for Executive Education (2U) Integration QA',
@@ -76,6 +76,6 @@ describe('<MultipleBudgetsPage />', () => {
       enterpriseSlug={enterpriseSlug}
       enterpriseSubsidiesContextValue={enterpriseSubsidiesContextValue}
     />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Loading budgets...')).toBeInTheDocument();
   });
 });

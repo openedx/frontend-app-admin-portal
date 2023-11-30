@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { useBudgetId, useOfferRedemptions } from './data';
+import { useBudgetId, useBudgetRedemptions } from './data';
 
 const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const {
     isLoading,
-    offerRedemptions,
-    fetchOfferRedemptions,
-  } = useOfferRedemptions(
+    budgetRedemptions,
+    fetchBudgetRedemptions,
+  } = useBudgetRedemptions(
     enterpriseUUID,
     enterpriseOfferId,
     subsidyAccessPolicyId,
@@ -31,8 +31,8 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
       </p>
       <LearnerCreditAllocationTable
         isLoading={isLoading}
-        tableData={offerRedemptions}
-        fetchTableData={fetchOfferRedemptions}
+        tableData={budgetRedemptions}
+        fetchTableData={fetchBudgetRedemptions}
       />
     </section>
   );
