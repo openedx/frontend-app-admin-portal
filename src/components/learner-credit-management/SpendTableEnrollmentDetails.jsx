@@ -37,7 +37,8 @@ const SpendTableEnrollmentDetailsContents = ({
               enterpriseId,
               EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_SPENT_DATATABLE_VIEW_COURSE,
               {
-                courseUUID: row.original.uuid,
+                courseKey: row.original.courseKey,
+                courseListPriceInCents: row.original.courseListPrice * 100,
               },
             );
           }}
@@ -58,6 +59,7 @@ const rowPropType = PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     courseKey: PropTypes.string.isRequired,
     courseTitle: PropTypes.string,
+    courseListPrice: PropTypes.number,
     userEmail: PropTypes.string,
     enterpriseEnrollmentId: PropTypes.number,
     fulfillmentIdentifier: PropTypes.string,

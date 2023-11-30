@@ -14,7 +14,11 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug, enterpriseId }) => {
     enterpriseId,
     EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_ASSIGNED_DATATABLE_VIEW_COURSE,
     {
-      courseUUID: row.original.uuid,
+      courseKey: row.original.contentKey,
+      contentQuantityInCents: row.original.contentQuantity,
+      errorReason: row.original.errorReason,
+      learnerState: row.original.learnerState,
+      state: row.original.state,
     },
   );
   return (
@@ -47,10 +51,14 @@ const mapStateToProps = state => ({
 AssignmentDetailsTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      uuid: PropTypes.string.isRequired,
+      uuid: PropTypes.string,
       learnerEmail: PropTypes.string,
       contentKey: PropTypes.string.isRequired,
       contentTitle: PropTypes.string,
+      contentQuantity: PropTypes.number,
+      errorReason: PropTypes.string,
+      learnerState: PropTypes.string,
+      state: PropTypes.string,
     }).isRequired,
   }).isRequired,
   enterpriseSlug: PropTypes.string,
