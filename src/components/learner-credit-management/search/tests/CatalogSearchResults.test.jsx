@@ -31,6 +31,10 @@ jest.mock('../../data', () => ({
     data: {
       uuid: 'test-uuid',
       displayName: 'Test Budget',
+      assignmentConfiguration: {
+        uuid: 'test-assignment-configuration-uuid',
+        active: true,
+      },
       aggregates: {
         spendAvailableUsd: 100,
       },

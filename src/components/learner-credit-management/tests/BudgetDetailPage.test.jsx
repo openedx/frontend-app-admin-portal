@@ -469,9 +469,10 @@ describe('<BudgetDetailPage />', () => {
     const refreshCTA = assignedSection.getByText('Refresh', { selector: 'button' });
     expect(refreshCTA).toBeInTheDocument();
     userEvent.click(refreshCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
     expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
     userEvent.click(viewCourseCTA);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
