@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks/dom';
 
-import useOfferSummary from '../useOfferSummary';
+import useBudgetSummaryAnalyticsApi from '../useBudgetSummaryAnalyticsApi';
 import EnterpriseDataApiService from '../../../../../data/services/EnterpriseDataApiService';
 
 jest.mock('@edx/frontend-platform/config', () => ({
@@ -26,9 +26,9 @@ const mockEnterpriseOffer = {
   id: TEST_ENTERPRISE_OFFER_ID,
 };
 
-describe('useOfferSummary', () => {
+describe('useBudgetSummaryAnalyticsApi', () => {
   it('should handle null enterprise offer', async () => {
-    const { result } = renderHook(() => useOfferSummary(TEST_ENTERPRISE_UUID));
+    const { result } = renderHook(() => useBudgetSummaryAnalyticsApi(TEST_ENTERPRISE_UUID));
 
     expect(result.current).toEqual({
       offerSummary: undefined,
@@ -38,7 +38,7 @@ describe('useOfferSummary', () => {
 
   it('should fetch summary data for enterprise offer', async () => {
     EnterpriseDataApiService.fetchEnterpriseOfferSummary.mockResolvedValueOnce({ data: mockOfferSummary });
-    const { result, waitForNextUpdate } = renderHook(() => useOfferSummary(TEST_ENTERPRISE_UUID, mockEnterpriseOffer));
+    const { result, waitForNextUpdate } = renderHook(() => useBudgetSummaryAnalyticsApi(TEST_ENTERPRISE_UUID, mockEnterpriseOffer));
 
     expect(result.current).toEqual({
       offerSummary: undefined,

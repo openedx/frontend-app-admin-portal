@@ -1,15 +1,23 @@
 import { createContext, useMemo } from 'react';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
-import { useCoupons, useCustomerAgreement, useEnterpriseOffers } from './data/hooks';
+import { useCoupons, useCustomerAgreement, useEnterpriseBudgets } from './data/hooks';
 
 export const EnterpriseSubsidiesContext = createContext();
 
-export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagementScreen, enterpriseId }) => {
+export const useEnterpriseSubsidiesContext = ({
+  enablePortalLearnerCreditManagementScreen,
+  enterpriseId,
+  isTopDownAssignmentEnabled,
+}) => {
   const {
-    offers,
+    budgets,
     canManageLearnerCredit,
-    isLoading: isLoadingOffers,
-  } = useEnterpriseOffers({ enablePortalLearnerCreditManagementScreen, enterpriseId });
+    isLoading: isLoadingBudgets,
+  } = useEnterpriseBudgets({
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseId,
+    isTopDownAssignmentEnabled,
+  });
 
   const {
     customerAgreement,
@@ -24,7 +32,7 @@ export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagem
   const enterpriseSubsidyTypes = useMemo(() => {
     const subsidyTypes = [];
 
-    if (offers.length > 0) {
+    if (budgets.length > 0) {
       subsidyTypes.push(SUBSIDY_TYPES.offer);
     }
 
@@ -36,18 +44,18 @@ export const useEnterpriseSubsidiesContext = ({ enablePortalLearnerCreditManagem
       subsidyTypes.push(SUBSIDY_TYPES.license);
     }
     return subsidyTypes;
-  }, [offers.length, coupons.length, customerAgreement]);
+  }, [budgets.length, coupons.length, customerAgreement]);
 
-  const isLoading = isLoadingOffers || isLoadingCustomerAgreement || isLoadingCoupons;
+  const isLoading = isLoadingBudgets || isLoadingCustomerAgreement || isLoadingCoupons;
 
   const context = useMemo(() => ({
-    offers,
+    budgets,
     customerAgreement,
     coupons,
     canManageLearnerCredit,
     enterpriseSubsidyTypes,
     isLoading,
-  }), [offers, customerAgreement, coupons, canManageLearnerCredit, enterpriseSubsidyTypes, isLoading]);
+  }), [budgets, customerAgreement, coupons, canManageLearnerCredit, enterpriseSubsidyTypes, isLoading]);
 
   return context;
 };

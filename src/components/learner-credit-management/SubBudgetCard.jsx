@@ -18,6 +18,7 @@ const SubBudgetCard = ({
   start,
   end,
   available,
+  pending,
   spent,
   displayName,
   enterpriseSlug,
@@ -40,7 +41,7 @@ const SubBudgetCard = ({
     const subtitle = (
       <Stack direction="horizontal" gap={2.5}>
         <Badge variant={budgetLabel.badgeVariant}>{budgetLabel.status}</Badge>
-        <span data-testid="offer-date">
+        <span data-testid="budget-date">
           {budgetLabel.term} {formattedDate}
         </span>
       </Stack>
@@ -50,7 +51,6 @@ const SubBudgetCard = ({
       <Card.Header
         title={budgetType}
         subtitle={subtitle}
-        className="mb-3"
         actions={
           budgetLabel.status !== BUDGET_STATUSES.scheduled
             ? renderActions(budgetId)
@@ -60,19 +60,25 @@ const SubBudgetCard = ({
     );
   };
 
-  const renderCardSection = (availableBalance, spentBalance) => (
+  const renderCardSection = () => (
     <Card.Section
-      title="Balance"
+      title={<h4>Balance</h4>}
       muted
     >
       <Row className="d-flex flex-row justify-content-start w-md-75">
-        <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0">
-          <span className="small">Available</span>
-          <span>{formatPrice(availableBalance)}</span>
+        <Col xs="6" md="auto" className="mb-3 mb-md-0">
+          <div className="small font-weight-bold">Available</div>
+          <span className="small">{formatPrice(available)}</span>
         </Col>
-        <Col xs="6" md="auto" className="d-flex flex-column mb-3 mb-md-0">
-          <span className="small">Spent</span>
-          <span>{formatPrice(spentBalance)}</span>
+        {pending > 0 && (
+          <Col xs="6" md="auto" className="mb-3 mb-md-0">
+            <div className="small font-weight-bold">Pending</div>
+            <span className="small">{formatPrice(pending)}</span>
+          </Col>
+        )}
+        <Col xs="6" md="auto" className="mb-3 mb-md-0">
+          <div className="small font-weight-bold">Spent</div>
+          <span className="small">{formatPrice(spent)}</span>
         </Col>
       </Row>
     </Card.Section>
@@ -84,8 +90,10 @@ const SubBudgetCard = ({
       isLoading={isLoading}
     >
       <Card.Body>
-        {renderCardHeader(displayName || 'Overview', id)}
-        {budgetLabel.status !== BUDGET_STATUSES.scheduled && renderCardSection(available, spent)}
+        <Stack gap={4}>
+          {renderCardHeader(displayName || 'Overview', id)}
+          {budgetLabel.status !== BUDGET_STATUSES.scheduled && renderCardSection()}
+        </Stack>
       </Card.Body>
     </Card>
   );
@@ -99,6 +107,7 @@ SubBudgetCard.propTypes = {
   spent: PropTypes.number,
   isLoading: PropTypes.bool,
   available: PropTypes.number,
+  pending: PropTypes.number,
   displayName: PropTypes.string,
 };
 

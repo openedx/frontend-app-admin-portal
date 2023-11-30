@@ -13,15 +13,15 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BudgetCard from '../BudgetCard';
-import { useOfferSummary, useOfferRedemptions } from '../data';
+import { useBudgetSummaryAnalyticsApi, useOfferRedemptions } from '../data';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
-  useOfferSummary: jest.fn(),
+  useBudgetSummaryAnalyticsApi: jest.fn(),
   useOfferRedemptions: jest.fn(),
 }));
-useOfferSummary.mockReturnValue({
+useBudgetSummaryAnalyticsApi.mockReturnValue({
   isLoading: false,
   offerSummary: null,
 });
@@ -78,7 +78,7 @@ describe('<BudgetCard />', () => {
         created: '2022-02-01',
         enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
       };
-      useOfferSummary.mockReturnValue({
+      useBudgetSummaryAnalyticsApi.mockReturnValue({
         isLoading: false,
         offerSummary: {
           totalFunds: 5000,
@@ -115,7 +115,7 @@ describe('<BudgetCard />', () => {
       expect(screen.getByText('Overview'));
       expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
       const formattedString = `Expired ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
-      const elementsWithTestId = screen.getAllByTestId('offer-date');
+      const elementsWithTestId = screen.getAllByTestId('budget-date');
       const firstElementWithTestId = elementsWithTestId[0];
       expect(firstElementWithTestId).toHaveTextContent(formattedString);
     });
@@ -132,7 +132,7 @@ describe('<BudgetCard />', () => {
         created: '2022-02-01',
         enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
       };
-      useOfferSummary.mockReturnValue({
+      useBudgetSummaryAnalyticsApi.mockReturnValue({
         isLoading: false,
         offerSummary: {
           totalFunds: 5000,
@@ -183,7 +183,7 @@ describe('<BudgetCard />', () => {
         created: '2022-02-01',
         enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
       };
-      useOfferSummary.mockReturnValue({
+      useBudgetSummaryAnalyticsApi.mockReturnValue({
         isLoading: false,
         offerSummary: {
           totalFunds: 5000,

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isBetween from 'dayjs/plugin/isBetween';
 
 import { logError } from '@edx/frontend-platform/logging';
 import { getConfig } from '@edx/frontend-platform/config';
@@ -11,74 +10,106 @@ import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
-export const useEnterpriseOffers = ({ enablePortalLearnerCreditManagementScreen, enterpriseId }) => {
-  const [offers, setOffers] = useState([]);
+dayjs.extend(isBetween);
+
+export const useEnterpriseBudgets = ({
+  enablePortalLearnerCreditManagementScreen,
+  enterpriseId,
+  isTopDownAssignmentEnabled,
+}) => {
+  const [budgets, setBudgets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [canManageLearnerCredit, setCanManageLearnerCredit] = useState(false);
 
-  dayjs.extend(isSameOrBefore);
-  dayjs.extend(isSameOrAfter);
-
   useEffect(() => {
-    setIsLoading(true);
-    const fetchOffers = async () => {
-      try {
-        const [enterpriseSubsidyResponse, ecommerceApiResponse] = await Promise.all([
-          SubsidyApiService.getSubsidyByCustomerUUID(enterpriseId, { subsidyType: 'learner_credit' }),
-          EcommerceApiService.fetchEnterpriseOffers(),
-        ]);
+    const fetchBudgets = async () => {
+      setIsLoading(true);
+      const budgetPromisesToFulfill = isTopDownAssignmentEnabled
+        ? [undefined, EnterpriseAccessApiService.listSubsidyAccessPolicies(enterpriseId)]
+        : [SubsidyApiService.getSubsidyByCustomerUUID(enterpriseId, { subsidyType: 'learner_credit' }), undefined];
 
-        // We have to consider both type of offers active and inactive.
+      // Always prepend the promise to fetch ecommerce offers
+      budgetPromisesToFulfill.unshift(EcommerceApiService.fetchEnterpriseOffers());
 
-        const enterpriseSubsidyResults = camelCaseObject(enterpriseSubsidyResponse.data).results;
-        const ecommerceOffersResults = camelCaseObject(ecommerceApiResponse.data.results);
+      // Attempt to resolve all promises
+      const [
+        ecommerceApiResponse,
+        enterpriseSubsidyResponse,
+        enterprisePolicyResponse,
+      ] = await Promise.allSettled(budgetPromisesToFulfill);
 
-        const offerData = [];
-
-        enterpriseSubsidyResults.forEach((result) => {
-          offerData.push({
-            source: BUDGET_TYPES.subsidy,
-            id: result.uuid,
-            name: result.title,
-            start: result.activeDatetime,
-            end: result.expirationDatetime,
-            isCurrent: result.isActive,
-          });
-        });
-
-        ecommerceOffersResults.forEach((result) => {
-          offerData.push({
-            source: BUDGET_TYPES.ecommerce,
-            id: (result.id).toString(),
-            name: result.displayName,
-            start: result.startDatetime,
-            end: result.endDatetime,
-            isCurrent: result.isCurrent,
-          });
-        });
-        setOffers(offerData);
-        if (offerData.length > 0) {
-          setCanManageLearnerCredit(true);
-        }
-      } catch (error) {
-        logError(error);
-      } finally {
-        setIsLoading(false);
+      // Log any errors
+      if (ecommerceApiResponse.status === 'rejected') {
+        logError(ecommerceApiResponse.reason);
       }
+      if (enterpriseSubsidyResponse.status === 'rejected') {
+        logError(enterpriseSubsidyResponse.reason);
+      }
+      if (enterprisePolicyResponse.status === 'rejected') {
+        logError(enterprisePolicyResponse.reason);
+      }
+
+      // Transform the API responses
+      const ecommerceOffersResults = camelCaseObject(ecommerceApiResponse.value?.data.results);
+      const enterpriseSubsidyResults = camelCaseObject(enterpriseSubsidyResponse.value?.data.results);
+      const enterprisePolicyResults = camelCaseObject(enterprisePolicyResponse.value?.data.results);
+
+      // Iterate through each API response (if applicable) and concatenate the results into a single array of budgets.
+      const budgetsList = [];
+      enterprisePolicyResults?.forEach((result) => {
+        console.log('enterprisePolicyResults', result);
+        budgetsList.push({
+          source: BUDGET_TYPES.policy,
+          id: result.uuid,
+          name: result.displayName || 'Overview',
+          start: result.subsidyActiveDatetime,
+          end: result.subsidyExpirationDatetime,
+          isCurrent: dayjs().isBetween(result.subsidyActiveDatetime, result.subsidyExpirationDatetime, 'day', '[]'),
+          aggregates: {
+            available: result.aggregates.spendAvailableUsd,
+            spent: result.aggregates.amountRedeemedUsd,
+            pending: result.aggregates.amountAllocatedUsd,
+          },
+        });
+      });
+      enterpriseSubsidyResults?.forEach((result) => {
+        budgetsList.push({
+          source: BUDGET_TYPES.subsidy,
+          id: result.uuid,
+          name: result.title,
+          start: result.activeDatetime,
+          end: result.expirationDatetime,
+          isCurrent: result.isActive,
+        });
+      });
+      ecommerceOffersResults?.forEach((result) => {
+        budgetsList.push({
+          source: BUDGET_TYPES.ecommerce,
+          id: (result.id).toString(),
+          name: result.displayName,
+          start: result.startDatetime,
+          end: result.endDatetime,
+          isCurrent: result.isCurrent,
+        });
+      });
+
+      if (budgetsList.length > 0) {
+        setBudgets(budgetsList);
+        setCanManageLearnerCredit(true);
+      }
+      setIsLoading(false);
     };
 
-    if (getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT
-      && enablePortalLearnerCreditManagementScreen) {
-      fetchOffers();
-    } else {
-      setIsLoading(false);
+    if (getConfig().FEATURE_LEARNER_CREDIT_MANAGEMENT && enablePortalLearnerCreditManagementScreen) {
+      fetchBudgets();
     }
-  }, [enablePortalLearnerCreditManagementScreen, enterpriseId]);
+  }, [enablePortalLearnerCreditManagementScreen, enterpriseId, isTopDownAssignmentEnabled]);
 
   return {
     isLoading,
-    offers,
+    budgets,
     canManageLearnerCredit,
   };
 };

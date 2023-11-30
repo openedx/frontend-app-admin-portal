@@ -172,36 +172,36 @@ export const formatPrice = (price, options = {}) => {
 };
 
 /**
- * Orders a list of offers based on their status, end date, and name.
- * Active offers come first, followed by scheduled offers, and then expired offers.
- * Within each status, offers are sorted by their end date and name.
+ * Orders a list of budgets based on their status, end date, and name.
+ * Active budgets come first, followed by scheduled budgets, and then expired budgets.
+ * Within each status, budgets are sorted by their end date and name.
  *
- * @param {Array} offers - An array of offer objects.
- * @returns {Array} - The sorted array of offer objects.
+ * @param {Array} budgets - An array of budget objects.
+ * @returns {Array} - The sorted array of budget objects.
  */
-export const orderOffers = (offers) => {
+export const orderBudgets = (budgets) => {
   const statusOrder = {
     Active: 0,
     Scheduled: 1,
     Expired: 2,
   };
 
-  offers?.sort((offerA, offerB) => {
-    const statusA = getBudgetStatus(offerA.start, offerA.end).status;
-    const statusB = getBudgetStatus(offerB.start, offerB.end).status;
+  budgets?.sort((budgetA, budgetB) => {
+    const statusA = getBudgetStatus(budgetA.start, budgetA.end).status;
+    const statusB = getBudgetStatus(budgetB.start, budgetB.end).status;
 
     if (statusOrder[statusA] !== statusOrder[statusB]) {
       return statusOrder[statusA] - statusOrder[statusB];
     }
 
-    if (offerA.end !== offerB.end) {
-      return offerA.end.localeCompare(offerB.end);
+    if (budgetA.end !== budgetB.end) {
+      return budgetA.end.localeCompare(budgetB.end);
     }
 
-    return offerA.name.localeCompare(offerB.name);
+    return budgetA.name.localeCompare(budgetB.name);
   });
 
-  return offers;
+  return budgets;
 };
 
 /**

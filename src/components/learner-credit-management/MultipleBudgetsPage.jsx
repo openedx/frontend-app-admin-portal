@@ -7,12 +7,12 @@ import {
   Card,
   Hyperlink,
   Container,
+  Skeleton,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import Hero from '../Hero';
 
-import LoadingMessage from '../LoadingMessage';
+import Hero from '../Hero';
 import MultipleBudgetsPicker from './MultipleBudgetsPicker';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
@@ -25,13 +25,19 @@ const MultipleBudgetsPage = ({
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
-  const { offers, isLoading } = useContext(EnterpriseSubsidiesContext);
+  const { budgets, isLoading } = useContext(EnterpriseSubsidiesContext);
 
   if (isLoading) {
-    return <LoadingMessage className="offers" />;
+    return (
+      <>
+        <h1><Skeleton /></h1>
+        <Skeleton height={200} count={2} />
+        <span className="sr-only">Loading budgets...</span>
+      </>
+    );
   }
 
-  if (offers.length === 0) {
+  if (budgets.length === 0) {
     return (
       <Stack>
         <Helmet title={PAGE_TITLE} />
@@ -66,7 +72,7 @@ const MultipleBudgetsPage = ({
       <Hero title={PAGE_TITLE} />
       <Container className="py-3" fluid>
         <MultipleBudgetsPicker
-          offers={offers}
+          budgets={budgets}
           enterpriseUUID={enterpriseUUID}
           enterpriseSlug={enterpriseSlug}
           enableLearnerPortal={enableLearnerPortal}

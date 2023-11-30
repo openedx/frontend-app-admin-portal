@@ -5,7 +5,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 import { transformOfferSummary } from '../utils';
 
-const useOfferSummary = (enterpriseUUID, enterpriseOffer) => {
+const useBudgetSummaryAnalyticsApi = (enterpriseUUID, enterpriseOffer) => {
   const [isLoading, setIsLoading] = useState(true);
   const [offerSummary, setOfferSummary] = useState();
 
@@ -38,4 +38,4 @@ const useOfferSummary = (enterpriseUUID, enterpriseOffer) => {
   };
 };
 
-export default useOfferSummary;
+export default useBudgetSummaryAnalyticsApi;
