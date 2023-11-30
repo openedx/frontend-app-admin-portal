@@ -19,17 +19,18 @@ const SsoErrorPage = ({
   return (
     <FullscreenModal
       isOpen={isOpen}
-      variant="error"
+      variant="default"
       hasCloseButton={false}
       onClose={() => { /* FullscreenModal requires an onClose prop despite hasCloseButton is false */ }}
       title={(
         <Image
           src={configuration.LOGO_URL}
           alt="edX logo title"
+          className="d-flex sso-error-lms-icon"
         />
       )}
     >
-      <Container size="md">
+      <Container size="md" className="pl-6 pr-6">
         <Image
           data-testid="sso-network-error-image"
           src={cardImage}
