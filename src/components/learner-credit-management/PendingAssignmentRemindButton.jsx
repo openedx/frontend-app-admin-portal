@@ -8,7 +8,7 @@ import { Mail } from '@edx/paragon/icons';
 import RemindAssignmentModal from './RemindAssignmentModal';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 
-const PendingAssignmentRemindButton = ({ refresh, row, tableInstance }) => {
+const PendingAssignmentRemindButton = ({ row }) => {
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   const {
     remindContentAssignments,
@@ -18,7 +18,7 @@ const PendingAssignmentRemindButton = ({ refresh, row, tableInstance }) => {
     setShowToast,
     showToast,
     toastMessage,
-  } = useRemindContentAssignments(row.original.assignmentConfiguration, refresh, tableInstance, row.original.uuid);
+  } = useRemindContentAssignments(row.original.assignmentConfiguration, [row.original.uuid]);
 
   return (
     <>
@@ -43,7 +43,6 @@ const PendingAssignmentRemindButton = ({ refresh, row, tableInstance }) => {
 };
 
 PendingAssignmentRemindButton.propTypes = {
-  refresh: PropTypes.func.isRequired,
   row: PropTypes.shape({
     original: PropTypes.shape({
       assignmentConfiguration: PropTypes.string.isRequired,

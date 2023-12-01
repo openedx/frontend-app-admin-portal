@@ -6,13 +6,13 @@ import {
 import { DoNotDisturbOn } from '@edx/paragon/icons';
 import PendingAssignmentRemindButton from './PendingAssignmentRemindButton';
 
-const AssignmentRowActionTableCell = ({ refresh, row, tableInstance }) => {
+const AssignmentRowActionTableCell = ({ row }) => {
   const isLearnerStateWaiting = row.original.learnerState === 'waiting';
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   return (
     <Stack direction="horizontal" gap={2} className="justify-content-end">
       {isLearnerStateWaiting && (
-      <PendingAssignmentRemindButton refresh={refresh} row={row} tableInstance={tableInstance} />
+      <PendingAssignmentRemindButton row={row} />
       )}
       <OverlayTrigger
         key="Cancel"
@@ -34,7 +34,6 @@ const AssignmentRowActionTableCell = ({ refresh, row, tableInstance }) => {
 };
 
 AssignmentRowActionTableCell.propTypes = {
-  refresh: PropTypes.func.isRequired,
   row: PropTypes.shape({
     original: PropTypes.shape({
       assignmentConfiguration: PropTypes.string,

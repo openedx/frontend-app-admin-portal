@@ -16,7 +16,7 @@ const FailedReminder = () => {
         onKeyPress={open}
         ref={setTarget}
         tabIndex={0}
-        variant="dark"
+        variant="light"
       >
         Failed: Reminder
       </Chip>
@@ -25,8 +25,8 @@ const FailedReminder = () => {
         isOpen={isOpen}
         onClose={close}
       >
-        <BaseModalPopup.Heading icon={Error} iconClassName="text-danger-500">
-          Failed Reminder
+        <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
+          Failed: Reminder
         </BaseModalPopup.Heading>
         <BaseModalPopup.Content>
           <p>Your reminder email did not send. Something went wrong behind the scenes.</p>
@@ -41,7 +41,7 @@ const FailedReminder = () => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination="https://edx.org" showLaunchIcon={false} target="_blank">
+                <Hyperlink destination="https://edx.org" showLaunchIcon target="_blank">
                   Help Center: Course Assignments
                 </Hyperlink>.
               </li>

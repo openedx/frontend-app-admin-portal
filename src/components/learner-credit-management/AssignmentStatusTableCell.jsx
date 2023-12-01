@@ -50,6 +50,10 @@ const AssignmentStatusTableCell = ({ row }) => {
       return (
         <FailedBadEmail learnerEmail={learnerEmail} />
       );
+    } if (errorReason === 'remind_error') {
+      return (
+        <FailedReminder />
+      );
     }
 
     return <FailedSystem />;

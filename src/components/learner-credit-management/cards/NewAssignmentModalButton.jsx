@@ -34,8 +34,9 @@ const NewAssignmentModalButton = ({ course, children }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
-  const { displayToastForAssignmentAllocation } = useContext(BudgetDetailPageContext);
-
+  const {
+    successfulAssignmentToast: { displayToastForAssignmentAllocation },
+  } = useContext(BudgetDetailPageContext);
   const { mutate } = useAllocateContentAssignments();
 
   const pathToActivityTab = generatePath(routeMatch.path, { budgetId: subsidyAccessPolicyId, activeTabKey: 'activity' });

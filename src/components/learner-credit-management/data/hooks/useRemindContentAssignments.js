@@ -1,45 +1,40 @@
 import { useCallback, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { logError } from '@edx/frontend-platform/logging';
 import { useToggle } from '@edx/paragon';
+
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import { learnerCreditManagementQueryKeys, useBudgetId } from '..';
 
-const generateSuccessRemindMessage = (assignmentUuids) => {
-  if (Array.isArray(assignmentUuids)) {
-    return `Reminders sent (${assignmentUuids.length})`;
-  }
-  return 'Reminder sent';
-};
-
-const useRemindContentAssignments = (assignmentConfigurationUuid, refresh, tableInstance, uuids) => {
+const useRemindContentAssignments = (
+  assignmentConfigurationUuid,
+  assignmentUuids,
+) => {
   const [isOpen, open, close] = useToggle(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [assignButtonState, setAssignButtonState] = useState('default');
+  const queryClient = useQueryClient();
+  const { subsidyAccessPolicyId } = useBudgetId();
 
   const remindContentAssignments = useCallback(async () => {
+    setAssignButtonState('pending');
     try {
-      const { status } = await EnterpriseAccessApiService.remindContentAssignments(assignmentConfigurationUuid, uuids);
-      if (status === 200) {
-        setToastMessage(generateSuccessRemindMessage(uuids));
-        setShowToast(true);
-        close(true);
-        setTimeout(() => {
-          refresh(tableInstance);
-        }, 2000);
-      }
+      await EnterpriseAccessApiService.remindAssignments(assignmentConfigurationUuid, assignmentUuids);
+      setAssignButtonState('complete');
+      queryClient.invalidateQueries({
+        queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
+      });
     } catch (err) {
       logError(err);
-      close(true);
+      setAssignButtonState('error');
     }
-  }, [assignmentConfigurationUuid, close, refresh, tableInstance, uuids]);
+  }, [assignmentConfigurationUuid, assignmentUuids, queryClient, subsidyAccessPolicyId]);
 
   return {
+    assignButtonState,
     remindContentAssignments,
     close,
     isOpen,
     open,
-    setShowToast,
-    showToast,
-    toastMessage,
   };
 };
 
