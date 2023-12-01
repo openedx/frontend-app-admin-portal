@@ -127,7 +127,7 @@ describe('useSubsidySummaryAnalyticsApi', () => {
     }
   });
 
-  it.skip('should (not) handle subsidy access policies as the budget type', () => {
+  it('should (not) handle subsidy access policies as the budget type', () => {
     const { result } = renderHook(() => useSubsidySummaryAnalyticsApi(TEST_ENTERPRISE_UUID, {
       id: TEST_ENTERPRISE_BUDGET_UUID,
       source: BUDGET_TYPES.policy,
