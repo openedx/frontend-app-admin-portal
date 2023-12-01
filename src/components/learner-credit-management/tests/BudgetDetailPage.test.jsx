@@ -16,7 +16,7 @@ import { faker } from '@faker-js/faker';
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
   useSubsidyAccessPolicy,
-  useOfferRedemptions,
+  useBudgetRedemptions,
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
   useIsLargeOrGreater,
@@ -46,7 +46,7 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
-  useOfferRedemptions: jest.fn(),
+  useBudgetRedemptions: jest.fn(),
   useBudgetContentAssignments: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
   useBudgetDetailActivityOverview: jest.fn(),
@@ -77,7 +77,7 @@ const mockEmptyStateBudgetDetailActivityOverview = {
   contentAssignments: { count: 0 },
   spentTransactions: { count: 0 },
 };
-const mockEmptyOfferRedemptions = {
+const mockEmptyBudgetRedemptions = {
   itemCount: 0,
   pageCount: 0,
   results: [],
@@ -292,10 +292,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     const storeState = {
       ...initialStoreState,
@@ -309,8 +309,8 @@ describe('<BudgetDetailPage />', () => {
     };
     renderWithRouter(<BudgetDetailPageWrapper initialState={storeState} />);
 
-    expect(useOfferRedemptions).toHaveBeenCalledTimes(1);
-    expect(useOfferRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
+    expect(useBudgetRedemptions).toHaveBeenCalledTimes(1);
+    expect(useBudgetRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
 
     // Activity tab exists and is active
     expect(screen.getByText('Activity').getAttribute('aria-selected')).toBe('true');
@@ -357,14 +357,14 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: {
+      budgetRedemptions: {
         itemCount: 2,
         pageCount: 1,
         results: [mockEnrollmentTransaction, mockEnrollmentTransactionWithReversal],
       },
-      fetchOfferRedemptions: jest.fn(),
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -427,10 +427,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -507,10 +507,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -588,10 +588,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -676,10 +676,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -741,10 +741,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -864,10 +864,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -927,10 +927,10 @@ describe('<BudgetDetailPage />', () => {
         spentTransactions: { count: 0 },
       },
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -965,10 +965,10 @@ describe('<BudgetDetailPage />', () => {
         spentTransactions: { count: 0 },
       },
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
 
@@ -1106,10 +1106,10 @@ describe('<BudgetDetailPage />', () => {
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,

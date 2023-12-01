@@ -46,7 +46,7 @@ const applyFiltersToOptions = (filters, options, shouldFetchSubsidyTransactions 
   }
 };
 
-const useOfferRedemptions = (
+const useBudgetRedemptions = (
   enterpriseUUID,
   offerId = null,
   budgetId = null,
@@ -54,14 +54,14 @@ const useOfferRedemptions = (
 ) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [offerRedemptions, setOfferRedemptions] = useState({
+  const [budgetRedemptions, setBudgetRedemptions] = useState({
     itemCount: 0,
     pageCount: 0,
     results: [],
   });
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(budgetId);
 
-  const fetchOfferRedemptions = useCallback((args) => {
+  const fetchBudgetRedemptions = useCallback((args) => {
     const fetch = async () => {
       try {
         const shouldFetchSubsidyTransactions = budgetId && isTopDownAssignmentEnabled;
@@ -103,7 +103,7 @@ const useOfferRedemptions = (
           transformedTableResults = transformUtilizationTableResults(data.results);
         }
 
-        setOfferRedemptions({
+        setBudgetRedemptions({
           itemCount: data.count,
           pageCount: data.numPages,
           results: transformedTableResults,
@@ -139,13 +139,16 @@ const useOfferRedemptions = (
     subsidyAccessPolicy?.subsidyUuid,
   ]);
 
-  const debouncedFetchOfferRedemptions = useMemo(() => debounce(fetchOfferRedemptions, 300), [fetchOfferRedemptions]);
+  const debouncedFetchBudgetRedemptions = useMemo(
+    () => debounce(fetchBudgetRedemptions, 300),
+    [fetchBudgetRedemptions],
+  );
 
   return {
     isLoading,
-    offerRedemptions,
-    fetchOfferRedemptions: debouncedFetchOfferRedemptions,
+    budgetRedemptions,
+    fetchBudgetRedemptions: debouncedFetchBudgetRedemptions,
   };
 };
 
-export default useOfferRedemptions;
+export default useBudgetRedemptions;

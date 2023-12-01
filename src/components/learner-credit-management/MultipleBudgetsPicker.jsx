@@ -7,16 +7,15 @@ import {
 } from '@edx/paragon';
 
 import BudgetCard from './BudgetCard';
-import { orderOffers } from './data/utils';
+import { orderBudgets } from './data/utils';
 
 const MultipleBudgetsPicker = ({
-  offers,
+  budgets,
   enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
-  const orderedOffers = orderOffers(offers);
-
+  const orderedBudgets = orderBudgets(budgets);
   return (
     <Stack gap={4}>
       <Row>
@@ -25,15 +24,13 @@ const MultipleBudgetsPicker = ({
       <Row>
         <Col lg="12">
           <Stack gap={4}>
-            {orderedOffers?.map(offer => (
+            {orderedBudgets.map(budget => (
               <BudgetCard
-                key={offer.id}
-                offer={offer}
+                key={budget.id}
+                budget={budget}
                 enterpriseUUID={enterpriseUUID}
                 enterpriseSlug={enterpriseSlug}
                 enableLearnerPortal={enableLearnerPortal}
-                offerType={offer.source}
-                displayName={offer.name}
               />
             ))}
           </Stack>
@@ -44,7 +41,7 @@ const MultipleBudgetsPicker = ({
 };
 
 MultipleBudgetsPicker.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  budgets: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,

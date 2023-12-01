@@ -68,7 +68,7 @@ export const ASSIGNMENT_STATUS_MODAL_MAX_WIDTH = 480;
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {
   all: ['learner-credit-management'],
-  budgets: () => [...learnerCreditManagementQueryKeys.all, 'budgets'],
+  budgets: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'budgets', enterpriseId],
   budget: (budgetId) => [...learnerCreditManagementQueryKeys.all, 'budget', budgetId],
   budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
   budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],

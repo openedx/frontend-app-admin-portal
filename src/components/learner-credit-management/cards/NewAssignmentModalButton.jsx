@@ -120,14 +120,21 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     mutate(mutationArgs, {
       onSuccess: ({ created, noChange, updated }) => {
         setAssignButtonState('complete');
+        // Ensure the budget and budgets queries are invalidated so that the relevant
+        // queries become stale and refetches new updated data from the API.
         queryClient.invalidateQueries({
           queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
+        });
+        queryClient.invalidateQueries({
+          queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
         });
         handleCloseAssignmentModal();
         onSuccessEnterpriseTrackEvents({
           created, noChange, updated,
         });
         displayToastForAssignmentAllocation({ totalLearnersAssigned: learnerEmails.length });
+
+        // Navigate to the activity tab
         history.push(pathToActivityTab);
       },
       onError: (err) => {

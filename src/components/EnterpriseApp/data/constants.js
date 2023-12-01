@@ -23,4 +23,5 @@ export const BUDGET_STATUSES = {
 export const BUDGET_TYPES = {
   ecommerce: 'ecommerce',
   subsidy: 'subsidy',
+  policy: 'policy',
 };

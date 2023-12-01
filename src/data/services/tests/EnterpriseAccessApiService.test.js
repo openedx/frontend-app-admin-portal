@@ -162,6 +162,13 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
+  test('listSubsidyAccessPolicies calls enterprise-access to fetch subsidy access policies', () => {
+    EnterpriseAccessApiService.listSubsidyAccessPolicies(mockEnterpriseUUID);
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/subsidy-access-policies/?enterprise_customer_uuid=${mockEnterpriseUUID}`,
+    );
+  });
+
   test('retrieveSubsidyAccessPolicy calls enterprise-access to fetch subsidy access policy', () => {
     EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(mockSubsidyAccessPolicyUUID);
     expect(axios.get).toBeCalledWith(

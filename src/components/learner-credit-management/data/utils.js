@@ -14,17 +14,20 @@ import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiSe
 import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
 
 /**
- * Transforms offer summary from API for display in the UI, guarding
+ * Transforms subsidy (offer or Subsidy) summary from API for display in the UI, guarding
  * against bad data (e.g., accounting for refunds).
  *
- * @param {object} offerSummary Object containing summary about an offer.
- * @returns Object containing transformed summary about an enterprise offer.
+ * @param {object} subsidySummary Object containing summary about a budget.
+ * @returns Object containing transformed summary about a budget.
  */
-export const transformOfferSummary = (offerSummary) => {
-  if (!offerSummary) { return null; }
+export const transformSubsidySummary = (subsidySummary) => {
+  if (!subsidySummary) {
+    return null;
+  }
+
   const budgetsSummary = [];
-  if (offerSummary?.budgets) {
-    const budgets = offerSummary?.budgets;
+  if (subsidySummary?.budgets) {
+    const budgets = subsidySummary?.budgets;
     for (let i = 0; i < budgets.length; i++) {
       const redeemedFunds = budgets[i].amountOfPolicySpent && parseFloat(budgets[i].amountOfPolicySpent);
       const remainingFunds = budgets[i].remainingBalance && parseFloat(budgets[i].remainingBalance);
@@ -37,10 +40,10 @@ export const transformOfferSummary = (offerSummary) => {
     }
   }
 
-  const totalFunds = offerSummary.maxDiscount && parseFloat(offerSummary.maxDiscount);
-  let redeemedFunds = offerSummary.amountOfOfferSpent && parseFloat(offerSummary.amountOfOfferSpent);
-  let redeemedFundsOcm = offerSummary.amountOfferSpentOcm && parseFloat(offerSummary.amountOfferSpentOcm);
-  let redeemedFundsExecEd = offerSummary.amountOfferSpentExecEd && parseFloat(offerSummary.amountOfferSpentExecEd);
+  const totalFunds = subsidySummary.maxDiscount && parseFloat(subsidySummary.maxDiscount);
+  let redeemedFunds = subsidySummary.amountOfOfferSpent && parseFloat(subsidySummary.amountOfOfferSpent);
+  let redeemedFundsOcm = subsidySummary.amountOfferSpentOcm && parseFloat(subsidySummary.amountOfferSpentOcm);
+  let redeemedFundsExecEd = subsidySummary.amountOfferSpentExecEd && parseFloat(subsidySummary.amountOfferSpentExecEd);
 
   // cap redeemed funds at the maximum funds available (`maxDiscount`), if applicable, so we
   // don't display redeemed funds > funds available.
@@ -50,19 +53,20 @@ export const transformOfferSummary = (offerSummary) => {
     redeemedFundsExecEd = Math.min(redeemedFundsExecEd, totalFunds);
   }
 
-  let remainingFunds = offerSummary.remainingBalance && parseFloat(offerSummary.remainingBalance);
+  let remainingFunds = subsidySummary.remainingBalance && parseFloat(subsidySummary.remainingBalance);
   // prevent remaining funds from going below $0, if applicable.
   if (remainingFunds) {
     remainingFunds = Math.max(remainingFunds, 0.0);
   }
 
-  let percentUtilized = offerSummary.percentOfOfferSpent && parseFloat(offerSummary.percentOfOfferSpent);
+  let percentUtilized = subsidySummary.percentOfOfferSpent && parseFloat(subsidySummary.percentOfOfferSpent);
   // prevent percent utilized from going over 1.0, if applicable.
   if (percentUtilized) {
     percentUtilized = Math.min(percentUtilized, 1.0);
   }
-  const { offerType } = offerSummary;
-  const { offerId } = offerSummary;
+  const { offerType } = subsidySummary;
+  const { offerId } = subsidySummary;
+
   return {
     totalFunds,
     redeemedFunds,
@@ -172,36 +176,36 @@ export const formatPrice = (price, options = {}) => {
 };
 
 /**
- * Orders a list of offers based on their status, end date, and name.
- * Active offers come first, followed by scheduled offers, and then expired offers.
- * Within each status, offers are sorted by their end date and name.
+ * Orders a list of budgets based on their status, end date, and name.
+ * Active budgets come first, followed by scheduled budgets, and then expired budgets.
+ * Within each status, budgets are sorted by their end date and name.
  *
- * @param {Array} offers - An array of offer objects.
- * @returns {Array} - The sorted array of offer objects.
+ * @param {Array} budgets - An array of budget objects.
+ * @returns {Array} - The sorted array of budget objects.
  */
-export const orderOffers = (offers) => {
+export const orderBudgets = (budgets) => {
   const statusOrder = {
     Active: 0,
     Scheduled: 1,
     Expired: 2,
   };
 
-  offers?.sort((offerA, offerB) => {
-    const statusA = getBudgetStatus(offerA.start, offerA.end).status;
-    const statusB = getBudgetStatus(offerB.start, offerB.end).status;
+  budgets?.sort((budgetA, budgetB) => {
+    const statusA = getBudgetStatus(budgetA.start, budgetA.end).status;
+    const statusB = getBudgetStatus(budgetB.start, budgetB.end).status;
 
     if (statusOrder[statusA] !== statusOrder[statusB]) {
       return statusOrder[statusA] - statusOrder[statusB];
     }
 
-    if (offerA.end !== offerB.end) {
-      return offerA.end.localeCompare(offerB.end);
+    if (budgetA.end !== budgetB.end) {
+      return budgetA.end.localeCompare(budgetB.end);
     }
 
-    return offerA.name.localeCompare(offerB.name);
+    return budgetA.name.localeCompare(budgetB.name);
   });
 
-  return offers;
+  return budgets;
 };
 
 /**
