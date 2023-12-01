@@ -11,7 +11,7 @@ import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
  * it will also render a single card.
  *
  * @param {Object} budget Represents either:
- *  - Enterprise Offer
+ *  - Enterprise Offer (ecommerce)
  *  - Subsidy (enterprise-subsidy)
  *  - Policy (enterprise-access)
  *
@@ -44,7 +44,7 @@ const BudgetCard = ({
     );
   }
 
-  // Enterprise Offers will always have a single budget, so we can render a single card.
+  // Enterprise Offers (ecommerce) will always have a single budget, so we can render a single card.
   if (budget.source === BUDGET_TYPES.ecommerce) {
     return (
       <SubBudgetCard

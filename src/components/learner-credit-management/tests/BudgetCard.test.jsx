@@ -67,7 +67,7 @@ describe('<BudgetCard />', () => {
     jest.clearAllMocks();
   });
 
-  it('displays correctly for Enterprise Offers', () => {
+  it('displays correctly for Enterprise Offers (ecommerce)', () => {
     const mockBudget = {
       id: mockEnterpriseOfferId,
       name: mockBudgetDisplayName,
