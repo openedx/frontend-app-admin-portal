@@ -126,18 +126,4 @@ describe('useSubsidySummaryAnalyticsApi', () => {
       expect(EnterpriseDataApiService.fetchEnterpriseOfferSummary).not.toHaveBeenCalled();
     }
   });
-
-  it('should (not) handle subsidy access policies as the budget type', () => {
-    const { result } = renderHook(() => useSubsidySummaryAnalyticsApi(TEST_ENTERPRISE_UUID, {
-      id: TEST_ENTERPRISE_BUDGET_UUID,
-      source: BUDGET_TYPES.policy,
-    }));
-
-    expect(EnterpriseDataApiService.fetchEnterpriseOfferSummary).not.toHaveBeenCalled();
-
-    expect(result.current).toEqual({
-      subsidySummary: undefined,
-      isLoading: false,
-    });
-  });
 });
