@@ -33,6 +33,7 @@ class EnterpriseDataApiService {
   }
 
   static fetchEnterpriseOfferSummary(enterpriseId, offerId, options = {}) {
+    console.log('fetchEnterpriseOfferSummary', enterpriseId);
     let url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/offers/${offerId}/`;
     if (Object.keys(options).length) {
       const queryParams = new URLSearchParams({
