@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Alert, ActionRow, Button, Hyperlink, ModalDialog, Toast, Skeleton, useToggle,
+  Alert, ActionRow, Button, Hyperlink, ModalDialog, Toast, Skeleton, Spinner, useToggle,
 } from '@edx/paragon';
 import { Add, WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
@@ -30,12 +30,15 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const [isOpen, open, close] = useToggle(false);
   const [pollingNetworkError, setPollingNetworkError] = useState(false);
   const [isStepperOpen, setIsStepperOpen] = useState(true);
+  const [isDeletingOldConfigs, setIsDeletingOldConfigs] = useState(false);
 
   const newConfigurationButtonOnClick = async () => {
+    setIsDeletingOldConfigs(true);
     Promise.all(existingConfigs.map(config => LmsApiService.updateEnterpriseSsoOrchestrationRecord(
       { active: false, is_removed: true },
       config.uuid,
     ))).then(() => {
+      setIsDeletingOldConfigs(false);
       setRefreshBool(!refreshBool);
       close();
     });
@@ -89,8 +92,13 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
               <Button
                 variant="primary"
                 onClick={newConfigurationButtonOnClick}
+                disabled={isDeletingOldConfigs}
               >
-                Create new SSO
+                {isDeletingOldConfigs ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  <>Create new SSO</>
+                )}
               </Button>
             </ActionRow>
           </ModalDialog.Footer>
@@ -151,7 +159,8 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
                 )}
                 {pdError && (
                   <Alert variant="warning" icon={WarningFilled}>
-                    An error occurred loading the SAML data: <p>{pdError?.message}</p>
+                    An error occurred loading the SAML data:{' '}
+                    <p>{pdError?.message}</p>
                   </Alert>
                 )}
                 <Toast
