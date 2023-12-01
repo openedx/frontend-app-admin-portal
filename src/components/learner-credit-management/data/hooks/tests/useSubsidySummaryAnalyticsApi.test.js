@@ -3,6 +3,7 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import useSubsidySummaryAnalyticsApi from '../useSubsidySummaryAnalyticsApi';
 import EnterpriseDataApiService from '../../../../../data/services/EnterpriseDataApiService';
+import { BUDGET_TYPES } from '../../../../EnterpriseApp/data/constants';
 
 jest.mock('@edx/frontend-platform/config', () => ({
   ...jest.requireActual('@edx/frontend-platform/config'),
@@ -18,6 +19,7 @@ jest.mock('../../../../../data/services/EnterpriseDataApiService');
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_ENTERPRISE_OFFER_ID = 1;
+const TEST_ENTERPRISE_BUDGET_UUID = 'test-enterprise-budget-uuid';
 
 const mockOfferSummary = {
   offer_id: TEST_ENTERPRISE_OFFER_ID,
@@ -28,11 +30,14 @@ const mockOfferSummary = {
   percent_of_offer_spent: 0.04,
   remaining_balance: 4800.00,
 };
-const mockEnterpriseOffer = {
-  id: TEST_ENTERPRISE_OFFER_ID,
-};
 
 describe('useSubsidySummaryAnalyticsApi', () => {
+  const mockFetchEnterpriseOfferSummarySpy = jest.spyOn(EnterpriseDataApiService, 'fetchEnterpriseOfferSummary');
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should handle null enterprise offer', async () => {
     const { result } = renderHook(() => useSubsidySummaryAnalyticsApi(TEST_ENTERPRISE_UUID));
 
@@ -43,51 +48,82 @@ describe('useSubsidySummaryAnalyticsApi', () => {
   });
 
   it.each([
-    { shouldThrowApiException: false },
-    { shouldThrowApiException: true },
-  ])('should fetch summary data for enterprise offer (%s)', async ({ shouldThrowApiException }) => {
+    {
+      budgetId: TEST_ENTERPRISE_OFFER_ID,
+      budgetType: BUDGET_TYPES.ecommerce,
+      shouldCallApi: true,
+      shouldThrowApiException: false,
+    },
+    {
+      budgetId: TEST_ENTERPRISE_BUDGET_UUID,
+      budgetType: BUDGET_TYPES.subsidy,
+      shouldCallApi: true,
+      shouldThrowApiException: true,
+    },
+    {
+      budgetId: TEST_ENTERPRISE_BUDGET_UUID,
+      budgetType: BUDGET_TYPES.policy,
+      shouldCallApi: false,
+      shouldThrowApiException: false,
+    },
+  ])('should fetch summary data for enterprise offer (%s)', async ({
+    budgetId,
+    budgetType,
+    shouldThrowApiException,
+    shouldCallApi,
+  }) => {
     const mockFetchError = 'mock fetch error';
     if (shouldThrowApiException) {
-      EnterpriseDataApiService.fetchEnterpriseOfferSummary.mockRejectedValueOnce(mockFetchError);
+      mockFetchEnterpriseOfferSummarySpy.mockRejectedValue(mockFetchError);
     } else {
-      EnterpriseDataApiService.fetchEnterpriseOfferSummary.mockResolvedValueOnce({ data: mockOfferSummary });
+      mockFetchEnterpriseOfferSummarySpy.mockResolvedValue({ data: mockOfferSummary });
     }
+    const mockBudget = {
+      id: budgetId,
+      source: budgetType,
+    };
+
     const {
       result,
       waitForNextUpdate,
-    } = renderHook(() => useSubsidySummaryAnalyticsApi(TEST_ENTERPRISE_UUID, mockEnterpriseOffer));
+    } = renderHook(() => useSubsidySummaryAnalyticsApi(
+      TEST_ENTERPRISE_UUID,
+      mockBudget,
+    ));
 
-    expect(result.current).toEqual({
-      subsidySummary: undefined,
-      isLoading: true,
-    });
-
-    await waitForNextUpdate();
-
-    expect(EnterpriseDataApiService.fetchEnterpriseOfferSummary).toHaveBeenCalled();
-
-    if (shouldThrowApiException) {
-      expect(logError).toHaveBeenCalledWith(mockFetchError);
+    if (shouldCallApi) {
       expect(result.current).toEqual({
         subsidySummary: undefined,
-        isLoading: false,
+        isLoading: true,
       });
+      await waitForNextUpdate();
+      expect(mockFetchEnterpriseOfferSummarySpy).toHaveBeenCalled();
+
+      if (shouldThrowApiException) {
+        expect(logError).toHaveBeenCalledWith(mockFetchError);
+        expect(result.current).toEqual({
+          subsidySummary: undefined,
+          isLoading: false,
+        });
+      } else {
+        const expectedResult = {
+          totalFunds: 5000,
+          redeemedFunds: 200,
+          redeemedFundsExecEd: NaN,
+          redeemedFundsOcm: NaN,
+          remainingFunds: 4800,
+          percentUtilized: 0.04,
+          offerId: 1,
+          budgetsSummary: [],
+          offerType: undefined,
+        };
+        expect(result.current).toEqual({
+          subsidySummary: expectedResult,
+          isLoading: false,
+        });
+      }
     } else {
-      const expectedResult = {
-        totalFunds: 5000,
-        redeemedFunds: 200,
-        redeemedFundsExecEd: NaN,
-        redeemedFundsOcm: NaN,
-        remainingFunds: 4800,
-        percentUtilized: 0.04,
-        offerId: 1,
-        budgetsSummary: [],
-        offerType: undefined,
-      };
-      expect(result.current).toEqual({
-        subsidySummary: expectedResult,
-        isLoading: false,
-      });
+      expect(EnterpriseDataApiService.fetchEnterpriseOfferSummary).not.toHaveBeenCalled();
     }
   });
 });
