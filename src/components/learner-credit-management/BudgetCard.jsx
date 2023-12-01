@@ -25,7 +25,7 @@ const BudgetCard = ({
   const {
     isLoading: isLoadingSubsidySummaryAnalyticsApi,
     subsidySummary: subsidySummaryAnalyticsApi,
-  } = useSubsidySummaryAnalyticsApi(enterpriseUUID, budget);
+  } = useSubsidySummaryAnalyticsApi(enterpriseUUID, budget.id, budget.source);
 
   // Subsidy Access Policies will always have a single budget, so we can render a single card
   // without relying on `useSubsidySummaryAnalyticsApi`.

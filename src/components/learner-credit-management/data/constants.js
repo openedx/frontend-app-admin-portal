@@ -70,6 +70,8 @@ export const learnerCreditManagementQueryKeys = {
   all: ['learner-credit-management'],
   budgets: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'budgets', enterpriseId],
   budget: (budgetId) => [...learnerCreditManagementQueryKeys.all, 'budget', budgetId],
+  // Used when fetching enterprise offer metadata when viewing the budget detail page for enterprise offer
+  budgetEnterpriseOffer: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'ecommerce'],
   budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
   budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],
 };

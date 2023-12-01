@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { useHistory } from 'react-router-dom';
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
 import AssignMoreCoursesEmptyStateMinimal from './AssignMoreCoursesEmptyStateMinimal';
 import { useBudgetContentAssignments, useBudgetId, useSubsidyAccessPolicy } from './data';
@@ -12,8 +13,13 @@ const BudgetDetailAssignments = ({
   enterpriseFeatures,
   enterpriseId,
 }) => {
+  const assignedHeadingRef = useRef();
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const history = useHistory();
+
+  const { location } = history;
+  const { state: locationState } = location;
   const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
   const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
@@ -27,6 +33,15 @@ const BudgetDetailAssignments = ({
     enterpriseId,
   });
 
+  useEffect(() => {
+    if (locationState?.budgetActivityScrollToKey === 'assigned') {
+      assignedHeadingRef.current?.scrollIntoView({ behavior: 'smooth' });
+      const newState = { ...locationState };
+      delete newState.budgetActivityScrollToKey;
+      history.replace({ ...location, state: newState });
+    }
+  }, [history, location, locationState]);
+
   if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
     return null;
   }
@@ -39,7 +54,7 @@ const BudgetDetailAssignments = ({
 
   return (
     <section className="budget-detail-assignments">
-      <h3 className="mb-3">Assigned</h3>
+      <h3 className="mb-3" ref={assignedHeadingRef}>Assigned</h3>
       <p className="small mb-4">
         Assigned activity earmarks funds in your budget so you can&apos;t overspend. For funds to move
         from assigned to spent, your learners must complete enrollment.

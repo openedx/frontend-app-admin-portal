@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { useHistory } from 'react-router';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { useBudgetId, useBudgetRedemptions } from './data';
 
 const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
+  const history = useHistory();
+  const { location } = history;
+  const { state: locationState } = location;
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
+  const spentHeadingRef = useRef();
   const {
     isLoading,
     budgetRedemptions,
@@ -17,9 +22,19 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     subsidyAccessPolicyId,
     enterpriseFeatures.topDownAssignmentRealTimeLcm,
   );
+
+  useEffect(() => {
+    if (locationState?.budgetActivityScrollToKey === 'spent') {
+      spentHeadingRef.current?.scrollIntoView({ behavior: 'smooth' });
+      const newState = { ...locationState };
+      delete newState.budgetActivityScrollToKey;
+      history.replace({ ...location, state: newState });
+    }
+  }, [history, location, locationState]);
+
   return (
     <section>
-      <h3 className="mb-3">Spent</h3>
+      <h3 className="mb-3" ref={spentHeadingRef}>Spent</h3>
       <p className="small mb-4">
         Spent activity is driven by completed enrollments.
         {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) && (
