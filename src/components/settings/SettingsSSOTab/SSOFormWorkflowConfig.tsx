@@ -8,6 +8,8 @@ import SSOConfigConfirmStep from './steps/NewSSOConfigConfirmStep';
 import LmsApiService from '../../../data/services/LmsApiService';
 import handleErrors from '../utils';
 import { snakeCaseDict } from '../../../utils';
+import { AxiosError } from 'axios';
+import { INVALID_IDP_METADATA_ERROR, RECORD_UNDER_CONFIGURATIONS_ERROR } from '../data/constants';
 
 type SSOConfigSnakeCase = {
   uuid?: string,
@@ -25,9 +27,9 @@ type SSOConfigSnakeCase = {
   email_attribute: string,
   username_attribute: string,
   country_attribute: string,
-  submitted_at: null,
-  configured_at: null,
-  validated_at: null,
+  submitted_at?: null,
+  configured_at?: null,
+  validated_at?: null,
   odata_api_timeout_interval: null,
   odata_api_root_url: string,
   odata_company_id: string,
@@ -36,10 +38,11 @@ type SSOConfigSnakeCase = {
   sapsf_private_key: string,
   odata_client_id: string,
   oauth_user_id: string,
-  sp_metadata_url?: string
+  sp_metadata_url?: string,
+  record?: object,
 };
 
-type SSOConfigCamelCase = {
+export type SSOConfigCamelCase = {
   uuid?: string,
   enterpriseCustomer: string,
   isRemoved: boolean,
@@ -81,46 +84,72 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
   const placeHolderButton = (buttonName?: string) => () => ({
     buttonText: buttonName || 'Next',
     opensNewWindow: false,
-    onClick: () => {},
+    onClick: () => { },
+    preventDefaultErrorModal: false,
   });
+
+  const advanceConnectStep = async ({
+    formFields,
+    errHandler,
+  }: FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
+    errHandler?.('');
+    return { ...formFields };
+  };
+
+  const sanitizeAndCopyFormFields = (formFields: SSOConfigSnakeCase) => {
+    const copiedFormFields = { ...formFields };
+    return omit(copiedFormFields, ['record', 'sp_metadata_url', 'submitted_at', 'configured_at','validated_at']);
+  };
 
   const saveChanges = async ({
     formFields,
     errHandler,
+    // @ts-ignore:next-line formFieldsChanged is only used in the below TODO
     formFieldsChanged,
-  }:FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
+  }: FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
     let err = null;
-    if (!formFieldsChanged) {
-      // Don't submit if nothing has changed
-      return formFields;
-    }
+
+    // TODO : Accurately detect if form fields have changed
+    // if (!formFieldsChanged && !idpMetadataError) {
+    //   // Don't submit if nothing has changed
+    //   return formFields;
+    // }
     let updatedFormFields: SSOConfigCamelCase = omit(formFields, ['idpConnectOption', 'spMetadataUrl', 'isPendingConfiguration']);
     updatedFormFields.enterpriseCustomer = enterpriseId;
     const submittedFormFields: SSOConfigSnakeCase = snakeCaseDict(updatedFormFields) as SSOConfigSnakeCase;
-    if (submittedFormFields?.uuid) {
+    let copiedFormFields = sanitizeAndCopyFormFields(submittedFormFields);
+    if (copiedFormFields?.uuid) {
       try {
         const updateResponse = await LmsApiService.updateEnterpriseSsoOrchestrationRecord(
-          submittedFormFields,
+          copiedFormFields,
           formFields?.uuid,
         );
         updatedFormFields = updateResponse.data;
-      } catch (error) {
+      } catch (error: AxiosError | any) {
         err = handleErrors(error);
-        setConfigureError(error);
+        if (error.message?.includes("Must provide valid IDP metadata url")) {
+          errHandler?.(INVALID_IDP_METADATA_ERROR);
+        } else if (error.message?.includes("Record has already been submitted for configuration.")) {
+          errHandler?.(RECORD_UNDER_CONFIGURATIONS_ERROR);
+        } else {
+          setConfigureError(error);
+        }
       }
     } else {
       try {
-        const createResponse = await LmsApiService.createEnterpriseSsoOrchestrationRecord(submittedFormFields);
+        const createResponse = await LmsApiService.createEnterpriseSsoOrchestrationRecord(copiedFormFields);
         updatedFormFields.uuid = createResponse.data.record;
         updatedFormFields.spMetadataUrl = createResponse.data.sp_metadata_url;
-      } catch (error) {
+      } catch (error: AxiosError | any) {
         err = handleErrors(error);
-        setConfigureError(error);
+        if (error.message?.includes("Must provide valid IDP metadata url")) {
+          errHandler?.(INVALID_IDP_METADATA_ERROR);
+        } else {
+          setConfigureError(error);
+        }
       }
     }
-    if (err && errHandler) {
-      errHandler(err);
-    }
+
     const newFormFields = { ...formFields, ...updatedFormFields } as SSOConfigCamelCase;
     return newFormFields;
   };
@@ -131,7 +160,12 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
       formComponent: SSOConfigConnectStep,
       validations: SSOConfigConnectStepValidations,
       stepName: 'Connect',
-      nextButtonConfig: placeHolderButton(),
+      nextButtonConfig: () => ({
+        buttonText: 'Next',
+        opensNewWindow: false,
+        onClick: advanceConnectStep,
+        preventDefaultErrorModal: true,
+      }),
     }, {
       index: 1,
       formComponent: SSOConfigConfigureStep,
@@ -141,6 +175,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
         buttonText: 'Configure',
         opensNewWindow: false,
         onClick: saveChanges,
+        preventDefaultErrorModal: true,
       }),
       showBackButton: true,
       showCancelButton: false,

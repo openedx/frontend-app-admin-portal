@@ -53,6 +53,7 @@ export type InitializeFormArguments<FormFields> = {
   formFields: FormFields;
   validations?: FormFieldValidation[];
   currentStep: FormWorkflowStep<FormFields>;
+  steps: FormWorkflowStep<FormFields>[];
 };
 
 export function initializeFormImpl<FormFields>(
@@ -78,7 +79,7 @@ export function initializeFormImpl<FormFields>(
 export function initializeForm<FormFields>(action: InitializeFormArguments<FormFields>) {
   const initialFormState: Pick<
   FormContext,
-  'isEdited' | 'formFields' | 'currentStep'
+  'isEdited' | 'formFields' | 'currentStep' | 'allSteps'
   > = { isEdited: false };
   if (action?.formFields) {
     initialFormState.formFields = action.formFields;
@@ -86,6 +87,7 @@ export function initializeForm<FormFields>(action: InitializeFormArguments<FormF
   if (action?.currentStep) {
     initialFormState.currentStep = action.currentStep;
   }
+  initialFormState.allSteps = action?.steps;
   return processFormErrors(initialFormState);
 }
 
