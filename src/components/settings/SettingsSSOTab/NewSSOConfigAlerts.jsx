@@ -18,6 +18,7 @@ const NewSSOConfigAlerts = ({
   notConfigured,
   contactEmail,
   closeAlerts,
+  enterpriseSlug,
 }) => {
   const dismissSetupCompleteAlert = () => {
     ssoCookies.set(
@@ -63,7 +64,7 @@ const NewSSOConfigAlerts = ({
             <br />
             1. Copy the URL for your learner Portal dashboard below:<br />
             <br />
-            &emsp; http://courses.edx.org/dashboard?tpa_hint=saml-bestrun-hana<br />
+            &emsp; http://courses.edx.org/dashboard?tpa_hint={enterpriseSlug}<br />
             <br />
             2: Launch a new incognito or private window and paste the copied URL into the URL bar to load your
             learner Portal dashboard.<br />
@@ -103,10 +104,12 @@ NewSSOConfigAlerts.propTypes = {
   notConfigured: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   closeAlerts: PropTypes.func.isRequired,
   contactEmail: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   contactEmail: state.portalConfiguration.contactEmail,
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
 export default connect(mapStateToProps)(NewSSOConfigAlerts);
