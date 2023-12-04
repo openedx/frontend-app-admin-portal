@@ -52,11 +52,47 @@ describe('<BudgetDetailPageWrapper />', () => {
   });
 
   it.each([
-    { totalLearnersAssigned: 1, expectedLearnerString: 'learner' },
-    { totalLearnersAssigned: 2, expectedLearnerString: 'learners' },
-  ])('should render Toast notification for successful assignment allocation (%s)', async ({
-    totalLearnersAssigned,
-    expectedLearnerString,
+    {
+      totalLearnersAllocated: 1,
+      expectedLearnersAllocatedString: 'learner',
+      totalLearnersAlreadyAllocated: 0,
+      expectedLearnersAlreadyAllocatedString: undefined,
+    },
+    {
+      totalLearnersAllocated: 2,
+      expectedLearnersAllocatedString: 'learners',
+      totalLearnersAlreadyAllocated: 0,
+      expectedLearnersAlreadyAllocatedString: undefined,
+    },
+    {
+      totalLearnersAllocated: 0,
+      expectedLearnersAllocatedString: undefined,
+      totalLearnersAlreadyAllocated: 1,
+      expectedLearnersAlreadyAllocatedString: 'learner',
+    },
+    {
+      totalLearnersAllocated: 0,
+      expectedLearnersAllocatedString: undefined,
+      totalLearnersAlreadyAllocated: 2,
+      expectedLearnersAlreadyAllocatedString: 'learners',
+    },
+    {
+      totalLearnersAllocated: 1,
+      expectedLearnersAllocatedString: 'learner',
+      totalLearnersAlreadyAllocated: 1,
+      expectedLearnersAlreadyAllocatedString: 'learner',
+    },
+    {
+      totalLearnersAllocated: 1,
+      expectedLearnersAllocatedString: 'learner',
+      totalLearnersAlreadyAllocated: 1,
+      expectedLearnersAlreadyAllocatedString: 'learner',
+    },
+  ])('should render Toast notification for successful assignment allocations (%s)', async ({
+    totalLearnersAllocated,
+    expectedLearnersAllocatedString,
+    totalLearnersAlreadyAllocated,
+    expectedLearnersAlreadyAllocatedString,
   }) => {
     const ToastContextController = () => {
       const {
@@ -65,7 +101,10 @@ describe('<BudgetDetailPageWrapper />', () => {
       } = useContext(BudgetDetailPageContext);
 
       const handleDisplayToast = () => {
-        displayToastForAssignmentAllocation({ totalLearnersAssigned });
+        displayToastForAssignmentAllocation({
+          totalLearnersAllocated,
+          totalLearnersAlreadyAllocated,
+        });
       };
 
       const handleCloseToast = () => {
@@ -81,7 +120,14 @@ describe('<BudgetDetailPageWrapper />', () => {
     };
     render(<MockBudgetDetailPageWrapper><ToastContextController /></MockBudgetDetailPageWrapper>);
 
-    const expectedToastMessage = `Course successfully assigned to ${totalLearnersAssigned} ${expectedLearnerString}.`;
+    const toastMessages = [];
+    if (totalLearnersAllocated > 0) {
+      toastMessages.push(`Course successfully assigned to ${totalLearnersAllocated} ${expectedLearnersAllocatedString}.`);
+    }
+    if (totalLearnersAlreadyAllocated > 0) {
+      toastMessages.push(`${totalLearnersAlreadyAllocated} ${expectedLearnersAlreadyAllocatedString} already had this course assigned.`);
+    }
+    const expectedToastMessage = toastMessages.join(' ');
 
     // Open Toast notification
     userEvent.click(getButtonElement('Open Toast'));

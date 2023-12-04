@@ -103,7 +103,7 @@ const mockSubsidyAccessPolicy = {
     spendAvailableUsd: 50000,
   },
 };
-const mockLearnerEmails = ['hello@example.com', 'world@example.com'];
+const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
 
 const mockDisplaySuccessfulAssignmentToast = jest.fn();
 const defaultBudgetDetailPageContextValue = {
@@ -315,6 +315,22 @@ describe('Course card works as expected', () => {
     allocationExceptionReason,
     shouldRetryAllocationAfterException,
   }) => {
+    const mockUpdatedLearnerAssignments = [mockLearnerEmails[0]];
+    const mockNoChangeLearnerAssignments = [mockLearnerEmails[1]];
+    const mockCreatedLearnerAssignments = mockLearnerEmails.slice(2).map(learnerEmail => ({
+      uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
+      assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
+      learner_email: learnerEmail,
+      lms_user_id: 0,
+      content_key: 'string',
+      content_title: 'string',
+      content_quantity: 0,
+      state: 'allocated',
+      transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
+      last_notification_at: '2019-08-24T14:15:22Z',
+      actions: [],
+    }));
+
     if (hasAllocationException) {
       // mock Axios error
       mockAllocateContentAssignments.mockRejectedValue({
@@ -326,21 +342,9 @@ describe('Course card works as expected', () => {
     } else {
       mockAllocateContentAssignments.mockResolvedValue({
         data: {
-          updated: [],
-          created: mockLearnerEmails.map(learnerEmail => ({
-            uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
-            assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
-            learner_email: learnerEmail,
-            lms_user_id: 0,
-            content_key: 'string',
-            content_title: 'string',
-            content_quantity: 0,
-            state: 'allocated',
-            transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
-            last_notification_at: '2019-08-24T14:15:22Z',
-            actions: [],
-          })),
-          no_change: [],
+          updated: mockUpdatedLearnerAssignments,
+          created: mockCreatedLearnerAssignments,
+          no_change: mockNoChangeLearnerAssignments,
         },
       });
     }
@@ -408,6 +412,7 @@ describe('Course card works as expected', () => {
     const nextSteps = assignmentModal.getByText('Next steps for assigned learners');
     userEvent.click(nextSteps);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
+
     // Verify modal footer
     expect(assignmentModal.getByText('Help Center: Course Assignments')).toBeInTheDocument();
     const cancelAssignmentCTA = getButtonElement('Cancel', { screenOverride: assignmentModal });
@@ -502,7 +507,8 @@ describe('Course card works as expected', () => {
           // Verify toast notification was displayed
           expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledTimes(1);
           expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledWith({
-            totalLearnersAssigned: mockLearnerEmails.length,
+            totalLearnersAllocated: mockCreatedLearnerAssignments.length + mockUpdatedLearnerAssignments.length,
+            totalLearnersAlreadyAllocated: mockNoChangeLearnerAssignments.length,
           });
         });
       }
@@ -513,7 +519,7 @@ describe('Course card works as expected', () => {
     }
   });
 
-  it.each([
+  test.each([
     {
       learnerEmails: ['a@a.com', 'b@bcom', 'c@c.com'],
       spendAvailableUsd: 1000,
