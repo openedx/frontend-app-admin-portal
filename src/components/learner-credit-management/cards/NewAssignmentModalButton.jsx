@@ -132,7 +132,12 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
         onSuccessEnterpriseTrackEvents({
           created, noChange, updated,
         });
-        displayToastForAssignmentAllocation({ totalLearnersAssigned: learnerEmails.length });
+        const totalLearnersAssigned = created.length + updated.length;
+        const totalLearnerAlreadyAssigned = noChange.length;
+        displayToastForAssignmentAllocation({
+          totalLearnersAssigned,
+          totalLearnerAlreadyAssigned,
+        });
 
         // Navigate to the activity tab
         history.push(pathToActivityTab);
