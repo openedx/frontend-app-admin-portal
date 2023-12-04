@@ -89,14 +89,13 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   }, []);
 
   const onSuccessEnterpriseTrackEvents = ({
-    created, noChange, updated,
+    totalLearnersAllocated,
+    totalLearnersAlreadyAllocated,
   }) => {
     const trackEventMetadata = {
       ...sharedEnterpriseTrackEventMetadata,
-      totalAllocatedLearners: learnerEmails.length,
-      created: created.length,
-      noChange: noChange.length,
-      updated: updated.length,
+      totalLearnersAllocated,
+      totalLearnersAlreadyAllocated,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
@@ -129,9 +128,12 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
         });
         handleCloseAssignmentModal();
-        onSuccessEnterpriseTrackEvents({ created, noChange, updated });
         const totalLearnersAllocated = created.length + updated.length;
         const totalLearnersAlreadyAllocated = noChange.length;
+        onSuccessEnterpriseTrackEvents({
+          totalLearnersAllocated,
+          totalLearnersAlreadyAllocated,
+        });
         displayToastForAssignmentAllocation({
           totalLearnersAllocated,
           totalLearnersAlreadyAllocated,
