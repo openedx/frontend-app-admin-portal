@@ -507,8 +507,8 @@ describe('Course card works as expected', () => {
           // Verify toast notification was displayed
           expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledTimes(1);
           expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledWith({
-            totalLearnersAssigned: mockCreatedLearnerAssignments.length + mockUpdatedLearnerAssignments.length,
-            totalLearnersAlreadyAssigned: mockNoChangeLearnerAssignments.length,
+            totalLearnersAllocated: mockCreatedLearnerAssignments.length + mockUpdatedLearnerAssignments.length,
+            totalLearnersAlreadyAllocated: mockNoChangeLearnerAssignments.length,
           });
         });
       }
