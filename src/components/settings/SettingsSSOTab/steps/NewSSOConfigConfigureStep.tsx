@@ -1,11 +1,16 @@
 import React from 'react';
 import {
-  Form, Container,
+  Alert, Button, Form, Container,
 } from '@edx/paragon';
+import { Info } from '@edx/paragon/icons';
 
 import ValidatedFormControl from '../../../forms/ValidatedFormControl';
 import { FormContext, FormFieldValidation, useFormContext } from '../../../forms/FormContext';
 import { urlValidation } from '../../../../utils';
+import { FormWorkflowStep } from '../../../forms/FormWorkflow';
+import { FORM_ERROR_MESSAGE, setStepAction } from '../../../forms/data/actions';
+import { INVALID_IDP_METADATA_ERROR, RECORD_UNDER_CONFIGURATIONS_ERROR } from '../../data/constants';
+import { SSOConfigCamelCase } from '../SSOFormWorkflowConfig';
 
 const isSAPConfig = (fields) => fields.identityProvider === 'sap_success_factors';
 
@@ -35,6 +40,9 @@ export const validations: FormFieldValidation[] = [
 const SSOConfigConfigureStep = () => {
   const {
     formFields,
+    dispatch,
+    allSteps,
+    stateMap,
   }: FormContext = useFormContext();
   const usingSAP = formFields?.identityProvider === 'sap_success_factors';
 
@@ -147,12 +155,65 @@ const SSOConfigConfigureStep = () => {
     </>
   );
 
+  const returnToConnectStep = () => {
+    const connectStep = allSteps?.[0] as FormWorkflowStep<SSOConfigCamelCase>;
+    dispatch?.(
+      setStepAction({ step: connectStep })
+    );
+  };
+
   return (
 
     <Container size="md">
 
       <Form style={{ maxWidth: '60rem' }}>
         <h2>Enter integration details</h2>
+        {stateMap?.[FORM_ERROR_MESSAGE] === RECORD_UNDER_CONFIGURATIONS_ERROR && (
+          <Alert
+            variant="danger"
+            actions={[
+              <Button
+                className="ml-3"
+                onClick={returnToConnectStep}
+              >
+                Record under configuration
+              </Button>,
+            ]}
+            className="mt-3 mb-3"
+            dismissible
+            stacked
+            icon={Info}
+          >
+            <Alert.Heading className="mt-1">Configuration Error</Alert.Heading>
+            <p className="mt-1">
+              Your record was recently submitted for configuration and must completed before you can resubmit. Please
+              check back in a few minutes. If the problem persists, contact enterprise customer support.
+            </p>
+          </Alert>
+        )}
+        {stateMap?.[FORM_ERROR_MESSAGE] === INVALID_IDP_METADATA_ERROR && (
+          <Alert
+            variant="danger"
+            actions={[
+              <Button
+                className="ml-3"
+                onClick={returnToConnectStep}
+              >
+                Return to Connect step
+              </Button>,
+            ]}
+            className="mt-3 mb-3"
+            dismissible
+            stacked
+            icon={Info}
+          >
+            <Alert.Heading className="mt-1">Metadata Error</Alert.Heading>
+            <p className="mt-1">
+              Please return to the “Connect” step and verify that your metadata URL or metadata file is correct. After
+              verifying, please try again. If the problem persists, contact enterprise customer support.
+            </p>
+          </Alert>
+        )}
         <span className="d-flex pb-4">
           <h3>Set display name</h3>
         </span>

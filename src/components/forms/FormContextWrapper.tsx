@@ -22,6 +22,7 @@ const FormContextWrapper = <FormConfigData extends unknown>({
   const initializeAction: InitializeFormArguments<FormConfigData> = {
     formFields: formData as FormConfigData,
     currentStep: formWorkflowConfig.getCurrentStep(),
+    steps: formWorkflowConfig.steps,
   };
   const [formFieldsState, dispatch] = useReducer<
   FormReducerType,
