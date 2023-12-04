@@ -2,30 +2,43 @@ import { useCallback, useMemo, useState } from 'react';
 
 const useSuccessfulAssignmentToastContextValue = () => {
   const [isToastOpen, setIsToastOpen] = useState(false);
-  const [learnersAssignedCount, setLearnersAssignedCount] = useState();
+  const [learnersAllocatedCount, setLearnersAllocatedCount] = useState(0);
+  const [learnersAlreadyAllocatedCount, setLearnersAlreadyAllocatedCount] = useState(0);
 
-  const handleDisplayToast = useCallback(({ totalLearnersAssigned }) => {
+  const handleDisplayToast = useCallback(({ totalLearnersAllocated, totalLearnersAlreadyAllocated }) => {
+    setLearnersAllocatedCount(totalLearnersAllocated);
+    setLearnersAlreadyAllocatedCount(totalLearnersAlreadyAllocated);
     setIsToastOpen(true);
-    setLearnersAssignedCount(totalLearnersAssigned);
   }, []);
 
   const handleCloseToast = useCallback(() => {
     setIsToastOpen(false);
   }, []);
 
-  const successfulAssignmentAllocationToastMessage = `Course successfully assigned to ${learnersAssignedCount} ${learnersAssignedCount === 1 ? 'learner' : 'learners'}.`;
+  const pluralizeLearner = (count) => (count === 1 ? 'learner' : 'learners');
+
+  const toastMessages = [];
+  if (learnersAllocatedCount > 0) {
+    toastMessages.push(`Course successfully assigned to ${learnersAllocatedCount} ${pluralizeLearner(learnersAllocatedCount)}.`);
+  }
+  if (learnersAlreadyAllocatedCount > 0) {
+    toastMessages.push(`${learnersAlreadyAllocatedCount} ${pluralizeLearner(learnersAlreadyAllocatedCount)} already had this course assigned.`);
+  }
+  const successfulAssignmentAllocationToastMessage = toastMessages.join(' ');
 
   const successfulAssignmentToastContextValue = useMemo(() => ({
     isSuccessfulAssignmentAllocationToastOpen: isToastOpen,
     displayToastForAssignmentAllocation: handleDisplayToast,
     closeToastForAssignmentAllocation: handleCloseToast,
-    totalLearnersAssigned: learnersAssignedCount,
+    totalLearnersAllocated: learnersAllocatedCount,
+    totalLearnersAlreadyAllocated: learnersAlreadyAllocatedCount,
     successfulAssignmentAllocationToastMessage,
   }), [
     isToastOpen,
     handleDisplayToast,
     handleCloseToast,
-    learnersAssignedCount,
+    learnersAllocatedCount,
+    learnersAlreadyAllocatedCount,
     successfulAssignmentAllocationToastMessage,
   ]);
 

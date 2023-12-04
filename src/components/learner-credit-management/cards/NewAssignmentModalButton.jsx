@@ -129,10 +129,13 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
         });
         handleCloseAssignmentModal();
-        onSuccessEnterpriseTrackEvents({
-          created, noChange, updated,
+        onSuccessEnterpriseTrackEvents({ created, noChange, updated });
+        const totalLearnersAllocated = created.length + updated.length;
+        const totalLearnersAlreadyAllocated = noChange.length;
+        displayToastForAssignmentAllocation({
+          totalLearnersAllocated,
+          totalLearnersAlreadyAllocated,
         });
-        displayToastForAssignmentAllocation({ totalLearnersAssigned: learnerEmails.length });
 
         // Navigate to the activity tab
         history.push(pathToActivityTab);

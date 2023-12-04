@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -15,6 +14,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BudgetCard from '../BudgetCard';
 import { formatPrice, useSubsidySummaryAnalyticsApi, useBudgetRedemptions } from '../data';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
@@ -52,11 +52,20 @@ const mockBudgetUuid = 'test-budget-uuid';
 
 const mockBudgetDisplayName = 'Test Enterprise Budget Display Name';
 
-const BudgetCardWrapper = ({ ...rest }) => (
+const defaultEnterpriseSubsidiesContextValue = {
+  isFetchingBudgets: false,
+};
+
+const BudgetCardWrapper = ({
+  enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+  ...rest
+}) => (
   <MemoryRouter initialEntries={['/test-enterprise/admin/learner-credit']}>
     <Provider store={store}>
       <IntlProvider locale="en">
-        <BudgetCard {...rest} />
+        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+          <BudgetCard {...rest} />
+        </EnterpriseSubsidiesContext.Provider>
       </IntlProvider>
     </Provider>
   </MemoryRouter>

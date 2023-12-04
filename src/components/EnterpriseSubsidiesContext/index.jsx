@@ -11,6 +11,7 @@ export const useEnterpriseSubsidiesContext = ({
 }) => {
   const {
     isLoading: isLoadingBudgets,
+    isFetching: isFetchingBudgets,
     data: budgetsOverview,
   } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
@@ -58,7 +59,16 @@ export const useEnterpriseSubsidiesContext = ({
     canManageLearnerCredit,
     enterpriseSubsidyTypes,
     isLoading,
-  }), [budgets, customerAgreement, coupons, canManageLearnerCredit, enterpriseSubsidyTypes, isLoading]);
+    isFetchingBudgets,
+  }), [
+    budgets,
+    customerAgreement,
+    coupons,
+    canManageLearnerCredit,
+    enterpriseSubsidyTypes,
+    isLoading,
+    isFetchingBudgets,
+  ]);
 
   return context;
 };
