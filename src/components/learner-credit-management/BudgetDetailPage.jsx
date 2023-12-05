@@ -1,13 +1,17 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Skeleton, Stack } from '@edx/paragon';
 
+import { connect } from 'react-redux';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailPageWrapper from './BudgetDetailPageWrapper';
 import BudgetDetailPageHeader from './BudgetDetailPageHeader';
 import NotFoundPage from '../NotFoundPage';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 
-const BudgetDetailPage = () => {
+const BudgetDetailPage = ({ enterpriseSlug }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const {
     data: subsidyAccessPolicy,
@@ -28,6 +32,13 @@ const BudgetDetailPage = () => {
     );
   }
 
+  // If the budget has a subsidyAccessPolicy but is not active, or the subsidyAccessPolicyId is invalid
+  // we should redirect the user to the budget list page.
+  if (!subsidyAccessPolicyId || subsidyAccessPolicy?.active === false) {
+    // TODO: In the react router v6 upgrade, refactor to the Navigate component
+    return <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`} />;
+  }
+
   // If the budget is intended to be a subsidy access policy (by presence of a policy UUID),
   // and the subsidy access policy is not found, show 404 messaging.
   if (subsidyAccessPolicyId && isSubsidyAccessPolicyError && error?.customAttributes.httpErrorStatus === 404) {
@@ -44,4 +55,12 @@ const BudgetDetailPage = () => {
   );
 };
 
-export default BudgetDetailPage;
+BudgetDetailPage.propTypes = {
+  enterpriseSlug: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+});
+
+export default connect(mapStateToProps)(BudgetDetailPage);

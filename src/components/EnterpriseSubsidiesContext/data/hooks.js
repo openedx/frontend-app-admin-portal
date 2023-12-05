@@ -62,19 +62,22 @@ async function fetchEnterpriseBudgets({
   // Iterate through each API response (if applicable) and concatenate the results into a single array of budgets.
   const budgetsList = [];
   enterprisePolicyResults?.forEach((result) => {
-    budgetsList.push({
-      source: BUDGET_TYPES.policy,
-      id: result.uuid,
-      name: result.displayName || 'Overview',
-      start: result.subsidyActiveDatetime,
-      end: result.subsidyExpirationDatetime,
-      isCurrent: dayjs().isBetween(result.subsidyActiveDatetime, result.subsidyExpirationDatetime, 'day', '[]'),
-      aggregates: {
-        available: result.aggregates.spendAvailableUsd,
-        spent: result.aggregates.amountRedeemedUsd,
-        pending: result.aggregates.amountAllocatedUsd,
-      },
-    });
+    // Only active policies will be accessible
+    if (result.active) {
+      budgetsList.push({
+        source: BUDGET_TYPES.policy,
+        id: result.uuid,
+        name: result.displayName || 'Overview',
+        start: result.subsidyActiveDatetime,
+        end: result.subsidyExpirationDatetime,
+        isCurrent: dayjs().isBetween(result.subsidyActiveDatetime, result.subsidyExpirationDatetime, 'day', '[]'),
+        aggregates: {
+          available: result.aggregates.spendAvailableUsd,
+          spent: result.aggregates.amountRedeemedUsd,
+          pending: result.aggregates.amountAllocatedUsd,
+        },
+      });
+    }
   });
   enterpriseSubsidyResults?.forEach((result) => {
     budgetsList.push({
