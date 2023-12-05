@@ -1,22 +1,22 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
 
-import useBudgetDetailActivityOverview from './useBudgetDetailActivityOverview';
-import useBudgetId from './useBudgetId';
-import useSubsidyAccessPolicy from './useSubsidyAccessPolicy';
-import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
-import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
+import useBudgetDetailActivityOverview from '../useBudgetDetailActivityOverview';
+import useBudgetId from '../useBudgetId';
+import useSubsidyAccessPolicy from '../useSubsidyAccessPolicy';
+import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
+import EnterpriseDataApiService from '../../../../../data/services/EnterpriseDataApiService';
 import {
   mockAssignableSubsidyAccessPolicy,
   mockPerLearnerSpendLimitSubsidyAccessPolicy,
   mockEnterpriseOfferId,
   mockSubsidyAccessPolicyUUID,
-} from '../tests/constants';
-import { queryClient } from '../../../test/testUtils';
-import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiService';
+} from '../../tests/constants';
+import { queryClient } from '../../../../test/testUtils';
+import SubsidyApiService from '../../../../../data/services/EnterpriseSubsidyApiService';
 
-jest.mock('./useBudgetId');
-jest.mock('./useSubsidyAccessPolicy');
+jest.mock('../useBudgetId');
+jest.mock('../useSubsidyAccessPolicy');
 
 const mockEnterpriseUUID = 'mock-enterprise-uuid';
 

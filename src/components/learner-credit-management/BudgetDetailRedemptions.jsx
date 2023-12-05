@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { useBudgetId, useOfferRedemptions } from './data';
+import { useBudgetId, useBudgetRedemptions } from './data';
 
 const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const {
     isLoading,
-    offerRedemptions,
-    fetchOfferRedemptions,
-  } = useOfferRedemptions(
+    budgetRedemptions,
+    fetchBudgetRedemptions,
+  } = useBudgetRedemptions(
     enterpriseUUID,
     enterpriseOfferId,
     subsidyAccessPolicyId,
@@ -21,13 +21,18 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     <section>
       <h3 className="mb-3">Spent</h3>
       <p className="small mb-4">
-        Spent activity is driven by completed enrollments. Enrollment data is automatically updated every 12 hours.
-        Come back later to view more recent enrollments.
+        Spent activity is driven by completed enrollments.
+        {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) && (
+          <>
+            Enrollment data is automatically updated every 12 hours.
+            Come back later to view more recent enrollments.
+          </>
+        )}
       </p>
       <LearnerCreditAllocationTable
         isLoading={isLoading}
-        tableData={offerRedemptions}
-        fetchTableData={fetchOfferRedemptions}
+        tableData={budgetRedemptions}
+        fetchTableData={fetchBudgetRedemptions}
       />
     </section>
   );

@@ -78,7 +78,6 @@ export const BaseCatalogSearchResults = ({
       </Alert>
     );
   }
-
   return (
     <div className="mb-5">
       <DataTable

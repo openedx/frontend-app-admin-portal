@@ -14,6 +14,7 @@ import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiSer
 import { API_FIELDS_BY_TABLE_COLUMN_ACCESSOR } from '../constants';
 import { transformUtilizationTableResults, transformUtilizationTableSubsidyTransactionResults } from '../utils';
 import useSubsidyAccessPolicy from './useSubsidyAccessPolicy';
+import EVENT_NAMES from '../../../../eventTracking';
 
 const applySortByToOptions = (sortBy, options) => {
   const orderingStrings = sortBy.map(({ id, desc }) => {
@@ -45,7 +46,7 @@ const applyFiltersToOptions = (filters, options, shouldFetchSubsidyTransactions 
   }
 };
 
-const useOfferRedemptions = (
+const useBudgetRedemptions = (
   enterpriseUUID,
   offerId = null,
   budgetId = null,
@@ -53,14 +54,14 @@ const useOfferRedemptions = (
 ) => {
   const shouldTrackFetchEvents = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [offerRedemptions, setOfferRedemptions] = useState({
+  const [budgetRedemptions, setBudgetRedemptions] = useState({
     itemCount: 0,
     pageCount: 0,
     results: [],
   });
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(budgetId);
 
-  const fetchOfferRedemptions = useCallback((args) => {
+  const fetchBudgetRedemptions = useCallback((args) => {
     const fetch = async () => {
       try {
         const shouldFetchSubsidyTransactions = budgetId && isTopDownAssignmentEnabled;
@@ -102,7 +103,7 @@ const useOfferRedemptions = (
           transformedTableResults = transformUtilizationTableResults(data.results);
         }
 
-        setOfferRedemptions({
+        setBudgetRedemptions({
           itemCount: data.count,
           pageCount: data.numPages,
           results: transformedTableResults,
@@ -113,7 +114,7 @@ const useOfferRedemptions = (
           // send all table state as event properties.
           sendEnterpriseTrackEvent(
             enterpriseUUID,
-            'edx.ui.enterprise.admin_portal.learner-credit-management.table.data.changed',
+            EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_SPENT_DATATABLE_SORT_BY_OR_FILTER,
             options,
           );
         } else {
@@ -138,13 +139,16 @@ const useOfferRedemptions = (
     subsidyAccessPolicy?.subsidyUuid,
   ]);
 
-  const debouncedFetchOfferRedemptions = useMemo(() => debounce(fetchOfferRedemptions, 300), [fetchOfferRedemptions]);
+  const debouncedFetchBudgetRedemptions = useMemo(
+    () => debounce(fetchBudgetRedemptions, 300),
+    [fetchBudgetRedemptions],
+  );
 
   return {
     isLoading,
-    offerRedemptions,
-    fetchOfferRedemptions: debouncedFetchOfferRedemptions,
+    budgetRedemptions,
+    fetchBudgetRedemptions: debouncedFetchBudgetRedemptions,
   };
 };
 
-export default useOfferRedemptions;
+export default useBudgetRedemptions;

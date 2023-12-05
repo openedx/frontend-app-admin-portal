@@ -1,14 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Button, Card, Row, Col,
 } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { useIsLargeOrGreater, usePathToCatalogTab } from './data';
 import nameYourLearners from './assets/nameYourLearners.svg';
 import findTheRightCourse from './assets/findTheRightCourse.svg';
 import confirmSpend from './assets/confirmSpend.svg';
+import EVENT_NAMES from '../../eventTracking';
 
 const FindTheRightCourseIllustration = (props) => (
   <img data-testid="find-the-right-course-illustration" src={findTheRightCourse} alt="" {...props} />
@@ -22,7 +26,7 @@ const ConfirmSpendIllustration = (props) => (
   <img data-testid="confirm-spend-illustration" src={confirmSpend} alt="" {...props} />
 );
 
-const NoBudgetActivityEmptyState = () => {
+const NoBudgetActivityEmptyState = ({ enterpriseId }) => {
   const pathToCatalogTab = usePathToCatalogTab();
   const isLargeOrGreater = useIsLargeOrGreater();
 
@@ -84,7 +88,16 @@ const NoBudgetActivityEmptyState = () => {
         </Row>
         <Row>
           <Col>
-            <Button as={Link} to={pathToCatalogTab}>Get started</Button>
+            <Button
+              as={Link}
+              to={pathToCatalogTab}
+              onClick={() => sendEnterpriseTrackEvent(
+                enterpriseId,
+                EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.EMPTY_STATE_CTA,
+              )}
+            >
+              Get started
+            </Button>
           </Col>
         </Row>
       </Card.Section>
@@ -92,4 +105,12 @@ const NoBudgetActivityEmptyState = () => {
   );
 };
 
-export default NoBudgetActivityEmptyState;
+NoBudgetActivityEmptyState.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(NoBudgetActivityEmptyState);

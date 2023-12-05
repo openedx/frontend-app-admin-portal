@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Alert, ActionRow, Button, Hyperlink, ModalDialog, Toast, Skeleton, useToggle,
+  Alert, ActionRow, Button, Hyperlink, ModalDialog, Toast, Skeleton, Spinner, useToggle,
 } from '@edx/paragon';
 import { Add, WarningFilled } from '@edx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
@@ -29,12 +29,16 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const { AUTH0_SELF_SERVICE_INTEGRATION } = features;
   const [isOpen, open, close] = useToggle(false);
   const [pollingNetworkError, setPollingNetworkError] = useState(false);
+  const [isStepperOpen, setIsStepperOpen] = useState(true);
+  const [isDeletingOldConfigs, setIsDeletingOldConfigs] = useState(false);
 
   const newConfigurationButtonOnClick = async () => {
+    setIsDeletingOldConfigs(true);
     Promise.all(existingConfigs.map(config => LmsApiService.updateEnterpriseSsoOrchestrationRecord(
       { active: false, is_removed: true },
       config.uuid,
     ))).then(() => {
+      setIsDeletingOldConfigs(false);
       setRefreshBool(!refreshBool);
       close();
     });
@@ -88,8 +92,13 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
               <Button
                 variant="primary"
                 onClick={newConfigurationButtonOnClick}
+                disabled={isDeletingOldConfigs}
               >
-                Create new SSO
+                {isDeletingOldConfigs ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  <>Create new SSO</>
+                )}
               </Button>
             </ActionRow>
           </ModalDialog.Footer>
@@ -129,19 +138,30 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
                     refreshBool={refreshBool}
                     setRefreshBool={setRefreshBool}
                     setPollingNetworkError={setPollingNetworkError}
+                    setIsStepperOpen={setIsStepperOpen}
                   />
                 )}
                 {/* Nothing found so guide user to creation/edit form */}
                 {showNoSSOCard && (
-                  <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />
+                  <NoSSOCard
+                    setShowNoSSOCard={setShowNoSSOCard}
+                    setShowNewSSOForm={setShowNewSSOForm}
+                    setIsStepperOpen={setIsStepperOpen}
+                  />
                 )}
                 {/* Since we found a selected providerConfig we know we are in editing mode and can safely
                 render the create/edit form */}
-                {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
+                {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (
+                  <NewSSOConfigForm
+                    setIsStepperOpen={setIsStepperOpen}
+                    isStepperOpen={isStepperOpen}
+                  />
+                )}
                 {pdError && (
-                <Alert variant="warning" icon={WarningFilled}>
-                  An error occurred loading the SAML data: <p>{pdError?.message}</p>
-                </Alert>
+                  <Alert variant="warning" icon={WarningFilled}>
+                    An error occurred loading the SAML data:{' '}
+                    <p>{pdError?.message}</p>
+                  </Alert>
                 )}
                 <Toast
                   onClose={() => setInfoMessage(null)}
@@ -178,27 +198,37 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
           existing configs but no providerConfig then we can safely render the listings page */}
           {existingConfigs?.length > 0 && (providerConfig === null)
             && (
-            <ExistingSSOConfigs
-              providerData={existingProviderData}
-              configs={existingConfigs}
-              refreshBool={refreshBool}
-              setRefreshBool={setRefreshBool}
-            />
+              <ExistingSSOConfigs
+                providerData={existingProviderData}
+                configs={existingConfigs}
+                refreshBool={refreshBool}
+                setRefreshBool={setRefreshBool}
+              />
             )}
           {/* Nothing found so guide user to creation/edit form */}
-          {showNoSSOCard && <NoSSOCard setShowNoSSOCard={setShowNoSSOCard} setShowNewSSOForm={setShowNewSSOForm} />}
+          {/* Because NoSSOCard is shared component between old and new sso steppers, setIsStepperOpen is a placeholder
+          for now. This whole tree is scheduled to be deleted soon */}
+          {showNoSSOCard && (
+            <NoSSOCard
+              setShowNoSSOCard={setShowNoSSOCard}
+              setShowNewSSOForm={setShowNewSSOForm}
+              setIsStepperOpen={() => { }}
+            />
+          )}
           {/* Since we found a selected providerConfig we know we are in editing mode and can safely
           render the create/edit form */}
-          {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (<NewSSOConfigForm />)}
+          {((existingConfigs?.length > 0 && providerConfig !== null) || showNewSSOForm) && (
+            <NewSSOConfigForm setIsStepperOpen={setIsStepperOpen} isStepperOpen={isStepperOpen} />
+          )}
           {error && (
-          <Alert variant="warning" icon={WarningFilled}>
-            An error occurred loading the SAML configs: <p>{error?.message}</p>
-          </Alert>
+            <Alert variant="warning" icon={WarningFilled}>
+              An error occurred loading the SAML configs: <p>{error?.message}</p>
+            </Alert>
           )}
           {pdError && (
-          <Alert variant="warning" icon={WarningFilled}>
-            An error occurred loading the SAML data: <p>{pdError?.message}</p>
-          </Alert>
+            <Alert variant="warning" icon={WarningFilled}>
+              An error occurred loading the SAML data: <p>{pdError?.message}</p>
+            </Alert>
           )}
           {infoMessage && (
             <Toast

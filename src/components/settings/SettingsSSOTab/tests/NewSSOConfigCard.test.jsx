@@ -2,6 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { act, render, screen } from '@testing-library/react';
+import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import NewSSOConfigCard from '../NewSSOConfigCard';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
@@ -18,6 +19,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: '2021-08-06T15:00:00Z',
           submitted_at: '2021-08-05T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}
@@ -41,6 +44,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: '2021-08-05T15:00:00Z',
           submitted_at: '2021-08-04T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}
@@ -64,6 +69,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: '2021-08-05T15:00:00Z',
           submitted_at: '2021-08-05T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}
@@ -87,6 +94,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: null,
           submitted_at: '2021-08-05T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}
@@ -108,6 +117,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: '2021-09-05T15:00:00Z',
           submitted_at: '2021-08-05T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}
@@ -120,27 +131,59 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays configure button properly', async () => {
+    const mockSetIsStepperOpen = jest.fn();
+    const mockSetProviderConfig = jest.fn();
+    const contextValue = {
+      ...SSO_INITIAL_STATE,
+      setCurrentError: jest.fn(),
+      currentError: null,
+      dispatchSsoState: jest.fn(),
+      ssoState: {
+        idp: {
+          metadataURL: '',
+          entityID: '',
+          entryType: '',
+          isDirty: false,
+        },
+        serviceprovider: {
+          isSPConfigured: false,
+        },
+        refreshBool: false,
+        providerConfig: {
+          id: 1337,
+        },
+      },
+      setProviderConfig: mockSetProviderConfig,
+      setRefreshBool: jest.fn(),
+    };
     render(
-      <NewSSOConfigCard
-        config={{
-          display_name: 'test',
-          uuid: 'ecc16800-c1cc-4cdb-93aa-186f71b026ca',
-          active: false,
-          modified: '2021-08-05T15:00:00Z',
-          validated_at: null,
-          configured_at: '2021-08-05T15:00:00Z',
-          submitted_at: '2021-07-05T15:00:00Z',
-        }}
-        setLoading={jest.fn()}
-        setRefreshBool={jest.fn()}
-        refreshBool={false}
-      />,
+      <SSOConfigContext.Provider value={contextValue}>
+        <NewSSOConfigCard
+          config={{
+            display_name: 'test',
+            uuid: 'ecc16800-c1cc-4cdb-93aa-186f71b026ca',
+            active: false,
+            modified: '2021-08-05T15:00:00Z',
+            validated_at: null,
+            configured_at: '2021-08-05T15:00:00Z',
+            submitted_at: '2021-07-05T15:00:00Z',
+          }}
+          setUpdateError={jest.fn()}
+          setIsStepperOpen={mockSetIsStepperOpen}
+          setLoading={jest.fn()}
+          setRefreshBool={jest.fn()}
+          refreshBool={false}
+        />
+      </SSOConfigContext.Provider>,
     );
-    expect(
-      screen.getByTestId(
-        'existing-sso-config-card-configure-button',
-      ),
-    ).toBeInTheDocument();
+    const button = screen.getByTestId(
+      'existing-sso-config-card-configure-button',
+    );
+    act(() => {
+      userEvent.click(button);
+    });
+    expect(mockSetIsStepperOpen).toHaveBeenCalledWith(true);
+    expect(mockSetProviderConfig).toHaveBeenCalled();
   });
   test('displays enable button properly', async () => {
     render(
@@ -154,6 +197,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: '2021-09-05T15:00:00Z',
           submitted_at: '2021-08-05T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}
@@ -179,6 +224,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: '2021-09-05T15:00:00Z',
           submitted_at: '2021-08-05T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}
@@ -206,6 +253,8 @@ describe('New SSO Config Card Tests', () => {
           configured_at: '2021-09-05T15:00:00Z',
           submitted_at: '2021-08-05T15:00:00Z',
         }}
+        setUpdateError={jest.fn()}
+        setIsStepperOpen={jest.fn()}
         setLoading={jest.fn()}
         setRefreshBool={jest.fn()}
         refreshBool={false}

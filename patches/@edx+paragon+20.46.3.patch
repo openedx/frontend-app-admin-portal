@@ -1,0 +1,29 @@
+diff --git a/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js b/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
+index 00c4c4b..426ca4e 100644
+--- a/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
++++ b/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
+@@ -20,11 +20,12 @@ function BaseSelectionStatus(_ref) {
+     itemCount,
+     filteredRows,
+     isPaginated,
+-    state
++    state,
++    controlledTableSelections,
+   } = useContext(DataTableContext);
+   const hasAppliedFilters = state?.filters?.length > 0;
+-  const isAllRowsSelected = numSelectedRows === itemCount;
+-  const filteredItems = filteredRows?.length || itemCount;
++  const isAllRowsSelected = controlledTableSelections?.isEntireTableSelected || numSelectedRows === itemCount;
++  const selectAllItemCount = itemCount;
+   const intlAllSelectedText = allSelectedText || /*#__PURE__*/React.createElement(FormattedMessage, {
+     id: "pgn.DataTable.BaseSelectionStatus.allSelectedText",
+     defaultMessage: "All {numSelectedRows} selected",
+@@ -62,7 +63,7 @@ function BaseSelectionStatus(_ref) {
+     defaultMessage: "Select all {itemCount}",
+     description: "A label for select all button.",
+     values: {
+-      itemCount: filteredItems
++      itemCount: selectAllItemCount
+     }
+   })), numSelectedRows > 0 && /*#__PURE__*/React.createElement(Button, {
+     className: CLEAR_SELECTION_TEST_ID,

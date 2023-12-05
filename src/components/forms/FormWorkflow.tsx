@@ -42,6 +42,7 @@ export type FormWorkflowAwaitHandler<FormData> = {
 export type FormWorkflowButtonConfig<FormData> = {
   buttonText: string;
   opensNewWindow: boolean;
+  preventDefaultErrorModal: boolean;
   onClick?: (args: FormWorkflowHandlerArgs<FormData>) => Promise<FormData> | void;
   awaitSuccess?: FormWorkflowAwaitHandler<FormData>;
 };
@@ -136,7 +137,12 @@ const FormWorkflow = <FormConfigData extends unknown>({
         setNextInProgress(true);
         const newFormFields: FormConfigData = await nextButtonConfig.onClick({
           formFields,
-          errHandler: setFormError,
+          errHandler: (error) => {
+            setFormError(error); 
+            if (!!error) {
+              advance = false;
+            }
+          },
           dispatch,
           formFieldsChanged: !!isEdited,
         });
@@ -228,7 +234,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
   return (
     <>
       <ConfigErrorModal
-        isOpen={stateMap && stateMap[FORM_ERROR_MESSAGE]}
+        isOpen={stateMap && stateMap[FORM_ERROR_MESSAGE] && !nextButtonConfig?.preventDefaultErrorModal}
         close={clearFormError}
         configTextOverride={stateMap && stateMap[FORM_ERROR_MESSAGE]}
       />

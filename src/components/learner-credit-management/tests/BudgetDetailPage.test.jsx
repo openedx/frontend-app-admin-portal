@@ -8,14 +8,16 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
+import { v4 as uuidv4 } from 'uuid';
+import { faker } from '@faker-js/faker';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
   useSubsidyAccessPolicy,
-  useOfferRedemptions,
+  useBudgetRedemptions,
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
   useIsLargeOrGreater,
@@ -33,6 +35,11 @@ import {
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
 
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
+
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: jest.fn(),
@@ -40,7 +47,7 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
-  useOfferRedemptions: jest.fn(),
+  useBudgetRedemptions: jest.fn(),
   useBudgetContentAssignments: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
   useBudgetDetailActivityOverview: jest.fn(),
@@ -74,7 +81,7 @@ const mockEmptyStateBudgetDetailActivityOverview = {
   contentAssignments: { count: 0 },
   spentTransactions: { count: 0 },
 };
-const mockEmptyOfferRedemptions = {
+const mockEmptyBudgetRedemptions = {
   itemCount: 0,
   pageCount: 0,
   results: [],
@@ -112,6 +119,11 @@ const mockLearnerContentAssignment = {
   actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
   errorReason: null,
 };
+const createMockLearnerContentAssignment = () => ({
+  ...mockLearnerContentAssignment,
+  uuid: uuidv4(),
+  learnerEmail: faker.internet.email(),
+});
 const mockEnrollmentTransactionReversal = {
   uuid: 'test-transaction-reversal-uuid',
   created: '2023-10-31',
@@ -214,7 +226,7 @@ describe('<BudgetDetailPage />', () => {
   it.each([
     { isLargeViewport: true },
     { isLargeViewport: false },
-  ])('displays budget activity overview empty state', ({ isLargeViewport }) => {
+  ])('displays budget activity overview empty state', async ({ isLargeViewport }) => {
     useIsLargeOrGreater.mockReturnValue(isLargeViewport);
     useParams.mockReturnValue({
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
@@ -235,19 +247,34 @@ describe('<BudgetDetailPage />', () => {
     const illustrationTestIds = ['find-the-right-course-illustration', 'name-your-learners-illustration', 'confirm-spend-illustration'];
     illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
     expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
+    userEvent.click(screen.getByText('Get started'));
+    await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
   });
 
   it.each([
     {
       budgetId: mockEnterpriseOfferId,
+      isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, true],
     },
     {
+      budgetId: mockEnterpriseOfferId,
+      isTopDownAssignmentEnabled: false,
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, false],
+    },
+    {
       budgetId: mockSubsidyAccessPolicyUUID,
+      isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],
+    },
+    {
+      budgetId: mockSubsidyAccessPolicyUUID,
+      isTopDownAssignmentEnabled: false,
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, false],
     },
   ])('displays spend table in "Activity" tab with empty results (%s)', async ({
     budgetId,
+    isTopDownAssignmentEnabled,
     expectedUseOfferRedemptionsArgs,
   }) => {
     useParams.mockReturnValue({
@@ -274,24 +301,44 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
-    renderWithRouter(<BudgetDetailPageWrapper />);
+    const storeState = {
+      ...initialStoreState,
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          ...initialStoreState.portalConfiguration.enterpriseFeatures,
+          topDownAssignmentRealTimeLcm: isTopDownAssignmentEnabled,
+        },
+      },
+    };
+    renderWithRouter(<BudgetDetailPageWrapper initialState={storeState} />);
 
-    expect(useOfferRedemptions).toHaveBeenCalledTimes(1);
-    expect(useOfferRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
+    expect(useBudgetRedemptions).toHaveBeenCalledTimes(1);
+    expect(useBudgetRedemptions).toHaveBeenCalledWith(...expectedUseOfferRedemptionsArgs);
 
     // Activity tab exists and is active
     expect(screen.getByText('Activity').getAttribute('aria-selected')).toBe('true');
     // Catalog tab does NOT exist since the budget is not assignable
     expect(screen.queryByText('Catalog')).not.toBeInTheDocument();
 
-    // Spent table is visible within Activity tab contents
+    // Spent table and messaging is visible within Activity tab contents
     const spentSection = within(screen.getByText('Spent').closest('section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
+    expect(spentSection.getByText('Spent activity is driven by completed enrollments.', { exact: false })).toBeInTheDocument();
+    const isSubsidyAccessPolicyWithAnalyicsApi = (
+      budgetId === mockSubsidyAccessPolicyUUID && !isTopDownAssignmentEnabled
+    );
+    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyicsApi) {
+      // This copy is only present when the "Spent" table is backed by the
+      // analytics API (i.e., budget is an enterprise offer or a subsidy access
+      // policy with the LC2 feature flag disabled).
+      expect(spentSection.getByText('Enrollment data is automatically updated every 12 hours.', { exact: false })).toBeInTheDocument();
+    }
   });
 
   it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', async () => {
@@ -319,14 +366,14 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: {
+      budgetRedemptions: {
         itemCount: 2,
         pageCount: 1,
         results: [mockEnrollmentTransaction, mockEnrollmentTransactionWithReversal],
       },
-      fetchOfferRedemptions: jest.fn(),
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -350,9 +397,13 @@ describe('<BudgetDetailPage />', () => {
     const transactionRowWithReversal = within(spentSection.getByText(mockSecondLearnerEmail).closest('tr'));
     expect(transactionRowWithReversal.getByText(`Refunded on ${formatDate(mockEnrollmentTransactionReversal.created)}`)).toBeInTheDocument();
     expect(transactionRowWithReversal.getByText(`+${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toBeInTheDocument();
+
+    userEvent.click(spentSection.queryAllByText(mockContentTitle, { selector: 'a' })[0]);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
   it('renders with assigned table data and handles table refresh', () => {
+    const NUMBER_OF_ASSIGNMENTS_TO_GENERATE = 60;
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -364,26 +415,31 @@ describe('<BudgetDetailPage />', () => {
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
-        contentAssignments: { count: 1 },
+        contentAssignments: { count: NUMBER_OF_ASSIGNMENTS_TO_GENERATE },
         spentTransactions: { count: 0 },
       },
     });
     const mockFetchContentAssignments = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockAssignmentsList = [
+      mockLearnerContentAssignment,
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockLearnerContentAssignment),
+    ];
     useBudgetContentAssignments.mockReturnValue({
       isLoading: false,
       contentAssignments: {
-        count: 1,
-        results: [mockLearnerContentAssignment],
-        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
-        numPages: 1,
+        count: NUMBER_OF_ASSIGNMENTS_TO_GENERATE,
+        results: mockAssignmentsList,
+        learnerStateCounts: [{ learnerState: 'waiting', count: NUMBER_OF_ASSIGNMENTS_TO_GENERATE }],
+        numPages: Math.floor(NUMBER_OF_ASSIGNMENTS_TO_GENERATE / PAGE_SIZE),
         currentPage: 1,
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -391,12 +447,23 @@ describe('<BudgetDetailPage />', () => {
     const assignedSection = within(screen.getByText('Assigned').closest('section'));
     expect(assignedSection.queryByText('No results found')).not.toBeInTheDocument();
     expect(assignedSection.getByText(mockLearnerEmail)).toBeInTheDocument();
-    const viewCourseCTA = assignedSection.getByText(mockContentTitle, { selector: 'a' });
+    const viewCourseCTA = assignedSection.queryAllByText(mockContentTitle, { selector: 'a' })[0];
     expect(viewCourseCTA).toBeInTheDocument();
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
-    expect(assignedSection.getByText('-$199')).toBeInTheDocument();
-    expect(assignedSection.getByText('Waiting for learner')).toBeInTheDocument();
-    expect(assignedSection.getByText(`Assigned: ${formatDate('2023-10-27')}`)).toBeInTheDocument();
+    expect(assignedSection.queryAllByText('-$199')).toHaveLength(PAGE_SIZE);
+    expect(assignedSection.queryAllByText('Waiting for learner')).toHaveLength(PAGE_SIZE);
+    expect(assignedSection.queryAllByText(`Assigned: ${formatDate('2023-10-27')}`)).toHaveLength(PAGE_SIZE);
+
+    // Assert the "Select all X" label count is correct, after selecting a row. This verifies the
+    // temporary patch of Paragon is working as intended. If this test fails, it may mean Paragon
+    // was upgraded to a version that does not yet contain a fix for the underlying bug related to
+    // the incorrect "Select all X" count.
+    const selectAllCheckbox = assignedSection.queryAllByRole('checkbox')[0];
+    userEvent.click(selectAllCheckbox);
+    expect(getButtonElement(`Select all ${NUMBER_OF_ASSIGNMENTS_TO_GENERATE}`, { screenOverride: assignedSection })).toBeInTheDocument();
+
+    // Unselect the checkbox the "Refresh" table action appears
+    userEvent.click(selectAllCheckbox);
 
     const expectedTableFetchDataArgs = {
       pageIndex: DEFAULT_PAGE,
@@ -411,8 +478,12 @@ describe('<BudgetDetailPage />', () => {
     const refreshCTA = assignedSection.getByText('Refresh', { selector: 'button' });
     expect(refreshCTA).toBeInTheDocument();
     userEvent.click(refreshCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
     expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
+
+    userEvent.click(viewCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 
   it.each([
@@ -445,10 +516,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -526,10 +597,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -614,10 +685,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: mockFetchContentAssignments,
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -679,10 +750,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -835,10 +906,10 @@ describe('<BudgetDetailPage />', () => {
       },
       fetchContentAssignments: jest.fn(),
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -898,10 +969,10 @@ describe('<BudgetDetailPage />', () => {
         spentTransactions: { count: 0 },
       },
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -936,10 +1007,10 @@ describe('<BudgetDetailPage />', () => {
         spentTransactions: { count: 0 },
       },
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
 
@@ -1077,10 +1148,10 @@ describe('<BudgetDetailPage />', () => {
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -1116,8 +1187,8 @@ describe('<BudgetDetailPage />', () => {
       const remindRowAction = screen.getByTestId('remind-assignment-test-uuid');
       expect(remindRowAction).toBeInTheDocument();
     }
-
-    const checkBox = screen.getByTestId('datatable-select-column-checkbox-cell');
+    // 2 checkboxes exist; the first is the "Select all" checkbox; the 2nd is the checkbox for the first row
+    const checkBox = screen.getAllByRole('checkbox')[1];
     expect(checkBox).toBeInTheDocument();
     userEvent.click(checkBox);
     expect(await screen.findByText('Cancel (1)')).toBeInTheDocument();

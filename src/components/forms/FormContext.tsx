@@ -22,6 +22,7 @@ export type FormContext = {
   errorMap?: { [name: string]: string[] };
   stateMap?: { [name: string]: any };
   currentStep?: FormWorkflowStep<any>;
+  allSteps?: FormWorkflowStep<any>[];
 };
 
 export const FormContextObject: Context<FormContext> = createContext({});

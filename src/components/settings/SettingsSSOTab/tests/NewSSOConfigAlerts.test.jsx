@@ -124,6 +124,12 @@ describe('New SSO Config Alerts Tests', () => {
       ),
     ).toBeInTheDocument();
     expect(
+      screen.getByText(
+        'http://courses.edx.org/dashboard?tpa_hint=sluggy',
+        { exact: false },
+      ),
+    ).toBeInTheDocument();
+    expect(
       screen.queryByText(
         'Your SSO integration is live!',
       ),

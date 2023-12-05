@@ -8,32 +8,37 @@ import configureMockStore from 'redux-mock-store';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import CourseCard from './CourseCard';
+import CourseCard from '../CourseCard';
 import {
   formatPrice,
   learnerCreditManagementQueryKeys,
   useBudgetId,
   useSubsidyAccessPolicy,
-} from '../data';
-import { getButtonElement, queryClient } from '../../test/testUtils';
+} from '../../data';
+import { getButtonElement, queryClient } from '../../../test/testUtils';
 
-import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from './data';
+import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
+import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../data';
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQueryClient: jest.fn(),
 }));
 
-jest.mock('../data', () => ({
-  ...jest.requireActual('../data'),
+jest.mock('../../data', () => ({
+  ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
 }));
-jest.mock('../../../data/services/EnterpriseAccessApiService');
+jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
 const originalData = {
   availability: ['Upcoming'],
@@ -90,11 +95,15 @@ const initialStoreState = {
 const mockSubsidyAccessPolicy = {
   uuid: 'test-subsidy-access-policy-uuid',
   displayName: 'Test Subsidy Access Policy',
+  assignmentConfiguration: {
+    uuid: 'test-assignment-configuration-uuid',
+    active: true,
+  },
   aggregates: {
     spendAvailableUsd: 50000,
   },
 };
-const mockLearnerEmails = ['hello@example.com', 'world@example.com'];
+const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
 
 const mockDisplaySuccessfulAssignmentToast = jest.fn();
 const defaultBudgetDetailPageContextValue = {
@@ -218,6 +227,45 @@ describe('Course card works as expected', () => {
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
   });
 
+  test('view course sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...execEdProps} />);
+    const viewCourseCTA = screen.getByText('View course', { selector: 'a' });
+    userEvent.click(viewCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+
+  test('card exits and sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const assignmentModal = within(screen.getByRole('dialog'));
+    expect(assignmentModal.getByText('Assign this course')).toBeInTheDocument();
+
+    const closeButton = screen.getByRole('button', { name: 'Close' });
+    userEvent.click(closeButton);
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+
+  test('help center article link sends segment events', () => {
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    const helpCenterButton = screen.getByText('Help Center: Course Assignments');
+
+    expect(helpCenterButton).toBeInTheDocument();
+    userEvent.click(helpCenterButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+
   test.each([
     {
       shouldSubmitAssignments: true,
@@ -269,6 +317,22 @@ describe('Course card works as expected', () => {
     allocationExceptionReason,
     shouldRetryAllocationAfterException,
   }) => {
+    const mockUpdatedLearnerAssignments = [mockLearnerEmails[0]];
+    const mockNoChangeLearnerAssignments = [mockLearnerEmails[1]];
+    const mockCreatedLearnerAssignments = mockLearnerEmails.slice(2).map(learnerEmail => ({
+      uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
+      assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
+      learner_email: learnerEmail,
+      lms_user_id: 0,
+      content_key: 'string',
+      content_title: 'string',
+      content_quantity: 0,
+      state: 'allocated',
+      transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
+      last_notification_at: '2019-08-24T14:15:22Z',
+      actions: [],
+    }));
+
     if (hasAllocationException) {
       // mock Axios error
       mockAllocateContentAssignments.mockRejectedValue({
@@ -280,21 +344,9 @@ describe('Course card works as expected', () => {
     } else {
       mockAllocateContentAssignments.mockResolvedValue({
         data: {
-          updated: [],
-          created: mockLearnerEmails.map(learnerEmail => ({
-            uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
-            assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
-            learner_email: learnerEmail,
-            lms_user_id: 0,
-            content_key: 'string',
-            content_title: 'string',
-            content_quantity: 0,
-            state: 'allocated',
-            transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
-            last_notification_at: '2019-08-24T14:15:22Z',
-            actions: [],
-          })),
-          no_change: [],
+          updated: mockUpdatedLearnerAssignments,
+          created: mockCreatedLearnerAssignments,
+          no_change: mockNoChangeLearnerAssignments,
         },
       });
     }
@@ -348,14 +400,20 @@ describe('Course card works as expected', () => {
     expect(assignmentModal.getByText('Learners will be notified of this course assignment by email.')).toBeInTheDocument();
     const budgetImpact = assignmentModal.getByText('Impact on your Learner Credit budget');
     expect(budgetImpact).toBeInTheDocument();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(assignmentModal.queryByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).not.toBeInTheDocument();
     userEvent.click(budgetImpact);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(assignmentModal.getByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).toBeInTheDocument();
     const managingAssignment = assignmentModal.getByText('Managing this assignment');
     expect(managingAssignment).toBeInTheDocument();
     expect(assignmentModal.queryByText('You will be able to monitor the status of this assignment', { exact: false })).not.toBeInTheDocument();
     userEvent.click(managingAssignment);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
     expect(assignmentModal.getByText('You will be able to monitor the status of this assignment', { exact: false })).toBeInTheDocument();
+    const nextSteps = assignmentModal.getByText('Next steps for assigned learners');
+    userEvent.click(nextSteps);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
 
     // Verify modal footer
     expect(assignmentModal.getByText('Help Center: Course Assignments')).toBeInTheDocument();
@@ -428,15 +486,20 @@ describe('Course card works as expected', () => {
           expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
           if (shouldRetryAllocationAfterException) {
             await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
+            expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
           } else {
             await simulateClickErrorModalExit(assignmentErrorModal);
+            expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
           }
         }
       } else {
         // Verify success state
-        expect(mockInvalidateQueries).toHaveBeenCalledTimes(1);
+        expect(mockInvalidateQueries).toHaveBeenCalledTimes(2);
         expect(mockInvalidateQueries).toHaveBeenCalledWith({
           queryKey: learnerCreditManagementQueryKeys.budget(mockSubsidyAccessPolicy.uuid),
+        });
+        expect(mockInvalidateQueries).toHaveBeenCalledWith({
+          queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseUUID),
         });
         expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
         await waitFor(() => {
@@ -446,7 +509,8 @@ describe('Course card works as expected', () => {
           // Verify toast notification was displayed
           expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledTimes(1);
           expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledWith({
-            totalLearnersAssigned: mockLearnerEmails.length,
+            totalLearnersAllocated: mockCreatedLearnerAssignments.length + mockUpdatedLearnerAssignments.length,
+            totalLearnersAlreadyAllocated: mockNoChangeLearnerAssignments.length,
           });
         });
       }
@@ -457,7 +521,7 @@ describe('Course card works as expected', () => {
     }
   });
 
-  it.each([
+  test.each([
     {
       learnerEmails: ['a@a.com', 'b@bcom', 'c@c.com'],
       spendAvailableUsd: 1000,
@@ -467,6 +531,11 @@ describe('Course card works as expected', () => {
       learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com', 'b@b.com'],
       spendAvailableUsd: 1000,
       expectedValidationMessage: 'b@b.com has been entered more than once.',
+    },
+    {
+      learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com', 'B@b.com'],
+      spendAvailableUsd: 1000,
+      expectedValidationMessage: 'B@b.com has been entered more than once.',
     },
     {
       learnerEmails: ['a@a.com', 'b@bcom', 'c@c.com', 'a@a.com'],

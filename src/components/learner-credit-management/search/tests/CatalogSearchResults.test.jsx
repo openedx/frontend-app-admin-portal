@@ -9,10 +9,10 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 
-import { BaseCatalogSearchResults } from '../search/CatalogSearchResults';
-import { CONTENT_TYPE_COURSE } from '../data/constants';
-import { queryClient } from '../../test/testUtils';
-import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
+import { BaseCatalogSearchResults } from '../CatalogSearchResults';
+import { CONTENT_TYPE_COURSE } from '../../data/constants';
+import { queryClient } from '../../../test/testUtils';
+import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 
 // Mocking this connected component so as not to have to mock the algolia Api
 const PAGINATE_ME = 'PAGINATE ME :)';
@@ -25,12 +25,16 @@ jest.mock('react-instantsearch-dom', () => ({
   Index: () => <div>Popular Courses</div>,
 }));
 
-jest.mock('../data', () => ({
-  ...jest.requireActual('../data'),
+jest.mock('../../data', () => ({
+  ...jest.requireActual('../../data'),
   useSubsidyAccessPolicy: jest.fn().mockReturnValue({
     data: {
       uuid: 'test-uuid',
       displayName: 'Test Budget',
+      assignmentConfiguration: {
+        uuid: 'test-assignment-configuration-uuid',
+        active: true,
+      },
       aggregates: {
         spendAvailableUsd: 100,
       },
@@ -185,11 +189,35 @@ describe('Main Catalogs view works as expected', () => {
             <BaseCatalogSearchResults {...defaultProps} />
           </BudgetDetailPageContext.Provider>
         </IntlProvider>
-        ,
       </SearchDataWrapper>,
     );
     expect(screen.queryByText(TEST_COURSE_NAME)).toBeInTheDocument();
     expect(screen.queryByText(TEST_COURSE_NAME_2)).toBeInTheDocument();
     expect(screen.getAllByText('Showing 2 of 2.')[0]).toBeInTheDocument();
+  });
+  test('error state displays', async () => {
+    const budgetDetailPageContextValue = {
+      isSuccessfulAssignmentAllocationToastOpen: false,
+      totalLearnersAssigned: undefined,
+      displayToastForAssignmentAllocation: jest.fn(),
+      closeToastForAssignmentAllocation: jest.fn(),
+    };
+    const error = {
+      message: 'Your test has Failed',
+    };
+    const errorState = {
+      ...defaultProps,
+      error,
+    };
+    renderWithRouter(
+      <SearchDataWrapper>
+        <IntlProvider locale="en">
+          <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+            <BaseCatalogSearchResults {...errorState} />
+          </BudgetDetailPageContext.Provider>
+        </IntlProvider>
+      </SearchDataWrapper>,
+    );
+    expect(screen.getByText(error.message, { exact: false })).toBeInTheDocument();
   });
 });

@@ -11,18 +11,20 @@ import {
   Form,
   Card,
 } from '@edx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { connect } from 'react-redux';
 import BaseCourseCard from './BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
-import { ImpactOnYourLearnerCreditBudget, ManagingThisAssignment, NextStepsForAssignedLearners } from './Collapsibles';
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isEmailAddressesInputValueValid } from './data';
+import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
+import EVENT_NAMES from '../../../eventTracking';
 
-const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
+const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
-
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
@@ -61,12 +63,19 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
       contentPrice,
     });
     setAssignmentAllocationMetadata(allocationMetadata);
+    if (allocationMetadata.validationError?.reason) {
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.EMAIL_ADDRESS_VALIDATION,
+        { validationErrorReason: allocationMetadata.validationError.reason },
+      );
+    }
     if (allocationMetadata.canAllocate) {
       onEmailAddressesChange(learnerEmails, { canAllocate: true });
     } else {
       onEmailAddressesChange([]);
     }
-  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable]);
+  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable, enterpriseId]);
 
   return (
     <Container size="lg" className="py-3">
@@ -100,11 +109,7 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
               )}
             </Form.Group>
             <h5 className="mb-3">How assigning this course works</h5>
-            <Stack gap={1}>
-              <NextStepsForAssignedLearners course={course} />
-              <ImpactOnYourLearnerCreditBudget />
-              <ManagingThisAssignment />
-            </Stack>
+            <AssignmentAllocationHelpCollapsibles course={course} />
           </Col>
           <Col xs={12} lg={{ span: 5, offset: 2 }}>
             <h4 className="mb-4">Pay by Learner Credit</h4>
@@ -151,8 +156,13 @@ const AssignmentModalContent = ({ course, onEmailAddressesChange }) => {
 };
 
 AssignmentModalContent.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
   course: PropTypes.shape().isRequired, // Pass-thru prop to `BaseCourseCard`
   onEmailAddressesChange: PropTypes.func.isRequired,
 };
 
-export default AssignmentModalContent;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(AssignmentModalContent);

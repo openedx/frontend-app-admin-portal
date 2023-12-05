@@ -1,3 +1,20 @@
+/* START LOCAL TESTING CONSTANTS */
+// Set to false before pushing PR! otherwise set to true to enable local testing of learner-credit-management components
+// Test will fail as additional check to ensure this is set to false before pushing PR
+export const TEST_FLAG = false;
+// Test enterpriseCatalogUuid for learner-credit-management search
+// to display card selections and confirmation
+export const testEnterpriseCatalogUuid = 'e3107bf4-2eac-4307-a049-cc691ea7213b ';
+// function that passes through enterpriseCatalogUuid if TEST_FLAG is false, otherwise
+// returns local testing enterpriseCatalogUuid
+export const ENABLE_TESTING = (enterpriseCatalogUuid, enableTest = TEST_FLAG) => {
+  if (enableTest) {
+    return testEnterpriseCatalogUuid;
+  }
+  return enterpriseCatalogUuid;
+};
+/* END LOCAL TESTING CONSTANTS */
+
 export const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   courseTitle: 'course_title',
   enrollmentDate: 'enrollment_date',
@@ -51,7 +68,7 @@ export const ASSIGNMENT_STATUS_MODAL_MAX_WIDTH = 480;
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {
   all: ['learner-credit-management'],
-  budgets: () => [...learnerCreditManagementQueryKeys.all, 'budgets'],
+  budgets: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'budgets', enterpriseId],
   budget: (budgetId) => [...learnerCreditManagementQueryKeys.all, 'budget', budgetId],
   budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
   budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],

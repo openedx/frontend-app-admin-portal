@@ -160,3 +160,6 @@ export const PIONEER_THEME = {
   banner: '#B8EBEF',
   accent: '#F96E46',
 };
+
+export const INVALID_IDP_METADATA_ERROR = 'Invalid IdP metadata';
+export const RECORD_UNDER_CONFIGURATIONS_ERROR = 'Record under configurations';

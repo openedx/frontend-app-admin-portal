@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Stack, Hyperlink } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import EmailAddressTableCell from './EmailAddressTableCell';
 import { formatDate } from './data';
+import EVENT_NAMES from '../../eventTracking';
 
 const SpendTableEnrollmentDetailsContents = ({
   row,
   enableLearnerPortal,
   enterpriseSlug,
+  enterpriseId,
 }) => (
   <Stack gap={1}>
     {row.original.reversal && (
@@ -29,6 +32,16 @@ const SpendTableEnrollmentDetailsContents = ({
         <Hyperlink
           className="x-small"
           destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.courseKey}`}
+          onClick={() => {
+            sendEnterpriseTrackEvent(
+              enterpriseId,
+              EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_SPENT_DATATABLE_VIEW_COURSE,
+              {
+                courseKey: row.original.courseKey,
+                courseListPriceInCents: row.original.courseListPrice * 100,
+              },
+            );
+          }}
           target="_blank"
           isInline
         >
@@ -43,8 +56,10 @@ const SpendTableEnrollmentDetailsContents = ({
 
 const rowPropType = PropTypes.shape({
   original: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
     courseKey: PropTypes.string.isRequired,
     courseTitle: PropTypes.string,
+    courseListPrice: PropTypes.number,
     userEmail: PropTypes.string,
     enterpriseEnrollmentId: PropTypes.number,
     fulfillmentIdentifier: PropTypes.string,
@@ -57,6 +72,7 @@ const rowPropType = PropTypes.shape({
 const mapStateToProps = state => ({
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
 const ConnectedSpendTableEnrollmentDetailsContents = connect(mapStateToProps)(SpendTableEnrollmentDetailsContents);
@@ -65,6 +81,7 @@ SpendTableEnrollmentDetailsContents.propTypes = {
   row: rowPropType,
   enableLearnerPortal: PropTypes.bool.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 const SpendTableEnrollmentDetails = ({ row }) => <ConnectedSpendTableEnrollmentDetailsContents row={row} />;
