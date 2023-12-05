@@ -59,7 +59,10 @@ AssignmentStatusTableCell.propTypes = {
     original: PropTypes.shape({
       learnerEmail: PropTypes.string,
       learnerState: PropTypes.string.isRequired,
-      errorReason: PropTypes.string,
+      errorReason: PropTypes.shape({
+        actionType: PropTypes.string.isRequired,
+        errorReason: PropTypes.string,
+      }),
       actions: PropTypes.arrayOf(PropTypes.shape({
         actionType: PropTypes.string.isRequired,
         errorReason: PropTypes.string,

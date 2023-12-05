@@ -1207,10 +1207,10 @@ describe('<BudgetDetailPage />', () => {
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -1259,7 +1259,8 @@ describe('<BudgetDetailPage />', () => {
       fetchContentAssignments: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
-    const cancelRowAction = screen.getByTestId('datatable-select-column-checkbox-header');
+    // const cancelRowAction = screen.getByTestId('datatable-select-column-checkbox-header');
+    const cancelRowAction = screen.getByTitle('Toggle All Current Page Rows Selected');
     expect(cancelRowAction).toBeInTheDocument();
     userEvent.click(cancelRowAction);
     const cancelBulkActionButton = screen.getByText('Cancel (2)');
@@ -1283,10 +1284,10 @@ describe('<BudgetDetailPage />', () => {
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
-    useOfferRedemptions.mockReturnValue({
+    useBudgetRedemptions.mockReturnValue({
       isLoading: false,
-      offerRedemptions: mockEmptyOfferRedemptions,
-      fetchOfferRedemptions: jest.fn(),
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
