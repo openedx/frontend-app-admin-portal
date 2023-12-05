@@ -739,7 +739,10 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: `This course assignment failed because a notification to ${mockLearnerEmail} could not be sent.`,
       actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
-      errorReason: 'email_error',
+      errorReason: {
+        errorReason: 'email_error',
+        actionType: 'notified',
+      },
     },
     {
       learnerState: 'failed',
@@ -748,7 +751,10 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: Bad email',
       expectedModalPopupContent: 'This course assignment failed because a notification to the learner could not be sent.',
       actions: [mockSuccessfulLinkedLearnerAction, mockFailedNotifiedAction],
-      errorReason: 'email_error',
+      errorReason: {
+        errorReason: 'email_error',
+        actionType: 'notified',
+      },
     },
     {
       learnerState: 'failed',
@@ -757,7 +763,10 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: System',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',
       actions: [mockFailedLinkedLearnerAction],
-      errorReason: 'internal_api_error',
+      errorReason: {
+        errorReason: 'internal_api_error',
+        actionType: 'notified',
+      },
     },
     {
       learnerState: 'failed',
@@ -766,7 +775,10 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: Cancellation',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',
       actions: [mockFailedCancelledLearnerAction],
-      errorReason: 'email_error',
+      errorReason: {
+        errorReason: 'email_error',
+        actionType: 'cancelled',
+      },
     },
     {
       learnerState: 'failed',
@@ -775,7 +787,10 @@ describe('<BudgetDetailPage />', () => {
       expectedModalPopupHeading: 'Failed: Cancellation',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',
       actions: [mockFailedCancelledLearnerAction],
-      errorReason: 'internal_api_error',
+      errorReason: {
+        errorReason: 'internal_api_error',
+        actionType: 'cancelled',
+      },
     },
   ])('renders correct status chips with assigned table data (%s)', ({
     learnerState,

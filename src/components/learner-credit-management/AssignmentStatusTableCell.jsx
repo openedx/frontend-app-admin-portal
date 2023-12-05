@@ -14,18 +14,7 @@ const AssignmentStatusTableCell = ({ row }) => {
     learnerEmail,
     learnerState,
     errorReason,
-    actions,
   } = original;
-
-  // Determine if the last action was an attempt to cancel email
-  if (actions[actions.length - 1]?.actionType === 'cancelled') {
-    if (actions[actions.length - 1].errorReason === 'email_error'
-      || actions[actions.length - 1].errorReason === 'internal_api_error') {
-      return (
-        <FailedCancellation />
-      );
-    }
-  }
 
   // Learner state is not available for this assignment, so don't display anything.
   if (!learnerState) {
@@ -47,13 +36,18 @@ const AssignmentStatusTableCell = ({ row }) => {
 
   if (learnerState === 'failed') {
     // Determine which failure chip to display based on the error reason.
-    if (errorReason === 'email_error') {
-      return (
-        <FailedBadEmail learnerEmail={learnerEmail} />
-      );
+    if (errorReason.actionType === 'notified') {
+      if (errorReason.errorReason === 'email_error') {
+        return (
+          <FailedBadEmail learnerEmail={learnerEmail} />
+        );
+      }
+      return <FailedSystem />;
     }
 
-    return <FailedSystem />;
+    if (errorReason.actionType === 'cancelled') {
+      return <FailedCancellation />;
+    }
   }
 
   // Note: The given `learnerState` not officially supported with a `ModalPopup`, but display it anyway.
