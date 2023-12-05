@@ -1259,7 +1259,6 @@ describe('<BudgetDetailPage />', () => {
       fetchContentAssignments: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
-    // const cancelRowAction = screen.getByTestId('datatable-select-column-checkbox-header');
     const cancelRowAction = screen.getByTitle('Toggle All Current Page Rows Selected');
     expect(cancelRowAction).toBeInTheDocument();
     userEvent.click(cancelRowAction);
@@ -1268,13 +1267,13 @@ describe('<BudgetDetailPage />', () => {
     userEvent.click(cancelBulkActionButton);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
-    const cancelDialogButton = screen.getByRole('button', { name: 'Cancel assignments (2)' });
+    const cancelDialogButton = getButtonElement('Cancel assignments (2)');
     userEvent.click(cancelDialogButton);
     expect(
       EnterpriseAccessApiService.cancelContentAssignments,
     ).toHaveBeenCalled();
     await waitFor(
-      () => act(() => expect(screen.getByText('Assignments canceled (2)')).toBeInTheDocument()),
+      () => expect(screen.getByText('Assignments canceled (2)')).toBeInTheDocument(),
     );
   });
 
@@ -1328,10 +1327,10 @@ describe('<BudgetDetailPage />', () => {
     userEvent.click(cancelIconButton);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
-    const cancelDialogButton = screen.getByRole('button', { name: 'Cancel assignment' });
+    const cancelDialogButton = getButtonElement('Cancel assignment');
     userEvent.click(cancelDialogButton);
     await waitFor(
-      () => act(() => expect(screen.getByText('Assignment canceled')).toBeInTheDocument()),
+      () => expect(screen.getByText('Assignment canceled')).toBeInTheDocument(),
     );
   });
 });

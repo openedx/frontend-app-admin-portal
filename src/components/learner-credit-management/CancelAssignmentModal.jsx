@@ -17,8 +17,8 @@ const CancelAssignmentModal = ({
     successfulCancellationToast: { displayToastForAssignmentCancellation },
   } = useContext(BudgetDetailPageContext);
 
-  const handleOnClick = () => {
-    cancelContentAssignments();
+  const handleOnClick = async () => {
+    await cancelContentAssignments();
     displayToastForAssignmentCancellation(uuidCount);
   };
 

@@ -4,7 +4,8 @@ import { logError } from '@edx/frontend-platform/logging';
 import { useToggle } from '@edx/paragon';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
-import { learnerCreditManagementQueryKeys, useBudgetId } from '..';
+import { learnerCreditManagementQueryKeys } from '../constants';
+import useBudgetId from './useBudgetId';
 
 const useCancelContentAssignments = (
   assignmentConfigurationUuid,
