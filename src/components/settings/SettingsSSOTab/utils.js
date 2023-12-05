@@ -31,6 +31,10 @@ function isInProgressConfig(config) {
   || config.configured_at < config.submitted_at;
 }
 
+function checkErroredOrTimedOutConfig(config) {
+  return config.errored_at || (config.submitted_at && !config.configured_at && !config.is_pending_configuration);
+}
+
 export {
-  updateSamlProviderData, deleteSamlProviderData, createSAMLURLs, isInProgressConfig,
+  updateSamlProviderData, deleteSamlProviderData, createSAMLURLs, isInProgressConfig, checkErroredOrTimedOutConfig,
 };

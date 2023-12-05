@@ -222,7 +222,7 @@ const SSOConfigConfigureStep = () => {
             formId="displayName"
             type="text"
             floatingLabel="Display Name (Optional)"
-            fieldInstructions="Create a custom display name for this SSO integration"
+            fieldInstructions="Create a custom display name for this SSO integration."
           />
         </Form.Group>
 

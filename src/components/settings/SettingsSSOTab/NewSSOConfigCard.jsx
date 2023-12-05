@@ -19,8 +19,14 @@ const NewSSOConfigCard = ({
 }) => {
   const VALIDATED = config.validated_at;
   const ENABLED = config.active;
-  const CONFIGURED = config.configured_at && (config.submitted_at < config.configured_at);
-  const SUBMITTED = config.submitted_at;
+  const CONFIGURED = config.configured_at && (config.submitted_at < config.configured_at) && (
+    !config.errored_at || (config.errored_at && config.configured_at > config.errored_at)
+  );
+  const SUBMITTED = config.submitted_at && (
+    !config.errored_at || (config.errored_at && config.submitted_at > config.errored_at)
+  );
+  const ERRORED = config.errored_at;
+  const TIMED_OUT = SUBMITTED && !CONFIGURED && !config.is_pending_configuration;
 
   const { setProviderConfig } = useContext(SSOConfigContext);
 
@@ -130,7 +136,7 @@ const NewSSOConfigCard = ({
 
   const renderCardButton = () => (
     <>
-      {!VALIDATED && CONFIGURED && (
+      {((!VALIDATED && CONFIGURED) || ((TIMED_OUT) || (ERRORED))) && (
         <Button
           className="float-right"
           onClick={() => onConfigureClick(config)}
@@ -172,7 +178,7 @@ const NewSSOConfigCard = ({
             Last modified {convertToReadableDate(config.modified)}
           </div>
         )}
-        actions={(!SUBMITTED || CONFIGURED) && (
+        actions={((!SUBMITTED || CONFIGURED) || (ERRORED || TIMED_OUT)) && (
           <Dropdown className="mt-3">
             <Dropdown.Toggle
               id="dropdown-toggle-with-iconbutton"
@@ -192,7 +198,7 @@ const NewSSOConfigCard = ({
                   Configure
                 </Dropdown.Item>
               )}
-              {(!ENABLED || !VALIDATED) && (
+              {((!ENABLED || !VALIDATED) || (ERRORED || TIMED_OUT)) && (
                 <Dropdown.Item
                   data-testid="existing-sso-config-delete-dropdown"
                   onClick={() => onDeleteClick(config)}
@@ -225,6 +231,8 @@ NewSSOConfigCard.propTypes = {
     validated_at: PropTypes.string,
     configured_at: PropTypes.string,
     submitted_at: PropTypes.string,
+    errored_at: PropTypes.string,
+    is_pending_configuration: PropTypes.bool,
   }).isRequired,
   setLoading: PropTypes.func.isRequired,
   setRefreshBool: PropTypes.func.isRequired,

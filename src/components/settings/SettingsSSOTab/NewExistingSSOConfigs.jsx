@@ -26,6 +26,8 @@ const NewExistingSSOConfigs = ({
   const [inProgressConfigs, setInProgressConfigs] = useState([]);
   const [untestedConfigs, setUntestedConfigs] = useState([]);
   const [liveConfigs, setLiveConfigs] = useState([]);
+  const [erroredConfigs, setErroredConfigs] = useState([]);
+  const [timedOutConfigs, setTimedOutConfigs] = useState([]);
   const [notConfiguredConfigs, setNotConfiguredConfigs] = useState([]);
   const [queryForTestedConfigs, setQueryForTestedConfigs] = useState(false);
   const [queryForConfiguredConfigs, setQueryForConfiguredConfigs] = useState(false);
@@ -88,6 +90,18 @@ const NewExistingSSOConfigs = ({
     return null;
   };
 
+  function checkConfiguring(config) {
+    return !config.configured_at || config.submitted_at > config.configured_at;
+  }
+
+  function checkErrored(config) {
+    return config.errored_at && (config.submitted_at < config.errored_at);
+  }
+
+  function checkTimedOut(config) {
+    return config.submitted_at && checkConfiguring(config) && !config.is_pending_configuration && !checkErrored(config);
+  }
+
   useEffect(() => {
     const [active, inactive] = _.partition(configs, config => config.active);
     const inProgress = configs.filter(isInProgressConfig);
@@ -96,6 +110,15 @@ const NewExistingSSOConfigs = ({
       config => (config.validated_at && config.active && config.validated_at > config.configured_at),
     );
     const notConfigured = configs.filter(config => !config.configured_at);
+
+    const handleCheckTimedOut = (config) => (
+      config.submitted_at && checkConfiguring(config) && !config.is_pending_configuration && !checkErrored(config)
+    );
+
+    const timedOut = configs.filter(handleCheckTimedOut);
+    const errored = configs.filter(checkErrored);
+    setTimedOutConfigs(timedOut);
+    setErroredConfigs(errored);
 
     if (live.length >= 1) {
       setLiveConfigs(live);
@@ -137,6 +160,15 @@ const NewExistingSSOConfigs = ({
         config => (config.submitted_at && !config.configured_at) || (config.configured_at < config.submitted_at),
       );
       const untested = res.data.filter(config => !config.validated_at || config.validated_at < config.configured_at);
+      const timedOut = res.data.filter(checkTimedOut);
+      const errored = res.data.filter(checkErrored);
+      if (timedOut.length >= 1) {
+        setTimedOutConfigs(timedOut);
+      }
+
+      if (errored.length >= 1) {
+        setErroredConfigs(errored);
+      }
 
       if (queryForConfiguredConfigs) {
         if (inProgress.length === 0) {
@@ -174,6 +206,9 @@ const NewExistingSSOConfigs = ({
               untestedConfigs={untestedConfigs}
               notConfigured={notConfiguredConfigs}
               closeAlerts={closeAlerts}
+              timedOutConfigs={timedOutConfigs}
+              erroredConfigs={erroredConfigs}
+              setIsStepperOpen={setIsStepperOpen}
             />
           )}
           {renderCards('Active', activeConfigs)}
