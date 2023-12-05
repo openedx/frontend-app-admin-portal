@@ -169,7 +169,7 @@ export const formatPrice = (price, options = {}) => {
   const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
     ...options,
   });
   return USDollar.format(Math.abs(price));
