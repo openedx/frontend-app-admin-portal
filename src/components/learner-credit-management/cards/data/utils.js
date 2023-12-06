@@ -52,8 +52,26 @@ export const isEmailAddressesInputValueValid = ({
   const remainingBalanceAfterAssignment = remainingBalance - totalAssignmentCost;
   const hasEnoughBalanceForAssigment = remainingBalanceAfterAssignment >= 0;
 
-  const invalidEmails = learnerEmails.filter((email) => !isEmail(email));
-  const duplicateEmails = learnerEmails.filter((email, index) => learnerEmails.indexOf(email.toLowerCase()) !== index);
+  const lowerCasedEmails = [];
+  const invalidEmails = [];
+  const duplicateEmails = [];
+
+  learnerEmails.forEach((email) => {
+    const lowerCasedEmail = email.toLowerCase();
+
+    // Validate the email address
+    if (!isEmail(email)) {
+      invalidEmails.push(email);
+    }
+
+    // Check for duplicates (case-insensitive)
+    if (lowerCasedEmails.includes(lowerCasedEmail)) {
+      duplicateEmails.push(email);
+    }
+
+    // Add to list of lower-cased emails already handled
+    lowerCasedEmails.push(lowerCasedEmail);
+  });
 
   const isValidInput = invalidEmails.length === 0 && duplicateEmails.length === 0;
   const canAllocate = learnerEmailsCount > 0 && hasEnoughBalanceForAssigment && isValidInput;
