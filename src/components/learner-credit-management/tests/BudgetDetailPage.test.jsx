@@ -150,6 +150,13 @@ const mockFailedCancelledLearnerAction = {
   completedAt: null,
   errorReason: 'email_error',
 };
+
+const mockFailedReminderLearnerAction = {
+  actionType: 'reminded',
+  completedAt: null,
+  errorReason: 'email_error',
+};
+
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
@@ -861,6 +868,18 @@ describe('<BudgetDetailPage />', () => {
       errorReason: {
         errorReason: 'internal_api_error',
         actionType: 'cancelled',
+      },
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: Reminder',
+      expectedModalPopupHeading: 'Failed: Reminder',
+      expectedModalPopupContent: 'Something went wrong behind the scenes.',
+      actions: [mockFailedReminderLearnerAction],
+      errorReason: {
+        errorReason: 'internal_api_error',
+        actionType: 'reminded',
       },
     },
   ])('renders correct status chips with assigned table data (%s)', ({
