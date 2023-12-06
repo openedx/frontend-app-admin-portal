@@ -421,7 +421,10 @@ describe('SAML Config Tab', () => {
   test('navigate through new non-SAP sso workflow', async () => {
     setupNewSSOStepper();
     const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');
-    mockCreateEnterpriseSsoOrchestrationRecord.mockResolvedValue({ data: { record: 'fakeuuid', sp_metadata_url: 'https://fake.url' } });
+    const mockUpdateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'updateEnterpriseSsoOrchestrationRecord');
+    const mockReturnData = { data: { record: 'fakeuuid', sp_metadata_url: 'https://fake.url' } };
+    mockCreateEnterpriseSsoOrchestrationRecord.mockResolvedValue(mockReturnData);
+    mockUpdateEnterpriseSsoOrchestrationRecord.mockResolvedValue(mockReturnData);
     jest.spyOn(Router, 'useParams').mockReturnValue({ enterpriseSlug: 'testslug' });
     // Connect Step
     await waitFor(() => {
@@ -504,7 +507,6 @@ describe('SAML Config Tab', () => {
     }, []);
     screen.queryByText(testMetadataUrl);
   });
-  // TODO: Test case where we go SAP route
   test('navigate through new SAP sso workflow', async () => {
     setupNewSSOStepper();
     const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');

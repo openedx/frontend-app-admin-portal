@@ -1,5 +1,6 @@
 import omit from 'lodash/omit';
 
+import { AxiosError } from 'axios';
 import type { FormWorkflowHandlerArgs, FormWorkflowStep } from '../../forms/FormWorkflow';
 import SSOConfigConnectStep, { validations as SSOConfigConnectStepValidations } from './steps/NewSSOConfigConnectStep';
 import SSOConfigConfigureStep, { validations as SSOConfigConfigureStepValidations } from './steps/NewSSOConfigConfigureStep';
@@ -8,7 +9,6 @@ import SSOConfigConfirmStep from './steps/NewSSOConfigConfirmStep';
 import LmsApiService from '../../../data/services/LmsApiService';
 import handleErrors from '../utils';
 import { snakeCaseDict } from '../../../utils';
-import { AxiosError } from 'axios';
 import { INVALID_IDP_METADATA_ERROR, RECORD_UNDER_CONFIGURATIONS_ERROR } from '../data/constants';
 
 type SSOConfigSnakeCase = {
@@ -40,6 +40,7 @@ type SSOConfigSnakeCase = {
   oauth_user_id: string,
   sp_metadata_url?: string,
   record?: object,
+  marked_authorized: boolean
 };
 
 export type SSOConfigCamelCase = {
@@ -70,7 +71,8 @@ export type SSOConfigCamelCase = {
   sapsfPrivateKey: string,
   odataClientId: string,
   oauthUserId: string,
-  spMetadataUrl?: string
+  spMetadataUrl?: string,
+  markedAuthorized: boolean
 };
 
 type SSOConfigFormControlVariables = {
@@ -81,13 +83,6 @@ type SSOConfigFormControlVariables = {
 type SSOConfigFormContextData = SSOConfigCamelCase & SSOConfigFormControlVariables;
 
 export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
-  const placeHolderButton = (buttonName?: string) => () => ({
-    buttonText: buttonName || 'Next',
-    opensNewWindow: false,
-    onClick: () => { },
-    preventDefaultErrorModal: false,
-  });
-
   const advanceConnectStep = async ({
     formFields,
     errHandler,
@@ -98,7 +93,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
 
   const sanitizeAndCopyFormFields = (formFields: SSOConfigSnakeCase) => {
     const copiedFormFields = { ...formFields };
-    return omit(copiedFormFields, ['record', 'sp_metadata_url', 'submitted_at', 'configured_at','validated_at']);
+    return omit(copiedFormFields, ['record', 'sp_metadata_url', 'submitted_at', 'configured_at', 'validated_at']);
   };
 
   const saveChanges = async ({
@@ -117,7 +112,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
     let updatedFormFields: SSOConfigCamelCase = omit(formFields, ['idpConnectOption', 'spMetadataUrl', 'isPendingConfiguration']);
     updatedFormFields.enterpriseCustomer = enterpriseId;
     const submittedFormFields: SSOConfigSnakeCase = snakeCaseDict(updatedFormFields) as SSOConfigSnakeCase;
-    let copiedFormFields = sanitizeAndCopyFormFields(submittedFormFields);
+    const copiedFormFields = sanitizeAndCopyFormFields(submittedFormFields);
     if (copiedFormFields?.uuid) {
       try {
         const updateResponse = await LmsApiService.updateEnterpriseSsoOrchestrationRecord(
@@ -127,9 +122,9 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
         updatedFormFields = updateResponse.data;
       } catch (error: AxiosError | any) {
         err = handleErrors(error);
-        if (error.message?.includes("Must provide valid IDP metadata url")) {
+        if (error.message?.includes('Must provide valid IDP metadata url')) {
           errHandler?.(INVALID_IDP_METADATA_ERROR);
-        } else if (error.message?.includes("Record has already been submitted for configuration.")) {
+        } else if (error.message?.includes('Record has already been submitted for configuration.')) {
           errHandler?.(RECORD_UNDER_CONFIGURATIONS_ERROR);
         } else {
           setConfigureError(error);
@@ -142,7 +137,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
         updatedFormFields.spMetadataUrl = createResponse.data.sp_metadata_url;
       } catch (error: AxiosError | any) {
         err = handleErrors(error);
-        if (error.message?.includes("Must provide valid IDP metadata url")) {
+        if (error.message?.includes('Must provide valid IDP metadata url')) {
           errHandler?.(INVALID_IDP_METADATA_ERROR);
         } else {
           setConfigureError(error);
@@ -184,7 +179,12 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
       formComponent: SSOConfigAuthorizeStep,
       validations: SSOConfigAuthorizeStepValidations,
       stepName: 'Authorize',
-      nextButtonConfig: placeHolderButton(),
+      nextButtonConfig: () => ({
+        buttonText: 'Next',
+        opensNewWindow: false,
+        onClick: saveChanges,
+        preventDefaultErrorModal: false,
+      }),
       showBackButton: true,
       showCancelButton: false,
     }, {
@@ -192,7 +192,12 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
       formComponent: SSOConfigConfirmStep,
       validations: [],
       stepName: 'Confirm and Test',
-      nextButtonConfig: placeHolderButton('Finish'),
+      nextButtonConfig: () => ({
+        buttonText: 'Finish',
+        opensNewWindow: false,
+        onClick: () => {},
+        preventDefaultErrorModal: false,
+      }),
       showBackButton: true,
       showCancelButton: false,
     },
