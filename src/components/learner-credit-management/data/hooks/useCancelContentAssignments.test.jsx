@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import { renderHook } from '@testing-library/react-hooks/dom';
 import { act, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -7,7 +8,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import useCancelContentAssignments from './useCancelContentAssignments';
 import { queryClient } from '../../../test/testUtils';
-import { useBudgetId } from '..';
 
 const TEST_ASSIGNMENT_CONFIGURATION_UUID = 'test-assignment-configuration-uuid';
 const TEST_PENDING_ASSIGNMENT_UUID_1 = 'test-pending-assignment-uuid_1';
@@ -21,14 +21,17 @@ jest.mock('../../../../data/services/EnterpriseAccessApiService');
 jest.mock('@edx/frontend-platform/logging', () => ({
   logError: jest.fn(),
 }));
-jest.mock('..', () => ({
-  ...jest.requireActual('..'),
-  useBudgetId: jest.fn(),
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(),
 }));
 
 describe('useCancelContentAssignments', () => {
   beforeEach(() => {
-    useBudgetId.mockReturnValue({ subsidyAccessPolicyId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c' });
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+    });
   });
 
   afterEach(() => {
