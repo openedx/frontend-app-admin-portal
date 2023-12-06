@@ -115,6 +115,9 @@ export const useEnterpriseBudgets = ({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
   }),
+  // Disables the ability to re-fetch on window focus due to re-fetching behavior causing
+  // ProductTours component to rerender despite localStorage flagging
+  refetchOnWindowFocus: false,
 });
 
 export const useCustomerAgreement = ({ enterpriseId }) => {
