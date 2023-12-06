@@ -7,7 +7,7 @@ import { Mail } from '@edx/paragon/icons';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 
 const RemindAssignmentModal = ({
-  assignButtonState, remindContentAssignments, close, isOpen, uuidCount,
+  remindButtonState, remindContentAssignments, close, isOpen, uuidCount,
 }) => {
   const {
     successfulReminderToast: { displayToastForAssignmentReminder },
@@ -31,17 +31,19 @@ const RemindAssignmentModal = ({
         </ModalDialog.Title>
       </ModalDialog.Header>
       <ModalDialog.Body>
-        <p>
-          You are sending a reminder email to the selected learner to take the next step on the course you assigned.
+        <p>You are sending a reminder email to the selected learner
+          to take the next step on the course you assigned.
         </p>
-        <p>When your learner completes enrollment, the associated “assigned” funds will be marked as “spent”.</p>
+        <p>When your learner completes enrollment, the associated
+          &quot;assigned&quot; funds will be marked as &quot;spent&quot;.
+        </p>
       </ModalDialog.Body>
 
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">Go back</ModalDialog.CloseButton>
           <StatefulButton
-            iconBefore={assignButtonState === 'default' ? Mail : null}
+            iconBefore={remindButtonState === 'default' ? Mail : null}
             labels={{
               default: uuidCount > 1 ? `Send reminders (${uuidCount})` : 'Send reminder',
               pending: 'Reminding...',
@@ -49,7 +51,7 @@ const RemindAssignmentModal = ({
               error: 'Try again',
             }}
             variant="danger"
-            state={assignButtonState}
+            state={remindButtonState}
             onClick={handleOnClick}
           />
         </ActionRow>
@@ -59,7 +61,7 @@ const RemindAssignmentModal = ({
 };
 
 RemindAssignmentModal.propTypes = {
-  assignButtonState: PropTypes.string.isRequired,
+  remindButtonState: PropTypes.string.isRequired,
   remindContentAssignments: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,

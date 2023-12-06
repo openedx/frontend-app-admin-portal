@@ -10,7 +10,7 @@ const AssignmentTableRemindAction = ({ selectedFlatRows }) => {
   const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
   const selectedRemindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').length;
   const {
-    assignButtonState,
+    remindButtonState,
     remindContentAssignments,
     close,
     isOpen,
@@ -30,7 +30,7 @@ const AssignmentTableRemindAction = ({ selectedFlatRows }) => {
         remindContentAssignments={remindContentAssignments}
         close={close}
         isOpen={isOpen}
-        assignButtonState={assignButtonState}
+        remindButtonState={remindButtonState}
         uuidCount={assignmentUuids.length}
       />
     </>

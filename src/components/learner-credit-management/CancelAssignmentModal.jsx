@@ -7,7 +7,7 @@ import { DoNotDisturbOn } from '@edx/paragon/icons';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 
 const CancelAssignmentModal = ({
-  assignButtonState,
+  cancelButtonState,
   cancelContentAssignments,
   close,
   isOpen,
@@ -46,7 +46,7 @@ const CancelAssignmentModal = ({
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">Go back</ModalDialog.CloseButton>
           <StatefulButton
-            iconBefore={assignButtonState === 'default' ? DoNotDisturbOn : null}
+            iconBefore={cancelButtonState === 'default' ? DoNotDisturbOn : null}
             labels={{
               default: uuidCount > 1 ? `Cancel assignments (${uuidCount})` : 'Cancel assignment',
               pending: 'Canceling...',
@@ -54,7 +54,7 @@ const CancelAssignmentModal = ({
               error: 'Try again',
             }}
             variant="danger"
-            state={assignButtonState}
+            state={cancelButtonState}
             onClick={handleOnClick}
           />
         </ActionRow>
@@ -64,7 +64,7 @@ const CancelAssignmentModal = ({
 };
 
 CancelAssignmentModal.propTypes = {
-  assignButtonState: PropTypes.string.isRequired,
+  cancelButtonState: PropTypes.string.isRequired,
   cancelContentAssignments: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,

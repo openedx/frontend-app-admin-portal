@@ -12,26 +12,26 @@ const useCancelContentAssignments = (
   assignmentUuids,
 ) => {
   const [isOpen, open, close] = useToggle(false);
-  const [assignButtonState, setAssignButtonState] = useState('default');
+  const [cancelButtonState, setCancelButtonState] = useState('default');
   const queryClient = useQueryClient();
   const { subsidyAccessPolicyId } = useBudgetId();
 
   const cancelContentAssignments = useCallback(async () => {
-    setAssignButtonState('pending');
+    setCancelButtonState('pending');
     try {
       await EnterpriseAccessApiService.cancelContentAssignments(assignmentConfigurationUuid, assignmentUuids);
-      setAssignButtonState('complete');
+      setCancelButtonState('complete');
       queryClient.invalidateQueries({
         queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
       });
     } catch (err) {
       logError(err);
-      setAssignButtonState('error');
+      setCancelButtonState('error');
     }
   }, [assignmentConfigurationUuid, assignmentUuids, queryClient, subsidyAccessPolicyId]);
 
   return {
-    assignButtonState,
+    cancelButtonState,
     cancelContentAssignments,
     close,
     isOpen,

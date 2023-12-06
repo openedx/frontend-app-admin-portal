@@ -49,7 +49,7 @@ describe('useRemindContentAssignments', () => {
     );
 
     expect(result.current).toEqual({
-      assignButtonState: 'default',
+      remindButtonState: 'default',
       remindContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -63,7 +63,7 @@ describe('useRemindContentAssignments', () => {
     expect(logError).toBeCalledTimes(0);
 
     expect(result.current).toEqual({
-      assignButtonState: 'complete',
+      remindButtonState: 'complete',
       remindContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -82,7 +82,7 @@ describe('useRemindContentAssignments', () => {
     );
 
     expect(result.current).toEqual({
-      assignButtonState: 'default',
+      remindButtonState: 'default',
       remindContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -96,7 +96,7 @@ describe('useRemindContentAssignments', () => {
     expect(logError).toBeCalledTimes(0);
 
     expect(result.current).toEqual({
-      assignButtonState: 'complete',
+      remindButtonState: 'complete',
       remindContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -116,7 +116,7 @@ describe('useRemindContentAssignments', () => {
     );
 
     expect(result.current).toEqual({
-      assignButtonState: 'default',
+      remindButtonState: 'default',
       remindContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -131,7 +131,7 @@ describe('useRemindContentAssignments', () => {
     expect(logError).toBeCalledTimes(1);
 
     expect(result.current).toEqual({
-      assignButtonState: 'error',
+      remindButtonState: 'error',
       remindContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,

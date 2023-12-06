@@ -39,7 +39,7 @@ const WaitingForLearner = ({ learnerEmail }) => {
             <p className="h6">Need help?</p>
             <p className="text-gray">
               Learn more about learner enrollment in assigned courses at{' '}
-              <Hyperlink destination="https://edx.org" showLaunchIcon target="_blank">
+              <Hyperlink destination="https://edx.org" target="_blank">
                 Help Center: Course Assignments
               </Hyperlink>.
             </p>

@@ -49,7 +49,7 @@ describe('useCancelContentAssignments', () => {
     );
 
     expect(result.current).toEqual({
-      assignButtonState: 'default',
+      cancelButtonState: 'default',
       cancelContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -63,7 +63,7 @@ describe('useCancelContentAssignments', () => {
     expect(logError).toBeCalledTimes(0);
 
     expect(result.current).toEqual({
-      assignButtonState: 'complete',
+      cancelButtonState: 'complete',
       cancelContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -82,7 +82,7 @@ describe('useCancelContentAssignments', () => {
     );
 
     expect(result.current).toEqual({
-      assignButtonState: 'default',
+      cancelButtonState: 'default',
       cancelContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -96,7 +96,7 @@ describe('useCancelContentAssignments', () => {
     expect(logError).toBeCalledTimes(0);
 
     expect(result.current).toEqual({
-      assignButtonState: 'complete',
+      cancelButtonState: 'complete',
       cancelContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -116,7 +116,7 @@ describe('useCancelContentAssignments', () => {
     );
 
     expect(result.current).toEqual({
-      assignButtonState: 'default',
+      cancelButtonState: 'default',
       cancelContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,
@@ -131,7 +131,7 @@ describe('useCancelContentAssignments', () => {
     expect(logError).toBeCalledTimes(1);
 
     expect(result.current).toEqual({
-      assignButtonState: 'error',
+      cancelButtonState: 'error',
       cancelContentAssignments: expect.any(Function),
       close: expect.any(Function),
       isOpen: false,

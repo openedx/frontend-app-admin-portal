@@ -9,7 +9,7 @@ import useRemindContentAssignments from './data/hooks/useRemindContentAssignment
 const PendingAssignmentRemindButton = ({ row }) => {
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   const {
-    assignButtonState,
+    remindButtonState,
     remindContentAssignments,
     close,
     isOpen,
@@ -20,7 +20,7 @@ const PendingAssignmentRemindButton = ({ row }) => {
     <>
       <IconButtonWithTooltip
         alt={`Remind learner ${emailAltText}`}
-        data-testid={`remind-learner-${row.original.uuid}`}
+        data-testid={`remind-assignment-${row.original.uuid}`}
         iconAs={Icon}
         onClick={open}
         src={Mail}
@@ -28,7 +28,7 @@ const PendingAssignmentRemindButton = ({ row }) => {
         tooltipPlacement="top"
       />
       <RemindAssignmentModal
-        assignButtonState={assignButtonState}
+        remindButtonState={remindButtonState}
         close={close}
         remindContentAssignments={remindContentAssignments}
         isOpen={isOpen}

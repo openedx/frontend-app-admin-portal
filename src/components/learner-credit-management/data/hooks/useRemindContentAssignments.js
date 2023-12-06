@@ -12,26 +12,26 @@ const useRemindContentAssignments = (
   assignmentUuids,
 ) => {
   const [isOpen, open, close] = useToggle(false);
-  const [assignButtonState, setAssignButtonState] = useState('default');
+  const [remindButtonState, setRemindButtonState] = useState('default');
   const queryClient = useQueryClient();
   const { subsidyAccessPolicyId } = useBudgetId();
 
   const remindContentAssignments = useCallback(async () => {
-    setAssignButtonState('pending');
+    setRemindButtonState('pending');
     try {
       await EnterpriseAccessApiService.remindContentAssignments(assignmentConfigurationUuid, assignmentUuids);
-      setAssignButtonState('complete');
+      setRemindButtonState('complete');
       queryClient.invalidateQueries({
         queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
       });
     } catch (err) {
       logError(err);
-      setAssignButtonState('error');
+      setRemindButtonState('error');
     }
   }, [assignmentConfigurationUuid, assignmentUuids, queryClient, subsidyAccessPolicyId]);
 
   return {
-    assignButtonState,
+    remindButtonState,
     remindContentAssignments,
     close,
     isOpen,

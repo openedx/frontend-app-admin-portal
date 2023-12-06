@@ -1203,7 +1203,7 @@ describe('<BudgetDetailPage />', () => {
     const cancelRowAction = screen.getByTestId('cancel-assignment-test-uuid');
     expect(cancelRowAction).toBeInTheDocument();
     if (shouldDisplayRemindAction) {
-      const remindRowAction = screen.getByTestId('remind-learner-test-uuid');
+      const remindRowAction = screen.getByTestId('remind-assignment-test-uuid');
       expect(remindRowAction).toBeInTheDocument();
     }
     // 2 checkboxes exist; the first is the "Select all" checkbox; the 2nd is the checkbox for the first row
@@ -1473,7 +1473,7 @@ describe('<BudgetDetailPage />', () => {
       fetchContentAssignments: jest.fn(),
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
-    const remindIconButton = screen.getByTestId('remind-learner-test-uuid');
+    const remindIconButton = screen.getByTestId('remind-assignment-test-uuid');
     expect(remindIconButton).toBeInTheDocument();
     userEvent.click(remindIconButton);
     const modalDialog = screen.getByRole('dialog');
