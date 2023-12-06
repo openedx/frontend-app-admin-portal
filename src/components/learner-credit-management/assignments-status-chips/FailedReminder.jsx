@@ -3,7 +3,7 @@ import { Chip, useToggle, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
 
-const FailedCancellation = () => {
+const FailedReminder = () => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
 
@@ -18,7 +18,7 @@ const FailedCancellation = () => {
         tabIndex={0}
         variant="light"
       >
-        Failed: Cancellation
+        Failed: Reminder
       </Chip>
       <BaseModalPopup
         positionRef={target}
@@ -26,15 +26,15 @@ const FailedCancellation = () => {
         onClose={close}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
-          Failed: Cancellation
+          Failed: Reminder
         </BaseModalPopup.Heading>
         <BaseModalPopup.Content>
-          <p>This assignment was not canceled. Something went wrong behind the scenes.</p>
+          <p>Your reminder email did not send. Something went wrong behind the scenes.</p>
           <div className="micro">
             <p className="h6">Suggested resolution steps</p>
             <ul className="text-gray pl-3">
               <li>
-                Wait and try to cancel this assignment again later
+                Wait and try to send this reminder again later, or send an email directly outside of the system.
               </li>
               <li>
                 If the issue continues, contact customer support.
@@ -43,7 +43,7 @@ const FailedCancellation = () => {
                 Get more troubleshooting help at{' '}
                 <Hyperlink destination="https://edx.org" showLaunchIcon target="_blank">
                   Help Center: Course Assignments
-                </Hyperlink>
+                </Hyperlink>.
               </li>
             </ul>
           </div>
@@ -53,4 +53,4 @@ const FailedCancellation = () => {
   );
 };
 
-export default FailedCancellation;
+export default FailedReminder;

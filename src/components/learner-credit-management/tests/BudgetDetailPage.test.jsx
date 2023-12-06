@@ -1184,7 +1184,7 @@ describe('<BudgetDetailPage />', () => {
     const cancelRowAction = screen.getByTestId('cancel-assignment-test-uuid');
     expect(cancelRowAction).toBeInTheDocument();
     if (shouldDisplayRemindAction) {
-      const remindRowAction = screen.getByTestId('remind-assignment-test-uuid');
+      const remindRowAction = screen.getByTestId('remind-learner-test-uuid');
       expect(remindRowAction).toBeInTheDocument();
     }
     // 2 checkboxes exist; the first is the "Select all" checkbox; the 2nd is the checkbox for the first row
@@ -1277,6 +1277,82 @@ describe('<BudgetDetailPage />', () => {
     );
   });
 
+  it('reminds assignments in bulk', async () => {
+    EnterpriseAccessApiService.remindContentAssignments.mockResolvedValueOnce({ status: 200 });
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 2,
+        results: [
+          {
+            uuid: 'test-uuid1',
+            contentKey: mockCourseKey,
+            contentQuantity: -19900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+          },
+          {
+            uuid: 'test-uuid2',
+            contentKey: mockCourseKey,
+            contentQuantity: -29900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-11-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+          },
+        ],
+        learnerStateCounts: [
+          { learnerState: 'waiting', count: 1 },
+          { learnerState: 'waiting', count: 1 },
+        ],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    const remindRowAction = screen.getByTitle('Toggle All Current Page Rows Selected');
+    expect(remindRowAction).toBeInTheDocument();
+    userEvent.click(remindRowAction);
+    const remindBulkActionButton = screen.getByText('Remind (2)');
+    expect(remindBulkActionButton).toBeInTheDocument();
+    userEvent.click(remindBulkActionButton);
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    const remindDialogButton = getButtonElement('Send reminders (2)');
+    userEvent.click(remindDialogButton);
+    expect(
+      EnterpriseAccessApiService.remindContentAssignments,
+    ).toHaveBeenCalled();
+    await waitFor(
+      () => expect(screen.getByText('Reminders sent (2)')).toBeInTheDocument(),
+    );
+  });
+
   it('cancels a single assignment', async () => {
     EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
@@ -1331,6 +1407,62 @@ describe('<BudgetDetailPage />', () => {
     userEvent.click(cancelDialogButton);
     await waitFor(
       () => expect(screen.getByText('Assignment canceled')).toBeInTheDocument(),
+    );
+  });
+  it('reminds a single assignment', async () => {
+    EnterpriseAccessApiService.remindContentAssignments.mockResolvedValueOnce({ status: 200 });
+    useParams.mockReturnValue({
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [
+          {
+            uuid: 'test-uuid',
+            contentKey: mockCourseKey,
+            contentQuantity: -19900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+          },
+        ],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    const remindIconButton = screen.getByTestId('remind-learner-test-uuid');
+    expect(remindIconButton).toBeInTheDocument();
+    userEvent.click(remindIconButton);
+    const modalDialog = screen.getByRole('dialog');
+    expect(modalDialog).toBeInTheDocument();
+    const remindDialogButton = getButtonElement('Send reminder');
+    userEvent.click(remindDialogButton);
+    await waitFor(
+      () => expect(screen.getByText('Reminder sent')).toBeInTheDocument(),
     );
   });
 });

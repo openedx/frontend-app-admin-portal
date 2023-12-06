@@ -40,7 +40,7 @@ const FailedBadEmail = ({ learnerEmail }) => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination="https://edx.org" target="_blank">
+                <Hyperlink destination="https://edx.org" showLaunchIcon target="_blank">
                   Help Center: Course Assignments
                 </Hyperlink>.
               </li>

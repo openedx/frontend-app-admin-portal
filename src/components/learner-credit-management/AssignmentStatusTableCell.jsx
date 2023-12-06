@@ -4,6 +4,7 @@ import {
 import PropTypes from 'prop-types';
 import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedCancellation from './assignments-status-chips/FailedCancellation';
+import FailedReminder from './assignments-status-chips/FailedReminder';
 import FailedSystem from './assignments-status-chips/FailedSystem';
 import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
 import WaitingForLearner from './assignments-status-chips/WaitingForLearner';
@@ -34,6 +35,9 @@ const AssignmentStatusTableCell = ({ row }) => {
     );
   }
 
+  console.log('learnerState: ', learnerState);
+  console.log('errorReason: ', errorReason);
+
   if (learnerState === 'failed') {
     // Determine which failure chip to display based on the error reason.
     if (errorReason.actionType === 'notified') {
@@ -44,9 +48,11 @@ const AssignmentStatusTableCell = ({ row }) => {
       }
       return <FailedSystem />;
     }
-
     if (errorReason.actionType === 'cancelled') {
       return <FailedCancellation />;
+    }
+    if (errorReason.actionType === 'reminded') {
+      return <FailedReminder />;
     }
   }
 
