@@ -13,7 +13,9 @@ import { isUUID } from '../utils';
  */
 const useBudgetId = () => {
   const { budgetId } = useParams();
-  const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
+  const enterpriseOfferId = isUUID(budgetId) && (budgetId !== 'undefined' && budgetId !== 'null')
+    ? null
+    : budgetId;
   const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
   return {
     budgetId,

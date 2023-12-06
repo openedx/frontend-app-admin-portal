@@ -12,7 +12,7 @@ import NotFoundPage from '../NotFoundPage';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 
 const BudgetDetailPage = ({ enterpriseSlug }) => {
-  const { subsidyAccessPolicyId } = useBudgetId();
+  const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
   const {
     data: subsidyAccessPolicy,
     isInitialLoading: isSubsidyAccessPolicyInitialLoading,
@@ -31,10 +31,9 @@ const BudgetDetailPage = ({ enterpriseSlug }) => {
       </BudgetDetailPageWrapper>
     );
   }
-
   // If the budget has a subsidyAccessPolicy but is not active, or the subsidyAccessPolicyId is invalid
   // we should redirect the user to the budget list page.
-  if (!subsidyAccessPolicyId || subsidyAccessPolicy?.active === false) {
+  if (!enterpriseOfferId && !subsidyAccessPolicyId) {
     // TODO: In the react router v6 upgrade, refactor to the Navigate component
     return <Redirect to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`} />;
   }
