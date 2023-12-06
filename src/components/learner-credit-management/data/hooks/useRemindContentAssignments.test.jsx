@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { renderHook } from '@testing-library/react-hooks/dom';
-import { act, waitFor } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { logError } from '@edx/frontend-platform/logging';
@@ -56,7 +56,7 @@ describe('useRemindContentAssignments', () => {
       open: expect.any(Function),
     });
 
-    await waitFor(() => act(() => result.current.remindContentAssignments()));
+    await waitFor(() => result.current.remindContentAssignments());
     expect(
       EnterpriseAccessApiService.remindContentAssignments,
     ).toHaveBeenCalled();
@@ -89,7 +89,7 @@ describe('useRemindContentAssignments', () => {
       open: expect.any(Function),
     });
 
-    await waitFor(() => act(() => result.current.remindContentAssignments()));
+    await waitFor(() => result.current.remindContentAssignments());
     expect(
       EnterpriseAccessApiService.remindContentAssignments,
     ).toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe('useRemindContentAssignments', () => {
       open: expect.any(Function),
     });
 
-    await waitFor(() => act(() => result.current.remindContentAssignments()));
+    await waitFor(() => result.current.remindContentAssignments());
 
     expect(
       EnterpriseAccessApiService.remindContentAssignments,

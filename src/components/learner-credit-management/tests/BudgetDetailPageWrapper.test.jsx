@@ -204,4 +204,63 @@ describe('<BudgetDetailPageWrapper />', () => {
       expect(screen.queryByText(expectedToastMessage)).not.toBeInTheDocument();
     });
   });
+
+  it.each([
+    {
+      assignmentUUIDs: 1,
+    },
+    {
+      assignmentUUIDs: 2,
+    },
+  ])('should render Toast notification for successful assignment reminder (%s)', async ({
+    assignmentUUIDs,
+  }) => {
+    const ToastContextController = () => {
+      const {
+        successfulReminderToast: {
+          displayToastForAssignmentReminder,
+          closeToastForAssignmentReminder,
+        },
+      } = useContext(BudgetDetailPageContext);
+
+      const handleDisplayToast = () => {
+        displayToastForAssignmentReminder(assignmentUUIDs);
+      };
+
+      const handleCloseToast = () => {
+        closeToastForAssignmentReminder();
+      };
+
+      return (
+        <div>
+          <Button onClick={handleDisplayToast}>Open Toast</Button>
+          <Button onClick={handleCloseToast}>Close Toast</Button>
+        </div>
+      );
+    };
+    render(<MockBudgetDetailPageWrapper><ToastContextController /></MockBudgetDetailPageWrapper>);
+
+    const toastMessages = [];
+    if (assignmentUUIDs > 1) {
+      toastMessages.push(`Reminders sent (${assignmentUUIDs})`);
+    }
+    if (assignmentUUIDs === 1) {
+      toastMessages.push('Reminder sent');
+    }
+    const expectedToastMessage = toastMessages.join(' ');
+
+    // Open Toast notification
+    userEvent.click(getButtonElement('Open Toast'));
+
+    // Verify Toast notification is rendered
+    expect(screen.getByText(expectedToastMessage)).toBeInTheDocument();
+
+    // Close Toast notification
+    userEvent.click(getButtonElement('Close Toast'));
+
+    // Verify Toast notification is no longer rendered
+    await waitFor(() => {
+      expect(screen.queryByText(expectedToastMessage)).not.toBeInTheDocument();
+    });
+  });
 });

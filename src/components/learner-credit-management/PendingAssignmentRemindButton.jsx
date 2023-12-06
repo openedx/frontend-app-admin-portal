@@ -42,10 +42,6 @@ PendingAssignmentRemindButton.propTypes = {
     original: PropTypes.shape({
       assignmentConfiguration: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string,
-      recentAction: PropTypes.shape({
-        actionType: PropTypes.string.isRequired,
-        timestamp: PropTypes.string.isRequired,
-      }).isRequired,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
