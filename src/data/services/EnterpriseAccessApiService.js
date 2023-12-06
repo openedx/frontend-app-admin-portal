@@ -167,6 +167,7 @@ class EnterpriseAccessApiService {
   static listSubsidyAccessPolicies(enterpriseCustomerId) {
     const queryParams = new URLSearchParams({
       enterprise_customer_uuid: enterpriseCustomerId,
+      active: true,
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
