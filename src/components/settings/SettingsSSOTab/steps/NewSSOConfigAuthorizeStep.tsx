@@ -1,21 +1,20 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Alert, Form, Hyperlink, Button, Row,
+  Alert, Hyperlink, Button, Row,
 } from '@edx/paragon';
 import { Info, Download } from '@edx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 import { createSAMLURLs } from '../utils';
 import { SSOConfigContext } from '../SSOConfigContext';
-import { setFormFieldAction } from '../../../forms/data/actions';
 import { FormFieldValidation, useFormContext } from '../../../forms/FormContext';
 import ValidatedFormCheckbox from '../../../forms/ValidatedFormCheckbox';
 
 export const validations: FormFieldValidation[] = [
   {
-    formFieldId: 'confirmAuthorizedEdxServiceProvider',
+    formFieldId: 'markedAuthorized',
     validator: (fields) => {
-      const ret = !fields.confirmAuthorizedEdxServiceProvider && 'Please verify authorization of edX as a Service Provider.';
+      const ret = !fields.markedAuthorized && 'Please verify authorization of edX as a Service Provider.';
       return ret;
     },
   },
@@ -40,7 +39,6 @@ const SSOConfigAuthorizeStep = () => {
     ssoState,
   } = useContext<SSOConfigContextValue>(SSOConfigContext);
   const {
-    dispatch,
     formFields,
   } = useFormContext();
   const { enterpriseSlug } = useParams();
@@ -80,7 +78,7 @@ const SSOConfigAuthorizeStep = () => {
       </p>
       <hr />
       <p>Return to this window and check the box once complete</p>
-      <ValidatedFormCheckbox className="mt-4" formId="confirmAuthorizedEdxServiceProvider">
+      <ValidatedFormCheckbox className="mt-4" formId="markedAuthorized">
         I have authorized edX as a Service Provider
       </ValidatedFormCheckbox>
     </>
