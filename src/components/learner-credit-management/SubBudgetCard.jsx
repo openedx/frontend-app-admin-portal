@@ -31,6 +31,7 @@ const SubBudgetCard = ({
   displayName,
   enterpriseSlug,
   isLoading,
+  isAssignable,
 }) => {
   const { isFetchingBudgets } = useContext(EnterpriseSubsidiesContext);
   const budgetLabel = getBudgetStatus(start, end);
@@ -81,7 +82,7 @@ const SubBudgetCard = ({
             {isFetchingBudgets ? <Skeleton /> : formatPrice(available)}
           </span>
         </Col>
-        {pending > 0 && (
+        {isAssignable && (
           <Col xs="6" md="auto" className="mb-3 mb-md-0">
             <div className="small font-weight-bold">Pending</div>
             <span className="small">
@@ -128,6 +129,7 @@ SubBudgetCard.propTypes = {
   available: PropTypes.number,
   pending: PropTypes.number,
   displayName: PropTypes.string,
+  isAssignable: PropTypes.bool,
 };
 
 export default SubBudgetCard;
