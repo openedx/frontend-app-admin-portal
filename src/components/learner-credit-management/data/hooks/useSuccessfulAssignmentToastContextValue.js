@@ -26,7 +26,7 @@ const useSuccessfulAssignmentToastContextValue = () => {
   }
   const successfulAssignmentAllocationToastMessage = toastMessages.join(' ');
 
-  const successfulAssignmentToastContextValue = useMemo(() => ({
+  const successfulAssignmentToast = useMemo(() => ({
     isSuccessfulAssignmentAllocationToastOpen: isToastOpen,
     displayToastForAssignmentAllocation: handleDisplayToast,
     closeToastForAssignmentAllocation: handleCloseToast,
@@ -42,7 +42,7 @@ const useSuccessfulAssignmentToastContextValue = () => {
     successfulAssignmentAllocationToastMessage,
   ]);
 
-  return successfulAssignmentToastContextValue;
+  return successfulAssignmentToast;
 };
 
 export default useSuccessfulAssignmentToastContextValue;

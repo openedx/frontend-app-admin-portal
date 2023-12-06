@@ -41,7 +41,9 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const [canAllocateAssignments, setCanAllocateAssignments] = useState(false);
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
-  const { displayToastForAssignmentAllocation } = useContext(BudgetDetailPageContext);
+  const {
+    successfulAssignmentToast: { displayToastForAssignmentAllocation },
+  } = useContext(BudgetDetailPageContext);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
     subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid,

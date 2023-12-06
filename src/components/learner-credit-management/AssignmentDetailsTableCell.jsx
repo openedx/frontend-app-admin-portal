@@ -56,7 +56,10 @@ AssignmentDetailsTableCell.propTypes = {
       contentKey: PropTypes.string.isRequired,
       contentTitle: PropTypes.string,
       contentQuantity: PropTypes.number,
-      errorReason: PropTypes.string,
+      errorReason: PropTypes.shape({
+        actionType: PropTypes.string,
+        errorReason: PropTypes.string,
+      }),
       learnerState: PropTypes.string,
       state: PropTypes.string,
     }).isRequired,
