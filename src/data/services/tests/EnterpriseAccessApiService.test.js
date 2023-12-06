@@ -200,4 +200,15 @@ describe('EnterpriseAccessApiService', () => {
       options,
     );
   });
+
+  test('remindContentAssignments calls enterprise-access cancel POST API to remind learners', () => {
+    const options = {
+      assignment_uuids: mockAssignmentUUIDs,
+    };
+    EnterpriseAccessApiService.remindContentAssignments(mockAssignmentConfigurationUUID, mockAssignmentUUIDs);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind/`,
+      options,
+    );
+  });
 });

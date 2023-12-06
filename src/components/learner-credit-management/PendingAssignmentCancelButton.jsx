@@ -10,7 +10,7 @@ import CancelAssignmentModal from './CancelAssignmentModal';
 const PendingAssignmentCancelButton = ({ row }) => {
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   const {
-    assignButtonState,
+    cancelButtonState,
     cancelContentAssignments,
     close,
     isOpen,
@@ -29,7 +29,7 @@ const PendingAssignmentCancelButton = ({ row }) => {
         variant="danger"
       />
       <CancelAssignmentModal
-        assignButtonState={assignButtonState}
+        cancelButtonState={cancelButtonState}
         close={close}
         cancelContentAssignments={cancelContentAssignments}
         isOpen={isOpen}
