@@ -243,6 +243,7 @@ describe('useEnterpriseBudgets', () => {
         end: mockBudgetEnd,
         isCurrent: true,
         source: BUDGET_TYPES.policy,
+        isAssignable: false,
         aggregates: {
           available: 700,
           spent: 200,

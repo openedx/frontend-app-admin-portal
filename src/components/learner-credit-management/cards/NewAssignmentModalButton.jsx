@@ -197,6 +197,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
                 EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_HELP_CENTER,
               )}
               destination="https://edx.org"
+              showLaunchIcon
               target="_blank"
             >
               Help Center: Course Assignments

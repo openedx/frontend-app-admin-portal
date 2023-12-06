@@ -9,7 +9,7 @@ const AssignmentTableCancelAction = ({ selectedFlatRows }) => {
   const assignmentUuids = selectedFlatRows.map(row => row.id);
   const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
   const {
-    assignButtonState,
+    cancelButtonState,
     cancelContentAssignments,
     close,
     isOpen,
@@ -25,7 +25,7 @@ const AssignmentTableCancelAction = ({ selectedFlatRows }) => {
         cancelContentAssignments={cancelContentAssignments}
         close={close}
         isOpen={isOpen}
-        assignButtonState={assignButtonState}
+        cancelButtonState={cancelButtonState}
         uuidCount={assignmentUuids.length}
       />
     </>

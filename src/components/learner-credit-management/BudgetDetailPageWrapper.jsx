@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Container, Toast } from '@edx/paragon';
 
 import Hero from '../Hero';
-import { useSuccessfulAssignmentToastContextValue, useSuccessfulCancellationToastContextValue } from './data';
+import { useSuccessfulAssignmentToastContextValue, useSuccessfulCancellationToastContextValue, useSuccessfulReminderToastContextValue } from './data';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
@@ -22,6 +22,7 @@ const BudgetDetailPageWrapper = ({
 
   const successfulAssignmentToast = useSuccessfulAssignmentToastContextValue();
   const successfulCancellationToast = useSuccessfulCancellationToastContextValue();
+  const successfulReminderToast = useSuccessfulReminderToastContextValue();
 
   const {
     isSuccessfulAssignmentAllocationToastOpen,
@@ -35,10 +36,17 @@ const BudgetDetailPageWrapper = ({
     closeToastForAssignmentCancellation,
   } = successfulCancellationToast;
 
+  const {
+    isSuccessfulAssignmentReminderToastOpen,
+    successfulAssignmentReminderToastMessage,
+    closeToastForAssignmentReminder,
+  } = successfulReminderToast;
+
   const values = useMemo(() => ({
     successfulAssignmentToast,
     successfulCancellationToast,
-  }), [successfulAssignmentToast, successfulCancellationToast]);
+    successfulReminderToast,
+  }), [successfulAssignmentToast, successfulCancellationToast, successfulReminderToast]);
 
   return (
     <BudgetDetailPageContext.Provider
@@ -50,10 +58,11 @@ const BudgetDetailPageWrapper = ({
         {children}
       </Container>
       {/**
-        Successful assignment allocation and cancellation Toast notifications. It is rendered here to guarantee that the
-        Toast component will not be unmounted when the user programmatically navigates to the "Activity"
-        tab, which will unmount the course cards that rendered the assignment modal. Thus, the Toast must
-        be rendered within the component tree that's common to both the "Activity" and "Overview" tabs.
+        Successful assignment allocation, reminder, and cancellation Toast notifications. It is rendered
+        here to guarantee that the Toast component will not be unmounted when the user programmatically
+        navigates to the "Activity" tab, which will unmount the course cards that rendered the assignment
+        modal. Thus, the Toast must be rendered within the component tree that's common to both the
+        "Activity" and "Overview" tabs.
       */}
       <Toast
         onClose={closeToastForAssignmentAllocation}
@@ -67,6 +76,13 @@ const BudgetDetailPageWrapper = ({
         show={isSuccessfulAssignmentCancellationToastOpen}
       >
         {successfulAssignmentCancellationToastMessage}
+      </Toast>
+
+      <Toast
+        onClose={closeToastForAssignmentReminder}
+        show={isSuccessfulAssignmentReminderToastOpen}
+      >
+        {successfulAssignmentReminderToastMessage}
       </Toast>
     </BudgetDetailPageContext.Provider>
   );

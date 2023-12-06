@@ -412,6 +412,17 @@ function defaultQueryClientRetryHandler(failureCount, err) {
   return true;
 }
 
+/**
+ * Determines whether a subsidy access policy is assignable, based on its policy type
+ * and the presence of an assignment configuration.
+ */
+function isAssignableSubsidyAccessPolicyType(policy) {
+  const policyType = policy?.policyType;
+  const isAssignable = !!policy?.assignmentConfiguration;
+  const assignableSubsidyAccessPolicyTypes = ['AssignedLearnerCreditAccessPolicy'];
+  return isAssignable && assignableSubsidyAccessPolicyTypes.includes(policyType);
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -446,4 +457,5 @@ export {
   pollAsync,
   isNotValidNumberString,
   defaultQueryClientRetryHandler,
+  isAssignableSubsidyAccessPolicyType,
 };

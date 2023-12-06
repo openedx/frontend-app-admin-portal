@@ -185,6 +185,17 @@ class EnterpriseAccessApiService {
   }
 
   /**
+   * Remind content assignments for a specific AssignmentConfiguration.
+   */
+  static remindContentAssignments(assignmentConfigurationUUID, assignmentUuids) {
+    const options = {
+      assignment_uuids: assignmentUuids,
+    };
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
    * Retrieve a specific subsidy access policy.
    * @param {string} subsidyAccessPolicyUUID The UUID of the subsidy access policy to retrieve.
    * @returns {Promise} - A promise that resolves to the response from the API.

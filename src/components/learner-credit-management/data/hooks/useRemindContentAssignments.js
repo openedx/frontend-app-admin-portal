@@ -7,36 +7,36 @@ import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAcce
 import { learnerCreditManagementQueryKeys } from '../constants';
 import useBudgetId from './useBudgetId';
 
-const useCancelContentAssignments = (
+const useRemindContentAssignments = (
   assignmentConfigurationUuid,
   assignmentUuids,
 ) => {
   const [isOpen, open, close] = useToggle(false);
-  const [cancelButtonState, setCancelButtonState] = useState('default');
+  const [remindButtonState, setRemindButtonState] = useState('default');
   const queryClient = useQueryClient();
   const { subsidyAccessPolicyId } = useBudgetId();
 
-  const cancelContentAssignments = useCallback(async () => {
-    setCancelButtonState('pending');
+  const remindContentAssignments = useCallback(async () => {
+    setRemindButtonState('pending');
     try {
-      await EnterpriseAccessApiService.cancelContentAssignments(assignmentConfigurationUuid, assignmentUuids);
-      setCancelButtonState('complete');
+      await EnterpriseAccessApiService.remindContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+      setRemindButtonState('complete');
       queryClient.invalidateQueries({
         queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
       });
     } catch (err) {
       logError(err);
-      setCancelButtonState('error');
+      setRemindButtonState('error');
     }
   }, [assignmentConfigurationUuid, assignmentUuids, queryClient, subsidyAccessPolicyId]);
 
   return {
-    cancelButtonState,
-    cancelContentAssignments,
+    remindButtonState,
+    remindContentAssignments,
     close,
     isOpen,
     open,
   };
 };
 
-export default useCancelContentAssignments;
+export default useRemindContentAssignments;

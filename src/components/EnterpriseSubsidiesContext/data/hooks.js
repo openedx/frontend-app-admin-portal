@@ -12,6 +12,7 @@ import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiServic
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../../learner-credit-management/data';
+import { isAssignableSubsidyAccessPolicyType } from '../../../utils';
 
 dayjs.extend(isBetween);
 
@@ -74,6 +75,7 @@ async function fetchEnterpriseBudgets({
         spent: result.aggregates.amountRedeemedUsd,
         pending: result.aggregates.amountAllocatedUsd,
       },
+      isAssignable: isAssignableSubsidyAccessPolicyType(result),
     });
   });
   enterpriseSubsidyResults?.forEach((result) => {
