@@ -35,9 +35,6 @@ const AssignmentStatusTableCell = ({ row }) => {
     );
   }
 
-  console.log('learnerState: ', learnerState);
-  console.log('errorReason: ', errorReason);
-
   if (learnerState === 'failed') {
     // Determine which failure chip to display based on the error reason.
     if (errorReason.actionType === 'notified') {
