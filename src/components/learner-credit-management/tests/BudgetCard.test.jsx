@@ -212,6 +212,7 @@ describe('<BudgetCard />', () => {
         pending: isAssignableBudget ? mockBudgetAggregates.pending : undefined,
         spent: mockBudgetAggregates.spent,
       },
+      isAssignable: isAssignableBudget,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
