@@ -19,6 +19,7 @@ const mockLicenseRequestUUID = 'test-license-request-uuid';
 const mockCouponCodeRequestUUID = 'test-coupon-code-request-uuid';
 const mockAssignmentConfigurationUUID = 'test-assignment-configuration-uuid';
 const mockSubsidyAccessPolicyUUID = 'test-subsidy-access-policy-uuid';
+const mockAssignmentUUIDs = ['test-assignment-uuid1', 'test-assignment-uuid-2'];
 
 describe('EnterpriseAccessApiService', () => {
   beforeEach(() => {
@@ -165,7 +166,7 @@ describe('EnterpriseAccessApiService', () => {
   test('listSubsidyAccessPolicies calls enterprise-access to fetch subsidy access policies', () => {
     EnterpriseAccessApiService.listSubsidyAccessPolicies(mockEnterpriseUUID);
     expect(axios.get).toBeCalledWith(
-      `${enterpriseAccessBaseUrl}/api/v1/subsidy-access-policies/?enterprise_customer_uuid=${mockEnterpriseUUID}`,
+      `${enterpriseAccessBaseUrl}/api/v1/subsidy-access-policies/?enterprise_customer_uuid=${mockEnterpriseUUID}&active=true`,
     );
   });
 
@@ -186,6 +187,17 @@ describe('EnterpriseAccessApiService', () => {
     expect(axios.post).toBeCalledWith(
       `${enterpriseAccessBaseUrl}/api/v1/policy-allocation/${mockSubsidyAccessPolicyUUID}/allocate/`,
       payload,
+    );
+  });
+
+  test('cancelContentAssignments calls enterprise-access cancel POST API to cancel assignments', () => {
+    const options = {
+      assignment_uuids: mockAssignmentUUIDs,
+    };
+    EnterpriseAccessApiService.cancelContentAssignments(mockAssignmentConfigurationUUID, mockAssignmentUUIDs);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/cancel/`,
+      options,
     );
   });
 });

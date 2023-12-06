@@ -107,10 +107,12 @@ const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@exa
 
 const mockDisplaySuccessfulAssignmentToast = jest.fn();
 const defaultBudgetDetailPageContextValue = {
-  isSuccessfulAssignmentAllocationToastOpen: false,
-  totalLearnersAssigned: undefined,
-  displayToastForAssignmentAllocation: mockDisplaySuccessfulAssignmentToast,
-  closeToastForAssignmentAllocation: jest.fn(),
+  successfulAssignmentToast: {
+    isSuccessfulAssignmentAllocationToastOpen: false,
+    totalLearnersAssigned: undefined,
+    displayToastForAssignmentAllocation: mockDisplaySuccessfulAssignmentToast,
+    closeToastForAssignmentAllocation: jest.fn(),
+  },
 };
 
 const CourseCardWrapper = ({
@@ -546,7 +548,7 @@ describe('Course card works as expected', () => {
       expectedValidationMessage: 'The total assignment cost exceeds your available Learner Credit budget balance of $100. Please remove learners and try again.',
     },
     {
-      learnerEmails: ['a@a.com', 'b@b.com', 'c@c.com'],
+      learnerEmails: ['a@a.com', 'B@b.com', 'c@c.com'],
       spendAvailableUsd: 1000,
       expectedValidationMessage: undefined, // no validation error
     },

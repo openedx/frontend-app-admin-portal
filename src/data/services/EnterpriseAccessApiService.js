@@ -167,9 +167,21 @@ class EnterpriseAccessApiService {
   static listSubsidyAccessPolicies(enterpriseCustomerId) {
     const queryParams = new URLSearchParams({
       enterprise_customer_uuid: enterpriseCustomerId,
+      active: true,
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  /**
+   * Cancel content assignments for a specific AssignmentConfiguration.
+   */
+  static cancelContentAssignments(assignmentConfigurationUUID, assignmentUuids) {
+    const options = {
+      assignment_uuids: assignmentUuids,
+    };
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
   }
 
   /**
