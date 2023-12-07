@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import omit from 'lodash/omit';
 import isString from 'lodash/isString';
 
-import { Form } from '@edx/paragon';
+import { Form, Stack } from '@edx/paragon';
 
 import { setFormFieldAction } from './data/actions';
 import { useFormContext } from './FormContext';
@@ -65,7 +65,9 @@ const ValidatedFormRadio = (props: ValidatedFormRadioProps) => {
         isInline={formRadioProps.isInline}
         value={value}
       >
-        {createOptions(formRadioProps.options)}
+        <Stack gap={3.5}>
+          {createOptions(formRadioProps.options)}
+        </Stack>
       </Form.RadioSet>
       {formRadioProps.fieldInstructions && (
         <Form.Text>{formRadioProps.fieldInstructions}</Form.Text>

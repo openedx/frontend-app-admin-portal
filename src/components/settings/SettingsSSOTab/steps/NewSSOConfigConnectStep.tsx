@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Dropzone, Form } from '@edx/paragon';
+import { Container, Dropzone, Form, Stack } from '@edx/paragon';
 
 import ValidatedFormRadio from '../../../forms/ValidatedFormRadio';
 import ValidatedFormControl from '../../../forms/ValidatedFormControl';
@@ -73,9 +73,9 @@ const SSOConfigConnectStep = () => {
 
       <Form style={{ maxWidth: '60rem' }}>
 
-        <h1>Let&apos;s get started</h1>
-        What is your organization&apos;s SSO Identity Provider?
-        <Form.Group className="mb-4.5">
+        <h3 className="mb-4">Let&apos;s get started</h3>
+        <p className="mb-n3">What is your organization&apos;s SSO Identity Provider?</p>
+        <Form.Group className="mb-5.5">
           <ValidatedFormRadio
             formId="identityProvider"
             label=""
@@ -83,9 +83,9 @@ const SSOConfigConnectStep = () => {
           />
         </Form.Group>
 
-        <h3>Connect edX to your Identity Provider</h3>
-        Select a method to connect edX to your Identity Provider
-        <Form.Group className="mb-4.5">
+        <h4 className="mb-4">Connect edX to your Identity Provider</h4>
+        <p className="mb-n3">Select a method to connect edX to your Identity Provider</p>
+        <Form.Group className="mb-5">
           <ValidatedFormRadio
             formId="idpConnectOption"
             label=""
@@ -94,14 +94,14 @@ const SSOConfigConnectStep = () => {
         </Form.Group>
 
         {showUrlEntry && (
-        <Form.Group className="mb-4">
-          <ValidatedFormControl
-            formId="metadataUrl"
-            type="text"
-            floatingLabel="Identity Provider Metadata URL"
-            fieldInstructions="Find the URL in your Identity Provider portal or website."
-          />
-        </Form.Group>
+          <Form.Group className="mb-4 mt-4">
+            <ValidatedFormControl
+              formId="metadataUrl"
+              type="text"
+              floatingLabel="Identity Provider Metadata URL"
+              fieldInstructions="Find the URL in your Identity Provider portal or website."
+            />
+          </Form.Group>
         )}
 
         {showXmlUpload
