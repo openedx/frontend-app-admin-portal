@@ -32,10 +32,10 @@ const ProductTours = ({
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const history = useHistory();
   const enabledFeatures = {
-    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance })[0],
-    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal })[0],
-    [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour()[0],
-    [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0],
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance }),
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal }),
+    [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour(),
+    [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS),
   };
   const newFeatureTourCheckpoints = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({

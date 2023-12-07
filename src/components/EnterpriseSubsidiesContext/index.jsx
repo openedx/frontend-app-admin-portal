@@ -18,6 +18,7 @@ export const useEnterpriseSubsidiesContext = ({
     enterpriseId,
     isTopDownAssignmentEnabled,
   });
+
   const {
     budgets = [],
     canManageLearnerCredit = false,
