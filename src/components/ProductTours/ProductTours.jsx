@@ -33,10 +33,10 @@ const ProductTours = ({
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const history = useHistory();
 
-  const portalAppearance = usePortalAppearanceTour({ enablePortalAppearance })[0];
-  const browseAndRequest = useBrowseAndRequestTour({ enableLearnerPortal })[0];
-  const learnerCredit = useLearnerCreditTour()[0];
-  const highlightTour = useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0];
+  const portalAppearance = usePortalAppearanceTour({ enablePortalAppearance });
+  const browseAndRequest = useBrowseAndRequestTour({ enableLearnerPortal });
+  const learnerCredit = useLearnerCreditTour();
+  const highlightTour = useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS);
 
   const enabledFeatures = useMemo(() => ({
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearance,
