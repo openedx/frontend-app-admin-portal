@@ -34,7 +34,7 @@ const queryClient = new QueryClient({
       // relying on the cached data until the `staleTime` window has exceeded. This may be modified
       // per-query, as needed, if certain queries expect to be more up-to-date than others. Allows
       // `useQuery` to be used as a state manager.
-      staleTime: 1000 * 60,
+      staleTime: 1000 * 2,
     },
   },
 });
