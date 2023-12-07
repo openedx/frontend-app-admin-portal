@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
 import { useHistory } from 'react-router-dom';
@@ -32,14 +32,20 @@ const ProductTours = ({
   const [tours, setTours] = useState([]);
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const history = useHistory();
-  const enabledFeatures = {
-    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance })[0],
-    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal })[0],
-    [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour()[0],
-    [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0],
-  };
-  console.log(enabledFeatures, 'step 1 product tour, enabledFeatures')
-  const newFeatureTourCheckpoints = {
+
+  const portalAppearance = usePortalAppearanceTour({ enablePortalAppearance })[0];
+  const browseAndRequest = useBrowseAndRequestTour({ enableLearnerPortal })[0];
+  const learnerCredit = useLearnerCreditTour()[0];
+  const highlightTour = useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS)[0];
+
+  const enabledFeatures = useMemo(() => ({
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearance,
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequest,
+    [LEARNER_CREDIT_COOKIE_NAME]: learnerCredit,
+    [HIGHLIGHTS_COOKIE_NAME]: highlightTour,
+  }), [browseAndRequest, highlightTour, learnerCredit, portalAppearance]);
+  console.log(enabledFeatures, 'step 1 product tour, enabledFeatures');
+  const newFeatureTourCheckpoints = useMemo(() => ({
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
       history,
@@ -56,8 +62,8 @@ const ProductTours = ({
       enterpriseSlug,
       history,
     }),
-  };
-  console.log(newFeatureTourCheckpoints, 'step 2 product tour, newFeatureTourCheckpoints')
+  }), [enterpriseSlug, history]);
+  console.log(newFeatureTourCheckpoints, 'step 2 product tour, newFeatureTourCheckpoints');
 
   useEffect(() => {
     if (tours.length === 0) {
