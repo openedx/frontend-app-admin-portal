@@ -22,7 +22,7 @@ const AssignmentStatusTableCell = ({ row }) => {
     return null;
   }
 
-  // If learnerState is failed but no error reason is defined, don't display anything.
+  // If learnerState is failed but no error reason is defined, return a failed system chip.
   if (learnerState === 'failed' && !errorReason) {
     return <FailedSystem />;
   }
