@@ -8,6 +8,7 @@ import FailedReminder from './assignments-status-chips/FailedReminder';
 import FailedSystem from './assignments-status-chips/FailedSystem';
 import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
 import WaitingForLearner from './assignments-status-chips/WaitingForLearner';
+import { capitalizeFirstLetter } from '../../utils';
 
 const AssignmentStatusTableCell = ({ row }) => {
   const { original } = row;
@@ -16,10 +17,14 @@ const AssignmentStatusTableCell = ({ row }) => {
     learnerState,
     errorReason,
   } = original;
-
   // Learner state is not available for this assignment, so don't display anything.
   if (!learnerState) {
     return null;
+  }
+
+  // If learnerState is failed but no error reason is defined, don't display anything.
+  if (learnerState === 'failed' && !errorReason) {
+    return <FailedSystem />;
   }
 
   // Display the appropriate status chip based on the learner state.
@@ -54,7 +59,7 @@ const AssignmentStatusTableCell = ({ row }) => {
   }
 
   // Note: The given `learnerState` not officially supported with a `ModalPopup`, but display it anyway.
-  return <Chip>{`${learnerState.charAt(0).toUpperCase()}${learnerState.substr(1)}`}</Chip>;
+  return <Chip>{`${capitalizeFirstLetter(learnerState)}`}</Chip>;
 };
 
 AssignmentStatusTableCell.propTypes = {
