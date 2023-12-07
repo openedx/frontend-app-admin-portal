@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
 import { useHistory } from 'react-router-dom';
@@ -29,23 +29,15 @@ const ProductTours = ({
   enableLearnerPortal,
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
-  const [tours, setTours] = useState([]);
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const history = useHistory();
-
-  const portalAppearance = usePortalAppearanceTour({ enablePortalAppearance });
-  const browseAndRequest = useBrowseAndRequestTour({ enableLearnerPortal });
-  const learnerCredit = useLearnerCreditTour();
-  const highlightTour = useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS);
-
-  const enabledFeatures = useMemo(() => ({
-    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearance,
-    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequest,
-    [LEARNER_CREDIT_COOKIE_NAME]: learnerCredit,
-    [HIGHLIGHTS_COOKIE_NAME]: highlightTour,
-  }), [browseAndRequest, highlightTour, learnerCredit, portalAppearance]);
-
-  const newFeatureTourCheckpoints = useMemo(() => ({
+  const enabledFeatures = {
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance }),
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal }),
+    [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour(),
+    [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS),
+  };
+  const newFeatureTourCheckpoints = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
       history,
@@ -62,22 +54,17 @@ const ProductTours = ({
       enterpriseSlug,
       history,
     }),
-  }), [enterpriseSlug, history]);
-
-  useEffect(() => {
-    if (tours.length === 0) {
-      const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
-      setTours([{
-        tourId: 'newFeatureTour',
-        advanceButtonText: 'Next',
-        dismissButtonText: 'Dismiss',
-        endButtonText: 'End',
-        enabled: checkpointsArray?.length > 0,
-        onEnd: () => disableAll(),
-        checkpoints: checkpointsArray,
-      }]);
-    }
-  }, [enabledFeatures, newFeatureTourCheckpoints, tours.length]);
+  };
+  const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
+  const tours = [{
+    tourId: 'newFeatureTour',
+    advanceButtonText: 'Next',
+    dismissButtonText: 'Dismiss',
+    endButtonText: 'End',
+    enabled: checkpointsArray?.length > 0,
+    onEnd: () => disableAll(),
+    checkpoints: checkpointsArray,
+  }];
 
   return (
     <ProductTour
