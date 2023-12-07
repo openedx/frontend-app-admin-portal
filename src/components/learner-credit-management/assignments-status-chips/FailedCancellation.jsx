@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Chip, useToggle, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
+import { getConfig } from '@edx/frontend-platform/config';
+
 import BaseModalPopup from './BaseModalPopup';
 
 const FailedCancellation = () => {
@@ -41,7 +43,7 @@ const FailedCancellation = () => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination="https://edx.org" target="_blank">
+                <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
                   Help Center: Course Assignments
                 </Hyperlink>
               </li>

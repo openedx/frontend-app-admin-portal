@@ -12,8 +12,9 @@ import {
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
-
 import { connect } from 'react-redux';
+import { getConfig } from '@edx/frontend-platform/config';
+
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy } from '../data';
@@ -196,7 +197,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
                 enterpriseId,
                 EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_HELP_CENTER,
               )}
-              destination="https://edx.org"
+              destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
               showLaunchIcon
               target="_blank"
             >
