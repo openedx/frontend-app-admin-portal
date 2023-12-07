@@ -44,7 +44,7 @@ const ProductTours = ({
     [LEARNER_CREDIT_COOKIE_NAME]: learnerCredit,
     [HIGHLIGHTS_COOKIE_NAME]: highlightTour,
   }), [browseAndRequest, highlightTour, learnerCredit, portalAppearance]);
-  console.log(enabledFeatures, 'step 1 product tour, enabledFeatures');
+
   const newFeatureTourCheckpoints = useMemo(() => ({
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
       enterpriseSlug,
@@ -63,7 +63,6 @@ const ProductTours = ({
       history,
     }),
   }), [enterpriseSlug, history]);
-  console.log(newFeatureTourCheckpoints, 'step 2 product tour, newFeatureTourCheckpoints');
 
   useEffect(() => {
     if (tours.length === 0) {

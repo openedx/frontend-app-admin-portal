@@ -18,8 +18,7 @@ export const useEnterpriseSubsidiesContext = ({
     enterpriseId,
     isTopDownAssignmentEnabled,
   });
-  console.log(isLoadingBudgets, isFetchingBudgets, budgetsOverview)
-  console.log(enablePortalLearnerCreditManagementScreen, enterpriseId, isTopDownAssignmentEnabled )
+
   const {
     budgets = [],
     canManageLearnerCredit = false,
