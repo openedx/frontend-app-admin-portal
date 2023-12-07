@@ -44,7 +44,7 @@ const SSOConfigConfirmStep = () => (
     <hr />
     <p>
       Select the <strong>&quot;Finish&quot;</strong> button below or close this form via the
-      <strong>&quot;X&quot;</strong> in the upper right corner while you wait for your
+      {' '}<strong>&quot;X&quot;</strong> in the upper right corner while you wait for your
       configuration email.  Your SSO testing status will display on the following SSO settings screen.
     </p>
   </>

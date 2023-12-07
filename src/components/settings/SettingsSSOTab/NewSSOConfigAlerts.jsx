@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  CheckCircle, Warning,
+  CheckCircle, Info, Warning,
 } from '@edx/paragon/icons';
-import { Alert } from '@edx/paragon';
+import { Alert, Button } from '@edx/paragon';
 import Cookies from 'universal-cookie';
+import { SSOConfigContext } from './SSOConfigContext';
 
 export const SSO_SETUP_COMPLETION_COOKIE_NAME = 'dismissed-sso-completion-alert';
 const SSO_ALERT_OVERRIDE_PARAM = 'sso_alert_override';
@@ -19,7 +20,19 @@ const NewSSOConfigAlerts = ({
   contactEmail,
   closeAlerts,
   enterpriseSlug,
+  timedOutConfigs,
+  erroredConfigs,
+  setIsStepperOpen,
 }) => {
+  const { setProviderConfig } = useContext(SSOConfigContext);
+
+  const configureOnClick = (config) => {
+    setProviderConfig(config);
+    setIsStepperOpen(true);
+  };
+  const onTimedOutConfigureClick = () => configureOnClick(timedOutConfigs[0]);
+  const onErroredConfigClick = () => configureOnClick(erroredConfigs[0]);
+
   const dismissSetupCompleteAlert = () => {
     ssoCookies.set(
       SSO_SETUP_COMPLETION_COOKIE_NAME,
@@ -32,13 +45,63 @@ const NewSSOConfigAlerts = ({
   const searchParams = new URLSearchParams(window.location.search);
   const dismissedSSOSetupCompletionCookie = ssoCookies.get(SSO_SETUP_COMPLETION_COOKIE_NAME) === 'true';
   const hideSSOLiveAlert = dismissedSSOSetupCompletionCookie && !searchParams.get(SSO_ALERT_OVERRIDE_PARAM);
+
+  const [showTimeoutAlert, setShowTimeoutAlert] = useState(true);
+  const [showErrorAlert, setShowErrorAlert] = useState(true);
+
+  if (timedOutConfigs.length >= 1) {
+    return (
+      <Alert
+        variant="danger"
+        icon={Info}
+        className="sso-alert-width"
+        actions={[
+          <Button data-testid="sso-timeout-alert-configure" onClick={onTimedOutConfigureClick}>Configure</Button>,
+        ]}
+        dismissible
+        show={showTimeoutAlert}
+        onClose={() => { setShowTimeoutAlert(false); }}
+        stacked
+      >
+        <Alert.Heading>SSO Configuration timed out</Alert.Heading>
+        <p>
+          Your SSO configuration failed due to an internal error. Please try again by selecting “Configure” below and
+          {' '}verifying your integration details. Then reconfigure, reauthorize, and test your connection.
+        </p>
+      </Alert>
+    );
+  }
+
+  if (erroredConfigs.length >= 1) {
+    return (
+      <Alert
+        variant="danger"
+        icon={Info}
+        className="sso-alert-width"
+        show={showErrorAlert}
+        actions={[
+          <Button data-testid="sso-errored-alert-configure" onClick={onErroredConfigClick}>Configure</Button>,
+        ]}
+        dismissible
+        onClose={() => { setShowErrorAlert(false); }}
+        stacked
+      >
+        <Alert.Heading>SSO Configuration failed</Alert.Heading>
+        <p>
+          Please verify integration details have been entered correctly. Select “Configure” below and verify your
+          {' '}integration details. Then reconfigure, reauthorize, and test your connection.
+        </p>
+      </Alert>
+    );
+  }
+
   return (
     <>
       {inProgressConfigs.length >= 1 && (
         <Alert
           variant="warning"
           icon={Warning}
-          className="ml-0 w-75"
+          className="ml-0 sso-alert-width"
           dismissible
           onClose={closeAlerts}
         >
@@ -53,21 +116,21 @@ const NewSSOConfigAlerts = ({
         <Alert
           variant="warning"
           icon={Warning}
-          className="ml-0 w-75"
+          className="ml-0 sso-alert-width"
           onClose={closeAlerts}
           dismissible
         >
           <Alert.Heading>You need to test your SSO connection</Alert.Heading>
           <p>
-            Your SSO configuration has completed,
+            Your SSO configuration has been completed,
             and you should have received an email with the following instructions:<br />
             <br />
-            1. Copy the URL for your learner Portal dashboard below:<br />
+            1: Copy the URL for your Learner Portal dashboard below:<br />
             <br />
             &emsp; http://courses.edx.org/dashboard?tpa_hint={enterpriseSlug}<br />
             <br />
             2: Launch a new incognito or private window and paste the copied URL into the URL bar to load your
-            learner Portal dashboard.<br />
+            Learner Portal dashboard.<br />
             <br />
             3: When prompted, enter login credentials supported by your IDP to test your connection to edX.<br />
             <br />
@@ -82,7 +145,7 @@ const NewSSOConfigAlerts = ({
         !hideSSOLiveAlert) && (
         <Alert
           variant="success"
-          className="ml-0 w-75"
+          className="ml-0 sso-alert-width"
           icon={CheckCircle}
           onClose={dismissSetupCompleteAlert}
           dismissible
@@ -105,6 +168,9 @@ NewSSOConfigAlerts.propTypes = {
   closeAlerts: PropTypes.func.isRequired,
   contactEmail: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  erroredConfigs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  timedOutConfigs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  setIsStepperOpen: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

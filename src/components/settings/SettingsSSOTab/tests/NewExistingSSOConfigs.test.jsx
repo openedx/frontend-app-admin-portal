@@ -40,6 +40,8 @@ const inactiveConfig = [
     configured_at: '2022-05-12T19:51:25Z',
     validated_at: '2022-06-12T19:51:25Z',
     submitted_at: '2022-04-12T19:51:25Z',
+    is_pending_configuration: false,
+    errored_at: null,
   },
 ];
 const activeConfig = [
@@ -51,6 +53,8 @@ const activeConfig = [
     configured_at: '2022-05-12T19:51:25Z',
     validated_at: '2022-06-12T19:51:25Z',
     submitted_at: '2022-04-12T19:51:25Z',
+    is_pending_configuration: false,
+    errored_at: null,
   },
 ];
 const unvalidatedConfig = [
@@ -62,6 +66,8 @@ const unvalidatedConfig = [
     configured_at: '2022-04-12T19:51:25Z',
     validated_at: null,
     submitted_at: '2022-04-12T19:51:25Z',
+    is_pending_configuration: false,
+    errored_at: null,
   },
 ];
 const inProgressConfig = [
@@ -73,6 +79,8 @@ const inProgressConfig = [
     configured_at: '2021-04-12T19:51:25Z',
     validated_at: null,
     submitted_at: '2022-04-12T19:51:25Z',
+    is_pending_configuration: true,
+    errored_at: null,
   },
 ];
 const notConfiguredConfig = [
@@ -84,6 +92,32 @@ const notConfiguredConfig = [
     configured_at: null,
     validated_at: null,
     submitted_at: '2022-04-12T19:51:25Z',
+    is_pending_configuration: true,
+    errored_at: null,
+  },
+];
+const timedOutConfig = [
+  {
+    uuid: 'ecc16800-c1cc-4cdb-93aa-186f71b026ca',
+    active: false,
+    modified: '2022-04-12T19:51:25Z',
+    configured_at: null,
+    validated_at: null,
+    submitted_at: '2022-04-12T19:51:25Z',
+    is_pending_configuration: false,
+    errored_at: null,
+  },
+];
+const erroredConfig = [
+  {
+    uuid: 'ecc16800-c1cc-4cdb-93aa-186f71b026ca',
+    active: false,
+    modified: null,
+    configured_at: null,
+    validated_at: null,
+    submitted_at: '2022-04-10T19:51:25Z',
+    is_pending_configuration: false,
+    errored_at: '2022-04-12T19:51:25Z',
   },
 ];
 
@@ -330,5 +364,39 @@ describe('New Existing SSO Configs tests', () => {
     setupNewExistingSSOConfigs(inProgressConfig);
     await waitFor(() => expect(spy).toHaveBeenCalledTimes(1));
     expect(mockSetPollingNetworkError).toHaveBeenCalledTimes(1);
+  });
+  test('detects timed out configs', async () => {
+    const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
+    spy.mockImplementation(() => Promise.resolve({
+      data: timedOutConfig,
+    }));
+    setupNewExistingSSOConfigs(timedOutConfig);
+    await waitFor(() => expect(
+      screen.queryByText(
+        'SSO Configuration timed out',
+      ),
+    ).toBeInTheDocument());
+    const button = screen.getByTestId('sso-timeout-alert-configure');
+    act(() => {
+      userEvent.click(button);
+    });
+    expect(mockSetProviderConfig).toHaveBeenCalledTimes(1);
+  });
+  test('detects errored configs', async () => {
+    const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
+    spy.mockImplementation(() => Promise.resolve({
+      data: erroredConfig,
+    }));
+    setupNewExistingSSOConfigs(erroredConfig);
+    await waitFor(() => expect(
+      screen.queryByText(
+        'SSO Configuration failed',
+      ),
+    ).toBeInTheDocument());
+    const button = screen.getByTestId('sso-errored-alert-configure');
+    act(() => {
+      userEvent.click(button);
+    });
+    expect(mockSetProviderConfig).toHaveBeenCalledTimes(1);
   });
 });

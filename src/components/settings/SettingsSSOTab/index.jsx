@@ -14,7 +14,7 @@ import NewSSOConfigForm from './NewSSOConfigForm';
 import { SSOConfigContext, SSOConfigContextProvider } from './SSOConfigContext';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { features } from '../../../config';
-import { isInProgressConfig } from './utils';
+import { isInProgressConfig, checkErroredOrTimedOutConfig } from './utils';
 
 const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const {
@@ -59,7 +59,9 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
 
   if (AUTH0_SELF_SERVICE_INTEGRATION) {
     const newButtonVisible = existingConfigs?.length > 0 && (providerConfig === null);
-    const newButtonDisabled = existingConfigs.some(isInProgressConfig);
+    const newButtonDisabled = existingConfigs.some(isInProgressConfig) && (
+      !existingConfigs.some(checkErroredOrTimedOutConfig)
+    );
     return (
       <div>
         <ModalDialog
