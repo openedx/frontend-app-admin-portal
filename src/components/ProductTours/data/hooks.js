@@ -9,9 +9,9 @@ import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 export const usePortalAppearanceTour = ({ enablePortalAppearance }) => {
-  const dismissedLearnerCreditTourCookie = global.localStorage.getItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME);
+  const dismissedPortalAppearanceTour = global.localStorage.getItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME);
   // Only show tour if feature is enabled, hide cookie is undefined or false or not in the settings page
-  const showPortalAppearanceTour = enablePortalAppearance && !dismissedLearnerCreditTourCookie;
+  const showPortalAppearanceTour = enablePortalAppearance && !dismissedPortalAppearanceTour;
   const [portalAppearanceTourEnabled, setPortalAppearanceTourEnabled] = useState(showPortalAppearanceTour);
   return [portalAppearanceTourEnabled, setPortalAppearanceTourEnabled];
 };
