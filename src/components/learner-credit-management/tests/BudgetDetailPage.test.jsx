@@ -127,6 +127,7 @@ const mockLearnerContentAssignment = {
   recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
   actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
   errorReason: null,
+  assignmentConfiguration: expect.any(Object),
 };
 const createMockLearnerContentAssignment = () => ({
   ...mockLearnerContentAssignment,
@@ -343,18 +344,23 @@ describe('<BudgetDetailPage />', () => {
     {
       subsidyAccessPolicy: null,
       subsidySummary: mockSubsidySummary,
+      enterpriseOfferMetadata: mockEnterpriseOfferMetadata,
       expected: {
         displayName: mockEnterpriseOfferMetadata.displayName,
-        spend: formatPrice(mockSubsidySummary.remainingBalance),
-        utilized: formatPrice(mockSubsidySummary.amountOfOfferSpent),
-        limit: formatPrice(mockSubsidySummary.maxDiscount),
+        spend: formatPrice(mockSubsidySummary.remainingFunds),
+        utilized: formatPrice(mockSubsidySummary.redeemedFunds),
+        limit: formatPrice(mockSubsidySummary.totalFunds),
         allocated: formatPrice(0),
-        redeemed: formatPrice(mockSubsidySummary.amountOfOfferSpent),
+        redeemed: formatPrice(mockSubsidySummary.redeemedFunds),
       },
       isLoading: false,
     },
   ])('render budget banner data (%s)', async ({
-    subsidyAccessPolicy, subsidySummary, expected, isLoading,
+    subsidyAccessPolicy,
+    subsidySummary,
+    enterpriseOfferMetadata,
+    expected,
+    isLoading,
   }) => {
     useParams.mockReturnValue({
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
@@ -378,7 +384,7 @@ describe('<BudgetDetailPage />', () => {
     });
     useEnterpriseOffer.mockReturnValue({
       isLoading: false,
-      data: mockEnterpriseOfferMetadata,
+      data: enterpriseOfferMetadata,
     });
     useBudgetRedemptions.mockReturnValue({
       isLoading: false,
@@ -415,7 +421,7 @@ describe('<BudgetDetailPage />', () => {
       }
     }
 
-    if ((subsidySummary || subsidySummary) && !isLoading) {
+    if ((subsidyAccessPolicy || subsidySummary) && !isLoading) {
       expect(screen.getByText(expected.displayName, { selector: 'h2' }));
 
       expect(screen.getByTestId('budget-detail-available')).toHaveTextContent(expected.spend);

@@ -105,7 +105,9 @@ const useBudgetRedemptions = (
 
         setBudgetRedemptions({
           itemCount: data.count,
-          pageCount: data.numPages,
+          // If the data comes from the subsidy transactions endpoint, the number of pages is calculated
+          // TODO: https://2u-internal.atlassian.net/browse/ENT-8106
+          pageCount: data.numPages ?? Math.floor(data.count / options.pageSize),
           results: transformedTableResults,
         });
         if (shouldTrackFetchEvents.current) {

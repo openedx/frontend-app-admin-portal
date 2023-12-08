@@ -1,22 +1,28 @@
 import React from 'react';
 import { Skeleton, Stack } from '@edx/paragon';
 
-import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import { useBudgetId, useEnterpriseOffer, useSubsidyAccessPolicy } from './data';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailPageWrapper from './BudgetDetailPageWrapper';
 import BudgetDetailPageHeader from './BudgetDetailPageHeader';
 import NotFoundPage from '../NotFoundPage';
 
 const BudgetDetailPage = () => {
-  const { subsidyAccessPolicyId } = useBudgetId();
+  const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const {
     data: subsidyAccessPolicy,
     isInitialLoading: isSubsidyAccessPolicyInitialLoading,
     isError: isSubsidyAccessPolicyError,
     error,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const {
+    data: enterpriseOffer,
+    isInitialLoading: isEnterpriseOfferInitialLoading,
+  } = useEnterpriseOffer(enterpriseOfferId);
 
-  if (isSubsidyAccessPolicyInitialLoading) {
+  const isLoading = isSubsidyAccessPolicyInitialLoading || isEnterpriseOfferInitialLoading;
+
+  if (isLoading) {
     return (
       <BudgetDetailPageWrapper includeHero={false}>
         <Skeleton height={25} />
@@ -35,7 +41,10 @@ const BudgetDetailPage = () => {
   }
 
   return (
-    <BudgetDetailPageWrapper subsidyAccessPolicy={subsidyAccessPolicy}>
+    <BudgetDetailPageWrapper
+      subsidyAccessPolicy={subsidyAccessPolicy}
+      enterpriseOffer={enterpriseOffer}
+    >
       <Stack gap={4}>
         <BudgetDetailPageHeader />
         <BudgetDetailTabsAndRoutes />

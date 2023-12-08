@@ -39,14 +39,15 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
       <h3 className="mb-3" ref={spentHeadingRef}>Spent</h3>
       <p className="small mb-4">
         Spent activity is driven by completed enrollments.{' '}
-        <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
-          Learn more
-        </Hyperlink>
-        {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) && (
+        {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) ? (
           <>
             Enrollment data is automatically updated every 12 hours.
             Come back later to view more recent enrollments.
           </>
+        ) : (
+          <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+            Learn more
+          </Hyperlink>
         )}
       </p>
       <LearnerCreditAllocationTable
