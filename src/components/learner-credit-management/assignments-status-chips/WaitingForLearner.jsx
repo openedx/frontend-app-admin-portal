@@ -6,17 +6,22 @@ import { Timelapse } from '@edx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
 import { ASSIGNMENT_ENROLLMENT_DEADLINE } from '../data';
 
-const WaitingForLearner = ({ learnerEmail }) => {
+const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+
+  const openChipModal = () => {
+    open();
+    trackEvent();
+  };
 
   return (
     <>
       <Chip
         ref={setTarget}
         iconBefore={Timelapse}
-        onClick={open}
-        onKeyPress={open}
+        onClick={openChipModal}
+        onKeyPress={openChipModal}
         tabIndex={0}
       >
         Waiting for learner
@@ -52,6 +57,7 @@ const WaitingForLearner = ({ learnerEmail }) => {
 
 WaitingForLearner.propTypes = {
   learnerEmail: PropTypes.string,
+  trackEvent: PropTypes.func.isRequired,
 };
 
 export default WaitingForLearner;

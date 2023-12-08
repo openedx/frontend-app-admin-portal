@@ -4,17 +4,22 @@ import { Chip, useToggle } from '@edx/paragon';
 import { Send } from '@edx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
 
-const NotifyingLearner = ({ learnerEmail }) => {
+const NotifyingLearner = ({ learnerEmail, trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+
+  const openChipModal = () => {
+    open();
+    trackEvent();
+  };
 
   return (
     <>
       <Chip
         ref={setTarget}
         iconBefore={Send}
-        onClick={open}
-        onKeyPress={open}
+        onClick={openChipModal}
+        onKeyPress={openChipModal}
         tabIndex={0}
       >
         Notifying learner
@@ -40,6 +45,7 @@ const NotifyingLearner = ({ learnerEmail }) => {
 
 NotifyingLearner.propTypes = {
   learnerEmail: PropTypes.string,
+  trackEvent: PropTypes.func.isRequired,
 };
 
 export default NotifyingLearner;

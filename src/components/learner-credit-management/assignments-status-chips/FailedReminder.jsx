@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Chip, useToggle, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
 
-const FailedReminder = () => {
+const FailedReminder = ({ trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+
+  const openChipModal = () => {
+    open();
+    trackEvent();
+  };
 
   return (
     <>
       <Chip
         disabled={false}
         iconBefore={Error}
-        onClick={open}
-        onKeyPress={open}
+        onClick={openChipModal}
+        onKeyPress={openChipModal}
         ref={setTarget}
         tabIndex={0}
         variant="light"
@@ -51,6 +57,10 @@ const FailedReminder = () => {
       </BaseModalPopup>
     </>
   );
+};
+
+FailedReminder.propTypes = {
+  trackEvent: PropTypes.func.isRequired,
 };
 
 export default FailedReminder;

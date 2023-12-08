@@ -5,17 +5,22 @@ import { Error } from '@edx/paragon/icons';
 
 import BaseModalPopup from './BaseModalPopup';
 
-const FailedBadEmail = ({ learnerEmail }) => {
+const FailedBadEmail = ({ learnerEmail, trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+
+  const openChipModal = () => {
+    open();
+    trackEvent();
+  };
 
   return (
     <>
       <Chip
         ref={setTarget}
         iconBefore={Error}
-        onClick={open}
-        onKeyPress={open}
+        onClick={openChipModal}
+        onKeyPress={openChipModal}
         tabIndex={0}
       >
         Failed: Bad email
@@ -54,6 +59,7 @@ const FailedBadEmail = ({ learnerEmail }) => {
 
 FailedBadEmail.propTypes = {
   learnerEmail: PropTypes.string,
+  trackEvent: PropTypes.func.isRequired,
 };
 
 FailedBadEmail.defaultProps = {

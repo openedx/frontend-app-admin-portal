@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Chip, Hyperlink, useToggle } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 
 import BaseModalPopup from './BaseModalPopup';
 
-const FailedSystem = () => {
+const FailedSystem = ({ trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+
+  const openChipModal = () => {
+    open();
+    trackEvent();
+  };
 
   return (
     <>
       <Chip
         ref={setTarget}
         iconBefore={Error}
-        onClick={open}
-        onKeyPress={open}
+        onClick={openChipModal}
+        onKeyPress={openChipModal}
         tabIndex={0}
       >
         Failed: System
@@ -47,6 +54,10 @@ const FailedSystem = () => {
       </BaseModalPopup>
     </>
   );
+};
+
+FailedSystem.propTypes = {
+  trackEvent: PropTypes.func.isRequired,
 };
 
 export default FailedSystem;
