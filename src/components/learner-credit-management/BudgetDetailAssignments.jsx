@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Hyperlink } from '@edx/paragon';
+import { getConfig } from '@edx/frontend-platform/config';
 
 import { useHistory } from 'react-router-dom';
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
@@ -57,7 +59,10 @@ const BudgetDetailAssignments = ({
       <h3 className="mb-3" ref={assignedHeadingRef}>Assigned</h3>
       <p className="small mb-4">
         Assigned activity earmarks funds in your budget so you can&apos;t overspend. For funds to move
-        from assigned to spent, your learners must complete enrollment.
+        from assigned to spent, your learners must complete enrollment.{' '}
+        <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+          Learn more
+        </Hyperlink>
       </p>
       <BudgetAssignmentsTable
         isLoading={isLoading}

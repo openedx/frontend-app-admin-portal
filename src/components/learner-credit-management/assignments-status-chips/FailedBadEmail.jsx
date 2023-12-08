@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Chip, Hyperlink, useToggle } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
+import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
 
@@ -40,7 +41,7 @@ const FailedBadEmail = ({ learnerEmail }) => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination="https://edx.org" target="_blank">
+                <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
                   Help Center: Course Assignments
                 </Hyperlink>.
               </li>

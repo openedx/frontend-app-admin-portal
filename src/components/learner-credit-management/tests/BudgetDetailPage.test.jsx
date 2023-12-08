@@ -1043,6 +1043,15 @@ describe('<BudgetDetailPage />', () => {
     {
       learnerState: 'failed',
       hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: System',
+      expectedModalPopupHeading: 'Failed: System',
+      expectedModalPopupContent: 'Something went wrong behind the scenes.',
+      actions: [mockFailedLinkedLearnerAction],
+      errorReason: null,
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
       expectedChipStatus: 'Failed: Cancellation',
       expectedModalPopupHeading: 'Failed: Cancellation',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',

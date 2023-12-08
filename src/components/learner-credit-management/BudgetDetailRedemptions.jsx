@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Hyperlink } from '@edx/paragon';
+import { getConfig } from '@edx/frontend-platform/config';
 
 import { useHistory } from 'react-router';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
@@ -36,7 +38,10 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     <section>
       <h3 className="mb-3" ref={spentHeadingRef}>Spent</h3>
       <p className="small mb-4">
-        Spent activity is driven by completed enrollments.
+        Spent activity is driven by completed enrollments.{' '}
+        <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+          Learn more
+        </Hyperlink>
         {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) && (
           <>
             Enrollment data is automatically updated every 12 hours.
