@@ -22,11 +22,6 @@ const AssignmentStatusTableCell = ({ row }) => {
     return null;
   }
 
-  // If learnerState is failed but no error reason is defined, return a failed system chip.
-  if (learnerState === 'failed' && !errorReason) {
-    return <FailedSystem />;
-  }
-
   // Display the appropriate status chip based on the learner state.
   if (learnerState === 'notifying') {
     return (
@@ -41,6 +36,10 @@ const AssignmentStatusTableCell = ({ row }) => {
   }
 
   if (learnerState === 'failed') {
+    // If learnerState is failed but no error reason is defined, return a failed system chip.
+    if (!errorReason) {
+      return <FailedSystem />;
+    }
     // Determine which failure chip to display based on the error reason.
     if (errorReason.actionType === 'notified') {
       if (errorReason.errorReason === 'email_error') {
