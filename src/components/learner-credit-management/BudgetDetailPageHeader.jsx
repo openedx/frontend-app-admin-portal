@@ -28,14 +28,7 @@ const BudgetStatusBadge = ({
   </Stack>
 );
 
-BudgetStatusBadge.propTypes = {
-  badgeVariant: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-  term: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
-};
-
-const BudgetDetailPageHeader = ({ enterpriseUUID }) => {
+const BudgetDetailPageHeader = ({ enterpriseUUID, enterpriseFeatures }) => {
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
   const budgetType = (enterpriseOfferId !== null) ? BUDGET_TYPES.ecommerce : BUDGET_TYPES.policy;
 
@@ -64,6 +57,7 @@ const BudgetDetailPageHeader = ({ enterpriseUUID }) => {
     subsidySummary,
     budgetId: policyOrOfferId,
     enterpriseOfferMetadata,
+    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
   if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer)) {
@@ -101,10 +95,21 @@ const BudgetDetailPageHeader = ({ enterpriseUUID }) => {
 
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 BudgetDetailPageHeader.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
+};
+
+BudgetStatusBadge.propTypes = {
+  badgeVariant: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  term: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailPageHeader);

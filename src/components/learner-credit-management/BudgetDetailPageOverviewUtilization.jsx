@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Stack, Collapsible, Row, Col, Button,
 } from '@edx/paragon';
@@ -10,19 +11,18 @@ import {
 } from 'react-router-dom';
 import { formatPrice } from './data';
 
-const BudgetDetailPageOverviewUtilization = (
-  {
-    budgetId,
-    budgetTotalSummary: { utilized },
-    budgetAggregates,
-    isAssignable,
-  },
-) => {
+const BudgetDetailPageOverviewUtilization = ({
+  budgetId,
+  budgetTotalSummary: { utilized },
+  budgetAggregates,
+  isAssignable,
+  enterpriseFeatures,
+}) => {
   const routeMatch = useRouteMatch();
 
   const { amountAllocatedUsd, amountRedeemedUsd } = budgetAggregates;
 
-  if (budgetId === null || utilized <= 0 || !isAssignable) {
+  if (!budgetId || !enterpriseFeatures.topDownAssignmentRealTimeLcm || utilized <= 0 || !isAssignable) {
     return null;
   }
 
@@ -74,12 +74,10 @@ const BudgetDetailPageOverviewUtilization = (
                       {formatPrice(amountAllocatedUsd)}
                     </Col>
                     <Col xl={7} className="text-right">
-                      {
-                        renderActivityLink({
-                          amount: amountAllocatedUsd,
-                          type: 'assigned',
-                        })
-                      }
+                      {renderActivityLink({
+                        amount: amountAllocatedUsd,
+                        type: 'assigned',
+                      })}
                     </Col>
                   </Row>
                   <Row>
@@ -88,12 +86,10 @@ const BudgetDetailPageOverviewUtilization = (
                       {formatPrice(amountRedeemedUsd)}
                     </Col>
                     <Col xl={7} lg={7} className="text-right">
-                      {
-                        renderActivityLink({
-                          amount: amountRedeemedUsd,
-                          type: 'spent',
-                        })
-                      }
+                      {renderActivityLink({
+                        amount: amountRedeemedUsd,
+                        type: 'spent',
+                      })}
                     </Col>
                   </Row>
                 </Stack>
@@ -122,6 +118,13 @@ BudgetDetailPageOverviewUtilization.propTypes = {
   budgetTotalSummary: PropTypes.shape(budgetTotalSummaryShape).isRequired,
   budgetAggregates: PropTypes.shape(budgetAggregatesShape).isRequired,
   isAssignable: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
 };
 
-export default BudgetDetailPageOverviewUtilization;
+const mapStateToProps = state => ({
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+});
+
+export default connect(mapStateToProps)(BudgetDetailPageOverviewUtilization);

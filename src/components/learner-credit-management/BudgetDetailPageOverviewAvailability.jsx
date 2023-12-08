@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 import {
   Button, Col, Hyperlink, ProgressBar, Row, Stack, useMediaQuery, breakpoints,
 } from '@edx/paragon';
@@ -49,7 +50,7 @@ const BudgetActions = ({ budgetId, isAssignable }) => {
         <div>
           <h4>Get people learning using this budget</h4>
           <p>
-            Funds from this budget are set to autoallocate to registered learners based on
+            Funds from this budget are set to auto-allocate to registered learners based on
             settings configured with your support team.
           </p>
           <Button variant="outline-primary" as={Hyperlink} destination={supportUrl} target="_blank">
@@ -86,13 +87,12 @@ BudgetActions.propTypes = {
   isAssignable: PropTypes.bool.isRequired,
 };
 
-const BudgetDetailPageOverviewAvailability = (
-  {
-    budgetId,
-    isAssignable,
-    budgetTotalSummary: { available, utilized, limit },
-  },
-) => (
+const BudgetDetailPageOverviewAvailability = ({
+  budgetId,
+  isAssignable,
+  budgetTotalSummary: { available, utilized, limit },
+  enterpriseFeatures,
+}) => (
   <Stack className="mt-4">
     <Row>
       <Col lg={7}>
@@ -101,7 +101,7 @@ const BudgetDetailPageOverviewAvailability = (
       <Col lg={5}>
         <BudgetActions
           budgetId={budgetId}
-          isAssignable={isAssignable}
+          isAssignable={isAssignable && enterpriseFeatures.topDownAssignmentRealTimeLcm}
         />
       </Col>
     </Row>
@@ -118,6 +118,13 @@ BudgetDetailPageOverviewAvailability.propTypes = {
   budgetId: PropTypes.string.isRequired,
   budgetTotalSummary: PropTypes.shape(budgetTotalSummaryShape).isRequired,
   isAssignable: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
 };
 
-export default BudgetDetailPageOverviewAvailability;
+const mapStateToProps = state => ({
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+});
+
+export default connect(mapStateToProps)(BudgetDetailPageOverviewAvailability);
