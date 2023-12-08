@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {
-  Button, Col, Hyperlink, ProgressBar, Row, Stack,
+  Button, Col, Hyperlink, ProgressBar, Row, Stack, useMediaQuery, breakpoints,
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
 import { generatePath, useRouteMatch, Link } from 'react-router-dom';
@@ -40,9 +41,11 @@ const BudgetActions = ({ budgetId, isAssignable }) => {
   const routeMatch = useRouteMatch();
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
+  const isLargeScreenOrGreater = useMediaQuery({ query: `(min-width: ${breakpoints.small.minWidth}px)` });
+
   if (!isAssignable) {
     return (
-      <div className="h-100 d-flex align-items-center p-4 py-lg-0">
+      <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
         <div>
           <h4>Get people learning using this budget</h4>
           <p>
@@ -58,8 +61,8 @@ const BudgetActions = ({ budgetId, isAssignable }) => {
   }
 
   return (
-    <div className="d-flex justify-content-center p-4">
-      <div className="text-center">
+    <div className="h-100 d-flex align-items-center justify-content-center pt-4 pt-lg-0">
+      <div className={classNames({ 'text-center': isLargeScreenOrGreater })}>
         <h4>Get people learning using this budget</h4>
         <Button
           variant="brand"

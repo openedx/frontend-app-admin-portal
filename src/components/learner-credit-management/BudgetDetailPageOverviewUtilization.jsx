@@ -67,7 +67,7 @@ const BudgetDetailPageOverviewUtilization = (
                   Your total utilization includes both assigned funds (earmarked for future enrollment) and spent
                   funds (redeemed for enrollment).
                 </p>
-                <Stack className="small font-weight-bold">
+                <Stack className="small">
                   <Row>
                     <Col xl={3} className="mt-auto mb-auto">Amount assigned</Col>
                     <Col className="mt-auto mb-auto text-right" data-testid="budget-utilization-assigned">

@@ -94,31 +94,18 @@ export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
 };
 
 export const mockSubsidySummary = {
-  offerId: '84014',
-  budgets: [],
-  enterpriseCustomerUuid: '852eac48-b5a9-4849-8490-743f3f2deabf',
-  enterpriseName: 'Executive Education (2U) Integration QA',
-  sumAmountLearnerPaid: 0.0,
-  sumCoursePrice: 0.0,
-  status: 'Open',
+  budgetsSummary: [],
+  offerId: '1234',
   offerType: 'Site',
-  dateCreated: '2022-09-23T12:37:32Z',
-  emailsForUsageAlert: '',
-  discountType: 'percent_discount',
-  discountValue: 100.0,
-  maxDiscount: 50000.0,
-  totalDiscountEcommerce: 42024.0,
-  amountOfOfferSpent: 0.0,
-  percentOfOfferSpent: 0.0,
-  remainingBalance: 50000.0,
-  amountOfferSpentOcm: 0.0,
-  amountOfferSpentExecEd: 0.0,
-  exportTimestamp: '2023-12-04T06:47:54Z',
+  percentUtilized: 0.5,
+  redeemedFunds: 500,
+  remainingFunds: 500,
+  totalFunds: 1000,
 };
 
 export const mockEnterpriseOfferMetadata = {
   id: 99511,
   startDatetime: '2022-09-01T00:00:00Z',
   endDatetime: '2024-09-01T00:00:00Z',
-  displayName: 'Test enterprise',
+  displayName: 'Test Display Name',
 };

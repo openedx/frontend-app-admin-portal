@@ -1,20 +1,26 @@
 import { getBudgetStatus } from '../utils';
 
-const transformSubsidySummaryToPolicy = (subsidySummary, metadata) => {
-  if (!subsidySummary) { return null; }
+const transformSubsidySummaryToPolicy = (subsidySummary, enterpriseOfferMetadata) => {
+  // Check whether Enterprise Offer metadata is still fetching from the ecommerce API
+  if (!enterpriseOfferMetadata) {
+    return null;
+  }
 
-  return {
-    displayName: metadata.displayName,
-    subsidyActiveDatetime: metadata.startDatetime,
-    subsidyExpirationDatetime: metadata.endDatetime,
-    aggregates: {
-      spendAvailableUsd: subsidySummary.remainingBalance,
-      amountAllocatedUsd: 0,
-      amountRedeemedUsd: subsidySummary.amountOfOfferSpent,
-    },
-    spendLimit: subsidySummary.maxDiscount * 100,
+  const transformedData = {
+    displayName: enterpriseOfferMetadata.displayName,
+    subsidyActiveDatetime: enterpriseOfferMetadata.startDatetime,
+    subsidyExpirationDatetime: enterpriseOfferMetadata.endDatetime,
     isAssignable: false,
   };
+  if (subsidySummary) {
+    transformedData.spendLimit = subsidySummary.totalFunds * 100;
+    transformedData.aggregates = {
+      spendAvailableUsd: subsidySummary.remainingFunds,
+      amountAllocatedUsd: 0,
+      amountRedeemedUsd: subsidySummary.redeemedFunds,
+    };
+  }
+  return transformedData;
 };
 
 const assignBudgetStatus = (policy) => {
@@ -31,6 +37,10 @@ const assignBudgetStatus = (policy) => {
 };
 
 const assignBudgetDetails = (policy) => {
+  if (!policy.aggregates) {
+    return {};
+  }
+
   const { spendAvailableUsd, amountAllocatedUsd, amountRedeemedUsd } = policy.aggregates;
 
   const available = spendAvailableUsd;
@@ -43,31 +53,30 @@ const assignBudgetDetails = (policy) => {
 };
 
 const useBudgetDetailHeaderData = ({
-  subsidyAccessPolicy, subsidySummary, budgetId, enterpriseOfferMetadata,
+  subsidyAccessPolicy,
+  subsidySummary,
+  budgetId,
+  enterpriseOfferMetadata,
 }) => {
   const policy = subsidyAccessPolicy || transformSubsidySummaryToPolicy(subsidySummary, enterpriseOfferMetadata);
 
-  if (policy == null) {
-    return {};
-  }
-
-  const defaultData = {
+  const transformedPolicyData = {
     budgetId,
     budgetTotalSummary: {
       available: 0,
       utilized: 0,
       limit: 0,
     },
-    budgetAggregates: policy.aggregates || {},
-    isAssignable: policy.isAssignable || false,
-    budgetDisplayName: policy.displayName || 'Overview',
+    budgetAggregates: policy?.aggregates || {},
+    isAssignable: policy?.isAssignable || false,
+    budgetDisplayName: policy?.displayName || 'Overview',
   };
 
-  return {
-    ...defaultData,
-    ...assignBudgetStatus(policy),
-    ...assignBudgetDetails(policy),
-  };
+  if (policy) {
+    Object.assign(transformedPolicyData, assignBudgetStatus(policy));
+    Object.assign(transformedPolicyData, assignBudgetDetails(policy));
+  }
+  return transformedPolicyData;
 };
 
 export default useBudgetDetailHeaderData;

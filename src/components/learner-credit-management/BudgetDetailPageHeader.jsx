@@ -75,10 +75,6 @@ const BudgetDetailPageHeader = ({ enterpriseUUID }) => {
     );
   }
 
-  if (subsidyAccessPolicy === null && subsidySummary === null) {
-    return null;
-  }
-
   return (
     <Stack gap={2}>
       <BudgetDetailPageBreadcrumbs budgetDisplayName={budgetDisplayName} />
