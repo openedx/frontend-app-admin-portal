@@ -1,4 +1,3 @@
-import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
 
@@ -19,6 +18,7 @@ const CatalogSearch = () => {
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const searchFilters = `enterprise_catalog_uuids:${ENABLE_TESTING(subsidyAccessPolicy.catalogUuid)} AND content_type:course`;
   const displayName = subsidyAccessPolicy.displayName ? `${subsidyAccessPolicy.displayName} catalog` : 'Overview';
+
   return (
     <section>
       <FormattedMessage

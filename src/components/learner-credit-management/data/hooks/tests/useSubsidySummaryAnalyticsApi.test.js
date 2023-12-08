@@ -88,7 +88,8 @@ describe('useSubsidySummaryAnalyticsApi', () => {
       waitForNextUpdate,
     } = renderHook(() => useSubsidySummaryAnalyticsApi(
       TEST_ENTERPRISE_UUID,
-      mockBudget,
+      mockBudget.id,
+      mockBudget.source,
     ));
 
     if (shouldCallApi) {

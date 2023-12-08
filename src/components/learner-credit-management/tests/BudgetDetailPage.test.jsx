@@ -21,17 +21,24 @@ import {
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
   useIsLargeOrGreater,
+  useSubsidySummaryAnalyticsApi,
+  useEnterpriseOffer,
   formatDate,
+  formatPrice,
   DEFAULT_PAGE,
   PAGE_SIZE,
-  formatPrice,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
   mockAssignableSubsidyAccessPolicy,
+  mockAssignableSubsidyAccessPolicyWithNoUtilization,
   mockPerLearnerSpendLimitSubsidyAccessPolicy,
   mockSubsidyAccessPolicyUUID,
   mockEnterpriseOfferId,
+  mockSubsidySummary,
+  mockEnterpriseOfferMetadata,
+  mockAssignableSubsidyAccessPolicyWithSpendNoAllocations,
+  mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
 
@@ -50,6 +57,8 @@ jest.mock('../data', () => ({
   useBudgetRedemptions: jest.fn(),
   useBudgetContentAssignments: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
+  useSubsidySummaryAnalyticsApi: jest.fn(),
+  useEnterpriseOffer: jest.fn(),
   useBudgetDetailActivityOverview: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useCancelContentAssignments: jest.fn(),
@@ -183,6 +192,16 @@ const BudgetDetailPageWrapper = ({
 describe('<BudgetDetailPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: {},
+    });
+
+    useEnterpriseOffer.mockReturnValue({
+      isLoading: false,
+      data: {},
+    });
   });
 
   it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
@@ -219,6 +238,7 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
     });
+
     const expectedDisplayName = displayName || 'Overview';
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -228,6 +248,180 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText(expectedDisplayName, { selector: 'li' }));
     // Page heading
     expect(screen.getByText(expectedDisplayName, { selector: 'h2' }));
+  });
+
+  it.each([
+    {
+      subsidyAccessPolicy: null,
+      subsidySummary: null,
+      expected: null,
+      isLoading: true,
+    },
+    {
+      subsidyAccessPolicy: null,
+      subsidySummary: null,
+      expected: null,
+      isLoading: false,
+    },
+    {
+      subsidyAccessPolicy: mockAssignableSubsidyAccessPolicy,
+      subsidySummary: null,
+      expected: {
+        displayName: mockAssignableSubsidyAccessPolicy.displayName,
+        spend: formatPrice(mockAssignableSubsidyAccessPolicy.aggregates.spendAvailableUsd),
+        utilized: formatPrice(
+          mockAssignableSubsidyAccessPolicy.aggregates.amountAllocatedUsd
+          + mockAssignableSubsidyAccessPolicy.aggregates.amountRedeemedUsd,
+        ),
+        limit: formatPrice(mockAssignableSubsidyAccessPolicy.spendLimit / 100),
+        allocated: formatPrice(mockAssignableSubsidyAccessPolicy.aggregates.amountAllocatedUsd),
+        redeemed: formatPrice(mockAssignableSubsidyAccessPolicy.aggregates.amountRedeemedUsd),
+      },
+      isLoading: false,
+    },
+    {
+      subsidyAccessPolicy: mockAssignableSubsidyAccessPolicyWithNoUtilization,
+      subsidySummary: null,
+      expected: {
+        displayName: mockAssignableSubsidyAccessPolicyWithNoUtilization.displayName,
+        spend: formatPrice(mockAssignableSubsidyAccessPolicyWithNoUtilization.aggregates.spendAvailableUsd),
+        utilized: formatPrice(
+          mockAssignableSubsidyAccessPolicyWithNoUtilization.aggregates.amountAllocatedUsd
+          + mockAssignableSubsidyAccessPolicyWithNoUtilization.aggregates.amountRedeemedUsd,
+        ),
+        limit: formatPrice(mockAssignableSubsidyAccessPolicyWithNoUtilization.spendLimit / 100),
+        allocated: formatPrice(mockAssignableSubsidyAccessPolicyWithNoUtilization.aggregates.amountAllocatedUsd),
+        redeemed: formatPrice(mockAssignableSubsidyAccessPolicyWithNoUtilization.aggregates.amountRedeemedUsd),
+      },
+      isLoading: false,
+    },
+    {
+      subsidyAccessPolicy: mockAssignableSubsidyAccessPolicyWithSpendNoAllocations,
+      subsidySummary: null,
+      expected: {
+        displayName: mockAssignableSubsidyAccessPolicyWithSpendNoAllocations.displayName,
+        spend: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoAllocations.aggregates.spendAvailableUsd),
+        utilized: formatPrice(
+          mockAssignableSubsidyAccessPolicyWithSpendNoAllocations.aggregates.amountAllocatedUsd
+          + mockAssignableSubsidyAccessPolicyWithSpendNoAllocations.aggregates.amountRedeemedUsd,
+        ),
+        limit: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoAllocations.spendLimit / 100),
+        allocated: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoAllocations.aggregates.amountAllocatedUsd),
+        redeemed: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoAllocations.aggregates.amountRedeemedUsd),
+      },
+      isLoading: false,
+    },
+    {
+      subsidyAccessPolicy: mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed,
+      subsidySummary: null,
+      expected: {
+        displayName: mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed.displayName,
+        spend: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed.aggregates.spendAvailableUsd),
+        utilized: formatPrice(
+          mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed.aggregates.amountAllocatedUsd
+          + mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed.aggregates.amountRedeemedUsd,
+        ),
+        limit: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed.spendLimit / 100),
+        allocated: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed.aggregates.amountAllocatedUsd),
+        redeemed: formatPrice(mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed.aggregates.amountRedeemedUsd),
+      },
+      isLoading: false,
+    },
+    {
+      subsidyAccessPolicy: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+      subsidySummary: null,
+      expected: {
+        displayName: mockPerLearnerSpendLimitSubsidyAccessPolicy.displayName,
+        spend: formatPrice(mockPerLearnerSpendLimitSubsidyAccessPolicy.aggregates.spendAvailableUsd),
+        utilized: formatPrice(mockPerLearnerSpendLimitSubsidyAccessPolicy.aggregates.amountRedeemedUsd),
+        limit: formatPrice(mockPerLearnerSpendLimitSubsidyAccessPolicy.spendLimit / 100),
+        allocated: formatPrice(mockPerLearnerSpendLimitSubsidyAccessPolicy.aggregates.amountAllocatedUsd),
+        redeemed: formatPrice(mockPerLearnerSpendLimitSubsidyAccessPolicy.aggregates.amountRedeemedUsd),
+      },
+      isLoading: false,
+    },
+    {
+      subsidyAccessPolicy: null,
+      subsidySummary: mockSubsidySummary,
+      expected: {
+        displayName: mockEnterpriseOfferMetadata.displayName,
+        spend: formatPrice(mockSubsidySummary.remainingBalance),
+        utilized: formatPrice(mockSubsidySummary.amountOfOfferSpent),
+        limit: formatPrice(mockSubsidySummary.maxDiscount),
+        allocated: formatPrice(0),
+        redeemed: formatPrice(mockSubsidySummary.amountOfOfferSpent),
+      },
+      isLoading: false,
+    },
+  ])('render budget banner data (%s)', async ({
+    subsidyAccessPolicy, subsidySummary, expected, isLoading,
+  }) => {
+    useParams.mockReturnValue({
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      isLoading,
+      data: subsidyAccessPolicy,
+    });
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading,
+      subsidySummary,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    useEnterpriseOffer.mockReturnValue({
+      isLoading: false,
+      data: mockEnterpriseOfferMetadata,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    if (isLoading) {
+      expect(screen.getByTestId('budget-detail-skeleton'));
+    }
+
+    if (subsidyAccessPolicy?.isAssignable) {
+      const redeemed = subsidyAccessPolicy.aggregates.amountRedeemedUsd;
+      const allocated = subsidyAccessPolicy.aggregates.amountAllocatedUsd;
+
+      const utilized = redeemed + allocated;
+
+      if (utilized > 0) {
+        userEvent.click(screen.getByText('Utilization details'));
+
+        expect(screen.getByTestId('budget-utilization-amount')).toHaveTextContent(expected.utilized);
+        expect(screen.getByTestId('budget-utilization-assigned')).toHaveTextContent(expected.allocated);
+        expect(screen.getByTestId('budget-utilization-spent')).toHaveTextContent(expected.redeemed);
+
+        if (allocated <= 0) {
+          expect(screen.queryByText('View assigned activity')).not.toBeInTheDocument();
+        }
+
+        if (redeemed <= 0) {
+          expect(screen.queryByText('View spent activity')).not.toBeInTheDocument();
+        }
+      }
+    }
+
+    if ((subsidySummary || subsidySummary) && !isLoading) {
+      expect(screen.getByText(expected.displayName, { selector: 'h2' }));
+
+      expect(screen.getByTestId('budget-detail-available')).toHaveTextContent(expected.spend);
+      expect(screen.getByTestId('budget-detail-utilized')).toHaveTextContent(`Utilized ${expected.utilized}`);
+      expect(screen.getByTestId('budget-detail-limit')).toHaveTextContent(expected.limit);
+    }
   });
 
   it.each([

@@ -14,15 +14,14 @@
     // `Card.Footer` when the `Card` is in the horizontal orientation.
     .assign-more-courses-empty-state-minimal {
       .assign-more-courses__card-body {
-          flex: 3;
+        flex: 3;
       }
       .assign-more-courses__card-footer {
-          flex: 1;
+        flex: 1;
       }
     }
   }
 }
-
 
 // Must be defined outside of `.learner-credit-management` to ensure the styles are applied to the contents of
 // the `FullscreenModal`, which renders in a React Portal.
