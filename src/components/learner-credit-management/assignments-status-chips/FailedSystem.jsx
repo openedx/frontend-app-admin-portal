@@ -16,6 +16,11 @@ const FailedSystem = ({ trackEvent }) => {
     trackEvent();
   };
 
+  const closeChipModal = () => {
+    close();
+    trackEvent({ isOpen: !isOpen });
+  };
+
   return (
     <>
       <Chip
@@ -30,7 +35,7 @@ const FailedSystem = ({ trackEvent }) => {
       <BaseModalPopup
         positionRef={target}
         isOpen={isOpen}
-        onClose={close}
+        onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
           Failed: System

@@ -23,23 +23,29 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     learnerState,
   };
 
-  const sendNotifyLearnerTrackEvent = () => {
+  const sendNotifyLearnerTrackEvent = (metaData) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
       'test',
-      sharedTrackEventMetadata,
+      {
+        ...sharedTrackEventMetadata,
+        ...metaData,
+      },
     );
   };
 
-  const sendWaitingForLearnerTrackEvent = () => {
+  const sendWaitingForLearnerTrackEvent = (metaData) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
       'test',
-      sharedTrackEventMetadata,
+      {
+        ...sharedTrackEventMetadata,
+        ...metaData,
+      },
     );
   };
 
-  const sendErrorStateTrackEvent = () => {
+  const sendErrorStateTrackEvent = (metaData) => {
     const errorReasonMetadata = !errorReason
       ? {
         errorReason: null,
@@ -55,7 +61,10 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
       'test',
-      errorStateMetadata,
+      {
+        ...errorStateMetadata,
+        metaData,
+      },
     );
   };
 

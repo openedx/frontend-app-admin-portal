@@ -15,6 +15,11 @@ const FailedCancellation = ({ trackEvent }) => {
     trackEvent();
   };
 
+  const closeChipModal = () => {
+    close();
+    trackEvent({ isOpen: !isOpen });
+  };
+
   return (
     <>
       <Chip
@@ -31,7 +36,7 @@ const FailedCancellation = ({ trackEvent }) => {
       <BaseModalPopup
         positionRef={target}
         isOpen={isOpen}
-        onClose={close}
+        onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
           Failed: Cancellation

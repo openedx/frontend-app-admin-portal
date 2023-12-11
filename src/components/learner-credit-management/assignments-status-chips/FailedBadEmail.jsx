@@ -15,6 +15,11 @@ const FailedBadEmail = ({ learnerEmail, trackEvent }) => {
     trackEvent();
   };
 
+  const closeChipModal = () => {
+    close();
+    trackEvent({ isOpen: !isOpen });
+  };
+
   return (
     <>
       <Chip
@@ -29,7 +34,7 @@ const FailedBadEmail = ({ learnerEmail, trackEvent }) => {
       <BaseModalPopup
         positionRef={target}
         isOpen={isOpen}
-        onClose={close}
+        onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
           Failed: Bad email

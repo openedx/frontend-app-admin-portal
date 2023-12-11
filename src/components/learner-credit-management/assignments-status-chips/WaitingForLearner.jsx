@@ -16,6 +16,11 @@ const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
     trackEvent();
   };
 
+  const closeChipModal = () => {
+    close();
+    trackEvent({ isOpen: !isOpen });
+  };
+
   return (
     <>
       <Chip
@@ -30,7 +35,7 @@ const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
       <BaseModalPopup
         positionRef={target}
         isOpen={isOpen}
-        onClose={close}
+        onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Timelapse} iconClassName="text-warning">
           Waiting for {learnerEmail ?? 'learner'}

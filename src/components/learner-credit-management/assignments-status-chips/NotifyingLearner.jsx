@@ -10,7 +10,12 @@ const NotifyingLearner = ({ learnerEmail, trackEvent }) => {
 
   const openChipModal = () => {
     open();
-    trackEvent();
+    trackEvent({ isOpen: !isOpen });
+  };
+
+  const closeChipModal = () => {
+    close();
+    trackEvent({ isOpen: !isOpen });
   };
 
   return (
@@ -27,7 +32,7 @@ const NotifyingLearner = ({ learnerEmail, trackEvent }) => {
       <BaseModalPopup
         positionRef={target}
         isOpen={isOpen}
-        onClose={close}
+        onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Send} iconClassName="text-gray-300">
           Notifying {learnerEmail ?? 'learner'}

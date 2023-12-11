@@ -7,8 +7,10 @@ import {
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
 import { generatePath, useRouteMatch, Link } from 'react-router-dom';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { formatPrice } from './data';
 import { configuration } from '../../config';
+import EVENT_NAMES from '../../eventTracking';
 
 const BudgetDetail = ({ available, utilized, limit }) => {
   const currentProgressBarLimit = (available / limit) * 100;
@@ -38,7 +40,7 @@ BudgetDetail.propTypes = {
   limit: PropTypes.number.isRequired,
 };
 
-const BudgetActions = ({ budgetId, isAssignable }) => {
+const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
   const routeMatch = useRouteMatch();
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
@@ -53,7 +55,16 @@ const BudgetActions = ({ budgetId, isAssignable }) => {
             Funds from this budget are set to auto-allocate to registered learners based on
             settings configured with your support team.
           </p>
-          <Button variant="outline-primary" as={Hyperlink} destination={supportUrl} target="_blank">
+          <Button
+            variant="outline-primary"
+            as={Hyperlink}
+            destination={supportUrl}
+            onClick={() => sendEnterpriseTrackEvent(
+              enterpriseId,
+              'test',
+            )}
+            target="_blank"
+          >
             Contact support
           </Button>
         </div>
@@ -74,6 +85,10 @@ const BudgetActions = ({ budgetId, isAssignable }) => {
             pathname: generatePath(routeMatch.path, { budgetId, activeTabKey: 'catalog' }),
             state: { budgetActivityScrollToKey: 'catalog' },
           }}
+          onClick={() => sendEnterpriseTrackEvent(
+            enterpriseId,
+            'test',
+          )}
         >
           New course assignment
         </Button>
@@ -85,6 +100,7 @@ const BudgetActions = ({ budgetId, isAssignable }) => {
 BudgetActions.propTypes = {
   budgetId: PropTypes.string.isRequired,
   isAssignable: PropTypes.bool.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 const BudgetDetailPageOverviewAvailability = ({
@@ -92,6 +108,7 @@ const BudgetDetailPageOverviewAvailability = ({
   isAssignable,
   budgetTotalSummary: { available, utilized, limit },
   enterpriseFeatures,
+  enterpriseId,
 }) => (
   <Stack className="mt-4">
     <Row>
@@ -102,6 +119,7 @@ const BudgetDetailPageOverviewAvailability = ({
         <BudgetActions
           budgetId={budgetId}
           isAssignable={isAssignable && enterpriseFeatures.topDownAssignmentRealTimeLcm}
+          enterpriseId={enterpriseId}
         />
       </Col>
     </Row>
@@ -121,9 +139,11 @@ BudgetDetailPageOverviewAvailability.propTypes = {
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
