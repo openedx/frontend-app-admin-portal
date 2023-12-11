@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Chip, useToggle, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
+import { getConfig } from '@edx/frontend-platform/config';
 import BaseModalPopup from './BaseModalPopup';
 
 const FailedReminder = ({ trackEvent }) => {
@@ -10,12 +11,16 @@ const FailedReminder = ({ trackEvent }) => {
 
   const openChipModal = () => {
     open();
-    trackEvent();
+    trackEvent('tests', { isOpen: !isOpen });
   };
 
   const closeChipModal = () => {
     close();
-    trackEvent({ isOpen: !isOpen });
+    trackEvent('tests', { isOpen: !isOpen });
+  };
+
+  const helpCenterTrackEvent = () => {
+    trackEvent('test');
   };
 
   return (
@@ -52,7 +57,11 @@ const FailedReminder = ({ trackEvent }) => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination="https://edx.org" target="_blank">
+                <Hyperlink
+                  destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
+                  onClick={helpCenterTrackEvent}
+                  target="_blank"
+                >
                   Help Center: Course Assignments
                 </Hyperlink>.
               </li>

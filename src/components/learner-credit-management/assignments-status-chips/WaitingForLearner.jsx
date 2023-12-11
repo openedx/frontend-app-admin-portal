@@ -13,12 +13,16 @@ const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
 
   const openChipModal = () => {
     open();
-    trackEvent();
+    trackEvent('tests', { isOpen: !isOpen });
   };
 
   const closeChipModal = () => {
     close();
-    trackEvent({ isOpen: !isOpen });
+    trackEvent('test', { isOpen: !isOpen });
+  };
+
+  const helpCenterTrackEvent = () => {
+    trackEvent('test');
   };
 
   return (
@@ -50,7 +54,11 @@ const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
             <p className="h6">Need help?</p>
             <p className="text-gray">
               Learn more about learner enrollment in assigned courses at{' '}
-              <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+              <Hyperlink
+                destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
+                onClick={helpCenterTrackEvent}
+                target="_blank"
+              >
                 Help Center: Course Assignments
               </Hyperlink>.
             </p>

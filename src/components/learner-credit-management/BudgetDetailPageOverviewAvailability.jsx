@@ -10,7 +10,6 @@ import { generatePath, useRouteMatch, Link } from 'react-router-dom';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { formatPrice } from './data';
 import { configuration } from '../../config';
-import EVENT_NAMES from '../../eventTracking';
 
 const BudgetDetail = ({ available, utilized, limit }) => {
   const currentProgressBarLimit = (available / limit) * 100;

@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 import { Chip, useToggle } from '@edx/paragon';
 import { Send } from '@edx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
+import EVENT_NAMES from '../../../eventTracking';
 
 const NotifyingLearner = ({ learnerEmail, trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
-
+  const { BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_NOTIFY_LEARNER } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
   const openChipModal = () => {
     open();
-    trackEvent({ isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_NOTIFY_LEARNER, { isOpen: !isOpen });
   };
 
   const closeChipModal = () => {
     close();
-    trackEvent({ isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_NOTIFY_LEARNER, { isOpen: !isOpen });
   };
 
   return (

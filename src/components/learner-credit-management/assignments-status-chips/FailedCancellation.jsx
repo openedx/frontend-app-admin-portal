@@ -12,12 +12,16 @@ const FailedCancellation = ({ trackEvent }) => {
 
   const openChipModal = () => {
     open();
-    trackEvent();
+    trackEvent('tests', { isOpen: !isOpen });
   };
 
   const closeChipModal = () => {
     close();
-    trackEvent({ isOpen: !isOpen });
+    trackEvent('tests', { isOpen: !isOpen });
+  };
+
+  const helpCenterTrackEvent = () => {
+    trackEvent('test');
   };
 
   return (
@@ -54,7 +58,11 @@ const FailedCancellation = ({ trackEvent }) => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+                <Hyperlink
+                  destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
+                  onClick={helpCenterTrackEvent}
+                  target="_blank"
+                >
                   Help Center: Course Assignments
                 </Hyperlink>
               </li>

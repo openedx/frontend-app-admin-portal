@@ -23,10 +23,10 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     learnerState,
   };
 
-  const sendNotifyLearnerTrackEvent = (metaData) => {
+  const sendGenericTrackEvent = (eventName, metaData = {}) => {
     sendEnterpriseTrackEvent(
       enterpriseId,
-      'test',
+      eventName,
       {
         ...sharedTrackEventMetadata,
         ...metaData,
@@ -34,18 +34,7 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     );
   };
 
-  const sendWaitingForLearnerTrackEvent = (metaData) => {
-    sendEnterpriseTrackEvent(
-      enterpriseId,
-      'test',
-      {
-        ...sharedTrackEventMetadata,
-        ...metaData,
-      },
-    );
-  };
-
-  const sendErrorStateTrackEvent = (metaData) => {
+  const sendErrorStateTrackEvent = (eventName, metaData = {}) => {
     const errorReasonMetadata = !errorReason
       ? {
         errorReason: null,
@@ -57,14 +46,12 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     const errorStateMetadata = {
       ...sharedTrackEventMetadata,
       ...errorReasonMetadata,
+      ...metaData,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
-      'test',
-      {
-        ...errorStateMetadata,
-        metaData,
-      },
+      eventName,
+      errorStateMetadata,
     );
   };
 
@@ -76,13 +63,13 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   // Display the appropriate status chip based on the learner state.
   if (learnerState === 'notifying') {
     return (
-      <NotifyingLearner learnerEmail={learnerEmail} trackEvent={sendNotifyLearnerTrackEvent} />
+      <NotifyingLearner learnerEmail={learnerEmail} trackEvent={sendGenericTrackEvent} />
     );
   }
 
   if (learnerState === 'waiting') {
     return (
-      <WaitingForLearner learnerEmail={learnerEmail} trackEvent={sendWaitingForLearnerTrackEvent} />
+      <WaitingForLearner learnerEmail={learnerEmail} trackEvent={sendGenericTrackEvent} />
     );
   }
 
