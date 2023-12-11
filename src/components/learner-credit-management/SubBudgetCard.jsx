@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
+import classNames from 'classnames';
 import {
   Card,
   Button,
@@ -42,6 +43,7 @@ const SubBudgetCard = ({
       data-testid="view-budget"
       as={Link}
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
+      variant={budgetLabel.status === BUDGET_STATUSES.expired ? 'outline-primary' : 'primary'}
     >
       View budget
     </Button>
@@ -62,10 +64,13 @@ const SubBudgetCard = ({
         title={<BackgroundFetchingWrapper>{budgetType}</BackgroundFetchingWrapper>}
         subtitle={<BackgroundFetchingWrapper>{subtitle}</BackgroundFetchingWrapper>}
         actions={
-          budgetLabel.status !== BUDGET_STATUSES.scheduled
-            ? renderActions(budgetId)
-            : undefined
-        }
+            budgetLabel.status !== BUDGET_STATUSES.scheduled
+              ? renderActions(budgetId)
+              : undefined
+          }
+        className={classNames('align-items-center', {
+          'mb-4.5': budgetLabel.status !== BUDGET_STATUSES.active,
+        })}
       />
     );
   };
@@ -106,9 +111,9 @@ const SubBudgetCard = ({
       isLoading={isLoading}
     >
       <Card.Body>
-        <Stack gap={4}>
+        <Stack gap={4.5}>
           {renderCardHeader(displayName || 'Overview', id)}
-          {budgetLabel.status !== BUDGET_STATUSES.scheduled && renderCardSection()}
+          {budgetLabel.status === BUDGET_STATUSES.active && renderCardSection()}
         </Stack>
       </Card.Body>
     </Card>
