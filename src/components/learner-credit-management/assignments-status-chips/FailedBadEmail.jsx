@@ -5,23 +5,28 @@ import { Error } from '@edx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
+import EVENT_NAMES from '../../../eventTracking';
 
 const FailedBadEmail = ({ learnerEmail, trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL_HELP_CENTER,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   const openChipModal = () => {
     open();
-    trackEvent('tests', { isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL, { isOpen: !isOpen });
   };
 
   const closeChipModal = () => {
     close();
-    trackEvent('tests', { isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL, { isOpen: !isOpen });
   };
 
   const helpCenterTrackEvent = () => {
-    trackEvent('test');
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL_HELP_CENTER);
   };
 
   return (

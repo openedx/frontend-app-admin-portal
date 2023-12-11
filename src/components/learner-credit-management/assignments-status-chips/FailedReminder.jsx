@@ -4,23 +4,28 @@ import { Chip, useToggle, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 import BaseModalPopup from './BaseModalPopup';
+import EVENT_NAMES from '../../../eventTracking';
 
 const FailedReminder = ({ trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER_HELP_CENTER,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   const openChipModal = () => {
     open();
-    trackEvent('tests', { isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER, { isOpen: !isOpen });
   };
 
   const closeChipModal = () => {
     close();
-    trackEvent('tests', { isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER, { isOpen: !isOpen });
   };
 
   const helpCenterTrackEvent = () => {
-    trackEvent('test');
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER_HELP_CENTER);
   };
 
   return (

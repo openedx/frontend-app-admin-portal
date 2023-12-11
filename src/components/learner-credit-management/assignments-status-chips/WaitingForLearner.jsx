@@ -6,23 +6,28 @@ import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
 import { ASSIGNMENT_ENROLLMENT_DEADLINE } from '../data';
+import EVENT_NAMES from '../../../eventTracking';
 
 const WaitingForLearner = ({ learnerEmail, trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER_HELP_CENTER,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   const openChipModal = () => {
     open();
-    trackEvent('tests', { isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER, { isOpen: !isOpen });
   };
 
   const closeChipModal = () => {
     close();
-    trackEvent('test', { isOpen: !isOpen });
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER, { isOpen: !isOpen });
   };
 
   const helpCenterTrackEvent = () => {
-    trackEvent('test');
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER_HELP_CENTER);
   };
 
   return (
