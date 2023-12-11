@@ -523,10 +523,10 @@ describe('<BudgetCard />', () => {
     expect(screen.getByText('Available')).toBeInTheDocument();
     expect(screen.getByText(formatPrice(mockBudgetAggregates.available))).toBeInTheDocument();
     if (isAssignableBudget) {
-      expect(screen.getByText('Pending')).toBeInTheDocument();
+      expect(screen.getByText('Assigned')).toBeInTheDocument();
       expect(screen.getByText(formatPrice(mockBudgetAggregates.pending))).toBeInTheDocument();
     } else {
-      expect(screen.queryByText('Pending')).not.toBeInTheDocument();
+      expect(screen.queryByText('Assigned')).not.toBeInTheDocument();
     }
     expect(screen.getByText('Spent')).toBeInTheDocument();
     expect(screen.getByText(formatPrice(mockBudgetAggregates.spent))).toBeInTheDocument();

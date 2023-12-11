@@ -89,7 +89,7 @@ const SubBudgetCard = ({
         </Col>
         {isAssignable && (
           <Col xs="6" md="auto" className="mb-3 mb-md-0">
-            <div className="small font-weight-bold">Pending</div>
+            <div className="small font-weight-bold">Assigned</div>
             <span className="small">
               {isFetchingBudgets ? <Skeleton /> : formatPrice(pending)}
             </span>
