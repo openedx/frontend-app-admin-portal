@@ -32,7 +32,7 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
     contentKey,
     contentQuantity,
     learnerState,
-    state,
+    assignmentState: state,
     isOpen: !isOpen,
   };
 
@@ -41,21 +41,29 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
     BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_REMIND_MODAL,
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
-  const openModal = () => {
-    open();
+  const trackEvent = (eventName, eventMetadata = {}) => {
+    const trackEventMetadata = {
+      ...sharedTrackEventMetadata,
+      ...eventMetadata,
+    };
     sendEnterpriseTrackEvent(
       enterpriseId,
+      eventName,
+      trackEventMetadata,
+    );
+  };
+
+  const openModal = () => {
+    open();
+    trackEvent(
       BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_REMIND_MODAL,
-      sharedTrackEventMetadata,
     );
   };
 
   const closeModal = () => {
     close();
-    sendEnterpriseTrackEvent(
-      enterpriseId,
+    trackEvent(
       BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_REMIND_MODAL,
-      sharedTrackEventMetadata,
     );
   };
 
@@ -75,6 +83,7 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
         close={closeModal}
         remindContentAssignments={remindContentAssignments}
         isOpen={isOpen}
+        trackEvent={trackEvent}
       />
     </>
   );

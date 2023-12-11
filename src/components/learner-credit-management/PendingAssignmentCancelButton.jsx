@@ -33,7 +33,7 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
     contentKey,
     contentQuantity,
     learnerState,
-    state,
+    assignmentState: state,
     isOpen: !isOpen,
   };
 
@@ -42,21 +42,29 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
     BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_CANCEL_MODAL,
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
-  const openModal = () => {
-    open();
+  const trackEvent = (eventName, eventMetadata = {}) => {
+    const trackEventMetadata = {
+      ...sharedTrackEventMetadata,
+      ...eventMetadata,
+    };
     sendEnterpriseTrackEvent(
       enterpriseId,
+      eventName,
+      trackEventMetadata,
+    );
+  };
+
+  const openModal = () => {
+    open();
+    trackEvent(
       BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_CANCEL_MODAL,
-      sharedTrackEventMetadata,
     );
   };
 
   const closeModal = () => {
     close();
-    sendEnterpriseTrackEvent(
-      enterpriseId,
+    trackEvent(
       BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_CANCEL_MODAL,
-      sharedTrackEventMetadata,
     );
   };
 
@@ -77,6 +85,7 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
         close={closeModal}
         cancelContentAssignments={cancelContentAssignments}
         isOpen={isOpen}
+        trackEvent={trackEvent}
       />
     </>
   );

@@ -5,6 +5,7 @@ import {
 } from '@edx/paragon';
 import { DoNotDisturbOn } from '@edx/paragon/icons';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
+import EVENT_NAMES from '../../eventTracking';
 
 const CancelAssignmentModal = ({
   cancelButtonState,
@@ -12,6 +13,7 @@ const CancelAssignmentModal = ({
   close,
   isOpen,
   uuidCount,
+  trackEvent,
 }) => {
   const {
     successfulCancellationToast: { displayToastForAssignmentCancellation },
@@ -19,6 +21,9 @@ const CancelAssignmentModal = ({
 
   const handleOnClick = async () => {
     await cancelContentAssignments();
+    trackEvent(
+      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_ASSIGNED_DATATABLE_CANCEL,
+    );
     displayToastForAssignmentCancellation(uuidCount);
   };
 
@@ -69,6 +74,7 @@ CancelAssignmentModal.propTypes = {
   close: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   uuidCount: PropTypes.number,
+  trackEvent: PropTypes.func.isRequired,
 };
 
 export default CancelAssignmentModal;
