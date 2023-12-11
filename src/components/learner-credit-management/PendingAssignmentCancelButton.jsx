@@ -4,25 +4,69 @@ import {
   Icon, IconButtonWithTooltip,
 } from '@edx/paragon';
 import { DoNotDisturbOn } from '@edx/paragon/icons';
+import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 import CancelAssignmentModal from './CancelAssignmentModal';
+import EVENT_NAMES from '../../eventTracking';
 
-const PendingAssignmentCancelButton = ({ row }) => {
+const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
+  const {
+    contentKey,
+    contentQuantity,
+    learnerState,
+    state,
+    assignmentConfiguration,
+    uuid,
+  } = row.original;
   const {
     cancelButtonState,
     cancelContentAssignments,
     close,
     isOpen,
     open,
-  } = useCancelContentAssignments(row.original.assignmentConfiguration, [row.original.uuid]);
+  } = useCancelContentAssignments(assignmentConfiguration, [uuid]);
+
+  const sharedTrackEventMetadata = {
+    assignmentConfiguration,
+    contentKey,
+    contentQuantity,
+    learnerState,
+    state,
+    isOpen: !isOpen,
+  };
+
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_CANCEL_MODAL,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_CANCEL_MODAL,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
+
+  const openModal = () => {
+    open();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_CANCEL_MODAL,
+      sharedTrackEventMetadata,
+    );
+  };
+
+  const closeModal = () => {
+    close();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_CANCEL_MODAL,
+      sharedTrackEventMetadata,
+    );
+  };
+
   return (
     <>
       <IconButtonWithTooltip
         alt={`Cancel assignment ${emailAltText}`}
         data-testid={`cancel-assignment-${row.original.uuid}`}
         iconAs={Icon}
-        onClick={open}
+        onClick={openModal}
         src={DoNotDisturbOn}
         tooltipContent="Cancel assignment"
         tooltipPlacement="top"
@@ -30,7 +74,7 @@ const PendingAssignmentCancelButton = ({ row }) => {
       />
       <CancelAssignmentModal
         cancelButtonState={cancelButtonState}
-        close={close}
+        close={closeModal}
         cancelContentAssignments={cancelContentAssignments}
         isOpen={isOpen}
       />
@@ -41,11 +85,20 @@ const PendingAssignmentCancelButton = ({ row }) => {
 PendingAssignmentCancelButton.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
+      contentKey: PropTypes.string.isRequired,
+      contentQuantity: PropTypes.number.isRequired,
+      learnerState: PropTypes.string.isRequired,
+      state: PropTypes.string.isRequired,
       assignmentConfiguration: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
-export default PendingAssignmentCancelButton;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(PendingAssignmentCancelButton);

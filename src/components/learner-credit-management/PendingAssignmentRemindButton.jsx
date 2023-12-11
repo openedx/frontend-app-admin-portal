@@ -3,18 +3,61 @@ import PropTypes from 'prop-types';
 import { Icon, IconButtonWithTooltip } from '@edx/paragon';
 
 import { Mail } from '@edx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { connect } from 'react-redux';
 import RemindAssignmentModal from './RemindAssignmentModal';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
+import EVENT_NAMES from '../../eventTracking';
 
-const PendingAssignmentRemindButton = ({ row }) => {
+const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
+  const {
+    contentKey,
+    contentQuantity,
+    learnerState,
+    state,
+    assignmentConfiguration,
+    uuid,
+  } = row.original;
   const {
     remindButtonState,
     remindContentAssignments,
     close,
     isOpen,
     open,
-  } = useRemindContentAssignments(row.original.assignmentConfiguration, [row.original.uuid]);
+  } = useRemindContentAssignments(assignmentConfiguration, [uuid]);
+
+  const sharedTrackEventMetadata = {
+    assignmentConfiguration,
+    contentKey,
+    contentQuantity,
+    learnerState,
+    state,
+    isOpen: !isOpen,
+  };
+
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_REMIND_MODAL,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_REMIND_MODAL,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
+
+  const openModal = () => {
+    open();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_REMIND_MODAL,
+      sharedTrackEventMetadata,
+    );
+  };
+
+  const closeModal = () => {
+    close();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_REMIND_MODAL,
+      sharedTrackEventMetadata,
+    );
+  };
 
   return (
     <>
@@ -22,14 +65,14 @@ const PendingAssignmentRemindButton = ({ row }) => {
         alt={`Remind learner ${emailAltText}`}
         data-testid={`remind-assignment-${row.original.uuid}`}
         iconAs={Icon}
-        onClick={open}
+        onClick={openModal}
         src={Mail}
         tooltipContent="Remind learner"
         tooltipPlacement="top"
       />
       <RemindAssignmentModal
         remindButtonState={remindButtonState}
-        close={close}
+        close={closeModal}
         remindContentAssignments={remindContentAssignments}
         isOpen={isOpen}
       />
@@ -40,11 +83,20 @@ const PendingAssignmentRemindButton = ({ row }) => {
 PendingAssignmentRemindButton.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
+      contentKey: PropTypes.string.isRequired,
+      contentQuantity: PropTypes.number.isRequired,
+      learnerState: PropTypes.string.isRequired,
+      state: PropTypes.string.isRequired,
       assignmentConfiguration: PropTypes.string.isRequired,
       learnerEmail: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
-export default PendingAssignmentRemindButton;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(PendingAssignmentRemindButton);
