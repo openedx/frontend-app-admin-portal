@@ -10,6 +10,7 @@ import { generatePath, useRouteMatch, Link } from 'react-router-dom';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { formatPrice } from './data';
 import { configuration } from '../../config';
+import EVENT_NAMES from '../../eventTracking';
 
 const BudgetDetail = ({ available, utilized, limit }) => {
   const currentProgressBarLimit = (available / limit) * 100;
@@ -60,7 +61,7 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
             destination={supportUrl}
             onClick={() => sendEnterpriseTrackEvent(
               enterpriseId,
-              'test',
+              EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_CONTACT_US,
             )}
             target="_blank"
           >
@@ -86,7 +87,7 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
           }}
           onClick={() => sendEnterpriseTrackEvent(
             enterpriseId,
-            'test',
+            EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_NEW_ASSIGNMENT,
           )}
         >
           New course assignment
