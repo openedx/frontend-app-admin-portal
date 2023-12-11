@@ -49,24 +49,26 @@ const SubBudgetCard = ({
 
   const renderCardHeader = (budgetType, budgetId) => {
     const subtitle = (
-      <Stack direction="horizontal" gap={2.5}>
+      <Stack direction="horizontal" gap={2.5} className="pb-4">
         <Badge variant={budgetLabel.badgeVariant}>{budgetLabel.status}</Badge>
         <span data-testid="budget-date">
           {budgetLabel.term} {formattedDate}
         </span>
       </Stack>
     );
-
+    const action = budgetLabel.status !== BUDGET_STATUSES.scheduled
+      ? renderActions(budgetId)
+      : undefined;
     return (
-      <Card.Header
-        title={<BackgroundFetchingWrapper>{budgetType}</BackgroundFetchingWrapper>}
-        subtitle={<BackgroundFetchingWrapper>{subtitle}</BackgroundFetchingWrapper>}
-        actions={
-          budgetLabel.status !== BUDGET_STATUSES.scheduled
-            ? renderActions(budgetId)
-            : undefined
-        }
-      />
+      <Stack direction="horizontal" className="justify-content-between">
+        <Card.Header
+          title={<BackgroundFetchingWrapper>{budgetType}</BackgroundFetchingWrapper>}
+          subtitle={<BackgroundFetchingWrapper>{subtitle}</BackgroundFetchingWrapper>}
+        />
+        <div className="pr-3">
+          {action && action}
+        </div>
+      </Stack>
     );
   };
 
@@ -106,9 +108,9 @@ const SubBudgetCard = ({
       isLoading={isLoading}
     >
       <Card.Body>
-        <Stack gap={4}>
+        <Stack>
           {renderCardHeader(displayName || 'Overview', id)}
-          {budgetLabel.status !== BUDGET_STATUSES.scheduled && renderCardSection()}
+          {budgetLabel.status === BUDGET_STATUSES.active && renderCardSection()}
         </Stack>
       </Card.Body>
     </Card>
