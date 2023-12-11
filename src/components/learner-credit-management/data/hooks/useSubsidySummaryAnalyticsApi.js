@@ -6,14 +6,14 @@ import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataAp
 import { transformSubsidySummary } from '../utils';
 import { BUDGET_TYPES } from '../../../EnterpriseApp/data/constants';
 
-const useSubsidySummaryAnalyticsApi = (enterpriseUUID, budget) => {
+const useSubsidySummaryAnalyticsApi = (enterpriseUUID, budgetId, budgetSource) => {
   const [isLoading, setIsLoading] = useState(true);
   const [subsidySummary, setSubsidySummary] = useState();
 
   useEffect(() => {
     // If there is no budget, or the budget is NOT an ecommerce offer or subsidy, fetch the
     // subsidy summary data from the analytics API.
-    if (![BUDGET_TYPES.ecommerce, BUDGET_TYPES.subsidy].includes(budget?.source)) {
+    if (![BUDGET_TYPES.ecommerce, BUDGET_TYPES.subsidy].includes(budgetSource)) {
       setIsLoading(false);
       return;
     }
@@ -23,7 +23,7 @@ const useSubsidySummaryAnalyticsApi = (enterpriseUUID, budget) => {
         setIsLoading(true);
         const response = await EnterpriseDataApiService.fetchEnterpriseOfferSummary(
           enterpriseUUID,
-          budget.id,
+          budgetId,
         );
         const data = camelCaseObject(response.data);
         const transformedSubsidySummary = transformSubsidySummary(data);
@@ -36,7 +36,7 @@ const useSubsidySummaryAnalyticsApi = (enterpriseUUID, budget) => {
     };
 
     fetchData();
-  }, [enterpriseUUID, budget]);
+  }, [enterpriseUUID, budgetId, budgetSource]);
 
   return {
     isLoading,
