@@ -5,7 +5,18 @@ import { DoNotDisturbOn } from '@edx/paragon/icons';
 import CancelAssignmentModal from './CancelAssignmentModal';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 
-const AssignmentTableCancelAction = ({ selectedFlatRows }) => {
+const calculateTotalToCancel = ({
+  assignmentUuids,
+  isEntireTableSelected,
+  tableItemCount,
+}) => {
+  if (isEntireTableSelected) {
+    return tableItemCount;
+  }
+  return assignmentUuids.length;
+};
+
+const AssignmentTableCancelAction = ({ selectedFlatRows, isEntireTableSelected, tableInstance }) => {
   const assignmentUuids = selectedFlatRows.map(row => row.id);
   const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
   const {
@@ -14,19 +25,26 @@ const AssignmentTableCancelAction = ({ selectedFlatRows }) => {
     close,
     isOpen,
     open,
-  } = useCancelContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+  } = useCancelContentAssignments(assignmentConfigurationUuid, assignmentUuids, isEntireTableSelected);
+
+  const tableItemCount = tableInstance.itemCount;
+  const totalToCancel = calculateTotalToCancel({
+    assignmentUuids,
+    isEntireTableSelected,
+    tableItemCount,
+  });
 
   return (
     <>
       <Button variant="danger" iconBefore={DoNotDisturbOn} onClick={open}>
-        {`Cancel (${assignmentUuids.length})`}
+        {`Cancel (${totalToCancel})`}
       </Button>
       <CancelAssignmentModal
         cancelContentAssignments={cancelContentAssignments}
         close={close}
         isOpen={isOpen}
         cancelButtonState={cancelButtonState}
-        uuidCount={assignmentUuids.length}
+        uuidCount={totalToCancel}
       />
     </>
   );
@@ -34,10 +52,18 @@ const AssignmentTableCancelAction = ({ selectedFlatRows }) => {
 
 AssignmentTableCancelAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()),
+  isEntireTableSelected: PropTypes.bool,
+  tableInstance: PropTypes.shape({
+    itemCount: PropTypes.number.isRequired,
+  }),
 };
 
 AssignmentTableCancelAction.defaultProps = {
   selectedFlatRows: [],
+  isEntireTableSelected: false,
+  tableInstance: {
+    itemCount: 0,
+  },
 };
 
 export default AssignmentTableCancelAction;

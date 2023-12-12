@@ -10,6 +10,7 @@ import useBudgetId from './useBudgetId';
 const useRemindContentAssignments = (
   assignmentConfigurationUuid,
   assignmentUuids,
+  remindAll = false,
 ) => {
   const [isOpen, open, close] = useToggle(false);
   const [remindButtonState, setRemindButtonState] = useState('default');
@@ -19,7 +20,11 @@ const useRemindContentAssignments = (
   const remindContentAssignments = useCallback(async () => {
     setRemindButtonState('pending');
     try {
-      await EnterpriseAccessApiService.remindContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+      if (remindAll) {
+        await EnterpriseAccessApiService.remindAllContentAssignments(assignmentConfigurationUuid);
+      } else {
+        await EnterpriseAccessApiService.remindContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+      }
       setRemindButtonState('complete');
       queryClient.invalidateQueries({
         queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
@@ -28,7 +33,7 @@ const useRemindContentAssignments = (
       logError(err);
       setRemindButtonState('error');
     }
-  }, [assignmentConfigurationUuid, assignmentUuids, queryClient, subsidyAccessPolicyId]);
+  }, [assignmentConfigurationUuid, assignmentUuids, remindAll, queryClient, subsidyAccessPolicyId]);
 
   return {
     remindButtonState,

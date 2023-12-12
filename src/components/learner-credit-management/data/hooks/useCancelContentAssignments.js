@@ -10,6 +10,7 @@ import useBudgetId from './useBudgetId';
 const useCancelContentAssignments = (
   assignmentConfigurationUuid,
   assignmentUuids,
+  cancelAll = false,
 ) => {
   const [isOpen, open, close] = useToggle(false);
   const [cancelButtonState, setCancelButtonState] = useState('default');
@@ -19,7 +20,11 @@ const useCancelContentAssignments = (
   const cancelContentAssignments = useCallback(async () => {
     setCancelButtonState('pending');
     try {
-      await EnterpriseAccessApiService.cancelContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+      if (cancelAll) {
+        await EnterpriseAccessApiService.cancelAllContentAssignments(assignmentConfigurationUuid);
+      } else {
+        await EnterpriseAccessApiService.cancelContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+      }
       setCancelButtonState('complete');
       queryClient.invalidateQueries({
         queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
@@ -28,7 +33,7 @@ const useCancelContentAssignments = (
       logError(err);
       setCancelButtonState('error');
     }
-  }, [assignmentConfigurationUuid, assignmentUuids, queryClient, subsidyAccessPolicyId]);
+  }, [assignmentConfigurationUuid, assignmentUuids, cancelAll, queryClient, subsidyAccessPolicyId]);
 
   return {
     cancelButtonState,
