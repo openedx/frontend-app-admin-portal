@@ -5,33 +5,51 @@ import { Mail } from '@edx/paragon/icons';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import RemindAssignmentModal from './RemindAssignmentModal';
 
-const AssignmentTableRemindAction = ({ selectedFlatRows }) => {
+const calculateTotalToRemind = ({
+  assignmentUuids,
+  isEntireTableSelected,
+  learnerStateCounts,
+}) => {
+  if (isEntireTableSelected) {
+    const waitingAssignmentCounts = learnerStateCounts.filter(({ learnerState }) => (learnerState === 'waiting'));
+    return waitingAssignmentCounts.length ? waitingAssignmentCounts[0].count : 0;
+  }
+  return assignmentUuids.length;
+};
+
+const AssignmentTableRemindAction = ({ selectedFlatRows, isEntireTableSelected, learnerStateCounts }) => {
   const assignmentUuids = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').map(({ id }) => id);
   const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
-  const selectedRemindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').length;
   const {
     remindButtonState,
     remindContentAssignments,
     close,
     isOpen,
     open,
-  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids, isEntireTableSelected);
+
+  const selectedRemindableRowCount = calculateTotalToRemind({
+    assignmentUuids,
+    isEntireTableSelected,
+    learnerStateCounts,
+  });
+
   return (
     <>
       <Button
-        disabled={selectedRemindableRows === 0}
-        alt={`Send reminder to ${selectedRemindableRows} learners`}
+        disabled={selectedRemindableRowCount === 0}
+        alt={`Send reminder to ${selectedRemindableRowCount} learners`}
         iconBefore={Mail}
         onClick={open}
       >
-        {`Remind (${selectedRemindableRows})`}
+        {`Remind (${selectedRemindableRowCount})`}
       </Button>
       <RemindAssignmentModal
         remindContentAssignments={remindContentAssignments}
         close={close}
         isOpen={isOpen}
         remindButtonState={remindButtonState}
-        uuidCount={assignmentUuids.length}
+        uuidCount={selectedRemindableRowCount}
       />
     </>
   );
@@ -39,10 +57,16 @@ const AssignmentTableRemindAction = ({ selectedFlatRows }) => {
 
 AssignmentTableRemindAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()),
+  isEntireTableSelected: PropTypes.bool,
+  learnerStateCounts: PropTypes.arrayOf(PropTypes.shape({
+    learnerState: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+  })).isRequired,
 };
 
 AssignmentTableRemindAction.defaultProps = {
   selectedFlatRows: [],
+  isEntireTableSelected: false,
 };
 
 export default AssignmentTableRemindAction;

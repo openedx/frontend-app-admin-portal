@@ -104,6 +104,31 @@ module.exports = {
 
 NB: In order for webpack to properly resolve scss imports locally, you must use a `~` before the import, like so: `@import "~@edx/brand/paragon/fonts";`
 
+### Running tests
+
+You can run all tests as follows:
+```
+nvm use
+npm install
+npm run test
+```
+
+Additionally, you can run a single test file with
+```
+npm run test -- ProvisioningFormSubmissionButton.test.jsx
+```
+
+or run a given test function by appending a `.only` to the test function (or appending `.skip` to do the inverse).
+For example: `test.only('your test function', () => {...})`.
+
+You can use watch mode with tests as follows:
+```
+npm run test:watch BudgetDetailPage.test.jsx
+# or to skip coverage reporting
+npm run test:watch-no-cov BudgetDetailpage.test.jsx
+```
+Note the watcher has its own set of commands to help run test functions that match a regex (`t my regex`), etc.
+Use the `w` command to get a list of valid watch commands.
 
 ## Getting Help
 

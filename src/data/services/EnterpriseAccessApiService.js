@@ -185,6 +185,14 @@ class EnterpriseAccessApiService {
   }
 
   /**
+   * Cancel ALL content assignments for a specific AssignmentConfiguration.
+   */
+  static cancelAllContentAssignments(assignmentConfigurationUUID) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel-all/`;
+    return EnterpriseAccessApiService.apiClient().post(url);
+  }
+
+  /**
    * Remind content assignments for a specific AssignmentConfiguration.
    */
   static remindContentAssignments(assignmentConfigurationUUID, assignmentUuids) {
@@ -193,6 +201,14 @@ class EnterpriseAccessApiService {
     };
     const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Remind ALL content assignments for a specific AssignmentConfiguration.
+   */
+  static remindAllContentAssignments(assignmentConfigurationUUID) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind-all/`;
+    return EnterpriseAccessApiService.apiClient().post(url);
   }
 
   /**
