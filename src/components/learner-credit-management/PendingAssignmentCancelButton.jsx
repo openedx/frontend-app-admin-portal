@@ -40,6 +40,7 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
   const {
     BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_CANCEL_MODAL,
     BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_CANCEL_MODAL,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CANCEL,
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   const trackEvent = (eventName, eventMetadata = {}) => {
@@ -68,6 +69,12 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
     );
   };
 
+  const cancellationTrackEvent = () => {
+    trackEvent(
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_CANCEL,
+    );
+  };
+
   return (
     <>
       <IconButtonWithTooltip
@@ -85,7 +92,7 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
         close={closeModal}
         cancelContentAssignments={cancelContentAssignments}
         isOpen={isOpen}
-        trackEvent={trackEvent}
+        trackEvent={cancellationTrackEvent}
       />
     </>
   );

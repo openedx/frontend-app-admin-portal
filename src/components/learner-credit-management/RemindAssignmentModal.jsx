@@ -5,7 +5,6 @@ import {
 } from '@edx/paragon';
 import { Mail } from '@edx/paragon/icons';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
-import EVENT_NAMES from '../../eventTracking';
 
 const RemindAssignmentModal = ({
   remindButtonState, remindContentAssignments, close, isOpen, uuidCount, trackEvent,
@@ -16,9 +15,7 @@ const RemindAssignmentModal = ({
 
   const handleOnClick = async () => {
     await remindContentAssignments();
-    trackEvent(
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_DETAILS_ASSIGNED_DATATABLE_REMIND,
-    );
+    trackEvent();
     displayToastForAssignmentReminder(uuidCount);
   };
 

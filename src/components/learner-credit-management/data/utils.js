@@ -337,3 +337,59 @@ export async function retrieveBudgetDetailActivityOverview({
   }
   return result;
 }
+
+/**
+ * Takes the raw selected flat rows data from the 'Assigned' datatable and returns metadata that is used for tracking
+ * bulk enrollment of reminders and bulk enrollment of cancellations.
+ * @param {Array} selectedFlatRows An array of selectedFlatRows from the activity 'Assigned' table
+ * @returns {{
+ * uniqueLearnerState: [String],
+ * totalContentQuantity: Number,
+ * assignmentConfigurationUuid: String,
+ * assignmentUuids: [String]
+ * uniqueContentKeys: [String],
+ * uniqueAssignmentState: [String],
+ * totalSelectedRows: Number,
+ * }}
+ */
+export const transformSelectedRows = (selectedFlatRows) => {
+  const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
+  const assignmentUuids = selectedFlatRows.map(item => item.id);
+  const totalSelectedRows = selectedFlatRows.length;
+
+  // list of unique courses
+  const flatMappedContentKeys = selectedFlatRows.map(item => item?.original?.contentKey);
+  const uniqueContentKeys = {};
+  flatMappedContentKeys.forEach((courseKey) => {
+    uniqueContentKeys[courseKey] = (uniqueContentKeys[courseKey] || 0) + 1;
+  });
+
+  // list of unique learner states
+  const flatMappedLearnerState = selectedFlatRows.map(item => item?.original?.learnerState);
+  const uniqueLearnerState = {};
+  flatMappedLearnerState.forEach((learnerState) => {
+    uniqueLearnerState[learnerState] = (uniqueLearnerState[learnerState] || 0) + 1;
+  });
+
+  // list of unique assignment states
+  const flatMappedAssignmentState = selectedFlatRows.map(item => item?.original?.state);
+  const uniqueAssignmentState = {};
+  flatMappedAssignmentState.forEach((state) => {
+    uniqueAssignmentState[state] = (uniqueAssignmentState[state] || 0) + 1;
+  });
+
+  // total value of the content quantity
+  const totalContentQuantity = selectedFlatRows.map(
+    item => item.original.contentQuantity,
+  ).reduce((prev, next) => prev + next, 0);
+
+  return {
+    uniqueAssignmentState,
+    uniqueLearnerState,
+    uniqueContentKeys,
+    totalContentQuantity,
+    assignmentConfigurationUuid,
+    assignmentUuids,
+    totalSelectedRows,
+  };
+};
