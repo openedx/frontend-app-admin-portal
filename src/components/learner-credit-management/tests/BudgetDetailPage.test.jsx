@@ -167,6 +167,12 @@ const mockFailedReminderLearnerAction = {
   errorReason: 'email_error',
 };
 
+const mockFailedRedemptionLearnerAction = {
+  actionType: 'redeemed',
+  completedAt: null,
+  errorReason: 'enrollment_error',
+};
+
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
@@ -1046,6 +1052,8 @@ describe('<BudgetDetailPage />', () => {
         actionType: 'notified',
       },
     },
+    // This test case is weird because we always serialize the latest failed action into error_reason in the assignment
+    // API response.  Nevertheless, keep it in just to cover potential backend serializer bugs.
     {
       learnerState: 'failed',
       hasLearnerEmail: true,
@@ -1089,6 +1097,21 @@ describe('<BudgetDetailPage />', () => {
       errorReason: {
         errorReason: 'internal_api_error',
         actionType: 'reminded',
+      },
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: Redemption',
+      expectedModalPopupHeading: 'Failed: Redemption',
+      expectedModalPopupContent: (
+        'Something went wrong behind the scenes when the learner attempted to redeem this course assignment. '
+        + 'Associated Learner credit funds have been released into your available balance.'
+      ),
+      actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction, mockFailedRedemptionLearnerAction],
+      errorReason: {
+        actionType: mockFailedRedemptionLearnerAction.actionType,
+        errorReason: mockFailedRedemptionLearnerAction.errorReason,
       },
     },
   ])('renders correct status chips with assigned table data (%s)', ({
