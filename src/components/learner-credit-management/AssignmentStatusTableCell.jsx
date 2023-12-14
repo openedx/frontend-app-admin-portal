@@ -1,6 +1,6 @@
 import {
   Chip,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedCancellation from './assignments-status-chips/FailedCancellation';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Image, SelectableBox } from '@edx/paragon';
+import { Container, Image, SelectableBox } from '@openedx/paragon';
 
 import { channelMapping } from '../../../utils';
 import { LMS_KEYS } from '../data/constants';

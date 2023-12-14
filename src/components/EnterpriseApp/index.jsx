@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { breakpoints, MediaQuery } from '@edx/paragon';
+import { breakpoints, MediaQuery } from '@openedx/paragon';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';

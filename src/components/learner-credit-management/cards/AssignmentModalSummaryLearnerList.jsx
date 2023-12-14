@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import {
   Button, Stack, Icon,
-} from '@edx/paragon';
-import { Person } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Person } from '@openedx/paragon/icons';
 
 import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, hasLearnerEmailsSummaryListTruncation } from './data';
 

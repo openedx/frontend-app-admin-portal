@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Spinner } from '@edx/paragon';
-import { FileDownload } from '@edx/paragon/icons';
+import { Button, Spinner } from '@openedx/paragon';
+import { FileDownload } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ModalDialog, ActionRow } from '@edx/paragon';
+import { ModalDialog, ActionRow } from '@openedx/paragon';
 
 import { configuration } from '../../../config';
 import Img from '../../Img';

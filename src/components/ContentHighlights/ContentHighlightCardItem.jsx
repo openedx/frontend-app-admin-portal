@@ -1,7 +1,7 @@
 import React from 'react';
 import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
-import { Card, Hyperlink } from '@edx/paragon';
+import { Card, Hyperlink } from '@openedx/paragon';
 import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
 import { getContentHighlightCardFooter } from './data/utils';

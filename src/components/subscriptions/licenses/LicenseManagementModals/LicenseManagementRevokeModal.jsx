@@ -10,10 +10,10 @@ import {
   Hyperlink,
   Icon,
   Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   RemoveCircle,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { useRequestState } from './LicenseManagementModalHook';

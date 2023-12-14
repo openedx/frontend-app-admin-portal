@@ -3,7 +3,7 @@ import {
   Container,
   Tabs,
   Tab,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   useHistory,
   generatePath,

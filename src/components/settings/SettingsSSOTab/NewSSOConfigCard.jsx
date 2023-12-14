@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import {
   Card, Badge, Button, Dropdown, IconButton, Icon, Tooltip, OverlayTrigger,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import {
   Key, KeyOff, MoreVert,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
 import LmsApiService from '../../../data/services/LmsApiService';
 

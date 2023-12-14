@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '@edx/paragon';
-import { ContentCopy } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { ContentCopy } from '@openedx/paragon/icons';
 import CopiedToast from './CopiedToast';
 import { dataPropType } from './constants';
 

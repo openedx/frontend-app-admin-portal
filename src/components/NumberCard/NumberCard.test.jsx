@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-import { Groups } from '@edx/paragon/icons';
+import { Groups } from '@openedx/paragon/icons';
 
 import NumberCard from './index';
 

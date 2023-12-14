@@ -1,9 +1,9 @@
 import React from 'react';
-import { CheckCircle } from '@edx/paragon/icons';
+import { CheckCircle } from '@openedx/paragon/icons';
 import {
   OverlayTrigger,
   Tooltip,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { SUBSIDY_TYPE_LABELS } from '../data/constants';
 

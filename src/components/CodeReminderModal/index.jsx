@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { Button, Modal, Spinner } from '@edx/paragon';
+import { Button, Modal, Spinner } from '@openedx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';

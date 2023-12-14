@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Icon } from '@edx/paragon';
-import { Warning } from '@edx/paragon/icons';
+import { Alert, Icon } from '@openedx/paragon';
+import { Warning } from '@openedx/paragon/icons';
 
 const ModalError = React.forwardRef(({ title, errors }, ref) => (
   <div

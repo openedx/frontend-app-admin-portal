@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Row,
   Col,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import SubscriptionCard from './SubscriptionCard';
 import { DEFAULT_LEAD_TEXT } from './data/constants';

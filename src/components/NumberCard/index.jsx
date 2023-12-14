@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Button, Icon, Spinner } from '@edx/paragon';
-import { ArrowDropDown, Close } from '@edx/paragon/icons';
+import { Button, Icon, Spinner } from '@openedx/paragon';
+import { ArrowDropDown, Close } from '@openedx/paragon/icons';
 import { Link, withRouter } from 'react-router-dom';
 
 import { removeTrailingSlash, isTriggerKey } from '../../utils';

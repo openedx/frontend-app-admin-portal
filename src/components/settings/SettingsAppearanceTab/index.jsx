@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert, Button, CardGrid, Dropzone, Image, Toast, useToggle,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 import InfoHover from '../../InfoHover';
 import LmsApiService from '../../../data/services/LmsApiService';

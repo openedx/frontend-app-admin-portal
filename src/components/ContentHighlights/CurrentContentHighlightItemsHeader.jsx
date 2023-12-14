@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionRow, Skeleton } from '@edx/paragon';
+import { ActionRow, Skeleton } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import ContentHighlightHelmet from './ContentHighlightHelmet';
 import DeleteHighlightSet from './DeleteHighlightSet';

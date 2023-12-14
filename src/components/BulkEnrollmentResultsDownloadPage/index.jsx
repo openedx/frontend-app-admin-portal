@@ -4,7 +4,7 @@ import { Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
-import { Toast } from '@edx/paragon';
+import { Toast } from '@openedx/paragon';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 

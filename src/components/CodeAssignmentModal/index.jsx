@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, Modal, Form, Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import isEmail from 'validator/lib/isEmail';

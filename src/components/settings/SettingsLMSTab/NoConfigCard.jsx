@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Button, Card, Icon } from '@edx/paragon';
+import { Button, Card, Icon } from '@openedx/paragon';
 
-import { Add, Error } from '@edx/paragon/icons';
+import { Add, Error } from '@openedx/paragon/icons';
 import cardImage from '../../../data/images/NoConfig.svg';
 
 const NoConfigCard = ({

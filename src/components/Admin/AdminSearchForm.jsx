@@ -3,8 +3,8 @@ import React from 'react';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 
-import { Form } from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+import { Form } from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';

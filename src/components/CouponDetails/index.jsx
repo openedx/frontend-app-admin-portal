@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Alert, Button, Icon, Form,
-} from '@edx/paragon';
-import { CheckCircle, Error } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { CheckCircle, Error } from '@openedx/paragon/icons';
 
 import TableContainer from '../../containers/TableContainer';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';

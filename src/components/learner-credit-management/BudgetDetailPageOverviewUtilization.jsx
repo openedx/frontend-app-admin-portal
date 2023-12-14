@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Stack, Collapsible, Row, Col, Button,
-} from '@edx/paragon';
-import { ArrowDownward } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { ArrowDownward } from '@openedx/paragon/icons';
 
 import {
   generatePath, useRouteMatch, Link,

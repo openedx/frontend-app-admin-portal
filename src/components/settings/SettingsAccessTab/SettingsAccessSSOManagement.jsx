@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
-import { Info } from '@edx/paragon/icons';
+import { Info } from '@openedx/paragon/icons';
 import {
   Alert,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
 import LmsApiService from '../../../data/services/LmsApiService';
 

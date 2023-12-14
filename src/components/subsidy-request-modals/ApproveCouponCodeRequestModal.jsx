@@ -8,9 +8,9 @@ import {
   Form,
   StatefulButton,
   Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { connect } from 'react-redux';
-import { Info } from '@edx/paragon/icons';
+import { Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { useApplicableCoupons } from './data/hooks';

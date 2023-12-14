@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
-import { DoNotDisturbOn } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { DoNotDisturbOn } from '@openedx/paragon/icons';
 import CancelAssignmentModal from './CancelAssignmentModal';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 

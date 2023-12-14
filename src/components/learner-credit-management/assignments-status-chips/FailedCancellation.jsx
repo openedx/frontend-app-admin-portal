@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Chip, useToggle, Hyperlink } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Chip, useToggle, Hyperlink } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
