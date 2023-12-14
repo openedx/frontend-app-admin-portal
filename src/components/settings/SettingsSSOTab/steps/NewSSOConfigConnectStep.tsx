@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Dropzone, Form, Stack } from '@edx/paragon';
+import { Container, Dropzone, Form, Stack } from '@openedx/paragon';
 
 import ValidatedFormRadio from '../../../forms/ValidatedFormRadio';
 import ValidatedFormControl from '../../../forms/ValidatedFormControl';

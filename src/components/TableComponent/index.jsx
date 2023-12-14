@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import { Alert, Pagination, Table } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Alert, Pagination, Table } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import 'font-awesome/css/font-awesome.css';
 

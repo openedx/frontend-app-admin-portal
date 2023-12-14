@@ -4,8 +4,8 @@ import Color from 'color';
 import ColorContrastChecker from 'color-contrast-checker';
 import {
   ActionRow, Button, Form, Hyperlink, Icon, ModalDialog,
-} from '@edx/paragon';
-import { InfoOutline } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { InfoOutline } from '@openedx/paragon/icons';
 import {
   CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK, DARK_COLOR, WHITE_COLOR,
 } from '../data/constants';

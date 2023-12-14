@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Link, Redirect } from 'react-router-dom';
-import { Alert, Button, Spinner } from '@edx/paragon';
+import { Alert, Button, Spinner } from '@openedx/paragon';
 
 import RenderField from '../RenderField';
 

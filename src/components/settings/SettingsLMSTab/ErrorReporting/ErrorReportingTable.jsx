@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Tab, Tabs } from '@edx/paragon';
+import { Tab, Tabs } from '@openedx/paragon';
 import ContentMetadataTable from './ContentMetadataTable';
 import LearnerMetadataTable from './LearnerMetadataTable';
 

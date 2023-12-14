@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Card, Stack, Icon } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Card, Stack, Icon } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import { formatPrice } from '../data';
 import AssignmentModalSummaryEmptyState from './AssignmentModalSummaryEmptyState';

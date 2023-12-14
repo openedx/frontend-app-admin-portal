@@ -6,11 +6,11 @@ import {
   Tooltip,
   OverlayTrigger,
   DataTableContext,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   Email,
   RemoveCircle,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import LicenseManagementRevokeModal from '../LicenseManagementModals/LicenseManagementRevokeModal';

@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 
 import {
   Button, ActionRow, Alert,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
-import { Add, Info } from '@edx/paragon/icons';
+import { Add, Info } from '@openedx/paragon/icons';
 import { useContentHighlightsContext } from './data/hooks';
 import EVENT_NAMES from '../../eventTracking';
 

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
   Button, Modal, Alert, Spinner,
-} from '@edx/paragon';
-import { Cancel as ErrorIcon } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Cancel as ErrorIcon } from '@openedx/paragon/icons';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import emailTemplate from './emailTemplate';

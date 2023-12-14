@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, OverlayTrigger, Tooltip,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { Field } from 'redux-form';
 
 import RenderField from '../RenderField';

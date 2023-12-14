@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useToggle } from '@edx/paragon';
+import { useToggle } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import SystemErrorAlertModal from './assignment-allocation-status-modals/SystemErrorAlertModal';

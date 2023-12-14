@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { CardGrid } from '@edx/paragon';
+import { CardGrid } from '@openedx/paragon';
 import { v4 as uuidv4 } from 'uuid';
 import SkeletonContentCard from './SkeletonContentCard';
 import { HIGHLIGHTS_CARD_GRID_COLUMN_SIZES } from './data/constants';

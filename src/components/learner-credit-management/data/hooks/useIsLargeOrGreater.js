@@ -1,4 +1,4 @@
-import { breakpoints, useMediaQuery } from '@edx/paragon';
+import { breakpoints, useMediaQuery } from '@openedx/paragon';
 
 const useIsLargeOrGreater = () => useMediaQuery({ query: `(min-width: ${breakpoints.large.minWidth}px)` });
 

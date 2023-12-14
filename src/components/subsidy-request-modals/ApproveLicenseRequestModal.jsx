@@ -8,8 +8,8 @@ import {
   StatefulButton,
   Alert,
   Skeleton,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
 import { useApplicableSubscriptions } from './data/hooks';

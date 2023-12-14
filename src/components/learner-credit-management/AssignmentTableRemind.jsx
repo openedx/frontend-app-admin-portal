@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
-import { Mail } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { Mail } from '@openedx/paragon/icons';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import RemindAssignmentModal from './RemindAssignmentModal';
 

@@ -4,7 +4,7 @@ import {
   Collapsible,
   Form,
   Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 const SettingsAccessTabSection = ({
   title,

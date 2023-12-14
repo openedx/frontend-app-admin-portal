@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   ActionRow, Button, Icon, ModalDialog, useToggle,
-} from '@edx/paragon';
-import { Warning } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Warning } from '@openedx/paragon/icons';
 
 import {
   ErrorContext,

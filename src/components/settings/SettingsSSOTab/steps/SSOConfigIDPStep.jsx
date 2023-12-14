@@ -1,4 +1,4 @@
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Alert, Button, Form, Container,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 import ValidatedFormControl from '../../../forms/ValidatedFormControl';
 import { FormContext, FormFieldValidation, useFormContext } from '../../../forms/FormContext';

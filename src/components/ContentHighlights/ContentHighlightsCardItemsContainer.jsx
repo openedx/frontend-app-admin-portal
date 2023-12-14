@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardGrid, Alert } from '@edx/paragon';
+import { CardGrid, Alert } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';

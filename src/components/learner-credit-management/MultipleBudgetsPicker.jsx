@@ -4,7 +4,7 @@ import {
   Stack,
   Row,
   Col,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import BudgetCard from './BudgetCard';
 import { orderBudgets } from './data/utils';

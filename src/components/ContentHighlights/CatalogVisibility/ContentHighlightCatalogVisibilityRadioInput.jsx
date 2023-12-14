@@ -1,8 +1,8 @@
 import {
   Form, Container, Spinner,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { useState, useContext, useEffect } from 'react';
-import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
+import { ActionRowSpacer } from '@openedx/paragon/dist/ActionRow';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useHistory } from 'react-router-dom';

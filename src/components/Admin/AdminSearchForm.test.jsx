@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { FormControl } from '@edx/paragon';
+import { FormControl } from '@openedx/paragon';
 
 import AdminSearchForm from './AdminSearchForm';
 import SearchBar from '../SearchBar';

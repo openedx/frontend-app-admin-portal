@@ -7,7 +7,7 @@ import {
   Card,
   Stack,
   Badge,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import { useCourseCardMetadata } from './data';

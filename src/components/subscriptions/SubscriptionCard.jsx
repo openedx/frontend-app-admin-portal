@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import {
   Card, Badge, Button, Stack, Row, Col,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import classNames from 'classnames';
 import { getSubscriptionStatus } from './data/utils';

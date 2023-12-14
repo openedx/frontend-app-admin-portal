@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { logError } from '@edx/frontend-platform/logging';
-import { useToggle } from '@edx/paragon';
+import { useToggle } from '@openedx/paragon';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../constants';

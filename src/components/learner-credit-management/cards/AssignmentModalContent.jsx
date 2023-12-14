@@ -10,7 +10,7 @@ import {
   Col,
   Form,
   Card,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { connect } from 'react-redux';

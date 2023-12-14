@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   CheckCircle, Info, Warning,
-} from '@edx/paragon/icons';
-import { Alert, Button } from '@edx/paragon';
+} from '@openedx/paragon/icons';
+import { Alert, Button } from '@openedx/paragon';
 import Cookies from 'universal-cookie';
 import { SSOConfigContext } from './SSOConfigContext';
 

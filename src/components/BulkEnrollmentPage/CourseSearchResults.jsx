@@ -5,8 +5,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connectStateResults } from 'react-instantsearch-dom';
-import { Alert, DataTable, Skeleton } from '@edx/paragon';
-import { Error, ErrorOutline } from '@edx/paragon/icons';
+import { Alert, DataTable, Skeleton } from '@openedx/paragon';
+import { Error, ErrorOutline } from '@openedx/paragon/icons';
 import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
 
 import { CourseNameCell, FormattedDateCell } from './table/CourseSearchResultsCells';

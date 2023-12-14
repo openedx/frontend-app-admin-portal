@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Hyperlink } from '@edx/paragon';
+import { Stack, Hyperlink } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { configuration } from '../../config';
