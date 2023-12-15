@@ -45,7 +45,7 @@ const BudgetDetailCatalogTabContents = () => {
       delete newState.budgetActivityScrollToKey;
       history.replace({ ...location, state: newState });
     }
-  }, [history, locationState]);
+  }, [history, location, locationState]);
 
   return (
     <Row data-testid="budget-detail-catalog-tab-contents" ref={catalogContainerRef}>
