@@ -65,15 +65,3 @@ export const transformFiltersForRequest = (filters) => {
     }),
   );
 };
-
-/**
- * Helper to determine which table columns have an active filter applied.
- *
- * @param {object} columns Array of column objects (e.g., { id, filter, filterValue })
- * @returns Array of column objects with an active filter applied.
- */
-export const getActiveFilters = columns => columns.map(column => ({
-  name: column.id,
-  filter: column.filter,
-  filterValue: column.filterValue,
-})).filter(filter => !!filter.filterValue);
