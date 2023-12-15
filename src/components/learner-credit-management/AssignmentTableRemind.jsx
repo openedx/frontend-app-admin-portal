@@ -4,6 +4,7 @@ import { Button } from '@edx/paragon';
 import { Mail } from '@edx/paragon/icons';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import RemindAssignmentModal from './RemindAssignmentModal';
+import { getActiveTableColumnFilters } from '../../utils';
 
 const calculateTotalToRemind = ({
   assignmentUuids,
@@ -17,20 +18,28 @@ const calculateTotalToRemind = ({
   return assignmentUuids.length;
 };
 
-const AssignmentTableRemindAction = ({ selectedFlatRows, isEntireTableSelected, learnerStateCounts }) => {
+const AssignmentTableRemindAction = ({
+  selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance,
+}) => {
   const assignmentUuids = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').map(({ id }) => id);
   const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
+
+  const activeFilters = getActiveTableColumnFilters(tableInstance.columns);
+
+  // If entire table is selected and there are NO filters, hit remind-all endpoint. Otherwise, hit usual bulk remind.
+  const shouldRemindAll = isEntireTableSelected && activeFilters.length === 0;
+
   const {
     remindButtonState,
     remindContentAssignments,
     close,
     isOpen,
     open,
-  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids, isEntireTableSelected);
+  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids, shouldRemindAll);
 
   const selectedRemindableRowCount = calculateTotalToRemind({
     assignmentUuids,
-    isEntireTableSelected,
+    isEntireTableSelected: shouldRemindAll,
     learnerStateCounts,
   });
 
@@ -56,17 +65,15 @@ const AssignmentTableRemindAction = ({ selectedFlatRows, isEntireTableSelected, 
 };
 
 AssignmentTableRemindAction.propTypes = {
-  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()),
-  isEntireTableSelected: PropTypes.bool,
+  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  isEntireTableSelected: PropTypes.bool.isRequired,
   learnerStateCounts: PropTypes.arrayOf(PropTypes.shape({
     learnerState: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
   })).isRequired,
-};
-
-AssignmentTableRemindAction.defaultProps = {
-  selectedFlatRows: [],
-  isEntireTableSelected: false,
+  tableInstance: PropTypes.shape({
+    columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  }).isRequired,
 };
 
 export default AssignmentTableRemindAction;

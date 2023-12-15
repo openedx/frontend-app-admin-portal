@@ -4,6 +4,7 @@ import { Button } from '@edx/paragon';
 import { DoNotDisturbOn } from '@edx/paragon/icons';
 import CancelAssignmentModal from './CancelAssignmentModal';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
+import { getActiveTableColumnFilters } from '../../utils';
 
 const calculateTotalToCancel = ({
   assignmentUuids,
@@ -19,18 +20,24 @@ const calculateTotalToCancel = ({
 const AssignmentTableCancelAction = ({ selectedFlatRows, isEntireTableSelected, tableInstance }) => {
   const assignmentUuids = selectedFlatRows.map(row => row.id);
   const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
+
+  const activeFilters = getActiveTableColumnFilters(tableInstance.columns);
+
+  // If entire table is selected and there are NO filters, hit cancel-all endpoint. Otherwise, hit usual bulk cancel.
+  const shouldCancelAll = isEntireTableSelected && activeFilters.length === 0;
+
   const {
     cancelButtonState,
     cancelContentAssignments,
     close,
     isOpen,
     open,
-  } = useCancelContentAssignments(assignmentConfigurationUuid, assignmentUuids, isEntireTableSelected);
+  } = useCancelContentAssignments(assignmentConfigurationUuid, assignmentUuids, shouldCancelAll);
 
   const tableItemCount = tableInstance.itemCount;
   const totalToCancel = calculateTotalToCancel({
     assignmentUuids,
-    isEntireTableSelected,
+    isEntireTableSelected: shouldCancelAll,
     tableItemCount,
   });
 
@@ -51,19 +58,12 @@ const AssignmentTableCancelAction = ({ selectedFlatRows, isEntireTableSelected, 
 };
 
 AssignmentTableCancelAction.propTypes = {
-  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()),
-  isEntireTableSelected: PropTypes.bool,
+  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  isEntireTableSelected: PropTypes.bool.isRequired,
   tableInstance: PropTypes.shape({
     itemCount: PropTypes.number.isRequired,
-  }),
-};
-
-AssignmentTableCancelAction.defaultProps = {
-  selectedFlatRows: [],
-  isEntireTableSelected: false,
-  tableInstance: {
-    itemCount: 0,
-  },
+    columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  }).isRequired,
 };
 
 export default AssignmentTableCancelAction;

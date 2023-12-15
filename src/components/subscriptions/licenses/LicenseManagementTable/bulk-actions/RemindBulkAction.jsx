@@ -9,9 +9,10 @@ import {
   licenseManagementModalZeroState as modalZeroState,
 } from '../../LicenseManagementModals/LicenseManagementModalHook';
 import LicenseManagementRemindModal from '../../LicenseManagementModals/LicenseManagementRemindModal';
-import { canRemindLicense, getActiveFilters } from '../../../data/utils';
+import { canRemindLicense } from '../../../data/utils';
 import { ACTIVATED, REVOKED } from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
+import { getActiveTableColumnFilters } from '../../../../../utils';
 
 const calculateTotalToRemind = ({
   selectedRemindableRows,
@@ -54,7 +55,7 @@ const RemindBulkAction = ({
   const [remindModal, setRemindModal] = useLicenseManagementModalState();
   const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
   const selectedRemindableRows = selectedRows.filter(row => canRemindLicense(row.status));
-  const activeFilters = getActiveFilters(tableInstance.columns);
+  const activeFilters = getActiveTableColumnFilters(tableInstance.columns);
   const tableItemCount = tableInstance.itemCount;
   const totalToRemind = calculateTotalToRemind({
     selectedRemindableRows,

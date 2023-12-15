@@ -9,9 +9,10 @@ import {
   licenseManagementModalZeroState as modalZeroState,
 } from '../../LicenseManagementModals/LicenseManagementModalHook';
 import LicenseManagementRevokeModal from '../../LicenseManagementModals/LicenseManagementRevokeModal';
-import { canRevokeLicense, getActiveFilters } from '../../../data/utils';
+import { canRevokeLicense } from '../../../data/utils';
 import { REVOKED } from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
+import { getActiveTableColumnFilters } from '../../../../../utils';
 
 const calculateTotalToRevoke = ({
   selectedRevocableRows,
@@ -51,7 +52,7 @@ const RevokeBulkAction = ({
   const [revokeModal, setRevokeModal] = useLicenseManagementModalState();
   const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
   const selectedRevocableRows = selectedRows.filter(row => canRevokeLicense(row.status));
-  const activeFilters = getActiveFilters(tableInstance.columns);
+  const activeFilters = getActiveTableColumnFilters(tableInstance.columns);
   const tableItemCount = tableInstance.itemCount;
   const totalToRevoke = calculateTotalToRevoke({
     selectedRevocableRows,
