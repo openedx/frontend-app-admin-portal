@@ -167,6 +167,12 @@ const mockFailedReminderLearnerAction = {
   errorReason: 'email_error',
 };
 
+const mockFailedRedemptionLearnerAction = {
+  actionType: 'redeemed',
+  completedAt: null,
+  errorReason: 'enrollment_error',
+};
+
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
@@ -1046,6 +1052,8 @@ describe('<BudgetDetailPage />', () => {
         actionType: 'notified',
       },
     },
+    // This test case is weird because we always serialize the latest failed action into error_reason in the assignment
+    // API response.  Nevertheless, keep it in just to cover potential backend serializer bugs.
     {
       learnerState: 'failed',
       hasLearnerEmail: true,
@@ -1089,6 +1097,21 @@ describe('<BudgetDetailPage />', () => {
       errorReason: {
         errorReason: 'internal_api_error',
         actionType: 'reminded',
+      },
+    },
+    {
+      learnerState: 'failed',
+      hasLearnerEmail: true,
+      expectedChipStatus: 'Failed: Redemption',
+      expectedModalPopupHeading: 'Failed: Redemption',
+      expectedModalPopupContent: (
+        'Something went wrong behind the scenes when the learner attempted to redeem this course assignment. '
+        + 'Associated Learner credit funds have been released into your available balance.'
+      ),
+      actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction, mockFailedRedemptionLearnerAction],
+      errorReason: {
+        actionType: mockFailedRedemptionLearnerAction.actionType,
+        errorReason: mockFailedRedemptionLearnerAction.errorReason,
       },
     },
   ])('renders correct status chips with assigned table data (%s)', ({
@@ -1430,7 +1453,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('cancels assignments in bulk', async () => {
-    EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
+    EnterpriseAccessApiService.cancelAllContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -1497,16 +1520,18 @@ describe('<BudgetDetailPage />', () => {
     expect(modalDialog).toBeInTheDocument();
     const cancelDialogButton = getButtonElement('Cancel assignments (2)');
     userEvent.click(cancelDialogButton);
-    expect(
-      EnterpriseAccessApiService.cancelContentAssignments,
-    ).toHaveBeenCalled();
+    await waitFor(
+      () => expect(
+        EnterpriseAccessApiService.cancelAllContentAssignments,
+      ).toHaveBeenCalled(),
+    );
     await waitFor(
       () => expect(screen.getByText('Assignments canceled (2)')).toBeInTheDocument(),
     );
   });
 
   it('reminds assignments in bulk', async () => {
-    EnterpriseAccessApiService.remindContentAssignments.mockResolvedValueOnce({ status: 200 });
+    EnterpriseAccessApiService.remindAllContentAssignments.mockResolvedValueOnce({ status: 202 });
     useParams.mockReturnValue({
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
@@ -1530,7 +1555,7 @@ describe('<BudgetDetailPage />', () => {
     useBudgetContentAssignments.mockReturnValue({
       isLoading: false,
       contentAssignments: {
-        count: 2,
+        count: 3,
         results: [
           {
             uuid: 'test-uuid1',
@@ -1552,10 +1577,20 @@ describe('<BudgetDetailPage />', () => {
             errorReason: null,
             state: 'allocated',
           },
+          {
+            uuid: 'test-uuid3',
+            contentKey: mockCourseKey,
+            contentQuantity: -29900,
+            learnerState: 'notifying',
+            recentAction: { actionType: 'assigned', timestamp: '2023-11-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+          },
         ],
         learnerStateCounts: [
-          { learnerState: 'waiting', count: 1 },
-          { learnerState: 'waiting', count: 1 },
+          { learnerState: 'waiting', count: 2 },
+          { learnerState: 'notifying', count: 1 },
         ],
         numPages: 1,
         currentPage: 1,
@@ -1573,9 +1608,11 @@ describe('<BudgetDetailPage />', () => {
     expect(modalDialog).toBeInTheDocument();
     const remindDialogButton = getButtonElement('Send reminders (2)');
     userEvent.click(remindDialogButton);
-    expect(
-      EnterpriseAccessApiService.remindContentAssignments,
-    ).toHaveBeenCalled();
+    await waitFor(
+      () => expect(
+        EnterpriseAccessApiService.remindAllContentAssignments,
+      ).toHaveBeenCalled(),
+    );
     await waitFor(
       () => expect(screen.getByText('Reminders sent (2)')).toBeInTheDocument(),
     );

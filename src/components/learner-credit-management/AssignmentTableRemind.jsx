@@ -8,9 +8,25 @@ import useRemindContentAssignments from './data/hooks/useRemindContentAssignment
 import RemindAssignmentModal from './RemindAssignmentModal';
 import { transformSelectedRows } from './data';
 import EVENT_NAMES from '../../eventTracking';
+import { getActiveTableColumnFilters } from '../../utils';
 
-const AssignmentTableRemindAction = ({ selectedFlatRows, enterpriseId }) => {
+const calculateTotalToRemind = ({
+  assignmentUuids,
+  isEntireTableSelected,
+  learnerStateCounts,
+}) => {
+  if (isEntireTableSelected) {
+    const waitingAssignmentCounts = learnerStateCounts.filter(({ learnerState }) => (learnerState === 'waiting'));
+    return waitingAssignmentCounts.length ? waitingAssignmentCounts[0].count : 0;
+  }
+  return assignmentUuids.length;
+};
+
+const AssignmentTableRemindAction = ({
+  selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance, enterpriseId,
+}) => {
   const remindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting');
+
   const {
     uniqueLearnerState,
     uniqueAssignmentState,
@@ -21,13 +37,24 @@ const AssignmentTableRemindAction = ({ selectedFlatRows, enterpriseId }) => {
     totalSelectedRows,
   } = transformSelectedRows(remindableRows);
 
+  const activeFilters = getActiveTableColumnFilters(tableInstance.columns);
+
+  // If entire table is selected and there are NO filters, hit remind-all endpoint. Otherwise, hit usual bulk remind.
+  const shouldRemindAll = isEntireTableSelected && activeFilters.length === 0;
+
   const {
     remindButtonState,
     remindContentAssignments,
     close,
     isOpen,
     open,
-  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids);
+  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids, shouldRemindAll);
+
+  const selectedRemindableRowCount = calculateTotalToRemind({
+    assignmentUuids,
+    isEntireTableSelected: shouldRemindAll,
+    learnerStateCounts,
+  });
 
   const {
     BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_BULK_REMIND_MODAL,
@@ -75,33 +102,36 @@ const AssignmentTableRemindAction = ({ selectedFlatRows, enterpriseId }) => {
   return (
     <>
       <Button
-        disabled={totalSelectedRows === 0}
-        alt={`Send reminder to ${totalSelectedRows} learners`}
+        disabled={selectedRemindableRowCount === 0}
+        alt={`Send reminder to ${selectedRemindableRowCount} learners`}
         iconBefore={Mail}
         onClick={openModal}
       >
-        {`Remind (${totalSelectedRows})`}
+        {`Remind (${selectedRemindableRowCount})`}
       </Button>
       <RemindAssignmentModal
         remindContentAssignments={remindContentAssignments}
         close={closeModal}
         isOpen={isOpen}
         remindButtonState={remindButtonState}
-        uuidCount={assignmentUuids.length}
         trackEvent={reminderTrackEvent}
+        uuidCount={selectedRemindableRowCount}
       />
     </>
   );
 };
 
 AssignmentTableRemindAction.propTypes = {
-  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()),
+  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   enterpriseId: PropTypes.string.isRequired,
-
-};
-
-AssignmentTableRemindAction.defaultProps = {
-  selectedFlatRows: [],
+  isEntireTableSelected: PropTypes.bool.isRequired,
+  learnerStateCounts: PropTypes.arrayOf(PropTypes.shape({
+    learnerState: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+  })).isRequired,
+  tableInstance: PropTypes.shape({
+    columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({

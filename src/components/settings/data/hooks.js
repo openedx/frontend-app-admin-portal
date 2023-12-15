@@ -132,6 +132,14 @@ export const useStylesForCustomBrandColors = (branding) => {
       .btn-brand:focus:before {
         border-color: ${brandColors.secondary.regular.hex()} !important;
       }
+      .btn-outline-brand:hover {
+        background-color: ${brandColors.secondary.regular.hex()} !important;
+        color: ${brandColors.secondary.textColor.hex()} !important;
+        border-color: ${brandColors.secondary.regular.hex()} !important;
+      }
+      .btn-outline-brand:focus:before {
+        border-color: ${brandColors.secondary.regular.hex()} !important;
+      }
       .btn-primary {
         background-color: ${brandColors.primary.regular.hex()} !important;
         border-color: ${brandColors.primary.regular.hex()} !important;
@@ -141,26 +149,16 @@ export const useStylesForCustomBrandColors = (branding) => {
         background-color: ${brandColors.primary.dark.hex()} !important;
         border-color: ${brandColors.primary.dark.hex()} !important;
       }
-      .btn-brand-primary {
-        background-color: ${brandColors.primary.regular.hex()} !important;
+      .btn-primary:focus:before {
         border-color: ${brandColors.primary.regular.hex()} !important;
+      }
+      .btn-outline-primary:hover {
+        background-color: ${brandColors.primary.regular.hex()} !important;
         color: ${brandColors.primary.textColor.hex()} !important;
-      }
-      .btn-brand-primary:hover {
-        background-color: ${brandColors.primary.dark.hex()} !important;
-        border-color: ${brandColors.primary.dark.hex()} !important;
-      }
-      .btn-brand-primary:focus:before {
         border-color: ${brandColors.primary.regular.hex()} !important;
       }
-      .bg-brand-primary {
-        background-color: ${brandColors.primary.regular.hex()} !important;
-      }
-      .border-brand-primary {
+      .btn-outline-primary:focus:before {
         border-color: ${brandColors.primary.regular.hex()} !important;
-      }
-      .color-brand-tertiary {
-        color: ${brandColors.tertiary.regular.hex()} !important;
       }
       .secondary-background {
         background: ${brandColors.secondary.regular.hex()} !important;

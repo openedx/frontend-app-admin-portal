@@ -77,7 +77,6 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
       <div className={classNames({ 'text-center': isLargeScreenOrGreater })}>
         <h4>Get people learning using this budget</h4>
         <Button
-          variant="brand"
           className="mt-3"
           iconBefore={Add}
           as={Link}

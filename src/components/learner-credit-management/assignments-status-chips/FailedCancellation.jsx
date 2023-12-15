@@ -32,13 +32,11 @@ const FailedCancellation = ({ trackEvent }) => {
   return (
     <>
       <Chip
-        disabled={false}
+        ref={setTarget}
         iconBefore={Error}
         onClick={openChipModal}
         onKeyPress={openChipModal}
-        ref={setTarget}
         tabIndex={0}
-        variant="light"
       >
         Failed: Cancellation
       </Chip>

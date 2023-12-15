@@ -258,7 +258,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       <Stepper activeKey={currentStep}>
         <FullscreenModal
           title="New highlight"
-          className="bg-light-200"
+          className="stepper-modal bg-light-200"
           isOpen={isStepperModalOpen}
           onClose={openCloseConfirmationModal}
           beforeBodyNode={<Stepper.Header className="border-bottom border-light" />}

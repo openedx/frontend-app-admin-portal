@@ -1,11 +1,10 @@
-import {
-  Chip,
-} from '@edx/paragon';
+import { Chip } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedCancellation from './assignments-status-chips/FailedCancellation';
+import FailedRedemption from './assignments-status-chips/FailedRedemption';
 import FailedReminder from './assignments-status-chips/FailedReminder';
 import FailedSystem from './assignments-status-chips/FailedSystem';
 import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
@@ -74,11 +73,12 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   }
 
   if (learnerState === 'failed') {
-    // If learnerState is failed but no error reason is defined, return a failed system chip.
+    // If learnerState is failed but no top-level error reason is defined, return a failed system chip.
     if (!errorReason) {
       return <FailedSystem trackEvent={sendErrorStateTrackEvent} />;
     }
-    // Determine which failure chip to display based on the error reason.
+    // Determine which failure chip to display based on the top level errorReason. In most cases, the actual errorReason
+    // code is ignored, in which case we key off the actionType.
     if (errorReason.actionType === 'notified') {
       if (errorReason.errorReason === 'email_error') {
         return (
@@ -93,6 +93,11 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     if (errorReason.actionType === 'reminded') {
       return <FailedReminder trackEvent={sendErrorStateTrackEvent} />;
     }
+    if (errorReason.actionType === 'redeemed') {
+      return <FailedRedemption />;
+    }
+    // In all other unexpected cases, return a failed system chip.
+    return <FailedSystem />;
   }
 
   // Note: The given `learnerState` not officially supported with a `ModalPopup`, but display it anyway.

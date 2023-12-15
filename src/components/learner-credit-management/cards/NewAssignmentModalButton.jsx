@@ -177,7 +177,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     <>
       <Button onClick={handleOpenAssignmentModal}>{children}</Button>
       <FullscreenModal
-        className="bg-light-200 text-left"
+        className="stepper-modal bg-light-200"
         title="Assign this course"
         isOpen={isOpen}
         onClose={() => {

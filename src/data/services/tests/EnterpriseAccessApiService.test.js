@@ -201,7 +201,7 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
-  test('remindContentAssignments calls enterprise-access cancel POST API to remind learners', () => {
+  test('remindContentAssignments calls enterprise-access remind POST API to remind learners', () => {
     const options = {
       assignment_uuids: mockAssignmentUUIDs,
     };
@@ -209,6 +209,20 @@ describe('EnterpriseAccessApiService', () => {
     expect(axios.post).toBeCalledWith(
       `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind/`,
       options,
+    );
+  });
+
+  test('cancelAllContentAssignments calls enterprise-access cancel-all POST API to cancel all assignments', () => {
+    EnterpriseAccessApiService.cancelAllContentAssignments(mockAssignmentConfigurationUUID);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/cancel-all/`,
+    );
+  });
+
+  test('remindAllContentAssignments calls enterprise-access remind-all POST API to remind all learners', () => {
+    EnterpriseAccessApiService.remindAllContentAssignments(mockAssignmentConfigurationUUID);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind-all/`,
     );
   });
 });
