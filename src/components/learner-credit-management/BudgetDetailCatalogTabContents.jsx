@@ -14,8 +14,8 @@ import { configuration } from '../../config';
 
 const BudgetDetailCatalogTabContents = () => {
   const history = useHistory();
-  const { location } = history;
-  const { state: locationState } = useLocation();
+  const location = useLocation();
+  const { state: locationState } = location;
   const catalogContainerRef = useRef();
 
   const language = {
