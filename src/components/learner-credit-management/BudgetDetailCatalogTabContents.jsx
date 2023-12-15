@@ -4,7 +4,7 @@ import algoliasearch from 'algoliasearch/lite';
 import { Row, Col } from '@edx/paragon';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
-import { useHistory } from 'react-router';
+import { useLocation, useHistory } from 'react-router';
 import CatalogSearch from './search/CatalogSearch';
 import {
   LANGUAGE_REFINEMENT,
@@ -15,7 +15,7 @@ import { configuration } from '../../config';
 const BudgetDetailCatalogTabContents = () => {
   const history = useHistory();
   const { location } = history;
-  const { state: locationState } = location;
+  const { state: locationState } = useLocation();
   const catalogContainerRef = useRef();
 
   const language = {
@@ -45,7 +45,7 @@ const BudgetDetailCatalogTabContents = () => {
       delete newState.budgetActivityScrollToKey;
       history.replace({ ...location, state: newState });
     }
-  }, [history, location, locationState]);
+  }, [history, locationState]);
 
   return (
     <Row data-testid="budget-detail-catalog-tab-contents" ref={catalogContainerRef}>
