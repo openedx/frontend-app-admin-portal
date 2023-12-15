@@ -132,9 +132,6 @@ export const useStylesForCustomBrandColors = (branding) => {
       .btn-brand:focus:before {
         border-color: ${brandColors.secondary.regular.hex()} !important;
       }
-      .btn-outline-brand {
-        color: ${brandColors.secondary.textColor.hex()} !important;
-      }
       .btn-outline-brand:hover {
         background-color: ${brandColors.secondary.regular.hex()} !important;
         color: ${brandColors.secondary.textColor.hex()} !important;
@@ -154,9 +151,6 @@ export const useStylesForCustomBrandColors = (branding) => {
       }
       .btn-primary:focus:before {
         border-color: ${brandColors.primary.regular.hex()} !important;
-      }
-      .btn-outline-primary {
-        color: ${brandColors.primary.textColor.hex()} !important;
       }
       .btn-outline-primary:hover {
         background-color: ${brandColors.primary.regular.hex()} !important;
