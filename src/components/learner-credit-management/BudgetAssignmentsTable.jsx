@@ -47,6 +47,7 @@ const BudgetAssignmentsTable = ({
       number: count,
       value: learnerState,
     }));
+
   return (
     <DataTable
       isSortable
