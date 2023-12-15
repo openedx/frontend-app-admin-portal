@@ -4,7 +4,7 @@ import algoliasearch from 'algoliasearch/lite';
 import { Row, Col } from '@edx/paragon';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useHistory } from 'react-router-dom';
 import CatalogSearch from './search/CatalogSearch';
 import {
   LANGUAGE_REFINEMENT,
