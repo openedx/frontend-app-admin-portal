@@ -71,7 +71,7 @@ describe('useSubsidyRequestsContext', () => {
       () => useSubsidyRequestsContext({
         enterpriseId: TEST_ENTERPRISE_UUID,
         enterpriseSubsidyTypes: [
-          SUBSIDY_TYPES.offer, SUBSIDY_TYPES.license,
+          SUBSIDY_TYPES.budget, SUBSIDY_TYPES.license,
         ],
       }),
     );

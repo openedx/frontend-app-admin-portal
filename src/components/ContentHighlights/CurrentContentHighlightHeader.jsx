@@ -46,7 +46,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       };
       sendEnterpriseTrackEvent(
         enterpriseId,
-        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIHT_MAX_REACHED}`,
+        `${EVENT_NAMES.CONTENT_HIGHLIGHTS.NEW_HIGHLIGHT_MAX_REACHED}`,
         trackInfo,
       );
     } else {

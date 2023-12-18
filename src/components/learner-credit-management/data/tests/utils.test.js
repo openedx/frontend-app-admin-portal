@@ -1,13 +1,13 @@
-import { transformOfferSummary, getBudgetStatus, orderOffers } from '../utils';
+import { transformSubsidySummary, getBudgetStatus, orderBudgets } from '../utils';
 import { EXEC_ED_OFFER_TYPE } from '../constants';
 
-describe('transformOfferSummary', () => {
-  it('should return null if there is no offerSummary', () => {
-    expect(transformOfferSummary()).toBeNull();
+describe('transformSubsidySummary', () => {
+  it('should return null if there is no budgetSummary', () => {
+    expect(transformSubsidySummary()).toBeNull();
   });
 
   it('should safeguard against bad data', () => {
-    const offerSummary = {
+    const budgetSummary = {
       maxDiscount: 1,
       amountOfOfferSpent: 1.34,
       remainingBalance: -0.34,
@@ -15,7 +15,7 @@ describe('transformOfferSummary', () => {
       offerType: EXEC_ED_OFFER_TYPE,
     };
 
-    expect(transformOfferSummary(offerSummary)).toEqual({
+    expect(transformSubsidySummary(budgetSummary)).toEqual({
       totalFunds: 1,
       redeemedFunds: 1,
       redeemedFundsExecEd: NaN,
@@ -29,7 +29,7 @@ describe('transformOfferSummary', () => {
   });
 
   it('should handle when no maxDiscount is not set', () => {
-    const offerSummary = {
+    const budgetSummary = {
       maxDiscount: null,
       amountOfOfferSpent: 100,
       remainingBalance: null,
@@ -39,7 +39,7 @@ describe('transformOfferSummary', () => {
       budgetsSummary: [],
     };
 
-    expect(transformOfferSummary(offerSummary)).toEqual({
+    expect(transformSubsidySummary(budgetSummary)).toEqual({
       totalFunds: null,
       redeemedFunds: 100,
       remainingFunds: null,
@@ -53,7 +53,7 @@ describe('transformOfferSummary', () => {
   });
 
   it('should handle when budgetsSummary is provided', () => {
-    const offerSummary = {
+    const budgetSummary = {
       maxDiscount: 1000,
       amountOfOfferSpent: 500,
       remainingBalance: 500,
@@ -71,7 +71,7 @@ describe('transformOfferSummary', () => {
         }],
     };
 
-    expect(transformOfferSummary(offerSummary)).toEqual({
+    expect(transformSubsidySummary(budgetSummary)).toEqual({
       totalFunds: 1000,
       redeemedFunds: 500,
       remainingFunds: 500,
@@ -118,52 +118,52 @@ describe('getBudgetStatus', () => {
   });
 });
 
-// Example offer objects for testing
-const offers = [
+// Example Budget objects for testing
+const budgets = [
   {
-    name: 'Offer 1',
+    name: 'Budget 1',
     start: '2023-01-01T00:00:00Z',
     end: '2023-01-10T00:00:00Z',
   },
   {
-    name: 'Offer 2',
+    name: 'Budget 2',
     start: '2022-12-01T00:00:00Z',
     end: '2022-12-20T00:00:00Z',
   },
   {
-    name: 'Offer 3',
+    name: 'Budget 3',
     start: '2023-02-01T00:00:00Z',
     end: '2023-02-15T00:00:00Z',
   },
   {
-    name: 'Offer 4',
+    name: 'Budget 4',
     start: '2023-01-15T00:00:00Z',
     end: '2023-01-25T00:00:00Z',
   },
 ];
 
-describe('orderOffers', () => {
+describe('orderBudgets', () => {
   it('should sort offers correctly', () => {
-    const sortedOffers = orderOffers(offers);
+    const sortedBudgets = orderBudgets(budgets);
 
-    // Expected order: Active offers (Offer 2), Upcoming offers (Offer 1, Offer 4), Expired offers (Offer 3)
-    expect(sortedOffers.map((offer) => offer.name)).toEqual(['Offer 2', 'Offer 1', 'Offer 4', 'Offer 3']);
+    // Expected order: Active budgets (Budget 2), Upcoming budgets (Budget 1, Budget 4), Expired budgets (Budget 3)
+    expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget 2', 'Budget 1', 'Budget 4', 'Budget 3']);
   });
 
   it('should handle empty input', () => {
-    const sortedOffers = orderOffers([]);
-    expect(sortedOffers).toEqual([]);
+    const sortedBudgets = orderBudgets([]);
+    expect(sortedBudgets).toEqual([]);
   });
 
   it('should handle offers with the same status and end date', () => {
-    const duplicateOffers = [
-      { name: 'Offer A', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
-      { name: 'Offer B', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
+    const duplicateBudgets = [
+      { name: 'Budget A', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
+      { name: 'Budget B', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
     ];
 
-    const sortedOffers = orderOffers(duplicateOffers);
+    const sortedBudgets = orderBudgets(duplicateBudgets);
 
     // Since both offers have the same status ("active") and end date, they should be sorted alphabetically by name.
-    expect(sortedOffers.map((offer) => offer.name)).toEqual(['Offer A', 'Offer B']);
+    expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget A', 'Budget B']);
   });
 });

@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
     enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,
+    enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
     enterpriseBranding: state.portalConfiguration.enterpriseBranding,
     loading: state.portalConfiguration.loading,
   };

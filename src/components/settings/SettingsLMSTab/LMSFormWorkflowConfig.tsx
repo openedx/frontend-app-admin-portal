@@ -75,6 +75,7 @@ export const LMSFormWorkflowConfig = ({
         buttonText: 'Next',
         opensNewWindow: false,
         onClick: () => {},
+        preventDefaultErrorModal: false,
       }),
     },
   ];
@@ -92,6 +93,7 @@ export const LMSFormWorkflowConfig = ({
         nextButtonConfig: () => ({
           buttonText: 'Next',
           opensNewWindow: false,
+          preventDefaultErrorModal: false,
         }),
       },
       {
@@ -102,6 +104,7 @@ export const LMSFormWorkflowConfig = ({
         nextButtonConfig: () => ({
           buttonText: 'Next',
           opensNewWindow: false,
+          preventDefaultErrorModal: false,
         }),
       },
     );

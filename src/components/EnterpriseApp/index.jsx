@@ -86,6 +86,7 @@ class EnterpriseApp extends React.Component {
       enablePortalLearnerCreditManagementScreen,
       enterpriseId,
       enterpriseName,
+      enterpriseFeatures,
       enterpriseBranding,
       loading,
     } = this.props;
@@ -123,6 +124,7 @@ class EnterpriseApp extends React.Component {
       <EnterpriseAppContextProvider
         enterpriseId={enterpriseId}
         enterpriseName={enterpriseName}
+        enterpriseFeatures={enterpriseFeatures}
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
         <BrandStyles enterpriseBranding={enterpriseBranding} />
@@ -173,6 +175,7 @@ class EnterpriseApp extends React.Component {
 EnterpriseApp.defaultProps = {
   enterpriseId: null,
   enterpriseName: null,
+  enterpriseFeatures: {},
   enterpriseBranding: {
     primary_color: SCHOLAR_THEME.button,
     secondary_color: SCHOLAR_THEME.banner,
@@ -196,6 +199,9 @@ EnterpriseApp.propTypes = {
   }).isRequired,
   enterpriseId: PropTypes.string,
   enterpriseName: PropTypes.string,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }),
   enterpriseBranding: PropTypes.shape({
     primary_color: PropTypes.string,
     secondary_color: PropTypes.string,

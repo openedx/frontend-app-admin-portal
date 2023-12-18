@@ -1,10 +1,8 @@
 import {
   act, render, screen, waitFor,
 } from '@testing-library/react';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import userEvent from '@testing-library/user-event';
+import { QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -15,6 +13,7 @@ import { HELP_CENTER_SAML_LINK } from '../../data/constants';
 import { features } from '../../../../config';
 import SettingsSSOTab from '..';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { queryClient } from '../../../test/testUtils';
 
 const enterpriseId = 'an-id-1';
 jest.mock('../../../../data/services/LmsApiService');
@@ -28,11 +27,6 @@ const initialStore = {
     contactEmail: 'foobar',
   },
 };
-const queryClient = new QueryClient({
-  queries: {
-    retry: true, // optional: you may disable automatic query retries for all queries or on a per-query basis.
-  },
-});
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = aStore => mockStore(aStore);
@@ -102,7 +96,7 @@ describe('SAML Config Tab', () => {
     }));
     await waitFor(() => render(
       <IntlProvider locale="en">
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient()}>
           <Provider store={store}>
             <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
           </Provider>,
@@ -112,5 +106,62 @@ describe('SAML Config Tab', () => {
     expect(screen.queryByText(
       'Great news! Your test was successful and your new SSO integration is live and ready to use.',
     )).toBeInTheDocument();
+  });
+  test('network errors trigger sso error page', async () => {
+    features.AUTH0_SELF_SERVICE_INTEGRATION = true;
+    const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
+    spy.mockRejectedValue({});
+    await waitFor(() => render(
+      <IntlProvider locale="en">
+        <QueryClientProvider client={queryClient()}>
+          <Provider store={store}>
+            <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
+          </Provider>,
+        </QueryClientProvider>
+      </IntlProvider>,
+    ));
+    await waitFor(() => expect(
+      screen.getByTestId(
+        'sso-network-error-image',
+      ),
+    ).toBeInTheDocument());
+  });
+  test('creating new sso config with existing config', async () => {
+    features.AUTH0_SELF_SERVICE_INTEGRATION = true;
+    const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
+    spy.mockImplementation(() => Promise.resolve({
+      data: [{
+        uuid: 'ecc16800-c1cc-4cdb-93aa-186f71b026ca',
+        display_name: 'foobar',
+        active: true,
+        modified: '2022-04-12T19:51:25Z',
+        configured_at: '2022-05-12T19:51:25Z',
+        validated_at: '2022-06-12T19:51:25Z',
+        submitted_at: '2022-04-12T19:51:25Z',
+      }],
+    }));
+    const updateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'updateEnterpriseSsoOrchestrationRecord');
+    await waitFor(() => render(
+      <IntlProvider locale="en">
+        <QueryClientProvider client={queryClient()}>
+          <Provider store={store}>
+            <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
+          </Provider>,
+        </QueryClientProvider>
+      </IntlProvider>,
+    ));
+    await waitFor(() => expect(
+      screen.queryByText(
+        'New',
+      ),
+    ).toBeInTheDocument());
+    userEvent.click(screen.getByText('New'));
+    await waitFor(() => expect(
+      screen.queryByText(
+        'Create new SSO configuration?',
+      ),
+    ).toBeInTheDocument());
+    userEvent.click(screen.getByText('Create new SSO'));
+    expect(updateEnterpriseSsoOrchestrationRecord).toBeCalled();
   });
 });

@@ -147,24 +147,89 @@ class EnterpriseAccessApiService {
    * List content assignments for a specific AssignmentConfiguration.
    */
   static listContentAssignments(assignmentConfigurationUUID, options = {}) {
-    const params = new URLSearchParams({
+    const { learnerState, ...optionsRest } = options;
+    const params = {
       page: 1,
       page_size: 25,
       // Only include assignments with allocated or errored states. The table should NOT
-      // include assignments in the cancelled or accepted states.
+      // include assignments in the canceled or accepted states.
       state__in: 'allocated,errored',
-      ...snakeCaseObject(options),
+      ...snakeCaseObject(optionsRest),
+    };
+    if (learnerState) {
+      params.learner_state__in = learnerState;
+    }
+    const urlParams = new URLSearchParams(params);
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/?${urlParams.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  static listSubsidyAccessPolicies(enterpriseCustomerId) {
+    const queryParams = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseCustomerId,
+      active: true,
     });
-    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/?${params.toString()}`;
+    const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
 
   /**
+   * Cancel content assignments for a specific AssignmentConfiguration.
+   */
+  static cancelContentAssignments(assignmentConfigurationUUID, assignmentUuids) {
+    const options = {
+      assignment_uuids: assignmentUuids,
+    };
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Cancel ALL content assignments for a specific AssignmentConfiguration.
+   */
+  static cancelAllContentAssignments(assignmentConfigurationUUID) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel-all/`;
+    return EnterpriseAccessApiService.apiClient().post(url);
+  }
+
+  /**
+   * Remind content assignments for a specific AssignmentConfiguration.
+   */
+  static remindContentAssignments(assignmentConfigurationUUID, assignmentUuids) {
+    const options = {
+      assignment_uuids: assignmentUuids,
+    };
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
+
+  /**
+   * Remind ALL content assignments for a specific AssignmentConfiguration.
+   */
+  static remindAllContentAssignments(assignmentConfigurationUUID) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind-all/`;
+    return EnterpriseAccessApiService.apiClient().post(url);
+  }
+
+  /**
    * Retrieve a specific subsidy access policy.
+   * @param {string} subsidyAccessPolicyUUID The UUID of the subsidy access policy to retrieve.
+   * @returns {Promise} - A promise that resolves to the response from the API.
    */
   static retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID) {
     const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/`;
     return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  /**
+   * ALlocates assignments for a specific subsidy access policy.
+   * @param {String} subsidyAccessPolicyUUID The UUID of the subsidy access policy to allocate content assignments for.
+   * @param {Object} payload The metadata to send to the API, including learner emails and the content key.
+   * @returns {Promise} - A promise that resolves to the response from the API.
+   */
+  static allocateContentAssignments(subsidyAccessPolicyUUID, payload) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/policy-allocation/${subsidyAccessPolicyUUID}/allocate/`;
+    return EnterpriseAccessApiService.apiClient().post(url, payload);
   }
 }
 

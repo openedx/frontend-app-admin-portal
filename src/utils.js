@@ -400,17 +400,42 @@ const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
   return false;
 };
 
-const getCourseProductLineText = (courseProductLine) => {
-  let courseProductLineText = '';
-  courseProductLineText = courseProductLine === 'OCM' ? 'Open Courses' : courseProductLine;
-  return courseProductLineText;
-};
+/**
+ * Modifies the retry behavior of queries to retry up to max 3 times (default) or if
+ * the error returned by the query is a 404 HTTP status code (not found). This configuration
+ * may be overridden per-query, as needed.
+ */
+function defaultQueryClientRetryHandler(failureCount, err) {
+  if (failureCount >= 3 || err.customAttributes.httpErrorStatus === 404) {
+    return false;
+  }
+  return true;
+}
 
-const getCourseProductLineAbbreviation = (courseProductLine) => {
-  let courseProductLineText = '';
-  courseProductLineText = courseProductLine === 'Open Courses Marketplace' ? 'OCM' : 'Executive Education';
-  return courseProductLineText;
-};
+/**
+ * Determines whether a subsidy access policy is assignable, based on its policy type
+ * and the presence of an assignment configuration.
+ */
+function isAssignableSubsidyAccessPolicyType(policy) {
+  const policyType = policy?.policyType;
+  const isAssignable = !!policy?.assignmentConfiguration;
+  const assignableSubsidyAccessPolicyTypes = ['AssignedLearnerCreditAccessPolicy'];
+  return isAssignable && assignableSubsidyAccessPolicyTypes.includes(policyType);
+}
+
+/**
+ * Helper to determine which table columns have an active filter applied.
+ *
+ * @param {object} columns Array of column objects (e.g., { id, filter, filterValue })
+ * @returns Array of column objects with an active filter applied.
+ */
+function getActiveTableColumnFilters(columns) {
+  return columns.map(column => ({
+    name: column.id,
+    filter: column.filter,
+    filterValue: column.filterValue,
+  })).filter(filter => !!filter.filterValue);
+}
 
 export {
   camelCaseDict,
@@ -445,6 +470,7 @@ export {
   capitalizeFirstLetter,
   pollAsync,
   isNotValidNumberString,
-  getCourseProductLineText,
-  getCourseProductLineAbbreviation,
+  defaultQueryClientRetryHandler,
+  isAssignableSubsidyAccessPolicyType,
+  getActiveTableColumnFilters,
 };

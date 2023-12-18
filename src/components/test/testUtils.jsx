@@ -2,8 +2,10 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render, screen } from '@testing-library/react';
+import { render, screen as rtlScreen } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
 
+// TODO: this could likely be replaced by `renderWithRouter` from `@edx/frontend-enterprise-utils`.
 export function renderWithRouter(
   ui,
   {
@@ -30,4 +32,25 @@ export function findElementWithText(container, type, text) {
   return [...elements].find((elem) => elem.innerHTML.includes(text));
 }
 
-export const getButtonElement = (buttonText) => screen.getByRole('button', { name: buttonText });
+export const getButtonElement = (buttonText, options = {}) => {
+  const {
+    screenOverride,
+    isQueryByRole,
+  } = options;
+  const screen = screenOverride || rtlScreen;
+  if (isQueryByRole) {
+    return screen.queryByRole('button', { name: buttonText });
+  }
+  return screen.getByRole('button', { name: buttonText });
+};
+
+export function queryClient(options = {}) {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+      ...options,
+    },
+  });
+}

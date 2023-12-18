@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dayjs from 'dayjs';
 import { DataTable } from '@edx/paragon';
 
 import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
 import SpendTableEnrollmentDetails from './SpendTableEnrollmentDetails';
-import { getCourseProductLineText } from '../../utils';
-import { PAGE_SIZE, DEFAULT_PAGE } from './data';
+import {
+  PAGE_SIZE,
+  DEFAULT_PAGE,
+  formatDate,
+} from './data';
+import SpendTableAmountContents from './SpendTableAmountContents';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -30,7 +33,7 @@ const LearnerCreditAllocationTable = ({
       {
         Header: 'Date',
         accessor: 'enrollmentDate',
-        Cell: ({ row }) => dayjs(row.values.enrollmentDate).format('MMM D, YYYY'),
+        Cell: ({ row }) => formatDate(row.values.enrollmentDate),
         disableFilters: true,
       },
       {
@@ -42,13 +45,7 @@ const LearnerCreditAllocationTable = ({
       {
         Header: 'Amount',
         accessor: 'courseListPrice',
-        Cell: ({ row }) => `$${row.values.courseListPrice}`,
-        disableFilters: true,
-      },
-      {
-        Header: 'Product',
-        accessor: 'courseProductLine',
-        Cell: ({ row }) => getCourseProductLineText(row.values.courseProductLine),
+        Cell: SpendTableAmountContents,
         disableFilters: true,
       },
     ]}
@@ -76,10 +73,9 @@ LearnerCreditAllocationTable.propTypes = {
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({
       userEmail: PropTypes.string,
-      courseTitle: PropTypes.string.isRequired,
+      courseTitle: PropTypes.string,
       courseListPrice: PropTypes.number.isRequired,
       enrollmentDate: PropTypes.string.isRequired,
-      courseProductLine: PropTypes.string.isRequired,
     })),
     itemCount: PropTypes.number.isRequired,
     pageCount: PropTypes.number.isRequired,

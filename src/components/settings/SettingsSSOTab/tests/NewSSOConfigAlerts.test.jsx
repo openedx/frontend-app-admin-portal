@@ -58,6 +58,9 @@ describe('New SSO Config Alerts Tests', () => {
               untestedConfigs={[{ display_name: 'untested' }]}
               notConfigured={[]}
               closeAlerts={jest.fn()}
+              timedOutConfigs={[]}
+              erroredConfigs={[]}
+              setIsStepperOpen={jest.fn()}
             />,
           </Provider>
         </SSOConfigContext.Provider>
@@ -90,6 +93,9 @@ describe('New SSO Config Alerts Tests', () => {
               untestedConfigs={[]}
               notConfigured={[{ display_name: 'not configured' }]}
               closeAlerts={jest.fn()}
+              timedOutConfigs={[]}
+              erroredConfigs={[]}
+              setIsStepperOpen={jest.fn()}
             />,
           </Provider>
         </SSOConfigContext.Provider>
@@ -113,6 +119,9 @@ describe('New SSO Config Alerts Tests', () => {
               untestedConfigs={[{ display_name: 'untested' }]}
               notConfigured={[]}
               closeAlerts={jest.fn()}
+              timedOutConfigs={[]}
+              erroredConfigs={[]}
+              setIsStepperOpen={jest.fn()}
             />,
           </Provider>
         </SSOConfigContext.Provider>
@@ -121,6 +130,12 @@ describe('New SSO Config Alerts Tests', () => {
     expect(
       screen.queryByText(
         'You need to test your SSO connection',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'http://courses.edx.org/dashboard?tpa_hint=sluggy',
+        { exact: false },
       ),
     ).toBeInTheDocument();
     expect(
@@ -144,6 +159,9 @@ describe('New SSO Config Alerts Tests', () => {
               untestedConfigs={[]}
               notConfigured={[]}
               closeAlerts={jest.fn()}
+              timedOutConfigs={[]}
+              erroredConfigs={[]}
+              setIsStepperOpen={jest.fn()}
             />,
           </Provider>
         </SSOConfigContext.Provider>
@@ -167,6 +185,9 @@ describe('New SSO Config Alerts Tests', () => {
               untestedConfigs={[{ display_name: 'untested' }]}
               notConfigured={[]}
               closeAlerts={mockCloseAlerts}
+              timedOutConfigs={[]}
+              erroredConfigs={[]}
+              setIsStepperOpen={jest.fn()}
             />,
           </Provider>
         </SSOConfigContext.Provider>
@@ -193,6 +214,9 @@ describe('New SSO Config Alerts Tests', () => {
               untestedConfigs={[]}
               notConfigured={[]}
               closeAlerts={jest.fn()}
+              timedOutConfigs={[]}
+              erroredConfigs={[]}
+              setIsStepperOpen={jest.fn()}
             />,
           </Provider>
         </SSOConfigContext.Provider>

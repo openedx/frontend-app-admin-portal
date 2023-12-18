@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -12,214 +11,524 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import BudgetCard from '../BudgetCard-V2';
-import { useOfferSummary, useOfferRedemptions } from '../data';
+import BudgetCard from '../BudgetCard';
+import { formatPrice, useSubsidySummaryAnalyticsApi, useBudgetRedemptions } from '../data';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
-  useOfferSummary: jest.fn(),
-  useOfferRedemptions: jest.fn(),
+  useSubsidySummaryAnalyticsApi: jest.fn(),
+  useBudgetRedemptions: jest.fn(),
 }));
-useOfferSummary.mockReturnValue({
+useSubsidySummaryAnalyticsApi.mockReturnValue({
   isLoading: false,
   offerSummary: null,
 });
-useOfferRedemptions.mockReturnValue({
+useBudgetRedemptions.mockReturnValue({
   isLoading: false,
   offerRedemptions: {
     itemCount: 0,
     pageCount: 0,
     results: [],
   },
-  fetchOfferRedemptions: jest.fn(),
+  fetchBudgetRedemptions: jest.fn(),
 });
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
-const enterpriseId = 'test-enterprise';
+const enterpriseSlug = 'test-enterprise';
 const enterpriseUUID = '1234';
 const initialStore = {
   portalConfiguration: {
-    enterpriseId,
+    enterpriseId: enterpriseUUID,
+    enterpriseSlug,
   },
 };
 const store = getMockStore({ ...initialStore });
 
-const mockEnterpriseOfferId = '123';
-const mockEnterpriseOfferEnrollmentId = 456;
+const mockEnterpriseOfferId = 123;
+const mockBudgetUuid = 'test-budget-uuid';
 
-const mockOfferDisplayName = 'Test Enterprise Offer';
+const mockBudgetDisplayName = 'Test Enterprise Budget Display Name';
 
-const BudgetCardWrapper = ({ ...rest }) => (
+const defaultEnterpriseSubsidiesContextValue = {
+  isFetchingBudgets: false,
+};
+
+const BudgetCardWrapper = ({
+  enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
+  ...rest
+}) => (
   <MemoryRouter initialEntries={['/test-enterprise/admin/learner-credit']}>
     <Provider store={store}>
       <IntlProvider locale="en">
-        <BudgetCard {...rest} />
+        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+          <BudgetCard {...rest} />
+        </EnterpriseSubsidiesContext.Provider>
       </IntlProvider>
     </Provider>
   </MemoryRouter>
 );
 
 describe('<BudgetCard />', () => {
-  describe('with enterprise offer', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('displays correctly for a scheduled Enterprise Offers (ecommerce)', () => {
+    const mockBudget = {
+      id: mockEnterpriseOfferId,
+      name: mockBudgetDisplayName,
+      start: '3022-01-01',
+      end: '3023-01-01',
+      source: BUDGET_TYPES.ecommerce,
+    };
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: {
+        totalFunds: mockBudgetAggregates.total,
+        redeemedFunds: mockBudgetAggregates.spent,
+        remainingFunds: mockBudgetAggregates.available,
+        percentUtilized: mockBudgetAggregates.spent / mockBudgetAggregates.total,
+        offerType: 'Site',
+        offerId: mockEnterpriseOfferId,
+        budgetsSummary: [],
+      },
     });
 
-    it('displays correctly for Offers', () => {
-      const mockOffer = {
-        id: mockEnterpriseOfferId,
-        name: mockOfferDisplayName,
-        start: '2022-01-01',
-        end: '2023-01-01',
-      };
-      const mockOfferRedemption = {
-        created: '2022-02-01',
-        enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
-      };
-      useOfferSummary.mockReturnValue({
-        isLoading: false,
-        offerSummary: {
-          totalFunds: 5000,
-          redeemedFunds: 200,
-          remainingFunds: 4800,
-          percentUtilized: 0.04,
-          offerType: 'Site',
-          budgetsSummary: [
-            {
-              id: 123,
-              start: '2022-01-01',
-              end: '2022-01-01',
-              available: 200,
-              spent: 100,
-              enterpriseSlug: enterpriseId,
-            },
-          ],
-        },
-      });
-      useOfferRedemptions.mockReturnValue({
-        isLoading: false,
-        offerRedemptions: {
-          results: [mockOfferRedemption],
-          itemCount: 1,
-          pageCount: 1,
-        },
-        fetchOfferRedemptions: jest.fn(),
-      });
-      render(<BudgetCardWrapper
-        offer={mockOffer}
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
-      />);
-      expect(screen.getByText('Overview'));
-      expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
-      const formattedString = `Expired ${dayjs(mockOffer.end).format('MMMM D, YYYY')}`;
-      const elementsWithTestId = screen.getAllByTestId('offer-date');
-      const firstElementWithTestId = elementsWithTestId[0];
-      expect(firstElementWithTestId).toHaveTextContent(formattedString);
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Starts ${dayjs(mockBudget.start).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+  });
+
+  it('displays correctly for a scheduled Subsidy (enterprise-subsidy)', () => {
+    const mockBudget = {
+      id: mockEnterpriseOfferId,
+      name: mockBudgetDisplayName,
+      start: '3022-01-01',
+      end: '4023-01-01',
+      source: BUDGET_TYPES.subsidy,
+    };
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: {
+        totalFunds: mockBudgetAggregates.total,
+        redeemedFunds: mockBudgetAggregates.spent,
+        remainingFunds: mockBudgetAggregates.available,
+        percentUtilized: mockBudgetAggregates.spent / mockBudgetAggregates.total,
+        offerType: 'Site',
+        offerId: mockEnterpriseOfferId,
+        budgetsSummary: [
+          {
+            id: 'test-subsidy-uuid',
+            start: '3022-01-01',
+            end: '4023-01-01',
+            remainingFunds: mockBudgetAggregates.available,
+            redeemedFunds: mockBudgetAggregates.spent,
+            enterpriseSlug,
+            subsidyAccessPolicyDisplayName: mockBudgetDisplayName,
+            subsidyAccessPolicyUuid: mockBudgetUuid,
+          },
+        ],
+      },
     });
 
-    it('renders SubBudgetCard when offerType is ecommerce', () => {
-      const mockOffer = {
-        id: mockEnterpriseOfferId,
-        name: mockOfferDisplayName,
-        start: '2022-01-01',
-        end: '2023-01-01',
-        offerType: BUDGET_TYPES.ecommerce,
-      };
-      const mockOfferRedemption = {
-        created: '2022-02-01',
-        enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
-      };
-      useOfferSummary.mockReturnValue({
-        isLoading: false,
-        offerSummary: {
-          totalFunds: 5000,
-          redeemedFunds: 200,
-          remainingFunds: 4800,
-          percentUtilized: 0.04,
-          offerType: 'learner_credit',
-          budgetsSummary: [
-            {
-              id: 123,
-              start: '2022-01-01',
-              end: '2022-01-01',
-              available: 200,
-              spent: 100,
-              enterpriseSlug: enterpriseId,
-            },
-          ],
-        },
-      });
-      useOfferRedemptions.mockReturnValue({
-        isLoading: false,
-        offerRedemptions: {
-          results: [mockOfferRedemption],
-          itemCount: 1,
-          pageCount: 1,
-        },
-        fetchOfferRedemptions: jest.fn(),
-      });
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
 
-      render(<BudgetCardWrapper
-        offer={mockOffer}
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
-      />);
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Starts ${dayjs(mockBudget.start).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+  });
 
-      expect(screen.getByTestId('view-budget')).toBeInTheDocument();
+  it.each([
+    { isAssignableBudget: false },
+    { isAssignableBudget: true },
+  ])('displays correctly for a scheduled Policy (enterprise-access) (%s)', ({ isAssignableBudget }) => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      pending: 100,
+      available: isAssignableBudget ? 4700 : 4800,
+    };
+    const mockBudget = {
+      id: mockBudgetUuid,
+      name: mockBudgetDisplayName,
+      start: '3022-01-01',
+      end: '4023-01-01',
+      source: BUDGET_TYPES.policy,
+      aggregates: {
+        available: mockBudgetAggregates.available,
+        pending: isAssignableBudget ? mockBudgetAggregates.pending : undefined,
+        spent: mockBudgetAggregates.spent,
+      },
+      isAssignable: isAssignableBudget,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: undefined,
     });
 
-    it('renders SubBudgetCard when offerType is not ecommerce', () => {
-      const mockOffer = {
-        id: mockEnterpriseOfferId,
-        name: mockOfferDisplayName,
-        start: '2022-01-01',
-        end: '2023-01-01',
-        offerType: 'otherOfferType',
-      };
-      const mockOfferRedemption = {
-        created: '2022-02-01',
-        enterpriseEnrollmentId: mockEnterpriseOfferEnrollmentId,
-      };
-      useOfferSummary.mockReturnValue({
-        isLoading: false,
-        offerSummary: {
-          totalFunds: 5000,
-          redeemedFunds: 200,
-          remainingFunds: 4800,
-          percentUtilized: 0.04,
-          offerType: 'learner_credit',
-          budgetsSummary: [
-            {
-              id: 123,
-              start: '2022-01-01',
-              end: '2022-01-01',
-              available: 200,
-              spent: 100,
-              enterpriseSlug: enterpriseId,
-            },
-          ],
-        },
-      });
-      useOfferRedemptions.mockReturnValue({
-        isLoading: false,
-        offerRedemptions: {
-          results: [mockOfferRedemption],
-          itemCount: 1,
-          pageCount: 1,
-        },
-        fetchOfferRedemptions: jest.fn(),
-      });
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
 
-      render(<BudgetCardWrapper
-        offer={mockOffer}
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseId}
-      />);
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Starts ${dayjs(mockBudget.start).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+  });
 
-      expect(screen.getByTestId('view-budget')).toBeInTheDocument();
+  it('displays correctly for an expired Enterprise Offers (ecommerce)', () => {
+    const mockBudget = {
+      id: mockEnterpriseOfferId,
+      name: mockBudgetDisplayName,
+      start: '2022-01-01',
+      end: '2023-01-01',
+      source: BUDGET_TYPES.ecommerce,
+    };
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: {
+        totalFunds: mockBudgetAggregates.total,
+        redeemedFunds: mockBudgetAggregates.spent,
+        remainingFunds: mockBudgetAggregates.available,
+        percentUtilized: mockBudgetAggregates.spent / mockBudgetAggregates.total,
+        offerType: 'Site',
+        offerId: mockEnterpriseOfferId,
+        budgetsSummary: [],
+      },
     });
+
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Expired ${dayjs(mockBudget.end).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+
+    // View budget CTA
+    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    expect(viewBudgetCTA).toBeInTheDocument();
+    expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockEnterpriseOfferId}`);
+  });
+
+  it('displays correctly for an expired Subsidy (enterprise-subsidy)', () => {
+    const mockBudget = {
+      id: mockEnterpriseOfferId,
+      name: mockBudgetDisplayName,
+      start: '2022-01-01',
+      end: '2023-01-01',
+      source: BUDGET_TYPES.subsidy,
+    };
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: {
+        totalFunds: mockBudgetAggregates.total,
+        redeemedFunds: mockBudgetAggregates.spent,
+        remainingFunds: mockBudgetAggregates.available,
+        percentUtilized: mockBudgetAggregates.spent / mockBudgetAggregates.total,
+        offerType: 'Site',
+        offerId: mockEnterpriseOfferId,
+        budgetsSummary: [
+          {
+            id: 'test-subsidy-uuid',
+            start: '2022-01-01',
+            end: '2022-01-01',
+            remainingFunds: mockBudgetAggregates.available,
+            redeemedFunds: mockBudgetAggregates.spent,
+            enterpriseSlug,
+            subsidyAccessPolicyDisplayName: mockBudgetDisplayName,
+            subsidyAccessPolicyUuid: mockBudgetUuid,
+          },
+        ],
+      },
+    });
+
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Expired ${dayjs(mockBudget.end).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+
+    // View budget CTA
+    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    expect(viewBudgetCTA).toBeInTheDocument();
+    expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockBudgetUuid}`);
+  });
+
+  it.each([
+    { isAssignableBudget: false },
+    { isAssignableBudget: true },
+  ])('displays correctly for an expired Policy (enterprise-access) (%s)', ({ isAssignableBudget }) => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      pending: 100,
+      available: isAssignableBudget ? 4700 : 4800,
+    };
+    const mockBudget = {
+      id: mockBudgetUuid,
+      name: mockBudgetDisplayName,
+      start: '2022-01-01',
+      end: '2023-01-01',
+      source: BUDGET_TYPES.policy,
+      aggregates: {
+        available: mockBudgetAggregates.available,
+        pending: isAssignableBudget ? mockBudgetAggregates.pending : undefined,
+        spent: mockBudgetAggregates.spent,
+      },
+      isAssignable: isAssignableBudget,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: undefined,
+    });
+
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Expired ${dayjs(mockBudget.end).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+
+    // View budget CTA
+    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    expect(viewBudgetCTA).toBeInTheDocument();
+    expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockBudgetUuid}`);
+  });
+
+  it('displays correctly for a current Enterprise Offers (ecommerce)', () => {
+    const mockBudget = {
+      id: mockEnterpriseOfferId,
+      name: mockBudgetDisplayName,
+      start: '2022-01-01',
+      end: '3022-01-01',
+      source: BUDGET_TYPES.ecommerce,
+    };
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: {
+        totalFunds: mockBudgetAggregates.total,
+        redeemedFunds: mockBudgetAggregates.spent,
+        remainingFunds: mockBudgetAggregates.available,
+        percentUtilized: mockBudgetAggregates.spent / mockBudgetAggregates.total,
+        offerType: 'Site',
+        offerId: mockEnterpriseOfferId,
+        budgetsSummary: [],
+      },
+    });
+
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Expires ${dayjs(mockBudget.end).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+
+    // View budget CTA
+    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    expect(viewBudgetCTA).toBeInTheDocument();
+    expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockEnterpriseOfferId}`);
+
+    // Aggregates
+    expect(screen.getByText('Balance')).toBeInTheDocument();
+    expect(screen.getByText('Available')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.available))).toBeInTheDocument();
+    expect(screen.getByText('Spent')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.spent))).toBeInTheDocument();
+  });
+
+  it('displays correctly for a current Subsidy (enterprise-subsidy)', () => {
+    const mockBudget = {
+      id: mockEnterpriseOfferId,
+      name: mockBudgetDisplayName,
+      start: '2022-01-01',
+      end: '3023-01-01',
+      source: BUDGET_TYPES.subsidy,
+    };
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: {
+        totalFunds: mockBudgetAggregates.total,
+        redeemedFunds: mockBudgetAggregates.spent,
+        remainingFunds: mockBudgetAggregates.available,
+        percentUtilized: mockBudgetAggregates.spent / mockBudgetAggregates.total,
+        offerType: 'Site',
+        offerId: mockEnterpriseOfferId,
+        budgetsSummary: [
+          {
+            id: 'test-subsidy-uuid',
+            start: '2022-01-01',
+            end: '3023-01-01',
+            remainingFunds: mockBudgetAggregates.available,
+            redeemedFunds: mockBudgetAggregates.spent,
+            enterpriseSlug,
+            subsidyAccessPolicyDisplayName: mockBudgetDisplayName,
+            subsidyAccessPolicyUuid: mockBudgetUuid,
+          },
+        ],
+      },
+    });
+
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Expires ${dayjs(mockBudget.end).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+
+    // View budget CTA
+    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    expect(viewBudgetCTA).toBeInTheDocument();
+    expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockBudgetUuid}`);
+
+    // Aggregates
+    expect(screen.getByText('Balance')).toBeInTheDocument();
+    expect(screen.getByText('Available')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.available))).toBeInTheDocument();
+    expect(screen.getByText('Spent')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.spent))).toBeInTheDocument();
+  });
+
+  it.each([
+    { isAssignableBudget: false },
+    { isAssignableBudget: true },
+  ])('displays correctly for a current Policy (enterprise-access) (%s)', ({ isAssignableBudget }) => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      pending: 100,
+      available: isAssignableBudget ? 4700 : 4800,
+    };
+    const mockBudget = {
+      id: mockBudgetUuid,
+      name: mockBudgetDisplayName,
+      start: '2022-01-01',
+      end: '3023-01-01',
+      source: BUDGET_TYPES.policy,
+      aggregates: {
+        available: mockBudgetAggregates.available,
+        pending: isAssignableBudget ? mockBudgetAggregates.pending : undefined,
+        spent: mockBudgetAggregates.spent,
+      },
+      isAssignable: isAssignableBudget,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: undefined,
+    });
+
+    render(<BudgetCardWrapper
+      budget={mockBudget}
+      enterpriseUUID={enterpriseUUID}
+      enterpriseSlug={enterpriseSlug}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Expires ${dayjs(mockBudget.end).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+
+    // View budget CTA
+    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    expect(viewBudgetCTA).toBeInTheDocument();
+    expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockBudgetUuid}`);
+
+    // Aggregates
+    expect(screen.getByText('Balance')).toBeInTheDocument();
+    expect(screen.getByText('Available')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.available))).toBeInTheDocument();
+    if (isAssignableBudget) {
+      expect(screen.getByText('Assigned')).toBeInTheDocument();
+      expect(screen.getByText(formatPrice(mockBudgetAggregates.pending))).toBeInTheDocument();
+    } else {
+      expect(screen.queryByText('Assigned')).not.toBeInTheDocument();
+    }
+    expect(screen.getByText('Spent')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.spent))).toBeInTheDocument();
   });
 });

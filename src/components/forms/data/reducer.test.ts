@@ -19,6 +19,7 @@ const dummyButtonConfig: FormWorkflowButtonConfig<DummyFormFields> = {
   buttonText: 'Unimportant',
   onClick: ({ formFields }: FormWorkflowHandlerArgs<DummyFormFields>) => Promise.resolve(formFields as DummyFormFields),
   opensNewWindow: false,
+  preventDefaultErrorModal: false,
 };
 
 const createDummyStep = (
@@ -65,6 +66,7 @@ const getTestInitializeFormArguments = () => {
     formFields: { ...testFormFields },
     validations: dummyFormFieldsValidations,
     currentStep: steps[0],
+    steps: [...steps],
   };
   return testArgs;
 };
@@ -77,11 +79,15 @@ describe('Form reducer tests', () => {
       formFields: { ...formFields },
       validations: dummyFormFieldsValidations,
       currentStep: steps[0],
+      steps: [...steps],
     };
     expect(initializeForm(initializeFormArguments)).toEqual({
       formFields,
+      errorMap: {},
+      hasErrors: false,
       currentStep: steps[0],
       isEdited: false,
+      allSteps: [...steps],
     });
   });
 

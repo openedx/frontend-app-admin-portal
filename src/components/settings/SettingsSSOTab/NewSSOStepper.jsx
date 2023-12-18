@@ -1,31 +1,62 @@
-import React, { useState, useContext } from 'react';
+import React, {
+  useState, useContext,
+} from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import FormContextWrapper from '../../forms/FormContextWrapper';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOFormWorkflowConfig from './SSOFormWorkflowConfig';
+import SsoErrorPage from './SsoErrorPage';
+import { camelCaseDict } from '../../../utils';
+import UnsavedSSOChangesModal from './UnsavedSSOChangesModal';
+import { IDP_URL_SELECTION, IDP_XML_SELECTION } from './steps/NewSSOConfigConnectStep';
 
-const NewSSOStepper = () => {
+const NewSSOStepper = ({ enterpriseId, isStepperOpen, setIsStepperOpen }) => {
   const {
-    setProviderConfig,
+    setProviderConfig, setRefreshBool, ssoState: { providerConfig, refreshBool },
   } = useContext(SSOConfigContext);
-  const [isStepperOpen, setIsStepperOpen] = useState(true);
+  const providerConfigCamelCase = camelCaseDict(providerConfig || {});
+  const [configureError, setConfigureError] = useState(null);
   const handleCloseWorkflow = () => {
     setProviderConfig?.(null);
     setIsStepperOpen(false);
+    setRefreshBool(!refreshBool);
   };
+  if (providerConfigCamelCase.metadataXml || providerConfigCamelCase.metadataUrl) {
+    providerConfigCamelCase.idpConnectOption = providerConfigCamelCase?.metadataUrl
+      ? IDP_URL_SELECTION
+      : IDP_XML_SELECTION;
+  }
 
-  return (isStepperOpen
-    && (
-    <div>
-      <FormContextWrapper
-        workflowTitle="New SSO integration"
-        formWorkflowConfig={SSOFormWorkflowConfig()}
-        onClickOut={handleCloseWorkflow}
-        formData={{}}
-        isStepperOpen={isStepperOpen}
-      />
-    </div>
-    )
+  return (
+    <>
+      {isStepperOpen && !configureError && (
+        <div>
+          <FormContextWrapper
+            workflowTitle="New SSO integration"
+            formWorkflowConfig={SSOFormWorkflowConfig({ enterpriseId, setConfigureError })}
+            onClickOut={handleCloseWorkflow}
+            formData={providerConfigCamelCase}
+            isStepperOpen={isStepperOpen}
+            UnsavedChangesModal={UnsavedSSOChangesModal}
+          />
+        </div>
+      )}
+      {isStepperOpen && configureError && (
+        <SsoErrorPage isOpen={configureError !== null} stepperError />
+      )}
+    </>
   );
 };
 
-export default NewSSOStepper;
+NewSSOStepper.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+  isStepperOpen: PropTypes.bool.isRequired,
+  setIsStepperOpen: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(NewSSOStepper);

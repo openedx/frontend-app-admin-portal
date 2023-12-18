@@ -449,7 +449,7 @@ const SSOConfigConfigureStep = ({
             />
             <Form.Text>
               Configurable value that represents the amount of time in seconds, no greater than 30, that the
-              edX system will wait for a response before cancelling the request.
+              edX system will wait for a response before canceling the request.
             </Form.Text>
             {!odataApiTimeoutIntervalValid && (
               <Form.Control.Feedback type="invalid">

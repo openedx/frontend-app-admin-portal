@@ -23,16 +23,18 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { defaultQueryClientRetryHandler } from '../../utils';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Specifying a longer `staleTime` of 20 seconds means queries will not refetch their data
+      retry: defaultQueryClientRetryHandler,
+      // Specifying a longer `staleTime` of 60 seconds means queries will not refetch their data
       // as often; mitigates making duplicate queries when within the `staleTime` window, instead
       // relying on the cached data until the `staleTime` window has exceeded. This may be modified
       // per-query, as needed, if certain queries expect to be more up-to-date than others. Allows
       // `useQuery` to be used as a state manager.
-      staleTime: 1000 * 20,
+      staleTime: 1000 * 60,
     },
   },
 });

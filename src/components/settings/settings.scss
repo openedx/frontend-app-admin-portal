@@ -9,6 +9,15 @@
   max-height: 35px;
 }
 
+.sso-error-lms-icon {
+  max-width: 71px;
+  max-height: 71px;
+}
+
+.sso-alert-width {
+  width: 73% !important;
+}
+
 .lms-card-hover {
   &:hover {
     box-shadow: $box-shadow;
@@ -156,10 +165,6 @@
   vertical-align: middle;
   font-size: 1rem; 
   font-weight: 500;
-}
-
-.stepper-modal .pgn__modal-header {
-  border-bottom: solid 7px;
 }
 
 .warning-icon {

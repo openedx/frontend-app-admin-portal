@@ -14,13 +14,26 @@ const NewSSOConfigCard = ({
   setLoading,
   setRefreshBool,
   refreshBool,
+  setUpdateError,
+  setIsStepperOpen,
 }) => {
   const VALIDATED = config.validated_at;
   const ENABLED = config.active;
-  const CONFIGURED = config.configured_at && (config.submitted_at < config.configured_at);
-  const SUBMITTED = config.submitted_at;
+  const CONFIGURED = config.configured_at && (config.submitted_at < config.configured_at) && (
+    !config.errored_at || (config.errored_at && config.configured_at > config.errored_at)
+  );
+  const SUBMITTED = config.submitted_at && (
+    !config.errored_at || (config.errored_at && config.submitted_at > config.errored_at)
+  );
+  const ERRORED = config.errored_at;
+  const TIMED_OUT = SUBMITTED && !CONFIGURED && !config.is_pending_configuration;
 
   const { setProviderConfig } = useContext(SSOConfigContext);
+
+  const onConfigureClick = (selectedConfig) => {
+    setProviderConfig(selectedConfig);
+    setIsStepperOpen(true);
+  };
 
   const convertToReadableDate = (date) => {
     const dateObj = new Date(date);
@@ -32,6 +45,9 @@ const NewSSOConfigCard = ({
     setLoading(true);
     LmsApiService.deleteEnterpriseSsoOrchestrationRecord(deletedConfig.uuid).then(() => {
       setRefreshBool(!refreshBool);
+    }).catch(() => {
+      setUpdateError({ config: config.uuid, action: 'delete' });
+      setLoading(false);
     });
   };
 
@@ -39,6 +55,9 @@ const NewSSOConfigCard = ({
     setLoading(true);
     LmsApiService.updateEnterpriseSsoOrchestrationRecord({ active: false }, disabledConfig.uuid).then(() => {
       setRefreshBool(!refreshBool);
+    }).catch(() => {
+      setUpdateError({ config: config.uuid, action: 'disable' });
+      setLoading(false);
     });
   };
 
@@ -46,6 +65,9 @@ const NewSSOConfigCard = ({
     setLoading(true);
     LmsApiService.updateEnterpriseSsoOrchestrationRecord({ active: true }, enabledConfig.uuid).then(() => {
       setRefreshBool(!refreshBool);
+    }).catch(() => {
+      setUpdateError({ config: config.uuid, action: 'enable' });
+      setLoading(false);
     });
   };
 
@@ -81,7 +103,7 @@ const NewSSOConfigCard = ({
           {renderKeyOffIcon('existing-sso-config-card-off-not-validated-icon')}
         </OverlayTrigger>
       )}
-      {(!ENABLED || !CONFIGURED) && (
+      {(!ENABLED || !CONFIGURED) && VALIDATED && (
         <>
           {renderKeyOffIcon('existing-sso-config-card-off-icon')}
         </>
@@ -114,10 +136,10 @@ const NewSSOConfigCard = ({
 
   const renderCardButton = () => (
     <>
-      {!VALIDATED && CONFIGURED && (
+      {((!VALIDATED && CONFIGURED) || ((TIMED_OUT) || (ERRORED))) && (
         <Button
           className="float-right"
-          onClick={() => setProviderConfig(config)}
+          onClick={() => onConfigureClick(config)}
           variant="outline-primary"
           data-testid="existing-sso-config-card-configure-button"
         >
@@ -156,7 +178,7 @@ const NewSSOConfigCard = ({
             Last modified {convertToReadableDate(config.modified)}
           </div>
         )}
-        actions={(!SUBMITTED || CONFIGURED) && (
+        actions={((!SUBMITTED || CONFIGURED) || (ERRORED || TIMED_OUT)) && (
           <Dropdown className="mt-3">
             <Dropdown.Toggle
               id="dropdown-toggle-with-iconbutton"
@@ -171,12 +193,12 @@ const NewSSOConfigCard = ({
               {VALIDATED && (
                 <Dropdown.Item
                   data-testid="existing-sso-config-configure-dropdown"
-                  onClick={() => setProviderConfig(config)}
+                  onClick={() => onConfigureClick(config)}
                 >
                   Configure
                 </Dropdown.Item>
               )}
-              {(!ENABLED || !VALIDATED) && (
+              {((!ENABLED || !VALIDATED) || (ERRORED || TIMED_OUT)) && (
                 <Dropdown.Item
                   data-testid="existing-sso-config-delete-dropdown"
                   onClick={() => onDeleteClick(config)}
@@ -209,10 +231,14 @@ NewSSOConfigCard.propTypes = {
     validated_at: PropTypes.string,
     configured_at: PropTypes.string,
     submitted_at: PropTypes.string,
+    errored_at: PropTypes.string,
+    is_pending_configuration: PropTypes.bool,
   }).isRequired,
   setLoading: PropTypes.func.isRequired,
   setRefreshBool: PropTypes.func.isRequired,
   refreshBool: PropTypes.bool.isRequired,
+  setUpdateError: PropTypes.func.isRequired,
+  setIsStepperOpen: PropTypes.func.isRequired,
 };
 
 export default NewSSOConfigCard;

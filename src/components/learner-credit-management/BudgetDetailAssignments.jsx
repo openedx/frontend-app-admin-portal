@@ -1,38 +1,90 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Hyperlink } from '@edx/paragon';
+import { getConfig } from '@edx/frontend-platform/config';
+
+import { useHistory } from 'react-router-dom';
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
+import AssignMoreCoursesEmptyStateMinimal from './AssignMoreCoursesEmptyStateMinimal';
+import { useBudgetContentAssignments, useBudgetId, useSubsidyAccessPolicy } from './data';
 
 const BudgetDetailAssignments = ({
-  isEnabled,
-  isLoading,
-  tableData,
-  fetchTableData,
+  hasContentAssignments,
+  hasSpentTransactions,
+  enterpriseFeatures,
+  enterpriseId,
 }) => {
-  if (!isEnabled) {
+  const assignedHeadingRef = useRef();
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const history = useHistory();
+
+  const { location } = history;
+  const { state: locationState } = location;
+  const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
+  const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
+  const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
+  const {
+    isLoading,
+    contentAssignments,
+    fetchContentAssignments,
+  } = useBudgetContentAssignments({
+    isEnabled: isAssignableBudget && hasContentAssignments,
+    assignmentConfigurationUUID,
+    enterpriseId,
+  });
+
+  useEffect(() => {
+    if (locationState?.budgetActivityScrollToKey === 'assigned') {
+      assignedHeadingRef.current?.scrollIntoView({ behavior: 'smooth' });
+      const newState = { ...locationState };
+      delete newState.budgetActivityScrollToKey;
+      history.replace({ ...location, state: newState });
+    }
+  }, [history, location, locationState]);
+
+  if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
     return null;
   }
 
+  if (!hasContentAssignments && hasSpentTransactions) {
+    return (
+      <AssignMoreCoursesEmptyStateMinimal />
+    );
+  }
+
   return (
-    <section>
-      <h3 className="mb-3">Assigned</h3>
+    <section className="budget-detail-assignments">
+      <h3 className="mb-3" ref={assignedHeadingRef}>Assigned</h3>
       <p className="small mb-4">
         Assigned activity earmarks funds in your budget so you can&apos;t overspend. For funds to move
-        from assigned to spent, your learners must complete enrollment.
+        from assigned to spent, your learners must complete enrollment.{' '}
+        <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+          Learn more
+        </Hyperlink>
       </p>
       <BudgetAssignmentsTable
         isLoading={isLoading}
-        tableData={tableData}
-        fetchTableData={fetchTableData}
+        tableData={contentAssignments}
+        fetchTableData={fetchContentAssignments}
       />
     </section>
   );
 };
 
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+});
+
 BudgetDetailAssignments.propTypes = {
-  isEnabled: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  tableData: PropTypes.shape().isRequired,
-  fetchTableData: PropTypes.func.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
+  hasContentAssignments: PropTypes.bool.isRequired,
+  hasSpentTransactions: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
 };
 
-export default BudgetDetailAssignments;
+export default connect(mapStateToProps)(BudgetDetailAssignments);

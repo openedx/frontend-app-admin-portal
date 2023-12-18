@@ -1,5 +1,3 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
 import algoliasearch from 'algoliasearch/lite';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
 
@@ -8,18 +6,24 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
+import {
+  ENABLE_TESTING, SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy,
+} from '../data';
 
 const CatalogSearch = () => {
-  const { budgetId } = useParams();
   const searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-
-  const searchFilters = `enterprise_catalog_query_uuids:${budgetId}`;
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const {
+    data: subsidyAccessPolicy,
+  } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const searchFilters = `enterprise_catalog_uuids:${ENABLE_TESTING(subsidyAccessPolicy.catalogUuid)} AND content_type:course`;
+  const displayName = subsidyAccessPolicy.displayName ? `${subsidyAccessPolicy.displayName} catalog` : 'Overview';
 
   return (
     <section>
       <FormattedMessage
         id="catalogs.enterpriseCatalogs.header"
-        defaultMessage="Budget associated catalog"
+        defaultMessage={displayName}
         description="Search dialogue."
         tagName="h3"
       />
@@ -28,6 +32,7 @@ const CatalogSearch = () => {
           <Configure
             filters={searchFilters}
             facetingAfterDistinct
+            hitsPerPage={SEARCH_RESULT_PAGE_SIZE}
           />
           <SearchHeader
             hideTitle
