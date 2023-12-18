@@ -6,7 +6,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import RemindAssignmentModal from './RemindAssignmentModal';
-import { transformSelectedRows } from './data';
+import { transformSelectedRows, useBudgetId, useSubsidyAccessPolicy } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { getActiveTableColumnFilters } from '../../utils';
 
@@ -25,13 +25,16 @@ const calculateTotalToRemind = ({
 const AssignmentTableRemindAction = ({
   selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance, enterpriseId,
 }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { assignmentConfiguration } = subsidyAccessPolicy;
+
   const remindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting');
   const {
     uniqueLearnerState,
     uniqueAssignmentState,
     uniqueContentKeys,
     totalContentQuantity,
-    assignmentConfigurationUuid,
     assignmentUuids,
     totalSelectedRows,
   } = transformSelectedRows(remindableRows);
@@ -47,7 +50,7 @@ const AssignmentTableRemindAction = ({
     close,
     isOpen,
     open,
-  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids, shouldRemindAll);
+  } = useRemindContentAssignments(assignmentConfiguration.uuid, assignmentUuids, shouldRemindAll);
 
   const selectedRemindableRowCount = calculateTotalToRemind({
     assignmentUuids,
@@ -76,7 +79,7 @@ const AssignmentTableRemindAction = ({
 
     const trackEventMetadata = {
       ...selectedRowsMetadata,
-      assignmentConfigurationUuid,
+      assignmentConfigurationUuid: assignmentConfiguration.uuid,
       isOpen: !isOpen,
     };
 

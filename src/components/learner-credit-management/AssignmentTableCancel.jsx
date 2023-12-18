@@ -6,7 +6,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import CancelAssignmentModal from './CancelAssignmentModal';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
-import { transformSelectedRows } from './data';
+import { transformSelectedRows, useBudgetId, useSubsidyAccessPolicy } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { getActiveTableColumnFilters } from '../../utils';
 
@@ -24,12 +24,15 @@ const calculateTotalToCancel = ({
 const AssignmentTableCancelAction = ({
   selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance, enterpriseId,
 }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { assignmentConfiguration } = subsidyAccessPolicy;
+
   const {
     uniqueLearnerState,
     uniqueAssignmentState,
     uniqueContentKeys,
     totalContentQuantity,
-    assignmentConfigurationUuid,
     assignmentUuids,
     totalSelectedRows,
   } = transformSelectedRows(selectedFlatRows);
@@ -45,7 +48,7 @@ const AssignmentTableCancelAction = ({
     close,
     isOpen,
     open,
-  } = useCancelContentAssignments(assignmentConfigurationUuid, assignmentUuids, shouldCancelAll);
+  } = useCancelContentAssignments(assignmentConfiguration.uuid, assignmentUuids, shouldCancelAll);
 
   const {
     BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_BULK_CANCEL_MODAL,
@@ -68,7 +71,7 @@ const AssignmentTableCancelAction = ({
 
     const trackEventMetadata = {
       ...selectedRowsMetadata,
-      assignmentConfigurationUuid,
+      assignmentConfigurationUuid: assignmentConfiguration.uuid,
       isOpen: !isOpen,
     };
 

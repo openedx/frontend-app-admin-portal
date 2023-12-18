@@ -353,7 +353,6 @@ export async function retrieveBudgetDetailActivityOverview({
  * }}
  */
 export const transformSelectedRows = (selectedFlatRows) => {
-  const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
   const assignmentUuids = selectedFlatRows.map(item => item.id);
   const totalSelectedRows = selectedFlatRows.length;
 
@@ -388,7 +387,6 @@ export const transformSelectedRows = (selectedFlatRows) => {
     uniqueLearnerState,
     uniqueContentKeys,
     totalContentQuantity,
-    assignmentConfigurationUuid,
     assignmentUuids,
     totalSelectedRows,
   };
