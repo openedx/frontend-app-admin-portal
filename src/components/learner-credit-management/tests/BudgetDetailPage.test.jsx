@@ -1175,6 +1175,8 @@ describe('<BudgetDetailPage />', () => {
     expect(statusChip).toBeInTheDocument();
     userEvent.click(statusChip);
 
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
     // Modal popup is visible with expected text
     const modalPopupContents = within(screen.getByTestId('assignment-status-modalpopup-contents'));
     expect(modalPopupContents.getByText(expectedModalPopupHeading)).toBeInTheDocument();
@@ -1331,6 +1333,8 @@ describe('<BudgetDetailPage />', () => {
     await act(async () => {
       userEvent.click(catalogTab);
     });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
 
     await waitFor(() => {
       expect(screen.getByTestId('budget-detail-catalog-tab-contents')).toBeInTheDocument();
@@ -1516,6 +1520,7 @@ describe('<BudgetDetailPage />', () => {
     const cancelBulkActionButton = screen.getByText('Cancel (2)');
     expect(cancelBulkActionButton).toBeInTheDocument();
     userEvent.click(cancelBulkActionButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
     const cancelDialogButton = getButtonElement('Cancel assignments (2)');
@@ -1528,6 +1533,7 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(
       () => expect(screen.getByText('Assignments canceled (2)')).toBeInTheDocument(),
     );
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 
   it('reminds assignments in bulk', async () => {
@@ -1608,6 +1614,7 @@ describe('<BudgetDetailPage />', () => {
     expect(modalDialog).toBeInTheDocument();
     const remindDialogButton = getButtonElement('Send reminders (2)');
     userEvent.click(remindDialogButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     await waitFor(
       () => expect(
         EnterpriseAccessApiService.remindAllContentAssignments,
@@ -1616,6 +1623,7 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(
       () => expect(screen.getByText('Reminders sent (2)')).toBeInTheDocument(),
     );
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 
   it('cancels a single assignment', async () => {
@@ -1666,6 +1674,7 @@ describe('<BudgetDetailPage />', () => {
     const cancelIconButton = screen.getByTestId('cancel-assignment-test-uuid');
     expect(cancelIconButton).toBeInTheDocument();
     userEvent.click(cancelIconButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
     const cancelDialogButton = getButtonElement('Cancel assignment');
@@ -1673,6 +1682,7 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(
       () => expect(screen.getByText('Assignment canceled')).toBeInTheDocument(),
     );
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
   it('reminds a single assignment', async () => {
     EnterpriseAccessApiService.remindContentAssignments.mockResolvedValueOnce({ status: 200 });
@@ -1722,6 +1732,7 @@ describe('<BudgetDetailPage />', () => {
     const remindIconButton = screen.getByTestId('remind-assignment-test-uuid');
     expect(remindIconButton).toBeInTheDocument();
     userEvent.click(remindIconButton);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
     const remindDialogButton = getButtonElement('Send reminder');
@@ -1729,5 +1740,6 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(
       () => expect(screen.getByText('Reminder sent')).toBeInTheDocument(),
     );
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 });
