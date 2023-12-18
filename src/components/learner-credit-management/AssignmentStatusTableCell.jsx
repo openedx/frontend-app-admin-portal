@@ -94,10 +94,10 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
       return <FailedReminder trackEvent={sendErrorStateTrackEvent} />;
     }
     if (errorReason.actionType === 'redeemed') {
-      return <FailedRedemption />;
+      return <FailedRedemption trackEvent={sendErrorStateTrackEvent} />;
     }
     // In all other unexpected cases, return a failed system chip.
-    return <FailedSystem />;
+    return <FailedSystem trackEvent={sendErrorStateTrackEvent} />;
   }
 
   // Note: The given `learnerState` not officially supported with a `ModalPopup`, but display it anyway.

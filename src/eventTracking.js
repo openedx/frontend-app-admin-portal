@@ -143,12 +143,14 @@ export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_SYSTEM: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_system.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_bad_email.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_reminder.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_redemption.clicked`,
   // Activity tab chips help center links
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_waiting_for_learner_help_center.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_cancellation_help_center.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_SYSTEM_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_system_help_center.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_bad_email_help_center.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_reminder_help_center.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_redemption_help_center.clicked`,
   // Catalog tab
   // Catalog tab search
   VIEW_COURSE: `${BUDGET_DETAIL_SEARCH_PREFIX}.view_course.clicked`,

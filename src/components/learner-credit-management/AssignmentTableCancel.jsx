@@ -22,12 +22,13 @@ const calculateTotalToCancel = ({
 };
 
 const AssignmentTableCancelAction = ({
-  selectedFlatRows, isEntireTableSelected, tableInstance, enterpriseId,
+  selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance, enterpriseId,
 }) => {
   const {
     uniqueLearnerState,
     uniqueAssignmentState,
     uniqueContentKeys,
+    totalContentQuantity,
     assignmentConfigurationUuid,
     assignmentUuids,
     totalSelectedRows,
@@ -53,14 +54,24 @@ const AssignmentTableCancelAction = ({
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   const trackEvent = (eventName) => {
+    // constructs a learner state object for the select all state to match format of select all on page metadata
+    const learnerStateObject = {};
+    learnerStateCounts.forEach((learnerState) => {
+      learnerStateObject[learnerState.learnerState] = learnerState.count;
+    });
+
+    const selectedRowsMetadata = isEntireTableSelected
+      ? { uniqueLearnerState: learnerStateObject, totalSelectedRows: tableInstance.itemCount }
+      : {
+        uniqueLearnerState, uniqueAssignmentState, uniqueContentKeys, totalContentQuantity, totalSelectedRows,
+      };
+
     const trackEventMetadata = {
-      uniqueLearnerState,
-      uniqueContentKeys,
-      uniqueAssignmentState,
+      ...selectedRowsMetadata,
       assignmentConfigurationUuid,
-      totalSelectedRows,
       isOpen: !isOpen,
     };
+
     sendEnterpriseTrackEvent(
       enterpriseId,
       eventName,
@@ -116,6 +127,10 @@ AssignmentTableCancelAction.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   isEntireTableSelected: PropTypes.bool.isRequired,
+  learnerStateCounts: PropTypes.arrayOf(PropTypes.shape({
+    learnerState: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+  })).isRequired,
   tableInstance: PropTypes.shape({
     itemCount: PropTypes.number.isRequired,
     columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,

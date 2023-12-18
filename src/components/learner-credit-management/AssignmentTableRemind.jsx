@@ -26,7 +26,6 @@ const AssignmentTableRemindAction = ({
   selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance, enterpriseId,
 }) => {
   const remindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting');
-
   const {
     uniqueLearnerState,
     uniqueAssignmentState,
@@ -63,15 +62,24 @@ const AssignmentTableRemindAction = ({
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   const trackEvent = (eventName) => {
+    // constructs a learner state object for the select all state to match format of select all on page metadata
+    const learnerStateObject = {};
+    learnerStateCounts.forEach((learnerState) => {
+      learnerStateObject[learnerState.learnerState] = learnerState.count;
+    });
+
+    const selectedRowsMetadata = isEntireTableSelected
+      ? { uniqueLearnerState: learnerStateObject, totalSelectedRows: tableInstance.itemCount }
+      : {
+        uniqueLearnerState, uniqueAssignmentState, uniqueContentKeys, totalContentQuantity, totalSelectedRows,
+      };
+
     const trackEventMetadata = {
-      uniqueLearnerState,
-      uniqueContentKeys,
-      uniqueAssignmentState,
+      ...selectedRowsMetadata,
       assignmentConfigurationUuid,
-      totalSelectedRows,
-      totalContentQuantity,
       isOpen: !isOpen,
     };
+
     sendEnterpriseTrackEvent(
       enterpriseId,
       eventName,
@@ -131,6 +139,7 @@ AssignmentTableRemindAction.propTypes = {
   })).isRequired,
   tableInstance: PropTypes.shape({
     columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    itemCount: PropTypes.number.isRequired,
   }).isRequired,
 };
 

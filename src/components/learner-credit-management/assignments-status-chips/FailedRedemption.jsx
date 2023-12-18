@@ -1,21 +1,43 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Chip, Hyperlink, useToggle } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
+import EVENT_NAMES from '../../../eventTracking';
 
-const FailedRedemption = () => {
+const FailedRedemption = ({ trackEvent }) => {
   const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
+
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION_HELP_CENTER,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
+
+  const openChipModal = () => {
+    open();
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION, { isOpen: !isOpen });
+  };
+
+  const closeChipModal = () => {
+    close();
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION, { isOpen: !isOpen });
+  };
+
+  const helpCenterTrackEvent = () => {
+    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION_HELP_CENTER);
+  };
 
   return (
     <>
       <Chip
         ref={setTarget}
         iconBefore={Error}
-        onClick={open}
-        onKeyPress={open}
+        onClick={openChipModal}
+        onKeyPress={openChipModal}
         tabIndex={0}
       >
         Failed: Redemption
@@ -23,7 +45,7 @@ const FailedRedemption = () => {
       <BaseModalPopup
         positionRef={target}
         isOpen={isOpen}
-        onClose={close}
+        onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
           Failed: Redemption
@@ -44,7 +66,11 @@ const FailedRedemption = () => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+                <Hyperlink
+                  destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
+                  onClick={helpCenterTrackEvent}
+                  target="_blank"
+                >
                   Help Center: Course Assignments
                 </Hyperlink>.
               </li>
@@ -54,6 +80,10 @@ const FailedRedemption = () => {
       </BaseModalPopup>
     </>
   );
+};
+
+FailedRedemption.propTypes = {
+  trackEvent: PropTypes.func.isRequired,
 };
 
 export default FailedRedemption;
