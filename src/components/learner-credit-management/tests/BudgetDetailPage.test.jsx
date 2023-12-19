@@ -155,7 +155,7 @@ const mockEnrollmentTransactionWithReversal = {
   reversal: mockEnrollmentTransactionReversal,
 };
 
-const mockFailedCancelledLearnerAction = {
+const mockFailedCanceledLearnerAction = {
   actionType: 'cancelled',
   completedAt: null,
   errorReason: 'email_error',
@@ -1069,7 +1069,7 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Failed: Cancellation',
       expectedModalPopupHeading: 'Failed: Cancellation',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',
-      actions: [mockFailedCancelledLearnerAction],
+      actions: [mockFailedCanceledLearnerAction],
       errorReason: {
         errorReason: 'email_error',
         actionType: 'cancelled',
@@ -1081,7 +1081,7 @@ describe('<BudgetDetailPage />', () => {
       expectedChipStatus: 'Failed: Cancellation',
       expectedModalPopupHeading: 'Failed: Cancellation',
       expectedModalPopupContent: 'Something went wrong behind the scenes.',
-      actions: [mockFailedCancelledLearnerAction],
+      actions: [mockFailedCanceledLearnerAction],
       errorReason: {
         errorReason: 'internal_api_error',
         actionType: 'cancelled',
