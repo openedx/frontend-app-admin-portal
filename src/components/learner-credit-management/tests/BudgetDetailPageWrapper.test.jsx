@@ -8,8 +8,10 @@ import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import BudgetDetailPageWrapper, { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import { getButtonElement } from '../../test/testUtils';
+import BudgetDetailPageBreadcrumbs from '../BudgetDetailPageBreadcrumbs';
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -25,6 +27,11 @@ const defaultStoreState = {
     },
   },
 };
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 const MockBudgetDetailPageWrapper = ({
   initialStoreState = defaultStoreState,
@@ -262,5 +269,17 @@ describe('<BudgetDetailPageWrapper />', () => {
     await waitFor(() => {
       expect(screen.queryByText(expectedToastMessage)).not.toBeInTheDocument();
     });
+  });
+  it('calls segment event on breadcrumb click', () => {
+    const mockBudgetDisplayName = 'Test Budget';
+    renderWithRouter(
+      <MockBudgetDetailPageWrapper>
+        <BudgetDetailPageBreadcrumbs budgetDisplayName={mockBudgetDisplayName} />
+      </MockBudgetDetailPageWrapper>,
+    );
+    const previousBreadcrumb = screen.getByText('Budgets');
+
+    userEvent.click(previousBreadcrumb);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 });

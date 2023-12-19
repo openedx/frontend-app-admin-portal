@@ -1181,6 +1181,19 @@ describe('<BudgetDetailPage />', () => {
     const modalPopupContents = within(screen.getByTestId('assignment-status-modalpopup-contents'));
     expect(modalPopupContents.getByText(expectedModalPopupHeading)).toBeInTheDocument();
     expect(modalPopupContents.getByText(expectedModalPopupContent, { exact: false })).toBeInTheDocument();
+
+    // Help Center link clicked and modal closed
+    if (screen.queryByText('Help Center: Course Assignments')) {
+      const helpCenterLink = screen.getByText('Help Center: Course Assignments');
+      userEvent.click(helpCenterLink);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+      // Click chip to close modal
+      userEvent.click(statusChip);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
+    } else {
+      userEvent.click(statusChip);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+    }
   });
 
   it.each([
