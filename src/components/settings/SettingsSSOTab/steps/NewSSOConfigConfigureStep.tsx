@@ -103,6 +103,14 @@ const SSOConfigConfigureStep = () => {
           fieldInstructions="URN of SAML attribute containing the user's email address[es]."
         />
       </Form.Group>
+      <Form.Group className="mb-4">
+        <ValidatedFormControl
+          formId="countryAttribute"
+          type="text"
+          floatingLabel="Country"
+          fieldInstructions="URN of SAML attribute containing the user's country of residence."
+        />
+      </Form.Group>
     </>
   );
   const renderSAPFields = () => (
