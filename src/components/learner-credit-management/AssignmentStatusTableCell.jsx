@@ -39,8 +39,10 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
         errorReason: null,
       }
       : {
-        errorReason: errorReason.errorReason,
-        actionType: errorReason.actionType,
+        erroredAction: {
+          errorReason: errorReason.errorReason,
+          actionType: errorReason.actionType,
+        },
       };
     const errorStateMetadata = {
       ...sharedTrackEventMetadata,
