@@ -77,7 +77,7 @@ const AssignmentTableRemindAction = ({
     });
 
     const selectedRowsMetadata = isEntireTableSelected
-      ? { uniqueLearnerState: learnerStateObject, totalSelectedRows: tableInstance.itemCount }
+      ? { uniqueLearnerState: learnerStateObject, totalSelectedRows: selectedRemindableRowCount }
       : {
         uniqueLearnerState, uniqueAssignmentState, uniqueContentKeys, totalContentQuantity, totalSelectedRows,
       };

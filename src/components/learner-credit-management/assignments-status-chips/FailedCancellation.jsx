@@ -1,33 +1,30 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Chip, useToggle, Hyperlink } from '@edx/paragon';
+import { Chip, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
 import EVENT_NAMES from '../../../eventTracking';
+import { useAssignmentStatusChip } from '../data';
 
 const FailedCancellation = ({ trackEvent }) => {
-  const [isOpen, open, close] = useToggle(false);
   const [target, setTarget] = useState(null);
   const {
     BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION,
     BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION_HELP_CENTER,
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
-  const openChipModal = () => {
-    open();
-    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION, { isOpen: !isOpen });
-  };
-
-  const closeChipModal = () => {
-    close();
-    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION, { isOpen: !isOpen });
-  };
-
-  const helpCenterTrackEvent = () => {
-    trackEvent(BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION_HELP_CENTER);
-  };
+  const {
+    openChipModal,
+    closeChipModal,
+    isChipModalOpen,
+    helpCenterTrackEvent,
+  } = useAssignmentStatusChip({
+    chipInteractionEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION,
+    chipHelpCenterEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION_HELP_CENTER,
+    trackEvent,
+  });
 
   return (
     <>
@@ -42,7 +39,7 @@ const FailedCancellation = ({ trackEvent }) => {
       </Chip>
       <BaseModalPopup
         positionRef={target}
-        isOpen={isOpen}
+        isOpen={isChipModalOpen}
         onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
