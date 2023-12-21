@@ -356,28 +356,31 @@ export const transformSelectedRows = (selectedFlatRows) => {
   const assignmentUuids = selectedFlatRows.map(item => item.id);
   const totalSelectedRows = selectedFlatRows.length;
 
-  // list of unique courses
+  // Count of unique content keys, where the key is the course,
+  // and value is count of the course.
   const flatMappedContentKeys = selectedFlatRows.map(item => item?.original?.contentKey);
   const uniqueContentKeys = {};
   flatMappedContentKeys.forEach((courseKey) => {
     uniqueContentKeys[courseKey] = (uniqueContentKeys[courseKey] || 0) + 1;
   });
 
-  // list of unique learner states
+  // Count of unique learner states, where the key is the learnerState,
+  // and value is count of the learnerState.
   const flatMappedLearnerState = selectedFlatRows.map(item => item?.original?.learnerState);
   const uniqueLearnerState = {};
   flatMappedLearnerState.forEach((learnerState) => {
     uniqueLearnerState[learnerState] = (uniqueLearnerState[learnerState] || 0) + 1;
   });
 
-  // list of unique assignment states
+  // Count of unique assignment states, where the key is the assignment state,
+  // and value is count of the assignment state.
   const flatMappedAssignmentState = selectedFlatRows.map(item => item?.original?.state);
   const uniqueAssignmentState = {};
   flatMappedAssignmentState.forEach((state) => {
     uniqueAssignmentState[state] = (uniqueAssignmentState[state] || 0) + 1;
   });
 
-  // total value of the content quantity
+  // Total value of all the selected rows accumulated from the contentQuantity
   const totalContentQuantity = selectedFlatRows.map(
     item => item.original.contentQuantity,
   ).reduce((prev, next) => prev + next, 0);
