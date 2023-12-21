@@ -38,6 +38,7 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 /**
  * @typedef {Object} TEnterpriseAppContext
  * @property {TEnterpriseCurationData} enterpriseCuration
+ * @property {user} user
  */
 
 /** @type {React.Context<TEnterpriseAppContext>} */

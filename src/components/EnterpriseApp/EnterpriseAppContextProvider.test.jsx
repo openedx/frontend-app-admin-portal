@@ -4,6 +4,7 @@ import {
   screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import * as hooks from './data/hooks';
 import EnterpriseAppContextProvider from './EnterpriseAppContextProvider';
 import * as subsidyRequestsContext from '../subsidy-requests/SubsidyRequestsContext';
@@ -13,6 +14,12 @@ const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_ENTERPRISE_NAME = 'test-enterprise-name';
 
 jest.mock('./data/hooks');
+
+jest.mock('@edx/frontend-platform/auth', () => ({
+  ...jest.requireActual('@edx/frontend-platform/auth'),
+  userId: jest.fn(),
+  email: jest.fn(),
+}));
 
 const mockEnterpriseFeatures = {
   topDownAssignmentRealTimeLcm: true,
@@ -62,6 +69,11 @@ describe('<EnterpriseAppContextProvider />', () => {
         isLoading: isLoadingEnterpriseCuration,
       },
     );
+
+    getAuthenticatedUser.mockReturnValue({
+      userId: 90210,
+      email: 'beverly@hills.com',
+    });
 
     render(
       <EnterpriseAppContextProvider

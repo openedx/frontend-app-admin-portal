@@ -7,10 +7,12 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import BudgetDetailPageWrapper, { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
-import { getButtonElement } from '../../test/testUtils';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { getButtonElement, queryClient } from '../../test/testUtils';
 import BudgetDetailPageBreadcrumbs from '../BudgetDetailPageBreadcrumbs';
 
 const mockStore = configureMockStore([thunk]);
@@ -33,19 +35,39 @@ jest.mock('@edx/frontend-enterprise-utils', () => ({
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 
+jest.mock('@edx/frontend-platform/auth', () => ({
+  ...jest.requireActual('@edx/frontend-platform/auth'),
+  userId: 90210,
+  email: 'beverly@hills.com',
+}));
+
+const defaultEnterpriseAppContextValue = {
+  user: {
+    id: 90210,
+    email: 'beverly@hills.com',
+  },
+};
+
 const MockBudgetDetailPageWrapper = ({
   initialStoreState = defaultStoreState,
   children,
 }) => {
   const store = getMockStore(initialStoreState);
   return (
-    <IntlProvider locale="en">
-      <Provider store={store}>
-        <BudgetDetailPageWrapper>
-          {children}
-        </BudgetDetailPageWrapper>
-      </Provider>
-    </IntlProvider>
+    <QueryClientProvider client={queryClient()}>
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
+
+            <BudgetDetailPageWrapper>
+              {children}
+            </BudgetDetailPageWrapper>
+          </EnterpriseAppContext.Provider>
+
+        </Provider>
+      </IntlProvider>
+    </QueryClientProvider>
+
   );
 };
 

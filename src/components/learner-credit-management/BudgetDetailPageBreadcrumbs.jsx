@@ -12,22 +12,27 @@ import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvi
 const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDisplayName }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const {
-    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
-  } = subsidyAccessPolicy;
   const { user } = useContext(EnterpriseAppContext);
 
-  const trackEventMetadata = {
-    subsidyUuid,
-    assignmentConfiguration,
-    isSubsidyActive,
-    isAssignable,
-    catalogUuid,
-    aggregates,
-    userId: user.id,
-    email: user.email,
-    budgetDisplayName,
-  };
+  const trackEventMetadata = {};
+  if (subsidyAccessPolicy) {
+    const {
+      subsidyUuid, assignmentConfiguration, isSubsidyActive, catalogUuid, aggregates, isAssignable,
+    } = subsidyAccessPolicy;
+    Object.assign(
+      trackEventMetadata,
+      {
+        subsidyUuid,
+        assignmentConfiguration,
+        isSubsidyActive,
+        isAssignable,
+        catalogUuid,
+        aggregates,
+        userId: user.id,
+        email: user.email,
+      },
+    );
+  }
 
   return (
     <div className="small">

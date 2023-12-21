@@ -46,21 +46,27 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const {
-    subsidyUuid, assignmentConfiguration, isSubsidyActive, catalogUuid, aggregates,
-  } = subsidyAccessPolicy;
-  const { user } = useContext(EnterpriseAppContext);
 
-  const trackEventMetadata = {
-    subsidyUuid,
-    assignmentConfiguration,
-    isSubsidyActive,
-    isAssignable,
-    catalogUuid,
-    aggregates,
-    userId: user.id,
-    email: user.email,
-  };
+  const { user } = useContext(EnterpriseAppContext);
+  const trackEventMetadata = {};
+  if (subsidyAccessPolicy) {
+    const {
+      subsidyUuid, assignmentConfiguration, isSubsidyActive, catalogUuid, aggregates,
+    } = subsidyAccessPolicy;
+    Object.assign(
+      trackEventMetadata,
+      {
+        subsidyUuid,
+        assignmentConfiguration,
+        isSubsidyActive,
+        isAssignable,
+        catalogUuid,
+        aggregates,
+        userId: user.id,
+        email: user.email,
+      },
+    );
+  }
 
   const isLargeScreenOrGreater = useMediaQuery({ query: `(min-width: ${breakpoints.small.minWidth}px)` });
 
