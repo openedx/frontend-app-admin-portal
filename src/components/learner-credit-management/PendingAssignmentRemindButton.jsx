@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, IconButtonWithTooltip } from '@edx/paragon';
 
@@ -8,17 +8,27 @@ import { connect } from 'react-redux';
 import RemindAssignmentModal from './RemindAssignmentModal';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import EVENT_NAMES from '../../eventTracking';
+import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const {
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+  } = subsidyAccessPolicy;
+
+  const { user } = useContext(EnterpriseAppContext);
+
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   const {
     contentKey,
     contentQuantity,
     learnerState,
     state,
-    assignmentConfiguration,
     uuid,
   } = row.original;
+
   const {
     remindButtonState,
     remindContentAssignments,
@@ -28,10 +38,17 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
   } = useRemindContentAssignments(assignmentConfiguration, [uuid]);
 
   const sharedTrackEventMetadata = {
+    subsidyUuid,
+    isSubsidyActive,
+    isAssignable,
+    catalogUuid,
     assignmentConfiguration,
     contentKey,
     contentQuantity,
     learnerState,
+    aggregates,
+    userId: user.id,
+    email: user.email,
     assignmentState: state,
     isOpen: !isOpen,
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   Icon, IconButtonWithTooltip,
@@ -9,17 +9,27 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 import CancelAssignmentModal from './CancelAssignmentModal';
 import EVENT_NAMES from '../../eventTracking';
+import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const {
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+  } = subsidyAccessPolicy;
+
+  const { user } = useContext(EnterpriseAppContext);
+
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   const {
     contentKey,
     contentQuantity,
     learnerState,
     state,
-    assignmentConfiguration,
     uuid,
   } = row.original;
+
   const {
     cancelButtonState,
     cancelContentAssignments,
@@ -29,10 +39,17 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
   } = useCancelContentAssignments(assignmentConfiguration, [uuid]);
 
   const sharedTrackEventMetadata = {
+    subsidyUuid,
+    isSubsidyActive,
+    isAssignable,
+    catalogUuid,
     assignmentConfiguration,
     contentKey,
     contentQuantity,
     learnerState,
+    aggregates,
+    userId: user.id,
+    email: user.email,
     assignmentState: state,
     isOpen: !isOpen,
   };

@@ -2,28 +2,52 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Breadcrumb } from '@edx/paragon';
 import { Link } from 'react-router-dom';
-import React from 'react';
+import React, { useContext } from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';
+import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
-const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDisplayName }) => (
-  <div className="small">
-    <Breadcrumb
-      ariaLabel="Learner Credit Management breadcrumb navigation"
-      links={[{
-        label: 'Budgets',
-        to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`,
-      }]}
-      linkAs={Link}
-      activeLabel={budgetDisplayName}
-      clickHandler={() => sendEnterpriseTrackEvent(
-        enterpriseId,
-        EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BREADCRUMB_FROM_BUDGET_DETAIL_TO_BUDGETS,
-      )}
-    />
-  </div>
-);
+const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDisplayName }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const {
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+  } = subsidyAccessPolicy;
+  const { user } = useContext(EnterpriseAppContext);
+
+  const trackEventMetadata = {
+    subsidyUuid,
+    assignmentConfiguration,
+    isSubsidyActive,
+    isAssignable,
+    catalogUuid,
+    aggregates,
+    userId: user.id,
+    email: user.email,
+    budgetDisplayName,
+  };
+
+  return (
+    <div className="small">
+      <Breadcrumb
+        ariaLabel="Learner Credit Management breadcrumb navigation"
+        links={[{
+          label: 'Budgets',
+          to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`,
+        }]}
+        linkAs={Link}
+        activeLabel={budgetDisplayName}
+        clickHandler={() => sendEnterpriseTrackEvent(
+          enterpriseId,
+          EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BREADCRUMB_FROM_BUDGET_DETAIL_TO_BUDGETS,
+          trackEventMetadata,
+        )}
+      />
+    </div>
+  );
+};
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -8,9 +8,10 @@ import {
 import { Add } from '@edx/paragon/icons';
 import { generatePath, useRouteMatch, Link } from 'react-router-dom';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { formatPrice } from './data';
+import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { configuration } from '../../config';
 import EVENT_NAMES from '../../eventTracking';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const BudgetDetail = ({ available, utilized, limit }) => {
   const currentProgressBarLimit = (available / limit) * 100;
@@ -43,6 +44,23 @@ BudgetDetail.propTypes = {
 const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
   const routeMatch = useRouteMatch();
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const {
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, catalogUuid, aggregates,
+  } = subsidyAccessPolicy;
+  const { user } = useContext(EnterpriseAppContext);
+
+  const trackEventMetadata = {
+    subsidyUuid,
+    assignmentConfiguration,
+    isSubsidyActive,
+    isAssignable,
+    catalogUuid,
+    aggregates,
+    userId: user.id,
+    email: user.email,
+  };
 
   const isLargeScreenOrGreater = useMediaQuery({ query: `(min-width: ${breakpoints.small.minWidth}px)` });
 
@@ -62,6 +80,7 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
             onClick={() => sendEnterpriseTrackEvent(
               enterpriseId,
               EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_CONTACT_US,
+              trackEventMetadata,
             )}
             target="_blank"
           >
@@ -87,6 +106,7 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
           onClick={() => sendEnterpriseTrackEvent(
             enterpriseId,
             EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_NEW_ASSIGNMENT,
+            trackEventMetadata,
           )}
         >
           New course assignment

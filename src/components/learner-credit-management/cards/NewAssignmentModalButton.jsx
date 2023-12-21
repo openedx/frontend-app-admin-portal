@@ -21,6 +21,7 @@ import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy }
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -45,9 +46,10 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const {
     successfulAssignmentToast: { displayToastForAssignmentAllocation },
   } = useContext(BudgetDetailPageContext);
+  const { user } = useContext(EnterpriseAppContext);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
-    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid,
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
   } = subsidyAccessPolicy;
   const sharedEnterpriseTrackEventMetadata = {
     subsidyAccessPolicyId,
@@ -55,10 +57,13 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     subsidyUuid,
     isSubsidyActive,
     isAssignable,
+    aggregates,
+    userId: user.id,
+    email: user.email,
     contentPriceCents: course.normalizedMetadata.contentPrice * 100,
     contentKey: course.key,
     courseUuid: course.uuid,
-    assignmentConfigurationUuid: assignmentConfiguration.uuid,
+    assignmentConfiguration,
   };
 
   const { mutate } = useAllocateContentAssignments();
@@ -94,11 +99,13 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const onSuccessEnterpriseTrackEvents = ({
     totalLearnersAllocated,
     totalLearnersAlreadyAllocated,
+    response,
   }) => {
     const trackEventMetadata = {
       ...sharedEnterpriseTrackEventMetadata,
       totalLearnersAllocated,
       totalLearnersAlreadyAllocated,
+      response,
     };
     sendEnterpriseTrackEvent(
       enterpriseId,
@@ -120,7 +127,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setAssignButtonState('pending');
     setCreateAssignmentsErrorReason(null);
     mutate(mutationArgs, {
-      onSuccess: ({ created, noChange, updated }) => {
+      onSuccess: (res) => {
         setAssignButtonState('complete');
         // Ensure the budget and budgets queries are invalidated so that the relevant
         // queries become stale and refetches new updated data from the API.
@@ -131,11 +138,12 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
         });
         handleCloseAssignmentModal();
-        const totalLearnersAllocated = created.length + updated.length;
-        const totalLearnersAlreadyAllocated = noChange.length;
+        const totalLearnersAllocated = res.created.length + res.updated.length;
+        const totalLearnersAlreadyAllocated = res.noChange.length;
         onSuccessEnterpriseTrackEvents({
           totalLearnersAllocated,
           totalLearnersAlreadyAllocated,
+          res,
         });
         displayToastForAssignmentAllocation({
           totalLearnersAllocated,
@@ -167,6 +175,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
             totalAllocatedLearners: learnerEmails.length,
             errorStatus: httpErrorStatus,
             errorReason,
+            response: err,
           },
         );
       },
@@ -185,7 +194,10 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           sendEnterpriseTrackEvent(
             enterpriseId,
             EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_EXIT,
-            { assignButtonState },
+            {
+              ...sharedEnterpriseTrackEventMetadata,
+              assignButtonState,
+            },
           );
         }}
         footerNode={(
@@ -196,6 +208,10 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
               onClick={() => sendEnterpriseTrackEvent(
                 enterpriseId,
                 EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_HELP_CENTER,
+                {
+                  ...sharedEnterpriseTrackEventMetadata,
+                  assignButtonState,
+                },
               )}
               destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
               showLaunchIcon
@@ -211,7 +227,10 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
                 sendEnterpriseTrackEvent(
                   enterpriseId,
                   EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_CANCEL,
-                  { assignButtonState },
+                  {
+                    ...sharedEnterpriseTrackEventMetadata,
+                    assignButtonState,
+                  },
                 );
               }}
             >
