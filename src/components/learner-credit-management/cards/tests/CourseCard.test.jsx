@@ -9,7 +9,6 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import CourseCard from '../CourseCard';
 import {
   formatPrice,
@@ -39,12 +38,6 @@ jest.mock('../../data', () => ({
   useSubsidyAccessPolicy: jest.fn(),
 }));
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
-
-jest.mock('@edx/frontend-platform/auth', () => ({
-  ...jest.requireActual('@edx/frontend-platform/auth'),
-  userId: 90210,
-  email: 'beverly@hills.com',
-}));
 
 const originalData = {
   availability: ['Upcoming'],
@@ -121,13 +114,6 @@ const defaultBudgetDetailPageContextValue = {
   },
 };
 
-const defaultEnterpriseAppContextValue = {
-  user: {
-    id: 90210,
-    email: 'beverly@hills.com',
-  },
-};
-
 const CourseCardWrapper = ({
   initialState = initialStoreState,
   budgetDetailPageContextValue = defaultBudgetDetailPageContextValue,
@@ -144,11 +130,9 @@ const CourseCardWrapper = ({
               config: { ENTERPRISE_LEARNER_PORTAL_URL: mockLearnerPortal },
             }}
           >
-            <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
-              <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
-                <CourseCard {...rest} />
-              </BudgetDetailPageContext.Provider>
-            </EnterpriseAppContext.Provider>
+            <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+              <CourseCard {...rest} />
+            </BudgetDetailPageContext.Provider>
           </AppContext.Provider>
         </Provider>
       </IntlProvider>

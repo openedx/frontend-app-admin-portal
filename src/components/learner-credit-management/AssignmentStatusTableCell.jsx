@@ -2,7 +2,6 @@ import { Chip } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
-import { useContext } from 'react';
 import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedCancellation from './assignments-status-chips/FailedCancellation';
 import FailedRedemption from './assignments-status-chips/FailedRedemption';
@@ -11,7 +10,6 @@ import FailedSystem from './assignments-status-chips/FailedSystem';
 import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
 import WaitingForLearner from './assignments-status-chips/WaitingForLearner';
 import { capitalizeFirstLetter } from '../../utils';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
 
 const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
@@ -21,7 +19,6 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     learnerState,
     errorReason,
   } = original;
-  const { user } = useContext(EnterpriseAppContext);
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
@@ -36,8 +33,6 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     isAssignable,
     catalogUuid,
     aggregates,
-    userId: user.id,
-    email: user.email,
   };
 
   const sendGenericTrackEvent = (eventName, eventMetadata = {}) => {

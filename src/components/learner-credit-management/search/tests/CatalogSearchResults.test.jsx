@@ -13,7 +13,6 @@ import { BaseCatalogSearchResults } from '../CatalogSearchResults';
 import { CONTENT_TYPE_COURSE } from '../../data/constants';
 import { queryClient } from '../../../test/testUtils';
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
-import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 
 // Mocking this connected component so as not to have to mock the algolia Api
 const PAGINATE_ME = 'PAGINATE ME :)';
@@ -24,12 +23,6 @@ jest.mock('react-instantsearch-dom', () => ({
   ...jest.requireActual('react-instantsearch-dom'),
   InstantSearch: () => <div>Popular Courses</div>,
   Index: () => <div>Popular Courses</div>,
-}));
-
-jest.mock('@edx/frontend-platform/auth', () => ({
-  ...jest.requireActual('@edx/frontend-platform/auth'),
-  userId: 90210,
-  email: 'beverly@hills.com',
 }));
 
 jest.mock('../../data', () => ({
@@ -170,13 +163,6 @@ const defaultProps = {
   },
 };
 
-const defaultEnterpriseAppContextValue = {
-  user: {
-    id: 90210,
-    email: 'beverly@hills.com',
-  },
-};
-
 describe('Main Catalogs view works as expected', () => {
   const OLD_ENV = process.env;
   beforeEach(() => {
@@ -199,11 +185,9 @@ describe('Main Catalogs view works as expected', () => {
     renderWithRouter(
       <SearchDataWrapper>
         <IntlProvider locale="en">
-          <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
-            <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
-              <BaseCatalogSearchResults {...defaultProps} />
-            </BudgetDetailPageContext.Provider>
-          </EnterpriseAppContext.Provider>
+          <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+            <BaseCatalogSearchResults {...defaultProps} />
+          </BudgetDetailPageContext.Provider>
         </IntlProvider>
       </SearchDataWrapper>,
     );
@@ -228,11 +212,9 @@ describe('Main Catalogs view works as expected', () => {
     renderWithRouter(
       <SearchDataWrapper>
         <IntlProvider locale="en">
-          <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
-            <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
-              <BaseCatalogSearchResults {...errorState} />
-            </BudgetDetailPageContext.Provider>
-          </EnterpriseAppContext.Provider>
+          <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+            <BaseCatalogSearchResults {...errorState} />
+          </BudgetDetailPageContext.Provider>
         </IntlProvider>
       </SearchDataWrapper>,
     );

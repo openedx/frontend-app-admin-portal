@@ -1,7 +1,6 @@
 import React, { createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { EnterpriseSubsidiesContext, useEnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SubsidyRequestsContext, useSubsidyRequestsContext } from '../subsidy-requests/SubsidyRequestsContext';
 import {
@@ -38,7 +37,6 @@ import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 /**
  * @typedef {Object} TEnterpriseAppContext
  * @property {TEnterpriseCurationData} enterpriseCuration
- * @property {user} user
  */
 
 /** @type {React.Context<TEnterpriseAppContext>} */
@@ -78,14 +76,9 @@ const EnterpriseAppContextProvider = ({
 
   // [tech debt] consolidate the other context values (e.g., useSubsidyRequestsContext)
   // into a singular `EnterpriseAppContext.Provider`.
-  const { userId, email } = getAuthenticatedUser();
   const enterpriseAppContext = useMemo(() => ({
     enterpriseCuration: enterpriseCurationContext,
-    user: {
-      id: userId,
-      email,
-    },
-  }), [userId, email, enterpriseCurationContext]);
+  }), [enterpriseCurationContext]);
 
   if (isLoading) {
     return <EnterpriseAppSkeleton />;

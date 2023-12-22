@@ -2,17 +2,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Breadcrumb } from '@edx/paragon';
 import { Link } from 'react-router-dom';
-import React, { useContext } from 'react';
+import React from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDisplayName }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const { user } = useContext(EnterpriseAppContext);
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -28,8 +26,6 @@ const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDispl
         isAssignable,
         catalogUuid,
         aggregates,
-        userId: user.id,
-        email: user.email,
       },
     );
   }

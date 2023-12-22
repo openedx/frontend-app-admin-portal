@@ -21,7 +21,6 @@ import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy }
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -46,7 +45,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const {
     successfulAssignmentToast: { displayToastForAssignmentAllocation },
   } = useContext(BudgetDetailPageContext);
-  const { user } = useContext(EnterpriseAppContext);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
     subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
@@ -58,8 +56,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     isSubsidyActive,
     isAssignable,
     aggregates,
-    userId: user.id,
-    email: user.email,
     contentPriceCents: course.normalizedMetadata.contentPrice * 100,
     contentKey: course.key,
     courseUuid: course.uuid,

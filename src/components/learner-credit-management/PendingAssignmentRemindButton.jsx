@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, IconButtonWithTooltip } from '@edx/paragon';
 
@@ -9,7 +9,6 @@ import RemindAssignmentModal from './RemindAssignmentModal';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import EVENT_NAMES from '../../eventTracking';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -17,8 +16,6 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
   const {
     subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
   } = subsidyAccessPolicy;
-
-  const { user } = useContext(EnterpriseAppContext);
 
   const emailAltText = row.original.learnerEmail ? `for ${row.original.learnerEmail}` : '';
   const {
@@ -47,8 +44,6 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
     contentQuantity,
     learnerState,
     aggregates,
-    userId: user.id,
-    email: user.email,
     assignmentState: state,
     isOpen: !isOpen,
   };

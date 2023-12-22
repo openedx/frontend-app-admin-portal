@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 import { Mail } from '@edx/paragon/icons';
@@ -9,7 +9,6 @@ import RemindAssignmentModal from './RemindAssignmentModal';
 import { transformSelectedRows, useBudgetId, useSubsidyAccessPolicy } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { getActiveTableColumnFilters } from '../../utils';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const calculateTotalToRemind = ({
   assignmentUuids,
@@ -31,8 +30,6 @@ const AssignmentTableRemindAction = ({
   const {
     subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
   } = subsidyAccessPolicy;
-
-  const { user } = useContext(EnterpriseAppContext);
 
   const remindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting');
   const {
@@ -91,8 +88,6 @@ const AssignmentTableRemindAction = ({
       isEntireTableSelected,
       assignmentUuids,
       aggregates,
-      userId: user.id,
-      email: user.email,
       assignmentConfiguration,
       isOpen: !isOpen,
     };

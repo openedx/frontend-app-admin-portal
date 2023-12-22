@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -11,7 +11,6 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { configuration } from '../../config';
 import EVENT_NAMES from '../../eventTracking';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 
 const BudgetDetail = ({ available, utilized, limit }) => {
   const currentProgressBarLimit = (available / limit) * 100;
@@ -47,7 +46,6 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
-  const { user } = useContext(EnterpriseAppContext);
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
     const {
@@ -62,8 +60,6 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
         isAssignable,
         catalogUuid,
         aggregates,
-        userId: user.id,
-        email: user.email,
       },
     );
   }
