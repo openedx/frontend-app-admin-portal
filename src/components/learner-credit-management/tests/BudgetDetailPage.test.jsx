@@ -41,7 +41,6 @@ import {
   mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -174,13 +173,6 @@ const mockFailedRedemptionLearnerAction = {
   errorReason: 'enrollment_error',
 };
 
-const defaultEnterpriseAppContextValue = {
-  user: {
-    id: 90210,
-    email: 'beverly@hills.com',
-  },
-};
-
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
@@ -195,11 +187,9 @@ const BudgetDetailPageWrapper = ({
     <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
-          <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
-            <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-              <BudgetDetailPage {...rest} />
-            </EnterpriseSubsidiesContext.Provider>
-          </EnterpriseAppContext.Provider>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <BudgetDetailPage {...rest} />
+          </EnterpriseSubsidiesContext.Provider>
         </Provider>
       </IntlProvider>
     </QueryClientProvider>
