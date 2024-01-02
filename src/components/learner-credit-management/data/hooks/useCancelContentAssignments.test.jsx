@@ -104,6 +104,47 @@ describe('useCancelContentAssignments', () => {
     });
   });
 
+  it('should send a post request to cancel all assignments with filters', async () => {
+    EnterpriseAccessApiService.cancelAllContentAssignments.mockResolvedValueOnce({ status: 200 });
+    const tableFilters = [{
+      id: 'learnerState',
+      value: ['waiting'],
+    }];
+    const cancelAll = true;
+    const { result } = renderHook(
+      () => useCancelContentAssignments(
+        TEST_ASSIGNMENT_CONFIGURATION_UUID,
+        [TEST_PENDING_ASSIGNMENT_UUID_1, TEST_PENDING_ASSIGNMENT_UUID_2],
+        cancelAll,
+        tableFilters,
+      ),
+      { wrapper },
+    );
+
+    expect(result.current).toEqual({
+      cancelButtonState: 'default',
+      cancelContentAssignments: expect.any(Function),
+      close: expect.any(Function),
+      isOpen: false,
+      open: expect.any(Function),
+    });
+
+    await waitFor(() => act(() => result.current.cancelContentAssignments()));
+    const expectedFilterParams = { learnerState: 'waiting' };
+    expect(
+      EnterpriseAccessApiService.cancelAllContentAssignments,
+    ).toHaveBeenCalledWith(TEST_ASSIGNMENT_CONFIGURATION_UUID, expectedFilterParams);
+    expect(logError).toBeCalledTimes(0);
+
+    expect(result.current).toEqual({
+      cancelButtonState: 'complete',
+      cancelContentAssignments: expect.any(Function),
+      close: expect.any(Function),
+      isOpen: false,
+      open: expect.any(Function),
+    });
+  });
+
   it('should handle assignment cancellation error', async () => {
     const error = new Error('An error occurred');
     EnterpriseAccessApiService.cancelContentAssignments.mockRejectedValueOnce(error);
