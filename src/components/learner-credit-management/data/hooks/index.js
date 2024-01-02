@@ -12,3 +12,4 @@ export { default as useSuccessfulAssignmentToastContextValue } from './useSucces
 export { default as useSuccessfulCancellationToastContextValue } from './useSuccessfulCancellationToastContextValue';
 export { default as useSuccessfulReminderToastContextValue } from './useSuccessfulReminderToastContextValue';
 export { default as useEnterpriseOffer } from './useEnterpriseOffer';
+export { default as useAssignmentStatusChip } from './useAssignmentStatusChip';

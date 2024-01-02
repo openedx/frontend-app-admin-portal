@@ -337,3 +337,60 @@ export async function retrieveBudgetDetailActivityOverview({
   }
   return result;
 }
+
+/**
+ * Takes the raw selected flat rows data from the 'Assigned' datatable and returns metadata that is used for tracking
+ * bulk enrollment of reminders and bulk enrollment of cancellations.
+ * @param {Array} selectedFlatRows An array of selectedFlatRows from the activity 'Assigned' table
+ * @returns {{
+ * uniqueLearnerState: [String],
+ * totalContentQuantity: Number,
+ * assignmentConfigurationUuid: String,
+ * assignmentUuids: [String]
+ * uniqueContentKeys: [String],
+ * uniqueAssignmentState: [String],
+ * totalSelectedRows: Number,
+ * }}
+ */
+export const transformSelectedRows = (selectedFlatRows) => {
+  const assignmentUuids = selectedFlatRows.map(item => item.id);
+  const totalSelectedRows = selectedFlatRows.length;
+
+  // Count of unique content keys, where the key is the course,
+  // and value is count of the course.
+  const flatMappedContentKeys = selectedFlatRows.map(item => item?.original?.contentKey);
+  const uniqueContentKeys = {};
+  flatMappedContentKeys.forEach((courseKey) => {
+    uniqueContentKeys[courseKey] = (uniqueContentKeys[courseKey] || 0) + 1;
+  });
+
+  // Count of unique learner states, where the key is the learnerState,
+  // and value is count of the learnerState.
+  const flatMappedLearnerState = selectedFlatRows.map(item => item?.original?.learnerState);
+  const uniqueLearnerState = {};
+  flatMappedLearnerState.forEach((learnerState) => {
+    uniqueLearnerState[learnerState] = (uniqueLearnerState[learnerState] || 0) + 1;
+  });
+
+  // Count of unique assignment states, where the key is the assignment state,
+  // and value is count of the assignment state.
+  const flatMappedAssignmentState = selectedFlatRows.map(item => item?.original?.state);
+  const uniqueAssignmentState = {};
+  flatMappedAssignmentState.forEach((state) => {
+    uniqueAssignmentState[state] = (uniqueAssignmentState[state] || 0) + 1;
+  });
+
+  // Total value of all the selected rows accumulated from the contentQuantity
+  const totalContentQuantity = selectedFlatRows.map(
+    item => item.original.contentQuantity,
+  ).reduce((prev, next) => prev + next, 0);
+
+  return {
+    uniqueAssignmentState,
+    uniqueLearnerState,
+    uniqueContentKeys,
+    totalContentQuantity,
+    assignmentUuids,
+    totalSelectedRows,
+  };
+};

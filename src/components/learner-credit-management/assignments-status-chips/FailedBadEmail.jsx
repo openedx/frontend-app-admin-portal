@@ -1,30 +1,46 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Chip, Hyperlink, useToggle } from '@edx/paragon';
+import { Chip, Hyperlink } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
+import EVENT_NAMES from '../../../eventTracking';
+import { useAssignmentStatusChip } from '../data';
 
-const FailedBadEmail = ({ learnerEmail }) => {
-  const [isOpen, open, close] = useToggle(false);
+const FailedBadEmail = ({ learnerEmail, trackEvent }) => {
   const [target, setTarget] = useState(null);
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL_HELP_CENTER,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
+
+  const {
+    openChipModal,
+    closeChipModal,
+    isChipModalOpen,
+    helpCenterTrackEvent,
+  } = useAssignmentStatusChip({
+    chipInteractionEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL,
+    chipHelpCenterEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL_HELP_CENTER,
+    trackEvent,
+  });
 
   return (
     <>
       <Chip
         ref={setTarget}
         iconBefore={Error}
-        onClick={open}
-        onKeyPress={open}
+        onClick={openChipModal}
+        onKeyPress={openChipModal}
         tabIndex={0}
       >
         Failed: Bad email
       </Chip>
       <BaseModalPopup
         positionRef={target}
-        isOpen={isOpen}
-        onClose={close}
+        isOpen={isChipModalOpen}
+        onClose={closeChipModal}
       >
         <BaseModalPopup.Heading icon={Error} iconClassName="text-danger">
           Failed: Bad email
@@ -41,7 +57,11 @@ const FailedBadEmail = ({ learnerEmail }) => {
               </li>
               <li>
                 Get more troubleshooting help at{' '}
-                <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+                <Hyperlink
+                  destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
+                  onClick={helpCenterTrackEvent}
+                  target="_blank"
+                >
                   Help Center: Course Assignments
                 </Hyperlink>.
               </li>
@@ -55,6 +75,7 @@ const FailedBadEmail = ({ learnerEmail }) => {
 
 FailedBadEmail.propTypes = {
   learnerEmail: PropTypes.string,
+  trackEvent: PropTypes.func.isRequired,
 };
 
 FailedBadEmail.defaultProps = {

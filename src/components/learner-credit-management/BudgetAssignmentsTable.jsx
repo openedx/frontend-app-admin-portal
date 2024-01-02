@@ -119,7 +119,7 @@ const BudgetAssignmentsTable = ({
       EmptyTableComponent={CustomDataTableEmptyState}
       bulkActions={[
         <AssignmentTableRemindAction learnerStateCounts={tableData.learnerStateCounts} />,
-        <AssignmentTableCancelAction />,
+        <AssignmentTableCancelAction learnerStateCounts={tableData.learnerStateCounts} />,
       ]}
     />
   );

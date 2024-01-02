@@ -21,8 +21,8 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
     isTopDownAssignmentEnabled,
   });
 
-  // // If the budget activity overview data is loading (either the initial request OR any
-  // // background re-fetching), show a skeleton.
+  // If the budget activity overview data is loading (either the initial request OR any
+  // background re-fetching), show a skeleton.
   if (isBudgetActivityOverviewLoading || isBudgetActivityOverviewFetching || !budgetActivityOverview) {
     return (
       <>
