@@ -6,11 +6,13 @@ import { useToggle } from '@edx/paragon';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../constants';
 import useBudgetId from './useBudgetId';
+import { applyFiltersToOptions } from './useBudgetContentAssignments';
 
 const useRemindContentAssignments = (
   assignmentConfigurationUuid,
   assignmentUuids,
-  remindAll = false,
+  remindAll,
+  tableFilters,
 ) => {
   const [isOpen, open, close] = useToggle(false);
   const [remindButtonState, setRemindButtonState] = useState('default');
@@ -21,7 +23,9 @@ const useRemindContentAssignments = (
     setRemindButtonState('pending');
     try {
       if (remindAll) {
-        await EnterpriseAccessApiService.remindAllContentAssignments(assignmentConfigurationUuid);
+        const options = {};
+        applyFiltersToOptions(tableFilters, options);
+        await EnterpriseAccessApiService.remindAllContentAssignments(assignmentConfigurationUuid, options);
       } else {
         await EnterpriseAccessApiService.remindContentAssignments(assignmentConfigurationUuid, assignmentUuids);
       }
@@ -33,7 +37,7 @@ const useRemindContentAssignments = (
       logError(err);
       setRemindButtonState('error');
     }
-  }, [assignmentConfigurationUuid, assignmentUuids, remindAll, queryClient, subsidyAccessPolicyId]);
+  }, [assignmentConfigurationUuid, assignmentUuids, remindAll, tableFilters, queryClient, subsidyAccessPolicyId]);
 
   return {
     remindButtonState,

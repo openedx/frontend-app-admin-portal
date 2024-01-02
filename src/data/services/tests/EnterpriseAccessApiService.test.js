@@ -213,16 +213,22 @@ describe('EnterpriseAccessApiService', () => {
   });
 
   test('cancelAllContentAssignments calls enterprise-access cancel-all POST API to cancel all assignments', () => {
-    EnterpriseAccessApiService.cancelAllContentAssignments(mockAssignmentConfigurationUUID);
+    const options = {
+      learnerState: 'pending,waiting',
+    };
+    EnterpriseAccessApiService.cancelAllContentAssignments(mockAssignmentConfigurationUUID, options);
     expect(axios.post).toBeCalledWith(
-      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/cancel-all/`,
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/cancel-all/?learner_state__in=pending%2Cwaiting`,
     );
   });
 
   test('remindAllContentAssignments calls enterprise-access remind-all POST API to remind all learners', () => {
-    EnterpriseAccessApiService.remindAllContentAssignments(mockAssignmentConfigurationUUID);
+    const options = {
+      learnerState: 'pending,waiting',
+    };
+    EnterpriseAccessApiService.remindAllContentAssignments(mockAssignmentConfigurationUUID, options);
     expect(axios.post).toBeCalledWith(
-      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind-all/`,
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind-all/?learner_state__in=pending%2Cwaiting`,
     );
   });
 });
