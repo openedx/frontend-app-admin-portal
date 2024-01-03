@@ -5,11 +5,13 @@ import {
   Stack, Collapsible, Row, Col, Button,
 } from '@edx/paragon';
 import { ArrowDownward } from '@edx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import {
   generatePath, useRouteMatch, Link,
 } from 'react-router-dom';
 import { formatPrice } from './data';
+import EVENT_NAMES from '../../eventTracking';
 
 const BudgetDetailPageOverviewUtilization = ({
   budgetId,
@@ -17,10 +19,15 @@ const BudgetDetailPageOverviewUtilization = ({
   budgetAggregates,
   isAssignable,
   enterpriseFeatures,
+  enterpriseId,
 }) => {
   const routeMatch = useRouteMatch();
-
   const { amountAllocatedUsd, amountRedeemedUsd } = budgetAggregates;
+  const {
+    BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE,
+    BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE,
+    BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   if (!budgetId || !enterpriseFeatures.topDownAssignmentRealTimeLcm || utilized <= 0 || !isAssignable) {
     return null;
@@ -32,6 +39,9 @@ const BudgetDetailPageOverviewUtilization = ({
     }
 
     const linkText = (type === 'assigned') ? 'View assigned activity' : 'View spent activity';
+    const eventNameType = (type === 'assigned')
+      ? BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE
+      : BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE;
 
     return (
       <Button
@@ -44,6 +54,10 @@ const BudgetDetailPageOverviewUtilization = ({
           pathname: generatePath(routeMatch.path, { budgetId, activeTabKey: 'activity' }),
           state: { budgetActivityScrollToKey: type },
         }}
+        onClick={() => sendEnterpriseTrackEvent(
+          enterpriseId,
+          eventNameType,
+        )}
       >
         {linkText}
       </Button>
@@ -55,6 +69,13 @@ const BudgetDetailPageOverviewUtilization = ({
       className="mt-4 budget-utilization-container"
       styling="basic"
       title={<h6 className="mb-0">Utilization details</h6>}
+      onToggle={(open) => sendEnterpriseTrackEvent(
+        enterpriseId,
+        BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
+        {
+          isOpen: open,
+        },
+      )}
     >
       <Stack className="mt-2 mx-n2">
         <Row>
@@ -121,10 +142,12 @@ BudgetDetailPageOverviewUtilization.propTypes = {
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+  enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
 export default connect(mapStateToProps)(BudgetDetailPageOverviewUtilization);

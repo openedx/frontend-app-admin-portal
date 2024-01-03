@@ -12,6 +12,7 @@ const CancelAssignmentModal = ({
   close,
   isOpen,
   uuidCount,
+  trackEvent,
 }) => {
   const {
     successfulCancellationToast: { displayToastForAssignmentCancellation },
@@ -19,6 +20,7 @@ const CancelAssignmentModal = ({
 
   const handleOnClick = async () => {
     await cancelContentAssignments();
+    trackEvent();
     displayToastForAssignmentCancellation(uuidCount);
   };
 
@@ -69,6 +71,7 @@ CancelAssignmentModal.propTypes = {
   close: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   uuidCount: PropTypes.number,
+  trackEvent: PropTypes.func.isRequired,
 };
 
 export default CancelAssignmentModal;

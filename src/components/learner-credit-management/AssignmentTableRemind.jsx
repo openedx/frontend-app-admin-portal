@@ -2,8 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 import { Mail } from '@edx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { connect } from 'react-redux';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import RemindAssignmentModal from './RemindAssignmentModal';
+import { transformSelectedRows, useBudgetId, useSubsidyAccessPolicy } from './data';
+import EVENT_NAMES from '../../eventTracking';
 import { getActiveTableColumnFilters } from '../../utils';
 
 const calculateTotalToRemind = ({
@@ -19,10 +23,23 @@ const calculateTotalToRemind = ({
 };
 
 const AssignmentTableRemindAction = ({
-  selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance,
+  selectedFlatRows, isEntireTableSelected, learnerStateCounts, tableInstance, enterpriseId,
 }) => {
-  const assignmentUuids = selectedFlatRows.filter(row => row.original.learnerState === 'waiting').map(({ id }) => id);
-  const assignmentConfigurationUuid = selectedFlatRows[0].original.assignmentConfiguration;
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const {
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+  } = subsidyAccessPolicy;
+
+  const remindableRows = selectedFlatRows.filter(row => row.original.learnerState === 'waiting');
+  const {
+    uniqueLearnerState,
+    uniqueAssignmentState,
+    uniqueContentKeys,
+    totalContentQuantity,
+    assignmentUuids,
+    totalSelectedRows,
+  } = transformSelectedRows(remindableRows);
 
   const activeFilters = getActiveTableColumnFilters(tableInstance.columns);
 
@@ -35,7 +52,7 @@ const AssignmentTableRemindAction = ({
     close,
     isOpen,
     open,
-  } = useRemindContentAssignments(assignmentConfigurationUuid, assignmentUuids, shouldRemindAll);
+  } = useRemindContentAssignments(assignmentConfiguration.uuid, assignmentUuids, shouldRemindAll);
 
   const selectedRemindableRowCount = calculateTotalToRemind({
     assignmentUuids,
@@ -43,21 +60,81 @@ const AssignmentTableRemindAction = ({
     learnerStateCounts,
   });
 
+  const {
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_BULK_REMIND_MODAL,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_BULK_REMIND_MODAL,
+    BUDGET_DETAILS_ASSIGNED_DATATABLE_BULK_REMIND,
+  } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
+
+  const trackEvent = (eventName) => {
+    // constructs a learner state object for the select all state to match format of select all on page metadata
+    const learnerStateObject = {};
+    learnerStateCounts.forEach((learnerState) => {
+      learnerStateObject[learnerState.learnerState] = learnerState.count;
+    });
+
+    const selectedRowsMetadata = isEntireTableSelected
+      ? { uniqueLearnerState: learnerStateObject, totalSelectedRows: selectedRemindableRowCount }
+      : {
+        uniqueLearnerState, uniqueAssignmentState, uniqueContentKeys, totalContentQuantity, totalSelectedRows,
+      };
+
+    const trackEventMetadata = {
+      ...selectedRowsMetadata,
+      isAssignable,
+      isSubsidyActive,
+      subsidyUuid,
+      catalogUuid,
+      isEntireTableSelected,
+      assignmentUuids,
+      aggregates,
+      assignmentConfiguration,
+      isOpen: !isOpen,
+    };
+
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      eventName,
+      trackEventMetadata,
+    );
+  };
+
+  const openModal = () => {
+    open();
+    trackEvent(
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_BULK_REMIND_MODAL,
+    );
+  };
+
+  const closeModal = () => {
+    close();
+    trackEvent(
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_BULK_REMIND_MODAL,
+    );
+  };
+
+  const reminderTrackEvent = () => {
+    trackEvent(
+      BUDGET_DETAILS_ASSIGNED_DATATABLE_BULK_REMIND,
+    );
+  };
+
   return (
     <>
       <Button
         disabled={selectedRemindableRowCount === 0}
         alt={`Send reminder to ${selectedRemindableRowCount} learners`}
         iconBefore={Mail}
-        onClick={open}
+        onClick={openModal}
       >
         {`Remind (${selectedRemindableRowCount})`}
       </Button>
       <RemindAssignmentModal
         remindContentAssignments={remindContentAssignments}
-        close={close}
+        close={closeModal}
         isOpen={isOpen}
         remindButtonState={remindButtonState}
+        trackEvent={reminderTrackEvent}
         uuidCount={selectedRemindableRowCount}
       />
     </>
@@ -66,6 +143,7 @@ const AssignmentTableRemindAction = ({
 
 AssignmentTableRemindAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  enterpriseId: PropTypes.string.isRequired,
   isEntireTableSelected: PropTypes.bool.isRequired,
   learnerStateCounts: PropTypes.arrayOf(PropTypes.shape({
     learnerState: PropTypes.string.isRequired,
@@ -73,7 +151,12 @@ AssignmentTableRemindAction.propTypes = {
   })).isRequired,
   tableInstance: PropTypes.shape({
     columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    itemCount: PropTypes.number.isRequired,
   }).isRequired,
 };
 
-export default AssignmentTableRemindAction;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(AssignmentTableRemindAction);

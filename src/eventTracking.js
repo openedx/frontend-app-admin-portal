@@ -103,14 +103,54 @@ export const SUBSCRIPTION_EVENTS = {
 };
 
 export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
+  BREADCRUMB_FROM_BUDGET_DETAIL_TO_BUDGETS: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.breadcrumb_budget_detail_to_budgets.clicked`,
   TAB_CHANGED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.tab.changed`,
+  // Budget Overview
+  BUDGET_OVERVIEW_CONTACT_US: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.contact_us.clicked`,
+  BUDGET_OVERVIEW_NEW_ASSIGNMENT: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.new_assignment.clicked`,
+  BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.utilization_dropdown.toggled`,
+  BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.view_spent_activity.clicked`,
+  BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.budget_detail.view_assigned_activity.clicked`,
   // Activity tab
+  // Activity tab assigned datatable
   BUDGET_DETAILS_ASSIGNED_DATATABLE_SORT_BY_OR_FILTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table.changed`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_VIEW_COURSE: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_view_course.clicked`,
   BUDGET_DETAILS_ASSIGNED_DATATABLE_ACTIONS_REFRESH: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_refresh.clicked`,
+  // Activity tab assigned table remind
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_REMIND_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_remind_modal_open.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_REMIND_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_remind_modal_close.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_REMIND: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_remind.clicked`,
+  // Activity tab assigned table bulk remind
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_BULK_REMIND_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_bulk_remind_modal_open.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_BULK_REMIND_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_bulk_remind_modal_close.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_BULK_REMIND: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_bulk_remind.clicked`,
+  // Activity tab assigned table cancel
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_CANCEL_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_cancel_modal_open.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_CANCEL_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_cancel_modal_close.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CANCEL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_cancel.clicked`,
+  // Activity tab assigned table bulk cancel
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_BULK_CANCEL_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_bulk_cancel_modal_open.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CLOSE_BULK_CANCEL_MODAL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_bulk_cancel_modal_close.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_BULK_CANCEL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_bulk_cancel.clicked`,
+  // Activity tab spent datatable
   BUDGET_DETAILS_SPENT_DATATABLE_SORT_BY_OR_FILTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.spent_table.changed`,
   BUDGET_DETAILS_SPENT_DATATABLE_VIEW_COURSE: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.spent_table_view_course.clicked`,
   EMPTY_STATE_CTA: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.empty_state_cta_to_catalog.clicked`,
+  // Activity tab chips
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_NOTIFY_LEARNER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_notify_learner.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_waiting_for_learner.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_cancellation.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_SYSTEM: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_system.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_bad_email.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_reminder.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_redemption.clicked`,
+  // Activity tab chips help center links
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_WAITING_FOR_LEARNER_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_waiting_for_learner_help_center.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_CANCELLATION_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_cancellation_help_center.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_SYSTEM_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_system_help_center.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_EMAIL_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_bad_email_help_center.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REMINDER_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_reminder_help_center.clicked`,
+  BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_REDEMPTION_HELP_CENTER: `${BUDGET_DETAIL_ACTIVITY_TAB_PREFIX}.assigned_table_chip_failed_redemption_help_center.clicked`,
   // Catalog tab
   // Catalog tab search
   VIEW_COURSE: `${BUDGET_DETAIL_SEARCH_PREFIX}.view_course.clicked`,
