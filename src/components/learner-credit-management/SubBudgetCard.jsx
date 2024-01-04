@@ -1,6 +1,7 @@
-import { useContext } from 'react';
+// import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
 import {
@@ -15,14 +16,45 @@ import {
 
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { formatPrice, getBudgetStatus } from './data/utils';
-import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+// import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
-const BackgroundFetchingWrapper = ({ children }) => {
-  const { isFetchingBudgets } = useContext(EnterpriseSubsidiesContext);
+const BaseBackgroundFetchingWrapper = ({
+  enterpriseId,
+  isTopDownAssignmentEnabled,
+  enablePortalLearnerCreditManagementScreen,
+  children,
+}) => {
+  // const { isFetchingBudgets } = useContext(EnterpriseSubsidiesContext);
+  const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseId,
+    isTopDownAssignmentEnabled,
+  });
   return <span style={{ opacity: isFetchingBudgets ? 0.5 : 1 }}>{children}</span>;
 };
 
-const SubBudgetCard = ({
+BaseBackgroundFetchingWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
+  isTopDownAssignmentEnabled: PropTypes.bool,
+  enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
+};
+
+BaseBackgroundFetchingWrapper.defaultProps = {
+  isTopDownAssignmentEnabled: false,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+  enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
+  isTopDownAssignmentEnabled: state.portalConfiguration.isTopDownAssignmentEnabled,
+  enterpriseFeatures: state.features,
+});
+
+const BackgroundFetchingWrapper = connect(mapStateToProps)(BaseBackgroundFetchingWrapper);
+
+const BaseSubBudgetCard = ({
   id,
   start,
   end,
@@ -31,10 +63,18 @@ const SubBudgetCard = ({
   spent,
   displayName,
   enterpriseSlug,
+  enterpriseId,
+  isTopDownAssignmentEnabled,
+  enablePortalLearnerCreditManagementScreen,
   isLoading,
   isAssignable,
 }) => {
-  const { isFetchingBudgets } = useContext(EnterpriseSubsidiesContext);
+  // const { isFetchingBudgets } = useContext(EnterpriseSubsidiesContext);
+  const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
+    enablePortalLearnerCreditManagementScreen,
+    enterpriseId,
+    isTopDownAssignmentEnabled,
+  });
   const budgetLabel = getBudgetStatus(start, end);
   const formattedDate = dayjs(budgetLabel?.date).format('MMMM D, YYYY');
 
@@ -120,12 +160,11 @@ const SubBudgetCard = ({
   );
 };
 
-BackgroundFetchingWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-SubBudgetCard.propTypes = {
+BaseSubBudgetCard.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
+  isTopDownAssignmentEnabled: PropTypes.bool,
+  enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   start: PropTypes.string,
   end: PropTypes.string,
@@ -137,4 +176,8 @@ SubBudgetCard.propTypes = {
   isAssignable: PropTypes.bool,
 };
 
-export default SubBudgetCard;
+BaseSubBudgetCard.defaultProps = {
+  isTopDownAssignmentEnabled: false,
+};
+
+export default connect(mapStateToProps)(BaseSubBudgetCard);
