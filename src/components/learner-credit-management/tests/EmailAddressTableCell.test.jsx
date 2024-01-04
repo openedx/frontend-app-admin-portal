@@ -74,8 +74,8 @@ describe('<EmailAddressTableCell />', () => {
     userEvent.click(screen.getByLabelText('More details'));
 
     // Verify onEntered Segment event is called when popover opens
-    expect(await screen.findByText('Learner data disabled', { exact: false }));
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(screen.findByText('Learner data disabled', { exact: false })));
+    await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       mockEnterpriseUUID,
       'edx.ui.enterprise.admin_portal.learner-credit-management.spent.email-hidden-popover.opened',

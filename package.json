@@ -22,7 +22,7 @@
     "start:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && npm run start",
     "start:stage:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && npm run start:stage",
     "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand --coverage",
-    "test": "TZ=UTC fedx-scripts jest --coverage --passWithNoTests --maxWorkers=50%",
+    "test": "TZ=UTC fedx-scripts jest --passWithNoTests --maxWorkers=50%",
     "test:watch": "npm run test -- --watch",
     "test:watch-no-cov": "npm run test -- --watch --collectCoverage=false",
     "snapshot": "fedx-scripts jest --updateSnapshot"
@@ -58,7 +58,7 @@
     "prop-types": "15.7.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-helmet": "^6.1.0",
+    "react-helmet": "6.1.0",
     "react-instantsearch-dom": "6.8.3",
     "react-markdown": "6.0.0",
     "react-redux": "7.2.9",
