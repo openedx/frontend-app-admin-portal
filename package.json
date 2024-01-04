@@ -22,7 +22,7 @@
     "start:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && npm run start",
     "start:stage:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && npm run start:stage",
     "debug-test": "node --inspect-brk node_modules/.bin/jest --runInBand --coverage",
-    "test": "TZ=UTC fedx-scripts jest --passWithNoTests --maxWorkers=50%",
+    "test": "TZ=UTC fedx-scripts jest --coverage --passWithNoTests --maxWorkers=50%",
     "test:watch": "npm run test -- --watch",
     "test:watch-no-cov": "npm run test -- --watch --collectCoverage=false",
     "snapshot": "fedx-scripts jest --updateSnapshot"
