@@ -10,6 +10,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import handleErrors from '../utils';
 import { snakeCaseDict } from '../../../utils';
 import { INVALID_IDP_METADATA_ERROR, RECORD_UNDER_CONFIGURATIONS_ERROR } from '../data/constants';
+import { submitConfigurationAction } from '../../forms/data/actions';
 
 type SSOConfigSnakeCase = {
   uuid?: string,
@@ -100,6 +101,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
     formFields,
     errHandler,
     formFieldsChanged,
+    dispatch,
   }: FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
     let err = null;
 
@@ -119,6 +121,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
           formFields?.uuid,
         );
         updatedFormFields = updateResponse.data;
+        dispatch?.(submitConfigurationAction());
       } catch (error: AxiosError | any) {
         err = handleErrors(error);
         if (error.message?.includes('Must provide valid IDP metadata url')) {

@@ -4,8 +4,8 @@ import {
   FormWorkflowButtonConfig, FormWorkflowHandlerArgs, FormWorkflowStep,
 } from '../FormWorkflow';
 import {
-  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction,
-  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP,
+  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction, submitConfigurationAction,
+  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP, SUBMIT_CONFIGURATION,
 } from './actions';
 import type { InitializeFormArguments } from './reducer';
 import { FormReducer, initializeForm } from './reducer';
@@ -139,6 +139,18 @@ describe('Form reducer tests', () => {
     const expected = {
       step: steps[1],
       type: SET_STEP,
+    };
+
+    expect(
+      FormReducer(action, initializeForm(getTestInitializeFormArguments())),
+    ).toStrictEqual(expected);
+  });
+
+  test('submit configuration', () => {
+    const action = submitConfigurationAction();
+
+    const expected = {
+      type: SUBMIT_CONFIGURATION,
     };
 
     expect(

@@ -55,6 +55,12 @@ export const setStepAction = ({ step }: SetStepArguments<any>) => ({
   step,
 });
 
+export const SUBMIT_CONFIGURATION = 'SUBMIT CONFIGURATION';
+// Construct action for submitting configurations
+export const submitConfigurationAction = () => ({
+  type: SUBMIT_CONFIGURATION,
+});
+
 // Global Workflow state keys
 export const FORM_ERROR_MESSAGE = 'FORM ERROR MESSAGE';
 

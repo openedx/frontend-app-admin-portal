@@ -29,7 +29,7 @@ export type FormWorkflowHandlerArgs<FormData> = {
   formFields: FormData;
   formFieldsChanged: boolean;
   errHandler?: FormWorkflowErrorHandler;
-  dispatch?: Dispatch<FormData>;
+  dispatch?: Dispatch<FormActionArguments>;
 };
 
 export type FormWorkflowAwaitHandler<FormData> = {
