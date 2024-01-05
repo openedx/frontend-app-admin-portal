@@ -18,15 +18,14 @@ const ContentHighlightCardItem = ({
     cardImgSrc: cardImageUrl,
     cardLogoSrc: partners.length === 1 ? partners[0].logoImageUrl : undefined,
     cardLogoAlt: partners.length === 1 ? `${partners[0].name}'s logo` : undefined,
-    cardTitle:
-  <Truncate lines={3} title={title}>{title}</Truncate>,
+    cardTitle: <Truncate lines={3} title={title}>{title}</Truncate>,
     cardSubtitle: partners.map(p => p.name).join(', '),
     cardFooter: getContentHighlightCardFooter({ price, contentType }),
   };
   if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
       <Hyperlink onClick={hyperlinkAttrs.onClick} destination={hyperlinkAttrs.href} target={hyperlinkAttrs.target} data-testid="hyperlink-title">
-        <Truncate lines={3} title={title}>{title}</Truncate>,
+        <Truncate lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
   }
