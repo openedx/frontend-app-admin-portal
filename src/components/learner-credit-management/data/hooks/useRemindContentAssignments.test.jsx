@@ -104,6 +104,47 @@ describe('useRemindContentAssignments', () => {
     });
   });
 
+  it('should send a post request to remind all assignments with filters', async () => {
+    EnterpriseAccessApiService.remindAllContentAssignments.mockResolvedValueOnce({ status: 200 });
+    const tableFilters = [{
+      id: 'learnerState',
+      value: ['waiting'],
+    }];
+    const remindAll = true;
+    const { result } = renderHook(
+      () => useRemindContentAssignments(
+        TEST_ASSIGNMENT_CONFIGURATION_UUID,
+        [TEST_PENDING_ASSIGNMENT_UUID_1, TEST_PENDING_ASSIGNMENT_UUID_2],
+        remindAll,
+        tableFilters,
+      ),
+      { wrapper },
+    );
+
+    expect(result.current).toEqual({
+      remindButtonState: 'default',
+      remindContentAssignments: expect.any(Function),
+      close: expect.any(Function),
+      isOpen: false,
+      open: expect.any(Function),
+    });
+
+    await waitFor(() => result.current.remindContentAssignments());
+    const expectedFilterParams = { learnerState: 'waiting' };
+    expect(
+      EnterpriseAccessApiService.remindAllContentAssignments,
+    ).toHaveBeenCalledWith(TEST_ASSIGNMENT_CONFIGURATION_UUID, expectedFilterParams);
+    expect(logError).toBeCalledTimes(0);
+
+    expect(result.current).toEqual({
+      remindButtonState: 'complete',
+      remindContentAssignments: expect.any(Function),
+      close: expect.any(Function),
+      isOpen: false,
+      open: expect.any(Function),
+    });
+  });
+
   it('should handle assignment reminder error', async () => {
     const error = new Error('An error occurred');
     EnterpriseAccessApiService.remindContentAssignments.mockRejectedValueOnce(error);

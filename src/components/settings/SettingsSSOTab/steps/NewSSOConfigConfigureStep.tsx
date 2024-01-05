@@ -166,7 +166,7 @@ const SSOConfigConfigureStep = () => {
   const returnToConnectStep = () => {
     const connectStep = allSteps?.[0] as FormWorkflowStep<SSOConfigCamelCase>;
     dispatch?.(
-      setStepAction({ step: connectStep })
+      setStepAction({ step: connectStep }),
     );
   };
 

@@ -8,7 +8,6 @@ import CancelAssignmentModal from './CancelAssignmentModal';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 import { transformSelectedRows, useBudgetId, useSubsidyAccessPolicy } from './data';
 import EVENT_NAMES from '../../eventTracking';
-import { getActiveTableColumnFilters } from '../../utils';
 
 const calculateTotalToCancel = ({
   assignmentUuids,
@@ -39,10 +38,7 @@ const AssignmentTableCancelAction = ({
     totalSelectedRows,
   } = transformSelectedRows(selectedFlatRows);
 
-  const activeFilters = getActiveTableColumnFilters(tableInstance.columns);
-
-  // If entire table is selected and there are NO filters, hit cancel-all endpoint. Otherwise, hit usual bulk cancel.
-  const shouldCancelAll = isEntireTableSelected && activeFilters.length === 0;
+  const { state: dataTableState } = tableInstance;
 
   const {
     cancelButtonState,
@@ -50,7 +46,12 @@ const AssignmentTableCancelAction = ({
     close,
     isOpen,
     open,
-  } = useCancelContentAssignments(assignmentConfiguration.uuid, assignmentUuids, shouldCancelAll);
+  } = useCancelContentAssignments(
+    assignmentConfiguration.uuid,
+    assignmentUuids,
+    isEntireTableSelected,
+    dataTableState.filters,
+  );
 
   const {
     BUDGET_DETAILS_ASSIGNED_DATATABLE_OPEN_BULK_CANCEL_MODAL,
@@ -114,7 +115,7 @@ const AssignmentTableCancelAction = ({
   const tableItemCount = tableInstance.itemCount;
   const totalToCancel = calculateTotalToCancel({
     assignmentUuids,
-    isEntireTableSelected: shouldCancelAll,
+    isEntireTableSelected,
     tableItemCount,
   });
 
@@ -146,6 +147,9 @@ AssignmentTableCancelAction.propTypes = {
   tableInstance: PropTypes.shape({
     itemCount: PropTypes.number.isRequired,
     columns: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    state: PropTypes.shape({
+      filters: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    }).isRequired,
   }).isRequired,
 };
 

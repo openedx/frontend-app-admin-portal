@@ -33,7 +33,7 @@ const PendingAssignmentCancelButton = ({ row, enterpriseId }) => {
     close,
     isOpen,
     open,
-  } = useCancelContentAssignments(assignmentConfiguration, [uuid]);
+  } = useCancelContentAssignments(assignmentConfiguration.uuid, [uuid]);
 
   const sharedTrackEventMetadata = {
     subsidyUuid,
@@ -117,7 +117,9 @@ PendingAssignmentCancelButton.propTypes = {
       contentQuantity: PropTypes.number.isRequired,
       learnerState: PropTypes.string.isRequired,
       state: PropTypes.string.isRequired,
-      assignmentConfiguration: PropTypes.string.isRequired,
+      assignmentConfiguration: PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+      }).isRequired,
       learnerEmail: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,
