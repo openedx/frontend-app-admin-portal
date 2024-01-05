@@ -114,7 +114,7 @@ export const FormReducer: FormReducerType = (
       return {
         ...state,
         formFields: updateFormFieldsArgs.formFields,
-        isEdited: false,
+        // isEdited: false,
         hasErrors: false,
         errorMap: {},
       };

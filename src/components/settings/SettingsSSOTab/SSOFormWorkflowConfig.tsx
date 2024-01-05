@@ -99,16 +99,15 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
   const saveChanges = async ({
     formFields,
     errHandler,
-    // @ts-ignore:next-line formFieldsChanged is only used in the below TODO
     formFieldsChanged,
   }: FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
     let err = null;
 
-    // TODO : Accurately detect if form fields have changed
-    // if (!formFieldsChanged && !idpMetadataError) {
-    //   // Don't submit if nothing has changed
-    //   return formFields;
-    // }
+    // Accurately detect if form fields have changed
+    if (!formFieldsChanged) {
+      // Don't submit if nothing has changed
+      return formFields;
+    }
     let updatedFormFields: SSOConfigCamelCase = omit(formFields, ['idpConnectOption', 'spMetadataUrl', 'isPendingConfiguration']);
     updatedFormFields.enterpriseCustomer = enterpriseId;
     const submittedFormFields: SSOConfigSnakeCase = snakeCaseDict(updatedFormFields) as SSOConfigSnakeCase;
