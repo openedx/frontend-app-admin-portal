@@ -25,7 +25,7 @@ const ContentHighlightCardItem = ({
   if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
       <Hyperlink onClick={hyperlinkAttrs.onClick} destination={hyperlinkAttrs.href} target={hyperlinkAttrs.target} data-testid="hyperlink-title">
-        <Truncate lines={3} title={title}>{title}</Truncate>
+        <Truncate elementType="span" lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
   }
