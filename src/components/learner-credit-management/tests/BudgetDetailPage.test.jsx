@@ -1192,7 +1192,7 @@ describe('<BudgetDetailPage />', () => {
       expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
     } else {
       userEvent.click(statusChip);
-      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+      waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2));
     }
   });
 
