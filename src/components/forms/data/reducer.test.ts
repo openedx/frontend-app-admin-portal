@@ -4,8 +4,8 @@ import {
   FormWorkflowButtonConfig, FormWorkflowHandlerArgs, FormWorkflowStep,
 } from '../FormWorkflow';
 import {
-  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction, submitConfigurationAction,
-  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP, SUBMIT_CONFIGURATION,
+  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction, resetFormEditState,
+  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP, RESET_EDITED_PROP,
 } from './actions';
 import type { InitializeFormArguments } from './reducer';
 import { FormReducer, initializeForm } from './reducer';
@@ -146,11 +146,11 @@ describe('Form reducer tests', () => {
     ).toStrictEqual(expected);
   });
 
-  test('submit configuration', () => {
-    const action = submitConfigurationAction();
+  test('resets isEdited property', () => {
+    const action = resetFormEditState();
 
     const expected = {
-      type: SUBMIT_CONFIGURATION,
+      type: RESET_EDITED_PROP,
     };
 
     expect(
