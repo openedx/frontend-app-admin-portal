@@ -6,11 +6,13 @@ import { useToggle } from '@edx/paragon';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../constants';
 import useBudgetId from './useBudgetId';
+import { applyFiltersToOptions } from './useBudgetContentAssignments';
 
 const useCancelContentAssignments = (
   assignmentConfigurationUuid,
   assignmentUuids,
-  cancelAll = false,
+  cancelAll,
+  tableFilters,
 ) => {
   const [isOpen, open, close] = useToggle(false);
   const [cancelButtonState, setCancelButtonState] = useState('default');
@@ -21,7 +23,9 @@ const useCancelContentAssignments = (
     setCancelButtonState('pending');
     try {
       if (cancelAll) {
-        await EnterpriseAccessApiService.cancelAllContentAssignments(assignmentConfigurationUuid);
+        const options = {};
+        applyFiltersToOptions(tableFilters, options);
+        await EnterpriseAccessApiService.cancelAllContentAssignments(assignmentConfigurationUuid, options);
       } else {
         await EnterpriseAccessApiService.cancelContentAssignments(assignmentConfigurationUuid, assignmentUuids);
       }
@@ -33,7 +37,7 @@ const useCancelContentAssignments = (
       logError(err);
       setCancelButtonState('error');
     }
-  }, [assignmentConfigurationUuid, assignmentUuids, cancelAll, queryClient, subsidyAccessPolicyId]);
+  }, [assignmentConfigurationUuid, assignmentUuids, cancelAll, tableFilters, queryClient, subsidyAccessPolicyId]);
 
   return {
     cancelButtonState,

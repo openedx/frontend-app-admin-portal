@@ -32,7 +32,7 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
     close,
     isOpen,
     open,
-  } = useRemindContentAssignments(assignmentConfiguration, [uuid]);
+  } = useRemindContentAssignments(assignmentConfiguration.uuid, [uuid]);
 
   const sharedTrackEventMetadata = {
     subsidyUuid,
@@ -115,7 +115,9 @@ PendingAssignmentRemindButton.propTypes = {
       contentQuantity: PropTypes.number.isRequired,
       learnerState: PropTypes.string.isRequired,
       state: PropTypes.string.isRequired,
-      assignmentConfiguration: PropTypes.string.isRequired,
+      assignmentConfiguration: PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+      }).isRequired,
       learnerEmail: PropTypes.string,
       uuid: PropTypes.string.isRequired,
     }).isRequired,

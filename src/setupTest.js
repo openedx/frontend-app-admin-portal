@@ -2,7 +2,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
 import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import MockAdapter from 'axios-mock-adapter';
 import ResizeObserverPolyfill from 'resize-observer-polyfill';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';

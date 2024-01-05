@@ -139,8 +139,8 @@ const FormWorkflow = <FormConfigData extends unknown>({
         const newFormFields: FormConfigData = await nextButtonConfig.onClick({
           formFields,
           errHandler: (error) => {
-            setFormError(error); 
-            if (!!error) {
+            setFormError(error);
+            if (error) {
               advance = false;
             }
           },

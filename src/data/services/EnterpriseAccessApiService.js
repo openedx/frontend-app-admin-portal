@@ -187,8 +187,19 @@ class EnterpriseAccessApiService {
   /**
    * Cancel ALL content assignments for a specific AssignmentConfiguration.
    */
-  static cancelAllContentAssignments(assignmentConfigurationUUID) {
-    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel-all/`;
+  static cancelAllContentAssignments(assignmentConfigurationUUID, options = {}) {
+    const { learnerState, ...optionsRest } = options;
+    const params = {
+      ...snakeCaseObject(optionsRest),
+    };
+    if (learnerState) {
+      params.learner_state__in = learnerState;
+    }
+    const urlParams = new URLSearchParams(params);
+    let url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/cancel-all/`;
+    if (Object.keys(params).length > 0) {
+      url += `?${urlParams.toString()}`;
+    }
     return EnterpriseAccessApiService.apiClient().post(url);
   }
 
@@ -206,8 +217,19 @@ class EnterpriseAccessApiService {
   /**
    * Remind ALL content assignments for a specific AssignmentConfiguration.
    */
-  static remindAllContentAssignments(assignmentConfigurationUUID) {
-    const url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind-all/`;
+  static remindAllContentAssignments(assignmentConfigurationUUID, options = {}) {
+    const { learnerState, ...optionsRest } = options;
+    const params = {
+      ...snakeCaseObject(optionsRest),
+    };
+    if (learnerState) {
+      params.learner_state__in = learnerState;
+    }
+    const urlParams = new URLSearchParams(params);
+    let url = `${EnterpriseAccessApiService.baseUrl}/assignment-configurations/${assignmentConfigurationUUID}/admin/assignments/remind-all/`;
+    if (Object.keys(params).length > 0) {
+      url += `?${urlParams.toString()}`;
+    }
     return EnterpriseAccessApiService.apiClient().post(url);
   }
 
