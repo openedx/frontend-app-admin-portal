@@ -29,7 +29,7 @@ export type FormWorkflowHandlerArgs<FormData> = {
   formFields: FormData;
   formFieldsChanged: boolean;
   errHandler?: FormWorkflowErrorHandler;
-  dispatch?: Dispatch<FormData>;
+  dispatch?: Dispatch<FormActionArguments>;
 };
 
 export type FormWorkflowAwaitHandler<FormData> = {
@@ -59,7 +59,8 @@ export type FormWorkflowStep<FormData> = {
   validations: FormFieldValidation[];
   saveChanges?: (
     formData: FormData,
-    errHandler: FormWorkflowErrorHandler
+    errHandler: FormWorkflowErrorHandler,
+    formFieldsChanged: boolean,
   ) => Promise<boolean>;
   nextButtonConfig: (FormData: FormData) => FormWorkflowButtonConfig<FormData>;
   showBackButton?: boolean;
@@ -197,6 +198,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
       const FormComponent: DynamicComponent<any> = currentStep?.formComponent;
       return (
         <Stepper.Step
+          key={currentStep.stepName}
           eventKey={currentStep.index.toString()}
           title={currentStep.stepName}
         >
@@ -245,7 +247,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
         exitWithoutSaving={() => onClickOut(false)}
         saveDraft={async () => {
           if (step?.saveChanges) {
-            await step?.saveChanges(formFields as FormConfigData, setFormError);
+            await step?.saveChanges(formFields as FormConfigData, setFormError, !!isEdited);
             onClickOut(true, SUBMIT_TOAST_MESSAGE);
           }
           onClickOut(false, 'No changes saved');
