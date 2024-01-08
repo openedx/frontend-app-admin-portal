@@ -1,35 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, ValidationFormGroup } from '@edx/paragon';
+import { Form } from '@edx/paragon';
 
 const ReduxFormCheckbox = (props) => {
   const {
     id,
     label,
-    helptext,
+    helpText,
     input,
     defaultChecked,
   } = props;
 
   return (
-    <ValidationFormGroup
-      for={id}
-      helpText={helptext}
-    >
-      <Form.Check
+    <Form>
+      <Form.Checkbox
         {...input}
         id={id}
-        type="checkbox"
-        defaultChecked={defaultChecked}
+        defaultValue={defaultChecked}
         checked={input.checked}
-        label={label}
-      />
-    </ValidationFormGroup>
+        description={helpText}
+      >
+        {label}
+      </Form.Checkbox>
+    </Form>
   );
 };
 
 ReduxFormCheckbox.defaultProps = {
-  helptext: null,
+  helpText: null,
   defaultChecked: false,
 };
 
@@ -39,7 +37,7 @@ ReduxFormCheckbox.propTypes = {
   input: PropTypes.shape({
     checked: PropTypes.bool,
   }).isRequired,
-  helptext: PropTypes.string,
+  helpText: PropTypes.string,
   defaultChecked: PropTypes.bool,
 };
 

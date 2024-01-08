@@ -53,8 +53,7 @@ exports[`<Footer /> renders correct help center link from config 1`] = `
           >
             <a
               className="nav-link px-2"
-              href="/http://test-hc.com/hc"
-              onClick={[Function]}
+              href="http://test-hc.com/hc"
               target="_blank"
             >
               Support

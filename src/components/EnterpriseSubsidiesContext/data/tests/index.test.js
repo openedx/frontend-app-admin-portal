@@ -9,37 +9,58 @@ jest.mock('../hooks');
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 
 describe('useEnterpriseSubsidiesContext', () => {
-  const basicProps = { enablePortalLearnerCreditManagementScreen: true, enterpriseId: TEST_ENTERPRISE_UUID };
+  const basicProps = {
+    enablePortalLearnerCreditManagementScreen: true,
+    enterpriseId: TEST_ENTERPRISE_UUID,
+  };
 
   it.each([
     {
-      offers: [{ uuid: 'offer-id' }],
+      isLoadingBudgets: false,
+      budgets: [{ uuid: 'offer-id' }],
       customerAgreement: { subscriptions: [{ uuid: 'subscription-id' }] },
       coupons: [{ uuid: 'coupon-id' }],
       expectedEnterpriseSubsidyTypes: [
-        SUBSIDY_TYPES.offer,
+        SUBSIDY_TYPES.budget,
         SUBSIDY_TYPES.coupon,
-        SUBSIDY_TYPES.license],
+        SUBSIDY_TYPES.license,
+      ],
     },
     {
-      offers: [],
+      isLoadingBudgets: true,
+      budgets: undefined,
       customerAgreement: { subscriptions: [{ uuid: 'subscription-id' }] },
       coupons: [{ uuid: 'coupon-id' }],
       expectedEnterpriseSubsidyTypes: [
         SUBSIDY_TYPES.coupon,
-        SUBSIDY_TYPES.license],
+        SUBSIDY_TYPES.license,
+      ],
     },
     {
-      offers: [],
+      isLoadingBudgets: false,
+      budgets: [],
+      customerAgreement: { subscriptions: [{ uuid: 'subscription-id' }] },
+      coupons: [{ uuid: 'coupon-id' }],
+      expectedEnterpriseSubsidyTypes: [
+        SUBSIDY_TYPES.coupon,
+        SUBSIDY_TYPES.license,
+      ],
+    },
+    {
+      isLoadingBudgets: false,
+      budgets: [],
       customerAgreement: { subscriptions: [{ uuid: 'subscription-id' }] },
       coupons: [],
       expectedEnterpriseSubsidyTypes: [SUBSIDY_TYPES.license],
     },
-  ])('returns the correct enterpriseSubsidyTypes', ({
-    offers, customerAgreement, coupons, expectedEnterpriseSubsidyTypes,
+  ])('returns the correct enterpriseSubsidyTypes (%s)', ({
+    isLoadingBudgets, budgets, customerAgreement, coupons, expectedEnterpriseSubsidyTypes,
   }) => {
-    hooks.useEnterpriseOffers.mockReturnValue({
-      offers,
+    hooks.useEnterpriseBudgets.mockReturnValue({
+      data: isLoadingBudgets ? undefined : {
+        budgets,
+        canManageLearnerCredit: !!budgets.length,
+      },
     });
     hooks.useCustomerAgreement.mockReturnValue({
       customerAgreement,

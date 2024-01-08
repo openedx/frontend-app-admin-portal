@@ -82,7 +82,6 @@ const defaultSubscriptions = {
 
 const mockStore = configureMockStore([thunk]);
 
-// eslint-disable-next-line react/prop-types
 const MultipleSubscriptionsPageWrapper = ({ subscriptions = defaultSubscriptions, ...props }) => (
   <Provider store={mockStore(fakeStore)}>
     <IntlProvider locale="en">

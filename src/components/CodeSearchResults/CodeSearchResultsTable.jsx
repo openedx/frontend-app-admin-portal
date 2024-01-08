@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useLocation } from 'react-router-dom';
 import { Icon } from '@edx/paragon';
+import { Check } from '@edx/paragon/icons';
 
 import { isValidEmail } from '../../utils';
 import TableContainer from '../../containers/TableContainer';
@@ -42,7 +43,7 @@ const getFormattedDate = (date) => {
   if (!date) {
     return null;
   }
-  return moment(date).format('MMMM D, YYYY');
+  return dayjs(date).format('MMMM D, YYYY');
 };
 
 const transformSearchResults = results => results.map(({
@@ -112,7 +113,7 @@ const CodeSearchResultsTable = ({
       couponName,
       code,
       isRedeemed: isRedeemed ? (
-        <Icon className="fa fa-check text-primary" screenReaderText="has been redeemed" />
+        <Icon className="text-primary" src={Check} screenReaderText="has been redeemed" />
       ) : defaultEmptyValue,
       courseTitle: courseTitle || defaultEmptyValue,
       assignedTo: assignedTo || defaultEmptyValue,

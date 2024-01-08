@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { createMemoryHistory } from 'history';
-import moment from 'moment';
-
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
+
 import SubscriptionData from '../SubscriptionData';
 import { ASSIGNED } from '../data/constants';
 import SubscriptionDetailContextProvider from '../SubscriptionDetailContextProvider';
@@ -221,7 +221,7 @@ export const generateSubscriptionPlan = (
   daysUntilExpiration = 2,
   agreementNetDaysUntilExpiration = daysUntilExpiration,
 ) => {
-  const startDate = moment().subtract(1, 'days');
+  const startDate = dayjs().subtract(1, 'days');
   return {
     title: TEST_SUBSCRIPTION_PLAN_TITLE,
     uuid: TEST_SUBSCRIPTION_PLAN_UUID,
@@ -259,9 +259,9 @@ export const generateSubscriptionUser = ({
   userEmail = 'edx@example.com',
   status = 'activated',
 }) => ({
-  activationDate: moment(),
+  activationDate: dayjs(),
   activationKey: 'test-activation-key',
-  lastRemindDate: moment(),
+  lastRemindDate: dayjs(),
   revokedDate: null,
   status,
   userEmail,

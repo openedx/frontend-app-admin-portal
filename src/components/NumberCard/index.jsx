@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Button, Icon } from '@edx/paragon';
+import { Button, Icon, Spinner } from '@edx/paragon';
+import { ArrowDropDown, Close } from '@edx/paragon/icons';
 import { Link } from 'react-router-dom';
 
 import { removeTrailingSlash, isTriggerKey } from '../../utils';
@@ -150,7 +151,7 @@ class NumberCard extends React.Component {
             {action.label}
           </span>
           {action.loading
-            && <Icon className="fa fa-spinner fa-spin ml-2" />}
+            && <Spinner animation="border" className="ml-2" variant="primary" size="sm" />}
         </div>
       </Link>
     ));
@@ -161,7 +162,7 @@ class NumberCard extends React.Component {
     const {
       className,
       title,
-      iconClassName,
+      icon,
       description,
       detailActions,
       id,
@@ -180,14 +181,14 @@ class NumberCard extends React.Component {
               <span>
                 {this.formatTitle(title)}
               </span>
-              {iconClassName && (
+              {icon && (
                 <Icon
                   className={
                     classNames(
                       'd-flex align-items-center justify-content-center',
-                      iconClassName,
                     )
                   }
+                  src={icon}
                 />
               )}
             </h3>
@@ -212,13 +213,7 @@ class NumberCard extends React.Component {
                   </div>
                   <div>
                     <Icon
-                      className={classNames(
-                        'fa',
-                        {
-                          'fa-caret-down': !detailsExpanded,
-                          'fa-close': detailsExpanded,
-                        },
-                      )}
+                      src={!detailsExpanded ? ArrowDropDown : Close}
                       screenReaderText={detailsExpanded
                         ? DETAILS_TEXT.expandedScreenReader : DETAILS_TEXT.unexpandedScreenReader}
                     />
@@ -246,7 +241,7 @@ class NumberCard extends React.Component {
 
 NumberCard.defaultProps = {
   className: null,
-  iconClassName: null,
+  icon: null,
   detailActions: null,
   detailsExpanded: false,
   actionSlug: '',
@@ -260,7 +255,7 @@ NumberCard.propTypes = {
   description: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   className: PropTypes.string,
-  iconClassName: PropTypes.string,
+  icon: PropTypes.func,
   detailActions: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     loading: PropTypes.bool,

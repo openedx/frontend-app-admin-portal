@@ -4,8 +4,8 @@ import {
   FormWorkflowButtonConfig, FormWorkflowHandlerArgs, FormWorkflowStep,
 } from '../FormWorkflow';
 import {
-  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction,
-  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP,
+  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction, resetFormEditState,
+  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP, RESET_EDIT_STATE,
 } from './actions';
 import type { InitializeFormArguments } from './reducer';
 import { FormReducer, initializeForm } from './reducer';
@@ -19,6 +19,7 @@ const dummyButtonConfig: FormWorkflowButtonConfig<DummyFormFields> = {
   buttonText: 'Unimportant',
   onClick: ({ formFields }: FormWorkflowHandlerArgs<DummyFormFields>) => Promise.resolve(formFields as DummyFormFields),
   opensNewWindow: false,
+  preventDefaultErrorModal: false,
 };
 
 const createDummyStep = (
@@ -65,6 +66,7 @@ const getTestInitializeFormArguments = () => {
     formFields: { ...testFormFields },
     validations: dummyFormFieldsValidations,
     currentStep: steps[0],
+    steps: [...steps],
   };
   return testArgs;
 };
@@ -77,11 +79,15 @@ describe('Form reducer tests', () => {
       formFields: { ...formFields },
       validations: dummyFormFieldsValidations,
       currentStep: steps[0],
+      steps: [...steps],
     };
     expect(initializeForm(initializeFormArguments)).toEqual({
       formFields,
+      errorMap: {},
+      hasErrors: false,
       currentStep: steps[0],
       isEdited: false,
+      allSteps: [...steps],
     });
   });
 
@@ -133,6 +139,18 @@ describe('Form reducer tests', () => {
     const expected = {
       step: steps[1],
       type: SET_STEP,
+    };
+
+    expect(
+      FormReducer(action, initializeForm(getTestInitializeFormArguments())),
+    ).toStrictEqual(expected);
+  });
+
+  test('resets isEdited property', () => {
+    const action = resetFormEditState();
+
+    const expected = {
+      type: RESET_EDIT_STATE,
     };
 
     expect(

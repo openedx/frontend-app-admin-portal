@@ -3,6 +3,11 @@ import {
   Route, Navigate, Routes, useLocation,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { AuthenticatedPageRoute, PageWrap, AppProvider } from '@edx/frontend-platform/react';
 import { logError } from '@edx/frontend-platform/logging';
@@ -20,6 +25,21 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { defaultQueryClientRetryHandler } from '../../utils';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: defaultQueryClientRetryHandler,
+      // Specifying a longer `staleTime` of 60 seconds means queries will not refetch their data
+      // as often; mitigates making duplicate queries when within the `staleTime` window, instead
+      // relying on the cached data until the `staleTime` window has exceeded. This may be modified
+      // per-query, as needed, if certain queries expect to be more up-to-date than others. Allows
+      // `useQuery` to be used as a state manager.
+      staleTime: 1000 * 60,
+    },
+  },
+});
 
 const RedirectComponent = () => {
   const location = useLocation();
@@ -62,71 +82,74 @@ const AppWrapper = () => {
   }, [config]);
 
   return (
-    <AppProvider store={store}>
-      <Helmet
-        titleTemplate="%s - edX Admin Portal"
-        defaultTitle="edX Admin Portal"
-      />
-      {isMaintenanceAlertOpen && (
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
+      <AppProvider store={store}>
+        <Helmet
+          titleTemplate="%s - edX Admin Portal"
+          defaultTitle="edX Admin Portal"
+        />
+        {isMaintenanceAlertOpen && (
         <SystemWideWarningBanner>
           {config.MAINTENANCE_ALERT_MESSAGE}
         </SystemWideWarningBanner>
-      )}
-      <Header />
-      <Routes>
-        <Route
-          path="/enterprises"
-          element={(
-            <AuthenticatedPageRoute
-              authenticatedAPIClient={apiClient}
-              redirect={`${process.env.BASE_URL}/enterprises`}
-            >
-              <EnterpriseIndexPage />
-            </AuthenticatedPageRoute>
+        )}
+        <Header />
+        <Routes>
+          <Route
+            path="/enterprises"
+            element={(
+              <AuthenticatedPageRoute
+                authenticatedAPIClient={apiClient}
+                redirect={`${process.env.BASE_URL}/enterprises`}
+              >
+                <EnterpriseIndexPage />
+              </AuthenticatedPageRoute>
           )}
-        />
-        <Route
-          path="/:enterpriseSlug/admin/register"
-          element={<PageWrap><AdminRegisterPage /></PageWrap>}
-        />
-        <Route
-          path="/:enterpriseSlug/admin/register/activate"
-          element={<PageWrap><UserActivationPage /></PageWrap>}
-        />
-        <Route
-          path="/:enterpriseSlug"
-          element={(
-            <PageWrap
-              authenticatedAPIClient={apiClient}
-              redirect={process.env.BASE_URL}
-            >
-              <RedirectComponent />
-            </PageWrap>
+          />
+          <Route
+            path="/:enterpriseSlug/admin/register"
+            element={<PageWrap><AdminRegisterPage /></PageWrap>}
+          />
+          <Route
+            path="/:enterpriseSlug/admin/register/activate"
+            element={<PageWrap><UserActivationPage /></PageWrap>}
+          />
+          <Route
+            path="/:enterpriseSlug"
+            element={(
+              <PageWrap
+                authenticatedAPIClient={apiClient}
+                redirect={process.env.BASE_URL}
+              >
+                <RedirectComponent />
+              </PageWrap>
           )}
-        />
-        <Route
-          path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
-          element={(
-            <PageWrap
-              authenticatedAPIClient={apiClient}
-              redirect={process.env.BASE_URL}
-            >
-              <AuthenticatedEnterpriseApp />
-            </PageWrap>
+          />
+          <Route
+            path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
+            element={(
+              <PageWrap
+                authenticatedAPIClient={apiClient}
+                redirect={process.env.BASE_URL}
+              >
+                <AuthenticatedEnterpriseApp />
+              </PageWrap>
           )}
-        />
-        <Route
-          path="/"
-          element={(
-            <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
-              <EnterpriseIndexPage />
-            </AuthenticatedPageRoute>
+          />
+          <Route
+            path="/"
+            element={(
+              <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
+                <EnterpriseIndexPage />
+              </AuthenticatedPageRoute>
           )}
-        />
-        <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
-      </Routes>
-      <Footer />
-    </AppProvider>
+          />
+          <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
+        </Routes>
+        <Footer />
+      </AppProvider>
+    </QueryClientProvider>
   );
 };
 

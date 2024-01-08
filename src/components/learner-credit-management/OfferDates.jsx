@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-
+import dayjs from 'dayjs';
 import { DATE_FORMAT } from './data/constants';
 
 /**
@@ -9,7 +8,7 @@ import { DATE_FORMAT } from './data/constants';
  * @param {string} date Timestamp string.
  * @returns True if timestamp is in the past, False if not.
  */
-const isDatePast = timestamp => moment(timestamp).isBefore(moment());
+const isDatePast = timestamp => dayjs(timestamp).isBefore(dayjs());
 
 /**
  * Formats provided dates for display, handling when `start` and/or
@@ -22,13 +21,13 @@ const isDatePast = timestamp => moment(timestamp).isBefore(moment());
 const formatDates = (start, end) => {
   let formattedDates = null;
   if (start && end) {
-    formattedDates = `${moment(start).format(DATE_FORMAT)} - ${moment(end).format(DATE_FORMAT)}`;
+    formattedDates = `${dayjs(start).format(DATE_FORMAT)} - ${dayjs(end).format(DATE_FORMAT)}`;
   } else if (start && !end) {
     const startLabel = isDatePast(start) ? 'Started' : 'Starts';
-    formattedDates = `${startLabel} ${moment(start).format(DATE_FORMAT)}`;
+    formattedDates = `${startLabel} ${dayjs(start).format(DATE_FORMAT)}`;
   } else if (!start && end) {
     const endLabel = isDatePast(end) ? 'Ended' : 'Ends';
-    formattedDates = `${endLabel} ${moment(end).format(DATE_FORMAT)}`;
+    formattedDates = `${endLabel} ${dayjs(end).format(DATE_FORMAT)}`;
   }
   return formattedDates;
 };

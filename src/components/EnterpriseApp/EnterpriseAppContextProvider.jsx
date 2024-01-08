@@ -45,6 +45,7 @@ export const EnterpriseAppContext = createContext();
 const EnterpriseAppContextProvider = ({
   enterpriseId,
   enterpriseName,
+  enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
@@ -52,6 +53,7 @@ const EnterpriseAppContextProvider = ({
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
+    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
   // subsidy requests for the enterprise customer
@@ -97,6 +99,9 @@ const EnterpriseAppContextProvider = ({
 EnterpriseAppContextProvider.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };

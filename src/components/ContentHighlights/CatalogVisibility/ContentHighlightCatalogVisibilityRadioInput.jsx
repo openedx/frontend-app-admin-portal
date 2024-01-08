@@ -82,11 +82,11 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
         setCatalogVisibilityAlert({
           isOpen: false,
         });
+        setValue(newTabValue);
         dispatch(enterpriseCurationActions.setHighlightToast(ALERT_TEXT.TOAST_TEXT.catalogVisibility));
         navigate(location.pathname, {
           state: { highlightToast: true },
         });
-        setValue(newTabValue);
       }
     } catch (error) {
       logError(error);

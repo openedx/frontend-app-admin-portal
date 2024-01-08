@@ -14,6 +14,10 @@ const TEST_ENTERPRISE_NAME = 'test-enterprise-name';
 
 jest.mock('./data/hooks');
 
+const mockEnterpriseFeatures = {
+  topDownAssignmentRealTimeLcm: true,
+};
+
 describe('<EnterpriseAppContextProvider />', () => {
   it.each([{
     isLoadingEnterpriseSubsidies: true,
@@ -63,6 +67,7 @@ describe('<EnterpriseAppContextProvider />', () => {
       <EnterpriseAppContextProvider
         enterpriseId={TEST_ENTERPRISE_UUID}
         enterpriseName={TEST_ENTERPRISE_NAME}
+        enterpriseFeatures={mockEnterpriseFeatures}
         enablePortalLearnerCreditManagementScreen
       >
         children

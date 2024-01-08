@@ -37,6 +37,7 @@ const LMSConfigPage = ({
   return (
     <div>
       <FormContextWrapper
+        workflowTitle="New learning platform integration"
         formWorkflowConfig={formWorkflowConfig}
         onClickOut={handleCloseWorkflow}
         formData={existingConfigFormData}

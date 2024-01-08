@@ -11,7 +11,6 @@ import { SubsidyRequestsContext } from '../../subsidy-requests';
 describe('LicenseAllocationHeader', () => {
   const mockStore = configureMockStore();
 
-  // eslint-disable-next-line react/prop-types
   const SubscriptionDetailContextWrapper = ({ children }) => (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <SubscriptionDetailContext.Provider value={{
@@ -29,7 +28,6 @@ describe('LicenseAllocationHeader', () => {
     </SubscriptionDetailContext.Provider>
   );
 
-  // eslint-disable-next-line react/prop-types
   const SubsidyRequestsContextWrapper = ({ children }) => (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <SubsidyRequestsContext.Provider value={{

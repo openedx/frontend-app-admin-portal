@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import { Pagination, Table } from '@edx/paragon';
+import { Alert, Pagination, Table } from '@edx/paragon';
+import { Error } from '@edx/paragon/icons';
+
 import 'font-awesome/css/font-awesome.css';
 
 import TableLoadingSkeleton from './TableLoadingSkeleton';
 import TableLoadingOverlay from '../TableLoadingOverlay';
-import StatusAlert from '../StatusAlert';
 import { updateUrl } from '../../utils';
 import { withLocation } from '../../hoc';
 
@@ -54,6 +55,8 @@ class TableComponent extends React.Component {
       id,
       loading,
       enterpriseId,
+      defaultSortIndex,
+      defaultSortType,
     } = this.props;
 
     const sortByColumn = (column, direction) => {
@@ -77,8 +80,8 @@ class TableComponent extends React.Component {
     let sortColumn;
 
     if (tableSortable) {
-      sortDirection = ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc';
-      sortColumn = (ordering && ordering.replace('-', '')) || columnConfig[0].key;
+      sortDirection = defaultSortType || (ordering && ordering.indexOf('-') !== -1 ? 'desc' : 'asc');
+      sortColumn = (ordering && ordering.replace('-', '')) || columnConfig[defaultSortIndex].key;
     }
 
     return (
@@ -125,22 +128,24 @@ class TableComponent extends React.Component {
 
   renderErrorMessage() {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to load data"
-        message={`Try refreshing your screen (${this.props.error.message})`}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <Alert.Heading>Unable to load data</Alert.Heading>
+        <p>Try refreshing your screen {this.props.error.message}</p>
+      </Alert>
     );
   }
 
   renderEmptyDataMessage() {
     return (
-      <StatusAlert
-        alertType="warning"
-        iconClassName="fa fa-exclamation-circle"
-        message="There are no results."
-      />
+      <Alert
+        variant="warning"
+        icon={Error}
+      >
+        There are no results.
+      </Alert>
     );
   }
 
@@ -170,6 +175,8 @@ TableComponent.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   formatData: PropTypes.func.isRequired,
   tableSortable: PropTypes.bool,
+  defaultSortIndex: PropTypes.number,
+  defaultSortType: PropTypes.string,
 
   // Props expected from TableContainer / redux store
   enterpriseId: PropTypes.string.isRequired,
@@ -189,6 +196,8 @@ TableComponent.propTypes = {
 
 TableComponent.defaultProps = {
   className: null,
+  defaultSortIndex: 0,
+  defaultSortType: undefined,
   tableSortable: false,
   data: undefined,
   ordering: undefined,

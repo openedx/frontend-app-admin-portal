@@ -26,4 +26,15 @@ function createSAMLURLs({
   return { testLink, spMetadataLink };
 }
 
-export { updateSamlProviderData, deleteSamlProviderData, createSAMLURLs };
+function isInProgressConfig(config) {
+  return (config.submitted_at && !config.configured_at)
+  || config.configured_at < config.submitted_at;
+}
+
+function checkErroredOrTimedOutConfig(config) {
+  return config.errored_at || (config.submitted_at && !config.configured_at && !config.is_pending_configuration);
+}
+
+export {
+  updateSamlProviderData, deleteSamlProviderData, createSAMLURLs, isInProgressConfig, checkErroredOrTimedOutConfig,
+};

@@ -11,6 +11,7 @@ dist/
 
 # emacs
 *~
+.projectile
 
 # edx
 .env.private

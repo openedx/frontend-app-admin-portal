@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
+import { Alert } from '@edx/paragon';
+import { CheckCircle, Error } from '@edx/paragon/icons';
 import Hero from '../Hero';
-import StatusAlert from '../StatusAlert';
 import PlotlyAnalyticsCharts from './PlotlyAnalyticsCharts';
 
 const PAGE_TITLE = 'Analytics';
 
-const PlotlyAnalyticsPage = ({ enterpriseId }) => {
+const PlotlyAnalyticsPage = ({ enterpriseId, enableDemoData }) => {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -24,14 +25,15 @@ const PlotlyAnalyticsPage = ({ enterpriseId }) => {
 
   const renderStatusMessage = () => (
     status && status.visible && (
-    <StatusAlert
-      alertType={status.alertType}
-      iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
-      title={status.title}
-      message={status.message}
+    <Alert
+      variant={status.alertType}
+      icon={`fa ${status.alertType === 'success' ? { CheckCircle } : { Error }}`}
       onClose={() => setSuccessStatus({ visible: false })}
       dismissible
-    />
+    >
+      <Alert.Heading>{status.title}</Alert.Heading>
+      <p>{status.message}</p>
+    </Alert>
     )
   );
 
@@ -42,17 +44,19 @@ const PlotlyAnalyticsPage = ({ enterpriseId }) => {
       <div className="col-12 col-lg-9">
         {renderStatusMessage()}
       </div>
-      <PlotlyAnalyticsCharts enterpriseId={enterpriseId} />
+      <PlotlyAnalyticsCharts enterpriseId={enterpriseId} enableDemoData={enableDemoData} />
     </>
   );
 };
 
 PlotlyAnalyticsPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enableDemoData: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enableDemoData: state.portalConfiguration.enableDemoData,
 });
 
 export default connect(mapStateToProps)(PlotlyAnalyticsPage);

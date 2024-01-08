@@ -10,7 +10,7 @@ import { mount } from 'enzyme';
 import { render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
-import { StatusAlert } from '@edx/paragon';
+import { Alert } from '@edx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
@@ -162,7 +162,7 @@ describe('CouponDetails container', () => {
 
   const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
     const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
-    selectAllCheckbox.simulate('change', { target: { value: isSelected } });
+    selectAllCheckbox.simulate('change', { target: { checked: isSelected } });
     expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
   };
 
@@ -340,8 +340,8 @@ describe('CouponDetails container', () => {
       />
     ));
 
-    expect(wrapper.find(StatusAlert).prop('alertType')).toEqual('danger');
-    wrapper.find(StatusAlert).find('.alert-dialog .btn').simulate('click'); // Retry fetching coupon overview data
+    expect(wrapper.find(Alert).prop('variant')).toEqual('danger');
+    wrapper.find(Alert).find('.btn').simulate('click'); // Retry fetching coupon overview data
 
     expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
@@ -506,13 +506,13 @@ describe('CouponDetails container', () => {
       wrapper.update();
 
       // success status alert
-      const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(Alert);
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.assign);
-      statusAlert.find('.alert-dialog .btn').simulate('click');
+      statusAlert.find('.btn-tertiary').simulate('click');
 
       // after alert is dismissed
-      expect(wrapper.find(StatusAlert)).toHaveLength(0);
+      expect(wrapper.find(Alert)).toHaveLength(0);
       expect(wrapper.find('CouponDetails').text()).toContain(COUPON_FILTERS.unredeemed.label);
 
       // fetches overview data for coupon
@@ -531,8 +531,8 @@ describe('CouponDetails container', () => {
       wrapper.update();
 
       // success status alert
-      const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(Alert);
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.revoke);
 
       // fetches overview data for coupon
@@ -551,8 +551,8 @@ describe('CouponDetails container', () => {
       wrapper.update();
 
       // success status alert
-      const statusAlert = wrapper.find(StatusAlert);
-      expect(statusAlert.prop('alertType')).toEqual('success');
+      const statusAlert = wrapper.find(Alert);
+      expect(statusAlert.prop('variant')).toEqual('success');
       expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.remind);
 
       // does not fetch overview data for coupon
@@ -593,8 +593,8 @@ describe('CouponDetails container', () => {
     it('handles individual code selection within table', () => {
       const checkboxes = wrapper.find('table').find('input[type=\'checkbox\']').slice(1);
 
-      checkboxes.first().simulate('change', { target: { value: true } });
-      checkboxes.last().simulate('change', { target: { value: true } });
+      checkboxes.first().simulate('change', { target: { checked: true } });
+      checkboxes.last().simulate('change', { target: { checked: true } });
 
       expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(2);
 

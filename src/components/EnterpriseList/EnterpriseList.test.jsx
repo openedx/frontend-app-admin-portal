@@ -51,7 +51,6 @@ const store = mockStore({
   },
 });
 
-// eslint-disable-next-line react/prop-types
 const EnterpriseListWrapper = ({ initialEntries, ...rest }) => (
   <MemoryRouter initialEntries={initialEntries}>
     <Provider store={store}>

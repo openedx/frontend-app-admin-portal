@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import { Icon } from '@edx/paragon';
+import { Helmet } from 'react-helmet';
+import { Alert, Icon } from '@edx/paragon';
+import { Error, Undo } from '@edx/paragon/icons';
 import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';
-import StatusAlert from '../StatusAlert';
 import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
@@ -25,12 +25,15 @@ import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
 import { withLocation, withParams } from '../../hoc';
+import AIAnalyticsSummary from './AIAnalyticsSummary';
+import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
 
 class Admin extends React.Component {
   componentDidMount() {
     const { enterpriseId } = this.props;
     if (enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardInsights(enterpriseId);
     }
   }
 
@@ -38,12 +41,14 @@ class Admin extends React.Component {
     const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardInsights(enterpriseId);
     }
   }
 
   componentWillUnmount() {
     // Clear the overview data
     this.props.clearDashboardAnalytics();
+    this.props.clearDashboardInsights();
   }
 
   getMetadataForAction(actionSlug) {
@@ -225,7 +230,7 @@ class Admin extends React.Component {
 
     return (
       <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
-        <Icon className="fa fa-undo mr-2" />
+        <Icon src={Undo} className="mr-2" />
         Reset to {this.getMetadataForAction().title}
       </Link>
     );
@@ -242,7 +247,7 @@ class Admin extends React.Component {
     const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
     return (
       <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
-        <Icon className="fa fa-undo mr-2" />
+        <Icon src={Undo} className="mr-2" />
         Reset Filters
       </Link>
     );
@@ -250,24 +255,26 @@ class Admin extends React.Component {
 
   renderErrorMessage() {
     return (
-      <StatusAlert
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to load overview"
-        message={`Try refreshing your screen (${this.props.error.message})`}
-      />
+      <Alert
+        variant="danger"
+        icon={Error}
+      >
+        <Alert.Heading>Hey, nice to see you</Alert.Heading>
+        <p>Try refreshing your screen {this.props.error.message}</p>
+      </Alert>
     );
   }
 
   renderCsvErrorMessage(message) {
     return (
-      <StatusAlert
+      <Alert
+        variant="danger"
         className="mt-3"
-        alertType="danger"
-        iconClassName="fa fa-times-circle"
-        title="Unable to Generate CSV Report"
-        message={`Please try again. (${message})`}
-      />
+        icon={Error}
+      >
+        <Alert.Heading>Unable to generate CSV report</Alert.Heading>
+        <p>Please try again. {message}</p>
+      </Alert>
     );
   }
 
@@ -279,6 +286,8 @@ class Admin extends React.Component {
       enterpriseId,
       actionSlug,
       location: { search },
+      insights,
+      insightsLoading,
     } = this.props;
 
     const queryParams = new URLSearchParams(search || '');
@@ -303,6 +312,13 @@ class Admin extends React.Component {
               <div className="row mt-4">
                 <div className="col">
                   <h2>Overview</h2>
+                </div>
+              </div>
+              <div className="row mt-4">
+                <div className="col">
+                  {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
+                    insights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                  )}
                 </div>
               </div>
               <div className="row mt-3">
@@ -399,11 +415,15 @@ Admin.defaultProps = {
   csv: null,
   table: null,
   actionSlug: '',
+  insightsLoading: false,
+  insights: null,
 };
 
 Admin.propTypes = {
   fetchDashboardAnalytics: PropTypes.func.isRequired,
   clearDashboardAnalytics: PropTypes.func.isRequired,
+  fetchDashboardInsights: PropTypes.func.isRequired,
+  clearDashboardInsights: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
@@ -423,6 +443,8 @@ Admin.propTypes = {
   csv: PropTypes.shape({}),
   actionSlug: PropTypes.string,
   table: PropTypes.shape({}),
+  insightsLoading: PropTypes.bool,
+  insights: PropTypes.objectOf(PropTypes.shape),
 };
 
 export default withParams(withLocation(Admin));

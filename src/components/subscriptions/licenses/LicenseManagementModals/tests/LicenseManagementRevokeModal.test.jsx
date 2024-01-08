@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -8,7 +9,6 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
-import moment from 'moment';
 
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRevokeModal from '../LicenseManagementRevokeModal';
@@ -23,14 +23,16 @@ jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
 }));
 
 const onSubmitMock = jest.fn();
+const onSuccessMock = jest.fn();
+
 const basicProps = {
   isOpen: true,
   onClose: () => {},
-  onSuccess: () => {},
+  onSuccess: onSuccessMock,
   onSubmit: onSubmitMock,
   subscription: {
     uuid: 'lorem',
-    expirationDate: moment().add(1, 'days').format(), // tomorrow
+    expirationDate: dayjs().add(1, 'days').format(), // tomorrow
     isRevocationCapEnabled: false,
     revocations: {
       applied: 1,
@@ -101,6 +103,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       const button = screen.getByText('Revoke (1)');
       await act(async () => { userEvent.click(button); });
       expect(onSubmitMock).toBeCalledTimes(1);
+      expect(onSuccessMock).toBeCalledTimes(1);
 
       expect(screen.queryByText('Revoke (1)')).toBeFalsy();
       expect(screen.getByText('Done'));
@@ -117,6 +120,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       const button = screen.getByText('Revoke (1)');
       await act(async () => { userEvent.click(button); });
       expect(onSubmitMock).toBeCalledTimes(1);
+      expect(onSuccessMock).toBeCalledTimes(0);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();

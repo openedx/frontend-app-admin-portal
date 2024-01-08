@@ -1,92 +1,79 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  DataTable, useMediaQuery, breakpoints,
-} from '@edx/paragon';
-import moment from 'moment';
+import { DataTable } from '@edx/paragon';
 
 import TableTextFilter from './TableTextFilter';
-import EmailAddressTableCell from './EmailAddressTableCell';
+import CustomDataTableEmptyState from './CustomDataTableEmptyState';
+import SpendTableEnrollmentDetails from './SpendTableEnrollmentDetails';
+import {
+  PAGE_SIZE,
+  DEFAULT_PAGE,
+  formatDate,
+} from './data';
+import SpendTableAmountContents from './SpendTableAmountContents';
 
-export const PAGE_SIZE = 20;
-export const DEFAULT_PAGE = 0; // `DataTable` uses zero-index array
+const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
 const LearnerCreditAllocationTable = ({
   isLoading,
   tableData,
   fetchTableData,
-  enterpriseUUID,
-}) => {
-  const isDesktopTable = useMediaQuery({ minWidth: breakpoints.extraLarge.minWidth });
-  return (
-    <DataTable
-      isSortable
-      manualSortBy
-      isPaginated
-      manualPagination
-      isFilterable
-      manualFilters
-      showFiltersInSidebar={isDesktopTable}
-      isLoading={isLoading}
-      defaultColumnValues={{ Filter: TableTextFilter }}
-      columns={[
-        {
-          Header: 'Email Address',
-          accessor: 'userEmail',
-          // eslint-disable-next-line react/prop-types, react/no-unstable-nested-components
-          Cell: ({ row }) => <EmailAddressTableCell row={row} enterpriseUUID={enterpriseUUID} />,
-        },
-        {
-          Header: 'Course Name',
-          accessor: 'courseTitle',
-        },
-        {
-          Header: 'Course Price',
-          accessor: 'courseListPrice',
-          Cell: ({ row }) => `$${row.values.courseListPrice}`,
-          disableFilters: true,
-        },
-        {
-          Header: 'Date Spent',
-          accessor: 'enrollmentDate',
-          Cell: ({ row }) => moment(row.values.enrollmentDate).format('MMMM DD, YYYY'),
-          disableFilters: true,
-        },
-      ]}
-      initialTableOptions={{
-        getRowId: row => row?.uuid?.toString(),
-      }}
-      initialState={{
-        pageSize: PAGE_SIZE,
-        pageIndex: DEFAULT_PAGE,
-        sortBy: [
-          { id: 'enrollmentDate', desc: true },
-        ],
-      }}
-      fetchData={fetchTableData}
-      data={tableData.results}
-      itemCount={tableData.itemCount}
-      pageCount={tableData.pageCount}
-      EmptyTableComponent={
-        // eslint-disable-next-line react/no-unstable-nested-components
-        () => {
-          if (isLoading) {
-            return null;
-          }
-          return <DataTable.EmptyTable content="No results found" />;
-        }
-      }
-    />
-  );
-};
+}) => (
+  <DataTable
+    isSortable
+    manualSortBy
+    isPaginated
+    manualPagination
+    isFilterable
+    manualFilters
+    isLoading={isLoading}
+    defaultColumnValues={{ Filter: TableTextFilter }}
+    FilterStatusComponent={FilterStatus}
+    columns={[
+      {
+        Header: 'Date',
+        accessor: 'enrollmentDate',
+        Cell: ({ row }) => formatDate(row.values.enrollmentDate),
+        disableFilters: true,
+      },
+      {
+        Header: 'Enrollment details',
+        accessor: 'enrollmentDetails',
+        Cell: SpendTableEnrollmentDetails,
+        disableSortBy: true,
+      },
+      {
+        Header: 'Amount',
+        accessor: 'courseListPrice',
+        Cell: SpendTableAmountContents,
+        disableFilters: true,
+      },
+    ]}
+    initialTableOptions={{
+      getRowId: row => row?.uuid?.toString(),
+    }}
+    initialState={{
+      pageSize: PAGE_SIZE,
+      pageIndex: DEFAULT_PAGE,
+      sortBy: [
+        { id: 'enrollmentDate', desc: true },
+      ],
+      filters: [],
+    }}
+    fetchData={fetchTableData}
+    data={tableData.results}
+    itemCount={tableData.itemCount}
+    pageCount={tableData.pageCount}
+    EmptyTableComponent={CustomDataTableEmptyState}
+  />
+);
 
 LearnerCreditAllocationTable.propTypes = {
-  enterpriseUUID: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({
       userEmail: PropTypes.string,
-      courseTitle: PropTypes.string.isRequired,
+      courseTitle: PropTypes.string,
       courseListPrice: PropTypes.number.isRequired,
       enrollmentDate: PropTypes.string.isRequired,
     })),

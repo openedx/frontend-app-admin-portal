@@ -2,12 +2,11 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import dayjs from 'dayjs';
 import {
-  Button, Row, Col, Toast,
+  Button, Row, Col, Toast, Icon,
 } from '@edx/paragon';
+import { ArrowBackIos } from '@edx/paragon/icons';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
@@ -38,7 +37,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
         <Row className="ml-0 mb-3">
           <Link to={backToSubscriptionsPath}>
             <Button variant="outline-primary">
-              <FontAwesomeIcon icon={faAngleLeft} className="mr-2" />
+              <Icon src={ArrowBackIos} className="mr-2" />
               Back to subscriptions
             </Button>
           </Link>
@@ -74,7 +73,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                   <small>Purchase Date</small>
                 </div>
                 <div className="lead">
-                  {moment(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
+                  {dayjs(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
                 </div>
               </div>
             )}
@@ -83,7 +82,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 <small>Start Date</small>
               </div>
               <div className="lead">
-                {moment(subscription.startDate).format('MMMM D, YYYY')}
+                {dayjs(subscription.startDate).format('MMMM D, YYYY')}
               </div>
             </div>
             <div>
@@ -91,7 +90,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 <small>End Date</small>
               </div>
               <div className="lead">
-                {moment(subscription.expirationDate).format('MMMM D, YYYY')}
+                {dayjs(subscription.expirationDate).format('MMMM D, YYYY')}
               </div>
             </div>
           </div>

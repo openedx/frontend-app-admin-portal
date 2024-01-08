@@ -58,27 +58,10 @@
         & + label {
           width: 15px;
 
-          &:before {
-            font-family: FontAwesome;
-            content: '\f096'; /* fa-square-o */
-            font-weight: normal;
-            font-size: 1rem;
-            line-height: 1rem;
-          }
+
         }
 
-        &:checked + label:before {
-          content: '\f046'; /* fa-check-square-o */
-        }
 
-        &.mixed + label:before {
-          content: '\f146'; /* fa-minus-square */
-        }
-
-        &:focus + label:before {
-          border-radius: 2px;
-          box-shadow: $input-btn-focus-box-shadow;
-        }
       }
     }
   }

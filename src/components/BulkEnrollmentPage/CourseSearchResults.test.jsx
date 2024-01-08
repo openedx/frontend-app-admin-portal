@@ -1,22 +1,20 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import { screen, waitFor, within } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import thunk from 'redux-thunk';
-import { SearchContext, SearchPagination } from '@edx/frontend-enterprise-catalog-search';
-import { Skeleton } from '@edx/paragon';
+import {
+  render, screen, waitFor, within,
+} from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import StatusAlert from '../StatusAlert';
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
 import {
   BaseCourseSearchResults, NO_DATA_MESSAGE, TABLE_HEADERS,
 } from './CourseSearchResults';
 import { renderWithRouter } from '../test/testUtils';
-
 import '../../../__mocks__/react-instantsearch-dom';
 
 const mockStore = configureMockStore([thunk]);
@@ -80,7 +78,6 @@ const defaultProps = {
 
 const refinements = {};
 
-// eslint-disable-next-line react/prop-types
 const CourseSearchWrapper = ({ value = { refinements }, props = defaultProps }) => (
   <Provider store={mockStore()}>
     <IntlProvider locale="en">
@@ -97,21 +94,15 @@ const CourseSearchWrapper = ({ value = { refinements }, props = defaultProps }) 
 
 describe('<CourseSearchResults />', () => {
   it('renders search results', () => {
-    const wrapper = mount(<CourseSearchWrapper />);
+    render(<CourseSearchWrapper />);
+    screen.getByRole('columnheader', { name: TABLE_HEADERS.courseName });
+    screen.getByRole('columnheader', { name: TABLE_HEADERS.partnerName });
+    screen.getByRole('columnheader', { name: TABLE_HEADERS.courseAvailability });
 
-    // 5 header columns: selection, Course name, Partner, Course Date, and enrollment
-    const tableHeaderCells = wrapper.find('TableHeaderCell');
-    expect(tableHeaderCells.length).toBe(4);
-    expect(tableHeaderCells.at(1).prop('Header')).toBe(TABLE_HEADERS.courseName);
-    expect(tableHeaderCells.at(2).prop('Header')).toBe(TABLE_HEADERS.partnerName);
-    expect(tableHeaderCells.at(3).prop('Header')).toBe(TABLE_HEADERS.courseAvailability);
-
-    // 5 table cells: selection, course name, partner, start date, and enrollment
-    const tableCells = wrapper.find('TableCell');
-    expect(tableCells.length).toBe(8); // 2 rows x 4 columns
-    expect(tableCells.at(1).text()).toBe(testCourseName);
-    expect(tableCells.at(2).text()).toBe('edX');
-    expect(tableCells.at(3).text()).toBe('Sep 10, 2020 - Sep 10, 2030');
+    expect(screen.getAllByRole('cell')).toHaveLength(8);
+    screen.getByRole('cell', { name: testCourseName });
+    screen.getByRole('cell', { name: 'Sep 10, 2020 - Sep 10, 2030' });
+    expect(screen.getAllByRole('cell', { name: 'edX' })).toHaveLength(2);
   });
   it('renders popover with course description', async () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
@@ -123,17 +114,19 @@ describe('<CourseSearchResults />', () => {
     });
   });
   it('displays search pagination', () => {
-    const wrapper = mount(<CourseSearchWrapper />);
-    expect(wrapper.find(SearchPagination)).toHaveLength(1);
+    renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
+    expect(screen.getByText('Navigate Right'));
+    expect(screen.getByText('Navigate Left'));
   });
   it('returns an error message if there\'s an error', () => {
     const errorMsg = 'It did not work';
-    const wrapper = mount(<CourseSearchWrapper props={{ ...defaultProps, error: { message: errorMsg } }} />);
-    expect(wrapper.text()).toContain(errorMsg);
+    const expectedError = `An error occured while retrieving data ${errorMsg}`;
+    renderWithRouter(<CourseSearchWrapper props={{ ...defaultProps, error: { message: errorMsg } }} />);
+    expect(screen.getByText(expectedError));
   });
   it('renders a loading state when loading algolia results', () => {
-    const wrapper = mount(<CourseSearchWrapper props={{ ...defaultProps, isSearchStalled: true }} />);
-    expect(wrapper.find(Skeleton)).toHaveLength(1);
+    renderWithRouter(<CourseSearchWrapper props={{ ...defaultProps, isSearchStalled: true }} />);
+    expect(screen.getByText('Loading...'));
   });
   it('shows selection options when at least one course is selected', () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
@@ -142,10 +135,9 @@ describe('<CourseSearchResults />', () => {
     expect(screen.getByText('1 selected (1 shown below)', { exact: false })).toBeInTheDocument();
   });
   it('renders a message when there are no results', () => {
-    const wrapper = mount(<CourseSearchWrapper
+    renderWithRouter(<CourseSearchWrapper
       props={{ ...defaultProps, searchResults: { ...searchResults, nbHits: 0 } }}
     />);
-    expect(wrapper.find(StatusAlert)).toHaveLength(1);
-    expect(wrapper.text()).toContain(NO_DATA_MESSAGE);
+    expect(screen.getByText(NO_DATA_MESSAGE));
   });
 });

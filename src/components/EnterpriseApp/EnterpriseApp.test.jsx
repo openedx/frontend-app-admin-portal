@@ -37,6 +37,7 @@ const EnterpriseAppContextProvider = ({ children }) => (
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   __esModule: true,
+
   // eslint-disable-next-line react/prop-types
   Route: (props) => <span>{props.keyName}</span>,
   Routes: (props) => props.children,

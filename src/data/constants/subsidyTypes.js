@@ -2,5 +2,5 @@
 export const SUBSIDY_TYPES = {
   coupon: 'coupon',
   license: 'license',
-  offer: 'offer',
+  budget: 'budget',
 };

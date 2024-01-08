@@ -13,9 +13,9 @@ import { SubscriptionManagementPage } from '../subscriptions';
 import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
-import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
+import LearnerCreditManagementRoutes from '../learner-credit-management';
 
 const EnterpriseAppRoutes = ({
   email,
@@ -101,8 +101,8 @@ const EnterpriseAppRoutes = ({
 
       {canManageLearnerCredit && enterpriseAppPage === ROUTE_NAMES.learnerCredit && (
         <Route
-          path="/"
-          element={<LearnerCreditManagement />}
+          path="/*"
+          element={<LearnerCreditManagementRoutes />}
         />
       )}
 

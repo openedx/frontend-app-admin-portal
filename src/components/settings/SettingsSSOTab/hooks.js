@@ -10,6 +10,7 @@ import {
   updateIdpDirtyState,
 } from './data/actions';
 import { updateSamlProviderData, deleteSamlProviderData } from './utils';
+import { features } from '../../../config';
 
 const useIdpState = () => {
   const {
@@ -179,23 +180,43 @@ const useExistingSSOConfigs = (enterpriseUuid, refreshBool) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const { AUTH0_SELF_SERVICE_INTEGRATION } = features;
     if (enterpriseUuid) {
-      const fetchConfig = async () => {
-        const response = await LmsApiService.getProviderConfig(enterpriseUuid);
-        return response.data.results;
-      };
-      fetchConfig().then(configs => {
-        setSsoConfigs(configs);
-        setLoading(false);
-      }).catch(err => {
-        setLoading(false);
-        if (err.customAttributes?.httpErrorStatus !== 404) {
-          // nothing found is okay for this fetcher.
-          setError(err);
-        } else {
-          setSsoConfigs([]);
-        }
-      });
+      if (!AUTH0_SELF_SERVICE_INTEGRATION) {
+        const fetchConfig = async () => {
+          const response = await LmsApiService.getProviderConfig(enterpriseUuid);
+          return response.data.results;
+        };
+        fetchConfig().then(configs => {
+          setSsoConfigs(configs);
+          setLoading(false);
+        }).catch(err => {
+          setLoading(false);
+          if (err.customAttributes?.httpErrorStatus !== 404) {
+            // nothing found is okay for this fetcher.
+            setError(err);
+          } else {
+            setSsoConfigs([]);
+          }
+        });
+      } else {
+        const fetchConfig = async () => {
+          const response = await LmsApiService.listEnterpriseSsoOrchestrationRecords(enterpriseUuid);
+          return response.data;
+        };
+        fetchConfig().then(orchestratorConfigs => {
+          setSsoConfigs(orchestratorConfigs);
+          setLoading(false);
+        }).catch(err => {
+          setLoading(false);
+          if (err.customAttributes?.httpErrorStatus !== 404) {
+            // nothing found is okay for this fetcher.
+            setError(err);
+          } else {
+            setSsoConfigs([]);
+          }
+        });
+      }
     }
   }, [enterpriseUuid, refreshBool]);
 

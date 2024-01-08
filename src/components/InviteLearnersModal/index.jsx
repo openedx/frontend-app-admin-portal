@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, Modal, Alert,
+  Button, Modal, Alert, Spinner,
 } from '@edx/paragon';
 import { Cancel as ErrorIcon } from '@edx/paragon/icons';
 
@@ -10,7 +10,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import emailTemplate from './emailTemplate';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import FileInput from '../FileInput';
-import { returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
+import { extractSalesforceIds, returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
 import { normalizeFileUpload } from '../../utils';
 
 class InviteLearnersModal extends React.Component {
@@ -74,6 +74,10 @@ class InviteLearnersModal extends React.Component {
     };
 
     options.user_emails = returnValidatedEmails(formData);
+    const SFIDs = extractSalesforceIds(formData, options.user_emails);
+    if (SFIDs) {
+      options.user_sfids = SFIDs;
+    }
 
     /* eslint-disable no-underscore-dangle */
     return addLicensesForUsers(options, subscriptionUUID)
@@ -192,7 +196,7 @@ class InviteLearnersModal extends React.Component {
             onClick={handleSubmit(this.handleModalSubmit)}
           >
             <>
-              {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
+              {submitting && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
               Invite learners
             </>
           </Button>,

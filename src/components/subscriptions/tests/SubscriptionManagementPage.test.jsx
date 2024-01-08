@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Provider } from 'react-redux';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { render, screen } from '@testing-library/react';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import {
@@ -23,8 +23,8 @@ describe('SubscriptionManagementPage', () => {
       {
         uuid: 'active',
         title: 'Enterprise A',
-        startDate: moment().toISOString(),
-        expirationDate: moment().add(3, 'days').toISOString(),
+        startDate: dayjs().toISOString(),
+        expirationDate: dayjs().add(3, 'days').toISOString(),
         licenses: {
           activated: 5,
           assigned: 5,
@@ -37,8 +37,8 @@ describe('SubscriptionManagementPage', () => {
       {
         uuid: 'expired',
         title: 'Enterprise B',
-        startDate: moment().toISOString(),
-        expirationDate: moment().subtract(3, 'days').toISOString(),
+        startDate: dayjs().toISOString(),
+        expirationDate: dayjs().subtract(3, 'days').toISOString(),
         licenses: {
           activated: 6,
           assigned: 5,

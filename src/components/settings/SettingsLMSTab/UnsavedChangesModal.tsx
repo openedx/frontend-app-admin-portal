@@ -1,15 +1,9 @@
 import React from 'react';
 import { ModalDialog, ActionRow, Button } from '@edx/paragon';
+import { UnsavedChangesModalProps } from '../../forms/FormWorkflow';
 
 const MODAL_TITLE = 'Exit configuration';
 const MODAL_TEXT = 'Your configuration data will be saved under your Learning Platform settings';
-
-type UnsavedChangesModalProps = {
-  isOpen: boolean;
-  close: () => void;
-  exitWithoutSaving: () => void;
-  saveDraft: () => void
-};
 
 // will have to pass in individual saveDraft method and config when
 // drafting is allowed

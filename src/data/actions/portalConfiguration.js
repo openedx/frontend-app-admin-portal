@@ -12,9 +12,12 @@ const fetchPortalConfigurationRequest = () => ({
   type: FETCH_PORTAL_CONFIGURATION_REQUEST,
 });
 
-const fetchPortalConfigurationSuccess = data => ({
+const fetchPortalConfigurationSuccess = response => ({
   type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
-  payload: { data },
+  payload: {
+    data: response.data,
+    enterpriseFeatures: response.enterpriseFeatures,
+  },
 });
 
 const fetchPortalConfigurationFailure = error => ({
@@ -34,7 +37,7 @@ const fetchPortalConfiguration = slug => (
     dispatch(fetchPortalConfigurationRequest());
     return LmsApiService.fetchEnterpriseBySlug(slug)
       .then((response) => {
-        dispatch(fetchPortalConfigurationSuccess(response.data));
+        dispatch(fetchPortalConfigurationSuccess(response));
       })
       .catch((error) => {
         logError(error);

@@ -43,7 +43,6 @@ const initialSubsidyRequestContextValue = {
   },
 };
 
-// eslint-disable-next-line react/prop-types
 const AppContextProvider = ({ children }) => (
   <AppContext.Provider value={defaultAppContext}>
     {children}

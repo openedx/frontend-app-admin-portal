@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+import Router from 'react-router';
 
 import { Provider } from 'react-redux';
 import NewSSOConfigForm from '../NewSSOConfigForm';
@@ -12,6 +14,8 @@ import handleErrors from '../../utils';
 import {
   INVALID_ODATA_API_TIMEOUT_INTERVAL, INVALID_SAPSF_OAUTH_ROOT_URL, INVALID_API_ROOT_URL,
 } from '../../data/constants';
+import { features } from '../../../../config';
+import { getButtonElement } from '../../../test/testUtils';
 
 jest.mock('../data/actions');
 jest.mock('../../utils');
@@ -40,6 +44,14 @@ jest.mock('../hooks', () => {
     useExistingSSOConfigs: () => [[{ hehe: 'haha' }], null, true],
   };
 });
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useParams: jest.fn(),
+}));
+
+// const enterUrlText = 'Find the URL in your Identity Provider portal or website.';
+const enterUrlText = 'Identity Provider Metadata URL';
+const uploadXmlText = 'Drag and drop your file here or click to upload.';
 
 const store = getMockStore({ ...initialStore });
 
@@ -68,8 +80,28 @@ const contextValue = {
   setRefreshBool: jest.fn(),
 };
 
+const setIsStepperOpen = jest.fn();
+
+const setupNewSSOStepper = (contextChanges = {}) => {
+  features.AUTH0_SELF_SERVICE_INTEGRATION = true;
+  return render(
+    <IntlProvider locale="en">
+      <SSOConfigContext.Provider value={{ ...contextValue, ...contextChanges }}>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
+      </SSOConfigContext.Provider>
+    </IntlProvider>,
+  );
+};
+
 describe('SAML Config Tab', () => {
   afterEach(() => {
+    features.AUTH0_SELF_SERVICE_INTEGRATION = false;
     jest.clearAllMocks();
   });
   test('canceling connect step', async () => {
@@ -79,7 +111,11 @@ describe('SAML Config Tab', () => {
     render(
       <Provider store={store}>
         <SSOConfigContext.Provider value={contextValue}>
-          <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
         </SSOConfigContext.Provider>
       </Provider>,
     );
@@ -100,7 +136,11 @@ describe('SAML Config Tab', () => {
     render(
       <Provider store={store}>
         <SSOConfigContext.Provider value={contextValue}>
-          <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
         </SSOConfigContext.Provider>
       </Provider>,
     );
@@ -130,7 +170,13 @@ describe('SAML Config Tab', () => {
 
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -156,7 +202,13 @@ describe('SAML Config Tab', () => {
 
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -176,7 +228,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -200,7 +258,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -221,7 +285,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -247,7 +317,13 @@ describe('SAML Config Tab', () => {
 
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -274,7 +350,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -294,7 +376,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'idp';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     await waitFor(() => {
@@ -307,6 +395,162 @@ describe('SAML Config Tab', () => {
       expect(screen.getByText('Next')).not.toBeDisabled();
     }, []);
   });
+  test('show correct metadata entry based on selection', async () => {
+    setupNewSSOStepper();
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+
+    // Verify metadata selectors are hidden initially
+    expect(screen.queryByText(enterUrlText)).not.toBeInTheDocument();
+    expect(screen.queryByText(uploadXmlText)).not.toBeInTheDocument();
+
+    // Verify metadata selectors appear with their respective selections
+    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await waitFor(() => {
+      expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText(uploadXmlText)).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByText('Upload Identity Provider Metadata XML file'));
+    await waitFor(() => {
+      expect(screen.queryByText(uploadXmlText)).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText(enterUrlText)).not.toBeInTheDocument();
+  });
+  test('navigate through new non-SAP sso workflow', async () => {
+    setupNewSSOStepper();
+    const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');
+    const mockUpdateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'updateEnterpriseSsoOrchestrationRecord');
+    const mockReturnData = { data: { record: 'fakeuuid', sp_metadata_url: 'https://fake.url' } };
+    mockCreateEnterpriseSsoOrchestrationRecord.mockResolvedValue(mockReturnData);
+    mockUpdateEnterpriseSsoOrchestrationRecord.mockResolvedValue(mockReturnData);
+    jest.spyOn(Router, 'useParams').mockReturnValue({ enterpriseSlug: 'testslug' });
+    // Connect Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('New SSO integration')).toBeInTheDocument();
+    expect(screen.queryByText('Connect')).toBeInTheDocument();
+    expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
+    // Click provider
+    userEvent.click(screen.getByText('Okta'));
+    // Click Enter identity Provider Metadata URL
+    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await waitFor(() => {
+      expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
+    }, []);
+    userEvent.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
+    userEvent.click(getButtonElement('Next'));
+
+    // Configure Step
+    await waitFor(() => {
+      expect(getButtonElement('Configure')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('Enter integration details')).toBeInTheDocument();
+    // Verify SAP field not present
+    expect(screen.queryByText('OAuth Root URL')).not.toBeInTheDocument();
+
+    userEvent.click(getButtonElement('Configure'));
+
+    // Authorize Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    // Click checkbox to advance
+    const getAuthorizedCheckbox = () => screen.queryByRole('checkbox');
+    await waitFor(() => {
+      expect(getAuthorizedCheckbox()).toBeInTheDocument();
+    }, []);
+    userEvent.click(getAuthorizedCheckbox());
+    await waitFor(() => {
+      expect(getAuthorizedCheckbox()).toBeChecked();
+    }, []);
+    userEvent.click(getButtonElement('Next'));
+
+    // Confirm and Test Step
+    await waitFor(() => {
+      expect(getButtonElement('Finish')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('Wait for SSO configuration confirmation')).toBeInTheDocument();
+  });
+  test('cancel out of new SSO workflow', async () => {
+    setupNewSSOStepper();
+    // Connect Step Select an option to trigger cancel modal
+    userEvent.click(screen.getByText('Okta'));
+    userEvent.click(getButtonElement('Cancel'));
+    await waitFor(() => {
+      expect(getButtonElement('Exit')).toBeInTheDocument();
+    }, []);
+    userEvent.click(getButtonElement('Exit'));
+
+    expect(setIsStepperOpen).toHaveBeenCalledWith(false);
+  });
+  test('new SSO workflow load existing metadata url config', async () => {
+    const testMetadataUrl = 'http://test.metadata';
+    const existingConfigContextValue = {
+      ssoState: {
+        providerConfig: {
+          uuid: 123,
+          metadataUrl: testMetadataUrl,
+        },
+      },
+    };
+    setupNewSSOStepper(existingConfigContextValue);
+    // Connect Step with metadata url selected
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          'Find the URL in your Identity Provider portal or website.',
+        ),
+      ).toBeInTheDocument();
+    }, []);
+    screen.queryByText(testMetadataUrl);
+  });
+  test('navigate through new SAP sso workflow', async () => {
+    setupNewSSOStepper();
+    const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');
+    mockCreateEnterpriseSsoOrchestrationRecord.mockResolvedValue({ data: { record: 'fakeuuid', sp_metadata_url: 'https://fake.url' } });
+    jest.spyOn(Router, 'useParams').mockReturnValue({ enterpriseSlug: 'testslug' });
+    // Connect Step
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+    expect(screen.queryByText('New SSO integration')).toBeInTheDocument();
+    expect(screen.queryByText('Connect')).toBeInTheDocument();
+    expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
+    // Click SAP provider
+    userEvent.click(screen.getByText('SAP SuccessFactors'));
+    // Click Enter identity Provider Metadata URL
+    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await waitFor(() => {
+      expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
+    }, []);
+    userEvent.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
+    userEvent.click(getButtonElement('Next'));
+
+    // Configure Step
+    await waitFor(() => {
+      expect(screen.queryByText('OAuth Root URL')).toBeInTheDocument();
+    }, []);
+    // Verify Configure does not advance until fields are filled out
+    userEvent.click(getButtonElement('Configure'));
+    expect(screen.queryByText('OAuth Root URL')).toBeInTheDocument();
+    const fieldEntries = [
+      ['OAuth Root URL', 'https://test'],
+      ['API Root URL', 'https://test'],
+      ['Company ID', 'test'],
+      ['Private Key', 'test'],
+      ['OAuth User ID', 'test'],
+    ];
+    fieldEntries.forEach(([fieldIdText, value]) => {
+      userEvent.type(screen.queryByText(fieldIdText), value);
+    });
+    userEvent.click(getButtonElement('Configure'));
+    await waitFor(() => {
+      expect(getButtonElement('Next')).toBeInTheDocument();
+    }, []);
+  });
   test('idp step fetches and displays existing idp data fields', async () => {
     // Setup
     const mockGetProviderData = jest.spyOn(LmsApiService, 'getProviderData');
@@ -316,7 +560,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'idp';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -335,7 +585,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -408,7 +664,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(
@@ -436,7 +698,13 @@ describe('SAML Config Tab', () => {
     contextValue.ssoState.currentStep = 'configure';
     render(
       <SSOConfigContext.Provider value={contextValue}>
-        <Provider store={store}><NewSSOConfigForm enterpriseId={enterpriseId} /></Provider>
+        <Provider store={store}>
+          <NewSSOConfigForm
+            enterpriseId={enterpriseId}
+            setIsStepperOpen={setIsStepperOpen}
+            isStepperOpen
+          />
+        </Provider>
       </SSOConfigContext.Provider>,
     );
     expect(

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Navigate } from 'react-router-dom';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../LoadingMessage';

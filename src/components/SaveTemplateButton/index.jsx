@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StatefulButton, Icon } from '@edx/paragon';
+import { StatefulButton, Icon, Spinner } from '@edx/paragon';
+import { CheckCircle } from '@edx/paragon/icons';
 import { SubmissionError } from 'redux-form';
 
 import { validateEmailTemplateFields } from '../../data/validation/email';
@@ -149,8 +150,8 @@ class SaveTemplateButton extends React.Component {
           complete: 'Template Saved',
         }}
         icons={{
-          pending: <Icon className="fa fa-spinner fa-spin" />,
-          complete: <Icon className="fa fa-check-circle" />,
+          pending: <Spinner animation="border" variant="primary" size="sm" />,
+          complete: <Icon src={CheckCircle} />,
         }}
         disabledStates={[SUBMIT_STATES.PENDING]}
         disabled={disabled}

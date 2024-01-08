@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import {
   screen,
   render,
@@ -7,10 +8,9 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { logError } from '@edx/frontend-platform/logging';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import moment from 'moment';
+import { logError } from '@edx/frontend-platform/logging';
 
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRemindModal from '../LicenseManagementRemindModal';
@@ -31,14 +31,16 @@ jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
 }));
 
 const onSubmitMock = jest.fn();
+const onSuccessMock = jest.fn();
+
 const basicProps = {
   isOpen: true,
   onClose: () => {},
-  onSuccess: () => {},
+  onSuccess: onSuccessMock,
   onSubmit: onSubmitMock,
   subscription: {
     uuid: 'lorem',
-    expirationDate: moment().add(1, 'days').format(), // tomorrow
+    expirationDate: dayjs().add(1, 'days').format(), // tomorrow
   },
   usersToRemind: [],
   activeFilters: [],
@@ -110,6 +112,7 @@ describe('<LicenseManagementRemindModal />', () => {
       const button = screen.getByText('Remind (1)');
       await act(async () => { userEvent.click(button); });
       expect(onSubmitMock).toBeCalledTimes(1);
+      expect(onSuccessMock).toBeCalledTimes(1);
 
       expect(screen.queryByText('Remind (1)')).toBeFalsy();
       expect(screen.queryByText('Done')).toBeTruthy();
@@ -127,6 +130,7 @@ describe('<LicenseManagementRemindModal />', () => {
       const button = screen.getByText('Remind (1)');
       await act(async () => { userEvent.click(button); });
       expect(onSubmitMock).toBeCalledTimes(1);
+      expect(onSuccessMock).toBeCalledTimes(0);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();

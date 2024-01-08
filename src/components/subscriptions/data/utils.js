@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   SEEN_SUBSCRIPTION_EXPIRATION_MODAL_COOKIE_PREFIX,
   ASSIGNED,
@@ -23,7 +23,7 @@ export const canRemindLicense = (licenseStatus) => licenseStatus === ASSIGNED;
 export const canEnrollLicense = (licenseStatus) => ENROLLABLE_STATUSES.includes(licenseStatus);
 
 export const getSubscriptionStatus = (subscription) => {
-  const now = moment();
+  const now = dayjs();
 
   if (now.isBefore(subscription.startDate)) {
     return SCHEDULED;
@@ -46,7 +46,7 @@ export const sortSubscriptionsByStatus = (subscriptions) => subscriptions.slice(
     const sub2Status = getSubscriptionStatus(sub2);
 
     if (sub1Status === sub2Status) {
-      return moment(sub1.startDate) - moment(sub2.startDate);
+      return dayjs(sub1.startDate) - dayjs(sub2.startDate);
     }
 
     return orderByStatus[sub1Status] - orderByStatus[sub2Status];
@@ -65,15 +65,3 @@ export const transformFiltersForRequest = (filters) => {
     }),
   );
 };
-
-/**
- * Helper to determine which table columns have an active filter applied.
- *
- * @param {object} columns Array of column objects (e.g., { id, filter, filterValue })
- * @returns Array of column objects with an active filter applied.
- */
-export const getActiveFilters = columns => columns.map(column => ({
-  name: column.id,
-  filter: column.filter,
-  filterValue: column.filterValue,
-})).filter(filter => !!filter.filterValue);

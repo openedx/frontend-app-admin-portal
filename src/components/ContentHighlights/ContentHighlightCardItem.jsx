@@ -1,7 +1,6 @@
 import React from 'react';
-import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
-import { Card, Hyperlink } from '@edx/paragon';
+import { Card, Hyperlink, Truncate } from '@edx/paragon';
 import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
 import { getContentHighlightCardFooter } from './data/utils';
@@ -26,7 +25,7 @@ const ContentHighlightCardItem = ({
   if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
       <Hyperlink onClick={hyperlinkAttrs.onClick} destination={hyperlinkAttrs.href} target={hyperlinkAttrs.target} data-testid="hyperlink-title">
-        <Truncate lines={3} title={title}>{title}</Truncate>
+        <Truncate elementType="span" lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
   }
@@ -41,7 +40,9 @@ const ContentHighlightCardItem = ({
       />
       <Card.Header
         title={cardInfo.cardTitle}
-        subtitle={<Truncate lines={2} title={cardInfo.cardSubtitle}>{cardInfo.cardSubtitle}</Truncate>}
+        subtitle={(
+          <Truncate lines={2} title={cardInfo.cardSubtitle}>{cardInfo.cardSubtitle}</Truncate>
+        )}
       />
       {contentType && (
         <>

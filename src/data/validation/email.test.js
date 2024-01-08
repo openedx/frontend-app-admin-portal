@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {
+  extractSalesforceIds,
   validateEmailAddresses,
   validateEmailAddressesFields,
   validateEmailTemplateFields,
@@ -231,6 +232,107 @@ describe('email validation', () => {
       expect(returnValidatedEmails(formData).sort()).toEqual(
         ['bobbyb@test.com', 'alice@test.com', 'cthulu@lkerwjrwlke.com'].sort(),
       );
+    });
+  });
+
+  describe('validate emails and ids extraction', () => {
+    it('extracted correct emails and ids from textarea and csv', () => {
+      const formData = new FormData();
+      formData[EMAIL_ADDRESS_TEXT_FORM_DATA] = [
+        'abc@example.com,000000000000ABCABC',
+        'asdf@example.com,',
+        'zzz@example.com,000000000000XYZXYZ',
+      ].join('\n');
+      formData[EMAIL_ADDRESS_CSV_FORM_DATA] = [
+        'one@example.com,000000000000YYYYYY',
+        'two@example.com,000000000000ZZZZZZ',
+        'three@example.com,000000000000ABCDDD',
+        'wow@example.com,',
+        'abc@example.com,000000000000ABCABC',
+        'ama@example.com',
+      ];
+      const userEmails = [
+        'abc@example.com',
+        'asdf@example.com',
+        'zzz@example.com',
+        'one@example.com',
+        'two@example.com',
+        'three@example.com',
+        'wow@example.com',
+        'ama@example.com',
+      ];
+
+      const salesforceIds = extractSalesforceIds(formData, userEmails);
+      expect(salesforceIds).toEqual([
+        '000000000000ABCABC',
+        '',
+        '000000000000XYZXYZ',
+        '000000000000YYYYYY',
+        '000000000000ZZZZZZ',
+        '000000000000ABCDDD',
+        '',
+        undefined,
+      ]);
+      expect(userEmails.length).toEqual(salesforceIds.length);
+    });
+
+    it('extracted correct emails and ids from textarea only', () => {
+      const formData = new FormData();
+      formData[EMAIL_ADDRESS_TEXT_FORM_DATA] = [
+        'aaa@example.com,000000000000ABCABC',
+        'bbb@example.com,',
+        'ccc@example.com,000000000000XYZXYZ',
+        'ddd@example.com',
+      ].join('\n');
+
+      const userEmails = returnValidatedEmails(formData);
+      expect(userEmails).toEqual(['aaa@example.com', 'bbb@example.com', 'ccc@example.com', 'ddd@example.com']);
+      const salesforceIds = extractSalesforceIds(formData, userEmails);
+      expect(salesforceIds).toEqual([
+        '000000000000ABCABC',
+        '',
+        '000000000000XYZXYZ',
+        undefined,
+      ]);
+      expect(userEmails.length).toEqual(salesforceIds.length);
+    });
+
+    it('extracted correct emails and ids from csv only', () => {
+      const formData = new FormData();
+      formData[EMAIL_ADDRESS_CSV_FORM_DATA] = [
+        'eee@example.com,000000000000YYYYYY',
+        'fff@example.com,',
+        'ggg@example.com,000000000000ZZZZZZ',
+        'hhh@example.com',
+      ];
+
+      const userEmails = returnValidatedEmails(formData);
+      expect(userEmails).toEqual(['eee@example.com', 'fff@example.com', 'ggg@example.com', 'hhh@example.com']);
+      const salesforceIds = extractSalesforceIds(formData, userEmails);
+      expect(salesforceIds).toEqual([
+        '000000000000YYYYYY',
+        '',
+        '000000000000ZZZZZZ',
+        undefined,
+      ]);
+      expect(userEmails.length).toEqual(salesforceIds.length);
+    });
+
+    it('returns no salesforce ids for emails only', () => {
+      const formData = new FormData();
+      formData[EMAIL_ADDRESS_TEXT_FORM_DATA] = [
+        'abc@example.com',
+        'asdf@example.com,',
+      ].join('\n');
+      formData[EMAIL_ADDRESS_CSV_FORM_DATA] = [
+        'one@example.com,',
+        'two@example.com',
+      ];
+
+      const userEmails = returnValidatedEmails(formData);
+      expect(userEmails).toEqual(['abc@example.com', 'asdf@example.com', 'one@example.com', 'two@example.com']);
+      const salesforceIds = extractSalesforceIds(formData, userEmails);
+      expect(salesforceIds).toEqual(undefined);
     });
   });
 });

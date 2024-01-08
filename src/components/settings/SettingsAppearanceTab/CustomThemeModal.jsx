@@ -24,7 +24,7 @@ const CustomThemeModal = ({
 
   const headerText = 'Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.';
   const infoText = 'More details about color appearance in the admin and learner experiences and best practices for selecting accessible colors are available in the ';
-  const invalidMessage = 'Must be hexidecimal starting with # (Ex: #1e0b57)';
+  const invalidMessage = 'Must be hexadecimal starting with # (Ex: #1e0b57)';
   const warningMessage = 'Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below. ';
 
   const hexRegExpPattern = '^#([A-Fa-f0-9]{6})$';
