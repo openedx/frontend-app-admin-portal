@@ -10,7 +10,7 @@ import PlotlyAnalyticsCharts from './PlotlyAnalyticsCharts';
 
 const PAGE_TITLE = 'Analytics';
 
-const PlotlyAnalyticsPage = ({ enterpriseId }) => {
+const PlotlyAnalyticsPage = ({ enterpriseId, enableDemoData }) => {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
@@ -44,17 +44,19 @@ const PlotlyAnalyticsPage = ({ enterpriseId }) => {
       <div className="col-12 col-lg-9">
         {renderStatusMessage()}
       </div>
-      <PlotlyAnalyticsCharts enterpriseId={enterpriseId} />
+      <PlotlyAnalyticsCharts enterpriseId={enterpriseId} enableDemoData={enableDemoData} />
     </>
   );
 };
 
 PlotlyAnalyticsPage.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enableDemoData: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enableDemoData: state.portalConfiguration.enableDemoData,
 });
 
 export default connect(mapStateToProps)(PlotlyAnalyticsPage);
