@@ -112,7 +112,8 @@ class ManageCodesTab extends React.Component {
     const queryParams = {
       coupon_id: couponId,
     };
-    updateUrl(queryParams);
+    const { navigate, location } = this.props;
+    updateUrl(navigate, location.pathname, queryParams);
     this.setCouponOpacity(couponId);
     this.setState({ searchQuery: '' });
   }
@@ -148,7 +149,8 @@ class ManageCodesTab extends React.Component {
     keys.forEach((key) => {
       queryParams[key] = undefined;
     });
-    updateUrl(queryParams);
+    const { navigate, location } = this.props;
+    updateUrl(navigate, location.pathname, queryParams);
   }
 
   paginateCouponOrders(pageNumber) {
@@ -195,7 +197,7 @@ class ManageCodesTab extends React.Component {
         ))}
         <div className="d-flex mt-4 justify-content-center">
           <Pagination
-            onPageSelect={page => updateUrl({
+            onPageSelect={page => updateUrl(this.props.navigate, this.props.location.pathname, {
               coupon_id: undefined,
               page: undefined,
               overview_page: page !== 1 ? page : undefined,

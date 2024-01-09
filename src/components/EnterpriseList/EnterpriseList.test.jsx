@@ -14,6 +14,7 @@ import LoadingMessage from '../LoadingMessage';
 
 import LmsApiServices from '../../data/services/LmsApiService';
 
+const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   const mockNavigation = jest.fn();
 
@@ -27,6 +28,7 @@ jest.mock('react-router-dom', () => {
     ...jest.requireActual('react-router-dom'),
     Navigate,
     mockNavigate: mockNavigation,
+    useNavigate: () => mockedNavigate,
   };
 });
 
@@ -206,8 +208,7 @@ describe('<EnterpriseList />', () => {
       ));
 
       submitSearch('Enterprise 1');
-      const queryParams = new URLSearchParams(window.location.search);
-      expect(queryParams.get('search')).toEqual('Enterprise 1');
+      expect(mockedNavigate).toHaveBeenCalledWith({ pathname: '/', search: 'search=Enterprise+1' });
     });
 
     it('search querystring clears onClear', () => {

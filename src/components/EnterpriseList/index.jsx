@@ -10,7 +10,7 @@ import ErrorPage from '../ErrorPage';
 import SearchBar from '../SearchBar';
 import SurveyPage from '../SurveyPage';
 import { updateUrl } from '../../utils';
-import { withLocation } from '../../hoc';
+import { withLocation, withNavigate } from '../../hoc';
 
 export const TITLE = 'Enterprise List';
 
@@ -128,11 +128,11 @@ class EnterpriseList extends React.Component {
               <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
                 <SearchBar
                   placeholder="Search by enterprise name..."
-                  onSearch={query => updateUrl({
+                  onSearch={query => updateUrl(this.props.navigate, this.props.location.pathname, {
                     search: query,
                     page: 1,
                   })}
-                  onClear={() => updateUrl({ search: null })}
+                  onClear={() => updateUrl(this.props.navigate, this.props.location.pathname, { search: null })}
                   value={searchQuery}
                 />
               </div>
@@ -180,10 +180,12 @@ EnterpriseList.propTypes = {
     start: PropTypes.number,
   }),
   location: PropTypes.shape({
+    pathname: PropTypes.string,
     search: PropTypes.string,
   }),
+  navigate: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };
 
-export default withLocation(EnterpriseList);
+export default withLocation(withNavigate(EnterpriseList));
