@@ -11,7 +11,7 @@ class PlotlyAnalyticsApiService {
     const queryParams = {
       ...options,
     };
-    return getAuthenticatedHttpClient().get(`${PlotlyAnalyticsApiService.plotlyTokenUrl}/${queryParams.enterpriseId}`);
+    return getAuthenticatedHttpClient().get(`${PlotlyAnalyticsApiService.plotlyTokenUrl}/${queryParams.enterpriseUUID}`);
   }
 }
 
