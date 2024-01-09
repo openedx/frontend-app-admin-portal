@@ -102,7 +102,7 @@ class EnterpriseApp extends React.Component {
 
     if (isUserMissingJWTRoles || isUserLoadedAndInactive) {
       return (
-        <Navigate to={`/${enterpriseSlug}/admin/register/activate`} />
+        <Navigate to={`/${enterpriseSlug}/admin/register/activate`} replace />
       );
     }
 

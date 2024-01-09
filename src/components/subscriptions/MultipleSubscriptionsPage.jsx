@@ -60,7 +60,7 @@ const MultipleSubscriptionsPage = ({
 
   if (subscriptions.length === 1) {
     return (
-      <Navigate to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} />
+      <Navigate to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} replace />
     );
   }
 

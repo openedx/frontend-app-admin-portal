@@ -43,6 +43,7 @@ class RequestCodesForm extends React.Component {
       <Navigate
         to={this.getPathToCodeManagement()}
         state={{ hasRequestedCodes: true }}
+        replace
       />
     );
   }

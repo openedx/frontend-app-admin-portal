@@ -87,7 +87,7 @@ class EnterpriseList extends React.Component {
   renderRedirectToEnterpriseAdminPage() {
     const { results } = this.props.enterpriseList;
     return (
-      <Navigate to={`/${results[0].slug}/admin/learners`} />
+      <Navigate to={`/${results[0].slug}/admin/learners`} replace />
     );
   }
 

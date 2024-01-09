@@ -54,7 +54,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
         >
           Your download is not ready yet.
         </Toast>
-        <Navigate to={`/${enterpriseSlug}/admin/learners`} />
+        <Navigate to={`/${enterpriseSlug}/admin/learners`} replace />
       </>
     );
   }
@@ -67,7 +67,7 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
         >
           There was a problem with your request.
         </Toast>
-        <Navigate to={`/${enterpriseSlug}/admin/learners`} />
+        <Navigate to={`/${enterpriseSlug}/admin/learners`} replace />
       </>
     );
   }

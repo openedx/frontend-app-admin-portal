@@ -20,6 +20,7 @@ export const SubscriptionDetailPage = ({ enterpriseSlug }) => {
     return (
       <Navigate
         to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`}
+        replace
       />
     );
   }

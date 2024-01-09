@@ -18,7 +18,7 @@ const CodeManagementRoutes = ({ enterpriseSlug }) => (
   <Routes>
     <Route
       path="/"
-      element={<Navigate to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`} />}
+      element={<Navigate to={`/${enterpriseSlug}/admin/coupons/${DEFAULT_TAB}`} replace />}
     />
     <Route
       path={`/:${COUPON_CODE_TAB_PARAM}?/*`}

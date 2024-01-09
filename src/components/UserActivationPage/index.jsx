@@ -45,7 +45,7 @@ const UserActivationPage = () => {
     // user is authenticated but doesn't have any JWT roles so redirect the user to
     // `:enterpriseSlug/admin/register` to force a log out in an attempt to refresh JWT roles.
     return (
-      <Navigate to={`/${enterpriseSlug}/admin/register`} />
+      <Navigate to={`/${enterpriseSlug}/admin/register`} replace />
     );
   }
 
@@ -59,7 +59,7 @@ const UserActivationPage = () => {
   if (isActive) {
     return (
       <>
-        <Navigate to={`/${enterpriseSlug}/admin/learners`} />
+        <Navigate to={`/${enterpriseSlug}/admin/learners`} replace />
         <Toast
           onClose={() => setShowToast(false)}
           show={showToast}
