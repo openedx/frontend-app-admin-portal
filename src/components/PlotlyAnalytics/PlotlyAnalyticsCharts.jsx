@@ -5,21 +5,23 @@ import PropTypes from 'prop-types';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 import PlotlyAnalyticsApiService from './data/service';
-import { configuration } from '../../config';
+import { configuration, features } from '../../config';
 
-const PlotlyAnalyticsCharts = ({ enterpriseId }) => {
+const PlotlyAnalyticsCharts = ({ enterpriseId, enableDemoData }) => {
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { FEATURE_DEMO_DATA } = features;
+  const enterpriseUUID = FEATURE_DEMO_DATA && enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
 
   const refreshPlotlyToken = async () => {
-    const response = await PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseId });
+    const response = await PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseUUID });
     return response.data.token;
   };
 
   useEffect(() => {
     setIsLoading(true);
-    PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseId })
+    PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseUUID })
       .then((response) => {
         setToken(response.data.token);
         setIsLoading(false);
@@ -56,6 +58,7 @@ const PlotlyAnalyticsCharts = ({ enterpriseId }) => {
 
 PlotlyAnalyticsCharts.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enableDemoData: PropTypes.bool.isRequired,
 };
 
 export default PlotlyAnalyticsCharts;
