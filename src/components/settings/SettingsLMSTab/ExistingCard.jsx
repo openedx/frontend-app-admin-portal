@@ -9,7 +9,6 @@ import {
   CheckCircle, Error, MoreVert, Sync,
 } from '@edx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { features } from '../../../config';
 import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';
 import { getTimeAgo } from './ErrorReporting/utils';
@@ -35,7 +34,6 @@ const ExistingCard = ({
   const redirectPath = `${useRouteMatch().url}`;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
-  const showErrorReporting = isEdxStaff && features.FEATURE_INTEGRATION_REPORTING;
 
   const toggleConfig = async (id, channelType, toggle) => {
     const configOptions = {
@@ -101,7 +99,7 @@ const ExistingCard = ({
   const getCardButton = () => {
     switch (getStatus(config)) {
       case ACTIVE:
-        if (showErrorReporting) {
+        if (isEdxStaff) {
           return <Button variant="outline-primary" href={`${redirectPath}${config.channelCode}/${config.id}`}>View sync history</Button>;
         }
         return null;
@@ -180,7 +178,7 @@ const ExistingCard = ({
                 alt="Actions dropdown"
               />
               <Dropdown.Menu>
-                {(isInactive && showErrorReporting) && (
+                {(isInactive && isEdxStaff) && (
                   <div className="d-flex">
                     <Dropdown.Item
                       href={`${redirectPath}${config.channelCode}/${config.id}`}
@@ -262,7 +260,7 @@ const ExistingCard = ({
         />
         <Card.Footer className="pt-2 pb-2 justify-content-between">
           <div className="x-small d-flex align-items-center">
-            {showErrorReporting && (
+            {isEdxStaff && (
             <>
               <Icon className="small-icon" src={Sync} />
               {getLastSync()}
