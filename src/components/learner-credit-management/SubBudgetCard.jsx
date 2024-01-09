@@ -1,4 +1,3 @@
-// import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,7 +15,6 @@ import {
 
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { formatPrice, getBudgetStatus } from './data/utils';
-// import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
 const BaseBackgroundFetchingWrapper = ({
@@ -25,7 +23,6 @@ const BaseBackgroundFetchingWrapper = ({
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
-  // const { isFetchingBudgets } = useContext(EnterpriseSubsidiesContext);
   const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
     enterpriseId,
@@ -69,7 +66,6 @@ const BaseSubBudgetCard = ({
   isLoading,
   isAssignable,
 }) => {
-  // const { isFetchingBudgets } = useContext(EnterpriseSubsidiesContext);
   const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
     enterpriseId,

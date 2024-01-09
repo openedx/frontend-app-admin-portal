@@ -17,6 +17,7 @@ import MultipleBudgetsPicker from './MultipleBudgetsPicker';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { configuration } from '../../config';
+import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
@@ -24,8 +25,18 @@ const MultipleBudgetsPage = ({
   enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
+  enterpriseFeatures,
+  enablePortalLearnerCreditManagementScreen,
 }) => {
-  const { budgets, isLoading } = useContext(EnterpriseSubsidiesContext);
+  const { isLoading } = useContext(EnterpriseSubsidiesContext);
+  const { data: budgetsOverview } = useEnterpriseBudgets({
+    enterpriseId: enterpriseUUID,
+    enablePortalLearnerCreditManagementScreen,
+    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
+  });
+  const {
+    budgets = [],
+  } = budgetsOverview || {};
 
   if (isLoading) {
     return (
@@ -86,12 +97,18 @@ const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+  enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
 });
 
 MultipleBudgetsPage.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
+  enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(MultipleBudgetsPage);
