@@ -1,5 +1,6 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { logError } from '@edx/frontend-platform/logging';
 
 import { configuration } from '../../config';
 import generateFormattedStatusUrl from './apiServiceUtils';
@@ -383,6 +384,39 @@ class LmsApiService {
   static generateAIAnalyticsSummary(enterpriseUUID, formData) {
     const url = `${LmsApiService.baseUrl}/enterprise/api/v1/analytics-summary/${enterpriseUUID}`;
     return LmsApiService.apiClient().post(url, formData);
+  }
+
+  static updateUserActiveEnterprise = (enterpriseId) => {
+    const url = `${configuration.LMS_BASE_URL}/enterprise/select/active/`;
+    const formData = new FormData();
+    formData.append('enterprise', enterpriseId);
+
+    return LmsApiService.apiClient().post(
+      url,
+      formData,
+    );
+  };
+
+  static fetchEnterpriseLearnerData(options) {
+    const enterpriseLearnerUrl = `${configuration.LMS_BASE_URL}/enterprise/api/v1/enterprise-learner/`;
+    const queryParams = new URLSearchParams({
+      ...options,
+      page: 1,
+    });
+    const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
+  }
+
+  static async getActiveLinkedEnterprise(username) {
+    const response = await this.fetchEnterpriseLearnerData({ username });
+    const transformedResponse = camelCaseObject(response.data);
+    const enterprisesForLearner = transformedResponse.results;
+    const activeLinkedEnterprise = enterprisesForLearner.find(enterprise => enterprise.active);
+    if (!activeLinkedEnterprise) {
+      logError(`${username} does not have any active linked enterprise customers`);
+      return null;
+    }
+    return activeLinkedEnterprise.enterpriseCustomer;
   }
 }
 
