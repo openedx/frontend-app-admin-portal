@@ -43,7 +43,7 @@ const BudgetDetailCatalogTabContents = () => {
       catalogContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
       const newState = { ...locationState };
       delete newState.budgetActivityScrollToKey;
-      navigate({ ...location, state: newState, replace: true });
+      navigate(location.pathname, { ...location, state: newState, replace: true });
     }
   }, [navigate, location, locationState]);
 

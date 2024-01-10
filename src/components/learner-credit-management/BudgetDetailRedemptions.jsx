@@ -30,7 +30,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
       spentHeadingRef.current?.scrollIntoView({ behavior: 'smooth' });
       const newState = { ...locationState };
       delete newState.budgetActivityScrollToKey;
-      navigate({ ...location, state: newState });
+      navigate(location.pathname, { ...location, state: newState });
     }
   }, [navigate, location, locationState]);
 

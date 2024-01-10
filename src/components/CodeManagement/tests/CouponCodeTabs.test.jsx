@@ -52,6 +52,7 @@ const store = getMockStore({ ...initialStore });
 const CouponCodeTabsWrapper = ({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
+  route = `/${enterpriseSlug}/admin/coupons/${MANAGE_CODES_TAB}`,
 }) => {
   const contextValue = useMemo(
     () => ({ subsidyRequestConfiguration, subsidyRequestsCounts }),
@@ -59,7 +60,7 @@ const CouponCodeTabsWrapper = ({
   );
   return (
     <Provider store={store}>
-      <MemoryRouter initialEntries={[`/${enterpriseSlug}/admin/coupons/${MANAGE_CODES_TAB}`]}>
+      <MemoryRouter initialEntries={[route]}>
         <Routes>
           <Route
             path="/:enterpriseSlug/admin/coupons/:couponCodesTab"
@@ -100,6 +101,11 @@ describe('<CouponCodeTabs />', () => {
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();
+  });
+
+  it('Renders not found page', async () => {
+    render(<CouponCodeTabsWrapper route={`/${enterpriseSlug}/admin/coupons/fake-route`} />);
+    expect(screen.queryByText('404')).toBeTruthy();
   });
 
   it('Clicking on a tab changes content via router', async () => {

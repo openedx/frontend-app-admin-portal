@@ -52,6 +52,7 @@ const store = getMockStore({ ...initialStore });
 const SubscriptionTabsWrapper = ({
   subsidyRequestConfiguration,
   subsidyRequestsCounts,
+  route = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`,
 }) => {
   const value = useMemo(
     () => ({ subsidyRequestConfiguration, subsidyRequestsCounts }),
@@ -59,7 +60,7 @@ const SubscriptionTabsWrapper = ({
   );
   return (
     <Provider store={store}>
-      <MemoryRouter initialEntries={[`/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`]}>
+      <MemoryRouter initialEntries={[route]}>
         <Routes>
           <Route
             path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab"
@@ -100,6 +101,11 @@ describe('<SubscriptionTabs />', () => {
   afterEach(() => {
     cleanup();
     jest.clearAllMocks();
+  });
+
+  it('Renders not found page', async () => {
+    render(<SubscriptionTabsWrapper route={`/${enterpriseSlug}/admin/subscriptions/fake-route`} />);
+    expect(screen.queryByText('404')).toBeTruthy();
   });
 
   it('Clicking on a tab changes content via router', async () => {
