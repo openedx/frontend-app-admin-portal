@@ -23,14 +23,7 @@ const PAGE_TILE = 'Settings';
  * When browsing to {path} (../admin/settings) redirect to default tab
  */
 const SettingsPage = () => {
-  const allSettingsTabs = [
-    SETTINGS_TABS_VALUES.access,
-    SETTINGS_TABS_VALUES.appearance,
-    SETTINGS_TABS_VALUES.sso,
-    SETTINGS_TABS_VALUES.lms,
-  ];
   const { pathname } = useLocation();
-  const currentPath = pathname === '/' ? '' : pathname;
 
   return (
     <>
@@ -39,11 +32,12 @@ const SettingsPage = () => {
       <Routes>
         <Route
           path="/"
-          element={<Navigate to={`${currentPath}/${DEFAULT_TAB}`} />}
+          element={<Navigate to={`${pathname}/${DEFAULT_TAB}`} />}
         />
-        {allSettingsTabs.map(path => (
+        {Object.values(SETTINGS_TABS_VALUES).map(path => (
           <Route
-            path={`/${path}?`}
+            key={path}
+            path={`/${path}`}
             element={<SettingsTabs />}
           />
         ))}

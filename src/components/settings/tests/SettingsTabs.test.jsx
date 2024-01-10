@@ -115,7 +115,6 @@ describe('<SettingsTabs />', () => {
   });
 
   test('Clicking on a tab changes content via router', async () => {
-    features.SETTINGS_PAGE_LMS_TAB = true;
     render(<SettingsTabsWithRouter />);
     const lmsTab = screen.getByText(SETTINGS_TAB_LABELS.lms);
     await act(async () => { userEvent.click(lmsTab); });
