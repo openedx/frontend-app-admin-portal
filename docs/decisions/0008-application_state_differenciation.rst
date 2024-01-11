@@ -82,4 +82,5 @@ Note that the ``queryClient`` is a test utility function that populates the ``Qu
 Alternatives Considered
 ***********************
 
-There is no other alternative to perfection.
+Other alternatives to were to selectively disable the re-fetch behavior on API calls, or increase the global ``staleTime`` to a longer interval to avoid the re-render disrupting the user experience.
+Another solution would be to use context selectors to reduce the effect of components unintentionally re-rendering by specifically re-rendering only the related context we were referencing.
