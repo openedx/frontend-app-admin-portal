@@ -11,7 +11,6 @@ export const useEnterpriseSubsidiesContext = ({
 }) => {
   const {
     isLoading: isLoadingBudgets,
-    isFetching: isFetchingBudgets,
     data: budgetsOverview,
   } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
@@ -54,21 +53,17 @@ export const useEnterpriseSubsidiesContext = ({
   const isLoading = isLoadingBudgets || isLoadingCustomerAgreement || isLoadingCoupons;
 
   const context = useMemo(() => ({
-    budgets,
     customerAgreement,
     coupons,
     canManageLearnerCredit,
     enterpriseSubsidyTypes,
     isLoading,
-    isFetchingBudgets,
   }), [
-    budgets,
     customerAgreement,
     coupons,
     canManageLearnerCredit,
     enterpriseSubsidyTypes,
     isLoading,
-    isFetchingBudgets,
   ]);
 
   return context;
