@@ -6,12 +6,11 @@ import {
 } from '@edx/paragon';
 import { ArrowDownward } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import {
-  generatePath, useLocation, Link,
-} from 'react-router-dom';
+import { generatePath, useParams, Link } from 'react-router-dom';
 
 import { formatPrice } from './data';
 import EVENT_NAMES from '../../eventTracking';
+import { LEARNER_CREDIT_ROUTE } from './constants';
 
 const BudgetDetailPageOverviewUtilization = ({
   budgetId,
@@ -21,7 +20,7 @@ const BudgetDetailPageOverviewUtilization = ({
   enterpriseFeatures,
   enterpriseId,
 }) => {
-  const { pathname } = useLocation();
+  const { enterpriseSlug, enterpriseAppPage } = useParams();
   const { amountAllocatedUsd, amountRedeemedUsd } = budgetAggregates;
   const {
     BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE,
@@ -50,7 +49,9 @@ const BudgetDetailPageOverviewUtilization = ({
         iconAfter={ArrowDownward}
         className="pl-0 pr-0"
         as={Link}
-        to={generatePath(pathname, { budgetId, activeTabKey: 'activity' })}
+        to={generatePath(LEARNER_CREDIT_ROUTE, {
+          enterpriseSlug, enterpriseAppPage, budgetId, activeTabKey: 'activity',
+        })}
         state={{ budgetActivityScrollToKey: type }}
         onClick={() => sendEnterpriseTrackEvent(
           enterpriseId,
