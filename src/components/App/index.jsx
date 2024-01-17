@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import {
+  Route, Navigate, Routes, useLocation,
+} from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import {
   QueryClient,
@@ -7,7 +9,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
-import { AuthenticatedPageRoute, PageRoute, AppProvider } from '@edx/frontend-platform/react';
+import { AuthenticatedPageRoute, PageWrap, AppProvider } from '@edx/frontend-platform/react';
 import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
@@ -38,6 +40,11 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+const RedirectComponent = () => {
+  const location = useLocation();
+  return <Navigate to={`${location.pathname}/admin/${ROUTE_NAMES.learners}`} />;
+};
 
 const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
@@ -83,56 +90,63 @@ const AppWrapper = () => {
           defaultTitle="edX Admin Portal"
         />
         {isMaintenanceAlertOpen && (
-          <SystemWideWarningBanner>
-            {config.MAINTENANCE_ALERT_MESSAGE}
-          </SystemWideWarningBanner>
+        <SystemWideWarningBanner>
+          {config.MAINTENANCE_ALERT_MESSAGE}
+        </SystemWideWarningBanner>
         )}
         <Header />
-        <Switch>
-          <AuthenticatedPageRoute
+        <Routes>
+          <Route
             path="/enterprises"
-            render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
-            authenticatedAPIClient={apiClient}
-            redirect={`${process.env.BASE_URL}/enterprises`}
+            element={(
+              <AuthenticatedPageRoute
+                authenticatedAPIClient={apiClient}
+                redirect={`${process.env.BASE_URL}/enterprises`}
+              >
+                <EnterpriseIndexPage />
+              </AuthenticatedPageRoute>
+          )}
           />
-          <PageRoute
-            exact
+          <Route
             path="/:enterpriseSlug/admin/register"
-            component={AdminRegisterPage}
+            element={<PageWrap><AdminRegisterPage /></PageWrap>}
           />
-          <PageRoute
-            exact
+          <Route
             path="/:enterpriseSlug/admin/register/activate"
-            component={UserActivationPage}
+            element={<PageWrap><UserActivationPage /></PageWrap>}
           />
-          <PageRoute
+          <Route
             path="/:enterpriseSlug"
-            authenticatedAPIClient={apiClient}
-            redirect={process.env.BASE_URL}
-            render={({
-              match: {
-                url: baseUrl,
-              },
-            }) => (
-              <Switch>
-                <Route
-                  path="/:enterpriseSlug/admin/:enterpriseAppPage"
-                  component={AuthenticatedEnterpriseApp}
-                />
-                <Redirect
-                  to={`${baseUrl}/admin/${ROUTE_NAMES.learners}`}
-                />
-              </Switch>
-            )}
+            element={(
+              <PageWrap
+                authenticatedAPIClient={apiClient}
+                redirect={process.env.BASE_URL}
+              >
+                <RedirectComponent />
+              </PageWrap>
+          )}
           />
-          <AuthenticatedPageRoute
+          <Route
+            path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
+            element={(
+              <PageWrap
+                authenticatedAPIClient={apiClient}
+                redirect={process.env.BASE_URL}
+              >
+                <AuthenticatedEnterpriseApp />
+              </PageWrap>
+          )}
+          />
+          <Route
             path="/"
-            render={(routerProps) => <EnterpriseIndexPage {...routerProps} />}
-            authenticatedAPIClient={apiClient}
-            redirect={process.env.BASE_URL}
+            element={(
+              <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
+                <EnterpriseIndexPage />
+              </AuthenticatedPageRoute>
+          )}
           />
-          <PageRoute component={NotFoundPage} />
-        </Switch>
+          <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
+        </Routes>
         <Footer />
       </AppProvider>
     </QueryClientProvider>

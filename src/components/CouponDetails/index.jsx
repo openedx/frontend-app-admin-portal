@@ -23,6 +23,7 @@ import {
 } from './constants';
 import ActionButton from './ActionButton';
 import FilterBulkActionRow from './FilterBulkActionRow';
+import { withLocation, withNavigate } from '../../hoc';
 
 class CouponDetails extends React.Component {
   constructor(props) {
@@ -83,11 +84,12 @@ class CouponDetails extends React.Component {
 
   handleToggleSelect(newValue) {
     const { selectedToggle } = this.state;
+    const { navigate, location } = this.props;
 
     const value = newValue || selectedToggle;
 
     this.resetCodeActionStatus();
-    updateUrl({ page: undefined });
+    updateUrl(navigate, location.pathname, { page: undefined });
     this.setState({
       tableColumns: this.getNewColumns(value),
       selectedToggle: value,
@@ -736,6 +738,10 @@ CouponDetails.propTypes = {
     available: PropTypes.bool.isRequired.isRequired,
   }).isRequired,
   isExpanded: PropTypes.bool,
+  navigate: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
 };
 
-export default CouponDetails;
+export default withLocation(withNavigate(CouponDetails));

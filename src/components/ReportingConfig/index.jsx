@@ -203,17 +203,6 @@ class ReportingConfig extends React.Component {
 }
 
 ReportingConfig.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      hasRequestedCodes: PropTypes.bool,
-    }),
-  }).isRequired,
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    replace: PropTypes.func.isRequired,
-  }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
 };
 

@@ -1,14 +1,14 @@
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 import { logError } from '@edx/frontend-platform/logging';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Routes, Route, MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import DeleteHighlightSet from '../DeleteHighlightSet';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
@@ -25,6 +25,12 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
     sendEnterpriseTrackEvent: jest.fn(),
   });
 });
+
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}));
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -43,8 +49,6 @@ const initialEnterpriseAppContextValue = {
   },
 };
 
-const initialRouterEntry = `/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`;
-
 /* eslint-disable react/prop-types */
 const DeleteHighlightSetWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
@@ -54,10 +58,14 @@ const DeleteHighlightSetWrapper = ({
   <IntlProvider locale="en">
     <Provider store={mockStore(initialState)}>
       <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <Route
-          path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
-          render={routeProps => <DeleteHighlightSet {...routeProps} {...props} />}
-        />
+        <MemoryRouter initialEntries={[`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`]}>
+          <Routes>
+            <Route
+              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.contentHighlights}/:highlightSetUUID`}
+              element={<DeleteHighlightSet {...props} />}
+            />
+          </Routes>
+        </MemoryRouter>
       </EnterpriseAppContext.Provider>
     </Provider>
   </IntlProvider>
@@ -80,28 +88,19 @@ describe('<DeleteHighlightSet />', () => {
   });
 
   it('has delete highlight button', () => {
-    renderWithRouter(
-      <DeleteHighlightSetWrapper />,
-      { route: initialRouterEntry },
-    );
+    render(<DeleteHighlightSetWrapper />);
     const deleteBtn = getDeleteHighlightBtn();
     expect(deleteBtn).toBeInTheDocument();
   });
 
   it('clicking delete highlight button opens confirmation modal', () => {
-    renderWithRouter(
-      <DeleteHighlightSetWrapper />,
-      { route: initialRouterEntry },
-    );
+    render(<DeleteHighlightSetWrapper />);
     clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
-  it('canceling confirmation modal closes modal', () => {
-    renderWithRouter(
-      <DeleteHighlightSetWrapper />,
-      { route: initialRouterEntry },
-    );
+  it('cancelling confirmation modal closes modal', () => {
+    render(<DeleteHighlightSetWrapper />);
     clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     userEvent.click(screen.getByText('Cancel'));
@@ -112,10 +111,7 @@ describe('<DeleteHighlightSet />', () => {
   it('confirming deletion in confirmation modal deletes via API', async () => {
     EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
 
-    const { history } = renderWithRouter(
-      <DeleteHighlightSetWrapper />,
-      { route: initialRouterEntry },
-    );
+    render(<DeleteHighlightSetWrapper />);
     clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     userEvent.click(screen.getByTestId('delete-confirmation-button'));
@@ -133,21 +129,13 @@ describe('<DeleteHighlightSet />', () => {
     });
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
-    expect(history.location.pathname).toEqual(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`);
-    expect(history.location.state).toEqual(
-      expect.objectContaining({
-        deletedHighlightSet: true,
-      }),
-    );
+    expect(mockNavigate).toHaveBeenCalledWith(`/test-enterprise/admin/${ROUTE_NAMES.contentHighlights}`, { state: { deletedHighlightSet: true } });
   });
 
   it('confirming deletion in confirmation modal handles error via API', async () => {
     EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
 
-    renderWithRouter(
-      <DeleteHighlightSetWrapper />,
-      { route: initialRouterEntry },
-    );
+    render(<DeleteHighlightSetWrapper />);
     clickDeleteHighlightBtn();
     userEvent.click(screen.getByTestId('delete-confirmation-button'));
     expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();

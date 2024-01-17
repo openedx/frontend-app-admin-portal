@@ -9,6 +9,7 @@ import Hero from '../Hero';
 import LoadingMessage from '../LoadingMessage';
 
 import LmsApiService from '../../data/services/LmsApiService';
+import { withLocation } from '../../hoc';
 
 class RequestCodesPage extends React.Component {
   hasEmailAndEnterpriseName() {
@@ -20,7 +21,7 @@ class RequestCodesPage extends React.Component {
     const {
       emailAddress,
       enterpriseName,
-      match,
+      location,
     } = this.props;
 
     return (
@@ -45,7 +46,7 @@ class RequestCodesPage extends React.Component {
                   initialValues={{
                     emailAddress, enterpriseName, numberOfCodes: '', notes: '',
                   }}
-                  match={match}
+                  url={location.pathname}
                 />
               ) : <LoadingMessage className="request-codes" />}
             </div>
@@ -64,9 +65,9 @@ RequestCodesPage.defaultProps = {
 RequestCodesPage.propTypes = {
   enterpriseName: PropTypes.string,
   emailAddress: PropTypes.string,
-  match: PropTypes.shape({
-    url: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
   }).isRequired,
 };
 
-export default RequestCodesPage;
+export default withLocation(RequestCodesPage);

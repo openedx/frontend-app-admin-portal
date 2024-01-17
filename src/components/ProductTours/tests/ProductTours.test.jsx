@@ -9,7 +9,7 @@ import {
   cleanup,
 } from '@testing-library/react';
 import { mergeConfig } from '@edx/frontend-platform';
-import { Router, Route } from 'react-router-dom';
+import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { features } from '../../../config';
 import ProductTours from '../ProductTours';
@@ -29,20 +29,11 @@ const mockStore = configureMockStore([thunk]);
 
 const ENTERPRISE_SLUG = 'sluggy';
 
-const useHistoryPush = jest.fn();
-
 const SUBSCRIPTION_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`;
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`;
 const LEARNER_CREDIT_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.learnerCredit}`;
 
-const historyMock = (pathname = SUBSCRIPTION_PAGE_LOCATION) => ({
-  push: useHistoryPush,
-  location: { pathname },
-  listen: jest.fn(),
-});
-
 const ToursWithContext = ({
-  pathname = undefined,
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
   subsidyRequestsEnabled = false,
   canManageLearnerCredit = false,
@@ -66,11 +57,11 @@ const ToursWithContext = ({
   }),
 }) => (
   <Provider store={store}>
-    <Router history={historyMock(pathname)}>
-      <Route
-        path={`/${ENTERPRISE_SLUG}/admin/:enterpriseAppPage`}
-        render={
-          () => (
+    <Router initialEntries={[`${SUBSCRIPTION_PAGE_LOCATION}`]}>
+      <Routes>
+        <Route
+          path={`/${ENTERPRISE_SLUG}/admin/:enterpriseAppPage`}
+          element={(
             <EnterpriseSubsidiesContext.Provider value={EnterpriseSubsidiesContextValue}>
               <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
                 <>
@@ -80,9 +71,9 @@ const ToursWithContext = ({
                 </>
               </SubsidyRequestsContext.Provider>
             </EnterpriseSubsidiesContext.Provider>
-          )
-        }
-      />
+          )}
+        />
+      </Routes>
     </Router>
   </Provider>
 );

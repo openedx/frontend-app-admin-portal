@@ -25,6 +25,15 @@ jest.mock('react-instantsearch-dom', () => ({
   Index: () => <div>Popular Courses</div>,
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({
+    enterpriseSlug: 'test-enterprise-slug',
+    enterpriseAppPage: 'learner-credit',
+    budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+  }),
+}));
+
 jest.mock('../../data', () => ({
   ...jest.requireActual('../../data'),
   useSubsidyAccessPolicy: jest.fn().mockReturnValue({
