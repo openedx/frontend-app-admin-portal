@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import {
-  Route, Navigate, Routes, useLocation,
+  Route, Navigate, Routes, useLocation, generatePath,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import {
@@ -43,7 +43,10 @@ const queryClient = new QueryClient({
 
 const RedirectComponent = () => {
   const location = useLocation();
-  return <Navigate to={`${location.pathname}/admin/${ROUTE_NAMES.learners}`} />;
+  const homePage = generatePath(
+    `${location.pathname}/admin/${ROUTE_NAMES.learners}`,
+  );
+  return <Navigate to={homePage} />;
 };
 
 const AppWrapper = () => {
