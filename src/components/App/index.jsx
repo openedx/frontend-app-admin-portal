@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import {
-  Route, Navigate, Routes, useLocation, generatePath,
+  Route, Navigate, Routes, generatePath, useParams,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import {
@@ -42,10 +42,13 @@ const queryClient = new QueryClient({
 });
 
 const RedirectComponent = () => {
-  const location = useLocation();
+  const { enterpriseSlug } = useParams();
+
   const homePage = generatePath(
-    `${location.pathname}/admin/${ROUTE_NAMES.learners}`,
+    `/:enterpriseSlug/admin/${ROUTE_NAMES.learners}`,
+    { enterpriseSlug },
   );
+
   return <Navigate to={homePage} />;
 };
 
@@ -119,7 +122,7 @@ const AppWrapper = () => {
             element={<PageWrap><UserActivationPage /></PageWrap>}
           />
           <Route
-            path="/:enterpriseSlug"
+            path="/:enterpriseSlug/admin?"
             element={(
               <PageWrap
                 authenticatedAPIClient={apiClient}
