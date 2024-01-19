@@ -140,6 +140,12 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   learnerpathway: 'Pathway',
 };
 
+// Course run statuses for ContentHighlightCardItem
+export const COURSE_RUN_STATUSES = {
+  archived: 'archived',
+  published: 'published',
+};
+
 export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
   ALL_CONTENT: {
     value: 'ALL_CONTENT',
@@ -188,7 +194,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         content_key: 'edX+DemoX',
         title: 'Math',
         card_image_url: 'https://picsum.photos/360/200',
-        course_run_statuses: ['archived'],
+        course_run_statuses: [COURSE_RUN_STATUSES.archived],
         authoring_organizations:
         [
           {
@@ -209,7 +215,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         uuid: faker.datatype.uuid(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
-        course_run_statuses: ['published'],
+        course_run_statuses: [COURSE_RUN_STATUSES.published],
         authoring_organizations:
         [
           {
@@ -225,7 +231,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         uuid: faker.datatype.uuid(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
-        course_run_statuses: ['published'],
+        course_run_statuses: [COURSE_RUN_STATUSES.published],
         authoring_organizations:
         [
           {

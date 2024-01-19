@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import {
+  COURSE_RUN_STATUSES,
   DEFAULT_ERROR_MESSAGE,
   HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
   MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
@@ -43,13 +44,11 @@ const ContentHighlightsCardItemsContainer = ({
         courseRunStatuses,
       } = highlightedContent[i];
       if (courseRunStatuses) {
-        for (let j = 0; j < courseRunStatuses.length; j++) {
-        // a course is only archived if all of it's course runs are archived
-          if (courseRunStatuses[j] !== 'archived') {
-            activeContent.push(highlightedContent[i]);
-            break;
-          }
+        // a course is only archived if all of its runs are archived
+        if (courseRunStatuses?.every(status => status === COURSE_RUN_STATUSES.archived)) {
           archivedContent.push(highlightedContent[i]);
+        } else {
+          activeContent.push(highlightedContent[i]);
         }
       }
     }
