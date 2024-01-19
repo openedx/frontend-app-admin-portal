@@ -15,4 +15,6 @@ const CARD_TEXT = {
   },
 };
 
+export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:budgetId/:activeTabKey';
+
 export default CARD_TEXT;

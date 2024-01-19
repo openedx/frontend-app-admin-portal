@@ -9,7 +9,6 @@ import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
-import { history } from '@edx/frontend-platform/initialize';
 import { features } from './config';
 
 import {
@@ -44,7 +43,7 @@ const formatPercentage = ({ decimal, numDecimals = 1 }) => (
   decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : '0%'
 );
 
-const updateUrl = (queryOptions) => {
+const updateUrl = (navigate, currentPath, queryOptions) => {
   if (!queryOptions) {
     return;
   }
@@ -65,9 +64,9 @@ const updateUrl = (queryOptions) => {
     newQueryParams.set(key, value);
   });
 
-  const newQueryString = `?${newQueryParams.toString()}`;
+  const newQueryString = newQueryParams.toString();
   if (newQueryString !== window.location.search) {
-    history.push(newQueryString);
+    navigate({ pathname: currentPath, search: newQueryString });
   }
 };
 

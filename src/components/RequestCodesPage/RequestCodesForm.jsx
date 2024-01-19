@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Alert, Button, Spinner } from '@edx/paragon';
 
 import RenderField from '../RenderField';
@@ -17,7 +17,7 @@ class RequestCodesForm extends React.Component {
   }
 
   getPathToCodeManagement() {
-    const { match: { url } } = this.props;
+    const { url } = this.props;
 
     // Remove `/request` from the url so it renders Code Management page again
     return url.split('/').slice(0, -1).join('/');
@@ -40,11 +40,10 @@ class RequestCodesForm extends React.Component {
 
   renderRedirect() {
     return (
-      <Redirect
-        to={{
-          pathname: this.getPathToCodeManagement(),
-          state: { hasRequestedCodes: true },
-        }}
+      <Navigate
+        to={this.getPathToCodeManagement()}
+        state={{ hasRequestedCodes: true }}
+        replace
       />
     );
   }
@@ -153,9 +152,7 @@ RequestCodesForm.propTypes = {
   error: PropTypes.instanceOf(Error),
 
   // custom props
-  match: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-  }).isRequired,
+  url: PropTypes.string.isRequired,
   initialValues: PropTypes.shape({ // eslint-disable-line react/no-unused-prop-types
     emailAddress: PropTypes.string.isRequired,
     enterpriseName: PropTypes.string.isRequired,

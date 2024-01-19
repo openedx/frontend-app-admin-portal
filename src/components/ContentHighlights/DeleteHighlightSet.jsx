@@ -9,7 +9,7 @@ import {
   StatefulButton,
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 
@@ -24,7 +24,7 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   const { highlightSetUUID } = useParams();
   const [isOpen, open, close] = useToggle(false);
   const [deletionState, setDeletionState] = useState('default');
-  const history = useHistory();
+  const navigate = useNavigate();
   const { enterpriseCuration: { dispatch } } = useContext(EnterpriseAppContext);
   const [isDeleted, setIsDeleted] = useState(false);
   const [deletionError, setDeletionError] = useState(null);
@@ -94,11 +94,11 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   useEffect(() => {
     if (isDeleted) {
       close();
-      history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`, {
-        deletedHighlightSet: true,
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}`, {
+        state: { deletedHighlightSet: true },
       });
     }
-  }, [isDeleted, close, highlightSetUUID, enterpriseSlug, history]);
+  }, [isDeleted, close, highlightSetUUID, enterpriseSlug, navigate]);
 
   return (
     <>

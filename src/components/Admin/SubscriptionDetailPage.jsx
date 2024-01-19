@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { useParams } from 'react-router-dom';
 import SubscriptionExpirationModals from '../subscriptions/expiration/SubscriptionExpirationModals';
 import SubscriptionDetails from './SubscriptionDetails';
 import LicenseAllocationDetails from './licenses/LicenseAllocationDetails';
@@ -11,8 +12,9 @@ import SubscriptionDetailsSkeleton from '../subscriptions/SubscriptionDetailsSke
 import { LPR_SUBSCRIPTION_PAGE_SIZE } from '../subscriptions/data/constants';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
-  const [subscription, loadingSubscription] = useSubscriptionFromParams({ match });
+export const SubscriptionDetailPage = ({ enterpriseSlug }) => {
+  const { subscriptionUUID } = useParams();
+  const [subscription, loadingSubscription] = useSubscriptionFromParams({ subscriptionUUID });
 
   if (!subscription && !loadingSubscription) {
     return (
@@ -40,11 +42,6 @@ export const SubscriptionDetailPage = ({ enterpriseSlug, match }) => {
 };
 
 SubscriptionDetailPage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      subscriptionUUID: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
 };
 

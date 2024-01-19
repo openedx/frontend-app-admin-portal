@@ -8,7 +8,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { isDefinedAndNotNull, isDefined } from '../../../utils';
-import { DARK_COLOR, WHITE_COLOR, SETTINGS_TAB_PARAM } from './constants';
+import { DARK_COLOR, WHITE_COLOR } from './constants';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const COLOR_LIGHTEN_DARKEN_MODIFIER = 0.2;
@@ -19,8 +19,8 @@ const COLOR_LIGHTEN_DARKEN_MODIFIER = 0.2;
  * @returns Current settings tab
  */
 export const useCurrentSettingsTab = () => {
-  const params = useParams();
-  return params[SETTINGS_TAB_PARAM];
+  const { '*': settingsTab } = useParams();
+  return settingsTab;
 };
 
 /**

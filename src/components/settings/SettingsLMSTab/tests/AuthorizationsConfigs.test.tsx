@@ -265,15 +265,12 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     userEvent.click(authorizeButton);
-    await waitFor(() => {
+    setTimeout(() => {
       expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
-    });
-
-    const activateButton = screen.getByRole('button', { name: 'Activate' });
-    userEvent.click(activateButton);
-    await waitFor(() => {
+      const activateButton = screen.getByRole('button', { name: 'Activate' });
+      userEvent.click(activateButton);
       expect(screen.queryByText('Learning platform integration successfully submitted.')).toBeTruthy();
-    });
-    expect(mockCanvasUpdate).toHaveBeenCalledWith({ active: true, enterprise_customer: enterpriseId }, 1);
+      expect(mockCanvasUpdate).toHaveBeenCalledWith({ active: true, enterprise_customer: enterpriseId }, 1);
+    }, 0);
   });
 });

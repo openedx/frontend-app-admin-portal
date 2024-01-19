@@ -23,6 +23,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NewFeatureAlertBrowseAndRequest from '../NewFeatureAlertBrowseAndRequest';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
+import { withLocation, withNavigate } from '../../hoc';
 
 class ManageCodesTab extends React.Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class ManageCodesTab extends React.Component {
   }
 
   componentDidMount() {
-    const { enterpriseId, location, history } = this.props;
+    const { enterpriseId, location, navigate } = this.props;
     const queryParams = new URLSearchParams(location.search);
 
     if (enterpriseId) {
@@ -50,10 +51,7 @@ class ManageCodesTab extends React.Component {
         hasRequestedCodes: location.state.hasRequestedCodes,
       });
 
-      history.replace({
-        ...location.pathname,
-        state: {},
-      });
+      navigate(location.pathname, { state: {}, replace: true });
     }
 
     // To fetch active email templates for assign, remind, and revoke
@@ -114,7 +112,8 @@ class ManageCodesTab extends React.Component {
     const queryParams = {
       coupon_id: couponId,
     };
-    updateUrl(queryParams);
+    const { navigate, location } = this.props;
+    updateUrl(navigate, location.pathname, queryParams);
     this.setCouponOpacity(couponId);
     this.setState({ searchQuery: '' });
   }
@@ -150,7 +149,8 @@ class ManageCodesTab extends React.Component {
     keys.forEach((key) => {
       queryParams[key] = undefined;
     });
-    updateUrl(queryParams);
+    const { navigate, location } = this.props;
+    updateUrl(navigate, location.pathname, queryParams);
   }
 
   paginateCouponOrders(pageNumber) {
@@ -197,7 +197,7 @@ class ManageCodesTab extends React.Component {
         ))}
         <div className="d-flex mt-4 justify-content-center">
           <Pagination
-            onPageSelect={page => updateUrl({
+            onPageSelect={page => updateUrl(this.props.navigate, this.props.location.pathname, {
               coupon_id: undefined,
               page: undefined,
               overview_page: page !== 1 ? page : undefined,
@@ -344,12 +344,7 @@ ManageCodesTab.propTypes = {
     }),
     pathname: PropTypes.string,
   }).isRequired,
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    replace: PropTypes.func.isRequired,
-  }).isRequired,
+  navigate: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   enterpriseSlug: PropTypes.string,
   coupons: PropTypes.shape({
@@ -380,4 +375,4 @@ const mapDispatchToProps = dispatch => ({
 
 ManageCodesTab.contextType = SubsidyRequestsContext;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCodesTab);
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigate(withLocation((ManageCodesTab))));

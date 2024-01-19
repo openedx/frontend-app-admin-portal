@@ -4,8 +4,8 @@ import {
   FormWorkflowButtonConfig, FormWorkflowHandlerArgs, FormWorkflowStep,
 } from '../FormWorkflow';
 import {
-  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction,
-  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP,
+  setFormFieldAction, updateFormFieldsAction, setStepAction, setWorkflowStateAction, resetFormEditState,
+  UPDATE_FORM_FIELDS, SET_FORM_FIELD, SET_WORKFLOW_STATE, SET_STEP, RESET_EDIT_STATE,
 } from './actions';
 import type { InitializeFormArguments } from './reducer';
 import { FormReducer, initializeForm } from './reducer';
@@ -139,6 +139,18 @@ describe('Form reducer tests', () => {
     const expected = {
       step: steps[1],
       type: SET_STEP,
+    };
+
+    expect(
+      FormReducer(action, initializeForm(getTestInitializeFormArguments())),
+    ).toStrictEqual(expected);
+  });
+
+  test('resets isEdited property', () => {
+    const action = resetFormEditState();
+
+    const expected = {
+      type: RESET_EDIT_STATE,
     };
 
     expect(

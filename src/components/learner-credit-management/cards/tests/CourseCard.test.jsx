@@ -32,6 +32,14 @@ jest.mock('@tanstack/react-query', () => ({
   useQueryClient: jest.fn(),
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({
+    enterpriseSlug: 'test-enterprise-slug',
+    enterpriseAppPage: 'test-enterprise-app',
+  }),
+}));
+
 jest.mock('../../data', () => ({
   ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),

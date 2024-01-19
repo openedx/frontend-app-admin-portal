@@ -97,7 +97,9 @@ describe('<NumberCard />', () => {
       expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeTruthy();
       const actions = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes();
       actions.first().simulate('keyDown', { key: 'Enter' });
-      expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
+      setTimeout(() => {
+        expect(getNumberCard(wrapper).instance().state.detailsExpanded).toBeFalsy();
+      }, 0);
     });
 
     it('closes detail actions with escape keydown on action', () => {

@@ -10,6 +10,7 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import handleErrors from '../utils';
 import { snakeCaseDict } from '../../../utils';
 import { INVALID_IDP_METADATA_ERROR, RECORD_UNDER_CONFIGURATIONS_ERROR } from '../data/constants';
+import { resetFormEditState } from '../../forms/data/actions';
 
 type SSOConfigSnakeCase = {
   uuid?: string,
@@ -99,16 +100,16 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
   const saveChanges = async ({
     formFields,
     errHandler,
-    // @ts-ignore:next-line formFieldsChanged is only used in the below TODO
     formFieldsChanged,
+    dispatch,
   }: FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
     let err = null;
 
-    // TODO : Accurately detect if form fields have changed
-    // if (!formFieldsChanged && !idpMetadataError) {
-    //   // Don't submit if nothing has changed
-    //   return formFields;
-    // }
+    // Accurately detect if form fields have changed
+    if (!formFieldsChanged) {
+      // Don't submit if nothing has changed
+      return formFields;
+    }
     let updatedFormFields: SSOConfigCamelCase = omit(formFields, ['idpConnectOption', 'spMetadataUrl', 'isPendingConfiguration']);
     updatedFormFields.enterpriseCustomer = enterpriseId;
     const submittedFormFields: SSOConfigSnakeCase = snakeCaseDict(updatedFormFields) as SSOConfigSnakeCase;
@@ -120,6 +121,7 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
           formFields?.uuid,
         );
         updatedFormFields = updateResponse.data;
+        dispatch?.(resetFormEditState());
       } catch (error: AxiosError | any) {
         err = handleErrors(error);
         if (error.message?.includes('Must provide valid IDP metadata url')) {

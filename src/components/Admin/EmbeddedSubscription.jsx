@@ -67,7 +67,7 @@ const EmbeddedSubscription = () => {
                 <span className="ml-4.5"> Learn more helpful tips in </span>
                 <span>
                   <Link
-                    to={{ pathname: bestPracticesUrl }}
+                    to={bestPracticesUrl}
                     target="_blank"
                   >
                     Best Practices
