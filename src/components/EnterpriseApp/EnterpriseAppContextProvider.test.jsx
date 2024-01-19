@@ -23,31 +23,43 @@ describe('<EnterpriseAppContextProvider />', () => {
     isLoadingEnterpriseSubsidies: true,
     isLoadingSubsidyRequests: false,
     isLoadingEnterpriseCuration: false,
+    isLoadingUpdateActiveEnterpriseForUser: false,
   },
   {
     isLoadingEnterpriseSubsidies: false,
     isLoadingSubsidyRequests: true,
     isLoadingEnterpriseCuration: false,
+    isLoadingUpdateActiveEnterpriseForUser: false,
   },
   {
     isLoadingEnterpriseSubsidies: false,
     isLoadingSubsidyRequests: false,
     isLoadingEnterpriseCuration: true,
+    isLoadingUpdateActiveEnterpriseForUser: false,
   },
   {
     isLoadingEnterpriseSubsidies: true,
     isLoadingSubsidyRequests: true,
     isLoadingEnterpriseCuration: false,
+    isLoadingUpdateActiveEnterpriseForUser: false,
+  },
+  {
+    isLoadingEnterpriseSubsidies: false,
+    isLoadingSubsidyRequests: false,
+    isLoadingEnterpriseCuration: false,
+    isLoadingUpdateActiveEnterpriseForUser: true,
   },
   {
     isLoadingEnterpriseSubsidies: true,
     isLoadingSubsidyRequests: true,
     isLoadingEnterpriseCuration: true,
+    isLoadingUpdateActiveEnterpriseForUser: true,
   },
   ])('renders <EnterpriseAppSkeleton /> when: %s', async ({
     isLoadingEnterpriseSubsidies,
     isLoadingSubsidyRequests,
     isLoadingEnterpriseCuration,
+    isLoadingUpdateActiveEnterpriseForUser,
   }) => {
     const mockUseEnterpriseSubsidiesContext = jest.spyOn(enterpriseSubsidiesContext, 'useEnterpriseSubsidiesContext').mockReturnValue({
       isLoading: isLoadingEnterpriseSubsidies,
@@ -60,6 +72,11 @@ describe('<EnterpriseAppContextProvider />', () => {
     const mockUseEnterpriseCurationContext = jest.spyOn(hooks, 'useEnterpriseCurationContext').mockReturnValue(
       {
         isLoading: isLoadingEnterpriseCuration,
+      },
+    );
+    const mockUseUpdateActiveEnterpriseForUser = jest.spyOn(hooks, 'useUpdateActiveEnterpriseForUser').mockReturnValue(
+      {
+        isLoading: isLoadingUpdateActiveEnterpriseForUser,
       },
     );
 
@@ -75,11 +92,17 @@ describe('<EnterpriseAppContextProvider />', () => {
     );
 
     await waitFor(() => {
+      expect(mockUseUpdateActiveEnterpriseForUser).toHaveBeenCalled();
       expect(mockUseSubsidyRequestsContext).toHaveBeenCalled();
       expect(mockUseEnterpriseSubsidiesContext).toHaveBeenCalled();
       expect(mockUseEnterpriseCurationContext).toHaveBeenCalled();
 
-      if (isLoadingEnterpriseSubsidies || isLoadingSubsidyRequests || isLoadingEnterpriseCuration) {
+      if (
+        isLoadingEnterpriseSubsidies
+        || isLoadingSubsidyRequests
+        || isLoadingEnterpriseCuration
+        || isLoadingUpdateActiveEnterpriseForUser
+      ) {
         expect(screen.getByText('Loading...'));
       } else {
         expect(screen.getByText('children'));
