@@ -5,8 +5,9 @@ import {
   Tab,
 } from '@edx/paragon';
 import {
-  useNavigate,
+  useHistory,
   generatePath,
+  useRouteMatch,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -48,7 +49,8 @@ const SettingsTabs = ({
 
   const tab = useCurrentSettingsTab();
 
-  const navigate = useNavigate();
+  const history = useHistory();
+  const match = useRouteMatch();
 
   const tabArray = useMemo(() => {
     const initialTabs = [];
@@ -160,10 +162,10 @@ const SettingsTabs = ({
   const handleTabChange = (newTabValue) => {
     if (SETTINGS_TABS_VALUES[newTabValue]) {
       const newPath = generatePath(
-        `/:enterpriseSlug/admin/settings/:${SETTINGS_TAB_PARAM}`,
-        { enterpriseSlug, [SETTINGS_TAB_PARAM]: newTabValue },
+        match.path,
+        { [SETTINGS_TAB_PARAM]: newTabValue },
       );
-      navigate(newPath);
+      history.push({ pathname: newPath });
     }
   };
 

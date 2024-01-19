@@ -2,7 +2,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
@@ -98,12 +98,10 @@ const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
   <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
     <Provider store={store}>
       <IntlProvider locale="en">
-        <Routes>
-          <Route
-            path="/:enterpriseSlug/*"
-            element={<EnterpriseApp {...props} />}
-          />
-        </Routes>
+        <Route
+          path="/:enterpriseSlug"
+          render={(renderProps) => <EnterpriseApp {...renderProps} {...props} />}
+        />
       </IntlProvider>
     </Provider>
   </MemoryRouter>

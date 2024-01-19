@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailPage } from './SubscriptionDetailPage';
@@ -11,13 +12,6 @@ import {
   mockSubscriptionHooks,
   MockSubscriptionContext,
 } from '../subscriptions/tests/TestUtilities';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: () => ({
-    subscriptionUUID: '28d4dcdc-c026-4c02-a263-82dd9c0d8b43',
-  }),
-}));
 
 const subscriptionPlan = generateSubscriptionPlan({
   licenses: {
@@ -34,6 +28,15 @@ const defaultAppContext = {
   enterpriseSlug: 'test-enterprise',
   enterpriseConfig: {
     slug: 'test-enterprise',
+  },
+  match: {
+    subscription: {
+      uuid: '1234',
+    },
+    params: {
+      subscriptionUUID: '28d4dcdc-c026-4c02-a263-82dd9c0d8b43',
+    },
+    loadingSubscription: false,
   },
 };
 
@@ -52,20 +55,31 @@ const AppContextProvider = ({ children }) => (
 const SubscriptionDetailPageWrapper = ({ context = defaultAppContext }) => (
   <IntlProvider locale="en">
     <AppContextProvider>
-      <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
-        <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
-          <SubscriptionDetailPage
-            enterpriseSlug={context.enterpriseSlug}
-            match={context.match}
-          />
-        </MockSubscriptionContext>
-      </SubsidyRequestsContext.Provider>
+      <MemoryRouter initialEntries={['/test-enterprise/admin/subscriptions/1234']}>
+        <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
+          <MockSubscriptionContext subscriptionPlan={subscriptionPlan}>
+            <SubscriptionDetailPage
+              enterpriseSlug={context.enterpriseSlug}
+              match={context.match}
+            />
+          </MockSubscriptionContext>
+        </SubsidyRequestsContext.Provider>
+      </MemoryRouter>
     </AppContextProvider>
   </IntlProvider>
 );
 SubscriptionDetailPageWrapper.propTypes = {
   context: PropTypes.shape({
     enterpriseSlug: PropTypes.string,
+    match: PropTypes.shape({
+      subscription: PropTypes.shape({
+        uuid: PropTypes.string,
+      }),
+      params: PropTypes.shape({
+        subscriptionUUID: PropTypes.string,
+      }),
+      loadingSubscription: PropTypes.bool,
+    }),
   }).isRequired,
 };
 

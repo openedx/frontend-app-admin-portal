@@ -8,7 +8,7 @@ import {
   act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import NewFeatureAlertBrowseAndRequest, { generateBrowseAndRequestAlertCookieName } from './index';
@@ -30,16 +30,14 @@ const store = mockStore({
   },
 });
 
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-}));
+const useHistoryPush = jest.fn();
+
+const historyMock = { push: useHistoryPush, location: {}, listen: jest.fn() };
 
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`;
 
 const NewFeatureAlertBrowseAndRequestWrapper = () => (
-  <Router>
+  <Router history={historyMock}>
     <Provider store={store}>
       <IntlProvider locale="en">
         <NewFeatureAlertBrowseAndRequest />
@@ -72,6 +70,8 @@ describe('<NewFeatureAlertBrowseAndRequest/>', () => {
     render(<NewFeatureAlertBrowseAndRequestWrapper />);
     const button = screen.getByText(REDIRECT_SETTINGS_BUTTON_TEXT);
     await act(async () => { userEvent.click(button); });
-    expect(mockNavigate).toHaveBeenCalledWith(SETTINGS_PAGE_LOCATION);
+    expect(useHistoryPush).toHaveBeenCalledWith({
+      pathname: SETTINGS_PAGE_LOCATION,
+    });
   });
 });

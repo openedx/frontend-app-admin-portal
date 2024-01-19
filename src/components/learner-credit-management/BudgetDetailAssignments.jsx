@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Hyperlink } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
-import { useNavigate, useLocation } from 'react-router-dom';
 
+import { useHistory } from 'react-router-dom';
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
 import AssignMoreCoursesEmptyStateMinimal from './AssignMoreCoursesEmptyStateMinimal';
 import { useBudgetContentAssignments, useBudgetId, useSubsidyAccessPolicy } from './data';
@@ -18,9 +18,9 @@ const BudgetDetailAssignments = ({
   const assignedHeadingRef = useRef();
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const navigate = useNavigate();
+  const history = useHistory();
 
-  const location = useLocation();
+  const { location } = history;
   const { state: locationState } = location;
   const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
   const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
@@ -40,9 +40,9 @@ const BudgetDetailAssignments = ({
       assignedHeadingRef.current?.scrollIntoView({ behavior: 'smooth' });
       const newState = { ...locationState };
       delete newState.budgetActivityScrollToKey;
-      navigate(location.pathname, { ...location, state: newState, replace: true });
+      history.replace({ ...location, state: newState });
     }
-  }, [navigate, location, locationState]);
+  }, [history, location, locationState]);
 
   if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
     return null;

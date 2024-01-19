@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import AdminPage from '../../containers/AdminPage';
@@ -18,6 +18,7 @@ import ContentHighlights from '../ContentHighlights';
 import LearnerCreditManagementRoutes from '../learner-credit-management';
 
 const EnterpriseAppRoutes = ({
+  baseUrl,
   email,
   enterpriseId,
   enterpriseName,
@@ -28,23 +29,22 @@ const EnterpriseAppRoutes = ({
   enableContentHighlightsPage,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
-  const { enterpriseAppPage } = useParams();
-
   return (
-    <Routes>
-      {enterpriseAppPage === ROUTE_NAMES.learners && (
-        <Route
-          path="/:actionSlug?"
-          element={<AdminPage />}
-        />
-      )}
+    <Switch>
+      <Route
+        exact
+        path={`${baseUrl}/admin/learners/:actionSlug?`}
+        component={AdminPage}
+      />
 
-      {enableCodeManagementPage && enterpriseAppPage === ROUTE_NAMES.codeManagement && [
+      {enableCodeManagementPage && [
         <Route
           key="request-codes"
-          path="/request-codes"
-          element={(
+          exact
+          path={`${baseUrl}/admin/${ROUTE_NAMES.codeManagement}/request-codes`}
+          render={routeProps => (
             <RequestCodesPage
+              {...routeProps}
               emailAddress={email}
               enterpriseName={enterpriseName}
             />
@@ -52,73 +52,72 @@ const EnterpriseAppRoutes = ({
         />,
         <Route
           key="code-management"
-          path="/*"
-          element={<CodeManagementPage />}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`}
+          component={CodeManagementPage}
         />,
       ]}
 
-      {enableReportingPage && enterpriseAppPage === ROUTE_NAMES.reporting && (
+      {enableReportingPage && (
         <Route
           key="reporting-config"
-          path="/"
-          element={(enterpriseId
-            ? <ReportingConfig enterpriseId={enterpriseId} />
+          exact
+          path={`${baseUrl}/admin/${ROUTE_NAMES.reporting}`}
+          render={routeProps => (enterpriseId
+            ? <ReportingConfig {...routeProps} enterpriseId={enterpriseId} />
             : <LoadingMessage className="overview" />
           )}
         />
       )}
 
-      {enableSubscriptionManagementPage && enterpriseAppPage === ROUTE_NAMES.subscriptionManagement && (
+      {enableSubscriptionManagementPage && (
         <Route
           key="subscription-management"
-          path="/*"
-          element={<SubscriptionManagementPage />}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`}
+          component={SubscriptionManagementPage}
         />
       )}
 
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics && (
+      {enableAnalyticsPage && (
         <Route
           key="analytics"
-          path="/"
-          element={<PlotlyAnalyticsPage />}
+          exact
+          path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
+          component={PlotlyAnalyticsPage}
         />
       )}
 
-      {enterpriseAppPage === ROUTE_NAMES.bulkEnrollmentResults && (
+      <Route
+        exact
+        path={`${baseUrl}/admin/${ROUTE_NAMES.bulkEnrollmentResults}/:bulkEnrollmentJobId`}
+        component={BulkEnrollmentResultsDownloadPage}
+      />
+
+      <Route
+        path={`${baseUrl}/admin/${ROUTE_NAMES.settings}`}
+        component={SettingsPage}
+      />
+
+      {canManageLearnerCredit && (
         <Route
-          path="/:bulkEnrollmentJobId"
-          element={<BulkEnrollmentResultsDownloadPage />}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`}
+          component={LearnerCreditManagementRoutes}
         />
       )}
 
-      {enterpriseAppPage === ROUTE_NAMES.settings && (
+      {enableContentHighlightsPage && (
         <Route
-          keyName="/admin/settings"
-          path="/*"
-          element={<SettingsPage />}
+          path={`${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`}
+          component={ContentHighlights}
         />
       )}
 
-      {canManageLearnerCredit && enterpriseAppPage === ROUTE_NAMES.learnerCredit && (
-        <Route
-          path="/*"
-          element={<LearnerCreditManagementRoutes />}
-        />
-      )}
-
-      {enableContentHighlightsPage && enterpriseAppPage === ROUTE_NAMES.contentHighlights && (
-        <Route
-          path="/*"
-          element={<ContentHighlights />}
-        />
-      )}
-
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+      <Route path="*" component={NotFoundPage} />
+    </Switch>
   );
 };
 
 EnterpriseAppRoutes.propTypes = {
+  baseUrl: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string.isRequired,

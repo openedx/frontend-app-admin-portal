@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Hyperlink } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
-import { useNavigate, useLocation } from 'react-router-dom';
 
+import { useHistory } from 'react-router';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { useBudgetId, useBudgetRedemptions } from './data';
 
 const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const history = useHistory();
+  const { location } = history;
   const { state: locationState } = location;
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const spentHeadingRef = useRef();
@@ -30,9 +30,9 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
       spentHeadingRef.current?.scrollIntoView({ behavior: 'smooth' });
       const newState = { ...locationState };
       delete newState.budgetActivityScrollToKey;
-      navigate(location.pathname, { ...location, state: newState });
+      history.replace({ ...location, state: newState });
     }
-  }, [navigate, location, locationState]);
+  }, [history, location, locationState]);
 
   return (
     <section>

@@ -6,12 +6,11 @@ import {
   Button, Col, Hyperlink, ProgressBar, Row, Stack, useMediaQuery, breakpoints,
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
-import { generatePath, useParams, Link } from 'react-router-dom';
+import { generatePath, useRouteMatch, Link } from 'react-router-dom';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { configuration } from '../../config';
 import EVENT_NAMES from '../../eventTracking';
-import { LEARNER_CREDIT_ROUTE } from './constants';
 
 const BudgetDetail = ({ available, utilized, limit }) => {
   const currentProgressBarLimit = (available / limit) * 100;
@@ -42,7 +41,7 @@ BudgetDetail.propTypes = {
 };
 
 const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
-  const { enterpriseSlug, enterpriseAppPage } = useParams();
+  const routeMatch = useRouteMatch();
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -102,10 +101,10 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
           className="mt-3"
           iconBefore={Add}
           as={Link}
-          to={generatePath(LEARNER_CREDIT_ROUTE, {
-            enterpriseSlug, enterpriseAppPage, budgetId, activeTabKey: 'catalog',
-          })}
-          state={{ budgetActivityScrollToKey: 'catalog' }}
+          to={{
+            pathname: generatePath(routeMatch.path, { budgetId, activeTabKey: 'catalog' }),
+            state: { budgetActivityScrollToKey: 'catalog' },
+          }}
           onClick={() => sendEnterpriseTrackEvent(
             enterpriseId,
             EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_NEW_ASSIGNMENT,

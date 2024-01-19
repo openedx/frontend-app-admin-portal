@@ -10,7 +10,6 @@ import 'font-awesome/css/font-awesome.css';
 import TableLoadingSkeleton from './TableLoadingSkeleton';
 import TableLoadingOverlay from '../TableLoadingOverlay';
 import { updateUrl } from '../../utils';
-import { withLocation, withNavigate } from '../../hoc';
 
 class TableComponent extends React.Component {
   componentDidMount() {
@@ -57,12 +56,10 @@ class TableComponent extends React.Component {
       enterpriseId,
       defaultSortIndex,
       defaultSortType,
-      navigate,
-      location,
     } = this.props;
 
     const sortByColumn = (column, direction) => {
-      updateUrl(navigate, location.pathname, {
+      updateUrl({
         page: 1,
         ordering: direction === 'desc' ? `-${column.key}` : column.key,
       });
@@ -111,7 +108,7 @@ class TableComponent extends React.Component {
               pageCount={pageCount}
               currentPage={currentPage}
               onPageSelect={(page) => {
-                updateUrl(this.props.navigate, this.props.location.pathname, { page });
+                updateUrl({ page });
                 sendEnterpriseTrackEvent(enterpriseId, 'edx.ui.enterprise.admin_portal.table.paginated', {
                   tableId: id,
                   page,
@@ -192,10 +189,8 @@ TableComponent.propTypes = {
   sortTable: PropTypes.func.isRequired,
   clearTable: PropTypes.func.isRequired,
   location: PropTypes.shape({
-    pathname: PropTypes.string,
     search: PropTypes.string,
   }).isRequired,
-  navigate: PropTypes.func,
 };
 
 TableComponent.defaultProps = {
@@ -211,4 +206,4 @@ TableComponent.defaultProps = {
   loading: false,
 };
 
-export default withLocation(withNavigate(TableComponent));
+export default TableComponent;

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import EnterpriseApp from '../../components/EnterpriseApp';
 
@@ -38,4 +39,4 @@ const mapDispatchToProps = dispatch => ({
 
 const ConnectedEnterpriseApp = connect(mapStateToProps, mapDispatchToProps)(EnterpriseApp);
 
-export default ConnectedEnterpriseApp;
+export default withRouter(ConnectedEnterpriseApp);

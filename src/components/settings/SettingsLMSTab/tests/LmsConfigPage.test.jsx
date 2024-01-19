@@ -5,6 +5,8 @@ import {
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import configureMockStore from 'redux-mock-store';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
@@ -246,6 +248,7 @@ describe('<SettingsLMSTab />', () => {
     expect(screen.queryByText('Enable connection to SAP Success Factors')).toBeFalsy();
   });
   test('Expected behavior when customer has no IDP configured', async () => {
+    const history = createMemoryHistory();
     const samlConfigurationScreenEnabled = true;
     const needsSSOState = {
       portalConfiguration: {
@@ -256,21 +259,23 @@ describe('<SettingsLMSTab />', () => {
       },
     };
     const NeedsSSOConfigLMSWrapper = () => (
-      <Provider store={mockStore({ ...needsSSOState })}>
-        <SettingsLMSTab
-          enterpriseId={enterpriseId}
-          enterpriseSlug={enterpriseSlug}
-          identityProvider={identityProvider}
-          enableSamlConfigurationScreen={samlConfigurationScreenEnabled}
-        />
-      </Provider>
+      <Router history={history}>
+        <Provider store={mockStore({ ...needsSSOState })}>
+          <SettingsLMSTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            identityProvider={identityProvider}
+            enableSamlConfigurationScreen={samlConfigurationScreenEnabled}
+          />
+        </Provider>
+      </Router>
     );
     renderWithRouter(<NeedsSSOConfigLMSWrapper />);
-    expect(window.location.pathname).toEqual('/');
+    expect(history.location.pathname).toEqual('/');
     await screen.findByText('No SSO configured');
     const configureSSOButton = screen.getByText('Configure SSO');
     await waitFor(() => userEvent.click(configureSSOButton));
-    expect(window.location.pathname).toEqual(`/${enterpriseSlug}/admin/settings/sso`);
+    expect(history.location.pathname).toEqual(`/${enterpriseSlug}/admin/settings/sso`);
   });
   test('Expected behavior when customer has IDP configured', async () => {
     renderWithRouter(<SettingsLMSWrapper />);

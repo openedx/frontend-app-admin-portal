@@ -12,10 +12,10 @@ import { features } from '../../../../config';
 
 jest.mock('../../../../data/services/LmsApiService');
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: () => ({
-    pathname: 'https://www.test.com/',
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useRouteMatch: () => ({
+    url: 'https://www.test.com/',
   }),
 }));
 

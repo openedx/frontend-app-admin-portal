@@ -6,7 +6,7 @@ import {
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 import SettingsPage from '../index';
 
 jest.mock('../SettingsTabs');
@@ -24,9 +24,9 @@ const store = mockStore({
 const settingsPageWithRouter = (route) => (
   <MemoryRouter initialEntries={[route]}>
     <Provider store={store}>
-      <Routes>
-        <Route path="/settings/*" element={<SettingsPage />} />
-      </Routes>
+      <Route path="/settings">
+        <SettingsPage />
+      </Route>
     </Provider>
   </MemoryRouter>
 );

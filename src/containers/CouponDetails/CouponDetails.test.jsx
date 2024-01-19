@@ -20,6 +20,7 @@ import CouponDetails from './index';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
 import CodeReminderModal from '../CodeReminderModal';
 import CodeAssignmentModal from '../../components/CodeAssignmentModal';
+import { renderWithRouter } from '../../components/test/testUtils';
 import {
   ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
 } from '../../components/CouponDetails/constants';
@@ -172,7 +173,7 @@ describe('CouponDetails container', () => {
       expect(screen.queryByText('Coupon Details')).not.toBeInTheDocument();
     });
     it('renders an expanded page', () => {
-      render(<CouponDetailsWrapper store={store} isExpanded />);
+      renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
       expect(screen.getByText('Coupon Details')).toBeInTheDocument();
       expect(screen.getByText('Download full report (CSV)')).toBeInTheDocument();
     });
@@ -183,7 +184,7 @@ describe('CouponDetails container', () => {
           'coupon-details': sampleTableData,
         },
       });
-      render(<CouponDetailsWrapper store={store} isExpanded />);
+      renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
       expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
       DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
         expect(screen.getByText(label)).toBeInTheDocument();
@@ -202,7 +203,7 @@ describe('CouponDetails container', () => {
           'coupon-details': sampleTableData,
         },
       });
-      render(<CouponDetailsWrapper store={store} isExpanded />);
+      renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
       userEvent.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
 
       DEFAULT_TABLE_COLUMNS[filterType].forEach(({ label }) => {
@@ -218,7 +219,7 @@ describe('CouponDetails container', () => {
         },
       });
 
-      render(<CouponDetailsWrapper
+      renderWithRouter(<CouponDetailsWrapper
         store={store}
         couponData={{
           ...initialCouponData,
@@ -239,7 +240,7 @@ describe('CouponDetails container', () => {
         },
       });
 
-      render(<CouponDetailsWrapper
+      renderWithRouter(<CouponDetailsWrapper
         store={store}
         couponData={{
           ...initialCouponData,
@@ -348,7 +349,7 @@ describe('CouponDetails container', () => {
   });
 
   it('disables bulk action select when unassignedCodes === 0', () => {
-    render((
+    renderWithRouter((
       <CouponDetailsWrapper
         couponData={{
           ...initialCouponData,
@@ -368,7 +369,7 @@ describe('CouponDetails container', () => {
       },
     });
 
-    render(<CouponDetailsWrapper store={store} isExpanded />);
+    renderWithRouter(<CouponDetailsWrapper store={store} isExpanded />);
 
     expect(screen.getByLabelText('Bulk action')).toBeEnabled();
   });

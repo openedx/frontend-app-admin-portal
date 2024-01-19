@@ -60,8 +60,9 @@ const AdminWrapper = props => (
               course_start: Date.now(),
             },
           ]}
-          location={{
-            pathname: '/',
+          match={{
+            params: {},
+            url: '/',
           }}
           {...props}
           fetchDashboardInsights={() => {}}
@@ -456,9 +457,11 @@ describe('<Admin />', () => {
                 },
               },
             }}
-            actionSlug={key}
-            location={{
-              pathname: '/',
+            match={{
+              url: '/',
+              params: {
+                actionSlug: key !== 'enrollments' ? key : undefined,
+              },
             }}
           />
         ));

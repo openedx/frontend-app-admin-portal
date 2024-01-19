@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import { useLocation } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Icon } from '@edx/paragon';
 import { Check } from '@edx/paragon/icons';
 
@@ -93,8 +93,8 @@ const CodeSearchResultsTable = ({
   shouldRefreshTable,
   onRemindSuccess,
   onRevokeSuccess,
+  location,
 }) => {
-  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const formatSearchResultsData = (results) => {
     const transformedSearchResults = transformSearchResults(results);
@@ -168,6 +168,9 @@ CodeSearchResultsTable.propTypes = {
   shouldRefreshTable: PropTypes.bool.isRequired,
   onRemindSuccess: PropTypes.func.isRequired,
   onRevokeSuccess: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
 };
 
-export default CodeSearchResultsTable;
+export default withRouter(CodeSearchResultsTable);

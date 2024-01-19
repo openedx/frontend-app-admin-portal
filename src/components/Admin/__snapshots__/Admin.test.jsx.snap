@@ -144,9 +144,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          >
-            
-          </div>
+          />
         </div>
         <div
           className="row"
@@ -798,13 +796,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             <h2
               className="table-title"
             >
-              Full Report
+              Number of Courses Enrolled by Learners
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -853,183 +877,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field11"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field11"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field12"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field12"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-13"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-13"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -1667,13 +1516,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             <h2
               className="table-title"
             >
-              Full Report
+              Number of Courses Completed by Learner
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -1722,183 +1597,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field36"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field36"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field37"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field37"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-38"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-38"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -2536,13 +2236,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             <h2
               className="table-title"
             >
-              Full Report
+              Number of Courses Completed by Learner
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -2550,7 +2276,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         >
           <div
             className="col"
-          />
+          >
+            <h3>
+              Past Week
+            </h3>
+          </div>
         </div>
       </div>
     </div>
@@ -2591,183 +2321,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field41"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field41"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field42"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field42"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-43"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-43"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -3410,9 +2965,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          >
-            
-          </div>
+          />
         </div>
         <div
           className="row"
@@ -3481,7 +3034,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field46"
+                    htmlFor="form-field6"
                   >
                     Filter by course
                   </label>
@@ -3490,7 +3043,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <select
                       className="form-control"
-                      id="form-field46"
+                      id="form-field6"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -3512,7 +3065,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field47"
+                    htmlFor="form-field7"
                   >
                     Filter by start date
                     <span
@@ -3546,7 +3099,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     <select
                       className="form-control"
                       disabled={true}
-                      id="form-field47"
+                      id="form-field7"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -3581,7 +3134,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-48"
+                      htmlFor="pgn-searchfield-input-8"
                     >
                       <span
                         className="sr-only"
@@ -3593,7 +3146,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                       className="form-control"
                       data-hj-suppress={true}
                       disabled={false}
-                      id="pgn-searchfield-input-48"
+                      id="pgn-searchfield-input-8"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -4279,9 +3832,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          >
-            
-          </div>
+          />
         </div>
         <div
           className="row"
@@ -5143,13 +4694,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             <h2
               className="table-title"
             >
-              Full Report
+              Learners Enrolled in a Course
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -5157,7 +4734,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <div
             className="col"
-          />
+          >
+            <h3>
+              Not Active in Past Month
+            </h3>
+          </div>
         </div>
       </div>
     </div>
@@ -5198,183 +4779,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field31"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field31"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field32"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field32"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-33"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-33"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -6012,13 +5418,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             <h2
               className="table-title"
             >
-              Full Report
+              Learners Enrolled in a Course
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -6026,7 +5458,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <div
             className="col"
-          />
+          >
+            <h3>
+              Not Active in Past Week
+            </h3>
+          </div>
         </div>
       </div>
     </div>
@@ -6067,183 +5503,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field26"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field26"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field27"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field27"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-28"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-28"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -6881,13 +6142,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             <h2
               className="table-title"
             >
-              Full Report
+              Learners Not Enrolled in an Active Course
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -6895,7 +6182,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         >
           <div
             className="col"
-          />
+          >
+            <p>
+              Learners who have completed all of their courses and/or courses have ended.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -6936,183 +6227,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field16"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field16"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field17"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field17"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-18"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-18"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -7750,13 +6866,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             <h2
               className="table-title"
             >
-              Full Report
+              Registered Learners Not Yet Enrolled in a Course
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -7805,183 +6947,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field6"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field6"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field7"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field7"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-8"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-8"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -8619,13 +7586,39 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             <h2
               className="table-title"
             >
-              Full Report
+              Learners Enrolled in a Course
             </h2>
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
           >
-            
+            <a
+              className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3"
+              href="/"
+              onClick={[Function]}
+            >
+              <span
+                className="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Reset to 
+              Full Report
+            </a>
           </div>
         </div>
         <div
@@ -8633,7 +7626,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         >
           <div
             className="col"
-          />
+          >
+            <h3>
+              Top Active Learners
+            </h3>
+          </div>
         </div>
       </div>
     </div>
@@ -8674,183 +7671,8 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   fill="currentColor"
                 />
               </svg>
-              Download full report (CSV)
+              Download current report (CSV)
             </button>
-          </div>
-        </div>
-        <div
-          className="row"
-        >
-          <div
-            className="col-12 pr-md-0 mb-0"
-          >
-            <div
-              className="row w-100 m-0"
-            >
-              <div
-                className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field21"
-                  >
-                    Filter by course
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      id="form-field21"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        All Courses
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3"
-              >
-                <div
-                  className="pgn__form-group"
-                >
-                  <label
-                    className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field22"
-                  >
-                    Filter by start date
-                    <span
-                      alt="More information"
-                      className="pgn__icon ml-1"
-                      onBlur={[Function]}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                  <div
-                    className="pgn__form-control-decorator-group w-100"
-                  >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="form-field22"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        value=""
-                      >
-                        Choose a course
-                      </option>
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-              >
-                <label
-                  className="pgn__form-label mb-2"
-                  id="search-email-label"
-                >
-                  Filter by email
-                </label>
-                <div
-                  className="pgn__searchfield d-flex py-0"
-                >
-                  <form
-                    className="d-flex align-items-center w-100"
-                    onReset={[Function]}
-                    onSubmit={[Function]}
-                    role="search"
-                  >
-                    <label
-                      className="m-0"
-                      htmlFor="pgn-searchfield-input-23"
-                    >
-                      <span
-                        className="sr-only"
-                      >
-                        search
-                      </span>
-                    </label>
-                    <input
-                      className="form-control"
-                      data-hj-suppress={true}
-                      disabled={false}
-                      id="pgn-searchfield-input-23"
-                      name="searchfield-input"
-                      onBlur={[Function]}
-                      onChange={[Function]}
-                      onFocus={[Function]}
-                      placeholder="Search by email..."
-                      role="searchbox"
-                      type="text"
-                      value=""
-                    />
-                    <button
-                      className="btn"
-                      disabled={false}
-                      type="submit"
-                    >
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      <span
-                        className="sr-only"
-                      >
-                        submit search
-                      </span>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div
@@ -9542,9 +8364,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          >
-            
-          </div>
+          />
         </div>
         <div
           className="row"
@@ -9613,7 +8433,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field56"
+                    htmlFor="form-field16"
                   >
                     Filter by course
                   </label>
@@ -9622,7 +8442,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                   >
                     <select
                       className="form-control"
-                      id="form-field56"
+                      id="form-field16"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -9644,7 +8464,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field57"
+                    htmlFor="form-field17"
                   >
                     Filter by start date
                     <span
@@ -9678,7 +8498,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                     <select
                       className="form-control"
                       disabled={true}
-                      id="form-field57"
+                      id="form-field17"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -9713,7 +8533,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-58"
+                      htmlFor="pgn-searchfield-input-18"
                     >
                       <span
                         className="sr-only"
@@ -9725,7 +8545,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                       className="form-control"
                       data-hj-suppress={true}
                       disabled={false}
-                      id="pgn-searchfield-input-58"
+                      id="pgn-searchfield-input-18"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}
@@ -9908,9 +8728,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          >
-            
-          </div>
+          />
         </div>
         <div
           className="row"
@@ -10080,9 +8898,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          >
-            
-          </div>
+          />
         </div>
         <div
           className="row"
@@ -10784,9 +9600,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
           </div>
           <div
             className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1"
-          >
-            
-          </div>
+          />
         </div>
         <div
           className="row"
@@ -10855,7 +9669,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field51"
+                    htmlFor="form-field11"
                   >
                     Filter by course
                   </label>
@@ -10864,7 +9678,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                   >
                     <select
                       className="form-control"
-                      id="form-field51"
+                      id="form-field11"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -10886,7 +9700,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                 >
                   <label
                     className="pgn__form-label search-label mb-2"
-                    htmlFor="form-field52"
+                    htmlFor="form-field12"
                   >
                     Filter by start date
                     <span
@@ -10920,7 +9734,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                     <select
                       className="form-control"
                       disabled={true}
-                      id="form-field52"
+                      id="form-field12"
                       onBlur={[Function]}
                       onChange={[Function]}
                       value=""
@@ -10955,7 +9769,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                   >
                     <label
                       className="m-0"
-                      htmlFor="pgn-searchfield-input-53"
+                      htmlFor="pgn-searchfield-input-13"
                     >
                       <span
                         className="sr-only"
@@ -10967,7 +9781,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                       className="form-control"
                       data-hj-suppress={true}
                       disabled={false}
-                      id="pgn-searchfield-input-53"
+                      id="pgn-searchfield-input-13"
                       name="searchfield-input"
                       onBlur={[Function]}
                       onChange={[Function]}

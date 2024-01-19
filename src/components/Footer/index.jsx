@@ -69,7 +69,7 @@ class Footer extends React.Component {
                 <li className="nav-item">
                   <Link
                     className="nav-link px-2"
-                    to={configuration.ENTERPRISE_SUPPORT_URL}
+                    to={{ pathname: configuration.ENTERPRISE_SUPPORT_URL }}
                     target="_blank"
                   >
                     {formatMessage(messages.support)}

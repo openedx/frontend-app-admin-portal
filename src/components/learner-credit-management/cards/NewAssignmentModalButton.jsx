@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useNavigate, generatePath } from 'react-router-dom';
+import { useRouteMatch, useHistory, generatePath } from 'react-router-dom';
 import {
   FullscreenModal,
   ActionRow,
@@ -21,7 +21,6 @@ import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy }
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
-import { LEARNER_CREDIT_ROUTE } from '../constants';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -34,8 +33,8 @@ const useAllocateContentAssignments = () => useMutation({
 });
 
 const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
-  const navigate = useNavigate();
-  const { enterpriseSlug, enterpriseAppPage } = useParams();
+  const history = useHistory();
+  const routeMatch = useRouteMatch();
   const queryClient = useQueryClient();
   const { subsidyAccessPolicyId } = useBudgetId();
   const [isOpen, open, close] = useToggle(false);
@@ -64,9 +63,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   };
 
   const { mutate } = useAllocateContentAssignments();
-  const pathToActivityTab = generatePath(LEARNER_CREDIT_ROUTE, {
-    enterpriseSlug, enterpriseAppPage, budgetId: subsidyAccessPolicyId, activeTabKey: 'activity',
-  });
+  const pathToActivityTab = generatePath(routeMatch.path, { budgetId: subsidyAccessPolicyId, activeTabKey: 'activity' });
 
   const handleOpenAssignmentModal = () => {
     open();
@@ -150,7 +147,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
         });
 
         // Navigate to the activity tab
-        navigate(pathToActivityTab);
+        history.push(pathToActivityTab);
       },
       onError: (err) => {
         const {

@@ -213,8 +213,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
       activeTabKey: 'activity',
     });
@@ -236,8 +234,6 @@ describe('<BudgetDetailPage />', () => {
     { displayName: 'Test Budget Display Name' },
   ])('renders budget header data (%s)', ({ displayName }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
       activeTabKey: 'activity',
     });
@@ -373,8 +369,6 @@ describe('<BudgetDetailPage />', () => {
     isLoading,
   }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
       activeTabKey: 'activity',
     });
@@ -448,8 +442,6 @@ describe('<BudgetDetailPage />', () => {
   ])('displays budget activity overview empty state', async ({ isLargeViewport }) => {
     useIsLargeOrGreater.mockReturnValue(isLargeViewport);
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
       activeTabKey: 'activity',
     });
@@ -499,8 +491,6 @@ describe('<BudgetDetailPage />', () => {
     expectedUseOfferRedemptionsArgs,
   }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId,
       activeTabKey: 'activity',
     });
@@ -566,8 +556,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', async () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -630,8 +618,6 @@ describe('<BudgetDetailPage />', () => {
   it('renders with assigned table data and handles table refresh', () => {
     const NUMBER_OF_ASSIGNMENTS_TO_GENERATE = 60;
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -717,8 +703,6 @@ describe('<BudgetDetailPage />', () => {
     { sortByColumnHeader: 'Amount', expectedSortBy: [{ id: 'amount', desc: false }] },
   ])('renders sortable assigned table data', async ({ sortByColumnHeader, expectedSortBy }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -800,8 +784,6 @@ describe('<BudgetDetailPage />', () => {
     const { field, value } = filterBy;
 
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -890,8 +872,6 @@ describe('<BudgetDetailPage />', () => {
     },
   ])('renders sortable assigned table data (%s)', async ({ columnHeader, columnId }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -958,8 +938,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('renders with assigned table data "View Course" hyperlink default when content title is null', () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1146,8 +1124,6 @@ describe('<BudgetDetailPage />', () => {
     errorReason,
   }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1225,8 +1201,6 @@ describe('<BudgetDetailPage />', () => {
     { displayName: 'Test Budget Display Name' },
   ])('renders with catalog tab active on initial load for assignable budgets with %s display name', ({ displayName }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'catalog',
     });
@@ -1247,8 +1221,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('hides catalog tab when budget is not assignable', () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1287,8 +1259,6 @@ describe('<BudgetDetailPage />', () => {
       },
     };
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1319,8 +1289,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('defaults to activity tab is no activeTabKey is provided', () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: undefined,
     });
@@ -1343,8 +1311,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('displays not found message is invalid activeTabKey is provided', () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'invalid',
     });
@@ -1363,8 +1329,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('handles user switching to catalog tab', async () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1392,8 +1356,6 @@ describe('<BudgetDetailPage />', () => {
 
   it('displays loading message while loading subsidy access policy metadata from API', () => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1424,8 +1386,6 @@ describe('<BudgetDetailPage />', () => {
     { isActivityOverviewLoading: false },
   ])('displays loading skeletons while fetching budget detail activity overview data from API endpoints (%s)', ({ isActivityOverviewLoading }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1453,8 +1413,6 @@ describe('<BudgetDetailPage />', () => {
     },
   ])('displays remind and cancel row and bulk actions when appropriate (%s)', async ({ learnerState, shouldDisplayRemindAction }) => {
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1514,8 +1472,6 @@ describe('<BudgetDetailPage />', () => {
   it('cancels assignments in bulk', async () => {
     EnterpriseAccessApiService.cancelAllContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1596,8 +1552,6 @@ describe('<BudgetDetailPage />', () => {
   it('reminds assignments in bulk', async () => {
     EnterpriseAccessApiService.remindAllContentAssignments.mockResolvedValueOnce({ status: 202 });
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1688,8 +1642,6 @@ describe('<BudgetDetailPage />', () => {
   it('cancels a single assignment', async () => {
     EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });
@@ -1748,8 +1700,6 @@ describe('<BudgetDetailPage />', () => {
   it('reminds a single assignment', async () => {
     EnterpriseAccessApiService.remindContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
       budgetId: mockSubsidyAccessPolicyUUID,
       activeTabKey: 'activity',
     });

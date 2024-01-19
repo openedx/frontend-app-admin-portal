@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import MultipleSubscriptionsPage from './MultipleSubscriptionsPage';
@@ -31,24 +31,28 @@ const SubscriptionPlanRoutes = ({ enterpriseSlug }) => {
     return actions;
   };
 
+  const baseManageLearnersPath = `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`;
   const redirectPage = `${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`;
 
   return (
-    <Routes>
+    <>
       <Route
-        path="/"
-        element={(
+        path={baseManageLearnersPath}
+        render={routeProps => (
           <MultipleSubscriptionsPage
+            {...routeProps}
             redirectPage={redirectPage}
             createActions={multipleSubsCreateActions}
           />
         )}
+        exact
       />
       <Route
-        path="/:subscriptionUUID"
-        element={<ConnectedSubscriptionDetailPage />}
+        path={`${baseManageLearnersPath}/:subscriptionUUID`}
+        component={ConnectedSubscriptionDetailPage}
+        exact
       />
-    </Routes>
+    </>
   );
 };
 

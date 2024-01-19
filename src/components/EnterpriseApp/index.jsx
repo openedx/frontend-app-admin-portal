@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@edx/paragon';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
@@ -15,7 +15,6 @@ import ProductTours from '../ProductTours/ProductTours';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EnterpriseAppContent from './EnterpriseAppContent';
-import { withLocation, withParams } from '../../hoc';
 
 class EnterpriseApp extends React.Component {
   constructor(props) {
@@ -30,13 +29,17 @@ class EnterpriseApp extends React.Component {
   }
 
   componentDidMount() {
-    const { enterpriseSlug } = this.props;
+    const {
+      match: { params: { enterpriseSlug } },
+    } = this.props;
     this.props.fetchPortalConfiguration(enterpriseSlug);
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is in header
   }
 
   componentDidUpdate(prevProps) {
-    const { pathname } = this.props.location;
+    const {
+      location: { pathname },
+    } = this.props;
 
     if (pathname !== prevProps.location.pathname) {
       this.handleSidebarMenuItemClick();
@@ -75,7 +78,7 @@ class EnterpriseApp extends React.Component {
   render() {
     const {
       error,
-      enterpriseSlug,
+      match,
       enableCodeManagementScreen,
       enableSubscriptionManagementScreen,
       enableAnalyticsScreen,
@@ -88,7 +91,10 @@ class EnterpriseApp extends React.Component {
       loading,
     } = this.props;
     const { sidebarWidth } = this.state;
-    const url = this.props.location.pathname;
+    const {
+      url,
+      params: { enterpriseSlug },
+    } = match;
     const baseUrl = url.split('/').slice(0, 2).join('/');
     const defaultContentPadding = 10; // 10px for appropriate padding
     const { isActive, roles, email } = getAuthenticatedUser() || {};
@@ -102,7 +108,7 @@ class EnterpriseApp extends React.Component {
 
     if (isUserMissingJWTRoles || isUserLoadedAndInactive) {
       return (
-        <Navigate to={`/${enterpriseSlug}/admin/register/activate`} replace />
+        <Redirect to={`/${enterpriseSlug}/admin/register/activate`} />
       );
     }
 
@@ -145,6 +151,7 @@ class EnterpriseApp extends React.Component {
                   }}
                 >
                   <EnterpriseAppContent
+                    baseUrl={baseUrl}
                     email={email}
                     enterpriseId={enterpriseId}
                     enterpriseName={enterpriseName}
@@ -184,7 +191,12 @@ EnterpriseApp.defaultProps = {
 };
 
 EnterpriseApp.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      enterpriseSlug: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   enterpriseId: PropTypes.string,
   enterpriseName: PropTypes.string,
   enterpriseFeatures: PropTypes.shape({
@@ -200,6 +212,9 @@ EnterpriseApp.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.func,
+  }).isRequired,
   toggleSidebarToggle: PropTypes.func.isRequired,
   enableCodeManagementScreen: PropTypes.bool,
   enableSubscriptionManagementScreen: PropTypes.bool,
@@ -210,4 +225,4 @@ EnterpriseApp.propTypes = {
   loading: PropTypes.bool,
 };
 
-export default withLocation(withParams(EnterpriseApp));
+export default EnterpriseApp;

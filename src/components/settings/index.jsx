@@ -2,16 +2,16 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import {
   Route,
-  Routes,
-  Navigate,
-  useLocation,
+  Switch,
+  Redirect,
+  useRouteMatch,
 } from 'react-router-dom';
 
 import Hero from '../Hero';
 import NotFoundPage from '../NotFoundPage';
 import {
   DEFAULT_TAB,
-  SETTINGS_TABS_VALUES,
+  SETTINGS_PARAM_MATCH,
 } from './data/constants';
 import SettingsTabs from './SettingsTabs';
 import SyncHistory from './SettingsLMSTab/ErrorReporting/SyncHistory';
@@ -23,30 +23,28 @@ const PAGE_TILE = 'Settings';
  * When browsing to {path} (../admin/settings) redirect to default tab
  */
 const SettingsPage = () => {
-  const { pathname } = useLocation();
-
+  const { path } = useRouteMatch();
   return (
     <>
       <Helmet title={PAGE_TILE} />
       <Hero title={PAGE_TILE} />
-      <Routes>
-        <Route
-          path="/"
-          element={<Navigate to={`${pathname}/${DEFAULT_TAB}`} />}
+      <Switch>
+        <Redirect
+          exact
+          from={path}
+          to={`${path}/${DEFAULT_TAB}`}
         />
-        {Object.values(SETTINGS_TABS_VALUES).map(path => (
-          <Route
-            key={path}
-            path={`/${path}`}
-            element={<SettingsTabs />}
-          />
-        ))}
         <Route
-          path="lms/:lms/:configId"
-          element={<SyncHistory />}
+          exact
+          path={`${path}/${SETTINGS_PARAM_MATCH}`}
+          component={SettingsTabs}
         />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+        <Route
+          path={`${path}/lms/:lms/:configId`}
+          component={SyncHistory}
+        />
+        <Route path="" component={NotFoundPage} />
+      </Switch>
     </>
   );
 };

@@ -2,16 +2,16 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import dayjs from 'dayjs';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import {
   TEST_ENTERPRISE_CUSTOMER_SLUG, createMockStore,
 } from './TestUtilities';
 import SubscriptionManagementPage from '../SubscriptionManagementPage';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
+import { renderWithRouter } from '../../test/testUtils';
 import * as hooks from '../data/hooks';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
@@ -78,14 +78,7 @@ describe('SubscriptionManagementPage', () => {
         <Provider store={mockStore}>
           <IntlProvider locale="en">
             <SubsidyRequestsContext.Provider value={subsidyRequestsState}>
-              <MemoryRouter initialEntries={[`/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`]}>
-                <Routes>
-                  <Route
-                    path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/*`}
-                    element={<SubscriptionManagementPage />}
-                  />
-                </Routes>
-              </MemoryRouter>
+              <SubscriptionManagementPage />
             </SubsidyRequestsContext.Provider>
           </IntlProvider>
         </Provider>
@@ -93,7 +86,10 @@ describe('SubscriptionManagementPage', () => {
     };
 
     it('renders the correct button text on subscription cards', async () => {
-      render(<SubscriptionManagementPageWrapper />);
+      renderWithRouter(<SubscriptionManagementPageWrapper />, {
+        route: `/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`,
+        path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
+      });
       expect(screen.getByText('Manage learners'));
       expect(screen.getByText('View learners'));
     });

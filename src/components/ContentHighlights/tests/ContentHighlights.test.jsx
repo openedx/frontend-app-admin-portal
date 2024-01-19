@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { useHistory } from 'react-router-dom';
 import ContentHighlights from '../ContentHighlights';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 
@@ -26,28 +27,43 @@ const initialState = {
 
 const ContentHighlightsWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
-  location,
-}) => (
-  <IntlProvider locale="en">
-    <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlights location={location} />
-      </EnterpriseAppContext.Provider>
-    </Provider>
-  </IntlProvider>
-);
+  highlightToast = false,
+  addToast = false,
+  deleteToast = false,
+}) => {
+  const history = useHistory();
+  const { location } = history;
+  if (highlightToast) {
+    history.push(location.pathname, { highlightToast: true });
+  }
+  if (addToast) {
+    history.push(location.pathname, { addHighlightSet: true });
+  }
+  if (deleteToast) {
+    history.push(location.pathname, { deletedHighlightSet: true });
+  }
+  return (
+    <IntlProvider locale="en">
+      <Provider store={mockStore(initialState)}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <ContentHighlights />
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
+  );
+};
 
 describe('<ContentHighlights>', () => {
   it('Displays the Hero', () => {
-    renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
-    expect(screen.getAllByText('Highlights')[0]).toBeInTheDocument();
+    renderWithRouter(<ContentHighlightsWrapper />);
+    expect(screen.getByText('Highlights')).toBeInTheDocument();
   });
   it('Displays the toast addition', () => {
-    renderWithRouter(<ContentHighlightsWrapper location={{ state: { addHighlightSet: true } }} />);
+    renderWithRouter(<ContentHighlightsWrapper addToast />);
     expect(screen.getByText('added', { exact: false })).toBeInTheDocument();
   });
   it('Displays the toast deleted', () => {
-    renderWithRouter(<ContentHighlightsWrapper location={{ state: { deletedHighlightSet: true } }} />);
+    renderWithRouter(<ContentHighlightsWrapper deleteToast />);
     expect(screen.getByText('deleted', { exact: false })).toBeInTheDocument();
   });
   it('Displays the toast highlight', () => {
@@ -55,16 +71,10 @@ describe('<ContentHighlights>', () => {
       enterpriseCuration: {
         enterpriseCuration: {
           toastText: 'highlighted',
-          highlightSets: [],
         },
       },
     };
-    renderWithRouter(
-      <ContentHighlightsWrapper
-        enterpriseAppContextValue={toastMessage}
-        location={{ state: { highlightToast: true } }}
-      />,
-    );
-    expect(screen.getByText('highlighted')).toBeInTheDocument();
+    renderWithRouter(<ContentHighlightsWrapper enterpriseAppContextValue={toastMessage} highlightToast />);
+    expect(screen.getByText('highlighted', { exact: false })).toBeInTheDocument();
   });
 });

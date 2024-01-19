@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightRoutes from './ContentHighlightRoutes';
 import Hero from '../Hero';
 import ContentHighlightsContextProvider from './ContentHighlightsContext';
 import ContentHighlightToast from './ContentHighlightToast';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
-import { withLocation } from '../../hoc';
 
-const ContentHighlights = ({ location }) => {
-  const navigate = useNavigate();
+const ContentHighlights = () => {
+  const history = useHistory();
+  const { location } = history;
   const { state: locationState } = location;
   const [toasts, setToasts] = useState([]);
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
@@ -22,7 +21,7 @@ const ContentHighlights = ({ location }) => {
       }]);
       const newState = { ...locationState };
       delete newState.highlightToast;
-      navigate(location.pathname, { ...location, state: newState, replace: true });
+      history.replace({ ...location, state: newState });
     }
     if (locationState?.deletedHighlightSet) {
       setToasts((prevState) => [...prevState, {
@@ -31,7 +30,7 @@ const ContentHighlights = ({ location }) => {
       }]);
       const newState = { ...locationState };
       delete newState.deletedHighlightSet;
-      navigate(location.pathname, { ...location, state: newState, replace: true });
+      history.replace({ ...location, state: newState });
     }
     if (locationState?.addHighlightSet) {
       setToasts((prevState) => [...prevState, {
@@ -40,9 +39,9 @@ const ContentHighlights = ({ location }) => {
       }]);
       const newState = { ...locationState };
       delete newState.addHighlightSet;
-      navigate(location.pathname, { ...location, state: newState, replace: true });
+      history.replace({ ...location, state: newState });
     }
-  }, [enterpriseCuration?.toastText, navigate, location, locationState]);
+  }, [enterpriseCuration?.toastText, history, location, locationState]);
   return (
     <ContentHighlightsContextProvider>
       <Hero title="Highlights" />
@@ -52,15 +51,4 @@ const ContentHighlights = ({ location }) => {
   );
 };
 
-ContentHighlights.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    state: PropTypes.shape({
-      addHighlightSet: PropTypes.bool,
-      deletedHighlightSet: PropTypes.bool,
-      highlightToast: PropTypes.bool,
-    }),
-  }),
-};
-
-export default withLocation(ContentHighlights);
+export default ContentHighlights;

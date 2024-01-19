@@ -5,7 +5,7 @@ import { useState, useContext, useEffect } from 'react';
 import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { ALERT_TEXT, BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
@@ -23,8 +23,8 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
   } = useContext(EnterpriseAppContext);
   const { highlightSets, canOnlyViewHighlightSets } = enterpriseCuration;
   const [radioGroupVisibility, setRadioGroupVisibility] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const history = useHistory();
+  const { location } = history;
   const [isEntireCatalogSelectionLoading, setIsEntireCatalogSelectionLoading] = useState(false);
   const [isHighlightsCatalogSelectionLoading, setIsHighlightsCatalogSelectionLoading] = useState(false);
 
@@ -84,8 +84,8 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
         });
         setValue(newTabValue);
         dispatch(enterpriseCurationActions.setHighlightToast(ALERT_TEXT.TOAST_TEXT.catalogVisibility));
-        navigate(location.pathname, {
-          state: { highlightToast: true },
+        history.push(location.pathname, {
+          highlightToast: true,
         });
       }
     } catch (error) {

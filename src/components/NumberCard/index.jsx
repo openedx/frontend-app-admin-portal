@@ -3,11 +3,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button, Icon, Spinner } from '@edx/paragon';
 import { ArrowDropDown, Close } from '@edx/paragon/icons';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { removeTrailingSlash, isTriggerKey } from '../../utils';
 import { DETAILS_TEXT } from '../CouponDetails/constants';
-import { withLocation, withParams } from '../../hoc';
 
 export const triggerKeys = {
   OPEN_DETAILS: ['ArrowDown', 'Enter'],
@@ -130,11 +129,12 @@ class NumberCard extends React.Component {
   }
 
   renderDetailActions() {
-    const { detailActions, location, actionSlug } = this.props;
+    const { detailActions, match } = this.props;
+    const { params: { actionSlug } } = match;
 
     return detailActions.map((action, index) => (
       <Link
-        ref={(node) => { this.detailActionItemRefs[index] = node; }}
+        innerRef={(node) => { this.detailActionItemRefs[index] = node; }}
         className={classNames(
           'btn btn-link',
           {
@@ -142,7 +142,7 @@ class NumberCard extends React.Component {
           },
         )}
         key={action.label}
-        to={actionSlug ? action.slug : `${removeTrailingSlash(location?.pathname)}/${action.slug}`}
+        to={actionSlug ? action.slug : `${removeTrailingSlash(match.url)}/${action.slug}`}
         onClick={() => { this.handleDetailsActionClick(); }}
         onKeyDown={event => this.handleDetailsActionKeyDown(event)}
       >
@@ -244,10 +244,6 @@ NumberCard.defaultProps = {
   icon: null,
   detailActions: null,
   detailsExpanded: false,
-  actionSlug: '',
-  location: {
-    pathname: '',
-  },
 };
 
 NumberCard.propTypes = {
@@ -261,10 +257,12 @@ NumberCard.propTypes = {
     loading: PropTypes.bool,
   })),
   detailsExpanded: PropTypes.bool,
-  actionSlug: PropTypes.string,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
+  match: PropTypes.shape({
+    url: PropTypes.string,
+    params: PropTypes.shape({
+      actionSlug: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
-export default withParams(withLocation(NumberCard));
+export default withRouter(NumberCard);

@@ -1,22 +1,29 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import MultipleBudgetsPage from './MultipleBudgetsPage';
 import BudgetDetailPage from './BudgetDetailPage';
 
-const LearnerCreditManagementRoutes = () => (
+const LearnerCreditManagementRoutes = ({ match }) => (
   <main className="learner-credit-management">
-    <Routes>
-      <Route
-        path="/"
-        element={<MultipleBudgetsPage />}
-      />
+    <Route
+      exact
+      path={match.path}
+      component={MultipleBudgetsPage}
+    />
 
-      <Route
-        path="/:budgetId/:activeTabKey?"
-        element={<BudgetDetailPage />}
-      />
-    </Routes>
+    <Route
+      exact
+      path={`${match.path}/:budgetId/:activeTabKey?`}
+      component={BudgetDetailPage}
+    />
   </main>
 );
+
+LearnerCreditManagementRoutes.propTypes = {
+  match: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default LearnerCreditManagementRoutes;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import {
   ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon,
   IconButton, Image, OverlayTrigger, Popover,
@@ -32,7 +32,7 @@ const ExistingCard = ({
   setErrorModalText,
   getStatus,
 }) => {
-  const redirectPath = `${useLocation().pathname}`;
+  const redirectPath = `${useRouteMatch().url}`;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
   const showErrorReporting = isEdxStaff && features.FEATURE_INTEGRATION_REPORTING;

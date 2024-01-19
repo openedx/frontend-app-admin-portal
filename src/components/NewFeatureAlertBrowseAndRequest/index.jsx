@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Button } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
@@ -33,12 +33,12 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug }) => {
     global.localStorage.setItem(browseAndRequestAlertCookieName, true);
   };
 
-  const navigate = useNavigate();
+  const history = useHistory();
   /**
    * Redirects user to settings page, access tab
    */
   const handleGoToSettings = () => {
-    navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`);
+    history.push({ pathname: `/${enterpriseSlug}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}` });
   };
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { Navigate, useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import {
   Container, Row, Col, Alert, MailtoLink, Toast,
 } from '@edx/paragon';
@@ -13,11 +14,11 @@ import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 
 const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
-const UserActivationPage = () => {
+const UserActivationPage = ({ match }) => {
   const user = getAuthenticatedUser();
   const [showToast, setShowToast] = useState(false);
 
-  const { enterpriseSlug } = useParams();
+  const { enterpriseSlug } = match.params;
   const { roles, isActive } = user || {};
 
   useInterval(() => {
@@ -45,7 +46,7 @@ const UserActivationPage = () => {
     // user is authenticated but doesn't have any JWT roles so redirect the user to
     // `:enterpriseSlug/admin/register` to force a log out in an attempt to refresh JWT roles.
     return (
-      <Navigate to={`/${enterpriseSlug}/admin/register`} replace />
+      <Redirect to={`/${enterpriseSlug}/admin/register`} />
     );
   }
 
@@ -59,7 +60,7 @@ const UserActivationPage = () => {
   if (isActive) {
     return (
       <>
-        <Navigate to={`/${enterpriseSlug}/admin/learners`} replace />
+        <Redirect to={`/${enterpriseSlug}/admin/learners`} />
         <Toast
           onClose={() => setShowToast(false)}
           show={showToast}
@@ -103,6 +104,14 @@ const UserActivationPage = () => {
       </Row>
     </Container>
   );
+};
+
+UserActivationPage.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      enterpriseSlug: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default UserActivationPage;

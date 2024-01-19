@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
   Row,
   Col,
@@ -60,7 +60,7 @@ const MultipleSubscriptionsPage = ({
 
   if (subscriptions.length === 1) {
     return (
-      <Navigate to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} replace />
+      <Redirect to={`/${enterpriseSlug}/admin/${redirectPage}/${subscriptions[0].uuid}`} />
     );
   }
 

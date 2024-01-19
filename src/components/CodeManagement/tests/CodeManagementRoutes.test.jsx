@@ -7,7 +7,7 @@ import {
   render,
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 
 import CodeManagementRoutes from '../CodeManagementRoutes';
 
@@ -57,9 +57,9 @@ const CodeManagementRoutesWithRouter = ({
 }) => (
   <MemoryRouter initialEntries={initialEntries}>
     <Provider store={storeProp}>
-      <Routes>
-        <Route path={`${routePath}*`} element={<CodeManagementRoutes />} />
-      </Routes>
+      <Route path={routePath}>
+        <CodeManagementRoutes />
+      </Route>
     </Provider>
   </MemoryRouter>
 );

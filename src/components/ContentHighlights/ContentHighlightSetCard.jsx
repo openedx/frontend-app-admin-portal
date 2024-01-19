@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@edx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { useContentHighlightsContext } from './data/hooks';
@@ -16,7 +16,7 @@ const ContentHighlightSetCard = ({
   itemCount,
   onClick,
 }) => {
-  const navigate = useNavigate();
+  const history = useHistory();
   /* Stepper Draft Logic (See Hook) - Start */
   const { openStepperModal } = useContentHighlightsContext();
   /* Stepper Draft Logic (See Hook) - End */
@@ -24,7 +24,7 @@ const ContentHighlightSetCard = ({
     if (isPublished) {
       onClick();
       // redirect to individual highlighted set based on uuid
-      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
+      history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.contentHighlights}/${highlightSetUUID}`);
       return;
     }
     openStepperModal();

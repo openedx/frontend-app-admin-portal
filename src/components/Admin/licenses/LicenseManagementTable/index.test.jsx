@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { MemoryRouter } from 'react-router-dom';
 import {
   MockSubscriptionContext,
   generateSubscriptionPlan,
@@ -30,14 +31,16 @@ const defaultSubscriptionPlan = generateSubscriptionPlan(
 
 const LicenseManagementTableWrapper = ({ subscriptionPlan, ...props }) => (
   <IntlProvider locale="en">
-    <Provider store={store}>
-      <MockSubscriptionContext subscriptionPlan={defaultSubscriptionPlan}>
-        <LicenseManagementTable
-          subscriptionUUID="123"
-          {...props}
-        />
-      </MockSubscriptionContext>
-    </Provider>
+    <MemoryRouter>
+      <Provider store={store}>
+        <MockSubscriptionContext subscriptionPlan={defaultSubscriptionPlan}>
+          <LicenseManagementTable
+            subscriptionUUID="123"
+            {...props}
+          />
+        </MockSubscriptionContext>
+      </Provider>
+    </MemoryRouter>
   </IntlProvider>
 );
 LicenseManagementTableWrapper.propTypes = {

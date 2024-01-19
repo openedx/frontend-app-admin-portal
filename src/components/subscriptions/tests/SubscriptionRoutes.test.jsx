@@ -7,7 +7,7 @@ import {
   render,
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 
 import SubscriptionRoutes from '../SubscriptionRoutes';
 
@@ -57,9 +57,9 @@ const SubscriptionRoutesWithRouter = ({
 }) => (
   <MemoryRouter initialEntries={initialEntries}>
     <Provider store={storeProp}>
-      <Routes>
-        <Route path={`${routePath}*`} element={<SubscriptionRoutes />} />
-      </Routes>
+      <Route path={routePath}>
+        <SubscriptionRoutes />
+      </Route>
     </Provider>
   </MemoryRouter>
 );
