@@ -188,6 +188,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         content_key: 'edX+DemoX',
         title: 'Math',
         card_image_url: 'https://picsum.photos/360/200',
+        course_run_statuses: ['archived'],
         authoring_organizations:
         [
           {
@@ -208,6 +209,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         uuid: faker.datatype.uuid(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
+        course_run_statuses: ['published'],
         authoring_organizations:
         [
           {
@@ -223,6 +225,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         uuid: faker.datatype.uuid(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
+        course_run_statuses: ['published'],
         authoring_organizations:
         [
           {
