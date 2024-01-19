@@ -414,7 +414,6 @@ Admin.defaultProps = {
   },
   csv: null,
   table: null,
-  actionSlug: '',
   insightsLoading: false,
   insights: null,
 };
