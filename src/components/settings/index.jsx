@@ -4,7 +4,7 @@ import {
   Route,
   Routes,
   Navigate,
-  useLocation, generatePath,
+  useLocation,
 } from 'react-router-dom';
 
 import Hero from '../Hero';
@@ -24,7 +24,6 @@ const PAGE_TILE = 'Settings';
  */
 const SettingsPage = () => {
   const { pathname } = useLocation();
-  const tabRoute = generatePath(`${pathname}/${DEFAULT_TAB}`);
 
   return (
     <>
@@ -33,7 +32,7 @@ const SettingsPage = () => {
       <Routes>
         <Route
           path="/"
-          element={<Navigate to={tabRoute} />}
+          element={<Navigate to={`${pathname}/${DEFAULT_TAB}`} />}
         />
         {Object.values(SETTINGS_TABS_VALUES).map(path => (
           <Route
