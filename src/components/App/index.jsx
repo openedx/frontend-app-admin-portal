@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import {
+  QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
@@ -25,9 +26,12 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { defaultQueryClientRetryHandler } from '../../utils';
+import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
 
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: queryCacheOnErrorHandler,
+  }),
   defaultOptions: {
     queries: {
       retry: defaultQueryClientRetryHandler,
