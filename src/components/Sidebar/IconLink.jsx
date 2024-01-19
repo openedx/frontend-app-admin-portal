@@ -11,6 +11,8 @@ const BaseNavLink = ({
   isExpanded,
   title,
   notification,
+  to,
+  isExternal,
   ...rest
 }) => {
   const iconRef = useRef();
@@ -39,33 +41,48 @@ const BaseNavLink = ({
     ),
   });
 
+  const LinkContent = (
+    <div className="position-relative d-flex align-items-center">
+      <span ref={iconRef} className="d-flex align-items-center">
+        {IconElement}
+      </span>
+      {!isExpanded && <span className="sr-only">{title}</span>}
+      {isExpanded && <span ref={titleRef}>{title}</span>}
+      {notification && (
+      <Bubble
+        variant="error"
+        className="position-absolute"
+        style={{
+          minHeight: '0.5rem',
+          minWidth: '0.5rem',
+          left: notificationBubbleMarginLeft,
+          top: -2,
+        }}
+      >
+        <span className="sr-only">has unread notifications</span>
+      </Bubble>
+      )}
+    </div>
+  );
+
   return (
-    <NavLink
-      className="nav-link text-left rounded-0 d-flex align-items-center"
-      {...rest}
-    >
-      <div className="position-relative d-flex align-items-center">
-        <span ref={iconRef} className="d-flex align-items-center">
-          {IconElement}
-        </span>
-        {!isExpanded && <span className="sr-only">{title}</span>}
-        {isExpanded && <span ref={titleRef}>{title}</span>}
-        {notification && (
-          <Bubble
-            variant="error"
-            className="position-absolute"
-            style={{
-              minHeight: '0.5rem',
-              minWidth: '0.5rem',
-              left: notificationBubbleMarginLeft,
-              top: -2,
-            }}
-          >
-            <span className="sr-only">has unread notifications</span>
-          </Bubble>
-        )}
-      </div>
-    </NavLink>
+    isExternal ? (
+      <a
+        className="nav-link text-left rounded-0 d-flex align-items-center"
+        href={to}
+        {...rest}
+      >
+        {LinkContent}
+      </a>
+    ) : (
+      <NavLink
+        className="nav-link text-left rounded-0 d-flex align-items-center"
+        to={to}
+        {...rest}
+      >
+        {LinkContent}
+      </NavLink>
+    )
   );
 };
 
@@ -74,10 +91,13 @@ const commonPropTypes = {
   icon: PropTypes.node.isRequired,
   isExpanded: PropTypes.bool,
   notification: PropTypes.bool,
+  to: PropTypes.string.isRequired,
+  isExternal: PropTypes.bool,
 };
 const commonDefaultProps = {
   isExpanded: false,
   notification: false,
+  isExternal: false,
 };
 
 BaseNavLink.propTypes = commonPropTypes;
@@ -89,10 +109,11 @@ const IconLink = (props) => {
   if (external) {
     return (
       <BaseNavLink
-        to={{ pathname: to }}
+        to={to}
         target="_blank"
         rel="noopener noreferrer"
         {...rest}
+        isExternal
       />
     );
   }

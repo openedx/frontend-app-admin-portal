@@ -2,31 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Switch,
+  Routes,
   Route,
-  Redirect,
+  Navigate,
 } from 'react-router-dom';
 
 import SubscriptionTabs from './SubscriptionTabs';
 import {
   DEFAULT_TAB,
-  SUBSCRIPTIONS_PARAM_MATCH,
+  SUBSCRIPTIONS_TAB_PARAM,
 } from './data/constants';
 import NotFoundPage from '../NotFoundPage';
 
 const SubscriptionRoutes = ({ enterpriseSlug }) => (
-  <Switch>
-    <Redirect
-      exact
-      from={`/${enterpriseSlug}/admin/subscriptions`}
-      to={`/${enterpriseSlug}/admin/subscriptions/${DEFAULT_TAB}`}
+  <Routes>
+    <Route
+      path="/"
+      element={<Navigate to={`/${enterpriseSlug}/admin/subscriptions/${DEFAULT_TAB}`} />}
     />
     <Route
-      path={`/${enterpriseSlug}/admin/subscriptions/${SUBSCRIPTIONS_PARAM_MATCH}`}
-      component={SubscriptionTabs}
+      path={`/:${SUBSCRIPTIONS_TAB_PARAM}?/*`}
+      element={<SubscriptionTabs />}
     />
-    <Route path="" component={NotFoundPage} />
-  </Switch>
+    <Route path="*" element={<NotFoundPage />} />
+  </Routes>
 );
 
 SubscriptionRoutes.propTypes = {

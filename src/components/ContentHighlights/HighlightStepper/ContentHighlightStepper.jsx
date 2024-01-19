@@ -17,7 +17,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import HighlightStepperTitle from './HighlightStepperTitle';
@@ -45,8 +45,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       dispatch: dispatchEnterpriseCuration,
     },
   } = useContext(EnterpriseAppContext);
-  const history = useHistory();
-  const { location } = history;
+  const navigate = useNavigate();
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [isPublishing, setIsPublishing] = useState(false);
   const [isCloseAlertOpen, openCloseAlert, closeCloseAlert] = useToggle(false);
@@ -97,8 +97,8 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
       };
       dispatchEnterpriseCuration(enterpriseCurationActions.addHighlightSet(transformedHighlightSet));
       dispatchEnterpriseCuration(enterpriseCurationActions.setHighlightSetToast(transformedHighlightSet.uuid));
-      history.push(location.pathname, {
-        addHighlightSet: true,
+      navigate(location.pathname, {
+        state: { addHighlightSet: true },
       });
       closeStepperModal();
       const handlePublishTrackEvent = () => {

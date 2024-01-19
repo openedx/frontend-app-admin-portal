@@ -10,7 +10,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 
-import { MemoryRouter, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import SettingsTabs from '../SettingsTabs';
 import { SCHOLAR_THEME, SETTINGS_TAB_LABELS } from '../data/constants';
 
@@ -47,6 +47,10 @@ jest.mock(
   },
 );
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+}));
 jest.mock(
   '../SettingsApiCredentialsTab/',
   () => function SettingsAccessTab() {
@@ -78,11 +82,11 @@ const defaultStore = getMockStore({ ...initialStore });
 
 const SettingsTabsWithRouter = ({ store = defaultStore }) => (
   <IntlProvider locale="en">
-    <MemoryRouter initialEntries={['settings/']}>
+    <MemoryRouter initialEntries={['/settings']}>
       <Provider store={store}>
-        <Route path="settings/">
-          <SettingsTabs />
-        </Route>
+        <Routes>
+          <Route path="/settings" element={<SettingsTabs />} />
+        </Routes>
       </Provider>
     </MemoryRouter>
   </IntlProvider>

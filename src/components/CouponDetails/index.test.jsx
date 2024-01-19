@@ -8,7 +8,6 @@ import thunk from 'redux-thunk';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { renderWithRouter } from '../test/testUtils';
 import CouponDetails from './index';
 import { COUPON_FILTERS, DEFAULT_TABLE_COLUMNS } from './constants';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
@@ -154,19 +153,19 @@ describe('CouponDetails component', () => {
     expect(screen.queryByText('Coupon Details')).not.toBeInTheDocument();
   });
   it('renders an expanded page', () => {
-    renderWithRouter(<CouponDetailsWrapper {...defaultProps} />);
+    render(<CouponDetailsWrapper {...defaultProps} />);
     expect(screen.getByText('Coupon Details')).toBeInTheDocument();
     expect(screen.getByText('Download full report (CSV)')).toBeInTheDocument();
   });
   it('renders the unassigned table by default', () => {
-    renderWithRouter(<CouponDetailsWrapper {...defaultProps} />);
+    render(<CouponDetailsWrapper {...defaultProps} />);
     expect(screen.getByText(COUPON_FILTERS.unassigned.label)).toBeInTheDocument();
     DEFAULT_TABLE_COLUMNS.unassigned.forEach(({ label }) => {
       expect(screen.getByText(label)).toBeInTheDocument();
     });
   });
   it('renders with error state', () => {
-    renderWithRouter(<CouponDetailsWrapper
+    render(<CouponDetailsWrapper
       {...defaultProps}
       couponData={{
         ...couponData,

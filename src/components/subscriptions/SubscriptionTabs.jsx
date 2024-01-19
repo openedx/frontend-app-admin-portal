@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from '@edx/paragon';
 import {
-  useHistory,
+  useNavigate,
   Route,
   useParams,
+  Routes,
 } from 'react-router-dom';
 
 import { SubsidyRequestsContext } from '../subsidy-requests';
@@ -20,6 +21,7 @@ import {
   SUBSCRIPTIONS_TAB_PARAM,
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
+import NotFoundPage from '../NotFoundPage';
 
 const SubscriptionTabs = ({ enterpriseSlug }) => {
   const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
@@ -41,7 +43,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
     return null;
   }, [isRequestsTabShown, subsidyRequestsCounts]);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams();
   const subscriptionsTab = params[SUBSCRIPTIONS_TAB_PARAM];
 
@@ -52,9 +54,9 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
 
   const handleTabSelect = (key) => {
     if (key === MANAGE_REQUESTS_TAB) {
-      history.push(routesByTabKey[MANAGE_REQUESTS_TAB]);
+      navigate(routesByTabKey[MANAGE_REQUESTS_TAB]);
     } else if (key === MANAGE_LEARNERS_TAB) {
-      history.push(routesByTabKey[MANAGE_LEARNERS_TAB]);
+      navigate(routesByTabKey[MANAGE_LEARNERS_TAB]);
     }
   };
 
@@ -82,17 +84,23 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
           notification={requestsTabNotification}
         >
           {SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] === subscriptionsTab && (
-            <Route
-              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_REQUESTS_TAB}`}
-              component={SubscriptionSubsidyRequests}
-              exact
-            />
+            <Routes>
+              <Route
+                path="/"
+                element={<SubscriptionSubsidyRequests />}
+              />
+            </Routes>
           )}
         </Tab>,
       );
     }
     return tabs;
   }, [subscriptionsTab, isRequestsTabShown, requestsTabNotification]);
+
+  if ((SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB] !== subscriptionsTab)
+     && (SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB] !== subscriptionsTab)) {
+    return <NotFoundPage />;
+  }
 
   return (
     <Tabs

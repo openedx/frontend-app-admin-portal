@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Tabs } from '@edx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
@@ -48,7 +48,7 @@ const BudgetDetailTabsAndRoutes = ({
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const isBudgetAssignable = !!subsidyAccessPolicy?.isAssignable;
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
     { enterpriseFeatures, isBudgetAssignable },
@@ -67,7 +67,7 @@ const BudgetDetailTabsAndRoutes = ({
 
   const handleTabSelect = (nextActiveTabKey) => {
     setActiveTabKey(nextActiveTabKey);
-    history.push(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}/${nextActiveTabKey}`);
+    navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}/${nextActiveTabKey}`);
     const eventMetadata = { selectedTab: nextActiveTabKey };
     sendEnterpriseTrackEvent(
       enterpriseId,
