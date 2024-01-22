@@ -4,6 +4,12 @@ import { useCallback, useState, useEffect } from 'react';
 import { useContextSelector } from 'use-context-selector';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
+import Cookies from 'universal-cookie';
+import { NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME } from './constants';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import { useContext } from 'react';
+
+const archivedHighlightsCoursesCookies = new Cookies();
 
 export function useHighlightSetsForCuration(enterpriseCuration) {
   const [highlightSets, setHighlightSets] = useState({
@@ -142,4 +148,72 @@ export function useContentHighlightsContext() {
     setHighlightTitle,
     setCatalogVisibilityAlert,
   };
+}
+
+
+export function useSetArchivedHighlightsCoursesCookies() {
+  const [highlightSet, setHighlightSet] = useState({});
+  const [isCookieLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [cookieValue, setCookieValue] = useState({});
+
+  const { enterpriseCuration: { enterpriseCuration: { highlightSets } } } = useContext(EnterpriseAppContext);
+  const [isNewArchivedCourses, setIsNewArchivedCourses] = useState(false);
+
+  useEffect(() => {
+    const dismissedCookies = archivedHighlightsCoursesCookies.get(NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME);
+
+    const isDismissedArchivedCoursesSet = dismissedCookies !== undefined;
+    const dismissedArchivedCourses = isDismissedArchivedCoursesSet ? dismissedCookies : {};
+
+    highlightSets.forEach(async(highlight) => {
+      try {
+        const { data } = await EnterpriseCatalogApiService.fetchHighlightSet(highlight.uuid);
+        const result = camelCaseObject(data);
+        setHighlightSet(result);
+      } catch (e) {
+        setError(e);
+        logError(e);
+      } finally {
+        setIsLoading(false);
+      }
+
+      const highlightedSetContent = highlightSet?.highlightedContent;
+      // checks that the highlight uuid isn't set
+      if (!dismissedArchivedCourses[highlight.uuid]) {
+        highlightedSetContent?.forEach(content => {
+          // if the length is greater than 1 for the course run status e.g. ["archived", "published"]
+          // the course should not be archived
+          if (content.courseRunStatuses?.length === 1 && content.courseRunStatuses?.includes("archived")) {
+            setCookieValue( {
+              ...dismissedArchivedCourses,
+              [highlight.uuid]: [content.contentKey],
+            })
+            setIsNewArchivedCourses(true);
+          }
+        })
+      // else the highlightUUID is in the cookie so we loop through each content key of that highlighted content
+      } else {
+        highlightedSetContent?.forEach(content => {
+          if (content.courseRunStatuses?.length === 1 && content.courseRunStatuses?.includes("archived") && !dismissedArchivedCourses[highlight.uuid].includes(content.contentKey)) {
+            setCookieValue({
+              ...dismissedArchivedCourses,
+              [highlight.uuid]: [...dismissedArchivedCourses[highlight.uuid], content.contentKey],
+            })
+            setIsNewArchivedCourses(true);
+          }
+        })
+      }
+    });
+  }, [])
+
+  const setNewCourseCookies = () => {
+    archivedHighlightsCoursesCookies.set(
+      NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME, cookieValue,
+    );
+
+    setIsNewArchivedCourses(false);
+  }
+  
+  return { isNewArchivedCourses, setNewCourseCookies, isCookieLoading };
 }

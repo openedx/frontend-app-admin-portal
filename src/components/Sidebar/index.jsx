@@ -18,6 +18,7 @@ import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import { useSetArchivedHighlightsCoursesCookies } from '../ContentHighlights/data/hooks';
 
 const Sidebar = ({
   baseUrl,
@@ -38,6 +39,7 @@ const Sidebar = ({
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
+  const { isNewArchivedCourses } = useSetArchivedHighlightsCoursesCookies();
 
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
@@ -105,6 +107,7 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} />,
       hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive,
+      notification: isNewArchivedCourses,
     },
     {
       title: 'Reporting Configurations',

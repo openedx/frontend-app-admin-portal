@@ -173,6 +173,8 @@ export const TEST_HIGHLIGHT_SET = {
   ],
 };
 
+export const NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME = 'new-archived-course-alert-dismissed';
+
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {
