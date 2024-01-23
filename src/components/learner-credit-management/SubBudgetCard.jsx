@@ -94,7 +94,7 @@ const BaseSubBudgetCard = ({
     const subtitle = (
       <Stack direction="horizontal" gap={2.5}>
         <Badge variant={budgetLabel.badgeVariant}>{budgetLabel.status}</Badge>
-        {budgetLabel.term && formattedDate && (
+        {(budgetLabel.term && formattedDate) && (
           <span data-testid="budget-date">
             {budgetLabel.term} {formattedDate}
           </span>
