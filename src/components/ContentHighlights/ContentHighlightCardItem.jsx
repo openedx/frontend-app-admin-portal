@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Hyperlink, Icon, Truncate } from '@edx/paragon';
+import {
+  Card, Hyperlink, Icon, Truncate,
+} from '@edx/paragon';
 import { Archive } from '@edx/paragon/icons';
 import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 

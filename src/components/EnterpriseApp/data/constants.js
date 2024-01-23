@@ -18,6 +18,7 @@ export const BUDGET_STATUSES = {
   active: 'Active',
   expired: 'Expired',
   scheduled: 'Scheduled',
+  retired: 'Retired',
 };
 
 export const BUDGET_TYPES = {

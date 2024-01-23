@@ -23,8 +23,10 @@ const BudgetStatusBadge = ({
   badgeVariant, status, term, date,
 }) => (
   <Stack direction="horizontal" gap={2}>
-    <Badge variant={badgeVariant}>{ status }</Badge>
-    <span className="small">{term} { formatDate(date) }</span>
+    <Badge variant={badgeVariant}>{status}</Badge>
+    {(term && date) && (
+      <span className="small">{term} {formatDate(date)}</span>
+    )}
   </Stack>
 );
 
@@ -74,7 +76,7 @@ const BudgetDetailPageHeader = ({ enterpriseUUID, enterpriseFeatures }) => {
       <BudgetDetailPageBreadcrumbs budgetDisplayName={budgetDisplayName} />
       <Card className="budget-overview-card">
         <Card.Section>
-          <h2>{ budgetDisplayName }</h2>
+          <h2>{budgetDisplayName}</h2>
           <BudgetStatusBadge badgeVariant={badgeVariant} status={status} term={term} date={date} />
           <BudgetDetailPageOverviewAvailability
             budgetId={budgetId}
