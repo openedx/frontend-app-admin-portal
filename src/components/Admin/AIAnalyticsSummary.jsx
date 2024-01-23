@@ -6,8 +6,10 @@ import {
 } from '@edx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { AutoFixHigh, Groups } from '@edx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import useAIAnalyticsSummary from '../AIAnalyticsSummary/data/hooks';
 
+export const SUMMARIZE_ANALYTICS_CLICK_SEGMENT_EVENT_NAME = 'edx.ui.enterprise.admin_portal.summarize_analytics.clicked';
 const AnalyticsDetailCard = ({
   onClose,
   isLoading,
@@ -63,6 +65,7 @@ const AIAnalyticsSummary = ({ enterpriseId, insights }) => {
           onClick={() => {
             showSummarizeCard(true);
             hideTrackProgressCard(true);
+            sendEnterpriseTrackEvent(enterpriseId, SUMMARIZE_ANALYTICS_CLICK_SEGMENT_EVENT_NAME);
           }}
           data-testid="summarize-analytics"
         >

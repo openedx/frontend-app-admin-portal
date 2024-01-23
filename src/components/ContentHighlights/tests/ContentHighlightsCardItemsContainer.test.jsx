@@ -10,6 +10,7 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import userEvent from '@testing-library/user-event';
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
 import { DEFAULT_ERROR_MESSAGE, TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
+import { features } from '../../../config';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -92,5 +93,22 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
     userEvent.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+  });
+  it('shows archived content subheader', () => {
+    features.HIGHLIGHTS_ARCHIVE_MESSAGING = true;
+    renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+      isLoading={false}
+      highlightedContent={testHighlightSet}
+    />);
+    screen.debug();
+    expect(screen.getByText('Delete archived courses')).toBeInTheDocument();
+  });
+  it('does not show archived content subheader', () => {
+    features.HIGHLIGHTS_ARCHIVE_MESSAGING = false;
+    renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
+      isLoading={false}
+      highlightedContent={testHighlightSet}
+    />);
+    expect(screen.queryByText('Delete archived courses')).not.toBeInTheDocument();
   });
 });

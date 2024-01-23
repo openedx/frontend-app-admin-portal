@@ -131,6 +131,8 @@ class NumberCard extends React.Component {
 
   renderDetailActions() {
     const { detailActions, location, actionSlug } = this.props;
+    const slugIndex = location?.pathname.lastIndexOf('/');
+    const truncatedURL = location?.pathname.substring(0, slugIndex);
 
     return detailActions.map((action, index) => (
       <Link
@@ -142,7 +144,7 @@ class NumberCard extends React.Component {
           },
         )}
         key={action.label}
-        to={actionSlug ? action.slug : `${removeTrailingSlash(location?.pathname)}/${action.slug}`}
+        to={actionSlug ? `${truncatedURL}/${action.slug}` : `${removeTrailingSlash(location?.pathname)}/${action.slug}`}
         onClick={() => { this.handleDetailsActionClick(); }}
         onKeyDown={event => this.handleDetailsActionKeyDown(event)}
       >

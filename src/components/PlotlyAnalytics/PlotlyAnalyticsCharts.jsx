@@ -5,14 +5,13 @@ import PropTypes from 'prop-types';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
 import PlotlyAnalyticsApiService from './data/service';
-import { configuration, features } from '../../config';
+import { configuration } from '../../config';
 
 const PlotlyAnalyticsCharts = ({ enterpriseId, enableDemoData }) => {
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { FEATURE_DEMO_DATA } = features;
-  const enterpriseUUID = FEATURE_DEMO_DATA && enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
+  const enterpriseUUID = enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
 
   const refreshPlotlyToken = async () => {
     const response = await PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseUUID });

@@ -9,6 +9,8 @@ import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
+import { logError } from '@edx/frontend-platform/logging';
+
 import { features } from './config';
 
 import {
@@ -412,6 +414,15 @@ function defaultQueryClientRetryHandler(failureCount, err) {
 }
 
 /**
+ * Logs a react-query query error message on failure
+ */
+function queryCacheOnErrorHandler(error, query) {
+  if (query.meta?.errorMessage) {
+    logError(query.meta?.errorMessage);
+  }
+}
+
+/**
  * Determines whether a subsidy access policy is assignable, based on its policy type
  * and the presence of an assignment configuration.
  */
@@ -472,4 +483,5 @@ export {
   defaultQueryClientRetryHandler,
   isAssignableSubsidyAccessPolicyType,
   getActiveTableColumnFilters,
+  queryCacheOnErrorHandler,
 };

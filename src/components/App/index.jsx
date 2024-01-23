@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import {
-  Route, Navigate, Routes, useLocation,
+  Route, Navigate, Routes, generatePath, useParams,
 } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import {
+  QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
@@ -25,9 +26,12 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { defaultQueryClientRetryHandler } from '../../utils';
+import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
 
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: queryCacheOnErrorHandler,
+  }),
   defaultOptions: {
     queries: {
       retry: defaultQueryClientRetryHandler,
@@ -42,8 +46,14 @@ const queryClient = new QueryClient({
 });
 
 const RedirectComponent = () => {
-  const location = useLocation();
-  return <Navigate to={`${location.pathname}/admin/${ROUTE_NAMES.learners}`} />;
+  const { enterpriseSlug } = useParams();
+
+  const homePage = generatePath(
+    `/:enterpriseSlug/admin/${ROUTE_NAMES.learners}`,
+    { enterpriseSlug },
+  );
+
+  return <Navigate to={homePage} />;
 };
 
 const AppWrapper = () => {
@@ -116,7 +126,7 @@ const AppWrapper = () => {
             element={<PageWrap><UserActivationPage /></PageWrap>}
           />
           <Route
-            path="/:enterpriseSlug"
+            path="/:enterpriseSlug/admin?"
             element={(
               <PageWrap
                 authenticatedAPIClient={apiClient}
