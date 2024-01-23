@@ -21,15 +21,21 @@ const useUpdateActiveEnterpriseForUser = ({ enterpriseId, user }) => {
     isLoading: isLoadingActiveEnterprise,
   } = useQuery({
     queryKey: ['activeLinkedEnterpriseCustomer', username],
-    queryFn: () => LmsApiService.getActiveLinkedEnterprise(username),
+    queryFn: () => LmsApiService.fetchEnterpriseLearnerData({ username }),
     meta: {
       errorMessage: "Failed to fetch user's active enterprise",
     },
   });
 
   useEffect(() => {
-    if (!data) { return; }
-    if (data.uuid !== enterpriseId) {
+    if (!data || !enterpriseId) { return; }
+    // Ensure that the current enterprise is linked and can be activated for the user
+    if (!data.find(enterprise => enterprise.enterpriseCustomer.uuid === enterpriseId)) {
+      return;
+    }
+    const activeLinkedEnterprise = data.find(enterprise => enterprise.active);
+    if (!activeLinkedEnterprise) { return; }
+    if (activeLinkedEnterprise.enterpriseCustomer.uuid !== enterpriseId) {
       mutate(enterpriseId);
     }
   }, [data, enterpriseId, mutate]);

@@ -407,7 +407,7 @@ const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
  * may be overridden per-query, as needed.
  */
 function defaultQueryClientRetryHandler(failureCount, err) {
-  if (failureCount >= 3 || err.customAttributes.httpErrorStatus === 404) {
+  if (failureCount >= 3 || err.customAttributes?.httpErrorStatus === 404) {
     return false;
   }
   return true;
