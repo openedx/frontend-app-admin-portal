@@ -1,5 +1,6 @@
 import { Alert } from '@edx/paragon';
 import { useContext, useState } from 'react';
+import dayjs from 'dayjs';
 import { NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME, archivedHighlightsCoursesCookies } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
@@ -22,7 +23,15 @@ const ContentHighlightArchivedCoursesAlert = () => {
   });
 
   const setArchivedCourseCookies = () => {
-    archivedHighlightsCoursesCookies.set(NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME, archivedCoursesCookies);
+    const currentDate = dayjs();
+    // Chrome sets an cap on expiration limit for cookies to 400 days
+    // https://developer.chrome.com/blog/cookie-max-age-expires
+    const cookieExpiration = currentDate.add(400, 'day').format();
+    archivedHighlightsCoursesCookies.set(
+      NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME,
+      archivedCoursesCookies,
+      { expires: new Date(cookieExpiration) },
+    );
     dispatch(enterpriseCurationActions.updateDismissedArchivedCourse(false));
     setIsOpen(false);
   };

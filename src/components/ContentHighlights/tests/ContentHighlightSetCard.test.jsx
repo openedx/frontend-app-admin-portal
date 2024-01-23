@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
+import Cookies from 'universal-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
@@ -15,7 +16,11 @@ import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
 import { configuration } from '../../../config';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import {
-  BUTTON_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT, STEPPER_STEP_TEXT,
+  BUTTON_TEXT,
+  MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
+  ALERT_TEXT,
+  STEPPER_STEP_TEXT,
+  NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME,
 } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
@@ -30,13 +35,30 @@ const mockData = [{
   onClick: jest.fn(),
 }];
 
+const mockEnterpriseHighlightedContents = [{
+  uuid: 'test-uuid',
+  isPublished: true,
+  highlightedContent: [
+    {
+      uuid: 'test-content-uuid',
+      contentKey: 'test-content-key',
+      courseRunStatuses: [
+        'archived',
+      ],
+    },
+  ],
+}];
+
 const initialEnterpriseAppContextValue = {
   enterpriseCuration: {
     enterpriseCuration: {
       highlightSets: mockData,
     },
+    enterpriseHighlightedContents: mockEnterpriseHighlightedContents,
+    isNewArchivedCourse: false,
   },
 };
+
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -141,5 +163,41 @@ describe('<ContentHighlightSetCard>', () => {
     // Verify Dismiss
     await waitFor(() => { expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument(); });
     expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
+  });
+  it('does not render archived course alert', () => {
+    renderWithRouter(
+      <ContentHighlightSetCardWrapper />,
+    );
+    expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
+  });
+  it('renders archived course alert and sets cookie on dismiss', async () => {
+    const archivedCoursesCookies = new Cookies();
+    const updatedEnterpriseAppContextValue = {
+      enterpriseCuration: {
+        enterpriseCuration: {
+          highlightSets: mockData,
+        },
+        enterpriseHighlightedContents: mockEnterpriseHighlightedContents,
+        isNewArchivedCourse: true,
+        dispatch: jest.fn(),
+      },
+    };
+    renderWithRouter(
+      <ContentHighlightSetCardWrapper
+        enterpriseAppContextValue={updatedEnterpriseAppContextValue}
+      />,
+    );
+    expect(screen.getByText('Needs Review: Archived Course(s)')).toBeInTheDocument();
+    const dismissButton = screen.getByText('Dismiss');
+    expect(dismissButton).toBeInTheDocument();
+    userEvent.click(dismissButton);
+    const resultCookie = archivedCoursesCookies.get(NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME);
+    const expectedCookie = {
+      'new-archived-course-alert-dismissed': {
+        'test-uuid': ['test-content-key'],
+      },
+    };
+    await waitFor(() => { expect(resultCookie).toEqual(expectedCookie); });
+    expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
   });
 });

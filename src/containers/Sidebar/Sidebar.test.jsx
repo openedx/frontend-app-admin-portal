@@ -442,5 +442,31 @@ describe('<Sidebar />', () => {
       render(<SidebarWrapper subsidyRequestsContextValue={contextValue} />);
       expect(screen.queryByRole('link', { name: 'Code Management has unread notifications' })).not.toBeInTheDocument();
     });
+    it('does not display notification bubble when there are no new archived courses', () => {
+      getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: true });
+      const contextValue = {
+        enterpriseCuration: {
+          enterpriseCuration: {
+            isHighlightFeatureActive: true,
+          },
+          isNewArchivedCourse: false,
+        },
+      };
+      render(<SidebarWrapper enterpriseAppContextValue={contextValue} />);
+      expect(screen.queryByRole('link', { name: 'Code Management has unread notifications' })).not.toBeInTheDocument();
+    });
+    it('displays notification bubble when there are new archived courses', () => {
+      getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: true });
+      const contextValue = {
+        enterpriseCuration: {
+          enterpriseCuration: {
+            isHighlightFeatureActive: true,
+          },
+          isNewArchivedCourse: true,
+        },
+      };
+      render(<SidebarWrapper enterpriseAppContextValue={contextValue} />);
+      expect(screen.getByRole('link', { name: 'Highlights has unread notifications' })).toBeInTheDocument();
+    });
   });
 });
