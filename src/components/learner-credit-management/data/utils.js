@@ -213,7 +213,6 @@ export const orderBudgets = (budgets) => {
   };
 
   budgets?.sort((budgetA, budgetB) => {
-    // console.log('BUDGETS!!!', budgetA, budgetB);
     const statusA = getBudgetStatus({
       startDateStr: budgetA.start,
       endDateStr: budgetA.end,
