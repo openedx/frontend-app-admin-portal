@@ -2,6 +2,7 @@
 import { faker } from '@faker-js/faker';
 import parse from 'html-react-parser';
 import sanitizeHTML from 'sanitize-html';
+import Cookies from 'universal-cookie';
 /* eslint-enable import/no-extraneous-dependencies */
 
 // Sanitizes HTML and parses the string as HTML
@@ -174,6 +175,7 @@ export const TEST_HIGHLIGHT_SET = {
 };
 
 export const NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME = 'new-archived-course-alert-dismissed';
+export const archivedHighlightsCoursesCookies = new Cookies();
 
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [

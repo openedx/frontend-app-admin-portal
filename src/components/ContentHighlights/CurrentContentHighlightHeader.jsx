@@ -11,7 +11,6 @@ import { Add, Info } from '@edx/paragon/icons';
 import { useContentHighlightsContext } from './data/hooks';
 import EVENT_NAMES from '../../eventTracking';
 import ContentHighlightArchivedCoursesAlert from './ContentHighlightArchivedCoursesAlert';
-import { useSetArchivedHighlightsCoursesCookies } from './data/hooks';
 
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import {
@@ -24,9 +23,10 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       enterpriseCuration: {
         highlightSets,
       },
+      isNewArchivedCourse,
     },
   } = useContext(EnterpriseAppContext);
-  const { isNewArchivedCourses, setNewCourseCookies } = useSetArchivedHighlightsCoursesCookies();
+
   const { openStepperModal } = useContentHighlightsContext();
   const [maxHighlightsReached, setMaxHighlightsReached] = useState(false);
   const [showMaxHighlightsAlert, setShowMaxHighlightsAlert] = useState(false);
@@ -83,7 +83,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       <p>
         {HEADER_TEXT.SUB_TEXT.currentContent}
       </p>
-      {isNewArchivedCourses ? <ContentHighlightArchivedCoursesAlert /> : null }
+      {isNewArchivedCourse ? <ContentHighlightArchivedCoursesAlert /> : null }
       <Alert
         variant="danger"
         icon={Info}

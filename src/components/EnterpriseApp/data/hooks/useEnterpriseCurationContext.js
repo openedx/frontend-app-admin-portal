@@ -20,6 +20,7 @@ function useEnterpriseCurationContext({
   const {
     isLoading,
     enterpriseCuration,
+    enterpriseHighlightedContents,
     fetchError,
     updateEnterpriseCuration,
   } = useEnterpriseCuration({
@@ -36,8 +37,16 @@ function useEnterpriseCurationContext({
   }, [enterpriseCuration]);
 
   useEffect(() => {
+    dispatch(enterpriseCurationActions.setEnterpriseHighlightedContents(enterpriseHighlightedContents));
+  }, [enterpriseHighlightedContents]);
+
+  useEffect(() => {
     dispatch(enterpriseCurationActions.setFetchError(fetchError));
   }, [fetchError]);
+
+  useEffect(() => {
+    dispatch(enterpriseCurationActions.setIsNewArchivedCourse(enterpriseHighlightedContents));
+  }, [enterpriseHighlightedContents]);
 
   const contextValue = useMemo(() => ({
     ...enterpriseCurationState,
