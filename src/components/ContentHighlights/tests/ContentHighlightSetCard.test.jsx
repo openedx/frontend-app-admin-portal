@@ -192,11 +192,7 @@ describe('<ContentHighlightSetCard>', () => {
     expect(dismissButton).toBeInTheDocument();
     userEvent.click(dismissButton);
     const resultCookie = archivedCoursesCookies.get(NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME);
-    const expectedCookie = {
-      'new-archived-course-alert-dismissed': {
-        'test-uuid': ['test-content-key'],
-      },
-    };
+    const expectedCookie = { 'test-uuid': ['test-content-key'] };
     await waitFor(() => { expect(resultCookie).toEqual(expectedCookie); });
     expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
   });
