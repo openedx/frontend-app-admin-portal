@@ -137,10 +137,27 @@ export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
 export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
 
 //  Utility function to check the budget status
-export const getBudgetStatus = (startDateStr, endDateStr, currentDate = new Date()) => {
+export const getBudgetStatus = ({
+  startDateStr,
+  endDateStr,
+  isBudgetRetired,
+  currentDate = new Date(),
+}) => {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
+  // Check if budget is retired
+  if (isBudgetRetired) {
+    return {
+      status: BUDGET_STATUSES.retired,
+      badgeVariant: 'info',
+      // no term or date for retired budgets
+      term: null,
+      date: null,
+    };
+  }
+
+  // Check if budget has not yet started
   if (currentDate < startDate) {
     return {
       status: BUDGET_STATUSES.scheduled,
@@ -149,6 +166,8 @@ export const getBudgetStatus = (startDateStr, endDateStr, currentDate = new Date
       date: startDateStr,
     };
   }
+
+  // Check if budget is current (today's date between start/end dates)
   if (currentDate >= startDate && currentDate <= endDate) {
     return {
       status: BUDGET_STATUSES.active,
@@ -157,6 +176,8 @@ export const getBudgetStatus = (startDateStr, endDateStr, currentDate = new Date
       date: endDateStr,
     };
   }
+
+  // Otherwise, budget must be expired
   return {
     status: BUDGET_STATUSES.expired,
     badgeVariant: 'light',
@@ -188,11 +209,20 @@ export const orderBudgets = (budgets) => {
     Active: 0,
     Scheduled: 1,
     Expired: 2,
+    Retired: 3,
   };
 
   budgets?.sort((budgetA, budgetB) => {
-    const statusA = getBudgetStatus(budgetA.start, budgetA.end).status;
-    const statusB = getBudgetStatus(budgetB.start, budgetB.end).status;
+    const statusA = getBudgetStatus({
+      startDateStr: budgetA.start,
+      endDateStr: budgetA.end,
+      isBudgetRetired: budgetA.isRetired,
+    }).status;
+    const statusB = getBudgetStatus({
+      startDateStr: budgetB.start,
+      endDateStr: budgetB.end,
+      isBudgetRetired: budgetB.isRetired,
+    }).status;
 
     if (statusOrder[statusA] !== statusOrder[statusB]) {
       return statusOrder[statusA] - statusOrder[statusB];
