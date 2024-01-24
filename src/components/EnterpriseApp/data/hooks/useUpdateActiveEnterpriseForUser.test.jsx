@@ -21,12 +21,20 @@ describe('useUpdateActiveEnterpriseForUser', () => {
   const mockUser = { username: 'joe_shmoe' };
   const connectedEnterprise = 'someID';
   beforeEach(() => {
-    LmsApiService.getActiveLinkedEnterprise.mockResolvedValue({ uuid: connectedEnterprise });
+    LmsApiService.fetchEnterpriseLearnerData.mockResolvedValue(
+      [{ enterpriseCustomer: { uuid: mockEnterpriseId }, active: true }],
+    );
   });
 
   afterEach(() => jest.clearAllMocks());
 
   it("should update user's active enterprise if it differs from the current enterprise", async () => {
+    LmsApiService.fetchEnterpriseLearnerData.mockResolvedValue(
+      [
+        { enterpriseCustomer: { uuid: mockEnterpriseId }, active: false },
+        { enterpriseCustomer: { uuid: 'some-other-uuid' }, active: true },
+      ],
+    );
     const { result, waitForNextUpdate } = renderHook(
       () => useUpdateActiveEnterpriseForUser({
         enterpriseId: mockEnterpriseId,
@@ -56,6 +64,12 @@ describe('useUpdateActiveEnterpriseForUser', () => {
   });
 
   it('should handle useMutation errors', async () => {
+    LmsApiService.fetchEnterpriseLearnerData.mockResolvedValue(
+      [
+        { enterpriseCustomer: { uuid: mockEnterpriseId }, active: false },
+        { enterpriseCustomer: { uuid: 'some-other-uuid' }, active: true },
+      ],
+    );
     LmsApiService.updateUserActiveEnterprise.mockRejectedValueOnce(Error('uh oh'));
     const { result, waitForNextUpdate } = renderHook(
       () => useUpdateActiveEnterpriseForUser({
@@ -73,7 +87,7 @@ describe('useUpdateActiveEnterpriseForUser', () => {
     expect(logError).toHaveBeenCalledTimes(1);
   });
   it('should handle useQuery errors', async () => {
-    LmsApiService.getActiveLinkedEnterprise.mockRejectedValueOnce(Error('uh oh'));
+    LmsApiService.fetchEnterpriseLearnerData.mockRejectedValueOnce(Error('uh oh'));
     const { result, waitForNextUpdate } = renderHook(
       () => useUpdateActiveEnterpriseForUser({
         enterpriseId: mockEnterpriseId,
@@ -85,7 +99,7 @@ describe('useUpdateActiveEnterpriseForUser', () => {
 
     await waitForNextUpdate();
 
-    expect(LmsApiService.getActiveLinkedEnterprise).toHaveBeenCalledTimes(1);
+    expect(LmsApiService.fetchEnterpriseLearnerData).toHaveBeenCalledTimes(1);
     expect(result.current.isLoading).toBe(false);
     expect(logError).toHaveBeenCalledWith("Failed to fetch user's active enterprise");
   });
