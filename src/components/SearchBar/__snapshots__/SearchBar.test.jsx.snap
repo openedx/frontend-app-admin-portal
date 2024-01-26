@@ -1,67 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SearchBar /> renders correctly 1`] = `
-<div
-  className="pgn__searchfield d-flex"
->
-  <form
-    className="d-flex align-items-center w-100"
-    onReset={[Function]}
-    onSubmit={[Function]}
-    role="search"
+<div>
+  <div
+    class="pgn__searchfield d-flex"
   >
-    <label
-      className="m-0"
-      htmlFor="pgn-searchfield-input-1"
+    <form
+      class="d-flex align-items-center w-100"
+      role="search"
     >
-      <span
-        className="sr-only"
+      <label
+        class="m-0"
+        for="pgn-searchfield-input-1"
       >
-        search
-      </span>
-    </label>
-    <input
-      className="form-control"
-      disabled={false}
-      id="pgn-searchfield-input-1"
-      name="searchfield-input"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onFocus={[Function]}
-      role="searchbox"
-      type="text"
-      value=""
-    />
-    <button
-      className="btn"
-      disabled={false}
-      type="submit"
-    >
-      <span
-        className="pgn__icon"
-      >
-        <svg
-          aria-hidden={true}
-          fill="none"
-          focusable={false}
-          height={24}
-          role="img"
-          viewBox="0 0 24 24"
-          width={24}
-          xmlns="http://www.w3.org/2000/svg"
+        <span
+          class="sr-only"
         >
-          <path
-            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-            fill="currentColor"
-          />
-        </svg>
-      </span>
-      <span
-        className="sr-only"
+          search
+        </span>
+      </label>
+      <input
+        class="form-control"
+        id="pgn-searchfield-input-1"
+        name="searchfield-input"
+        role="searchbox"
+        type="text"
+        value=""
+      />
+      <button
+        class="btn"
+        type="submit"
       >
-        submit search
-      </span>
-    </button>
-  </form>
+        <span
+          class="pgn__icon"
+        >
+          <svg
+            aria-hidden="true"
+            fill="none"
+            focusable="false"
+            height="24"
+            role="img"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        <span
+          class="sr-only"
+        >
+          submit search
+        </span>
+      </button>
+    </form>
+  </div>
 </div>
 `;

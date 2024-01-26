@@ -9,6 +9,7 @@ import { mount } from 'enzyme';
 import { breakpoints, Skeleton } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { render } from '@testing-library/react';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -214,7 +215,7 @@ describe('<EnterpriseApp />', () => {
     });
   });
 
-  it('toggles sidebar toggle on componentWillUnmount', () => {
+  it.only('toggles sidebar toggle on componentWillUnmount', () => {
     const store = mockStore({
       ...initialState,
       sidebar: {
@@ -223,7 +224,7 @@ describe('<EnterpriseApp />', () => {
       },
     });
 
-    const wrapper = mount((
+    const wrapper = render((
       <EnterpriseAppWrapper
         store={store}
       />

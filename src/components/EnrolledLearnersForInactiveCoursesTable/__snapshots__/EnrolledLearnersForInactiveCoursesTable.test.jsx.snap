@@ -1,366 +1,348 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EnrolledLearnersForInactiveCoursesTable renders empty state correctly 1`] = `
-<div
-  className="fade alert-content alert alert-warning show"
-  role="alert"
->
-  <span
-    className="pgn__icon alert-icon"
-  >
-    <svg
-      aria-hidden={true}
-      fill="none"
-      focusable={false}
-      height={24}
-      role="img"
-      viewBox="0 0 24 24"
-      width={24}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
-        fill="currentColor"
-      />
-    </svg>
-  </span>
+<div>
   <div
-    className="pgn__alert-message-wrapper"
+    class="fade alert-content alert alert-warning show"
+    role="alert"
   >
-    <div
-      className="alert-message-content"
+    <span
+      class="pgn__icon alert-icon"
     >
-      There are no results.
+      <svg
+        aria-hidden="true"
+        fill="none"
+        focusable="false"
+        height="24"
+        role="img"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
+          fill="currentColor"
+        />
+      </svg>
+    </span>
+    <div
+      class="pgn__alert-message-wrapper"
+    >
+      <div
+        class="alert-message-content"
+      >
+        There are no results.
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for inactive courses table correctly 1`] = `
-<div
-  className="enrolled-learners-inactive-courses"
->
+<div>
   <div
-    className="row"
+    class="enrolled-learners-inactive-courses"
   >
     <div
-      className="col"
+      class="row"
     >
       <div
-        className="table-responsive"
-      >
-        <table
-          className="table table-sm table-striped"
-        >
-          <thead
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Email
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Total Course Enrollment Count
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Total Completed Courses Count
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-              <th
-                className="sortable"
-                scope="col"
-              >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <span>
-                    Last Activity Date
-                    <span
-                      className="sr-only"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
-                  </span>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            className=""
-          >
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  test_user_1@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                2
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                1
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                June 23, 2017
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  test_user_2@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                5
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                5
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                January 15, 2018
-              </td>
-            </tr>
-            <tr
-              className=""
-            >
-              <td
-                className=""
-                scope={null}
-              >
-                <span
-                  data-hj-suppress={true}
-                >
-                  test_user_3@example.com
-                </span>
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                6
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                4
-              </td>
-              <td
-                className=""
-                scope={null}
-              >
-                November 18, 2017
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="enrolled-learners-inactive-courses-pagination"
-        className="pagination-default"
+        class="col"
       >
         <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
+          class="table-responsive"
         >
-          Page 1, Current Page, of 1
+          <table
+            class="table table-sm table-striped"
+          >
+            <thead
+              class=""
+            >
+              <tr
+                class=""
+              >
+                <th
+                  class="sortable"
+                  scope="col"
+                >
+                  <button
+                    class="btn btn-header"
+                    type="button"
+                  >
+                    <span>
+                      Email
+                      <span
+                        class="sr-only"
+                      >
+                         
+                        sort ascending
+                      </span>
+                       
+                      <span
+                        aria-hidden="true"
+                        class="fa fa-sort-asc"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  class="sortable"
+                  scope="col"
+                >
+                  <button
+                    class="btn btn-header"
+                    type="button"
+                  >
+                    <span>
+                      Total Course Enrollment Count
+                      <span
+                        class="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden="true"
+                        class="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  class="sortable"
+                  scope="col"
+                >
+                  <button
+                    class="btn btn-header"
+                    type="button"
+                  >
+                    <span>
+                      Total Completed Courses Count
+                      <span
+                        class="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden="true"
+                        class="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+                <th
+                  class="sortable"
+                  scope="col"
+                >
+                  <button
+                    class="btn btn-header"
+                    type="button"
+                  >
+                    <span>
+                      Last Activity Date
+                      <span
+                        class="sr-only"
+                      >
+                         
+                        click to sort
+                      </span>
+                       
+                      <span
+                        aria-hidden="true"
+                        class="fa fa-sort"
+                      />
+                    </span>
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class=""
+            >
+              <tr
+                class=""
+              >
+                <td
+                  class=""
+                >
+                  <span
+                    data-hj-suppress="true"
+                  >
+                    test_user_1@example.com
+                  </span>
+                </td>
+                <td
+                  class=""
+                >
+                  2
+                </td>
+                <td
+                  class=""
+                >
+                  1
+                </td>
+                <td
+                  class=""
+                >
+                  June 23, 2017
+                </td>
+              </tr>
+              <tr
+                class=""
+              >
+                <td
+                  class=""
+                >
+                  <span
+                    data-hj-suppress="true"
+                  >
+                    test_user_2@example.com
+                  </span>
+                </td>
+                <td
+                  class=""
+                >
+                  5
+                </td>
+                <td
+                  class=""
+                >
+                  5
+                </td>
+                <td
+                  class=""
+                >
+                  January 15, 2018
+                </td>
+              </tr>
+              <tr
+                class=""
+              >
+                <td
+                  class=""
+                >
+                  <span
+                    data-hj-suppress="true"
+                  >
+                    test_user_3@example.com
+                  </span>
+                </td>
+                <td
+                  class=""
+                >
+                  6
+                </td>
+                <td
+                  class=""
+                >
+                  4
+                </td>
+                <td
+                  class=""
+                >
+                  November 18, 2017
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <ul
-          className="pagination"
+      </div>
+    </div>
+    <div
+      class="row mt-2"
+    >
+      <div
+        class="col d-flex justify-content-center"
+      >
+        <nav
+          aria-label="enrolled-learners-inactive-courses-pagination"
+          class="pagination-default"
         >
-          <li
-            className="page-item disabled"
+          <div
+            aria-atomic="true"
+            aria-live="polite"
+            aria-relevant="text"
+            class="sr-only"
           >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
+            Page 1, Current Page, of 1
+          </div>
+          <ul
+            class="pagination"
           >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
+            <li
+              class="page-item disabled"
             >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
+              <button
+                aria-label="Previous"
+                class="previous page-link btn btn-primary"
+                disabled=""
+                tabindex="-1"
+                type="button"
+              >
+                <div>
+                  <span
+                    class="pgn__icon"
                   >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+                    <svg
+                      aria-hidden="true"
+                      fill="none"
+                      focusable="false"
+                      height="24"
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  Previous
+                </div>
+              </button>
+            </li>
+            <li
+              class="page-item disabled"
+            >
+              <button
+                aria-label="Next"
+                class="next page-link btn btn-primary"
+                disabled=""
+                tabindex="-1"
+                type="button"
+              >
+                <div>
+                  Next
+                  <span
+                    class="pgn__icon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      fill="none"
+                      focusable="false"
+                      height="24"
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>

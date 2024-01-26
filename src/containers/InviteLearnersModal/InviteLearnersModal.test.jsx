@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import InviteLearnersModal from './index';
 
@@ -54,7 +54,7 @@ describe('UserSubscriptionModalWrapper', () => {
   });
 
   it('renders user licenses modal', () => {
-    const wrapper = mount(<InviteLearnersModalWrapper data={{}} />);
-    expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add Users');
+    render(<InviteLearnersModalWrapper data={{}} />);
+    expect(screen.getByText('Add Users')).toBeTruthy();
   });
 });

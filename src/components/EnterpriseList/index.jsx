@@ -125,7 +125,7 @@ class EnterpriseList extends React.Component {
               <div className="col-sm-12 col-md">
                 <h1>{TITLE}</h1>
               </div>
-              <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
+              <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0" data-testid="search-bar-wrapper">
                 <SearchBar
                   placeholder="Search by enterprise name..."
                   onSearch={query => updateUrl(this.props.navigate, this.props.location.pathname, {
@@ -138,7 +138,7 @@ class EnterpriseList extends React.Component {
               </div>
             </div>
             <div className="row mt-2">
-              <div className="col">
+              <div className="col" data-testid="table-container-wrapper">
                 {this.shouldRenderRedirectToEnterpriseAdminPage()
                   && this.renderRedirectToEnterpriseAdminPage()}
                 <TableContainer

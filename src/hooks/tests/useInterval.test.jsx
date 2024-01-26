@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { useInterval } from '..';
 
 const interval = 1000;
@@ -27,7 +27,7 @@ describe('useInterval hook', () => {
   });
 
   it('calls the test function every second', (done) => {
-    const wrapper = mount(<FakeComponent />);
+    const wrapper = render(<FakeComponent />);
     setTimeout(() => {
       try {
         expect(callback1).toHaveBeenCalledTimes(5);
@@ -44,7 +44,7 @@ describe('useInterval hook', () => {
   });
   // test not currently working
   it.skip('does not call the function if the delay is null', (done) => {
-    const wrapper = mount(<FakeComponentNullInterval />);
+    const wrapper = render(<FakeComponentNullInterval />);
     setTimeout(() => {
       try {
         expect(callback1).not.toHaveBeenCalled();

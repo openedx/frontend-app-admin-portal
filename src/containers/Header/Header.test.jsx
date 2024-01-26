@@ -4,16 +4,12 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { AvatarButton } from '@edx/paragon';
 import Header from './index';
-import { Logo, HeaderDropdown } from '../../components/Header';
-import SidebarToggle from '../SidebarToggle';
 
 import { configuration } from '../../config';
-import Img from '../../components/Img';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -64,11 +60,11 @@ describe('<Header />', () => {
     };
     store = mockStore({ ...storeData });
 
-    const wrapper = mount(<HeaderWrapper store={store} />);
-    const logo = wrapper.find(Logo);
+    render(<HeaderWrapper store={store} />);
+    const logo = screen.getByTestId('img');
 
-    expect(logo.props().enterpriseLogo).toEqual(storeData.portalConfiguration.enterpriseBranding.logo);
-    expect(logo.props().enterpriseName).toEqual(storeData.portalConfiguration.enterpriseName);
+    expect(logo.src).toEqual(storeData.portalConfiguration.enterpriseBranding.logo);
+    expect(logo.alt).toEqual(`${storeData.portalConfiguration.enterpriseName} logo`);
   });
 
   it('renders edX logo correctly', () => {
@@ -77,11 +73,11 @@ describe('<Header />', () => {
       portalConfiguration: {},
       sidebar: {},
     });
-    const wrapper = mount(<HeaderWrapper store={store} />);
+    render(<HeaderWrapper store={store} />);
     // testing the Img rather than Logo because Logo's props will be undefined
-    const logo = wrapper.find(Img);
-    expect(logo.props().src).toEqual(configuration.LOGO_URL);
-    expect(logo.props().alt).toEqual('edX logo');
+    const logo = screen.getByTestId('img');
+    expect(logo.src).toEqual(configuration.LOGO_URL);
+    expect(logo.alt).toEqual('edX logo');
   });
 
   it('renders profile image correctly', () => {
@@ -100,10 +96,12 @@ describe('<Header />', () => {
       },
       sidebar: {},
     });
-    const wrapper = mount(<HeaderWrapper store={store} />);
-    const userImg = wrapper.find(AvatarButton);
-    expect(userImg.props().src).toEqual(userData.profileImage.imageUrlMedium);
-    expect(userImg.props().alt).toContain(userData.username);
+    render(<HeaderWrapper store={store} />);
+
+    expect(screen.getAllByRole('img')[1]).toBeTruthy();
+    const userImg = screen.getAllByRole('img')[1];
+    expect(userImg.src).toEqual(userData.profileImage.imageUrlMedium);
+    expect(screen.getByRole('button').getAttribute('alt')).toContain(userData.username);
   });
 
   it('does not render profile image or dropdown if unauthenticated', () => {
@@ -112,8 +110,8 @@ describe('<Header />', () => {
       portalConfiguration: {},
       sidebar: {},
     });
-    const wrapper = mount(<HeaderWrapper store={store} />);
-    expect(wrapper.find(HeaderDropdown).length).toEqual(0);
+    render(<HeaderWrapper store={store} />);
+    expect(screen.queryAllByText('Logout')).toHaveLength(0);
   });
 
   it('does not call hydrate if not authenticated', () => {
@@ -123,7 +121,7 @@ describe('<Header />', () => {
       sidebar: {},
     });
 
-    mount(<HeaderWrapper store={store} />);
+    render(<HeaderWrapper store={store} />);
     expect(hydrateAuthenticatedUser.mock.calls.length).toBe(0);
   });
 
@@ -141,8 +139,8 @@ describe('<Header />', () => {
           isExpandedByToggle: false,
         },
       });
-      const wrapper = mount(<HeaderWrapper store={store} />);
-      expect(wrapper.find(SidebarToggle).length).toEqual(0);
+      render(<HeaderWrapper store={store} />);
+      expect(screen.queryAllByTestId('sidebar-toggle')).toHaveLength(0);
     });
 
     it('does show toggle', () => {
@@ -159,8 +157,8 @@ describe('<Header />', () => {
           isExpandedByToggle: false,
         },
       });
-      const wrapper = mount(<HeaderWrapper store={store} />);
-      expect(wrapper.find(SidebarToggle).length).toEqual(1);
+      render(<HeaderWrapper store={store} />);
+      expect(screen.getAllByTestId('sidebar-toggle')).toHaveLength(1);
     });
   });
 });

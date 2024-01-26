@@ -1,7 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -63,24 +62,20 @@ const AIAnalyticsSummaryWrapper = props => (
 
 describe('<AIAnalyticsSummary />', () => {
   it('should render action buttons correctly', () => {
-    const tree = renderer
-      .create((
-        <AIAnalyticsSummaryWrapper
-          insights={mockedInsights}
-        />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <AIAnalyticsSummaryWrapper
+        insights={mockedInsights}
+      />,
+    );
 
     expect(tree).toMatchSnapshot();
   });
 
   it('should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked', () => {
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    fireEvent.click(screen.getByTestId('summarize-analytics'));
 
-    const tree = renderer
-      .create(<AIAnalyticsSummaryWrapper insights={mockedInsights} />)
-      .toJSON();
+    const { container: tree } = render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
 
     expect(tree).toMatchSnapshot();
   });
@@ -99,12 +94,10 @@ describe('<AIAnalyticsSummary />', () => {
 
   it('should handle null analytics data', () => {
     const insightsData = { ...mockedInsights, learner_engagement: null };
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={insightsData} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
+    fireEvent.click(screen.getByTestId('summarize-analytics'));
 
-    const tree = renderer
-      .create(<AIAnalyticsSummaryWrapper insights={insightsData} />)
-      .toJSON();
+    const { container: tree } = render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
 
     expect(tree).toMatchSnapshot();
   });

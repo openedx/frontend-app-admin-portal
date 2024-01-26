@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import Header, { Logo } from './index';
 import { configuration } from '../../config';
-import Img from '../Img';
 
 const HeaderWrapper = props => (
   <MemoryRouter>
@@ -34,16 +33,16 @@ describe('<Logo />', () => {
       enterpriseName: 'Test Enterprise',
     };
 
-    const wrapper = mount(<Logo {...props} />);
-    const logo = wrapper.find(Img);
-    expect(logo.props().src).toEqual(props.enterpriseLogo);
-    expect(logo.props().alt).toEqual(`${props.enterpriseName} logo`);
+    render(<Logo {...props} />);
+    const logo = screen.getByTestId('img');
+    expect(logo.src).toEqual(props.enterpriseLogo);
+    expect(logo.alt).toEqual(`${props.enterpriseName} logo`);
   });
 
   it('renders edX logo correctly', () => {
-    const wrapper = mount(<Logo />);
-    const logo = wrapper.find(Img);
-    expect(logo.props().src).toEqual(configuration.LOGO_URL);
-    expect(logo.props().alt).toEqual('edX logo');
+    render(<Logo />);
+    const logo = screen.getByTestId('img');
+    expect(logo.src).toEqual(configuration.LOGO_URL);
+    expect(logo.alt).toEqual('edX logo');
   });
 });
