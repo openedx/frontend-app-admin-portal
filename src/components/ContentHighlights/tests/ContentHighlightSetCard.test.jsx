@@ -8,7 +8,6 @@ import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
-import Cookies from 'universal-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
@@ -171,7 +170,6 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
   });
   it('renders archived course alert and sets cookie on dismiss', async () => {
-    const archivedCoursesCookies = new Cookies();
     const updatedEnterpriseAppContextValue = {
       enterpriseCuration: {
         enterpriseCuration: {
@@ -191,9 +189,8 @@ describe('<ContentHighlightSetCard>', () => {
     const dismissButton = screen.getByText('Dismiss');
     expect(dismissButton).toBeInTheDocument();
     userEvent.click(dismissButton);
-    const resultCookie = archivedCoursesCookies.get(NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME);
-    const expectedCookie = { 'test-uuid': ['test-content-key'] };
-    await waitFor(() => { expect(resultCookie).toEqual(expectedCookie); });
+    const resultCookie = global.localStorage.getItem(`${NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME}-test-uuid`);
+    await waitFor(() => { expect(resultCookie).toEqual('test-content-key'); });
     expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
   });
 });

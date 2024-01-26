@@ -1,5 +1,5 @@
 import { logError } from '@edx/frontend-platform/logging';
-import { archivedHighlightsCoursesCookies, NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME } from '../../ContentHighlights/data/constants';
+import { NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME, COURSE_RUN_STATUSES } from '../../ContentHighlights/data/constants';
 
 export const initialReducerState = {
   isLoading: true,
@@ -67,29 +67,34 @@ function getHighlightSetsFromState(state) {
 }
 
 function getIsNewArchivedCourseFromState(payload) {
-  const dismissedCookies = archivedHighlightsCoursesCookies.get(NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME);
-  const isDismissedArchivedCoursesSet = dismissedCookies !== undefined;
-  const dismissedArchivedCourses = isDismissedArchivedCoursesSet ? dismissedCookies : {};
   let isNewArchivedCourse = false;
-  // checks that the highlight uuid isn't set
   payload?.forEach(highlightSet => {
-    if (!dismissedArchivedCourses[highlightSet.uuid]) {
+    const dismissedCookies = global.localStorage.getItem(`${NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME}-${highlightSet.uuid}`);
+    // Checks that the highlightSet uuid isn't set
+    if (!dismissedCookies) {
       highlightSet.highlightedContent.forEach(courseContent => {
-        // if the length is greater than 1 for the course run status e.g. ["archived", "published"]
-        // the course should not be archived
-        if (courseContent.courseRunStatuses?.length === 1 && courseContent.courseRunStatuses?.includes('archived')) {
+        // If the length > 1 for the course run status e.g. ["archived", "published"]
+        // the course is not considered archived. An "unpublished" course run is not considered "archived" because
+        // it could have a scheduled course run.
+        if (courseContent.courseRunStatuses?.length === 1
+          && courseContent.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
+        ) {
           isNewArchivedCourse = true;
         }
       });
+      // If the highlightSet uuid is already in the cookies, check if it includes the archived course content key
     } else {
       highlightSet.highlightedContent.forEach(courseContent => {
-        if (courseContent.courseRunStatuses?.length === 1 && courseContent.courseRunStatuses?.includes('archived') && !dismissedArchivedCourses[highlightSet.uuid].includes(courseContent.contentKey)) {
+        if (
+          courseContent.courseRunStatuses?.length === 1
+          && courseContent.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
+          && !dismissedCookies.includes(courseContent.contentKey)
+        ) {
           isNewArchivedCourse = true;
         }
       });
     }
   });
-
   return isNewArchivedCourse;
 }
 

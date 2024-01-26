@@ -1,7 +1,6 @@
 import { Alert } from '@edx/paragon';
 import { useContext, useState } from 'react';
-import dayjs from 'dayjs';
-import { NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME, archivedHighlightsCoursesCookies } from './data/constants';
+import { NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME, COURSE_RUN_STATUSES } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
 
@@ -12,7 +11,7 @@ const ContentHighlightArchivedCoursesAlert = () => {
   const { enterpriseCuration: { enterpriseHighlightedContents, dispatch } } = useContext(EnterpriseAppContext);
   enterpriseHighlightedContents.forEach(content => {
     content.highlightedContent.forEach(course => {
-      if (course.courseRunStatuses?.length === 1 && course.courseRunStatuses.includes('archived')) {
+      if (course.courseRunStatuses?.length === 1 && course.courseRunStatuses.includes(COURSE_RUN_STATUSES.archived)) {
         if (archivedCoursesCookies[content.uuid]) {
           archivedCoursesCookies[content.uuid].push(course.contentKey);
         } else {
@@ -21,17 +20,13 @@ const ContentHighlightArchivedCoursesAlert = () => {
       }
     });
   });
-
   const setArchivedCourseCookies = () => {
-    const currentDate = dayjs();
-    // Chrome sets an cap on expiration limit for cookies to 400 days
-    // https://developer.chrome.com/blog/cookie-max-age-expires
-    const cookieExpiration = currentDate.add(400, 'day').format();
-    archivedHighlightsCoursesCookies.set(
-      NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME,
-      archivedCoursesCookies,
-      { expires: new Date(cookieExpiration) },
-    );
+    Object.entries(archivedCoursesCookies).forEach(([highlightContentUUID, courseKey]) => {
+      global.localStorage.setItem(
+        `${NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME}-${highlightContentUUID}`,
+        courseKey,
+      );
+    });
     dispatch(enterpriseCurationActions.updateDismissedArchivedCourse(false));
     setIsOpen(false);
   };

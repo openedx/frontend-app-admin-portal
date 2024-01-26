@@ -86,7 +86,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
           curation = await createEnterpriseCuration();
         }
         const curationHighlightedContents = await Promise.all(curation.highlightSets.map(async (highlightSet) => {
-          const data = await getHighlightSet(highlightSet.uuid).then(error => error);
+          const data = await getHighlightSet(highlightSet.uuid);
           return data;
         }));
         setEnterpriseHighlightedContents(curationHighlightedContents);
