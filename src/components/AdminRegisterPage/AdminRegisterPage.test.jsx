@@ -51,7 +51,7 @@ describe('<AdminRegisterPage />', () => {
     render(<AdminRegisterPageWrapper />);
 
     // verify that the loading skeleton appears during redirect
-    await waitFor(() => expect(screen.getByText('Loading...')).toBeTruthy());
+    await waitFor(() => expect(screen.getByTestId('enterprise-app-skeleton')).toBeTruthy());
     await waitFor(() => expect(global.location.href).toBeTruthy());
   });
 
@@ -69,7 +69,7 @@ describe('<AdminRegisterPage />', () => {
         data: mockEnterpriseCustomer,
       }));
       render(<AdminRegisterPageWrapper />);
-      await waitFor(() => expect(screen.getByText('Loading...')).toBeTruthy());
+      await waitFor(() => expect(screen.getByTestId('enterprise-app-skeleton')).toBeTruthy());
     });
   });
 

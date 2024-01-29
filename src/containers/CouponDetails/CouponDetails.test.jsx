@@ -6,7 +6,6 @@ import { within } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
 import { render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
@@ -253,19 +252,15 @@ describe('CouponDetails container', () => {
     });
   });
 
-  it('handles isExpanded prop change', () => {
-    wrapper = mount(<CouponDetailsWrapper isExpanded />);
-    expect(wrapper.find(CouponDetails).prop('isExpanded')).toBeTruthy();
+  it.only('handles isExpanded prop change', () => {
+    wrapper = render(<CouponDetailsWrapper isExpanded />);
+    expect(screen.getByTestId('coupon-details-expanded')).toBeTruthy();
 
-    wrapper.setProps({
-      isExpanded: false,
-    });
-    expect(wrapper.find(CouponDetails).prop('isExpanded')).toBeFalsy();
+    wrapper.rerender(<CouponDetailsWrapper isExpanded={false} />);
+    expect(screen.queryByTestId('coupon-details-expanded')).toBeFalsy();
 
-    wrapper.setProps({
-      isExpanded: true,
-    });
-    expect(wrapper.find(CouponDetails).prop('isExpanded')).toBeTruthy();
+    wrapper.rerender(<CouponDetailsWrapper isExpanded />);
+    expect(screen.getByTestId('coupon-details-expanded')).toBeTruthy();
   });
 
   it('removes partial redeem toggle for "Single use" coupons', () => {

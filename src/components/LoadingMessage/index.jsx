@@ -10,6 +10,7 @@ const LoadingMessage = (props) => {
         'loading d-flex align-items-center justify-content-center',
         className,
       )}
+      data-testid="loading-message"
     >
       Loading...
       <span className="sr-only">Loading</span>

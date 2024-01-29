@@ -530,6 +530,7 @@ exports[`ManageCodesTabWrapper renders renders loading state correctly 1`] = `
     >
       <div
         class="loading d-flex align-items-center justify-content-center coupons mt-3"
+        data-testid="loading-message"
       >
         Loading...
         <span

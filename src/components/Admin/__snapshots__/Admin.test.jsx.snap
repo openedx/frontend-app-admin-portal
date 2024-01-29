@@ -111,6 +111,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -742,6 +743,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -852,6 +854,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         id="form-field11"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -901,6 +904,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         id="form-field12"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -1565,6 +1569,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -1675,6 +1680,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         id="form-field36"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -1724,6 +1730,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         id="form-field37"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -2388,6 +2395,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -2498,6 +2506,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         id="form-field41"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -2547,6 +2556,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         id="form-field42"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -3211,6 +3221,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -3321,6 +3332,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         id="form-field46"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -3370,6 +3382,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         id="form-field47"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -4034,6 +4047,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -4144,6 +4158,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         id="form-field1"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -4193,6 +4208,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         id="form-field2"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -4857,6 +4873,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -4967,6 +4984,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         id="form-field31"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -5016,6 +5034,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         id="form-field32"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -5680,6 +5699,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -5790,6 +5810,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         id="form-field26"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -5839,6 +5860,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         id="form-field27"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -6503,6 +6525,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -6613,6 +6636,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         id="form-field16"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -6662,6 +6686,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         id="form-field17"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -7326,6 +7351,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -7436,6 +7462,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         id="form-field6"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -7485,6 +7512,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         id="form-field7"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -8149,6 +8177,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -8259,6 +8288,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         id="form-field21"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -8308,6 +8338,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         id="form-field22"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -9017,6 +9048,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -9127,6 +9159,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         id="form-field56"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -9176,6 +9209,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         id="form-field57"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course
@@ -9365,6 +9399,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -9533,6 +9568,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -10204,6 +10240,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
         >
           <div
             class="loading d-flex align-items-center justify-content-center subscriptions"
+            data-testid="loading-message"
           >
             Loading...
             <span
@@ -10314,6 +10351,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         id="form-field51"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           All Courses
@@ -10363,6 +10401,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         id="form-field52"
                       >
                         <option
+                          data-testid="form-control-option"
                           value=""
                         >
                           Choose a course

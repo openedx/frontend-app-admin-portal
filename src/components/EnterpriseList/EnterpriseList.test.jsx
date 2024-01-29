@@ -145,7 +145,7 @@ describe('<EnterpriseList />', () => {
         <EnterpriseListWrapper loading enterpriseList={null} />,
       );
 
-      expect(screen.getAllByText('Loading...')).toHaveLength(1);
+      expect(screen.getAllByTestId('loading-message')).toHaveLength(1);
     });
 
     it('redirects when there is only one enterprise', () => {

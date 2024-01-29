@@ -116,8 +116,11 @@ exports[`<ErrorPage /> renders correctly for 404 errors 1`] = `
       >
         <div
           className="text-center py-5"
+          data-testid="not-found-page"
         >
-          <h1>
+          <h1
+            data-testid="not-found-error"
+          >
             404
           </h1>
           <p

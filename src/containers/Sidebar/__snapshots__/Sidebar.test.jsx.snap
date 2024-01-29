@@ -4,6 +4,7 @@ exports[`<Sidebar /> renders correctly 1`] = `
 <nav
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
+  data-testid="sidebar"
   id="sidebar"
   onBlur={[Function]}
   onFocus={[Function]}
@@ -237,6 +238,7 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
 <nav
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex has-shadow"
+  data-testid="sidebar"
   id="sidebar"
   onBlur={[Function]}
   onFocus={[Function]}
@@ -386,6 +388,7 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
 <nav
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded has-shadow"
+  data-testid="sidebar"
   id="sidebar"
   onBlur={[Function]}
   onFocus={[Function]}
@@ -609,6 +612,7 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
 <nav
   aria-label="sidebar"
   className="sidebar border-right h-100 d-none d-lg-flex d-flex expanded"
+  data-testid="sidebar"
   id="sidebar"
   onBlur={[Function]}
   onFocus={[Function]}

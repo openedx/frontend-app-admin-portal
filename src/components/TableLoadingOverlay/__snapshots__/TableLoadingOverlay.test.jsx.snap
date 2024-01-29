@@ -10,6 +10,7 @@ Array [
   >
     <div
       className="loading d-flex align-items-center justify-content-center loading"
+      data-testid="loading-message"
     >
       Loading...
       <span

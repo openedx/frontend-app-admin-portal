@@ -546,7 +546,7 @@ class CouponDetails extends React.Component {
         <div className="col">
           {isExpanded && (
             <>
-              <div className="details-header row no-gutters mb-5">
+              <div className="details-header row no-gutters mb-5" data-testid="coupon-details-expanded">
                 <div className="col-12 col-md-6 mb-2 mb-md-0">
                   <h3>Coupon Details</h3>
                 </div>

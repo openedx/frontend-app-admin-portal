@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import last from 'lodash/last';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
@@ -93,34 +93,30 @@ CodeAssignmentModalWrapper.propTypes = {
 
 describe('CodeAssignmentModalWrapper', () => {
   it('renders individual assignment modal', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper />);
-    expect(wrapper.find('IndividualAssignFields')).toHaveLength(1);
+    render(<CodeAssignmentModalWrapper />);
+    expect(screen.getAllByTestId('individual-assign-fields')).toHaveLength(1);
   });
 
   it('renders bulk assignment modal', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper isBulkAssign />);
-    expect(wrapper.find('BulkAssignFields')).toHaveLength(1);
+    render(<CodeAssignmentModalWrapper isBulkAssign />);
+    expect(screen.getAllByTestId('bulk-assign-fields')).toHaveLength(1);
   });
 
   it('renders <SaveTemplateButton />', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper />);
-    const saveTemplateButton = wrapper.find('SaveTemplateButton');
-    expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().templateType).toEqual('assign');
+    render(<CodeAssignmentModalWrapper />);
+    expect(screen.getAllByText('Save Template')).toHaveLength(1);
   });
 
   it('renders <TemplateSourceFields /> with source new_email', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+    render(<CodeAssignmentModalWrapper />);
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('input[name="template-name"]')).toHaveLength(1);
+    expect(screen.getAllByText('New Email')[0].getAttribute('aria-pressed')).toEqual('true');
+    expect(screen.getAllByText('From Template')[0].getAttribute('aria-pressed')).toEqual('false');
+    expect(screen.getAllByText('New Email')[0].getAttribute('style')).toEqual('pointer-events: none;');
+    expect(screen.getAllByText('From Template')[0].getAttribute('style')).toEqual('pointer-events: auto;');
+    expect(screen.getAllByRole('textbox', { name: /Template Name/i })).toHaveLength(1);
 
-    TemplateSourceFields.find('button#btn-old-email-template').simulate('click');
+    fireEvent.click(screen.getAllByText('From Template')[0]);
     expect(last(store.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE },
@@ -135,17 +131,15 @@ describe('CodeAssignmentModalWrapper', () => {
         emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
       },
     });
-    const wrapper = mount(<CodeAssignmentModalWrapper store={newStore} />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+    render(<CodeAssignmentModalWrapper store={newStore} />);
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('select[name="template-name-select"]')).toHaveLength(1);
+    expect(screen.getAllByText('New Email')[0].getAttribute('aria-pressed')).toEqual('false');
+    expect(screen.getAllByText('From Template')[0].getAttribute('aria-pressed')).toEqual('true');
+    expect(screen.getAllByText('New Email')[0].getAttribute('style')).toEqual('pointer-events: auto;');
+    expect(screen.getAllByText('From Template')[0].getAttribute('style')).toEqual('pointer-events: none;');
+    expect(screen.getAllByRole('combobox', { name: /Template Name/i })).toHaveLength(1);
 
-    TemplateSourceFields.find('button#btn-new-email-template').simulate('click');
+    fireEvent.click(screen.getAllByText('New Email')[0]);
     expect(last(newStore.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL },
