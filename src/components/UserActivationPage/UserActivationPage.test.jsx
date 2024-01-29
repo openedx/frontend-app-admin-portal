@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import {
   MemoryRouter as Router, Routes, Route, mockNavigate,
 } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import UserActivationPage from './index';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
@@ -67,10 +66,10 @@ describe('<UserActivationPage />', () => {
     // Note: this test does not assert that the redirect to the proxy login works since
     // JSdom does not implement global.location. Due to this, JSdom outputs a "Not
     // implemented: navigation" warning for this test that can safely be ignored.
-    const wrapper = mount(<UserActivationPageWrapper />);
+    render(<UserActivationPageWrapper />);
 
     // verify that the loading skeleton appears during redirect
-    expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy();
+    expect(screen.getByTestId('enterprise-app-skeleton')).toBeTruthy();
   });
 
   it('redirects to /admin/register when user is authenticated but has no JWT roles', () => {
@@ -82,7 +81,7 @@ describe('<UserActivationPage />', () => {
       initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`],
     });
 
-    mount(<UserActivationPageWrapper history={history} />);
+    render(<UserActivationPageWrapper history={history} />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register`;
     expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute);
   });
@@ -93,8 +92,8 @@ describe('<UserActivationPage />', () => {
       roles: ['enterprise_admin:*'],
     });
 
-    const wrapper = mount(<UserActivationPageWrapper />);
-    expect(wrapper.find(EnterpriseAppSkeleton).exists()).toBeTruthy();
+    render(<UserActivationPageWrapper />);
+    expect(screen.getByTestId('enterprise-app-skeleton')).toBeTruthy();
   });
 
   it('displays an alert when user with unverified email is authenticated and has "enterprise_admin" JWT role', () => {
@@ -104,8 +103,8 @@ describe('<UserActivationPage />', () => {
       isActive: false,
     });
 
-    const wrapper = mount(<UserActivationPageWrapper />);
-    expect(wrapper.find('Alert').exists()).toBeTruthy();
+    render(<UserActivationPageWrapper />);
+    expect(screen.getByRole('alert')).toBeTruthy();
   });
 
   it('redirects to /admin/learners route when user with verified email is authenticated and has "enterprise_admin" JWT role', () => {
@@ -119,7 +118,7 @@ describe('<UserActivationPage />', () => {
       initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register/activate`],
     });
 
-    mount(<UserActivationPageWrapper history={history} />);
+    render(<UserActivationPageWrapper history={history} />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/learners`;
     expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute);
   });

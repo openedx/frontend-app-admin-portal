@@ -1,10 +1,9 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import LearnerActivityTable from '.';
 
@@ -102,62 +101,54 @@ const LearnerActivityTableWrapper = props => (
 );
 
 const verifyLearnerActivityTableRendered = (tableId, activity, columnTitles, rowsData) => {
-  const wrapper = mount((
+  const wrapper = render((
     <LearnerActivityTableWrapper id={tableId} activity={activity} />
   ));
   // Verify that table has correct number of columns
-  expect(wrapper.find(`.${tableId} thead th`).length).toEqual(columnTitles.length);
+  expect(wrapper.container.querySelectorAll(`.${tableId} thead th`).length).toEqual(columnTitles.length);
 
   // Verify only expected columns are shown
-  wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
-    expect(column.text()).toContain(columnTitles[index]);
+  wrapper.container.querySelectorAll(`.${tableId} thead th`).forEach((column, index) => {
+    expect(column.textContent).toContain(columnTitles[index]);
   });
 
   // Verify that table has correct number of rows
-  expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(2);
+  expect(wrapper.container.querySelectorAll(`.${tableId} tbody tr`).length).toEqual(2);
 
   // Verify each row in table has correct data
-  wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
-    row.find('td').forEach((cell, colIndex) => {
-      expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
+  wrapper.container.querySelectorAll(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
+    row.querySelectorAll('td').forEach((cell, colIndex) => {
+      expect(cell.textContent).toEqual(rowsData[rowIndex][colIndex]);
     });
   });
 };
 
 describe('LearnerActivityTable', () => {
   it('renders empty state correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityEmptyTableWrapper id="active-week" activity="active_past_week" />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <LearnerActivityEmptyTableWrapper id="active-week" activity="active_past_week" />,
+    );
     expect(tree).toMatchSnapshot();
   });
 
   it('renders active learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="active-week" activity="active_past_week" />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <LearnerActivityTableWrapper id="active-week" activity="active_past_week" />,
+    );
     expect(tree).toMatchSnapshot();
   });
 
   it('renders inactive past week learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="inactive-week" activity="inactive_past_week" />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <LearnerActivityTableWrapper id="inactive-week" activity="inactive_past_week" />,
+    );
     expect(tree).toMatchSnapshot();
   });
 
   it('renders inactive past month learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="inactive-month" activity="inactive_past_month" />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <LearnerActivityTableWrapper id="inactive-month" activity="inactive_past_month" />,
+    );
     expect(tree).toMatchSnapshot();
   });
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import last from 'lodash/last';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
@@ -157,30 +157,30 @@ describe('CodeReminderModalWrapper', () => {
 
   it('renders individual reminder modal', () => {
     const codeRemindData = [data, data];
-    const wrapper = mount(<CodeReminderModalWrapper
+    render(<CodeReminderModalWrapper
       data={{ ...codeRemindData, selectedCodes: [data] }}
     />);
-    expect(wrapper.find('.assignment-detail').find('p')).toBeTruthy();
+    expect(screen.getByTestId('assignment-details').children.length).toBe(0);
   });
 
   it('renders bulk reminder modal', async () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
     const codeRemindData = [data, data];
-    const wrapper = mount(<CodeReminderModalWrapper
+    render(<CodeReminderModalWrapper
       data={{ ...codeRemindData, selectedCodes: codeRemindData }}
       isBulkRemind
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
-    expect(wrapper.find('#email-template')).toBeTruthy();
-    wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
+    expect(screen.getByTestId('assignment-details-codes').childNodes[0].textContent).toEqual('Selected codes: 2');
+    expect(screen.getByText('Email Template')).toBeTruthy();
+    fireEvent.click(screen.getByText('Remind'));
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(2));
   });
 
   it('returns the correct data if learner portal is not enabled', async () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
     const codeRemindData = [data, data];
-    const wrapper = mount(<CodeReminderModalWrapper
+    render(<CodeReminderModalWrapper
       data={{
         ...codeRemindData,
         selectedCodes: codeRemindData,
@@ -192,9 +192,9 @@ describe('CodeReminderModalWrapper', () => {
       isBulkRemind
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
-    expect(wrapper.find('#email-template')).toBeTruthy();
-    wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
+    expect(screen.getByTestId('assignment-details-codes').childNodes[0].textContent).toEqual('Selected codes: 2');
+    expect(screen.getByText('Email Template')).toBeTruthy();
+    fireEvent.click(screen.getByText('Remind'));
     const expectedData = codeReminderRequestData(2);
     delete expectedData.base_enterprise_url;
     expect(spy).toHaveBeenCalledWith(couponId, expectedData);
@@ -204,36 +204,32 @@ describe('CodeReminderModalWrapper', () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeReminder');
     const codeReminderData = [data, data];
     const selectedToggle = 'unredeemed';
-    const wrapper = mount(<CodeReminderModalWrapper
+    render(<CodeReminderModalWrapper
       data={{ ...codeReminderData, selectedCodes: [] }}
       selectedToggle={selectedToggle}
       isBulkRemind
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 3');
-    wrapper.find('.modal-footer .code-remind-save-btn').hostNodes().simulate('click');
+    expect(screen.getByTestId('assignment-details-codes').childNodes[0].textContent).toEqual('Selected codes: 3');
+    fireEvent.click(screen.getByText('Remind'));
     expect(spy).toHaveBeenCalledWith(couponId, codeReminderRequestData(0, selectedToggle));
   });
 
   it('renders <SaveTemplateButton />', () => {
-    const wrapper = mount(<CodeReminderModalWrapper />);
-    const saveTemplateButton = wrapper.find('SaveTemplateButton');
-    expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().templateType).toEqual('remind');
+    render(<CodeReminderModalWrapper />);
+    expect(screen.getByText('Save Template')).toBeTruthy();
   });
 
   it('renders <TemplateSourceFields /> with source new_email', () => {
-    const wrapper = mount(<CodeReminderModalWrapper />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+    render(<CodeReminderModalWrapper />);
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('input[name="template-name"]')).toHaveLength(1);
+    expect(screen.getAllByText('New Email')[0].getAttribute('aria-pressed')).toEqual('true');
+    expect(screen.getAllByText('From Template')[0].getAttribute('aria-pressed')).toEqual('false');
+    expect(screen.getAllByText('New Email')[0].getAttribute('style')).toEqual('pointer-events: none;');
+    expect(screen.getAllByText('From Template')[0].getAttribute('style')).toEqual('pointer-events: auto;');
+    expect(screen.getAllByRole('textbox', { name: /Template Name/i })).toHaveLength(1);
 
-    TemplateSourceFields.find('button#btn-old-email-template').simulate('click');
+    fireEvent.click(screen.getAllByText('From Template')[0]);
     expect(last(store.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE },
@@ -248,17 +244,15 @@ describe('CodeReminderModalWrapper', () => {
         emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
       },
     });
-    const wrapper = mount(<CodeReminderModalWrapper store={newStore} />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+    render(<CodeReminderModalWrapper store={newStore} />);
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('select[name="template-name-select"]')).toHaveLength(1);
+    expect(screen.getAllByText('New Email')[0].getAttribute('aria-pressed')).toEqual('false');
+    expect(screen.getAllByText('From Template')[0].getAttribute('aria-pressed')).toEqual('true');
+    expect(screen.getAllByText('New Email')[0].getAttribute('style')).toEqual('pointer-events: auto;');
+    expect(screen.getAllByText('From Template')[0].getAttribute('style')).toEqual('pointer-events: none;');
+    expect(screen.getAllByRole('combobox', { name: /Template Name/i })).toHaveLength(1);
 
-    TemplateSourceFields.find('button#btn-new-email-template').simulate('click');
+    fireEvent.click(screen.getAllByText('New Email')[0]);
     expect(last(newStore.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL },

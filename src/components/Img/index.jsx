@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './Img.scss';
 
 const Img = (props) => (
-  <img src={props.src} alt={props.alt} {...props} />
+  <img data-testid="img" src={props.src} alt={props.alt} {...props} />
 );
 
 Img.propTypes = {

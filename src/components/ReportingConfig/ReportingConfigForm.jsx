@@ -187,6 +187,7 @@ class ReportingConfigForm extends React.Component {
     const selectedDataTypesOption = config ? [{ label: config.dataType, value: config.dataType, hidden: true }] : [];
     return (
       <form
+        data-testid="reporting-config-form"
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.target);

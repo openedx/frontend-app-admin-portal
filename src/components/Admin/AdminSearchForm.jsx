@@ -65,7 +65,7 @@ class AdminSearchForm extends React.Component {
                   value={searchCourseQuery}
                   onChange={e => this.onCourseSelect(e)}
                 >
-                  <option value="">All Courses</option>
+                  <option value="" data-testid="form-control-option">All Courses</option>
                   {courseTitles.map(title => (
                     <option
                       value={title}
@@ -97,7 +97,7 @@ class AdminSearchForm extends React.Component {
                   })}
                   disabled={!searchCourseQuery}
                 >
-                  <option value="">{searchCourseQuery ? 'All Dates' : 'Choose a course'}</option>
+                  <option value="" data-testid="form-control-option">{searchCourseQuery ? 'All Dates' : 'Choose a course'}</option>
                   {searchCourseQuery && courseDates.map(date => (
                     <option
                       value={date}

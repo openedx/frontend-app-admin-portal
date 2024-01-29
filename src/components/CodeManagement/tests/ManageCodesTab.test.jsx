@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import ManageCodesTab from '../ManageCodesTab';
@@ -18,6 +17,12 @@ const BNR_NEW_FEATURE_ALERT_TEXT = 'browse and request new feature alert!';
 jest.mock('../../NewFeatureAlertBrowseAndRequest', () => ({
   __esModule: true,
   default: () => BNR_NEW_FEATURE_ALERT_TEXT,
+}));
+
+jest.mock('@edx/paragon/icons', () => ({
+  ...jest.requireActual('@edx/paragon/icons'),
+  ExpandLess: () => <div data-testid="expand-less" />,
+  ExpandMore: () => <div data-testid="expand-more" />,
 }));
 
 const mockStore = configureMockStore([thunk]);
@@ -102,11 +107,9 @@ const sampleCouponData = {
 describe('ManageCodesTabWrapper', () => {
   describe('renders', () => {
     it('renders empty results correctly', () => {
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <ManageCodesTabWrapper />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -130,11 +133,9 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper store={store} />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <ManageCodesTabWrapper store={store} />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -147,11 +148,9 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper store={store} />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <ManageCodesTabWrapper store={store} />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -164,17 +163,15 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper store={store} />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <ManageCodesTabWrapper store={store} />,
+      );
       expect(tree).toMatchSnapshot();
     });
   });
 
   it('handles location.state on componentDidMount', () => {
-    const wrapper = mount((
+    render((
       <ManageCodesTabWrapper
         location={{
           state: {
@@ -184,7 +181,7 @@ describe('ManageCodesTabWrapper', () => {
       />
     ));
 
-    expect(wrapper.find('ManageCodesTab').instance().state.hasRequestedCodes).toBeTruthy();
+    expect(screen.getByText('Request for more codes received')).toBeTruthy();
   });
 
   it('handles overview_page query parameter change', () => {
@@ -201,15 +198,16 @@ describe('ManageCodesTabWrapper', () => {
     });
     const spy = jest.spyOn(store, 'dispatch');
 
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+    const wrapper = render(<ManageCodesTabWrapper store={store} />);
 
     spy.mockRestore();
 
-    wrapper.setProps({
-      location: {
+    wrapper.rerender(<ManageCodesTabWrapper
+      store={store}
+      location={{
         search: '?overview_page=2',
-      },
-    });
+      }}
+    />);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
@@ -217,7 +215,7 @@ describe('ManageCodesTabWrapper', () => {
   it('calls clearCouponOrders() on componentWillUnmount', () => {
     const store = mockStore({ ...initialState });
 
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+    const wrapper = render(<ManageCodesTabWrapper store={store} />);
     wrapper.unmount();
 
     const actions = store.getActions();
@@ -250,25 +248,22 @@ describe('ManageCodesTabWrapper', () => {
       },
     });
 
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
-    const instance = wrapper.find('ManageCodesTab').instance();
-    const spyExpand = jest.spyOn(instance, 'handleCouponExpand');
-    const spyCollapse = jest.spyOn(instance, 'handleCouponCollapse');
+    const wrapper = render(<ManageCodesTabWrapper store={store} />);
 
     // expand
-    wrapper.find('Coupon').first().find('.metadata').simulate('click');
-    expect(spyExpand).toBeCalledTimes(1);
+    fireEvent.click(wrapper.container.querySelector('.metadata'));
+    expect(screen.getByTestId('expand-less')).toBeTruthy();
 
     // collapse
-    wrapper.find('Coupon').first().find('.metadata').simulate('click');
-    expect(spyCollapse).toBeCalledTimes(1);
+    fireEvent.click(wrapper.container.querySelector('.metadata'));
+    expect(screen.getAllByTestId('expand-more')).toBeTruthy();
   });
 
   it('fetches coupons on refresh button click', () => {
     const store = mockStore({ ...initialState });
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+    render(<ManageCodesTabWrapper store={store} />);
     store.clearActions();
-    wrapper.find('[data-testid="refresh-data"]').hostNodes().simulate('click');
+    fireEvent.click(screen.getByTestId('refresh-data'));
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
   });
 
@@ -296,12 +291,12 @@ describe('ManageCodesTabWrapper', () => {
         shouldShowAlert: false,
       },
     ])('should render correctly', ({ subsidyRequestConfiguration, shouldShowAlert }) => {
-      const wrapper = mount(<ManageCodesTabWrapper subsidyRequestConfiguration={subsidyRequestConfiguration} />);
+      render(<ManageCodesTabWrapper subsidyRequestConfiguration={subsidyRequestConfiguration} />);
 
       if (shouldShowAlert) {
-        expect(wrapper.text().includes(BNR_NEW_FEATURE_ALERT_TEXT)).toBe(true);
+        expect(screen.getByText(BNR_NEW_FEATURE_ALERT_TEXT)).toBeTruthy();
       } else {
-        expect(wrapper.text().includes(BNR_NEW_FEATURE_ALERT_TEXT)).toBe(false);
+        expect(screen.queryByText(BNR_NEW_FEATURE_ALERT_TEXT)).toBeFalsy();
       }
     });
   });

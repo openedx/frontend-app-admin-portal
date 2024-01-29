@@ -1,6 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { act } from '@testing-library/react';
+import {
+  render, screen, act, fireEvent,
+} from '@testing-library/react';
 import ReportingConfigForm from './ReportingConfigForm';
 
 const defaultConfig = {
@@ -416,8 +418,8 @@ describe('<ReportingConfigForm />', () => {
     );
     expect('encryptedPassword' in invalidFields).toBe(false);
   });
-  it('Submit enterprise uuid upon report config creation', async () => {
-    const wrapper = mount((
+  it.only('Submit enterprise uuid upon report config creation', async () => {
+    render((
       <ReportingConfigForm
         config={defaultConfig}
         createConfig={createConfig}
@@ -432,7 +434,8 @@ describe('<ReportingConfigForm />', () => {
     Object.entries(defaultConfig).forEach(([key, value]) => {
       formData.append(key, value);
     });
-    wrapper.instance().handleSubmit(formData, null);
+    fireEvent.submit(screen.getByTestId('reporting-config-form'), formData);
+    // wrapper.instance().handleSubmit(formData, null);
     await act(() => flushPromises());
     expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
   });

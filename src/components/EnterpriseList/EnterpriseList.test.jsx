@@ -1,18 +1,16 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, mockNavigate } from 'react-router-dom';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EnterpriseList, { TITLE } from './index';
 import mockEnterpriseList from './EnterpriseList.mocks';
-import SearchBar from '../SearchBar';
-import TableContainer from '../../containers/TableContainer';
-import LoadingMessage from '../LoadingMessage';
 
 import LmsApiServices from '../../data/services/LmsApiService';
+import { renderWithRouter } from '../test/testUtils';
 
 const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
@@ -76,7 +74,7 @@ describe('<EnterpriseList />', () => {
   describe('renders correctly', () => {
     it('call clearPortalConfiguration prop', () => {
       const mockClearPortalConfiguration = jest.fn();
-      mount(
+      render(
         <EnterpriseListWrapper
           clearPortalConfiguration={mockClearPortalConfiguration}
         />,
@@ -85,7 +83,7 @@ describe('<EnterpriseList />', () => {
     });
 
     it('with enterprises data', () => {
-      wrapper = mount(
+      wrapper = render(
         <EnterpriseListWrapper
           enterpriseList={mockEnterpriseList}
           location={{
@@ -94,12 +92,11 @@ describe('<EnterpriseList />', () => {
           }}
         />,
       );
-      const table = wrapper.find(TableContainer);
-      expect(table.length).toEqual(1);
+      expect(screen.getAllByTestId('table-container-wrapper')).toHaveLength(1);
     });
 
     it('with empty enterprises data', () => {
-      wrapper = mount(
+      wrapper = render(
         <EnterpriseListWrapper
           enterpriseList={{
             ...mockEnterpriseList,
@@ -112,13 +109,13 @@ describe('<EnterpriseList />', () => {
           }}
         />,
       );
-      expect(wrapper.find('h1').text()).toEqual(TITLE);
-      expect(wrapper.find(TableContainer)).toHaveLength(1);
-      expect(wrapper.find(SearchBar)).toHaveLength(1);
+      expect(wrapper.container.querySelector('h1').textContent).toEqual(TITLE);
+      expect(screen.getAllByTestId('table-container-wrapper')).toHaveLength(1);
+      expect(screen.getAllByTestId('search-bar-wrapper')).toHaveLength(1);
     });
 
     it('with search query and empty enterprises data', () => {
-      wrapper = mount(
+      wrapper = render(
         <EnterpriseListWrapper
           initialEntries={['/?search=enterprise%20name']}
           enterpriseList={{
@@ -132,23 +129,23 @@ describe('<EnterpriseList />', () => {
           }}
         />,
       );
-      expect(wrapper.find(SearchBar).props().value).toEqual('enterprise name');
+      expect(screen.getByDisplayValue('enterprise name')).toBeTruthy();
     });
 
     it('with error state', () => {
       const err = 'Network Error';
-      wrapper = mount(
+      wrapper = render(
         <EnterpriseListWrapper error={Error('Network Error')} />,
       );
-      expect(wrapper.text()).toContain(err);
+      expect(screen.getByText(err)).toBeTruthy();
     });
 
     it('with loading state', () => {
-      wrapper = mount(
+      wrapper = render(
         <EnterpriseListWrapper loading enterpriseList={null} />,
       );
 
-      expect(wrapper.find(LoadingMessage)).toHaveLength(1);
+      expect(screen.getAllByTestId('loading-message')).toHaveLength(1);
     });
 
     it('redirects when there is only one enterprise', () => {
@@ -166,16 +163,14 @@ describe('<EnterpriseList />', () => {
         start: 0,
       };
 
-      wrapper = mount((
-        <MemoryRouter initialEntries={['/test']}>
-          <Provider store={store}>
-            <EnterpriseList
-              enterpriseList={oneEnterpriseListData}
-              searchEnterpriseList={() => {}}
-              clearPortalConfiguration={() => {}}
-            />
-          </Provider>
-        </MemoryRouter>
+      renderWithRouter((
+        <Provider store={store}>
+          <EnterpriseList
+            enterpriseList={oneEnterpriseListData}
+            searchEnterpriseList={() => {}}
+            clearPortalConfiguration={() => {}}
+          />
+        </Provider>
       ));
       expect(mockNavigate).toHaveBeenCalledWith('/enterprise-99/admin/learners');
     });
@@ -183,14 +178,14 @@ describe('<EnterpriseList />', () => {
 
   describe('enterprise list search', () => {
     const submitSearch = (searchQuery) => {
-      wrapper.find('SearchBar').find('input[type="text"]').simulate('change', { target: { value: searchQuery } });
-      expect(wrapper.find('SearchBar').find('input[type="text"]').prop('value')).toEqual(searchQuery);
-      wrapper.find('SearchBar').find('form').simulate('submit');
+      fireEvent.change(wrapper.container.querySelector('input[type="text"]'), { target: { value: searchQuery } });
+      expect(wrapper.container.querySelector('input[type="text"]').value).toEqual(searchQuery);
+      fireEvent.submit(wrapper.container.querySelector('form'));
     };
 
     it('fetchEnterpriseList called with no search property initially', () => {
       jest.spyOn(LmsApiServices, 'fetchEnterpriseList');
-      wrapper = mount(
+      wrapper = render(
         <EnterpriseListWrapper
           location={{
             path: '/',
@@ -201,7 +196,7 @@ describe('<EnterpriseList />', () => {
     });
 
     it('search querystring changes onSearch', () => {
-      wrapper = mount((
+      wrapper = render((
         <EnterpriseListWrapper
           enterprises={mockEnterpriseList}
         />
@@ -212,13 +207,13 @@ describe('<EnterpriseList />', () => {
     });
 
     it('search querystring clears onClear', () => {
-      wrapper = mount((
+      wrapper = render((
         <EnterpriseListWrapper
           enterprises={mockEnterpriseList}
         />
       ));
       submitSearch('Enterprise 1');
-      wrapper.find('SearchBar').find('button[type="reset"]').simulate('reset');
+      fireEvent.reset(wrapper.container.querySelector('button[type="reset"]'));
       const queryParams = new URLSearchParams(window.location.search);
       expect(queryParams.has('search')).toBeFalsy();
     });

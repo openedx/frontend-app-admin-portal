@@ -1,13 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
 import {
   MemoryRouter, Routes, Route,
 } from 'react-router-dom';
-import { waitFor } from '@testing-library/react';
+import { waitFor, render, screen } from '@testing-library/react';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { isEnterpriseUser } from '@edx/frontend-enterprise-utils';
 
-import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import AdminRegisterPage from './index';
 import LmsApiService from '../../data/services/LmsApiService';
 
@@ -50,10 +48,10 @@ describe('<AdminRegisterPage />', () => {
     LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
       data: mockEnterpriseCustomer,
     }));
-    const wrapper = mount(<AdminRegisterPageWrapper />);
+    render(<AdminRegisterPageWrapper />);
 
     // verify that the loading skeleton appears during redirect
-    await waitFor(() => expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy());
+    await waitFor(() => expect(screen.getByTestId('enterprise-app-skeleton')).toBeTruthy());
     await waitFor(() => expect(global.location.href).toBeTruthy());
   });
 
@@ -70,8 +68,8 @@ describe('<AdminRegisterPage />', () => {
       LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
         data: mockEnterpriseCustomer,
       }));
-      const wrapper = mount(<AdminRegisterPageWrapper />);
-      await waitFor(() => expect(wrapper.find(EnterpriseAppSkeleton).exists()).toBeTruthy());
+      render(<AdminRegisterPageWrapper />);
+      await waitFor(() => expect(screen.getByTestId('enterprise-app-skeleton')).toBeTruthy());
     });
   });
 
@@ -84,7 +82,7 @@ describe('<AdminRegisterPage />', () => {
     LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
       data: mockEnterpriseCustomer,
     }));
-    mount(<AdminRegisterPageWrapper />);
+    render(<AdminRegisterPageWrapper />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register/activate`;
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute));
   });

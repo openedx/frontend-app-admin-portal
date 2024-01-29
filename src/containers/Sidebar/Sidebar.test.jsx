@@ -5,12 +5,9 @@ import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {
-  render, screen,
-} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import Sidebar from './index';
@@ -106,7 +103,7 @@ describe('<Sidebar />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount((
+    wrapper = render((
       <SidebarWrapper />
     ));
   });
@@ -175,46 +172,60 @@ describe('<Sidebar />', () => {
   describe('calls onWidthChange callback', () => {
     it('on isMobile prop change', () => {
       const spy = jest.fn();
-      wrapper = mount((
+      wrapper = render((
         <SidebarWrapper
           onWidthChange={spy}
         />
       ));
-      wrapper.setProps({ isMobile: true });
+      wrapper.rerender((
+        <SidebarWrapper
+          onWidthChange={spy}
+          isMobile
+        />
+      ));
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('events', () => {
-    let store;
-
-    beforeEach(() => {
-      store = wrapper.prop('store');
-      store.clearActions();
-    });
-
     it('expands on mouse over', () => {
+      const store = mockStore({
+        ...initialState,
+      });
+
+      render((
+        <SidebarWrapper store={store} />
+      ));
+
       const expectedActions = [{
         type: EXPAND_SIDEBAR,
         payload: { usingToggle: false },
       }];
 
-      wrapper.find('Sidebar').simulate('mouseover');
+      fireEvent.focus(screen.getAllByTestId('sidebar')[1]);
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('expands on focus', () => {
+      const store = mockStore({
+        ...initialState,
+      });
+
+      render((
+        <SidebarWrapper store={store} />
+      ));
+
       const expectedActions = [{
         type: EXPAND_SIDEBAR,
         payload: { usingToggle: false },
       }];
 
-      wrapper.find('Sidebar').simulate('focus');
+      fireEvent.focus(screen.getAllByTestId('sidebar')[1]);
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('collapses on mouseout', () => {
-      store = mockStore({
+      const store = mockStore({
         ...initialState,
         sidebar: {
           ...initialState.sidebar,
@@ -222,7 +233,7 @@ describe('<Sidebar />', () => {
         },
       });
 
-      wrapper = mount((
+      render((
         <SidebarWrapper store={store} />
       ));
 
@@ -231,12 +242,12 @@ describe('<Sidebar />', () => {
         payload: { usingToggle: false },
       }];
 
-      wrapper.find('Sidebar').simulate('mouseleave');
+      fireEvent.mouseLeave(screen.getAllByTestId('sidebar')[1]);
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('collapses on blur', () => {
-      store = mockStore({
+      const store = mockStore({
         ...initialState,
         sidebar: {
           ...initialState.sidebar,
@@ -244,7 +255,7 @@ describe('<Sidebar />', () => {
         },
       });
 
-      wrapper = mount((
+      render((
         <SidebarWrapper store={store} />
       ));
 
@@ -253,7 +264,7 @@ describe('<Sidebar />', () => {
         payload: { usingToggle: false },
       }];
 
-      wrapper.find('Sidebar').simulate('blur');
+      fireEvent.blur(screen.getAllByTestId('sidebar')[1]);
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -268,6 +279,7 @@ describe('<Sidebar />', () => {
         enableSubscriptionManagementScreen: false,
       },
     });
+    wrapper.unmount();
 
     render(<SidebarWrapper store={store} />);
     const subscriptionManagementLink = screen.queryByRole('link', { name: 'Subscription Management' });
@@ -283,6 +295,7 @@ describe('<Sidebar />', () => {
         enableSubscriptionManagementScreen: true,
       },
     });
+    wrapper.unmount();
     render(<SidebarWrapper store={store} />);
     const subscriptionManagementLink = screen.getByRole('link', { name: 'Subscription Management' });
     expect(subscriptionManagementLink).toBeInTheDocument();
@@ -327,6 +340,7 @@ describe('<Sidebar />', () => {
         enableLearnerPortal: true,
       },
     });
+    wrapper.unmount();
 
     features.SETTINGS_PAGE = true;
 
@@ -343,6 +357,7 @@ describe('<Sidebar />', () => {
         enableLearnerPortal: true,
       },
     });
+    wrapper.unmount();
 
     render(<SidebarWrapper store={store} />);
     const enableLearnerCreditLink = screen.getByRole('link', { name: 'Learner Credit Management' });
@@ -357,6 +372,7 @@ describe('<Sidebar />', () => {
         enableLearnerPortal: false,
       },
     });
+    wrapper.unmount();
 
     render(<SidebarWrapper
       store={store}
@@ -402,6 +418,7 @@ describe('<Sidebar />', () => {
   ) => {
     getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: highlightsFeatureFlag });
     const store = mockStore(initialState);
+    wrapper.unmount();
     render(<SidebarWrapper
       store={store}
       enterpriseAppContextValue={{

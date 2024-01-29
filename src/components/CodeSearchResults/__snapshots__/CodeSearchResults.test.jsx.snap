@@ -1,103 +1,94 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CodeSearchResults /> basic rendering should render empty table data 1`] = `
-<div
-  className="pgn-transition-replace-group position-relative"
-  style={
-    Object {
-      "height": null,
-    }
-  }
->
+<div>
   <div
-    style={
-      Object {
-        "padding": ".1px 0",
-      }
-    }
+    class="pgn-transition-replace-group position-relative"
   >
     <div
-      className="code-search-results border-bottom pb-4"
+      style="padding: .1px 0px;"
     >
       <div
-        className="d-flex align-items-center justify-content-between mb-3"
+        class="code-search-results border-bottom pb-4"
       >
         <div
-          className="flex-grow-1 text-truncate mr-3"
-        >
-          <h3
-            className="lead m-0 text-truncate"
-          >
-            Search results for 
-            <em>
-              "
-              test@test.com
-              "
-            </em>
-          </h3>
-        </div>
-        <div
-          className="flex-grow-0 flex-shrink-0"
-        >
-          <button
-            className="close-search-results-btn btn btn-outline-primary"
-            disabled={false}
-            onClick={[MockFunction]}
-            type="button"
-          >
-            <span
-              className="pgn__icon mr-2"
-            >
-              <svg
-                aria-hidden={true}
-                fill="none"
-                focusable={false}
-                height={24}
-                role="img"
-                viewBox="0 0 24 24"
-                width={24}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Close search results
-          </button>
-        </div>
-      </div>
-      <div
-        className="fade alert-content alert alert-warning show"
-        role="alert"
-      >
-        <span
-          className="pgn__icon alert-icon"
-        >
-          <svg
-            aria-hidden={true}
-            fill="none"
-            focusable={false}
-            height={24}
-            role="img"
-            viewBox="0 0 24 24"
-            width={24}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
-              fill="currentColor"
-            />
-          </svg>
-        </span>
-        <div
-          className="pgn__alert-message-wrapper"
+          class="d-flex align-items-center justify-content-between mb-3"
         >
           <div
-            className="alert-message-content"
+            class="flex-grow-1 text-truncate mr-3"
           >
-            There are no results.
+            <h3
+              class="lead m-0 text-truncate"
+            >
+              Search results for 
+              <em>
+                "
+                test@test.com
+                "
+              </em>
+            </h3>
+          </div>
+          <div
+            class="flex-grow-0 flex-shrink-0"
+          >
+            <button
+              class="close-search-results-btn btn btn-outline-primary"
+              type="button"
+            >
+              <span
+                class="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  focusable="false"
+                  height="24"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Close search results
+            </button>
+          </div>
+        </div>
+        <div
+          class="fade alert-content alert alert-warning show"
+          role="alert"
+        >
+          <span
+            class="pgn__icon alert-icon"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="24"
+              role="img"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <div
+            class="pgn__alert-message-wrapper"
+          >
+            <div
+              class="alert-message-content"
+            >
+              There are no results.
+            </div>
           </div>
         </div>
       </div>
@@ -107,111 +98,102 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
 `;
 
 exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
-<div
-  className="pgn-transition-replace-group position-relative"
-  style={
-    Object {
-      "height": null,
-    }
-  }
->
+<div>
   <div
-    style={
-      Object {
-        "padding": ".1px 0",
-      }
-    }
+    class="pgn-transition-replace-group position-relative"
   >
     <div
-      className="code-search-results border-bottom pb-4"
+      style="padding: .1px 0px;"
     >
       <div
-        className="d-flex align-items-center justify-content-between mb-3"
+        class="code-search-results border-bottom pb-4"
       >
         <div
-          className="flex-grow-1 text-truncate mr-3"
-        >
-          <h3
-            className="lead m-0 text-truncate"
-          >
-            Search results for 
-            <em>
-              "
-              test@test.com
-              "
-            </em>
-          </h3>
-        </div>
-        <div
-          className="flex-grow-0 flex-shrink-0"
-        >
-          <button
-            className="close-search-results-btn btn btn-outline-primary"
-            disabled={false}
-            onClick={[MockFunction]}
-            type="button"
-          >
-            <span
-              className="pgn__icon mr-2"
-            >
-              <svg
-                aria-hidden={true}
-                fill="none"
-                focusable={false}
-                height={24}
-                role="img"
-                viewBox="0 0 24 24"
-                width={24}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Close search results
-          </button>
-        </div>
-      </div>
-      <div
-        className="fade alert-content alert alert-danger show"
-        role="alert"
-      >
-        <span
-          className="pgn__icon alert-icon"
-        >
-          <svg
-            aria-hidden={true}
-            fill="none"
-            focusable={false}
-            height={24}
-            role="img"
-            viewBox="0 0 24 24"
-            width={24}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
-              fill="currentColor"
-            />
-          </svg>
-        </span>
-        <div
-          className="pgn__alert-message-wrapper"
+          class="d-flex align-items-center justify-content-between mb-3"
         >
           <div
-            className="alert-message-content"
+            class="flex-grow-1 text-truncate mr-3"
+          >
+            <h3
+              class="lead m-0 text-truncate"
+            >
+              Search results for 
+              <em>
+                "
+                test@test.com
+                "
+              </em>
+            </h3>
+          </div>
+          <div
+            class="flex-grow-0 flex-shrink-0"
+          >
+            <button
+              class="close-search-results-btn btn btn-outline-primary"
+              type="button"
+            >
+              <span
+                class="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  focusable="false"
+                  height="24"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Close search results
+            </button>
+          </div>
+        </div>
+        <div
+          class="fade alert-content alert alert-danger show"
+          role="alert"
+        >
+          <span
+            class="pgn__icon alert-icon"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="24"
+              role="img"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          <div
+            class="pgn__alert-message-wrapper"
           >
             <div
-              className="alert-heading h4"
+              class="alert-message-content"
             >
-              Unable to load data
+              <div
+                class="alert-heading h4"
+              >
+                Unable to load data
+              </div>
+              <p>
+                Try refreshing your screen 
+                Network Error
+              </p>
             </div>
-            <p>
-              Try refreshing your screen 
-              Network Error
-            </p>
           </div>
         </div>
       </div>
@@ -221,359 +203,250 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
 `;
 
 exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
-<div
-  className="pgn-transition-replace-group position-relative"
-  style={
-    Object {
-      "height": null,
-    }
-  }
->
+<div>
   <div
-    style={
-      Object {
-        "padding": ".1px 0",
-      }
-    }
+    class="pgn-transition-replace-group position-relative"
   >
     <div
-      className="code-search-results border-bottom pb-4"
+      style="padding: .1px 0px;"
     >
       <div
-        className="d-flex align-items-center justify-content-between mb-3"
+        class="code-search-results border-bottom pb-4"
       >
         <div
-          className="flex-grow-1 text-truncate mr-3"
+          class="d-flex align-items-center justify-content-between mb-3"
         >
-          <h3
-            className="lead m-0 text-truncate"
+          <div
+            class="flex-grow-1 text-truncate mr-3"
           >
-            Search results for 
-            <em>
-              "
-              test@test.com
-              "
-            </em>
-          </h3>
+            <h3
+              class="lead m-0 text-truncate"
+            >
+              Search results for 
+              <em>
+                "
+                test@test.com
+                "
+              </em>
+            </h3>
+          </div>
+          <div
+            class="flex-grow-0 flex-shrink-0"
+          >
+            <button
+              class="close-search-results-btn btn btn-outline-primary"
+              type="button"
+            >
+              <span
+                class="pgn__icon mr-2"
+              >
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  focusable="false"
+                  height="24"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Close search results
+            </button>
+          </div>
         </div>
-        <div
-          className="flex-grow-0 flex-shrink-0"
-        >
-          <button
-            className="close-search-results-btn btn btn-outline-primary"
-            disabled={false}
-            onClick={[MockFunction]}
-            type="button"
+        <div>
+          <div
+            class="sr-only"
+          >
+            Loading...
+          </div>
+          <span
+            aria-busy="true"
+            aria-live="polite"
           >
             <span
-              className="pgn__icon mr-2"
+              class="react-loading-skeleton"
+              style="height: 25px;"
             >
-              <svg
-                aria-hidden={true}
-                fill="none"
-                focusable={false}
-                height={24}
-                role="img"
-                viewBox="0 0 24 24"
-                width={24}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
-                  fill="currentColor"
-                />
-              </svg>
+              ‌
             </span>
-            Close search results
-          </button>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+            <span
+              class="react-loading-skeleton"
+              style="height: 25px;"
+            >
+              ‌
+            </span>
+            <br />
+          </span>
         </div>
-      </div>
-      <div>
-        <div
-          className="sr-only"
-        >
-          Loading...
-        </div>
-        <span
-          aria-busy={true}
-          aria-live="polite"
-        >
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-          <span
-            className="react-loading-skeleton"
-            style={
-              Object {
-                "height": 25,
-              }
-            }
-          >
-            ‌
-          </span>
-          <br />
-        </span>
       </div>
     </div>
   </div>
@@ -581,450 +454,412 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
 `;
 
 exports[`<CodeSearchResults /> basic rendering should render nothing visible when isOpen prop is false 1`] = `
-<div
-  className="pgn-transition-replace-group position-relative"
-  style={
-    Object {
-      "height": null,
-    }
-  }
-/>
+<div>
+  <div
+    class="pgn-transition-replace-group position-relative"
+  />
+</div>
 `;
 
 exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
-<div
-  className="pgn-transition-replace-group position-relative"
-  style={
-    Object {
-      "height": null,
-    }
-  }
->
+<div>
   <div
-    style={
-      Object {
-        "padding": ".1px 0",
-      }
-    }
+    class="pgn-transition-replace-group position-relative"
   >
     <div
-      className="code-search-results border-bottom pb-4"
+      style="padding: .1px 0px;"
     >
       <div
-        className="d-flex align-items-center justify-content-between mb-3"
+        class="code-search-results border-bottom pb-4"
       >
         <div
-          className="flex-grow-1 text-truncate mr-3"
-        >
-          <h3
-            className="lead m-0 text-truncate"
-          >
-            Search results for 
-            <em>
-              "
-              test@test.com
-              "
-            </em>
-          </h3>
-        </div>
-        <div
-          className="flex-grow-0 flex-shrink-0"
-        >
-          <button
-            className="close-search-results-btn btn btn-outline-primary"
-            disabled={false}
-            onClick={[MockFunction]}
-            type="button"
-          >
-            <span
-              className="pgn__icon mr-2"
-            >
-              <svg
-                aria-hidden={true}
-                fill="none"
-                focusable={false}
-                height={24}
-                role="img"
-                viewBox="0 0 24 24"
-                width={24}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Close search results
-          </button>
-        </div>
-      </div>
-      <div
-        className="code-search-results-table"
-      >
-        <div
-          className="row"
+          class="d-flex align-items-center justify-content-between mb-3"
         >
           <div
-            className="col"
+            class="flex-grow-1 text-truncate mr-3"
           >
-            <div
-              className="table-responsive"
+            <h3
+              class="lead m-0 text-truncate"
             >
-              <table
-                className="table table-sm table-striped"
+              Search results for 
+              <em>
+                "
+                test@test.com
+                "
+              </em>
+            </h3>
+          </div>
+          <div
+            class="flex-grow-0 flex-shrink-0"
+          >
+            <button
+              class="close-search-results-btn btn btn-outline-primary"
+              type="button"
+            >
+              <span
+                class="pgn__icon mr-2"
               >
-                <thead
-                  className=""
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  focusable="false"
+                  height="24"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <tr
-                    className=""
-                  >
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Coupon Batch
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Code
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Redeemed
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Redemption Date
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Course Title
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  className=""
-                >
-                  <tr
-                    className=""
-                  >
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Coupon Name
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Y7XS3OGG7WB7KQ5R
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      <span
-                        className="pgn__icon text-primary"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                        <span
-                          className="sr-only"
-                        >
-                          has been redeemed
-                        </span>
-                      </span>
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      August 28, 2019
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Course Title
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                  </tr>
-                  <tr
-                    className=""
-                  >
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Coupon Name 2
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      CMX9N1LPGTUSL7DU
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                  </tr>
-                  <tr
-                    className=""
-                  >
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Coupon Name
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Y7XS3OGG7WB7KQ5R
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      <span
-                        className="pgn__icon text-primary"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                        <span
-                          className="sr-only"
-                        >
-                          has been redeemed
-                        </span>
-                      </span>
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      August 30, 2019
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Course Title
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                  </tr>
-                  <tr
-                    className=""
-                  >
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Coupon Name
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      FAG2LVLNHAKIXQ0Q
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                  <path
+                    d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Close search results
+            </button>
           </div>
         </div>
         <div
-          className="row mt-2"
+          class="code-search-results-table"
         >
           <div
-            className="col d-flex justify-content-center"
+            class="row"
           >
-            <nav
-              aria-label="code-search-results-pagination"
-              className="pagination-default"
+            <div
+              class="col"
             >
               <div
-                aria-atomic={true}
-                aria-live="polite"
-                aria-relevant="text"
-                className="sr-only"
+                class="table-responsive"
               >
-                Page 1, Current Page, of 1
+                <table
+                  class="table table-sm table-striped"
+                >
+                  <thead
+                    class=""
+                  >
+                    <tr
+                      class=""
+                    >
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Coupon Batch
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Code
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Redeemed
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Redemption Date
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Course Title
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class=""
+                  >
+                    <tr
+                      class=""
+                    >
+                      <td
+                        class=""
+                      >
+                        Test Coupon Name
+                      </td>
+                      <td
+                        class=""
+                      >
+                        Y7XS3OGG7WB7KQ5R
+                      </td>
+                      <td
+                        class=""
+                      >
+                        <span
+                          class="pgn__icon text-primary"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="none"
+                            focusable="false"
+                            height="24"
+                            role="img"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          <span
+                            class="sr-only"
+                          >
+                            has been redeemed
+                          </span>
+                        </span>
+                      </td>
+                      <td
+                        class=""
+                      >
+                        August 28, 2019
+                      </td>
+                      <td
+                        class=""
+                      >
+                        Test Course Title
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                    </tr>
+                    <tr
+                      class=""
+                    >
+                      <td
+                        class=""
+                      >
+                        Test Coupon Name 2
+                      </td>
+                      <td
+                        class=""
+                      >
+                        CMX9N1LPGTUSL7DU
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                    </tr>
+                    <tr
+                      class=""
+                    >
+                      <td
+                        class=""
+                      >
+                        Test Coupon Name
+                      </td>
+                      <td
+                        class=""
+                      >
+                        Y7XS3OGG7WB7KQ5R
+                      </td>
+                      <td
+                        class=""
+                      >
+                        <span
+                          class="pgn__icon text-primary"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="none"
+                            focusable="false"
+                            height="24"
+                            role="img"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          <span
+                            class="sr-only"
+                          >
+                            has been redeemed
+                          </span>
+                        </span>
+                      </td>
+                      <td
+                        class=""
+                      >
+                        August 30, 2019
+                      </td>
+                      <td
+                        class=""
+                      >
+                        Test Course Title
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                    </tr>
+                    <tr
+                      class=""
+                    >
+                      <td
+                        class=""
+                      >
+                        Test Coupon Name
+                      </td>
+                      <td
+                        class=""
+                      >
+                        FAG2LVLNHAKIXQ0Q
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <ul
-                className="pagination"
+            </div>
+          </div>
+          <div
+            class="row mt-2"
+          >
+            <div
+              class="col d-flex justify-content-center"
+            >
+              <nav
+                aria-label="code-search-results-pagination"
+                class="pagination-default"
               >
-                <li
-                  className="page-item disabled"
+                <div
+                  aria-atomic="true"
+                  aria-live="polite"
+                  aria-relevant="text"
+                  class="sr-only"
                 >
-                  <button
-                    aria-label="Previous"
-                    className="previous page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
-                  >
-                    <div>
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      Previous
-                    </div>
-                  </button>
-                </li>
-                <li
-                  className="page-item disabled"
+                  Page 1, Current Page, of 1
+                </div>
+                <ul
+                  class="pagination"
                 >
-                  <button
-                    aria-label="Next"
-                    className="next page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
+                  <li
+                    class="page-item disabled"
                   >
-                    <div>
-                      Next
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
+                    <button
+                      aria-label="Previous"
+                      class="previous page-link btn btn-primary"
+                      disabled=""
+                      tabindex="-1"
+                      type="button"
+                    >
+                      <div>
+                        <span
+                          class="pgn__icon"
                         >
-                          <path
-                            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </button>
-                </li>
-              </ul>
-            </nav>
+                          <svg
+                            aria-hidden="true"
+                            fill="none"
+                            focusable="false"
+                            height="24"
+                            role="img"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </span>
+                        Previous
+                      </div>
+                    </button>
+                  </li>
+                  <li
+                    class="page-item disabled"
+                  >
+                    <button
+                      aria-label="Next"
+                      class="next page-link btn btn-primary"
+                      disabled=""
+                      tabindex="-1"
+                      type="button"
+                    >
+                      <div>
+                        Next
+                        <span
+                          class="pgn__icon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="none"
+                            focusable="false"
+                            height="24"
+                            role="img"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -1034,301 +869,279 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
 `;
 
 exports[`<CodeSearchResults /> basic rendering should render table data when searchQuery is a code 1`] = `
-<div
-  className="pgn-transition-replace-group position-relative"
-  style={
-    Object {
-      "height": null,
-    }
-  }
->
+<div>
   <div
-    style={
-      Object {
-        "padding": ".1px 0",
-      }
-    }
+    class="pgn-transition-replace-group position-relative"
   >
     <div
-      className="code-search-results border-bottom pb-4"
+      style="padding: .1px 0px;"
     >
       <div
-        className="d-flex align-items-center justify-content-between mb-3"
+        class="code-search-results border-bottom pb-4"
       >
         <div
-          className="flex-grow-1 text-truncate mr-3"
-        >
-          <h3
-            className="lead m-0 text-truncate"
-          >
-            Search results for 
-            <em>
-              "
-              FAG2LVLNHAKIXQ0Q
-              "
-            </em>
-          </h3>
-        </div>
-        <div
-          className="flex-grow-0 flex-shrink-0"
-        >
-          <button
-            className="close-search-results-btn btn btn-outline-primary"
-            disabled={false}
-            onClick={[MockFunction]}
-            type="button"
-          >
-            <span
-              className="pgn__icon mr-2"
-            >
-              <svg
-                aria-hidden={true}
-                fill="none"
-                focusable={false}
-                height={24}
-                role="img"
-                viewBox="0 0 24 24"
-                width={24}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Close search results
-          </button>
-        </div>
-      </div>
-      <div
-        className="code-search-results-table"
-      >
-        <div
-          className="row"
+          class="d-flex align-items-center justify-content-between mb-3"
         >
           <div
-            className="col"
+            class="flex-grow-1 text-truncate mr-3"
           >
-            <div
-              className="table-responsive"
+            <h3
+              class="lead m-0 text-truncate"
             >
-              <table
-                className="table table-sm table-striped"
+              Search results for 
+              <em>
+                "
+                FAG2LVLNHAKIXQ0Q
+                "
+              </em>
+            </h3>
+          </div>
+          <div
+            class="flex-grow-0 flex-shrink-0"
+          >
+            <button
+              class="close-search-results-btn btn btn-outline-primary"
+              type="button"
+            >
+              <span
+                class="pgn__icon mr-2"
               >
-                <thead
-                  className=""
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  focusable="false"
+                  height="24"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <tr
-                    className=""
-                  >
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Coupon Batch
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Code
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Redeemed
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Redemption Date
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Assigned To
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Course Title
-                    </th>
-                    <th
-                      className=""
-                      scope="col"
-                    >
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  className=""
-                >
-                  <tr
-                    className=""
-                  >
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      Test Coupon Name
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      FAG2LVLNHAKIXQ0Q
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      test@test.com
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      -
-                    </td>
-                    <td
-                      className=""
-                      scope={null}
-                    >
-                      <button
-                        className="remind-btn btn-sm p-0 btn btn-link"
-                        disabled={false}
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        Remind
-                      </button>
-                       | 
-                      <button
-                        className="revoke-btn btn-sm p-0 btn btn-link"
-                        disabled={false}
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        Revoke
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                  <path
+                    d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Close search results
+            </button>
           </div>
         </div>
         <div
-          className="row mt-2"
+          class="code-search-results-table"
         >
           <div
-            className="col d-flex justify-content-center"
+            class="row"
           >
-            <nav
-              aria-label="code-search-results-pagination"
-              className="pagination-default"
+            <div
+              class="col"
             >
               <div
-                aria-atomic={true}
-                aria-live="polite"
-                aria-relevant="text"
-                className="sr-only"
+                class="table-responsive"
               >
-                Page 1, Current Page, of 1
+                <table
+                  class="table table-sm table-striped"
+                >
+                  <thead
+                    class=""
+                  >
+                    <tr
+                      class=""
+                    >
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Coupon Batch
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Code
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Redeemed
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Redemption Date
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Assigned To
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Course Title
+                      </th>
+                      <th
+                        class=""
+                        scope="col"
+                      >
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class=""
+                  >
+                    <tr
+                      class=""
+                    >
+                      <td
+                        class=""
+                      >
+                        Test Coupon Name
+                      </td>
+                      <td
+                        class=""
+                      >
+                        FAG2LVLNHAKIXQ0Q
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        test@test.com
+                      </td>
+                      <td
+                        class=""
+                      >
+                        -
+                      </td>
+                      <td
+                        class=""
+                      >
+                        <button
+                          class="remind-btn btn-sm p-0 btn btn-link"
+                          type="button"
+                        >
+                          Remind
+                        </button>
+                         | 
+                        <button
+                          class="revoke-btn btn-sm p-0 btn btn-link"
+                          type="button"
+                        >
+                          Revoke
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <ul
-                className="pagination"
+            </div>
+          </div>
+          <div
+            class="row mt-2"
+          >
+            <div
+              class="col d-flex justify-content-center"
+            >
+              <nav
+                aria-label="code-search-results-pagination"
+                class="pagination-default"
               >
-                <li
-                  className="page-item disabled"
+                <div
+                  aria-atomic="true"
+                  aria-live="polite"
+                  aria-relevant="text"
+                  class="sr-only"
                 >
-                  <button
-                    aria-label="Previous"
-                    className="previous page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
-                  >
-                    <div>
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                      Previous
-                    </div>
-                  </button>
-                </li>
-                <li
-                  className="page-item disabled"
+                  Page 1, Current Page, of 1
+                </div>
+                <ul
+                  class="pagination"
                 >
-                  <button
-                    aria-label="Next"
-                    className="next page-link btn btn-primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tabIndex="-1"
-                    type="button"
+                  <li
+                    class="page-item disabled"
                   >
-                    <div>
-                      Next
-                      <span
-                        className="pgn__icon"
-                      >
-                        <svg
-                          aria-hidden={true}
-                          fill="none"
-                          focusable={false}
-                          height={24}
-                          role="img"
-                          viewBox="0 0 24 24"
-                          width={24}
-                          xmlns="http://www.w3.org/2000/svg"
+                    <button
+                      aria-label="Previous"
+                      class="previous page-link btn btn-primary"
+                      disabled=""
+                      tabindex="-1"
+                      type="button"
+                    >
+                      <div>
+                        <span
+                          class="pgn__icon"
                         >
-                          <path
-                            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </button>
-                </li>
-              </ul>
-            </nav>
+                          <svg
+                            aria-hidden="true"
+                            fill="none"
+                            focusable="false"
+                            height="24"
+                            role="img"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </span>
+                        Previous
+                      </div>
+                    </button>
+                  </li>
+                  <li
+                    class="page-item disabled"
+                  >
+                    <button
+                      aria-label="Next"
+                      class="next page-link btn btn-primary"
+                      disabled=""
+                      tabindex="-1"
+                      type="button"
+                    >
+                      <div>
+                        Next
+                        <span
+                          class="pgn__icon"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="none"
+                            focusable="false"
+                            height="24"
+                            role="img"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
       </div>

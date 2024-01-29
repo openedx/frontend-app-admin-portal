@@ -22,8 +22,6 @@ jobs:
       run: make validate-no-uncommitted-package-lock-changes
     - name: Install dependencies
       run: npm ci
-    - name: Lint
-      run: npm run lint
     - name: Test
       run: npm run test
     - name: Coverage

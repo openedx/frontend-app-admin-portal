@@ -1,23 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AIAnalyticsSummary /> should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked 1`] = `
-Array [
+<div>
   <div
-    className="pgn__hstack pgn__stack-gap--3"
+    class="pgn__hstack pgn__stack-gap--3"
   >
     <button
-      className="d-sm-inline btn btn-outline-primary"
+      class="d-sm-inline btn btn-outline-primary"
       data-testid="summarize-analytics"
-      disabled={false}
-      onClick={[Function]}
       type="button"
     >
       <svg
-        className="mr-2"
+        class="mr-2"
         fill="none"
-        height={24}
+        height="24"
         viewBox="0 0 24 24"
-        width={24}
+        width="24"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -28,18 +26,16 @@ Array [
       Summarize Analytics
     </button>
     <button
-      className="d-none btn btn-outline-primary"
+      class="d-none btn btn-outline-primary"
       data-testid="track-progress"
-      disabled={false}
-      onClick={[Function]}
       type="button"
     >
       <svg
-        className="mr-2"
+        class="mr-2"
         fill="none"
-        height={24}
+        height="24"
         viewBox="0 0 24 24"
-        width={24}
+        width="24"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -49,29 +45,27 @@ Array [
       </svg>
       Track Progress
     </button>
-  </div>,
-  ",",
-]
+  </div>
+  ,
+</div>
 `;
 
 exports[`<AIAnalyticsSummary /> should handle null analytics data 1`] = `
-Array [
+<div>
   <div
-    className="pgn__hstack pgn__stack-gap--3"
+    class="pgn__hstack pgn__stack-gap--3"
   >
     <button
-      className="d-sm-inline btn btn-outline-primary"
+      class="d-sm-inline btn btn-outline-primary"
       data-testid="summarize-analytics"
-      disabled={false}
-      onClick={[Function]}
       type="button"
     >
       <svg
-        className="mr-2"
+        class="mr-2"
         fill="none"
-        height={24}
+        height="24"
         viewBox="0 0 24 24"
-        width={24}
+        width="24"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -82,18 +76,16 @@ Array [
       Summarize Analytics
     </button>
     <button
-      className="d-none btn btn-outline-primary"
+      class="d-none btn btn-outline-primary"
       data-testid="track-progress"
-      disabled={false}
-      onClick={[Function]}
       type="button"
     >
       <svg
-        className="mr-2"
+        class="mr-2"
         fill="none"
-        height={24}
+        height="24"
         viewBox="0 0 24 24"
-        width={24}
+        width="24"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -103,29 +95,27 @@ Array [
       </svg>
       Track Progress
     </button>
-  </div>,
-  ",",
-]
+  </div>
+  ,
+</div>
 `;
 
 exports[`<AIAnalyticsSummary /> should render action buttons correctly 1`] = `
-Array [
+<div>
   <div
-    className="pgn__hstack pgn__stack-gap--3"
+    class="pgn__hstack pgn__stack-gap--3"
   >
     <button
-      className="d-sm-inline btn btn-outline-primary"
+      class="d-sm-inline btn btn-outline-primary"
       data-testid="summarize-analytics"
-      disabled={false}
-      onClick={[Function]}
       type="button"
     >
       <svg
-        className="mr-2"
+        class="mr-2"
         fill="none"
-        height={24}
+        height="24"
         viewBox="0 0 24 24"
-        width={24}
+        width="24"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -136,18 +126,16 @@ Array [
       Summarize Analytics
     </button>
     <button
-      className="d-none btn btn-outline-primary"
+      class="d-none btn btn-outline-primary"
       data-testid="track-progress"
-      disabled={false}
-      onClick={[Function]}
       type="button"
     >
       <svg
-        className="mr-2"
+        class="mr-2"
         fill="none"
-        height={24}
+        height="24"
         viewBox="0 0 24 24"
-        width={24}
+        width="24"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -157,7 +145,7 @@ Array [
       </svg>
       Track Progress
     </button>
-  </div>,
-  ",",
-]
+  </div>
+  ,
+</div>
 `;

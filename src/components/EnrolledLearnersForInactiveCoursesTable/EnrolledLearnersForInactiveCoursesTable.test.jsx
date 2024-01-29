@@ -1,10 +1,9 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import EnrolledLearnersForInactiveCoursesTable from '.';
 
@@ -114,20 +113,16 @@ const EnrolledLearnersForInactiveCoursesWrapper = props => (
 
 describe('EnrolledLearnersForInactiveCoursesTable', () => {
   it('renders empty state correctly', () => {
-    const tree = renderer
-      .create((
-        <EnrolledLearnersForInactiveCoursesEmptyTableWrapper />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <EnrolledLearnersForInactiveCoursesEmptyTableWrapper />,
+    );
     expect(tree).toMatchSnapshot();
   });
 
   it('renders enrolled learners for inactive courses table correctly', () => {
-    const tree = renderer
-      .create((
-        <EnrolledLearnersForInactiveCoursesWrapper />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <EnrolledLearnersForInactiveCoursesWrapper />,
+    );
     expect(tree).toMatchSnapshot();
   });
 
@@ -157,25 +152,25 @@ describe('EnrolledLearnersForInactiveCoursesTable', () => {
       ],
     ];
 
-    const wrapper = mount((
+    const wrapper = render((
       <EnrolledLearnersForInactiveCoursesWrapper />
     ));
 
     // Verify that table has correct number of columns
-    expect(wrapper.find(`.${tableId} thead th`).length).toEqual(columnTitles.length);
+    expect(wrapper.container.querySelectorAll(`.${tableId} thead th`).length).toEqual(columnTitles.length);
 
     // Verify only expected columns are shown
-    wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
-      expect(column.text()).toContain(columnTitles[index]);
+    wrapper.container.querySelectorAll(`.${tableId} thead th`).forEach((column, index) => {
+      expect(column.textContent).toContain(columnTitles[index]);
     });
 
     // Verify that table has correct number of rows
-    expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(rowsData.length);
+    expect(wrapper.container.querySelectorAll(`.${tableId} tbody tr`).length).toEqual(rowsData.length);
 
     // Verify each row in table has correct data
-    wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
-      row.find('td').forEach((cell, colIndex) => {
-        expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
+    wrapper.container.querySelectorAll(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
+      row.querySelectorAll('td').forEach((cell, colIndex) => {
+        expect(cell.textContent).toEqual(rowsData[rowIndex][colIndex]);
       });
     });
   });

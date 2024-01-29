@@ -1,5 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import '@testing-library/jest-dom/extend-expect';
+import { render, screen } from '@testing-library/react';
 import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
 
 const testCourseName = 'TestCourseName';
@@ -14,15 +15,15 @@ describe('CourseNameCell', () => {
     },
   };
   const slug = 'sluggy';
-  const wrapper = mount(<CourseNameCell value={testCourseName} row={row} enterpriseSlug={slug} />);
+  render(<CourseNameCell value={testCourseName} row={row} enterpriseSlug={slug} />);
   it('displays the course name', () => {
-    expect(wrapper.text()).toEqual(testCourseName);
+    expect(screen.getByText(testCourseName)).toBeInTheDocument();
   });
 });
 
 describe('<FormattedDateCell />', () => {
   it('renders a formatted date', () => {
-    const wrapper = mount(<FormattedDateCell startValue={testStartDate} endValue={testEndDate} />);
-    expect(wrapper.text()).toEqual('Sep 10, 2020 - Sep 10, 2030');
+    render(<FormattedDateCell startValue={testStartDate} endValue={testEndDate} />);
+    expect(screen.getByText('Sep 10, 2020 - Sep 10, 2030')).toBeInTheDocument();
   });
 });

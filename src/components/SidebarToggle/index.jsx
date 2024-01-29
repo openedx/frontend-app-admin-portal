@@ -22,7 +22,7 @@ const SidebarToggle = (props) => {
       aria-controls="sidebar"
       iconBefore={Icon}
     >
-      <span className="sr-only">
+      <span className="sr-only" data-testid="sidebar-toggle">
         {isExpandedByToggle ? 'close menu' : 'open menu'}
       </span>
     </Button>

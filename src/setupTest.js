@@ -1,14 +1,10 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
-import Enzyme from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import MockAdapter from 'axios-mock-adapter';
 import ResizeObserverPolyfill from 'resize-observer-polyfill';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import 'jest-localstorage-mock';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('@edx/frontend-platform/auth');
 jest.mock('@edx/frontend-platform/logging');

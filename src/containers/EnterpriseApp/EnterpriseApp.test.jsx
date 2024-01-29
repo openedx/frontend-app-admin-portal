@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
-import { breakpoints, Skeleton } from '@edx/paragon';
+import { breakpoints } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { render, screen } from '@testing-library/react';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -16,7 +16,6 @@ import EnterpriseApp from './index';
 import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 
 import { features } from '../../config';
-import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 
@@ -55,6 +54,12 @@ jest.mock('../Sidebar', () => ({
   __esModule: true,
 
   default: ({ children }) => <div>{children}</div>,
+}));
+
+jest.mock('@edx/paragon', () => ({
+  __esModule: true,
+  ...jest.requireActual('@edx/paragon'),
+  Skeleton: () => <div data-testid="skeleton" />,
 }));
 
 jest.mock('../../components/ProductTours/ProductTours', () => function ProductTours() {
@@ -129,14 +134,14 @@ describe('<EnterpriseApp />', () => {
         enterpriseId: null,
       },
     });
-    const wrapper = mount((
+    render((
       <EnterpriseAppWrapper
         initialEntries={['/foo/bar']}
         store={store}
       />
     ));
-    expect(wrapper.find(NotFoundPage).length).toEqual(1);
-    expect(wrapper.text()).toContain(404);
+    expect(screen.getAllByTestId('not-found-page').length).toEqual(1);
+    expect(screen.getByTestId('not-found-error').textContent).toContain(404);
   });
 
   it('renders the load page correctly', () => {
@@ -148,10 +153,10 @@ describe('<EnterpriseApp />', () => {
       },
     });
 
-    const wrapper = mount((
+    render((
       <EnterpriseAppWrapper store={store} />
     ));
-    expect(wrapper.find(Skeleton)).toHaveLength(2);
+    expect(screen.getAllByTestId('skeleton')).toHaveLength(2);
   });
 
   it('renders error page correctly', () => {
@@ -164,10 +169,10 @@ describe('<EnterpriseApp />', () => {
       },
     });
 
-    const wrapper = mount((
+    render((
       <EnterpriseAppWrapper store={store} />
     ));
-    expect(wrapper.text()).toContain(err);
+    expect(screen.getByText(err)).toBeTruthy();
   });
   describe('location changes', () => {
     beforeEach(() => {
@@ -197,16 +202,15 @@ describe('<EnterpriseApp />', () => {
         },
       });
 
-      const wrapper = mount(
+      const wrapper = render(
         <EnterpriseAppWrapper store={store} />,
         { attachTo: document.getElementById('container') },
       );
 
-      wrapper.setProps({
-        location: {
-          pathname: '/test-enterprise-slug/admin/codes',
-        },
-      });
+      wrapper.rerender(
+        <EnterpriseAppWrapper store={store} location={{ pathname: '/test-enterprise-slug/admin/codes' }} />,
+        { attachTo: document.getElementById('container') },
+      );
 
       // ensure focus is set on content wrapper
       expect(document.activeElement.className).toEqual('content-wrapper');
@@ -223,7 +227,7 @@ describe('<EnterpriseApp />', () => {
       },
     });
 
-    const wrapper = mount((
+    const wrapper = render((
       <EnterpriseAppWrapper
         store={store}
       />

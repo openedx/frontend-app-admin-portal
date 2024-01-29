@@ -1,7 +1,7 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -24,26 +24,28 @@ const store = mockStore({
 });
 
 describe('<DownloadCsvButton />', () => {
-  let wrapper;
   let dispatchSpy;
 
   beforeEach(() => {
     dispatchSpy = jest.spyOn(store, 'dispatch');
-    wrapper = mount((
+    render((
       <MemoryRouter>
         <Provider store={store}>
           <IntlProvider locale="en">
-            <DownloadCsvButton id="enrollments" />
+            <DownloadCsvButton
+              id="enrollments"
+              fetchMethod={() => (
+                EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
+              )}
+            />
           </IntlProvider>
         </Provider>
       </MemoryRouter>
-    )).find('DownloadCsvButton');
+    ));
   });
 
   it('fetchCsv dispatch action', () => {
-    wrapper.props().fetchCsv(() => (
-      EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
-    ));
+    fireEvent.click(screen.getByText('Download full report (CSV)'));
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });

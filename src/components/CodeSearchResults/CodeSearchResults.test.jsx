@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -12,9 +11,9 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CodeSearchResults from './index';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
-import CodeReminderModal from '../../containers/CodeReminderModal';
 
 jest.mock('../../data/services/EcommerceApiService');
+jest.mock('../../components/TemplateSourceFields');
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -93,16 +92,14 @@ describe('<CodeSearchResults />', () => {
 
   describe('basic rendering', () => {
     it('should render nothing visible when isOpen prop is false', () => {
-      const tree = renderer
-        .create((
-          <CodeSearchResultsWrapper
-            onClose={jest.fn()}
-            searchQuery="test@test.com"
-            enableLearnerPortal={false}
-            enterpriseSlug="sluggy"
-          />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <CodeSearchResultsWrapper
+          onClose={jest.fn()}
+          searchQuery="test@test.com"
+          enableLearnerPortal={false}
+          enterpriseSlug="sluggy"
+        />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -117,16 +114,14 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const tree = renderer
-        .create((
-          <CodeSearchResultsWrapper
-            onClose={jest.fn()}
-            searchQuery="test@test.com"
-            store={store}
-            isOpen
-          />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <CodeSearchResultsWrapper
+          onClose={jest.fn()}
+          searchQuery="test@test.com"
+          store={store}
+          isOpen
+        />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -173,16 +168,14 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const tree = renderer
-        .create((
-          <CodeSearchResultsWrapper
-            store={store}
-            onClose={jest.fn()}
-            searchQuery="test@test.com"
-            isOpen
-          />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <CodeSearchResultsWrapper
+          store={store}
+          onClose={jest.fn()}
+          searchQuery="test@test.com"
+          isOpen
+        />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -210,16 +203,14 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const tree = renderer
-        .create((
-          <CodeSearchResultsWrapper
-            store={store}
-            onClose={jest.fn()}
-            searchQuery="FAG2LVLNHAKIXQ0Q"
-            isOpen
-          />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <CodeSearchResultsWrapper
+          store={store}
+          onClose={jest.fn()}
+          searchQuery="FAG2LVLNHAKIXQ0Q"
+          isOpen
+        />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -238,16 +229,14 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const tree = renderer
-        .create((
-          <CodeSearchResultsWrapper
-            store={store}
-            onClose={jest.fn()}
-            searchQuery="test@test.com"
-            isOpen
-          />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <CodeSearchResultsWrapper
+          store={store}
+          onClose={jest.fn()}
+          searchQuery="test@test.com"
+          isOpen
+        />,
+      );
       expect(tree).toMatchSnapshot();
     });
 
@@ -262,16 +251,14 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const tree = renderer
-        .create((
-          <CodeSearchResultsWrapper
-            store={store}
-            onClose={jest.fn()}
-            searchQuery="test@test.com"
-            isOpen
-          />
-        ))
-        .toJSON();
+      const { container: tree } = render(
+        <CodeSearchResultsWrapper
+          store={store}
+          onClose={jest.fn()}
+          searchQuery="test@test.com"
+          isOpen
+        />,
+      );
       expect(tree).toMatchSnapshot();
     });
   });
@@ -303,7 +290,7 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const wrapper = mount((
+      render((
         <CodeSearchResultsWrapper
           store={store}
           onClose={jest.fn()}
@@ -313,12 +300,11 @@ describe('<CodeSearchResults />', () => {
       ));
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
-      wrapper.find('RemindButton').simulate('click');
-      wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');
+      expect(screen.queryByText('A reminder was successfully sent to test@test.com.')).toBeFalsy();
+      fireEvent.click(screen.getByText('Remind'));
+      fireEvent.click(screen.getAllByText('Remind')[1]);
       await flushPromises();
-      wrapper.update();
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeTruthy();
+      expect(screen.queryByText('A reminder was successfully sent to test@test.com.')).toBeTruthy();
     });
 
     it('should handle remind button for saved template', async () => {
@@ -355,7 +341,7 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const wrapper = mount((
+      render((
         <CodeSearchResultsWrapper
           store={store}
           onClose={jest.fn()}
@@ -365,12 +351,11 @@ describe('<CodeSearchResults />', () => {
       ));
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
-      wrapper.find('RemindButton').simulate('click');
-      wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');
+      expect(screen.queryByText('A reminder was successfully sent to test@test.com.')).toBeFalsy();
+      fireEvent.click(screen.getByText('Remind'));
+      fireEvent.click(screen.getAllByText('Remind')[1]);
       await flushPromises();
-      wrapper.update();
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeTruthy();
+      expect(screen.queryByText('A reminder was successfully sent to test@test.com.')).toBeTruthy();
     });
 
     it('should handle revoke button', async () => {
@@ -397,7 +382,7 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const wrapper = mount((
+      render((
         <CodeSearchResultsWrapper
           store={store}
           onClose={jest.fn()}
@@ -405,12 +390,12 @@ describe('<CodeSearchResults />', () => {
           isOpen
         />
       ));
-      expect(wrapper.find('CodeSearchResults').state('isCodeRevokeSuccessful')).toBeFalsy();
-      wrapper.find('RevokeButton').simulate('click');
-      wrapper.find('CodeRevokeModal').find('.code-revoke-save-btn').first().simulate('click');
+
+      expect(screen.queryByText('Successfully revoked code(s)')).toBeFalsy();
+      fireEvent.click(screen.getByText('Revoke'));
+      fireEvent.click(screen.getAllByText('Revoke')[1]);
       await flushPromises();
-      wrapper.update();
-      expect(wrapper.find('CodeSearchResults').state('isCodeRevokeSuccessful')).toBeTruthy();
+      expect(screen.queryByText('Successfully revoked code(s)')).toBeTruthy();
     });
   });
 
@@ -430,7 +415,7 @@ describe('<CodeSearchResults />', () => {
         },
       },
     });
-    const wrapper = mount((
+    const wrapper = render((
       <CodeSearchResultsWrapper
         store={store}
         onClose={mockOnClose}
@@ -439,7 +424,7 @@ describe('<CodeSearchResults />', () => {
       />
     ));
 
-    wrapper.find('.close-search-results-btn').first().simulate('click');
+    fireEvent.click(wrapper.container.querySelector('.close-search-results-btn'));
     expect(mockOnClose).toBeCalledTimes(1);
   });
 });

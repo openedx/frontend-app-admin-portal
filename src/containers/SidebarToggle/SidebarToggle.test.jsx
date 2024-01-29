@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-
-import { Close, MenuIcon } from '@edx/paragon/icons';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import SidebarToggle from './index';
 import {
   EXPAND_SIDEBAR,
   COLLAPSE_SIDEBAR,
 } from '../../data/constants/sidebar';
+
+jest.mock('@edx/paragon/icons', () => ({
+  Close: () => <div data-testid="close-icon" />,
+  MenuIcon: () => <div data-testid="menu-icon" />,
+}));
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -41,8 +44,8 @@ SidebarToggleWrapper.propTypes = {
 
 describe('<Sidebar />', () => {
   it('renders correctly with menu icon', () => {
-    const wrapper = mount(<SidebarToggleWrapper />);
-    expect(wrapper.find(MenuIcon)).toHaveLength(1);
+    render(<SidebarToggleWrapper />);
+    expect(screen.getAllByTestId('menu-icon')).toHaveLength(1);
   });
 
   it('renders correctly with close icon', () => {
@@ -52,8 +55,8 @@ describe('<Sidebar />', () => {
         isExpandedByToggle: true,
       },
     });
-    const wrapper = mount(<SidebarToggleWrapper store={store} />);
-    expect(wrapper.find(Close)).toHaveLength(1);
+    render(<SidebarToggleWrapper store={store} />);
+    expect(screen.getAllByTestId('close-icon')).toHaveLength(1);
   });
 
   it('dispatches expandSidebar action', () => {
@@ -61,7 +64,7 @@ describe('<Sidebar />', () => {
       ...initialState,
     });
 
-    const wrapper = mount((
+    render((
       <SidebarToggleWrapper store={store} />
     ));
 
@@ -71,7 +74,7 @@ describe('<Sidebar />', () => {
     }];
 
     store.clearActions();
-    wrapper.find('SidebarToggle').simulate('click');
+    fireEvent.click(screen.getByRole('button'));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -84,7 +87,7 @@ describe('<Sidebar />', () => {
       },
     });
 
-    const wrapper = mount((
+    render((
       <SidebarToggleWrapper store={store} />
     ));
 
@@ -94,7 +97,7 @@ describe('<Sidebar />', () => {
     }];
 
     store.clearActions();
-    wrapper.find('SidebarToggle').simulate('click');
+    fireEvent.click(screen.getByRole('button'));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

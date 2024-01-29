@@ -1,6 +1,5 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 
 import SearchBar from './index';
 
@@ -8,25 +7,23 @@ describe('<SearchBar />', () => {
   let wrapper;
 
   it('renders correctly', () => {
-    const tree = renderer
-      .create((
-        <SearchBar
-          onSearch={() => {}}
-        />
-      ))
-      .toJSON();
+    const { container: tree } = render(
+      <SearchBar
+        onSearch={() => {}}
+      />,
+    );
     expect(tree).toMatchSnapshot();
   });
 
   it('calls onSearch callback handler', () => {
     const mockOnSearchCallback = jest.fn();
-    wrapper = mount((
+    wrapper = render((
       <SearchBar
         onSearch={mockOnSearchCallback}
       />
     ));
-    wrapper.find('input[type="text"]').simulate('change', { target: { value: 'foobar' } });
-    wrapper.find('form').simulate('submit');
+    fireEvent.change(wrapper.container.querySelector('input[type="text"]'), { target: { value: 'foobar' } });
+    fireEvent.submit(wrapper.container.querySelector('form'));
     expect(mockOnSearchCallback).toHaveBeenCalledTimes(1);
   });
 });

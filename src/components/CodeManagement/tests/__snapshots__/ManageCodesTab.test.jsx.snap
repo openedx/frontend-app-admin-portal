@@ -1,69 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ManageCodesTabWrapper renders renders empty results correctly 1`] = `
-Array [
+<div>
   <div
-    className="row mt-4 mb-3 no-gutters"
+    class="row mt-4 mb-3 no-gutters"
   >
     <div
-      className="col-12 col-xl-3 mb-3 mb-xl-0"
+      class="col-12 col-xl-3 mb-3 mb-xl-0"
     >
       <h2>
         Overview
       </h2>
     </div>
     <div
-      className="col-12 col-xl-4 mb-3 mb-xl-0"
+      class="col-12 col-xl-4 mb-3 mb-xl-0"
     >
       <div
-        className="pgn__searchfield d-flex"
+        class="pgn__searchfield d-flex"
       >
         <form
-          className="d-flex align-items-center w-100"
-          onReset={[Function]}
-          onSubmit={[Function]}
+          class="d-flex align-items-center w-100"
           role="search"
         >
           <label
-            className="m-0"
-            htmlFor="pgn-searchfield-input-1"
+            class="m-0"
+            for="pgn-searchfield-input-1"
           >
             <span
-              className="sr-only"
+              class="sr-only"
             >
               search
             </span>
           </label>
           <input
-            className="form-control"
-            data-hj-suppress={true}
-            disabled={false}
+            class="form-control"
+            data-hj-suppress="true"
             id="pgn-searchfield-input-1"
             name="searchfield-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
             placeholder="Search by email or code..."
             role="searchbox"
             type="text"
             value=""
           />
           <button
-            className="btn"
-            disabled={false}
+            class="btn"
             type="submit"
           >
             <span
-              className="pgn__icon"
+              class="pgn__icon"
             >
               <svg
-                aria-hidden={true}
+                aria-hidden="true"
                 fill="none"
-                focusable={false}
-                height={24}
+                focusable="false"
+                height="24"
                 role="img"
                 viewBox="0 0 24 24"
-                width={24}
+                width="24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -73,7 +66,7 @@ Array [
               </svg>
             </span>
             <span
-              className="sr-only"
+              class="sr-only"
             >
               submit search
             </span>
@@ -82,26 +75,24 @@ Array [
       </div>
     </div>
     <div
-      className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
+      class="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
     >
       <button
-        className="mr-2 btn btn-link"
-        disabled={false}
-        onClick={[Function]}
+        class="mr-2 btn btn-link"
         type="button"
       >
         <span
-          className="pgn__icon mr-2"
+          class="pgn__icon mr-2"
           data-testid="refresh-data"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -113,21 +104,20 @@ Array [
         Refresh data
       </button>
       <a
-        className="request-codes-btn btn btn-primary"
+        class="request-codes-btn btn btn-primary"
         href="/test-enterprise-slug/admin/coupons/request-codes"
-        onClick={[Function]}
       >
         <span
-          className="pgn__icon"
+          class="pgn__icon"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -139,44 +129,39 @@ Array [
         Request more codes
       </a>
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="pgn-transition-replace-group position-relative"
-        style={
-          Object {
-            "height": null,
-          }
-        }
+        class="pgn-transition-replace-group position-relative"
       />
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="fade alert-content alert alert-warning show"
+        class="fade alert-content alert alert-warning show"
         role="alert"
       >
         <span
-          className="pgn__icon alert-icon"
+          class="pgn__icon alert-icon"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -187,84 +172,77 @@ Array [
           </svg>
         </span>
         <div
-          className="pgn__alert-message-wrapper"
+          class="pgn__alert-message-wrapper"
         >
           <div
-            className="alert-message-content"
+            class="alert-message-content"
           >
             There are no results.
           </div>
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`ManageCodesTabWrapper renders renders error state correctly 1`] = `
-Array [
+<div>
   <div
-    className="row mt-4 mb-3 no-gutters"
+    class="row mt-4 mb-3 no-gutters"
   >
     <div
-      className="col-12 col-xl-3 mb-3 mb-xl-0"
+      class="col-12 col-xl-3 mb-3 mb-xl-0"
     >
       <h2>
         Overview
       </h2>
     </div>
     <div
-      className="col-12 col-xl-4 mb-3 mb-xl-0"
+      class="col-12 col-xl-4 mb-3 mb-xl-0"
     >
       <div
-        className="pgn__searchfield d-flex"
+        class="pgn__searchfield d-flex"
       >
         <form
-          className="d-flex align-items-center w-100"
-          onReset={[Function]}
-          onSubmit={[Function]}
+          class="d-flex align-items-center w-100"
           role="search"
         >
           <label
-            className="m-0"
-            htmlFor="pgn-searchfield-input-4"
+            class="m-0"
+            for="pgn-searchfield-input-4"
           >
             <span
-              className="sr-only"
+              class="sr-only"
             >
               search
             </span>
           </label>
           <input
-            className="form-control"
-            data-hj-suppress={true}
-            disabled={false}
+            class="form-control"
+            data-hj-suppress="true"
             id="pgn-searchfield-input-4"
             name="searchfield-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
             placeholder="Search by email or code..."
             role="searchbox"
             type="text"
             value=""
           />
           <button
-            className="btn"
-            disabled={false}
+            class="btn"
             type="submit"
           >
             <span
-              className="pgn__icon"
+              class="pgn__icon"
             >
               <svg
-                aria-hidden={true}
+                aria-hidden="true"
                 fill="none"
-                focusable={false}
-                height={24}
+                focusable="false"
+                height="24"
                 role="img"
                 viewBox="0 0 24 24"
-                width={24}
+                width="24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -274,7 +252,7 @@ Array [
               </svg>
             </span>
             <span
-              className="sr-only"
+              class="sr-only"
             >
               submit search
             </span>
@@ -283,26 +261,24 @@ Array [
       </div>
     </div>
     <div
-      className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
+      class="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
     >
       <button
-        className="mr-2 btn btn-link"
-        disabled={false}
-        onClick={[Function]}
+        class="mr-2 btn btn-link"
         type="button"
       >
         <span
-          className="pgn__icon mr-2"
+          class="pgn__icon mr-2"
           data-testid="refresh-data"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -314,21 +290,20 @@ Array [
         Refresh data
       </button>
       <a
-        className="request-codes-btn btn btn-primary"
+        class="request-codes-btn btn btn-primary"
         href="/test-enterprise-slug/admin/coupons/request-codes"
-        onClick={[Function]}
       >
         <span
-          className="pgn__icon"
+          class="pgn__icon"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -340,44 +315,39 @@ Array [
         Request more codes
       </a>
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="pgn-transition-replace-group position-relative"
-        style={
-          Object {
-            "height": null,
-          }
-        }
+        class="pgn-transition-replace-group position-relative"
       />
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="fade alert-content alert alert-danger show"
+        class="fade alert-content alert alert-danger show"
         role="alert"
       >
         <span
-          className="pgn__icon alert-icon"
+          class="pgn__icon alert-icon"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -387,13 +357,13 @@ Array [
           </svg>
         </span>
         <div
-          className="pgn__alert-message-wrapper"
+          class="pgn__alert-message-wrapper"
         >
           <div
-            className="alert-message-content"
+            class="alert-message-content"
           >
             <div
-              className="alert-heading h4"
+              class="alert-heading h4"
             >
               Unable to load coupons
             </div>
@@ -406,74 +376,67 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`ManageCodesTabWrapper renders renders loading state correctly 1`] = `
-Array [
+<div>
   <div
-    className="row mt-4 mb-3 no-gutters"
+    class="row mt-4 mb-3 no-gutters"
   >
     <div
-      className="col-12 col-xl-3 mb-3 mb-xl-0"
+      class="col-12 col-xl-3 mb-3 mb-xl-0"
     >
       <h2>
         Overview
       </h2>
     </div>
     <div
-      className="col-12 col-xl-4 mb-3 mb-xl-0"
+      class="col-12 col-xl-4 mb-3 mb-xl-0"
     >
       <div
-        className="pgn__searchfield d-flex"
+        class="pgn__searchfield d-flex"
       >
         <form
-          className="d-flex align-items-center w-100"
-          onReset={[Function]}
-          onSubmit={[Function]}
+          class="d-flex align-items-center w-100"
           role="search"
         >
           <label
-            className="m-0"
-            htmlFor="pgn-searchfield-input-3"
+            class="m-0"
+            for="pgn-searchfield-input-3"
           >
             <span
-              className="sr-only"
+              class="sr-only"
             >
               search
             </span>
           </label>
           <input
-            className="form-control"
-            data-hj-suppress={true}
-            disabled={false}
+            class="form-control"
+            data-hj-suppress="true"
             id="pgn-searchfield-input-3"
             name="searchfield-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
             placeholder="Search by email or code..."
             role="searchbox"
             type="text"
             value=""
           />
           <button
-            className="btn"
-            disabled={false}
+            class="btn"
             type="submit"
           >
             <span
-              className="pgn__icon"
+              class="pgn__icon"
             >
               <svg
-                aria-hidden={true}
+                aria-hidden="true"
                 fill="none"
-                focusable={false}
-                height={24}
+                focusable="false"
+                height="24"
                 role="img"
                 viewBox="0 0 24 24"
-                width={24}
+                width="24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -483,7 +446,7 @@ Array [
               </svg>
             </span>
             <span
-              className="sr-only"
+              class="sr-only"
             >
               submit search
             </span>
@@ -492,26 +455,25 @@ Array [
       </div>
     </div>
     <div
-      className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
+      class="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
     >
       <button
-        className="mr-2 btn btn-link"
-        disabled={true}
-        onClick={[Function]}
+        class="mr-2 btn btn-link"
+        disabled=""
         type="button"
       >
         <span
-          className="pgn__icon mr-2"
+          class="pgn__icon mr-2"
           data-testid="refresh-data"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -523,21 +485,20 @@ Array [
         Refresh data
       </button>
       <a
-        className="request-codes-btn btn btn-primary"
+        class="request-codes-btn btn btn-primary"
         href="/test-enterprise-slug/admin/coupons/request-codes"
-        onClick={[Function]}
       >
         <span
-          className="pgn__icon"
+          class="pgn__icon"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -549,108 +510,97 @@ Array [
         Request more codes
       </a>
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="pgn-transition-replace-group position-relative"
-        style={
-          Object {
-            "height": null,
-          }
-        }
+        class="pgn-transition-replace-group position-relative"
       />
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="loading d-flex align-items-center justify-content-center coupons mt-3"
+        class="loading d-flex align-items-center justify-content-center coupons mt-3"
+        data-testid="loading-message"
       >
         Loading...
         <span
-          className="sr-only"
+          class="sr-only"
         >
           Loading
         </span>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] = `
-Array [
+<div>
   <div
-    className="row mt-4 mb-3 no-gutters"
+    class="row mt-4 mb-3 no-gutters"
   >
     <div
-      className="col-12 col-xl-3 mb-3 mb-xl-0"
+      class="col-12 col-xl-3 mb-3 mb-xl-0"
     >
       <h2>
         Overview
       </h2>
     </div>
     <div
-      className="col-12 col-xl-4 mb-3 mb-xl-0"
+      class="col-12 col-xl-4 mb-3 mb-xl-0"
     >
       <div
-        className="pgn__searchfield d-flex"
+        class="pgn__searchfield d-flex"
       >
         <form
-          className="d-flex align-items-center w-100"
-          onReset={[Function]}
-          onSubmit={[Function]}
+          class="d-flex align-items-center w-100"
           role="search"
         >
           <label
-            className="m-0"
-            htmlFor="pgn-searchfield-input-2"
+            class="m-0"
+            for="pgn-searchfield-input-2"
           >
             <span
-              className="sr-only"
+              class="sr-only"
             >
               search
             </span>
           </label>
           <input
-            className="form-control"
-            data-hj-suppress={true}
-            disabled={false}
+            class="form-control"
+            data-hj-suppress="true"
             id="pgn-searchfield-input-2"
             name="searchfield-input"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
             placeholder="Search by email or code..."
             role="searchbox"
             type="text"
             value=""
           />
           <button
-            className="btn"
-            disabled={false}
+            class="btn"
             type="submit"
           >
             <span
-              className="pgn__icon"
+              class="pgn__icon"
             >
               <svg
-                aria-hidden={true}
+                aria-hidden="true"
                 fill="none"
-                focusable={false}
-                height={24}
+                focusable="false"
+                height="24"
                 role="img"
                 viewBox="0 0 24 24"
-                width={24}
+                width="24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -660,7 +610,7 @@ Array [
               </svg>
             </span>
             <span
-              className="sr-only"
+              class="sr-only"
             >
               submit search
             </span>
@@ -669,26 +619,24 @@ Array [
       </div>
     </div>
     <div
-      className="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
+      class="col-12 col-xl-5 mb-3 mb-xl-0 text-xl-right"
     >
       <button
-        className="mr-2 btn btn-link"
-        disabled={false}
-        onClick={[Function]}
+        class="mr-2 btn btn-link"
         type="button"
       >
         <span
-          className="pgn__icon mr-2"
+          class="pgn__icon mr-2"
           data-testid="refresh-data"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -700,21 +648,20 @@ Array [
         Refresh data
       </button>
       <a
-        className="request-codes-btn btn btn-primary"
+        class="request-codes-btn btn btn-primary"
         href="/test-enterprise-slug/admin/coupons/request-codes"
-        onClick={[Function]}
       >
         <span
-          className="pgn__icon"
+          class="pgn__icon"
         >
           <svg
-            aria-hidden={true}
+            aria-hidden="true"
             fill="none"
-            focusable={false}
-            height={24}
+            focusable="false"
+            height="24"
             role="img"
             viewBox="0 0 24 24"
-            width={24}
+            width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -726,46 +673,39 @@ Array [
         Request more codes
       </a>
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="pgn-transition-replace-group position-relative"
-        style={
-          Object {
-            "height": null,
-          }
-        }
+        class="pgn-transition-replace-group position-relative"
       />
     </div>
-  </div>,
+  </div>
   <div
-    className="row"
+    class="row"
   >
     <div
-      className="col"
+      class="col"
     >
       <div
-        className="coupon mb-3 mb-lg-2 rounded border"
+        class="coupon mb-3 mb-lg-2 rounded border"
       >
         <div
           aria-controls="coupon-details-0"
-          aria-expanded={false}
-          className="metadata row no-gutters p-2 d-flex align-items-center rounded"
-          onClick={[Function]}
-          onKeyDown={[Function]}
+          aria-expanded="false"
+          class="metadata row no-gutters p-2 d-flex align-items-center rounded"
           role="button"
-          tabIndex="0"
+          tabindex="0"
         >
           <div
-            className="col-sm-12 col-lg-3 mb-2 mb-lg-0"
+            class="col-sm-12 col-lg-3 mb-2 mb-lg-0"
           >
             <small
-              className="text-muted"
+              class="text-muted"
             >
               Coupon Name
             </small>
@@ -774,16 +714,16 @@ Array [
             </div>
           </div>
           <div
-            className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+            class="col-sm-12 col-lg-4 mb-2 mb-lg-0"
           >
             <div
-              className="row no-gutters"
+              class="row no-gutters"
             >
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Valid From
                 </small>
@@ -792,10 +732,10 @@ Array [
                 </div>
               </div>
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Valid To
                 </small>
@@ -806,16 +746,16 @@ Array [
             </div>
           </div>
           <div
-            className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+            class="col-sm-12 col-lg-4 mb-2 mb-lg-0"
           >
             <div
-              className="row no-gutters"
+              class="row no-gutters"
             >
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Assignments Remaining
                 </small>
@@ -824,17 +764,17 @@ Array [
                 </div>
               </div>
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Enrollments Redeemed
                 </small>
                 <div>
                   2 of 10
                   <span
-                    className="ml-1"
+                    class="ml-1"
                   >
                     (20%)
                   </span>
@@ -843,28 +783,16 @@ Array [
             </div>
           </div>
           <div
-            className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
+            class="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
           >
             <span
-              className="pgn__icon d-inline-block text-primary"
+              class="pgn__icon d-inline-block text-primary"
             >
-              <svg
-                aria-hidden={true}
-                fill="none"
-                focusable={false}
-                height={24}
-                role="img"
-                viewBox="0 0 24 24"
-                width={24}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41Z"
-                  fill="currentColor"
-                />
-              </svg>
+              <div
+                data-testid="expand-more"
+              />
               <span
-                className="sr-only"
+                class="sr-only"
               >
                 Open coupon details
               </span>
@@ -872,31 +800,29 @@ Array [
           </div>
         </div>
         <div
-          className="coupon-details row no-gutters px-2 my-3 d-none"
+          class="coupon-details row no-gutters px-2 my-3 d-none"
           id="coupon-details-0"
         >
           <div
-            className="col"
+            class="col"
           />
         </div>
       </div>
       <div
-        className="coupon mb-3 mb-lg-2 rounded border"
+        class="coupon mb-3 mb-lg-2 rounded border"
       >
         <div
           aria-controls="coupon-details-1"
-          aria-expanded={false}
-          className="metadata row no-gutters p-2 d-flex align-items-center rounded"
-          onClick={[Function]}
-          onKeyDown={[Function]}
+          aria-expanded="false"
+          class="metadata row no-gutters p-2 d-flex align-items-center rounded"
           role="button"
-          tabIndex="0"
+          tabindex="0"
         >
           <div
-            className="col-sm-12 col-lg-3 mb-2 mb-lg-0"
+            class="col-sm-12 col-lg-3 mb-2 mb-lg-0"
           >
             <small
-              className="text-muted"
+              class="text-muted"
             >
               Coupon Name
             </small>
@@ -905,16 +831,16 @@ Array [
             </div>
           </div>
           <div
-            className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+            class="col-sm-12 col-lg-4 mb-2 mb-lg-0"
           >
             <div
-              className="row no-gutters"
+              class="row no-gutters"
             >
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Valid From
                 </small>
@@ -923,10 +849,10 @@ Array [
                 </div>
               </div>
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Valid To
                 </small>
@@ -937,16 +863,16 @@ Array [
             </div>
           </div>
           <div
-            className="col-sm-12 col-lg-4 mb-2 mb-lg-0"
+            class="col-sm-12 col-lg-4 mb-2 mb-lg-0"
           >
             <div
-              className="row no-gutters"
+              class="row no-gutters"
             >
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Assignments Remaining
                 </small>
@@ -955,17 +881,17 @@ Array [
                 </div>
               </div>
               <div
-                className="col"
+                class="col"
               >
                 <small
-                  className="text-muted"
+                  class="text-muted"
                 >
                   Enrollments Redeemed
                 </small>
                 <div>
                   2 of 10
                   <span
-                    className="ml-1"
+                    class="ml-1"
                   >
                     (20%)
                   </span>
@@ -974,28 +900,16 @@ Array [
             </div>
           </div>
           <div
-            className="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
+            class="icons col-lg-1 order-first order-lg-last text-right pr-2 mt-1 m-lg-0"
           >
             <span
-              className="pgn__icon d-inline-block text-primary"
+              class="pgn__icon d-inline-block text-primary"
             >
-              <svg
-                aria-hidden={true}
-                fill="none"
-                focusable={false}
-                height={24}
-                role="img"
-                viewBox="0 0 24 24"
-                width={24}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41Z"
-                  fill="currentColor"
-                />
-              </svg>
+              <div
+                data-testid="expand-more"
+              />
               <span
-                className="sr-only"
+                class="sr-only"
               >
                 Open coupon details
               </span>
@@ -1003,55 +917,54 @@ Array [
           </div>
         </div>
         <div
-          className="coupon-details row no-gutters px-2 my-3 d-none"
+          class="coupon-details row no-gutters px-2 my-3 d-none"
           id="coupon-details-1"
         >
           <div
-            className="col"
+            class="col"
           />
         </div>
       </div>
       <div
-        className="d-flex mt-4 justify-content-center"
+        class="d-flex mt-4 justify-content-center"
       >
         <nav
           aria-label="coupons pagination"
-          className="pagination-default"
+          class="pagination-default"
         >
           <div
-            aria-atomic={true}
+            aria-atomic="true"
             aria-live="polite"
             aria-relevant="text"
-            className="sr-only"
+            class="sr-only"
           >
             Page 1, Current Page, of 1
           </div>
           <ul
-            className="pagination"
+            class="pagination"
           >
             <li
-              className="page-item disabled"
+              class="page-item disabled"
             >
               <button
                 aria-label="Previous"
-                className="previous page-link btn btn-primary"
-                disabled={true}
-                onClick={[Function]}
-                tabIndex="-1"
+                class="previous page-link btn btn-primary"
+                disabled=""
+                tabindex="-1"
                 type="button"
               >
                 <div>
                   <span
-                    className="pgn__icon"
+                    class="pgn__icon"
                   >
                     <svg
-                      aria-hidden={true}
+                      aria-hidden="true"
                       fill="none"
-                      focusable={false}
-                      height={24}
+                      focusable="false"
+                      height="24"
                       role="img"
                       viewBox="0 0 24 24"
-                      width={24}
+                      width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
@@ -1065,29 +978,28 @@ Array [
               </button>
             </li>
             <li
-              className="page-item disabled"
+              class="page-item disabled"
             >
               <button
                 aria-label="Next"
-                className="next page-link btn btn-primary"
-                disabled={true}
-                onClick={[Function]}
-                tabIndex="-1"
+                class="next page-link btn btn-primary"
+                disabled=""
+                tabindex="-1"
                 type="button"
               >
                 <div>
                   Next
                   <span
-                    className="pgn__icon"
+                    class="pgn__icon"
                   >
                     <svg
-                      aria-hidden={true}
+                      aria-hidden="true"
                       fill="none"
-                      focusable={false}
-                      height={24}
+                      focusable="false"
+                      height="24"
                       role="img"
                       viewBox="0 0 24 24"
-                      width={24}
+                      width="24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
@@ -1103,6 +1015,6 @@ Array [
         </nav>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
