@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ActionRow, Alert, Button, CardGrid,
+  ActionRow, Alert, Button, CardGrid, useToggle,
 } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,10 +16,13 @@ import SkeletonContentCardContainer from './SkeletonContentCardContainer';
 import { generateAboutPageUrl } from './data/utils';
 import EVENT_NAMES from '../../eventTracking';
 import { features } from '../../config';
+import DeleteArchivedHighlightsDialogs from './DeleteArchivedHighlightsDialogs';
 
 const ContentHighlightsCardItemsContainer = ({
   enterpriseId, enterpriseSlug, isLoading, highlightedContent,
 }) => {
+  const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useToggle(false);
+
   const {
     HIGHLIGHTS_ARCHIVE_MESSAGING,
   } = features;
@@ -50,11 +53,15 @@ const ContentHighlightsCardItemsContainer = ({
         } else {
           activeContent.push(highlightedContent[i]);
         }
+      } else {
+        activeContent.push(highlightedContent[i]);
       }
     }
   } else {
     activeContent.push(...highlightedContent);
   }
+
+  const archivedContentKeys = archivedContent.map(({ contentKey }) => contentKey);
 
   const trackClickEvent = ({ aggregationKey }) => {
     const trackInfo = {
@@ -96,12 +103,17 @@ const ContentHighlightsCardItemsContainer = ({
       </CardGrid>
       {archivedContent.length > 0 && (
         <>
+          <DeleteArchivedHighlightsDialogs
+            isDeleteModalOpen={isDeleteModalOpen}
+            closeDeleteModal={closeDeleteModal}
+            archivedContentKeys={archivedContentKeys}
+          />
           <ActionRow>
             <h3 className="m-0">
               Archived
             </h3>
             <ActionRow.Spacer />
-            <Button variant="outline-primary">Delete archived courses</Button>
+            <Button onClick={openDeleteModal} variant="outline-primary">Delete archived courses</Button>
           </ActionRow>
           <div className="mb-4.5">Learners are no longer able to enroll in archived courses,
             but past learners can still access course materials.

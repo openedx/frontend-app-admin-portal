@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
@@ -30,9 +31,11 @@ const initialState = {
 };
 
 const ContentHighlightsCardItemsContainerWrapper = (props) => (
-  <Provider store={mockStore(initialState)}>
-    <ContentHighlightsCardItemsContainer {...props} />
-  </Provider>
+  <IntlProvider locale="en">
+    <Provider store={mockStore(initialState)}>
+      <ContentHighlightsCardItemsContainer {...props} />
+    </Provider>
+  </IntlProvider>
 );
 
 describe('<ContentHighlightsCardItemsContainer>', () => {
