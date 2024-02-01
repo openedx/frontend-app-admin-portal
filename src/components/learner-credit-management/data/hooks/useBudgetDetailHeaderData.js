@@ -26,13 +26,17 @@ const transformSubsidySummaryToPolicy = (subsidySummary, enterpriseOfferMetadata
 const assignBudgetStatus = (policy) => {
   const {
     status, badgeVariant, term, date,
-  } = getBudgetStatus(
-    policy.subsidyActiveDatetime,
-    policy.subsidyExpirationDatetime,
-  );
+  } = getBudgetStatus({
+    startDateStr: policy.subsidyActiveDatetime,
+    endDateStr: policy.subsidyExpirationDatetime,
+    isBudgetRetired: policy.retired,
+  });
 
   return {
-    status, badgeVariant, term, date,
+    status,
+    badgeVariant,
+    term,
+    date,
   };
 };
 

@@ -45,6 +45,14 @@ describe('LmsApiService', () => {
     );
   });
   test('updateUserActiveEnterprise calls the LMS to update the active linked enterprise org', () => {
+    axios.get.mockReturnValue({
+      data: {
+        results: [{
+          active: true,
+          enterpriseCustomer: { uuid: 'test-uuid' },
+        }],
+      },
+    });
     LmsApiService.updateUserActiveEnterprise(
       mockEnterpriseUUID,
     );
@@ -56,6 +64,14 @@ describe('LmsApiService', () => {
     );
   });
   test('fetchEnterpriseLearnerData calls the LMS to fetch learner data', () => {
+    axios.get.mockReturnValue({
+      data: {
+        results: [{
+          active: true,
+          enterpriseCustomer: { uuid: 'test-uuid' },
+        }],
+      },
+    });
     LmsApiService.fetchEnterpriseLearnerData({ username: mockUsername });
     expect(axios.get).toBeCalledWith(
       `${lmsBaseUrl}/enterprise/api/v1/enterprise-learner/?username=${mockUsername}&page=1`,
@@ -70,7 +86,7 @@ describe('LmsApiService', () => {
         }],
       },
     });
-    const activeCustomer = await LmsApiService.getActiveLinkedEnterprise(mockUsername);
-    expect(activeCustomer).toEqual({ uuid: 'test-uuid' });
+    const activeCustomer = await LmsApiService.fetchEnterpriseLearnerData({ username: mockUsername });
+    expect(activeCustomer).toEqual([{ active: true, enterpriseCustomer: { uuid: 'test-uuid' } }]);
   });
 });

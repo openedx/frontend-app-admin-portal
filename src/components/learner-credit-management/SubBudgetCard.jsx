@@ -65,21 +65,26 @@ const BaseSubBudgetCard = ({
   enablePortalLearnerCreditManagementScreen,
   isLoading,
   isAssignable,
+  isRetired,
 }) => {
   const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
     enterpriseId,
     isTopDownAssignmentEnabled,
   });
-  const budgetLabel = getBudgetStatus(start, end);
-  const formattedDate = dayjs(budgetLabel?.date).format('MMMM D, YYYY');
+  const budgetLabel = getBudgetStatus({
+    startDateStr: start,
+    endDateStr: end,
+    isBudgetRetired: isRetired,
+  });
+  const formattedDate = budgetLabel?.date ? dayjs(budgetLabel?.date).format('MMMM D, YYYY') : undefined;
 
   const renderActions = (budgetId) => (
     <Button
       data-testid="view-budget"
       as={Link}
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
-      variant={budgetLabel.status === BUDGET_STATUSES.expired ? 'outline-primary' : 'primary'}
+      variant={[BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(budgetLabel.status) ? 'outline-primary' : 'primary'}
     >
       View budget
     </Button>
@@ -89,9 +94,11 @@ const BaseSubBudgetCard = ({
     const subtitle = (
       <Stack direction="horizontal" gap={2.5}>
         <Badge variant={budgetLabel.badgeVariant}>{budgetLabel.status}</Badge>
-        <span data-testid="budget-date">
-          {budgetLabel.term} {formattedDate}
-        </span>
+        {(budgetLabel.term && formattedDate) && (
+          <span data-testid="budget-date">
+            {budgetLabel.term} {formattedDate}
+          </span>
+        )}
       </Stack>
     );
 
@@ -170,6 +177,7 @@ BaseSubBudgetCard.propTypes = {
   pending: PropTypes.number,
   displayName: PropTypes.string,
   isAssignable: PropTypes.bool,
+  isRetired: PropTypes.bool,
 };
 
 BaseSubBudgetCard.defaultProps = {
