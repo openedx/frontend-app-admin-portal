@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
-  Button, Hyperlink, ModalDialog, StatefulButton, Toast, useToggle,
+  Button, Hyperlink, ModalDialog, StatefulButton, useToggle,
 } from '@edx/paragon';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { configuration } from '../../config';
+import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 
 const DeleteArchivedCoursesDialogs = ({
   isDeleteModalOpen, closeDeleteModal, archivedContentKeys,
 }) => {
   const { highlightSetUUID } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isErrorOpen, openError, closeError] = useToggle(false);
-  const [toastShow, setToastShow] = useState(false);
   const [deletionState, setDeletionState] = useState('default');
+  const { enterpriseCuration: { getEnterpriseCuration, dispatch } } = useContext(EnterpriseAppContext);
 
   const handleDeleteArchivedClick = async () => {
     setDeletionState('pending');
@@ -22,7 +26,11 @@ const DeleteArchivedCoursesDialogs = ({
       const resp = await EnterpriseCatalogApiService.deleteHighlightSetContent(highlightSetUUID, archivedContentKeys);
       if (resp.status === 201) {
         closeDeleteModal();
-        setToastShow(true);
+        await getEnterpriseCuration();
+        dispatch(enterpriseCurationActions.setHighlightSetToast(highlightSetUUID));
+        navigate(location.pathname, {
+          state: { archiveCourses: true },
+        });
       }
     } catch (err) {
       closeDeleteModal();
@@ -35,6 +43,7 @@ const DeleteArchivedCoursesDialogs = ({
   return (
     <>
       <ModalDialog
+        title="Archive error modal"
         isOpen={isErrorOpen}
         onClose={closeError}
       >
@@ -58,13 +67,8 @@ const DeleteArchivedCoursesDialogs = ({
           </Hyperlink>
         </ModalDialog.Footer>
       </ModalDialog>
-      <Toast
-        onClose={() => setToastShow(false)}
-        show={toastShow}
-      >
-        Archived courses deleted.
-      </Toast>
       <ModalDialog
+        title="Delete archived courses"
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
         isFullscreenOnMobile

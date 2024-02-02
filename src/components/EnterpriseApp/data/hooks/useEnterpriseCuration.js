@@ -37,6 +37,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
       const response = await EnterpriseCatalogApiService.getEnterpriseCurationConfig(enterpriseId);
       const formattedResponse = camelCaseObject(response.data);
       const result = formattedResponse.results[0];
+      setEnterpriseCuration(result);
       return result;
     } catch (error) {
       logError(error);
@@ -93,6 +94,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
     isLoading,
     enterpriseCuration,
     fetchError,
+    getEnterpriseCuration,
     updateEnterpriseCuration,
   };
 }
