@@ -67,4 +67,12 @@ describe('<ContentHighlights>', () => {
     );
     expect(screen.getByText('highlighted')).toBeInTheDocument();
   });
+  it('Displays the archive toast', () => {
+    renderWithRouter(
+      <ContentHighlightsWrapper
+        location={{ state: { archiveCourses: true } }}
+      />,
+    );
+    expect(screen.getByText('Archived courses deleted')).toBeInTheDocument();
+  });
 });
