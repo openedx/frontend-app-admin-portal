@@ -19,12 +19,12 @@ import { features } from '../../config';
 import DeleteArchivedHighlightsDialogs from './DeleteArchivedHighlightsDialogs';
 
 const ContentHighlightsCardItemsContainer = ({
-  enterpriseId, enterpriseSlug, isLoading, highlightedContent,
+  enterpriseId, enterpriseSlug, isLoading, highlightedContent, updateHighlightSet,
 }) => {
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useToggle(false);
 
   const {
-    HIGHLIGHTS_ARCHIVE_MESSAGING,
+    FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING,
   } = features;
   if (isLoading) {
     return (
@@ -41,7 +41,8 @@ const ContentHighlightsCardItemsContainer = ({
 
   const archivedContent = [];
   const activeContent = [];
-  if (HIGHLIGHTS_ARCHIVE_MESSAGING) {
+
+  if (FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING) {
     for (let i = 0; i < highlightedContent.length; i++) {
       const {
         courseRunStatuses,
@@ -60,8 +61,10 @@ const ContentHighlightsCardItemsContainer = ({
   } else {
     activeContent.push(...highlightedContent);
   }
+  const updateSetWithActiveContent = () => updateHighlightSet(activeContent);
 
   const archivedContentKeys = archivedContent.map(({ contentKey }) => contentKey);
+  const activeContentUuids = activeContent.map(({ uuid }) => uuid);
 
   const trackClickEvent = ({ aggregationKey }) => {
     const trackInfo = {
@@ -107,6 +110,8 @@ const ContentHighlightsCardItemsContainer = ({
             isDeleteModalOpen={isDeleteModalOpen}
             closeDeleteModal={closeDeleteModal}
             archivedContentKeys={archivedContentKeys}
+            activeContentUuids={activeContentUuids}
+            updateSetWithActiveContent={updateSetWithActiveContent}
           />
           <ActionRow>
             <h3 className="m-0">
@@ -166,6 +171,7 @@ ContentHighlightsCardItemsContainer.propTypes = {
     })),
     courseRunStatuses: PropTypes.arrayOf(PropTypes.string),
   })).isRequired,
+  updateHighlightSet: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

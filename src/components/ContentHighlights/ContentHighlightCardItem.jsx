@@ -20,7 +20,7 @@ const ContentHighlightCardItem = ({
   archived,
 }) => {
   const {
-    HIGHLIGHTS_ARCHIVE_MESSAGING,
+    FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING,
   } = features;
   const cardInfo = {
     cardImgSrc: cardImageUrl,
@@ -55,7 +55,7 @@ const ContentHighlightCardItem = ({
       {contentType && (
         <>
           <Card.Section />
-          {HIGHLIGHTS_ARCHIVE_MESSAGING && archived && (
+          {FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING && archived && (
           <p className="ml-3 mb-4 mt-0 d-flex small text-gray-400">
             <Icon src={Archive} className="mr-1" />
             Archived

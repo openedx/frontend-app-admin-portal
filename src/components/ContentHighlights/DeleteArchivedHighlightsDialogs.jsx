@@ -11,14 +11,16 @@ import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurat
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 
 const DeleteArchivedCoursesDialogs = ({
-  isDeleteModalOpen, closeDeleteModal, archivedContentKeys,
+  isDeleteModalOpen, closeDeleteModal, archivedContentKeys, activeContentUuids, updateSetWithActiveContent,
 }) => {
   const { highlightSetUUID } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [isErrorOpen, openError, closeError] = useToggle(false);
   const [deletionState, setDeletionState] = useState('default');
-  const { enterpriseCuration: { getEnterpriseCuration, dispatch } } = useContext(EnterpriseAppContext);
+  const {
+    enterpriseCuration: { dispatch },
+  } = useContext(EnterpriseAppContext);
 
   const handleDeleteArchivedClick = async () => {
     setDeletionState('pending');
@@ -26,8 +28,13 @@ const DeleteArchivedCoursesDialogs = ({
       const resp = await EnterpriseCatalogApiService.deleteHighlightSetContent(highlightSetUUID, archivedContentKeys);
       if (resp.status === 201) {
         closeDeleteModal();
-        await getEnterpriseCuration();
+        const payload = {
+          activeContentUuids,
+          highlightSetUUID,
+        };
+        dispatch(enterpriseCurationActions.updateHighlightSetContentItems(payload));
         dispatch(enterpriseCurationActions.setHighlightSetToast(highlightSetUUID));
+        updateSetWithActiveContent();
         navigate(location.pathname, {
           state: { archiveCourses: true },
         });
@@ -104,6 +111,8 @@ DeleteArchivedCoursesDialogs.propTypes = {
   isDeleteModalOpen: PropTypes.bool.isRequired,
   closeDeleteModal: PropTypes.func.isRequired,
   archivedContentKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  activeContentUuids: PropTypes.arrayOf(PropTypes.string).isRequired,
+  updateSetWithActiveContent: PropTypes.func.isRequired,
 };
 
 export default DeleteArchivedCoursesDialogs;

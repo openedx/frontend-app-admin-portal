@@ -66,7 +66,7 @@ describe('<ContentHighlightCardItem>', () => {
     expect(trackClickEvent).toHaveBeenCalled();
   });
   it('Adds archived subtitle when appropriate', () => {
-    features.HIGHLIGHTS_ARCHIVE_MESSAGING = true;
+    features.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING = true;
     renderWithRouter(<ContentHighlightCardItemContainerWrapper
       isLoading={false}
       title={testHighlightedContent.title}

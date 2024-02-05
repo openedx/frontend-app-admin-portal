@@ -13,6 +13,7 @@ export const DELETE_HIGHLIGHT_SET = 'DELETE_HIGHLIGHT_SET';
 export const ADD_HIGHLIGHT_SET = 'ADD_HIGHLIGHT_SET';
 export const SET_HIGHLIGHT_SET_TOAST_TEXT = 'SET_HIGHLIGHT_SET_TOAST_TEXT';
 export const SET_HIGHLIGHT_TOAST_TEXT = 'SET_HIGHLIGHT_TOAST_TEXT';
+export const UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS = 'UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS';
 
 export const enterpriseCurationActions = {
   setIsLoading: (payload) => ({
@@ -41,6 +42,10 @@ export const enterpriseCurationActions = {
   }),
   addHighlightSet: (payload) => ({
     type: ADD_HIGHLIGHT_SET,
+    payload,
+  }),
+  updateHighlightSetContentItems: (payload) => ({
+    type: UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS,
     payload,
   }),
 };
@@ -99,6 +104,22 @@ function enterpriseCurationReducer(state, action) {
         enterpriseCuration: {
           ...state.enterpriseCuration,
           highlightSets: [action.payload, ...existingHighlightSets],
+        },
+      };
+    }
+    case UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS: {
+      const existingHighlightSets = getHighlightSetsFromState(state);
+      const updatedHighlightSets = existingHighlightSets.map((highlightSet) => {
+        if (highlightSet.uuid === action.payload.highlightSetUUID) {
+          return { ...highlightSet, highlightedContentUuids: action.payload.activeContentUuids };
+        }
+        return highlightSet;
+      });
+      return {
+        ...state,
+        enterpriseCuration: {
+          ...state.enterpriseCuration,
+          highlightSets: updatedHighlightSets,
         },
       };
     }

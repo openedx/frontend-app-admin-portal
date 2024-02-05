@@ -10,6 +10,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
 import { features } from '../../../config';
@@ -25,6 +26,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
+const mockDispatchFn = jest.fn();
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    dispatch: mockDispatchFn,
+  },
+};
+
 const testHighlightSet = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent;
 const initialState = {
   portalConfiguration: {
@@ -32,10 +40,15 @@ const initialState = {
   },
 };
 
-const ContentHighlightsCardItemsContainerWrapper = (props) => (
+const ContentHighlightsCardItemsContainerWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  ...props
+}) => (
   <IntlProvider locale="en">
     <Provider store={mockStore(initialState)}>
-      <ContentHighlightsCardItemsContainer {...props} />
+      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+        <ContentHighlightsCardItemsContainer {...props} />
+      </EnterpriseAppContext.Provider>
     </Provider>
   </IntlProvider>
 );
@@ -53,7 +66,7 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
   };
 
   beforeEach(() => {
-    features.HIGHLIGHTS_ARCHIVE_MESSAGING = true;
+    features.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING = true;
     jest.resetAllMocks();
   });
 

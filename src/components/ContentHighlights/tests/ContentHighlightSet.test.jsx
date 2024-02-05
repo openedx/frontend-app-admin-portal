@@ -89,6 +89,7 @@ describe('<ContentHighlightSet>', () => {
       isLoading: true,
       error: null,
       highlightSet: [],
+      updateHighlightSet: expect.any(Function),
     });
 
     await waitForNextUpdate();
@@ -96,6 +97,7 @@ describe('<ContentHighlightSet>', () => {
       isLoading: false,
       error: null,
       highlightSet: camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA),
+      updateHighlightSet: expect.any(Function),
     });
     expect(
       EnterpriseCatalogApiService.fetchHighlightSet,

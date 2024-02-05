@@ -9,6 +9,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import userEvent from '@testing-library/user-event';
+import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import ContentHighlightsCardItemsContainer from '../ContentHighlightsCardItemsContainer';
 import { DEFAULT_ERROR_MESSAGE, TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import { features } from '../../../config';
@@ -23,6 +24,13 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
+const mockDispatchFn = jest.fn();
+const initialEnterpriseAppContextValue = {
+  enterpriseCuration: {
+    dispatch: mockDispatchFn,
+  },
+};
+
 const testHighlightSet = camelCaseObject(TEST_COURSE_HIGHLIGHTS_DATA)[0]?.highlightedContent;
 const initialState = {
   portalConfiguration: {
@@ -30,10 +38,15 @@ const initialState = {
   },
 };
 
-const ContentHighlightsCardItemsContainerWrapper = (props) => (
+const ContentHighlightsCardItemsContainerWrapper = ({
+  enterpriseAppContextValue = initialEnterpriseAppContextValue,
+  ...props
+}) => (
   <IntlProvider locale="en">
     <Provider store={mockStore(initialState)}>
-      <ContentHighlightsCardItemsContainer {...props} />
+      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+        <ContentHighlightsCardItemsContainer {...props} />
+      </EnterpriseAppContext.Provider>
     </Provider>
   </IntlProvider>
 );
@@ -98,16 +111,15 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
   it('shows archived content subheader', () => {
-    features.HIGHLIGHTS_ARCHIVE_MESSAGING = true;
+    features.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING = true;
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
-    screen.debug();
     expect(screen.getByText('Delete archived courses')).toBeInTheDocument();
   });
   it('does not show archived content subheader', () => {
-    features.HIGHLIGHTS_ARCHIVE_MESSAGING = false;
+    features.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING = false;
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}
       highlightedContent={testHighlightSet}
