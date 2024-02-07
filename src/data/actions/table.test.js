@@ -211,6 +211,7 @@ describe('actions', () => {
       const defaultQueryParams = new URLSearchParams({
         page: 1,
         page_size: 50,
+        audit_enrollments: false,
         search: 'test3@edx.org',
       });
       const params = `?${defaultQueryParams.toString()}`;
@@ -254,6 +255,7 @@ describe('actions', () => {
       const defaultQueryParams = new URLSearchParams({
         page: 1,
         page_size: 50,
+        audit_enrollments: false,
         search: 'test3@edx.org',
       });
       const params = `?${defaultQueryParams.toString()}`;
