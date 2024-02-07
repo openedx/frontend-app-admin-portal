@@ -94,7 +94,6 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
     isLoading,
     enterpriseCuration,
     fetchError,
-    getEnterpriseCuration,
     updateEnterpriseCuration,
   };
 }

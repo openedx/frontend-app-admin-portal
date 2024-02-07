@@ -51,12 +51,12 @@ export function useHighlightSet(highlightSetUUID) {
     }
   }, [highlightSetUUID]);
 
-  const updateHighlightSet = useCallback((highlightSetContentItems) => {
+  const updateHighlightSet = (highlightSetContentItems) => {
     setHighlightSet((prevHighlightSet) => ({
       ...prevHighlightSet,
       highlightedContent: highlightSetContentItems,
     }));
-  }, []);
+  };
 
   useEffect(() => {
     getHighlightSet();

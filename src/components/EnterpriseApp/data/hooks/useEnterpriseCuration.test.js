@@ -40,7 +40,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: null,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -61,7 +60,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: null,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -82,7 +80,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: true,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: null,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -99,7 +96,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -142,7 +138,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: updatedEnterpriseCuration,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -168,7 +163,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: true,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: null,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -185,7 +179,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -204,7 +197,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: true,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: null,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -218,7 +210,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: mockErrorMessage,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: null,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -243,7 +234,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: true,
         fetchError: null,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: null,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -257,7 +247,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: mockErrorMessage,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: undefined,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -294,7 +283,6 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: mockErrorMessage,
-        getEnterpriseCuration: expect.any(Function),
         enterpriseCuration: undefined,
         updateEnterpriseCuration: expect.any(Function),
       });
