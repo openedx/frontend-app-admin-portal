@@ -24,6 +24,15 @@ const ContentHighlights = ({ location }) => {
       delete newState.highlightToast;
       navigate(location.pathname, { ...location, state: newState, replace: true });
     }
+    if (locationState?.archiveCourses) {
+      setToasts((prevState) => [...prevState, {
+        toastText: 'Archived courses deleted',
+        uuid: uuidv4(),
+      }]);
+      const newState = { ...locationState };
+      delete newState.archiveCourses;
+      navigate(location.pathname, { ...location, state: newState, replace: true });
+    }
     if (locationState?.deletedHighlightSet) {
       setToasts((prevState) => [...prevState, {
         toastText: `"${enterpriseCuration?.toastText}" deleted`,
@@ -58,6 +67,7 @@ ContentHighlights.propTypes = {
     state: PropTypes.shape({
       addHighlightSet: PropTypes.bool,
       deletedHighlightSet: PropTypes.bool,
+      archiveCourses: PropTypes.bool,
       highlightToast: PropTypes.bool,
     }),
   }),
