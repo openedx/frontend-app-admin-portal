@@ -183,7 +183,7 @@ function enterpriseCurationReducer(state, action) {
       return {
         ...state,
         isNewArchivedContent: action.payload,
-      }
+      };
     }
     case UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS: {
       const existingHighlightSets = getHighlightSetsFromState(state);
