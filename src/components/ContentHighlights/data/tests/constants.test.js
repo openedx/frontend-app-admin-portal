@@ -33,7 +33,7 @@ describe('constants', () => {
   });
   it('renders title name in string functions', () => {
     const highlightTitle = 'test-title';
-    // eslint-disable-next-line react/prop-types
+
     const TestComponent = ({ children }) => (
       <p>
         {children}

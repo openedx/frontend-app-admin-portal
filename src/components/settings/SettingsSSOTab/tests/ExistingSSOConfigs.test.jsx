@@ -1,5 +1,10 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
@@ -104,12 +109,15 @@ describe('<ExistingSSOConfigs />', () => {
     );
     expect(screen.getByText('nacho cheese')).toBeInTheDocument();
     expect(screen.getByText('Inactive')).toBeInTheDocument();
-
-    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${inactiveConfig[0].id}`));
+    act(() => {
+      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${inactiveConfig[0].id}`));
+    });
     expect(screen.getByText('Enable')).toBeInTheDocument();
     expect(screen.getByText('Edit')).toBeInTheDocument();
 
-    userEvent.click(screen.getByText('Enable'));
+    act(() => {
+      userEvent.click(screen.getByText('Enable'));
+    });
     const data = new FormData();
     data.append('enabled', true);
     data.append('enterprise_customer_uuid', enterpriseId);
@@ -129,7 +137,9 @@ describe('<ExistingSSOConfigs />', () => {
     );
     expect(screen.getByText('bbq')).toBeInTheDocument();
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
-    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    act(() => {
+      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    });
     await waitFor(() => {
       expect(screen.getByText('Delete')).toBeInTheDocument();
       expect(screen.getByText('Edit')).toBeInTheDocument();
@@ -162,8 +172,12 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    userEvent.click(screen.getByText('Delete'));
+    act(() => {
+      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    });
+    act(() => {
+      userEvent.click(screen.getByText('Delete'));
+    });
     expect(LmsApiService.deleteProviderConfig).toHaveBeenCalledWith(incompleteConfig[0].id, enterpriseId);
   });
   it('properly handles errors when deleting provider data', () => {
@@ -182,8 +196,12 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    userEvent.click(screen.getByText('Delete'));
+    act(() => {
+      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    });
+    act(() => {
+      userEvent.click(screen.getByText('Delete'));
+    });
     expect(handleErrors).toHaveBeenCalled();
   });
   it('properly handles errors when deleting provider configs', () => {
@@ -202,8 +220,12 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    userEvent.click(screen.getByText('Delete'));
+    act(() => {
+      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    });
+    act(() => {
+      userEvent.click(screen.getByText('Delete'));
+    });
     expect(handleErrors).toHaveBeenCalled();
   });
   it('properly displays error message when deleting provider configs', async () => {
@@ -223,8 +245,12 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    userEvent.click(screen.getByText('Delete'));
+    act(() => {
+      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    });
+    act(() => {
+      userEvent.click(screen.getByText('Delete'));
+    });
     await waitFor(() => {
       expect(screen.getByText(
         'We were unable to delete your configuration. Please try removing again or contact support for help.',

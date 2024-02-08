@@ -7,19 +7,20 @@ import ErrorPage from '../ErrorPage';
 import PlotlyAnalyticsApiService from './data/service';
 import { configuration } from '../../config';
 
-const PlotlyAnalyticsCharts = ({ enterpriseId }) => {
+const PlotlyAnalyticsCharts = ({ enterpriseId, enableDemoData }) => {
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const enterpriseUUID = enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
 
   const refreshPlotlyToken = async () => {
-    const response = await PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseId });
+    const response = await PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseUUID });
     return response.data.token;
   };
 
   useEffect(() => {
     setIsLoading(true);
-    PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseId })
+    PlotlyAnalyticsApiService.fetchPlotlyToken({ enterpriseUUID })
       .then((response) => {
         setToken(response.data.token);
         setIsLoading(false);
@@ -56,6 +57,7 @@ const PlotlyAnalyticsCharts = ({ enterpriseId }) => {
 
 PlotlyAnalyticsCharts.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  enableDemoData: PropTypes.bool.isRequired,
 };
 
 export default PlotlyAnalyticsCharts;

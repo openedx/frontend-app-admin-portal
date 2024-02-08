@@ -1,10 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/prefer-default-export */
 import React from 'react';
-import { Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render } from '@testing-library/react';
+import { render, screen as rtlScreen } from '@testing-library/react';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
+import { queryCacheOnErrorHandler } from '../../utils';
 
+// TODO: this could likely be replaced by `renderWithRouter` from `@edx/frontend-enterprise-utils`.
 export function renderWithRouter(
   ui,
   {
@@ -29,4 +31,30 @@ export function renderWithRouter(
 export function findElementWithText(container, type, text) {
   const elements = container.querySelectorAll(type);
   return [...elements].find((elem) => elem.innerHTML.includes(text));
+}
+
+export const getButtonElement = (buttonText, options = {}) => {
+  const {
+    screenOverride,
+    isQueryByRole,
+  } = options;
+  const screen = screenOverride || rtlScreen;
+  if (isQueryByRole) {
+    return screen.queryByRole('button', { name: buttonText });
+  }
+  return screen.getByRole('button', { name: buttonText });
+};
+
+export function queryClient(options = {}) {
+  return new QueryClient({
+    queryCache: new QueryCache({
+      onError: queryCacheOnErrorHandler,
+    }),
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+      ...options,
+    },
+  });
 }

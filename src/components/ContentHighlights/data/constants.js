@@ -14,8 +14,8 @@ export const sanitizeAndParseHTML = (htmlString) => {
 // Set to false before pushing PR!! otherwise set to true to enable local testing of ContentHighlights components
 // Test will fail as additional check to ensure this is set to false before pushing PR
 export const TEST_FLAG = false;
-// Test entepriseId for Content Highlights to display card selections and confirmation
-export const testEnterpriseId = 'f23ccd7d-fbbb-411a-824e-c2861942aac0';
+// Test enterpriseId for Content Highlights to display card selections and confirmation
+export const testEnterpriseId = '943b1234-58cf-4376-b8e0-0efcbf4bfdf9';
 // function that passes through enterpriseId if TEST_FLAG is false, otherwise returns local testing enterpriseId
 export const ENABLE_TESTING = (enterpriseId, enableTest = TEST_FLAG) => {
   if (enableTest) {
@@ -42,11 +42,11 @@ export const TAB_TITLES = {
 // Max length of highlight title in stepper
 export const MAX_HIGHLIGHT_TITLE_LENGTH = 60;
 
-// Max highlight sets per enteprise curation
-export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 8;
+// Max highlight sets per enterprise curation
+export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 12;
 
 // Max number of content items per highlight set
-export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 12;
+export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 24;
 
 // Max number of content items displayed from search results
 export const MAX_PAGE_SIZE = 24;
@@ -140,6 +140,12 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
   learnerpathway: 'Pathway',
 };
 
+// Course run statuses for ContentHighlightCardItem
+export const COURSE_RUN_STATUSES = {
+  archived: 'archived',
+  published: 'published',
+};
+
 export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
   ALL_CONTENT: {
     value: 'ALL_CONTENT',
@@ -188,6 +194,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         content_key: 'edX+DemoX',
         title: 'Math',
         card_image_url: 'https://picsum.photos/360/200',
+        course_run_statuses: [COURSE_RUN_STATUSES.archived],
         authoring_organizations:
         [
           {
@@ -208,6 +215,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         uuid: faker.datatype.uuid(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
+        course_run_statuses: [COURSE_RUN_STATUSES.published],
         authoring_organizations:
         [
           {
@@ -223,6 +231,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         uuid: faker.datatype.uuid(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
+        course_run_statuses: null,
         authoring_organizations:
         [
           {

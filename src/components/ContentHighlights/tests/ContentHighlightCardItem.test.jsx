@@ -11,6 +11,7 @@ import userEvent from '@testing-library/user-event';
 import ContentHighlightCardItem from '../ContentHighlightCardItem';
 import { TEST_COURSE_HIGHLIGHTS_DATA } from '../data/constants';
 import { generateAboutPageUrl } from '../data/utils';
+import { features } from '../../../config';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -63,5 +64,16 @@ describe('<ContentHighlightCardItem>', () => {
     expect(hyperlink.href).toContain(`${initialState.portalConfiguration.enterpriseSlug}/${testHighlightedContent.contentType.toLowerCase()}/${testHighlightedContent.contentKey}`);
     userEvent.click(hyperlink);
     expect(trackClickEvent).toHaveBeenCalled();
+  });
+  it('Adds archived subtitle when appropriate', () => {
+    features.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING = true;
+    renderWithRouter(<ContentHighlightCardItemContainerWrapper
+      isLoading={false}
+      title={testHighlightedContent.title}
+      contentType={testHighlightedContent.contentType.toLowerCase()}
+      partners={testHighlightedContent.authoringOrganizations}
+      archived
+    />);
+    expect(screen.getByText('Archived')).toBeInTheDocument();
   });
 });

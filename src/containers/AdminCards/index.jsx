@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import AdminCards from '../../components/Admin/AdminCards';
 
@@ -10,4 +9,4 @@ const mapStateToProps = state => ({
   courseCompletions: state.dashboardAnalytics.course_completions,
 });
 
-export default withRouter(connect(mapStateToProps)(AdminCards));
+export default connect(mapStateToProps)(AdminCards);

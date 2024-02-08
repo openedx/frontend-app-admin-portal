@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  render,
   screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -8,10 +9,28 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { renderWithRouter } from '../../test/testUtils';
+import {
+  MemoryRouter, Route, Routes, mockNavigate,
+} from 'react-router-dom';
 import { SubscriptionContext } from '../SubscriptionData';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import MultipleSubscriptionsPage from '../MultipleSubscriptionsPage';
+
+jest.mock('react-router-dom', () => {
+  const mockNavigation = jest.fn();
+
+  // eslint-disable-next-line react/prop-types
+  const Navigate = ({ to }) => {
+    mockNavigation(to);
+    return <div />;
+  };
+
+  return {
+    ...jest.requireActual('react-router-dom'),
+    Navigate,
+    mockNavigate: mockNavigation,
+  };
+});
 
 const fakeSlug = 'sluggo';
 const defaultProps = {
@@ -63,31 +82,32 @@ const defaultSubscriptions = {
 
 const mockStore = configureMockStore([thunk]);
 
-// eslint-disable-next-line react/prop-types
 const MultipleSubscriptionsPageWrapper = ({ subscriptions = defaultSubscriptions, ...props }) => (
   <Provider store={mockStore(fakeStore)}>
     <IntlProvider locale="en">
       <SubscriptionContext.Provider value={subscriptions}>
-        <MultipleSubscriptionsPage {...props} />
+        <MemoryRouter initialEntries={[`/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`]}>
+          <Routes>
+            <Route path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`} element={<MultipleSubscriptionsPage {...props} />} />
+          </Routes>
+        </MemoryRouter>
       </SubscriptionContext.Provider>
     </IntlProvider>
   </Provider>
 );
 
 describe('MultipleSubscriptionsPage', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('displays the MultipleSubscriptionPicker when there are multiple subscriptions', () => {
-    renderWithRouter(<MultipleSubscriptionsPageWrapper {...defaultProps} />, {
-      route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-      path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
-    });
+    render(<MultipleSubscriptionsPageWrapper {...defaultProps} />);
     expect(screen.getByText('Plans')).toBeInTheDocument();
   });
   it('returns null if there are no subscriptions', () => {
     const subscriptions = { data: { results: [] } };
-    renderWithRouter(<MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} />, {
-      route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-      path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
-    });
+    render(<MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} />);
     expect(screen.queryByText('Plans')).not.toBeInTheDocument();
   });
   it('redirects if there is only one subscription, default redirectPage', () => {
@@ -106,14 +126,8 @@ describe('MultipleSubscriptionsPage', () => {
         }],
       },
     };
-    const { history } = renderWithRouter(
-      <MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} />,
-      {
-        route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-        path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
-      },
-    );
-    expect(history.location.pathname).toEqual(`/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subsUuid}`);
+    render(<MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} />);
+    expect(mockNavigate).toHaveBeenLastCalledWith(`/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${subsUuid}`);
   });
   it('redirects if there is only one subscription, custom redirect page', () => {
     const redirectPage = 'bulkenrollment';
@@ -132,13 +146,9 @@ describe('MultipleSubscriptionsPage', () => {
         }],
       },
     };
-    const { history } = renderWithRouter(
+    render(
       <MultipleSubscriptionsPageWrapper subscriptions={subscriptions} {...defaultProps} redirectPage={redirectPage} />,
-      {
-        route: `/${fakeSlug}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-        path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
-      },
     );
-    expect(history.location.pathname).toEqual(`/${fakeSlug}/admin/${redirectPage}/${subsUuid}`);
+    expect(mockNavigate).toHaveBeenCalledWith(`/${fakeSlug}/admin/${redirectPage}/${subsUuid}`);
   });
 });

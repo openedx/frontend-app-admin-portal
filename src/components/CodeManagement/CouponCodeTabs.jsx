@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from '@edx/paragon';
 import {
-  useHistory,
+  useNavigate,
   Route,
+  Routes,
   useParams,
 } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ import {
   COUPON_CODE_TAB_PARAM,
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
+import NotFoundPage from '../NotFoundPage';
 
 const CouponCodeTabs = ({ enterpriseSlug }) => {
   const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
@@ -38,7 +40,7 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
     );
   }
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams();
   const couponCodesTab = params[COUPON_CODE_TAB_PARAM];
 
@@ -48,9 +50,9 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
   };
   const handleTabSelect = (key) => {
     if (key === MANAGE_REQUESTS_TAB) {
-      history.push(routesByTabKey[MANAGE_REQUESTS_TAB]);
+      navigate(routesByTabKey[MANAGE_REQUESTS_TAB]);
     } else if (key === MANAGE_CODES_TAB) {
-      history.push(routesByTabKey[MANAGE_CODES_TAB]);
+      navigate(routesByTabKey[MANAGE_CODES_TAB]);
     }
   };
 
@@ -64,11 +66,12 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
         className="pt-4"
       >
         {COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB] === couponCodesTab && (
-          <Route
-            path={`/:enterpriseSlug/admin/${ROUTE_NAMES.codeManagement}/${MANAGE_CODES_TAB}`}
-            component={ManageCodesTab}
-            exact
-          />
+          <Routes>
+            <Route
+              path="/"
+              element={<ManageCodesTab />}
+            />
+          </Routes>
         )}
       </Tab>,
     );
@@ -82,17 +85,23 @@ const CouponCodeTabs = ({ enterpriseSlug }) => {
           notification={requestsTabNotification}
         >
           {COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB] === couponCodesTab && (
-            <Route
-              path={`/:enterpriseSlug/admin/${ROUTE_NAMES.codeManagement}/${MANAGE_REQUESTS_TAB}`}
-              component={ManageRequestsTab}
-              exact
-            />
+            <Routes>
+              <Route
+                path="/"
+                element={<ManageRequestsTab />}
+              />
+            </Routes>
           )}
         </Tab>,
       );
     }
     return tabs;
   }, [couponCodesTab, isRequestsTabShown, requestsTabNotification]);
+
+  if (COUPON_CODE_TABS_VALUES[MANAGE_REQUESTS_TAB] !== couponCodesTab
+    && COUPON_CODE_TABS_VALUES[MANAGE_CODES_TAB] !== couponCodesTab) {
+    return <NotFoundPage />;
+  }
 
   return (
     <Tabs

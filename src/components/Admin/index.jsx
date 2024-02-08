@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { Alert, Icon } from '@edx/paragon';
 import { Error, Undo } from '@edx/paragon/icons';
 import { Link } from 'react-router-dom';
@@ -24,12 +24,16 @@ import { formatTimestamp } from '../../utils';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
+import { withLocation, withParams } from '../../hoc';
+import AIAnalyticsSummary from './AIAnalyticsSummary';
+import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
 
 class Admin extends React.Component {
   componentDidMount() {
     const { enterpriseId } = this.props;
     if (enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardInsights(enterpriseId);
     }
   }
 
@@ -37,12 +41,14 @@ class Admin extends React.Component {
     const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
+      this.props.fetchDashboardInsights(enterpriseId);
     }
   }
 
   componentWillUnmount() {
     // Clear the overview data
     this.props.clearDashboardAnalytics();
+    this.props.clearDashboardInsights();
   }
 
   getMetadataForAction(actionSlug) {
@@ -168,7 +174,7 @@ class Admin extends React.Component {
   }
 
   displaySearchBar() {
-    return !this.props.match.params.actionSlug;
+    return !this.props.actionSlug;
   }
 
   isTableDataMissing(id) {
@@ -204,8 +210,7 @@ class Admin extends React.Component {
   }
 
   renderDownloadButton() {
-    const { match } = this.props;
-    const { params: { actionSlug } } = match;
+    const { actionSlug } = this.props;
     const tableMetadata = this.getMetadataForAction(actionSlug);
     return (
       <DownloadCsvButton
@@ -218,7 +223,7 @@ class Admin extends React.Component {
   }
 
   renderUrlResetButton() {
-    const { match: { url } } = this.props;
+    const url = this.props.location.pathname;
 
     // Remove the slug from the url so it renders the full report
     const path = url.split('/').slice(0, -1).join('/');
@@ -279,11 +284,11 @@ class Admin extends React.Component {
       lastUpdatedDate,
       loading,
       enterpriseId,
-      match,
+      actionSlug,
       location: { search },
+      insights,
+      insightsLoading,
     } = this.props;
-
-    const { params: { actionSlug } } = match;
 
     const queryParams = new URLSearchParams(search || '');
     const queryParamsLength = Array.from(queryParams.entries()).length;
@@ -307,6 +312,13 @@ class Admin extends React.Component {
               <div className="row mt-4">
                 <div className="col">
                   <h2>Overview</h2>
+                </div>
+              </div>
+              <div className="row mt-4">
+                <div className="col">
+                  {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
+                    insights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                  )}
                 </div>
               </div>
               <div className="row mt-3">
@@ -402,11 +414,15 @@ Admin.defaultProps = {
   },
   csv: null,
   table: null,
+  insightsLoading: false,
+  insights: null,
 };
 
 Admin.propTypes = {
   fetchDashboardAnalytics: PropTypes.func.isRequired,
   clearDashboardAnalytics: PropTypes.func.isRequired,
+  fetchDashboardInsights: PropTypes.func.isRequired,
+  clearDashboardInsights: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
@@ -424,13 +440,10 @@ Admin.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   csv: PropTypes.shape({}),
-  match: PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      actionSlug: PropTypes.string,
-    }).isRequired,
-  }).isRequired,
+  actionSlug: PropTypes.string,
   table: PropTypes.shape({}),
+  insightsLoading: PropTypes.bool,
+  insights: PropTypes.objectOf(PropTypes.shape),
 };
 
-export default Admin;
+export default withParams(withLocation(Admin));

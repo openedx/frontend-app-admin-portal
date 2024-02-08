@@ -85,7 +85,6 @@ const bulkEnrollWithCoursesSelectedRows = {
   courses: [selectedCourses, coursesDispatch],
 };
 
-// eslint-disable-next-line react/prop-types
 const BulkEnrollmentSubmitWrapper = ({ bulkEnrollInfo = defaultBulkEnrollInfo, ...props }) => (
   <IntlProvider locale="en">
     <BulkEnrollContext.Provider value={bulkEnrollInfo}>

@@ -1,13 +1,14 @@
 // ... Any custom SCSS variables should be defined here
 $modal-max-width: 650px;
 
+// Paragon/Brand
 @import "~@edx/brand/paragon/fonts";
 @import "~@edx/brand/paragon/variables";
 @import "~@edx/paragon/scss/core/core";
 @import "~@edx/frontend-enterprise-catalog-search";
 @import "~@edx/brand/paragon/overrides";
 
-
+// Components
 @import "./components/EnterpriseApp/EnterpriseApp";
 @import "./components/CodeSearchResults/CodeSearchResults";
 @import "./components/Coupon/Coupon";
@@ -24,7 +25,9 @@ $modal-max-width: 650px;
 @import "./components/BulkEnrollmentPage/BulkEnrollment";
 @import "./components/Admin/Admin";
 @import "./components/settings/settings";
+@import "./components/learner-credit-management/styles";
 
+// Global
 body {
   overflow-x: hidden;
 }
@@ -71,4 +74,8 @@ form {
   .modal-dialog {
     max-width: $modal-max-width;
   }
+}
+
+.stepper-modal .pgn__modal-header {
+  border-bottom: solid 7px;
 }

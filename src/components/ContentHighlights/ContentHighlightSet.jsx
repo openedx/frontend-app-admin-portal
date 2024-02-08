@@ -7,11 +7,15 @@ import { useHighlightSet } from './data/hooks';
 
 const ContentHighlightSet = () => {
   const { highlightSetUUID } = useParams();
-  const { highlightSet, isLoading } = useHighlightSet(highlightSetUUID);
+  const { highlightSet, isLoading, updateHighlightSet } = useHighlightSet(highlightSetUUID);
   return (
     <Container className="mt-5">
       <CurrentContentHighlightItemsHeader isLoading={isLoading} highlightTitle={highlightSet?.title} />
-      <ContentHighlightsCardItemContainer isLoading={isLoading} highlightedContent={highlightSet?.highlightedContent} />
+      <ContentHighlightsCardItemContainer
+        isLoading={isLoading}
+        highlightedContent={highlightSet?.highlightedContent}
+        updateHighlightSet={updateHighlightSet}
+      />
     </Container>
   );
 };

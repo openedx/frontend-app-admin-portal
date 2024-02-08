@@ -2,16 +2,16 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import dayjs from 'dayjs';
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import {
   TEST_ENTERPRISE_CUSTOMER_SLUG, createMockStore,
 } from './TestUtilities';
 import SubscriptionManagementPage from '../SubscriptionManagementPage';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
-import { renderWithRouter } from '../../test/testUtils';
 import * as hooks from '../data/hooks';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { SUBSIDY_REQUESTS_TYPES } from '../../SubsidyRequestManagementTable/data/constants';
@@ -78,7 +78,14 @@ describe('SubscriptionManagementPage', () => {
         <Provider store={mockStore}>
           <IntlProvider locale="en">
             <SubsidyRequestsContext.Provider value={subsidyRequestsState}>
-              <SubscriptionManagementPage />
+              <MemoryRouter initialEntries={[`/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`]}>
+                <Routes>
+                  <Route
+                    path={`/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}/*`}
+                    element={<SubscriptionManagementPage />}
+                  />
+                </Routes>
+              </MemoryRouter>
             </SubsidyRequestsContext.Provider>
           </IntlProvider>
         </Provider>
@@ -86,10 +93,7 @@ describe('SubscriptionManagementPage', () => {
     };
 
     it('renders the correct button text on subscription cards', async () => {
-      renderWithRouter(<SubscriptionManagementPageWrapper />, {
-        route: `/${TEST_ENTERPRISE_CUSTOMER_SLUG}/admin/${ROUTE_NAMES.subscriptionManagement}`,
-        path: `/:enterpriseSlug/admin/${ROUTE_NAMES.subscriptionManagement}`,
-      });
+      render(<SubscriptionManagementPageWrapper />);
       expect(screen.getByText('Manage learners'));
       expect(screen.getByText('View learners'));
     });

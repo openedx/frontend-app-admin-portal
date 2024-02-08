@@ -6,33 +6,42 @@ import {
   Col,
 } from '@edx/paragon';
 
-import BudgetCard from './BudgetCard-V2';
+import BudgetCard from './BudgetCard';
+import { orderBudgets } from './data/utils';
 
 const MultipleBudgetsPicker = ({
-  offers,
+  budgets,
   enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
-}) => (
-  <Stack>
-    <Row>
-      <Col lg="10">
-        {offers.map(offer => (
-          <BudgetCard
-            key={offer.id}
-            offer={offer}
-            enterpriseUUID={enterpriseUUID}
-            enterpriseSlug={enterpriseSlug}
-            enableLearnerPortal={enableLearnerPortal}
-          />
-        ))}
-      </Col>
-    </Row>
-  </Stack>
-);
+}) => {
+  const orderedBudgets = orderBudgets(budgets);
+  return (
+    <Stack gap={4}>
+      <Row>
+        <Col lg="12"><h2>Budgets</h2></Col>
+      </Row>
+      <Row>
+        <Col lg="12">
+          <Stack gap={4}>
+            {orderedBudgets.map(budget => (
+              <BudgetCard
+                key={budget.id}
+                budget={budget}
+                enterpriseUUID={enterpriseUUID}
+                enterpriseSlug={enterpriseSlug}
+                enableLearnerPortal={enableLearnerPortal}
+              />
+            ))}
+          </Stack>
+        </Col>
+      </Row>
+    </Stack>
+  );
+};
 
 MultipleBudgetsPicker.propTypes = {
-  offers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  budgets: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,

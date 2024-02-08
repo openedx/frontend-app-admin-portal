@@ -1,9 +1,12 @@
 import React from 'react';
-import Truncate from 'react-truncate';
 import PropTypes from 'prop-types';
-import { Card, Hyperlink } from '@edx/paragon';
+import {
+  Card, Hyperlink, Icon, Truncate,
+} from '@edx/paragon';
+import { Archive } from '@edx/paragon/icons';
 import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
+import { features } from '../../config';
 import { getContentHighlightCardFooter } from './data/utils';
 
 const ContentHighlightCardItem = ({
@@ -14,7 +17,11 @@ const ContentHighlightCardItem = ({
   partners,
   cardImageUrl,
   price,
+  archived,
 }) => {
+  const {
+    FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING,
+  } = features;
   const cardInfo = {
     cardImgSrc: cardImageUrl,
     cardLogoSrc: partners.length === 1 ? partners[0].logoImageUrl : undefined,
@@ -26,7 +33,7 @@ const ContentHighlightCardItem = ({
   if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
       <Hyperlink onClick={hyperlinkAttrs.onClick} destination={hyperlinkAttrs.href} target={hyperlinkAttrs.target} data-testid="hyperlink-title">
-        <Truncate lines={3} title={title}>{title}</Truncate>
+        <Truncate elementType="span" lines={3} title={title}>{title}</Truncate>
       </Hyperlink>
     );
   }
@@ -41,11 +48,19 @@ const ContentHighlightCardItem = ({
       />
       <Card.Header
         title={cardInfo.cardTitle}
-        subtitle={<Truncate lines={2} title={cardInfo.cardSubtitle}>{cardInfo.cardSubtitle}</Truncate>}
+        subtitle={(
+          <Truncate lines={2} title={cardInfo.cardSubtitle}>{cardInfo.cardSubtitle}</Truncate>
+        )}
       />
       {contentType && (
         <>
           <Card.Section />
+          {FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING && archived && (
+          <p className="ml-3 mb-4 mt-0 d-flex small text-gray-400">
+            <Icon src={Archive} className="mr-1" />
+            Archived
+          </p>
+          )}
           <Card.Footer
             textElement={cardInfo.cardFooter}
           />
@@ -71,6 +86,7 @@ ContentHighlightCardItem.propTypes = {
     logoImageUrl: PropTypes.string,
   })).isRequired,
   price: PropTypes.number,
+  archived: PropTypes.bool,
 };
 
 ContentHighlightCardItem.defaultProps = {
@@ -78,6 +94,7 @@ ContentHighlightCardItem.defaultProps = {
   hyperlinkAttrs: undefined,
   cardImageUrl: undefined,
   price: undefined,
+  archived: false,
 };
 
 export default ContentHighlightCardItem;

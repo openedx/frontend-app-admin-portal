@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Redirect } from 'react-router-dom';
+import { MemoryRouter, mockNavigate } from 'react-router-dom';
 import { mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -13,6 +13,24 @@ import TableContainer from '../../containers/TableContainer';
 import LoadingMessage from '../LoadingMessage';
 
 import LmsApiServices from '../../data/services/LmsApiService';
+
+const mockedNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+  const mockNavigation = jest.fn();
+
+  // eslint-disable-next-line react/prop-types
+  const Navigate = ({ to }) => {
+    mockNavigation(to);
+    return <div />;
+  };
+
+  return {
+    ...jest.requireActual('react-router-dom'),
+    Navigate,
+    mockNavigate: mockNavigation,
+    useNavigate: () => mockedNavigate,
+  };
+});
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -35,7 +53,6 @@ const store = mockStore({
   },
 });
 
-// eslint-disable-next-line react/prop-types
 const EnterpriseListWrapper = ({ initialEntries, ...rest }) => (
   <MemoryRouter initialEntries={initialEntries}>
     <Provider store={store}>
@@ -160,8 +177,7 @@ describe('<EnterpriseList />', () => {
           </Provider>
         </MemoryRouter>
       ));
-      const expectedRedirect = <Redirect to="/enterprise-99/admin/learners" />;
-      expect(wrapper.containsMatchingElement(expectedRedirect)).toEqual(true);
+      expect(mockNavigate).toHaveBeenCalledWith('/enterprise-99/admin/learners');
     });
   });
 
@@ -192,8 +208,7 @@ describe('<EnterpriseList />', () => {
       ));
 
       submitSearch('Enterprise 1');
-      const queryParams = new URLSearchParams(window.location.search);
-      expect(queryParams.get('search')).toEqual('Enterprise 1');
+      expect(mockedNavigate).toHaveBeenCalledWith({ pathname: '/', search: 'search=Enterprise+1' });
     });
 
     it('search querystring clears onClear', () => {

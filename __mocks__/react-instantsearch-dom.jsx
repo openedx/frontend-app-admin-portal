@@ -12,11 +12,16 @@ const advertised_course_run = {
   start: '2020-09-09T04:00:00Z',
   key: 'course-v1:edX+Bee101+3T2020',
 };
+const mockNormalizedData = {
+  start_date: '2020-09-09T04:00:00Z',
+  end_date: '2021-09-09T04:00:00Z',
+  enroll_by_date: '2020-09-15T04:00:00Z',
+};
 
 /* eslint-disable camelcase */
 const fakeHits = [
-  { objectID: '1', aggregation_key: 'course:Bees101', title: 'bla', advertised_course_run, key: 'Bees101' },
-  { objectID: '2', aggregation_key: 'course:Wasps200', title: 'blp', advertised_course_run, key: 'Wasps200' },
+  { objectID: '1', aggregation_key: 'course:Bees101', title: 'bla', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Bees101', normalized_metadata: mockNormalizedData },
+  { objectID: '2', aggregation_key: 'course:Wasps200', title: 'blp', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Wasps200', normalized_metadata: mockNormalizedData },
 ];
 /* eslint-enable camelcase */
 

@@ -88,6 +88,16 @@ class EcommerceApiService {
     return EcommerceApiService.apiClient().post(url, options);
   }
 
+  static fetchEnterpriseOffer(budgetId, options) {
+    const { enterpriseId } = store.getState().portalConfiguration;
+    let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/${enterpriseId}/enterprise-admin-offers/${budgetId}/`;
+    if (options) {
+      const queryParams = new URLSearchParams(snakeCaseObject(options));
+      url += `?${queryParams.toString()}`;
+    }
+    return EcommerceApiService.apiClient().get(url);
+  }
+
   static fetchEnterpriseOffers(options) {
     const { enterpriseId } = store.getState().portalConfiguration;
     let url = `${EcommerceApiService.ecommerceBaseUrl}/api/v2/enterprise/${enterpriseId}/enterprise-admin-offers/`;

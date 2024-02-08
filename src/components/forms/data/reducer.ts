@@ -2,7 +2,7 @@ import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import {
-  SetShowErrorsArguments, SET_FORM_FIELD, SET_SHOW_ERRORS, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS,
+  SetShowErrorsArguments, SET_FORM_FIELD, SET_SHOW_ERRORS, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS, RESET_EDIT_STATE,
 } from './actions';
 import type {
   FormActionArguments, SetFormFieldArguments, SetStepArguments, SetWorkflowStateArguments, UpdateFormFieldArguments,
@@ -53,6 +53,7 @@ export type InitializeFormArguments<FormFields> = {
   formFields: FormFields;
   validations?: FormFieldValidation[];
   currentStep: FormWorkflowStep<FormFields>;
+  steps: FormWorkflowStep<FormFields>[];
 };
 
 export function initializeFormImpl<FormFields>(
@@ -78,7 +79,7 @@ export function initializeFormImpl<FormFields>(
 export function initializeForm<FormFields>(action: InitializeFormArguments<FormFields>) {
   const initialFormState: Pick<
   FormContext,
-  'isEdited' | 'formFields' | 'currentStep'
+  'isEdited' | 'formFields' | 'currentStep' | 'allSteps'
   > = { isEdited: false };
   if (action?.formFields) {
     initialFormState.formFields = action.formFields;
@@ -86,9 +87,8 @@ export function initializeForm<FormFields>(action: InitializeFormArguments<FormF
   if (action?.currentStep) {
     initialFormState.currentStep = action.currentStep;
   }
-  return {
-    ...initialFormState,
-  };
+  initialFormState.allSteps = action?.steps;
+  return processFormErrors(initialFormState);
 }
 
 export type FormReducerType = (FormActionArguments, FormContext) => FormContext;
@@ -114,13 +114,18 @@ export const FormReducer: FormReducerType = (
       return {
         ...state,
         formFields: updateFormFieldsArgs.formFields,
-        isEdited: false,
         hasErrors: false,
         errorMap: {},
       };
+    } case RESET_EDIT_STATE: {
+      return {
+        ...state,
+        isEdited: false,
+      };
     } case SET_STEP: {
       const setStepArgs = action as SetStepArguments<FormFields>;
-      return { ...state, currentStep: setStepArgs.step };
+      const newStepState = { ...state, currentStep: setStepArgs.step };
+      return processFormErrors(newStepState);
     } case SET_SHOW_ERRORS: {
       const SetShowErrorsArgs = action as SetShowErrorsArguments;
       return { ...state, showErrors: SetShowErrorsArgs.showErrors };

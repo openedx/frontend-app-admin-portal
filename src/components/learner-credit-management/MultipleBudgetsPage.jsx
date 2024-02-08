@@ -6,31 +6,49 @@ import {
   Col,
   Card,
   Hyperlink,
+  Container,
+  Skeleton,
 } from '@edx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import Hero from '../Hero';
 
-import LoadingMessage from '../LoadingMessage';
+import Hero from '../Hero';
 import MultipleBudgetsPicker from './MultipleBudgetsPicker';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { configuration } from '../../config';
+import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
-const PAGE_TITLE = 'Learner Credit';
+const PAGE_TITLE = 'Learner Credit Management';
 
 const MultipleBudgetsPage = ({
   enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
+  enterpriseFeatures,
+  enablePortalLearnerCreditManagementScreen,
 }) => {
-  const { offers, isLoading } = useContext(EnterpriseSubsidiesContext);
+  const { isLoading } = useContext(EnterpriseSubsidiesContext);
+  const { data: budgetsOverview } = useEnterpriseBudgets({
+    enterpriseId: enterpriseUUID,
+    enablePortalLearnerCreditManagementScreen,
+    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
+  });
+  const {
+    budgets = [],
+  } = budgetsOverview || {};
 
   if (isLoading) {
-    return <LoadingMessage className="offers" />;
+    return (
+      <>
+        <h1><Skeleton /></h1>
+        <Skeleton height={200} count={2} />
+        <span className="sr-only">Loading budgets...</span>
+      </>
+    );
   }
 
-  if (offers.length === 0) {
+  if (budgets.length === 0) {
     return (
       <Stack>
         <Helmet title={PAGE_TITLE} />
@@ -63,12 +81,14 @@ const MultipleBudgetsPage = ({
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <MultipleBudgetsPicker
-        offers={offers}
-        enterpriseUUID={enterpriseUUID}
-        enterpriseSlug={enterpriseSlug}
-        enableLearnerPortal={enableLearnerPortal}
-      />
+      <Container className="py-3" fluid>
+        <MultipleBudgetsPicker
+          budgets={budgets}
+          enterpriseUUID={enterpriseUUID}
+          enterpriseSlug={enterpriseSlug}
+          enableLearnerPortal={enableLearnerPortal}
+        />
+      </Container>
     </>
   );
 };
@@ -77,12 +97,18 @@ const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+  enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
 });
 
 MultipleBudgetsPage.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
+  enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(MultipleBudgetsPage);

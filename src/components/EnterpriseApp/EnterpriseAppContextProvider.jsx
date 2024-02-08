@@ -1,10 +1,12 @@
-import React, { createContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { AppContext } from '@edx/frontend-platform/react';
 
 import { EnterpriseSubsidiesContext, useEnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SubsidyRequestsContext, useSubsidyRequestsContext } from '../subsidy-requests/SubsidyRequestsContext';
 import {
   useEnterpriseCurationContext,
+  useUpdateActiveEnterpriseForUser,
 } from './data/hooks';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 
@@ -45,13 +47,16 @@ export const EnterpriseAppContext = createContext();
 const EnterpriseAppContextProvider = ({
   enterpriseId,
   enterpriseName,
+  enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
+  const { authenticatedUser } = useContext(AppContext);
   // subsidies for the enterprise customer
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
+    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
   // subsidy requests for the enterprise customer
@@ -66,10 +71,16 @@ const EnterpriseAppContextProvider = ({
     curationTitleForCreation: enterpriseName,
   });
 
+  const { isLoading: isUpdatingActiveEnterprise } = useUpdateActiveEnterpriseForUser({
+    enterpriseId,
+    user: authenticatedUser,
+  });
+
   const isLoading = (
     subsidyRequestsContext.isLoading
     || enterpriseSubsidiesContext.isLoading
     || enterpriseCurationContext.isLoading
+    || isUpdatingActiveEnterprise
   );
 
   // [tech debt] consolidate the other context values (e.g., useSubsidyRequestsContext)
@@ -97,6 +108,9 @@ const EnterpriseAppContextProvider = ({
 EnterpriseAppContextProvider.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };

@@ -17,6 +17,9 @@ const enterpriseAccessBaseUrl = `${process.env.ENTERPRISE_ACCESS_BASE_URL}`;
 const mockEnterpriseUUID = 'test-enterprise-id';
 const mockLicenseRequestUUID = 'test-license-request-uuid';
 const mockCouponCodeRequestUUID = 'test-coupon-code-request-uuid';
+const mockAssignmentConfigurationUUID = 'test-assignment-configuration-uuid';
+const mockSubsidyAccessPolicyUUID = 'test-subsidy-access-policy-uuid';
+const mockAssignmentUUIDs = ['test-assignment-uuid1', 'test-assignment-uuid-2'];
 
 describe('EnterpriseAccessApiService', () => {
   beforeEach(() => {
@@ -130,5 +133,102 @@ describe('EnterpriseAccessApiService', () => {
       subsidy_requests_enabled: true,
       subsidy_type: SUPPORTED_SUBSIDY_TYPES.coupon,
     });
+  });
+
+  test('listContentAssignments calls enterprise-access to fetch content assignments with learner state filter', () => {
+    const options = {
+      learnerState: ['notifying', 'waiting'],
+    };
+    EnterpriseAccessApiService.listContentAssignments(mockAssignmentConfigurationUUID, options);
+    const expectedParams = new URLSearchParams({
+      page: 1,
+      page_size: 25,
+      state__in: 'allocated,errored',
+      learner_state__in: 'notifying,waiting',
+    }).toString();
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/?${expectedParams}`,
+    );
+  });
+
+  test('listContentAssignments calls enterprise-access to fetch content assignments without learner state filter', () => {
+    EnterpriseAccessApiService.listContentAssignments(mockAssignmentConfigurationUUID);
+    const expectedParams = new URLSearchParams({
+      page: 1,
+      page_size: 25,
+      state__in: 'allocated,errored',
+    }).toString();
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/?${expectedParams}`,
+    );
+  });
+
+  test('listSubsidyAccessPolicies calls enterprise-access to fetch subsidy access policies', () => {
+    EnterpriseAccessApiService.listSubsidyAccessPolicies(mockEnterpriseUUID);
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/subsidy-access-policies/?enterprise_customer_uuid=${mockEnterpriseUUID}&active=true`,
+    );
+  });
+
+  test('retrieveSubsidyAccessPolicy calls enterprise-access to fetch subsidy access policy', () => {
+    EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(mockSubsidyAccessPolicyUUID);
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/subsidy-access-policies/${mockSubsidyAccessPolicyUUID}/`,
+    );
+  });
+
+  test('allocateContentAssignments calls enterprise-access allocate POST API to create assignments', () => {
+    const payload = {
+      learner_emails: ['edx@example.com'],
+      content_key: 'edX+DemoX',
+      content_price_cents: 19900,
+    };
+    EnterpriseAccessApiService.allocateContentAssignments(mockSubsidyAccessPolicyUUID, payload);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/policy-allocation/${mockSubsidyAccessPolicyUUID}/allocate/`,
+      payload,
+    );
+  });
+
+  test('cancelContentAssignments calls enterprise-access cancel POST API to cancel assignments', () => {
+    const options = {
+      assignment_uuids: mockAssignmentUUIDs,
+    };
+    EnterpriseAccessApiService.cancelContentAssignments(mockAssignmentConfigurationUUID, mockAssignmentUUIDs);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/cancel/`,
+      options,
+    );
+  });
+
+  test('remindContentAssignments calls enterprise-access remind POST API to remind learners', () => {
+    const options = {
+      assignment_uuids: mockAssignmentUUIDs,
+    };
+    EnterpriseAccessApiService.remindContentAssignments(mockAssignmentConfigurationUUID, mockAssignmentUUIDs);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind/`,
+      options,
+    );
+  });
+
+  test('cancelAllContentAssignments calls enterprise-access cancel-all POST API to cancel all assignments', () => {
+    const options = {
+      learnerState: 'pending,waiting',
+    };
+    EnterpriseAccessApiService.cancelAllContentAssignments(mockAssignmentConfigurationUUID, options);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/cancel-all/?learner_state__in=pending%2Cwaiting`,
+    );
+  });
+
+  test('remindAllContentAssignments calls enterprise-access remind-all POST API to remind all learners', () => {
+    const options = {
+      learnerState: 'pending,waiting',
+    };
+    EnterpriseAccessApiService.remindAllContentAssignments(mockAssignmentConfigurationUUID, options);
+    expect(axios.post).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/assignment-configurations/${mockAssignmentConfigurationUUID}/admin/assignments/remind-all/?learner_state__in=pending%2Cwaiting`,
+    );
   });
 });

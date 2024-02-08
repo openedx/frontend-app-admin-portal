@@ -25,6 +25,8 @@ const initialState = {
   enableLmsConfigurationsScreen: false,
   enableUniversalLink: false,
   enablePortalLearnerCreditManagementScreen: false,
+  enableDemoData: false,
+  enterpriseFeatures: {},
 };
 
 const enterpriseData = {
@@ -52,7 +54,9 @@ const enterpriseData = {
   enable_universal_link: true,
   enable_browse_and_request: true,
   enable_generation_of_api_credentials: true,
+  enable_demo_data_for_analytics_and_lpr: true,
 };
+const mockEnterpriseFeatures = { featureA: true };
 
 describe('portalConfiguration reducer', () => {
   it('has initial state', () => {
@@ -81,10 +85,12 @@ describe('portalConfiguration reducer', () => {
       enableUniversalLink: enterpriseData.enable_universal_link,
       enablePortalLearnerCreditManagementScreen: enterpriseData.enable_portal_learner_credit_management_screen,
       enableApiCredentialGeneration: enterpriseData.enable_generation_of_api_credentials,
+      enableDemoData: enterpriseData.enable_demo_data_for_analytics_and_lpr,
+      enterpriseFeatures: mockEnterpriseFeatures,
     };
     expect(portalConfiguration(undefined, {
       type: FETCH_PORTAL_CONFIGURATION_SUCCESS,
-      payload: { data: enterpriseData },
+      payload: { data: enterpriseData, enterpriseFeatures: mockEnterpriseFeatures },
     })).toEqual(expected);
   });
 

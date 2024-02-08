@@ -20,18 +20,19 @@ const name = "edx's Enterprise Credentials";
 const clientId = 'y0TCvOEvvIs6ll95irirzCJ5EaF0RnSbBIIXuNJE';
 const clientSecret = '1G896sVeT67jtjHO6FNd5qFqayZPIV7BtnW01P8zaAd4mDfmBVVVsUP33u';
 const updated = '2023-07-28T04:28:20.909550Z';
-const redirectUris = 'www.customercourses.edx.com, www.customercourses.edx.stage.com';
+const redirectUri1 = 'www.customercourses.edx.com';
+const redirectUri2 = 'www.customercourses.edx.com';
 
 const data = {
   name,
   client_id: clientId,
   client_secret: clientSecret,
-  redirect_uris: redirectUris,
+  redirect_uris: redirectUri1,
   updated,
 };
 const regenerationData = {
   ...data,
-  redirect_uris: redirectUris,
+  redirect_uris: redirectUri1,
 };
 const copiedData = {
   ...data,
@@ -66,7 +67,7 @@ describe('API Credentials Tab', () => {
     expect(screen.queryByText('Help Center: EdX Enterprise API Guide')).toBeInTheDocument();
     const helpLink = screen.getByText('Help Center: EdX Enterprise API Guide');
     expect(helpLink.getAttribute('href')).toBe(HELP_CENTER_API_GUIDE);
-    const serviceLink = screen.getByText('edX API terms of service');
+    const serviceLink = screen.getByText('edX API terms of service.');
     expect(serviceLink.getAttribute('href')).toBe(API_TERMS_OF_SERVICE);
 
     expect(screen.getByText('Generate API Credentials').toBeInTheDocument);
@@ -86,7 +87,7 @@ describe('API Credentials Tab', () => {
     await waitFor(() => expect(screen.getByText(name)).toBeInTheDocument);
 
     expect(screen.getByText(name).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri1}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
@@ -147,7 +148,7 @@ describe('API Credentials Tab', () => {
     });
 
     expect(screen.getByRole('heading', { name: `Application name: ${name}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri1}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
@@ -200,9 +201,11 @@ describe('API Credentials Tab', () => {
     );
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
     const input = screen.getByTestId('form-control');
-    expect(input).toHaveValue('');
-    userEvent.type(input, redirectUris);
-    await waitFor(() => expect(input).toHaveValue(redirectUris));
+    expect(input).toHaveValue(redirectUri1);
+    userEvent.clear(input);
+    userEvent.type(input, redirectUri2);
+
+    await waitFor(() => expect(input).toHaveValue(redirectUri2));
     const button = screen.getByText('Regenerate API Credentials');
     userEvent.click(button);
 
@@ -210,10 +213,13 @@ describe('API Credentials Tab', () => {
     const confirmedButton = screen.getByText('Regenerate');
     userEvent.click(confirmedButton);
     await waitFor(() => {
-      expect(mockPatchFn).toHaveBeenCalledWith(redirectUris, enterpriseId);
+      expect(mockPatchFn).toHaveBeenCalledWith(redirectUri2, enterpriseId);
+    });
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri2}` }).toBeInTheDocument);
     });
     expect(screen.getByRole('heading', { name: `Application name: ${name}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri2}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
     expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
@@ -234,9 +240,9 @@ describe('API Credentials Tab', () => {
     );
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
     const input = screen.getByTestId('form-control');
-    expect(input).toHaveValue('');
-    userEvent.type(input, redirectUris);
-    await waitFor(() => expect(input).toHaveValue(redirectUris));
+    expect(input).toHaveValue(redirectUri1);
+    userEvent.type(input, ` ${redirectUri2}`);
+    await waitFor(() => expect(input).toHaveValue(`${redirectUri1} ${redirectUri2}`));
     const button = screen.getByText('Regenerate API Credentials');
     userEvent.click(button);
 
@@ -244,9 +250,9 @@ describe('API Credentials Tab', () => {
     const confirmedButton = screen.getByText('Regenerate');
     userEvent.click(confirmedButton);
     await waitFor(() => {
-      expect(mockPatchFn).toHaveBeenCalledWith(redirectUris, enterpriseId);
+      expect(mockPatchFn).toHaveBeenCalledWith(`${redirectUri1} ${redirectUri2}`, enterpriseId);
     });
-    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri1}` }).toBeInTheDocument);
     expect(screen.getByText('Something went wrong while generating your credentials. Please try again. If the issue continues, contact Enterprise Customer Support.'))
       .toBeInTheDocument();
   });
@@ -264,9 +270,7 @@ describe('API Credentials Tab', () => {
 
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
     const input = screen.getByTestId('form-control');
-    expect(input).toHaveValue('');
-    userEvent.type(input, redirectUris);
-    await waitFor(() => expect(input).toHaveValue(redirectUris));
+    expect(input).toHaveValue(redirectUri1);
     const button = screen.getByText('Regenerate API Credentials');
     userEvent.click(button);
 
@@ -274,8 +278,8 @@ describe('API Credentials Tab', () => {
     const cancelButton = screen.getByText('Cancel');
     userEvent.click(cancelButton);
     await waitFor(() => {
-      expect(mockPatchFn).not.toHaveBeenCalledWith(redirectUris, enterpriseId);
+      expect(mockPatchFn).not.toHaveBeenCalledWith(redirectUri1, enterpriseId);
     });
-    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUris}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri1}` }).toBeInTheDocument);
   });
 });

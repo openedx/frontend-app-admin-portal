@@ -10,7 +10,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import emailTemplate from './emailTemplate';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import FileInput from '../FileInput';
-import { returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
+import { extractSalesforceIds, returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
 import { normalizeFileUpload } from '../../utils';
 
 class InviteLearnersModal extends React.Component {
@@ -69,6 +69,10 @@ class InviteLearnersModal extends React.Component {
     };
 
     options.user_emails = returnValidatedEmails(formData);
+    const SFIDs = extractSalesforceIds(formData, options.user_emails);
+    if (SFIDs) {
+      options.user_sfids = SFIDs;
+    }
 
     /* eslint-disable no-underscore-dangle */
     return addLicensesForUsers(options, subscriptionUUID)

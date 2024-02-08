@@ -30,7 +30,6 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-// eslint-disable-next-line react/prop-types
 const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds = [] }) => {
   const contextValue = useState({
     stepperModal: {

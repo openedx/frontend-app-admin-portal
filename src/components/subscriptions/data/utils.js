@@ -34,24 +34,39 @@ export const getSubscriptionStatus = (subscription) => {
   return ACTIVE;
 };
 
-// Sort plans by statuses, active -> scheduled -> ended.
-export const sortSubscriptionsByStatus = (subscriptions) => subscriptions.slice().sort(
-  (sub1, sub2) => {
-    const orderByStatus = {
-      [ACTIVE]: 0,
-      [SCHEDULED]: 1,
-      [ENDED]: 2,
-    };
-    const sub1Status = getSubscriptionStatus(sub1);
-    const sub2Status = getSubscriptionStatus(sub2);
+/**
+ * Sort subscription plans by:
+ *   - Statuses (active -> scheduled -> ended)
+ *   - Plans within same status, sorted by expiration date (ascending)
+ *   - Plans within same status and expiration date, sorted by title (ascending)
+ *
+ * @param {Array} subscriptions - List of subscription plans.
+ *
+ * @returns Ordered list of subscription plans.
+ */
+export const sortSubscriptionsByStatus = (subscriptions) => {
+  const statusOrder = {
+    [ACTIVE]: 0,
+    [SCHEDULED]: 1,
+    [ENDED]: 2,
+  };
+  return subscriptions.slice().sort(
+    (sub1, sub2) => {
+      const sub1Status = getSubscriptionStatus(sub1);
+      const sub2Status = getSubscriptionStatus(sub2);
 
-    if (sub1Status === sub2Status) {
-      return dayjs(sub1.startDate) - dayjs(sub2.startDate);
-    }
+      if (statusOrder[sub1Status] !== statusOrder[sub2Status]) {
+        return statusOrder[sub1Status] - statusOrder[sub2Status];
+      }
 
-    return orderByStatus[sub1Status] - orderByStatus[sub2Status];
-  },
-);
+      if (sub1.expirationDate !== sub2.expirationDate) {
+        return sub1.expirationDate.localeCompare(sub2.expirationDate);
+      }
+
+      return sub1.title.localeCompare(sub2.title);
+    },
+  );
+};
 
 export const transformFiltersForRequest = (filters) => {
   const nameMappings = {
@@ -65,15 +80,3 @@ export const transformFiltersForRequest = (filters) => {
     }),
   );
 };
-
-/**
- * Helper to determine which table columns have an active filter applied.
- *
- * @param {object} columns Array of column objects (e.g., { id, filter, filterValue })
- * @returns Array of column objects with an active filter applied.
- */
-export const getActiveFilters = columns => columns.map(column => ({
-  name: column.id,
-  filter: column.filter,
-  filterValue: column.filterValue,
-})).filter(filter => !!filter.filterValue);

@@ -55,6 +55,12 @@ export const setStepAction = ({ step }: SetStepArguments<any>) => ({
   step,
 });
 
+export const RESET_EDIT_STATE = 'RESET EDIT STATE';
+// Construct action for resetting isEdited property
+export const resetFormEditState = () => ({
+  type: RESET_EDIT_STATE,
+});
+
 // Global Workflow state keys
 export const FORM_ERROR_MESSAGE = 'FORM ERROR MESSAGE';
 

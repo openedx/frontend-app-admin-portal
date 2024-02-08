@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import {
   clearDashboardAnalytics,
@@ -9,6 +8,7 @@ import {
 import Admin from '../../components/Admin';
 import { paginateTable } from '../../data/actions/table';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+import { fetchDashboardInsights, clearDashboardInsights } from '../../data/actions/dashboardInsights';
 
 const mapStateToProps = state => ({
   loading: state.dashboardAnalytics.loading,
@@ -21,6 +21,8 @@ const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
   csv: state.csv,
   table: state.table,
+  insightsLoading: state.dashboardInsights.loading,
+  insights: state.dashboardInsights.insights,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -33,6 +35,12 @@ const mapDispatchToProps = dispatch => ({
   searchEnrollmentsList: () => {
     dispatch(paginateTable('enrollments', EnterpriseDataApiService.fetchCourseEnrollments));
   },
+  fetchDashboardInsights: (enterpriseId) => {
+    dispatch(fetchDashboardInsights(enterpriseId));
+  },
+  clearDashboardInsights: () => {
+    dispatch(clearDashboardInsights());
+  },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Admin));
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);

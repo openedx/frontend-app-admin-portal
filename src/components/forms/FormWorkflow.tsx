@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import type { Dispatch } from 'react';
 import {
-  ActionRow, Button, FullscreenModal, Stepper, useToggle,
+  ActionRow, Button, FullscreenModal, Spinner, Stepper, useToggle,
 } from '@edx/paragon';
 import { Launch } from '@edx/paragon/icons';
 
 import { useFormContext } from './FormContext';
 import type { FormFieldValidation, FormContext } from './FormContext';
 import {
-  FORM_ERROR_MESSAGE, FormActionArguments, setStepAction, setWorkflowStateAction, setShowErrorsAction,
+  FORM_ERROR_MESSAGE,
+  FormActionArguments,
+  setStepAction,
+  setWorkflowStateAction,
+  setShowErrorsAction,
+  updateFormFieldsAction,
 } from './data/actions';
 import { HELP_CENTER_LINK, SUBMIT_TOAST_MESSAGE } from '../settings/data/constants';
-import UnsavedChangesModal from '../settings/SettingsLMSTab/UnsavedChangesModal';
 import ConfigErrorModal from '../settings/ConfigErrorModal';
 import { channelMapping, pollAsync } from '../../utils';
 import HelpCenterButton from '../settings/HelpCenterButton';
+import './_FormWorkflow.scss';
 
 export const WAITING_FOR_ASYNC_OPERATION = 'WAITING FOR ASYNC OPERATION';
 
 export type FormWorkflowErrorHandler = (errMsg: string) => void;
 
 export type FormWorkflowHandlerArgs<FormData> = {
-  formFields?: FormData;
+  formFields: FormData;
   formFieldsChanged: boolean;
   errHandler?: FormWorkflowErrorHandler;
-  dispatch?: Dispatch<FormData>;
+  dispatch?: Dispatch<FormActionArguments>;
 };
 
 export type FormWorkflowAwaitHandler<FormData> = {
@@ -37,22 +42,29 @@ export type FormWorkflowAwaitHandler<FormData> = {
 export type FormWorkflowButtonConfig<FormData> = {
   buttonText: string;
   opensNewWindow: boolean;
+  preventDefaultErrorModal: boolean;
   onClick?: (args: FormWorkflowHandlerArgs<FormData>) => Promise<FormData> | void;
   awaitSuccess?: FormWorkflowAwaitHandler<FormData>;
 };
 
-type DynamicComponent = React.FunctionComponent | React.ComponentClass | React.ElementType;
+export type DynamicComponent<Props> =
+  | React.FunctionComponent<Props>
+  | React.ComponentClass<Props>
+  | React.ElementType<Props>;
 
 export type FormWorkflowStep<FormData> = {
   index: number;
   stepName: string;
-  formComponent: DynamicComponent;
+  formComponent: DynamicComponent<any>;
   validations: FormFieldValidation[];
   saveChanges?: (
     formData: FormData,
-    errHandler: FormWorkflowErrorHandler
+    errHandler: FormWorkflowErrorHandler,
+    formFieldsChanged: boolean,
   ) => Promise<boolean>;
   nextButtonConfig: (FormData: FormData) => FormWorkflowButtonConfig<FormData>;
+  showBackButton?: boolean;
+  showCancelButton?: boolean;
 };
 
 export type FormWorkflowConfig<FormData> = {
@@ -60,19 +72,30 @@ export type FormWorkflowConfig<FormData> = {
   getCurrentStep: () => FormWorkflowStep<FormData>;
 };
 
+export type UnsavedChangesModalProps = {
+  isOpen: boolean;
+  close: () => void;
+  exitWithoutSaving?: () => void;
+  saveDraft?: () => void
+};
+
 export type FormWorkflowProps<FormConfigData> = {
+  workflowTitle: string;
   formWorkflowConfig: FormWorkflowConfig<FormConfigData>;
-  onClickOut: (edited: boolean, msg?: string) => null;
+  onClickOut: (() => void) | ((edited?: boolean, msg?: string) => null);
   dispatch: Dispatch<FormActionArguments>;
   isStepperOpen: boolean;
+  UnsavedChangesModal?: DynamicComponent<UnsavedChangesModalProps>;
 };
 
 // Modal container for multi-step forms
 const FormWorkflow = <FormConfigData extends unknown>({
+  workflowTitle,
   formWorkflowConfig,
   onClickOut,
   isStepperOpen,
   dispatch,
+  UnsavedChangesModal,
 }: FormWorkflowProps<FormConfigData>) => {
   const {
     formFields,
@@ -87,6 +110,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
     closeSavedChangesModal,
   ] = useToggle(false);
   const [helpCenterLink, setHelpCenterLink] = useState(HELP_CENTER_LINK);
+  const [nextInProgress, setNextInProgress] = useState(false);
   const nextButtonConfig = step?.nextButtonConfig(formFields);
   const awaitingAsyncAction = stateMap && stateMap[WAITING_FOR_ASYNC_OPERATION];
 
@@ -111,12 +135,22 @@ const FormWorkflow = <FormConfigData extends unknown>({
     } else {
       let advance = true;
       if (nextButtonConfig && nextButtonConfig.onClick) {
+        setNextInProgress(true);
         const newFormFields: FormConfigData = await nextButtonConfig.onClick({
           formFields,
-          errHandler: setFormError,
+          errHandler: (error) => {
+            setFormError(error);
+            if (error) {
+              advance = false;
+            }
+          },
           dispatch,
           formFieldsChanged: !!isEdited,
         });
+        if (newFormFields) {
+          dispatch(updateFormFieldsAction({ formFields: newFormFields }));
+        }
+        setNextInProgress(false);
         if (nextButtonConfig?.awaitSuccess) {
           advance = await pollAsync(
             () => nextButtonConfig.awaitSuccess?.awaitCondition?.({
@@ -150,11 +184,21 @@ const FormWorkflow = <FormConfigData extends unknown>({
     }
   };
 
+  const onBack = () => {
+    if (step?.index !== undefined) {
+      const previousStep: number = step.index - 1;
+      if (previousStep >= 0) {
+        dispatch(setStepAction({ step: formWorkflowConfig.steps[previousStep] }));
+      }
+    }
+  };
+
   const stepBody = (currentStep: FormWorkflowStep<FormConfigData>) => {
     if (currentStep) {
-      const FormComponent: DynamicComponent = currentStep?.formComponent;
+      const FormComponent: DynamicComponent<any> = currentStep?.formComponent;
       return (
         <Stepper.Step
+          key={currentStep.stepName}
           eventKey={currentStep.index.toString()}
           title={currentStep.stepName}
         >
@@ -175,28 +219,44 @@ const FormWorkflow = <FormConfigData extends unknown>({
     }
   }, [formFields]);
 
+  // Show back button only if showBackButton === true
+  const showBackButton = (step?.index !== undefined) && (step.index > 0) && step.showBackButton;
+  // Show cancel button by default
+  const showCancelButton = step?.showCancelButton === undefined || step?.showCancelButton;
+  let nextButtonContents = nextButtonConfig && (
+    <>
+      {nextButtonConfig.buttonText}
+      {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
+    </>
+  );
+  if (nextInProgress) {
+    // show spinner if Next button operation is ongoing
+    nextButtonContents = <Spinner animation="border" size="sm" />;
+  }
   return (
     <>
       <ConfigErrorModal
-        isOpen={stateMap && stateMap[FORM_ERROR_MESSAGE]}
+        isOpen={stateMap && stateMap[FORM_ERROR_MESSAGE] && !nextButtonConfig?.preventDefaultErrorModal}
         close={clearFormError}
         configTextOverride={stateMap && stateMap[FORM_ERROR_MESSAGE]}
       />
+      {/* @ts-ignore JSX element type 'UnsavedChangesModal' does not have any construct or call signatures. */}
       <UnsavedChangesModal
         isOpen={savedChangesModalIsOpen}
         close={closeSavedChangesModal}
         exitWithoutSaving={() => onClickOut(false)}
         saveDraft={async () => {
           if (step?.saveChanges) {
-            await step?.saveChanges(formFields as FormConfigData, setFormError);
+            await step?.saveChanges(formFields as FormConfigData, setFormError, !!isEdited);
             onClickOut(true, SUBMIT_TOAST_MESSAGE);
           }
+          onClickOut(false, 'No changes saved');
         }}
       />
 
       {formWorkflowConfig.steps && (
         <FullscreenModal
-          title="New learning platform integration"
+          title={workflowTitle}
           isOpen={isStepperOpen}
           onClose={onCancel}
           className="stepper-modal"
@@ -206,11 +266,11 @@ const FormWorkflow = <FormConfigData extends unknown>({
                 Help Center: Integrations
               </HelpCenterButton>
               <ActionRow.Spacer />
-              <Button variant="tertiary" onClick={onCancel}>Cancel</Button>
+              {showCancelButton && <Button variant="tertiary" onClick={onCancel}>Cancel</Button>}
+              {showBackButton && <Button variant="tertiary" onClick={onBack}>Back</Button>}
               {nextButtonConfig && (
-                <Button onClick={onNext} disabled={awaitingAsyncAction}>
-                  {nextButtonConfig.buttonText}
-                  {nextButtonConfig.opensNewWindow && <Launch className="ml-1" />}
+                <Button className="next-button" onClick={onNext} disabled={nextInProgress || awaitingAsyncAction}>
+                  {nextButtonContents}
                 </Button>
               )}
             </ActionRow>

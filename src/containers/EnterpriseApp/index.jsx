@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import EnterpriseApp from '../../components/EnterpriseApp';
 
@@ -22,6 +21,7 @@ const mapStateToProps = (state) => {
     enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,
+    enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
     enterpriseBranding: state.portalConfiguration.enterpriseBranding,
     loading: state.portalConfiguration.loading,
   };
@@ -38,4 +38,4 @@ const mapDispatchToProps = dispatch => ({
 
 const ConnectedEnterpriseApp = connect(mapStateToProps, mapDispatchToProps)(EnterpriseApp);
 
-export default withRouter(ConnectedEnterpriseApp);
+export default ConnectedEnterpriseApp;

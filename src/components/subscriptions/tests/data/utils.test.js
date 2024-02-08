@@ -4,16 +4,19 @@ import { sortSubscriptionsByStatus, getSubscriptionStatus } from '../../data/uti
 
 describe('utils', () => {
   const scheduledSub = {
-    startDate: dayjs().add(1, 'days'),
-    expirationDate: dayjs().add(10, 'days'),
+    startDate: dayjs().add(1, 'days').toISOString(),
+    expirationDate: dayjs().add(10, 'days').toISOString(),
+    title: 'Test Scheduled Plan',
   };
   const activeSub = {
-    startDate: dayjs().subtract(1, 'days'),
-    expirationDate: dayjs().add(10, 'days'),
+    startDate: dayjs().subtract(1, 'days').toISOString(),
+    expirationDate: dayjs().add(10, 'days').toISOString(),
+    title: 'Test Active Plan',
   };
   const expiredSub = {
-    startDate: dayjs().subtract(10, 'days'),
-    expirationDate: dayjs().subtract(1, 'days'),
+    startDate: dayjs().subtract(10, 'days').toISOString(),
+    expirationDate: dayjs().subtract(1, 'days').toISOString(),
+    title: 'Test Expired Plan',
   };
 
   describe('getSubscriptionStatus', () => {
@@ -28,18 +31,26 @@ describe('utils', () => {
     it('should sort subscriptions by status', () => {
       const initialOrder = [expiredSub, activeSub, scheduledSub];
       const expectedOrder = [activeSub, scheduledSub, expiredSub];
-
       expect(sortSubscriptionsByStatus(initialOrder)).toEqual(expectedOrder);
     });
 
-    it('should sort subscriptions by start date after status', () => {
+    it('should sort subscriptions by expiration date after status', () => {
       const activeSub2 = {
-        startDate: dayjs().subtract(2, 'days'),
-        expirationDate: dayjs().add(10, 'days'),
+        ...activeSub,
+        expirationDate: dayjs().add(1, 'days').toISOString(), // expires sooner than other active subs plan
       };
       const initialOrder = [expiredSub, activeSub, scheduledSub, activeSub2];
       const expectedOrder = [activeSub2, activeSub, scheduledSub, expiredSub];
+      expect(sortSubscriptionsByStatus(initialOrder)).toEqual(expectedOrder);
+    });
 
+    it('should sort subscriptions by plan title after status and date', () => {
+      const activeSub2 = {
+        ...activeSub,
+        title: 'Another Active Plan', // title alphabetically comes before other active subs plan title
+      };
+      const initialOrder = [expiredSub, activeSub, scheduledSub, activeSub2];
+      const expectedOrder = [activeSub2, activeSub, scheduledSub, expiredSub];
       expect(sortSubscriptionsByStatus(initialOrder)).toEqual(expectedOrder);
     });
   });

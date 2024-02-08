@@ -81,6 +81,16 @@ class EnterpriseCatalogApiService {
   static deleteHighlightSet(highlightSetUUID) {
     return EnterpriseCatalogApiService.apiClient().delete(`${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}/`);
   }
+
+  static deleteHighlightSetContent(highlightSetUUID, contentKeys) {
+    const payload = {
+      content_keys: contentKeys,
+    };
+    return EnterpriseCatalogApiService.apiClient().post(
+      `${EnterpriseCatalogApiService.highlightSetUrl}${highlightSetUUID}/remove-content/`,
+      payload,
+    );
+  }
 }
 
 export default EnterpriseCatalogApiService;

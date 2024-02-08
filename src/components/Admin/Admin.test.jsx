@@ -36,6 +36,10 @@ const store = mockStore({
     number_of_users: 3,
     course_completions: 1,
   },
+  dashboardInsights: {
+    loading: null,
+    insights: null,
+  },
 });
 
 const AdminWrapper = props => (
@@ -56,11 +60,12 @@ const AdminWrapper = props => (
               course_start: Date.now(),
             },
           ]}
-          match={{
-            params: {},
-            url: '/',
+          location={{
+            pathname: '/',
           }}
           {...props}
+          fetchDashboardInsights={() => {}}
+          clearDashboardInsights={() => {}}
         />
       </IntlProvider>
     </Provider>
@@ -77,6 +82,7 @@ describe('<Admin />', () => {
     courseCompletions: 1,
     lastUpdatedDate: '2018-07-31T23:14:35Z',
     numberOfUsers: 3,
+    insights: null,
   };
 
   describe('renders correctly', () => {
@@ -290,6 +296,66 @@ describe('<Admin />', () => {
         .toJSON();
       expect(tree).toMatchSnapshot();
     });
+
+    it('with no dashboard insights data', () => {
+      const insights = null;
+      const tree = renderer
+        .create((
+          <AdminWrapper
+            {...baseProps}
+            insights={insights}
+          />
+        ))
+        .toJSON();
+
+      expect(tree).toMatchSnapshot();
+    });
+
+    describe('with dashboard insights data', () => {
+      it('renders dashboard insights data correctly', () => {
+        const insights = {
+          learner_progress: {
+            enterprise_customer_uuid: 'aac56d39-f38d-4510-8ef9-085cab048ea9',
+            enterprise_customer_name: 'Microsoft Corporation',
+            active_subscription_plan: true,
+            assigned_licenses: 0,
+            activated_licenses: 0,
+            assigned_licenses_percentage: 0.0,
+            activated_licenses_percentage: 0.0,
+            active_enrollments: 1026,
+            at_risk_enrollment_less_than_one_hour: 26,
+            at_risk_enrollment_end_date_soon: 15,
+            at_risk_enrollment_dormant: 918,
+            created_at: '2023-10-02T03:24:17Z',
+          },
+          learner_engagement: {
+            enterprise_customer_uuid: 'aac56d39-f38d-4510-8ef9-085cab048ea9',
+            enterprise_customer_name: 'Microsoft Corporation',
+            enrolls: 49,
+            enrolls_prior: 45,
+            passed: 2,
+            passed_prior: 0,
+            engage: 67,
+            engage_prior: 50,
+            hours: 62,
+            hours_prior: 49,
+            contract_end_date: '2022-06-13T00:00:00Z',
+            active_contract: false,
+            created_at: '2023-10-02T03:24:40Z',
+          },
+        };
+        const tree = renderer
+          .create((
+            <AdminWrapper
+              {...baseProps}
+              insights={insights}
+            />
+          ))
+          .toJSON();
+
+        expect(tree).toMatchSnapshot();
+      });
+    });
   });
 
   describe('handle changes to enterpriseId prop', () => {
@@ -390,11 +456,9 @@ describe('<Admin />', () => {
                 },
               },
             }}
-            match={{
-              url: '/',
-              params: {
-                actionSlug: key !== 'enrollments' ? key : undefined,
-              },
+            actionSlug={key}
+            location={{
+              pathname: '/',
             }}
           />
         ));
