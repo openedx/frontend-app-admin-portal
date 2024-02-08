@@ -135,10 +135,10 @@ const CodeReminderModalWrapper = (props) => (
   </MemoryRouter>
 );
 /* eslint-enable react/prop-types */
-
 describe('CodeReminderModal component', () => {
   it('displays a modal', () => {
     render(<CodeReminderModalWrapper />);
+
     expect(screen.getByText(initialProps.title)).toBeInTheDocument();
   });
   it('displays an error', () => {

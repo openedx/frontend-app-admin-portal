@@ -22,6 +22,7 @@ function useEnterpriseCurationContext({
     enterpriseCuration,
     enterpriseHighlightedSets,
     fetchError,
+    getEnterpriseCuration,
     updateEnterpriseCuration,
   } = useEnterpriseCuration({
     enterpriseId,
@@ -51,8 +52,9 @@ function useEnterpriseCurationContext({
   const contextValue = useMemo(() => ({
     ...enterpriseCurationState,
     dispatch,
+    getEnterpriseCuration,
     updateEnterpriseCuration,
-  }), [enterpriseCurationState, updateEnterpriseCuration]);
+  }), [enterpriseCurationState, getEnterpriseCuration, updateEnterpriseCuration]);
 
   return contextValue;
 }

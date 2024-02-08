@@ -18,6 +18,7 @@ export const SET_HIGHLIGHT_TOAST_TEXT = 'SET_HIGHLIGHT_TOAST_TEXT';
 export const SET_IS_NEW_ARCHIVED_COURSE = 'SET_IS_NEW_ARCHIVED_COURSE';
 export const SET_ENTERPRISE_HIGHLIGHTED_CONTENTS = 'SET_ENTERPRISE_HIGHLIGHTED_CONTENTS';
 export const UPDATE_DISMISSED_ARCHIVED_COURSE = 'UPDATE_DISMISSED_ARCHIVED_COURSE';
+export const UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS = 'UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS';
 
 export const enterpriseCurationActions = {
   setIsLoading: (payload) => ({
@@ -58,6 +59,10 @@ export const enterpriseCurationActions = {
   }),
   updateDismissedArchivedCourse: (payload) => ({
     type: UPDATE_DISMISSED_ARCHIVED_COURSE,
+    payload,
+  }),
+  updateHighlightSetContentItems: (payload) => ({
+    type: UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS,
     payload,
   }),
 };
@@ -178,6 +183,22 @@ function enterpriseCurationReducer(state, action) {
       return {
         ...state,
         isNewArchivedContent: action.payload,
+      }
+    }
+    case UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS: {
+      const existingHighlightSets = getHighlightSetsFromState(state);
+      const updatedHighlightSets = existingHighlightSets.map((highlightSet) => {
+        if (highlightSet.uuid === action.payload.highlightSetUUID) {
+          return { ...highlightSet, highlightedContentUuids: action.payload.activeContentUuids };
+        }
+        return highlightSet;
+      });
+      return {
+        ...state,
+        enterpriseCuration: {
+          ...state.enterpriseCuration,
+          highlightSets: updatedHighlightSets,
+        },
       };
     }
     default: {

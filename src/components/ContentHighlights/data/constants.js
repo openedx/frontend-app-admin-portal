@@ -233,7 +233,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         uuid: faker.datatype.uuid(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
-        course_run_statuses: [COURSE_RUN_STATUSES.published],
+        course_run_statuses: null,
         authoring_organizations:
         [
           {

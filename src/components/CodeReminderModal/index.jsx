@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
-import { Button, Modal, Spinner } from '@edx/paragon';
+import {
+  Button, Icon, ModalDialog, ActionRow,
+} from '@edx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import SaveTemplateButton from '../../containers/SaveTemplateButton';
@@ -28,7 +30,6 @@ export class BaseCodeReminderModal extends React.Component {
     super(props);
 
     this.errorMessageRef = React.createRef();
-    this.modalRef = React.createRef();
 
     this.state = {
       mode: REMIND_MODE,
@@ -37,14 +38,6 @@ export class BaseCodeReminderModal extends React.Component {
     this.setMode = this.setMode.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-  }
-
-  componentDidMount() {
-    const { current: { firstFocusableElement } } = this.modalRef;
-
-    if (firstFocusableElement) {
-      firstFocusableElement.focus();
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -217,31 +210,46 @@ export class BaseCodeReminderModal extends React.Component {
     } = this.state;
 
     return (
-      <Modal
-        ref={this.modalRef}
-        dialogClassName="code-reminder"
-        title={this.renderTitle()}
-        body={this.renderBody()}
-        buttons={[
-          <Button
-            key="remind-submit-btn"
-            disabled={submitting}
-            className="code-remind-save-btn"
-            onClick={handleSubmit(this.handleModalSubmit)}
-          >
-            {mode === REMIND_MODE && submitting && <Spinner animation="border" variant="primary" size="sm" />}
-            Remind
-          </Button>,
-          <SaveTemplateButton
-            key="save-remind-template-btn"
-            templateType={REMIND_MODE}
-            setMode={this.setMode}
-            handleSubmit={handleSubmit}
-          />,
-        ]}
+      <ModalDialog
+        isOpen
+        size="lg"
         onClose={onClose}
-        open
-      />
+        className="code-reminder"
+        hasCloseButton
+      >
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            {this.renderTitle()}
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          {this.renderBody()}
+        </ModalDialog.Body>
+        <ModalDialog.Footer>
+          <ActionRow>
+            <ModalDialog.CloseButton variant="link">
+              Cancel
+            </ModalDialog.CloseButton>
+            <Button
+              key="remind-submit-btn"
+              disabled={submitting}
+              className="code-remind-save-btn"
+              onClick={handleSubmit(this.handleModalSubmit)}
+            >
+              <>
+                {mode === REMIND_MODE && submitting && <Spinner animation="border" variant="primary" size="sm" />}
+                Remind
+              </>
+            </Button>,
+            <SaveTemplateButton
+              key="save-remind-template-btn"
+              templateType={REMIND_MODE}
+              setMode={this.setMode}
+              handleSubmit={handleSubmit}
+            />,
+          </ActionRow>
+        </ModalDialog.Footer>
+      </ModalDialog>
     );
   }
 }
