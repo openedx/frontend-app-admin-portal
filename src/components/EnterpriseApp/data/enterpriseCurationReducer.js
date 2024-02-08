@@ -1,10 +1,10 @@
 import { logError } from '@edx/frontend-platform/logging';
-import { NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME, COURSE_RUN_STATUSES } from '../../ContentHighlights/data/constants';
+import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME, COURSE_RUN_STATUSES } from '../../ContentHighlights/data/constants';
 
 export const initialReducerState = {
   isLoading: true,
   enterpriseCuration: null,
-  enterpriseHighlightedContents: null,
+  enterpriseHighlightedSets: null,
   fetchError: null,
 };
 
@@ -48,11 +48,11 @@ export const enterpriseCurationActions = {
     type: ADD_HIGHLIGHT_SET,
     payload,
   }),
-  setEnterpriseHighlightedContents: (payload) => ({
+  setEnterpriseHighlightedSets: (payload) => ({
     type: SET_ENTERPRISE_HIGHLIGHTED_CONTENTS,
     payload,
   }),
-  setIsNewArchivedCourse: (payload) => ({
+  setIsNewArchivedContent: (payload) => ({
     type: SET_IS_NEW_ARCHIVED_COURSE,
     payload,
   }),
@@ -66,36 +66,50 @@ function getHighlightSetsFromState(state) {
   return state.enterpriseCuration?.highlightSets || [];
 }
 
-function getIsNewArchivedCourseFromState(payload) {
-  let isNewArchivedCourse = false;
+/**
+ * Helper function to determine if there is a new archived content in a highlight set
+ *
+ * @param {Array} payload Array of highlight set objects
+ * [{
+ *  cardImageUrl: bool,
+ *  enterpriseCuration: string,
+ *  highlightedContent: array,
+ *  isPublished: bool,
+ *  title: string,
+ *  uuid: string,
+ * }]
+ * @returns {Boolean}
+ */
+function getIsNewArchivedContentFromState(payload) {
+  let isNewArchivedContent = false;
   payload?.forEach(highlightSet => {
-    const dismissedCookies = global.localStorage.getItem(`${NEW_ARCHIVED_COURSE_ALERT_DISMISSED_COOKIE_NAME}-${highlightSet.uuid}`);
+    const dismissedCookies = global.localStorage.getItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-${highlightSet.uuid}`);
     // Checks that the highlightSet uuid isn't set
     if (!dismissedCookies) {
-      highlightSet.highlightedContent.forEach(courseContent => {
+      highlightSet.highlightedContent.forEach(content => {
         // If the length > 1 for the course run status e.g. ["archived", "published"]
-        // the course is not considered archived. An "unpublished" course run is not considered "archived" because
-        // it could have a scheduled course run.
-        if (courseContent.courseRunStatuses?.length === 1
-          && courseContent.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
+        // the content is not considered archived. An "unpublished" course run is not considered "archived" because
+        // it could have a scheduled course run in the future.
+        if (content.courseRunStatuses?.length === 1
+          && content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
         ) {
-          isNewArchivedCourse = true;
+          isNewArchivedContent = true;
         }
       });
       // If the highlightSet uuid is already in the cookies, check if it includes the archived course content key
     } else {
-      highlightSet.highlightedContent.forEach(courseContent => {
+      highlightSet.highlightedContent.forEach(content => {
         if (
-          courseContent.courseRunStatuses?.length === 1
-          && courseContent.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
-          && !dismissedCookies.includes(courseContent.contentKey)
+          content.courseRunStatuses?.length === 1
+          && content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
+          && !dismissedCookies.includes(content.contentKey)
         ) {
-          isNewArchivedCourse = true;
+          isNewArchivedContent = true;
         }
       });
     }
   });
-  return isNewArchivedCourse;
+  return isNewArchivedContent;
 }
 
 function enterpriseCurationReducer(state, action) {
@@ -105,7 +119,7 @@ function enterpriseCurationReducer(state, action) {
     case SET_ENTERPRISE_CURATION:
       return { ...state, enterpriseCuration: action.payload };
     case SET_ENTERPRISE_HIGHLIGHTED_CONTENTS:
-      return { ...state, enterpriseHighlightedContents: action.payload };
+      return { ...state, enterpriseHighlightedSets: action.payload };
     case SET_FETCH_ERROR:
       return { ...state, fetchError: action.payload };
     case SET_HIGHLIGHT_TOAST_TEXT: {
@@ -154,16 +168,16 @@ function enterpriseCurationReducer(state, action) {
       };
     }
     case SET_IS_NEW_ARCHIVED_COURSE: {
-      const isNewArchivedCourse = getIsNewArchivedCourseFromState(action.payload);
+      const isNewArchivedContent = getIsNewArchivedContentFromState(action.payload);
       return {
         ...state,
-        isNewArchivedCourse,
+        isNewArchivedContent,
       };
     }
     case UPDATE_DISMISSED_ARCHIVED_COURSE: {
       return {
         ...state,
-        isNewArchivedCourse: action.payload,
+        isNewArchivedContent: action.payload,
       };
     }
     default: {

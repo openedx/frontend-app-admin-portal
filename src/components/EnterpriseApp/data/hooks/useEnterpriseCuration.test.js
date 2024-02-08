@@ -27,7 +27,7 @@ const mockEnterpriseCurationConfigResponse = {
   results: [mockEnterpriseCurationConfig],
 };
 
-const mockEnterpriseHighlightedContentsResponse = [{
+const mockEnterpriseHighlightedSetsResponse = [{
   uuid: 'test-uuid',
   is_published: true,
   highlighted_content: [
@@ -58,7 +58,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
       expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: null,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
       expect(EnterpriseCatalogApiService.getEnterpriseCurationConfig).not.toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe('useEnterpriseCuration', () => {
         data: mockEnterpriseCurationConfigResponse,
       });
       EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
-        data: mockEnterpriseHighlightedContentsResponse,
+        data: mockEnterpriseHighlightedSetsResponse,
       });
 
       const args = {
@@ -107,7 +107,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
 
@@ -126,7 +126,7 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        enterpriseHighlightedContents: [camelCaseObject(mockEnterpriseHighlightedContentsResponse)],
+        enterpriseHighlightedSets: [camelCaseObject(mockEnterpriseHighlightedSetsResponse)],
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -169,7 +169,7 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        enterpriseHighlightedContents: [undefined],
+        enterpriseHighlightedSets: [undefined],
         enterpriseCuration: updatedEnterpriseCuration,
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -196,7 +196,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
 
@@ -212,7 +212,7 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: null,
-        enterpriseHighlightedContents: [undefined],
+        enterpriseHighlightedSets: [undefined],
         enterpriseCuration: expect.objectContaining(mockEnterpriseCurationConfig),
         updateEnterpriseCuration: expect.any(Function),
       });
@@ -232,7 +232,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
 
@@ -246,7 +246,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: mockErrorMessage,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
     });
@@ -271,7 +271,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: true,
         fetchError: null,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
 
@@ -285,7 +285,7 @@ describe('useEnterpriseCuration', () => {
         isLoading: false,
         fetchError: mockErrorMessage,
         enterpriseCuration: null,
-        enterpriseHighlightedContents: null,
+        enterpriseHighlightedSets: null,
         updateEnterpriseCuration: expect.any(Function),
       });
     });
@@ -321,7 +321,7 @@ describe('useEnterpriseCuration', () => {
       expect(result.current).toEqual({
         isLoading: false,
         fetchError: mockErrorMessage,
-        enterpriseHighlightedContents: [undefined],
+        enterpriseHighlightedSets: [undefined],
         enterpriseCuration: undefined,
         updateEnterpriseCuration: expect.any(Function),
       });

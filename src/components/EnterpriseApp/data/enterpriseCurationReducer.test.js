@@ -5,7 +5,7 @@ import enterpriseCurationReducer, { enterpriseCurationActions } from './enterpri
 const initialState = {
   isLoading: false,
   enterpriseCuration: null,
-  enterpriseHighlightedContents: null,
+  enterpriseHighlightedSets: null,
   fetchError: null,
 };
 const highlightSetUUID = 'fake-uuid';
@@ -31,7 +31,7 @@ describe('enterpriseCurationReducer', () => {
   });
 
   it('should set enterprise highlighted contents', () => {
-    const enterpriseHighlightedContents = [{
+    const enterpriseHighlightedSets = [{
       uuid: 'test-uuid',
       isPublished: true,
       highlightedContent: [
@@ -47,13 +47,13 @@ describe('enterpriseCurationReducer', () => {
     expect(
       enterpriseCurationReducer(
         initialState,
-        enterpriseCurationActions.setEnterpriseHighlightedContents(enterpriseHighlightedContents),
+        enterpriseCurationActions.setEnterpriseHighlightedSets(enterpriseHighlightedSets),
       ),
-    ).toMatchObject({ enterpriseHighlightedContents });
+    ).toMatchObject({ enterpriseHighlightedSets });
   });
 
-  it('should set isNewArchivedCourse ', () => {
-    const enterpriseHighlightedContents = [{
+  it('should set isNewArchivedContent ', () => {
+    const enterpriseHighlightedSets = [{
       uuid: 'test-uuid',
       isPublished: true,
       highlightedContent: [
@@ -69,9 +69,9 @@ describe('enterpriseCurationReducer', () => {
     expect(
       enterpriseCurationReducer(
         initialState,
-        enterpriseCurationActions.setIsNewArchivedCourse(enterpriseHighlightedContents),
+        enterpriseCurationActions.setIsNewArchivedContent(enterpriseHighlightedSets),
       ),
-    ).toMatchObject({ isNewArchivedCourse: true });
+    ).toMatchObject({ isNewArchivedContent: true });
   });
 
   it('should set fetch error', () => {

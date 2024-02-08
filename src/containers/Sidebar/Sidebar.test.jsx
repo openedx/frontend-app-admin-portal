@@ -449,7 +449,7 @@ describe('<Sidebar />', () => {
           enterpriseCuration: {
             isHighlightFeatureActive: true,
           },
-          isNewArchivedCourse: false,
+          isNewArchivedContent: false,
         },
       };
       render(<SidebarWrapper enterpriseAppContextValue={contextValue} />);
@@ -462,7 +462,7 @@ describe('<Sidebar />', () => {
           enterpriseCuration: {
             isHighlightFeatureActive: true,
           },
-          isNewArchivedCourse: true,
+          isNewArchivedContent: true,
         },
       };
       render(<SidebarWrapper enterpriseAppContextValue={contextValue} />);

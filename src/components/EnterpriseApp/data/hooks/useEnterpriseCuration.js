@@ -27,7 +27,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [enterpriseCuration, setEnterpriseCuration] = useState(null);
-  const [enterpriseHighlightedContents, setEnterpriseHighlightedContents] = useState(null);
+  const [enterpriseHighlightedSets, setEnterpriseHighlightedSets] = useState(null);
 
   const config = getConfig();
 
@@ -89,7 +89,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
           const data = await getHighlightSet(highlightSet.uuid);
           return data;
         }));
-        setEnterpriseHighlightedContents(curationHighlightedContents);
+        setEnterpriseHighlightedSets(curationHighlightedContents);
         setEnterpriseCuration(curation);
       } catch (error) {
         logError(error);
@@ -109,7 +109,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   return {
     isLoading,
     enterpriseCuration,
-    enterpriseHighlightedContents,
+    enterpriseHighlightedSets,
     fetchError,
     updateEnterpriseCuration,
   };

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Add, Info } from '@edx/paragon/icons';
 import { useContentHighlightsContext } from './data/hooks';
 import EVENT_NAMES from '../../eventTracking';
-import ContentHighlightArchivedCoursesAlert from './ContentHighlightArchivedCoursesAlert';
+import ContentHighlightArchivedContentAlert from './ContentHighlightArchivedContentAlert';
 
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import {
@@ -23,7 +23,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       enterpriseCuration: {
         highlightSets,
       },
-      isNewArchivedCourse,
+      isNewArchivedContent,
     },
   } = useContext(EnterpriseAppContext);
 
@@ -83,7 +83,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       <p>
         {HEADER_TEXT.SUB_TEXT.currentContent}
       </p>
-      {isNewArchivedCourse ? <ContentHighlightArchivedCoursesAlert /> : null }
+      {isNewArchivedContent ? <ContentHighlightArchivedContentAlert /> : null }
       <Alert
         variant="danger"
         icon={Info}
