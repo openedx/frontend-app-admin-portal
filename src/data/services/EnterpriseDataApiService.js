@@ -2,7 +2,7 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import store from '../store';
-import { configuration, features } from '../../config';
+import { configuration } from '../../config';
 
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
@@ -13,9 +13,8 @@ class EnterpriseDataApiService {
   static enterpriseAdminBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/`;
 
   static getEnterpriseUUID(enterpriseId) {
-    const { FEATURE_DEMO_DATA } = features;
     const { enableDemoData } = store.getState().portalConfiguration;
-    return FEATURE_DEMO_DATA && enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
+    return enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
   }
 
   static fetchDashboardAnalytics(enterpriseId) {

@@ -20,7 +20,6 @@ exports[`<Sidebar /> renders correctly 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
@@ -63,7 +62,6 @@ exports[`<Sidebar /> renders correctly 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
@@ -106,7 +104,6 @@ exports[`<Sidebar /> renders correctly 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
@@ -149,7 +146,6 @@ exports[`<Sidebar /> renders correctly 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
           id="learner-credit-link"
@@ -193,7 +189,6 @@ exports[`<Sidebar /> renders correctly 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/settings"
           id="settings-sidebar-link"
@@ -258,7 +253,6 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
@@ -301,7 +295,6 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
           id="learner-credit-link"
@@ -345,7 +338,6 @@ exports[`<Sidebar /> renders correctly when code management is hidden 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/settings"
           id="settings-sidebar-link"
@@ -410,7 +402,6 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
@@ -451,7 +442,6 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
@@ -492,7 +482,6 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
@@ -533,7 +522,6 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
           id="learner-credit-link"
@@ -575,7 +563,6 @@ exports[`<Sidebar /> renders correctly when expanded 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/settings"
           id="settings-sidebar-link"
@@ -638,7 +625,6 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learners"
           onClick={[Function]}
@@ -679,7 +665,6 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/coupons"
           onClick={[Function]}
@@ -720,7 +705,6 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/subscriptions"
           onClick={[Function]}
@@ -761,7 +745,6 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/learner-credit"
           id="learner-credit-link"
@@ -803,7 +786,6 @@ exports[`<Sidebar /> renders correctly when expanded by toggle 1`] = `
         className="nav-item"
       >
         <a
-          aria-current={null}
           className="nav-link text-left rounded-0 d-flex align-items-center"
           href="/test-enterprise-slug/admin/settings"
           id="settings-sidebar-link"

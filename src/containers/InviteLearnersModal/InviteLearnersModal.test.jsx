@@ -55,6 +55,6 @@ describe('UserSubscriptionModalWrapper', () => {
 
   it('renders user licenses modal', () => {
     const wrapper = mount(<InviteLearnersModalWrapper data={{}} />);
-    expect(wrapper.find('.modal-body form h3').first().text()).toEqual('Add Users');
+    expect(wrapper.find('div form h3').first().text()).toEqual('Add Users');
   });
 });

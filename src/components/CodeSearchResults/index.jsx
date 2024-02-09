@@ -7,6 +7,7 @@ import { updateUrl } from '../../utils';
 
 import CodeSearchResultsHeading from './CodeSearchResultsHeading';
 import CodeSearchResultsTable from './CodeSearchResultsTable';
+import { withLocation, withNavigate } from '../../hoc';
 
 class CodeSearchResults extends React.Component {
   constructor(props) {
@@ -19,14 +20,16 @@ class CodeSearchResults extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { searchQuery, isOpen } = this.props;
+    const {
+      searchQuery, isOpen, navigate, location,
+    } = this.props;
     if (isOpen && searchQuery !== prevProps.searchQuery) {
       this.resetCodeActionMessages();
       this.resetShouldRefreshTable();
     }
 
     if (isOpen !== prevProps.isOpen) {
-      updateUrl({ page: undefined });
+      updateUrl(navigate, location.pathname, { page: undefined });
     }
   }
 
@@ -50,7 +53,8 @@ class CodeSearchResults extends React.Component {
   };
 
   handleRevokeOnSuccess = () => {
-    updateUrl({ page: undefined });
+    const { navigate, location } = this.props;
+    updateUrl(navigate, location.pathname, { page: undefined });
     this.setState({
       isCodeRevokeSuccessful: true,
       shouldRefreshTable: true,
@@ -106,6 +110,10 @@ CodeSearchResults.propTypes = {
   onClose: PropTypes.func.isRequired,
   isOpen: PropTypes.bool,
   searchQuery: PropTypes.string,
+  navigate: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
 };
 
 CodeSearchResults.defaultProps = {
@@ -113,4 +121,4 @@ CodeSearchResults.defaultProps = {
   searchQuery: null,
 };
 
-export default CodeSearchResults;
+export default withLocation(withNavigate(CodeSearchResults));

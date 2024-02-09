@@ -139,7 +139,6 @@ const CodeAssignmentModalWrapper = (props) => (
   </MemoryRouter>
 );
 /* eslint-enable react/prop-types */
-
 describe('CodeAssignmentModal component', () => {
   it('displays a modal', () => {
     render(<CodeAssignmentModalWrapper />);

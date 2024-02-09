@@ -76,6 +76,7 @@ async function fetchEnterpriseBudgets({
         pending: result.aggregates.amountAllocatedUsd,
       },
       isAssignable: isAssignableSubsidyAccessPolicyType(result),
+      isRetired: result.retired,
     });
   });
   enterpriseSubsidyResults?.forEach((result) => {

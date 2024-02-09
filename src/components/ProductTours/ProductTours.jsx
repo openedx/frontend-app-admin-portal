@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ProductTour } from '@edx/paragon';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
 import browseAndRequestTour from './browseAndRequestTour';
@@ -30,7 +29,6 @@ const ProductTours = ({
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
-  const history = useHistory();
   const enabledFeatures = {
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance }),
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal }),
@@ -38,22 +36,10 @@ const ProductTours = ({
     [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS),
   };
   const newFeatureTourCheckpoints = {
-    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({
-      enterpriseSlug,
-      history,
-    }),
-    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({
-      enterpriseSlug,
-      history,
-    }),
-    [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({
-      enterpriseSlug,
-      history,
-    }),
-    [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({
-      enterpriseSlug,
-      history,
-    }),
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: portalAppearanceTour({ enterpriseSlug }),
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({ enterpriseSlug }),
+    [LEARNER_CREDIT_COOKIE_NAME]: learnerCreditTour({ enterpriseSlug }),
+    [HIGHLIGHTS_COOKIE_NAME]: highlightsTour({ enterpriseSlug }),
   };
   const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
   const tours = [{

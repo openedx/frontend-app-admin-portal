@@ -41,6 +41,7 @@ const BudgetCard = ({
         displayName={budget.name}
         enterpriseSlug={enterpriseSlug}
         isAssignable={budget.isAssignable}
+        isRetired={budget.isRetired}
       />
     );
   }
@@ -96,6 +97,7 @@ BudgetCard.propTypes = {
       pending: PropTypes.number,
     }),
     isAssignable: PropTypes.bool,
+    isRetired: PropTypes.bool,
   }).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,

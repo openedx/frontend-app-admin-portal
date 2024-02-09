@@ -1,3 +1,5 @@
+import { logError } from '@edx/frontend-platform/logging';
+
 import {
   camelCaseDict,
   camelCaseDictArray,
@@ -6,7 +8,13 @@ import {
   pollAsync,
   isValidNumber,
   defaultQueryClientRetryHandler,
+  queryCacheOnErrorHandler,
 } from './utils';
+
+jest.mock('@edx/frontend-platform/logging', () => ({
+  ...jest.requireActual('@edx/frontend-platform/logging'),
+  logError: jest.fn(),
+}));
 
 describe('utils', () => {
   describe('camel casing methods', () => {
@@ -112,6 +120,14 @@ describe('utils', () => {
     it.each([1, 2])('return true if first failure and error is not a 404 (failureCount: %s)', (failureCount) => {
       const result = defaultQueryClientRetryHandler(failureCount, mockError500);
       expect(result).toEqual(true);
+    });
+  });
+  describe('queryCacheOnErrorHandler', () => {
+    it('calls logError', () => {
+      const error = 'hello!';
+      const query = { meta: { errorMessage: "hi, I'm an error" } };
+      queryCacheOnErrorHandler(error, query);
+      expect(logError).toHaveBeenCalledWith("hi, I'm an error");
     });
   });
 });

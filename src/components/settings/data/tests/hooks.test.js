@@ -23,7 +23,7 @@ describe('settings hooks', () => {
     });
 
     test('returns expected route param', () => {
-      jest.spyOn(Router, 'useParams').mockReturnValue({ settingsTab: 'access' });
+      jest.spyOn(Router, 'useParams').mockReturnValue({ '*': 'access' });
       const { result } = renderHook(useCurrentSettingsTab);
       expect(result.current).toEqual('access');
     });

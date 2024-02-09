@@ -9,7 +9,8 @@ import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
-import { history } from '@edx/frontend-platform/initialize';
+import { logError } from '@edx/frontend-platform/logging';
+
 import { features } from './config';
 
 import {
@@ -44,7 +45,7 @@ const formatPercentage = ({ decimal, numDecimals = 1 }) => (
   decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : '0%'
 );
 
-const updateUrl = (queryOptions) => {
+const updateUrl = (navigate, currentPath, queryOptions) => {
   if (!queryOptions) {
     return;
   }
@@ -65,9 +66,9 @@ const updateUrl = (queryOptions) => {
     newQueryParams.set(key, value);
   });
 
-  const newQueryString = `?${newQueryParams.toString()}`;
+  const newQueryString = newQueryParams.toString();
   if (newQueryString !== window.location.search) {
-    history.push(newQueryString);
+    navigate({ pathname: currentPath, search: newQueryString });
   }
 };
 
@@ -406,10 +407,19 @@ const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
  * may be overridden per-query, as needed.
  */
 function defaultQueryClientRetryHandler(failureCount, err) {
-  if (failureCount >= 3 || err.customAttributes.httpErrorStatus === 404) {
+  if (failureCount >= 3 || err.customAttributes?.httpErrorStatus === 404) {
     return false;
   }
   return true;
+}
+
+/**
+ * Logs a react-query query error message on failure
+ */
+function queryCacheOnErrorHandler(error, query) {
+  if (query.meta?.errorMessage) {
+    logError(query.meta?.errorMessage);
+  }
 }
 
 /**
@@ -473,4 +483,5 @@ export {
   defaultQueryClientRetryHandler,
   isAssignableSubsidyAccessPolicyType,
   getActiveTableColumnFilters,
+  queryCacheOnErrorHandler,
 };

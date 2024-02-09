@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Modal, Form, Spinner,
+  Button, Icon, ModalDialog, ActionRow, Form,
 } from '@edx/paragon';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
@@ -40,7 +40,6 @@ export class BaseCodeAssignmentModal extends React.Component {
     super(props);
 
     this.errorMessageRef = React.createRef();
-    this.modalRef = React.createRef();
 
     this.state = {
       mode: MODAL_TYPES.assign,
@@ -52,14 +51,6 @@ export class BaseCodeAssignmentModal extends React.Component {
     this.validateFormData = this.validateFormData.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.getNumberOfSelectedCodes = this.getNumberOfSelectedCodes.bind(this);
-  }
-
-  componentDidMount() {
-    const { current: { firstFocusableElement } } = this.modalRef;
-
-    if (firstFocusableElement) {
-      firstFocusableElement.focus();
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -376,7 +367,7 @@ export class BaseCodeAssignmentModal extends React.Component {
           >
             Notify learners by email
           </Form.Checkbox>
-          { notify && (
+          {notify && (
             <EmailTemplateForm
               emailTemplateType={MODAL_TYPES.assign}
               fields={getAssignmentModalFields(formatMessage)}
@@ -405,33 +396,46 @@ export class BaseCodeAssignmentModal extends React.Component {
     } = this.state;
 
     return (
-      <Modal
-        ref={this.modalRef}
-        dialogClassName="code-assignment"
-        title={this.renderTitle()}
-        body={this.renderBody()}
-        buttons={[
-          <Button
-            key="assign-submit-btn"
-            disabled={submitting}
-            onClick={handleSubmit(this.handleModalSubmit)}
-            data-testid={SUBMIT_BUTTON_TEST_ID}
-          >
-            <>
-              {mode === MODAL_TYPES.assign && submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
-              {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
-            </>
-          </Button>,
-          <SaveTemplateButton
-            key="save-assign-template-btn"
-            templateType={MODAL_TYPES.assign}
-            setMode={this.setMode}
-            handleSubmit={handleSubmit}
-          />,
-        ]}
+      <ModalDialog
+        isOpen
+        size="lg"
         onClose={onClose}
-        open
-      />
+        className="code-assignment"
+        hasCloseButton
+      >
+        <ModalDialog.Header>
+          <ModalDialog.Title>
+            {this.renderTitle()}
+          </ModalDialog.Title>
+        </ModalDialog.Header>
+        <ModalDialog.Body>
+          {this.renderBody()}
+        </ModalDialog.Body>
+        <ModalDialog.Footer>
+          <ActionRow>
+            <ModalDialog.CloseButton variant="link">
+              Cancel
+            </ModalDialog.CloseButton>
+            <Button
+              key="assign-submit-btn"
+              disabled={submitting}
+              onClick={handleSubmit(this.handleModalSubmit)}
+              data-testid={SUBMIT_BUTTON_TEST_ID}
+            >
+              <>
+              {mode === MODAL_TYPES.assign && submitting && <Spinner animation="border" className="mr-2" variant="light" size="sm" />}
+                {`Assign ${isBulkAssign ? 'Codes' : 'Code'}`}
+              </>
+            </Button>,
+            <SaveTemplateButton
+              key="save-assign-template-btn"
+              templateType={MODAL_TYPES.assign}
+              setMode={this.setMode}
+              handleSubmit={handleSubmit}
+            />,
+          </ActionRow>
+        </ModalDialog.Footer>
+      </ModalDialog>
     );
   }
 }

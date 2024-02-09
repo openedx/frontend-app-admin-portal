@@ -384,6 +384,39 @@ class LmsApiService {
     const url = `${LmsApiService.baseUrl}/enterprise/api/v1/analytics-summary/${enterpriseUUID}`;
     return LmsApiService.apiClient().post(url, formData);
   }
+
+  static updateUserActiveEnterprise = (enterpriseId) => {
+    const url = `${configuration.LMS_BASE_URL}/enterprise/select/active/`;
+    const formData = new FormData();
+    formData.append('enterprise', enterpriseId);
+
+    return LmsApiService.apiClient().post(
+      url,
+      formData,
+    );
+  };
+
+  static async fetchData(url, linkedEnterprises = []) {
+    const response = await getAuthenticatedHttpClient().get(url);
+    const responseData = camelCaseObject(response.data);
+    const linkedEnterprisesCopy = [...linkedEnterprises];
+    linkedEnterprisesCopy.push(...responseData.results);
+    if (responseData.next) {
+      return LmsApiService.fetchData(responseData.next, linkedEnterprisesCopy);
+    }
+    return linkedEnterprisesCopy;
+  }
+
+  static fetchEnterpriseLearnerData = async (options) => {
+    const enterpriseLearnerUrl = `${configuration.LMS_BASE_URL}/enterprise/api/v1/enterprise-learner/`;
+    const queryParams = new URLSearchParams({
+      ...options,
+      page: 1,
+    });
+    const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
+    const response = await LmsApiService.fetchData(url);
+    return response;
+  };
 }
 
 export default LmsApiService;

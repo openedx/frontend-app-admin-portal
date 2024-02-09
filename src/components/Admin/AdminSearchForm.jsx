@@ -9,6 +9,7 @@ import { Info } from '@edx/paragon/icons';
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
+import { withLocation, withNavigate } from '../../hoc';
 
 class AdminSearchForm extends React.Component {
   componentDidUpdate(prevProps) {
@@ -32,6 +33,7 @@ class AdminSearchForm extends React.Component {
   }
 
   onCourseSelect(event) {
+    const { navigate, location } = this.props;
     const updateParams = {
       search_course: event.target.value,
       page: 1,
@@ -39,7 +41,7 @@ class AdminSearchForm extends React.Component {
     if (event.target.value === '') {
       updateParams.search_start_date = '';
     }
-    updateUrl(updateParams);
+    updateUrl(navigate, location.pathname, updateParams);
   }
 
   render() {
@@ -89,7 +91,7 @@ class AdminSearchForm extends React.Component {
                   as="select"
                   className="w-100"
                   value={searchDateQuery}
-                  onChange={event => updateUrl({
+                  onChange={event => updateUrl(this.props.navigate, this.props.location.pathname, {
                     search_start_date: event.target.value,
                     page: 1,
                   })}
@@ -111,11 +113,11 @@ class AdminSearchForm extends React.Component {
               <Form.Label id="search-email-label" className="mb-2">Filter by email</Form.Label>
               <SearchBar
                 placeholder="Search by email..."
-                onSearch={query => updateUrl({
+                onSearch={query => updateUrl(this.props.navigate, this.props.location.pathname, {
                   search: query,
                   page: 1,
                 })}
-                onClear={() => updateUrl({ search: undefined })}
+                onClear={() => updateUrl(this.props.navigate, this.props.location.pathname, { search: undefined })}
                 value={searchQuery}
                 aria-labelledby="search-email-label"
                 className="py-0"
@@ -141,6 +143,10 @@ AdminSearchForm.propTypes = {
     searchDateQuery: PropTypes.string,
   }).isRequired,
   tableData: PropTypes.arrayOf(PropTypes.shape({})),
+  navigate: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
 };
 
-export default AdminSearchForm;
+export default withLocation(withNavigate(AdminSearchForm));

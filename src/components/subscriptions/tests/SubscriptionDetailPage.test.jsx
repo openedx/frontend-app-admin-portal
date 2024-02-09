@@ -1,11 +1,11 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { mockNavigate } from 'react-router-dom';
 import { useSubscriptionFromParams } from '../data/contextHooks';
 import { SubscriptionDetailPage } from '../SubscriptionDetailPage';
 import { SubscriptionManagementContext, SUBSCRIPTION_PLAN_ZERO_STATE } from './TestUtilities';
-import { renderWithRouter } from '../../test/testUtils';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { MANAGE_LEARNERS_TAB } from '../data/constants';
 
@@ -29,6 +29,22 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../data/contextHooks', () => ({
   useSubscriptionFromParams: jest.fn(),
 }));
+
+jest.mock('react-router-dom', () => {
+  const mockNavigation = jest.fn();
+
+  // eslint-disable-next-line react/prop-types
+  const Navigate = ({ to }) => {
+    mockNavigation(to);
+    return <div />;
+  };
+
+  return {
+    ...jest.requireActual('react-router-dom'),
+    Navigate,
+    mockNavigate: mockNavigation,
+  };
+});
 
 const defaultProps = {
   enterpriseSlug: 'sluggy',
@@ -57,24 +73,22 @@ describe('<SubscriptionDetailPage />', () => {
 
   it('renders the subscription detail page children components', () => {
     useSubscriptionFromParams.mockReturnValue([fakeSubscription, false]);
-    renderWithRouter(<SubscriptionDetailPageWrapper {...defaultProps} />);
+    render(<SubscriptionDetailPageWrapper {...defaultProps} />);
     screen.getByTestId('subscription-details');
     screen.getByTestId('subscription-expiration-modals');
     screen.getByTestId('license-allocation-details');
   });
   it('shows a loading screen ', () => {
     useSubscriptionFromParams.mockReturnValue([null, true]);
-    renderWithRouter(<SubscriptionDetailPageWrapper {...defaultProps} />);
+    render(<SubscriptionDetailPageWrapper {...defaultProps} />);
     expect(screen.getByTestId('skelly')).toBeInTheDocument();
   });
   it('redirects to the subscription choosing page if there is no subscription', async () => {
     useSubscriptionFromParams.mockReturnValue([null, false]);
 
-    renderWithRouter(<SubscriptionDetailPageWrapper {...defaultProps} />);
+    render(<SubscriptionDetailPageWrapper {...defaultProps} />);
 
     const expectedPath = `/${defaultProps.enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/${MANAGE_LEARNERS_TAB}`;
-    await waitFor(() => {
-      expect(screen.getByText(`Redirected to ${expectedPath}`)).toBeInTheDocument();
-    });
+    expect(mockNavigate).toHaveBeenLastCalledWith(expectedPath);
   });
 });

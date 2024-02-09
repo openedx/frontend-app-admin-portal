@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { createMemoryHistory } from 'history';
-import { Router, Route } from 'react-router-dom';
+import {
+  MemoryRouter, Routes, Route,
+} from 'react-router-dom';
 import { waitFor } from '@testing-library/react';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { isEnterpriseUser } from '@edx/frontend-enterprise-utils';
@@ -19,19 +20,23 @@ const mockEnterpriseCustomer = {
   uuid: 'dc3bfcf8-c61f-11ec-9d64-0242ac120002',
 };
 
-const history = createMemoryHistory({
-  initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/register`],
-});
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}));
+
 const AdminRegisterPageWrapper = ({
   ...rest
 }) => (
-  <Router history={history}>
-    <Route
-      exact
-      path="/:enterpriseSlug/admin/register"
-      render={routeProps => <AdminRegisterPage {...routeProps} {...rest} />}
-    />
-  </Router>
+  <MemoryRouter initialEntries={[`/${TEST_ENTERPRISE_SLUG}/admin/register`]}>
+    <Routes>
+      <Route
+        path="/:enterpriseSlug/admin/register"
+        element={<AdminRegisterPage {...rest} />}
+      />
+    </Routes>
+  </MemoryRouter>
 );
 
 describe('<AdminRegisterPage />', () => {
@@ -81,6 +86,6 @@ describe('<AdminRegisterPage />', () => {
     }));
     mount(<AdminRegisterPageWrapper />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register/activate`;
-    await waitFor(() => expect(history.location.pathname).toEqual(expectedRedirectRoute));
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute));
   });
 });

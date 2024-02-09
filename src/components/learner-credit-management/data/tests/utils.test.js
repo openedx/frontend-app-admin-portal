@@ -1,4 +1,8 @@
-import { transformSubsidySummary, getBudgetStatus, orderBudgets } from '../utils';
+import {
+  transformSubsidySummary,
+  getBudgetStatus,
+  orderBudgets,
+} from '../utils';
 import { EXEC_ED_OFFER_TYPE } from '../constants';
 
 describe('transformSubsidySummary', () => {
@@ -97,7 +101,11 @@ describe('getBudgetStatus', () => {
     const startDateStr = '2024-09-30';
     const endDateStr = '2027-10-30';
     const currentDateStr = '2023-09-28';
-    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
+    const result = getBudgetStatus({
+      startDateStr,
+      endDateStr,
+      currentDate: new Date(currentDateStr),
+    });
     expect(result.status).toEqual('Scheduled');
   });
 
@@ -105,7 +113,11 @@ describe('getBudgetStatus', () => {
     const startDateStr = '2023-08-01';
     const endDateStr = '2027-10-30';
     const currentDateStr = '2023-09-28';
-    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
+    const result = getBudgetStatus({
+      startDateStr,
+      endDateStr,
+      currentDate: new Date(currentDateStr),
+    });
     expect(result.status).toEqual('Active');
   });
 
@@ -113,8 +125,25 @@ describe('getBudgetStatus', () => {
     const startDateStr = '2023-08-01';
     const endDateStr = '2023-08-31';
     const currentDateStr = '2023-09-28';
-    const result = getBudgetStatus(startDateStr, endDateStr, new Date(currentDateStr));
+    const result = getBudgetStatus({
+      startDateStr,
+      endDateStr,
+      currentDate: new Date(currentDateStr),
+    });
     expect(result.status).toEqual('Expired');
+  });
+
+  it('should return "Retired" when `isBudgetRetired=true`', () => {
+    const startDateStr = '2023-08-01';
+    const endDateStr = '2023-08-31';
+    const currentDateStr = '2023-09-28';
+    const result = getBudgetStatus({
+      startDateStr,
+      endDateStr,
+      currentDate: new Date(currentDateStr),
+      isBudgetRetired: true,
+    });
+    expect(result.status).toEqual('Retired');
   });
 });
 
@@ -132,11 +161,17 @@ const budgets = [
   },
   {
     name: 'Budget 3',
+    start: '2023-01-01T00:00:00Z',
+    end: '2023-01-10T00:00:00Z',
+    isRetired: true,
+  },
+  {
+    name: 'Budget 4',
     start: '2023-02-01T00:00:00Z',
     end: '2023-02-15T00:00:00Z',
   },
   {
-    name: 'Budget 4',
+    name: 'Budget 5',
     start: '2023-01-15T00:00:00Z',
     end: '2023-01-25T00:00:00Z',
   },
@@ -146,8 +181,12 @@ describe('orderBudgets', () => {
   it('should sort offers correctly', () => {
     const sortedBudgets = orderBudgets(budgets);
 
-    // Expected order: Active budgets (Budget 2), Upcoming budgets (Budget 1, Budget 4), Expired budgets (Budget 3)
-    expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget 2', 'Budget 1', 'Budget 4', 'Budget 3']);
+    // Expected order:
+    // Active budgets (Budget 2)
+    // Upcoming budgets (Budget 1, Budget 5)
+    // Expired budgets (Budget 4)
+    // Retired budgets (Budget 3)
+    expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget 2', 'Budget 1', 'Budget 5', 'Budget 4', 'Budget 3']);
   });
 
   it('should handle empty input', () => {

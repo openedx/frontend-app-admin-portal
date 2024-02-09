@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import TableContainer from '../../containers/TableContainer';
@@ -10,6 +10,7 @@ import ErrorPage from '../ErrorPage';
 import SearchBar from '../SearchBar';
 import SurveyPage from '../SurveyPage';
 import { updateUrl } from '../../utils';
+import { withLocation, withNavigate } from '../../hoc';
 
 export const TITLE = 'Enterprise List';
 
@@ -86,7 +87,7 @@ class EnterpriseList extends React.Component {
   renderRedirectToEnterpriseAdminPage() {
     const { results } = this.props.enterpriseList;
     return (
-      <Redirect to={`/${results[0].slug}/admin/learners`} />
+      <Navigate to={`/${results[0].slug}/admin/learners`} replace />
     );
   }
 
@@ -127,11 +128,11 @@ class EnterpriseList extends React.Component {
               <div className="col-sm-12 col-md-6 col-lg-4 mb-3 mb-md-0">
                 <SearchBar
                   placeholder="Search by enterprise name..."
-                  onSearch={query => updateUrl({
+                  onSearch={query => updateUrl(this.props.navigate, this.props.location.pathname, {
                     search: query,
                     page: 1,
                   })}
-                  onClear={() => updateUrl({ search: null })}
+                  onClear={() => updateUrl(this.props.navigate, this.props.location.pathname, { search: null })}
                   value={searchQuery}
                 />
               </div>
@@ -179,10 +180,12 @@ EnterpriseList.propTypes = {
     start: PropTypes.number,
   }),
   location: PropTypes.shape({
+    pathname: PropTypes.string,
     search: PropTypes.string,
   }),
+  navigate: PropTypes.func,
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
 };
 
-export default withRouter(EnterpriseList);
+export default withLocation(withNavigate(EnterpriseList));

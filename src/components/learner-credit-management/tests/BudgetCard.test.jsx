@@ -11,11 +11,19 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { QueryClientProvider } from '@tanstack/react-query';
 import BudgetCard from '../BudgetCard';
 import { formatPrice, useSubsidySummaryAnalyticsApi, useBudgetRedemptions } from '../data';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
+import { queryClient } from '../../test/testUtils';
 
+jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
+  useEnterpriseBudgets: jest.fn().mockReturnValue({
+    isFetchingBudgets: false,
+  }),
+}));
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
   useSubsidySummaryAnalyticsApi: jest.fn(),
@@ -43,6 +51,10 @@ const initialStore = {
   portalConfiguration: {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
+    enablePortalLearnerCreditManagementScreen: true,
   },
 };
 const store = getMockStore({ ...initialStore });
@@ -55,20 +67,21 @@ const mockBudgetDisplayName = 'Test Enterprise Budget Display Name';
 const defaultEnterpriseSubsidiesContextValue = {
   isFetchingBudgets: false,
 };
-
 const BudgetCardWrapper = ({
   enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
   ...rest
 }) => (
-  <MemoryRouter initialEntries={['/test-enterprise/admin/learner-credit']}>
-    <Provider store={store}>
-      <IntlProvider locale="en">
-        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-          <BudgetCard {...rest} />
-        </EnterpriseSubsidiesContext.Provider>
-      </IntlProvider>
-    </Provider>
-  </MemoryRouter>
+  <QueryClientProvider client={queryClient()}>
+    <MemoryRouter initialEntries={['/test-enterprise/admin/learner-credit']}>
+      <Provider store={store}>
+        <IntlProvider locale="en">
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <BudgetCard {...rest} />
+          </EnterpriseSubsidiesContext.Provider>
+        </IntlProvider>
+      </Provider>
+    </MemoryRouter>
+  </QueryClientProvider>
 );
 
 describe('<BudgetCard />', () => {

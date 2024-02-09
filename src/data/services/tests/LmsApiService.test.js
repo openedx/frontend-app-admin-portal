@@ -7,12 +7,15 @@ import { configuration } from '../../../config';
 
 const lmsBaseUrl = `${configuration.LMS_BASE_URL}`;
 const mockEnterpriseUUID = 'test-enterprise-id';
+const mockUsername = 'test_username';
 
 const axiosMock = new MockAdapter(axios);
 getAuthenticatedHttpClient.mockReturnValue(axios);
 
 axiosMock.onAny().reply(200);
 axios.patch = jest.fn();
+axios.post = jest.fn();
+axios.get = jest.fn();
 
 describe('LmsApiService', () => {
   test('updateEnterpriseCustomer calls the LMS to update the enterprise customer', () => {
@@ -40,5 +43,50 @@ describe('LmsApiService', () => {
       `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer-branding/update-branding/${mockEnterpriseUUID}/`,
       { primary_color: '#A8DABC' },
     );
+  });
+  test('updateUserActiveEnterprise calls the LMS to update the active linked enterprise org', () => {
+    axios.get.mockReturnValue({
+      data: {
+        results: [{
+          active: true,
+          enterpriseCustomer: { uuid: 'test-uuid' },
+        }],
+      },
+    });
+    LmsApiService.updateUserActiveEnterprise(
+      mockEnterpriseUUID,
+    );
+    const expectedFormData = new FormData();
+    expectedFormData.append('enterprise', mockEnterpriseUUID);
+    expect(axios.post).toBeCalledWith(
+      `${lmsBaseUrl}/enterprise/select/active/`,
+      expectedFormData,
+    );
+  });
+  test('fetchEnterpriseLearnerData calls the LMS to fetch learner data', () => {
+    axios.get.mockReturnValue({
+      data: {
+        results: [{
+          active: true,
+          enterpriseCustomer: { uuid: 'test-uuid' },
+        }],
+      },
+    });
+    LmsApiService.fetchEnterpriseLearnerData({ username: mockUsername });
+    expect(axios.get).toBeCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-learner/?username=${mockUsername}&page=1`,
+    );
+  });
+  test('getActiveLinkedEnterprise returns the actively linked enterprise', async () => {
+    axios.get.mockReturnValue({
+      data: {
+        results: [{
+          active: true,
+          enterpriseCustomer: { uuid: 'test-uuid' },
+        }],
+      },
+    });
+    const activeCustomer = await LmsApiService.fetchEnterpriseLearnerData({ username: mockUsername });
+    expect(activeCustomer).toEqual([{ active: true, enterpriseCustomer: { uuid: 'test-uuid' } }]);
   });
 });
