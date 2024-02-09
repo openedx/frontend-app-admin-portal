@@ -232,7 +232,6 @@ describe('<ExistingLMSCardDeck />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
-    features.FEATURE_INTEGRATION_REPORTING = true;
     const baseUrl = 'http://dummy.com';
     const pathName = '/test-enterprise/admin/settings/lms';
     Object.defineProperty(window, 'location', {
