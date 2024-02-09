@@ -1,9 +1,8 @@
 import { Alert } from '@edx/paragon';
 import { useContext, useState } from 'react';
-import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME, COURSE_RUN_STATUSES } from './data/constants';
+import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions, isArchivedContent } from '../EnterpriseApp/data/enterpriseCurationReducer';
-
 
 const ContentHighlightArchivedAlert = () => {
   const archivedContentCookies = {};
