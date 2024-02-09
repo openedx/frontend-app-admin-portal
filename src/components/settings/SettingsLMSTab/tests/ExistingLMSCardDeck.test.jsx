@@ -124,7 +124,6 @@ describe('<ExistingLMSCardDeck />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
-    features.FEATURE_INTEGRATION_REPORTING = true;
   });
 
   it('renders active config card', () => {
@@ -341,18 +340,6 @@ describe('<ExistingLMSCardDeck />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: false,
     });
-    render(
-      <ExistingLMSCardDeck
-        configData={configData}
-        editExistingConfig={mockEditExistingConfigFn}
-        onClick={mockOnClick}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />,
-    );
-    expect(screen.queryByText('View sync history')).not.toBeInTheDocument();
-  });
-  it('only shows sync logs only when feature is not gated', () => {
-    features.FEATURE_INTEGRATION_REPORTING = false;
     render(
       <ExistingLMSCardDeck
         configData={configData}

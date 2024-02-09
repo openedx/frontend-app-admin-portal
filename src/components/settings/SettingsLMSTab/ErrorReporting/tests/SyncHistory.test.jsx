@@ -92,7 +92,6 @@ describe('Test sync history page full flow', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
-    features.FEATURE_INTEGRATION_REPORTING = true;
 
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
     const mockFetchExistingConfigs = jest.spyOn(LmsApiService, 'fetchEnterpriseCustomerIntegrationConfigs');
