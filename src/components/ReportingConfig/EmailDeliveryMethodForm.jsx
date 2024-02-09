@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, ValidationFormGroup } from '@edx/paragon';
+import { Form, Input } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
 import isEmail from 'validator/lib/isEmail';
 
@@ -10,12 +10,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   return (
     <div className="row">
       <div className="col">
-        <ValidationFormGroup
-          for="email"
-          helpText="The email(s), one per line, where the report should be sent"
-          invalidMessage="Required. One email per line. Emails must be formatted properly (email@domain.com)"
-          invalid={invalidFields.emailRaw}
-        >
+        <Form.Group isInvalid={invalidFields.emailRaw}>
           <label htmlFor="email">Email(s)</label>
           <Input
             type="textarea"
@@ -29,7 +24,13 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             })}
             data-hj-suppress
           />
-        </ValidationFormGroup>
+          <Form.Text>The email(s), one per line, where the report should be sent.</Form.Text>
+          {invalidFields.emailRaw && (
+          <Form.Control.Feedback type="invalid">
+            Required. One email per line. Emails must be formatted properly (email@domain.com)
+          </Form.Control.Feedback>
+          )}
+        </Form.Group>
         {config && (
           <div className="form-group">
             <label htmlFor="changePassword">Change Password</label>
@@ -42,12 +43,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             />
           </div>
         )}
-        <ValidationFormGroup
-          for="encryptedPassword"
-          helpText="This password will be used to secure the zip file. It will be encrypted when stored in the database."
-          invalid={invalidFields.encryptedPassword}
-          invalidMessage="Required. Password must not be blank"
-        >
+        <Form.Group isInvalid={invalidFields.encryptedPassword}>
           <label htmlFor="encryptedPassword">Password</label>
           <Input
             type="password"
@@ -57,7 +53,15 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             onBlur={e => handleBlur(e)}
             data-hj-suppress
           />
-        </ValidationFormGroup>
+          <Form.Text>
+            This password will be used to secure the zip file. It will be encrypted when stored in the database.
+          </Form.Text>
+          {invalidFields.encryptedPassword && (
+          <Form.Control.Feedback type="invalid">
+            Required. Password must not be blank.
+          </Form.Control.Feedback>
+          )}
+        </Form.Group>
       </div>
     </div>
   );

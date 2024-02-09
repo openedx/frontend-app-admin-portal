@@ -188,11 +188,12 @@ describe('<ReportingConfigForm />', () => {
     // test empty email field
     wrapper.find('textarea#email').instance().value = '';
     wrapper.find('textarea#email').simulate('blur');
-    expect(wrapper.find('textarea#email').hasClass('is-invalid')).toBeTruthy();
+    expect(wrapper.find({ children: 'Required. One email per line. Emails must be formatted properly (email@domain.com)' }));
+
     // test wrong formatting
     wrapper.find('textarea#email').instance().value = 'misformatted email';
     wrapper.find('textarea#email').simulate('blur');
-    expect(wrapper.find('textarea#email').hasClass('is-invalid')).toBeTruthy();
+    expect(wrapper.find({ children: 'Required. One email per line. Emails must be formatted properly (email@domain.com)' }));
   });
   it('Does not submit if hourOfDay is empty', () => {
     const config = { ...defaultConfig };
@@ -208,7 +209,7 @@ describe('<ReportingConfigForm />', () => {
       />
     ));
     wrapper.find('input#hourOfDay').simulate('blur');
-    expect(wrapper.find('input#hourOfDay').hasClass('is-invalid')).toBeTruthy();
+    expect(wrapper.find({ children: 'Required for all frequency types' }));
   });
   it('Does not submit if sftp fields are empty and deliveryMethod is sftp', () => {
     const config = { ...defaultConfig };
@@ -225,11 +226,16 @@ describe('<ReportingConfigForm />', () => {
       />
     ));
     wrapper.find('.form-control').forEach(input => input.simulate('blur'));
-    expect(wrapper.find('input#sftpPort').hasClass('is-invalid')).toBeTruthy();
-    expect(wrapper.find('input#sftpUsername').hasClass('is-invalid')).toBeTruthy();
-    expect(wrapper.find('input#sftpHostname').hasClass('is-invalid')).toBeTruthy();
-    expect(wrapper.find('input#sftpFilePath').hasClass('is-invalid')).toBeTruthy();
-    expect(wrapper.find('input#encryptedSftpPassword').hasClass('is-invalid')).toBeTruthy();
+    // sftpPort
+    expect(wrapper.find({ children: 'Required for all frequency types' }));
+    // sftpUsername
+    expect(wrapper.find({ children: 'Required. Username cannot be blank' }));
+    // sftpHostname
+    expect(wrapper.find({ children: 'Required. Hostname cannot be blank' }));
+    // sftpFilePath
+    expect(wrapper.find({ children: 'Required. File path cannot be blank' }));
+    // encryptedSftpPassword
+    expect(wrapper.find({ children: 'Required. Password must not be blank' }));
   });
   it('Does not let you select a new value for data type if it uses the old progress_v1', () => {
     const configWithOldDataType = {
@@ -382,7 +388,7 @@ describe('<ReportingConfigForm />', () => {
     });
     wrapper.instance().handleSubmit(formData, null);
     wrapper.find('.form-control').forEach(input => input.simulate('blur'));
-    expect(wrapper.find('input#encryptedPassword').hasClass('is-invalid')).toBeTruthy();
+    expect(wrapper.find({ children: 'Required. Password must not be blank.' }));
   });
   it('Password is not required while updating if it is already present and delivery method is email', async () => {
     const updateConfigMock = jest.fn().mockResolvedValue();

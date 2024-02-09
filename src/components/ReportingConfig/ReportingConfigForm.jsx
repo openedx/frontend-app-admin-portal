@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
 import {
-  ValidationFormGroup, Input, StatefulButton, Icon, Button, Spinner,
+  Button, Form, Icon, Input, Spinner, StatefulButton,
 } from '@edx/paragon';
 import { Check, Close, Download } from '@edx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
@@ -195,9 +195,7 @@ class ReportingConfigForm extends React.Component {
         onChange={() => this.setState({ submitState: SUBMIT_STATES.DEFAULT })}
       >
         <div className="col">
-          <ValidationFormGroup
-            for="active"
-          >
+          <Form.Group>
             <label htmlFor="active">Active</label>
             <Input
               type="checkbox"
@@ -207,14 +205,11 @@ class ReportingConfigForm extends React.Component {
               checked={active}
               onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
             />
-          </ValidationFormGroup>
+          </Form.Group>
         </div>
         <div className="row">
           <div className="col col-6">
-            <ValidationFormGroup
-              for="dataType"
-              helpText="The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report"
-            >
+            <Form.Group>
               <label htmlFor="dataType">Data Type</label>
               <Input
                 type="select"
@@ -224,11 +219,12 @@ class ReportingConfigForm extends React.Component {
                 disabled={config && !dataTypesOptionsValues.includes(config.dataType)}
                 options={[...dataTypesOptions, ...selectedDataTypesOption]}
               />
-            </ValidationFormGroup>
-            <ValidationFormGroup
-              for="reportType"
-              helpText="The type this report should be sent as, e.g. CSV"
-            >
+              <Form.Text>
+                The type of data this report should contain. If this is an old report, you will
+                not be able to change this field, and should create a new report
+              </Form.Text>
+            </Form.Group>
+            <Form.Group>
               <label htmlFor="reportType">Report Type</label>
               <Input
                 type="select"
@@ -237,15 +233,13 @@ class ReportingConfigForm extends React.Component {
                 defaultValue={config ? config.reportType : reportingConfigTypes.reportType[0][0]}
                 options={reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] }))}
               />
-            </ValidationFormGroup>
+              <Form.Text>
+                The type this report should be sent as, e.g. CSV
+              </Form.Text>
+            </Form.Group>
           </div>
           <div className="col col-6">
-            <ValidationFormGroup
-              for="deliveryMethod"
-              helpText="The method in which the data should be sent"
-              invalid={!!APIErrors.deliveryMethod}
-              invalidMessage={APIErrors.deliveryMethod}
-            >
+            <Form.Group isInvalid={!!APIErrors.deliveryMethod}>
               <label htmlFor="deliveryMethod">Delivery Method</label>
               <Input
                 type="select"
@@ -262,11 +256,14 @@ class ReportingConfigForm extends React.Component {
                 value={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
                 disabled={!config}
               />
-            </ValidationFormGroup>
-            <ValidationFormGroup
-              for="frequency"
-              helpText="The frequency interval (daily, weekly, or monthly) that the report should be sent"
-            >
+              <Form.Text>The method in which the data should be sent</Form.Text>
+              {!!APIErrors.deliveryMethod && (
+                <Form.Control.Feedback type="invalid">
+                  {APIErrors.deliveryMethod}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+            <Form.Group>
               <label htmlFor="frequency">Frequency</label>
               <Input
                 type="select"
@@ -276,15 +273,14 @@ class ReportingConfigForm extends React.Component {
                 options={reportingConfigTypes.frequency.map(item => ({ label: item[1], value: item[0] }))}
                 onChange={e => this.setState({ frequency: e.target.value })}
               />
-            </ValidationFormGroup>
+              <Form.Text>The frequency interval (daily, weekly, or monthly) that the report should be sent</Form.Text>
+            </Form.Group>
           </div>
         </div>
         <div className="row">
           <div className="col">
-            <ValidationFormGroup
-              for="dayOfMonth"
-              helpText="The day of the month to send the report. This field is required and only valid when the frequency is monthly"
-              invalid={frequency === 'monthly' && invalidFields.dayOfMonth}
+            <Form.Group
+              isInvalid={frequency === 'monthly' && invalidFields.dayOfMonth}
             >
               <label htmlFor="dayOfMonth">Day of Month</label>
               <Input
@@ -297,13 +293,14 @@ class ReportingConfigForm extends React.Component {
                 defaultValue={config ? config.dayOfMonth : 1}
                 onBlur={e => this.handleBlur(e)}
               />
-            </ValidationFormGroup>
+              <Form.Text>
+                The day of the month to send the report. This field is
+                required and only valid when the frequency is monthly
+              </Form.Text>
+            </Form.Group>
           </div>
           <div className="col">
-            <ValidationFormGroup
-              for="dayOfWeek"
-              helpText="The day of the week to send the report. This field is required and only valid when the frequency is weekly"
-            >
+            <Form.Group>
               <label htmlFor="dayOfWeek">Day of Week</label>
               <Input
                 type="select"
@@ -313,14 +310,15 @@ class ReportingConfigForm extends React.Component {
                 options={reportingConfigTypes.dayOfWeek.map(item => ({ label: item[1], value: item[0] }))}
                 defaultValue={config ? config.dayOfWeek : undefined}
               />
-            </ValidationFormGroup>
+              <Form.Text>
+                The day of the week to send the report. This field is
+                required and only valid when the frequency is weekly.
+              </Form.Text>
+            </Form.Group>
           </div>
           <div className="col">
-            <ValidationFormGroup
-              for="hourOfDay"
-              helpText="The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings"
-              invalid={invalidFields.hourOfDay}
-              invalidMessage="Required for all frequency types"
+            <Form.Group
+              isInvalid={invalidFields.hourOfDay}
             >
               <label htmlFor="hourOfDay">Hour of Day</label>
               <Input
@@ -330,14 +328,20 @@ class ReportingConfigForm extends React.Component {
                 defaultValue={config ? config.hourOfDay : undefined}
                 onBlur={e => this.handleBlur(e)}
               />
-            </ValidationFormGroup>
+              <Form.Text>
+                The hour of the day to send the report, in Eastern Standard Time (EST).
+                This is required for all frequency settings
+              </Form.Text>
+              {invalidFields.hourOfDay && (
+                <Form.Control.Feedback type="invalid">
+                  Required for all frequency types
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
           </div>
         </div>
-        <ValidationFormGroup
-          for="pgpEncryptionKey"
-          helpText="The key for encryption, if PGP encrypted file is required"
-          invalid={!!APIErrors.pgpEncryptionKey}
-          invalidMessage={APIErrors.pgpEncryptionKey}
+        <Form.Group
+          isInvalid={!!APIErrors.pgpEncryptionKey}
         >
           <label htmlFor="pgpEncryptionKey">PGP Encryption Key</label>
           <Input
@@ -348,7 +352,15 @@ class ReportingConfigForm extends React.Component {
             data-hj-suppress
             onBlur={e => this.handleBlur(e)}
           />
-        </ValidationFormGroup>
+          <Form.Text>
+            The key for encryption, if PGP encrypted file is required
+          </Form.Text>
+          {!!APIErrors.pgpEncryptionKey && (
+          <Form.Control.Feedback type="invalid">
+            {APIErrors.pgpEncryptionKey}
+          </Form.Control.Feedback>
+          )}
+        </Form.Group>
         {deliveryMethod === 'email' && (
           <EmailDeliveryMethodForm
             config={config}
@@ -364,11 +376,8 @@ class ReportingConfigForm extends React.Component {
           />
         )}
         <div className="col">
-          <ValidationFormGroup
-            for="enableCompression"
-            helpText="Specifies whether report should be compressed. Without compression files will not be password protected or encrypted."
-            invalid={!!APIErrors.enableCompression}
-            invalidMessage={APIErrors.enableCompression}
+          <Form.Group
+            isInvalid={!!APIErrors.enableCompression}
           >
             <label htmlFor="enableCompression">Enable Compression</label>
             <Input
@@ -379,13 +388,19 @@ class ReportingConfigForm extends React.Component {
               checked={enableCompression}
               onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
             />
-          </ValidationFormGroup>
+            <Form.Text>
+              Specifies whether report should be compressed.
+              Without compression files will not be password protected or encrypted.
+            </Form.Text>
+            {!!APIErrors.enableCompression && (
+            <Form.Control.Feedback type="invalid">
+              {APIErrors.enableCompression}
+            </Form.Control.Feedback>
+            )}
+          </Form.Group>
         </div>
         <div className="col">
-          <ValidationFormGroup
-            for="enterpriseCustomerCatalogs"
-            helpText="The catalogs that should be included in the report. No selection means all catalogs will be included."
-          >
+          <Form.Group>
             <label htmlFor="enterpriseCustomerCatalogs">Enterprise Customer Catalogs</label>
             <Input
               type="select"
@@ -400,14 +415,15 @@ class ReportingConfigForm extends React.Component {
                 }))
               }
             />
-          </ValidationFormGroup>
+            <Form.Text>
+              The catalogs that should be included in the report. No selection means all catalogs will be included.
+            </Form.Text>
+          </Form.Group>
         </div>
         <div className="row justify-content-between align-items-center form-group">
-          <ValidationFormGroup
-            for="submitButton"
-            invalidMessage="There was an error submitting, please try again."
-            invalid={submitState === SUBMIT_STATES.ERROR}
+          <Form.Group
             className="mb-0"
+            isInvalid={submitState === SUBMIT_STATES.ERROR}
           >
             <StatefulButton
               state={submitState}
@@ -429,7 +445,12 @@ class ReportingConfigForm extends React.Component {
               className="ml-3 col"
               variant="primary"
             />
-          </ValidationFormGroup>
+            {submitState === SUBMIT_STATES.ERROR && (
+            <Form.Control.Feedback type="invalid">
+              There was an error submitting, please try again.
+            </Form.Control.Feedback>
+            )}
+          </Form.Group>
           {config && (
             <Button
               className="btn-outline-danger  mr-3"
