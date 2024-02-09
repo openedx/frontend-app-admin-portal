@@ -15,9 +15,9 @@ export const DELETE_HIGHLIGHT_SET = 'DELETE_HIGHLIGHT_SET';
 export const ADD_HIGHLIGHT_SET = 'ADD_HIGHLIGHT_SET';
 export const SET_HIGHLIGHT_SET_TOAST_TEXT = 'SET_HIGHLIGHT_SET_TOAST_TEXT';
 export const SET_HIGHLIGHT_TOAST_TEXT = 'SET_HIGHLIGHT_TOAST_TEXT';
-export const SET_IS_NEW_ARCHIVED_COURSE = 'SET_IS_NEW_ARCHIVED_COURSE';
+export const SET_IS_NEW_ARCHIVED_CONTENT = 'SET_IS_NEW_ARCHIVED_CONTENT';
 export const SET_ENTERPRISE_HIGHLIGHTED_CONTENTS = 'SET_ENTERPRISE_HIGHLIGHTED_CONTENTS';
-export const UPDATE_DISMISSED_ARCHIVED_COURSE = 'UPDATE_DISMISSED_ARCHIVED_COURSE';
+export const UPDATE_DISMISSED_ARCHIVED_CONTENT = 'UPDATE_DISMISSED_ARCHIVED_CONTENT';
 export const UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS = 'UPDATE_HIGHLIGHT_SET_CONTENT_ITEMS';
 
 export const enterpriseCurationActions = {
@@ -54,11 +54,11 @@ export const enterpriseCurationActions = {
     payload,
   }),
   setIsNewArchivedContent: (payload) => ({
-    type: SET_IS_NEW_ARCHIVED_COURSE,
+    type: SET_IS_NEW_ARCHIVED_CONTENT,
     payload,
   }),
   updateDismissedArchivedCourse: (payload) => ({
-    type: UPDATE_DISMISSED_ARCHIVED_COURSE,
+    type: UPDATE_DISMISSED_ARCHIVED_CONTENT,
     payload,
   }),
   updateHighlightSetContentItems: (payload) => ({
@@ -71,6 +71,20 @@ function getHighlightSetsFromState(state) {
   return state.enterpriseCuration?.highlightSets || [];
 }
 
+/**
+ * Helper function to determine if a content is archived.
+ * If the length > 1 for the course run status e.g. ["archived", "published"]
+ * the content is not considered archived. An "unpublished" course run is not considered "archived" because
+ * it could have a scheduled course run in the future.
+ *
+ * @param {Object} content
+ * @returns {Boolean}
+ */
+export function isArchivedContent(content) {
+  return (content.courseRunStatuses?.length === 1
+    && content.courseRunStatuses[0] === COURSE_RUN_STATUSES.archived
+  );
+}
 /**
  * Helper function to determine if there is a new archived content in a highlight set
  *
@@ -92,22 +106,14 @@ function getIsNewArchivedContentFromState(payload) {
     // Checks that the highlightSet uuid isn't set
     if (!dismissedCookies) {
       highlightSet.highlightedContent.forEach(content => {
-        // If the length > 1 for the course run status e.g. ["archived", "published"]
-        // the content is not considered archived. An "unpublished" course run is not considered "archived" because
-        // it could have a scheduled course run in the future.
-        if (content.courseRunStatuses?.length === 1
-          && content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
-        ) {
+        if (isArchivedContent(content)) {
           isNewArchivedContent = true;
         }
       });
       // If the highlightSet uuid is already in the cookies, check if it includes the archived course content key
     } else {
       highlightSet.highlightedContent.forEach(content => {
-        if (
-          content.courseRunStatuses?.length === 1
-          && content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived)
-          && !dismissedCookies.includes(content.contentKey)
+        if (isArchivedContent(content) && !dismissedCookies.includes(content.contentKey)
         ) {
           isNewArchivedContent = true;
         }
@@ -172,14 +178,14 @@ function enterpriseCurationReducer(state, action) {
         },
       };
     }
-    case SET_IS_NEW_ARCHIVED_COURSE: {
+    case SET_IS_NEW_ARCHIVED_CONTENT: {
       const isNewArchivedContent = getIsNewArchivedContentFromState(action.payload);
       return {
         ...state,
         isNewArchivedContent,
       };
     }
-    case UPDATE_DISMISSED_ARCHIVED_COURSE: {
+    case UPDATE_DISMISSED_ARCHIVED_CONTENT: {
       return {
         ...state,
         isNewArchivedContent: action.payload,

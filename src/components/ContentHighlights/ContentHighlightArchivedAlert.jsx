@@ -2,16 +2,17 @@ import { Alert } from '@edx/paragon';
 import { useContext, useState } from 'react';
 import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME, COURSE_RUN_STATUSES } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
-import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
+import { enterpriseCurationActions, isArchivedContent } from '../EnterpriseApp/data/enterpriseCurationReducer';
 
-const ContentHighlightArchivedContentAlert = () => {
+
+const ContentHighlightArchivedAlert = () => {
   const archivedContentCookies = {};
   const [isOpen, setIsOpen] = useState(true);
 
   const { enterpriseCuration: { enterpriseHighlightedSets, dispatch } } = useContext(EnterpriseAppContext);
   enterpriseHighlightedSets.forEach(set => {
     set.highlightedContent.forEach(content => {
-      if (content.courseRunStatuses?.length === 1 && content.courseRunStatuses.includes(COURSE_RUN_STATUSES.archived)) {
+      if (isArchivedContent(content)) {
         if (archivedContentCookies[set.uuid]) {
           archivedContentCookies[set.uuid].push(content.contentKey);
         } else {
@@ -46,4 +47,4 @@ const ContentHighlightArchivedContentAlert = () => {
   );
 };
 
-export default ContentHighlightArchivedContentAlert;
+export default ContentHighlightArchivedAlert;
