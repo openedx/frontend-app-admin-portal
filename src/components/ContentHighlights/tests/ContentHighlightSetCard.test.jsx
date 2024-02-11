@@ -9,6 +9,7 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
 import { v4 as uuidv4 } from 'uuid';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
@@ -128,14 +129,16 @@ const ContentHighlightSetCardWrapper = ({
   });
   return (
     <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          <CurrentContentHighlightHeader />
-          {data.map((highlight) => (
-            <ContentHighlightSetCard key={uuidv4()} {...highlight} />
-          ))}
-        </ContentHighlightsContext.Provider>
-      </EnterpriseAppContext.Provider>
+      <IntlProvider locale="en">
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <ContentHighlightsContext.Provider value={contextValue}>
+            <CurrentContentHighlightHeader />
+            {data.map((highlight) => (
+              <ContentHighlightSetCard key={uuidv4()} {...highlight} />
+            ))}
+          </ContentHighlightsContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </IntlProvider>
     </Provider>
   );
 };
@@ -157,12 +160,13 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument();
     expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
   });
-  it('renders correct text when more then or equal to max curations', async () => {
+  it('renders correct text when more than or equal to max curations', async () => {
     const updatedEnterpriseAppContextValue = {
       enterpriseCuration: {
         enterpriseCuration: {
           highlightSets: mockMultipleData,
         },
+        isNewArchivedContent: false,
       },
     };
     renderWithRouter(
@@ -194,7 +198,7 @@ describe('<ContentHighlightSetCard>', () => {
     );
     expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
   });
-  it('renders archived course alert and sets cookie on dismiss', async () => {
+  it('renders archived course alert and sets local storage on dismiss', async () => {
     const updatedEnterpriseAppContextValue = {
       enterpriseCuration: {
         enterpriseCuration: {

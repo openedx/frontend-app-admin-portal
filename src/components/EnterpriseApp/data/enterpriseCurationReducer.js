@@ -73,18 +73,29 @@ function getHighlightSetsFromState(state) {
 
 /**
  * Helper function to determine if a content is archived.
- * If the length > 1 for the course run status e.g. ["archived", "published"]
- * the content is not considered archived. An "unpublished" course run is not considered "archived" because
- * it could have a scheduled course run in the future.
  *
  * @param {Object} content
  * @returns {Boolean}
  */
 export function isArchivedContent(content) {
-  return (content.courseRunStatuses?.length === 1
-    && content.courseRunStatuses[0] === COURSE_RUN_STATUSES.archived
-  );
+  const hasArchivedCourseRun = content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived);
+  const hasUnpublishedCourseRun = content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.unpublished);
+
+  // If the length is 1 for the course run status e.g. ["archived"] or ["unpublished"],
+  // the course is considered archived.
+  if (content.courseRunStatuses?.length === 1) {
+    return (hasArchivedCourseRun || hasUnpublishedCourseRun);
+  }
+
+  // If the length is 2 for the course run status e.g. ["archived", "unpublished"],
+  // the course is considered archived.
+  if (content.courseRunStatuses?.length === 2) {
+    return (hasArchivedCourseRun && hasUnpublishedCourseRun);
+  }
+
+  return false;
 }
+
 /**
  * Helper function to determine if there is a new archived content in a highlight set
  *

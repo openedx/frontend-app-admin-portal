@@ -144,6 +144,7 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
 export const COURSE_RUN_STATUSES = {
   archived: 'archived',
   published: 'published',
+  unpublished: 'unpublished',
 };
 
 export const LEARNER_PORTAL_CATALOG_VISIBILITY = {

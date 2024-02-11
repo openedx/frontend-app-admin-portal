@@ -30,6 +30,11 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
   const { openStepperModal } = useContentHighlightsContext();
   const [maxHighlightsReached, setMaxHighlightsReached] = useState(false);
   const [showMaxHighlightsAlert, setShowMaxHighlightsAlert] = useState(false);
+  const [isArchivedAlertOpen, setIsArchivedAlertOpen] = useState(false);
+
+  useEffect(() => {
+    setIsArchivedAlertOpen(isNewArchivedContent);
+  }, [isNewArchivedContent]);
 
   useEffect(() => {
     // using greater than or equal as an additional buffer as opposed to exactly equal
@@ -83,7 +88,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       <p>
         {HEADER_TEXT.SUB_TEXT.currentContent}
       </p>
-      {isNewArchivedContent ? <ContentHighlightArchivedAlert /> : null }
+      <ContentHighlightArchivedAlert open={isArchivedAlertOpen} onClose={() => setIsArchivedAlertOpen(false)} />
       <Alert
         variant="danger"
         icon={Info}
