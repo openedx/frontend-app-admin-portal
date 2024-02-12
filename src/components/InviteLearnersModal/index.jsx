@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, Alert, ModalDialog, ActionRow,
+  Button, Alert, ModalDialog, ActionRow, Spinner,
 } from '@edx/paragon';
 import { Cancel as ErrorIcon } from '@edx/paragon/icons';
 
@@ -204,7 +204,7 @@ class InviteLearnersModal extends React.Component {
               onClick={handleSubmit(this.handleModalSubmit)}
             >
               <>
-              {submitting && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
+                {submitting && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
                 Invite learners
               </>
             </Button>,

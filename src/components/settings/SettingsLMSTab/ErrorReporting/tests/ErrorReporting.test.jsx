@@ -9,7 +9,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import LmsApiService from '../../../../../data/services/LmsApiService';
-import { features } from '../../../../../config';
 import SyncHistory from '../SyncHistory';
 
 const enterpriseCustomerUuid = 'test-enterprise-id';
