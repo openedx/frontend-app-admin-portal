@@ -9,7 +9,6 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { features } from '../../../../../config';
 
 import { renderWithRouter } from '../../../../test/testUtils';
 import SettingsLMSTab from '../..';
