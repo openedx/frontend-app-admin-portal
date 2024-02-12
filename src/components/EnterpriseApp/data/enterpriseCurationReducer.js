@@ -78,22 +78,14 @@ function getHighlightSetsFromState(state) {
  * @returns {Boolean}
  */
 export function isArchivedContent(content) {
-  const hasArchivedCourseRun = content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.archived);
-  const hasUnpublishedCourseRun = content.courseRunStatuses?.includes(COURSE_RUN_STATUSES.unpublished);
+  const { courseRunStatuses } = content;
 
-  // If the length is 1 for the course run status e.g. ["archived"] or ["unpublished"],
-  // the course is considered archived.
-  if (content.courseRunStatuses?.length === 1) {
-    return (hasArchivedCourseRun || hasUnpublishedCourseRun);
+  if (!courseRunStatuses) {
+    return false;
   }
 
-  // If the length is 2 for the course run status e.g. ["archived", "unpublished"],
-  // the course is considered archived.
-  if (content.courseRunStatuses?.length === 2) {
-    return (hasArchivedCourseRun && hasUnpublishedCourseRun);
-  }
-
-  return false;
+  const ARCHIVABLE_STATUSES = [COURSE_RUN_STATUSES.archived, COURSE_RUN_STATUSES.unpublished];
+  return courseRunStatuses.every(status => ARCHIVABLE_STATUSES.includes(status));
 }
 
 /**
