@@ -8,6 +8,7 @@ import { getProxyLoginUrl } from '@edx/frontend-enterprise-logistration';
 import {
   getAuthenticatedUser, getLogoutRedirectUrl,
 } from '@edx/frontend-platform/auth';
+import { getConfig } from '@edx/frontend-platform/config';
 import SidebarToggle from '../../containers/SidebarToggle';
 import Img from '../Img';
 
@@ -38,9 +39,11 @@ Logo.propTypes = {
 };
 
 export const HeaderDropdown = ({ user, enterpriseSlug }) => {
-  const { profileImage, username } = user;
+  const hideUsername = getConfig().HIDE_USERNAME_FROM_HEADER;
+
+  const { profileImage, username, name } = user;
   const avatarImage = profileImage?.hasImage ? profileImage.imageUrlMedium : null;
-  const avatarScreenReaderText = `Profile image for ${username}`;
+  const avatarScreenReaderText = hideUsername ? `Profile image for ${name}` : `Profile image for ${username}`;
 
   return (
     <Dropdown>
@@ -51,7 +54,7 @@ export const HeaderDropdown = ({ user, enterpriseSlug }) => {
         size="md"
         alt={avatarScreenReaderText}
       >
-        {username}
+        {!hideUsername && username}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
@@ -75,6 +78,7 @@ HeaderDropdown.propTypes = {
       imageUrlMedium: PropTypes.string,
     }),
     username: PropTypes.string.isRequired,
+    name: PropTypes.string,
   }).isRequired,
   enterpriseSlug: PropTypes.string,
 };
