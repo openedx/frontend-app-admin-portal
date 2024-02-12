@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Icon, ModalDialog, ActionRow,
+  Button, ModalDialog, ActionRow, Spinner,
 } from '@edx/paragon';
 import { Info } from '@edx/paragon/icons';
 
