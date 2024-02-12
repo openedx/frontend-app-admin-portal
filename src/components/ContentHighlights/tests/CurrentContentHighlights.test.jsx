@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CurrentContentHighlights from '../CurrentContentHighlights';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import { BUTTON_TEXT } from '../data/constants';
@@ -38,7 +39,7 @@ const CurrentContentHighlightsWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
 }) => {
-/* eslint-enable react/prop-types */
+  /* eslint-enable react/prop-types */
   const contextValue = useState({
     stepperModal: {
       isOpen: false,
@@ -51,11 +52,13 @@ const CurrentContentHighlightsWrapper = ({
   });
   return (
     <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          <CurrentContentHighlights {...props} />
-        </ContentHighlightsContext.Provider>
-      </EnterpriseAppContext.Provider>
+      <IntlProvider locale="en">
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <ContentHighlightsContext.Provider value={contextValue}>
+            <CurrentContentHighlights {...props} />
+          </ContentHighlightsContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </IntlProvider>
     </Provider>
   );
 };

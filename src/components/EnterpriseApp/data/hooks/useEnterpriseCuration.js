@@ -7,6 +7,17 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 
+const getHighlightSet = async (highlightSetUUID) => {
+  try {
+    const { data } = await EnterpriseCatalogApiService.fetchHighlightSet(highlightSetUUID);
+    const result = camelCaseObject(data);
+    return result;
+  } catch (e) {
+    logError(e);
+  }
+  return undefined;
+};
+
 /**
  * TODO
  * @param {*} param0
@@ -16,6 +27,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [enterpriseCuration, setEnterpriseCuration] = useState(null);
+  const [enterpriseHighlightedSets, setEnterpriseHighlightedSets] = useState(null);
 
   const config = getConfig();
 
@@ -74,6 +86,11 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
         if (!curation) {
           curation = await createEnterpriseCuration();
         }
+        const curationHighlightedContents = await Promise.all(curation.highlightSets.map(async (highlightSet) => {
+          const data = await getHighlightSet(highlightSet.uuid);
+          return data;
+        }));
+        setEnterpriseHighlightedSets(curationHighlightedContents);
         setEnterpriseCuration(curation);
       } catch (error) {
         logError(error);
@@ -93,6 +110,7 @@ function useEnterpriseCuration({ enterpriseId, curationTitleForCreation }) {
   return {
     isLoading,
     enterpriseCuration,
+    enterpriseHighlightedSets,
     fetchError,
     updateEnterpriseCuration,
   };

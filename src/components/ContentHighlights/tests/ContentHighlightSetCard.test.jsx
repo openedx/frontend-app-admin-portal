@@ -9,13 +9,18 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
 import { v4 as uuidv4 } from 'uuid';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlightSetCard from '../ContentHighlightSetCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import CurrentContentHighlightHeader from '../CurrentContentHighlightHeader';
 import { configuration } from '../../../config';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import {
-  BUTTON_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT, STEPPER_STEP_TEXT,
+  BUTTON_TEXT,
+  MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
+  ALERT_TEXT,
+  STEPPER_STEP_TEXT,
+  NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME,
 } from '../data/constants';
 
 const mockStore = configureMockStore([thunk]);
@@ -30,13 +35,55 @@ const mockData = [{
   onClick: jest.fn(),
 }];
 
+const mockEnterpriseHighlightedSets = [
+  {
+    uuid: 'test-uuid',
+    isPublished: true,
+    highlightedContent: [
+      {
+        uuid: 'test-content-uuid',
+        contentKey: 'test-content-key',
+        contentType: 'course',
+        courseRunStatuses: [
+          'archived',
+        ],
+      },
+    ],
+  },
+  {
+    uuid: 'test-highlight-set2',
+    isPublished: true,
+    highlightedContent: [
+      {
+        uuid: 'test-content2-uuid',
+        contentKey: 'test-content2-key',
+        contentType: 'program',
+        courseRunStatuses: [
+          'archived',
+        ],
+      },
+      {
+        uuid: 'test-content3-uuid',
+        contentKey: 'test-content3-key',
+        contentType: 'course',
+        courseRunStatuses: [
+          'archived',
+        ],
+      },
+    ],
+  },
+];
+
 const initialEnterpriseAppContextValue = {
   enterpriseCuration: {
     enterpriseCuration: {
       highlightSets: mockData,
     },
+    enterpriseHighlightedSets: mockEnterpriseHighlightedSets,
+    isNewArchivedContent: false,
   },
 };
+
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -82,14 +129,16 @@ const ContentHighlightSetCardWrapper = ({
   });
   return (
     <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          <CurrentContentHighlightHeader />
-          {data.map((highlight) => (
-            <ContentHighlightSetCard key={uuidv4()} {...highlight} />
-          ))}
-        </ContentHighlightsContext.Provider>
-      </EnterpriseAppContext.Provider>
+      <IntlProvider locale="en">
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <ContentHighlightsContext.Provider value={contextValue}>
+            <CurrentContentHighlightHeader />
+            {data.map((highlight) => (
+              <ContentHighlightSetCard key={uuidv4()} {...highlight} />
+            ))}
+          </ContentHighlightsContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </IntlProvider>
     </Provider>
   );
 };
@@ -111,12 +160,13 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument();
     expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
   });
-  it('renders correct text when more then or equal to max curations', async () => {
+  it('renders correct text when more than or equal to max curations', async () => {
     const updatedEnterpriseAppContextValue = {
       enterpriseCuration: {
         enterpriseCuration: {
           highlightSets: mockMultipleData,
         },
+        isNewArchivedContent: false,
       },
     };
     renderWithRouter(
@@ -141,5 +191,39 @@ describe('<ContentHighlightSetCard>', () => {
     // Verify Dismiss
     await waitFor(() => { expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument(); });
     expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
+  });
+  it('does not render archived course alert', () => {
+    renderWithRouter(
+      <ContentHighlightSetCardWrapper />,
+    );
+    expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
+  });
+  it('renders archived course alert and sets local storage on dismiss', async () => {
+    const updatedEnterpriseAppContextValue = {
+      enterpriseCuration: {
+        enterpriseCuration: {
+          highlightSets: mockData,
+        },
+        enterpriseHighlightedSets: mockEnterpriseHighlightedSets,
+        isNewArchivedContent: true,
+        dispatch: jest.fn(),
+      },
+    };
+    renderWithRouter(
+      <ContentHighlightSetCardWrapper
+        enterpriseAppContextValue={updatedEnterpriseAppContextValue}
+      />,
+    );
+    expect(screen.getByText('Needs Review: Archived Course(s)')).toBeInTheDocument();
+    const dismissButton = screen.getByText('Dismiss');
+    expect(dismissButton).toBeInTheDocument();
+    global.localStorage.setItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-highlight-set2`, 'test-content2-key');
+    userEvent.click(dismissButton);
+    const resultCookieHighlightSet1 = global.localStorage.getItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-uuid`);
+    const resultCookieHighlightSet2 = global.localStorage.getItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-highlight-set2`);
+    await waitFor(() => { expect(resultCookieHighlightSet1).toEqual('test-content-key'); });
+    // checks that a new content key is added to existing highlight set in localStorage
+    await waitFor(() => { expect(resultCookieHighlightSet2).toEqual('test-content2-key,test-content3-key'); });
+    expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
   });
 });

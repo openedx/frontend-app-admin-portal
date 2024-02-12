@@ -18,6 +18,7 @@ describe('useEnterpriseCurationContext', () => {
     useEnterpriseCuration.mockReturnValue({
       isLoading: false,
       enterpriseCuration: mockEnterpriseCurationConfig,
+      enterpriseHighlightedSets: null,
       fetchError: null,
     });
     const args = {
@@ -30,6 +31,7 @@ describe('useEnterpriseCurationContext', () => {
       expect.objectContaining({
         isLoading: false,
         enterpriseCuration: mockEnterpriseCurationConfig,
+        enterpriseHighlightedSets: null,
         fetchError: null,
       }),
     );
