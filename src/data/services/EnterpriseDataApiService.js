@@ -2,7 +2,7 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import store from '../store';
-import { configuration } from '../../config';
+import { configuration, features } from '../../config';
 
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
@@ -19,21 +19,25 @@ class EnterpriseDataApiService {
 
   static fetchDashboardAnalytics(enterpriseId) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
-    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/enrollments/overview/`;
+    const { enableAuditDataReporting } = store.getState().portalConfiguration;
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/enrollments/overview/?audit_enrollments=${enableAuditDataReporting}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchCourseEnrollments(enterpriseId, options, { csv } = {}) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const endpoint = csv ? 'enrollments.csv' : 'enrollments';
+    const { enableAuditDataReporting } = store.getState().portalConfiguration;
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
+      audit_enrollments: enableAuditDataReporting,
       ...snakeCaseObject(options),
     });
 
     if (csv) {
       queryParams.set('no_page', csv);
+      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -54,15 +58,18 @@ class EnterpriseDataApiService {
   static fetchUnenrolledRegisteredLearners(enterpriseId, options, { csv } = {}) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const endpoint = csv ? 'users.csv' : 'users';
+    const { enableAuditDataReporting } = store.getState().portalConfiguration;
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       has_enrollments: false,
+      audit_enrollments: enableAuditDataReporting,
       ...options,
     });
 
     if (csv) {
       queryParams.set('no_page', csv);
+      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -72,16 +79,19 @@ class EnterpriseDataApiService {
   static fetchEnrolledLearners(enterpriseId, options, { csv } = {}) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const endpoint = csv ? 'users.csv' : 'users';
+    const { enableAuditDataReporting } = store.getState().portalConfiguration;
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
       has_enrollments: true,
       extra_fields: ['enrollment_count'],
+      audit_enrollments: enableAuditDataReporting,
       ...options,
     });
 
     if (csv) {
       queryParams.set('no_page', csv);
+      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -91,6 +101,7 @@ class EnterpriseDataApiService {
   static fetchEnrolledLearnersForInactiveCourses(enterpriseId, options, { csv } = {}) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const endpoint = csv ? 'users.csv' : 'users';
+    const { enableAuditDataReporting } = store.getState().portalConfiguration;
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
@@ -98,11 +109,13 @@ class EnterpriseDataApiService {
       active_courses: false,
       all_enrollments_passed: true,
       extra_fields: ['enrollment_count', 'course_completion_count'],
+      audit_enrollments: enableAuditDataReporting,
       ...options,
     });
 
     if (csv) {
       queryParams.set('no_page', csv);
+      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -112,14 +125,17 @@ class EnterpriseDataApiService {
   static fetchCompletedLearners(enterpriseId, options, { csv } = {}) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const endpoint = csv ? 'learner_completed_courses.csv' : 'learner_completed_courses';
+    const { enableAuditDataReporting } = store.getState().portalConfiguration;
     const queryParams = new URLSearchParams({
       page: 1,
       page_size: 50,
+      audit_enrollments: enableAuditDataReporting,
       ...options,
     });
 
     if (csv) {
       queryParams.set('no_page', csv);
+      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;

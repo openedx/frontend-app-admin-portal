@@ -26,6 +26,7 @@ const initialState = {
   enableUniversalLink: false,
   enablePortalLearnerCreditManagementScreen: false,
   enableDemoData: false,
+  enableAuditDataReporting: false,
   enterpriseFeatures: {},
 };
 
@@ -55,6 +56,7 @@ const enterpriseData = {
   enable_browse_and_request: true,
   enable_generation_of_api_credentials: true,
   enable_demo_data_for_analytics_and_lpr: true,
+  enable_audit_data_reporting: true,
 };
 const mockEnterpriseFeatures = { featureA: true };
 
@@ -86,6 +88,7 @@ describe('portalConfiguration reducer', () => {
       enablePortalLearnerCreditManagementScreen: enterpriseData.enable_portal_learner_credit_management_screen,
       enableApiCredentialGeneration: enterpriseData.enable_generation_of_api_credentials,
       enableDemoData: enterpriseData.enable_demo_data_for_analytics_and_lpr,
+      enableAuditDataReporting: enterpriseData.enable_audit_data_reporting,
       enterpriseFeatures: mockEnterpriseFeatures,
     };
     expect(portalConfiguration(undefined, {

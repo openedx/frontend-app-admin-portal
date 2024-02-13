@@ -27,6 +27,7 @@ const initialState = {
   enablePortalLearnerCreditManagementScreen: false,
   enableApiCredentialGeneration: false,
   enableDemoData: false,
+  enableAuditDataReporting: false,
   enterpriseFeatures: {},
 };
 
@@ -61,6 +62,7 @@ const portalConfiguration = (state = initialState, action) => {
         enablePortalLearnerCreditManagementScreen: action.payload.data.enable_portal_learner_credit_management_screen,
         enableApiCredentialGeneration: action.payload.data.enable_generation_of_api_credentials,
         enableDemoData: action.payload.data.enable_demo_data_for_analytics_and_lpr,
+        enableAuditDataReporting: action.payload.data.enable_audit_data_reporting,
         enterpriseFeatures: action.payload.enterpriseFeatures,
       };
     case FETCH_PORTAL_CONFIGURATION_FAILURE:
@@ -86,6 +88,7 @@ const portalConfiguration = (state = initialState, action) => {
         enablePortalLearnerCreditManagementScreen: false,
         enableApiCredentialGeneration: false,
         enableDemoData: false,
+        enableAuditDataReporting: false,
         enterpriseFeatures: {},
       };
     case CLEAR_PORTAL_CONFIGURATION:
@@ -109,6 +112,7 @@ const portalConfiguration = (state = initialState, action) => {
         enablePortalLearnerCreditManagementScreen: false,
         enableApiCredentialGeneration: false,
         enableDemoData: false,
+        enableAuditDataReporting: false,
         enterpriseFeatures: {},
       };
     case UPDATE_PORTAL_CONFIGURATION:
