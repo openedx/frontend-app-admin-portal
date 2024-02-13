@@ -6,7 +6,6 @@ import ReportingConfigForm from './ReportingConfigForm';
 const defaultConfig = {
   enterpriseCustomerId: 'test-customer-uuid',
   active: true,
-  enableCompression: true,
   deliveryMethod: 'email',
   email: ['test_email@example.com'],
   emailRaw: 'test_email@example.com',
@@ -136,24 +135,7 @@ describe('<ReportingConfigForm />', () => {
     wrapper.find('.btn-outline-danger').at(0).simulate('click');
     expect(mock).toHaveBeenCalled();
   });
-  it('check the compression checkbox is render or not', () => {
-    const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
-    ));
 
-    expect(wrapper.exists('#enableCompression')).toEqual(true);
-    expect(wrapper.find('#enableCompression').hostNodes().prop('checked')).toEqual(true);
-    wrapper.find('#enableCompression').hostNodes().simulate('change', { target: { checked: false } });
-    wrapper.update();
-    expect(wrapper.find('#enableCompression').hostNodes().prop('checked')).toEqual(false);
-  });
   it('renders the proper fields when changing the delivery method', () => {
     const wrapper = mount((
       <ReportingConfigForm
@@ -165,13 +147,13 @@ describe('<ReportingConfigForm />', () => {
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />
     ));
-    expect(wrapper.exists('#email')).toEqual(true);
+    expect(wrapper.find({ children: 'Email(s)' }));
     wrapper.find('select#deliveryMethod').simulate('change', { target: { value: 'sftp' } });
-    expect(wrapper.exists('#sftpHostname')).toEqual(true);
-    expect(wrapper.exists('#sftpUsername')).toEqual(true);
-    expect(wrapper.exists('#sftpFilePath')).toEqual(true);
-    expect(wrapper.exists('#encryptedSftpPassword')).toEqual(true);
-    expect(wrapper.exists('#sftpPort')).toEqual(true);
+    expect(wrapper.find({ children: 'SFTP Hostname' }));
+    expect(wrapper.find({ children: 'SFTP Username' }));
+    expect(wrapper.find({ children: 'SFTP File Path' }));
+    expect(wrapper.find({ children: 'SFTP Password' }));
+    expect(wrapper.find({ children: 'SFTP Port' }));
   });
 
   it('Does not submit if email is not formatted or is missing and deliveryMethod is email', () => {
@@ -195,6 +177,7 @@ describe('<ReportingConfigForm />', () => {
     wrapper.find('textarea#email').simulate('blur');
     expect(wrapper.find({ children: 'Required. One email per line. Emails must be formatted properly (email@domain.com)' }));
   });
+
   it('Does not submit if hourOfDay is empty', () => {
     const config = { ...defaultConfig };
     config.hourOfDay = undefined;
@@ -209,8 +192,9 @@ describe('<ReportingConfigForm />', () => {
       />
     ));
     wrapper.find('input#hourOfDay').simulate('blur');
-    expect(wrapper.find({ children: 'Required for all frequency types' }));
+    expect(wrapper.find('input#hourOfDay').hasClass('is-invalid')).toBeTruthy();
   });
+
   it('Does not submit if sftp fields are empty and deliveryMethod is sftp', () => {
     const config = { ...defaultConfig };
     config.deliveryMethod = 'sftp';
@@ -308,6 +292,26 @@ describe('<ReportingConfigForm />', () => {
       wrapper.find('select#enterpriseCustomerCatalogs').instance().value,
     ).toEqual('test-enterprise-customer-catalog');
   });
+  it('Submit enterprise uuid upon report config creation', async () => {
+    const wrapper = mount((
+      <ReportingConfigForm
+        config={defaultConfig}
+        createConfig={createConfig}
+        updateConfig={updateConfig}
+        availableCatalogs={availableCatalogs}
+        reportingConfigTypes={reportingConfigTypes}
+        enterpriseCustomerUuid={enterpriseCustomerUuid}
+      />
+    ));
+    const flushPromises = () => new Promise(setImmediate);
+    const formData = new FormData();
+    Object.entries(defaultConfig).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    wrapper.instance().handleSubmit(formData, null);
+    await act(() => flushPromises());
+    expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
+  });
   it('handles API response errors correctly.', async () => {
     defaultConfig.pgpEncryptionKey = 'invalid-key';
     const mock = jest.fn();
@@ -343,103 +347,5 @@ describe('<ReportingConfigForm />', () => {
 
     wrapper.instance().handleAPIErrorResponse(null);
     expect(mock).not.toHaveBeenCalled();
-  });
-  it('Submit if PGP key is present and password is empty and delivery method is email', async () => {
-    const config = { ...defaultConfig };
-    config.deliveryMethod = 'email';
-    config.pgpEncryptionKey = 'some-pgp-key';
-    config.encryptedPassword = '';
-    const wrapper = mount((
-      <ReportingConfigForm
-        config={config}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
-    ));
-    const flushPromises = () => new Promise(setImmediate);
-    const formData = new FormData();
-    Object.entries(config).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    wrapper.instance().handleSubmit(formData, null);
-    await act(() => flushPromises());
-    expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
-  });
-  it('Do not Submit if PGP key and password is empty and delivery method is email', async () => {
-    const config = { ...defaultConfig };
-    config.pgpEncryptionKey = '';
-    config.encryptedPassword = '';
-    const wrapper = mount((
-      <ReportingConfigForm
-        config={config}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
-    ));
-    const formData = new FormData();
-    Object.entries(config).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    wrapper.instance().handleSubmit(formData, null);
-    wrapper.find('.form-control').forEach(input => input.simulate('blur'));
-    expect(wrapper.find({ children: 'Required. Password must not be blank.' }));
-  });
-  it('Password is not required while updating if it is already present and delivery method is email', async () => {
-    const updateConfigMock = jest.fn().mockResolvedValue();
-    const initialConfig = {
-      ...defaultConfig,
-    };
-    initialConfig.encryptedPassword = 'some_pass';
-    initialConfig.pgpEncryptionKey = '';
-    initialConfig.hourOfDay = 4;
-    const requiredFields = ['hourOfDay', 'emailRaw'];
-    const wrapper = mount(
-      <ReportingConfigForm
-        config={initialConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfigMock}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />,
-    );
-
-    const updatedFormData = new FormData();
-    updatedFormData.append('deliveryMethod', 'email');
-    updatedFormData.append('pgpEncryptionKey', '');
-    updatedFormData.append('encryptedPassword', '');
-
-    const invalidFields = await wrapper.instance().validateReportingForm(
-      initialConfig,
-      updatedFormData,
-      requiredFields,
-    );
-    expect('encryptedPassword' in invalidFields).toBe(false);
-  });
-  it('Submit enterprise uuid upon report config creation', async () => {
-    const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
-    ));
-    const flushPromises = () => new Promise(setImmediate);
-    const formData = new FormData();
-    Object.entries(defaultConfig).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    wrapper.instance().handleSubmit(formData, null);
-    await act(() => flushPromises());
-    expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
   });
 });

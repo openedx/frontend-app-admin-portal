@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from '@edx/paragon';
+import { Form } from '@edx/paragon';
 
 const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   const [checked, setChecked] = useState(false);
@@ -12,11 +12,8 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           <Form.Group
             isInvalid={invalidFields.sftpHostname}
           >
-            <label htmlFor="sftpHostname">SFTP Hostname</label>
-            <Input
-              type="text"
-              id="sftpHostname"
-              name="sftpHostname"
+            <Form.Label>SFTP Hostname</Form.Label>
+            <Form.Control
               defaultValue={config ? config.sftpHostname : undefined}
               onBlur={e => handleBlur(e)}
               data-hj-suppress
@@ -33,19 +30,17 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           <Form.Group
             isInvalid={invalidFields.sftpPort}
           >
-            <label htmlFor="sftpPort">SFTP Port</label>
-            <Input
-              type="number"
-              id="sftpPort"
-              name="sftpPort"
+            <Form.Label>SFTP Port</Form.Label>
+            <Form.Control
+              as="number"
               defaultValue={config ? config.sftpPort : 22}
               onBlur={e => handleBlur(e)}
             />
             <Form.Text>The port the sftp host connects to</Form.Text>
             {invalidFields.sftpPort && (
-            <Form.Control.Feedback type="invalid">
-              Required. Must be a valid port
-            </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Required. Must be a valid port
+              </Form.Control.Feedback>
             )}
           </Form.Group>
         </div>
@@ -55,42 +50,35 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           <Form.Group
             isInvalid={invalidFields.sftpUsername}
           >
-            <label htmlFor="sftpUsername">SFTP Username</label>
-            <Input
-              type="text"
-              id="sftpUsername"
-              name="sftpUsername"
+            <Form.Label>SFTP Username</Form.Label>
+            <Form.Control
               defaultValue={config ? config.sftpUsername : undefined}
               onBlur={e => handleBlur(e)}
               data-hj-suppress
             />
             <Form.Text>The username to securely access the host</Form.Text>
             {invalidFields.sftpPort && (
-            <Form.Control.Feedback type="invalid">
-              Required. Username cannot be blank
-            </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Required. Username cannot be blank
+              </Form.Control.Feedback>
             )}
           </Form.Group>
           {config && (
-            <div className="form-group">
-              <label htmlFor="changePassword">Change Password</label>
-              <Input
-                type="checkbox"
-                id="changePassword"
+            <Form.Group>
+              <Form.Label>Change Password</Form.Label>
+              <Form.Checkbox
                 className="ml-3"
                 checked={checked}
                 onChange={() => setChecked(!checked)}
               />
-            </div>
+            </Form.Group>
           )}
           <Form.Group
             isInvalid={invalidFields.encryptedSftpPassword}
           >
-            <label htmlFor="encryptedSftpPassword">SFTP Password</label>
-            <Input
-              type="password"
-              id="encryptedSftpPassword"
-              name="encryptedSftpPassword"
+            <Form.Label>SFTP Password</Form.Label>
+            <Form.Control
+              as="password"
               onBlur={e => handleBlur(e)}
               disabled={config && !checked}
               data-hj-suppress
@@ -100,28 +88,25 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               will be encrypted when stored in the database
             </Form.Text>
             {invalidFields.encryptedSftpPassword && (
-            <Form.Control.Feedback type="invalid">
-              Required. Password must not be blank
-            </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Required. Password must not be blank
+              </Form.Control.Feedback>
             )}
           </Form.Group>
           <Form.Group
             isInvalid={invalidFields.sftpFilePath}
           >
-            <label htmlFor="sftpFilePath">SFTP File Path</label>
-            <Input
-              type="text"
-              id="sftpFilePath"
-              name="sftpFilePath"
+            <Form.Label>SFTP File Path</Form.Label>
+            <Form.Control
               defaultValue={config ? config.sftpFilePath : undefined}
               onBlur={e => handleBlur(e)}
               data-hj-suppress
             />
             <Form.Text>The path on the host to deliver the report to</Form.Text>
             {invalidFields.sftpFilePath && (
-            <Form.Control.Feedback type="invalid">
-              Required. File path cannot be blank
-            </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Required. File path cannot be blank
+              </Form.Control.Feedback>
             )}
           </Form.Group>
         </div>

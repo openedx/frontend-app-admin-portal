@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
 import {
-  Button, Form, Icon, Input, Spinner, StatefulButton,
+  Button, Form, Icon, Spinner, StatefulButton,
 } from '@edx/paragon';
-import { Check, Close, Download } from '@edx/paragon/icons';
+import {
+  Check, Close, Download, Error,
+} from '@edx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';
@@ -82,7 +84,7 @@ class ReportingConfigForm extends React.Component {
   handleBlur = (e, validationFunction) => {
     // One special case for email fields
     const field = e.target;
-    const error = validationFunction ? validationFunction() : !field.value.length;
+    const error = validationFunction ? validationFunction() : !field.value?.length;
     this.setState((state) => ({
       invalidFields: {
         ...state.invalidFields,
@@ -168,6 +170,78 @@ class ReportingConfigForm extends React.Component {
     this.setState({ submitState: SUBMIT_STATES.COMPLETE });
   };
 
+  renderSelect = data => {
+    const { config, reportingConfigTypes } = this.props;
+    const { invalidFields } = this.state;
+    const options = data.options?.map(userType => (
+      <option value={userType.value} key={userType.value} hidden={userType.hidden}>
+        {userType.label}
+      </option>
+    ));
+    const otherProps = {
+      ...data.multiple && { multiple: data.multiple },
+      ...data.onChange && { onChange: data.onChange },
+    };
+
+    return (
+      <Form.Group
+        controlId={data.key}
+        isInvalid={invalidFields[data.key]}
+      >
+        <Form.Label>{data.label}</Form.Label>
+        <Form.Control
+          as="select"
+          name={data.key}
+          // eslint-disable-next-line no-nested-ternary
+          defaultValue={data.defaultValue ? data.defaultValue : config
+            ? config[data.key] : reportingConfigTypes[data.key][0][0]}
+          disabled={data.disabled}
+          {...otherProps}
+        >
+          {options}
+        </Form.Control>
+        {data.helpText && <Form.Text>{data.helpText}</Form.Text>}
+        {invalidFields[data.key] && data.invalidMessage && (
+          <Form.Control.Feedback icon={<Error className="mr-1" />}>
+            {data.invalidMessage}
+          </Form.Control.Feedback>
+        )}
+      </Form.Group>
+    );
+  };
+
+  renderNumberField = data => {
+    const { invalidFields } = this.state;
+    const { config } = this.props;
+    const otherProps = {
+      ...data.max && { max: data.max },
+      ...data.min && { min: data.min },
+    };
+    return (
+      <Form.Group
+        controlId={data.key}
+        isInvalid={data.isInvalid ? data.isInvalid : invalidFields[data.key]}
+      >
+        <Form.Label>{data.label}</Form.Label>
+        <Form.Control
+          type="number"
+          name={data.key}
+          defaultValue={config ? config[data.key] : 1}
+          disabled={data.disabled}
+          data-hj-suppress
+          onBlur={e => this.handleBlur(e)}
+          {...otherProps}
+        />
+        <Form.Text>{data.helpText}</Form.Text>
+        {invalidFields[data.key] && data.invalidMessage && (
+          <Form.Control.Feedback icon={<Error className="mr-1" />}>
+            {data.invalidMessage}
+          </Form.Control.Feedback>
+        )}
+      </Form.Group>
+    );
+  };
+
   render() {
     const { config, availableCatalogs, reportingConfigTypes } = this.props;
     const {
@@ -196,158 +270,89 @@ class ReportingConfigForm extends React.Component {
       >
         <div className="col">
           <Form.Group>
-            <label htmlFor="active">Active</label>
-            <Input
-              type="checkbox"
-              id="active"
-              name="active"
+            <Form.Checkbox
               className="ml-3"
               checked={active}
               onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
-            />
+            >
+              Active
+            </Form.Checkbox>
           </Form.Group>
         </div>
         <div className="row">
           <div className="col col-6">
-            <Form.Group>
-              <label htmlFor="dataType">Data Type</label>
-              <Input
-                type="select"
-                id="dataType"
-                name="dataType"
-                defaultValue={config ? config.dataType : reportingConfigTypes.dataType[0][0]}
-                disabled={config && !dataTypesOptionsValues.includes(config.dataType)}
-                options={[...dataTypesOptions, ...selectedDataTypesOption]}
-              />
-              <Form.Text>
-                The type of data this report should contain. If this is an old report, you will
-                not be able to change this field, and should create a new report
-              </Form.Text>
-            </Form.Group>
-            <Form.Group>
-              <label htmlFor="reportType">Report Type</label>
-              <Input
-                type="select"
-                id="reportType"
-                name="reportType"
-                defaultValue={config ? config.reportType : reportingConfigTypes.reportType[0][0]}
-                options={reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] }))}
-              />
-              <Form.Text>
-                The type this report should be sent as, e.g. CSV
-              </Form.Text>
-            </Form.Group>
+            {this.renderSelect({
+              key: 'dataType',
+              helpText: 'The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report',
+              label: 'Data Type',
+              options: [...dataTypesOptions, ...selectedDataTypesOption],
+              disabled: config && !dataTypesOptionsValues.includes(config.dataType),
+            })}
+            {this.renderSelect({
+              key: 'reportType',
+              helpText: 'The type this report should be sent as, e.g. CSV',
+              label: 'Report Type',
+              options: reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] })),
+            })}
           </div>
           <div className="col col-6">
-            <Form.Group isInvalid={!!APIErrors.deliveryMethod}>
-              <label htmlFor="deliveryMethod">Delivery Method</label>
-              <Input
-                type="select"
-                id="deliveryMethod"
-                name="deliveryMethod"
-                defaultValue={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
-                options={reportingConfigTypes.deliveryMethod.map(item => ({ label: item[1], value: item[0] }))}
-                onChange={e => this.setState({ deliveryMethod: e.target.value })}
-                disabled={config}
-              />
-              <input
-                type="hidden"
-                name="deliveryMethod"
-                value={config ? config.deliveryMethod : reportingConfigTypes.deliveryMethod[0][0]}
-                disabled={!config}
-              />
-              <Form.Text>The method in which the data should be sent</Form.Text>
-              {!!APIErrors.deliveryMethod && (
-                <Form.Control.Feedback type="invalid">
-                  {APIErrors.deliveryMethod}
-                </Form.Control.Feedback>
-              )}
-            </Form.Group>
-            <Form.Group>
-              <label htmlFor="frequency">Frequency</label>
-              <Input
-                type="select"
-                id="frequency"
-                name="frequency"
-                defaultValue={frequency}
-                options={reportingConfigTypes.frequency.map(item => ({ label: item[1], value: item[0] }))}
-                onChange={e => this.setState({ frequency: e.target.value })}
-              />
-              <Form.Text>The frequency interval (daily, weekly, or monthly) that the report should be sent</Form.Text>
-            </Form.Group>
+            {this.renderSelect({
+              key: 'deliveryMethod',
+              helpText: 'The method in which the data should be sent',
+              label: 'Delivery Method',
+              options: reportingConfigTypes.deliveryMethod.map(item => ({ label: item[1], value: item[0] })),
+              onChange: event => this.setState({ deliveryMethod: event.target.value }),
+              isInvalid: !!APIErrors.deliveryMethod,
+              invalidMessage: APIErrors.deliveryMethod,
+            })}
+            {this.renderSelect({
+              key: 'frequency',
+              helpText: 'The frequency interval (daily, weekly, or monthly) that the report should be sent',
+              label: 'Frequency',
+              options: reportingConfigTypes.frequency.map(item => ({ label: item[1], value: item[0] })),
+              defaultValue: frequency,
+              onChange: event => this.setState({ frequency: event.target.value }),
+            })}
           </div>
         </div>
         <div className="row">
           <div className="col">
-            <Form.Group
-              isInvalid={frequency === 'monthly' && invalidFields.dayOfMonth}
-            >
-              <label htmlFor="dayOfMonth">Day of Month</label>
-              <Input
-                type="number"
-                max={MONTHLY_MAX}
-                min={MONTHLY_MIN}
-                disabled={!(frequency === 'monthly')}
-                id="dayOfMonth"
-                name="dayOfMonth"
-                defaultValue={config ? config.dayOfMonth : 1}
-                onBlur={e => this.handleBlur(e)}
-              />
-              <Form.Text>
-                The day of the month to send the report. This field is
-                required and only valid when the frequency is monthly
-              </Form.Text>
-            </Form.Group>
+            {this.renderNumberField({
+              key: 'dayOfMonth',
+              helpText: 'The day of the month to send the report. This field is required and only valid when the frequency is monthly',
+              isInvalid: frequency === 'monthly' && invalidFields.dayOfMonth,
+              label: 'Day of Month',
+              max: MONTHLY_MAX,
+              min: MONTHLY_MIN,
+              disabled: !(frequency === 'monthly'),
+              onBlur: event => this.handleBlur(event),
+            })}
           </div>
           <div className="col">
-            <Form.Group>
-              <label htmlFor="dayOfWeek">Day of Week</label>
-              <Input
-                type="select"
-                id="dayOfWeek"
-                name="dayOfWeek"
-                disabled={!(frequency === 'weekly')}
-                options={reportingConfigTypes.dayOfWeek.map(item => ({ label: item[1], value: item[0] }))}
-                defaultValue={config ? config.dayOfWeek : undefined}
-              />
-              <Form.Text>
-                The day of the week to send the report. This field is
-                required and only valid when the frequency is weekly.
-              </Form.Text>
-            </Form.Group>
+            {this.renderSelect({
+              key: 'dayOfWeek',
+              helpText: 'The day of the week to send the report. This field is required and only valid when the frequency is weekly',
+              label: 'Day of Week',
+              options: reportingConfigTypes.dayOfWeek.map(item => ({ label: item[1], value: item[0] })),
+              disabled: !(frequency === 'weekly'),
+            })}
           </div>
           <div className="col">
-            <Form.Group
-              isInvalid={invalidFields.hourOfDay}
-            >
-              <label htmlFor="hourOfDay">Hour of Day</label>
-              <Input
-                type="number"
-                id="hourOfDay"
-                name="hourOfDay"
-                defaultValue={config ? config.hourOfDay : undefined}
-                onBlur={e => this.handleBlur(e)}
-              />
-              <Form.Text>
-                The hour of the day to send the report, in Eastern Standard Time (EST).
-                This is required for all frequency settings
-              </Form.Text>
-              {invalidFields.hourOfDay && (
-                <Form.Control.Feedback type="invalid">
-                  Required for all frequency types
-                </Form.Control.Feedback>
-              )}
-            </Form.Group>
+            {this.renderNumberField({
+              key: 'hourOfDay',
+              helpText: 'The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings',
+              invalidMessage: 'Required for all frequency types',
+              isInvalid: invalidFields.hourOfDay,
+              label: 'Hour of Day',
+            })}
           </div>
         </div>
         <Form.Group
           isInvalid={!!APIErrors.pgpEncryptionKey}
         >
-          <label htmlFor="pgpEncryptionKey">PGP Encryption Key</label>
-          <Input
-            type="textarea"
-            id="pgpEncryptionKey"
-            name="pgpEncryptionKey"
+          <Form.Label>PGP Encryption Key</Form.Label>
+          <Form.Control
+            as="textarea"
             defaultValue={config ? config.pgpEncryptionKey : undefined}
             data-hj-suppress
             onBlur={e => this.handleBlur(e)}
@@ -356,9 +361,9 @@ class ReportingConfigForm extends React.Component {
             The key for encryption, if PGP encrypted file is required
           </Form.Text>
           {!!APIErrors.pgpEncryptionKey && (
-          <Form.Control.Feedback type="invalid">
-            {APIErrors.pgpEncryptionKey}
-          </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {APIErrors.pgpEncryptionKey}
+            </Form.Control.Feedback>
           )}
         </Form.Group>
         {deliveryMethod === 'email' && (
@@ -379,11 +384,9 @@ class ReportingConfigForm extends React.Component {
           <Form.Group
             isInvalid={!!APIErrors.enableCompression}
           >
-            <label htmlFor="enableCompression">Enable Compression</label>
-            <Input
-              type="checkbox"
-              id="enableCompression"
-              name="enableCompression"
+            <Form.Label>Enable Compression</Form.Label>
+            <Form.Checkbox
+              data-testid="compressionCheckbox"
               className="ml-3"
               checked={enableCompression}
               onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
@@ -393,28 +396,24 @@ class ReportingConfigForm extends React.Component {
               Without compression files will not be password protected or encrypted.
             </Form.Text>
             {!!APIErrors.enableCompression && (
-            <Form.Control.Feedback type="invalid">
-              {APIErrors.enableCompression}
-            </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {APIErrors.enableCompression}
+              </Form.Control.Feedback>
             )}
           </Form.Group>
         </div>
         <div className="col">
-          <Form.Group>
-            <label htmlFor="enterpriseCustomerCatalogs">Enterprise Customer Catalogs</label>
-            <Input
-              type="select"
-              id="enterpriseCustomerCatalogs"
-              name="enterpriseCustomerCatalogUuids"
+          <Form.Group controlId="enterpriseCustomerCatalogs">
+            <Form.Label>Enterprise Customer Catalogs</Form.Label>
+            <Form.Control
+              as="select"
               multiple
               defaultValue={selectedCatalogs}
-              options={
-                availableCatalogs && availableCatalogs.map(item => ({
-                  value: item.uuid,
-                  label: `Catalog "${item.title}" with UUID "${item.uuid}"`,
-                }))
-              }
-            />
+            >
+              {availableCatalogs && (availableCatalogs.map((item) => (
+                <option key={item.uuid} value={item.uuid}>Catalog {item.title} with UUID {item.uuid}</option>
+              )))}
+            </Form.Control>
             <Form.Text>
               The catalogs that should be included in the report. No selection means all catalogs will be included.
             </Form.Text>
@@ -453,7 +452,8 @@ class ReportingConfigForm extends React.Component {
           </Form.Group>
           {config && (
             <Button
-              className="btn-outline-danger  mr-3"
+              data-testid="deleteConfigButton"
+              className="btn-outline-danger mr-3"
               onClick={() => this.props.deleteConfig(config.uuid)}
             >
               <Icon src={Close} className="danger" /> Delete
