@@ -9,7 +9,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import LmsApiService from '../../../../../data/services/LmsApiService';
-import { features } from '../../../../../config';
 import SyncHistory from '../SyncHistory';
 
 const enterpriseCustomerUuid = 'test-enterprise-id';
@@ -232,7 +231,6 @@ describe('<ExistingLMSCardDeck />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
-    features.FEATURE_INTEGRATION_REPORTING = true;
     const baseUrl = 'http://dummy.com';
     const pathName = '/test-enterprise/admin/settings/lms';
     Object.defineProperty(window, 'location', {

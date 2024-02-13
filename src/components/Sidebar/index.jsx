@@ -34,7 +34,7 @@ const Sidebar = ({
 }) => {
   const navRef = useRef();
   const widthRef = useRef();
-  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
+  const { enterpriseCuration: { enterpriseCuration, isNewArchivedContent } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
@@ -105,6 +105,7 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} />,
       hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive,
+      notification: isNewArchivedContent,
     },
     {
       title: 'Reporting Configurations',

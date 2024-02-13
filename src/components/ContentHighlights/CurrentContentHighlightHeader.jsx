@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { Add, Info } from '@edx/paragon/icons';
 import { useContentHighlightsContext } from './data/hooks';
 import EVENT_NAMES from '../../eventTracking';
+import ContentHighlightArchivedAlert from './ContentHighlightArchivedAlert';
 
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import {
@@ -22,11 +23,18 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       enterpriseCuration: {
         highlightSets,
       },
+      isNewArchivedContent,
     },
   } = useContext(EnterpriseAppContext);
+
   const { openStepperModal } = useContentHighlightsContext();
   const [maxHighlightsReached, setMaxHighlightsReached] = useState(false);
   const [showMaxHighlightsAlert, setShowMaxHighlightsAlert] = useState(false);
+  const [isArchivedAlertOpen, setIsArchivedAlertOpen] = useState(false);
+
+  useEffect(() => {
+    setIsArchivedAlertOpen(isNewArchivedContent);
+  }, [isNewArchivedContent]);
 
   useEffect(() => {
     // using greater than or equal as an additional buffer as opposed to exactly equal
@@ -80,6 +88,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       <p>
         {HEADER_TEXT.SUB_TEXT.currentContent}
       </p>
+      <ContentHighlightArchivedAlert open={isArchivedAlertOpen} onClose={() => setIsArchivedAlertOpen(false)} />
       <Alert
         variant="danger"
         icon={Info}

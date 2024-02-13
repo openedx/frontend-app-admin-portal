@@ -144,6 +144,7 @@ export const FOOTER_TEXT_BY_CONTENT_TYPE = {
 export const COURSE_RUN_STATUSES = {
   archived: 'archived',
   published: 'published',
+  unpublished: 'unpublished',
 };
 
 export const LEARNER_PORTAL_CATALOG_VISIBILITY = {
@@ -178,6 +179,8 @@ export const TEST_HIGHLIGHT_SET = {
     'bff7c78a-ea9b-45b7-9a71-0326a6d5ccb2',
   ],
 };
+
+export const NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME = 'new-archived-content-alert-dismissed';
 
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
