@@ -20,9 +20,9 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             />
             <Form.Text>The host to deliver the report to</Form.Text>
             {invalidFields.sftpHostname && (
-            <Form.Control.Feedback type="invalid">
-              Required. Hostname cannot be blank
-            </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Required. Hostname cannot be blank
+              </Form.Control.Feedback>
             )}
           </Form.Group>
         </div>

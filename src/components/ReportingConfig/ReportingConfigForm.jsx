@@ -445,9 +445,9 @@ class ReportingConfigForm extends React.Component {
               variant="primary"
             />
             {submitState === SUBMIT_STATES.ERROR && (
-            <Form.Control.Feedback type="invalid">
-              There was an error submitting, please try again.
-            </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                There was an error submitting, please try again.
+              </Form.Control.Feedback>
             )}
           </Form.Group>
           {config && (

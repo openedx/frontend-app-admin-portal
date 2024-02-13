@@ -1,10 +1,11 @@
 import {
-  screen, render, waitFor,
+  screen,
+  render,
+  waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { Form } from '@edx/paragon';
 
 import SettingsAccessSubsidyRequestManagement from '../SettingsAccessSubsidyRequestManagement';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
@@ -13,8 +14,8 @@ jest.mock('../SettingsAccessTabSection', () => ({
   __esModule: true,
   default: jest.fn(({ checked, onFormSwitchChange }) => (
     <div>
-      <Form.Checkbox checked={checked} onChange={onFormSwitchChange} />
-      <Form.Label>Checkbox</Form.Label>
+      <input type="checkbox" id="checkbox" checked={checked} onChange={onFormSwitchChange} />
+      <label htmlFor="checkbox">Checkbox</label>
     </div>
   )),
 }));
