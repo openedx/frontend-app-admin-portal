@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { clearFields } from 'redux-form';
-import { Button, Icon, ValidationFormGroup } from '@edx/paragon';
+import { Button, Form, Icon } from '@edx/paragon';
 import { Close } from '@edx/paragon/icons';
 
 class FileInput extends React.Component {
@@ -69,12 +69,10 @@ class FileInput extends React.Component {
     } = this.props;
     const hasError = !!(touched && error);
     return (
-      <ValidationFormGroup
+      <Form.Group
         className="file-input"
-        for={id}
-        helpText={description}
-        invalid={hasError}
-        invalidMessage={error}
+        controlId={id}
+        isInvalid={hasError}
       >
         <label className="m-0 mb-1" htmlFor={id}>{label}</label>
         <div
@@ -142,7 +140,14 @@ class FileInput extends React.Component {
             </Button>
           )}
         </div>
-      </ValidationFormGroup>
+        <Form.Text>{description}</Form.Text>
+        {hasError && (
+          <Form.Control.Feedback type="invalid">
+            {error}
+          </Form.Control.Feedback>
+        )}
+      </Form.Group>
+
     );
   }
 }
