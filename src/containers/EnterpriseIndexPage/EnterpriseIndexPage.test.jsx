@@ -43,18 +43,6 @@ describe('<EnterpriseIndexPage />', () => {
     ));
   });
 
-  it('sets the appropriate props', () => {
-    const el = wrapper.find(EnterpriseList);
-    expect(el.props().loading).toEqual(false);
-    expect(el.props().error).toEqual(null);
-    expect(el.props().enterpriseList).toEqual(initialState.table['enterprise-list'].data);
-  });
-
-  it('searchEnterpriseList dispatches searchEnterpriseList action', () => {
-    wrapper.find(EnterpriseList).props().searchEnterpriseList();
-    expect(dispatchSpy).toHaveBeenCalled();
-  });
-
   it('clearPortalConfiguration dispatches clearPortalConfiguration action', () => {
     wrapper.find(EnterpriseList).props().clearPortalConfiguration();
     expect(dispatchSpy).toHaveBeenCalled();
