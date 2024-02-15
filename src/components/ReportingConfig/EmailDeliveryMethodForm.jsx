@@ -1,26 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, ValidationFormGroup } from '@edx/paragon';
+import { Form } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
 import isEmail from 'validator/lib/isEmail';
 
 const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   const [checked, setChecked] = useState(false);
-
   return (
     <div className="row">
       <div className="col">
-        <ValidationFormGroup
-          for="email"
-          helpText="The email(s), one per line, where the report should be sent"
-          invalidMessage="Required. One email per line. Emails must be formatted properly (email@domain.com)"
-          invalid={invalidFields.emailRaw}
-        >
-          <label htmlFor="email">Email(s)</label>
-          <Input
-            type="textarea"
-            id="email"
-            name="emailRaw"
+        <Form.Group controlId="email" isInvalid={invalidFields.emailRaw}>
+          <Form.Label>Email(s)</Form.Label>
+          <Form.Control
+            as="textarea"
+            data-testid="emailRaw"
             defaultValue={config ? config.email.join('\n') : undefined}
             onBlur={e => handleBlur(e, () => {
               const rows = e.target.value.split('\n');
@@ -28,36 +21,45 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               return !isEmpty(emails);
             })}
             data-hj-suppress
+            autoResize
           />
-        </ValidationFormGroup>
+          <Form.Text>The email(s), one per line, where the report should be sent.</Form.Text>
+          {invalidFields.emailRaw && (
+            <Form.Control.Feedback type="invalid">
+              Required. One email per line. Emails must be formatted properly (email@domain.com)
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
         {config && (
-          <div className="form-group">
-            <label htmlFor="changePassword">Change Password</label>
-            <Input
-              type="checkbox"
-              id="changePassword"
+          <Form.Group controlId="changePassword">
+            <Form.Label>Change Password</Form.Label>
+            <Form.Checkbox
               className="ml-3"
               checked={checked}
               onChange={() => setChecked(!checked)}
             />
-          </div>
+          </Form.Group>
         )}
-        <ValidationFormGroup
-          for="encryptedPassword"
-          helpText="This password will be used to secure the zip file. It will be encrypted when stored in the database."
-          invalid={invalidFields.encryptedPassword}
-          invalidMessage="Required. Password must not be blank"
+        <Form.Group
+          controlId="encryptedPassword"
+          isInvalid={invalidFields.encryptedPassword}
         >
-          <label htmlFor="encryptedPassword">Password</label>
-          <Input
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type="password"
-            id="encryptedPassword"
-            name="encryptedPassword"
             disabled={config && !checked}
             onBlur={e => handleBlur(e)}
             data-hj-suppress
           />
-        </ValidationFormGroup>
+          <Form.Text>
+            This password will be used to secure the zip file. It will be encrypted when stored in the database.
+          </Form.Text>
+          {invalidFields.encryptedPassword && (
+            <Form.Control.Feedback type="invalid">
+              Required. Password must not be blank.
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
       </div>
     </div>
   );
