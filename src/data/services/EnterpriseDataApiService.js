@@ -37,7 +37,6 @@ class EnterpriseDataApiService {
 
     if (csv) {
       queryParams.set('no_page', csv);
-      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -69,7 +68,6 @@ class EnterpriseDataApiService {
 
     if (csv) {
       queryParams.set('no_page', csv);
-      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -91,7 +89,6 @@ class EnterpriseDataApiService {
 
     if (csv) {
       queryParams.set('no_page', csv);
-      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -115,7 +112,6 @@ class EnterpriseDataApiService {
 
     if (csv) {
       queryParams.set('no_page', csv);
-      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
@@ -135,7 +131,6 @@ class EnterpriseDataApiService {
 
     if (csv) {
       queryParams.set('no_page', csv);
-      queryParams.set('streaming_csv_enabled', features.FEATURE_STREAMING_CSV);
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
