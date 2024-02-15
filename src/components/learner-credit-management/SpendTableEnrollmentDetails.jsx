@@ -28,7 +28,7 @@ const SpendTableEnrollmentDetailsContents = ({
       fulfillmentIdentifier={row.original.fulfillmentIdentifier}
     />
     <div>
-      {enableLearnerPortal ? (
+      {(enableLearnerPortal && row.original.courseKey) ? (
         <Hyperlink
           className="x-small"
           destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.courseKey}`}
