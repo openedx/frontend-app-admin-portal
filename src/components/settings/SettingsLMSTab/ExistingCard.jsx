@@ -31,7 +31,9 @@ const ExistingCard = ({
   setErrorModalText,
   getStatus,
 }) => {
-  const redirectPath = `${useLocation().pathname}`;
+  const location = useLocation();
+  const pathname = location.pathname;
+  const redirectPath = pathname.endsWith('/') ? pathname : `${pathname}/`;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const isEdxStaff = getAuthenticatedUser().administrator;
 
