@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
 import {
-  COURSE_RUN_STATUSES,
   DEFAULT_ERROR_MESSAGE,
   HIGHLIGHTS_CARD_GRID_COLUMN_SIZES,
   MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET,
@@ -17,6 +16,7 @@ import { generateAboutPageUrl } from './data/utils';
 import EVENT_NAMES from '../../eventTracking';
 import { features } from '../../config';
 import DeleteArchivedHighlightsDialogs from './DeleteArchivedHighlightsDialogs';
+import { isArchivedContent } from '../EnterpriseApp/data/enterpriseCurationReducer';
 
 const ContentHighlightsCardItemsContainer = ({
   enterpriseId, enterpriseSlug, isLoading, highlightedContent, updateHighlightSet,
@@ -44,16 +44,8 @@ const ContentHighlightsCardItemsContainer = ({
 
   if (FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING) {
     for (let i = 0; i < highlightedContent.length; i++) {
-      const {
-        courseRunStatuses,
-      } = highlightedContent[i];
-      if (courseRunStatuses) {
-        // a course is only archived if all of its runs are archived
-        if (courseRunStatuses?.every(status => status === COURSE_RUN_STATUSES.archived)) {
-          archivedContent.push(highlightedContent[i]);
-        } else {
-          activeContent.push(highlightedContent[i]);
-        }
+      if (isArchivedContent(highlightedContent[i])) {
+        archivedContent.push(highlightedContent[i]);
       } else {
         activeContent.push(highlightedContent[i]);
       }

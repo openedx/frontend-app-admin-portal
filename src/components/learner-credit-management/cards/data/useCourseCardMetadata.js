@@ -32,6 +32,7 @@ const useCourseCardMetadata = ({
   let logoSrc;
   let logoAlt;
   if (partners.length === 1) {
+    // here
     logoSrc = partners[0]?.logoImageUrl;
     logoAlt = `${partners[0]?.name}'s logo`;
   }

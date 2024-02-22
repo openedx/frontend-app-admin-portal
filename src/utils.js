@@ -447,6 +447,17 @@ function getActiveTableColumnFilters(columns) {
   })).filter(filter => !!filter.filterValue);
 }
 
+function makePlural(num, string) {
+  const stringEndings = ['s', 'x', 'z'];
+  if (num > 1 || num === 0) {
+    if (stringEndings.includes(string.charAt(string.length - 1))) {
+      return `${num} ${string}es`;
+    }
+    return `${num} ${string}s`;
+  }
+  return `${num} ${string}`;
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -484,4 +495,5 @@ export {
   isAssignableSubsidyAccessPolicyType,
   getActiveTableColumnFilters,
   queryCacheOnErrorHandler,
+  makePlural,
 };

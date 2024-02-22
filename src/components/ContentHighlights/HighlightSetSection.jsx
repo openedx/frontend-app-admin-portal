@@ -40,6 +40,7 @@ const HighlightSetSection = ({
           isPublished,
           highlightedContentUuids,
           cardImageUrl,
+          archivedContentCount,
         }) => (
           <ContentHighlightSetCard
             key={uuid}
@@ -47,6 +48,7 @@ const HighlightSetSection = ({
             highlightSetUUID={uuid}
             isPublished={isPublished}
             itemCount={highlightedContentUuids.length}
+            archivedItemCount={archivedContentCount}
             imageCapSrc={cardImageUrl}
             onClick={() => trackClickEvent({
               uuid, title, isPublished, highlightedContentUuids,
