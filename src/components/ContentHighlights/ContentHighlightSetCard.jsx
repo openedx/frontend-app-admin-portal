@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { useContentHighlightsContext } from './data/hooks';
+import { makePlural } from '../../utils';
 
 const ContentHighlightSetCard = ({
   imageCapSrc,
@@ -14,6 +15,7 @@ const ContentHighlightSetCard = ({
   isPublished,
   enterpriseSlug,
   itemCount,
+  archivedItemCount,
   onClick,
 }) => {
   const navigate = useNavigate();
@@ -30,6 +32,15 @@ const ContentHighlightSetCard = ({
     openStepperModal();
   };
 
+  const cardItemText = () => {
+    let returnString = '';
+    returnString += makePlural(itemCount, 'item');
+    if (archivedItemCount > 0) {
+      returnString += ` : ${makePlural(archivedItemCount, 'archived item')}`;
+    }
+    return returnString;
+  };
+
   return (
     <Card
       isClickable
@@ -39,7 +50,7 @@ const ContentHighlightSetCard = ({
       <Card.ImageCap src={imageCapSrc} srcAlt="" />
       <Card.Header title={title} />
       <Card.Section>
-        {itemCount} items
+        {cardItemText()}
       </Card.Section>
     </Card>
   );
@@ -51,6 +62,7 @@ ContentHighlightSetCard.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   isPublished: PropTypes.bool.isRequired,
   itemCount: PropTypes.number.isRequired,
+  archivedItemCount: PropTypes.number.isRequired,
   imageCapSrc: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };

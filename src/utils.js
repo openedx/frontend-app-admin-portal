@@ -24,6 +24,7 @@ import CornerstoneIcon from './icons/CSOD.png';
 import DegreedIcon from './icons/Degreed.png';
 import MoodleIcon from './icons/Moodle.png';
 import SAPIcon from './icons/SAP.svg';
+import { COURSE_RUN_STATUSES } from './components/ContentHighlights/data/constants';
 
 import LmsApiService from './data/services/LmsApiService';
 
@@ -447,6 +448,37 @@ function getActiveTableColumnFilters(columns) {
   })).filter(filter => !!filter.filterValue);
 }
 
+/**
+ * Helper to transform a string into a plural form based on a number.
+ *
+ * @returns A string with the number and the plural form of the string.
+ */
+function makePlural(num, string) {
+  const stringEndings = ['s', 'x', 'z'];
+  if (num > 1 || num === 0) {
+    if (stringEndings.includes(string.charAt(string.length - 1))) {
+      return `${num} ${string}es`;
+    }
+    return `${num} ${string}s`;
+  }
+  return `${num} ${string}`;
+}
+
+/**
+ * Helper function to determine if a content is archived.
+ *
+ * @param {Object} content (can be program, course, or pathway)
+ * @returns {Boolean}
+ */
+function isArchivedContent(content) {
+  const { courseRunStatuses } = content;
+  if (!courseRunStatuses) {
+    return false;
+  }
+  const ARCHIVABLE_STATUSES = [COURSE_RUN_STATUSES.archived, COURSE_RUN_STATUSES.unpublished];
+  return courseRunStatuses.every(status => ARCHIVABLE_STATUSES.includes(status));
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -484,4 +516,6 @@ export {
   isAssignableSubsidyAccessPolicyType,
   getActiveTableColumnFilters,
   queryCacheOnErrorHandler,
+  makePlural,
+  isArchivedContent,
 };

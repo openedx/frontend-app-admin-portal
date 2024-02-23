@@ -2,7 +2,7 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import store from '../store';
-import { configuration, features } from '../../config';
+import { configuration } from '../../config';
 
 class EnterpriseDataApiService {
   // TODO: This should access the data-api through the gateway instead of direct
