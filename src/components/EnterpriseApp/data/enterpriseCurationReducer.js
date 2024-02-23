@@ -1,5 +1,6 @@
 import { logError } from '@edx/frontend-platform/logging';
-import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME, COURSE_RUN_STATUSES } from '../../ContentHighlights/data/constants';
+import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME } from '../../ContentHighlights/data/constants';
+import { isArchivedContent } from '../../../utils';
 
 export const initialReducerState = {
   isLoading: true,
@@ -69,23 +70,6 @@ export const enterpriseCurationActions = {
 
 function getHighlightSetsFromState(state) {
   return state.enterpriseCuration?.highlightSets || [];
-}
-
-/**
- * Helper function to determine if a content is archived.
- *
- * @param {Object} content
- * @returns {Boolean}
- */
-export function isArchivedContent(content) {
-  const { courseRunStatuses } = content;
-
-  if (!courseRunStatuses) {
-    return false;
-  }
-
-  const ARCHIVABLE_STATUSES = [COURSE_RUN_STATUSES.archived, COURSE_RUN_STATUSES.unpublished];
-  return courseRunStatuses.every(status => ARCHIVABLE_STATUSES.includes(status));
 }
 
 /**
