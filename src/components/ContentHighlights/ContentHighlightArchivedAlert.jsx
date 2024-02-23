@@ -3,7 +3,8 @@ import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
-import { enterpriseCurationActions, isArchivedContent } from '../EnterpriseApp/data/enterpriseCurationReducer';
+import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
+import { isArchivedContent } from '../../utils';
 
 const ContentHighlightArchivedAlert = ({ open, onClose }) => {
   const [archivedContentLocalStorage, setArchivedContentLocalStorage] = useState({});

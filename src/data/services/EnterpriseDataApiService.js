@@ -138,7 +138,8 @@ class EnterpriseDataApiService {
   }
 
   static fetchDashboardInsights(enterpriseId) {
-    const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseId}`;
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseUUID}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 }

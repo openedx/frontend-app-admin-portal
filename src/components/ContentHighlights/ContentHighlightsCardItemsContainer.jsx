@@ -16,7 +16,7 @@ import { generateAboutPageUrl } from './data/utils';
 import EVENT_NAMES from '../../eventTracking';
 import { features } from '../../config';
 import DeleteArchivedHighlightsDialogs from './DeleteArchivedHighlightsDialogs';
-import { isArchivedContent } from '../EnterpriseApp/data/enterpriseCurationReducer';
+import { isArchivedContent } from '../../utils';
 
 const ContentHighlightsCardItemsContainer = ({
   enterpriseId, enterpriseSlug, isLoading, highlightedContent, updateHighlightSet,
