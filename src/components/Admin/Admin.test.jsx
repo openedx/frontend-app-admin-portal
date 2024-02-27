@@ -20,10 +20,20 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
+jest.mock('../EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../EnterpriseSubsidiesContext/data/hooks'),
+  useEnterpriseBudgets: jest.fn().mockReturnValue({
+    data: [],
+  }),
+}));
+
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
   },
   table: {},
   csv: {},
@@ -472,6 +482,7 @@ describe('<Admin />', () => {
       });
     });
   });
+
   describe('reset form button', () => {
     it('should not be present if there is no query', () => {
       const wrapper = mount((

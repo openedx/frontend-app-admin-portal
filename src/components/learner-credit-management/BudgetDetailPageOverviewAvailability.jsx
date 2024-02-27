@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import {
-  Button, Col, Hyperlink, ProgressBar, Row, Stack, useMediaQuery, breakpoints,
+  breakpoints, Button, Col, Hyperlink, ProgressBar, Stack, Row, useMediaQuery,
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
 import { generatePath, useParams, Link } from 'react-router-dom';
@@ -12,9 +12,26 @@ import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { configuration } from '../../config';
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
+import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 
-const BudgetDetail = ({ available, utilized, limit }) => {
+const BudgetDetail = ({
+  available, utilized, limit, status,
+}) => {
   const currentProgressBarLimit = (available / limit) * 100;
+
+  if (status === BUDGET_STATUSES.expired) {
+    return (
+      <Stack className="border border-light-400 p-4">
+        <h4>Spent</h4>
+        <Stack direction="horizontal" gap={4} className="mt-1">
+          <span className="display-1 text-dark" data-testid="budget-detail-spent">{formatPrice(utilized)}</span>
+          <span className="mt-auto small text-monospace" data-testid="budget-detail-unspent">
+            Unspent {formatPrice(available)}
+          </span>
+        </Stack>
+      </Stack>
+    );
+  }
 
   return (
     <Stack className="border border-light-400 p-4">
@@ -39,9 +56,15 @@ BudgetDetail.propTypes = {
   available: PropTypes.number.isRequired,
   utilized: PropTypes.number.isRequired,
   limit: PropTypes.number.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
-const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
+const BudgetActions = ({
+  budgetId,
+  isAssignable,
+  enterpriseId,
+  status,
+}) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -67,11 +90,37 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
 
   const isLargeScreenOrGreater = useMediaQuery({ query: `(min-width: ${breakpoints.small.minWidth}px)` });
 
-  if (!isAssignable) {
+  if (status === BUDGET_STATUSES.expired) {
     return (
       <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
         <div>
           <h4>Get people learning using this budget</h4>
+          <p>
+            This budget has expired. To create a new budget, please contact support.
+          </p>
+          <Button
+            variant="outline-primary"
+            as={Hyperlink}
+            destination={supportUrl}
+            onClick={() => sendEnterpriseTrackEvent(
+              enterpriseId,
+              EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_CONTACT_US,
+              trackEventMetadata,
+            )}
+            target="_blank"
+          >
+            Contact support
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAssignable) {
+    return (
+      <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+        <div>
+          <h4>Keep people learning with a new plan</h4>
           <p>
             Funds from this budget are set to auto-allocate to registered learners based on
             settings configured with your support team.
@@ -123,6 +172,7 @@ BudgetActions.propTypes = {
   budgetId: PropTypes.string.isRequired,
   isAssignable: PropTypes.bool.isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 const BudgetDetailPageOverviewAvailability = ({
@@ -131,37 +181,38 @@ const BudgetDetailPageOverviewAvailability = ({
   budgetTotalSummary: { available, utilized, limit },
   enterpriseFeatures,
   enterpriseId,
+  status,
 }) => (
   <Stack className="mt-4">
     <Row>
       <Col lg={7}>
-        <BudgetDetail available={available} utilized={utilized} limit={limit} />
+        <BudgetDetail available={available} utilized={utilized} limit={limit} status={status} />
       </Col>
       <Col lg={5}>
         <BudgetActions
           budgetId={budgetId}
           isAssignable={isAssignable && enterpriseFeatures.topDownAssignmentRealTimeLcm}
           enterpriseId={enterpriseId}
+          status={status}
         />
       </Col>
     </Row>
   </Stack>
 );
 
-const budgetTotalSummaryShape = {
-  utilized: PropTypes.number.isRequired,
-  available: PropTypes.number.isRequired,
-  limit: PropTypes.number.isRequired,
-};
-
 BudgetDetailPageOverviewAvailability.propTypes = {
   budgetId: PropTypes.string.isRequired,
-  budgetTotalSummary: PropTypes.shape(budgetTotalSummaryShape).isRequired,
+  budgetTotalSummary: PropTypes.shape({
+    utilized: PropTypes.number.isRequired,
+    available: PropTypes.number.isRequired,
+    limit: PropTypes.number.isRequired,
+  }).isRequired,
   isAssignable: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
