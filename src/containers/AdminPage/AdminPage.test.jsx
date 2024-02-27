@@ -8,10 +8,20 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import AdminPage from '.';
 
+jest.mock('../../components/EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../../components/EnterpriseSubsidiesContext/data/hooks'),
+  useEnterpriseBudgets: jest.fn().mockReturnValue({
+    data: [],
+  }),
+}));
+
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise',
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
   },
   dashboardAnalytics: {
     active_learners: {
