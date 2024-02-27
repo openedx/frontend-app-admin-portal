@@ -8,9 +8,13 @@ import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { screen, render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import dayjs from 'dayjs';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import Admin from './index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../DownloadCsvButton';
+import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -20,10 +24,20 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
+jest.mock('../EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../EnterpriseSubsidiesContext/data/hooks'),
+  useEnterpriseBudgets: jest.fn().mockReturnValue({
+    data: [],
+  }),
+}));
+
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+    },
   },
   table: {},
   csv: {},
@@ -472,6 +486,7 @@ describe('<Admin />', () => {
       });
     });
   });
+
   describe('reset form button', () => {
     it('should not be present if there is no query', () => {
       const wrapper = mount((
@@ -549,6 +564,40 @@ describe('<Admin />', () => {
       expect(wrapper.text()).toContain('Reset Filters');
       const link = wrapper.find(Link).find('#reset-filters');
       expect(link.first().props().to).toEqual(`${path}?${nonSearchQuery}`);
+    });
+  });
+
+  describe('renders expiry component when threshold is met', () => {
+    it('renders when date is within threshold', () => {
+      useEnterpriseBudgets.mockReturnValue(
+        {
+          data: [
+            {
+              end: dayjs().add(60, 'day').toString(),
+            },
+          ],
+        },
+      );
+
+      render(<AdminWrapper {...baseProps} />);
+
+      expect(screen.getByTestId('expiry-notification-alert')).toBeInTheDocument();
+    });
+
+    it('does not render when date is not within threshold', () => {
+      useEnterpriseBudgets.mockReturnValue(
+        {
+          data: [
+            {
+              end: dayjs().add(160, 'day').toString(),
+            },
+          ],
+        },
+      );
+
+      render(<AdminWrapper {...baseProps} />);
+
+      expect(screen.queryByTestId('expiry-notification-alert')).not.toBeInTheDocument();
     });
   });
 });

@@ -110,6 +110,7 @@ export const useEnterpriseBudgets = ({
   enablePortalLearnerCreditManagementScreen,
   enterpriseId,
   isTopDownAssignmentEnabled,
+  queryOptions = {},
 }) => useQuery({
   queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
   queryFn: (args) => fetchEnterpriseBudgets({
@@ -118,6 +119,7 @@ export const useEnterpriseBudgets = ({
     enterpriseId,
     enablePortalLearnerCreditManagementScreen,
   }),
+  ...queryOptions,
 });
 
 export const useCustomerAgreement = ({ enterpriseId }) => {

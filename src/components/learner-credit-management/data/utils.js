@@ -12,6 +12,7 @@ import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
+import { isPlanApproachingExpiry } from '../../BudgetExpiryAlertAndModal/data/utils';
 
 /**
  * Transforms subsidy (offer or Subsidy) summary from API for display in the UI, guarding
@@ -179,6 +180,15 @@ export const getBudgetStatus = ({
     };
   }
 
+  if (isPlanApproachingExpiry(endDateStr)) {
+    return {
+      status: BUDGET_STATUSES.expiring,
+      badgeVariant: 'warning',
+      term: 'Expiring',
+      date: endDateStr,
+    };
+  }
+
   // Check if budget is current (today's date between start/end dates)
   if (currentDate >= startDate && currentDate <= endDate) {
     return {
@@ -218,10 +228,11 @@ export const formatPrice = (price, options = {}) => {
  */
 export const orderBudgets = (budgets) => {
   const statusOrder = {
-    Active: 0,
-    Scheduled: 1,
-    Expired: 2,
-    Retired: 3,
+    Expiring: 1,
+    Active: 1,
+    Scheduled: 2,
+    Expired: 3,
+    Retired: 4,
   };
 
   budgets?.sort((budgetA, budgetB) => {

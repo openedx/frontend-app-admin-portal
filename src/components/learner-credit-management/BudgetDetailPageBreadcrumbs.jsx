@@ -8,7 +8,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
 
-const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDisplayName }) => {
+const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, displayName }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
@@ -39,7 +39,7 @@ const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, budgetDispl
           to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`,
         }]}
         linkAs={Link}
-        activeLabel={budgetDisplayName}
+        activeLabel={displayName}
         clickHandler={() => sendEnterpriseTrackEvent(
           enterpriseId,
           EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BREADCRUMB_FROM_BUDGET_DETAIL_TO_BUDGETS,
@@ -58,7 +58,7 @@ const mapStateToProps = state => ({
 BudgetDetailPageBreadcrumbs.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  budgetDisplayName: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailPageBreadcrumbs);
