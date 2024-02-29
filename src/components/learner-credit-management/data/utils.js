@@ -81,13 +81,14 @@ export const transformSubsidySummary = (subsidySummary) => {
 };
 
 /**
- * Transforms enrollment data from analytics api to fields for display
- * in learner credit allocation table.
- * A uuid is added to each enrollment to be used as a key for the table.
+ * Transforms enrollment data from analytics api to fields for display in learner credit spent table.
+ *
+ * Notes:
+ * * A uuid is synthesized for each enrollment to be used as a key for the table.
  *
  * @param {array} results List of raw enrollment results from API.
  *
- * @returns List of transformed results for display in table.
+ * @returns List of transformed results for display in spent table.
  */
 export const transformUtilizationTableResults = results => results.map(result => ({
   created: result.created,
@@ -100,6 +101,16 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseKey: result.courseKey,
 }));
 
+/**
+ * Transforms redemptions data from transaction list API to fields for display in learner credit spent table.
+ *
+ * Notes:
+ * * This supports the "real-time" spent table implementation.
+ *
+ * @param {array} results List of raw enrollment results from API.
+ *
+ * @returns List of transformed results for display in spent table.
+ */
 export const transformUtilizationTableSubsidyTransactionResults = results => results.map(result => ({
   created: result.created,
   enrollmentDate: result.created,
@@ -109,7 +120,8 @@ export const transformUtilizationTableSubsidyTransactionResults = results => res
   courseTitle: result.contentTitle,
   courseListPrice: result.unit === 'usd_cents' ? -1 * (result.quantity / 100) : -1 * results.quantity,
   uuid: result.uuid,
-  courseKey: result.contentKey,
+  // In the transaction list response, `parent_content_key` is the course key, and `content_key` is the course run key.
+  courseKey: result.parentContentKey,
 }));
 
 /**

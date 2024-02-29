@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook } from '@testing-library/react-hooks/dom';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 import useBudgetRedemptions from '../useBudgetRedemptions';
 import useSubsidyAccessPolicy from '../useSubsidyAccessPolicy';
@@ -10,8 +11,11 @@ import { queryClient } from '../../../../test/testUtils';
 
 const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 const TEST_ENTERPRISE_OFFER_ID = 1;
-const subsidyUuid = 'test-subsidy-uuid';
+const subsidyUuid = uuidv4();
+const transactionUuid = uuidv4();
 const courseTitle = 'Test Course Title';
+const courseKey = 'edX+test';
+const courseRunKey = `course-v1:${courseKey}+course.1`;
 const userEmail = 'edx@example.com';
 
 const mockOfferEnrollments = [{
@@ -33,14 +37,15 @@ const mockSubsidyTransactionResponse = {
   current_page: 1,
   num_pages: 5,
   results: [{
-    uuid: subsidyUuid,
+    uuid: transactionUuid,
     state: 'committed',
-    idempotency_key: '5d00d319-fe46-41f7-b14e-966534da9f72',
+    idempotency_key: 'does-not-matter',
     lms_user_id: 999,
     lms_user_email: userEmail,
-    content_key: 'course-v1:edX+test+course.1',
+    content_key: courseRunKey,
+    parent_content_key: courseKey,
     content_title: courseTitle,
-    quantity: -1000,
+    quantity: -1500,
     unit: 'usd_cents',
   }],
 };
@@ -145,7 +150,8 @@ describe('useBudgetRedemptions', () => {
     }
 
     const mockExpectedResultsObj = isTopDownAssignmentEnabled ? [{
-      courseListPrice: 10,
+      courseListPrice: 15,
+      courseKey,
       courseTitle,
       userEmail,
     }] : camelCaseObject(mockOfferEnrollments);
