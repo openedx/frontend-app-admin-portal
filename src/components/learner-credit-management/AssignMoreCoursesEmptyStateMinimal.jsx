@@ -5,7 +5,7 @@ import { Button, Card } from '@edx/paragon';
 import {
   formatDate, formatPrice, useBudgetId, usePathToCatalogTab, useSubsidyAccessPolicy,
 } from './data';
-import nameYourLearner from './assets/nameYourLearners.svg';
+import nameYourLearner from './assets/reading.svg';
 
 const AssignMoreCoursesEmptyStateMinimal = () => {
   const { subsidyAccessPolicyId } = useBudgetId();
