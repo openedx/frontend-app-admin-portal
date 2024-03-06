@@ -9,8 +9,8 @@ import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoBudgetActivityEmptyState from './NoBudgetActivityEmptyState';
-
-import InviteMembersModal from './invite-modal/InviteMembersModal';
+import InviteMembersModal from './invite-modal/InviteModalContent';
+import InviteMembersModalWrapper from './invite-modal/InviteMembersModalWrapper';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
   const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(true);
@@ -40,7 +40,7 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     return (
       <>
-        <InviteMembersModal isOpen={inviteModalIsOpen} close={closeInviteModal} />
+        <InviteMembersModalWrapper isOpen={inviteModalIsOpen} close={closeInviteModal} />
         <Button onClick={openInviteModal} variant="primary">Click here!</Button>
         <BudgetDetailRedemptions />
       </>
