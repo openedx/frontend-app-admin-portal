@@ -6,10 +6,9 @@ import {
 } from '@edx/paragon';
 import { Person } from '@edx/paragon/icons';
 
-import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, hasLearnerEmailsSummaryListTruncation } from './data';
+import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, hasLearnerEmailsSummaryListTruncation } from '../cards/data';
 
-const AssignmentModalSummaryLearnerList = ({
-  course,
+const InviteModalSummaryLearnerList = ({
   learnerEmails,
 }) => {
   const [isTruncated, setIsTruncated] = useState(hasLearnerEmailsSummaryListTruncation(learnerEmails));
@@ -43,9 +42,6 @@ const AssignmentModalSummaryLearnerList = ({
                   </div>
                 </Stack>
               </div>
-              <span className="ml-auto">
-                {course.formattedPrice}
-              </span>
             </div>
           </li>
         ))}
@@ -64,11 +60,8 @@ const AssignmentModalSummaryLearnerList = ({
   );
 };
 
-AssignmentModalSummaryLearnerList.propTypes = {
-  course: PropTypes.shape({
-    formattedPrice: PropTypes.string.isRequired,
-  }).isRequired,
+InviteModalSummaryLearnerList.propTypes = {
   learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default AssignmentModalSummaryLearnerList;
+export default InviteModalSummaryLearnerList;

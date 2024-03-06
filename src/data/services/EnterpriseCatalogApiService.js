@@ -31,6 +31,10 @@ class EnterpriseCatalogApiService {
     ).get(url);
   }
 
+  static fetchEnterpriseCatalog(catalogUuid) {
+    return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCustomerCatalogsUrl}${catalogUuid}`);
+  }
+
   static fetchEnterpriseCustomerCatalogs(enterpriseId) {
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCustomerCatalogsUrl}?enterprise_customer=${enterpriseId}`);
   }

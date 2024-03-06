@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Skeleton } from '@edx/paragon';
+import {
+  Button, Stack, Skeleton, useToggle,
+} from '@edx/paragon';
 
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoBudgetActivityEmptyState from './NoBudgetActivityEmptyState';
 
+import InviteMembersModal from './invite-modal/InviteMembersModal';
+
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
+  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(true);
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -33,7 +38,13 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   }
 
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
-    return <BudgetDetailRedemptions />;
+    return (
+      <>
+        <InviteMembersModal isOpen={inviteModalIsOpen} close={closeInviteModal} />
+        <Button onClick={openInviteModal} variant="primary">Click here!</Button>
+        <BudgetDetailRedemptions />
+      </>
+    );
   }
 
   const hasContentAssignments = !!budgetActivityOverview.contentAssignments?.count > 0;
