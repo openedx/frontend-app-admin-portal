@@ -22,7 +22,7 @@ const EnrollAndSpendIllustration = (props) => (
   <img data-testid="enroll-and-spend-illustration" src={enrollAndSpend} alt="" {...props} />
 );
 
-const NoBnRBudgetActivity = () => {
+const NoBnEBudgetActivity = () => {
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
@@ -96,4 +96,4 @@ const NoBnRBudgetActivity = () => {
   );
 };
 
-export default NoBnRBudgetActivity;
+export default NoBnEBudgetActivity;

@@ -7,7 +7,7 @@ import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
-import NoBnRBudgetActivity from './empty-state/NoBnRBudgetActivity';
+import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
@@ -33,13 +33,13 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
     );
   }
 
-  const hasSpentTransactions = !!budgetActivityOverview.spentTransactions?.count > 0;
-  const hasContentAssignments = !!budgetActivityOverview.contentAssignments?.count > 0;
+  const hasSpentTransactions = budgetActivityOverview.spentTransactions?.count > 0;
+  const hasContentAssignments = budgetActivityOverview.contentAssignments?.count > 0;
 
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     return (
       <>
-        {!hasSpentTransactions && (<NoBnRBudgetActivity />)}
+        {!hasSpentTransactions && (<NoBnEBudgetActivity />)}
         <BudgetDetailRedemptions />
       </>
     );
