@@ -8,11 +8,11 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { useIsLargeOrGreater, usePathToCatalogTab } from '../data';
-import findTheRightCourse from '../assets/phoneScroll.svg';
-import nameYourLearners from '../assets/reading.svg';
-import confirmSpend from '../assets/wallet.svg';
-import EVENT_NAMES from '../../../eventTracking';
+import { useIsLargeOrGreater, usePathToCatalogTab } from './data';
+import nameYourLearners from './assets/nameYourLearners.svg';
+import findTheRightCourse from './assets/findTheRightCourse.svg';
+import confirmSpend from './assets/confirmSpend.svg';
+import EVENT_NAMES from '../../eventTracking';
 
 const FindTheRightCourseIllustration = (props) => (
   <img data-testid="find-the-right-course-illustration" src={findTheRightCourse} alt="" {...props} />
