@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  Button, Stack, Skeleton, useToggle,
-} from '@edx/paragon';
+import { Stack, Skeleton, useToggle } from '@edx/paragon';
 
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
-import NoBudgetActivityEmptyState from './NoBudgetActivityEmptyState';
-import InviteMembersModal from './invite-modal/InviteModalContent';
+import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
+import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 import InviteMembersModalWrapper from './invite-modal/InviteMembersModalWrapper';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
-  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(true);
+  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -37,25 +35,23 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
     );
   }
 
+  const hasSpentTransactions = budgetActivityOverview.spentTransactions?.count > 0;
+  const hasContentAssignments = budgetActivityOverview.contentAssignments?.count > 0;
+
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     return (
       <>
+        {!hasSpentTransactions && (<NoBnEBudgetActivity open={openInviteModal} />)}
         <InviteMembersModalWrapper isOpen={inviteModalIsOpen} close={closeInviteModal} />
-        <Button onClick={openInviteModal} variant="primary">Click here!</Button>
         <BudgetDetailRedemptions />
       </>
     );
   }
 
-  const hasContentAssignments = !!budgetActivityOverview.contentAssignments?.count > 0;
-  const hasSpentTransactions = !!budgetActivityOverview.spentTransactions?.count > 0;
-
   // If there is no activity whatsoever (no assignments, no spent transactions), show the
   // full empty state.
   if (!hasContentAssignments && !hasSpentTransactions) {
-    return (
-      <NoBudgetActivityEmptyState />
-    );
+    return <NoAssignableBudgetActivity />;
   }
 
   // Otherwise, render the contents of the "Activity" tab.

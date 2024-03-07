@@ -51,8 +51,6 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
     // on error
     // setInviteButtonState('error');
   };
-  console.log('heree???');
-  console.log(handleEmailAddressesChanged);
 
   return (
     <>
