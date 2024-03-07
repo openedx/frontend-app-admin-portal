@@ -90,18 +90,20 @@ describe('<BudgetCard />', () => {
   });
 
   it('displays correctly for a scheduled Enterprise Offers (ecommerce)', () => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
     const mockBudget = {
       id: mockEnterpriseOfferId,
       name: mockBudgetDisplayName,
       start: '3022-01-01',
       end: '3023-01-01',
       source: BUDGET_TYPES.ecommerce,
+      aggregates: mockBudgetAggregates,
     };
-    const mockBudgetAggregates = {
-      total: 5000,
-      spent: 200,
-      available: 4800,
-    };
+
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
       subsidySummary: {
@@ -116,9 +118,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -130,17 +130,18 @@ describe('<BudgetCard />', () => {
   });
 
   it('displays correctly for a scheduled Subsidy (enterprise-subsidy)', () => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
     const mockBudget = {
       id: mockEnterpriseOfferId,
       name: mockBudgetDisplayName,
       start: '3022-01-01',
       end: '4023-01-01',
       source: BUDGET_TYPES.subsidy,
-    };
-    const mockBudgetAggregates = {
-      total: 5000,
-      spent: 200,
-      available: 4800,
+      aggregates: mockBudgetAggregates,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -167,9 +168,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -202,6 +201,8 @@ describe('<BudgetCard />', () => {
         spent: mockBudgetAggregates.spent,
       },
       isAssignable: isAssignableBudget,
+      enterpriseSlug,
+      enterpriseUUID,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -209,9 +210,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -223,17 +222,20 @@ describe('<BudgetCard />', () => {
   });
 
   it('displays correctly for an expired Enterprise Offers (ecommerce)', () => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
     const mockBudget = {
       id: mockEnterpriseOfferId,
       name: mockBudgetDisplayName,
       start: '2022-01-01',
       end: '2023-01-01',
       source: BUDGET_TYPES.ecommerce,
-    };
-    const mockBudgetAggregates = {
-      total: 5000,
-      spent: 200,
-      available: 4800,
+      aggregates: mockBudgetAggregates,
+      enterpriseSlug,
+      enterpriseUUID,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -249,9 +251,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -268,17 +268,20 @@ describe('<BudgetCard />', () => {
   });
 
   it('displays correctly for an expired Subsidy (enterprise-subsidy)', () => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
     const mockBudget = {
       id: mockEnterpriseOfferId,
       name: mockBudgetDisplayName,
       start: '2022-01-01',
       end: '2023-01-01',
       source: BUDGET_TYPES.subsidy,
-    };
-    const mockBudgetAggregates = {
-      total: 5000,
-      spent: 200,
-      available: 4800,
+      aggregates: mockBudgetAggregates,
+      enterpriseSlug,
+      enterpriseUUID,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -305,9 +308,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -345,6 +346,8 @@ describe('<BudgetCard />', () => {
         spent: mockBudgetAggregates.spent,
       },
       isAssignable: isAssignableBudget,
+      enterpriseSlug,
+      enterpriseUUID,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -352,9 +355,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -371,17 +372,20 @@ describe('<BudgetCard />', () => {
   });
 
   it('displays correctly for a current Enterprise Offers (ecommerce)', () => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
     const mockBudget = {
       id: mockEnterpriseOfferId,
       name: mockBudgetDisplayName,
       start: '2022-01-01',
       end: '3022-01-01',
       source: BUDGET_TYPES.ecommerce,
-    };
-    const mockBudgetAggregates = {
-      total: 5000,
-      spent: 200,
-      available: 4800,
+      aggregates: mockBudgetAggregates,
+      enterpriseSlug,
+      enterpriseUUID,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -397,9 +401,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -423,17 +425,20 @@ describe('<BudgetCard />', () => {
   });
 
   it('displays correctly for a current Subsidy (enterprise-subsidy)', () => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      available: 4800,
+    };
     const mockBudget = {
       id: mockEnterpriseOfferId,
       name: mockBudgetDisplayName,
       start: '2022-01-01',
       end: '3023-01-01',
       source: BUDGET_TYPES.subsidy,
-    };
-    const mockBudgetAggregates = {
-      total: 5000,
-      spent: 200,
-      available: 4800,
+      aggregates: mockBudgetAggregates,
+      enterpriseSlug,
+      enterpriseUUID,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -460,9 +465,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
@@ -507,6 +510,8 @@ describe('<BudgetCard />', () => {
         spent: mockBudgetAggregates.spent,
       },
       isAssignable: isAssignableBudget,
+      enterpriseSlug,
+      enterpriseUUID,
     };
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
@@ -514,9 +519,7 @@ describe('<BudgetCard />', () => {
     });
 
     render(<BudgetCardWrapper
-      budget={mockBudget}
-      enterpriseUUID={enterpriseUUID}
-      enterpriseSlug={enterpriseSlug}
+      original={mockBudget}
     />);
 
     expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();

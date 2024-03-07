@@ -10,6 +10,8 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import MultipleBudgetsPage from '../MultipleBudgetsPage';
 import { queryClient } from '../../test/testUtils';
@@ -61,9 +63,11 @@ const MultipleBudgetsPageWrapper = ({
 }) => (
   <QueryClientProvider client={queryClient()}>
     <Provider store={store}>
-      <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-        <MultipleBudgetsPage {...rest} />
-      </EnterpriseSubsidiesContext.Provider>
+      <IntlProvider locale="en">
+        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+          <MultipleBudgetsPage {...rest} />
+        </EnterpriseSubsidiesContext.Provider>
+      </IntlProvider>
     </Provider>
   </QueryClientProvider>
 );
