@@ -445,7 +445,7 @@ describe('<BudgetDetailPage />', () => {
   it.each([
     { isLargeViewport: true },
     { isLargeViewport: false },
-  ])('displays assignable budget activity overview empty state', async ({ isLargeViewport }) => {
+  ])('displays budget activity overview empty state', async ({ isLargeViewport }) => {
     useIsLargeOrGreater.mockReturnValue(isLargeViewport);
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -470,39 +470,6 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
     userEvent.click(screen.getByText('Get started'));
     await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
-  });
-
-  it.each([
-    { isLargeViewport: true },
-    { isLargeViewport: false },
-  ])('displays bnr budget activity overview empty state', async ({ isLargeViewport }) => {
-    useIsLargeOrGreater.mockReturnValue(isLargeViewport);
-    useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
-      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
-      activeTabKey: 'activity',
-    });
-    useSubsidyAccessPolicy.mockReturnValue({
-      isInitialLoading: false,
-      data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
-    });
-    useBudgetDetailActivityOverview.mockReturnValue({
-      isLoading: false,
-      data: mockEmptyStateBudgetDetailActivityOverview,
-    });
-    useBudgetRedemptions.mockReturnValue({
-      isLoading: false,
-      budgetRedemptions: mockEmptyBudgetRedemptions,
-      fetchBudgetRedemptions: jest.fn(),
-    });
-    renderWithRouter(<BudgetDetailPageWrapper />);
-
-    // Overview empty state (no content assignments, no spent transactions)
-    expect(screen.getByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
-    const illustrationTestIds = ['name-your-members-illustration', 'members-browse-illustration', 'enroll-and-spend-illustration'];
-    illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
-    expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
   });
 
   it.each([
