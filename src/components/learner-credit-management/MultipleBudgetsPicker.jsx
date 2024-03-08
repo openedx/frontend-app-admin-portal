@@ -8,6 +8,7 @@ import {
   Row,
   Col,
 } from '@edx/paragon';
+import groupBy from 'lodash/groupBy';
 
 import BudgetCard from './BudgetCard';
 import { getBudgetStatus, orderBudgets } from './data/utils';
@@ -39,24 +40,19 @@ const MultipleBudgetsPicker = ({
     [orderedBudgets, enterpriseUUID, enterpriseSlug, enableLearnerPortal],
   );
 
-  const reducedChoices = orderedBudgets.reduce((acc, currentObject) => {
-    const budgetLabel = getBudgetStatus({
-      startDateStr: currentObject.start,
-      endDateStr: currentObject.end,
-      isBudgetRetired: currentObject.isRetired,
-    });
-
-    if (budgetLabel.status in acc) {
-      acc[budgetLabel.status].number += 1;
-    } else {
-      acc[budgetLabel.status] = {
-        name: budgetLabel.status,
-        number: 1,
-        value: budgetLabel.status,
-      };
-    }
-    return acc;
-  }, {});
+  const budgetLabels = orderedBudgets.map(budget => {
+    return getBudgetStatus({
+      startDateStr: budget.start,
+      endDateStr: budget.end,
+      isBudgetRetired: budget.isRetired,
+    })
+  });
+  const budgetLabelsByStatus = groupBy(budgetLabels, 'status');
+  const reducedChoices = Object.keys(budgetLabelsByStatus).map(budgetLabel => ({
+    name: budgetLabel,
+    number: budgetLabelsByStatus[budgetLabel].length,
+    value: budgetLabel,
+  }));
 
   return (
     <>
@@ -77,7 +73,7 @@ const MultipleBudgetsPicker = ({
             Header: 'Status',
             accessor: 'status',
             Filter: CheckboxFilter,
-            filterChoices: Object.values(reducedChoices),
+            filterChoices: reducedChoices,
           },
         ]}
       >
