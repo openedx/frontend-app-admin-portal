@@ -17,46 +17,55 @@ import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
  *
  * @returns Budget card component(s).
  */
-const BudgetCard = ({
-  budget,
-  enterpriseUUID,
-  enterpriseSlug,
-}) => {
+const BudgetCard = ({ original }) => {
+  const {
+    aggregates,
+    end,
+    enterpriseSlug,
+    enterpriseUUID,
+    id,
+    isAssignable,
+    isRetired,
+    name,
+    source,
+    start,
+  } = original;
+
   const {
     isLoading: isLoadingSubsidySummaryAnalyticsApi,
     subsidySummary: subsidySummaryAnalyticsApi,
-  } = useSubsidySummaryAnalyticsApi(enterpriseUUID, budget.id, budget.source);
+  } = useSubsidySummaryAnalyticsApi(enterpriseUUID, id, source);
 
   // Subsidy Access Policies will always have a single budget, so we can render a single card
   // without relying on `useSubsidySummaryAnalyticsApi`.
-  if (budget.source === BUDGET_TYPES.policy) {
+  if (source === BUDGET_TYPES.policy) {
     return (
       <SubBudgetCard
-        id={budget.id}
-        start={budget.start}
-        end={budget.end}
-        available={budget.aggregates.available}
-        spent={budget.aggregates.spent}
-        pending={budget.aggregates.pending}
-        displayName={budget.name}
+        id={id}
+        start={start}
+        end={end}
+        available={aggregates.available}
+        spent={aggregates.spent}
+        pending={aggregates.pending}
+        displayName={name}
         enterpriseSlug={enterpriseSlug}
-        isAssignable={budget.isAssignable}
-        isRetired={budget.isRetired}
+        isAssignable={isAssignable}
+        isRetired={isRetired}
       />
     );
   }
 
   // Enterprise Offers (ecommerce) will always have a single budget, so we can render a single card.
-  if (budget.source === BUDGET_TYPES.ecommerce) {
+  if (source === BUDGET_TYPES.ecommerce) {
     return (
       <SubBudgetCard
         isLoading={isLoadingSubsidySummaryAnalyticsApi}
         id={subsidySummaryAnalyticsApi?.offerId}
-        start={budget.start}
-        end={budget.end}
+        start={start}
+        end={end}
         available={subsidySummaryAnalyticsApi?.remainingFunds}
         spent={subsidySummaryAnalyticsApi?.redeemedFunds}
-        displayName={budget.name}
+        displayName={name}
         enterpriseSlug={enterpriseSlug}
       />
     );
@@ -74,8 +83,8 @@ const BudgetCard = ({
       isLoading={isLoadingSubsidySummaryAnalyticsApi}
       key={subBudget.subsidyAccessPolicyUuid}
       id={subBudget.subsidyAccessPolicyUuid}
-      start={budget.start}
-      end={budget.end}
+      start={start}
+      end={end}
       available={subBudget.remainingFunds}
       spent={subBudget.redeemedFunds}
       displayName={subBudget.subsidyAccessPolicyDisplayName}
@@ -85,7 +94,7 @@ const BudgetCard = ({
 };
 
 BudgetCard.propTypes = {
-  budget: PropTypes.shape({
+  original: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     name: PropTypes.string.isRequired,
     start: PropTypes.string.isRequired,
@@ -98,9 +107,10 @@ BudgetCard.propTypes = {
     }),
     isAssignable: PropTypes.bool,
     isRetired: PropTypes.bool,
+    enterpriseUUID: PropTypes.string.isRequired,
+    enterpriseSlug: PropTypes.string.isRequired,
+    status: PropTypes.string,
   }).isRequired,
-  enterpriseUUID: PropTypes.string.isRequired,
-  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 export default BudgetCard;
