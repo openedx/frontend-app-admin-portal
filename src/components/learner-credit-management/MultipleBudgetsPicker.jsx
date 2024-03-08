@@ -40,13 +40,13 @@ const MultipleBudgetsPicker = ({
     [orderedBudgets, enterpriseUUID, enterpriseSlug, enableLearnerPortal],
   );
 
-  const budgetLabels = orderedBudgets.map(budget => {
-    return getBudgetStatus({
+  const budgetLabels = orderedBudgets.map(budget => (
+    getBudgetStatus({
       startDateStr: budget.start,
       endDateStr: budget.end,
       isBudgetRetired: budget.isRetired,
     })
-  });
+  ));
   const budgetLabelsByStatus = groupBy(budgetLabels, 'status');
   const reducedChoices = Object.keys(budgetLabelsByStatus).map(budgetLabel => ({
     name: budgetLabel,
