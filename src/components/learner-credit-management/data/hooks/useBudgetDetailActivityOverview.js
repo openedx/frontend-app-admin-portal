@@ -7,7 +7,6 @@ import { learnerCreditManagementQueryKeys } from '../constants';
 const useBudgetDetailActivityOverview = ({ enterpriseUUID, isTopDownAssignmentEnabled }) => {
   const { budgetId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  console.log('subsidyAccessPolicy', subsidyAccessPolicy);
   return useQuery({
     queryKey: learnerCreditManagementQueryKeys.budgetActivityOverview(budgetId),
     queryFn: (args) => retrieveBudgetDetailActivityOverview({

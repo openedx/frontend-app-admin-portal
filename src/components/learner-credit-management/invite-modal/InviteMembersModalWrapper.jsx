@@ -1,26 +1,27 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FullscreenModal,
-  ActionRow,
-  Button,
-  useToggle,
-  Hyperlink,
-  StatefulButton,
+  ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
+import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 import InviteModalContent from './InviteModalContent';
-import CreateInvitationErrorAlertModals from './CreateInvitationErrorAlertModals';
+import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import LmsApiService from '../../../data/services/LmsApiService';
+import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 
 const InviteMembersModalWrapper = ({ isOpen, close }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [canInviteMembers, setCanInviteMembers] = useState(false);
   const [inviteButtonState, setInviteButtonState] = useState('default');
-  const [createInvitationErrorReason, setCreateInvitationErrorReason] = useState();
-  // const {
-  //   successfulInvitationToast: { displayToastForAssignmentAllocation },
-  // } = useContext(BudgetDetailPageContext);
+  const [isSystemError, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
+  const {
+    successfulInvitationToast: { displayToastForInvitation },
+  } = useContext(BudgetDetailPageContext);
 
   const handleCloseInviteModal = () => {
     close();
@@ -38,18 +39,27 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
     setCanInviteMembers(canInvite);
   }, []);
 
-  const handleInviteMembers = () => {
+  const handleInviteMembers = async () => {
     setInviteButtonState('pending');
-    // on success
-    // setInviteButtonState('complete');
-    // handleCloseInviteModal();
-    // displayToastForAssignmentAllocation({
-    //   totalLearnersAllocated,
-    //   totalLearnersAlreadyAllocated,
-    // });
+    const payload = snakeCaseObject({
+      learnerEmails,
+    });
 
-    // on error
-    // setInviteButtonState('error');
+    try {
+      const groupUuid = subsidyAccessPolicy.groupAssociations[0];
+      const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, payload);
+      if (response.status === 201) {
+        const totalLearnersInvited = response.data.records_processed;
+        setInviteButtonState('complete');
+        handleCloseInviteModal();
+        displayToastForInvitation({
+          totalLearnersInvited,
+        });
+      }
+    } catch (err) {
+      setInviteButtonState('error');
+      openSystemErrorModal();
+    }
   };
 
   return (
@@ -93,10 +103,11 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
           onEmailAddressesChange={handleEmailAddressesChanged}
         />
       </FullscreenModal>
-      <CreateInvitationErrorAlertModals
-        errorReason={createInvitationErrorReason}
+      <SystemErrorAlertModal
+        isErrorModalOpen={isSystemError}
+        closeErrorModal={closeSystemErrorModal}
+        closeAssignmentModal={handleCloseInviteModal}
         retry={handleInviteMembers}
-        closeInvitationModal={handleCloseInviteModal}
       />
     </>
   );
@@ -104,9 +115,7 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
 
 InviteMembersModalWrapper.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  open: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired, // Represents the button text
 };
 
 export default InviteMembersModalWrapper;

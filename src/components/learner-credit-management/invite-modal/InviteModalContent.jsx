@@ -11,7 +11,6 @@ import InviteModalSummary from './InviteModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../cards/data';
 
 const InviteModalContent = ({ onEmailAddressesChange }) => {
-  console.log(onEmailAddressesChange);
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [memberInviteMetadata, setMemberInviteMetadata] = useState({});
