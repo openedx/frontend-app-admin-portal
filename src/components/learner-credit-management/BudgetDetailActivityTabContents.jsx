@@ -6,7 +6,8 @@ import { Stack, Skeleton } from '@edx/paragon';
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
-import NoBudgetActivityEmptyState from './NoBudgetActivityEmptyState';
+import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
+import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
@@ -32,19 +33,22 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
     );
   }
 
-  if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
-    return <BudgetDetailRedemptions />;
-  }
+  const hasSpentTransactions = budgetActivityOverview.spentTransactions?.count > 0;
+  const hasContentAssignments = budgetActivityOverview.contentAssignments?.count > 0;
 
-  const hasContentAssignments = !!budgetActivityOverview.contentAssignments?.count > 0;
-  const hasSpentTransactions = !!budgetActivityOverview.spentTransactions?.count > 0;
+  if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
+    return (
+      <>
+        {!hasSpentTransactions && (<NoBnEBudgetActivity />)}
+        <BudgetDetailRedemptions />
+      </>
+    );
+  }
 
   // If there is no activity whatsoever (no assignments, no spent transactions), show the
   // full empty state.
   if (!hasContentAssignments && !hasSpentTransactions) {
-    return (
-      <NoBudgetActivityEmptyState />
-    );
+    return <NoAssignableBudgetActivity />;
   }
 
   // Otherwise, render the contents of the "Activity" tab.
