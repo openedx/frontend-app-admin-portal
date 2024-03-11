@@ -161,8 +161,8 @@ const NewExistingSSOConfigs = ({
       );
       const untested = res.data.filter(config => !config.validated_at || config.validated_at < config.configured_at);
       const timedOut = res.data.filter(checkTimedOut);
-      const errored = res.data.filter(checkErrored); 
-      if (timedOut.length >= 1) { 
+      const errored = res.data.filter(checkErrored);
+      if (timedOut.length >= 1) {
         setTimedOutConfigs(timedOut);
       }
 

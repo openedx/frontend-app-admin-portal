@@ -117,7 +117,6 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
       const { data } = ssoRecord;
       isErrored =
         data.errored_at &&
-        data.uuid == formFields?.uuid &&
         data.submitted_at < data.errored_at;
     }
     if (!isErrored && !formFieldsChanged) {
