@@ -105,11 +105,25 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
   }: FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
     let err = null;
 
-    // Accurately detect if form fields have changed
-    if (!formFieldsChanged) {
-      // Don't submit if nothing has changed
+    // Accurately detect if form fields have changed or there's and error in existing record
+    let isErrored;
+    if (formFields?.uuid) {
+      const ssoRecord =
+        await LmsApiService.fetchEnterpriseSsoOrchestrationRecord(
+          formFields?.uuid
+        ).catch(() => {
+          return { data: {} };
+        });
+      const { data } = ssoRecord;
+      isErrored =
+        data.errored_at &&
+        data.uuid == formFields?.uuid &&
+        data.submitted_at < data.errored_at;
+    }
+    if (!isErrored && !formFieldsChanged) {
       return formFields;
     }
+    // else, update enterprise SSO record
     let updatedFormFields: SSOConfigCamelCase = omit(formFields, ['idpConnectOption', 'spMetadataUrl', 'isPendingConfiguration']);
     updatedFormFields.enterpriseCustomer = enterpriseId;
     const submittedFormFields: SSOConfigSnakeCase = snakeCaseDict(updatedFormFields) as SSOConfigSnakeCase;
