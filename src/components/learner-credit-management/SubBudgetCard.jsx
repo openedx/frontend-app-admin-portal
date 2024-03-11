@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import {
   Card,
   Button,
-  Row,
   Col,
   Badge,
   Stack,
@@ -123,8 +122,8 @@ const BaseSubBudgetCard = ({
       title={<h4>Balance</h4>}
       muted
     >
-      <Row className="d-flex flex-row justify-content-start w-md-75">
-        <Col xs="6" md="auto" className="mb-3 mb-md-0">
+      <Col className="d-flex justify-content-start w-md-75">
+        <Col xs="6" md="auto" className="mb-3 mb-md-0 ml-n4.5">
           <div className="small font-weight-bold">Available</div>
           <span className="small">
             {isFetchingBudgets ? <Skeleton /> : formatPrice(available)}
@@ -144,7 +143,7 @@ const BaseSubBudgetCard = ({
             {isFetchingBudgets ? <Skeleton /> : formatPrice(spent)}
           </span>
         </Col>
-      </Row>
+      </Col>
     </Card.Section>
   );
 
