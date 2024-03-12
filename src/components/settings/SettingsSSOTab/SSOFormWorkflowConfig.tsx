@@ -64,6 +64,7 @@ export type SSOConfigCamelCase = {
   submittedAt: null,
   configuredAt: null,
   validatedAt: null,
+  erroredAt: null,
   odataApiTimeoutInterval: null,
   odataApiRootUrl: string,
   odataCompanyId: string,
@@ -108,16 +109,10 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
     // Accurately detect if form fields have changed or there's and error in existing record
     let isErrored;
     if (formFields?.uuid) {
-      const ssoRecord =
-        await LmsApiService.fetchEnterpriseSsoOrchestrationRecord(
-          formFields?.uuid
-        ).catch(() => {
-          return { data: {} };
-        });
-      const { data } = ssoRecord;
       isErrored =
-        data.errored_at &&
-        data.submitted_at < data.errored_at;
+        formFields.erroredAt &&
+        formFields.submittedAt &&
+        formFields.submittedAt < formFields.erroredAt;
     }
     if (!isErrored && !formFieldsChanged) {
       return formFields;
