@@ -50,7 +50,7 @@ export const isAssignEmailAddressesInputValueValid = ({
   const learnerEmailsCount = learnerEmails.length;
   const totalAssignmentCost = contentPrice * learnerEmailsCount;
   const remainingBalanceAfterAssignment = remainingBalance - totalAssignmentCost;
-  const hasEnoughBalanceForAssigment = remainingBalanceAfterAssignment >= 0;
+  const hasEnoughBalanceForAssignment = remainingBalanceAfterAssignment >= 0;
 
   const lowerCasedEmails = [];
   const invalidEmails = [];
@@ -74,7 +74,7 @@ export const isAssignEmailAddressesInputValueValid = ({
   });
 
   const isValidInput = invalidEmails.length === 0 && duplicateEmails.length === 0;
-  const canAllocate = learnerEmailsCount > 0 && hasEnoughBalanceForAssigment && isValidInput;
+  const canAllocate = learnerEmailsCount > 0 && hasEnoughBalanceForAssignment && isValidInput;
 
   const ensureValidationErrorObjectExists = () => {
     if (!validationError) {
@@ -91,7 +91,7 @@ export const isAssignEmailAddressesInputValueValid = ({
       validationError.reason = 'duplicate_email';
       validationError.message = `${duplicateEmails[0]} has been entered more than once.`;
     }
-  } else if (!hasEnoughBalanceForAssigment) {
+  } else if (!hasEnoughBalanceForAssignment) {
     ensureValidationErrorObjectExists();
     validationError.reason = 'insufficient_funds';
     validationError.message = `The total assignment cost exceeds your available Learner Credit budget balance of ${formatPrice(remainingBalance)}. Please remove learners and try again.`;
@@ -104,7 +104,7 @@ export const isAssignEmailAddressesInputValueValid = ({
     validationError,
     totalAssignmentCost,
     remainingBalanceAfterAssignment,
-    hasEnoughBalanceForAssigment,
+    hasEnoughBalanceForAssignment,
   };
 };
 
@@ -112,7 +112,6 @@ export const isAssignEmailAddressesInputValueValid = ({
  * Determine the validity of the learner emails user input. The input is valid if
  * all emails are valid. Invalid and duplicate emails are returned.
  *
- * @param {Object} args Arguments.
  * @param {Array<String>} learnerEmails List of learner emails.
  *
  * @returns Object containing various properties about the validity of the learner emails
@@ -139,10 +138,10 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     // Check for duplicates (case-insensitive)
     if (lowerCasedEmails.includes(lowerCasedEmail)) {
       duplicateEmails.push(email);
+    } else {
+      // Add to list of lower-cased emails already handled
+      lowerCasedEmails.push(lowerCasedEmail);
     }
-
-    // Add to list of lower-cased emails already handled
-    lowerCasedEmails.push(lowerCasedEmail);
   });
 
   const isValidInput = invalidEmails.length === 0;
@@ -169,7 +168,7 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
 
   return {
     canInvite,
-    learnerEmailsCount,
+    lowerCasedEmails,
     duplicateEmailsCount,
     isValidInput,
     validationError,

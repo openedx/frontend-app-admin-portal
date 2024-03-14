@@ -18,7 +18,7 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [canInviteMembers, setCanInviteMembers] = useState(false);
   const [inviteButtonState, setInviteButtonState] = useState('default');
-  const [isSystemError, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
+  const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
   const {
     successfulInvitationToast: { displayToastForInvitation },
   } = useContext(BudgetDetailPageContext);
@@ -41,13 +41,16 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
 
   const handleInviteMembers = async () => {
     setInviteButtonState('pending');
+
     const payload = snakeCaseObject({
-      learnerEmails,
+      learnerEmails: learnerEmails.join(','),
     });
+    const formData = new FormData();
+    Object.keys(payload).forEach(key => formData.append(key, payload[key]));
 
     try {
       const groupUuid = subsidyAccessPolicy.groupAssociations[0];
-      const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, payload);
+      const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, formData);
       if (response.status === 201) {
         const totalLearnersInvited = response.data.records_processed;
         setInviteButtonState('complete');
@@ -104,7 +107,7 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
         />
       </FullscreenModal>
       <SystemErrorAlertModal
-        isErrorModalOpen={isSystemError}
+        isErrorModalOpen={isSystemErrorModalOpen}
         closeErrorModal={closeSystemErrorModal}
         closeAssignmentModal={handleCloseInviteModal}
         retry={handleInviteMembers}

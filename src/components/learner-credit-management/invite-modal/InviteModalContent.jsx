@@ -26,7 +26,7 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
       onEmailAddressesChange([]);
       return;
     }
-    const emails = value.split('\n').filter((email) => email.trim().length > 0);
+    const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
     setLearnerEmails(emails);
   }, [onEmailAddressesChange]);
 
@@ -82,7 +82,6 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
         <Col>
           <h4>Details</h4>
           <InviteModalSummary
-            learnerEmails={learnerEmails}
             memberInviteMetadata={memberInviteMetadata}
           />
         </Col>

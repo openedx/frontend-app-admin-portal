@@ -26,18 +26,17 @@ const InviteModalSummaryContents = ({
 };
 
 const InviteModalSummary = ({
-  learnerEmails,
   memberInviteMetadata,
 }) => {
   const {
     isValidInput,
-    learnerEmailsCount,
+    lowerCasedEmails,
   } = memberInviteMetadata;
-  const hasLearnerEmails = learnerEmailsCount > 0 && isValidInput;
+  const hasLearnerEmails = lowerCasedEmails?.length > 0 && isValidInput;
 
   let summaryHeading = 'Summary';
   if (hasLearnerEmails) {
-    summaryHeading = `${summaryHeading} (${learnerEmailsCount})`;
+    summaryHeading = `${summaryHeading} (${lowerCasedEmails.length})`;
   }
   return (
     <>
@@ -51,7 +50,7 @@ const InviteModalSummary = ({
         >
           <Card.Section>
             <InviteModalSummaryContents
-              learnerEmails={learnerEmails}
+              learnerEmails={lowerCasedEmails}
               hasLearnerEmails={hasLearnerEmails}
               hasInputValidationError={!isValidInput}
             />
@@ -69,10 +68,9 @@ InviteModalSummaryContents.propTypes = {
 };
 
 InviteModalSummary.propTypes = {
-  learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
   memberInviteMetadata: PropTypes.shape({
     isValidInput: PropTypes.bool,
-    learnerEmailsCount: PropTypes.number,
+    lowerCasedEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
 };
 

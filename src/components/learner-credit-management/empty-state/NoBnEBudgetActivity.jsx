@@ -23,7 +23,7 @@ const EnrollAndSpendIllustration = (props) => (
   <img data-testid="enroll-and-spend-illustration" src={enrollAndSpend} alt="" {...props} />
 );
 
-const NoBnEBudgetActivity = ({ open }) => {
+const NoBnEBudgetActivity = ({ openInviteModal }) => {
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
@@ -87,7 +87,7 @@ const NoBnEBudgetActivity = ({ open }) => {
           <Col>
             <Button
               as={Link}
-              onClick={open}
+              onClick={openInviteModal}
             >
               Get started
             </Button>
@@ -99,7 +99,7 @@ const NoBnEBudgetActivity = ({ open }) => {
 };
 
 NoBnEBudgetActivity.propTypes = {
-  open: PropTypes.func.isRequired,
+  openInviteModal: PropTypes.func.isRequired,
 };
 
 export default NoBnEBudgetActivity;

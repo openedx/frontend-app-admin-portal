@@ -13,6 +13,8 @@ import InviteMembersModalWrapper from './invite-modal/InviteMembersModalWrapper'
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
   const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
+  const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1;
+
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
@@ -41,7 +43,9 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     return (
       <>
-        {!hasSpentTransactions && (<NoBnEBudgetActivity open={openInviteModal} />)}
+        {!hasSpentTransactions && isEnterpriseGroupsEnabled && (
+          <NoBnEBudgetActivity openInviteModal={openInviteModal} />
+        )}
         <InviteMembersModalWrapper isOpen={inviteModalIsOpen} close={closeInviteModal} />
         <BudgetDetailRedemptions />
       </>
@@ -75,6 +79,7 @@ BudgetDetailActivityTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
+    enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
 };
 
