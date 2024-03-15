@@ -77,6 +77,7 @@ const initialStoreState = {
     enableLearnerPortal: true,
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
+      enterpriseGroupsV1: true,
     },
   },
 };
@@ -440,6 +441,40 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByTestId('budget-detail-utilized')).toHaveTextContent(`Utilized ${expected.utilized}`);
       expect(screen.getByTestId('budget-detail-limit')).toHaveTextContent(expected.limit);
     }
+  });
+
+  it('renders bne zero state only when the groups feature flag enabled', async () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: false,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+
+    // Overview empty state (no content assignments, no spent transactions)
+    expect(screen.queryByText('No budget activity yet? Invite members to browse the catalog and enroll!')).not.toBeInTheDocument();
   });
 
   it.each([

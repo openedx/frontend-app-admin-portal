@@ -11,6 +11,7 @@ import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
+  const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
@@ -39,7 +40,8 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     return (
       <>
-        {!hasSpentTransactions && (<NoBnEBudgetActivity />)}
+        {!hasSpentTransactions && isEnterpriseGroupsEnabled && (
+          <NoBnEBudgetActivity />)}
         <BudgetDetailRedemptions />
       </>
     );
@@ -72,6 +74,7 @@ BudgetDetailActivityTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
+    enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
 };
 
