@@ -64,6 +64,7 @@ export type SSOConfigCamelCase = {
   submittedAt: null,
   configuredAt: null,
   validatedAt: null,
+  erroredAt: null,
   odataApiTimeoutInterval: null,
   odataApiRootUrl: string,
   odataCompanyId: string,
@@ -105,11 +106,18 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
   }: FormWorkflowHandlerArgs<SSOConfigFormContextData>) => {
     let err = null;
 
-    // Accurately detect if form fields have changed
-    if (!formFieldsChanged) {
-      // Don't submit if nothing has changed
+    // Accurately detect if form fields have changed or there's and error in existing record
+    let isErrored;
+    if (formFields?.uuid) {
+      isErrored =
+        formFields.erroredAt &&
+        formFields.submittedAt &&
+        formFields.submittedAt < formFields.erroredAt;
+    }
+    if (!isErrored && !formFieldsChanged) {
       return formFields;
     }
+    // else, update enterprise SSO record
     let updatedFormFields: SSOConfigCamelCase = omit(formFields, ['idpConnectOption', 'spMetadataUrl', 'isPendingConfiguration']);
     updatedFormFields.enterpriseCustomer = enterpriseId;
     const submittedFormFields: SSOConfigSnakeCase = snakeCaseDict(updatedFormFields) as SSOConfigSnakeCase;
