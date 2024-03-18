@@ -4,13 +4,13 @@ import {
   ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
-import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 import InviteModalContent from './InviteModalContent';
 import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
+import { snakeCaseObjectToForm } from '../../../utils';
 
 const InviteMembersModalWrapper = ({ isOpen, close }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -41,12 +41,9 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
 
   const handleInviteMembers = async () => {
     setInviteButtonState('pending');
-
-    const payload = snakeCaseObject({
+    const formData = snakeCaseObjectToForm({
       learnerEmails: learnerEmails.join(','),
     });
-    const formData = new FormData();
-    Object.keys(payload).forEach(key => formData.append(key, payload[key]));
 
     try {
       if (subsidyAccessPolicy.groupAssociations.length > 0) {

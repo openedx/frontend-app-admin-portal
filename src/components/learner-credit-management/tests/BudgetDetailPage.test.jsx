@@ -443,12 +443,12 @@ describe('<BudgetDetailPage />', () => {
     }
   });
 
-  it('does not renders bne zero state when the groups feature flag disabled', async () => {
+  it('does not render bne zero state when the groups feature flag disabled', async () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: false,
+          enterpriseGroupsV1: false,
         },
       },
     };
