@@ -443,7 +443,7 @@ describe('<BudgetDetailPage />', () => {
     }
   });
 
-  it('renders bne zero state only when the groups feature flag enabled', async () => {
+  it('does not renders bne zero state when the groups feature flag disabled', async () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,

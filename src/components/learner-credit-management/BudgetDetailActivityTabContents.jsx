@@ -15,7 +15,7 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1;
 
-  const { subsidyAccessPolicyId } = useBudgetId();
+  const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
     isLoading: isBudgetActivityOverviewLoading,
@@ -40,12 +40,13 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   const hasSpentTransactions = budgetActivityOverview.spentTransactions?.count > 0;
   const hasContentAssignments = budgetActivityOverview.contentAssignments?.count > 0;
 
+  // If enterprise groups is turned on, it's learner credit NOT enterprise offers w/ no spend
+  const renderBnEActivity = isEnterpriseGroupsEnabled && (enterpriseOfferId == null) && !hasSpentTransactions;
+
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     return (
       <>
-        {!hasSpentTransactions && isEnterpriseGroupsEnabled && (
-          <NoBnEBudgetActivity openInviteModal={openInviteModal} />
-        )}
+        {renderBnEActivity && (<NoBnEBudgetActivity openInviteModal={openInviteModal} />)}
         <InviteMembersModalWrapper isOpen={inviteModalIsOpen} close={closeInviteModal} />
         <BudgetDetailRedemptions />
       </>

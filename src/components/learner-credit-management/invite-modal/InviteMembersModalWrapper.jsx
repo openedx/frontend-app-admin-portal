@@ -49,15 +49,18 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
     Object.keys(payload).forEach(key => formData.append(key, payload[key]));
 
     try {
-      const groupUuid = subsidyAccessPolicy.groupAssociations[0];
-      const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, formData);
-      if (response.status === 201) {
+      if (subsidyAccessPolicy.groupAssociations.length > 0) {
+        const groupUuid = subsidyAccessPolicy.groupAssociations[0];
+        const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, formData);
         const totalLearnersInvited = response.data.records_processed;
         setInviteButtonState('complete');
         handleCloseInviteModal();
         displayToastForInvitation({
           totalLearnersInvited,
         });
+      } else {
+        setInviteButtonState('error');
+        openSystemErrorModal();
       }
     } catch (err) {
       setInviteButtonState('error');
@@ -80,7 +83,6 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
               variant="tertiary"
               as={Hyperlink}
               destination={getConfig().ENTERPRISE_SUPPORT_URL}
-              showLaunchIcon
               target="_blank"
             >
               Help Center: Invite Budget Members
