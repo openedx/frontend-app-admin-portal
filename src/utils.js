@@ -189,9 +189,9 @@ const snakeCaseFormData = (formData) => {
 
 const snakeCaseObjectToForm = (payload) => {
   // transforms an object to a snake_cased FormData object
-  snakeCaseObject(payload);
+  const snakeCaseData = snakeCaseObject({...payload});
   const formData = new FormData();
-  Object.keys(payload).forEach(key => formData.append(key, payload[key]));
+  Object.keys(snakeCaseData).forEach(key => formData.append(key, payload[key]));
   return formData;
 };
 
