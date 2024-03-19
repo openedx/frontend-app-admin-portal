@@ -13,6 +13,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           <Form.Label>Email(s)</Form.Label>
           <Form.Control
             as="textarea"
+            name="emailRaw"
             data-testid="emailRaw"
             defaultValue={config ? config.email.join('\n') : undefined}
             onBlur={e => handleBlur(e, () => {
@@ -47,6 +48,7 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
+            name="encryptedPassword"
             disabled={config && !checked}
             onBlur={e => handleBlur(e)}
             data-hj-suppress
