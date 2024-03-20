@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { makePlural } from '../../../../utils';
 
 const useSuccessfulAssignmentToastContextValue = () => {
   const [isToastOpen, setIsToastOpen] = useState(false);
@@ -15,14 +16,12 @@ const useSuccessfulAssignmentToastContextValue = () => {
     setIsToastOpen(false);
   }, []);
 
-  const pluralizeLearner = (count) => (count === 1 ? 'learner' : 'learners');
-
   const toastMessages = [];
   if (learnersAllocatedCount > 0) {
-    toastMessages.push(`Course successfully assigned to ${learnersAllocatedCount} ${pluralizeLearner(learnersAllocatedCount)}.`);
+    toastMessages.push(`Course successfully assigned to ${makePlural(learnersAllocatedCount, 'learner')}.`);
   }
   if (learnersAlreadyAllocatedCount > 0) {
-    toastMessages.push(`${learnersAlreadyAllocatedCount} ${pluralizeLearner(learnersAlreadyAllocatedCount)} already had this course assigned.`);
+    toastMessages.push(`${makePlural(learnersAlreadyAllocatedCount, 'learner')} already had this course assigned.`);
   }
   const successfulAssignmentAllocationToastMessage = toastMessages.join(' ');
 

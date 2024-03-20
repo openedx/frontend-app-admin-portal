@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { useToggle } from '@edx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
-import SystemErrorAlertModal from './assignment-allocation-status-modals/SystemErrorAlertModal';
-import ContentNotInCatalogErrorAlertModal from './assignment-allocation-status-modals/ContentNotInCatalogErrorAlertModal';
-import NotEnoughBalanceAlertModal from './assignment-allocation-status-modals/NotEnoughBalanceAlertModal';
+import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import ContentNotInCatalogErrorAlertModal from '../cards/assignment-allocation-status-modals/ContentNotInCatalogErrorAlertModal';
+import NotEnoughBalanceAlertModal from '../cards/assignment-allocation-status-modals/NotEnoughBalanceAlertModal';
 import EVENT_NAMES from '../../../eventTracking';
 
 const CreateAllocationErrorAlertModals = ({

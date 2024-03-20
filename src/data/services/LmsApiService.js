@@ -41,6 +41,8 @@ class LmsApiService {
 
   static enterpriseSsoOrchestrationUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_sso_configuration/`;
 
+  static enterpriseGroupUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
+
   static fetchEnterpriseSsoOrchestrationRecord(configurationUuid) {
     const enterpriseSsoOrchestrationFetchUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}${configurationUuid}`;
     return LmsApiService.apiClient().get(enterpriseSsoOrchestrationFetchUrl);
@@ -416,6 +418,11 @@ class LmsApiService {
     const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
     const response = await LmsApiService.fetchData(url);
     return response;
+  };
+
+  static inviteEnterpriseLearnersToGroup = async (groupUuid, formData) => {
+    const assignLearnerEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/assign_learners/`;
+    return LmsApiService.apiClient().post(assignLearnerEndpoint, formData);
   };
 }
 

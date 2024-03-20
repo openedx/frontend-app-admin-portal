@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Skeleton } from '@edx/paragon';
+import { Stack, Skeleton, useToggle } from '@edx/paragon';
 
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
 import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
+import InviteMembersModalWrapper from './invite-modal/InviteMembersModalWrapper';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
+  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1;
-  const { subsidyAccessPolicyId } = useBudgetId();
+
+  const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
     isLoading: isBudgetActivityOverviewLoading,
@@ -37,11 +40,14 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   const hasSpentTransactions = budgetActivityOverview.spentTransactions?.count > 0;
   const hasContentAssignments = budgetActivityOverview.contentAssignments?.count > 0;
 
+  // If enterprise groups is turned on, it's learner credit NOT enterprise offers w/ no spend
+  const renderBnEActivity = isEnterpriseGroupsEnabled && (enterpriseOfferId == null) && !hasSpentTransactions;
+
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     return (
       <>
-        {!hasSpentTransactions && isEnterpriseGroupsEnabled && (
-          <NoBnEBudgetActivity />)}
+        {renderBnEActivity && (<NoBnEBudgetActivity openInviteModal={openInviteModal} />)}
+        <InviteMembersModalWrapper isOpen={inviteModalIsOpen} close={closeInviteModal} />
         <BudgetDetailRedemptions />
       </>
     );

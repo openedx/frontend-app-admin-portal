@@ -10,6 +10,7 @@ import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
 
 import { logError } from '@edx/frontend-platform/logging';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { features } from './config';
 
@@ -184,6 +185,14 @@ const snakeCaseFormData = (formData) => {
       transformedData.append(snakeCase(entry[0]), entry[1])
     ));
   return transformedData;
+};
+
+const snakeCaseObjectToForm = (payload) => {
+  // transforms an object to a snake_cased FormData object
+  const snakeCaseData = snakeCaseObject(payload);
+  const formData = new FormData();
+  Object.keys(snakeCaseData).forEach(key => formData.append(key, snakeCaseData[key]));
+  return formData;
 };
 
 const transformTemplate = (emailType, template) => ({
@@ -500,6 +509,7 @@ export {
   modifyObjectKeys,
   snakeCaseDict,
   snakeCaseFormData,
+  snakeCaseObjectToForm,
   maxLength512,
   transformTemplate,
   updateTemplateEmailAddress,

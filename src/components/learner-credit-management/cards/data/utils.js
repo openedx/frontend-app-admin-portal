@@ -40,7 +40,7 @@ export const hasLearnerEmailsSummaryListTruncation = (learnerEmails) => (
  * input, including a validation error when appropriate, and whether the assignment allocation
  * should proceed.
  */
-export const isEmailAddressesInputValueValid = ({
+export const isAssignEmailAddressesInputValueValid = ({
   learnerEmails,
   remainingBalance,
   contentPrice,
@@ -50,7 +50,7 @@ export const isEmailAddressesInputValueValid = ({
   const learnerEmailsCount = learnerEmails.length;
   const totalAssignmentCost = contentPrice * learnerEmailsCount;
   const remainingBalanceAfterAssignment = remainingBalance - totalAssignmentCost;
-  const hasEnoughBalanceForAssigment = remainingBalanceAfterAssignment >= 0;
+  const hasEnoughBalanceForAssignment = remainingBalanceAfterAssignment >= 0;
 
   const lowerCasedEmails = [];
   const invalidEmails = [];
@@ -74,7 +74,7 @@ export const isEmailAddressesInputValueValid = ({
   });
 
   const isValidInput = invalidEmails.length === 0 && duplicateEmails.length === 0;
-  const canAllocate = learnerEmailsCount > 0 && hasEnoughBalanceForAssigment && isValidInput;
+  const canAllocate = learnerEmailsCount > 0 && hasEnoughBalanceForAssignment && isValidInput;
 
   const ensureValidationErrorObjectExists = () => {
     if (!validationError) {
@@ -91,7 +91,7 @@ export const isEmailAddressesInputValueValid = ({
       validationError.reason = 'duplicate_email';
       validationError.message = `${duplicateEmails[0]} has been entered more than once.`;
     }
-  } else if (!hasEnoughBalanceForAssigment) {
+  } else if (!hasEnoughBalanceForAssignment) {
     ensureValidationErrorObjectExists();
     validationError.reason = 'insufficient_funds';
     validationError.message = `The total assignment cost exceeds your available Learner Credit budget balance of ${formatPrice(remainingBalance)}. Please remove learners and try again.`;
@@ -104,6 +104,73 @@ export const isEmailAddressesInputValueValid = ({
     validationError,
     totalAssignmentCost,
     remainingBalanceAfterAssignment,
-    hasEnoughBalanceForAssigment,
+    hasEnoughBalanceForAssignment,
+  };
+};
+
+/**
+ * Determine the validity of the learner emails user input. The input is valid if
+ * all emails are valid. Invalid and duplicate emails are returned.
+ *
+ * @param {Array<String>} learnerEmails List of learner emails.
+ *
+ * @returns Object containing various properties about the validity of the learner emails
+ * input, including a validation error when appropriate, and whether the member invitation
+ * should proceed.
+ */
+export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
+  let validationError;
+
+  const learnerEmailsCount = learnerEmails.length;
+
+  const lowerCasedEmails = [];
+  const invalidEmails = [];
+  const duplicateEmails = [];
+
+  learnerEmails.forEach((email) => {
+    const lowerCasedEmail = email.toLowerCase();
+
+    // Validate the email address
+    if (!isEmail(email)) {
+      invalidEmails.push(email);
+    }
+
+    // Check for duplicates (case-insensitive)
+    if (lowerCasedEmails.includes(lowerCasedEmail)) {
+      duplicateEmails.push(email);
+    } else {
+      // Add to list of lower-cased emails already handled
+      lowerCasedEmails.push(lowerCasedEmail);
+    }
+  });
+
+  const isValidInput = invalidEmails.length === 0;
+  const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < 1000 && isValidInput;
+  const duplicateEmailsCount = duplicateEmails.length;
+
+  const ensureValidationErrorObjectExists = () => {
+    if (!validationError) {
+      validationError = {};
+    }
+  };
+
+  if (!isValidInput) {
+    ensureValidationErrorObjectExists();
+    if (invalidEmails.length > 0) {
+      validationError.reason = 'invalid_email';
+      validationError.message = `${invalidEmails[0]} is not a valid email.`;
+    }
+  } else if (duplicateEmails.length > 0) {
+    ensureValidationErrorObjectExists();
+    validationError.reason = 'duplicate_email';
+    validationError.message = `${duplicateEmails[0]} has been entered more than once.`;
+  }
+
+  return {
+    canInvite,
+    lowerCasedEmails,
+    duplicateEmailsCount,
+    isValidInput,
+    validationError,
   };
 };

@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
-  Button, Card, Row, Col,
+  Button, Card, Col, Row,
 } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 
@@ -22,7 +23,7 @@ const EnrollAndSpendIllustration = (props) => (
   <img data-testid="enroll-and-spend-illustration" src={enrollAndSpend} alt="" {...props} />
 );
 
-const NoBnEBudgetActivity = () => {
+const NoBnEBudgetActivity = ({ openInviteModal }) => {
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
@@ -86,6 +87,7 @@ const NoBnEBudgetActivity = () => {
           <Col>
             <Button
               as={Link}
+              onClick={openInviteModal}
             >
               Get started
             </Button>
@@ -94,6 +96,10 @@ const NoBnEBudgetActivity = () => {
       </Card.Section>
     </Card>
   );
+};
+
+NoBnEBudgetActivity.propTypes = {
+  openInviteModal: PropTypes.func.isRequired,
 };
 
 export default NoBnEBudgetActivity;

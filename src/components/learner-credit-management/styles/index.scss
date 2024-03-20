@@ -30,7 +30,8 @@
 }
 
 .assignment-modal-summary-card,
-.assignment-modal-total-assignment-cost-card {
+.assignment-modal-total-assignment-cost-card
+.invite-modal-summary-card {
   &.invalid {
     background-color: $danger-100;
     border: 1px solid $danger;
