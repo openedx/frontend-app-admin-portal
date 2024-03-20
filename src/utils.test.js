@@ -5,6 +5,7 @@ import {
   camelCaseDictArray,
   snakeCaseDict,
   snakeCaseFormData,
+  snakeCaseObjectToForm,
   pollAsync,
   isValidNumber,
   defaultQueryClientRetryHandler,
@@ -62,6 +63,12 @@ describe('utils', () => {
       expect(snakeCaseFormData(camelCaseFormData).get('user_name')).toEqual(
         'ayyLmao',
       );
+    });
+    it('converts object to form data', () => {
+      const originalObject = { captainCrunch: 'allberries' };
+      const formData = snakeCaseObjectToForm(originalObject);
+      expect(formData instanceof FormData).toEqual(true);
+      expect(formData.get('captain_crunch')).toEqual('allberries');
     });
   });
 
