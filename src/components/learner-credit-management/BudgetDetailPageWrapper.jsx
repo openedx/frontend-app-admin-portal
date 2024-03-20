@@ -4,7 +4,12 @@ import { Helmet } from 'react-helmet';
 import { Container, Toast } from '@edx/paragon';
 
 import Hero from '../Hero';
-import { useSuccessfulAssignmentToastContextValue, useSuccessfulCancellationToastContextValue, useSuccessfulReminderToastContextValue } from './data';
+import {
+  useSuccessfulAssignmentToastContextValue,
+  useSuccessfulCancellationToastContextValue,
+  useSuccessfulReminderToastContextValue,
+} from './data';
+import useSuccessfulInvitationToastContextValue from './data/hooks/useSuccessfulInvitationToastContextValue';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
@@ -37,6 +42,7 @@ const BudgetDetailPageWrapper = ({
   const successfulAssignmentToast = useSuccessfulAssignmentToastContextValue();
   const successfulCancellationToast = useSuccessfulCancellationToastContextValue();
   const successfulReminderToast = useSuccessfulReminderToastContextValue();
+  const successfulInvitationToast = useSuccessfulInvitationToastContextValue();
 
   const {
     isSuccessfulAssignmentAllocationToastOpen,
@@ -56,11 +62,18 @@ const BudgetDetailPageWrapper = ({
     closeToastForAssignmentReminder,
   } = successfulReminderToast;
 
+  const {
+    isSuccessfulInvitationToastOpen,
+    successfulInvitationToastMessage,
+    closeToastForInvitation,
+  } = successfulInvitationToast;
+
   const values = useMemo(() => ({
     successfulAssignmentToast,
     successfulCancellationToast,
     successfulReminderToast,
-  }), [successfulAssignmentToast, successfulCancellationToast, successfulReminderToast]);
+    successfulInvitationToast,
+  }), [successfulAssignmentToast, successfulCancellationToast, successfulReminderToast, successfulInvitationToast]);
 
   return (
     <BudgetDetailPageContext.Provider value={values}>
@@ -95,6 +108,13 @@ const BudgetDetailPageWrapper = ({
         show={isSuccessfulAssignmentReminderToastOpen}
       >
         {successfulAssignmentReminderToastMessage}
+      </Toast>
+
+      <Toast
+        onClose={closeToastForInvitation}
+        show={isSuccessfulInvitationToastOpen}
+      >
+        {successfulInvitationToastMessage}
       </Toast>
     </BudgetDetailPageContext.Provider>
   );

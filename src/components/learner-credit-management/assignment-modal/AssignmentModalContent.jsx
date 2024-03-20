@@ -14,10 +14,10 @@ import {
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { connect } from 'react-redux';
-import BaseCourseCard from './BaseCourseCard';
+import BaseCourseCard from '../cards/BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
 import AssignmentModalSummary from './AssignmentModalSummary';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isEmailAddressesInputValueValid } from './data';
+import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInputValueValid } from '../cards/data';
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
 
@@ -57,7 +57,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
 
   // Validate the learner emails emails from user input whenever it changes
   useEffect(() => {
-    const allocationMetadata = isEmailAddressesInputValueValid({
+    const allocationMetadata = isAssignEmailAddressesInputValueValid({
       learnerEmails,
       remainingBalance: spendAvailable,
       contentPrice,

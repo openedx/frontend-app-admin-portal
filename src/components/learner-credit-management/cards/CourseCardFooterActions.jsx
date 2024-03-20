@@ -4,7 +4,7 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React from 'react';
-import NewAssignmentModalButton from './NewAssignmentModalButton';
+import NewAssignmentModalButton from '../assignment-modal/NewAssignmentModalButton';
 import EVENT_NAMES from '../../../eventTracking';
 import CARD_TEXT from '../constants';
 

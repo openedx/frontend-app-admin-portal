@@ -38,7 +38,7 @@ const AssignmentModalSummary = ({
     isValidInput,
     learnerEmailsCount,
     totalAssignmentCost,
-    hasEnoughBalanceForAssigment,
+    hasEnoughBalanceForAssignment,
   } = assignmentAllocationMetadata;
   const hasLearnerEmails = learnerEmailsCount > 0 && isValidInput;
 
@@ -69,12 +69,12 @@ const AssignmentModalSummary = ({
           <Card
             className={classNames(
               'assignment-modal-total-assignment-cost-card rounded-0 shadow-none',
-              { invalid: !hasEnoughBalanceForAssigment },
+              { invalid: !hasEnoughBalanceForAssignment },
             )}
           >
             <Card.Section className="py-2">
               <Stack direction="horizontal" gap={3}>
-                {!hasEnoughBalanceForAssigment && <Icon className="text-danger" src={Error} />}
+                {!hasEnoughBalanceForAssignment && <Icon className="text-danger" src={Error} />}
                 <Stack direction="horizontal" className="justify-space-between flex-grow-1">
                   <div>Total assignment cost</div>
                   <div className="ml-auto">{formatPrice(totalAssignmentCost)}</div>
@@ -102,7 +102,7 @@ AssignmentModalSummary.propTypes = {
     isValidInput: PropTypes.bool,
     learnerEmailsCount: PropTypes.number,
     totalAssignmentCost: PropTypes.number,
-    hasEnoughBalanceForAssigment: PropTypes.bool,
+    hasEnoughBalanceForAssignment: PropTypes.bool,
   }).isRequired,
 };
 
