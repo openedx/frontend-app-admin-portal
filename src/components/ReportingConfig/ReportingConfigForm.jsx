@@ -124,6 +124,8 @@ class ReportingConfigForm extends React.Component {
   handleSubmit = async (formData, config) => {
     await this.setState({ submitState: SUBMIT_STATES.PENDING });
     let requiredFields = [];
+    formData.append('active', this.state.active);
+    formData.append('enableCompression', this.state.enableCompression);
     if (formData.get('deliveryMethod') === 'email') {
       requiredFields = config ? [...REQUIRED_EMAIL_FIELDS] : [...REQUIRED_NEW_EMAIL_FIELDS];
       // transform email field to match what the api is looking for
@@ -343,6 +345,7 @@ class ReportingConfigForm extends React.Component {
               helpText: 'The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings',
               invalidMessage: 'Required for all frequency types',
               isInvalid: invalidFields.hourOfDay,
+              min: 0,
               label: 'Hour of Day',
             })}
           </div>
