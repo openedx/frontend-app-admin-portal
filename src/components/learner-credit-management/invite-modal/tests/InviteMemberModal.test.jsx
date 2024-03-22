@@ -1,8 +1,11 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -57,11 +60,13 @@ const defaultProps = {
 const InviteModalWrapper = ({
   budgetDetailPageContextValue = defaultBudgetDetailPageContextValue,
 }) => (
-  <QueryClientProvider client={queryClient()}>
-    <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
-      <InviteMembersModalWrapper {...defaultProps} />
-    </BudgetDetailPageContext.Provider>
-  </QueryClientProvider>
+  <IntlProvider locale="en">
+    <QueryClientProvider client={queryClient()}>
+      <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+        <InviteMembersModalWrapper {...defaultProps} />
+      </BudgetDetailPageContext.Provider>
+    </QueryClientProvider>
+  </IntlProvider>
 );
 
 describe('<InviteMemberModal />', () => {
@@ -97,6 +102,67 @@ describe('<InviteMemberModal />', () => {
     expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
     await waitFor(() => {
       expect(screen.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('allows csv upload of emails', async () => {
+    render(<InviteModalWrapper />);
+    expect(screen.getByText('You haven\'t entered any members yet.')).toBeInTheDocument();
+    expect(screen.getByText('Add member emails to get started.')).toBeInTheDocument();
+    const inputTypeRadio = screen.getByLabelText('Upload CSV');
+    expect(inputTypeRadio).toBeInTheDocument();
+    fireEvent.click(inputTypeRadio);
+    const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
+
+    expect(screen.getByText('Upload CSV files (Max 1MB)')).toBeInTheDocument();
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(screen.getByText('emails.csv')).toBeInTheDocument();
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('does not allow non-csv files', async () => {
+    render(<InviteModalWrapper />);
+    expect(screen.getByText('You haven\'t entered any members yet.')).toBeInTheDocument();
+    expect(screen.getByText('Add member emails to get started.')).toBeInTheDocument();
+    const inputTypeRadio = screen.getByLabelText('Upload CSV');
+    expect(inputTypeRadio).toBeInTheDocument();
+    fireEvent.click(inputTypeRadio);
+    const fakeFile = new File(['tammiswanson@library.com'], 'emails.txt', { type: 'text/txt' });
+
+    expect(screen.getByText('Upload CSV files (Max 1MB)')).toBeInTheDocument();
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone);
+    await waitFor(() => {
+      expect(screen.getByText('Invalid file type, only csv files allowed.')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('verifies emails uploaded from a csv', async () => {
+    render(<InviteModalWrapper />);
+    expect(screen.getByText('You haven\'t entered any members yet.')).toBeInTheDocument();
+    expect(screen.getByText('Add member emails to get started.')).toBeInTheDocument();
+    const inputTypeRadio = screen.getByLabelText('Upload CSV');
+    expect(inputTypeRadio).toBeInTheDocument();
+    fireEvent.click(inputTypeRadio);
+    const fakeFile = new File(['tammiswanson'], 'emails.csv', { type: 'text/csv' });
+
+    expect(screen.getByText('Upload CSV files (Max 1MB)')).toBeInTheDocument();
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(screen.getByText('tammiswanson is not a valid email.')).toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
   it('invite calls assign-learners api and renders toast', async () => {

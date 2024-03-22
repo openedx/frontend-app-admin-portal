@@ -120,9 +120,7 @@ export const isAssignEmailAddressesInputValueValid = ({
  */
 export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
   let validationError;
-
   const learnerEmailsCount = learnerEmails.length;
-
   const lowerCasedEmails = [];
   const invalidEmails = [];
   const duplicateEmails = [];
@@ -144,7 +142,7 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     }
   });
 
-  const isValidInput = invalidEmails.length === 0;
+  const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < 1000;
   const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < 1000 && isValidInput;
   const duplicateEmailsCount = duplicateEmails.length;
 
@@ -156,6 +154,10 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
 
   if (!isValidInput) {
     ensureValidationErrorObjectExists();
+    if (learnerEmailsCount > 1000) {
+      validationError.reason = 'over_email_max';
+      validationError.message = `${learnerEmailsCount} emails entered (1000 maximum). Delete ${learnerEmailsCount - 1000} emails to proceed.`;
+    }
     if (invalidEmails.length > 0) {
       validationError.reason = 'invalid_email';
       validationError.message = `${invalidEmails[0]} is not a valid email.`;

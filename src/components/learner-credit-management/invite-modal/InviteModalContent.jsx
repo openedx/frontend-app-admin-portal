@@ -9,9 +9,11 @@ import {
 
 import InviteModalSummary from './InviteModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../cards/data';
+import FileUpload from './FileUpload';
 
 const InviteModalContent = ({ onEmailAddressesChange }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
+  const [inputType, setInputType] = useState('email');
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [memberInviteMetadata, setMemberInviteMetadata] = useState({});
 
@@ -57,7 +59,19 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
       <h3>Invite members to this budget</h3>
       <Row className="mt-3">
         <Col>
-          <h4>Send invite to</h4>
+          <h4 className="mb-4">Send invite to</h4>
+          <Form.Group>
+            <Form.RadioSet
+              name="input-type"
+              onChange={(e) => setInputType(e.target.value)}
+              defaultValue="email"
+              isInline
+            >
+              <Form.Radio className="mr-5" value="email">Enter email addresses</Form.Radio>
+              <Form.Radio value="csv">Upload CSV</Form.Radio>
+            </Form.RadioSet>
+          </Form.Group>
+          {inputType === 'email' && (
           <Form.Group className="mb-5">
             <Form.Control
               as="textarea"
@@ -78,6 +92,13 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
               </Form.Control.Feedback>
             )}
           </Form.Group>
+          )}
+          {inputType === 'csv' && (
+            <FileUpload
+              validationError={memberInviteMetadata.validationError}
+              setEmailAddressesInputValue={setEmailAddressesInputValue}
+            />
+          )}
         </Col>
         <Col>
           <h4>Details</h4>
