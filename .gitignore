@@ -15,5 +15,6 @@ dist/
 
 # edx
 .env.private
-src/i18n/
 temp/
+src/i18n/messages
+
