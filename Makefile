@@ -1,5 +1,6 @@
 transifex_utils = ./node_modules/.bin/transifex-utils.js
-intl_imports = ./node_modules/frontend-platform-shim/node_modules/.bin/intl-imports.js
+intl_imports = ./node_modules/.bin/intl-imports.js
+
 
 i18n = ./src/i18n
 transifex_input = $(i18n)/transifex_input.json
@@ -57,7 +58,8 @@ pull_translations:
 	rm -rf src/i18n/messages
 	mkdir src/i18n/messages
 	cd src/i18n/messages \
-	  && atlas pull \
+	  && atlas $(ATLAS_OPTIONS) pull \
+	           translations/frontend-platform/src/i18n/messages:frontend-platform \
 	           translations/paragon/src/i18n/messages:paragon \
 	           translations/frontend-app-admin-portal/src/i18n/messages:frontend-app-admin-portal
-	$(intl_imports) paragon frontend-app-admin-portal
+	$(intl_imports) frontend-platform paragon frontend-app-admin-portal
