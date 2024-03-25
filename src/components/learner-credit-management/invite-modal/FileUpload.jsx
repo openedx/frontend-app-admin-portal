@@ -33,7 +33,7 @@ const FileUpload = ({ validationError, setEmailAddressesInputValue }) => {
     <Form.Group>
       <Dropzone
         onProcessUpload={handleFileUpload}
-        maxSize={1048576} // 1MB 1024000
+        maxSize={1048576} // 1MB
         inputComponent={uploadedFile ? UploadedFile : false}
         accept={{
           'text/csv': ['.csv'],
