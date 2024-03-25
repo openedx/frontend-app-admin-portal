@@ -6,6 +6,7 @@ import {
 import { InsertDriveFile } from '@edx/paragon/icons';
 
 import { formatBytes } from '../../MultipleFileInputField/utils';
+import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
 
 const FileUpload = ({ validationError, setEmailAddressesInputValue }) => {
   const [uploadedFile, setUploadedFile] = useState(undefined);
@@ -50,7 +51,7 @@ const FileUpload = ({ validationError, setEmailAddressesInputValue }) => {
         </Form.Control.Feedback>
       ) : (
         <Form.Control.Feedback>
-          <p className="mb-0">Maximum invite at a time: 1,000 emails</p>
+          <p className="mb-0">{`Maximum invite at a time: ${MAX_EMAIL_ENTRY_LIMIT.toLocaleString()} emails`}</p>
           <p>File must be in CSV format, only one file upload permitted.</p>
         </Form.Control.Feedback>
       )}
