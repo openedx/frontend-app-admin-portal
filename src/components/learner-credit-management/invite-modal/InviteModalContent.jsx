@@ -10,6 +10,7 @@ import {
 import InviteModalSummary from './InviteModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../cards/data';
 import FileUpload from './FileUpload';
+import InviteModalInputFeedback from './InviteModalInputFeedback';
 
 const InviteModalContent = ({ onEmailAddressesChange }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
@@ -81,21 +82,12 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
               rows={10}
               data-hj-suppress
             />
-            {memberInviteMetadata.validationError ? (
-              <Form.Control.Feedback type="invalid">
-                {memberInviteMetadata.validationError.message}
-              </Form.Control.Feedback>
-            ) : (
-              <Form.Control.Feedback>
-                <p className="mb-0">Maximum invite at a time: 1,000 emails</p>
-                <p>To add more than one learner, enter one email address per line.</p>
-              </Form.Control.Feedback>
-            )}
+            <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} />
           </Form.Group>
           )}
           {inputType === 'csv' && (
             <FileUpload
-              validationError={memberInviteMetadata.validationError}
+              memberInviteMetadata={memberInviteMetadata}
               setEmailAddressesInputValue={setEmailAddressesInputValue}
             />
           )}

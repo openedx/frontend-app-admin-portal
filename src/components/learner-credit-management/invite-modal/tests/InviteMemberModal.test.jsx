@@ -211,7 +211,8 @@ describe('<InviteMemberModal />', () => {
     userEvent.type(textareaInput, '{enter}');
     userEvent.type(textareaInput, 'oopsallberries@example.com');
     await waitFor(() => {
-      expect(screen.getByText('oopsallberries@example.com has been entered more than once.')).toBeInTheDocument();
+      expect(screen.getByText('oopsallberries@example.com was entered more than once.')).toBeInTheDocument();
+      expect(screen.getByText('Only 1 invite per email address will be sent.')).toBeInTheDocument();
       const inviteButton = screen.getByRole('button', { name: 'Invite' });
       expect(inviteButton).not.toBeDisabled();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });

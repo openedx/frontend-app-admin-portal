@@ -2,6 +2,7 @@ import isEmail from 'validator/lib/isEmail';
 
 import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
 import { formatPrice } from '../../data';
+import { makePlural } from '../../../../utils';
 
 /**
  * Transforms and formats a policy's display name for rendering within the assignment modal's allocation alert modals.
@@ -144,7 +145,6 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
 
   const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < 1000;
   const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < 1000 && isValidInput;
-  const duplicateEmailsCount = duplicateEmails.length;
 
   const ensureValidationErrorObjectExists = () => {
     if (!validationError) {
@@ -163,15 +163,19 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
       validationError.message = `${invalidEmails[0]} is not a valid email.`;
     }
   } else if (duplicateEmails.length > 0) {
+    let message = `${duplicateEmails[0]} was entered more than once.`;
+    if (duplicateEmails.length > 1) {
+      message = `${duplicateEmails[0]} and ${makePlural(duplicateEmails.length - 1, 'other email address')}
+      were entered more than once.`;
+    }
     ensureValidationErrorObjectExists();
     validationError.reason = 'duplicate_email';
-    validationError.message = `${duplicateEmails[0]} has been entered more than once.`;
+    validationError.message = message;
   }
-
   return {
     canInvite,
     lowerCasedEmails,
-    duplicateEmailsCount,
+    duplicateEmails,
     isValidInput,
     validationError,
   };

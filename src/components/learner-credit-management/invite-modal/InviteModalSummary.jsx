@@ -6,6 +6,7 @@ import { Card, Stack } from '@edx/paragon';
 import InviteModalSummaryEmptyState from './InviteModalSummaryEmptyState';
 import InviteModalSummaryLearnerList from './InviteModalSummaryLearnerList';
 import InviteModalSummaryErrorState from './InviteModalSummaryErrorState';
+import InviteModalSummaryDuplicate from './InviteModalSummaryDuplicate';
 
 const InviteModalSummaryContents = ({
   hasLearnerEmails,
@@ -31,6 +32,7 @@ const InviteModalSummary = ({
   const {
     isValidInput,
     lowerCasedEmails,
+    duplicateEmails,
   } = memberInviteMetadata;
   const hasLearnerEmails = lowerCasedEmails?.length > 0 && isValidInput;
 
@@ -56,6 +58,7 @@ const InviteModalSummary = ({
             />
           </Card.Section>
         </Card>
+        {duplicateEmails?.length > 0 && <InviteModalSummaryDuplicate />}
       </Stack>
     </>
   );
@@ -71,7 +74,9 @@ InviteModalSummary.propTypes = {
   memberInviteMetadata: PropTypes.shape({
     isValidInput: PropTypes.bool,
     lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
+    duplicateEmails: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+
 };
 
 export default InviteModalSummary;
