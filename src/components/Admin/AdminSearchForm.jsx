@@ -79,8 +79,8 @@ class AdminSearchForm extends React.Component {
             </div>
             <div className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3">
               <Form.Group>
-                <Form.Label className="search-label mb-2">
-                  Filter by start date
+                <Form.Label className="search-label mb-2 d-flex align-items-center">
+                  <span>Filter by start date</span>
                   <IconWithTooltip
                     icon={Info}
                     altText="More information"
