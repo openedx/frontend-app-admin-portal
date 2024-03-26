@@ -1,10 +1,13 @@
+const today = Date.now();
+
 export const mockEnterpriseOfferId = '123';
+
 export const mockSubsidyAccessPolicyUUID = 'c17de32e-b80b-468f-b994-85e68fd32751';
 
 export const mockAssignableSubsidyAccessPolicy = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -22,8 +25,8 @@ export const mockAssignableSubsidyAccessPolicy = {
 
 export const mockAssignableSubsidyAccessPolicyWithNoUtilization = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -41,8 +44,8 @@ export const mockAssignableSubsidyAccessPolicyWithNoUtilization = {
 
 export const mockAssignableSubsidyAccessPolicyWithSpendNoAllocations = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -60,8 +63,8 @@ export const mockAssignableSubsidyAccessPolicyWithSpendNoAllocations = {
 
 export const mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -79,8 +82,8 @@ export const mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed = {
 
 export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
   uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: '2023-11-01T13:06:46Z',
-  subsidyExpirationDatetime: '2024-02-29T13:06:59Z',
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   policyType: 'PerLearnerSpendCreditAccessPolicy',
   displayName: 'Per Learner Spend Limit',
   spendLimit: 10000 * 100,
@@ -105,7 +108,7 @@ export const mockSubsidySummary = {
 
 export const mockEnterpriseOfferMetadata = {
   id: 99511,
-  startDatetime: '2022-09-01T00:00:00Z',
-  endDatetime: '2024-09-01T00:00:00Z',
+  startDatetime: new Date(today).toISOString(),
+  endDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   displayName: 'Test Display Name',
 };

@@ -278,7 +278,7 @@ describe('<BudgetDetailPageWrapper />', () => {
     const mockBudgetDisplayName = 'Test Budget';
     renderWithRouter(
       <MockBudgetDetailPageWrapper>
-        <BudgetDetailPageBreadcrumbs budgetDisplayName={mockBudgetDisplayName} />
+        <BudgetDetailPageBreadcrumbs displayName={mockBudgetDisplayName} />
       </MockBudgetDetailPageWrapper>,
     );
     const previousBreadcrumb = screen.getByText('Budgets');
