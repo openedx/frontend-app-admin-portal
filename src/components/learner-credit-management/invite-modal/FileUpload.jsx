@@ -6,9 +6,9 @@ import {
 import { InsertDriveFile } from '@edx/paragon/icons';
 
 import { formatBytes } from '../../MultipleFileInputField/utils';
-import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
+import InviteModalInputFeedback from './InviteModalInputFeedback';
 
-const FileUpload = ({ validationError, setEmailAddressesInputValue }) => {
+const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
   const [uploadedFile, setUploadedFile] = useState(undefined);
   const UploadedFile = (
     <>
@@ -45,24 +45,17 @@ const FileUpload = ({ validationError, setEmailAddressesInputValue }) => {
           multipleDragged: 'Cannot upload more than one file.',
         }}
       />
-      {validationError ? (
-        <Form.Control.Feedback type="invalid">
-          {validationError.message}
-        </Form.Control.Feedback>
-      ) : (
-        <Form.Control.Feedback>
-          <p className="mb-0">{`Maximum invite at a time: ${MAX_EMAIL_ENTRY_LIMIT.toLocaleString()} emails`}</p>
-          <p>File must be in CSV format, only one file upload permitted.</p>
-        </Form.Control.Feedback>
-      )}
+      <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} />
     </Form.Group>
   );
 };
 
 FileUpload.propTypes = {
-  validationError: PropTypes.shape({
-    message: PropTypes.string,
-  }),
+  memberInviteMetadata: PropTypes.shape({
+    validationError: PropTypes.shape({
+      message: PropTypes.string,
+    }),
+  }).isRequired,
   setEmailAddressesInputValue: PropTypes.func.isRequired,
 };
 
