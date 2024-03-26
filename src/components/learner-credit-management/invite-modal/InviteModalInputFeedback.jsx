@@ -1,5 +1,6 @@
 import { Form } from '@edx/paragon';
 import PropTypes from 'prop-types';
+import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
 
 const InviteModalInputFeedback = (metadata) => {
   const { memberInviteMetadata } = metadata;
@@ -19,7 +20,7 @@ const InviteModalInputFeedback = (metadata) => {
   }
   return (
     <Form.Control.Feedback>
-      <p className="mb-0">Maximum invite at a time: 1,000 emails</p>
+      <p className="mb-0">Maximum invite at a time: {MAX_EMAIL_ENTRY_LIMIT} emails</p>
       <p>To add more than one learner, enter one email address per line.</p>
     </Form.Control.Feedback>
   );

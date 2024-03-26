@@ -7,7 +7,6 @@ import { InsertDriveFile } from '@edx/paragon/icons';
 
 import { formatBytes } from '../../MultipleFileInputField/utils';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
-import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
 
 const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
   const [uploadedFile, setUploadedFile] = useState(undefined);

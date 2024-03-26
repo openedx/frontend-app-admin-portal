@@ -145,7 +145,6 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
 
   const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
   const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT && isValidInput;
-  const duplicateEmailsCount = duplicateEmails.length;
 
   const ensureValidationErrorObjectExists = () => {
     if (!validationError) {
