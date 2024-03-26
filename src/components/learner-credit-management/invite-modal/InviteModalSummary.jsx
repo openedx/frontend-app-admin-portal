@@ -63,14 +63,14 @@ const InviteModalSummary = ({
 
 InviteModalSummaryContents.propTypes = {
   hasLearnerEmails: PropTypes.bool.isRequired,
-  learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
+  learnerEmails: PropTypes.arrayOf(PropTypes.string),
   hasInputValidationError: PropTypes.bool.isRequired,
 };
 
 InviteModalSummary.propTypes = {
   memberInviteMetadata: PropTypes.shape({
     isValidInput: PropTypes.bool,
-    lowerCasedEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
+    lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
 

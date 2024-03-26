@@ -1,6 +1,6 @@
 import isEmail from 'validator/lib/isEmail';
 
-import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
+import { MAX_EMAIL_ENTRY_LIMIT, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
 import { formatPrice } from '../../data';
 
 /**
@@ -120,9 +120,7 @@ export const isAssignEmailAddressesInputValueValid = ({
  */
 export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
   let validationError;
-
   const learnerEmailsCount = learnerEmails.length;
-
   const lowerCasedEmails = [];
   const invalidEmails = [];
   const duplicateEmails = [];
@@ -144,8 +142,8 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     }
   });
 
-  const isValidInput = invalidEmails.length === 0;
-  const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < 1000 && isValidInput;
+  const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
+  const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT && isValidInput;
   const duplicateEmailsCount = duplicateEmails.length;
 
   const ensureValidationErrorObjectExists = () => {
@@ -156,6 +154,11 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
 
   if (!isValidInput) {
     ensureValidationErrorObjectExists();
+    if (learnerEmailsCount > MAX_EMAIL_ENTRY_LIMIT) {
+      validationError.reason = 'over_email_max';
+      validationError.message = `${learnerEmailsCount} emails entered (${MAX_EMAIL_ENTRY_LIMIT}} maximum).`
+      + `Delete ${learnerEmailsCount - MAX_EMAIL_ENTRY_LIMIT} emails to proceed.`;
+    }
     if (invalidEmails.length > 0) {
       validationError.reason = 'invalid_email';
       validationError.message = `${invalidEmails[0]} is not a valid email.`;
