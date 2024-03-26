@@ -8,7 +8,7 @@ import {
 } from '@edx/paragon';
 
 import InviteModalSummary from './InviteModalSummary';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../cards/data';
+import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';
 import FileUpload from './FileUpload';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
 
@@ -65,14 +65,14 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
             <Form.RadioSet
               name="input-type"
               onChange={(e) => setInputType(e.target.value)}
-              defaultValue="email"
+              defaultValue={INPUT_TYPE.EMAIL}
               isInline
             >
-              <Form.Radio className="mr-5" value="email">Enter email addresses</Form.Radio>
-              <Form.Radio value="csv">Upload CSV</Form.Radio>
+              <Form.Radio className="mr-5" value={INPUT_TYPE.EMAIL}>Enter email addresses</Form.Radio>
+              <Form.Radio value={INPUT_TYPE.CSV}>Upload CSV</Form.Radio>
             </Form.RadioSet>
           </Form.Group>
-          {inputType === 'email' && (
+          {inputType === INPUT_TYPE.EMAIL && (
           <Form.Group className="mb-5">
             <Form.Control
               as="textarea"
@@ -85,7 +85,7 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
             <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} />
           </Form.Group>
           )}
-          {inputType === 'csv' && (
+          {inputType === INPUT_TYPE.CSV && (
             <FileUpload
               memberInviteMetadata={memberInviteMetadata}
               setEmailAddressesInputValue={setEmailAddressesInputValue}

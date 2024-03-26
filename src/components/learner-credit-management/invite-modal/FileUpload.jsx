@@ -7,6 +7,7 @@ import { InsertDriveFile } from '@edx/paragon/icons';
 
 import { formatBytes } from '../../MultipleFileInputField/utils';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
+import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
 
 const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
   const [uploadedFile, setUploadedFile] = useState(undefined);
@@ -34,7 +35,7 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
     <Form.Group>
       <Dropzone
         onProcessUpload={handleFileUpload}
-        maxSize={1048576} // 1MB 1024000
+        maxSize={1048576} // 1MB
         inputComponent={uploadedFile ? UploadedFile : false}
         accept={{
           'text/csv': ['.csv'],

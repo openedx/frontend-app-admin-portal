@@ -1,6 +1,6 @@
 import isEmail from 'validator/lib/isEmail';
 
-import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
+import { MAX_EMAIL_ENTRY_LIMIT, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
 import { formatPrice } from '../../data';
 import { makePlural } from '../../../../utils';
 
@@ -143,8 +143,9 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     }
   });
 
-  const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < 1000;
-  const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < 1000 && isValidInput;
+  const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
+  const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT && isValidInput;
+  const duplicateEmailsCount = duplicateEmails.length;
 
   const ensureValidationErrorObjectExists = () => {
     if (!validationError) {
@@ -154,9 +155,10 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
 
   if (!isValidInput) {
     ensureValidationErrorObjectExists();
-    if (learnerEmailsCount > 1000) {
+    if (learnerEmailsCount > MAX_EMAIL_ENTRY_LIMIT) {
       validationError.reason = 'over_email_max';
-      validationError.message = `${learnerEmailsCount} emails entered (1000 maximum). Delete ${learnerEmailsCount - 1000} emails to proceed.`;
+      validationError.message = `${learnerEmailsCount} emails entered (${MAX_EMAIL_ENTRY_LIMIT}} maximum).`
+      + `Delete ${learnerEmailsCount - MAX_EMAIL_ENTRY_LIMIT} emails to proceed.`;
     }
     if (invalidEmails.length > 0) {
       validationError.reason = 'invalid_email';
