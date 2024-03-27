@@ -900,10 +900,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field12"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -1767,10 +1769,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field37"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -2634,10 +2638,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field42"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -3501,10 +3507,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field47"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -4368,10 +4376,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field2"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -5235,10 +5245,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field32"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -6102,10 +6114,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field27"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -6969,10 +6983,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field17"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -7836,10 +7852,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field7"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -8703,10 +8721,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field22"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -9619,10 +9639,12 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field57"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
@@ -10855,10 +10877,12 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                   className="pgn__form-group"
                 >
                   <label
-                    className="pgn__form-label search-label mb-2"
+                    className="pgn__form-label search-label mb-2 d-flex align-items-center"
                     htmlFor="form-field52"
                   >
-                    Filter by start date
+                    <span>
+                      Filter by start date
+                    </span>
                     <span
                       alt="More information"
                       className="pgn__icon ml-1"
