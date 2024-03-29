@@ -9,6 +9,7 @@ import {
   cleanup,
 } from '@testing-library/react';
 import { mergeConfig } from '@edx/frontend-platform';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { features } from '../../../config';
@@ -57,24 +58,26 @@ const ToursWithContext = ({
   }),
 }) => (
   <Provider store={store}>
-    <Router initialEntries={[`${SUBSCRIPTION_PAGE_LOCATION}`]}>
-      <Routes>
-        <Route
-          path={`/${ENTERPRISE_SLUG}/admin/:enterpriseAppPage`}
-          element={(
-            <EnterpriseSubsidiesContext.Provider value={EnterpriseSubsidiesContextValue}>
-              <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
-                <>
-                  <ProductTours />
-                  <p id={TOUR_TARGETS.LEARNER_CREDIT}>Learner Credit Management</p>
-                  <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
-                </>
-              </SubsidyRequestsContext.Provider>
-            </EnterpriseSubsidiesContext.Provider>
-          )}
-        />
-      </Routes>
-    </Router>
+    <IntlProvider locale="en">
+      <Router initialEntries={[`${SUBSCRIPTION_PAGE_LOCATION}`]}>
+        <Routes>
+          <Route
+            path={`/${ENTERPRISE_SLUG}/admin/:enterpriseAppPage`}
+            element={(
+              <EnterpriseSubsidiesContext.Provider value={EnterpriseSubsidiesContextValue}>
+                <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
+                  <>
+                    <ProductTours />
+                    <p id={TOUR_TARGETS.LEARNER_CREDIT}>Learner Credit Management</p>
+                    <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
+                  </>
+                </SubsidyRequestsContext.Provider>
+              </EnterpriseSubsidiesContext.Provider>
+            )}
+          />
+        </Routes>
+      </Router>
+    </IntlProvider>
   </Provider>
 );
 
