@@ -36,6 +36,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                     Email
                     <span
                       className="sr-only"
+                      data-testid="table-heading-sr"
                     >
                        
                       sort ascending
@@ -62,6 +63,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                     Course Title
                     <span
                       className="sr-only"
+                      data-testid="table-heading-sr"
                     >
                        
                       click to sort
@@ -88,6 +90,7 @@ exports[`PastWeekPassedLearnersTable renders table correctly 1`] = `
                     Passed Date
                     <span
                       className="sr-only"
+                      data-testid="table-heading-sr"
                     >
                        
                       click to sort

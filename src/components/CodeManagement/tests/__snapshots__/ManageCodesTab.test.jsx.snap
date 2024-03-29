@@ -17,9 +17,10 @@ Array [
     >
       <div
         className="pgn__searchfield d-flex"
+        onSearch={[Function]}
       >
         <form
-          className="d-flex align-items-center w-100"
+          className="pgn__searchfield-form"
           onReset={[Function]}
           onSubmit={[Function]}
           role="search"
@@ -218,9 +219,10 @@ Array [
     >
       <div
         className="pgn__searchfield d-flex"
+        onSearch={[Function]}
       >
         <form
-          className="d-flex align-items-center w-100"
+          className="pgn__searchfield-form"
           onReset={[Function]}
           onSubmit={[Function]}
           role="search"
@@ -427,9 +429,10 @@ Array [
     >
       <div
         className="pgn__searchfield d-flex"
+        onSearch={[Function]}
       >
         <form
-          className="d-flex align-items-center w-100"
+          className="pgn__searchfield-form"
           onReset={[Function]}
           onSubmit={[Function]}
           role="search"
@@ -604,9 +607,10 @@ Array [
     >
       <div
         className="pgn__searchfield d-flex"
+        onSearch={[Function]}
       >
         <form
-          className="d-flex align-items-center w-100"
+          className="pgn__searchfield-form"
           onReset={[Function]}
           onSubmit={[Function]}
           role="search"

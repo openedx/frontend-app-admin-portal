@@ -962,10 +962,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -1831,10 +1833,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -2700,10 +2704,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -3569,10 +3575,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -4438,10 +4446,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -5307,10 +5317,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -6176,10 +6188,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -7045,10 +7059,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -7914,10 +7930,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -8783,10 +8801,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -9701,10 +9721,12 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
@@ -10939,10 +10961,12 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                   Filter by email
                 </label>
                 <div
+                  aria-labelledby="search-email-label"
                   className="pgn__searchfield d-flex py-0"
+                  onSearch={[Function]}
                 >
                   <form
-                    className="d-flex align-items-center w-100"
+                    className="pgn__searchfield-form"
                     onReset={[Function]}
                     onSubmit={[Function]}
                     role="search"
