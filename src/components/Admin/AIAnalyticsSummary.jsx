@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Button, Card, Stack, Badge, useToggle,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { AutoFixHigh, Groups } from '@edx/paragon/icons';
+import { AutoFixHigh, Groups } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import useAIAnalyticsSummary from '../AIAnalyticsSummary/data/hooks';
 

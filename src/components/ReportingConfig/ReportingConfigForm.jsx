@@ -4,10 +4,10 @@ import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
 import {
   Button, Form, Icon, Spinner, StatefulButton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   Check, Close, Download, Error,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';

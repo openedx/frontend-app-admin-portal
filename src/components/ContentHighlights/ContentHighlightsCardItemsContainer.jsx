@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   ActionRow, Alert, Button, CardGrid, useToggle,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';

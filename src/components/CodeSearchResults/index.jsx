@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, TransitionReplace } from '@edx/paragon';
-import { CheckCircle } from '@edx/paragon/icons';
+import { Alert, TransitionReplace } from '@openedx/paragon';
+import { CheckCircle } from '@openedx/paragon/icons';
 
 import { updateUrl } from '../../utils';
 

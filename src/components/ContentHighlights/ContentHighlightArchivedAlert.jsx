@@ -1,4 +1,4 @@
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME } from './data/constants';

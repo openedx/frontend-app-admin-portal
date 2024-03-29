@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@edx/paragon';
+import { Card } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 
 const ZeroStateCardImage = ({ imageContainerClassName, imageClassName, cardImage }) => (

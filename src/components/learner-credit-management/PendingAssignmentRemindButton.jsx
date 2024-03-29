@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, IconButtonWithTooltip } from '@edx/paragon';
+import { Icon, IconButtonWithTooltip } from '@openedx/paragon';
 
-import { Mail } from '@edx/paragon/icons';
+import { Mail } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import RemindAssignmentModal from './RemindAssignmentModal';

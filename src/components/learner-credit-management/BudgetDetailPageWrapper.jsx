@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Container, Toast } from '@edx/paragon';
+import { Container, Toast } from '@openedx/paragon';
 
 import Hero from '../Hero';
 import {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import {
   Row, Col, Toast, Button,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import { Link } from 'react-router-dom';
 import { SubscriptionDetailContext } from '../subscriptions/SubscriptionDetailContextProvider';

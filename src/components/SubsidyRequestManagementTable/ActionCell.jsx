@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   ActionRow,
   Button,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 const ActionCell = ({
   row, onApprove, onDecline, disableApproveButton,

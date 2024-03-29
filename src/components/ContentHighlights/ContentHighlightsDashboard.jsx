@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Tabs, Tab } from '@edx/paragon';
+import { Container, Tabs, Tab } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import CurrentContentHighlights from './CurrentContentHighlights';

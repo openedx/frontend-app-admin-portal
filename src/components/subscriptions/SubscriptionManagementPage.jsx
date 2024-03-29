@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Container } from '@edx/paragon';
+import { Container } from '@openedx/paragon';
 
 import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';

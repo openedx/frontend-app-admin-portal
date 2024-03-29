@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   ActionRow, ModalDialog, StatefulButton,
-} from '@edx/paragon';
-import { Mail } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Mail } from '@openedx/paragon/icons';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 
 const RemindAssignmentModal = ({

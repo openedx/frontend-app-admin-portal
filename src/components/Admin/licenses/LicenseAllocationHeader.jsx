@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Badge } from '@edx/paragon';
+import { Badge } from '@openedx/paragon';
 import { SubscriptionDetailContext } from '../../subscriptions/SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import NewFeatureAlertBrowseAndRequest from '../../NewFeatureAlertBrowseAndRequest';

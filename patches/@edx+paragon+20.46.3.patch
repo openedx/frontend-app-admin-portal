@@ -1,7 +1,7 @@
-diff --git a/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js b/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
+diff --git a/node_modules/@openedx/paragon/dist/DataTable/selection/BaseSelectionStatus.js b/node_modules/@openedx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
 index 00c4c4b..426ca4e 100644
---- a/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
-+++ b/node_modules/@edx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
+--- a/node_modules/@openedx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
++++ b/node_modules/@openedx/paragon/dist/DataTable/selection/BaseSelectionStatus.js
 @@ -20,11 +20,12 @@ function BaseSelectionStatus(_ref) {
      itemCount,
      filteredRows,

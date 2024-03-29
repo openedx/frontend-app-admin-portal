@@ -1,4 +1,4 @@
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
 

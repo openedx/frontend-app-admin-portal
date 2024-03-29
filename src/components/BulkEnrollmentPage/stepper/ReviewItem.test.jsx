@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { IconButton } from '@edx/paragon';
+import { IconButton } from '@openedx/paragon';
 import ReviewItem from './ReviewItem';
 import { deleteSelectedRowAction } from '../data/actions';
 

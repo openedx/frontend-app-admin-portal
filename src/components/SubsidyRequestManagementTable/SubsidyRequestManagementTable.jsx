@@ -4,7 +4,7 @@ import {
   DataTable,
   TextFilter,
   CheckboxFilter,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import EmailAddressCell from './EmailAddressCell';
 import RequestDateCell from './RequestDateCell';

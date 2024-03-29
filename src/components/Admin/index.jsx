@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Alert, Icon } from '@edx/paragon';
-import { Error, Undo } from '@edx/paragon/icons';
+import { Alert, Icon } from '@openedx/paragon';
+import { Error, Undo } from '@openedx/paragon/icons';
 import { Link } from 'react-router-dom';
 
 import Hero from '../Hero';

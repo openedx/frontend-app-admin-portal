@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Stack, Card, Badge, Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

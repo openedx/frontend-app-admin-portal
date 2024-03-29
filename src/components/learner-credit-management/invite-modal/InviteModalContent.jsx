@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
   Col, Container, Form, Row,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import InviteModalSummary from './InviteModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';

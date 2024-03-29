@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Card, Stack } from '@edx/paragon';
+import { Card, Stack } from '@openedx/paragon';
 
 import InviteModalSummaryEmptyState from './InviteModalSummaryEmptyState';
 import InviteModalSummaryLearnerList from './InviteModalSummaryLearnerList';

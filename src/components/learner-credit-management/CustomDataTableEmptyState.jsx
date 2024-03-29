@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { DataTable, DataTableContext } from '@edx/paragon';
+import { DataTable, DataTableContext } from '@openedx/paragon';
 
 const CustomDataTableEmptyState = () => {
   const { isLoading } = useContext(DataTableContext);

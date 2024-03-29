@@ -12,7 +12,7 @@ import {
   useToggle,
   AlertModal,
   ActionRow,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Chip } from '@edx/paragon';
-import { Send } from '@edx/paragon/icons';
+import { Chip } from '@openedx/paragon';
+import { Send } from '@openedx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
 import EVENT_NAMES from '../../../eventTracking';
 import { useAssignmentStatusChip } from '../data';

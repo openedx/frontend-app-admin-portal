@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Button, DataTableContext } from '@edx/paragon';
+import { Button, DataTableContext } from '@openedx/paragon';
 
 // This selection status component uses the BulkEnrollContext to show selection status rather than the data table state.
 const BaseSelectionStatus = ({

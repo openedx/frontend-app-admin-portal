@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Alert, Hyperlink, OverlayTrigger, Popover,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 const IncognitoPopover = () => (
   <OverlayTrigger

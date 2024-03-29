@@ -10,7 +10,7 @@ import {
   Spinner,
   Form,
   Hyperlink,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { useRequestState } from './LicenseManagementModalHook';

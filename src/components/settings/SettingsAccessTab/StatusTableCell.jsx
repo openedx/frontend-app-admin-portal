@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge } from '@edx/paragon';
+import { Badge } from '@openedx/paragon';
 
 const StatusTableCell = ({ row }) => {
   const { isValid } = row.original;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card } from '@edx/paragon';
+import { Button, Card } from '@openedx/paragon';
 
 import {
   formatDate, formatPrice, useBudgetId, usePathToCatalogTab, useSubsidyAccessPolicy,

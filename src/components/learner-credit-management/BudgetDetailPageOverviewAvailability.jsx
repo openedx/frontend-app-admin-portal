@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import {
   Button, Col, Hyperlink, ProgressBar, Row, Stack, useMediaQuery, breakpoints,
-} from '@edx/paragon';
-import { Add } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Add } from '@openedx/paragon/icons';
 import { generatePath, useParams, Link } from 'react-router-dom';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';

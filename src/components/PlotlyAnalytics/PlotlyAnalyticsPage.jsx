@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { Alert } from '@edx/paragon';
-import { CheckCircle, Error } from '@edx/paragon/icons';
+import { Alert } from '@openedx/paragon';
+import { CheckCircle, Error } from '@openedx/paragon/icons';
 import Hero from '../Hero';
 import PlotlyAnalyticsCharts from './PlotlyAnalyticsCharts';
 

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import {
   Button, Card, Hyperlink, Icon, Spinner,
-} from '@edx/paragon';
-import { Add, Error } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Add, Error } from '@openedx/paragon/icons';
 
 import { credentialErrorMessage } from './constants';
 import cardImage from '../../../data/images/ZeroState.svg';
