@@ -924,20 +924,18 @@ describe('<BudgetDetailPage />', () => {
     if (field === 'status') {
       const filtersButton = getButtonElement('Filters', { screenOverride: assignedSection });
       userEvent.click(filtersButton);
-      act(async () => {
-        const filtersDropdown = await screen.findByRole('group', { name: 'Status' });
+      waitFor(() => {
+        const filtersDropdown = screen.getByRole('group', { name: 'Status' });
         const filtersDropdownContainer = within(filtersDropdown);
         if (value.includes('waiting')) {
           const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
           expect(waitingForLearnerOption).toBeInTheDocument();
           userEvent.click(waitingForLearnerOption);
 
-          await waitFor(() => {
-            expect(waitingForLearnerOption).toBeChecked();
-            expect(mockFetchContentAssignments).toHaveBeenCalledWith(
-              expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
-            );
-          });
+          expect(waitingForLearnerOption).toBeChecked();
+          expect(mockFetchContentAssignments).toHaveBeenCalledWith(
+            expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
+          );
         }
       });
     }
