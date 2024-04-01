@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailPage } from './SubscriptionDetailPage';
@@ -11,6 +12,7 @@ import {
   mockSubscriptionHooks,
   MockSubscriptionContext,
 } from '../subscriptions/tests/TestUtilities';
+import * as hooks from '../subscriptions/data/contextHooks';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -34,6 +36,11 @@ const defaultAppContext = {
   enterpriseSlug: 'test-enterprise',
   enterpriseConfig: {
     slug: 'test-enterprise',
+  },
+  match: {
+    params: {
+      subscriptionUUID: '28d4dcdc-c026-4c02-a263-82dd9c0d8b43',
+    },
   },
 };
 
@@ -77,5 +84,14 @@ describe('SubscriptionDetailPage', () => {
     expect(document.querySelector('h2').textContent).toEqual(
       'Get Started',
     );
+  });
+
+  it('renders correct message if no subscriptions', () => {
+    jest.spyOn(hooks, 'useSubscriptionFromParams').mockImplementation(
+      () => [false, false],
+    );
+    render(<SubscriptionDetailPageWrapper />);
+
+    expect(screen.getByText('No subscription available')).toBeInTheDocument();
   });
 });
