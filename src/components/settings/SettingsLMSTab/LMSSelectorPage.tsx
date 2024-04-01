@@ -28,7 +28,7 @@ export function LMSSelectorPage(setLms: (string) => void) {
     return (
       <Container size="lg">
         <span className="pb-4">
-          <h3 className="pb-3">
+          <h3 id="lms-selection-heading" className="pb-3">
             Let&apos;s get started
           </h3>
           <p>Select the LMS or LXP you want to integrate with edX For Business.</p>
@@ -38,6 +38,7 @@ export function LMSSelectorPage(setLms: (string) => void) {
             onChange={handleChange}
             name="colors"
             columns={3}
+            ariaLabelledby="lms-selection-heading"
           >
             {LMS_KEYS.map(lms => (
               <SelectableBox value={lms} type="radio" aria-label={`select ${channelMapping[lms].displayName}`}>
