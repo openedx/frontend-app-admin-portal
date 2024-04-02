@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { faker } from '@faker-js/faker';
 import parse from 'html-react-parser';
 import sanitizeHTML from 'sanitize-html';
+import { v4 as uuidv4 } from 'uuid';
 /* eslint-enable import/no-extraneous-dependencies */
 
 // Sanitizes HTML and parses the string as HTML
@@ -185,14 +185,14 @@ export const NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME = 'new-archived-co
 // Test Content Highlights data
 export const TEST_COURSE_HIGHLIGHTS_DATA = [
   {
-    uuid: faker.datatype.uuid(),
+    uuid: uuidv4(),
     title: 'Dire Core',
     is_published: true,
     enterprise_curation: '321123',
     highlighted_content:
     [
       {
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_type: 'Course',
         content_key: 'edX+DemoX',
         title: 'Math',
@@ -201,12 +201,12 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             name: 'General Studies 1',
             logo_image_url: 'https://placekitten.com/200/100',
           },
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Super General Studies',
           },
@@ -215,14 +215,14 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Science',
         content_type: 'Learnerpathway',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         course_run_statuses: [COURSE_RUN_STATUSES.published],
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'General Studies 2',
           },
@@ -231,14 +231,14 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'English',
         content_type: 'Program',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         course_run_statuses: null,
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'General Studies 3',
           },
@@ -248,7 +248,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
   },
   {
     title: 'Dire Math',
-    uuid: faker.datatype.uuid(),
+    uuid: uuidv4(),
     is_published: true,
     enterprise_curation: '321123',
     highlighted_content:
@@ -256,13 +256,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Math Xtreme',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Matheletes',
           },
@@ -271,13 +271,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Science for Math Majors',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Matheletes',
           },
@@ -286,13 +286,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'English Divergence',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Matheletes',
           },
@@ -302,7 +302,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
   },
   {
     title: 'Dire Science',
-    uuid: faker.datatype.uuid(),
+    uuid: uuidv4(),
     is_published: false,
     enterprise_curation: '321123',
     highlighted_content:
@@ -310,13 +310,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Math for Science Majors',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'The Beakers',
           },
@@ -325,13 +325,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Science Xtreme',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'The Beakers',
           },
@@ -340,13 +340,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'English Obfuscation',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'The Beakers',
           },
@@ -356,7 +356,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
   },
   {
     title: 'Dire English',
-    uuid: faker.datatype.uuid(),
+    uuid: uuidv4(),
     is_published: true,
     enterprise_curation: '321123',
     highlighted_content:
@@ -364,13 +364,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'To Math or not Math',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Extensive Etymology',
           },
@@ -379,13 +379,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Science for English Majors',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Extensive Etymology',
           },
@@ -394,13 +394,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Moore English: Lawlessness Refined',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Extensive Etymology',
           },
@@ -410,7 +410,7 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
   },
   {
     title: 'Dire Engineering',
-    uuid: faker.datatype.uuid(),
+    uuid: uuidv4(),
     is_published: true,
     enterprise_curation: '321123',
     highlighted_content:
@@ -418,13 +418,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Math for Engineering Majors',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Building Bridges',
           },
@@ -433,13 +433,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'Science for Engineering Majors',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Building Bridges',
           },
@@ -448,13 +448,13 @@ export const TEST_COURSE_HIGHLIGHTS_DATA = [
       {
         title: 'English Instantiation',
         content_type: 'Course',
-        uuid: faker.datatype.uuid(),
+        uuid: uuidv4(),
         content_key: 'edX+DemoX',
         card_image_url: 'https://picsum.photos/360/200',
         authoring_organizations:
         [
           {
-            uuid: faker.datatype.uuid(),
+            uuid: uuidv4(),
             logo_image_url: 'https://placekitten.com/200/100',
             name: 'Building Bridges',
           },
