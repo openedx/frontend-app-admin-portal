@@ -441,7 +441,7 @@ describe('<Sidebar />', () => {
     });
 
     LmsApiService.fetchEnterpriseGroup.mockImplementation(() => Promise.resolve({
-      data: { results: { applies_to_all_contexts: false } },
+      data: { results: [{ applies_to_all_contexts: false }] },
     }));
     render(<SidebarWrapper store={store} />);
     const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
@@ -451,7 +451,7 @@ describe('<Sidebar />', () => {
     }, 1000);
 
     LmsApiService.fetchEnterpriseGroup.mockImplementation(() => Promise.resolve({
-      data: { results: { applies_to_all_contexts: true } },
+      data: { results: [{ applies_to_all_contexts: true }] },
     }));
     render(<SidebarWrapper store={store} />);
     setTimeout(() => {
