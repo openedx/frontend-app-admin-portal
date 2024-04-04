@@ -420,6 +420,11 @@ class LmsApiService {
     return response;
   };
 
+  static fetchEnterpriseGroup = async () => {
+    const url = `${LmsApiService.enterpriseGroupUrl}`;
+    return LmsApiService.apiClient().get(url);
+  };
+
   static inviteEnterpriseLearnersToGroup = async (groupUuid, formData) => {
     const assignLearnerEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/assign_learners/`;
     return LmsApiService.apiClient().post(assignLearnerEndpoint, formData);
