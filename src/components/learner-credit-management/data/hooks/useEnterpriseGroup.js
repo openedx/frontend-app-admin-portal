@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import isEmpty from 'lodash/isEmpty';
 
 import { learnerCreditManagementQueryKeys } from '../constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -11,7 +12,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
  * @returns The enterprise group object
  */
 const getEnterpriseGroup = async ({ subsidyAccessPolicy }) => {
-  if (!subsidyAccessPolicy.groupAssociations || subsidyAccessPolicy.groupAssociations.length === 0) {
+  if (!subsidyAccessPolicy.groupAssociations || isEmpty(subsidyAccessPolicy.groupAssociations)) {
     return null;
   }
   const response = await LmsApiService.fetchEnterpriseGroup(subsidyAccessPolicy.groupAssociations[0]);

@@ -1,5 +1,5 @@
 import React, {
-  useRef, useContext, useEffect, useCallback,
+  useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -8,6 +8,7 @@ import {
   BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
 } from '@edx/paragon/icons';
 
+import { logError } from '@edx/frontend-platform/logging';
 import { getConfig } from '@edx/frontend-platform/config';
 import IconLink from './IconLink';
 
@@ -18,6 +19,7 @@ import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import LmsApiService from '../../data/services/LmsApiService';
 
 const Sidebar = ({
   baseUrl,
@@ -31,6 +33,7 @@ const Sidebar = ({
   enableAnalyticsScreen,
   onWidthChange,
   isMobile,
+  enterpriseGroupsV1,
 }) => {
   const navRef = useRef();
   const widthRef = useRef();
@@ -38,6 +41,8 @@ const Sidebar = ({
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
+  const [isSubGroup, setIsSubGroup] = useState(false);
+  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup;
 
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
@@ -53,6 +58,23 @@ const Sidebar = ({
       const sideBarWidth = getSidebarWidth();
       widthRef.current = sideBarWidth;
       onWidthChange(sideBarWidth);
+    }
+    async function fetchGroupsData() {
+      try {
+        const response = await LmsApiService.fetchEnterpriseGroups();
+        // we only want to hide the feature if a customer has a group this does not
+        // apply to all contexts/include all users
+        response.data.results.forEach((group) => {
+          if (group.applies_to_all_contexts === false) {
+            setIsSubGroup(true);
+          }
+        });
+      } catch (error) {
+        logError(error);
+      }
+    }
+    if (enterpriseGroupsV1) {
+      fetchGroupsData();
     }
   });
 
@@ -104,7 +126,7 @@ const Sidebar = ({
       id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} />,
-      hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive,
+      hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive || hideHighlightsForGroups,
       notification: isNewArchivedContent,
     },
     {
@@ -187,6 +209,7 @@ Sidebar.defaultProps = {
   enableAnalyticsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
+  enterpriseGroupsV1: false,
 };
 
 Sidebar.propTypes = {
@@ -201,6 +224,7 @@ Sidebar.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
+  enterpriseGroupsV1: PropTypes.bool,
 };
 
 export default Sidebar;
