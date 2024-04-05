@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Skeleton, useToggle } from '@edx/paragon';
+import { Stack, Skeleton } from '@edx/paragon';
 
-import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
+import BudgetDetailRedemptions from './BudgetDetailRedemptions';
+import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
 import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 import InviteMembersModalWrapper from './invite-modal/InviteMembersModalWrapper';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
-  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1;
-
+  const {
+    inviteModalIsOpen, openInviteModal, closeInviteModal,
+  } = useContext(BudgetDetailPageContext);
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {

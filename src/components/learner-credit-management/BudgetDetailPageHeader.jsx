@@ -1,34 +1,20 @@
 import React from 'react';
-import {
-  Stack, Card, Badge, Skeleton,
-} from '@edx/paragon';
-
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Card, Skeleton, Stack } from '@edx/paragon';
+
 import {
   useBudgetId,
   useSubsidyAccessPolicy,
   useBudgetDetailHeaderData,
   useEnterpriseOffer,
-  formatDate,
   useSubsidySummaryAnalyticsApi,
 } from './data';
-
 import BudgetDetailPageBreadcrumbs from './BudgetDetailPageBreadcrumbs';
 import BudgetDetailPageOverviewAvailability from './BudgetDetailPageOverviewAvailability';
 import BudgetDetailPageOverviewUtilization from './BudgetDetailPageOverviewUtilization';
 import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
-
-const BudgetStatusBadge = ({
-  badgeVariant, status, term, date,
-}) => (
-  <Stack direction="horizontal" gap={2}>
-    <Badge variant={badgeVariant}>{status}</Badge>
-    {(term && date) && (
-      <span className="small">{term} {formatDate(date)}</span>
-    )}
-  </Stack>
-);
+import BudgetStatusSubtitle from './BudgetStatusSubtitle';
 
 const BudgetDetailPageHeader = ({ enterpriseUUID, enterpriseFeatures }) => {
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
@@ -77,7 +63,14 @@ const BudgetDetailPageHeader = ({ enterpriseUUID, enterpriseFeatures }) => {
       <Card className="budget-overview-card">
         <Card.Section>
           <h2>{budgetDisplayName}</h2>
-          <BudgetStatusBadge badgeVariant={badgeVariant} status={status} term={term} date={date} />
+          <BudgetStatusSubtitle
+            badgeVariant={badgeVariant}
+            status={status}
+            isAssignable={isAssignable}
+            term={term}
+            date={date}
+            policy={subsidyAccessPolicy}
+          />
           <BudgetDetailPageOverviewAvailability
             budgetId={budgetId}
             budgetTotalSummary={budgetTotalSummary}
@@ -105,13 +98,6 @@ BudgetDetailPageHeader.propTypes = {
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
-};
-
-BudgetStatusBadge.propTypes = {
-  badgeVariant: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-  term: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailPageHeader);
