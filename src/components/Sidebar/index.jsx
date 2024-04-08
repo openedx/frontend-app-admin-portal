@@ -61,7 +61,7 @@ const Sidebar = ({
     }
     async function fetchGroupsData() {
       try {
-        const response = await LmsApiService.fetchEnterpriseGroup();
+        const response = await LmsApiService.fetchEnterpriseGroups();
         // we only want to hide the feature if a customer has a group this does not
         // apply to all contexts/include all users
         response.data.results.forEach((group) => {

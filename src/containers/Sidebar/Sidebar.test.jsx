@@ -440,7 +440,7 @@ describe('<Sidebar />', () => {
       },
     });
 
-    LmsApiService.fetchEnterpriseGroup.mockImplementation(() => Promise.resolve({
+    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
       data: { results: [{ applies_to_all_contexts: false }] },
     }));
     render(<SidebarWrapper store={store} />);
@@ -450,7 +450,7 @@ describe('<Sidebar />', () => {
       expect(highlightsLink).not.toBeInTheDocument();
     }, 1000);
 
-    LmsApiService.fetchEnterpriseGroup.mockImplementation(() => Promise.resolve({
+    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
       data: { results: [{ applies_to_all_contexts: true }] },
     }));
     render(<SidebarWrapper store={store} />);

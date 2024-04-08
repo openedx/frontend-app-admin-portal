@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { connect } from 'react-redux';
+import { generatePath, useParams, Link } from 'react-router-dom';
 import {
-  Button, Col, Hyperlink, ProgressBar, Row, Stack, useMediaQuery, breakpoints,
+  Button, Col, ProgressBar, Row, Stack,
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
-import { generatePath, useParams, Link } from 'react-router-dom';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
+import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';
-import { configuration } from '../../config';
+import useEnterpriseGroup from './data/hooks/useEnterpriseGroup';
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
 
@@ -43,9 +44,10 @@ BudgetDetail.propTypes = {
 
 const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
-  const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { data: appliesToAllContexts } = useEnterpriseGroup(subsidyAccessPolicy);
+  const { openInviteModal } = useContext(BudgetDetailPageContext);
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -65,29 +67,38 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
     );
   }
 
-  const isLargeScreenOrGreater = useMediaQuery({ query: `(min-width: ${breakpoints.small.minWidth}px)` });
-
   if (!isAssignable) {
+    if (appliesToAllContexts === true) {
+      return (
+        <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+          <div>
+            <h3>Manage edX for your organization</h3>
+            <p>
+              All people in your organization can choose what to learn
+              from the catalog and spend from the available balance to enroll.
+            </p>
+            <Link to={`/${enterpriseSlug}/admin/settings/access`}>
+              <Button variant="outline-primary">Configure access</Button>
+            </Link>,
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
         <div>
-          <h4>Get people learning using this budget</h4>
+          <h3>Drive learner-led enrollments by inviting members</h3>
           <p>
-            Funds from this budget are set to auto-allocate to registered learners based on
-            settings configured with your support team.
+            Members of this budget can choose what to learn from the catalog
+            and spend from the available balance to enroll.
           </p>
           <Button
-            variant="outline-primary"
-            as={Hyperlink}
-            destination={supportUrl}
-            onClick={() => sendEnterpriseTrackEvent(
-              enterpriseId,
-              EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_CONTACT_US,
-              trackEventMetadata,
-            )}
+            variant="brand"
+            onClick={openInviteModal}
             target="_blank"
+            iconBefore={Add}
           >
-            Contact support
+            New members
           </Button>
         </div>
       </div>
@@ -96,9 +107,11 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
 
   return (
     <div className="h-100 d-flex align-items-center justify-content-center pt-4 pt-lg-0">
-      <div className={classNames({ 'text-center': isLargeScreenOrGreater })}>
-        <h4>Get people learning using this budget</h4>
+      <div>
+        <h3>Lead the way to learning that matters</h3>
+        <p>Assign content to people using the available budget to cover the cost of enrollment.</p>
         <Button
+          variant="brand"
           className="mt-3"
           iconBefore={Add}
           as={Link}
@@ -112,7 +125,7 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
             trackEventMetadata,
           )}
         >
-          New course assignment
+          New assignment
         </Button>
       </div>
     </div>

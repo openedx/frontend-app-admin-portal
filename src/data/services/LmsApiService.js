@@ -420,7 +420,12 @@ class LmsApiService {
     return response;
   };
 
-  static fetchEnterpriseGroup = async () => {
+  static fetchEnterpriseGroup = async (groupUuid) => {
+    const groupEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/`;
+    return LmsApiService.apiClient().get(groupEndpoint);
+  };
+
+  static fetchEnterpriseGroups = async () => {
     const url = `${LmsApiService.enterpriseGroupUrl}`;
     return LmsApiService.apiClient().get(url);
   };

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Container, Toast } from '@edx/paragon';
+import { Container, Toast, useToggle } from '@edx/paragon';
 
 import Hero from '../Hero';
 import {
@@ -68,12 +68,20 @@ const BudgetDetailPageWrapper = ({
     closeToastForInvitation,
   } = successfulInvitationToast;
 
+  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
+
   const values = useMemo(() => ({
     successfulAssignmentToast,
     successfulCancellationToast,
     successfulReminderToast,
     successfulInvitationToast,
-  }), [successfulAssignmentToast, successfulCancellationToast, successfulReminderToast, successfulInvitationToast]);
+    inviteModalIsOpen,
+    openInviteModal,
+    closeInviteModal,
+  }), [
+    successfulAssignmentToast, successfulCancellationToast,
+    successfulReminderToast, successfulInvitationToast,
+    inviteModalIsOpen, openInviteModal, closeInviteModal]);
 
   return (
     <BudgetDetailPageContext.Provider value={values}>

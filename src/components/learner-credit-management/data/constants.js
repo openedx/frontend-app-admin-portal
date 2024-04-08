@@ -74,4 +74,5 @@ export const learnerCreditManagementQueryKeys = {
   budgetEnterpriseOffer: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'ecommerce'],
   budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
   budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],
+  group: (groupUuid) => [...learnerCreditManagementQueryKeys.all, 'group', groupUuid],
 };
