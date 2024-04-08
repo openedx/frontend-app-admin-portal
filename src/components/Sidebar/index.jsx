@@ -7,11 +7,11 @@ import { Icon } from '@edx/paragon';
 import {
   BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
 } from '@edx/paragon/icons';
-
-import { logError } from '@edx/frontend-platform/logging';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
-import IconLink from './IconLink';
+import { logError } from '@edx/frontend-platform/logging';
 
+import IconLink from './IconLink';
 import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
@@ -41,8 +41,9 @@ const Sidebar = ({
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
+  const isEdxStaff = getAuthenticatedUser().administrator;
   const [isSubGroup, setIsSubGroup] = useState(false);
-  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup;
+  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup && !isEdxStaff;
 
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
@@ -73,7 +74,7 @@ const Sidebar = ({
         logError(error);
       }
     }
-    if (enterpriseGroupsV1) {
+    if (enterpriseGroupsV1 && !isEdxStaff) {
       fetchGroupsData();
     }
   });
