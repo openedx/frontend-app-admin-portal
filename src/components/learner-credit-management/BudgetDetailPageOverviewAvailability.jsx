@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { generatePath, useParams, Link } from 'react-router-dom';
 import {
-  Button, Col, ProgressBar, Row, Stack,
+  Button, Col, Hyperlink, ProgressBar, Row, Stack,
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';
 import useEnterpriseGroup from './data/hooks/useEnterpriseGroup';
@@ -42,12 +43,15 @@ BudgetDetail.propTypes = {
   limit: PropTypes.number.isRequired,
 };
 
-const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
+const BudgetActions = ({
+  budgetId, isAssignable, enterpriseId, enterpriseGroupsV1,
+}) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const { data: appliesToAllContexts } = useEnterpriseGroup(subsidyAccessPolicy);
   const { openInviteModal } = useContext(BudgetDetailPageContext);
+  const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -68,18 +72,39 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
   }
 
   if (!isAssignable) {
-    if (appliesToAllContexts === true) {
+    if (enterpriseGroupsV1) {
+      if (appliesToAllContexts === true) {
+        return (
+          <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+            <div>
+              <h3>Manage edX for your organization</h3>
+              <p>
+                All people in your organization can choose what to learn
+                from the catalog and spend from the available balance to enroll.
+              </p>
+              <Link to={`/${enterpriseSlug}/admin/settings/access`}>
+                <Button variant="outline-primary">Configure access</Button>
+              </Link>,
+            </div>
+          </div>
+        );
+      }
       return (
         <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
           <div>
-            <h3>Manage edX for your organization</h3>
+            <h3>Drive learner-led enrollments by inviting members</h3>
             <p>
-              All people in your organization can choose what to learn
-              from the catalog and spend from the available balance to enroll.
+              Members of this budget can choose what to learn from the catalog
+              and spend from the available balance to enroll.
             </p>
-            <Link to={`/${enterpriseSlug}/admin/settings/access`}>
-              <Button variant="outline-primary">Configure access</Button>
-            </Link>,
+            <Button
+              variant="brand"
+              onClick={openInviteModal}
+              target="_blank"
+              iconBefore={Add}
+            >
+              New members
+            </Button>
           </div>
         </div>
       );
@@ -87,18 +112,23 @@ const BudgetActions = ({ budgetId, isAssignable, enterpriseId }) => {
     return (
       <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
         <div>
-          <h3>Drive learner-led enrollments by inviting members</h3>
+          <h4>Get people learning using this budget</h4>
           <p>
-            Members of this budget can choose what to learn from the catalog
-            and spend from the available balance to enroll.
+            Funds from this budget are set to auto-allocate to registered learners based on
+            settings configured with your support team.
           </p>
           <Button
-            variant="brand"
-            onClick={openInviteModal}
+            variant="outline-primary"
+            as={Hyperlink}
+            destination={supportUrl}
+            onClick={() => sendEnterpriseTrackEvent(
+              enterpriseId,
+              EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_CONTACT_US,
+              trackEventMetadata,
+            )}
             target="_blank"
-            iconBefore={Add}
           >
-            New members
+            Contact support
           </Button>
         </div>
       </div>
@@ -136,6 +166,7 @@ BudgetActions.propTypes = {
   budgetId: PropTypes.string.isRequired,
   isAssignable: PropTypes.bool.isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseGroupsV1: PropTypes.bool.isRequired,
 };
 
 const BudgetDetailPageOverviewAvailability = ({
@@ -155,6 +186,7 @@ const BudgetDetailPageOverviewAvailability = ({
           budgetId={budgetId}
           isAssignable={isAssignable && enterpriseFeatures.topDownAssignmentRealTimeLcm}
           enterpriseId={enterpriseId}
+          enterpriseGroupsV1={enterpriseFeatures.enterpriseGroupsV1}
         />
       </Col>
     </Row>
@@ -173,6 +205,7 @@ BudgetDetailPageOverviewAvailability.propTypes = {
   isAssignable: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
+    enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
 };

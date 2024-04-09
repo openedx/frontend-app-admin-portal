@@ -12,6 +12,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { getConfig } from '@edx/frontend-platform/config';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import Sidebar from './index';
 import { SubsidyRequestsContext } from '../../components/subsidy-requests';
@@ -111,6 +112,9 @@ describe('<Sidebar />', () => {
   let wrapper;
 
   beforeEach(() => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
     wrapper = mount((
       <SidebarWrapper />
     ));
@@ -430,6 +434,9 @@ describe('<Sidebar />', () => {
   });
 
   it('hides highlights when we have groups with a subset of all learners', async () => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: false,
+    });
     getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: true });
     const store = mockStore({
       ...initialState,

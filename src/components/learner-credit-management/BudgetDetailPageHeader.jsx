@@ -72,6 +72,7 @@ const BudgetDetailPageHeader = ({ enterpriseUUID, enterpriseFeatures }) => {
             policy={subsidyAccessPolicy}
           />
           <BudgetDetailPageOverviewAvailability
+            enterpriseFeatures={enterpriseFeatures}
             budgetId={budgetId}
             budgetTotalSummary={budgetTotalSummary}
             isAssignable={isAssignable}
