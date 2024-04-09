@@ -5,9 +5,13 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlights from '../ContentHighlights';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import LmsApiService from '../../../data/services/LmsApiService';
+
+jest.mock('../../../data/services/LmsApiService');
 
 const mockStore = configureMockStore([thunk]);
 const initialEnterpriseAppContextValue = {
@@ -38,6 +42,11 @@ const ContentHighlightsWrapper = ({
 );
 
 describe('<ContentHighlights>', () => {
+  beforeEach(() => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
+  });
   it('Displays the Hero', () => {
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
     expect(screen.getAllByText('Highlights')[0]).toBeInTheDocument();
@@ -74,5 +83,12 @@ describe('<ContentHighlights>', () => {
       />,
     );
     expect(screen.getByText('Archived courses deleted')).toBeInTheDocument();
+  });
+  it('Displays the alert if custom groups is enabled and user is staff', () => {
+    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
+      data: { results: [{ applies_to_all_contexts: true }] },
+    }));
+    renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
+    screen.debug();
   });
 });
