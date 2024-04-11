@@ -23,14 +23,20 @@ const AnalyticsDetailCard = ({
       </Badge>
       <Stack gap={1} direction="horizontal">
         <p className="card-text text-justify small">
+          {error && (
           <FormattedMessage
-            id="adminPortal.analyticsCardText"
-            defaultMessage={
-              error
-                ? `An error occurred: ${error.message}`
-                : data || 'Analytics not found.'
-            }
+            id="adminPortal.analyticsCardErrorText"
+            defaultMessage="An error occurred: {errorMessage}"
+            values={{ errorMessage: error.message }}
           />
+          )}
+          {!error && !data && (
+          <FormattedMessage
+            id="adminPortal.analyticsCardNotFoundText"
+            defaultMessage="Analytics not found."
+          />
+          )}
+          {data}
         </p>
         <Button variant="link" className="mb-4 ml-3" onClick={onClose}>
           <span className="small font-weight-bold text-gray-800">Dismiss</span>
