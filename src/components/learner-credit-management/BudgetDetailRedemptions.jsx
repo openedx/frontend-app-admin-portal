@@ -35,7 +35,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
   }, [navigate, location, locationState]);
 
   return (
-    <section>
+    <section data-testid="spent-section">
       <h3 className="mb-3" ref={spentHeadingRef}>Spent</h3>
       <p className="small mb-4">
         Spent activity is driven by completed enrollments.{' '}

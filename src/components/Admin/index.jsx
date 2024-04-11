@@ -27,6 +27,7 @@ import EmbeddedSubscription from './EmbeddedSubscription';
 import { withLocation, withParams } from '../../hoc';
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
+import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -308,6 +309,9 @@ class Admin extends React.Component {
           <>
             <Helmet title="Learner Progress Report" />
             <Hero title="Learner Progress Report" />
+            <div className="mt-4">
+              <BudgetExpiryAlertAndModal />
+            </div>
             <div className="container-fluid">
               <div className="row mt-4">
                 <div className="col">
@@ -367,22 +371,21 @@ class Admin extends React.Component {
                         <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
                           {lastUpdatedDate
                             && (
-                            <>
-                              Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                            </>
+                              <>
+                                Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
+                              </>
                             )}
-
                         </div>
                         <div className="col-12 col-md-6 col-xl-8">
                           {this.renderDownloadButton()}
                         </div>
                       </div>
                       {this.displaySearchBar() && (
-                      <AdminSearchForm
-                        searchParams={searchParams}
-                        searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                        tableData={this.getTableData() ? this.getTableData().results : []}
-                      />
+                        <AdminSearchForm
+                          searchParams={searchParams}
+                          searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
+                          tableData={this.getTableData() ? this.getTableData().results : []}
+                        />
                       )}
                     </>
                   )}

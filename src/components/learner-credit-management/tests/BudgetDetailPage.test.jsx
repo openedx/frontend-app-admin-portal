@@ -618,7 +618,7 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.queryByText('Catalog')).not.toBeInTheDocument();
 
     // Spent table and messaging is visible within Activity tab contents
-    const spentSection = within(screen.getByText('Spent').closest('section'));
+    const spentSection = within(screen.getByTestId('spent-section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
     expect(spentSection.getByText('Spent activity is driven by completed enrollments.', { exact: false })).toBeInTheDocument();
     const isSubsidyAccessPolicyWithAnalyicsApi = (

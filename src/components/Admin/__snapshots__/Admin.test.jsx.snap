@@ -21,6 +21,9 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     </div>
   </div>
   <div
+    className="mt-4"
+  />
+  <div
     className="container-fluid"
   >
     <div
@@ -190,6 +193,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
@@ -1060,6 +1066,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
   </div>
   <div
+    className="mt-4"
+  />
+  <div
     className="container-fluid"
   >
     <div
@@ -1928,6 +1937,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
@@ -2798,6 +2810,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     </div>
   </div>
   <div
+    className="mt-4"
+  />
+  <div
     className="container-fluid"
   >
     <div
@@ -3666,6 +3681,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
@@ -4536,6 +4554,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
   </div>
   <div
+    className="mt-4"
+  />
+  <div
     className="container-fluid"
   >
     <div
@@ -5404,6 +5425,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
@@ -6274,6 +6298,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     </div>
   </div>
   <div
+    className="mt-4"
+  />
+  <div
     className="container-fluid"
   >
     <div
@@ -7142,6 +7169,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
@@ -8012,6 +8042,9 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     </div>
   </div>
   <div
+    className="mt-4"
+  />
+  <div
     className="container-fluid"
   >
     <div
@@ -8880,6 +8913,9 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
@@ -9799,6 +9835,9 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     </div>
   </div>
   <div
+    className="mt-4"
+  />
+  <div
     className="container-fluid"
   >
     <div
@@ -9952,6 +9991,9 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
@@ -10167,6 +10209,9 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
       />
     </div>
   </div>
+  <div
+    className="mt-4"
+  />
   <div
     className="container-fluid"
   >
