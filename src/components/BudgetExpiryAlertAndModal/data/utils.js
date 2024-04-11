@@ -13,7 +13,7 @@ export const getExpirationMetadata = (endDateStr) => {
   const thresholdKeys = Object.keys(ExpiryThresholds).sort((a, b) => a - b);
   const thresholdKey = thresholdKeys.find((key) => durationDiff.asDays() <= key);
 
-  if (thresholdKey === undefined) {
+  if (!thresholdKey) {
     return {
       thresholdKey: null,
       threshold: null,
@@ -34,7 +34,7 @@ export const getExpirationMetadata = (endDateStr) => {
 export const isPlanApproachingExpiry = (endDateStr) => {
   const { thresholdKey, threshold } = getExpirationMetadata(endDateStr);
 
-  if (thresholdKey === null) {
+  if (!thresholdKey) {
     return false;
   }
 
