@@ -54,6 +54,8 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
     alertOpen,
     alertClose,
   );
+  const NotificationMessage = notification?.message;
+  const ModalMessage = modal?.message;
 
   const trackEventMetadata = useMemo(() => {
     if (modal === null && notification === null) { return {}; }
@@ -88,7 +90,7 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
           data-testid="expiry-notification-alert"
         >
           <Alert.Heading>{notification.title}</Alert.Heading>
-          <p>{notification.message}</p>
+          <NotificationMessage />
         </Alert>
       )}
 
@@ -116,7 +118,8 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
             </ActionRow>
           )}
         >
-          {modal.message}
+          {/* <ModalMessage contactEmail={getContactEmail(enterpriseCustomer)} */}
+          <ModalMessage />
         </AlertModal>
       )}
     </>
