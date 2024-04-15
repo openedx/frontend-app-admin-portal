@@ -184,14 +184,10 @@ export class BaseCodeAssignmentModal extends React.Component {
     const {
       data: {
         selectedCodes,
-        hasAllCodesSelected,
       },
-      couponDetailsTable: { data: tableData },
     } = this.props;
 
-    const numberOfSelectedCodes = selectedCodes ? selectedCodes.length : 0;
-
-    return hasAllCodesSelected ? tableData.count : numberOfSelectedCodes;
+    return selectedCodes ? selectedCodes.length : 0;
   }
 
   usersEmail(emails) {

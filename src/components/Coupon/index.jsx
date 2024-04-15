@@ -131,7 +131,7 @@ class Coupon extends React.Component {
 
   render() {
     const { isExpanded, dimmed } = this.state;
-    const { data } = this.props;
+    const { data, enterpriseId } = this.props;
 
     return (
       <div
@@ -200,6 +200,7 @@ class Coupon extends React.Component {
           </div>
         </div>
         <CouponDetails
+          enterpriseId={enterpriseId}
           isExpanded={isExpanded}
           couponData={data}
         />
@@ -228,6 +229,7 @@ Coupon.propTypes = {
   isExpanded: PropTypes.bool,
   onExpand: PropTypes.func,
   onCollapse: PropTypes.func,
+  enterpriseId: PropTypes.string.isRequired
 };
 
 export default Coupon;

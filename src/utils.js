@@ -388,6 +388,17 @@ const isDefinedAndNotNull = (value) => {
   return values.every(item => isDefined(item) && !isNull(item));
 };
 
+// TODO: Unit test if we keep this
+const cleanUndefinedKeys = (obj) => {
+  const cleaned = {};
+  Object.keys(obj).forEach(key => {
+    if(obj[key] !== undefined) {
+      cleaned[key] = obj[key];
+    }
+  });
+  return cleaned;
+};
+
 const pollAsync = async (pollFunc, timeout, interval, checkFunc) => {
   const startTime = new Date().getTime();
   while (new Date().getTime() - startTime < timeout) {
@@ -518,4 +529,5 @@ export {
   queryCacheOnErrorHandler,
   makePlural,
   isArchivedContent,
+  cleanUndefinedKeys
 };

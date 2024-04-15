@@ -180,7 +180,7 @@ class ManageCodesTab extends React.Component {
   }
 
   renderCoupons() {
-    const { coupons, location } = this.props;
+    const { coupons, location, enterpriseId } = this.props;
     const queryParams = new URLSearchParams(location.search);
 
     return (
@@ -193,6 +193,7 @@ class ManageCodesTab extends React.Component {
             isExpanded={coupon.id === parseInt(queryParams.get('coupon_id'), 10)}
             onExpand={() => this.handleCouponExpand(index)}
             onCollapse={() => this.handleCouponCollapse()}
+            enterpriseId={enterpriseId}
           />
         ))}
         <div className="d-flex mt-4 justify-content-center">

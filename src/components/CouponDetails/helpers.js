@@ -45,20 +45,3 @@ export const getBASelectOptions = ({
   value: ACTIONS.revoke.value,
   disabled: isAssignView || isRedeemedView || !hasTableData || !couponAvailable || numSelectedCodes === 0, // eslint-disable-line max-len
 }]);
-
-export const shouldShowSelectAllStatusAlert = ({
-  tableData, hasAllCodesSelected, selectedToggle, selectedCodes,
-}) => {
-  if (!tableData || selectedToggle !== COUPON_FILTERS.unassigned.value) {
-    return false;
-  }
-
-  if (hasAllCodesSelected) {
-    return true;
-  }
-
-  return (
-    selectedCodes.length === tableData.results.length
-    && selectedCodes.length !== tableData.count
-  );
-};
