@@ -41,7 +41,9 @@ class LmsApiService {
 
   static enterpriseSsoOrchestrationUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_customer_sso_configuration/`;
 
-  static enterpriseGroupUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
+  static enterpriseGroupUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-group/`;
+
+  static enterpriseGroupListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
 
   static fetchEnterpriseSsoOrchestrationRecord(configurationUuid) {
     const enterpriseSsoOrchestrationFetchUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}${configurationUuid}`;
@@ -421,7 +423,7 @@ class LmsApiService {
   };
 
   static fetchEnterpriseGroup = async (groupUuid) => {
-    const groupEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/`;
+    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().get(groupEndpoint);
   };
 
@@ -431,8 +433,14 @@ class LmsApiService {
   };
 
   static inviteEnterpriseLearnersToGroup = async (groupUuid, formData) => {
-    const assignLearnerEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/assign_learners/`;
+    const assignLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/assign_learners/`;
     return LmsApiService.apiClient().post(assignLearnerEndpoint, formData);
+  };
+
+  static fetchEnterpriseGroupLearners = async (groupUuid, options) => {
+    const queryParams = new URLSearchParams(options);
+    const enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
   };
 }
 

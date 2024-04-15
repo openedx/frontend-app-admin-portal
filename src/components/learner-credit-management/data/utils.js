@@ -102,6 +102,13 @@ export const transformUtilizationTableResults = results => results.map(result =>
   courseKey: result.courseKey,
 }));
 
+export const transformGroupMembersTableResults = results => results.map(result => ({
+  memberDetails: result.memberDetails,
+  status: result.status,
+  recentAction: result.recentAction,
+  memberEnrollments: result.memberEnrollments,
+}));
+
 /**
  * Transforms redemptions data from transaction list API to fields for display in learner credit spent table.
  *
