@@ -11,8 +11,15 @@ import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/
 import LmsApiService from '../../../data/services/LmsApiService';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import { snakeCaseObjectToForm } from '../../../utils';
+import { BUDGET_DETAIL_MEMBERS_TAB } from '../data/constants';
 
-const InviteMembersModalWrapper = ({ isOpen, close }) => {
+const InviteMembersModalWrapper = ({
+  isOpen,
+  close,
+  handleTabSelect,
+  setRefresh,
+  refresh,
+}) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const [learnerEmails, setLearnerEmails] = useState([]);
@@ -55,6 +62,8 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
         displayToastForInvitation({
           totalLearnersInvited,
         });
+        setRefresh(!refresh);
+        handleTabSelect(BUDGET_DETAIL_MEMBERS_TAB);
       } else {
         setInviteButtonState('error');
         openSystemErrorModal();
@@ -118,6 +127,9 @@ const InviteMembersModalWrapper = ({ isOpen, close }) => {
 InviteMembersModalWrapper.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  handleTabSelect: PropTypes.func.isRequired,
+  setRefresh: PropTypes.func.isRequired,
+  refresh: PropTypes.bool.isRequired,
 };
 
 export default InviteMembersModalWrapper;

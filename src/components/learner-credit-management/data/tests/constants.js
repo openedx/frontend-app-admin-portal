@@ -3,11 +3,13 @@ const today = Date.now();
 export const mockEnterpriseOfferId = '123';
 
 export const mockSubsidyAccessPolicyUUID = 'c17de32e-b80b-468f-b994-85e68fd32751';
+export const mockGroupUuid = '81d68e18-2ce0-4080-8141-36679bdaef33';
 
 export const mockAssignableSubsidyAccessPolicy = {
   uuid: mockSubsidyAccessPolicyUUID,
   subsidyActiveDatetime: new Date(today).toISOString(),
   subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [mockGroupUuid],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -27,6 +29,7 @@ export const mockAssignableSubsidyAccessPolicyWithNoUtilization = {
   uuid: mockSubsidyAccessPolicyUUID,
   subsidyActiveDatetime: new Date(today).toISOString(),
   subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -46,6 +49,7 @@ export const mockAssignableSubsidyAccessPolicyWithSpendNoAllocations = {
   uuid: mockSubsidyAccessPolicyUUID,
   subsidyActiveDatetime: new Date(today).toISOString(),
   subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -65,6 +69,7 @@ export const mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed = {
   uuid: mockSubsidyAccessPolicyUUID,
   subsidyActiveDatetime: new Date(today).toISOString(),
   subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
   policyType: 'AssignedLearnerCreditAccessPolicy',
   displayName: 'Assignable Learner Credit',
   spendLimit: 10000 * 100,
@@ -84,6 +89,7 @@ export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
   uuid: mockSubsidyAccessPolicyUUID,
   subsidyActiveDatetime: new Date(today).toISOString(),
   subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: [],
   policyType: 'PerLearnerSpendCreditAccessPolicy',
   displayName: 'Per Learner Spend Limit',
   spendLimit: 10000 * 100,

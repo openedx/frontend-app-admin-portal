@@ -13,3 +13,5 @@ export { default as useSuccessfulCancellationToastContextValue } from './useSucc
 export { default as useSuccessfulReminderToastContextValue } from './useSuccessfulReminderToastContextValue';
 export { default as useEnterpriseOffer } from './useEnterpriseOffer';
 export { default as useAssignmentStatusChip } from './useAssignmentStatusChip';
+export { default as useEnterpriseGroupLearners } from './useEnterpriseGroupLearners';
+export { default as useEnterpriseGroupMembersTableData } from './useEnterpriseGroupMembersTableData';
