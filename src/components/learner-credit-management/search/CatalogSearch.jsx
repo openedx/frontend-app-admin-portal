@@ -17,16 +17,27 @@ const CatalogSearch = () => {
     data: subsidyAccessPolicy,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const searchFilters = `enterprise_catalog_uuids:${ENABLE_TESTING(subsidyAccessPolicy.catalogUuid)} AND content_type:course`;
-  const displayName = subsidyAccessPolicy.displayName ? `${subsidyAccessPolicy.displayName} catalog` : 'Overview';
 
   return (
     <section>
-      <FormattedMessage
-        id="catalogs.enterpriseCatalogs.header"
-        defaultMessage={displayName}
-        description="Search dialogue."
-        tagName="h3"
-      />
+      {(
+        subsidyAccessPolicy.displayName ? (
+          <FormattedMessage
+            id="catalogs.enterpriseCatalogs.header.subsidyAccessPolicyName"
+            defaultMessage="{subsidyAccessPolicyName} catalog"
+            description="Search dialogue message with subsidy access policy name."
+            tagName="h3"
+            values={{ subsidyAccessPolicyName: subsidyAccessPolicy.displayName }}
+          />
+        ) : (
+          <FormattedMessage
+            id="catalogs.enterpriseCatalogs.header"
+            defaultMessage="Overview"
+            description="Search dialogue."
+            tagName="h3"
+          />
+        )
+      )}
       <InstantSearch indexName={configuration.ALGOLIA.INDEX_NAME} searchClient={searchClient}>
         <div className="enterprise-catalogs-header">
           <Configure
