@@ -6,7 +6,7 @@ exports[`LicenseAllocationHeader renders without crashing 1`] = `
 >
   <h4
     style={
-      Object {
+      {
         "display": "inline-block",
       }
     }
