@@ -10,6 +10,7 @@ import {
   useSuccessfulReminderToastContextValue,
 } from './data';
 import useSuccessfulInvitationToastContextValue from './data/hooks/useSuccessfulInvitationToastContextValue';
+import useSuccessfulRemovalToastContextValue from './data/hooks/useSuccessfulRemovalToastContextValue';
 
 const PAGE_TITLE = 'Learner Credit Management';
 
@@ -43,6 +44,7 @@ const BudgetDetailPageWrapper = ({
   const successfulCancellationToast = useSuccessfulCancellationToastContextValue();
   const successfulReminderToast = useSuccessfulReminderToastContextValue();
   const successfulInvitationToast = useSuccessfulInvitationToastContextValue();
+  const successfulRemovalToast = useSuccessfulRemovalToastContextValue();
 
   const {
     isSuccessfulAssignmentAllocationToastOpen,
@@ -68,6 +70,12 @@ const BudgetDetailPageWrapper = ({
     closeToastForInvitation,
   } = successfulInvitationToast;
 
+  const {
+    isSuccessfulRemovalToastOpen,
+    successfulRemovalToastMessage,
+    closeToastForRemoval,
+  } = successfulRemovalToast;
+
   const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
 
   const values = useMemo(() => ({
@@ -75,13 +83,15 @@ const BudgetDetailPageWrapper = ({
     successfulCancellationToast,
     successfulReminderToast,
     successfulInvitationToast,
+    successfulRemovalToast,
     inviteModalIsOpen,
     openInviteModal,
     closeInviteModal,
   }), [
     successfulAssignmentToast, successfulCancellationToast,
     successfulReminderToast, successfulInvitationToast,
-    inviteModalIsOpen, openInviteModal, closeInviteModal]);
+    inviteModalIsOpen, openInviteModal, closeInviteModal,
+    successfulRemovalToast]);
 
   return (
     <BudgetDetailPageContext.Provider value={values}>
@@ -123,6 +133,12 @@ const BudgetDetailPageWrapper = ({
         show={isSuccessfulInvitationToastOpen}
       >
         {successfulInvitationToastMessage}
+      </Toast>
+      <Toast
+        onClose={closeToastForRemoval}
+        show={isSuccessfulRemovalToastOpen}
+      >
+        {successfulRemovalToastMessage}
       </Toast>
     </BudgetDetailPageContext.Provider>
   );

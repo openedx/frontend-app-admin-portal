@@ -1,17 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DataTable } from '@edx/paragon';
-import TableTextFilter from './TableTextFilter';
-import CustomDataTableEmptyState from './CustomDataTableEmptyState';
+import TableTextFilter from '../TableTextFilter';
+import CustomDataTableEmptyState from '../CustomDataTableEmptyState';
 import MemberDetailsTableCell from './MemberDetailsTableCell';
 import MemberStatusTableCell from './MemberStatusTableCell';
 import MemberStatusTableColumnHeader from './MemberStatusTableColumnHeader';
 import MemberEnrollmentsTableColumnHeader from './MemberEnrollmentsTableColumnHeader';
-
-import {
-  MEMBERS_TABLE_PAGE_SIZE,
-  DEFAULT_PAGE,
-} from './data';
+import MembersRemoveAction from './bulk-actions/MemberRemoveAction';
+import { DEFAULT_PAGE, MEMBERS_TABLE_PAGE_SIZE } from '../data';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -19,6 +16,8 @@ const LearnerCreditGroupMembersTable = ({
   isLoading,
   tableData,
   fetchTableData,
+  setRefresh,
+  groupUuid,
 }) => (
   <DataTable
     isSortable
@@ -68,6 +67,12 @@ const LearnerCreditGroupMembersTable = ({
       ],
       filters: [],
     }}
+    bulkActions={[
+      <MembersRemoveAction
+        setRefresh={setRefresh}
+        groupUuid={groupUuid}
+      />,
+    ]}
     fetchData={fetchTableData}
     data={tableData.results}
     itemCount={tableData.itemCount}
@@ -85,6 +90,8 @@ LearnerCreditGroupMembersTable.propTypes = {
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
+  setRefresh: PropTypes.func.isRequired,
+  groupUuid: PropTypes.string.isRequired,
 };
 
 export default LearnerCreditGroupMembersTable;

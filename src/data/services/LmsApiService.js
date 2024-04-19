@@ -442,6 +442,11 @@ class LmsApiService {
     const enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
   };
+
+  static removeEnterpriseLearnersFromGroup = async (groupUuid, formData) => {
+    const removeLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/remove_learners/`;
+    return LmsApiService.apiClient().post(removeLearnerEndpoint, formData);
+  };
 }
 
 export default LmsApiService;

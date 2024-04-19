@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LearnerCreditGroupMembersTable from './LearnerCreditGroupMembersTable';
-import { useEnterpriseGroupMembersTableData, useBudgetId, useSubsidyAccessPolicy } from './data';
+import { useEnterpriseGroupMembersTableData, useBudgetId, useSubsidyAccessPolicy } from '../data';
 
-const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh }) => {
+const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const groupId = subsidyAccessPolicy.groupAssociations[0];
@@ -31,6 +31,8 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh }) => {
         isLoading={isLoading}
         tableData={enterpriseGroupMembersTableData}
         fetchTableData={fetchEnterpriseGroupMembersTableData}
+        setRefresh={setRefresh}
+        groupUuid={subsidyAccessPolicy?.groupAssociations[0]}
       />
     </>
   );
@@ -43,6 +45,7 @@ const mapStateToProps = state => ({
 BudgetDetailMembersTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   refresh: PropTypes.bool.isRequired,
+  setRefresh: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailMembersTabContents);

@@ -33,7 +33,7 @@ const BudgetStatusSubtitle = ({
             key="budget-tooltip"
             placement="top"
             overlay={(
-              <Tooltip>
+              <Tooltip id="budget-status-tooltip">
                 Available to {popoverText}
               </Tooltip>
             )}
