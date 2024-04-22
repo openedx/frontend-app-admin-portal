@@ -41,6 +41,7 @@ const MemberRemoveAction = ({
   const handleRemoveSuccess = () => {
     setRemoveModal(modalZeroState);
     tableInstance.clearSelection();
+    // console.log('totalToRemove ', totalToRemove);
     displayToastForRemoval(totalToRemove);
     setRefresh(true);
   };

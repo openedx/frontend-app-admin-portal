@@ -152,11 +152,6 @@ class LmsApiService {
     return LmsApiService.apiClient().get(providerDataUrl);
   }
 
-  static createProviderData(formData) {
-    const providerDataUrl = `${LmsApiService.providerDataUrl}`;
-    return LmsApiService.apiClient().post(providerDataUrl, formData);
-  }
-
   static deleteProviderData(pdid, uuid) {
     const providerDataUrl = `${LmsApiService.providerDataUrl}${pdid}/?enterprise_customer_uuid=${uuid}`;
     return LmsApiService.apiClient().delete(providerDataUrl);

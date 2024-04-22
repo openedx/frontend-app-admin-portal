@@ -9,7 +9,6 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import { useRequestState } from '../../../subscriptions/licenses/LicenseManagementModals/LicenseManagementModalHook';
 import { configuration } from '../../../../config';
-import { snakeCaseObjectToForm } from '../../../../utils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 /**
@@ -51,11 +50,10 @@ const MemberRemoveModal = ({
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = () => {
       const userEmailsToRemove = usersToRemove.map((user) => user.memberDetails.userEmail);
-      const formData = snakeCaseObjectToForm({
-        learnerEmails: userEmailsToRemove.join(','),
-      });
-      const res = LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, formData);
-      return res;
+      const requestBody = {
+        learner_emails: userEmailsToRemove,
+      };
+      return LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, requestBody);
     };
 
     try {

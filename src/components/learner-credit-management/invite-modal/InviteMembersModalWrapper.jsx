@@ -10,7 +10,6 @@ import InviteModalContent from './InviteModalContent';
 import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
-import { snakeCaseObjectToForm } from '../../../utils';
 import { BUDGET_DETAIL_MEMBERS_TAB } from '../data/constants';
 
 const InviteMembersModalWrapper = ({
@@ -48,14 +47,14 @@ const InviteMembersModalWrapper = ({
 
   const handleInviteMembers = async () => {
     setInviteButtonState('pending');
-    const formData = snakeCaseObjectToForm({
-      learnerEmails: learnerEmails.join(','),
-    });
+    const requestBody = {
+      learner_emails: learnerEmails,
+    };
 
     try {
       if (subsidyAccessPolicy.groupAssociations.length > 0) {
         const groupUuid = subsidyAccessPolicy.groupAssociations[0];
-        const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, formData);
+        const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, requestBody);
         const totalLearnersInvited = response.data.records_processed;
         setInviteButtonState('complete');
         handleCloseInviteModal();
