@@ -309,12 +309,10 @@ class Admin extends React.Component {
           <>
             <Helmet title="Learner Progress Report" />
             <Hero title="Learner Progress Report" />
-            <div className="mt-4">
-              <BudgetExpiryAlertAndModal />
-            </div>
             <div className="container-fluid">
               <div className="row mt-4">
                 <div className="col">
+                  <BudgetExpiryAlertAndModal />
                   <h2>Overview</h2>
                 </div>
               </div>
