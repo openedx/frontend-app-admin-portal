@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Button, Card, Stack, Badge, useToggle,
 } from '@edx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, defineMessages } from '@edx/frontend-platform/i18n';
 import { AutoFixHigh, Groups } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import useAIAnalyticsSummary from '../AIAnalyticsSummary/data/hooks';
@@ -15,33 +15,48 @@ const AnalyticsDetailCard = ({
   isLoading,
   error,
   data,
-}) => (
-  <Card className="mt-3 mb-4" isLoading={isLoading}>
-    <Card.Section>
-      <Badge variant="light" className="mb-3 font-weight-semibold">
-        <FormattedMessage id="adminPortal.analyticsCardBetaButton" defaultMessage="Beta" />
-      </Badge>
-      <Stack gap={1} direction="horizontal">
-        <p className="card-text text-justify small">
-          <FormattedMessage
-            id="adminPortal.analyticsCardText"
-            defaultMessage={
-              error
-                ? `An error occurred: ${error.message}`
-                : data || 'Analytics not found.'
+}) => {
+  const messages = defineMessages({
+    errorMessage: {
+      id: 'adminPortal.analyticsCardText.errorMessage',
+      defaultMessage: 'An error occurred: {error_message}',
+      description: 'Message shown to the user in case of error returned byt analytics API.',
+      values: { error_message: error?.message },
+    },
+    noContentErrorMessage: {
+      id: 'adminPortal.analyticsCardText.noContentErrorMessage',
+      defaultMessage: 'Analytics not found.',
+      description: 'Message shown to the user in case of empty response returned byt analytics API.',
+    },
+  });
+
+  return (
+    <Card className="mt-3 mb-4" isLoading={isLoading}>
+      <Card.Section>
+        <Badge variant="light" className="mb-3 font-weight-semibold">
+          <FormattedMessage id="adminPortal.analyticsCardBetaButton" defaultMessage="Beta" />
+        </Badge>
+        <Stack gap={1} direction="horizontal">
+          <p className="card-text text-justify small">
+            ${
+              error ? (
+                <FormattedMessage {...messages.errorMessage} />
+              ) : (
+                data || <FormattedMessage {...messages.noContentErrorMessage} />
+              )
             }
-          />
-        </p>
-        <Button variant="link" className="mb-4 ml-3" onClick={onClose}>
-          <span className="small font-weight-bold text-gray-800">Dismiss</span>
-        </Button>
-      </Stack>
-      <label className="x-small" htmlFor="poweredBylabel">
-        <FormattedMessage id="adminPortal.analyticsCardPoweredBylabel" defaultMessage="Powered by OpenAI" />
-      </label>
-    </Card.Section>
-  </Card>
-);
+          </p>
+          <Button variant="link" className="mb-4 ml-3" onClick={onClose}>
+            <span className="small font-weight-bold text-gray-800">Dismiss</span>
+          </Button>
+        </Stack>
+        <label className="x-small" htmlFor="poweredBylabel">
+          <FormattedMessage id="adminPortal.analyticsCardPoweredBylabel" defaultMessage="Powered by OpenAI" />
+        </label>
+      </Card.Section>
+    </Card>
+  );
+};
 
 AnalyticsDetailCard.propTypes = {
   onClose: PropTypes.func.isRequired,

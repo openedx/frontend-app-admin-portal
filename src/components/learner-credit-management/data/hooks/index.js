@@ -15,3 +15,5 @@ export { default as useEnterpriseOffer } from './useEnterpriseOffer';
 export { default as useAssignmentStatusChip } from './useAssignmentStatusChip';
 export { default as useEnterpriseGroupLearners } from './useEnterpriseGroupLearners';
 export { default as useEnterpriseGroupMembersTableData } from './useEnterpriseGroupMembersTableData';
+export { default as useEnterpriseCustomer } from './useEnterpriseCustomer';
+export { default as useEnterpriseGroup } from './useEnterpriseGroup';
