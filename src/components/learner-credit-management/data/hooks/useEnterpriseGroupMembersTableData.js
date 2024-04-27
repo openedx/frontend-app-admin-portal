@@ -6,13 +6,11 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import debounce from 'lodash.debounce';
 
-import LmsApiService from '../../../../data/services/LmsApiService';
+import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { transformGroupMembersTableResults } from '../utils';
 
-const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
+const useEnterpriseGroupMembersTableData = ({ policyUuid, groupId, refresh }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [showRemoved, setShowRemoved] = useState(false);
-  const handleSwitchChange = e => setShowRemoved(e.target.checked);
   const [enterpriseGroupMembersTableData, setEnterpriseGroupMembersTableData] = useState({
     itemCount: 0,
     pageCount: 0,
@@ -22,28 +20,30 @@ const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
     const fetch = async () => {
       try {
         setIsLoading(true);
-        const options = {};
-        if (args?.filters.length > 0) {
-          options.user_query = args.filters[0].value;
-        }
+        const options = { group_uuid: groupId };
         if (args?.sortBy.length > 0) {
           const sortByValue = args.sortBy[0].id;
           options.sort_by = _.snakeCase(sortByValue);
           if (!args.sortBy[0].desc) {
-            options.is_reversed = args.sortBy[0].desc;
+            options.is_reversed = !args.sortBy[0].desc;
           }
-        } if (showRemoved) {
-          options.show_removed = true;
         }
+        args.filters.forEach((filter) => {
+          const { id, value } = filter;
+          if (id === 'status') {
+            options.show_removed = value;
+          } else if (id === 'memberDetails') {
+            options.user_query = value;
+          }
+        });
+
         options.page = args.pageIndex + 1;
-        const response = await LmsApiService.fetchEnterpriseGroupLearners(groupId, options);
+        const response = await EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData(policyUuid, options);
         const data = camelCaseObject(response.data);
         const transformedTableResults = transformGroupMembersTableResults(data.results);
 
         setEnterpriseGroupMembersTableData({
           itemCount: data.count,
-          // If the data comes from the subsidy transactions endpoint, the number of pages is calculated
-          // TODO: https://2u-internal.atlassian.net/browse/ENT-8106
           pageCount: data.numPages ?? Math.floor(data.count / options.pageSize),
           results: transformedTableResults,
         });
@@ -53,10 +53,10 @@ const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
         setIsLoading(false);
       }
     };
-    if (groupId) {
+    if (policyUuid) {
       fetch();
     }
-  }, [groupId, showRemoved]);
+  }, [groupId, policyUuid]);
 
   const debouncedFetchEnterpriseGroupMembersData = useMemo(
     () => debounce(fetchEnterpriseGroupMembersData, 300),
@@ -66,8 +66,6 @@ const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
 
   return {
     isLoading,
-    showRemoved,
-    handleSwitchChange,
     enterpriseGroupMembersTableData,
     fetchEnterpriseGroupMembersTableData: debouncedFetchEnterpriseGroupMembersData,
   };

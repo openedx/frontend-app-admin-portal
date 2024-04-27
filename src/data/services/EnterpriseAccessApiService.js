@@ -253,6 +253,12 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/policy-allocation/${subsidyAccessPolicyUUID}/allocate/`;
     return EnterpriseAccessApiService.apiClient().post(url, payload);
   }
+
+  static fetchSubsidyHydratedGroupMembersData(subsidyAccessPolicyUUID, options) {
+    const queryParams = new URLSearchParams(options);
+    const subsidyHydratedGroupLearnersEndpoint = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/group-members?${queryParams.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(subsidyHydratedGroupLearnersEndpoint);
+  }
 }
 
 export default EnterpriseAccessApiService;
