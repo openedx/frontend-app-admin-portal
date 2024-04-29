@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { Container, Toast, useToggle } from '@edx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import Hero from '../Hero';
 import {
@@ -11,8 +12,6 @@ import {
 } from './data';
 import useSuccessfulInvitationToastContextValue from './data/hooks/useSuccessfulInvitationToastContextValue';
 import useSuccessfulRemovalToastContextValue from './data/hooks/useSuccessfulRemovalToastContextValue';
-
-const PAGE_TITLE = 'Learner Credit Management';
 
 export const BudgetDetailPageContext = React.createContext();
 
@@ -35,6 +34,12 @@ const BudgetDetailPageWrapper = ({
   includeHero,
   children,
 }) => {
+  const intl = useIntl();
+  const PAGE_TITLE = intl.formatMessage({
+    id: 'lcm.budget.detail.page.title',
+    defaultMessage: 'Learner Credit Management',
+    description: 'The title of the budget detail page',
+  });
   // display name is an optional field, and may not be set for all budgets so fallback to "Overview"
   // similar to the display name logic for budgets on the overview page route.
   const budgetDisplayName = getBudgetDisplayName({ subsidyAccessPolicy, enterpriseOffer });

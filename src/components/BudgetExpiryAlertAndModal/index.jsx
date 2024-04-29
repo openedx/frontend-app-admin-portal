@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { matchPath, useLocation } from 'react-router-dom';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 import { configuration } from '../../config';
 import EVENT_NAMES from '../../eventTracking';
@@ -80,7 +81,11 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
               )}
               className="flex-shrink-0"
             >
-              Contact support
+              <FormattedMessage
+                id="lcm.budget.detail.page.expiry.alert.contact.support"
+                defaultMessage="Contact support"
+                description="Expire budget alert Contact support button text"
+              />
             </Button>,
           ]}
           dismissible={notification.dismissible}
@@ -100,7 +105,13 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
           onClose={dismissModal}
           footerNode={(
             <ActionRow>
-              <Button variant="tertiary" onClick={dismissModal}>Dismiss</Button>
+              <Button variant="tertiary" onClick={dismissModal}>
+                <FormattedMessage
+                  id="lcm.budget.detail.page.expiry.modal.dismiss"
+                  defaultMessage="Dismiss"
+                  description="Alert modal Dismiss button text"
+                />
+              </Button>
               <Button
                 variant="primary"
                 as={Hyperlink}
@@ -111,7 +122,11 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
                   trackEventMetadata,
                 )}
               >
-                Contact support
+                <FormattedMessage
+                  id="lcm.budget.detail.page.expiry.modal.contact.support"
+                  defaultMessage="Contact support"
+                  description="Expire budget modal Contact support button text"
+                />
               </Button>
             </ActionRow>
           )}

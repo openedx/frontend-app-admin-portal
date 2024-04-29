@@ -10,6 +10,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import { Routes, Route, MemoryRouter } from 'react-router-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import SubscriptionTabs from '../SubscriptionTabs';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
@@ -59,20 +60,22 @@ const SubscriptionTabsWrapper = ({
     [subsidyRequestConfiguration, subsidyRequestsCounts],
   );
   return (
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[route]}>
-        <Routes>
-          <Route
-            path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab"
-            element={(
-              <SubsidyRequestsContext.Provider value={value}>
-                <SubscriptionTabs />
-              </SubsidyRequestsContext.Provider>
+    <IntlProvider locale="en">
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[route]}>
+          <Routes>
+            <Route
+              path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab"
+              element={(
+                <SubsidyRequestsContext.Provider value={value}>
+                  <SubscriptionTabs />
+                </SubsidyRequestsContext.Provider>
             )}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+            />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    </IntlProvider>
   );
 };
 
