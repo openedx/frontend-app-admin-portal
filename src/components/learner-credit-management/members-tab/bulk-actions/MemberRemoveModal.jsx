@@ -49,7 +49,7 @@ const MemberRemoveModal = ({
   const handleSubmit = useCallback(async () => {
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = () => {
-      const userEmailsToRemove = usersToRemove.map((user) => user.memberDetails.userEmail);
+      const userEmailsToRemove = usersToRemove.map((user) => user.original.memberDetails.userEmail);
       const requestBody = {
         learner_emails: userEmailsToRemove,
       };

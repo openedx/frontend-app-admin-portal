@@ -1,7 +1,5 @@
 import {
-  useCallback,
-  useMemo,
-  useState,
+  useCallback, useMemo, useState,
 } from 'react';
 import _ from 'lodash';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
@@ -13,6 +11,8 @@ import { transformGroupMembersTableResults } from '../utils';
 
 const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showRemoved, setShowRemoved] = useState(false);
+  const handleSwitchChange = e => setShowRemoved(e.target.checked);
   const [enterpriseGroupMembersTableData, setEnterpriseGroupMembersTableData] = useState({
     itemCount: 0,
     pageCount: 0,
@@ -32,6 +32,8 @@ const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
           if (!args.sortBy[0].desc) {
             options.is_reversed = args.sortBy[0].desc;
           }
+        } if (showRemoved) {
+          options.show_removed = true;
         }
         options.page = args.pageIndex + 1;
         const response = await LmsApiService.fetchEnterpriseGroupLearners(groupId, options);
@@ -54,7 +56,7 @@ const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
     if (groupId) {
       fetch();
     }
-  }, [groupId]);
+  }, [groupId, showRemoved]);
 
   const debouncedFetchEnterpriseGroupMembersData = useMemo(
     () => debounce(fetchEnterpriseGroupMembersData, 300),
@@ -64,6 +66,8 @@ const useEnterpriseGroupMembersTableData = ({ groupId, refresh }) => {
 
   return {
     isLoading,
+    showRemoved,
+    handleSwitchChange,
     enterpriseGroupMembersTableData,
     fetchEnterpriseGroupMembersTableData: debouncedFetchEnterpriseGroupMembersData,
   };

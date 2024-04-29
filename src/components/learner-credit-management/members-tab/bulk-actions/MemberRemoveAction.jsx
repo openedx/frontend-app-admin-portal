@@ -1,50 +1,21 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@edx/paragon';
 import { RemoveCircle } from '@edx/paragon/icons';
-
-import {
-  useLicenseManagementModalState,
-  licenseManagementModalZeroState as modalZeroState,
-} from '../../../subscriptions/licenses/LicenseManagementModals/LicenseManagementModalHook';
 import MemberRemoveModal from './MemberRemoveModal';
-import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
+import useRemoveMember from '../../data/hooks/useRemoveMember';
 
 const MemberRemoveAction = ({
   selectedFlatRows,
   isEntireTableSelected,
   tableInstance,
+  refresh,
   setRefresh,
   groupUuid,
 }) => {
-  const [removeModal, setRemoveModal] = useLicenseManagementModalState();
-  const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
-  const tableItemCount = tableInstance.itemCount;
-
-  const totalToRemove = isEntireTableSelected ? tableItemCount : selectedRows.length;
   const {
-    successfulRemovalToast: { displayToastForRemoval },
-  } = useContext(BudgetDetailPageContext);
-
-  const handleRemoveClick = () => {
-    setRemoveModal({
-      isOpen: true,
-      users: selectedRows,
-      allUsersSelected: isEntireTableSelected,
-    });
-  };
-
-  const handleRemoveCancel = () => {
-    setRemoveModal(modalZeroState);
-  };
-
-  const handleRemoveSuccess = () => {
-    setRemoveModal(modalZeroState);
-    tableInstance.clearSelection();
-    // console.log('totalToRemove ', totalToRemove);
-    displayToastForRemoval(totalToRemove);
-    setRefresh(true);
-  };
+    totalToRemove, removeModal, handleRemoveClick, handleRemoveCancel, handleRemoveSuccess,
+  } = useRemoveMember(selectedFlatRows, isEntireTableSelected, tableInstance, refresh, setRefresh);
 
   return (
     <>
@@ -69,16 +40,6 @@ const MemberRemoveAction = ({
   );
 };
 
-MemberRemoveAction.defaultProps = {
-  selectedFlatRows: [],
-  tableInstance: {
-    itemCount: 0,
-    columns: [],
-    clearSelection: () => {},
-  },
-  isEntireTableSelected: false,
-};
-
 MemberRemoveAction.propTypes = {
   selectedFlatRows: PropTypes.arrayOf(
     PropTypes.shape({ original: PropTypes.shape() }),
@@ -89,6 +50,7 @@ MemberRemoveAction.propTypes = {
     clearSelection: PropTypes.func.isRequired,
   }),
   isEntireTableSelected: PropTypes.bool,
+  refresh: PropTypes.bool.isRequired,
   setRefresh: PropTypes.func.isRequired,
   groupUuid: PropTypes.string.isRequired,
 };

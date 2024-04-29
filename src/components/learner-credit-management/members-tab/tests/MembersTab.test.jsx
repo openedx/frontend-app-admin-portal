@@ -413,8 +413,7 @@ describe('<BudgetDetailPage />', () => {
     userEvent.click(modalRemoveButton);
     expect(mockRemoveSpy).toHaveBeenCalled();
     await waitForElementToBeRemoved(() => screen.queryByText('Removing (1)'));
-    await waitFor(() => expect(screen.queryByText('undefined member successfully removed')).toBeInTheDocument());
-    // await waitFor(() => expect(screen.queryByText('1 member successfully removed')).toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText('1 member successfully removed')).toBeInTheDocument());
   });
   it('remove learner flow for multiple users', async () => {
     const initialState = {
@@ -487,15 +486,82 @@ describe('<BudgetDetailPage />', () => {
     const removeButton = screen.queryByText('Remove (2)');
     expect(removeButton).toBeInTheDocument();
     userEvent.click(removeButton);
-    screen.debug(undefined, 100000);
 
     expect(screen.queryByText('Remove members?')).toBeInTheDocument();
     const modalRemoveButton = screen.getByTestId('modal-remove-button');
     userEvent.click(modalRemoveButton);
     expect(mockRemoveSpy).toHaveBeenCalled();
     await waitForElementToBeRemoved(() => screen.queryByText('Removing (2)'));
-    await waitFor(() => expect(screen.queryByText('undefined member successfully removed')).toBeInTheDocument());
-    // await waitFor(() => expect(screen.queryByText('1 member successfully removed')).toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText('2 members successfully removed')).toBeInTheDocument());
+  });
+  it('remove learner flow with the kabob menu', async () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      activeTabKey: 'members',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+        },
+      },
+    });
+    useEnterpriseGroupMembersTableData.mockReturnValue({
+      isLoading: false,
+      enterpriseGroupMembersTableData: {
+        itemCount: 2,
+        pageCount: 1,
+        results: [{
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+          status: 'pending',
+          recentAction: 'Pending: April 02, 2024',
+          memberEnrollments: 0,
+        }],
+      },
+      fetchEnterpriseGroupMembersTableData: jest.fn(),
+    });
+    const mockRemoveSpy = jest.spyOn(LmsApiService, 'removeEnterpriseLearnersFromGroup');
+    LmsApiService.removeEnterpriseLearnersFromGroup.mockResolvedValue({ status: 200 });
+
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    const kabobMenu = screen.queryByTestId('kabob-menu-dropdown');
+    userEvent.click(kabobMenu);
+    const removeDropdownOption = screen.queryByText('Remove member');
+    userEvent.click(removeDropdownOption);
+
+    await waitFor(() => expect(screen.queryByText('Remove member?')).toBeInTheDocument());
+    const modalRemoveButton = screen.getByTestId('modal-remove-button');
+    userEvent.click(modalRemoveButton);
+    expect(mockRemoveSpy).toHaveBeenCalled();
+    await waitFor(() => expect(screen.queryByText('1 member successfully removed')).toBeInTheDocument());
   });
   it('error in remove learner flow', async () => {
     const initialState = {
@@ -566,5 +632,81 @@ describe('<BudgetDetailPage />', () => {
     userEvent.click(modalRemoveButton);
     await waitForElementToBeRemoved(() => screen.queryByText('Removing (1)'));
     await waitFor(() => expect(screen.queryByText('There was an error with your request. Please try again.')).toBeInTheDocument());
+  });
+  it('Remove toggle shows removed members', async () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      activeTabKey: 'members',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValueOnce({
+      data: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [
+          {
+            enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+            learnerId: 4382,
+            memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+            status: 'pending',
+          },
+          {
+            enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7d',
+            learnerId: 4382,
+            memberDetails: { userEmail: 'tammy2@example.com', userName: 'tammy 2' },
+            status: 'removed',
+          },
+        ],
+      },
+    });
+    useEnterpriseGroupMembersTableData.mockReturnValue({
+      isLoading: false,
+      showRemoved: true,
+      enterpriseGroupMembersTableData: {
+        itemCount: 2,
+        pageCount: 1,
+        results: [{
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+          status: 'pending',
+          recentAction: 'Pending: April 02, 2024',
+          memberEnrollments: 0,
+        }, {
+          memberDetails: { userEmail: 'tammy2@example.com', userName: 'tammy 2' },
+          status: 'removed',
+          recentAction: 'Removed: April 02, 2024',
+          memberEnrollments: 0,
+        }],
+      },
+      fetchEnterpriseGroupMembersTableData: jest.fn(),
+    });
+    // when we pass in showRemoved=true, we should see removed members
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    const removeToggle = screen.getByTestId('show-removed-toggle');
+    expect(removeToggle).toHaveAttribute('checked', '');
+    expect(screen.queryByText('Former member')).toBeInTheDocument();
+    expect(screen.queryByText('tammy2@example.com')).toBeInTheDocument();
   });
 });

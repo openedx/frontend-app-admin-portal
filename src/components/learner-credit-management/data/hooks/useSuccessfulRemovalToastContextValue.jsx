@@ -12,7 +12,6 @@ const useSuccessfulRemovalToastContextValue = () => {
   const successfulRemovalToastMessage = generateSuccessRemoveMessage(learnersRemovedCount);
 
   const handleDisplayToast = useCallback(({ totalLearnersRemoved }) => {
-    // console.log('totalLearnersRemoved ', totalLearnersRemoved);
     setLearnersRemovedCount(totalLearnersRemoved);
     setIsToastOpen(true);
   }, []);
