@@ -331,6 +331,11 @@ class LmsApiService {
     return LmsApiService.apiClient().patch(url, options);
   }
 
+  static async fetchEnterpriseCustomer(enterpriseUUID) {
+    const url = `${LmsApiService.enterpriseCustomerUrl}${enterpriseUUID}/`;
+    return LmsApiService.apiClient().get(url);
+  }
+
   static updateEnterpriseCustomerBranding(enterpriseUUID, options) {
     const url = `${LmsApiService.enterpriseCustomerBrandingUrl}${enterpriseUUID}/`;
     return LmsApiService.apiClient().patch(url, options);

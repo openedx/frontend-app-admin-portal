@@ -10,11 +10,17 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
-import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from './data';
-import useEnterpriseGroup from './data/hooks/useEnterpriseGroup';
+import {
+  formatPrice,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+  useEnterpriseCustomer,
+  useEnterpriseGroup,
+} from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import isLmsBudget from './utils';
 
 const BudgetDetail = ({
   available, utilized, limit, status,
@@ -72,6 +78,7 @@ const BudgetActions = ({
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const { data: appliesToAllContexts } = useEnterpriseGroup(subsidyAccessPolicy);
+  const { data: enterpriseCustomer } = useEnterpriseCustomer(enterpriseId);
   const { openInviteModal } = useContext(BudgetDetailPageContext);
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
@@ -121,21 +128,34 @@ const BudgetActions = ({
 
   if (!isAssignable) {
     if (enterpriseGroupsV1) {
-      if (appliesToAllContexts === true) {
+      if (isLmsBudget(enterpriseCustomer?.activeIntegrations.length, appliesToAllContexts)) {
         return (
           <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
             <div>
-              <h3>Manage edX for your organization</h3>
+              <h3>Manage edX in your integrated learning platform</h3>
               <p>
-                All people in your organization can choose what to learn
-                from the catalog and spend from the available balance to enroll.
+                People who have received access to discover edX content in your integrated
+                learning platform can spend from this budget&apos;s available balance to enroll.
               </p>
-              <Link to={`/${enterpriseSlug}/admin/settings/access`}>
+              <Link to={`/${enterpriseSlug}/admin/settings/lms`}>
                 <Button variant="outline-primary">Configure access</Button>
-              </Link>,
+              </Link>
             </div>
           </div>
         );
+      } if (appliesToAllContexts === true) {
+        <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+          <div>
+            <h3>Manage edX for your organization</h3>
+            <p>
+              All people in your organization can choose what to learn
+              from the catalog and spend from the available balance to enroll.
+            </p>
+            <Link to={`/${enterpriseSlug}/admin/settings/access`}>
+              <Button variant="outline-primary">Configure access</Button>
+            </Link>,
+          </div>
+        </div>;
       }
       return (
         <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
