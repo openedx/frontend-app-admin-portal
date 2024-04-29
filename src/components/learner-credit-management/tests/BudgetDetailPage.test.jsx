@@ -29,6 +29,8 @@ import {
   formatPrice,
   DEFAULT_PAGE,
   PAGE_SIZE,
+  useEnterpriseGroup,
+  useEnterpriseCustomer,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
@@ -66,6 +68,8 @@ jest.mock('../data', () => ({
   useBudgetDetailActivityOverview: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useCancelContentAssignments: jest.fn(),
+  useEnterpriseGroup: jest.fn(),
+  useEnterpriseCustomer: jest.fn(),
 }));
 
 jest.mock('../../../data/services/EnterpriseAccessApiService');
@@ -214,6 +218,22 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       data: {},
     });
+
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: true,
+        enterpriseCustomer: 'test-customer-uuid',
+        name: 'test-name',
+        uuid: 'test-uuid',
+      },
+    });
+
+    useEnterpriseCustomer.mockReturnValue({
+      data: {
+        uuid: 'test-customer-uuid',
+        activeIntegrations: ['BLACKBOARD'],
+      },
+    });
   });
 
   it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
@@ -263,7 +283,6 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
     });
-
     const expectedDisplayName = displayName || 'Overview';
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -426,7 +445,6 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
-
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     if (isLoading) {
@@ -2320,5 +2338,62 @@ describe('<BudgetDetailPage />', () => {
       () => expect(screen.getByText('Reminder sent')).toBeInTheDocument(),
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+  it('displays the custom integrated channel budget card', () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: true,
+      data: undefined,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
+        },
+      },
+    });
+    renderWithRouter(
+      <BudgetDetailPageWrapper
+        initialState={initialState}
+      />,
+    );
+    expect(screen.getByText('• Enroll via Integrated Learning Platform')).toBeInTheDocument();
+    expect(screen.getByText('Manage edX in your integrated learning platform')).toBeInTheDocument();
   });
 });

@@ -69,6 +69,7 @@ const BudgetOverviewContent = ({
           term={term}
           date={date}
           policy={subsidyAccessPolicy}
+          enterpriseUUID={enterpriseUUID}
         />
         <BudgetDetailPageOverviewAvailability
           budgetId={budgetId}
