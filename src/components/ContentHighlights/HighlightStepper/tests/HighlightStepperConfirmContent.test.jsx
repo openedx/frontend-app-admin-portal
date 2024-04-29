@@ -6,6 +6,7 @@ import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import HighlightStepperConfirmContent, { BaseReviewContentSelections, SelectedContent } from '../HighlightStepperConfirmContent';
 import {
   DEFAULT_ERROR_MESSAGE,
@@ -42,11 +43,13 @@ const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds
     searchClient,
   });
   return (
-    <Provider store={mockStore(initialState)}>
-      <ContentHighlightsContext.Provider value={contextValue}>
-        {children}
-      </ContentHighlightsContext.Provider>
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={mockStore(initialState)}>
+        <ContentHighlightsContext.Provider value={contextValue}>
+          {children}
+        </ContentHighlightsContext.Provider>
+      </Provider>
+    </IntlProvider>
   );
 };
 

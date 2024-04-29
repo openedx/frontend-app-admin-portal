@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import {
   Alert, Button, Row, Col,
 } from '@edx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Info, Add } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useContextSelector } from 'use-context-selector';
-import { ALERT_TEXT, BUTTON_TEXT } from '../data/constants';
+import { BUTTON_TEXT } from '../data/constants';
 import { useContentHighlightsContext } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
@@ -47,10 +48,18 @@ const ContentHighlightCatalogVisibilityAlert = () => {
             icon={Info}
           >
             <Alert.Heading>
-              {ALERT_TEXT.HEADER_TEXT.catalogVisibilityAPI}
+              <FormattedMessage
+                id="highlights.catalog.visibility.tab.catalog.visibility.not.updated.alert.error.header.title"
+                defaultMessage="Catalog visibility not updated"
+                description="Header title for error alert shown to admin when catalog visibility failed to update."
+              />
             </Alert.Heading>
             <p>
-              {ALERT_TEXT.SUB_TEXT.catalogVisibilityAPI}
+              <FormattedMessage
+                id="highlights.catalog.visibility.tab.catalog.visibility.not.updated.alert.error.detail.message"
+                defaultMessage="Something went wrong when updating your setting. Please try again."
+                description="Detail message for error alert shown to admin when catalog visibility failed to update."
+              />
             </p>
           </Alert>
         </Col>
@@ -74,15 +83,27 @@ const ContentHighlightCatalogVisibilityAlert = () => {
               data-testid={`catalog-visibility-alert-${BUTTON_TEXT.catalogVisibility}`}
               iconBefore={Add}
             >
-              {BUTTON_TEXT.catalogVisibility}
+              <FormattedMessage
+                id="highlights.catalog.visibility.tab.create.new.highlight.button.text"
+                defaultMessage="New highlight"
+                description="Button text shown to admin to create a new highlight."
+              />
             </Button>,
           ]}
         >
           <Alert.Heading>
-            {ALERT_TEXT.HEADER_TEXT.catalogVisibility}
+            <FormattedMessage
+              id="highlights.catalog.visibility.tab.create.new.highlight.alert.header.text"
+              defaultMessage="No highlights created"
+              description="Header text for alert shown to admin when no highlights are created."
+            />
           </Alert.Heading>
           <p>
-            {ALERT_TEXT.SUB_TEXT.catalogVisibility}
+            <FormattedMessage
+              id="highlights.catalog.visibility.tab.create.new.highlight.alert.header.detail.text"
+              defaultMessage="At least one highlight has to be created to make a selection"
+              description="Detail text for alert shown to admin when no highlights are created."
+            />
           </p>
         </Alert>
       </Col>

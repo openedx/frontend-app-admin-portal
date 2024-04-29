@@ -1,12 +1,13 @@
 import {
   Form, Container, Spinner,
 } from '@edx/paragon';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { useState, useContext, useEffect } from 'react';
 import { ActionRowSpacer } from '@edx/paragon/dist/ActionRow';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ALERT_TEXT, BUTTON_TEXT, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../data/constants';
+import { LEARNER_PORTAL_CATALOG_VISIBILITY } from '../data/constants';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../../EnterpriseApp/data/enterpriseCurationReducer';
 import EVENT_NAMES from '../../../eventTracking';
@@ -27,6 +28,7 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
   const location = useLocation();
   const [isEntireCatalogSelectionLoading, setIsEntireCatalogSelectionLoading] = useState(false);
   const [isHighlightsCatalogSelectionLoading, setIsHighlightsCatalogSelectionLoading] = useState(false);
+  const intl = useIntl();
 
   /**
    * Sets enterpriseCuration.canOnlyViewHighlightSets to false if there are no highlight sets
@@ -83,7 +85,15 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
           isOpen: false,
         });
         setValue(newTabValue);
-        dispatch(enterpriseCurationActions.setHighlightToast(ALERT_TEXT.TOAST_TEXT.catalogVisibility));
+        dispatch(
+          enterpriseCurationActions.setHighlightToast(
+            intl.formatMessage({
+              id: 'highlights.catalog.visibility.tab.visibility.updated.toast.message',
+              defaultMessage: 'Catalog visibility settings updated.',
+              description: 'Toast message shown to admin when catalog visibility settings are updated.',
+            }),
+          ),
+        );
         navigate(location.pathname, {
           state: { highlightToast: true },
         });
@@ -133,7 +143,11 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
               disabled={radioGroupVisibility || isEntireCatalogSelectionLoading || isHighlightsCatalogSelectionLoading}
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control-button`}
             >
-              {BUTTON_TEXT.catalogVisibilityRadio1}
+              <FormattedMessage
+                id="highlights.catalog.visibility.tab.visibility.option.all.courses.in.catalog"
+                defaultMessage="Learners can view and enroll into all courses in your catalog"
+                description="Option to allow learners to view and enroll into all courses in your catalog"
+              />
             </Form.Radio>
           </div>
           <div className="d-flex align-items-center position-relative">
@@ -158,7 +172,11 @@ const ContentHighlightCatalogVisibilityRadioInput = () => {
               disabled={radioGroupVisibility || isEntireCatalogSelectionLoading || isHighlightsCatalogSelectionLoading}
               data-testid={`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control-button`}
             >
-              {BUTTON_TEXT.catalogVisibilityRadio2}
+              <FormattedMessage
+                id="highlights.catalog.visibility.tab.visibility.option.highlighted.courses.only"
+                defaultMessage="Learners can only view and enroll into highlighted courses"
+                description="Option to allow learners to view and enroll into highlighted courses only"
+              />
             </Form.Radio>
           </div>
         </Form.RadioSet>
