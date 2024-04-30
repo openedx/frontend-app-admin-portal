@@ -18,7 +18,6 @@ import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextPr
 import {
   BUTTON_TEXT,
   MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
-  ALERT_TEXT,
   STEPPER_STEP_TEXT,
   NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME,
 } from '../data/constants';
@@ -157,8 +156,8 @@ describe('<ContentHighlightSetCard>', () => {
   it('renders correct text when less then max curations', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText(BUTTON_TEXT.createNewHighlight)).toBeInTheDocument();
-    expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument();
-    expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
+    expect(screen.queryByText('Highlight limit reached')).not.toBeInTheDocument();
+    expect(screen.queryByText('Delete at least one highlight to create a new one.')).not.toBeInTheDocument();
   });
   it('renders correct text when more than or equal to max curations', async () => {
     const updatedEnterpriseAppContextValue = {
@@ -181,16 +180,16 @@ describe('<ContentHighlightSetCard>', () => {
     userEvent.click(createNewHighlightButton);
     // Verify Alert
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
-    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.currentContent)).toBeInTheDocument();
-    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.currentContent)).toBeInTheDocument();
+    expect(screen.getByText('Highlight limit reached')).toBeInTheDocument();
+    expect(screen.getByText('Delete at least one highlight to create a new one.')).toBeInTheDocument();
 
     const dismissButton = screen.getByText('Dismiss');
     expect(dismissButton).toBeInTheDocument();
     // Trigger Dismiss
     userEvent.click(dismissButton);
     // Verify Dismiss
-    await waitFor(() => { expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.currentContent)).not.toBeInTheDocument(); });
-    expect(screen.queryByText(ALERT_TEXT.SUB_TEXT.currentContent)).not.toBeInTheDocument();
+    await waitFor(() => { expect(screen.queryByText('Highlight limit reached')).not.toBeInTheDocument(); });
+    expect(screen.queryByText('Delete at least one highlight to create a new one.')).not.toBeInTheDocument();
   });
   it('does not render archived course alert', () => {
     renderWithRouter(

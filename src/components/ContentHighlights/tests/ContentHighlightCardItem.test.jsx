@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
@@ -24,9 +25,11 @@ const initialState = {
 };
 
 const ContentHighlightCardItemContainerWrapper = (props) => (
-  <Provider store={mockStore(initialState)}>
-    <ContentHighlightCardItem {...props} />
-  </Provider>
+  <IntlProvider locale="en">
+    <Provider store={mockStore(initialState)}>
+      <ContentHighlightCardItem {...props} />
+    </Provider>
+  </IntlProvider>
 );
 
 describe('<ContentHighlightCardItem>', () => {
