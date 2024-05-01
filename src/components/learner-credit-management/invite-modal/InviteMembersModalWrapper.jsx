@@ -4,13 +4,13 @@ import {
   ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 import InviteModalContent from './InviteModalContent';
 import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
-import { snakeCaseObjectToForm } from '../../../utils';
 import { BUDGET_DETAIL_MEMBERS_TAB } from '../data/constants';
 
 const InviteMembersModalWrapper = ({
@@ -48,14 +48,16 @@ const InviteMembersModalWrapper = ({
 
   const handleInviteMembers = async () => {
     setInviteButtonState('pending');
-    const formData = snakeCaseObjectToForm({
-      learnerEmails: learnerEmails.join(','),
+    const requestBody = snakeCaseObject({
+      learnerEmails,
+      catalogUuid: subsidyAccessPolicy.catalogUuid,
+      actByDate: subsidyAccessPolicy.subsidyExpirationDatetime,
     });
 
     try {
       if (subsidyAccessPolicy.groupAssociations.length > 0) {
         const groupUuid = subsidyAccessPolicy.groupAssociations[0];
-        const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, formData);
+        const response = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, requestBody);
         const totalLearnersInvited = response.data.records_processed;
         setInviteButtonState('complete');
         handleCloseInviteModal();
