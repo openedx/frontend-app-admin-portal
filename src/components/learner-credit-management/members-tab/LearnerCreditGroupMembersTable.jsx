@@ -17,7 +17,7 @@ import useRemoveMember from '../data/hooks/useRemoveMember';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
-const KebabMenu = ({
+const KabobMenu = ({
   row, groupUuid, refresh, setRefresh,
 }) => {
   const {
@@ -125,7 +125,7 @@ const LearnerCreditGroupMembersTable = ({
         Header: '',
         // eslint-disable-next-line react/no-unstable-nested-components
         Cell: (props) => (
-          <KebabMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
+          <KabobMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
         ),
       },
     ]}
@@ -137,7 +137,7 @@ const LearnerCreditGroupMembersTable = ({
   />
 );
 
-KebabMenu.propTypes = {
+KabobMenu.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
       status: PropTypes.string.isRequired,
