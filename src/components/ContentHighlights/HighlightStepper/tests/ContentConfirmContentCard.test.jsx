@@ -65,8 +65,8 @@ const ContentHighlightContentCardWrapper = ({
         <ContentHighlightsContext.Provider value={contextValue}>
           {testCourseData.map((original) => (
             <ContentConfirmContentCard
-            original={original}
-            key={original.aggregationKey}
+              original={original}
+              key={original.aggregationKey}
             />
           ))}
         </ContentHighlightsContext.Provider>

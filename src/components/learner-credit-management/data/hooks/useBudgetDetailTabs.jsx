@@ -15,6 +15,7 @@ export const useBudgetDetailTabs = ({
   isBudgetAssignable,
   enterpriseGroupLearners,
   refreshMembersTab,
+  setRefreshMembersTab,
   enterpriseFeatures,
   ActivityTabElement,
   CatalogTabElement,
@@ -58,7 +59,10 @@ export const useBudgetDetailTabs = ({
           className={TAB_CLASS_NAME}
         >
           {activeTabKey === BUDGET_DETAIL_MEMBERS_TAB && (
-            <MembersTabElement refresh={refreshMembersTab} />
+            <MembersTabElement
+              refresh={refreshMembersTab}
+              setRefresh={setRefreshMembersTab}
+            />
           )}
         </Tab>,
       );
@@ -74,6 +78,7 @@ export const useBudgetDetailTabs = ({
     isBudgetAssignable,
     enterpriseGroupLearners,
     refreshMembersTab,
+    setRefreshMembersTab,
   ]);
 
   return tabs;

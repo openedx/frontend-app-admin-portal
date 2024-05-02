@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  IconButton,
-  Stack,
-  Icon,
+  Icon, IconButton, Stack,
 } from '@edx/paragon';
 import {
   Person,
@@ -26,8 +24,8 @@ const MemberDetailsTableCell = ({
   if (row.original.status === 'removed') {
     memberDetails = (
       <div className="mb-n3">
-        <p className="text-danger-900 font-weight-bold text-uppercase x-small mb-0">
-          FORMER MEMBER
+        <p className="text-danger-500 font-weight-bold text-uppercase x-small mb-0">
+          Former member
         </p>
         <p>{row.original.memberDetails.userEmail}</p>
       </div>

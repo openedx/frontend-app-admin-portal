@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import LearnerCreditGroupMembersTable from './LearnerCreditGroupMembersTable';
-import { useEnterpriseGroupMembersTableData, useBudgetId, useSubsidyAccessPolicy } from './data';
+import { Form } from '@edx/paragon';
 
-const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh }) => {
+import LearnerCreditGroupMembersTable from './LearnerCreditGroupMembersTable';
+import { useEnterpriseGroupMembersTableData, useBudgetId, useSubsidyAccessPolicy } from '../data';
+
+const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const groupId = subsidyAccessPolicy.groupAssociations[0];
   const {
     isLoading,
+    showRemoved,
+    handleSwitchChange,
     enterpriseGroupMembersTableData,
     fetchEnterpriseGroupMembersTableData,
   } = useEnterpriseGroupMembersTableData({
@@ -27,10 +31,21 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh }) => {
           Members choose what to learn from the catalog and spend from the budget to enroll.
         </p>
       </div>
+      <Form.Switch
+        className="ml-2.5"
+        checked={showRemoved}
+        onChange={handleSwitchChange}
+        data-testid="show-removed-toggle"
+      >
+        Show removed
+      </Form.Switch>
       <LearnerCreditGroupMembersTable
         isLoading={isLoading}
         tableData={enterpriseGroupMembersTableData}
         fetchTableData={fetchEnterpriseGroupMembersTableData}
+        refresh={refresh}
+        setRefresh={setRefresh}
+        groupUuid={subsidyAccessPolicy?.groupAssociations[0]}
       />
     </>
   );
@@ -43,6 +58,7 @@ const mapStateToProps = state => ({
 BudgetDetailMembersTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   refresh: PropTypes.bool.isRequired,
+  setRefresh: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailMembersTabContents);

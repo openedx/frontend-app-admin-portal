@@ -16,7 +16,7 @@ const MemberEnrollmentsTableColumnHeader = () => (
       key="enrollments-column-tooltip"
       placement="top"
       overlay={(
-        <Tooltip>
+        <Tooltip id="enrollments-column-tooltip">
           <div>Total number of enrollment originated from the budget</div>
         </Tooltip>
       )}

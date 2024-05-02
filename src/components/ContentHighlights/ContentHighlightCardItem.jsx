@@ -47,7 +47,9 @@ const ContentHighlightCardItem = ({
     cardLogoAlt: partners.length === 1 ? `${partners[0].name}'s logo` : undefined,
     cardTitle: <Truncate lines={3} title={title}>{title}</Truncate>,
     cardSubtitle: partners.map(p => p.name).join(', '),
-    cardFooter: getContentHighlightCardFooter({ price, formattedContentType: formattedContentTypes[contentType?.toLowerCase()] }),
+    cardFooter: getContentHighlightCardFooter(
+      { price, formattedContentType: formattedContentTypes[contentType?.toLowerCase()] },
+    ),
   };
   if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
