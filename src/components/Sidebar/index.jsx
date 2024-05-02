@@ -4,6 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon } from '@edx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
 } from '@edx/paragon/icons';
@@ -44,6 +45,7 @@ const Sidebar = ({
   const isEdxStaff = getAuthenticatedUser().administrator;
   const [isSubGroup, setIsSubGroup] = useState(false);
   const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup && !isEdxStaff;
+  const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
@@ -123,7 +125,11 @@ const Sidebar = ({
       hidden: !canManageLearnerCredit,
     },
     {
-      title: 'Highlights',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.highlights.title',
+        defaultMessage: 'Highlights',
+        description: 'Sidebar menu item title for highlights.',
+      }),
       id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} />,

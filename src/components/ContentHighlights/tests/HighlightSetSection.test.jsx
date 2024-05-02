@@ -4,6 +4,7 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
@@ -61,13 +62,15 @@ const HighlightSetSectionWrapper = ({
     searchClient,
   });
   return (
-    <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlightsContext.Provider value={contextValue}>
-          <HighlightSetSection highlightSets={highlightSetArray} />
-        </ContentHighlightsContext.Provider>
-      </EnterpriseAppContext.Provider>
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={mockStore(initialState)}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <ContentHighlightsContext.Provider value={contextValue}>
+            <HighlightSetSection highlightSets={highlightSetArray} />
+          </ContentHighlightsContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
   );
 };
 

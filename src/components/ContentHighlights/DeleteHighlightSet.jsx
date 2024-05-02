@@ -8,6 +8,7 @@ import {
   ActionRow,
   StatefulButton,
 } from '@edx/paragon';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Info } from '@edx/paragon/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
@@ -28,6 +29,7 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
   const { enterpriseCuration: { dispatch } } = useContext(EnterpriseAppContext);
   const [isDeleted, setIsDeleted] = useState(false);
   const [deletionError, setDeletionError] = useState(null);
+  const intl = useIntl();
 
   const trackEventOpenDelete = () => {
     const trackInfo = {
@@ -102,18 +104,42 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
 
   return (
     <>
-      <Button variant="outline-primary" onClick={openDeleteConfirmation}>Delete highlight</Button>
+      <Button variant="outline-primary" onClick={openDeleteConfirmation}>
+        <FormattedMessage
+          id="highlights.delete.highlight.button.text"
+          defaultMessage="Delete highlight"
+          description="Button text to delete a highlight set."
+        />
+      </Button>
       <AlertModal
-        title="Delete highlight?"
+        title={intl.formatMessage({
+          id: 'highlights.modal.delete.highlight.confirm.title',
+          defaultMessage: 'Delete highlight?',
+          description: 'Title of the modal to confirm the deletion of a highlight.',
+        })}
         isOpen={isOpen}
         onClose={close}
         footerNode={(
           <ActionRow>
-            <Button variant="tertiary" onClick={closeDeleteConfirmation}>Cancel</Button>
+            <Button variant="tertiary" onClick={closeDeleteConfirmation}>
+              <FormattedMessage
+                id="highlights.modal.delete.highlight.cancel.button.text"
+                defaultMessage="Cancel"
+                description="Button text shown on a modal to cancel the deletion of a highlight."
+              />
+            </Button>
             <StatefulButton
               labels={{
-                default: 'Delete highlight',
-                pending: 'Deleting highlight...',
+                default: intl.formatMessage({
+                  id: 'highlights.modal.delete.highlight.confirm.button.text',
+                  defaultMessage: 'Delete highlight',
+                  description: 'Button text shown on a modal to confirm the deletion of a highlight.',
+                }),
+                pending: intl.formatMessage({
+                  id: 'highlights.modal.delete.highlight.delete.in.progress.button.text',
+                  defaultMessage: 'Deleting highlight...',
+                  description: 'Button text shown on a modal when the highlight deletion is in progress.',
+                }),
               }}
               variant="primary"
               state={deletionState}
@@ -128,15 +154,31 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
           onClose={() => setDeletionError(null)}
           variant="danger"
           dismissible
+          closeLabel={intl.formatMessage({
+            id: 'highlights.modal.delete.highlight.error.dismiss.button.text',
+            defaultMessage: 'Dismiss',
+            description: 'Dismiss button label for error alert shown when deleting a highlight fails.',
+          })}
           icon={Info}
         >
           <p>
-            An error occurred while deleting this highlight collection. Please try again.
+            <FormattedMessage
+              id="highlights.modal.delete.highlight.error.message"
+              defaultMessage="An error occurred while deleting this highlight collection. Please try again."
+              description="Error message shown when deleting a highlight fails."
+            />
           </p>
         </Alert>
         <p>
-          Deleting this highlight will remove it from your
-          learners&apos; &quot;Find a Course&quot;. This action is permanent and cannot be undone.
+          <FormattedMessage
+            id="highlights.modal.delete.highlight.confirmation.message"
+            defaultMessage="Deleting this highlight will remove it from your learners{apostrophe} {doubleQoute}Find a Course{doubleQoute}. This action is permanent and cannot be undone."
+            description="Confirmation message shown when deleting a highlight."
+            values={{
+              apostrophe: "'",
+              doubleQoute: '"',
+            }}
+          />
         </p>
       </AlertModal>
     </>

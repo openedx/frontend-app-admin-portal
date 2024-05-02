@@ -7,6 +7,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
   render, screen,
 } from '@testing-library/react';
@@ -83,18 +84,20 @@ const SidebarWrapper = ({
   ...props
 }) => (
   <MemoryRouter>
-    <Provider store={props.store}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-          <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
-            <Sidebar
-              baseUrl="/test-enterprise-slug"
-              {...props}
-            />
-          </SubsidyRequestsContext.Provider>
-        </EnterpriseSubsidiesContext.Provider>
-      </EnterpriseAppContext.Provider>
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={props.store}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
+              <Sidebar
+                baseUrl="/test-enterprise-slug"
+                {...props}
+              />
+            </SubsidyRequestsContext.Provider>
+          </EnterpriseSubsidiesContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 

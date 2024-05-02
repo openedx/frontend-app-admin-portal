@@ -4,6 +4,7 @@ import {
 } from '@edx/paragon';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { configuration } from '../../config';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
@@ -21,6 +22,7 @@ const DeleteArchivedCoursesDialogs = ({
   const {
     enterpriseCuration: { dispatch },
   } = useContext(EnterpriseAppContext);
+  const intl = useIntl();
 
   const handleDeleteArchivedClick = async () => {
     setDeletionState('pending');
@@ -81,20 +83,47 @@ const DeleteArchivedCoursesDialogs = ({
         isFullscreenOnMobile
       >
         <ModalDialog.Header>
-          <ModalDialog.Title>Delete archived courses?</ModalDialog.Title>
+          <ModalDialog.Title>
+            <FormattedMessage
+              id="highlights.highlights.tab.archived.courses.modal.heading"
+              defaultMessage="Delete archived courses?"
+              description="Heading for the modal to delete archived courses."
+            />
+          </ModalDialog.Title>
         </ModalDialog.Header>
         <ModalDialog.Body>
           <p>
-            Deleting the archived courses in this highlight will remove it from your learners’
-            “Find a Course”. This action is permanent and cannot be undone.
+            <FormattedMessage
+              id="highlights.highlights.tab.archived.courses.modal.message"
+              defaultMessage="Deleting the archived courses in this highlight will remove it from your learners{apostrophe} {doubleQoute}Find a Course{doubleQoute}. This action is permanent and cannot be undone."
+              description="Message shown in the modal to delete archived courses."
+              values={{
+                apostrophe: "'",
+                doubleQoute: '"',
+              }}
+            />
           </p>
         </ModalDialog.Body>
         <ModalDialog.Footer>
-          <Button onClick={closeDeleteModal} className="mr-2" variant="outline-primary">Cancel</Button>
+          <Button onClick={closeDeleteModal} className="mr-2" variant="outline-primary">
+            <FormattedMessage
+              id="highlights.highlights.tab.archived.courses.delete.modal.cancel.button.text"
+              defaultMessage="Cancel"
+              description="Button text shown on a modal to cancel the deletion of archived courses."
+            />
+          </Button>
           <StatefulButton
             labels={{
-              default: 'Delete archived courses',
-              pending: 'Deleting courses...',
+              default: intl.formatMessage({
+                id: 'highlights.highlights.tab.archived.courses.delete.modal.delete.confirm.button.text',
+                defaultMessage: 'Delete archived courses',
+                description: 'Button text shown on a modal to confirm the deletion of archived courses.',
+              }),
+              pending: intl.formatMessage({
+                id: 'highlights.highlights.tab.archived.courses.delete.modal.delete.in.progress.button.text',
+                defaultMessage: 'Deleting courses...',
+                description: 'Button text shown on a modal when the archived courses deletion is in progress.',
+              }),
             }}
             variant="primary"
             state={deletionState}
