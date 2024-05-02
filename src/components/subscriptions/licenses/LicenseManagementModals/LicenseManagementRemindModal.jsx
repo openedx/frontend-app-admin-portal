@@ -89,19 +89,30 @@ const LicenseManagementRemindModal = ({
       };
 
       const filtersPresent = activeFilters.length > 0;
+      const transformedFilters = transformFiltersForRequest(activeFilters);
 
-      // If reminding all users and there are no filters, hit remind-all endpoint
-      if (remindAllUsers && !filtersPresent) {
-        return LicenseManagerApiService.licenseRemindAll(subscription.uuid);
+      if (remindAllUsers) {
+        if (!filtersPresent) {
+          // If reminding all users and there are no filters, hit remind-all endpoint
+          return LicenseManagerApiService.licenseRemindAll(subscription.uuid);
+        }
+        // If reminding all users and there *are* active filters, pass
+        // the filters through to the remind endpoint, which performs
+        // bulk operations when filters are provided in the request body.
+        options.filters = transformedFilters;
+        return LicenseManagerApiService.licenseBulkRemind(subscription.uuid, options);
       }
 
+      // From this point on, we're dealing with a case where remindAllUsers is false.
+      // Give preference to selected emails over any selected filters,
+      // because the remind endpoint will only operate when *one* of (emails, filters)
+      // is provided in the request body.
       const userEmailsToRemind = usersToRemind.map((user) => user.email);
 
-      // If emails are passed in, send them in the payload.
       if (userEmailsToRemind.length > 0) {
         options.user_emails = userEmailsToRemind;
       } else {
-        options.filters = transformFiltersForRequest(activeFilters);
+        options.filters = transformedFilters;
       }
 
       return LicenseManagerApiService.licenseBulkRemind(subscription.uuid, options);
