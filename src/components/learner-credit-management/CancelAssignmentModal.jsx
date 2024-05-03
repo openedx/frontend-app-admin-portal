@@ -4,6 +4,7 @@ import {
   ActionRow, ModalDialog, StatefulButton,
 } from '@edx/paragon';
 import { DoNotDisturbOn } from '@edx/paragon/icons';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 
 const CancelAssignmentModal = ({
@@ -17,7 +18,7 @@ const CancelAssignmentModal = ({
   const {
     successfulCancellationToast: { displayToastForAssignmentCancellation },
   } = useContext(BudgetDetailPageContext);
-
+  const intl = useIntl();
   const handleOnClick = async () => {
     await cancelContentAssignments();
     trackEvent();
@@ -33,27 +34,70 @@ const CancelAssignmentModal = ({
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          Cancel assignment?
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.title"
+            defaultMessage="Cancel assignment?"
+            description="Title for the cancel assignment modal"
+          />
         </ModalDialog.Title>
       </ModalDialog.Header>
 
       <ModalDialog.Body>
-        <p>This action cannot be undone.</p>
-        <p>The learner will be notified that you have canceled the assignment. The funds associated with
-          this course assignment will move from &quot;assigned&quot; back to &quot;available&quot;.
+        <p>
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.body"
+            defaultMessage="This action cannot be undone."
+            description="Body text for the cancel assignment modal which warns the user that the action cannot be undone."
+          />
+        </p>
+        <p>
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.body2"
+            defaultMessage="The learner will be notified that you have canceled the assignment. The funds associated with this course assignment will move from {doubleQoute}assigned{doubleQoute} back to {doubleQoute}available{doubleQoute}."
+            description="Body text for the cancel assignment modal which informs the user that the learner will be notified that the assignment has been canceled."
+            values={{ doubleQoute: '"' }}
+          />
         </p>
       </ModalDialog.Body>
 
       <ModalDialog.Footer>
         <ActionRow>
-          <ModalDialog.CloseButton variant="tertiary">Go back</ModalDialog.CloseButton>
+          <ModalDialog.CloseButton variant="tertiary">
+            <FormattedMessage
+              id="lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.close.button"
+              defaultMessage="Close"
+              description="Close button text for the cancel assignment modal"
+            />
+          </ModalDialog.CloseButton>
           <StatefulButton
             iconBefore={cancelButtonState === 'default' ? DoNotDisturbOn : null}
             labels={{
-              default: uuidCount > 1 ? `Cancel assignments (${uuidCount})` : 'Cancel assignment',
-              pending: 'Canceling...',
-              complete: 'Canceled',
-              error: 'Try again',
+              default: uuidCount > 1
+                ? intl.formatMessage({
+                  id: 'lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.cancel.multiple.assignment.button',
+                  defaultMessage: 'Cancel assignments ({uuidCount})',
+                  description: 'Button text for canceling assignments when we have multiple assignments to cancel',
+                }, { uuidCount })
+                : intl.formatMessage({
+                  id: 'lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.cancel.single.assignment.button',
+                  defaultMessage: 'Cancel assignment',
+                  description: 'Button text for canceling assignments when we have only one assignment to cancel',
+                }),
+              pending: intl.formatMessage({
+                id: 'lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.canceling.state',
+                defaultMessage: 'Canceling...',
+                description: 'Button state text for canceling assignments',
+              }),
+              complete: intl.formatMessage({
+                id: 'lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.canceled.state',
+                defaultMessage: 'Canceled',
+                description: 'Button state text for canceled assignments',
+              }),
+              error: intl.formatMessage({
+                id: 'lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.try.again',
+                defaultMessage: 'Try again',
+                description: 'Button state text for trying to cancel assignments again',
+              }),
             }}
             variant="danger"
             state={cancelButtonState}
