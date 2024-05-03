@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form } from '@edx/paragon';
 
 import LearnerCreditGroupMembersTable from './LearnerCreditGroupMembersTable';
 import { useEnterpriseGroupMembersTableData, useBudgetId, useSubsidyAccessPolicy } from '../data';
@@ -12,13 +11,12 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh })
   const groupId = subsidyAccessPolicy.groupAssociations[0];
   const {
     isLoading,
-    showRemoved,
-    handleSwitchChange,
     enterpriseGroupMembersTableData,
     fetchEnterpriseGroupMembersTableData,
   } = useEnterpriseGroupMembersTableData({
     enterpriseUUID,
     subsidyAccessPolicyId,
+    policyUuid: subsidyAccessPolicy.uuid,
     groupId,
     refresh,
   });
@@ -31,14 +29,6 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh })
           Members choose what to learn from the catalog and spend from the budget to enroll.
         </p>
       </div>
-      <Form.Switch
-        className="ml-2.5"
-        checked={showRemoved}
-        onChange={handleSwitchChange}
-        data-testid="show-removed-toggle"
-      >
-        Show removed
-      </Form.Switch>
       <LearnerCreditGroupMembersTable
         isLoading={isLoading}
         tableData={enterpriseGroupMembersTableData}

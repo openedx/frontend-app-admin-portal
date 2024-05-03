@@ -695,10 +695,10 @@ describe('<BudgetDetailPage />', () => {
     const spentSection = within(screen.getByTestId('spent-section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
     expect(spentSection.getByText('Spent activity is driven by completed enrollments.', { exact: false })).toBeInTheDocument();
-    const isSubsidyAccessPolicyWithAnalyicsApi = (
+    const isSubsidyAccessPolicyWithAnalyticsApi = (
       budgetId === mockSubsidyAccessPolicyUUID && !isTopDownAssignmentEnabled
     );
-    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyicsApi) {
+    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyticsApi) {
       // This copy is only present when the "Spent" table is backed by the
       // analytics API (i.e., budget is an enterprise offer or a subsidy access
       // policy with the LC2 feature flag disabled).
