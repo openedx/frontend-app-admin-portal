@@ -5,6 +5,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import EnterpriseApp from './index';
 import { features } from '../../config';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
@@ -101,7 +102,11 @@ describe('<EnterpriseApp />', () => {
   });
 
   it('should show error page if enterprise name is invalid', () => {
-    render(<EnterpriseApp {...invalidEnterpriseId} />);
+    render(
+      <IntlProvider locale="en">
+        <EnterpriseApp {...invalidEnterpriseId} />
+      </IntlProvider>,
+    );
     expect(screen.getByText("Oops, sorry we can't find that page!")).toBeInTheDocument();
   });
 });

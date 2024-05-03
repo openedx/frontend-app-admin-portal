@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DataTable, CheckboxFilter } from '@edx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
 import AssignmentDetailsTableCell from './AssignmentDetailsTableCell';
@@ -40,6 +41,7 @@ const BudgetAssignmentsTable = ({
   tableData,
   fetchTableData,
 }) => {
+  const intl = useIntl();
   const statusFilterChoices = tableData.learnerStateCounts
     .filter(({ learnerState }) => !!getLearnerStateDisplayName(learnerState))
     .map(({ learnerState, count }) => ({
@@ -64,19 +66,34 @@ const BudgetAssignmentsTable = ({
       SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       columns={[
         {
-          Header: 'Assignment details',
+          Header:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.assignments.table.columns.assignment.details',
+            defaultMessage: 'Assignment details',
+            description: 'Column header for the assignment details column in the assignments table',
+          }),
           accessor: 'assignmentDetails',
           Cell: AssignmentDetailsTableCell,
           disableSortBy: true,
         },
         {
-          Header: 'Amount',
+          Header:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.assignments.table.columns.amount',
+            defaultMessage: 'Amount',
+            description: 'Column header for the amount column in the assignments table',
+          }),
           accessor: 'amount',
           Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100)}`,
           disableFilters: true,
         },
         {
-          Header: 'Status',
+          Header:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.assignments.table.columns.status',
+            defaultMessage: 'Status',
+            description: 'Column header for the status column in the assignments table',
+          }),
           accessor: 'learnerState',
           Cell: AssignmentStatusTableCell,
           Filter: CheckboxFilter,
@@ -84,7 +101,12 @@ const BudgetAssignmentsTable = ({
           filterChoices: statusFilterChoices,
         },
         {
-          Header: 'Recent action',
+          Header:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.assignments.table.columns.recent.action',
+            defaultMessage: 'Recent action',
+            description: 'Column header for the recent action column in the assignments table',
+          }),
           accessor: 'recentAction',
           Cell: AssignmentRecentActionTableCell,
           disableFilters: true,

@@ -6,6 +6,7 @@ import {
 } from '@edx/paragon';
 import { GroupAdd, Groups, ManageAccounts } from '@edx/paragon/icons';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { formatDate, useEnterpriseCustomer, useEnterpriseGroup } from './data';
 import isLmsBudget from './utils';
 
@@ -15,21 +16,52 @@ const BudgetStatusSubtitle = ({
   const { data: enterpriseGroup } = useEnterpriseGroup(policy);
   const { data: enterpriseCustomer } = useEnterpriseCustomer(enterpriseUUID);
   const universalGroup = enterpriseGroup?.appliesToAllContexts;
+  const intl = useIntl();
   const budgetType = {
     lms: {
-      enrollmentType: 'Enroll via Integrated Learning Platform',
-      popoverText: 'Available to people in your organization based on settings configured in your integrated learning platform',
+      enrollmentType:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.via.integrated.learning.platform',
+        defaultMessage: 'Enroll via Integrated Learning Platform',
+        description: 'Enrollment type for budgets that are assigned via an integrated learning platform',
+      }),
+      popoverText:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.via.integrated.learning.platform.popover',
+        defaultMessage: 'Available to people in your organization based on settings configured in your integrated learning platform',
+        description: 'Popover text for budgets that are assigned via an integrated learning platform',
+      }),
       icon: <Icon size="xs" src={ManageAccounts} className="ml-1 mt-4 d-inline-flex" />,
 
     },
     assignable: {
-      enrollmentType: 'Assignable',
-      popoverText: 'Available to members added to this budget',
+      enrollmentType:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.assignable',
+        defaultMessage: 'Assignable',
+        description: 'Enrollment type for budgets that are assignable',
+      }),
+      popoverText:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.assignable.popover',
+        defaultMessage: 'Available to members added to this budget',
+        description: 'Popover text for budgets that are assignable',
+      }),
       icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" />,
     },
     browseAndEnroll: {
-      enrollmentType: 'Browse & Enroll',
-      popoverText: 'Available to all people in your organization',
+      enrollmentType:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.browse.and.enroll',
+        defaultMessage: 'Browse & Enroll',
+        description: 'Enrollment type for budgets that are browsable and enrollable',
+      }),
+      popoverText:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.browse.and.enroll.popover',
+        defaultMessage: 'Available to all people in your organization',
+        description: 'Popover text for budgets that are browsable and enrollable',
+      }),
       icon: <Icon size="xs" src={Groups} className="ml-1 d-inline-flex" />,
     },
   };
