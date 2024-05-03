@@ -111,6 +111,7 @@ const InviteMembersModalWrapper = ({
       >
         <InviteModalContent
           onEmailAddressesChange={handleEmailAddressesChanged}
+          catalogUuid={subsidyAccessPolicy.catalogUuid}
         />
       </FullscreenModal>
       <SystemErrorAlertModal

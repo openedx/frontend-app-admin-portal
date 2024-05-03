@@ -8,11 +8,12 @@ import {
 } from '@edx/paragon';
 
 import InviteModalSummary from './InviteModalSummary';
+import InviteModalPermissions from './InviteModalPermissions';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';
 import FileUpload from './FileUpload';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
 
-const InviteModalContent = ({ onEmailAddressesChange }) => {
+const InviteModalContent = ({ onEmailAddressesChange, catalogUuid }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [inputType, setInputType] = useState('email');
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
@@ -94,9 +95,8 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
         </Col>
         <Col>
           <h4>Details</h4>
-          <InviteModalSummary
-            memberInviteMetadata={memberInviteMetadata}
-          />
+          <InviteModalSummary memberInviteMetadata={memberInviteMetadata} />
+          <InviteModalPermissions catalogUuid={catalogUuid} />
         </Col>
       </Row>
     </Container>
@@ -105,6 +105,7 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
 
 InviteModalContent.propTypes = {
   onEmailAddressesChange: PropTypes.func.isRequired,
+  catalogUuid: PropTypes.string.isRequired,
 };
 
 export default InviteModalContent;

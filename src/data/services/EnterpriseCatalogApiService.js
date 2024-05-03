@@ -14,6 +14,12 @@ class EnterpriseCatalogApiService {
 
   static highlightSetUrl = `${EnterpriseCatalogApiService.baseUrl}/highlight-sets-admin/`;
 
+  static fetchEnterpriseCatalogMetadata({ catalogUuid }) {
+    const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-catalogs/${catalogUuid}/get_content_metadata/`;
+    console.log('uuid in service ', catalogUuid);
+    return EnterpriseCatalogApiService.apiClient().get(url);
+  }
+
   static fetchApplicableCatalogs({ enterpriseId, courseRunIds }) {
     // This API call will *only* obtain the enterprise's catalogs whose
     // catalog queries return/contain the specified courseRunIds.
