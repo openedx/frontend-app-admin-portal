@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { generatePath, useParams, Link } from 'react-router-dom';
 import {
-  Button, Col, Hyperlink, ProgressBar, Row, Stack,
+  Button, Col, Hyperlink, Row, Stack,
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -12,82 +12,13 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import {
-  formatPrice,
-  useBudgetId,
-  useSubsidyAccessPolicy,
-  useEnterpriseCustomer,
-  useEnterpriseGroup,
+  useBudgetId, useSubsidyAccessPolicy, useEnterpriseCustomer, useEnterpriseGroup,
 } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 import isLmsBudget from './utils';
-
-const BudgetDetail = ({
-  available, utilized, limit, status,
-}) => {
-  const currentProgressBarLimit = (available / limit) * 100;
-
-  if (status === BUDGET_STATUSES.expired) {
-    return (
-      <Stack className="border border-light-400 p-4">
-        <h4>Spent</h4>
-        <Stack direction="horizontal" gap={4} className="mt-1">
-          <span className="display-1 text-dark" data-testid="budget-detail-spent">{formatPrice(utilized)}</span>
-          <span className="mt-auto small text-monospace" data-testid="budget-detail-unspent">
-            <FormattedMessage
-              id="lcm.budget.detail.page.overview.budget.detail.unspent"
-              defaultMessage="Unspent {unspent}"
-              description="unspent budget amount on the budget detail page overview"
-              values={{ unspent: formatPrice(available) }}
-            />
-          </span>
-        </Stack>
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack className="border border-light-400 p-4">
-      <h4>
-        <FormattedMessage
-          id="lcm.budget.detail.page.overview.budget.detail.available"
-          defaultMessage="Available"
-          description="available budget amount on the budget detail page overview"
-        />
-      </h4>
-      <Stack direction="horizontal" gap={4} className="mt-1">
-        <span className="display-1 text-dark" data-testid="budget-detail-available">{formatPrice(available)}</span>
-        <span className="mt-auto small text-monospace" data-testid="budget-detail-utilized">
-          <FormattedMessage
-            id="lcm.budget.detail.page.overview.budget.detail.utilized"
-            defaultMessage="Utilized {utilized}"
-            values={{ utilized: formatPrice(utilized) }}
-            description="utilized budget amount on the budget detail page overview"
-          />
-        </span>
-      </Stack>
-      <Stack gap={2} className="mt-3">
-        <ProgressBar now={currentProgressBarLimit} variant="info" />
-        <span className="ml-auto small text-monospace" data-testid="budget-detail-limit">
-          <FormattedMessage
-            id="lcm.budget.detail.page.overview.budget.detail.limit"
-            defaultMessage="{limit} limit"
-            description="limit of the budget on the budget detail page overview"
-            values={{ limit: formatPrice(limit) }}
-          />
-        </span>
-      </Stack>
-    </Stack>
-  );
-};
-
-BudgetDetail.propTypes = {
-  available: PropTypes.number.isRequired,
-  utilized: PropTypes.number.isRequired,
-  limit: PropTypes.number.isRequired,
-  status: PropTypes.string.isRequired,
-};
+import BudgetDetail from './BudgetDetail';
 
 const BudgetActions = ({
   budgetId,
