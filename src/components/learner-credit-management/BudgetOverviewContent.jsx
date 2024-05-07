@@ -59,7 +59,7 @@ const BudgetOverviewContent = ({
   }
 
   return (
-    <Card className="budget-overview-card">
+    <Card>
       <Card.Section>
         <h2>{budgetDisplayName}</h2>
         <BudgetStatusSubtitle

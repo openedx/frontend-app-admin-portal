@@ -16,7 +16,6 @@ class EnterpriseCatalogApiService {
 
   static fetchEnterpriseCatalogMetadata({ catalogUuid }) {
     const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-catalogs/${catalogUuid}/get_content_metadata/`;
-    console.log('uuid in service ', catalogUuid);
     return EnterpriseCatalogApiService.apiClient().get(url);
   }
 
