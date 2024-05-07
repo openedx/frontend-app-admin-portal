@@ -3,6 +3,7 @@ import { Button } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import EVENT_NAMES from '../../eventTracking';
 import { applyFiltersToOptions, applySortByToOptions } from './data/hooks/useBudgetContentAssignments';
 
@@ -39,7 +40,11 @@ const AssignmentsTableRefreshAction = ({ enterpriseId, tableInstance, refresh })
       variant="outline-primary"
       onClick={handleRefresh}
     >
-      Refresh
+      <FormattedMessage
+        id="lcm.budget.detail.page.catalog.tab.course.card.refresh"
+        defaultMessage="Refresh"
+        description="Button text to refresh the assignment table"
+      />
     </Button>
   );
 };

@@ -164,7 +164,7 @@ describe('<LicenseManagementRemindModal />', () => {
         ...basicProps,
         usersToRemind: [sampleUser],
         totalToRemind: 1,
-        activeFilters: [{  // part of the test is that these activeFilters are not sent in the request body
+        activeFilters: [{ // part of the test is that these activeFilters are not sent in the request body
           name: 'statusBadge',
           filterValue: [ASSIGNED],
         }],
@@ -190,7 +190,7 @@ describe('<LicenseManagementRemindModal />', () => {
       const props = {
         ...basicProps,
         remindAllUsers: true,
-        usersToRemind: [sampleUser],  // part of the test here is that the emails are not sent in the request body
+        usersToRemind: [sampleUser], // part of the test here is that the emails are not sent in the request body
         totalToRemind: null,
         activeFilters: [{
           name: 'statusBadge',

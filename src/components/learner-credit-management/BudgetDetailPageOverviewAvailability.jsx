@@ -73,8 +73,8 @@ const BudgetDetail = ({
           <FormattedMessage
             id="lcm.budget.detail.page.overview.budget.detail.limit"
             defaultMessage="{limit} limit"
-            values={{ limit: formatPrice(limit) }}
             description="limit of the budget on the budget detail page overview"
+            values={{ limit: formatPrice(limit) }}
           />
         </span>
       </Stack>
@@ -179,7 +179,7 @@ const BudgetActions = ({
                 <FormattedMessage
                   id="lcm.budget.detail.page.overview.budget.actions.people.access.edx"
                   defaultMessage="People who have received access to discover edX content in your integrated learning platform can spend from this budget{apostrophe}s available balance to enroll."
-                  description="Description which tells that people who have received access to discover edX content in your integrated learning platform can spend from this budget's available balance to enroll"
+                  description="Description which tells that people can spend from the budget's available balance to enroll"
                   values={{ apostrophe: "'" }}
                 />
               </p>
