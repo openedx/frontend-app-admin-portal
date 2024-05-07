@@ -26,6 +26,7 @@ import {
 } from '../../data/tests/constants';
 import { queryClient } from '../../../test/testUtils';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -53,6 +54,11 @@ jest.mock('../../data', () => ({
 
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
 jest.mock('../../../../data/services/LmsApiService');
+
+jest.mock('file-saver', () => ({
+  ...jest.requireActual('react-router-dom'),
+  saveAs: jest.fn(),
+}));
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -250,7 +256,7 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 0,
         }],
       },
       fetchEnterpriseGroupMembersTableData: jest.fn(),
@@ -308,36 +314,49 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 0,
         }],
       },
       fetchEnterpriseGroupMembersTableData: mockFetchEnterpriseGroupMembersTableData,
     });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
 
+    await userEvent.type(screen.getByText('Search by member details'), 'foobar');
+    await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
+      filters: [{ id: 'memberDetails', value: 'foobar' }],
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [{ desc: true, id: 'memberDetails' }],
+    }));
+
     userEvent.click(screen.getByTestId('members-table-status-column-header'));
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
-      filters: [],
+      filters: [{ id: 'memberDetails', value: 'foobar' }],
       pageIndex: 0,
       pageSize: 10,
       sortBy: [{ desc: false, id: 'status' }],
     }));
 
-    userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+    const removeToggle = screen.getByTestId('show-removed-toggle');
+    userEvent.click(removeToggle);
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
-      filters: [],
+      filters: [
+        { id: 'memberDetails', value: 'foobar' },
+        { id: 'status', value: true },
+      ],
       pageIndex: 0,
       pageSize: 10,
-      sortBy: [{ desc: false, id: 'memberEnrollment' }],
+      sortBy: [{ desc: false, id: 'status' }],
     }));
 
-    userEvent.type(screen.getByText('Search by member details'), 'foobar');
-    await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
-      filters: [{ id: 'memberDetails', value: 'foobar' }],
-      pageIndex: 0,
-      pageSize: 10,
-      sortBy: [{ desc: false, id: 'memberEnrollment' }],
-    }));
+    // TODO Sorting by enrollment count is currently not supported by the backend
+    // userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+    // await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
+    //   filters: [],
+    //   pageIndex: 0,
+    //   pageSize: 10,
+    //   sortBy: [{ desc: false, id: 'enrollmentCount' }],
+    // }));
   });
   it('remove learner flow', async () => {
     const initialState = {
@@ -388,7 +407,7 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 0,
         }],
       },
       fetchEnterpriseGroupMembersTableData: jest.fn(),
@@ -464,13 +483,13 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 0,
         },
         {
           memberDetails: { userEmail: 'tammy2@test.com', userName: 'tammy 2' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 0,
         }],
       },
       fetchEnterpriseGroupMembersTableData: jest.fn(),
@@ -543,7 +562,7 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 0,
         }],
       },
       fetchEnterpriseGroupMembersTableData: jest.fn(),
@@ -612,7 +631,7 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 0,
         }],
       },
       fetchEnterpriseGroupMembersTableData: jest.fn(),
@@ -633,7 +652,7 @@ describe('<BudgetDetailPage />', () => {
     await waitForElementToBeRemoved(() => screen.queryByText('Removing (1)'));
     await waitFor(() => expect(screen.queryByText('There was an error with your request. Please try again.')).toBeInTheDocument());
   });
-  it('Remove toggle shows removed members', async () => {
+  it('displays members download button that makes requests to fetch member data with queries', async () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
@@ -646,6 +665,7 @@ describe('<BudgetDetailPage />', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: mockAssignableSubsidyAccessPolicy.uuid,
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -660,53 +680,55 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
-    useEnterpriseGroupLearners.mockReturnValueOnce({
+    useEnterpriseGroupLearners.mockReturnValue({
       data: {
         count: 1,
         currentPage: 1,
         next: null,
         numPages: 1,
-        results: [
-          {
-            enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
-            learnerId: 4382,
-            memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
-            status: 'pending',
-          },
-          {
-            enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7d',
-            learnerId: 4382,
-            memberDetails: { userEmail: 'tammy2@example.com', userName: 'tammy 2' },
-            status: 'removed',
-          },
-        ],
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
+        },
       },
     });
-    useEnterpriseGroupMembersTableData.mockReturnValue({
+    const mockFetchEnterpriseGroupMembersTableData = jest.fn();
+    const mockGroupData = {
       isLoading: false,
-      showRemoved: true,
       enterpriseGroupMembersTableData: {
-        itemCount: 2,
+        itemCount: 1,
         pageCount: 1,
         results: [{
-          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
           status: 'pending',
           recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
-        }, {
-          memberDetails: { userEmail: 'tammy2@example.com', userName: 'tammy 2' },
-          status: 'removed',
-          recentAction: 'Removed: April 02, 2024',
-          memberEnrollments: 0,
+          enrollmentCount: 1,
         }],
       },
-      fetchEnterpriseGroupMembersTableData: jest.fn(),
-    });
-    // when we pass in showRemoved=true, we should see removed members
+      fetchEnterpriseGroupMembersTableData: mockFetchEnterpriseGroupMembersTableData,
+    };
+    useEnterpriseGroupMembersTableData.mockReturnValue(mockGroupData);
+    EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData.mockResolvedValue('a,b,c,\nd,e,f');
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    userEvent.type(screen.getByText('Search by member details'), 'foobar');
+    userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
     const removeToggle = screen.getByTestId('show-removed-toggle');
-    expect(removeToggle).toHaveAttribute('checked', '');
-    expect(screen.queryByText('Former member')).toBeInTheDocument();
-    expect(screen.queryByText('tammy2@example.com')).toBeInTheDocument();
+    userEvent.click(removeToggle);
+
+    const downloadButton = screen.getByText('Download all (1)');
+    expect(downloadButton).toBeInTheDocument();
+    userEvent.click(downloadButton);
+    expect(EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData).toHaveBeenCalledWith(
+      mockAssignableSubsidyAccessPolicy.uuid,
+      {
+        format_csv: true,
+        traverse_pagination: true,
+        group_uuid: mockAssignableSubsidyAccessPolicy.groupAssociations[0],
+        user_query: 'foobar',
+        sort_by: 'member_details',
+        show_removed: true,
+      },
+    );
   });
 });

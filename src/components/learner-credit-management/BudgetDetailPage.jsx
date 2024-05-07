@@ -1,6 +1,7 @@
 import React from 'react';
 import { Skeleton, Stack } from '@edx/paragon';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useBudgetId, useEnterpriseOffer, useSubsidyAccessPolicy } from './data';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailPageWrapper from './BudgetDetailPageWrapper';
@@ -29,7 +30,13 @@ const BudgetDetailPage = () => {
         <Skeleton height={50} />
         <Skeleton height={360} />
         <Skeleton height={360} />
-        <span className="sr-only">loading budget details</span>
+        <span className="sr-only">
+          <FormattedMessage
+            id="lcm.budget.detail.page.loading"
+            defaultMessage="loading budget details"
+            description="loading budget details"
+          />
+        </span>
       </BudgetDetailPageWrapper>
     );
   }

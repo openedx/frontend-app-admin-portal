@@ -4,6 +4,7 @@ import { Breadcrumb } from '@edx/paragon';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
@@ -11,6 +12,7 @@ import { useBudgetId, useSubsidyAccessPolicy } from './data';
 const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, displayName }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const intl = useIntl();
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -35,7 +37,11 @@ const BudgetDetailPageBreadcrumbs = ({ enterpriseId, enterpriseSlug, displayName
       <Breadcrumb
         ariaLabel="Learner Credit Management breadcrumb navigation"
         links={[{
-          label: 'Budgets',
+          label: intl.formatMessage({
+            id: 'lcm.budget.detail.page.breadcrumb.budgets',
+            defaultMessage: 'Budgets',
+            description: 'Breadcrumb label for the budgets page',
+          }),
           to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}`,
         }]}
         linkAs={Link}

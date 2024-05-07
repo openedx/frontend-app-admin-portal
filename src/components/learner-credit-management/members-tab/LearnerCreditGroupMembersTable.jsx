@@ -14,6 +14,8 @@ import MemberRemoveAction from './bulk-actions/MemberRemoveAction';
 import MemberRemoveModal from './bulk-actions/MemberRemoveModal';
 import { DEFAULT_PAGE, MEMBERS_TABLE_PAGE_SIZE } from '../data';
 import useRemoveMember from '../data/hooks/useRemoveMember';
+import GroupMembersCsvDownloadTableAction from './GroupMembersCsvDownloadTableAction';
+import MembersTableSwitchFilter from './MembersTableSwitchFilter';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -75,6 +77,8 @@ const LearnerCreditGroupMembersTable = ({
     isLoading={isLoading}
     defaultColumnValues={{ Filter: TableTextFilter }}
     FilterStatusComponent={FilterStatus}
+    numBreakoutFilters={2}
+    tableActions={[<GroupMembersCsvDownloadTableAction />]}
     columns={[
       {
         Header: 'Member Details',
@@ -85,7 +89,8 @@ const LearnerCreditGroupMembersTable = ({
         Header: MemberStatusTableColumnHeader,
         accessor: 'status',
         Cell: MemberStatusTableCell,
-        disableFilters: true,
+        Filter: MembersTableSwitchFilter,
+        filter: 'status',
       },
       {
         Header: 'Recent action',
@@ -95,14 +100,15 @@ const LearnerCreditGroupMembersTable = ({
       },
       {
         Header: MemberEnrollmentsTableColumnHeader,
-        accessor: 'memberEnrollment',
-        // TODO:
-        Cell: () => ('0'),
+        accessor: 'enrollmentCount',
+        Cell: ({ row }) => row.original.enrollmentCount,
         disableFilters: true,
+        disableSortBy: true,
       },
     ]}
     initialTableOptions={{
       getRowId: row => row?.memberDetails.userEmail,
+      autoResetPage: true,
     }}
     initialState={{
       pageSize: MEMBERS_TABLE_PAGE_SIZE,

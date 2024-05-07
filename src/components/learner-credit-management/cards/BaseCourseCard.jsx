@@ -10,8 +10,8 @@ import {
 } from '@edx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useCourseCardMetadata } from './data';
-import CARD_TEXT from '../constants';
 
 const BaseCourseCard = ({
   original,
@@ -37,7 +37,6 @@ const BaseCourseCard = ({
     courseEnrollmentInfo,
     execEdEnrollmentInfo,
   } = courseCardMetadata;
-  const { BADGE, PRICE } = CARD_TEXT;
 
   return (
     <Card orientation={isSmall ? 'vertical' : 'horizontal'} className={cardClassName}>
@@ -54,13 +53,33 @@ const BaseCourseCard = ({
           actions={(
             <Stack gap={1} className="text-right">
               <div className="h4 mt-2.5 mb-0">{formattedPrice}</div>
-              <span className="micro">{PRICE.subText}</span>
+              <span className="micro">
+                <FormattedMessage
+                  id="lcm.budget.detail.page.catalog.tab.course.card.price.per.learner"
+                  defaultMessage="Per learner price"
+                  description="Price per learner text for course card"
+                />
+              </span>
             </Stack>
           )}
         />
         <Card.Section>
           <Badge variant="light">
-            {isExecEdCourseType ? BADGE.execEd : BADGE.course}
+            {isExecEdCourseType
+              ? (
+                <FormattedMessage
+                  id="lcm.budget.detail.page.catalog.tab.course.card.executive.education"
+                  defaultMessage="Executive Education"
+                  description="Badge text for Executive Education course"
+                />
+              )
+              : (
+                <FormattedMessage
+                  id="lcm.budget.detail.page.catalog.tab.course.card.course"
+                  defaultMessage="Course"
+                  description="Badge text for Course"
+                />
+              )}
           </Badge>
         </Card.Section>
         <Card.Footer

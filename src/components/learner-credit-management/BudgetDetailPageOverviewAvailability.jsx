@@ -7,6 +7,7 @@ import {
 } from '@edx/paragon';
 import { Add } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
@@ -56,9 +57,19 @@ const BudgetActions = ({
     return (
       <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
         <div>
-          <h3>Keep people learning with a new plan</h3>
+          <h3>
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.keep.people.learning"
+              defaultMessage="Keep people learning with a new plan"
+              description="Title for the budget actions section on the budget detail page overview"
+            />
+          </h3>
           <p>
-            This budget has expired. To create a new budget, please contact support.
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.budget.expired"
+              defaultMessage="This budget has expired. To create a new budget, please contact support."
+              description="Description which tells that budget has expired and to create a new budget contact support"
+            />
           </p>
           <Button
             variant="outline-primary"
@@ -71,7 +82,11 @@ const BudgetActions = ({
             )}
             target="_blank"
           >
-            Contact support
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.budget.expired.contact.support"
+              defaultMessage="Contact support"
+              description="Contact support button on expired budget detail page overview"
+            />
           </Button>
         </div>
       </div>
@@ -84,13 +99,29 @@ const BudgetActions = ({
         return (
           <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
             <div>
-              <h3>Manage edX in your integrated learning platform</h3>
+              <h3>
+                <FormattedMessage
+                  id="lcm.budget.detail.page.overview.budget.actions.manage.edx.in.integrated.learning.platform"
+                  defaultMessage="Manage edX in your integrated learning platform"
+                  description="Titlte which tells to customer to manage edX in their integrated learning platform"
+                />
+              </h3>
               <p>
-                People who have received access to discover edX content in your integrated
-                learning platform can spend from this budget&apos;s available balance to enroll.
+                <FormattedMessage
+                  id="lcm.budget.detail.page.overview.budget.actions.people.access.edx"
+                  defaultMessage="People who have received access to discover edX content in your integrated learning platform can spend from this budget{apostrophe}s available balance to enroll."
+                  description="Description which tells that people can spend from the budget's available balance to enroll"
+                  values={{ apostrophe: "'" }}
+                />
               </p>
               <Link to={`/${enterpriseSlug}/admin/settings/lms`}>
-                <Button variant="outline-primary">Configure access</Button>
+                <Button variant="outline-primary">
+                  <FormattedMessage
+                    id="lcm.budget.detail.page.overview.budget.actions.configure.access"
+                    defaultMessage="Configure access"
+                    description="Configure access button on the budget detail page overview"
+                  />
+                </Button>
               </Link>
             </div>
           </div>
@@ -98,13 +129,29 @@ const BudgetActions = ({
       } if (appliesToAllContexts === true) {
         <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
           <div>
-            <h3>Manage edX for your organization</h3>
+            <h3>
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.manage.edx.for.organization"
+                defaultMessage="Manage edX for your organization"
+                description="Title for the budget actions section on the budget detail page overview"
+              />
+            </h3>
             <p>
-              All people in your organization can choose what to learn
-              from the catalog and spend from the available balance to enroll.
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn"
+                defaultMessage="All people in your organization can choose what to learn
+                from the catalog and spend from the available balance to enroll."
+                description="Decription which tells that user can choose from the catalog and spend from the available balance to enroll"
+              />
             </p>
             <Link to={`/${enterpriseSlug}/admin/settings/access`}>
-              <Button variant="outline-primary">Configure access</Button>
+              <Button variant="outline-primary">
+                <FormattedMessage
+                  id="lcm.budget.detail.page.overview.budget.actions.configure.access.general"
+                  defaultMessage="Configure access"
+                  description="Configure access button on the budget detail page overview"
+                />
+              </Button>
             </Link>,
           </div>
         </div>;
@@ -112,10 +159,19 @@ const BudgetActions = ({
       return (
         <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
           <div>
-            <h3>Drive learner-led enrollments by inviting members</h3>
+            <h3>
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.drive.learner.led.enrollments"
+                defaultMessage="Drive learner-led enrollments by inviting members"
+                description="Title for the budget actions section on the budget detail page overview"
+              />
+            </h3>
             <p>
-              Members of this budget can choose what to learn from the catalog
-              and spend from the available balance to enroll.
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.members.choose.learn"
+                defaultMessage="Members of this budget can choose what to learn from the catalog and spend from the available balance to enroll."
+                description="Description for the budget actions section on the budget detail page overview"
+              />
             </p>
             <Button
               variant="brand"
@@ -123,7 +179,11 @@ const BudgetActions = ({
               target="_blank"
               iconBefore={Add}
             >
-              New members
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.new.members"
+                defaultMessage="New members"
+                description="New members button on the budget detail page overview"
+              />
             </Button>
           </div>
         </div>
@@ -132,10 +192,19 @@ const BudgetActions = ({
     return (
       <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
         <div>
-          <h4>Get people learning using this budget</h4>
+          <h4>
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.get.people.learning"
+              defaultMessage="Get people learning using this budget"
+              description="Title that enables people to learning using this budget"
+            />
+          </h4>
           <p>
-            Funds from this budget are set to auto-allocate to registered learners based on
-            settings configured with your support team.
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.auto.allocate"
+              defaultMessage="Funds from this budget are set to auto-allocate to registered learners based on settings configured with your support team."
+              description="Description which tells that funds from this budget are set to auto-allocate to registered learners"
+            />
           </p>
           <Button
             variant="outline-primary"
@@ -148,7 +217,11 @@ const BudgetActions = ({
             )}
             target="_blank"
           >
-            Contact support
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.contact.support"
+              defaultMessage="Contact support"
+              description="Contact support button on the budget detail page overview"
+            />
           </Button>
         </div>
       </div>
@@ -158,8 +231,20 @@ const BudgetActions = ({
   return (
     <div className="h-100 d-flex align-items-center justify-content-center pt-4 pt-lg-0">
       <div>
-        <h3>Lead the way to learning that matters</h3>
-        <p>Assign content to people using the available budget to cover the cost of enrollment.</p>
+        <h3>
+          <FormattedMessage
+            id="lcm.budget.detail.page.overview.budget.actions.lead.learning"
+            defaultMessage="Lead the way to learning that matters"
+            description="Title for the budget actions section on the budget detail page overview"
+          />
+        </h3>
+        <p>
+          <FormattedMessage
+            id="lcm.budget.detail.page.overview.budget.actions.assign.content"
+            defaultMessage="Assign content to people using the available budget to cover the cost of enrollment."
+            description="Description which tells that content can be assigned to people using the available budget"
+          />
+        </p>
         <Button
           variant="brand"
           className="mt-3"
@@ -175,7 +260,11 @@ const BudgetActions = ({
             trackEventMetadata,
           )}
         >
-          New assignment
+          <FormattedMessage
+            id="lcm.budget.detail.page.overview.budget.actions.new.assignment"
+            defaultMessage="New assignment"
+            description="New assignment button on the budget detail page overview"
+          />
         </Button>
       </div>
     </div>

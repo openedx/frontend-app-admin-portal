@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Card, Skeleton } from '@edx/paragon';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   useBudgetDetailHeaderData,
   useBudgetId,
@@ -53,7 +54,13 @@ const BudgetOverviewContent = ({
     return (
       <div data-testid="budget-detail-skeleton">
         <Skeleton height={180} />
-        <span className="sr-only">Loading budget header data</span>
+        <span className="sr-only">
+          <FormattedMessage
+            id="lcm.budget.detail.page.overview.loading"
+            defaultMessage="Loading budget header data"
+            description="Loading budget header data"
+          />
+        </span>
       </div>
     );
   }

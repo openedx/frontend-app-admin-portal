@@ -107,6 +107,7 @@ export const transformGroupMembersTableResults = results => results.map(result =
   status: result.status,
   recentAction: result.recentAction,
   memberEnrollments: result.memberEnrollments,
+  enrollmentCount: result.enrollmentCount,
 }));
 
 /**
