@@ -3,6 +3,7 @@ import {
   getEnterpriseBudgetExpiringAlertCookieName,
   getEnterpriseBudgetExpiringModalCookieName,
   getExpirationMetadata,
+  getNonExpiredBudgets,
 } from '../utils';
 
 const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, alertClose) => {
@@ -15,9 +16,27 @@ const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, aler
       return;
     }
 
-    const earliestExpiryBudget = budgets.reduce(
+    // We need to consider the special case where there are a mix of
+    // expired and non-expired budgets.  In that case, we only want
+    // to determine the expiry threshold from the set of *non-expired* budgets,
+    // so that the alert and modal below do not falsely signal.
+    let budgetsToConsiderForExpirationMessaging = budgets;
+
+    const nonExpiredBudgets = getNonExpiredBudgets(budgets);
+    const hasNonExpiredBudgets = nonExpiredBudgets.length > 0;
+
+    // If the length of all budgets is different from the length of non-expired budgets,
+    // then there exists at least one expired budget (note that we already early-returned
+    // above if there are zero total budgets).
+    const hasExpiredBudgets = budgets.length !== nonExpiredBudgets.length;
+
+    if (hasNonExpiredBudgets && hasExpiredBudgets) {
+      budgetsToConsiderForExpirationMessaging = nonExpiredBudgets;
+    }
+
+    const earliestExpiryBudget = budgetsToConsiderForExpirationMessaging.reduce(
       (earliestBudget, currentBudget) => (currentBudget.end < earliestBudget.end ? currentBudget : earliestBudget),
-      budgets[0],
+      budgetsToConsiderForExpirationMessaging[0],
     );
 
     const { thresholdKey, threshold } = getExpirationMetadata(earliestExpiryBudget.end);

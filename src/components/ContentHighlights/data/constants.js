@@ -81,7 +81,7 @@ export const STEPPER_STEP_TEXT = {
   },
   ALERT_MODAL_TEXT: {
     title: 'Lose Progress?',
-    content: 'If you exit now, any changes you\'ve made will be lost.',
+    content: 'If you exit now, any changes you have made will be lost.',
     buttons: {
       exit: 'Exit',
       cancel: 'Cancel',

@@ -61,4 +61,15 @@ describe('useExpiry', () => {
     expect(result.current.modal).toEqual(expected.modalTemplate);
     expect(result.current.status).toEqual(expected.status);
   });
+
+  it('displays no notification with both an expired and non-expired budget', () => {
+    const expiredBudget = { end: dayjs().subtract(1, 'day') };
+    const nonExpiredBudget = { end: dayjs().add(200, 'day') };
+    const budgets = [expiredBudget, nonExpiredBudget];
+
+    const { result } = renderHook(() => useExpiry('enterpriseId', budgets, modalOpen, modalClose, alertOpen, alertClose));
+
+    expect(result.current.notification).toEqual(null);
+    expect(result.current.modal).toEqual(null);
+  });
 });
