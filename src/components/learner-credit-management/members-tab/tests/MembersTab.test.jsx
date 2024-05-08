@@ -726,8 +726,9 @@ describe('<BudgetDetailPage />', () => {
         traverse_pagination: true,
         group_uuid: mockAssignableSubsidyAccessPolicy.groupAssociations[0],
         user_query: 'foobar',
-        sort_by: 'member_details',
+        sort_by: 'enrollment_count',
         show_removed: true,
+        is_reversed: true,
       },
     );
   });
