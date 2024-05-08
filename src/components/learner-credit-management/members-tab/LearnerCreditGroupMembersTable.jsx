@@ -103,7 +103,6 @@ const LearnerCreditGroupMembersTable = ({
         accessor: 'enrollmentCount',
         Cell: ({ row }) => row.original.enrollmentCount,
         disableFilters: true,
-        disableSortBy: true,
       },
     ]}
     initialTableOptions={{
