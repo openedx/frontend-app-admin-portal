@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Card, Col, Row, Skeleton,
 } from '@edx/paragon';
-import { logError } from '@edx/frontend-platform/logging';
+import { makePlural } from '../../../utils';
 
 import {
   useBudgetDetailHeaderData,
   useBudgetId,
+  useEnterpriseGroupLearners,
   useEnterpriseOffer, useSubsidyAccessPolicy,
   useSubsidySummaryAnalyticsApi,
 } from '../data';
 import BudgetDetail from '../BudgetDetail';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import BudgetStatusSubtitle from '../BudgetStatusSubtitle';
-import LmsApiService from '../../../data/services/LmsApiService';
 
 const InviteModalBudgetCard = ({
   enterpriseUUID,
@@ -23,21 +23,9 @@ const InviteModalBudgetCard = ({
 }) => {
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const [memberCount, setMemberCount] = useState(null);
+  const { data } = useEnterpriseGroupLearners(subsidyAccessPolicy.groupAssociations[0]);
 
-  const fetchMemberCount = async () => {
-    try {
-      const groupUuid = subsidyAccessPolicy.groupAssociations[0];
-      const response = await LmsApiService.fetchEnterpriseGroupLearners(groupUuid, null);
-      setMemberCount(response.data.count);
-    } catch (error) {
-      logError(error);
-      throw error;
-    }
-  };
-  fetchMemberCount();
-
-  const memberSubtitle = memberCount ? `${memberCount} current members` : '';
+  const memberSubtitle = data?.count ? `${makePlural(data?.count, 'current member')}` : '';
   const budgetType = (enterpriseOfferId !== null) ? BUDGET_TYPES.ecommerce : BUDGET_TYPES.policy;
 
   const { isLoading: isLoadingSubsidySummary, subsidySummary } = useSubsidySummaryAnalyticsApi(
