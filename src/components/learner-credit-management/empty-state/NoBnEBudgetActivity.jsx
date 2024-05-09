@@ -23,7 +23,7 @@ const EnrollAndSpendIllustration = (props) => (
   <img data-testid="enroll-and-spend-illustration" src={enrollAndSpend} alt="" {...props} />
 );
 
-const NoBnEBudgetActivity = ({ openInviteModal }) => {
+const NoBnEBudgetActivity = ({ openInviteModal, isEnterpriseGroupsEnabled }) => {
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
@@ -89,7 +89,7 @@ const NoBnEBudgetActivity = ({ openInviteModal }) => {
               as={Link}
               onClick={openInviteModal}
             >
-              Get started
+              {isEnterpriseGroupsEnabled ? 'Invite more members' : 'Get started'}
             </Button>
           </Col>
         </Row>
@@ -100,6 +100,11 @@ const NoBnEBudgetActivity = ({ openInviteModal }) => {
 
 NoBnEBudgetActivity.propTypes = {
   openInviteModal: PropTypes.func.isRequired,
+  isEnterpriseGroupsEnabled: PropTypes.bool,
+};
+
+NoBnEBudgetActivity.defaultProps = {
+  isEnterpriseGroupsEnabled: false,
 };
 
 export default NoBnEBudgetActivity;
