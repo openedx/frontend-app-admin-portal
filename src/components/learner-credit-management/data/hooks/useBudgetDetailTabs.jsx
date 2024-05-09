@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { Tab } from '@edx/paragon';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   BUDGET_DETAIL_ACTIVITY_TAB,
   BUDGET_DETAIL_CATALOG_TAB,
   BUDGET_DETAIL_MEMBERS_TAB,
-  BUDGET_DETAIL_TAB_LABELS,
 } from '../constants';
 
 const TAB_CLASS_NAME = 'pt-4.5';
@@ -15,18 +15,26 @@ export const useBudgetDetailTabs = ({
   isBudgetAssignable,
   enterpriseGroupLearners,
   refreshMembersTab,
+  setRefreshMembersTab,
   enterpriseFeatures,
   ActivityTabElement,
   CatalogTabElement,
   MembersTabElement,
 }) => {
+  const intl = useIntl();
   const tabs = useMemo(() => {
     const tabsArray = [];
     tabsArray.push(
       <Tab
         key={BUDGET_DETAIL_ACTIVITY_TAB}
         eventKey={BUDGET_DETAIL_ACTIVITY_TAB}
-        title={BUDGET_DETAIL_TAB_LABELS.activity}
+        title={
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.activity.tab.label',
+            defaultMessage: 'Activity',
+            description: 'Label for the activity tab in the budget detail page',
+          })
+        }
         className={TAB_CLASS_NAME}
       >
         {activeTabKey === BUDGET_DETAIL_ACTIVITY_TAB && (
@@ -39,7 +47,13 @@ export const useBudgetDetailTabs = ({
         <Tab
           key={BUDGET_DETAIL_CATALOG_TAB}
           eventKey={BUDGET_DETAIL_CATALOG_TAB}
-          title={BUDGET_DETAIL_TAB_LABELS.catalog}
+          title={
+            intl.formatMessage({
+              id: 'lcm.budget.detail.page.catalog.tab.label',
+              defaultMessage: 'Catalog',
+              description: 'Label for the catalog tab in the budget detail page',
+            })
+          }
           className={TAB_CLASS_NAME}
         >
           {activeTabKey === BUDGET_DETAIL_CATALOG_TAB && (
@@ -54,11 +68,20 @@ export const useBudgetDetailTabs = ({
           data-testid="group-members-tab"
           key={BUDGET_DETAIL_MEMBERS_TAB}
           eventKey={BUDGET_DETAIL_MEMBERS_TAB}
-          title={BUDGET_DETAIL_TAB_LABELS.members}
+          title={
+            intl.formatMessage({
+              id: 'lcm.budget.detail.page.members.tab.label',
+              defaultMessage: 'Members',
+              description: 'Label for the members tab in the budget detail page',
+            })
+          }
           className={TAB_CLASS_NAME}
         >
           {activeTabKey === BUDGET_DETAIL_MEMBERS_TAB && (
-            <MembersTabElement refresh={refreshMembersTab} />
+            <MembersTabElement
+              refresh={refreshMembersTab}
+              setRefresh={setRefreshMembersTab}
+            />
           )}
         </Tab>,
       );
@@ -74,6 +97,8 @@ export const useBudgetDetailTabs = ({
     isBudgetAssignable,
     enterpriseGroupLearners,
     refreshMembersTab,
+    setRefreshMembersTab,
+    intl,
   ]);
 
   return tabs;

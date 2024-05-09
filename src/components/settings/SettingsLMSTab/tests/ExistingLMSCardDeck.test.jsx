@@ -174,7 +174,7 @@ describe('<ExistingLMSCardDeck />', () => {
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    // Click kebab menu
+    // Click kabob menu
     userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
     // Click Delete
     userEvent.click(screen.getByTestId('dropdown-delete-item'));
@@ -201,7 +201,7 @@ describe('<ExistingLMSCardDeck />', () => {
         enterpriseCustomerUuid={enterpriseCustomerUuid}
       />,
     );
-    // Click kebab menu
+    // Click kabob menu
     userEvent.click(screen.getByTestId('existing-lms-config-card-dropdown-1'));
     // Click Delete
     userEvent.click(screen.getByTestId('dropdown-delete-item'));

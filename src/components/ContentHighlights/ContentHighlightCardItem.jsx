@@ -4,6 +4,7 @@ import {
   Card, Hyperlink, Icon, Truncate,
 } from '@edx/paragon';
 import { Archive } from '@edx/paragon/icons';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import cardImageCapFallbackSrc from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
 import { features } from '../../config';
@@ -22,13 +23,33 @@ const ContentHighlightCardItem = ({
   const {
     FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING,
   } = features;
+  const intl = useIntl();
+  const formattedContentTypes = {
+    course: intl.formatMessage({
+      id: 'highlights.highlights.tab.content.type.course.label',
+      defaultMessage: 'Course',
+      description: 'Label for course content type in the highlight content card',
+    }),
+    program: intl.formatMessage({
+      id: 'highlights.highlights.tab.content.type.program.label',
+      defaultMessage: 'Program',
+      description: 'Label for program content type in the highlight content card',
+    }),
+    learnerpathway: intl.formatMessage({
+      id: 'highlights.highlights.tab.content.type.pathway.label',
+      defaultMessage: 'Pathway',
+      description: 'Label for pathway content type in the highlight content card',
+    }),
+  };
   const cardInfo = {
     cardImgSrc: cardImageUrl,
     cardLogoSrc: partners.length === 1 ? partners[0].logoImageUrl : undefined,
     cardLogoAlt: partners.length === 1 ? `${partners[0].name}'s logo` : undefined,
     cardTitle: <Truncate lines={3} title={title}>{title}</Truncate>,
     cardSubtitle: partners.map(p => p.name).join(', '),
-    cardFooter: getContentHighlightCardFooter({ price, contentType }),
+    cardFooter: getContentHighlightCardFooter(
+      { price, formattedContentType: formattedContentTypes[contentType?.toLowerCase()] },
+    ),
   };
   if (hyperlinkAttrs) {
     cardInfo.cardTitle = (
@@ -58,7 +79,11 @@ const ContentHighlightCardItem = ({
           {FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING && archived && (
           <p className="ml-3 mb-4 mt-0 d-flex small text-gray-400">
             <Icon src={Archive} className="mr-1" />
-            Archived
+            <FormattedMessage
+              id="highlights.highlights.tab.highlight.item.card.archived.content.label"
+              defaultMessage="Archived"
+              description="Label for archived content in the highlight content card"
+            />
           </p>
           )}
           <Card.Footer

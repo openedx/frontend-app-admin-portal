@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Card, Stack, Icon } from '@edx/paragon';
 import { Error } from '@edx/paragon/icons';
 
+import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import { formatPrice } from '../data';
 import AssignmentModalSummaryEmptyState from './AssignmentModalSummaryEmptyState';
 import AssignmentModalSummaryLearnerList from './AssignmentModalSummaryLearnerList';
@@ -34,6 +35,7 @@ const AssignmentModalSummary = ({
   learnerEmails,
   assignmentAllocationMetadata,
 }) => {
+  const intl = useIntl();
   const {
     isValidInput,
     learnerEmailsCount,
@@ -42,7 +44,11 @@ const AssignmentModalSummary = ({
   } = assignmentAllocationMetadata;
   const hasLearnerEmails = learnerEmailsCount > 0 && isValidInput;
 
-  let summaryHeading = 'Summary';
+  let summaryHeading = intl.formatMessage({
+    id: 'lcm.budget.detail.page.catalog.tab.course.card.summary',
+    defaultMessage: 'Summary',
+    description: 'Heading for the summary section of the assignment modal',
+  });
   if (hasLearnerEmails) {
     summaryHeading = `${summaryHeading} (${learnerEmailsCount})`;
   }
@@ -76,7 +82,13 @@ const AssignmentModalSummary = ({
               <Stack direction="horizontal" gap={3}>
                 {!hasEnoughBalanceForAssignment && <Icon className="text-danger" src={Error} />}
                 <Stack direction="horizontal" className="justify-space-between flex-grow-1">
-                  <div>Total assignment cost</div>
+                  <div>
+                    <FormattedMessage
+                      id="lcm.budget.detail.page.catalog.tab.course.card.total.assignment.cost"
+                      defaultMessage="Total assignment cost"
+                      description="Label for the total assignment cost in the assignment modal"
+                    />
+                  </div>
                   <div className="ml-auto">{formatPrice(totalAssignmentCost)}</div>
                 </Stack>
               </Stack>

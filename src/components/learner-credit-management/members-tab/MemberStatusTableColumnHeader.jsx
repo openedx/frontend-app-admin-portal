@@ -16,7 +16,7 @@ const MemberStatusTableColumnHeader = () => (
       key="status-column-tooltip"
       placement="top"
       overlay={(
-        <Tooltip>
+        <Tooltip id="status-column-tooltip">
           <div>Status of the member invitation.</div>
         </Tooltip>
       )}

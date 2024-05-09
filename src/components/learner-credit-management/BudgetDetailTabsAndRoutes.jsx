@@ -25,7 +25,7 @@ import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 
 import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
 import BudgetDetailCatalogTabContents from './BudgetDetailCatalogTabContents';
-import BudgetDetailMembersTabContents from './BudgetDetailMembersTabContents';
+import BudgetDetailMembersTabContents from './members-tab/BudgetDetailMembersTabContents';
 
 const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 
@@ -112,6 +112,7 @@ const BudgetDetailTabsAndRoutes = ({
     enterpriseGroupLearners,
     enterpriseFeatures,
     refreshMembersTab,
+    setRefreshMembersTab,
     ActivityTabElement: BudgetDetailActivityTabContents,
     CatalogTabElement: BudgetDetailCatalogTabContents,
     MembersTabElement: BudgetDetailMembersTabContents,

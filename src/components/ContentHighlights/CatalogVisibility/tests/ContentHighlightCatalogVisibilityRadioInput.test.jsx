@@ -13,7 +13,7 @@ import { useContentHighlightsContext } from '../../data/hooks';
 import ContentHighlightCatalogVisibilityRadioInput from '../ContentHighlightCatalogVisibilityRadioInput';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
-import { BUTTON_TEXT, TEST_COURSE_HIGHLIGHTS_DATA, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../../data/constants';
+import { TEST_COURSE_HIGHLIGHTS_DATA, LEARNER_PORTAL_CATALOG_VISIBILITY } from '../../data/constants';
 import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
 
 const mockStore = configureMockStore([thunk]);
@@ -90,8 +90,8 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
   });
   it('renders', () => {
     renderWithRouter(<ContentHighlightCatalogVisibilityRadioInputWrapper />);
-    expect(screen.getByText(BUTTON_TEXT.catalogVisibilityRadio1)).toBeTruthy();
-    expect(screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2)).toBeTruthy();
+    expect(screen.getByText('Learners can view and enroll into all courses in your catalog')).toBeTruthy();
+    expect(screen.getByText('Learners can only view and enroll into highlighted courses')).toBeTruthy();
   });
   it('Spinner 2 shows on radio 2 click', async () => {
     const mockUpdateEnterpriseCuration = jest.fn();
@@ -115,7 +115,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
       />
     ));
 
-    const viewHighlightedContentButton = screen.getByText(BUTTON_TEXT.catalogVisibilityRadio2);
+    const viewHighlightedContentButton = screen.getByText('Learners can only view and enroll into highlighted courses');
     const radio2LoadingStateInitial = screen.queryByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control`);
     const radio1CheckedState = screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control-button`).checked;
 
@@ -158,7 +158,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
         highlightSets={mockHighlightSetResponse}
       />,
     );
-    const viewAllContentButton = screen.getByText(BUTTON_TEXT.catalogVisibilityRadio1);
+    const viewAllContentButton = screen.getByText('Learners can view and enroll into all courses in your catalog');
     const radio1LoadingStateInitial = screen.queryByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.ALL_CONTENT.value}-form-control`);
     const radio2CheckedState = screen.getByTestId(`${LEARNER_PORTAL_CATALOG_VISIBILITY.HIGHLIGHTED_CONTENT.value}-form-control-button`).checked;
 

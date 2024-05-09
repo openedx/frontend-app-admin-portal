@@ -8,6 +8,7 @@ import { ArrowDownward } from '@edx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { generatePath, useParams, Link } from 'react-router-dom';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { formatPrice } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
@@ -21,6 +22,7 @@ const BudgetDetailPageOverviewUtilization = ({
   enterpriseId,
 }) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
+  const intl = useIntl();
   const { amountAllocatedUsd, amountRedeemedUsd } = budgetAggregates;
   const {
     BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE,
@@ -37,7 +39,17 @@ const BudgetDetailPageOverviewUtilization = ({
       return null;
     }
 
-    const linkText = (type === 'assigned') ? 'View assigned activity' : 'View spent activity';
+    const linkText = (type === 'assigned')
+      ? intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.utilization.view.assigned',
+        defaultMessage: 'View assigned activity',
+        description: 'Link text for the view assigned activity link on the budget detail page',
+      })
+      : intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.utilization.view.spent',
+        defaultMessage: 'View spent activity',
+        description: 'Link text for the view spent activity link on the budget detail page',
+      });
     const eventNameType = (type === 'assigned')
       ? BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE
       : BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE;
@@ -67,7 +79,15 @@ const BudgetDetailPageOverviewUtilization = ({
     <Collapsible
       className="mt-4 budget-utilization-container"
       styling="basic"
-      title={<h6 className="mb-0">Utilization details</h6>}
+      title={(
+        <h6 className="mb-0">
+          <FormattedMessage
+            id="lcm.budget.detail.page.overview.utilization.collapsible.title"
+            defaultMessage="Utilization details"
+            description="Title for the utilization details collapsible section on the budget detail page"
+          />
+        </h6>
+)}
       onToggle={(open) => sendEnterpriseTrackEvent(
         enterpriseId,
         BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
@@ -80,16 +100,32 @@ const BudgetDetailPageOverviewUtilization = ({
         <Row>
           <Col lg={7}>
             <Stack className="border border-light-400 p-4">
-              <h4 className="text-primary-500">Utilized</h4>
+              <h4 className="text-primary-500">
+                <FormattedMessage
+                  id="lcm.budget.detail.page.overview.utilization.title"
+                  defaultMessage="Utilized"
+                  description="Title for the utilized amount on the budget detail page"
+                />
+              </h4>
               <Stack direction="vertical" gap={1}>
                 <h1 data-testid="budget-utilization-amount">{formatPrice(utilized)}</h1>
                 <p className="micro">
-                  Your total utilization includes both assigned funds (earmarked for future enrollment) and spent
-                  funds (redeemed for enrollment).
+                  <FormattedMessage
+                    id="lcm.budget.detail.page.overview.utilization.description"
+                    defaultMessage="Your total utilization includes both assigned funds (earmarked for future enrollment) and spent
+                    funds (redeemed for enrollment)"
+                    description="Description for the utilization details on the budget detail page"
+                  />
                 </p>
                 <Stack className="small">
                   <Row>
-                    <Col xl={3} className="mt-auto mb-auto">Amount assigned</Col>
+                    <Col xl={3} className="mt-auto mb-auto">
+                      <FormattedMessage
+                        id="lcm.budget.detail.page.overview.utilization.assigned"
+                        defaultMessage="Amount assigned"
+                        description="Label for the amount assigned on the budget detail page"
+                      />
+                    </Col>
                     <Col className="mt-auto mb-auto text-right" data-testid="budget-utilization-assigned">
                       {formatPrice(amountAllocatedUsd)}
                     </Col>
@@ -101,7 +137,13 @@ const BudgetDetailPageOverviewUtilization = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Col xl={3} className="mt-auto mb-auto">Amount spent</Col>
+                    <Col xl={3} className="mt-auto mb-auto">
+                      <FormattedMessage
+                        id="lcm.budget.detail.page.overview.utilization.spent"
+                        defaultMessage="Amount spent"
+                        description="Label for the amount spent on the budget detail page"
+                      />
+                    </Col>
                     <Col className="mt-auto mb-auto text-right" data-testid="budget-utilization-spent">
                       {formatPrice(amountRedeemedUsd)}
                     </Col>

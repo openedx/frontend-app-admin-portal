@@ -11,6 +11,7 @@ import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import CouponCodeTabs from '../CouponCodeTabs';
 import {
@@ -59,20 +60,22 @@ const CouponCodeTabsWrapper = ({
     [subsidyRequestConfiguration, subsidyRequestsCounts],
   );
   return (
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[route]}>
-        <Routes>
-          <Route
-            path="/:enterpriseSlug/admin/coupons/:couponCodesTab"
-            element={(
-              <SubsidyRequestsContext.Provider value={contextValue}>
-                <CouponCodeTabs />
-              </SubsidyRequestsContext.Provider>
+    <IntlProvider locale="en">
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[route]}>
+          <Routes>
+            <Route
+              path="/:enterpriseSlug/admin/coupons/:couponCodesTab"
+              element={(
+                <SubsidyRequestsContext.Provider value={contextValue}>
+                  <CouponCodeTabs />
+                </SubsidyRequestsContext.Provider>
             )}
-          />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
+            />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    </IntlProvider>
   );
 };
 

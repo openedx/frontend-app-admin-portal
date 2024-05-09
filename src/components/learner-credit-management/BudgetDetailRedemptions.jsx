@@ -5,6 +5,7 @@ import { Hyperlink } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
 import { useBudgetId, useBudgetRedemptions } from './data';
 
@@ -36,18 +37,39 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
 
   return (
     <section data-testid="spent-section">
-      <h3 className="mb-3" ref={spentHeadingRef}>Spent</h3>
+      <h3 className="mb-3" ref={spentHeadingRef}>
+        <FormattedMessage
+          id="lcm.budget.detail.page.spent.heading"
+          defaultMessage="Spent"
+          description="Heading for the spent section of the budget detail page"
+        />
+      </h3>
       <p className="small mb-4">
-        Spent activity is driven by completed enrollments.{' '}
+        <FormattedMessage
+          id="lcm.budget.detail.page.spent.description"
+          defaultMessage="Spent activity is driven by completed enrollments."
+          description="Description for the spent section of the budget detail page"
+        />
         {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) ? (
-          <>
-            Enrollment data is automatically updated every 12 hours.
-            Come back later to view more recent enrollments.
-          </>
+          <FormattedMessage
+            id="lcm.budget.detail.page.spent.description.enterprise"
+            defaultMessage="Enrollment data is automatically updated every 12 hours. Come back later to view more recent enrollments."
+            description="Description for the spent section of the budget detail page for enterprise users"
+          />
         ) : (
-          <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
-            Learn more
-          </Hyperlink>
+          <FormattedMessage
+            id="lcm.budget.detail.page.spent.description.learn.more"
+            defaultMessage="<a>Learn more</a>"
+            description="Description for the spent section of the budget detail page with a link to learn more"
+            values={{
+              // eslint-disable-next-line react/no-unstable-nested-components
+              a: (chunks) => (
+                <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+                  {chunks}
+                </Hyperlink>
+              ),
+            }}
+          />
         )}
       </p>
       <LearnerCreditAllocationTable

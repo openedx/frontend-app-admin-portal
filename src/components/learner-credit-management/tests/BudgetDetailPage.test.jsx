@@ -21,7 +21,6 @@ import {
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
   useEnterpriseGroupLearners,
-  useEnterpriseGroupMembersTableData,
   useIsLargeOrGreater,
   useSubsidySummaryAnalyticsApi,
   useEnterpriseOffer,
@@ -482,227 +481,6 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByTestId('budget-detail-limit')).toHaveTextContent(expected.limit);
     }
   });
-  it('does not render members tab if no members exist', async () => {
-    const initialState = {
-      portalConfiguration: {
-        ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
-      },
-    };
-    useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
-      activeTabKey: 'activity',
-      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
-    });
-    useSubsidyAccessPolicy.mockReturnValue({
-      isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
-    });
-    useBudgetDetailActivityOverview.mockReturnValue({
-      isLoading: false,
-      data: mockEmptyStateBudgetDetailActivityOverview,
-    });
-    useBudgetRedemptions.mockReturnValue({
-      isLoading: false,
-      budgetRedemptions: mockEmptyBudgetRedemptions,
-      fetchBudgetRedemptions: jest.fn(),
-    });
-    useEnterpriseGroupLearners.mockReturnValue({
-      data: {
-        count: 0,
-        currentPage: 1,
-        next: null,
-        numPages: 1,
-        results: [],
-      },
-    });
-    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-    expect(screen.queryByTestId('group-members-tab')).not.toBeInTheDocument();
-  });
-  it('does renders the members tab if members exist', async () => {
-    const initialState = {
-      portalConfiguration: {
-        ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
-      },
-    };
-    useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
-      activeTabKey: 'activity',
-    });
-    useSubsidyAccessPolicy.mockReturnValue({
-      isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
-    });
-    useBudgetDetailActivityOverview.mockReturnValue({
-      isLoading: false,
-      data: mockEmptyStateBudgetDetailActivityOverview,
-    });
-    useBudgetRedemptions.mockReturnValue({
-      isLoading: false,
-      budgetRedemptions: mockEmptyBudgetRedemptions,
-      fetchBudgetRedemptions: jest.fn(),
-    });
-    useEnterpriseGroupLearners.mockReturnValue({
-      data: {
-        count: 1,
-        currentPage: 1,
-        next: null,
-        numPages: 1,
-        results: {
-          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
-          learnerId: 4382,
-          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-        },
-      },
-    });
-    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-    await waitFor(() => expect(screen.queryByTestId('group-members-tab')).toBeInTheDocument());
-  });
-  it('renders group members table data fetched by useEnterpriseGroupMembersTableData', async () => {
-    const initialState = {
-      portalConfiguration: {
-        ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
-      },
-    };
-    useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
-      activeTabKey: 'members',
-    });
-    useSubsidyAccessPolicy.mockReturnValue({
-      isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
-    });
-    useBudgetDetailActivityOverview.mockReturnValue({
-      isLoading: false,
-      data: mockEmptyStateBudgetDetailActivityOverview,
-    });
-    useBudgetRedemptions.mockReturnValue({
-      isLoading: false,
-      budgetRedemptions: mockEmptyBudgetRedemptions,
-      fetchBudgetRedemptions: jest.fn(),
-    });
-    useEnterpriseGroupLearners.mockReturnValue({
-      data: {
-        count: 1,
-        currentPage: 1,
-        next: null,
-        numPages: 1,
-        results: {
-          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
-          learnerId: 4382,
-          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-        },
-      },
-    });
-    useEnterpriseGroupMembersTableData.mockReturnValue({
-      isLoading: false,
-      enterpriseGroupMembersTableData: {
-        itemCount: 1,
-        pageCount: 1,
-        results: [{
-          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-          status: 'pending',
-          recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
-        }],
-      },
-      fetchEnterpriseGroupMembersTableData: jest.fn(),
-    });
-    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-    await waitFor(() => expect(screen.queryByText('foobar@test.com')).toBeInTheDocument());
-  });
-  it('passes proper sorting and filter args to fetchEnterpriseGroupMembersData', async () => {
-    const initialState = {
-      portalConfiguration: {
-        ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
-      },
-    };
-    useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
-      activeTabKey: 'members',
-    });
-    useSubsidyAccessPolicy.mockReturnValue({
-      isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
-    });
-    useBudgetDetailActivityOverview.mockReturnValue({
-      isLoading: false,
-      data: mockEmptyStateBudgetDetailActivityOverview,
-    });
-    useBudgetRedemptions.mockReturnValue({
-      isLoading: false,
-      budgetRedemptions: mockEmptyBudgetRedemptions,
-      fetchBudgetRedemptions: jest.fn(),
-    });
-    useEnterpriseGroupLearners.mockReturnValue({
-      data: {
-        count: 1,
-        currentPage: 1,
-        next: null,
-        numPages: 1,
-        results: {
-          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
-          learnerId: 4382,
-          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-        },
-      },
-    });
-    const mockFetchEnterpriseGroupMembersTableData = jest.fn();
-    useEnterpriseGroupMembersTableData.mockReturnValue({
-      isLoading: false,
-      enterpriseGroupMembersTableData: {
-        itemCount: 1,
-        pageCount: 1,
-        results: [{
-          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-          status: 'pending',
-          recentAction: 'Pending: April 02, 2024',
-          memberEnrollments: 0,
-        }],
-      },
-      fetchEnterpriseGroupMembersTableData: mockFetchEnterpriseGroupMembersTableData,
-    });
-    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-
-    userEvent.click(screen.getByTestId('members-table-status-column-header'));
-    await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
-      filters: [],
-      pageIndex: 0,
-      pageSize: 10,
-      sortBy: [{ desc: false, id: 'status' }],
-    }));
-
-    userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
-    await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
-      filters: [],
-      pageIndex: 0,
-      pageSize: 10,
-      sortBy: [{ desc: false, id: 'memberEnrollment' }],
-    }));
-
-    userEvent.type(screen.getByText('Search by member details'), 'foobar');
-    await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
-      filters: [{ id: 'memberDetails', value: 'foobar' }],
-      pageIndex: 0,
-      pageSize: 10,
-      sortBy: [{ desc: false, id: 'memberEnrollment' }],
-    }));
-  });
   it('does not render bne zero state when the groups feature flag disabled', async () => {
     const initialState = {
       portalConfiguration: {
@@ -917,10 +695,10 @@ describe('<BudgetDetailPage />', () => {
     const spentSection = within(screen.getByTestId('spent-section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
     expect(spentSection.getByText('Spent activity is driven by completed enrollments.', { exact: false })).toBeInTheDocument();
-    const isSubsidyAccessPolicyWithAnalyicsApi = (
+    const isSubsidyAccessPolicyWithAnalyticsApi = (
       budgetId === mockSubsidyAccessPolicyUUID && !isTopDownAssignmentEnabled
     );
-    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyicsApi) {
+    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyticsApi) {
       // This copy is only present when the "Spent" table is backed by the
       // analytics API (i.e., budget is an enterprise offer or a subsidy access
       // policy with the LC2 feature flag disabled).
