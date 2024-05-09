@@ -53,7 +53,7 @@ const InviteModalBudgetCard = ({
     isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
-  if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer || memberCount !== null)) {
+  if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer)) {
     return (
       <div data-testid="budget-detail-skeleton">
         <Skeleton height={180} />

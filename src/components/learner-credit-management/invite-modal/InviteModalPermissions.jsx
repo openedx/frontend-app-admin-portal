@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Icon, Stack } from '@edx/paragon';
 import { Check } from '@edx/paragon/icons';
-import { logError } from '@edx/frontend-platform/logging';
-import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
+import useContentMetadata from '../data/hooks/useContentMetadata';
 
 const InviteModalPermissions = ({ subsidyAccessPolicy }) => {
   const { catalogUuid, policyType, spendLimit } = subsidyAccessPolicy;
-  const [courseCount, setCourseCount] = React.useState(0);
+  const { data } = useContentMetadata(catalogUuid);
+
   const getPolicyType = () => {
     if (policyType === 'PerLearnerEnrollmentCreditAccessPolicy') {
       return 'First come, first served';
@@ -16,16 +16,7 @@ const InviteModalPermissions = ({ subsidyAccessPolicy }) => {
     }
     return '';
   };
-  const getCatalogCourseCount = useCallback(async () => {
-    try {
-      const response = await EnterpriseCatalogApiService.fetchEnterpriseCatalogMetadata({ catalogUuid });
-      setCourseCount(response.data.count);
-    } catch (error) {
-      logError(error);
-      throw error;
-    }
-  }, [catalogUuid]);
-  getCatalogCourseCount();
+
   return (
     <>
       <h5 className="mb-2 mt-4">Member permissions</h5>
@@ -35,7 +26,7 @@ const InviteModalPermissions = ({ subsidyAccessPolicy }) => {
           <Card.Footer className="p-0 justify-content-between" orientation="horizontal">
             <span>
               Browse this budget&apos;s catalog
-              <p className="micro pt-1 mb-0">{courseCount} courses</p>
+              <p className="micro pt-1 mb-0">{data?.count} courses</p>
             </span>
             <Icon src={Check} className="mr-2" />
           </Card.Footer>

@@ -12,8 +12,9 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import EnterpriseCatalogApiService from '../../../../data/services/EnterpriseCatalogApiService';
-import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
+import {
+  useBudgetId, useEnterpriseGroupLearners, useSubsidyAccessPolicy, useContentMetadata,
+} from '../../data';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../cards/data';
 
 import { queryClient } from '../../../test/testUtils';
@@ -28,6 +29,8 @@ jest.mock('../../data', () => ({
   ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
+  useEnterpriseGroupLearners: jest.fn(),
+  useContentMetadata: jest.fn(),
 }));
 jest.mock('../../../../data/services/LmsApiService');
 jest.mock('../../../../data/services/EnterpriseCatalogApiService');
@@ -71,11 +74,6 @@ const defaultBudgetDetailPageContextValue = {
   },
 };
 
-const mockCatalogContentMetadata = {
-  count: 5280,
-  results: [],
-};
-
 const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
 const defaultProps = {
   isOpen: true,
@@ -107,10 +105,8 @@ describe('<InviteMemberModal />', () => {
       data: mockSubsidyAccessPolicy,
       isLoading: false,
     });
-    const mockFetchMetadata = jest.spyOn(EnterpriseCatalogApiService, 'fetchEnterpriseCatalogMetadata');
-    mockFetchMetadata.mockResolvedValue({ status: 200, data: { count: 5280 } });
-    const mockFetchLearners = jest.spyOn(LmsApiService, 'fetchEnterpriseGroupLearners');
-    mockFetchLearners.mockResolvedValue({ status: 200, data: { count: 3 } });
+    useContentMetadata.mockReturnValue({ data: { count: 5280 } });
+    useEnterpriseGroupLearners.mockReturnValue({ data: { count: 3 } });
   });
 
   afterEach(() => {
