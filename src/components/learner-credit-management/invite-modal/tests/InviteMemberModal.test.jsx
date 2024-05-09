@@ -2,6 +2,9 @@ import React from 'react';
 import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -9,7 +12,9 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
+import {
+  useBudgetId, useEnterpriseGroupLearners, useSubsidyAccessPolicy, useContentMetadata,
+} from '../../data';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../cards/data';
 
 import { queryClient } from '../../../test/testUtils';
@@ -20,13 +25,31 @@ jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQueryClient: jest.fn(),
 }));
-
 jest.mock('../../data', () => ({
   ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
+  useEnterpriseGroupLearners: jest.fn(),
+  useContentMetadata: jest.fn(),
 }));
 jest.mock('../../../../data/services/LmsApiService');
+jest.mock('../../../../data/services/EnterpriseCatalogApiService');
+
+const mockStore = configureMockStore([thunk]);
+const getMockStore = store => mockStore(store);
+const enterpriseSlug = 'test-enterprise';
+const enterpriseUUID = '1234';
+const initialStoreState = {
+  portalConfiguration: {
+    enterpriseId: enterpriseUUID,
+    enterpriseSlug,
+    enableLearnerPortal: true,
+    enterpriseFeatures: {
+      topDownAssignmentRealTimeLcm: true,
+      enterpriseGroupsV1: true,
+    },
+  },
+};
 
 const mockSubsidyAccessPolicy = {
   uuid: 'test-subsidy-access-policy-uuid',
@@ -58,16 +81,22 @@ const defaultProps = {
 };
 
 const InviteModalWrapper = ({
+  initialState = initialStoreState,
   budgetDetailPageContextValue = defaultBudgetDetailPageContextValue,
-}) => (
-  <IntlProvider locale="en">
-    <QueryClientProvider client={queryClient()}>
-      <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
-        <InviteMembersModalWrapper {...defaultProps} />
-      </BudgetDetailPageContext.Provider>
-    </QueryClientProvider>
-  </IntlProvider>
-);
+}) => {
+  const store = getMockStore({ ...initialState });
+  return (
+    <IntlProvider locale="en">
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient()}>
+          <BudgetDetailPageContext.Provider value={budgetDetailPageContextValue}>
+            <InviteMembersModalWrapper {...defaultProps} />
+          </BudgetDetailPageContext.Provider>
+        </QueryClientProvider>
+      </Provider>
+    </IntlProvider>
+  );
+};
 
 describe('<InviteMemberModal />', () => {
   beforeEach(() => {
@@ -76,6 +105,8 @@ describe('<InviteMemberModal />', () => {
       data: mockSubsidyAccessPolicy,
       isLoading: false,
     });
+    useContentMetadata.mockReturnValue({ data: { count: 5280 } });
+    useEnterpriseGroupLearners.mockReturnValue({ data: { count: 3 } });
   });
 
   afterEach(() => {
@@ -87,7 +118,15 @@ describe('<InviteMemberModal />', () => {
     expect(screen.getByText('New members')).toBeInTheDocument();
     expect(screen.getByText('Invite members to this budget')).toBeInTheDocument();
     expect(screen.getByText('Member email addresses')).toBeInTheDocument();
+    expect(screen.getByText('Members are invited')).toBeInTheDocument();
+    expect(screen.getByText('Newly invited members are immediately notified by email.')).toBeInTheDocument();
+    expect(screen.getByText('Members can browse and learn')).toBeInTheDocument();
+    expect(screen.getByText('Managing members')).toBeInTheDocument();
+    // some dropdowns shouldn't be expanded
+    expect(screen.queryByText('Members can be removed at any time from this budget\'s Members tab.')).not.toBeInTheDocument();
     expect(screen.getByText('Details')).toBeInTheDocument();
+    expect(screen.getByText('Member permissions')).toBeInTheDocument();
+    expect(screen.getByText('Browse this budget\'s catalog')).toBeInTheDocument();
   });
   it('allows manual input of emails', async () => {
     render(<InviteModalWrapper />);
