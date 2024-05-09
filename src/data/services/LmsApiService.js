@@ -438,8 +438,11 @@ class LmsApiService {
   };
 
   static fetchEnterpriseGroupLearners = async (groupUuid, options) => {
-    const queryParams = new URLSearchParams(options);
-    const enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
+    let enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners`;
+    if (options) {
+      const queryParams = new URLSearchParams(options);
+      enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
+    }
     return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
   };
 

@@ -1,25 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Card, Skeleton } from '@edx/paragon';
+import {
+  Card, Col, Row, Skeleton,
+} from '@edx/paragon';
+import { makePlural } from '../../../utils';
 
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   useBudgetDetailHeaderData,
   useBudgetId,
+  useEnterpriseGroupLearners,
   useEnterpriseOffer, useSubsidyAccessPolicy,
   useSubsidySummaryAnalyticsApi,
-} from './data';
-import BudgetDetailPageOverviewAvailability from './BudgetDetailPageOverviewAvailability';
-import BudgetDetailPageOverviewUtilization from './BudgetDetailPageOverviewUtilization';
-import { BUDGET_TYPES } from '../EnterpriseApp/data/constants';
-import BudgetStatusSubtitle from './BudgetStatusSubtitle';
+} from '../data';
+import BudgetDetail from '../BudgetDetail';
+import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
+import BudgetStatusSubtitle from '../BudgetStatusSubtitle';
 
-const BudgetOverviewContent = ({
+const InviteModalBudgetCard = ({
   enterpriseUUID,
   enterpriseFeatures,
 }) => {
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { data } = useEnterpriseGroupLearners(subsidyAccessPolicy.groupAssociations[0]);
+
+  const memberSubtitle = data?.count ? `${makePlural(data?.count, 'current member')}` : '';
   const budgetType = (enterpriseOfferId !== null) ? BUDGET_TYPES.ecommerce : BUDGET_TYPES.policy;
 
   const { isLoading: isLoadingSubsidySummary, subsidySummary } = useSubsidySummaryAnalyticsApi(
@@ -29,14 +35,11 @@ const BudgetOverviewContent = ({
   );
 
   const { isLoading: isLoadingEnterpriseOffer, data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
   const policyOrOfferId = subsidyAccessPolicyId || enterpriseOfferId;
   const {
-    budgetId,
     budgetDisplayName,
     budgetTotalSummary,
-    budgetAggregates,
     status,
     badgeVariant,
     term,
@@ -54,42 +57,33 @@ const BudgetOverviewContent = ({
     return (
       <div data-testid="budget-detail-skeleton">
         <Skeleton height={180} />
-        <span className="sr-only">
-          <FormattedMessage
-            id="lcm.budget.detail.page.overview.loading"
-            defaultMessage="Loading budget header data"
-            description="Loading budget header data"
-          />
-        </span>
+        <span className="sr-only">Loading budget header data</span>
       </div>
     );
   }
 
+  const { available, utilized, limit } = budgetTotalSummary;
   return (
-    <Card>
+    <Card className="budget-overview-card m-3">
       <Card.Section>
-        <h2>{budgetDisplayName}</h2>
-        <BudgetStatusSubtitle
-          badgeVariant={badgeVariant}
-          status={status}
-          isAssignable={isAssignable}
-          term={term}
-          date={date}
-          policy={subsidyAccessPolicy}
-          enterpriseUUID={enterpriseUUID}
-        />
-        <BudgetDetailPageOverviewAvailability
-          budgetId={budgetId}
-          budgetTotalSummary={budgetTotalSummary}
-          isAssignable={isAssignable}
-          status={status}
-        />
-        <BudgetDetailPageOverviewUtilization
-          budgetId={budgetId}
-          budgetTotalSummary={budgetTotalSummary}
-          budgetAggregates={budgetAggregates}
-          isAssignable={isAssignable}
-        />
+        <Row>
+          <Col lg={5}>
+            <h4>{budgetDisplayName}</h4>
+            <p>{memberSubtitle}</p>
+            <BudgetStatusSubtitle
+              badgeVariant={badgeVariant}
+              status={status}
+              isAssignable={isAssignable}
+              term={term}
+              date={date}
+              policy={subsidyAccessPolicy}
+              enterpriseUUID={enterpriseUUID}
+            />
+          </Col>
+          <Col lg={7}>
+            <BudgetDetail available={available} utilized={utilized} limit={limit} status={status} />
+          </Col>
+        </Row>
       </Card.Section>
     </Card>
   );
@@ -100,11 +94,11 @@ const mapStateToProps = state => ({
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
-BudgetOverviewContent.propTypes = {
+InviteModalBudgetCard.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
 };
 
-export default connect(mapStateToProps)(BudgetOverviewContent);
+export default connect(mapStateToProps)(InviteModalBudgetCard);
