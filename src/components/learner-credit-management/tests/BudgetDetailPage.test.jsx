@@ -233,6 +233,14 @@ describe('<BudgetDetailPage />', () => {
         activeIntegrations: ['BLACKBOARD'],
       },
     });
+
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        enterpriseGroupLearners: {
+          count: 40,
+        },
+      },
+    });
   });
 
   it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
