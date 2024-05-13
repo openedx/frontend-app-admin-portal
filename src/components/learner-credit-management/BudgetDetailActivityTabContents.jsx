@@ -43,6 +43,20 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   const renderBnEActivity = isEnterpriseGroupsEnabled && (enterpriseOfferId == null) && !hasSpentTransactions;
 
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
+    if (isEnterpriseGroupsEnabled) {
+      return (
+        <>
+          {renderBnEActivity
+            && (
+              <NoBnEBudgetActivity
+                openInviteModal={openInviteModal}
+                isEnterpriseGroupsEnabled={isEnterpriseGroupsEnabled}
+              />
+            )}
+          {hasSpentTransactions && <BudgetDetailRedemptions />}
+        </>
+      );
+    }
     return (
       <>
         {renderBnEActivity && (<NoBnEBudgetActivity openInviteModal={openInviteModal} />)}
