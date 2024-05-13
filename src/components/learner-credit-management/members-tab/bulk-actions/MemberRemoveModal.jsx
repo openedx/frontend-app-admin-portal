@@ -6,10 +6,12 @@ import {
 } from '@edx/paragon';
 import { RemoveCircle } from '@edx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { useRequestState } from '../../../subscriptions/licenses/LicenseManagementModals/LicenseManagementModalHook';
 import { configuration } from '../../../../config';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
 
 /**
  * Returns StatefulButton labels
@@ -41,18 +43,21 @@ const MemberRemoveModal = ({
   groupUuid,
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
-
+  console.log('here')
   const buttonLabels = generateRemoveModalSubmitLabel(totalToRemove);
 
   const title = `Remove member${removeAllUsers || totalToRemove > 1 ? 's' : ''}?`;
-
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  console.log(subsidyAccessPolicy)
   const handleSubmit = useCallback(async () => {
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = () => {
       const userEmailsToRemove = usersToRemove.map((user) => user.original.memberDetails.userEmail);
-      const requestBody = {
-        learner_emails: userEmailsToRemove,
-      };
+      const requestBody = snakeCaseObject({
+        learnerEmails: userEmailsToRemove,
+        catalogUuid: subsidyAccessPolicy.catalogUuid,
+      });
       return LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, requestBody);
     };
 
