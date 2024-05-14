@@ -73,6 +73,7 @@ const MemberRemoveModal = ({
     onSuccess,
     setRequestState,
     groupUuid,
+    subsidyAccessPolicy,
   ]);
 
   const handleClose = () => {
