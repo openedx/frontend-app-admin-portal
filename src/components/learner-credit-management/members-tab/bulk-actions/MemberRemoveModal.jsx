@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import {
   ActionRow, Alert, Hyperlink, Icon, ModalDialog, Spinner, StatefulButton,
-} from '@edx/paragon';
-import { RemoveCircle } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { RemoveCircle } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { useRequestState } from '../../../subscriptions/licenses/LicenseManagementModals/LicenseManagementModalHook';

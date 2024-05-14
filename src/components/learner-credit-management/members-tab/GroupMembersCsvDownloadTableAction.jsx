@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ActionRow, AlertModal, Button } from '@edx/paragon';
-import { Download } from '@edx/paragon/icons';
+import { ActionRow, AlertModal, Button } from '@openedx/paragon';
+import { Download } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import snakeCase from 'lodash/snakeCase';
 import { saveAs } from 'file-saver';

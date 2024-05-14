@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Badge, Icon, OverlayTrigger, Stack, Tooltip,
-} from '@edx/paragon';
-import { GroupAdd, Groups, ManageAccounts } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { GroupAdd, Groups, ManageAccounts } from '@openedx/paragon/icons';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { formatDate, useEnterpriseCustomer, useEnterpriseGroup } from './data';

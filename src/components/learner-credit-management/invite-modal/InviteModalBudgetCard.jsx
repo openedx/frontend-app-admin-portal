@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Card, Col, Row, Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { makePlural } from '../../../utils';
 
 import {
