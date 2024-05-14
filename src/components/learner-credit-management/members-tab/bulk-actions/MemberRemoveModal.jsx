@@ -43,13 +43,11 @@ const MemberRemoveModal = ({
   groupUuid,
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
-  console.log('here')
   const buttonLabels = generateRemoveModalSubmitLabel(totalToRemove);
 
   const title = `Remove member${removeAllUsers || totalToRemove > 1 ? 's' : ''}?`;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  console.log(subsidyAccessPolicy)
   const handleSubmit = useCallback(async () => {
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = () => {
