@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { Container, Tabs, Tab } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -27,6 +28,7 @@ const ContentHighlightsDashboard = () => {
   const highlightSets = enterpriseCuration?.highlightSets;
   const [activeTab, setActiveTab] = useState(TAB_TITLES.highlights);
   const [isHighlightSetCreated, setIsHighlightSetCreated] = useState(false);
+  const intl = useIntl();
   const sendTrackEventTabSwitch = (tab) => {
     const trackInfo = {
       active_tab: tab,
@@ -54,13 +56,21 @@ const ContentHighlightsDashboard = () => {
       >
         <Tab
           eventKey={camelCaseObject(TAB_TITLES.highlights)}
-          title={TAB_TITLES.highlights}
+          title={intl.formatMessage({
+            id: 'highlights.highlights.tab.title',
+            defaultMessage: 'Highlights',
+            description: 'Tab title for highlights tab',
+          })}
         >
           {isHighlightSetCreated ? <CurrentContentHighlights /> : <ZeroStateHighlights />}
         </Tab>
         <Tab
           eventKey={camelCaseObject(TAB_TITLES.catalogVisibility)}
-          title={TAB_TITLES.catalogVisibility}
+          title={intl.formatMessage({
+            id: 'highlights.catalog.visibiliy.tab.title',
+            defaultMessage: 'Catalog Visibility',
+            description: 'Tab title for catalog visibility tab',
+          })}
         >
           <ContentHighlightCatalogVisibility />
         </Tab>

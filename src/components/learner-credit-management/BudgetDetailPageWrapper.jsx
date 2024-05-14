@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Container, Toast } from '@openedx/paragon';
+import { Container, Toast, useToggle } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import Hero from '../Hero';
 import {
@@ -10,8 +11,7 @@ import {
   useSuccessfulReminderToastContextValue,
 } from './data';
 import useSuccessfulInvitationToastContextValue from './data/hooks/useSuccessfulInvitationToastContextValue';
-
-const PAGE_TITLE = 'Learner Credit Management';
+import useSuccessfulRemovalToastContextValue from './data/hooks/useSuccessfulRemovalToastContextValue';
 
 export const BudgetDetailPageContext = React.createContext();
 
@@ -34,6 +34,12 @@ const BudgetDetailPageWrapper = ({
   includeHero,
   children,
 }) => {
+  const intl = useIntl();
+  const PAGE_TITLE = intl.formatMessage({
+    id: 'lcm.budget.detail.page.title',
+    defaultMessage: 'Learner Credit Management',
+    description: 'The title of the budget detail page',
+  });
   // display name is an optional field, and may not be set for all budgets so fallback to "Overview"
   // similar to the display name logic for budgets on the overview page route.
   const budgetDisplayName = getBudgetDisplayName({ subsidyAccessPolicy, enterpriseOffer });
@@ -43,6 +49,7 @@ const BudgetDetailPageWrapper = ({
   const successfulCancellationToast = useSuccessfulCancellationToastContextValue();
   const successfulReminderToast = useSuccessfulReminderToastContextValue();
   const successfulInvitationToast = useSuccessfulInvitationToastContextValue();
+  const successfulRemovalToast = useSuccessfulRemovalToastContextValue();
 
   const {
     isSuccessfulAssignmentAllocationToastOpen,
@@ -68,12 +75,28 @@ const BudgetDetailPageWrapper = ({
     closeToastForInvitation,
   } = successfulInvitationToast;
 
+  const {
+    isSuccessfulRemovalToastOpen,
+    successfulRemovalToastMessage,
+    closeToastForRemoval,
+  } = successfulRemovalToast;
+
+  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
+
   const values = useMemo(() => ({
     successfulAssignmentToast,
     successfulCancellationToast,
     successfulReminderToast,
     successfulInvitationToast,
-  }), [successfulAssignmentToast, successfulCancellationToast, successfulReminderToast, successfulInvitationToast]);
+    successfulRemovalToast,
+    inviteModalIsOpen,
+    openInviteModal,
+    closeInviteModal,
+  }), [
+    successfulAssignmentToast, successfulCancellationToast,
+    successfulReminderToast, successfulInvitationToast,
+    inviteModalIsOpen, openInviteModal, closeInviteModal,
+    successfulRemovalToast]);
 
   return (
     <BudgetDetailPageContext.Provider value={values}>
@@ -115,6 +138,12 @@ const BudgetDetailPageWrapper = ({
         show={isSuccessfulInvitationToastOpen}
       >
         {successfulInvitationToastMessage}
+      </Toast>
+      <Toast
+        onClose={closeToastForRemoval}
+        show={isSuccessfulRemovalToastOpen}
+      >
+        {successfulRemovalToastMessage}
       </Toast>
     </BudgetDetailPageContext.Provider>
   );

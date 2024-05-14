@@ -22,7 +22,7 @@ import ErrorReportingTable from './ErrorReportingTable';
 const SyncHistory = () => {
   // the simple redirect is used for going back to the lms page
   const vars = (window.location.pathname).split('lms/');
-  const redirectPath = `${vars[0]}lms/`;
+  const redirectPath = `${vars[0]}lms`;
   const configInfo = vars[1].split('/');
   const configChannel = configInfo[0];
   const configId = configInfo[1];

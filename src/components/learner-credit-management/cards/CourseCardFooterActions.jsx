@@ -4,11 +4,9 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import NewAssignmentModalButton from '../assignment-modal/NewAssignmentModalButton';
 import EVENT_NAMES from '../../../eventTracking';
-import CARD_TEXT from '../constants';
-
-const { BUTTON_ACTION } = CARD_TEXT;
 
 const CourseCardFooterActions = ({ enterpriseId, course }) => {
   const { linkToCourse, uuid } = course;
@@ -29,10 +27,18 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
       target="_blank"
       variant="outline-primary"
     >
-      {BUTTON_ACTION.viewCourse}
+      <FormattedMessage
+        id="lcm.budget.detail.page.catalog.tab.course.card.view.course"
+        defaultMessage="View course"
+        description="Button text to view course"
+      />
     </Button>,
     <NewAssignmentModalButton key="assignment-modal-trigger" course={course}>
-      {BUTTON_ACTION.assign}
+      <FormattedMessage
+        id="lcm.budget.detail.page.catalog.tab.course.card.assign"
+        defaultMessage="Assign"
+        description="Button text to assign course"
+      />
     </NewAssignmentModalButton>,
   ];
 };

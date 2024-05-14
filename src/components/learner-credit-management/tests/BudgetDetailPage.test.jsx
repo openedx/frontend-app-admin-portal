@@ -20,6 +20,7 @@ import {
   useBudgetRedemptions,
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
+  useEnterpriseGroupLearners,
   useIsLargeOrGreater,
   useSubsidySummaryAnalyticsApi,
   useEnterpriseOffer,
@@ -27,6 +28,8 @@ import {
   formatPrice,
   DEFAULT_PAGE,
   PAGE_SIZE,
+  useEnterpriseGroup,
+  useEnterpriseCustomer,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
@@ -56,12 +59,16 @@ jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
   useBudgetRedemptions: jest.fn(),
   useBudgetContentAssignments: jest.fn(),
+  useEnterpriseGroupLearners: jest.fn(),
+  useEnterpriseGroupMembersTableData: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
   useSubsidySummaryAnalyticsApi: jest.fn(),
   useEnterpriseOffer: jest.fn(),
   useBudgetDetailActivityOverview: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useCancelContentAssignments: jest.fn(),
+  useEnterpriseGroup: jest.fn(),
+  useEnterpriseCustomer: jest.fn(),
 }));
 
 jest.mock('../../../data/services/EnterpriseAccessApiService');
@@ -210,6 +217,30 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       data: {},
     });
+
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: true,
+        enterpriseCustomer: 'test-customer-uuid',
+        name: 'test-name',
+        uuid: 'test-uuid',
+      },
+    });
+
+    useEnterpriseCustomer.mockReturnValue({
+      data: {
+        uuid: 'test-customer-uuid',
+        activeIntegrations: ['BLACKBOARD'],
+      },
+    });
+
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        enterpriseGroupLearners: {
+          count: 40,
+        },
+      },
+    });
   });
 
   it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
@@ -246,11 +277,19 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: { ...mockAssignableSubsidyAccessPolicy, displayName },
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
     });
-
     const expectedDisplayName = displayName || 'Overview';
     renderWithRouter(<BudgetDetailPageWrapper />);
 
@@ -384,6 +423,15 @@ describe('<BudgetDetailPage />', () => {
       isLoading,
       data: subsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading,
       subsidySummary,
@@ -404,7 +452,6 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
-
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     if (isLoading) {
@@ -442,7 +489,6 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByTestId('budget-detail-limit')).toHaveTextContent(expected.limit);
     }
   });
-
   it('does not render bne zero state when the groups feature flag disabled', async () => {
     const initialState = {
       portalConfiguration: {
@@ -461,6 +507,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -492,6 +547,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
@@ -522,6 +586,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
@@ -537,7 +610,7 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
     const illustrationTestIds = ['name-your-members-illustration', 'members-browse-illustration', 'enroll-and-spend-illustration'];
     illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
-    expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
+    expect(screen.getByText('Invite more members', { selector: 'a' })).toBeInTheDocument();
   });
 
   it.each([
@@ -561,7 +634,7 @@ describe('<BudgetDetailPage />', () => {
       isTopDownAssignmentEnabled: false,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, false],
     },
-  ])('displays spend table in "Activity" tab with empty results (%s)', async ({
+  ])('displays spend table in "Activity" tab with empty results (%s) when enterpriseGroupsV1 feature is false', async ({
     budgetId,
     isTopDownAssignmentEnabled,
     expectedUseOfferRedemptionsArgs,
@@ -575,6 +648,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: undefined,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -597,6 +679,7 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+
     const storeState = {
       ...initialStoreState,
       portalConfiguration: {
@@ -604,6 +687,7 @@ describe('<BudgetDetailPage />', () => {
         enterpriseFeatures: {
           ...initialStoreState.portalConfiguration.enterpriseFeatures,
           topDownAssignmentRealTimeLcm: isTopDownAssignmentEnabled,
+          enterpriseGroupsV1: false,
         },
       },
     };
@@ -618,13 +702,13 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.queryByText('Catalog')).not.toBeInTheDocument();
 
     // Spent table and messaging is visible within Activity tab contents
-    const spentSection = within(screen.getByText('Spent').closest('section'));
+    const spentSection = within(screen.getByTestId('spent-section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
     expect(spentSection.getByText('Spent activity is driven by completed enrollments.', { exact: false })).toBeInTheDocument();
-    const isSubsidyAccessPolicyWithAnalyicsApi = (
+    const isSubsidyAccessPolicyWithAnalyticsApi = (
       budgetId === mockSubsidyAccessPolicyUUID && !isTopDownAssignmentEnabled
     );
-    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyicsApi) {
+    if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyticsApi) {
       // This copy is only present when the "Spent" table is backed by the
       // analytics API (i.e., budget is an enterprise offer or a subsidy access
       // policy with the LC2 feature flag disabled).
@@ -642,6 +726,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -706,6 +799,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -796,6 +898,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
@@ -878,6 +989,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -969,6 +1089,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
@@ -1036,6 +1165,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -1225,6 +1363,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
@@ -1304,6 +1451,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: { ...mockAssignableSubsidyAccessPolicy, displayName },
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValueOnce({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
@@ -1325,6 +1481,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -1366,6 +1531,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
@@ -1398,6 +1572,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
@@ -1422,6 +1605,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
@@ -1441,6 +1633,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -1503,6 +1704,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: isActivityOverviewLoading,
       data: undefined,
@@ -1536,6 +1746,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -1597,6 +1816,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -1680,6 +1908,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
@@ -1754,7 +1991,6 @@ describe('<BudgetDetailPage />', () => {
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
-
   it('cancels a single assignment', async () => {
     EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
@@ -1771,6 +2007,15 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
     });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
@@ -1832,6 +2077,15 @@ describe('<BudgetDetailPage />', () => {
       isInitialLoading: false,
       data: mockAssignableSubsidyAccessPolicy,
     });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: {
@@ -1874,5 +2128,62 @@ describe('<BudgetDetailPage />', () => {
       () => expect(screen.getByText('Reminder sent')).toBeInTheDocument(),
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  });
+  it('displays the custom integrated channel budget card', () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: true,
+      data: undefined,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
+        },
+      },
+    });
+    renderWithRouter(
+      <BudgetDetailPageWrapper
+        initialState={initialState}
+      />,
+    );
+    expect(screen.getByText('• Enroll via Integrated Learning Platform')).toBeInTheDocument();
+    expect(screen.getByText('Manage edX in your integrated learning platform')).toBeInTheDocument();
   });
 });

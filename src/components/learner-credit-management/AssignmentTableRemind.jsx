@@ -4,6 +4,7 @@ import { Button } from '@openedx/paragon';
 import { Mail } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import useRemindContentAssignments from './data/hooks/useRemindContentAssignments';
 import RemindAssignmentModal from './RemindAssignmentModal';
 import { transformSelectedRows, useBudgetId, useSubsidyAccessPolicy } from './data';
@@ -128,7 +129,12 @@ const AssignmentTableRemindAction = ({
         iconBefore={Mail}
         onClick={openModal}
       >
-        {`Remind (${selectedRemindableRowCount})`}
+        <FormattedMessage
+          id="lcm.budget.detail.page.catalog.tab.course.card.remind"
+          defaultMessage="Remind ({selectedRemindableRowCount})"
+          description="Button text to remind learners"
+          values={{ selectedRemindableRowCount }}
+        />
       </Button>
       <RemindAssignmentModal
         remindContentAssignments={remindContentAssignments}

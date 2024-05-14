@@ -27,6 +27,7 @@ import EmbeddedSubscription from './EmbeddedSubscription';
 import { withLocation, withParams } from '../../hoc';
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
+import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -311,6 +312,7 @@ class Admin extends React.Component {
             <div className="container-fluid">
               <div className="row mt-4">
                 <div className="col">
+                  <BudgetExpiryAlertAndModal />
                   <h2>Overview</h2>
                 </div>
               </div>
@@ -367,22 +369,21 @@ class Admin extends React.Component {
                         <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
                           {lastUpdatedDate
                             && (
-                            <>
-                              Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                            </>
+                              <>
+                                Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
+                              </>
                             )}
-
                         </div>
                         <div className="col-12 col-md-6 col-xl-8">
                           {this.renderDownloadButton()}
                         </div>
                       </div>
                       {this.displaySearchBar() && (
-                      <AdminSearchForm
-                        searchParams={searchParams}
-                        searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                        tableData={this.getTableData() ? this.getTableData().results : []}
-                      />
+                        <AdminSearchForm
+                          searchParams={searchParams}
+                          searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
+                          tableData={this.getTableData() ? this.getTableData().results : []}
+                        />
                       )}
                     </>
                   )}

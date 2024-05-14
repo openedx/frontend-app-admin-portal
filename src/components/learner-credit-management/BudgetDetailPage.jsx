@@ -1,7 +1,10 @@
 import React from 'react';
 import { Skeleton, Stack } from '@openedx/paragon';
 
-import { useBudgetId, useEnterpriseOffer, useSubsidyAccessPolicy } from './data';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import {
+  useBudgetId, useEnterpriseGroupLearners, useEnterpriseOffer, useSubsidyAccessPolicy,
+} from './data';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailPageWrapper from './BudgetDetailPageWrapper';
 import BudgetDetailPageHeader from './BudgetDetailPageHeader';
@@ -19,8 +22,17 @@ const BudgetDetailPage = () => {
     data: enterpriseOffer,
     isInitialLoading: isEnterpriseOfferInitialLoading,
   } = useEnterpriseOffer(enterpriseOfferId);
+  let groupUuid;
+  if (subsidyAccessPolicy?.groupAssociations?.length) {
+    [groupUuid] = subsidyAccessPolicy.groupAssociations;
+  }
+  const {
+    data: enterpriseGroupLearners,
+    isInitialLoading: isEnterpriseGroupInitialLoading,
+  } = useEnterpriseGroupLearners(groupUuid);
 
-  const isLoading = isSubsidyAccessPolicyInitialLoading || isEnterpriseOfferInitialLoading;
+  const isLoading = isSubsidyAccessPolicyInitialLoading || isEnterpriseOfferInitialLoading
+    || isEnterpriseGroupInitialLoading;
 
   if (isLoading) {
     return (
@@ -29,7 +41,13 @@ const BudgetDetailPage = () => {
         <Skeleton height={50} />
         <Skeleton height={360} />
         <Skeleton height={360} />
-        <span className="sr-only">loading budget details</span>
+        <span className="sr-only">
+          <FormattedMessage
+            id="lcm.budget.detail.page.loading"
+            defaultMessage="loading budget details"
+            description="loading budget details"
+          />
+        </span>
       </BudgetDetailPageWrapper>
     );
   }
@@ -47,7 +65,7 @@ const BudgetDetailPage = () => {
     >
       <Stack gap={4}>
         <BudgetDetailPageHeader />
-        <BudgetDetailTabsAndRoutes />
+        <BudgetDetailTabsAndRoutes enterpriseGroupLearners={enterpriseGroupLearners} />
       </Stack>
     </BudgetDetailPageWrapper>
   );

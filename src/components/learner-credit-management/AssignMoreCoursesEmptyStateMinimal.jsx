@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card } from '@openedx/paragon';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   formatDate, formatPrice, useBudgetId, usePathToCatalogTab, useSubsidyAccessPolicy,
 } from './data';
@@ -28,10 +29,24 @@ const AssignMoreCoursesEmptyStateMinimal = () => {
       <Card.Body className="assign-more-courses__card-body">
         <Card.Section className="h-100 d-flex align-items-center">
           <div>
-            <h3>Assign more courses to maximize your budget.</h3>
+            <h3>
+              <FormattedMessage
+                id="lcm.budget.detail.page.assign.more.courses.empty.state.title"
+                defaultMessage="Assign more courses to maximize your budget."
+                description="Title for the empty state card on the budget detail page"
+              />
+            </h3>
             <span>
-              Your budget&apos;s available balance of {formatPrice(availableBalance)} will
-              expire on {formatDate(subsidyExpirationDate)}.
+              <FormattedMessage
+                id="lcm.budget.detail.page.assign.more.courses.empty.state.subtitle"
+                defaultMessage="Your budget's available balance of {availableBalance} will
+                expire on {subsidyExpirationDate}."
+                description="Subtitle for the empty state card on the budget detail page"
+                values={{
+                  availableBalance: formatPrice(availableBalance),
+                  subsidyExpirationDate: formatDate(subsidyExpirationDate),
+                }}
+              />
             </span>
           </div>
         </Card.Section>
@@ -41,7 +56,11 @@ const AssignMoreCoursesEmptyStateMinimal = () => {
           as={Link}
           to={pathToCatalogTab}
         >
-          Assign courses
+          <FormattedMessage
+            id="lcm.budget.detail.page.assign.more.courses.empty.state.assign.courses.button"
+            defaultMessage="Assign courses"
+            description="Button text to assign more courses"
+          />
         </Button>
       </Card.Footer>
     </Card>

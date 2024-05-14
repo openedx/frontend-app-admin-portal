@@ -4,6 +4,7 @@ import {
   ActionRow, ModalDialog, StatefulButton,
 } from '@openedx/paragon';
 import { Mail } from '@openedx/paragon/icons';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 
 const RemindAssignmentModal = ({
@@ -12,7 +13,7 @@ const RemindAssignmentModal = ({
   const {
     successfulReminderToast: { displayToastForAssignmentReminder },
   } = useContext(BudgetDetailPageContext);
-
+  const intl = useIntl();
   const handleOnClick = async () => {
     await remindContentAssignments();
     trackEvent();
@@ -28,28 +29,69 @@ const RemindAssignmentModal = ({
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          Remind learner?
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.remind.assignment.modal.title"
+            defaultMessage="Remind learner?"
+            description="Title for the remind assignment modal"
+          />
         </ModalDialog.Title>
       </ModalDialog.Header>
       <ModalDialog.Body>
-        <p>You are sending a reminder email to the selected learner
-          to take the next step on the course you assigned.
+        <p>
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.remind.assignment.modal.body"
+            defaultMessage="You are sending a reminder email to the selected learner to take the next step on the course you assigned."
+            description="Text1 for the body of the remind assignment modal"
+          />
         </p>
-        <p>When your learner completes enrollment, the associated
-          &quot;assigned&quot; funds will be marked as &quot;spent&quot;.
+        <p>
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.remind.assignment.modal.body2"
+            defaultMessage="When your learner completes enrollment, the associated {doubleQoute}assigned{doubleQoute} funds will be marked as {doubleQoute}spent{doubleQoute}."
+            description="Text2 for the body of the remind assignment modal"
+            values={{ doubleQoute: '"' }}
+          />
         </p>
       </ModalDialog.Body>
 
       <ModalDialog.Footer>
         <ActionRow>
-          <ModalDialog.CloseButton variant="tertiary">Go back</ModalDialog.CloseButton>
+          <ModalDialog.CloseButton variant="tertiary">
+            <FormattedMessage
+              id="lcm.budget.detail.page.catalog.tab.remind.assignment.modal.close"
+              defaultMessage="Go back"
+              description="Text for the close button in the remind assignment modal"
+            />
+          </ModalDialog.CloseButton>
           <StatefulButton
             iconBefore={remindButtonState === 'default' ? Mail : null}
             labels={{
-              default: uuidCount > 1 ? `Send reminders (${uuidCount})` : 'Send reminder',
-              pending: 'Reminding...',
-              complete: 'Reminded',
-              error: 'Try again',
+              default: uuidCount > 1
+                ? intl.formatMessage({
+                  id: 'lcm.budget.detail.page.catalog.tab.remind.assignment.modal.send.multiple.reminder',
+                  defaultMessage: 'Send reminders ({uuidCount, number})',
+                  description: 'Text for the button to send reminders through email when we have more than one assignments',
+                }, { uuidCount })
+                : intl.formatMessage({
+                  id: 'lcm.budget.detail.page.catalog.tab.remind.assignment.modal.send.single.reminder',
+                  defaultMessage: 'Send reminder',
+                  description: 'Text for the button to send reminders through email when we have only one assignment',
+                }),
+              pending: intl.formatMessage({
+                id: 'lcm.budget.detail.page.catalog.tab.remind.assignment.modal.sending',
+                defaultMessage: 'Sending...',
+                description: 'Text for the button when sending reminders',
+              }),
+              complete: intl.formatMessage({
+                id: 'lcm.budget.detail.page.catalog.tab.remind.assignment.modal.reminded',
+                defaultMessage: 'Reminded',
+                description: 'Text for the button when reminders have been sent',
+              }),
+              error: intl.formatMessage({
+                id: 'lcm.budget.detail.page.catalog.tab.remind.assignment.modal.error',
+                defaultMessage: 'Try again',
+                description: 'Text for the button when reminders have failed to send',
+              }),
             }}
             variant="danger"
             state={remindButtonState}

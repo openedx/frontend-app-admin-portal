@@ -106,12 +106,12 @@ const BaseSubBudgetCard = ({
         title={<BackgroundFetchingWrapper>{budgetType}</BackgroundFetchingWrapper>}
         subtitle={<BackgroundFetchingWrapper>{subtitle}</BackgroundFetchingWrapper>}
         actions={
-            budgetLabel.status !== BUDGET_STATUSES.scheduled
-              ? renderActions(budgetId)
-              : undefined
-          }
+          budgetLabel.status !== BUDGET_STATUSES.scheduled
+            ? renderActions(budgetId)
+            : undefined
+        }
         className={classNames('align-items-center', {
-          'mb-4.5': budgetLabel.status !== BUDGET_STATUSES.active,
+          'mb-4.5': budgetLabel.status !== BUDGET_STATUSES.active && budgetLabel.status !== BUDGET_STATUSES.expiring,
         })}
       />
     );
@@ -155,7 +155,8 @@ const BaseSubBudgetCard = ({
       <Card.Body>
         <Stack gap={4.5}>
           {renderCardHeader(displayName || 'Overview', id)}
-          {budgetLabel.status === BUDGET_STATUSES.active && renderCardSection()}
+          {(budgetLabel.status === BUDGET_STATUSES.active || budgetLabel.status === BUDGET_STATUSES.expiring)
+            && renderCardSection()}
         </Stack>
       </Card.Body>
     </Card>

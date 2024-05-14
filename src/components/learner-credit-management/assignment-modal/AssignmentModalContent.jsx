@@ -12,6 +12,7 @@ import {
   Card,
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { connect } from 'react-redux';
 import BaseCourseCard from '../cards/BaseCourseCard';
@@ -28,7 +29,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
-
+  const intl = useIntl();
   const { contentPrice } = course.normalizedMetadata;
 
   const handleEmailAddressInputChange = (e) => {
@@ -82,19 +83,35 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
       <Stack gap={5}>
         <Row>
           <Col>
-            <h3 className="mb-4">Use Learner Credit to assign this course</h3>
+            <h3 className="mb-4">
+              <FormattedMessage
+                id="lcm.budget.detail.page.catalog.tab.assign.course.section.header"
+                defaultMessage="Use Learner Credit to assign this course"
+                description="Header for the section to assign a course to learners using learner credit."
+              />
+            </h3>
             <BaseCourseCard original={course} cardClassName="shadow-none" />
           </Col>
         </Row>
         <Row>
           <Col xs={12} lg={5} className="mb-5 mb-lg-0">
-            <h4 className="mb-4">Assign to</h4>
+            <h4 className="mb-4">
+              <FormattedMessage
+                id="lcm.budget.detail.page.catalog.tab.assign.course.section.assign.to"
+                defaultMessage="Assign to"
+                description="Header for the section where we assign a course to learners"
+              />
+            </h4>
             <Form.Group className="mb-5">
               <Form.Control
                 as="textarea"
                 value={emailAddressesInputValue}
                 onChange={handleEmailAddressInputChange}
-                floatingLabel="Learner email addresses"
+                floatingLabel={intl.formatMessage({
+                  id: 'lcm.budget.detail.page.catalog.tab.assign.course.section.assign.to.email.addresses',
+                  defaultMessage: 'Learner email addresses',
+                  description: 'Label for the input field where learner email addresses are entered',
+                })}
                 rows={10}
                 data-hj-suppress
               />
@@ -104,15 +121,31 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
                 </Form.Control.Feedback>
               ) : (
                 <Form.Control.Feedback>
-                  To add more than one learner, enter one email address per line.
+                  <FormattedMessage
+                    id="lcm.budget.detail.page.catalog.tab.assign.course.section.assign.to.email.addresses.help.text"
+                    defaultMessage="To add more than one learner, enter one email address per line."
+                    description="Help text for the input field if the user needs to add more than one learner."
+                  />
                 </Form.Control.Feedback>
               )}
             </Form.Group>
-            <h5 className="mb-3">How assigning this course works</h5>
+            <h5 className="mb-3">
+              <FormattedMessage
+                id="lcm.budget.detail.page.catalog.tab.assign.course.section.how.assigning.works"
+                defaultMessage="How assigning this course works"
+                description="Header for the section that explains how assigning a course works"
+              />
+            </h5>
             <AssignmentAllocationHelpCollapsibles course={course} />
           </Col>
           <Col xs={12} lg={{ span: 5, offset: 2 }}>
-            <h4 className="mb-4">Pay by Learner Credit</h4>
+            <h4 className="mb-4">
+              <FormattedMessage
+                id="lcm.budget.detail.page.catalog.tab.assign.course.section.pay.by.learner.credit"
+                defaultMessage="Pay by Learner Credit"
+                description="Header for the section where we pay for the course by learner credit."
+              />
+            </h4>
             <AssignmentModalSummary
               course={course}
               learnerEmails={learnerEmails}
@@ -120,14 +153,25 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
             />
             <hr className="my-4" />
             <h5 className="mb-4">
-              Learner Credit Budget: {subsidyAccessPolicy.displayName ?? 'Overview'}
+              <FormattedMessage
+                id="lcm.budget.detail.page.catalog.tab.assign.course.section.learner.credit.budget"
+                defaultMessage="Learner Credit Budget: {subsidyAccessPolicyName}"
+                description="Header for the section that explains the learner credit budget"
+                values={{ subsidyAccessPolicyName: subsidyAccessPolicy.displayName ?? 'Overview' }}
+              />
             </h5>
             <Stack gap={2.5}>
               <Card className="rounded-0 shadow-none">
                 <Card.Section className="py-2 small">
                   <Stack gap={2.5}>
                     <Stack direction="horizontal" className="justify-content-between">
-                      <div>Available balance</div>
+                      <div>
+                        <FormattedMessage
+                          id="lcm.budget.detail.page.catalog.tab.assign.course.section.available.balance"
+                          defaultMessage="Available balance"
+                          description="Label for the available balance in the learner credit budget"
+                        />
+                      </div>
                       <div>{formatPrice(spendAvailable)}</div>
                     </Stack>
                     {assignmentAllocationMetadata.canAllocate && (
@@ -142,7 +186,13 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
               {assignmentAllocationMetadata.canAllocate && (
                 <Card className="rounded-0 shadow-none">
                   <Card.Section className="d-flex justify-content-between py-2">
-                    <div>Remaining after assignment</div>
+                    <div>
+                      <FormattedMessage
+                        id="lcm.budget.detail.page.catalog.tab.assign.course.section.remaining.after.assignment"
+                        defaultMessage="Remaining after assignment"
+                        description="Label for the remaining balance after assignment in the learner credit budget"
+                      />
+                    </div>
                     <div>{formatPrice(assignmentAllocationMetadata.remainingBalanceAfterAssignment)}</div>
                   </Card.Section>
                 </Card>

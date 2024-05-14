@@ -5,6 +5,7 @@ import { Hyperlink } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
 import AssignMoreCoursesEmptyStateMinimal from './AssignMoreCoursesEmptyStateMinimal';
 import { useBudgetContentAssignments, useBudgetId, useSubsidyAccessPolicy } from './data';
@@ -56,13 +57,31 @@ const BudgetDetailAssignments = ({
 
   return (
     <section className="budget-detail-assignments">
-      <h3 className="mb-3" ref={assignedHeadingRef}>Assigned</h3>
+      <h3 className="mb-3" ref={assignedHeadingRef}>
+        <FormattedMessage
+          id="lcm.budget.detail.page.assignments.heading"
+          defaultMessage="Assigned"
+          description="Heading for the assigned section on the budget detail page"
+        />
+      </h3>
       <p className="small mb-4">
-        Assigned activity earmarks funds in your budget so you can&apos;t overspend. For funds to move
-        from assigned to spent, your learners must complete enrollment.{' '}
-        <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
-          Learn more
-        </Hyperlink>
+        <FormattedMessage
+          id="lcm.budget.detail.page.assignments.description"
+          defaultMessage="Assigned activity earmarks funds in your budget so you can not overspend.
+           For funds to move from assigned to spent, your learners must complete enrollment. <a>Learn more</a>"
+          description="Description for the assigned section on the budget detail page. Includes a link to learn more."
+          values={{
+            // eslint-disable-next-line react/no-unstable-nested-components
+            a: (chunks) => (
+              <Hyperlink
+                destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
+                target="_blank"
+              >
+                {chunks}
+              </Hyperlink>
+            ),
+          }}
+        />
       </p>
       <BudgetAssignmentsTable
         isLoading={isLoading}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,28 +8,43 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import {
   BUDGET_DETAIL_ACTIVITY_TAB,
   BUDGET_DETAIL_CATALOG_TAB,
+  BUDGET_DETAIL_MEMBERS_TAB,
 } from './data/constants';
 import { useBudgetDetailTabs, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
+
+import InviteMembersModalWrapper from './invite-modal/InviteMembersModalWrapper';
+import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
+
 import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
 import BudgetDetailCatalogTabContents from './BudgetDetailCatalogTabContents';
+import BudgetDetailMembersTabContents from './members-tab/BudgetDetailMembersTabContents';
 
 const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 
-function isSupportedTabKey({ tabKey, isBudgetAssignable, enterpriseFeatures }) {
+function isSupportedTabKey({
+  tabKey,
+  isBudgetAssignable,
+  enterpriseGroupLearners,
+  enterpriseFeatures,
+}) {
   const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB];
   if (enterpriseFeatures.topDownAssignmentRealTimeLcm && isBudgetAssignable) {
     supportedTabs.push(BUDGET_DETAIL_CATALOG_TAB);
   }
+  if (enterpriseGroupLearners?.count > 0) {
+    supportedTabs.push(BUDGET_DETAIL_MEMBERS_TAB);
+  }
   return supportedTabs.includes(tabKey);
 }
 
-function getInitialTabKey(routeActiveTabKey, { isBudgetAssignable, enterpriseFeatures }) {
+function getInitialTabKey(routeActiveTabKey, { isBudgetAssignable, enterpriseGroupLearners, enterpriseFeatures }) {
   const isValidTabKey = isSupportedTabKey({
     tabKey: routeActiveTabKey,
     isBudgetAssignable,
+    enterpriseGroupLearners,
     enterpriseFeatures,
   });
   if (!isValidTabKey) {
@@ -42,6 +57,7 @@ const BudgetDetailTabsAndRoutes = ({
   enterpriseId,
   enterpriseSlug,
   enterpriseFeatures,
+  enterpriseGroupLearners,
 }) => {
   const { activeTabKey: routeActiveTabKey } = useParams();
   const { budgetId, subsidyAccessPolicyId } = useBudgetId();
@@ -51,8 +67,12 @@ const BudgetDetailTabsAndRoutes = ({
   const navigate = useNavigate();
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
-    { enterpriseFeatures, isBudgetAssignable },
+    { enterpriseFeatures, enterpriseGroupLearners, isBudgetAssignable },
   ));
+
+  const {
+    inviteModalIsOpen, closeInviteModal,
+  } = useContext(BudgetDetailPageContext);
 
   /**
    * Ensure the active tab in the UI reflects the active tab in the URL.
@@ -60,10 +80,10 @@ const BudgetDetailTabsAndRoutes = ({
   useEffect(() => {
     const initialTabKey = getInitialTabKey(
       routeActiveTabKey,
-      { enterpriseFeatures, isBudgetAssignable },
+      { enterpriseFeatures, enterpriseGroupLearners, isBudgetAssignable },
     );
     setActiveTabKey(initialTabKey);
-  }, [routeActiveTabKey, enterpriseFeatures, isBudgetAssignable]);
+  }, [routeActiveTabKey, enterpriseFeatures, isBudgetAssignable, enterpriseGroupLearners]);
 
   const handleTabSelect = (nextActiveTabKey) => {
     setActiveTabKey(nextActiveTabKey);
@@ -76,29 +96,44 @@ const BudgetDetailTabsAndRoutes = ({
     );
   };
 
+  const [refreshMembersTab, setRefreshMembersTab] = useState(false);
+
   const tabs = useBudgetDetailTabs({
     activeTabKey,
     isBudgetAssignable,
+    enterpriseGroupLearners,
     enterpriseFeatures,
+    refreshMembersTab,
+    setRefreshMembersTab,
     ActivityTabElement: BudgetDetailActivityTabContents,
     CatalogTabElement: BudgetDetailCatalogTabContents,
+    MembersTabElement: BudgetDetailMembersTabContents,
   });
 
   if (!isSupportedTabKey({
     tabKey: routeActiveTabKey || activeTabKey,
     isBudgetAssignable,
+    enterpriseGroupLearners,
     enterpriseFeatures,
   })) {
     return <NotFoundPage />;
   }
-
   return (
-    <Tabs
-      activeKey={activeTabKey}
-      onSelect={handleTabSelect}
-    >
-      {tabs}
-    </Tabs>
+    <>
+      <InviteMembersModalWrapper
+        isOpen={inviteModalIsOpen}
+        close={closeInviteModal}
+        handleTabSelect={handleTabSelect}
+        setRefresh={setRefreshMembersTab}
+        refresh={refreshMembersTab}
+      />
+      <Tabs
+        activeKey={activeTabKey}
+        onSelect={handleTabSelect}
+      >
+        {tabs}
+      </Tabs>
+    </>
   );
 };
 
@@ -112,6 +147,9 @@ BudgetDetailTabsAndRoutes.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape().isRequired,
+  enterpriseGroupLearners: PropTypes.shape({
+    count: PropTypes.number.isRequired,
+  }),
 };
 
 export default connect(mapStateToProps)(BudgetDetailTabsAndRoutes);

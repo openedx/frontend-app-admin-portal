@@ -11,8 +11,11 @@ import InviteModalSummary from './InviteModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';
 import FileUpload from './FileUpload';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
+import InviteModalMembershipInfo from './InviteModalMembershipInfo';
+import InviteModalBudgetCard from './InviteModalBudgetCard';
+import InviteModalPermissions from './InviteModalPermissions';
 
-const InviteModalContent = ({ onEmailAddressesChange }) => {
+const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [inputType, setInputType] = useState('email');
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
@@ -58,6 +61,7 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
   return (
     <Container size="lg" className="py-3">
       <h3>Invite members to this budget</h3>
+      <InviteModalBudgetCard />
       <Row className="mt-3">
         <Col>
           <h4 className="mb-4">Send invite to</h4>
@@ -91,12 +95,13 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
               setEmailAddressesInputValue={setEmailAddressesInputValue}
             />
           )}
+          <InviteModalMembershipInfo subsidyAccessPolicy={subsidyAccessPolicy} />
         </Col>
         <Col>
           <h4>Details</h4>
-          <InviteModalSummary
-            memberInviteMetadata={memberInviteMetadata}
-          />
+          <InviteModalSummary memberInviteMetadata={memberInviteMetadata} />
+          <hr className="my-4" />
+          <InviteModalPermissions subsidyAccessPolicy={subsidyAccessPolicy} />
         </Col>
       </Row>
     </Container>
@@ -105,6 +110,7 @@ const InviteModalContent = ({ onEmailAddressesChange }) => {
 
 InviteModalContent.propTypes = {
   onEmailAddressesChange: PropTypes.func.isRequired,
+  subsidyAccessPolicy: PropTypes.shape(),
 };
 
 export default InviteModalContent;

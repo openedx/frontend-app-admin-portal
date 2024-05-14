@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentConfirmContentCard from '../ContentConfirmContentCard';
@@ -59,16 +60,18 @@ const ContentHighlightContentCardWrapper = ({
     searchClient,
   });
   return (
-    <Provider store={store}>
-      <ContentHighlightsContext.Provider value={contextValue}>
-        {testCourseData.map((original) => (
-          <ContentConfirmContentCard
-            original={original}
-            key={original.aggregationKey}
-          />
-        ))}
-      </ContentHighlightsContext.Provider>
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={store}>
+        <ContentHighlightsContext.Provider value={contextValue}>
+          {testCourseData.map((original) => (
+            <ContentConfirmContentCard
+              original={original}
+              key={original.aggregationKey}
+            />
+          ))}
+        </ContentHighlightsContext.Provider>
+      </Provider>
+    </IntlProvider>
   );
 };
 

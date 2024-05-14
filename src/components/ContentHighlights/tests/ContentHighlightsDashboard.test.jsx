@@ -10,7 +10,7 @@ import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';
 import {
-  BUTTON_TEXT, STEPPER_STEP_TEXT, HEADER_TEXT,
+  BUTTON_TEXT, STEPPER_STEP_TEXT,
 } from '../data/constants';
 import ContentHighlightsDashboard from '../ContentHighlightsDashboard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
@@ -88,8 +88,8 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 describe('<ContentHighlightsDashboard>', () => {
   it('Displays ZeroState on empty highlighted content list', () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    expect(screen.getByText(HEADER_TEXT.zeroStateHighlights)).toBeInTheDocument();
-    expect(screen.getByText(HEADER_TEXT.SUB_TEXT.zeroStateHighlights)).toBeInTheDocument();
+    expect(screen.getByText("You haven't created any highlights yet.")).toBeInTheDocument();
+    expect(screen.getByText('Create and recommend content collections to your learners, enabling them to quickly locate content relevant to them.')).toBeInTheDocument();
   });
 
   it('Displays New highlight Modal on button click with no highlighted content list', () => {

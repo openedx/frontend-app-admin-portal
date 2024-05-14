@@ -3,10 +3,10 @@ import { Card } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { useContentHighlightsContext } from './data/hooks';
-import { makePlural } from '../../utils';
 
 const ContentHighlightSetCard = ({
   imageCapSrc,
@@ -18,6 +18,7 @@ const ContentHighlightSetCard = ({
   archivedItemCount,
   onClick,
 }) => {
+  const intl = useIntl();
   const navigate = useNavigate();
   /* Stepper Draft Logic (See Hook) - Start */
   const { openStepperModal } = useContentHighlightsContext();
@@ -34,9 +35,21 @@ const ContentHighlightSetCard = ({
 
   const cardItemText = () => {
     let returnString = '';
-    returnString += makePlural(itemCount, 'item');
+
+    const itemText = intl.formatMessage({
+      id: 'highlights.highlights.tab.highlight.card.item.count.text',
+      defaultMessage: '{itemCount, plural, one {# item} other {# items}}',
+      description: 'Item count text for a highlight set card',
+    }, { itemCount });
+    const archivedText = intl.formatMessage({
+      id: 'highlights.highlights.tab.highlight.card.archived.item.count.text',
+      defaultMessage: '{archivedItemCount, plural, one {# archived item} other {# archived items}}',
+      description: 'Archived item count text for a highlight set card',
+    }, { archivedItemCount });
+
+    returnString = itemText;
     if (archivedItemCount > 0) {
-      returnString += ` : ${makePlural(archivedItemCount, 'archived item')}`;
+      returnString = `${itemText} : ${archivedText}`;
     }
     return returnString;
   };

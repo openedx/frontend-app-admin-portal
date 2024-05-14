@@ -81,26 +81,11 @@ export const STEPPER_STEP_TEXT = {
   },
   ALERT_MODAL_TEXT: {
     title: 'Lose Progress?',
-    content: 'If you exit now, any changes you\'ve made will be lost.',
+    content: 'If you exit now, any changes you have made will be lost.',
     buttons: {
       exit: 'Exit',
       cancel: 'Cancel',
     },
-  },
-};
-
-// Header text extracted into constant to maintain passing test on changes
-export const HEADER_TEXT = {
-  currentContent: 'Highlights',
-  catalogVisibility: 'Catalog Visibility',
-  zeroStateHighlights: 'You haven\'t created any highlights yet.',
-  SUB_TEXT: {
-    catalogVisibility: 'Choose a visibility for your catalog.',
-    currentContent: `Create up to ${MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION} highlights for your learners.`,
-    zeroStateHighlights: 'Create and recommend content collections to your learners, enabling them to quickly locate content relevant to them.',
-  },
-  PRO_TIP_TEXT: {
-    catalogVisibility: 'Pro tip: regardless of your choice, learners will be able to see all highlight collections.',
   },
 };
 
@@ -109,29 +94,10 @@ export const BUTTON_TEXT = {
   createNewHighlight: 'New',
   catalogVisibility: 'New highlight',
   zeroStateCreateNewHighlight: 'New highlight',
-  catalogVisibilityRadio1: 'Learners can view and enroll into all courses in your catalog',
-  catalogVisibilityRadio2: 'Learners can only view and enroll into highlighted courses',
 };
 
 // Button text for stepper help center button
 export const STEPPER_HELP_CENTER_FOOTER_BUTTON_TEXT = 'Help Center: Program Optimization';
-
-// Alert Text extracted from constant to maintain passing test on changes
-export const ALERT_TEXT = {
-  HEADER_TEXT: {
-    catalogVisibility: 'No highlights created',
-    catalogVisibilityAPI: 'Catalog visibility not updated',
-    currentContent: 'Highlight limit reached',
-  },
-  SUB_TEXT: {
-    catalogVisibility: 'At least one highlight has to be created to make a selection',
-    catalogVisibilityAPI: 'Something went wrong when updating your setting. Please try again.',
-    currentContent: 'Delete at least one highlight to create a new one.',
-  },
-  TOAST_TEXT: {
-    catalogVisibility: 'Catalog visibility settings updated.',
-  },
-};
 
 // Default footer values based on API response for ContentHighlightCardItem
 export const FOOTER_TEXT_BY_CONTENT_TYPE = {

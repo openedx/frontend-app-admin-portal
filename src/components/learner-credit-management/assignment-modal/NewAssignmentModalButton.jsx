@@ -15,6 +15,7 @@ import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy } from '../data';
@@ -34,6 +35,7 @@ const useAllocateContentAssignments = () => useMutation({
 });
 
 const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
+  const intl = useIntl();
   const navigate = useNavigate();
   const { enterpriseSlug, enterpriseAppPage } = useParams();
   const queryClient = useQueryClient();
@@ -186,7 +188,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       <Button onClick={handleOpenAssignmentModal}>{children}</Button>
       <FullscreenModal
         className="stepper-modal bg-light-200"
-        title="Assign this course"
+        title={intl.formatMessage({
+          id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.title',
+          defaultMessage: 'Assign this course',
+          description: 'Title for the assignment modal',
+        })}
         isOpen={isOpen}
         onClose={() => {
           handleCloseAssignmentModal();
@@ -216,7 +222,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
               showLaunchIcon
               target="_blank"
             >
-              Help Center: Course Assignments
+              <FormattedMessage
+                id="lcm.budget.detail.page.catalog.tab.help.center.cta"
+                defaultMessage="Help Center: Course Assignments"
+                description="Button text to open the help center for course assignments"
+              />
             </Button>
             <ActionRow.Spacer />
             <Button
@@ -233,14 +243,38 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
                 );
               }}
             >
-              Cancel
+              <FormattedMessage
+                id="lcm.budget.detail.page.catalog.tab.assignment.modal.cancel.button"
+                defaultMessage="Cancel"
+                description="Button text to cancel the assignment modal"
+              />
             </Button>
             <StatefulButton
               labels={{
-                default: 'Assign',
-                pending: 'Assigning...',
-                complete: 'Assigned',
-                error: 'Try again',
+                default:
+                  intl.formatMessage({
+                    id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button',
+                    defaultMessage: 'Assign',
+                    description: 'Button text to assign course',
+                  }),
+                pending:
+                  intl.formatMessage({
+                    id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button.pending',
+                    defaultMessage: 'Assigning...',
+                    description: 'Button text to indicate that the course is being assigned',
+                  }),
+                complete:
+                  intl.formatMessage({
+                    id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button.complete',
+                    defaultMessage: 'Assigned',
+                    description: 'Button text to indicate that the course has been assigned',
+                  }),
+                error:
+                  intl.formatMessage({
+                    id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button.error',
+                    defaultMessage: 'Try again',
+                    description: 'Button text to indicate that the assignment failed and to try again',
+                  }),
               }}
               variant="primary"
               state={assignButtonState}

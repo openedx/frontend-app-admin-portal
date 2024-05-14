@@ -11,7 +11,7 @@ import userEvent from '@testing-library/user-event';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
-  BUTTON_TEXT, ALERT_TEXT, TEST_COURSE_HIGHLIGHTS_DATA, STEPPER_STEP_TEXT,
+  TEST_COURSE_HIGHLIGHTS_DATA, STEPPER_STEP_TEXT,
 } from '../../data/constants';
 import ContentHighlightCatalogVisibilityAlert from '../ContentHighlightCatalogVisibilityAlert';
 import ContentHighlightStepper from '../../HighlightStepper/ContentHighlightStepper';
@@ -86,30 +86,30 @@ describe('ContentHighlightCatalogVisibilityAlert', () => {
     renderWithRouter(
       <ContentHighlightCatalogVisibilityAlertWrapper catalogVisibility />,
     );
-    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibilityAPI)).toBeTruthy();
-    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibilityAPI)).toBeTruthy();
+    expect(screen.getByText('Catalog visibility not updated')).toBeTruthy();
+    expect(screen.getByText('Something went wrong when updating your setting. Please try again.')).toBeTruthy();
   });
   it('renders no highlights alert when highlight sets length is 0', () => {
     renderWithRouter(
       <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={noHighlightsAppContext} />,
     );
-    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibility)).toBeTruthy();
-    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibility)).toBeTruthy();
-    expect(screen.getByText(BUTTON_TEXT.catalogVisibility)).toBeTruthy();
+    expect(screen.getByText('No highlights created')).toBeTruthy();
+    expect(screen.getByText('At least one highlight has to be created to make a selection')).toBeTruthy();
+    expect(screen.getByText('New highlight')).toBeTruthy();
   });
   it('renders null when nothing is triggering it', () => {
     renderWithRouter(<ContentHighlightCatalogVisibilityAlertWrapper />);
-    expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.catalogVisibility)).toBeNull();
-    expect(screen.queryByText(ALERT_TEXT.HEADER_TEXT.catalogVisibilityAPI)).toBeNull();
+    expect(screen.queryByText('No highlights created')).toBeNull();
+    expect(screen.queryByText('Something went wrong when updating your setting. Please try again.')).toBeNull();
   });
   it('renders no highlight sets alert and opens stepper modal', () => {
     renderWithRouter(
       <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={noHighlightsAppContext} />,
     );
-    expect(screen.getByText(ALERT_TEXT.HEADER_TEXT.catalogVisibility)).toBeTruthy();
-    expect(screen.getByText(ALERT_TEXT.SUB_TEXT.catalogVisibility)).toBeTruthy();
-    expect(screen.getByText(BUTTON_TEXT.catalogVisibility)).toBeTruthy();
-    const openStepperModalButton = screen.getByText(BUTTON_TEXT.catalogVisibility);
+    expect(screen.getByText('No highlights created')).toBeTruthy();
+    expect(screen.getByText('At least one highlight has to be created to make a selection')).toBeTruthy();
+    expect(screen.getByText('New highlight')).toBeTruthy();
+    const openStepperModalButton = screen.getByText('New highlight');
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeFalsy();
 
     userEvent.click(openStepperModalButton);

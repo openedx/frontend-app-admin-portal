@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Skeleton, useToggle } from '@openedx/paragon';
+import { Stack, Skeleton } from '@openedx/paragon';
 
-import BudgetDetailRedemptions from './BudgetDetailRedemptions';
 import BudgetDetailAssignments from './BudgetDetailAssignments';
+import BudgetDetailRedemptions from './BudgetDetailRedemptions';
+import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
 import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
-import InviteMembersModalWrapper from './invite-modal/InviteMembersModalWrapper';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
-  const [inviteModalIsOpen, openInviteModal, closeInviteModal] = useToggle(false);
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1;
-
+  const { openInviteModal } = useContext(BudgetDetailPageContext);
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
@@ -44,10 +43,23 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
   const renderBnEActivity = isEnterpriseGroupsEnabled && (enterpriseOfferId == null) && !hasSpentTransactions;
 
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
+    if (isEnterpriseGroupsEnabled) {
+      return (
+        <>
+          {renderBnEActivity
+            && (
+              <NoBnEBudgetActivity
+                openInviteModal={openInviteModal}
+                isEnterpriseGroupsEnabled={isEnterpriseGroupsEnabled}
+              />
+            )}
+          {hasSpentTransactions && <BudgetDetailRedemptions />}
+        </>
+      );
+    }
     return (
       <>
         {renderBnEActivity && (<NoBnEBudgetActivity openInviteModal={openInviteModal} />)}
-        <InviteMembersModalWrapper isOpen={inviteModalIsOpen} close={closeInviteModal} />
         <BudgetDetailRedemptions />
       </>
     );

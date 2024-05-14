@@ -394,7 +394,7 @@ describe('Course card works as expected', () => {
     expect(assignmentModal.getByText('To add more than one learner, enter one email address per line.')).toBeInTheDocument();
     expect(assignmentModal.getByText('Pay by Learner Credit')).toBeInTheDocument();
     expect(assignmentModal.getByText('Summary')).toBeInTheDocument();
-    expect(assignmentModal.getByText('You haven\'t entered any learners yet.')).toBeInTheDocument();
+    expect(assignmentModal.getByText("You haven't entered any learners yet.")).toBeInTheDocument();
     expect(assignmentModal.getByText('Add learner emails to get started.')).toBeInTheDocument();
     expect(assignmentModal.getByText(`Learner Credit Budget: ${mockSubsidyAccessPolicy.displayName}`)).toBeInTheDocument();
     expect(assignmentModal.getByText('Available balance')).toBeInTheDocument();

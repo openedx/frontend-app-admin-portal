@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import {
   Button, ActionRow, Alert,
 } from '@openedx/paragon';
-
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ import ContentHighlightArchivedAlert from './ContentHighlightArchivedAlert';
 
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import {
-  BUTTON_TEXT, HEADER_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION, ALERT_TEXT,
+  BUTTON_TEXT, MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
 } from './data/constants';
 
 const CurrentContentHighlightHeader = ({ enterpriseId }) => {
@@ -31,6 +31,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
   const [maxHighlightsReached, setMaxHighlightsReached] = useState(false);
   const [showMaxHighlightsAlert, setShowMaxHighlightsAlert] = useState(false);
   const [isArchivedAlertOpen, setIsArchivedAlertOpen] = useState(false);
+  const intl = useIntl();
 
   useEffect(() => {
     setIsArchivedAlertOpen(isNewArchivedContent);
@@ -74,7 +75,11 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
     <>
       <ActionRow>
         <h2 className="m-0">
-          {HEADER_TEXT.currentContent}
+          <FormattedMessage
+            id="highlights.highlights.tab.header.title"
+            defaultMessage="Highlights"
+            description="Header title when we have atleast one highlight is present."
+          />
         </h2>
         <ActionRow.Spacer />
 
@@ -86,22 +91,41 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
         </Button>
       </ActionRow>
       <p>
-        {HEADER_TEXT.SUB_TEXT.currentContent}
+        <FormattedMessage
+          id="highlights.catalog.visibility.tab.catalog.visibility.not.updated.alert.error.header.title"
+          defaultMessage="Create up to {maxHighlights} highlights for your learners."
+          description="Header title for error alert shown to admin when catalog visibility failed to update."
+          values={{
+            maxHighlights: MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION,
+          }}
+        />
       </p>
       <ContentHighlightArchivedAlert open={isArchivedAlertOpen} onClose={() => setIsArchivedAlertOpen(false)} />
       <Alert
         variant="danger"
         icon={Info}
         dismissible
-        closeLabel="Dismiss"
+        closeLabel={intl.formatMessage({
+          id: 'highlights.highlights.tab.create.highlight.max.limit.reached.alert.dismiss.button.label',
+          defaultMessage: 'Dismiss',
+          description: 'Dismiss button label for error alert shown to admin when highlight creation limit is reached.',
+        })}
         show={showMaxHighlightsAlert}
         onClose={() => setShowMaxHighlightsAlert(false)}
       >
         <Alert.Heading>
-          {ALERT_TEXT.HEADER_TEXT.currentContent}
+          <FormattedMessage
+            id="highlights.highlights.tab.create.highlight.max.limit.reached.alert.header.message"
+            defaultMessage="Highlight limit reached"
+            description="Header title for error alert shown to admin when highlight creation limit is reached."
+          />
         </Alert.Heading>
         <p>
-          {ALERT_TEXT.SUB_TEXT.currentContent}
+          <FormattedMessage
+            id="highlights.highlights.tab.create.highlight.max.limit.reached.alert.detail.message"
+            defaultMessage="Delete at least one highlight to create a new one."
+            description="Subtext for error alert shown to admin when highlight creation limit is reached."
+          />
         </p>
       </Alert>
     </>

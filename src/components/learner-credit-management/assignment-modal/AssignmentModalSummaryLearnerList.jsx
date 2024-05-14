@@ -5,6 +5,7 @@ import {
   Button, Stack, Icon,
 } from '@openedx/paragon';
 import { Person } from '@openedx/paragon/icons';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT, hasLearnerEmailsSummaryListTruncation } from '../cards/data';
 
@@ -15,14 +16,22 @@ const AssignmentModalSummaryLearnerList = ({
   const [isTruncated, setIsTruncated] = useState(hasLearnerEmailsSummaryListTruncation(learnerEmails));
   const truncatedLearnerEmails = learnerEmails.slice(0, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT - 1);
   const displayedLearnerEmails = isTruncated ? truncatedLearnerEmails : learnerEmails;
-
+  const intl = useIntl();
   useEffect(() => {
     setIsTruncated(hasLearnerEmailsSummaryListTruncation(learnerEmails));
   }, [learnerEmails]);
 
   const expandCollapseMessage = isTruncated
-    ? `Show ${learnerEmails.length - MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT} more`
-    : 'Show less';
+    ? intl.formatMessage({
+      id: 'lcm.budget.detail.page.catalog.tab.course.card.show.more',
+      defaultMessage: 'Show {count, number} more',
+      description: 'Button text to show more learner emails',
+    }, { count: learnerEmails.length - MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT })
+    : intl.formatMessage({
+      id: 'lcm.budget.detail.page.catalog.tab.course.card.show.less',
+      defaultMessage: 'Show less',
+      description: 'Button text to show less learner emails',
+    });
 
   return (
     <ul className="list-unstyled mb-0">

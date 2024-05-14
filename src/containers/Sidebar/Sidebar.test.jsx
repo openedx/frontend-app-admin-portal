@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { getConfig } from '@edx/frontend-platform/config';
 import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -8,16 +7,19 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
   render, screen,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { getConfig } from '@edx/frontend-platform/config';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 
 import Sidebar from './index';
 import { SubsidyRequestsContext } from '../../components/subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
-
+import LmsApiService from '../../data/services/LmsApiService';
 import { features } from '../../config';
 
 import {
@@ -34,6 +36,8 @@ jest.mock('@edx/frontend-platform/config', () => ({
   })),
 }));
 
+jest.mock('../../data/services/LmsApiService');
+
 const mockStore = configureMockStore([thunk]);
 const initialState = {
   sidebar: {
@@ -46,6 +50,9 @@ const initialState = {
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
     enableReportingConfigScreenLink: true,
+    enterpriseFeatures: {
+      enterpriseGroupsV1: false,
+    },
   },
 };
 
@@ -77,18 +84,20 @@ const SidebarWrapper = ({
   ...props
 }) => (
   <MemoryRouter>
-    <Provider store={props.store}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-          <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
-            <Sidebar
-              baseUrl="/test-enterprise-slug"
-              {...props}
-            />
-          </SubsidyRequestsContext.Provider>
-        </EnterpriseSubsidiesContext.Provider>
-      </EnterpriseAppContext.Provider>
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={props.store}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
+              <Sidebar
+                baseUrl="/test-enterprise-slug"
+                {...props}
+              />
+            </SubsidyRequestsContext.Provider>
+          </EnterpriseSubsidiesContext.Provider>
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 
@@ -106,6 +115,9 @@ describe('<Sidebar />', () => {
   let wrapper;
 
   beforeEach(() => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: true,
+    });
     wrapper = mount((
       <SidebarWrapper />
     ));
@@ -127,6 +139,9 @@ describe('<Sidebar />', () => {
       },
       portalConfiguration: {
         enableCodeManagementScreen: false,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: false,
+        },
       },
     });
 
@@ -421,6 +436,38 @@ describe('<Sidebar />', () => {
     }
   });
 
+  it('hides highlights when we have groups with a subset of all learners', async () => {
+    getAuthenticatedUser.mockReturnValue({
+      administrator: false,
+    });
+    getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: true });
+    const store = mockStore({
+      ...initialState,
+      portalConfiguration: {
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    });
+
+    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
+      data: { results: [{ applies_to_all_contexts: false }] },
+    }));
+    render(<SidebarWrapper store={store} />);
+    const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
+    // we have to wait for the async call to set the state
+    setTimeout(() => {
+      expect(highlightsLink).not.toBeInTheDocument();
+    }, 1000);
+
+    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
+      data: { results: [{ applies_to_all_contexts: true }] },
+    }));
+    render(<SidebarWrapper store={store} />);
+    setTimeout(() => {
+      expect(highlightsLink).toBeInTheDocument();
+    }, 1000);
+  });
   describe('notifications', () => {
     it('displays notification bubble when there are outstanding license requests', () => {
       const contextValue = { subsidyRequestsCounts: { subscriptionLicenses: 2 } };

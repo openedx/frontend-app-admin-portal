@@ -1,6 +1,7 @@
 import { Alert } from '@openedx/paragon';
 import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME } from './data/constants';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { enterpriseCurationActions } from '../EnterpriseApp/data/enterpriseCurationReducer';
@@ -9,6 +10,7 @@ import { isArchivedContent } from '../../utils';
 const ContentHighlightArchivedAlert = ({ open, onClose }) => {
   const [archivedContentLocalStorage, setArchivedContentLocalStorage] = useState({});
   const { enterpriseCuration: { enterpriseHighlightedSets, dispatch } } = useContext(EnterpriseAppContext);
+  const intl = useIntl();
 
   useEffect(() => {
     enterpriseHighlightedSets?.forEach((highlightSet) => {
@@ -46,11 +48,28 @@ const ContentHighlightArchivedAlert = ({ open, onClose }) => {
     <Alert
       variant="info"
       dismissible
+      closeLabel={intl.formatMessage({
+        id: 'highlights.highlights.tab.content.archived.alert.dismiss.button.label',
+        defaultMessage: 'Dismiss',
+        description: 'Alert dismiss button label for archived courses in highlight tab',
+      })}
       show={open}
       onClose={addArchivedContentToLocalStorage}
     >
-      <Alert.Heading>Needs Review: Archived Course(s)</Alert.Heading>
-      <p>Course(s) in your highlight(s) have been archived and are no longer open for new enrollments.</p>
+      <Alert.Heading>
+        <FormattedMessage
+          id="highlights.highlights.tab.content.archived.alert.heading"
+          defaultMessage="Needs Review: Archived Course(s)"
+          description="Alert heading for archived courses on highlights tab"
+        />
+      </Alert.Heading>
+      <p>
+        <FormattedMessage
+          id="highlights.highlights.tab.content.archived.alert.message"
+          defaultMessage="Course(s) in your highlight(s) have been archived and are no longer open for new enrollments."
+          description="Alert message for archived course on highlights tab"
+        />
+      </p>
     </Alert>
   );
 };

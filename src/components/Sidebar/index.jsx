@@ -1,16 +1,18 @@
 import React, {
-  useRef, useContext, useEffect, useCallback,
+  useCallback, useContext, useEffect, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
 } from '@openedx/paragon/icons';
-
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
-import IconLink from './IconLink';
+import { logError } from '@edx/frontend-platform/logging';
 
+import IconLink from './IconLink';
 import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
@@ -18,6 +20,7 @@ import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import LmsApiService from '../../data/services/LmsApiService';
 
 const Sidebar = ({
   baseUrl,
@@ -31,6 +34,7 @@ const Sidebar = ({
   enableAnalyticsScreen,
   onWidthChange,
   isMobile,
+  enterpriseGroupsV1,
 }) => {
   const navRef = useRef();
   const widthRef = useRef();
@@ -38,6 +42,10 @@ const Sidebar = ({
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
+  const isEdxStaff = getAuthenticatedUser().administrator;
+  const [isSubGroup, setIsSubGroup] = useState(false);
+  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup && !isEdxStaff;
+  const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
     if (navRef && navRef.current) {
@@ -53,6 +61,23 @@ const Sidebar = ({
       const sideBarWidth = getSidebarWidth();
       widthRef.current = sideBarWidth;
       onWidthChange(sideBarWidth);
+    }
+    async function fetchGroupsData() {
+      try {
+        const response = await LmsApiService.fetchEnterpriseGroups();
+        // we only want to hide the feature if a customer has a group this does not
+        // apply to all contexts/include all users
+        response.data.results.forEach((group) => {
+          if (group.applies_to_all_contexts === false) {
+            setIsSubGroup(true);
+          }
+        });
+      } catch (error) {
+        logError(error);
+      }
+    }
+    if (enterpriseGroupsV1 && !isEdxStaff) {
+      fetchGroupsData();
     }
   });
 
@@ -100,11 +125,15 @@ const Sidebar = ({
       hidden: !canManageLearnerCredit,
     },
     {
-      title: 'Highlights',
+      title: intl.formatMessage({
+        id: 'sidebar.menu.item.highlights.title',
+        defaultMessage: 'Highlights',
+        description: 'Sidebar menu item title for highlights.',
+      }),
       id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} />,
-      hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive,
+      hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive || hideHighlightsForGroups,
       notification: isNewArchivedContent,
     },
     {
@@ -187,6 +216,7 @@ Sidebar.defaultProps = {
   enableAnalyticsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
+  enterpriseGroupsV1: false,
 };
 
 Sidebar.propTypes = {
@@ -201,6 +231,7 @@ Sidebar.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
+  enterpriseGroupsV1: PropTypes.bool,
 };
 
 export default Sidebar;

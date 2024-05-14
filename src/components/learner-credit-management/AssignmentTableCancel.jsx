@@ -4,6 +4,7 @@ import { Button } from '@openedx/paragon';
 import { DoNotDisturbOn } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import CancelAssignmentModal from './CancelAssignmentModal';
 import useCancelContentAssignments from './data/hooks/useCancelContentAssignments';
 import { transformSelectedRows, useBudgetId, useSubsidyAccessPolicy } from './data';
@@ -122,7 +123,12 @@ const AssignmentTableCancelAction = ({
   return (
     <>
       <Button variant="danger" iconBefore={DoNotDisturbOn} onClick={openModal}>
-        {`Cancel (${totalToCancel})`}
+        <FormattedMessage
+          id="lcm.budget.detail.page.catalog.tab.course.card.cancel"
+          defaultMessage="Cancel ({totalToCancel})"
+          description="Button text to cancel the selected assignments"
+          values={{ totalToCancel }}
+        />
       </Button>
       <CancelAssignmentModal
         cancelContentAssignments={cancelContentAssignments}

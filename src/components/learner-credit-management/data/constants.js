@@ -37,9 +37,11 @@ export const EXEC_ED_OFFER_TYPE = 'learner_credit';
 // Budget Detail Page Tabs
 export const BUDGET_DETAIL_ACTIVITY_TAB = 'activity';
 export const BUDGET_DETAIL_CATALOG_TAB = 'catalog';
+export const BUDGET_DETAIL_MEMBERS_TAB = 'members';
 export const BUDGET_DETAIL_TAB_LABELS = {
   [BUDGET_DETAIL_ACTIVITY_TAB]: 'Activity',
   [BUDGET_DETAIL_CATALOG_TAB]: 'Catalog',
+  [BUDGET_DETAIL_MEMBERS_TAB]: 'Members',
 };
 
 // Facet filters
@@ -64,6 +66,8 @@ export const SEARCH_RESULT_PAGE_SIZE = 15;
 // Max width of Assigned table status column's modalpopup dialog; matches `Popover`.
 export const ASSIGNMENT_STATUS_MODAL_MAX_WIDTH = 480;
 
+export const MEMBERS_TABLE_PAGE_SIZE = 10;
+
 // Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {
@@ -74,4 +78,7 @@ export const learnerCreditManagementQueryKeys = {
   budgetEnterpriseOffer: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'ecommerce'],
   budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
   budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],
+  group: (groupUuid) => [...learnerCreditManagementQueryKeys.all, 'group', groupUuid],
+  budgetGroupLearners: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'group learners'],
+  enterpriseCustomer: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'enterpriseCustomer', enterpriseId],
 };

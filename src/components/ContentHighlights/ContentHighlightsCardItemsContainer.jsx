@@ -3,6 +3,7 @@ import {
   ActionRow, Alert, Button, CardGrid, useToggle,
 } from '@openedx/paragon';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import ContentHighlightCardItem from './ContentHighlightCardItem';
@@ -107,13 +108,27 @@ const ContentHighlightsCardItemsContainer = ({
           />
           <ActionRow>
             <h3 className="m-0">
-              Archived
+              <FormattedMessage
+                id="highlights.highlights.tab.archived.courses.section.heading.title"
+                defaultMessage="Archived"
+                description="Header title for archived courses section on highlights tab."
+              />
             </h3>
             <ActionRow.Spacer />
-            <Button onClick={openDeleteModal} variant="outline-primary">Delete archived courses</Button>
+            <Button onClick={openDeleteModal} variant="outline-primary">
+              <FormattedMessage
+                id="highlights.highlights.tab.archived.courses.delete.button.label"
+                defaultMessage="Delete archived courses"
+                description="Button label to delete archived courses on highlights tab."
+              />
+            </Button>
           </ActionRow>
-          <div className="mb-4.5">Learners are no longer able to enroll in archived courses,
-            but past learners can still access course materials.
+          <div className="mb-4.5">
+            <FormattedMessage
+              id="highlights.highlights.tab.archived.courses.section.subheading"
+              defaultMessage="Learners are no longer able to enroll in archived courses, but past learners can still access course materials."
+              description="Subheading for archived courses section on highlights tab."
+            />
           </div>
           <CardGrid columnSizes={HIGHLIGHTS_CARD_GRID_COLUMN_SIZES}>
             {archivedContent.map(({
