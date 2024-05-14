@@ -233,6 +233,14 @@ describe('<BudgetDetailPage />', () => {
         activeIntegrations: ['BLACKBOARD'],
       },
     });
+
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        enterpriseGroupLearners: {
+          count: 40,
+        },
+      },
+    });
   });
 
   it('renders page not found messaging if budget is a subsidy access policy, but the REST API returns a 404', () => {
@@ -602,7 +610,7 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
     const illustrationTestIds = ['name-your-members-illustration', 'members-browse-illustration', 'enroll-and-spend-illustration'];
     illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
-    expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
+    expect(screen.getByText('Invite more members', { selector: 'a' })).toBeInTheDocument();
   });
 
   it.each([
@@ -626,7 +634,7 @@ describe('<BudgetDetailPage />', () => {
       isTopDownAssignmentEnabled: false,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, false],
     },
-  ])('displays spend table in "Activity" tab with empty results (%s)', async ({
+  ])('displays spend table in "Activity" tab with empty results (%s) when enterpriseGroupsV1 feature is false', async ({
     budgetId,
     isTopDownAssignmentEnabled,
     expectedUseOfferRedemptionsArgs,
@@ -671,6 +679,7 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+
     const storeState = {
       ...initialStoreState,
       portalConfiguration: {
@@ -678,6 +687,7 @@ describe('<BudgetDetailPage />', () => {
         enterpriseFeatures: {
           ...initialStoreState.portalConfiguration.enterpriseFeatures,
           topDownAssignmentRealTimeLcm: isTopDownAssignmentEnabled,
+          enterpriseGroupsV1: false,
         },
       },
     };

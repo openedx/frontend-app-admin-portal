@@ -10,12 +10,7 @@ import {
   BUDGET_DETAIL_CATALOG_TAB,
   BUDGET_DETAIL_MEMBERS_TAB,
 } from './data/constants';
-import {
-  useBudgetDetailTabs,
-  useBudgetId,
-  useEnterpriseGroupLearners,
-  useSubsidyAccessPolicy,
-} from './data';
+import { useBudgetDetailTabs, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
@@ -62,16 +57,13 @@ const BudgetDetailTabsAndRoutes = ({
   enterpriseId,
   enterpriseSlug,
   enterpriseFeatures,
+  enterpriseGroupLearners,
 }) => {
   const { activeTabKey: routeActiveTabKey } = useParams();
   const { budgetId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const isBudgetAssignable = !!subsidyAccessPolicy?.isAssignable;
-  let groupUuid;
-  if (subsidyAccessPolicy?.groupAssociations?.length) {
-    [groupUuid] = subsidyAccessPolicy.groupAssociations;
-  }
-  const { data: enterpriseGroupLearners } = useEnterpriseGroupLearners(groupUuid);
+
   const navigate = useNavigate();
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
@@ -155,6 +147,9 @@ BudgetDetailTabsAndRoutes.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape().isRequired,
+  enterpriseGroupLearners: PropTypes.shape({
+    count: PropTypes.number.isRequired,
+  }),
 };
 
 export default connect(mapStateToProps)(BudgetDetailTabsAndRoutes);
