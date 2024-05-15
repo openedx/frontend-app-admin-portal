@@ -1,4 +1,5 @@
 import { logError } from '@edx/frontend-platform/logging';
+import { createIntl } from '@edx/frontend-platform/i18n';
 
 import {
   camelCaseDict,
@@ -10,12 +11,19 @@ import {
   isValidNumber,
   defaultQueryClientRetryHandler,
   queryCacheOnErrorHandler,
+  i18nFormatPassedTimestamp,
+  i18nFormatProgressStatus,
 } from './utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
   ...jest.requireActual('@edx/frontend-platform/logging'),
   logError: jest.fn(),
 }));
+
+const intl = createIntl({
+  locale: 'en',
+  messages: {},
+});
 
 describe('utils', () => {
   describe('camel casing methods', () => {
@@ -135,6 +143,27 @@ describe('utils', () => {
       const query = { meta: { errorMessage: "hi, I'm an error" } };
       queryCacheOnErrorHandler(error, query);
       expect(logError).toHaveBeenCalledWith("hi, I'm an error");
+    });
+  });
+  describe('i18nFormatPassedTimestamp', () => {
+    it('returns correct value', () => {
+      const passedTimestamp = i18nFormatPassedTimestamp({ intl, timestamp: '2021-01-01T00:00:00Z' });
+      expect(passedTimestamp).toEqual('January 1, 2021');
+
+      const notPassed = i18nFormatPassedTimestamp({ intl, timestamp: undefined });
+      expect(notPassed).toEqual('Has not passed');
+    });
+  });
+  describe('i18nFormatProgressStatus', () => {
+    it('returns correct progress status', () => {
+      const allProgressStatuses = [
+        'In Progress', 'Passed', 'Audit Access Expired',
+        'Failed', 'Cancelled', 'Enrolled', 'Pass', 'Pending', null,
+      ];
+      allProgressStatuses.forEach((progressStatus) => {
+        const formattedProgressStatus = i18nFormatProgressStatus({ intl, progressStatus });
+        expect(formattedProgressStatus).toEqual(progressStatus);
+      });
     });
   });
 });
