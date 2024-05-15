@@ -10,7 +10,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient, renderWithRouter } from '../../../test/testUtils';
 import CatalogSearch from '../CatalogSearch';
 
-import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
+import { useBudgetId, useEnterpriseGroup, useSubsidyAccessPolicy } from '../../data';
 
 jest.mock('react-instantsearch-dom', () => ({
   ...jest.requireActual('react-instantsearch-dom'),
@@ -45,6 +45,11 @@ describe('Catalog Search component', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       data: {
         catalogUuid: '123',
+      },
+    });
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: true,
       },
     });
     renderWithRouter(

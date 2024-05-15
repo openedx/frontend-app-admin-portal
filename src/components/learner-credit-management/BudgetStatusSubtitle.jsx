@@ -32,7 +32,6 @@ const BudgetStatusSubtitle = ({
         description: 'Popover text for budgets that are assigned via an integrated learning platform',
       }),
       icon: <Icon size="xs" src={ManageAccounts} className="ml-1 mt-4 d-inline-flex" />,
-
     },
     assignable: {
       enrollmentType:
@@ -92,7 +91,7 @@ const BudgetStatusSubtitle = ({
               key="budget-tooltip"
               placement="top"
               overlay={(
-                <Tooltip>
+                <Tooltip id="budget-tooltip">
                   {budgetTypeToRender.popoverText}
                 </Tooltip>
               )}

@@ -320,7 +320,7 @@ describe('<BudgetDetailPage />', () => {
       fetchEnterpriseGroupMembersTableData: mockFetchEnterpriseGroupMembersTableData,
     });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-
+    await waitForElementToBeRemoved(() => screen.queryByText('loading budget details'));
     await userEvent.type(screen.getByText('Search by member details'), 'foobar');
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
       filters: [{ id: 'memberDetails', value: 'foobar' }],
@@ -571,6 +571,7 @@ describe('<BudgetDetailPage />', () => {
     LmsApiService.removeEnterpriseLearnersFromGroup.mockResolvedValue({ status: 200 });
 
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    await waitForElementToBeRemoved(() => screen.queryByText('loading budget details'));
     const kabobMenu = screen.queryByTestId('kabob-menu-dropdown');
     userEvent.click(kabobMenu);
     const removeDropdownOption = screen.queryByText('Remove member');
@@ -711,6 +712,7 @@ describe('<BudgetDetailPage />', () => {
     useEnterpriseGroupMembersTableData.mockReturnValue(mockGroupData);
     EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData.mockResolvedValue('a,b,c,\nd,e,f');
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    await waitForElementToBeRemoved(() => screen.queryByText('loading budget details'));
     userEvent.type(screen.getByText('Search by member details'), 'foobar');
     userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
     const removeToggle = screen.getByTestId('show-removed-toggle');
