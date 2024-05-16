@@ -734,4 +734,89 @@ describe('<BudgetDetailPage />', () => {
       },
     );
   });
+  it('test member status popovers', async () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      activeTabKey: 'members',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+        },
+      },
+    });
+    useEnterpriseGroupMembersTableData.mockReturnValue({
+      isLoading: false,
+      enterpriseGroupMembersTableData: {
+        itemCount: 3,
+        pageCount: 1,
+        results: [{
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+          status: 'pending',
+          recentAction: 'Pending: April 02, 2024',
+          enrollmentCount: 0,
+        }, {
+          memberDetails: { userEmail: 'bobbynewport@test.com', userName: 'bobby newport' },
+          status: 'removed',
+          recentAction: 'Removed: April 02, 2024',
+          enrollmentCount: 0,
+        }, {
+          memberDetails: { userEmail: 'annperkins@test.com', userName: 'ann perkins' },
+          status: 'accepted',
+          recentAction: 'Accepted: April 02, 2024',
+          enrollmentCount: 0,
+        }],
+      },
+      fetchEnterpriseGroupMembersTableData: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    await waitFor(() => expect(screen.queryByText('dukesilver@test.com')).toBeInTheDocument());
+    userEvent.click(screen.getByText('Waiting for member'));
+    await waitFor(() => expect(screen.queryByText('Waiting for dukesilver@test.com')).toBeInTheDocument());
+    screen.debug(undefined, 10000000);
+    screen.getByText('This member must accept their invitation to browse this budget\'s catalog and enroll using their '
+    + 'member permissions by logging in or creating an account within 90 days.');
+    // click again to close it out
+    userEvent.click(screen.getByText('Waiting for member'));
+
+    userEvent.click(screen.getByText('Accepted'));
+    await waitFor(() => expect(screen.queryByText('Invitation accepted')).toBeInTheDocument());
+    screen.getByText('This member has successfully accepted the member invitation and can '
+    + 'now browse this budget\'s catalog and enroll using their member permissions.');
+    userEvent.click(screen.getByText('Accepted'));
+
+    userEvent.click(screen.getByText('Removed'));
+    await waitFor(() => expect(screen.queryByText('Member removed')).toBeInTheDocument());
+    screen.getByText('This member has been successfully removed and can not browse this budget\'s '
+    + 'catalog and enroll using their member permissions.');
+  });
 });

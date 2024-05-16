@@ -31,7 +31,7 @@ function isSupportedTabKey({
   subsidyAccessPolicy,
   appliesToAllContexts,
 }) {
-  const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && appliesToAllContexts)
+  const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0)
     || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
   const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB];
   if (showCatalog) {

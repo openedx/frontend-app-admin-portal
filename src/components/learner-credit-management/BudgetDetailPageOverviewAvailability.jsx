@@ -34,6 +34,7 @@ const BudgetActions = ({
   const { data: enterpriseCustomer } = useEnterpriseCustomer(enterpriseId);
   const { openInviteModal } = useContext(BudgetDetailPageContext);
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
+  const globalGroup = appliesToAllContexts?.appliesToAllContexts;
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -103,7 +104,7 @@ const BudgetActions = ({
                 <FormattedMessage
                   id="lcm.budget.detail.page.overview.budget.actions.manage.edx.in.integrated.learning.platform"
                   defaultMessage="Manage edX in your integrated learning platform"
-                  description="Titlte which tells to customer to manage edX in their integrated learning platform"
+                  description="Title which tells to customer to manage edX in their integrated learning platform"
                 />
               </h3>
               <p>
@@ -126,35 +127,37 @@ const BudgetActions = ({
             </div>
           </div>
         );
-      } if (appliesToAllContexts === true) {
-        <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
-          <div>
-            <h3>
-              <FormattedMessage
-                id="lcm.budget.detail.page.overview.budget.actions.manage.edx.for.organization"
-                defaultMessage="Manage edX for your organization"
-                description="Title for the budget actions section on the budget detail page overview"
-              />
-            </h3>
-            <p>
-              <FormattedMessage
-                id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn"
-                defaultMessage="All people in your organization can choose what to learn
-                from the catalog and spend from the available balance to enroll."
-                description="Decription which tells that user can choose from the catalog and spend from the available balance to enroll"
-              />
-            </p>
-            <Link to={`/${enterpriseSlug}/admin/settings/access`}>
-              <Button variant="outline-primary">
+      } if (globalGroup) {
+        return (
+          <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+            <div>
+              <h3>
                 <FormattedMessage
-                  id="lcm.budget.detail.page.overview.budget.actions.configure.access.general"
-                  defaultMessage="Configure access"
-                  description="Configure access button on the budget detail page overview"
+                  id="lcm.budget.detail.page.overview.budget.actions.manage.edx.for.organization"
+                  defaultMessage="Manage edX for your organization"
+                  description="Title for the budget actions section on the budget detail page overview"
                 />
-              </Button>
-            </Link>,
+              </h3>
+              <p>
+                <FormattedMessage
+                  id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn"
+                  defaultMessage="All people in your organization can choose what to learn
+                from the catalog and spend from the available balance to enroll."
+                  description="Decription which tells that user can choose from the catalog and spend from the available balance to enroll"
+                />
+              </p>
+              <Link to={`/${enterpriseSlug}/admin/settings/access`}>
+                <Button variant="outline-primary">
+                  <FormattedMessage
+                    id="lcm.budget.detail.page.overview.budget.actions.configure.access.general"
+                    defaultMessage="Configure access"
+                    description="Configure access button on the budget detail page overview"
+                  />
+                </Button>
+              </Link>,
+            </div>
           </div>
-        </div>;
+        );
       }
       return (
         <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">

@@ -65,7 +65,7 @@ export const useBudgetDetailTabs = ({
         </Tab>,
       );
     }
-    if (enterpriseGroupLearners?.count > 0) {
+    if (enterpriseGroupLearners?.count > 0 && !appliesToAllContexts) {
       tabsArray.push(
         <Tab
           data-testid="group-members-tab"
@@ -101,6 +101,7 @@ export const useBudgetDetailTabs = ({
     setRefreshMembersTab,
     intl,
     showCatalog,
+    appliesToAllContexts,
   ]);
 
   return tabs;
