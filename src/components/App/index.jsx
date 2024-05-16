@@ -14,6 +14,7 @@ import { AuthenticatedPageRoute, PageWrap, AppProvider } from '@edx/frontend-pla
 import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
+import { Button } from '@edx/paragon';
 
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
