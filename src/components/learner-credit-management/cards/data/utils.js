@@ -132,10 +132,8 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     // Validate the email address
     if (!isEmail(email)) {
       invalidEmails.push(email);
-    }
-
-    // Check for duplicates (case-insensitive)
-    if (lowerCasedEmails.includes(lowerCasedEmail)) {
+    } else if (lowerCasedEmails.includes(lowerCasedEmail)) {
+      // Check for duplicates (case-insensitive)
       duplicateEmails.push(email);
     } else {
       // Add to list of lower-cased emails already handled
@@ -144,7 +142,7 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
   });
 
   const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
-  const canInvite = learnerEmailsCount > 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT && isValidInput;
+  const canInvite = lowerCasedEmails.length > 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
 
   const ensureValidationErrorObjectExists = () => {
     if (!validationError) {
@@ -161,7 +159,11 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     }
     if (invalidEmails.length > 0) {
       validationError.reason = 'invalid_email';
-      validationError.message = `${invalidEmails[0]} is not a valid email.`;
+      if (invalidEmails.length === 1) {
+        validationError.message = `${invalidEmails[0]} is not a valid email.`;
+      } else {
+        validationError.message = `${invalidEmails[0]} and ${invalidEmails.length - 1} other email addresses are not valid.`;
+      }
     }
   } else if (duplicateEmails.length > 0) {
     let message = `${duplicateEmails[0]} was entered more than once.`;
@@ -177,6 +179,7 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     canInvite,
     lowerCasedEmails,
     duplicateEmails,
+    invalidEmails,
     isValidInput,
     validationError,
   };
