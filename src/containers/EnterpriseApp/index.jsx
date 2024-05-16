@@ -7,12 +7,12 @@ import { toggleSidebarToggle } from '../../data/actions/sidebar';
 
 const mapStateToProps = (state) => {
   const enterpriseListState = state.table['enterprise-list'] || {};
-
   return {
     enterprises: enterpriseListState.data,
     error: state.portalConfiguration.error,
+    disableExpiryMessagingForLearnerCredit: state.portalConfiguration.disableExpiryMessagingForLearnerCredit,
     enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
-    enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen, // eslint-disable-line max-len
+    enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen,
     enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
     enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen,
     enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,

@@ -3,13 +3,14 @@ import {
   getEnterpriseBudgetExpiringAlertCookieName,
   getEnterpriseBudgetExpiringModalCookieName,
   getExpirationMetadata,
-  getNonExpiredBudgets,
+  getExpiredAndNonExpiredBudgets,
 } from '../utils';
 
 const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, alertClose) => {
   const [notification, setNotification] = useState(null);
   const [expirationThreshold, setExpirationThreshold] = useState(null);
   const [modal, setModal] = useState(null);
+  const [isNonExpiredBudget, setisNonExpiredBudget] = useState(false);
 
   useEffect(() => {
     if (!budgets || budgets.length === 0) {
@@ -20,18 +21,19 @@ const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, aler
     // expired and non-expired budgets.  In that case, we only want
     // to determine the expiry threshold from the set of *non-expired* budgets,
     // so that the alert and modal below do not falsely signal.
-    let budgetsToConsiderForExpirationMessaging = budgets;
+    let budgetsToConsiderForExpirationMessaging = [];
 
-    const nonExpiredBudgets = getNonExpiredBudgets(budgets);
+    const { nonExpiredBudgets, expiredBudgets } = getExpiredAndNonExpiredBudgets(budgets);
+
+    // Consider the length of each budget
     const hasNonExpiredBudgets = nonExpiredBudgets.length > 0;
 
-    // If the length of all budgets is different from the length of non-expired budgets,
-    // then there exists at least one expired budget (note that we already early-returned
-    // above if there are zero total budgets).
-    const hasExpiredBudgets = budgets.length !== nonExpiredBudgets.length;
-
-    if (hasNonExpiredBudgets && hasExpiredBudgets) {
+    // If an unexpired budget exists, set budgetsToConsiderForExpirationMessaging to nonExpiredBudgets
+    if (hasNonExpiredBudgets) {
       budgetsToConsiderForExpirationMessaging = nonExpiredBudgets;
+      setisNonExpiredBudget(true);
+    } else {
+      budgetsToConsiderForExpirationMessaging = expiredBudgets;
     }
 
     const earliestExpiryBudget = budgetsToConsiderForExpirationMessaging.reduce(
@@ -97,7 +99,7 @@ const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, aler
   };
 
   return {
-    notification, modal, dismissModal, dismissAlert,
+    notification, modal, dismissModal, dismissAlert, isNonExpiredBudget,
   };
 };
 
