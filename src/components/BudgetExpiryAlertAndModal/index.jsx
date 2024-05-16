@@ -20,7 +20,6 @@ import useExpiry from './data/hooks/useExpiry';
 const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disableExpiryMessagingForLearnerCredit }) => {
   const [modalIsOpen, modalOpen, modalClose] = useToggle(false);
   const [alertIsOpen, alertOpen, alertClose] = useToggle(false);
-
   const location = useLocation();
 
   const budgetDetailRouteMatch = matchPath(

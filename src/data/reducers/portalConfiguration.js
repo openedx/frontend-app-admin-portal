@@ -103,7 +103,7 @@ const portalConfiguration = (state = initialState, action) => {
         enterpriseSlug: null,
         enterpriseBranding: null,
         identityProvider: null,
-        disableExpiryMessagingForLearnerCredit: null,
+        disableExpiryMessagingForLearnerCredit: false,
         enableCodeManagementScreen: false,
         enableReportingConfigScreen: false,
         enableSubscriptionManagementScreen: false,
