@@ -31,7 +31,7 @@ const BudgetStatusSubtitle = ({
         defaultMessage: 'Available to people in your organization based on settings configured in your integrated learning platform',
         description: 'Popover text for budgets that are assigned via an integrated learning platform',
       }),
-      icon: <Icon size="xs" src={ManageAccounts} className="ml-1 mt-4 d-inline-flex" />,
+      icon: <Icon size="xs" src={ManageAccounts} className="ml-1 mt-4 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
     },
     assignable: {
       enrollmentType:
@@ -46,7 +46,7 @@ const BudgetStatusSubtitle = ({
         defaultMessage: 'Available to members added to this budget',
         description: 'Popover text for budgets that are assignable',
       }),
-      icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" />,
+      icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
     },
     browseAndEnroll: {
       enrollmentType:
@@ -61,7 +61,7 @@ const BudgetStatusSubtitle = ({
         defaultMessage: 'Available to all people in your organization',
         description: 'Popover text for budgets that are browsable and enrollable',
       }),
-      icon: <Icon size="xs" src={Groups} className="ml-1 d-inline-flex" />,
+      icon: <Icon size="xs" src={Groups} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
     },
   };
   let budgetTypeToRender;
