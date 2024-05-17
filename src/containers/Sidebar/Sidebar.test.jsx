@@ -19,8 +19,8 @@ import Sidebar from './index';
 import { SubsidyRequestsContext } from '../../components/subsidy-requests';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
-import LmsApiService from '../../data/services/LmsApiService';
 import { features } from '../../config';
+import { useEnterpriseGroups } from '../../components/learner-credit-management/data';
 
 import {
   EXPAND_SIDEBAR,
@@ -36,7 +36,10 @@ jest.mock('@edx/frontend-platform/config', () => ({
   })),
 }));
 
-jest.mock('../../data/services/LmsApiService');
+jest.mock('../../components/learner-credit-management/data', () => ({
+  ...jest.requireActual('../../components/learner-credit-management/data'),
+  useEnterpriseGroups: jest.fn(),
+}));
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -45,6 +48,8 @@ const initialState = {
     isExpandedByToggle: false,
   },
   portalConfiguration: {
+    enterpriseSlug: 'test-enterprise',
+    enterpriseId: 'test-uuid',
     enableLearnerPortal: true,
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
@@ -75,6 +80,40 @@ const initialSubsidyRequestsContextValue = {
 
 const initialEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
+};
+
+const mockGlobalGroupsResponse = {
+  data: {
+    count: 2,
+    currentPage: 1,
+    next: null,
+    numPages: 1,
+    results: [
+      {
+        name: 'test group',
+        appliesToAllContexts: false,
+      },
+      {
+        name: 'test group 2',
+        appliesToAllContexts: true,
+      },
+    ],
+  },
+};
+
+const mockGroupsResponse = {
+  data: {
+    count: 1,
+    currentPage: 1,
+    next: null,
+    numPages: 1,
+    results: [
+      {
+        name: 'test group',
+        appliesToAllContexts: false,
+      },
+    ],
+  },
 };
 
 const SidebarWrapper = ({
@@ -118,6 +157,7 @@ describe('<Sidebar />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
+    useEnterpriseGroups.mockReturnValue(mockGroupsResponse);
     wrapper = mount((
       <SidebarWrapper />
     ));
@@ -428,7 +468,7 @@ describe('<Sidebar />', () => {
         },
       }}
     />);
-    const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
+    const highlightsLink = expect(screen.queryByText('Highlights'));
     if (expected) {
       highlightsLink.toBeInTheDocument();
     } else {
@@ -450,23 +490,9 @@ describe('<Sidebar />', () => {
       },
     });
 
-    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: false }] },
-    }));
+    useEnterpriseGroups.mockReturnValue(mockGlobalGroupsResponse);
     render(<SidebarWrapper store={store} />);
-    const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
-    // we have to wait for the async call to set the state
-    setTimeout(() => {
-      expect(highlightsLink).not.toBeInTheDocument();
-    }, 1000);
-
-    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: true }] },
-    }));
-    render(<SidebarWrapper store={store} />);
-    setTimeout(() => {
-      expect(highlightsLink).toBeInTheDocument();
-    }, 1000);
+    expect(screen.queryByText('Highlights')).not.toBeInTheDocument();
   });
   describe('notifications', () => {
     it('displays notification bubble when there are outstanding license requests', () => {

@@ -5,44 +5,31 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { logError } from '@edx/frontend-platform/logging';
 import { Alert } from '@edx/paragon';
 import { WarningFilled } from '@edx/paragon/icons';
 
-import LmsApiService from '../../data/services/LmsApiService';
 import ContentHighlightRoutes from './ContentHighlightRoutes';
 import Hero from '../Hero';
 import ContentHighlightsContextProvider from './ContentHighlightsContext';
 import ContentHighlightToast from './ContentHighlightToast';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { withLocation } from '../../hoc';
+import { useEnterpriseGroups } from '../learner-credit-management/data';
 
-const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
+const ContentHighlights = ({ location, enterpriseId, enterpriseGroupsV1 }) => {
   const navigate = useNavigate();
+  const { data } = useEnterpriseGroups(enterpriseId);
+  const enterpriseHasGlobalGroup = data?.results.some(group => group.appliesToAllContexts === true);
   const { state: locationState } = location;
   const [toasts, setToasts] = useState([]);
   const isEdxStaff = getAuthenticatedUser().administrator;
-  const [isSubGroup, setIsSubGroup] = useState(false);
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const intl = useIntl();
 
-  useEffect(() => {
-    async function fetchGroupsData() {
-      try {
-        const response = await LmsApiService.fetchEnterpriseGroups();
-        response.data.results.forEach((group) => {
-          if (group.applies_to_all_contexts === false) {
-            setIsSubGroup(true);
-          }
-        });
-      } catch (error) {
-        logError(error);
-      }
-    }
-    if (enterpriseGroupsV1 && isEdxStaff) {
-      fetchGroupsData();
-    }
-  }, [enterpriseGroupsV1, isEdxStaff]);
+  console.log('isEdxStaff', isEdxStaff);
+  console.log('enterpriseHasGlobalGroup', enterpriseHasGlobalGroup);
+  console.log('enterpriseGroupsV1', enterpriseGroupsV1);
+
   useEffect(() => {
     if (locationState?.highlightToast) {
       setToasts((prevState) => [...prevState, {
@@ -84,7 +71,7 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
         toastText: intl.formatMessage({
           id: 'highlights.page.highlight.added.toast.message',
           defaultMessage: '{highlightTitle} added',
-          description: 'Toast message shown when hightlight set is added',
+          description: 'Toast message shown when highlight set is added',
         }, { highlightTitle: `"${enterpriseCuration?.toastText}"` }),
         uuid: uuidv4(),
       }]);
@@ -102,7 +89,7 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
           description: 'Hero title for the highlights page.',
         })}
       />
-      {isSubGroup && (
+      {(isEdxStaff && enterpriseHasGlobalGroup && enterpriseGroupsV1) && (
         <Alert variant="warning" className="mt-4 mb-0" icon={WarningFilled}>
           <Alert.Heading>
             <FormattedMessage
@@ -136,10 +123,12 @@ ContentHighlights.propTypes = {
       highlightToast: PropTypes.bool,
     }),
   }),
+  enterpriseId: PropTypes.string.isRequired,
   enterpriseGroupsV1: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseGroupsV1: state.portalConfiguration.enterpriseFeatures?.enterpriseGroupsV1,
 });
 

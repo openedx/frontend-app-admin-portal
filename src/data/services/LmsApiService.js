@@ -422,14 +422,14 @@ class LmsApiService {
     return response;
   };
 
-  static fetchEnterpriseGroup = async (groupUuid) => {
-    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+  static fetchEnterpriseGroups = async (enterpriseUuid) => {
+    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}?enterprise_uuids=${enterpriseUuid}`;
     return LmsApiService.apiClient().get(groupEndpoint);
   };
 
-  static fetchEnterpriseGroups = async () => {
-    const url = `${LmsApiService.enterpriseGroupUrl}`;
-    return LmsApiService.apiClient().get(url);
+  static fetchEnterpriseGroup = async (groupUuid) => {
+    const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+    return LmsApiService.apiClient().get(groupEndpoint);
   };
 
   static inviteEnterpriseLearnersToGroup = async (groupUuid, formData) => {

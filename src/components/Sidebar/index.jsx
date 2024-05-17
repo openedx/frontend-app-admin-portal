@@ -1,6 +1,7 @@
 import React, {
-  useCallback, useContext, useEffect, useRef, useState,
+  useCallback, useContext, useEffect, useRef,
 } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon } from '@edx/paragon';
@@ -10,7 +11,6 @@ import {
 } from '@edx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
-import { logError } from '@edx/frontend-platform/logging';
 
 import IconLink from './IconLink';
 import { configuration, features } from '../../config';
@@ -20,7 +20,7 @@ import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
-import LmsApiService from '../../data/services/LmsApiService';
+import { useEnterpriseGroups } from '../learner-credit-management/data';
 
 const Sidebar = ({
   baseUrl,
@@ -35,6 +35,7 @@ const Sidebar = ({
   onWidthChange,
   isMobile,
   enterpriseGroupsV1,
+  enterpriseId,
 }) => {
   const navRef = useRef();
   const widthRef = useRef();
@@ -43,8 +44,9 @@ const Sidebar = ({
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const isEdxStaff = getAuthenticatedUser().administrator;
-  const [isSubGroup, setIsSubGroup] = useState(false);
-  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup && !isEdxStaff;
+  const { data } = useEnterpriseGroups(enterpriseId);
+  const enterpriseHasGlobalGroup = data?.results.some(group => group.appliesToAllContexts === true);
+  const hideHighlightsForGroups = enterpriseGroupsV1 && enterpriseHasGlobalGroup && !isEdxStaff;
   const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
@@ -61,23 +63,6 @@ const Sidebar = ({
       const sideBarWidth = getSidebarWidth();
       widthRef.current = sideBarWidth;
       onWidthChange(sideBarWidth);
-    }
-    async function fetchGroupsData() {
-      try {
-        const response = await LmsApiService.fetchEnterpriseGroups();
-        // we only want to hide the feature if a customer has a group this does not
-        // apply to all contexts/include all users
-        response.data.results.forEach((group) => {
-          if (group.applies_to_all_contexts === false) {
-            setIsSubGroup(true);
-          }
-        });
-      } catch (error) {
-        logError(error);
-      }
-    }
-    if (enterpriseGroupsV1 && !isEdxStaff) {
-      fetchGroupsData();
     }
   });
 
@@ -209,6 +194,10 @@ const Sidebar = ({
   );
 };
 
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
 Sidebar.defaultProps = {
   enableCodeManagementScreen: false,
   enableReportingConfigScreen: false,
@@ -232,6 +221,7 @@ Sidebar.propTypes = {
   onWidthChange: PropTypes.func,
   isMobile: PropTypes.bool,
   enterpriseGroupsV1: PropTypes.bool,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
-export default Sidebar;
+export default connect(mapStateToProps)(Sidebar);

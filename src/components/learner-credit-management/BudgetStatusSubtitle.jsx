@@ -91,7 +91,7 @@ const BudgetStatusSubtitle = ({
               key="budget-tooltip"
               placement="top"
               overlay={(
-                <Tooltip>
+                <Tooltip id="budget-tooltip">
                   {budgetTypeToRender.popoverText}
                 </Tooltip>
               )}

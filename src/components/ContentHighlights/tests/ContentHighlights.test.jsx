@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -9,9 +10,13 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlights from '../ContentHighlights';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
-import LmsApiService from '../../../data/services/LmsApiService';
+import { queryClient } from '../../test/testUtils';
+import { useEnterpriseGroups } from '../../learner-credit-management/data';
 
-jest.mock('../../../data/services/LmsApiService');
+jest.mock('../../learner-credit-management/data', () => ({
+  ...jest.requireActual('../../learner-credit-management/data'),
+  useEnterpriseGroups: jest.fn(),
+}));
 
 const mockStore = configureMockStore([thunk]);
 const initialEnterpriseAppContextValue = {
@@ -21,24 +26,49 @@ const initialEnterpriseAppContextValue = {
     },
   },
 };
+
 const initialState = {
-  portalConfiguration:
-    {
-      enterpriseSlug: 'test-enterprise',
+  portalConfiguration: {
+    enterpriseSlug: 'test-enterprise',
+    enterpriseId: 'test-uuid',
+    enterpriseFeatures: {
+      enterpriseGroupsV1: true,
     },
+  },
+};
+
+const mockGroupsResponse = {
+  data: {
+    count: 0,
+    currentPage: 1,
+    next: null,
+    numPages: 1,
+    results: [
+      {
+        name: 'test group',
+        appliesToAllContexts: false,
+      },
+      {
+        name: 'test group 2',
+        appliesToAllContexts: true,
+      },
+    ],
+  },
 };
 
 const ContentHighlightsWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   location,
 }) => (
-  <IntlProvider locale="en">
-    <Provider store={mockStore(initialState)}>
-      <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
-        <ContentHighlights location={location} />
-      </EnterpriseAppContext.Provider>
-    </Provider>
-  </IntlProvider>
+  <QueryClientProvider client={queryClient()}>
+    <IntlProvider locale="en">
+      <Provider store={mockStore(initialState)}>
+        <EnterpriseAppContext.Provider value={enterpriseAppContextValue}>
+          <ContentHighlights location={location} />
+        </EnterpriseAppContext.Provider>
+      </Provider>
+    </IntlProvider>
+  </QueryClientProvider>
 );
 
 describe('<ContentHighlights>', () => {
@@ -46,6 +76,7 @@ describe('<ContentHighlights>', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
+    useEnterpriseGroups.mockReturnValue(mockGroupsResponse);
   });
   it('Displays the Hero', () => {
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
@@ -85,10 +116,7 @@ describe('<ContentHighlights>', () => {
     expect(screen.getByText('Archived courses deleted')).toBeInTheDocument();
   });
   it('Displays the alert if custom groups is enabled and user is staff', () => {
-    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: true }] },
-    }));
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
-    screen.debug();
+    expect(screen.getByText('Highlights hidden for administrators with custom groups enabled')).toBeInTheDocument();
   });
 });
