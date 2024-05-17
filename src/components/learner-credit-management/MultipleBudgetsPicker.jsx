@@ -72,6 +72,7 @@ const MultipleBudgetsPicker = ({
           {
             Header: 'Status',
             accessor: 'status',
+            filter: 'includesValue',
             Filter: CheckboxFilter,
             filterChoices: reducedChoices,
           },
