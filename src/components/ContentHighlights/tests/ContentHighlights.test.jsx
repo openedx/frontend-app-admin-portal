@@ -89,6 +89,5 @@ describe('<ContentHighlights>', () => {
       data: { results: [{ applies_to_all_contexts: true }] },
     }));
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
-    screen.debug();
   });
 });
