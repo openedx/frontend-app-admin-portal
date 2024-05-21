@@ -12,14 +12,13 @@ import {
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
+import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import Hero from '../Hero';
 import MultipleBudgetsPicker from './MultipleBudgetsPicker';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 
 import { configuration } from '../../config';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
-
-const PAGE_TITLE = 'Learner Credit Management';
 
 const MultipleBudgetsPage = ({
   enterpriseUUID,
@@ -28,6 +27,12 @@ const MultipleBudgetsPage = ({
   enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
 }) => {
+  const intl = useIntl();
+  const PAGE_TITLE = intl.formatMessage({
+    id: 'lcm.page.title',
+    defaultMessage: 'Learner Credit Management',
+    description: 'Title for the Learner Credit Management page',
+  });
   const { isLoading } = useContext(EnterpriseSubsidiesContext);
   const { data: budgetsOverview } = useEnterpriseBudgets({
     enterpriseId: enterpriseUUID,
@@ -43,7 +48,13 @@ const MultipleBudgetsPage = ({
       <>
         <h1><Skeleton /></h1>
         <Skeleton height={200} count={2} />
-        <span className="sr-only">Loading budgets...</span>
+        <span className="sr-only">
+          <FormattedMessage
+            id="lcm.budgets.loading"
+            defaultMessage="Loading budgets..."
+            description="Loading budgets"
+          />
+        </span>
       </>
     );
   }
@@ -57,17 +68,30 @@ const MultipleBudgetsPage = ({
           <Card.Section className="text-center">
             <Row>
               <Col xs={12} lg={{ span: 8, offset: 2 }}>
-                <h3 className="mb-3">No budgets for your organization</h3>
+                <h3 className="mb-3">
+                  <FormattedMessage
+                    id="lcm.budgets.no.budgets"
+                    defaultMessage="No budgets for your organization"
+                    description="No budgets for your organization"
+                  />
+                </h3>
                 <p>
-                  We were unable to find any budgets for your organization. Please contact
-                  Customer Support if you have questions.
+                  <FormattedMessage
+                    id="lcm.budgets.no.budgets.description"
+                    defaultMessage="We were unable to find any budgets for your organization. Please contact Customer Support if you have questions."
+                    description="Description for no budgets found and guidance to contact support."
+                  />
                 </p>
                 <Hyperlink
                   className="btn btn-brand"
                   target="_blank"
                   destination={configuration.ENTERPRISE_SUPPORT_URL}
                 >
-                  Contact support
+                  <FormattedMessage
+                    id="lcm.budgets.contact.support"
+                    defaultMessage="Contact support"
+                    description="Contact support text for no budgets found."
+                  />
                 </Hyperlink>
               </Col>
             </Row>

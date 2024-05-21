@@ -2,6 +2,8 @@ import {
   transformSubsidySummary,
   getBudgetStatus,
   orderBudgets,
+  getTranslatedBudgetStatus,
+  getTranslatedBudgetTerm,
 } from '../utils';
 import { EXEC_ED_OFFER_TYPE } from '../constants';
 
@@ -204,5 +206,49 @@ describe('orderBudgets', () => {
 
     // Since both offers have the same status ("active") and end date, they should be sorted alphabetically by name.
     expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget A', 'Budget B']);
+  });
+});
+
+describe('getTranslatedBudgetStatus', () => {
+  it('should translate the budget status correctly', () => {
+    const intl = { formatMessage: jest.fn() };
+    const status = 'Retired';
+
+    getTranslatedBudgetStatus(intl, status);
+
+    expect(intl.formatMessage).toHaveBeenCalledWith({
+      id: 'lcm.budgets.budget.card.status.retired',
+      defaultMessage: 'Retired',
+      description: 'Status for a retired budget',
+    });
+  });
+  it('should handle the case for an unknown value', () => {
+    const intl = { formatMessage: jest.fn() };
+    const status = 'unknown';
+
+    expect(getTranslatedBudgetStatus(intl, status)).toEqual('');
+  });
+});
+
+describe('getTranslatedBudgetTerm', () => {
+  it('should translate the budget term correctly', () => {
+    const intl = { formatMessage: jest.fn() };
+    const term = 'Expiring';
+
+    getTranslatedBudgetTerm(intl, term);
+
+    expect(intl.formatMessage).toHaveBeenCalledWith({
+      id: 'lcm.budgets.budget.card.term.expiring',
+      defaultMessage: 'Expiring',
+      description: 'Term for when a budget is expiring',
+    });
+  });
+  it('should handle the case when unknown or null term', () => {
+    const intl = { formatMessage: jest.fn() };
+    const term1 = 'unknown';
+    const term2 = null;
+
+    expect(getTranslatedBudgetTerm(intl, term1)).toEqual('');
+    expect(getTranslatedBudgetTerm(intl, term2)).toEqual('');
   });
 });
