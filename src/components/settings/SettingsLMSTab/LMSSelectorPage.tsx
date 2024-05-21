@@ -31,14 +31,14 @@ export function LMSSelectorPage(setLms: (string) => void) {
           <h3 id="lms-selection-heading" className="pb-3">
             Let&apos;s get started
           </h3>
-          <p>Select the LMS or LXP you want to integrate with edX For Business.</p>
+          <p id="lms-selection-description">Select the LMS or LXP you want to integrate with edX For Business.</p>
           <SelectableBox.Set
             type="radio"
             value={formFields?.lms}
             onChange={handleChange}
             name="colors"
             columns={3}
-            ariaLabelledby="lms-selection-heading"
+            ariaLabelledby="lms-selection-description"
           >
             {LMS_KEYS.map(lms => (
               <SelectableBox value={lms} type="radio" aria-label={`select ${channelMapping[lms].displayName}`}>
