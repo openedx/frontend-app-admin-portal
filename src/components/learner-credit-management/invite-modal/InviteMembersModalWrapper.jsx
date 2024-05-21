@@ -4,6 +4,7 @@ import {
   ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
+import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 import InviteModalContent from './InviteModalContent';
@@ -47,9 +48,11 @@ const InviteMembersModalWrapper = ({
 
   const handleInviteMembers = async () => {
     setInviteButtonState('pending');
-    const requestBody = {
-      learner_emails: learnerEmails,
-    };
+    const requestBody = snakeCaseObject({
+      learnerEmails,
+      catalogUuid: subsidyAccessPolicy.catalogUuid,
+      actByDate: subsidyAccessPolicy.subsidyExpirationDatetime,
+    });
 
     try {
       if (subsidyAccessPolicy.groupAssociations.length > 0) {

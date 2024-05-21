@@ -12,8 +12,11 @@ import {
   Skeleton,
 } from '@openedx/paragon';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { formatPrice, getBudgetStatus } from './data/utils';
+import {
+  formatPrice, getBudgetStatus, getTranslatedBudgetStatus, getTranslatedBudgetTerm,
+} from './data/utils';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
 const BaseBackgroundFetchingWrapper = ({
@@ -71,12 +74,20 @@ const BaseSubBudgetCard = ({
     enterpriseId,
     isTopDownAssignmentEnabled,
   });
+  const intl = useIntl();
   const budgetLabel = getBudgetStatus({
     startDateStr: start,
     endDateStr: end,
     isBudgetRetired: isRetired,
   });
-  const formattedDate = budgetLabel?.date ? dayjs(budgetLabel?.date).format('MMMM D, YYYY') : undefined;
+  const formattedDate = budgetLabel?.date ? intl.formatDate(
+    dayjs(budgetLabel?.date).toDate(),
+    {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    },
+  ) : undefined;
 
   const renderActions = (budgetId) => (
     <Button
@@ -85,17 +96,21 @@ const BaseSubBudgetCard = ({
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
       variant={[BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(budgetLabel.status) ? 'outline-primary' : 'primary'}
     >
-      View budget
+      <FormattedMessage
+        id="lcm.budgets.budget.card.view.budget"
+        defaultMessage="View budget"
+        description="Button text to view a budget"
+      />
     </Button>
   );
 
   const renderCardHeader = (budgetType, budgetId) => {
     const subtitle = (
       <Stack direction="horizontal" gap={2.5}>
-        <Badge variant={budgetLabel.badgeVariant}>{budgetLabel.status}</Badge>
+        <Badge variant={budgetLabel.badgeVariant}>{getTranslatedBudgetStatus(intl, budgetLabel.status)}</Badge>
         {(budgetLabel.term && formattedDate) && (
           <span data-testid="budget-date">
-            {budgetLabel.term} {formattedDate}
+            {getTranslatedBudgetTerm(intl, budgetLabel.term)} {formattedDate}
           </span>
         )}
       </Stack>
@@ -119,26 +134,52 @@ const BaseSubBudgetCard = ({
 
   const renderCardSection = () => (
     <Card.Section
-      title={<h4>Balance</h4>}
+      title={(
+        <h4>
+          <FormattedMessage
+            id="lcm.budgets.budget.card.balance"
+            defaultMessage="Balance"
+            description="Header for the balance section of the budget card"
+          />
+        </h4>
+)}
       muted
     >
       <Col className="d-flex justify-content-start w-md-75">
         <Col xs="6" md="auto" className="mb-3 mb-md-0 ml-n4.5">
-          <div className="small font-weight-bold">Available</div>
+          <div className="small font-weight-bold">
+            <FormattedMessage
+              id="lcm.budgets.budget.card.available"
+              defaultMessage="Available"
+              description="Label for the available balance on the budget card"
+            />
+          </div>
           <span className="small">
             {isFetchingBudgets ? <Skeleton /> : formatPrice(available)}
           </span>
         </Col>
         {isAssignable && (
           <Col xs="6" md="auto" className="mb-3 mb-md-0">
-            <div className="small font-weight-bold">Assigned</div>
+            <div className="small font-weight-bold">
+              <FormattedMessage
+                id="lcm.budgets.budget.card.assigned"
+                defaultMessage="Assigned"
+                description="Label for the assigned balance on the budget card"
+              />
+            </div>
             <span className="small">
               {isFetchingBudgets ? <Skeleton /> : formatPrice(pending)}
             </span>
           </Col>
         )}
         <Col xs="6" md="auto" className="mb-3 mb-md-0">
-          <div className="small font-weight-bold">Spent</div>
+          <div className="small font-weight-bold">
+            <FormattedMessage
+              id="lcm.budgets.budget.card.spent"
+              defaultMessage="Spent"
+              description="Label for the spent balance on the budget card"
+            />
+          </div>
           <span className="small">
             {isFetchingBudgets ? <Skeleton /> : formatPrice(spent)}
           </span>

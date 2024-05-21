@@ -455,3 +455,84 @@ export const transformSelectedRows = (selectedFlatRows) => {
     totalSelectedRows,
   };
 };
+
+/**
+ * Translates the budget status using the provided `intl` object.
+ *
+ * @param {object} intl - The `intl` object used for translation.
+ * @param {string} status - The status of the budget.
+ * @returns {string} The translated budget status.
+ */
+export const getTranslatedBudgetStatus = (intl, status) => {
+  switch (status) {
+    case BUDGET_STATUSES.active:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.active',
+        defaultMessage: 'Active',
+        description: 'Status for an active budget',
+      });
+    case BUDGET_STATUSES.expiring:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.expiring',
+        defaultMessage: 'Expiring',
+        description: 'Status for an expiring budget',
+      });
+    case BUDGET_STATUSES.expired:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.expired',
+        defaultMessage: 'Expired',
+        description: 'Status for an expired budget',
+      });
+    case BUDGET_STATUSES.retired:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.retired',
+        defaultMessage: 'Retired',
+        description: 'Status for a retired budget',
+      });
+    case BUDGET_STATUSES.scheduled:
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.status.scheduled',
+        defaultMessage: 'Scheduled',
+        description: 'Status for a scheduled budget',
+      });
+    default:
+      return '';
+  }
+};
+
+/**
+ * Translates the budget term using the provided `intl` object.
+ * @param {object} intl - The `intl` object used for translation.
+ * @param {string} term - The term of the budget.
+ * @returns {string} The translated budget term.
+ */
+export const getTranslatedBudgetTerm = (intl, term) => {
+  switch (term) {
+    case 'Starts':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.starts',
+        defaultMessage: 'Starts',
+        description: 'Term for when a budget starts',
+      });
+    case 'Expires':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.expires',
+        defaultMessage: 'Expires',
+        description: 'Term for when a budget expires',
+      });
+    case 'Expiring':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.expiring',
+        defaultMessage: 'Expiring',
+        description: 'Term for when a budget is expiring',
+      });
+    case 'Expired':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.expired',
+        defaultMessage: 'Expired',
+        description: 'Term for when a budget has expired',
+      });
+    default:
+      return '';
+  }
+};

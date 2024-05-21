@@ -10,8 +10,9 @@ import {
 } from '@openedx/paragon';
 import groupBy from 'lodash/groupBy';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import BudgetCard from './BudgetCard';
-import { getBudgetStatus, orderBudgets } from './data/utils';
+import { getBudgetStatus, getTranslatedBudgetStatus, orderBudgets } from './data/utils';
 
 const MultipleBudgetsPicker = ({
   budgets,
@@ -20,7 +21,7 @@ const MultipleBudgetsPicker = ({
   enableLearnerPortal,
 }) => {
   const orderedBudgets = orderBudgets(budgets);
-
+  const intl = useIntl();
   const rows = useMemo(
     () => orderedBudgets.map(budget => {
       const budgetLabel = getBudgetStatus({
@@ -49,7 +50,7 @@ const MultipleBudgetsPicker = ({
   ));
   const budgetLabelsByStatus = groupBy(budgetLabels, 'status');
   const reducedChoices = Object.keys(budgetLabelsByStatus).map(budgetLabel => ({
-    name: budgetLabel,
+    name: getTranslatedBudgetStatus(intl, budgetLabel),
     number: budgetLabelsByStatus[budgetLabel].length,
     value: budgetLabel,
   }));
@@ -57,7 +58,15 @@ const MultipleBudgetsPicker = ({
   return (
     <>
       <Row className="mb-4">
-        <Col lg="12"><h2>Budgets</h2></Col>
+        <Col lg="12">
+          <h2>
+            <FormattedMessage
+              id="lcm.budgets.budgets"
+              defaultMessage="Budgets"
+              description="Header for the budget picker page."
+            />
+          </h2>
+        </Col>
       </Row>
       <DataTable
         defaultColumnValues={{ Filter: TextFilter }}
@@ -70,7 +79,11 @@ const MultipleBudgetsPicker = ({
             accessor: 'name',
           },
           {
-            Header: 'Status',
+            Header: intl.formatMessage({
+              id: 'lcm.budgets.budgets.filters.status',
+              defaultMessage: 'Status',
+              description: 'Header for the status column in the budget picker page.',
+            }),
             accessor: 'status',
             Filter: CheckboxFilter,
             filterChoices: reducedChoices,
