@@ -31,19 +31,23 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 >
                   <label
                     className="pgn__form-label sr-only"
-                    htmlFor="form-field2"
-                    id="text-filter-label-header_email-1"
+                    htmlFor="text-filter-label-header_email-1"
                   >
                     Search email address
                   </label>
-                  <input
-                    aria-labelledby="text-filter-label-header_email-1"
-                    className="form-control"
-                    onChange={[Function]}
-                    placeholder="Search email address"
-                    type="text"
-                    value=""
-                  />
+                  <div
+                    className="pgn__form-control-decorator-group"
+                  >
+                    <input
+                      className="form-control"
+                      id="text-filter-label-header_email-1"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      placeholder="Search email address"
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
               </div>
               <div
