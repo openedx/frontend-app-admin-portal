@@ -53,6 +53,7 @@ const KabobMenu = ({
         removeAllUsers={removeModal.allUsersSelected}
         totalToRemove={totalToRemove}
         groupUuid={groupUuid}
+        isRemoveIndividualUser
       />
     </>
   );
