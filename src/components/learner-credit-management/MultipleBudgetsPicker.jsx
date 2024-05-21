@@ -85,6 +85,7 @@ const MultipleBudgetsPicker = ({
               description: 'Header for the status column in the budget picker page.',
             }),
             accessor: 'status',
+            filter: 'includesValue',
             Filter: CheckboxFilter,
             filterChoices: reducedChoices,
           },
