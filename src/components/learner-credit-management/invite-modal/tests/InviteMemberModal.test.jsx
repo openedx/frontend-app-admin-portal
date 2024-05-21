@@ -16,7 +16,6 @@ import {
   useBudgetId, useEnterpriseGroupLearners, useSubsidyAccessPolicy, useContentMetadata,
 } from '../../data';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../cards/data';
-
 import { queryClient } from '../../../test/testUtils';
 
 import InviteMembersModalWrapper from '../InviteMembersModalWrapper';
@@ -163,6 +162,8 @@ describe('<InviteMemberModal />', () => {
       expect(screen.getByText('emails.csv')).toBeInTheDocument();
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
+      const formFeedbackText = 'Maximum invite at a time: 1000';
+      expect(screen.queryByText(formFeedbackText)).not.toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
   it('does not allow non-csv files', async () => {

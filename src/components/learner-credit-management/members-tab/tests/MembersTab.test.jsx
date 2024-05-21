@@ -508,6 +508,7 @@ describe('<BudgetDetailPage />', () => {
 
     expect(screen.queryByText('Remove members?')).toBeInTheDocument();
     const modalRemoveButton = screen.getByTestId('modal-remove-button');
+    expect(modalRemoveButton).toHaveTextContent('Remove (2)');
     userEvent.click(modalRemoveButton);
     expect(mockRemoveSpy).toHaveBeenCalled();
     await waitForElementToBeRemoved(() => screen.queryByText('Removing (2)'));
@@ -579,6 +580,7 @@ describe('<BudgetDetailPage />', () => {
 
     await waitFor(() => expect(screen.queryByText('Remove member?')).toBeInTheDocument());
     const modalRemoveButton = screen.getByTestId('modal-remove-button');
+    expect(modalRemoveButton).toHaveTextContent('Remove member');
     userEvent.click(modalRemoveButton);
     expect(mockRemoveSpy).toHaveBeenCalled();
     await waitFor(() => expect(screen.queryByText('1 member successfully removed')).toBeInTheDocument());

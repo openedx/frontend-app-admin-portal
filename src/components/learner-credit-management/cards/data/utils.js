@@ -156,7 +156,7 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     ensureValidationErrorObjectExists();
     if (learnerEmailsCount > MAX_EMAIL_ENTRY_LIMIT) {
       validationError.reason = 'over_email_max';
-      validationError.message = `${learnerEmailsCount} emails entered (${MAX_EMAIL_ENTRY_LIMIT}} maximum).`
+      validationError.message = `${learnerEmailsCount} emails entered (${MAX_EMAIL_ENTRY_LIMIT} maximum). `
       + `Delete ${learnerEmailsCount - MAX_EMAIL_ENTRY_LIMIT} emails to proceed.`;
     }
     if (invalidEmails.length > 0) {
