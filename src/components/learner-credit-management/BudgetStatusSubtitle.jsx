@@ -15,7 +15,7 @@ import {
 } from './data';
 
 const BudgetStatusSubtitle = ({
-  badgeVariant, status, isAssignable, term, date, policy, enterpriseUUID,
+  badgeVariant, status, isAssignable, term, date, policy, enterpriseUUID, isRetired,
 }) => {
   const { data: enterpriseGroup } = useEnterpriseGroup(policy);
   const { data: enterpriseCustomer } = useEnterpriseCustomer(enterpriseUUID);
@@ -99,21 +99,25 @@ const BudgetStatusSubtitle = ({
           // budget expiration date
           <span>{term} {formatDate(date)}</span>
         )}
-        <span> • {budgetTypeToRender.enrollmentType}</span>
-        {(!isAssignable) && (
-          <span> •
-            <OverlayTrigger
-              key="budget-tooltip"
-              placement="top"
-              overlay={(
-                <Tooltip id="budget-tooltip">
-                  {budgetTypeToRender.popoverText}
-                </Tooltip>
-              )}
-            >
-              {budgetTypeToRender.icon}
-            </OverlayTrigger>
-          </span>
+        {!isRetired && (
+          <>
+            <span> • {budgetTypeToRender.enrollmentType}</span>
+            {(!isAssignable) && (
+              <span> •
+                <OverlayTrigger
+                  key="budget-tooltip"
+                  placement="top"
+                  overlay={(
+                    <Tooltip id="budget-tooltip">
+                      {budgetTypeToRender.popoverText}
+                    </Tooltip>
+                  )}
+                >
+                  {budgetTypeToRender.icon}
+                </OverlayTrigger>
+              </span>
+            )}
+          </>
         )}
       </span>
     </Stack>
@@ -124,10 +128,11 @@ BudgetStatusSubtitle.propTypes = {
   badgeVariant: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   isAssignable: PropTypes.bool.isRequired,
-  term: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
+  term: PropTypes.string,
+  date: PropTypes.string,
   policy: PropTypes.shape({}).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
+  isRetired: PropTypes.bool.isRequired,
 };
 
 export default BudgetStatusSubtitle;

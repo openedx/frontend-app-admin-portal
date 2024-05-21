@@ -31,6 +31,7 @@ const assignBudgetStatus = (intl, policy) => {
     startDateStr: policy.subsidyActiveDatetime,
     endDateStr: policy.subsidyExpirationDatetime,
     isBudgetRetired: policy.retired,
+    retiredDateStr: policy.retiredAt,
   });
 
   return {
@@ -83,6 +84,7 @@ const useBudgetDetailHeaderData = ({
     budgetAggregates: policy?.aggregates || {},
     isAssignable: policy?.isAssignable || false,
     budgetDisplayName: policy?.displayName || 'Overview',
+    isRetired: policy?.retired || false,
   };
 
   if (policy) {
