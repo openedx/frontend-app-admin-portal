@@ -18,8 +18,8 @@ const CatalogSearch = () => {
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const searchFilters = `enterprise_catalog_uuids:${ENABLE_TESTING(subsidyAccessPolicy.catalogUuid)} AND content_type:course`;
 
-  const { data: appliesToAllContexts } = useEnterpriseGroup(subsidyAccessPolicy);
-  const showSubtitle = subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts.appliesToAllContexts;
+  const { data: { appliesToAllContexts } } = useEnterpriseGroup(subsidyAccessPolicy);
+  const showSubtitle = subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts;
 
   return (
     <section>
