@@ -12,47 +12,66 @@ const modalClose = jest.fn();
 const alertOpen = jest.fn();
 const alertClose = jest.fn();
 
+const offsetDays = {
+  120: dayjs().add(120, 'day'),
+  90: dayjs().add(90, 'day'),
+  60: dayjs().add(60, 'day'),
+  30: dayjs().add(30, 'day'),
+  10: dayjs().add(10, 'day'),
+  1: dayjs().subtract(1, 'day'),
+};
+
 describe('useExpiry', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it.each([
-    (() => {
-      const endDate = dayjs().add(120, 'day');
-      return { endDate, expected: expiryThresholds[120]({ date: formatDate(endDate.toString()) }) };
-    })(),
-    (() => {
-      const endDate = dayjs().add(90, 'day');
-      return { endDate, expected: expiryThresholds[90]({ date: formatDate(endDate.toString()) }) };
-    })(),
-    (() => {
-      const endDate = dayjs().add(60, 'day');
-      return { endDate, expected: expiryThresholds[60]({ date: formatDate(endDate.toString()) }) };
-    })(),
-    (() => {
-      const endDate = dayjs().add(30, 'day');
-      return { endDate, expected: expiryThresholds[30]({ date: formatDate(endDate.toString()) }) };
-    })(),
-    (() => {
-      const endDate = dayjs().add(10, 'day');
-      const today = dayjs().add(1, 'minutes');
-      const durationDiff = dayjs.duration(endDate.diff(today));
-
-      return {
-        endDate,
-        expected: expiryThresholds[10]({
-          date: formatDate(endDate.toString()),
-          days: durationDiff.days(),
-          hours: durationDiff.hours(),
-        }),
-      };
-    })(),
-    (() => {
-      const endDate = dayjs().subtract(1, 'day');
-      return { endDate, expected: expiryThresholds[0]({ date: formatDate(endDate.toString()) }) };
-    })(),
-  ])('displays correct notification and modal when plan is expiring in %s days', ({ endDate, expected }) => {
+    {
+      endDate: offsetDays['120'],
+      expected: expiryThresholds[120]({
+        date: formatDate(offsetDays['120'].toString()),
+      }),
+      isNonExpiredBudget: true,
+    },
+    {
+      endDate: offsetDays['90'],
+      expected: expiryThresholds[90]({
+        date: formatDate(offsetDays['90'].toString()),
+      }),
+      isNonExpiredBudget: true,
+    },
+    {
+      endDate: offsetDays['60'],
+      expected: expiryThresholds[60]({
+        date: formatDate(offsetDays['60'].toString()),
+      }),
+      isNonExpiredBudget: true,
+    },
+    {
+      endDate: offsetDays['30'],
+      expected: expiryThresholds[30]({
+        date: formatDate(offsetDays['30'].toString()),
+      }),
+      isNonExpiredBudget: true,
+    },
+    {
+      endDate: offsetDays['10'],
+      expected: expiryThresholds[10]({
+        date: formatDate(offsetDays['10'].toString()),
+        days: dayjs.duration(offsetDays['10'].diff(dayjs())).days(),
+        hours: dayjs.duration(offsetDays['10'].diff(dayjs())).hours(),
+      }),
+      isNonExpiredBudget: true,
+    },
+    {
+      endDate: offsetDays['1'],
+      expected: expiryThresholds[0]({
+        date: formatDate(offsetDays['1'].toString()),
+      }),
+      isNonExpiredBudget: false,
+    },
+  ])('displays correct notification and modal when plan is expiring in %s days', ({ endDate, expected, isNonExpiredBudget }) => {
     const budgets = [{ end: endDate }]; // Mock data with an expiring budget
 
     const { result } = renderHook(() => useExpiry('enterpriseId', budgets, modalOpen, modalClose, alertOpen, alertClose));
@@ -60,6 +79,7 @@ describe('useExpiry', () => {
     expect(result.current.notification).toEqual(expected.notificationTemplate);
     expect(result.current.modal).toEqual(expected.modalTemplate);
     expect(result.current.status).toEqual(expected.status);
+    expect(result.current.isNonExpiredBudget).toEqual(isNonExpiredBudget);
   });
 
   it('displays no notification with both an expired and non-expired budget', () => {

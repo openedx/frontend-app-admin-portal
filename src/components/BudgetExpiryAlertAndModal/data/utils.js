@@ -5,9 +5,21 @@ import ExpiryThresholds from './expiryThresholds';
 
 dayjs.extend(duration);
 
-export const getNonExpiredBudgets = (budgets) => {
+export const getExpiredAndNonExpiredBudgets = (budgets) => {
   const today = dayjs();
-  return budgets.filter((budget) => today <= dayjs(budget.end));
+  const nonExpiredBudgets = [];
+  const expiredBudgets = [];
+  budgets.forEach((budget) => {
+    if (today <= dayjs(budget.end)) {
+      nonExpiredBudgets.push(budget);
+    } else {
+      expiredBudgets.push(budget);
+    }
+  });
+  return {
+    nonExpiredBudgets,
+    expiredBudgets,
+  };
 };
 
 export const getExpirationMetadata = (endDateStr) => {
