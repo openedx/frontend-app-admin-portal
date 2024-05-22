@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PageBanner, Icon } from '@edx/paragon';
-import { WarningFilled } from '@edx/paragon/icons';
+import { PageBanner, Icon } from '@openedx/paragon';
+import { WarningFilled } from '@openedx/paragon/icons';
 
 const SystemWideWarningBanner = ({ children }) => (
   <PageBanner variant="warning">

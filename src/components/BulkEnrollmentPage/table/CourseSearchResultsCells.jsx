@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 
-import { Popover, Button, OverlayTrigger } from '@edx/paragon';
+import { Popover, Button, OverlayTrigger } from '@openedx/paragon';
 
 import { configuration } from '../../../config';
 

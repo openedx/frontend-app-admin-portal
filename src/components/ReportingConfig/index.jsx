@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Collapsible, Icon } from '@edx/paragon';
-import { Check, Close } from '@edx/paragon/icons';
+import { Collapsible, Icon } from '@openedx/paragon';
+import { Check, Close } from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import LMSApiService from '../../data/services/LmsApiService';

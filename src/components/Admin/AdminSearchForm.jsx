@@ -2,8 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Form } from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+import { Form } from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 

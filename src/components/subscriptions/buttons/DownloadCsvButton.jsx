@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { StatefulButton, Icon, Spinner } from '@edx/paragon';
-import { Download, Check } from '@edx/paragon/icons';
+import { StatefulButton, Icon, Spinner } from '@openedx/paragon';
+import { Download, Check } from '@openedx/paragon/icons';
 
 import { logError } from '@edx/frontend-platform/logging';
 import { saveAs } from 'file-saver';

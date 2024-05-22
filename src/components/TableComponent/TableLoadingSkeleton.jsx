@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from '@edx/paragon';
+import { Skeleton } from '@openedx/paragon';
 
 const TableLoadingSkeleton = (props) => (
   <div {...props}>

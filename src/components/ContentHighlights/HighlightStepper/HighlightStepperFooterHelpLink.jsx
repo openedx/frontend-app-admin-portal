@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Hyperlink,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useContextSelector } from 'use-context-selector';

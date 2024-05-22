@@ -7,7 +7,7 @@ import {
   CheckboxFilter,
   Row,
   Col,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import groupBy from 'lodash/groupBy';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';

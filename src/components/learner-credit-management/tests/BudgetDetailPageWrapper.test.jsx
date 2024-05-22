@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';

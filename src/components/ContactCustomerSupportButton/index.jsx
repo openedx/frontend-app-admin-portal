@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hyperlink } from '@edx/paragon';
+import { Hyperlink } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 

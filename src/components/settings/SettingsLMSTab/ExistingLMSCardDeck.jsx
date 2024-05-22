@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { CardGrid, useToggle } from '@edx/paragon';
+import { CardGrid, useToggle } from '@openedx/paragon';
 import { getStatus } from './utils';
 import ExistingCard from './ExistingCard';
 import ConfigErrorModal from '../ConfigErrorModal';

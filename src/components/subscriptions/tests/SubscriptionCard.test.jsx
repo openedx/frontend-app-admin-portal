@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {
   breakpoints,
   ResponsiveContext,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { renderWithRouter } from '../../test/testUtils';
 import SubscriptionCard from '../SubscriptionCard';
 

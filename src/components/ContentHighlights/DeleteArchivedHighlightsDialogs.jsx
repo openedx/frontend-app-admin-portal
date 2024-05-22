@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import {
   Button, Hyperlink, ModalDialog, StatefulButton, useToggle,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';

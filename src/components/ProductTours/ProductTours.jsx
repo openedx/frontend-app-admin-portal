@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ProductTour } from '@edx/paragon';
+import { ProductTour } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
 import browseAndRequestTour from './browseAndRequestTour';

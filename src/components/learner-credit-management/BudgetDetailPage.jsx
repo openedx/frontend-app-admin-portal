@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton, Stack } from '@edx/paragon';
+import { Skeleton, Stack } from '@openedx/paragon';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {

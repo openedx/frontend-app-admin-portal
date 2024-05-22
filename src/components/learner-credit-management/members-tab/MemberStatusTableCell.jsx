@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Chip } from '@edx/paragon';
+import { Chip } from '@openedx/paragon';
 
 import {
   Timelapse, CheckCircle, RemoveCircle,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 
 const MemberStatusTableCell = ({
   row,

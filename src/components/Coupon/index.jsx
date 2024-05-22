@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Icon } from '@edx/paragon';
-import { Error, ExpandLess, ExpandMore } from '@edx/paragon/icons';
+import { Icon } from '@openedx/paragon';
+import { Error, ExpandLess, ExpandMore } from '@openedx/paragon/icons';
 
 import CouponDetails from '../../containers/CouponDetails';
 

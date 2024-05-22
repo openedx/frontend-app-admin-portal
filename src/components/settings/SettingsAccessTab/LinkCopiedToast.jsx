@@ -1,5 +1,5 @@
 import React from 'react';
-import { Toast } from '@edx/paragon';
+import { Toast } from '@openedx/paragon';
 
 const LinkCopiedToast = (props) => (
   <Toast {...props}>

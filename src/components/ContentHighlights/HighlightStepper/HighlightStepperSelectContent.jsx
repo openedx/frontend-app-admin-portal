@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Row, Col, Container,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import HighlightStepperSelectContentSearch from './HighlightStepperSelectContentSearch';
 import HighlightStepperSelectContentHeader from './HighlightStepperSelectContentHeader';

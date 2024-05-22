@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
-import { Mail } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { Mail } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';

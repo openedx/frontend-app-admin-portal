@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 
 import ContactCustomerSupportButton from '../ContactCustomerSupportButton';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ALERT_CLOSE_LABEL_TEXT } from '@edx/paragon';
+import { ALERT_CLOSE_LABEL_TEXT } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

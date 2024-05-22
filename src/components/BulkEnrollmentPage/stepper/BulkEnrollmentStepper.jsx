@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Button, ModalDialog, Stepper,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import BulkEnrollmentSubmit from './BulkEnrollmentSubmit';
 import AddCoursesStep from './AddCoursesStep';

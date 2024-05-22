@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Form, Image } from '@edx/paragon';
+import { Container, Form, Image } from '@openedx/paragon';
 import { BLACKBOARD_TYPE, CANVAS_TYPE } from '../../../data/constants';
 import { channelMapping } from '../../../../../utils';
 

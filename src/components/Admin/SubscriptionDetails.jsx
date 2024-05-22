@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Row, Col, Toast, Button,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import { Link } from 'react-router-dom';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';

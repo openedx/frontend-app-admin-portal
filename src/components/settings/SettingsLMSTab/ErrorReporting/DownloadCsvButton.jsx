@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 
 import {
   Toast, StatefulButton, Icon, Spinner, useToggle,
-} from '@edx/paragon';
-import { Download, Check } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Download, Check } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import { isStrictlyArray } from './utils';
 

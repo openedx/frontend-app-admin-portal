@@ -6,7 +6,7 @@ import {
   FullscreenModal,
   Image,
   Stack,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { configuration } from '../../../config';
 import { ssoStepperNetworkErrorText, ssoLPNetworkErrorText, HELP_CENTER_SAML_LINK } from '../data/constants';
 import cardImage from '../../../data/images/SomethingWentWrong.svg';

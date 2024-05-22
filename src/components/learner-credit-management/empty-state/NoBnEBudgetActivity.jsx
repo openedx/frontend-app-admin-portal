@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Button, Card, Col, Row,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { Link } from 'react-router-dom';
 
 import { useIsLargeOrGreater } from '../data';

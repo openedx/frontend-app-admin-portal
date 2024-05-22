@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DataTable } from '@edx/paragon';
+import { DataTable } from '@openedx/paragon';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import TableTextFilter from './TableTextFilter';

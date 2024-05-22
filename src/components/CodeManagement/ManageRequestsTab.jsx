@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 
-import { Stack } from '@edx/paragon';
+import { Stack } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
 
 import SubsidyRequestManagementTable, {

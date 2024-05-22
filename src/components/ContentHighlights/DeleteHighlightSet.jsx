@@ -7,9 +7,9 @@ import {
   useToggle,
   ActionRow,
   StatefulButton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { Info } from '@edx/paragon/icons';
+import { Info } from '@openedx/paragon/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';

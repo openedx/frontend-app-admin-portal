@@ -12,7 +12,7 @@ import {
   TextFilter,
   CheckboxFilter,
   Toast,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';

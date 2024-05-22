@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dropzone, Form, Icon,
-} from '@edx/paragon';
-import { InsertDriveFile } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { InsertDriveFile } from '@openedx/paragon/icons';
 
 import { formatBytes } from '../../MultipleFileInputField/utils';
 import InviteModalInputFeedback from './InviteModalInputFeedback';

@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert, ActionRow, Button, Hyperlink, ModalDialog, Toast, Skeleton, Spinner, useToggle,
-} from '@edx/paragon';
-import { Add, WarningFilled } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Add, WarningFilled } from '@openedx/paragon/icons';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs, useExistingProviderData } from './hooks';
 import NoSSOCard from './NoSSOCard';

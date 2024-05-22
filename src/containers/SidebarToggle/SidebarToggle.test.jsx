@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
-import { Close, MenuIcon } from '@edx/paragon/icons';
+import { Close, MenuIcon } from '@openedx/paragon/icons';
 
 import SidebarToggle from './index';
 import {
