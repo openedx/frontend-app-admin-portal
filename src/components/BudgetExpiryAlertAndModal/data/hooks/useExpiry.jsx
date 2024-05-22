@@ -10,7 +10,7 @@ const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, aler
   const [notification, setNotification] = useState(null);
   const [expirationThreshold, setExpirationThreshold] = useState(null);
   const [modal, setModal] = useState(null);
-  const [isNonExpiredBudget, setisNonExpiredBudget] = useState(false);
+  const [isNonExpiredBudget, setIsNonExpiredBudget] = useState(false);
 
   useEffect(() => {
     if (!budgets || budgets.length === 0) {
@@ -31,7 +31,7 @@ const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, aler
     // If an unexpired budget exists, set budgetsToConsiderForExpirationMessaging to nonExpiredBudgets
     if (hasNonExpiredBudgets) {
       budgetsToConsiderForExpirationMessaging = nonExpiredBudgets;
-      setisNonExpiredBudget(true);
+      setIsNonExpiredBudget(true);
     } else {
       budgetsToConsiderForExpirationMessaging = expiredBudgets;
     }

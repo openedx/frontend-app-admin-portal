@@ -7,9 +7,18 @@ dayjs.extend(duration);
 
 export const getExpiredAndNonExpiredBudgets = (budgets) => {
   const today = dayjs();
+  const nonExpiredBudgets = [];
+  const expiredBudgets = [];
+  budgets.forEach((budget) => {
+    if (today <= dayjs(budget.end)) {
+      nonExpiredBudgets.push(budget);
+    } else {
+      expiredBudgets.push(budget);
+    }
+  });
   return {
-    nonExpiredBudgets: budgets.filter((budget) => today <= dayjs(budget.end)),
-    expiredBudgets: budgets.filter((budget) => today > dayjs(budget.end)),
+    nonExpiredBudgets,
+    expiredBudgets,
   };
 };
 
