@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import {
   Button, Row, Col, Toast, Icon,
-} from '@edx/paragon';
-import { ArrowBackIos } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { ArrowBackIos } from '@openedx/paragon/icons';
 
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import InviteLearnersButton from './buttons/InviteLearnersButton';

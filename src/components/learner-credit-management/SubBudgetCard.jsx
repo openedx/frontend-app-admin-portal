@@ -10,7 +10,7 @@ import {
   Badge,
   Stack,
   Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';

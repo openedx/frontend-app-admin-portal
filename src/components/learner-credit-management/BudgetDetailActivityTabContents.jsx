@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Skeleton } from '@edx/paragon';
+import { Stack, Skeleton } from '@openedx/paragon';
 
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';

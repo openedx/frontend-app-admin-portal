@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Icon, IconButton, Stack,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   Person,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 
 const MemberDetailsTableCell = ({
   row,

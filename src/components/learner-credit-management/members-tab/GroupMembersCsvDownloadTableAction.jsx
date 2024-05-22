@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ActionRow, AlertModal, Button } from '@edx/paragon';
-import { Download } from '@edx/paragon/icons';
+import { ActionRow, AlertModal, Button } from '@openedx/paragon';
+import { Download } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import snakeCase from 'lodash/snakeCase';
 import { saveAs } from 'file-saver';
@@ -11,6 +11,8 @@ import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 const GroupMembersCsvDownloadTableAction = ({
   tableInstance,
 }) => {
+  const selectedEmails = Object.keys(tableInstance.state.selectedRowIds);
+  const selectedEmailCount = selectedEmails.length;
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [alertModalExc, setAlertModalException] = useState('');
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -53,6 +55,7 @@ const GroupMembersCsvDownloadTableAction = ({
     EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData(
       subsidyAccessPolicyId,
       options,
+      selectedEmails,
     ).then(response => {
       // download CSV
       const blob = new Blob([response.data], {
@@ -96,7 +99,7 @@ const GroupMembersCsvDownloadTableAction = ({
         className="border rounded-0 border-dark-500"
         disabled={tableInstance.itemCount === 0}
       >
-        Download all ({tableInstance.itemCount})
+        Download {selectedEmailCount > 0 ? `(${selectedEmailCount})` : `all (${tableInstance.itemCount})`}
       </Button>
     </>
   );
@@ -118,6 +121,7 @@ GroupMembersCsvDownloadTableAction.propTypes = {
         id: PropTypes.string,
         desc: PropTypes.bool,
       })),
+      selectedRowIds: PropTypes.shape(),
     }),
   }),
 };

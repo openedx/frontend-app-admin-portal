@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Col, Row } from '@edx/paragon';
+import { Col, Row } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 

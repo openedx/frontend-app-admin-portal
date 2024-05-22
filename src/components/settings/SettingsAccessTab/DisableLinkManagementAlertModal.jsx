@@ -6,8 +6,8 @@ import {
   Alert,
   Button,
   StatefulButton,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 const DisableLinkManagementAlertModal = ({
   isOpen,

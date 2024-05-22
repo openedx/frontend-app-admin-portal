@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { Alert } from '@edx/paragon';
-import { Cancel as ErrorIcon } from '@edx/paragon/icons';
+import { Alert } from '@openedx/paragon';
+import { Cancel as ErrorIcon } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import NotFoundPage from '../NotFoundPage';

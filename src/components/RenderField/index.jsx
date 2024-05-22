@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormControl } from '@edx/paragon';
+import { Form, FormControl } from '@openedx/paragon';
 
 const RenderField = ({
   input,

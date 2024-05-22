@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import {
   Award, Check, Groups, RemoveRedEye,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 
 import NumberCard from '../NumberCard';
 

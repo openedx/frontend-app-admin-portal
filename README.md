@@ -96,8 +96,8 @@ module.exports = {
 */
   localModules: [
     { moduleName: '@edx/brand', dir: '../brand-edx.org' },
-    { moduleName: '@edx/paragon/scss/core', dir: '../paragon', dist: 'scss/core' },
-    { moduleName: '@edx/paragon', dir: '../paragon', dist: 'dist' },
+    { moduleName: '@openedx/paragon/scss/core', dir: '../paragon', dist: 'scss/core' },
+    { moduleName: '@openedx/paragon', dir: '../paragon', dist: 'dist' },
   ],
 };
 ```

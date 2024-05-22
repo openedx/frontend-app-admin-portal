@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Row, Col, Icon, Container,
-} from '@edx/paragon';
-import { EditCircle } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { EditCircle } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import HighlightStepperTitleInput from './HighlightStepperTitleInput';

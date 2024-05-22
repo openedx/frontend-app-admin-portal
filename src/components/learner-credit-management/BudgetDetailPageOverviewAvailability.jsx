@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { generatePath, useParams, Link } from 'react-router-dom';
 import {
   Button, Col, Hyperlink, Row, Stack,
-} from '@edx/paragon';
-import { Add } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Add } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 

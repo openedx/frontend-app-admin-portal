@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { AvatarButton } from '@edx/paragon';
+import { AvatarButton } from '@openedx/paragon';
 import Header from './index';
 import { Logo, HeaderDropdown } from '../../components/Header';
 import SidebarToggle from '../SidebarToggle';

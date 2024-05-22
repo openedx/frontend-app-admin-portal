@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { logError } from '@edx/frontend-platform/logging';
-import { DataTable, TextFilter } from '@edx/paragon';
+import { DataTable, TextFilter } from '@openedx/paragon';
 
 import LmsApiService from '../../data/services/LmsApiService';
 

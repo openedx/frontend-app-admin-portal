@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import {
   screen,
   render,
+  waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
@@ -115,7 +116,7 @@ describe('<MultipleBudgetsPage />', () => {
     checkboxes.forEach(checkbox => {
       userEvent.click(checkbox);
     });
-    expect(screen.getByText('Showing 3 of 3.')).toBeInTheDocument();
+    waitFor(() => expect(screen.getByText('Showing 3 of 3.')).toBeInTheDocument());
   });
   it('Shows loading spinner', () => {
     const enterpriseSubsidiesContextValue = {

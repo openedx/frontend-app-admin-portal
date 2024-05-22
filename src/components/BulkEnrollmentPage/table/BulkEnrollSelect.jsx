@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { CheckboxControl } from '@edx/paragon';
+import { CheckboxControl } from '@openedx/paragon';
 
 export const SELECT_ONE_TEST_ID = 'selectOne';
 export const SELECT_ALL_TEST_ID = 'selectAll';

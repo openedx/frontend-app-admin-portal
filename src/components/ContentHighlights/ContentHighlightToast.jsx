@@ -1,4 +1,4 @@
-import { Toast } from '@edx/paragon';
+import { Toast } from '@openedx/paragon';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 

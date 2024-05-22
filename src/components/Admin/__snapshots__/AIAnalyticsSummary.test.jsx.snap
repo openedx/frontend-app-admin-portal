@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AIAnalyticsSummary /> should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked 1`] = `
-Array [
+[
   <div
     className="pgn__hstack pgn__stack-gap--3"
   >
@@ -55,7 +55,7 @@ Array [
 `;
 
 exports[`<AIAnalyticsSummary /> should handle null analytics data 1`] = `
-Array [
+[
   <div
     className="pgn__hstack pgn__stack-gap--3"
   >
@@ -109,7 +109,7 @@ Array [
 `;
 
 exports[`<AIAnalyticsSummary /> should render action buttons correctly 1`] = `
-Array [
+[
   <div
     className="pgn__hstack pgn__stack-gap--3"
   >

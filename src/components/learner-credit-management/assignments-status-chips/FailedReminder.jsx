@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Chip, Hyperlink } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Chip, Hyperlink } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 import BaseModalPopup from './BaseModalPopup';
 import EVENT_NAMES from '../../../eventTracking';

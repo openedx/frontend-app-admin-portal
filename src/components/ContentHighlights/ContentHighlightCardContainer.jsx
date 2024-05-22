@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Stack } from '@edx/paragon';
+import { Stack } from '@openedx/paragon';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useHighlightSetsForCuration } from './data/hooks';

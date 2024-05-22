@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert, Button, useToggle, Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import ReviewItem from './ReviewItem';
 
 export const MAX_ITEMS_DISPLAYED = 25;

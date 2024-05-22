@@ -5,7 +5,7 @@ import {
   AlertModal,
   Button,
   StatefulButton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import LmsApiService from '../../../data/services/LmsApiService';
 

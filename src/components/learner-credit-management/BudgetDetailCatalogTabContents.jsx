@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { InstantSearch } from 'react-instantsearch-dom';
 import algoliasearch from 'algoliasearch/lite';
-import { Row, Col } from '@edx/paragon';
+import { Row, Col } from '@openedx/paragon';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
 import { useLocation, useNavigate } from 'react-router-dom';

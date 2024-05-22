@@ -12,7 +12,8 @@ import {
   TextFilter,
   CheckboxFilter,
   Toast,
-} from '@edx/paragon';
+} from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';
 import { SubscriptionDetailContext } from '../../../subscriptions/SubscriptionDetailContextProvider';
@@ -20,7 +21,7 @@ import {
   DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED, API_FIELDS_BY_TABLE_COLUMN_ACCESSOR,
 } from '../../../subscriptions/data/constants';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
-import { formatTimestamp } from '../../../../utils';
+import { i18nFormatTimestamp } from '../../../../utils';
 import SubscriptionZeroStateMessage from '../../../subscriptions/SubscriptionZeroStateMessage';
 import EnrollBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/EnrollBulkAction';
 import RemindBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/RemindBulkAction';
@@ -30,16 +31,28 @@ import LicenseManagementUserBadge from '../../../subscriptions/licenses/LicenseM
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 import { pushEvent, EVENTS } from '../../../../optimizely';
 
-const userRecentAction = (user) => {
+const userRecentAction = (user, intl) => {
   switch (user.status) {
     case ACTIVATED: {
-      return `Activated: ${formatTimestamp({ timestamp: user.activationDate })}`;
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.embedded.subscription.license.management.table.user.recent.action.activated',
+        defaultMessage: 'Activated: {activationDate}',
+        description: 'Activated action date for a user in the license management table.',
+      }, { activationDate: i18nFormatTimestamp({ intl, timestamp: user.activationDate }) });
     }
     case REVOKED: {
-      return `Revoked: ${formatTimestamp({ timestamp: user.revokedDate })}`;
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.embedded.subscription.license.management.table.user.recent.action.revoked',
+        defaultMessage: 'Revoked: {revokedDate}',
+        description: 'Revoked action date for a user in the license management table.',
+      }, { revokedDate: i18nFormatTimestamp({ intl, timestamp: user.revokedDate }) });
     }
     case ASSIGNED: {
-      return `Invited: ${formatTimestamp({ timestamp: user.lastRemindDate })}`;
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.embedded.subscription.license.management.table.user.recent.action.invited',
+        defaultMessage: 'Invited: {lastRemindDate}',
+        description: 'Invited action date for a user in the license management table.',
+      }, { lastRemindDate: i18nFormatTimestamp({ intl, timestamp: user.lastRemindDate }) });
     }
     default: {
       return null;
@@ -62,6 +75,7 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
   const {
     forceRefresh: forceRefreshSubscription,
   } = useContext(SubscriptionContext);
+  const intl = useIntl();
 
   const {
     currentPage,
@@ -175,9 +189,9 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
       emailLabel: <span data-hj-suppress>{user.userEmail}</span>,
       status: user.status,
       statusBadge: <LicenseManagementUserBadge userStatus={user.status} />,
-      recentAction: userRecentAction(user),
+      recentAction: userRecentAction(user, intl),
     })),
-    [users],
+    [users, intl],
   );
 
   const onEnrollSuccess = () => {
@@ -189,7 +203,11 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
     pushEvent(EVENTS.LPR_SUBSCRIPTION_LICENSE_REMIND, { enterpriseUUID: subscription.enterpriseCustomerUuid });
     // Refresh users to get updated lastRemindDate
     forceRefreshUsers();
-    setToastMessage('Users successfully reminded');
+    setToastMessage(intl.formatMessage({
+      id: 'admin.portal.lpr.embedded.subscription.license.management.table.reminded.toast',
+      defaultMessage: 'Users successfully reminded',
+      description: 'Toast message for reminding users in the license management table.',
+    }));
     setShowToast(true);
   };
   const onRevokeSuccess = () => {
@@ -197,7 +215,11 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
     // Refresh subscription and user data to get updated revoke count and revoked list of users
     forceRefreshSubscription();
     forceRefreshDetailView();
-    setToastMessage('Licenses successfully revoked');
+    setToastMessage(intl.formatMessage({
+      id: 'admin.portal.lpr.embedded.subscription.license.management.table.revoked.toast',
+      defaultMessage: 'Licenses successfully revoked',
+      description: 'Toast message for revoking users in the license management table.',
+    }));
     setShowToast(true);
   };
 
@@ -234,7 +256,15 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
             if (loadingUsers) {
               return null;
             }
-            return <DataTable.EmptyTable content="No results found" />;
+            return (
+              <DataTable.EmptyTable
+                content={intl.formatMessage({
+                  id: 'admin.portal.lpr.embedded.subscription.license.management.table.empty.content',
+                  defaultMessage: 'No results found',
+                  description: 'Empty table content for the license management table.',
+                })}
+              />
+            );
           }
           /* eslint-enable react/no-unstable-nested-components */
         }
@@ -242,7 +272,11 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
         data={rows}
         columns={[
           {
-            Header: 'Email address',
+            Header: intl.formatMessage({
+              id: 'admin.portal.lpr.embedded.subscription.license.management.table.column.email.heading',
+              defaultMessage: 'Email address',
+              description: 'Column heading for the email address column in the license management table.',
+            }),
             accessor: 'emailLabel',
             /* eslint-disable react/prop-types */
             /* eslint-disable react/no-unstable-nested-components */
@@ -252,23 +286,39 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
             /* eslint-enable react/no-unstable-nested-components */
           },
           {
-            Header: 'Status',
+            Header: intl.formatMessage({
+              id: 'admin.portal.lpr.embedded.subscription.license.management.table.column.status.heading',
+              defaultMessage: 'Status',
+              description: 'Column heading for the status column in the license management table.',
+            }),
             accessor: 'statusBadge',
             Filter: CheckboxFilter,
             filter: 'includesValue',
             filterChoices: [{
-              name: 'Pending',
+              name: intl.formatMessage({
+                id: 'admin.portal.lpr.embedded.subscription.license.management.table.pending.filter',
+                defaultMessage: 'Pending',
+                description: 'Filter option for pending status in the license management table.',
+              }),
               number: overview.assigned,
               value: ASSIGNED,
             }, {
-              name: 'Active',
+              name: intl.formatMessage({
+                id: 'admin.portal.lpr.embedded.subscription.license.management.table.active.filter',
+                defaultMessage: 'Active',
+                description: 'Filter option for active status in the license management table.',
+              }),
               number: overview.activated,
               value: ACTIVATED,
             }],
             disableFilters: true,
           },
           {
-            Header: 'Recent action',
+            Header: intl.formatMessage({
+              id: 'admin.portal.lpr.embedded.subscription.license.management.table.column.recent.action.heading',
+              defaultMessage: 'Recent action',
+              description: 'Column heading for the recent action column in the license management table.',
+            }),
             accessor: 'recentAction',
             disableFilters: true,
           },

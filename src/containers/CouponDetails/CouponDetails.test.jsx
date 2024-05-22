@@ -10,7 +10,7 @@ import { mount } from 'enzyme';
 import { render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';

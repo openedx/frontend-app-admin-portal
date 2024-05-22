@@ -12,6 +12,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
     >
       <div
         className="pgn__data-table-status-bar"
+        data-testid="table-control-bar"
       >
         <div
           className="pgn__data-table-actions"
@@ -30,19 +31,23 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
                 >
                   <label
                     className="pgn__form-label sr-only"
-                    htmlFor="form-field2"
-                    id="text-filter-label-header_email-1"
+                    htmlFor="text-filter-label-header_email-1"
                   >
                     Search email address
                   </label>
-                  <input
-                    aria-labelledby="text-filter-label-header_email-1"
-                    className="form-control"
-                    onChange={[Function]}
-                    placeholder="Search email address"
-                    type="text"
-                    value=""
-                  />
+                  <div
+                    className="pgn__form-control-decorator-group"
+                  >
+                    <input
+                      className="form-control"
+                      id="text-filter-label-header_email-1"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      placeholder="Search email address"
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
               </div>
               <div
@@ -76,8 +81,9 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
           >
             <div
               className="pgn__smart-status"
+              data-testid="row-status"
             >
-              Showing 3 of 24.
+              Showing 1 - 3 of 24.
             </div>
           </div>
           <div
@@ -87,6 +93,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
       </div>
       <div
         className="pgn__data-table-container"
+        data-testid="data-table-container"
       >
         <table
           className="pgn__data-table is-striped"
@@ -352,9 +359,12 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
       </div>
       <div
         className="pgn__data-table-footer"
+        data-testid="table-footer"
       >
-        <div>
-          Showing 3 of 24.
+        <div
+          data-testid="row-status"
+        >
+          Showing 1 - 3 of 24.
         </div>
         <div
           className="pgn__dropdown pgn__dropdown-light dropdown"

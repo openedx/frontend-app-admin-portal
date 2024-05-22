@@ -857,7 +857,9 @@ describe('<BudgetDetailPage />', () => {
     // the incorrect "Select all X" count.
     const selectAllCheckbox = assignedSection.queryAllByRole('checkbox')[0];
     userEvent.click(selectAllCheckbox);
-    expect(getButtonElement(`Select all ${NUMBER_OF_ASSIGNMENTS_TO_GENERATE}`, { screenOverride: assignedSection })).toBeInTheDocument();
+    waitFor(() => {
+      expect(getButtonElement(`Select all ${NUMBER_OF_ASSIGNMENTS_TO_GENERATE}`, { screenOverride: assignedSection })).toBeInTheDocument();
+    });
 
     // Unselect the checkbox the "Refresh" table action appears
     userEvent.click(selectAllCheckbox);
@@ -1042,20 +1044,20 @@ describe('<BudgetDetailPage />', () => {
     if (field === 'status') {
       const filtersButton = getButtonElement('Filters', { screenOverride: assignedSection });
       userEvent.click(filtersButton);
-      const filtersDropdown = screen.getByRole('group', { name: 'Status' });
-      const filtersDropdownContainer = within(filtersDropdown);
-      if (value.includes('waiting')) {
-        const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
-        expect(waitingForLearnerOption).toBeInTheDocument();
-        userEvent.click(waitingForLearnerOption);
+      waitFor(() => {
+        const filtersDropdown = screen.getByRole('group', { name: 'Status' });
+        const filtersDropdownContainer = within(filtersDropdown);
+        if (value.includes('waiting')) {
+          const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
+          expect(waitingForLearnerOption).toBeInTheDocument();
+          userEvent.click(waitingForLearnerOption);
 
-        await waitFor(() => {
           expect(waitingForLearnerOption).toBeChecked();
           expect(mockFetchContentAssignments).toHaveBeenCalledWith(
             expect.objectContaining(expectedTableFetchDataArgsAfterFilter),
           );
-        });
-      }
+        }
+      });
     }
 
     if (field === 'search') {

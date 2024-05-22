@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -91,7 +91,9 @@ describe('HighlightStepperSelectContentSearch', () => {
         <HighlightStepperSelectContent />
       </HighlightStepperSelectContentSearchWrapper>,
     );
-    expect(screen.getByText(`Showing ${mockCourseData.length} of ${mockCourseData.length}`, { exact: false })).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText(`Showing ${mockCourseData.length} of ${mockCourseData.length}`, { exact: false })).toBeInTheDocument();
+    });
     expect(screen.getByText('Search courses')).toBeInTheDocument();
   });
   test('renders the search results with all selected', async () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Form, Image } from '@edx/paragon';
+import { Container, Form, Image } from '@openedx/paragon';
 
 import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
 import { channelMapping, urlValidation } from '../../../../../utils';

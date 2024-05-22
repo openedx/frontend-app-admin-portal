@@ -1,7 +1,7 @@
 import {
   Icon, Col, Stack,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 import PropTypes from 'prop-types';
 
 const LearnerCreditDisclaimer = ({ offerLastUpdated }) => (

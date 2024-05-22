@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Card, Toast } from '@edx/paragon';
+import { Card, Toast } from '@openedx/paragon';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';

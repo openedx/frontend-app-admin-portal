@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@edx/paragon';
+import { Button } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
