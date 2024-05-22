@@ -14,10 +14,10 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
   const {
     data: subsidyAccessPolicy,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const { data: { appliesToAllContexts } } = useEnterpriseGroup(subsidyAccessPolicy);
+  const { data } = useEnterpriseGroup(subsidyAccessPolicy);
 
   const catalogGroupView = subsidyAccessPolicy?.groupAssociations?.length > 0
-    && !appliesToAllContexts;
+    && !data.appliesToAllContexts;
 
   const { linkToCourse, uuid } = course;
   const handleViewCourse = () => {

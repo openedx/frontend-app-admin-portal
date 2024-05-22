@@ -12,7 +12,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
  * @returns The enterprise group object
  */
 const getEnterpriseGroup = async ({ subsidyAccessPolicy }) => {
-  if (subsidyAccessPolicy === undefined || isEmpty(subsidyAccessPolicy.groupAssociations)) {
+  if (isEmpty(subsidyAccessPolicy?.groupAssociations)) {
     return null;
   }
   const response = await LmsApiService.fetchEnterpriseGroup(subsidyAccessPolicy.groupAssociations[0]);
