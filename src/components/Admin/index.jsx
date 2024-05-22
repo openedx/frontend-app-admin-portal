@@ -392,7 +392,6 @@ class Admin extends React.Component {
       insights,
       insightsLoading,
     } = this.props;
-
     const queryParams = new URLSearchParams(search || '');
     const queryParamsLength = Array.from(queryParams.entries()).length;
     const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
