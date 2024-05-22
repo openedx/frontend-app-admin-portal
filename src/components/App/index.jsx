@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   Route, Navigate, Routes, generatePath, useParams,
 } from 'react-router-dom';
@@ -27,6 +33,11 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
+
+// eslint-disable-next-line import/no-unresolved
+const ReactQueryDevtoolsProduction = lazy(() => import('@tanstack/react-query-devtools/production').then((d) => ({
+  default: d.ReactQueryDevtools,
+})));
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -60,6 +71,11 @@ const AppWrapper = () => {
   const apiClient = getAuthenticatedHttpClient();
   const config = getConfig();
 
+  const [showReactQueryDevtools, setShowReactQueryDevtools] = useState(false);
+  useEffect(() => {
+    window.toggleReactQueryDevtools = () => setShowReactQueryDevtools((prevState) => !prevState);
+  });
+
   useEffect(() => {
     if (process.env.HOTJAR_APP_ID) {
       try {
@@ -90,10 +106,14 @@ const AppWrapper = () => {
     }
     return true;
   }, [config]);
-
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
+      {showReactQueryDevtools && (
+      <Suspense fallback={null}>
+        <ReactQueryDevtoolsProduction />
+      </Suspense>
+      )}
       <AppProvider store={store}>
         <Helmet
           titleTemplate="%s - edX Admin Portal"
