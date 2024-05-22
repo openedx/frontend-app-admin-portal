@@ -2,8 +2,7 @@ import { Form } from '@edx/paragon';
 import PropTypes from 'prop-types';
 import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
 
-const InviteModalInputFeedback = (metadata) => {
-  const { memberInviteMetadata } = metadata;
+const InviteModalInputFeedback = ({ memberInviteMetadata, isCsvUpload }) => {
   if (memberInviteMetadata.validationError) {
     if (!memberInviteMetadata.isValidInput) {
       return (
@@ -18,6 +17,18 @@ const InviteModalInputFeedback = (metadata) => {
       </Form.Control.Feedback>
     );
   }
+  if (isCsvUpload) {
+    return (
+      <div>
+        {!memberInviteMetadata.lowerCasedEmails.length > 0 ? (
+          <Form.Control.Feedback>
+            <p className="mb-0">Maximum invite at a time: {MAX_EMAIL_ENTRY_LIMIT} emails</p>
+          </Form.Control.Feedback>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <Form.Control.Feedback>
       <p className="mb-0">Maximum invite at a time: {MAX_EMAIL_ENTRY_LIMIT} emails</p>
@@ -27,14 +38,16 @@ const InviteModalInputFeedback = (metadata) => {
 };
 
 InviteModalInputFeedback.propTypes = {
-  metadata: PropTypes.shape({
-    memberInviteMetadata: PropTypes.shape({
-      isValidInput: PropTypes.bool,
-      validationError: PropTypes.shape({
-        message: PropTypes.number,
-      }),
+  memberInviteMetadata: PropTypes.shape({
+    isValidInput: PropTypes.bool,
+    validationError: PropTypes.shape({
+      message: PropTypes.number,
     }),
+    lowerCasedEmails: PropTypes.arrayOf(
+      PropTypes.shape({}),
+    ),
   }),
+  isCsvUpload: PropTypes.bool,
 };
 
 export default InviteModalInputFeedback;

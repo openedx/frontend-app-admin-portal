@@ -45,7 +45,7 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
           multipleDragged: 'Cannot upload more than one file.',
         }}
       />
-      <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} />
+      <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload />
     </Form.Group>
   );
 };
