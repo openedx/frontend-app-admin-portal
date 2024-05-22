@@ -110,9 +110,9 @@ const AppWrapper = () => {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
       {showReactQueryDevtools && (
-      <Suspense fallback={null}>
-        <ReactQueryDevtoolsProduction />
-      </Suspense>
+        <Suspense fallback={null}>
+          <ReactQueryDevtoolsProduction />
+        </Suspense>
       )}
       <AppProvider store={store}>
         <Helmet
