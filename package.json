@@ -37,7 +37,7 @@
     "@edx/frontend-enterprise-utils": "9.1.0",
     "@edx/frontend-platform": "8.0.0",
     "@edx/openedx-atlas": "^0.6.0",
-    "@openedx/paragon": "^21.13.1",
+    "@openedx/paragon": "21.13.1",
     "@tanstack/react-query": "4.36.1",
     "@tanstack/react-query-devtools": "4.36.1",
     "algoliasearch": "4.8.3",
