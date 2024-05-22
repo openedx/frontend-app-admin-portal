@@ -124,6 +124,7 @@ const LearnerCreditGroupMembersTable = ({
         setRefresh={setRefresh}
         groupUuid={groupUuid}
       />,
+      <GroupMembersCsvDownloadTableAction />,
     ]}
     additionalColumns={[
       {

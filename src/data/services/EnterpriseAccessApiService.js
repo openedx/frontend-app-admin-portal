@@ -254,8 +254,11 @@ class EnterpriseAccessApiService {
     return EnterpriseAccessApiService.apiClient().post(url, payload);
   }
 
-  static fetchSubsidyHydratedGroupMembersData(subsidyAccessPolicyUUID, options) {
+  static fetchSubsidyHydratedGroupMembersData(subsidyAccessPolicyUUID, options, selectedEmails) {
     const queryParams = new URLSearchParams(options);
+    if (selectedEmails) {
+      selectedEmails.forEach((email) => queryParams.append('learners', email));
+    }
     const subsidyHydratedGroupLearnersEndpoint = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/group-members?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(subsidyHydratedGroupLearnersEndpoint);
   }

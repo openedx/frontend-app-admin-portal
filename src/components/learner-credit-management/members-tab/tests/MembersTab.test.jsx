@@ -715,11 +715,16 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
     userEvent.type(screen.getByText('Search by member details'), 'foobar');
     userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+
     const removeToggle = screen.getByTestId('show-removed-toggle');
     userEvent.click(removeToggle);
 
-    const downloadButton = screen.getByText('Download all (1)');
+    const toggleAllRowsSelected = screen.getByTitle('Toggle All Current Page Rows Selected');
+    userEvent.click(toggleAllRowsSelected);
+
+    const downloadButton = screen.getByText('Download (1)');
     expect(downloadButton).toBeInTheDocument();
+
     userEvent.click(downloadButton);
     expect(EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData).toHaveBeenCalledWith(
       mockAssignableSubsidyAccessPolicy.uuid,
@@ -732,6 +737,7 @@ describe('<BudgetDetailPage />', () => {
         show_removed: true,
         is_reversed: true,
       },
+      ['foobar@test.com'],
     );
   });
 });
