@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ManageCodesTabWrapper renders renders empty results correctly 1`] = `
-Array [
+[
   <div
     className="row mt-4 mb-3 no-gutters"
   >
@@ -150,7 +150,7 @@ Array [
       <div
         className="pgn-transition-replace-group position-relative"
         style={
-          Object {
+          {
             "height": null,
           }
         }
@@ -203,7 +203,7 @@ Array [
 `;
 
 exports[`ManageCodesTabWrapper renders renders error state correctly 1`] = `
-Array [
+[
   <div
     className="row mt-4 mb-3 no-gutters"
   >
@@ -352,7 +352,7 @@ Array [
       <div
         className="pgn-transition-replace-group position-relative"
         style={
-          Object {
+          {
             "height": null,
           }
         }
@@ -413,7 +413,7 @@ Array [
 `;
 
 exports[`ManageCodesTabWrapper renders renders loading state correctly 1`] = `
-Array [
+[
   <div
     className="row mt-4 mb-3 no-gutters"
   >
@@ -562,7 +562,7 @@ Array [
       <div
         className="pgn-transition-replace-group position-relative"
         style={
-          Object {
+          {
             "height": null,
           }
         }
@@ -591,7 +591,7 @@ Array [
 `;
 
 exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] = `
-Array [
+[
   <div
     className="row mt-4 mb-3 no-gutters"
   >
@@ -740,7 +740,7 @@ Array [
       <div
         className="pgn-transition-replace-group position-relative"
         style={
-          Object {
+          {
             "height": null,
           }
         }

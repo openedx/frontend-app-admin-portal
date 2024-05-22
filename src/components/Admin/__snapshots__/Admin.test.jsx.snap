@@ -61,7 +61,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -73,7 +73,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -85,7 +85,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -97,7 +97,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -10015,7 +10015,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -10027,7 +10027,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -10039,7 +10039,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -10051,7 +10051,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
           >
             <span
               className="react-loading-skeleton"
-              style={Object {}}
+              style={{}}
             >
               ‌
             </span>
@@ -10141,7 +10141,7 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": "8rem",
         }
       }
@@ -10157,7 +10157,7 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": "70vh",
         }
       }
