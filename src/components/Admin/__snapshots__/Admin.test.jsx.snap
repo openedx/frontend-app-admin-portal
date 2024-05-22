@@ -9882,8 +9882,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                 Hey, nice to see you
               </div>
               <p>
-                Try refreshing your screen 
-                Network Error
+                Try refreshing your screen Network Error
               </p>
             </div>
           </div>

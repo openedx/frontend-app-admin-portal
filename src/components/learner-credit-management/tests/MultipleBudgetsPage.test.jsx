@@ -9,6 +9,7 @@ import {
   render,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
@@ -36,14 +37,34 @@ jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
   useEnterpriseBudgets: jest.fn().mockReturnValue({
     data: {
-      budgets: [{
-        source: 'subsidy',
-        id: '392f1fe1-ee91-4f44-b174-13ecf59866eb',
-        name: 'Subsidy 2 for Executive Education (2U) Integration QA',
-        start: '2023-06-07T15:38:29Z',
-        end: '2024-06-07T15:38:30Z',
-        isCurrent: true,
-      },
+      budgets: [
+        {
+          source: 'subsidy',
+          id: '392f1fe1-ee91-4f44-b174-13ecf59866eb',
+          name: 'Subsidy 2 for Executive Education (2U) Integration QA',
+          start: '2023-06-07T15:38:29Z',
+          end: '2024-06-07T15:38:30Z',
+          isCurrent: true,
+          isRetired: false,
+        },
+        {
+          source: 'subsidy',
+          id: '392f1fe1-ee91-4f44-b174-13ecf59866e3',
+          name: 'Subsidy 3',
+          start: '2023-06-07T15:38:29Z',
+          end: '2024-06-07T15:38:30Z',
+          isCurrent: true,
+          isRetired: true,
+        },
+        {
+          source: 'subsidy',
+          id: '392f1fe1-ee91-4f44-b174-13ecf59866ef',
+          name: 'Subsidy 4',
+          start: '2023-06-07T15:38:29Z',
+          end: '2024-06-07T15:38:30Z',
+          isCurrent: true,
+          isRetired: false,
+        },
       ],
     },
   }),
@@ -88,6 +109,13 @@ describe('<MultipleBudgetsPage />', () => {
   it('budgets for your organization', () => {
     render(<MultipleBudgetsPageWrapper enterpriseUUID={enterpriseUUID} enterpriseSlug={enterpriseId} />);
     expect(screen.getByText('Budgets'));
+    const filterButton = screen.getByText('Filters');
+    userEvent.click(filterButton);
+    const checkboxes = screen.queryAllByRole('checkbox');
+    checkboxes.forEach(checkbox => {
+      userEvent.click(checkbox);
+    });
+    expect(screen.getByText('Showing 3 of 3.')).toBeInTheDocument();
   });
   it('Shows loading spinner', () => {
     const enterpriseSubsidiesContextValue = {

@@ -18,10 +18,12 @@ import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
  * @param {number} totalToRemove
  * @returns {Object}
  */
-const generateRemoveModalSubmitLabel = (totalToRemove) => {
+const generateRemoveModalSubmitLabel = (totalToRemove, isRemoveIndividualUser) => {
   let buttonNumberLabel = 'all';
 
-  if (Number.isFinite(totalToRemove)) {
+  if (isRemoveIndividualUser) {
+    buttonNumberLabel = 'member';
+  } else if (Number.isFinite(totalToRemove)) {
     buttonNumberLabel = `(${totalToRemove})`;
   }
 
@@ -41,9 +43,10 @@ const MemberRemoveModal = ({
   removeAllUsers,
   totalToRemove,
   groupUuid,
+  isRemoveIndividualUser,
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
-  const buttonLabels = generateRemoveModalSubmitLabel(totalToRemove);
+  const buttonLabels = generateRemoveModalSubmitLabel(totalToRemove, isRemoveIndividualUser);
 
   const title = `Remove member${removeAllUsers || totalToRemove > 1 ? 's' : ''}?`;
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -155,6 +158,7 @@ const MemberRemoveModal = ({
 MemberRemoveModal.defaultProps = {
   removeAllUsers: false,
   totalToRemove: -1,
+  isRemoveIndividualUser: false,
 };
 
 MemberRemoveModal.propTypes = {
@@ -170,6 +174,7 @@ MemberRemoveModal.propTypes = {
   removeAllUsers: PropTypes.bool,
   totalToRemove: PropTypes.number,
   groupUuid: PropTypes.string.isRequired,
+  isRemoveIndividualUser: PropTypes.bool,
 };
 
 export default MemberRemoveModal;

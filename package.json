@@ -107,7 +107,6 @@
     "jest-localstorage-mock": "^2.4.22",
     "patch-package": "8.0.0",
     "postcss": "8.4.24",
-    "react-dev-utils": "11.0.4",
     "react-test-renderer": "^17.0.2",
     "resize-observer-polyfill": "1.5.1",
     "ts-jest": "^29.0.0"

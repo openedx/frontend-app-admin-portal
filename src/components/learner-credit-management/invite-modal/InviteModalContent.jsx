@@ -86,7 +86,7 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
               rows={10}
               data-hj-suppress
             />
-            <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} />
+            <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload={false} />
           </Form.Group>
           )}
           {inputType === INPUT_TYPE.CSV && (

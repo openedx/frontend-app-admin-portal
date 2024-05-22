@@ -37,7 +37,7 @@ const BudgetStatusSubtitle = ({
       enrollmentType:
       intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.enroll.assignable',
-        defaultMessage: 'Assignable',
+        defaultMessage: 'Assignment',
         description: 'Enrollment type for budgets that are assignable',
       }),
       popoverText:

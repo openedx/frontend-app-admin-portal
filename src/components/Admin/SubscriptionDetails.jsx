@@ -1,17 +1,18 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import dayjs from 'dayjs';
 import {
   Row, Col, Toast, Button,
 } from '@openedx/paragon';
 
 import { Link } from 'react-router-dom';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailContext } from '../subscriptions/SubscriptionDetailContextProvider';
 import InviteLearnersButton from '../subscriptions/buttons/InviteLearnersButton';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
 import SubscriptionExpirationBanner from '../subscriptions/expiration/SubscriptionExpirationBanner';
 import { MANAGE_LEARNERS_TAB } from '../subscriptions/data/constants';
+import { i18nFormatTimestamp } from '../../utils';
 
 const SubscriptionDetails = ({ enterpriseSlug }) => {
   const { forceRefresh } = useContext(SubscriptionContext);
@@ -26,8 +27,11 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
   const shouldShowInviteLearnersButton = (
     hasLicensesAllocatedOrRevoked && subscription.daysUntilExpiration > 0
   );
+  const intl = useIntl();
 
   const backToSubscriptionsPath = `/${enterpriseSlug}/admin/subscriptions/${MANAGE_LEARNERS_TAB}`;
+  const subscriptionStartDate = i18nFormatTimestamp({ intl, timestamp: subscription.startDate });
+  const subscriptionExpirationDate = i18nFormatTimestamp({ intl, timestamp: subscription.expirationDate });
 
   return (
     <>
@@ -37,7 +41,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
           <div className="mt-3 d-flex align-items-center">
             <div className="mr-5">
               <span>
-                {dayjs(subscription.startDate).format('MMMM D, YYYY')} - {dayjs(subscription.expirationDate).format('MMMM D, YYYY')}
+                {subscriptionStartDate} - {subscriptionExpirationDate}
               </span>
             </div>
           </div>
@@ -46,14 +50,22 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
               <div className="text-md-right">
                 <Link to={backToSubscriptionsPath}>
                   <Button variant="outline-primary mr-2">
-                    Manage All Learners
+                    <FormattedMessage
+                      id="admin.portal.lpr.embedded.subscription.section.manage.all.learners.button.label"
+                      defaultMessage="Manage All Learners"
+                      description="Label for the manage all learners button in the embedded subscription section on lpr page."
+                    />
                   </Button>
                 </Link>
                 <InviteLearnersButton
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
                     forceRefreshDetailView();
-                    setToastMessage(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
+                    setToastMessage(intl.formatMessage({
+                      id: 'admin.portal.lpr.embedded.subscription.section.invite.learners.toast.message',
+                      defaultMessage: '{numAlreadyAssociated} email addresses were previously assigned. {numSuccessfulAssignments} email addresses were successfully added.',
+                      description: 'Toast message displayed when learners are successfully invited to a subscription plan.',
+                    }, { numAlreadyAssociated, numSuccessfulAssignments }));
                     setShowToast(true);
                   }}
                   disabled={subscription.isLockedForRenewalProcessing}

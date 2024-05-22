@@ -2,6 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
@@ -94,21 +95,25 @@ const enrolledLearnersForInactiveCoursesStore = mockStore({
 
 const EnrolledLearnersForInactiveCoursesEmptyTableWrapper = props => (
   <MemoryRouter>
-    <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
-      <EnrolledLearnersForInactiveCoursesTable
-        {...props}
-      />
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
+        <EnrolledLearnersForInactiveCoursesTable
+          {...props}
+        />
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 
 const EnrolledLearnersForInactiveCoursesWrapper = props => (
   <MemoryRouter>
-    <Provider store={enrolledLearnersForInactiveCoursesStore}>
-      <EnrolledLearnersForInactiveCoursesTable
-        {...props}
-      />
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={enrolledLearnersForInactiveCoursesStore}>
+        <EnrolledLearnersForInactiveCoursesTable
+          {...props}
+        />
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 
