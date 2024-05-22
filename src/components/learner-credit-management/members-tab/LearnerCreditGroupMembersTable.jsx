@@ -66,82 +66,84 @@ const LearnerCreditGroupMembersTable = ({
   setRefresh,
   groupUuid,
   removedGroupMembersCount,
-}) => (
-  <DataTable
-    isSortable
-    isSelectable
-    manualSortBy
-    isPaginated
-    manualPagination
-    isFilterable
-    manualFilters
-    isLoading={isLoading}
-    defaultColumnValues={{ Filter: TableTextFilter }}
-    FilterStatusComponent={FilterStatus}
-    numBreakoutFilters={2}
-    tableActions={[<GroupMembersCsvDownloadTableAction />]}
-    columns={[
-      {
-        Header: 'Member Details',
-        accessor: 'memberDetails',
-        Cell: MemberDetailsTableCell,
-      },
-      {
-        Header: MemberStatusTableColumnHeader,
-        accessor: 'status',
-        Cell: MemberStatusTableCell,
-        Filter: <MembersTableSwitchFilter removedGroupMembersCount={removedGroupMembersCount} />,
-        filter: 'status',
-      },
-      {
-        Header: 'Recent action',
-        accessor: 'recentAction',
-        Cell: ({ row }) => row.original.recentAction,
-        disableFilters: true,
-      },
-      {
-        Header: MemberEnrollmentsTableColumnHeader,
-        accessor: 'enrollmentCount',
-        Cell: ({ row }) => row.original.enrollmentCount,
-        disableFilters: true,
-      },
-    ]}
-    initialTableOptions={{
-      getRowId: row => row?.memberDetails.userEmail,
-      autoResetPage: true,
-    }}
-    initialState={{
-      pageSize: MEMBERS_TABLE_PAGE_SIZE,
-      pageIndex: DEFAULT_PAGE,
-      sortBy: [
-        { id: 'memberDetails', desc: true },
-      ],
-      filters: [],
-    }}
-    bulkActions={[
-      <MemberRemoveAction
-        refresh={refresh}
-        setRefresh={setRefresh}
-        groupUuid={groupUuid}
-      />,
-    ]}
-    additionalColumns={[
-      {
-        id: 'action',
-        Header: '',
-        // eslint-disable-next-line react/no-unstable-nested-components
-        Cell: (props) => (
-          <KabobMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
-        ),
-      },
-    ]}
-    fetchData={fetchTableData}
-    data={tableData.results}
-    itemCount={tableData.itemCount}
-    pageCount={tableData.pageCount}
-    EmptyTableComponent={CustomDataTableEmptyState}
-  />
-);
+}) => {
+  return (
+    <DataTable
+      isSortable
+      isSelectable
+      manualSortBy
+      isPaginated
+      manualPagination
+      isFilterable
+      manualFilters
+      isLoading={isLoading}
+      defaultColumnValues={{ Filter: TableTextFilter }}
+      FilterStatusComponent={FilterStatus}
+      numBreakoutFilters={2}
+      tableActions={[<GroupMembersCsvDownloadTableAction />]}
+      columns={[
+        {
+          Header: 'Member Details',
+          accessor: 'memberDetails',
+          Cell: MemberDetailsTableCell,
+        },
+        {
+          Header: MemberStatusTableColumnHeader,
+          accessor: 'status',
+          Cell: MemberStatusTableCell,
+          Filter: removedGroupMembersCount > 0 ? <MembersTableSwitchFilter removedGroupMembersCount={removedGroupMembersCount} /> : <div></div>,
+          filter: 'status',
+        },
+        {
+          Header: 'Recent action',
+          accessor: 'recentAction',
+          Cell: ({ row }) => row.original.recentAction,
+          disableFilters: true,
+        },
+        {
+          Header: MemberEnrollmentsTableColumnHeader,
+          accessor: 'enrollmentCount',
+          Cell: ({ row }) => row.original.enrollmentCount,
+          disableFilters: true,
+        },
+      ]}
+      initialTableOptions={{
+        getRowId: row => row?.memberDetails.userEmail,
+        autoResetPage: true,
+      }}
+      initialState={{
+        pageSize: MEMBERS_TABLE_PAGE_SIZE,
+        pageIndex: DEFAULT_PAGE,
+        sortBy: [
+          { id: 'memberDetails', desc: true },
+        ],
+        filters: [],
+      }}
+      bulkActions={[
+        <MemberRemoveAction
+          refresh={refresh}
+          setRefresh={setRefresh}
+          groupUuid={groupUuid}
+        />,
+      ]}
+      additionalColumns={[
+        {
+          id: 'action',
+          Header: '',
+          // eslint-disable-next-line react/no-unstable-nested-components
+          Cell: (props) => (
+            <KabobMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
+          ),
+        },
+      ]}
+      fetchData={fetchTableData}
+      data={tableData.results}
+      itemCount={tableData.itemCount}
+      pageCount={tableData.pageCount}
+      EmptyTableComponent={CustomDataTableEmptyState}
+    />
+  )
+};
 
 KabobMenu.propTypes = {
   row: PropTypes.shape({
