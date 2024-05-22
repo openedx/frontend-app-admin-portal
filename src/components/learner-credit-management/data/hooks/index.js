@@ -18,3 +18,4 @@ export { default as useEnterpriseGroupMembersTableData } from './useEnterpriseGr
 export { default as useEnterpriseCustomer } from './useEnterpriseCustomer';
 export { default as useEnterpriseGroup } from './useEnterpriseGroup';
 export { default as useContentMetadata } from './useContentMetadata';
+export { default as useEnterpriseRemovedGroupMembers } from './useEnterpriseRemovedGroupMembers';
