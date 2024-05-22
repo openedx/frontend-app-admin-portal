@@ -6,7 +6,7 @@ import {
   Col,
   Card,
   Hyperlink,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { connect } from 'react-redux';
 
 import LoadingMessage from '../LoadingMessage';

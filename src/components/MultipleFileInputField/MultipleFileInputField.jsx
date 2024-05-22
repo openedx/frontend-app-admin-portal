@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Form, FormControl, IconButton,
-} from '@edx/paragon';
-import { Close } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Close } from '@openedx/paragon/icons';
 import classNames from 'classnames';
 import { getSizeInBytes, formatBytes } from './utils';
 import { MAX_FILES_SIZE, FILE_SIZE_EXCEEDS_ERROR } from './constants';

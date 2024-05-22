@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DataTable, CheckboxFilter } from '@edx/paragon';
+import { DataTable, CheckboxFilter } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';

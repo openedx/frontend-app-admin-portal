@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Col, Card, ProgressBar, Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import { getProgressBarVariant } from './data/utils';
 

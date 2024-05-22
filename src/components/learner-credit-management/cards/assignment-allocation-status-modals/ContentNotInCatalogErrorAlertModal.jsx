@@ -1,6 +1,6 @@
 import React from 'react';
-import { AlertModal, ActionRow, Button } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { AlertModal, ActionRow, Button } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import { commonErrorAlertModalPropTypes, getBudgetDisplayName } from '../data';
 import { useBudgetId, useSubsidyAccessPolicy } from '../../data';

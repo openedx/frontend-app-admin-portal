@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Info } from '@edx/paragon/icons';
+import { Info } from '@openedx/paragon/icons';
 import {
   Alert,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
 

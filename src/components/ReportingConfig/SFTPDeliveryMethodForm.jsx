@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form } from '@edx/paragon';
+import { Form } from '@openedx/paragon';
 
 const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   const [checked, setChecked] = useState(false);

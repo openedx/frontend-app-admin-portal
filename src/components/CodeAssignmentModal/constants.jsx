@@ -1,4 +1,4 @@
-import { Info } from '@edx/paragon/icons';
+import { Info } from '@openedx/paragon/icons';
 import { MODAL_TYPES } from '../EmailTemplateForm/constants';
 import { getTemplateEmailFields } from '../EmailTemplateForm';
 import CheckboxWithTooltip from '../ReduxFormCheckbox/CheckboxWithTooltip';

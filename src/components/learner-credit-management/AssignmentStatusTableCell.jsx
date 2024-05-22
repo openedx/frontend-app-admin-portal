@@ -1,4 +1,4 @@
-import { Chip } from '@edx/paragon';
+import { Chip } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';

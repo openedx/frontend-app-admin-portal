@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ActionRow, ModalDialog } from '@edx/paragon';
+import { ActionRow, ModalDialog } from '@openedx/paragon';
 
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { getSubscriptionExpiringCookieName } from '../data/utils';

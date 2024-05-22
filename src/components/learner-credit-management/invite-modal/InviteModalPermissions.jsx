@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Icon, Stack } from '@edx/paragon';
-import { Check } from '@edx/paragon/icons';
+import { Card, Icon, Stack } from '@openedx/paragon';
+import { Check } from '@openedx/paragon/icons';
 import useContentMetadata from '../data/hooks/useContentMetadata';
 
 const InviteModalPermissions = ({ subsidyAccessPolicy }) => {

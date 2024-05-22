@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   DataTable, Dropdown, Icon, IconButton,
-} from '@edx/paragon';
-import { MoreVert, RemoveCircle } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { MoreVert, RemoveCircle } from '@openedx/paragon/icons';
 import TableTextFilter from '../TableTextFilter';
 import CustomDataTableEmptyState from '../CustomDataTableEmptyState';
 import MemberDetailsTableCell from './MemberDetailsTableCell';

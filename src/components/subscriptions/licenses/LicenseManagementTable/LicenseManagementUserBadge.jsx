@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Badge,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import {
   USER_STATUS_BADGE_MAP,

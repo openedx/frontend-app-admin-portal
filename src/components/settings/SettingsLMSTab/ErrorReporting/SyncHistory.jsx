@@ -4,8 +4,8 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
   ActionRow, AlertModal, Badge, Breadcrumb, Button, Card, Hyperlink,
   Icon, Image, Skeleton, Toast, useToggle,
-} from '@edx/paragon';
-import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { CheckCircle, Error, Sync } from '@openedx/paragon/icons';
 import { getStatus } from '../utils';
 import { getTimeAgo } from './utils';
 import handleErrors from '../../utils';

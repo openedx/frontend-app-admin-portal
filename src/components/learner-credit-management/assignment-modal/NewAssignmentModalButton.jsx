@@ -8,7 +8,7 @@ import {
   useToggle,
   Hyperlink,
   StatefulButton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';

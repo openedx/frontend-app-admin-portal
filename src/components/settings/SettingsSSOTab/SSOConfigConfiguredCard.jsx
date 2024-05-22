@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import {
   Form, Icon, OverlayTrigger, Popover, Button,
-} from '@edx/paragon';
-import { AddCircle, CheckCircle } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { AddCircle, CheckCircle } from '@openedx/paragon/icons';
 import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { SSOConfigContext } from './SSOConfigContext';

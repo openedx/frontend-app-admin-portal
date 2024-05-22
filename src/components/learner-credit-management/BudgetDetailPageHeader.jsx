@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Stack,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import {
   useBudgetId,

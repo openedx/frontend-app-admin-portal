@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { FormControl } from '@edx/paragon';
+import { FormControl } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import AdminSearchForm from './AdminSearchForm';

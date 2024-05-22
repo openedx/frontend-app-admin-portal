@@ -31,13 +31,13 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "7.12.1",
     "@edx/brand": "npm:@openedx/brand-openedx@^1.2.2",
-    "@edx/frontend-enterprise-catalog-search": "5.0.0",
-    "@edx/frontend-enterprise-hotjar": "2.0.0",
-    "@edx/frontend-enterprise-logistration": "4.0.0",
-    "@edx/frontend-enterprise-utils": "4.0.0",
-    "@edx/frontend-platform": "5.6.1",
+    "@edx/frontend-enterprise-catalog-search": "10.3.0",
+    "@edx/frontend-enterprise-hotjar": "7.1.0",
+    "@edx/frontend-enterprise-logistration": "9.1.0",
+    "@edx/frontend-enterprise-utils": "9.1.0",
+    "@edx/frontend-platform": "8.0.0",
     "@edx/openedx-atlas": "^0.6.0",
-    "@edx/paragon": "20.46.3",
+    "@openedx/paragon": "21.13.1",
     "@tanstack/react-query": "4.36.1",
     "@tanstack/react-query-devtools": "4.36.1",
     "algoliasearch": "4.8.3",
@@ -52,7 +52,7 @@
     "font-awesome": "4.7.0",
     "history": "4.10.1",
     "html-react-parser": "3.0.7",
-    "jest-environment-jsdom": "26.6.1",
+    "jest-environment-jsdom": "29.7.0",
     "lodash": "4.17.21",
     "lodash.debounce": "4.0.8",
     "prop-types": "15.7.2",
@@ -91,10 +91,10 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.0.0",
-    "@edx/frontend-build": "^12.9.0-alpha.1",
+    "@openedx/frontend-build": "14.0.3",
     "@faker-js/faker": "^7.6.0",
     "@testing-library/dom": "9.3.1",
-    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/react-hooks": "5.0.3",
     "@testing-library/user-event": "12.8.3",
@@ -109,6 +109,6 @@
     "postcss": "8.4.24",
     "react-test-renderer": "^17.0.2",
     "resize-observer-polyfill": "1.5.1",
-    "ts-jest": "^26.5.0"
+    "ts-jest": "^29.0.0"
   }
 }

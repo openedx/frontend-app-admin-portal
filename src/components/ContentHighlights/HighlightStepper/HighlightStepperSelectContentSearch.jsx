@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
-import { DataTable, CardView } from '@edx/paragon';
+import { DataTable, CardView } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 

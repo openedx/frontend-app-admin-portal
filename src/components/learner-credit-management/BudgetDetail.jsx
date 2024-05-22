@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ProgressBar, Stack } from '@edx/paragon';
+import { ProgressBar, Stack } from '@openedx/paragon';
 
 import { formatPrice } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';

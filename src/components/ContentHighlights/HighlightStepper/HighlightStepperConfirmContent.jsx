@@ -10,8 +10,8 @@ import {
   Icon,
   CardGrid,
   Alert,
-} from '@edx/paragon';
-import { Assignment } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Assignment } from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
 import { connect } from 'react-redux';

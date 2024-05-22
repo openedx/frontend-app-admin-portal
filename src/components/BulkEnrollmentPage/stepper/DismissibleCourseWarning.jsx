@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { Alert } from '@edx/paragon';
-import { WarningFilled } from '@edx/paragon/icons';
+import { Alert } from '@openedx/paragon';
+import { WarningFilled } from '@openedx/paragon/icons';
 import { WARNING_ALERT_TITLE_TEXT, WARNING_ALERT_BODY_TEXT } from './constants';
 
 /**

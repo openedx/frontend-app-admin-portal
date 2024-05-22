@@ -1,5 +1,5 @@
 import { getConfig } from '@edx/frontend-platform/config';
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
 import { connect } from 'react-redux';

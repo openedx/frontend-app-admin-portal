@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Card } from '@edx/paragon';
-import { Add } from '@edx/paragon/icons';
+import { Button, Card } from '@openedx/paragon';
+import { Add } from '@openedx/paragon/icons';
 import cardImage from '../../../data/images/NoSSO.svg';
 
 const NoSSOCard = ({

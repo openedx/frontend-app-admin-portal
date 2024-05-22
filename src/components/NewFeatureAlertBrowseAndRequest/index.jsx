@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Button } from '@edx/paragon';
+import { Alert, Button } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

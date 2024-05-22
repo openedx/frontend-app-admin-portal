@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { logError } from '@edx/frontend-platform/logging';
-import { ActionRow, Toast } from '@edx/paragon';
+import { ActionRow, Toast } from '@openedx/paragon';
 import ZeroStateCard from './ZeroStateCard';
 import APICredentialsPage from './APICredentialsPage';
 import FailedAlert from './FailedAlert';

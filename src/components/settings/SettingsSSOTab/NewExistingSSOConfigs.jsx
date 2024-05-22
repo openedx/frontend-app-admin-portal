@@ -4,8 +4,8 @@ import {
   CardGrid,
   Skeleton,
   useToggle,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';

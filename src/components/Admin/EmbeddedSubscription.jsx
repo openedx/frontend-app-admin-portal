@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import dayjs from 'dayjs';
 import { useParams, Link } from 'react-router-dom';
-import { Form, Icon } from '@edx/paragon';
-import { Lightbulb, ArrowOutward } from '@edx/paragon/icons';
+import { Form, Icon } from '@openedx/paragon';
+import { Lightbulb, ArrowOutward } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import ConnectedSubscriptionDetailPage from './SubscriptionDetailPage';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';

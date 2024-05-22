@@ -1,6 +1,6 @@
 import * as timeago from 'timeago.js';
-import { Hyperlink, OverlayTrigger, Popover } from '@edx/paragon';
-import { CheckCircle, Error, Sync } from '@edx/paragon/icons';
+import { Hyperlink, OverlayTrigger, Popover } from '@openedx/paragon';
+import { CheckCircle, Error, Sync } from '@openedx/paragon/icons';
 
 timeago.register('time-locale');
 /**

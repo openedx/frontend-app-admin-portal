@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
-import { useToggle } from '@edx/paragon';
+import { useToggle } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import SubscriptionExpiredModal from './SubscriptionExpiredModal';

@@ -6,7 +6,7 @@ import { SearchPagination, SearchContext } from '@edx/frontend-enterprise-catalo
 import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
 import {
   Alert, CardView, DataTable, TextFilter,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import CourseCard from '../cards/CourseCard';
 import { DEFAULT_PAGE, SEARCH_RESULT_PAGE_SIZE } from '../data';

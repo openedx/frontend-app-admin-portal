@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StatefulButton, Icon, Spinner } from '@edx/paragon';
-import { CheckCircle } from '@edx/paragon/icons';
+import { StatefulButton, Icon, Spinner } from '@openedx/paragon';
+import { CheckCircle } from '@openedx/paragon/icons';
 import { SubmissionError } from 'redux-form';
 
 import { validateEmailTemplateFields } from '../../data/validation/email';

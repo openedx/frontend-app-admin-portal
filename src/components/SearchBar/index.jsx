@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SearchField } from '@edx/paragon';
+import { SearchField } from '@openedx/paragon';
 
 const SearchBar = props => (
   <SearchField

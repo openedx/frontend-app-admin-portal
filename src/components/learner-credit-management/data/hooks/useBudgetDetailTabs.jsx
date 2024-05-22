@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Tab } from '@edx/paragon';
+import { Tab } from '@openedx/paragon';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {

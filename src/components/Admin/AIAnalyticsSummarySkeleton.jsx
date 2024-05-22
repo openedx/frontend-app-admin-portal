@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton, Stack } from '@edx/paragon';
+import { Skeleton, Stack } from '@openedx/paragon';
 
 const AIAnalyticsSummarySkeleton = () => (
   <Stack direction="horizontal" gap={2}>

@@ -14,7 +14,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -25,7 +25,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -36,7 +36,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -47,7 +47,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -58,7 +58,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -69,7 +69,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -80,7 +80,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -91,7 +91,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -102,7 +102,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -113,7 +113,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -124,7 +124,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -135,7 +135,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -146,7 +146,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -157,7 +157,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -168,7 +168,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -179,7 +179,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -190,7 +190,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -201,7 +201,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -212,7 +212,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -223,7 +223,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -234,7 +234,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -245,7 +245,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -256,7 +256,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -267,7 +267,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
@@ -278,7 +278,7 @@ exports[`TableLoadingSkeleton renders a skeleton 1`] = `
     <span
       className="react-loading-skeleton"
       style={
-        Object {
+        {
           "height": 25,
         }
       }
