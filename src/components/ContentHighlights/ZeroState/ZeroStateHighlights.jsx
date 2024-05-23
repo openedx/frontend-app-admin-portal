@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import {
   Card, Button, Col, Row,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { Add } from '@edx/paragon/icons';
+import { Add } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';

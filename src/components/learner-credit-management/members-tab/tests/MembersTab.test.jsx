@@ -327,7 +327,7 @@ describe('<BudgetDetailPage />', () => {
       fetchEnterpriseGroupMembersTableData: mockFetchEnterpriseGroupMembersTableData,
     });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-
+    await waitForElementToBeRemoved(() => screen.queryByText('loading budget details'));
     await userEvent.type(screen.getByText('Search by member details'), 'foobar');
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
       filters: [{ id: 'memberDetails', value: 'foobar' }],
@@ -515,6 +515,7 @@ describe('<BudgetDetailPage />', () => {
 
     expect(screen.queryByText('Remove members?')).toBeInTheDocument();
     const modalRemoveButton = screen.getByTestId('modal-remove-button');
+    expect(modalRemoveButton).toHaveTextContent('Remove (2)');
     userEvent.click(modalRemoveButton);
     expect(mockRemoveSpy).toHaveBeenCalled();
     await waitForElementToBeRemoved(() => screen.queryByText('Removing (2)'));
@@ -578,6 +579,7 @@ describe('<BudgetDetailPage />', () => {
     LmsApiService.removeEnterpriseLearnersFromGroup.mockResolvedValue({ status: 200 });
 
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    await waitForElementToBeRemoved(() => screen.queryByText('loading budget details'));
     const kabobMenu = screen.queryByTestId('kabob-menu-dropdown');
     userEvent.click(kabobMenu);
     const removeDropdownOption = screen.queryByText('Remove member');
@@ -585,6 +587,7 @@ describe('<BudgetDetailPage />', () => {
 
     await waitFor(() => expect(screen.queryByText('Remove member?')).toBeInTheDocument());
     const modalRemoveButton = screen.getByTestId('modal-remove-button');
+    expect(modalRemoveButton).toHaveTextContent('Remove member');
     userEvent.click(modalRemoveButton);
     expect(mockRemoveSpy).toHaveBeenCalled();
     await waitFor(() => expect(screen.queryByText('1 member successfully removed')).toBeInTheDocument());
@@ -718,13 +721,19 @@ describe('<BudgetDetailPage />', () => {
     useEnterpriseGroupMembersTableData.mockReturnValue(mockGroupData);
     EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData.mockResolvedValue('a,b,c,\nd,e,f');
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    await waitForElementToBeRemoved(() => screen.queryByText('loading budget details'));
     userEvent.type(screen.getByText('Search by member details'), 'foobar');
     userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+
     const removeToggle = screen.getByTestId('show-removed-toggle');
     userEvent.click(removeToggle);
 
-    const downloadButton = screen.getByText('Download all (1)');
+    const toggleAllRowsSelected = screen.getByTitle('Toggle All Current Page Rows Selected');
+    userEvent.click(toggleAllRowsSelected);
+
+    const downloadButton = screen.getByText('Download (1)');
     expect(downloadButton).toBeInTheDocument();
+
     userEvent.click(downloadButton);
     expect(EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData).toHaveBeenCalledWith(
       mockAssignableSubsidyAccessPolicy.uuid,
@@ -737,7 +746,93 @@ describe('<BudgetDetailPage />', () => {
         show_removed: true,
         is_reversed: true,
       },
+      ['foobar@test.com'],
     );
+  });
+  it('test member status popovers', async () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      activeTabKey: 'members',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+        },
+      },
+    });
+    useEnterpriseGroupMembersTableData.mockReturnValue({
+      isLoading: false,
+      enterpriseGroupMembersTableData: {
+        itemCount: 3,
+        pageCount: 1,
+        results: [{
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+          status: 'pending',
+          recentAction: 'Pending: April 02, 2024',
+          enrollmentCount: 0,
+        }, {
+          memberDetails: { userEmail: 'bobbynewport@test.com', userName: 'bobby newport' },
+          status: 'removed',
+          recentAction: 'Removed: April 02, 2024',
+          enrollmentCount: 0,
+        }, {
+          memberDetails: { userEmail: 'annperkins@test.com', userName: 'ann perkins' },
+          status: 'accepted',
+          recentAction: 'Accepted: April 02, 2024',
+          enrollmentCount: 0,
+        }],
+      },
+      fetchEnterpriseGroupMembersTableData: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    await waitFor(() => expect(screen.queryByText('dukesilver@test.com')).toBeInTheDocument());
+    userEvent.click(screen.getByText('Waiting for member'));
+    await waitFor(() => expect(screen.queryByText('Waiting for dukesilver@test.com')).toBeInTheDocument());
+    screen.debug(undefined, 10000000);
+    screen.getByText('This member must accept their invitation to browse this budget\'s catalog and enroll using their '
+      + 'member permissions by logging in or creating an account within 90 days.');
+    // click again to close it out
+    userEvent.click(screen.getByText('Waiting for member'));
+
+    userEvent.click(screen.getByText('Accepted'));
+    await waitFor(() => expect(screen.queryByText('Invitation accepted')).toBeInTheDocument());
+    screen.getByText('This member has successfully accepted the member invitation and can '
+      + 'now browse this budget\'s catalog and enroll using their member permissions.');
+    userEvent.click(screen.getByText('Accepted'));
+
+    userEvent.click(screen.getByText('Removed'));
+    await waitFor(() => expect(screen.queryByText('Member removed')).toBeInTheDocument());
+    screen.getByText('This member has been successfully removed and can not browse this budget\'s '
+      + 'catalog and enroll using their member permissions.');
   });
   it('displays removed members count in toggle', () => {
     const initialState = {

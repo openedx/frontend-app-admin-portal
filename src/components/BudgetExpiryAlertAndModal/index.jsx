@@ -4,7 +4,7 @@ import {
   Alert, AlertModal,
   Button, Hyperlink,
   useToggle,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,10 +17,9 @@ import EVENT_NAMES from '../../eventTracking';
 
 import useExpiry from './data/hooks/useExpiry';
 
-const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
+const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disableExpiryMessagingForLearnerCredit }) => {
   const [modalIsOpen, modalOpen, modalClose] = useToggle(false);
   const [alertIsOpen, alertOpen, alertClose] = useToggle(false);
-
   const location = useLocation();
 
   const budgetDetailRouteMatch = matchPath(
@@ -46,7 +45,7 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
   });
 
   const {
-    notification, modal, dismissModal, dismissAlert,
+    notification, modal, dismissModal, dismissAlert, isNonExpiredBudget,
   } = useExpiry(
     enterpriseUUID,
     budgets,
@@ -63,6 +62,10 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
       notification,
     };
   }, [modal, notification]);
+
+  if (isNonExpiredBudget && disableExpiryMessagingForLearnerCredit) {
+    return null;
+  }
 
   return (
     <>
@@ -141,6 +144,7 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures }) => {
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+  disableExpiryMessagingForLearnerCredit: state.portalConfiguration.disableExpiryMessagingForLearnerCredit,
 });
 
 BudgetExpiryAlertAndModal.propTypes = {
@@ -148,6 +152,7 @@ BudgetExpiryAlertAndModal.propTypes = {
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool.isRequired,
   }),
+  disableExpiryMessagingForLearnerCredit: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetExpiryAlertAndModal);

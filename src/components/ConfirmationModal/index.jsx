@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   ModalDialog, ActionRow, Button, StatefulButton, Alert,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 
 export const DEFAULT_TITLE = 'Are you sure?';
 export const CONFIRM_BUTTON_STATES = {

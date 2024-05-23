@@ -1,4 +1,4 @@
-import { Form, DataTableContext } from '@edx/paragon';
+import { Form, DataTableContext } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 

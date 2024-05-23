@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@edx/paragon';
-import { Close, MenuIcon } from '@edx/paragon/icons';
+import { Button } from '@openedx/paragon';
+import { Close, MenuIcon } from '@openedx/paragon/icons';
 
 import './SidebarToggle.scss';
 

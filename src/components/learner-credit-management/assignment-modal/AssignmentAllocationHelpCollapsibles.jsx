@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Collapsible, Stack } from '@edx/paragon';
+import { Collapsible, Stack } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import React from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';

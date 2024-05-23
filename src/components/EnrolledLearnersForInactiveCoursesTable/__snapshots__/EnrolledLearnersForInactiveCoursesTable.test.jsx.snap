@@ -72,6 +72,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                     Email
                     <span
                       className="sr-only"
+                      data-testid="table-heading-sr"
                     >
                        
                       sort ascending
@@ -98,6 +99,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                     Total Course Enrollment Count
                     <span
                       className="sr-only"
+                      data-testid="table-heading-sr"
                     >
                        
                       click to sort
@@ -124,6 +126,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                     Total Completed Courses Count
                     <span
                       className="sr-only"
+                      data-testid="table-heading-sr"
                     >
                        
                       click to sort
@@ -150,6 +153,7 @@ exports[`EnrolledLearnersForInactiveCoursesTable renders enrolled learners for i
                     Last Activity Date
                     <span
                       className="sr-only"
+                      data-testid="table-heading-sr"
                     >
                        
                       click to sort

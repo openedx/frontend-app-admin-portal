@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
-import { Alert } from '@edx/paragon';
+import { Alert } from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 
 import LmsApiService from '../../data/services/LmsApiService';

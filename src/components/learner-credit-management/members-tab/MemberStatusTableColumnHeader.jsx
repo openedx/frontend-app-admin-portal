@@ -4,8 +4,8 @@ import {
   Stack,
   Tooltip,
   Icon,
-} from '@edx/paragon';
-import { InfoOutline } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { InfoOutline } from '@openedx/paragon/icons';
 
 const MemberStatusTableColumnHeader = () => (
   <Stack gap={0} direction="horizontal">

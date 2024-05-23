@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Alert, Hyperlink, Button, Row,
-} from '@edx/paragon';
-import { Info, Download } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info, Download } from '@openedx/paragon/icons';
 import { getConfig } from '@edx/frontend-platform/config';
 import { createSAMLURLs } from '../utils';
 import { SSOConfigContext } from '../SSOConfigContext';

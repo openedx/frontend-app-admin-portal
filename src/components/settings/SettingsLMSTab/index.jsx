@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
   Alert, Button, Toast, Skeleton, useToggle,
-} from '@edx/paragon';
-import { Add, Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Add, Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
 import HelpCenterButton from '../HelpCenterButton';

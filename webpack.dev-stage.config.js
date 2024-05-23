@@ -1,4 +1,4 @@
-const { createConfig } = require('@edx/frontend-build');
+const { createConfig } = require('@openedx/frontend-build');
 const path = require('path');
 const dotenv = require('dotenv');
 

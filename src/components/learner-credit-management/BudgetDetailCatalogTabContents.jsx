@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { InstantSearch } from 'react-instantsearch-dom';
 import algoliasearch from 'algoliasearch/lite';
-import { Row, Col } from '@edx/paragon';
+import { Row, Col } from '@openedx/paragon';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CatalogSearch from './search/CatalogSearch';
 import {
-  LANGUAGE_REFINEMENT,
-  LEARNING_TYPE_REFINEMENT,
+  LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT,
 } from './data';
 import { configuration } from '../../config';
 

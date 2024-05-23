@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Skeleton } from '@edx/paragon';
+import { Skeleton } from '@openedx/paragon';
 
 import LearnerCreditGroupMembersTable from './LearnerCreditGroupMembersTable';
 import {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModalDialog, ActionRow, Button } from '@edx/paragon';
+import { ModalDialog, ActionRow, Button } from '@openedx/paragon';
 import { UnsavedChangesModalProps } from '../../forms/FormWorkflow';
 
 const MODAL_TITLE = 'Exit configuration';

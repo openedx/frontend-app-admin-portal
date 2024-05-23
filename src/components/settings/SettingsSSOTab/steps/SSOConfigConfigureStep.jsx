@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import {
   Alert, Button, Form, Hyperlink, ModalDialog,
-} from '@edx/paragon';
-import { Info } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { Info } from '@openedx/paragon/icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isURL from 'validator/lib/isURL';

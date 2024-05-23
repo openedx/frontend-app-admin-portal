@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Hyperlink } from '@edx/paragon';
-import { WarningFilled } from '@edx/paragon/icons';
+import { Alert, Hyperlink } from '@openedx/paragon';
+import { WarningFilled } from '@openedx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOStepper from './SSOStepper';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';

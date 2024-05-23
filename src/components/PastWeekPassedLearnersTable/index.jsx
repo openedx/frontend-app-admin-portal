@@ -1,23 +1,39 @@
 import React from 'react';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
+
 import TableContainer from '../../containers/TableContainer';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
-import { formatTimestamp } from '../../utils';
+import { i18nFormatTimestamp } from '../../utils';
 
 const PastWeekPassedLearnersTable = () => {
+  const intl = useIntl();
+
   const tableColumns = [
     {
-      label: 'Email',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.past.week.passed.learners.table.user_email.column.heading',
+        defaultMessage: 'Email',
+        description: 'Column heading for the user email column in the past week passed learners table',
+      }),
       key: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Course Title',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.past.week.passed.learners.table.course_title.column.heading',
+        defaultMessage: 'Course Title',
+        description: 'Column heading for the course title column in the past week passed learners table',
+      }),
       key: 'course_title',
       columnSortable: true,
     },
     {
-      label: 'Passed Date',
+      label: intl.formatMessage({
+        id: 'admin.portal.lpr.past.week.passed.learners.table.passed_date.column.heading',
+        defaultMessage: 'Passed Date',
+        description: 'Column heading for the passed date column in the past week passed learners table',
+      }),
       key: 'passed_date',
       columnSortable: true,
     },
@@ -26,7 +42,7 @@ const PastWeekPassedLearnersTable = () => {
   const formatLearnerData = learners => learners.map(learner => ({
     ...learner,
     user_email: <span data-hj-suppress>{learner.user_email}</span>,
-    passed_date: formatTimestamp({ timestamp: learner.passed_date }),
+    passed_date: i18nFormatTimestamp({ intl, timestamp: learner.passed_date }),
   }));
 
   return (

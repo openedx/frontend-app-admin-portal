@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connectPagination } from 'react-instantsearch-dom';
-import { ActionRow, Pagination, DataTable } from '@edx/paragon';
+import { ActionRow, Pagination, DataTable } from '@openedx/paragon';
 
 export const BaseSearchPagination = ({
   nbPages,

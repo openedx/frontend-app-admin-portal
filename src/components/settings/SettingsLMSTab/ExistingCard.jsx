@@ -4,10 +4,10 @@ import { useLocation } from 'react-router-dom';
 import {
   ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon,
   IconButton, Image, OverlayTrigger, Popover,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   CheckCircle, Error, MoreVert, Sync,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';

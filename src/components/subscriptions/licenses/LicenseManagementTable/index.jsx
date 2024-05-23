@@ -10,7 +10,7 @@ import {
   useWindowSize,
   breakpoints,
   Toast,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { SubscriptionContext } from '../../SubscriptionData';

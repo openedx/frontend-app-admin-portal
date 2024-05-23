@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActionRow, AlertModal, Button } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { ActionRow, AlertModal, Button } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import { commonErrorAlertModalPropTypes } from '../data';
 

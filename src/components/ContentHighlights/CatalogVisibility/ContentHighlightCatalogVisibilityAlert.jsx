@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import {
   Alert, Button, Row, Col,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { Info, Add } from '@edx/paragon/icons';
+import { Info, Add } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useContextSelector } from 'use-context-selector';
 import { BUTTON_TEXT } from '../data/constants';

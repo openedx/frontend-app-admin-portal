@@ -10,7 +10,7 @@ import {
   Badge,
   Stack,
   Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
@@ -68,6 +68,7 @@ const BaseSubBudgetCard = ({
   isLoading,
   isAssignable,
   isRetired,
+  retiredAt,
 }) => {
   const { isFetching: isFetchingBudgets } = useEnterpriseBudgets({
     enablePortalLearnerCreditManagementScreen,
@@ -79,6 +80,7 @@ const BaseSubBudgetCard = ({
     startDateStr: start,
     endDateStr: end,
     isBudgetRetired: isRetired,
+    retiredDateStr: retiredAt,
   });
   const formattedDate = budgetLabel?.date ? intl.formatDate(
     dayjs(budgetLabel?.date).toDate(),
@@ -89,6 +91,16 @@ const BaseSubBudgetCard = ({
     },
   ) : undefined;
 
+  const hasBudgetAggregatesSection = () => {
+    const { status } = budgetLabel;
+
+    return (
+      status === BUDGET_STATUSES.active
+      || status === BUDGET_STATUSES.expiring
+      || status === BUDGET_STATUSES.retired
+    );
+  };
+
   const renderActions = (budgetId) => (
     <Button
       data-testid="view-budget"
@@ -96,11 +108,19 @@ const BaseSubBudgetCard = ({
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
       variant={[BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(budgetLabel.status) ? 'outline-primary' : 'primary'}
     >
-      <FormattedMessage
-        id="lcm.budgets.budget.card.view.budget"
-        defaultMessage="View budget"
-        description="Button text to view a budget"
-      />
+      {isRetired ? (
+        <FormattedMessage
+          id="lcm.budgets.budget.card.view.budget.history"
+          defaultMessage="View budget history"
+          description="Button text to view budget history"
+        />
+      ) : (
+        <FormattedMessage
+          id="lcm.budgets.budget.card.view.budget"
+          defaultMessage="View budget"
+          description="Button text to view a budget"
+        />
+      )}
     </Button>
   );
 
@@ -116,88 +136,94 @@ const BaseSubBudgetCard = ({
       </Stack>
     );
 
+    const showActions = budgetLabel.status !== BUDGET_STATUSES.scheduled;
+
     return (
       <Card.Header
         title={<BackgroundFetchingWrapper>{budgetType}</BackgroundFetchingWrapper>}
         subtitle={<BackgroundFetchingWrapper>{subtitle}</BackgroundFetchingWrapper>}
-        actions={
-          budgetLabel.status !== BUDGET_STATUSES.scheduled
-            ? renderActions(budgetId)
-            : undefined
-        }
-        className={classNames('align-items-center', {
-          'mb-4.5': budgetLabel.status !== BUDGET_STATUSES.active && budgetLabel.status !== BUDGET_STATUSES.expiring,
-        })}
+        actions={showActions ? renderActions(budgetId) : undefined}
+        className={classNames('align-items-center', { 'mb-4.5': !hasBudgetAggregatesSection() })}
       />
     );
   };
 
-  const renderCardSection = () => (
-    <Card.Section
-      title={(
-        <h4>
-          <FormattedMessage
-            id="lcm.budgets.budget.card.balance"
-            defaultMessage="Balance"
-            description="Header for the balance section of the budget card"
-          />
-        </h4>
-)}
-      muted
-    >
-      <Col className="d-flex justify-content-start w-md-75">
-        <Col xs="6" md="auto" className="mb-3 mb-md-0 ml-n4.5">
-          <div className="small font-weight-bold">
+  const renderCardSection = () => {
+    if (!hasBudgetAggregatesSection()) {
+      return null;
+    }
+
+    return (
+      <Card.Section
+        title={!isRetired && (
+          <h4>
             <FormattedMessage
-              id="lcm.budgets.budget.card.available"
-              defaultMessage="Available"
-              description="Label for the available balance on the budget card"
+              id="lcm.budgets.budget.card.balance"
+              defaultMessage="Balance"
+              description="Header for the balance section of the budget card"
             />
-          </div>
-          <span className="small">
-            {isFetchingBudgets ? <Skeleton /> : formatPrice(available)}
-          </span>
-        </Col>
-        {isAssignable && (
-          <Col xs="6" md="auto" className="mb-3 mb-md-0">
-            <div className="small font-weight-bold">
+          </h4>
+        )}
+        muted
+      >
+        <Col className="d-flex justify-content-start w-md-75" data-testid="aggregates-section">
+          {!isRetired && (
+            <>
+              <Col xs="6" md="auto" className="mb-3 mb-md-0 ml-n4.5">
+                <div className="small font-weight-bold">
+                  <FormattedMessage
+                    id="lcm.budgets.budget.card.available"
+                    defaultMessage="Available"
+                    description="Label for the available balance on the budget card"
+                  />
+                </div>
+                <span className="small">
+                  {isFetchingBudgets ? <Skeleton /> : formatPrice(available)}
+                </span>
+              </Col>
+              {isAssignable && (
+                <Col xs="6" md="auto" className="mb-3 mb-md-0">
+                  <div className="small font-weight-bold">
+                    <FormattedMessage
+                      id="lcm.budgets.budget.card.assigned"
+                      defaultMessage="Assigned"
+                      description="Label for the assigned balance on the budget card"
+                    />
+                  </div>
+                  <span className="small">
+                    {isFetchingBudgets ? <Skeleton /> : formatPrice(pending)}
+                  </span>
+                </Col>
+              )}
+            </>
+          )}
+          <Col xs="6" md="auto" className={classNames('mb-3 mb-md-0', { 'ml-n4.5': isRetired })}>
+            <div className={classNames('font-weight-bold', { h4: isRetired, small: !isRetired })}>
               <FormattedMessage
-                id="lcm.budgets.budget.card.assigned"
-                defaultMessage="Assigned"
-                description="Label for the assigned balance on the budget card"
+                id="lcm.budgets.budget.card.spent"
+                defaultMessage="Spent"
+                description="Label for the spent balance on the budget card"
               />
             </div>
-            <span className="small">
-              {isFetchingBudgets ? <Skeleton /> : formatPrice(pending)}
+            <span className={classNames({ 'font-size-base': isRetired })}>
+              {isFetchingBudgets ? <Skeleton /> : formatPrice(spent)}
             </span>
           </Col>
-        )}
-        <Col xs="6" md="auto" className="mb-3 mb-md-0">
-          <div className="small font-weight-bold">
-            <FormattedMessage
-              id="lcm.budgets.budget.card.spent"
-              defaultMessage="Spent"
-              description="Label for the spent balance on the budget card"
-            />
-          </div>
-          <span className="small">
-            {isFetchingBudgets ? <Skeleton /> : formatPrice(spent)}
-          </span>
         </Col>
-      </Col>
-    </Card.Section>
-  );
+      </Card.Section>
+    );
+  };
 
   return (
     <Card
       orientation="horizontal"
       isLoading={isLoading}
+      data-testid="balance-detail-section"
     >
       <Card.Body>
         <Stack gap={4.5}>
           {renderCardHeader(displayName || 'Overview', id)}
-          {(budgetLabel.status === BUDGET_STATUSES.active || budgetLabel.status === BUDGET_STATUSES.expiring)
-            && renderCardSection()}
+          {renderCardSection()}
         </Stack>
       </Card.Body>
     </Card>
@@ -219,6 +245,7 @@ BaseSubBudgetCard.propTypes = {
   displayName: PropTypes.string,
   isAssignable: PropTypes.bool,
   isRetired: PropTypes.bool,
+  retiredAt: PropTypes.string,
 };
 
 BaseSubBudgetCard.defaultProps = {

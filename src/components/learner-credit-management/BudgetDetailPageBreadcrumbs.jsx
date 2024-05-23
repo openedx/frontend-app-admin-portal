@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Breadcrumb } from '@edx/paragon';
+import { Breadcrumb } from '@openedx/paragon';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';

@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import {
   Form,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import ConfirmationModal, { CONFIRM_BUTTON_STATES } from '../../ConfirmationModal';

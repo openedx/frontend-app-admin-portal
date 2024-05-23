@@ -163,6 +163,7 @@ export const getBudgetStatus = ({
   endDateStr,
   isBudgetRetired,
   currentDate = new Date(),
+  retiredDateStr = null,
 }) => {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
@@ -171,10 +172,9 @@ export const getBudgetStatus = ({
   if (isBudgetRetired) {
     return {
       status: BUDGET_STATUSES.retired,
-      badgeVariant: 'info',
-      // no term or date for retired budgets
-      term: null,
-      date: null,
+      badgeVariant: 'light',
+      term: 'Retired',
+      date: retiredDateStr,
     };
   }
 
@@ -531,6 +531,12 @@ export const getTranslatedBudgetTerm = (intl, term) => {
         id: 'lcm.budgets.budget.card.term.expired',
         defaultMessage: 'Expired',
         description: 'Term for when a budget has expired',
+      });
+    case 'Retired':
+      return intl.formatMessage({
+        id: 'lcm.budgets.budget.card.term.retired',
+        defaultMessage: 'Retired',
+        description: 'Term for when a budget has retired',
       });
     default:
       return '';

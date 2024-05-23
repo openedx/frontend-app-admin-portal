@@ -8,7 +8,7 @@ import {
   Hyperlink,
   Container,
   Skeleton,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 

@@ -4,14 +4,14 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
@@ -110,14 +110,14 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
@@ -224,14 +224,14 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
@@ -301,7 +301,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -312,7 +312,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -323,7 +323,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -334,7 +334,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -345,7 +345,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -356,7 +356,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -367,7 +367,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -378,7 +378,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -389,7 +389,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -400,7 +400,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -411,7 +411,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -422,7 +422,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -433,7 +433,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -444,7 +444,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -455,7 +455,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -466,7 +466,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -477,7 +477,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -488,7 +488,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -499,7 +499,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -510,7 +510,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -521,7 +521,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -532,7 +532,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -543,7 +543,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -554,7 +554,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -565,7 +565,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <span
             className="react-loading-skeleton"
             style={
-              Object {
+              {
                 "height": 25,
               }
             }
@@ -584,7 +584,7 @@ exports[`<CodeSearchResults /> basic rendering should render nothing visible whe
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
@@ -595,14 +595,14 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }
@@ -1037,14 +1037,14 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
 <div
   className="pgn-transition-replace-group position-relative"
   style={
-    Object {
+    {
       "height": null,
     }
   }
 >
   <div
     style={
-      Object {
+      {
         "padding": ".1px 0",
       }
     }

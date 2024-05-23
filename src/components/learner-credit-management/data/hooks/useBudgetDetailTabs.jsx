@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Tab } from '@edx/paragon';
+import { Tab } from '@openedx/paragon';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
@@ -12,7 +12,8 @@ const TAB_CLASS_NAME = 'pt-4.5';
 
 export const useBudgetDetailTabs = ({
   activeTabKey,
-  isBudgetAssignable,
+  subsidyAccessPolicy,
+  appliesToAllContexts,
   enterpriseGroupLearners,
   refreshMembersTab,
   setRefreshMembersTab,
@@ -22,6 +23,8 @@ export const useBudgetDetailTabs = ({
   MembersTabElement,
 }) => {
   const intl = useIntl();
+  const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
+  || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
   const tabs = useMemo(() => {
     const tabsArray = [];
     tabsArray.push(
@@ -42,7 +45,7 @@ export const useBudgetDetailTabs = ({
         )}
       </Tab>,
     );
-    if (enterpriseFeatures.topDownAssignmentRealTimeLcm && isBudgetAssignable) {
+    if (showCatalog) {
       tabsArray.push(
         <Tab
           key={BUDGET_DETAIL_CATALOG_TAB}
@@ -62,7 +65,7 @@ export const useBudgetDetailTabs = ({
         </Tab>,
       );
     }
-    if (enterpriseGroupLearners?.count > 0) {
+    if (enterpriseGroupLearners?.count > 0 && !appliesToAllContexts) {
       tabsArray.push(
         <Tab
           data-testid="group-members-tab"
@@ -90,15 +93,15 @@ export const useBudgetDetailTabs = ({
     return tabsArray;
   }, [
     activeTabKey,
-    enterpriseFeatures,
     ActivityTabElement,
     MembersTabElement,
     CatalogTabElement,
-    isBudgetAssignable,
     enterpriseGroupLearners,
     refreshMembersTab,
     setRefreshMembersTab,
     intl,
+    showCatalog,
+    appliesToAllContexts,
   ]);
 
   return tabs;

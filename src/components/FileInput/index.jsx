@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { clearFields } from 'redux-form';
-import { Button, Form, Icon } from '@edx/paragon';
-import { Close } from '@edx/paragon/icons';
+import { Button, Form, Icon } from '@openedx/paragon';
+import { Close } from '@openedx/paragon/icons';
 
 class FileInput extends React.Component {
   constructor(props) {

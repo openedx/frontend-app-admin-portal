@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Form, Hyperlink } from '@edx/paragon';
+import { Form, Hyperlink } from '@openedx/paragon';
 import { dataPropType } from './constants';
 import RegenerateCredentialWarningModal from './RegenerateCredentialWarningModal';
 import CopyButton from './CopyButton';

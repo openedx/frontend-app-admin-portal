@@ -3,10 +3,10 @@ import { useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import {
   Badge, Card, CardGrid, Dropdown, Icon, IconButton, useToggle,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   Delete, Edit, MoreVert, PlayCircleFilled, RemoveCircle,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 import { SSOConfigContext } from './SSOConfigContext';
 import ConfigErrorModal from '../ConfigErrorModal';
 import handleErrors from '../utils';

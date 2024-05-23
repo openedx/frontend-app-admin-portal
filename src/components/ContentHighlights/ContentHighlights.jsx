@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { logError } from '@edx/frontend-platform/logging';
-import { Alert } from '@edx/paragon';
-import { WarningFilled } from '@edx/paragon/icons';
+import { Alert } from '@openedx/paragon';
+import { WarningFilled } from '@openedx/paragon/icons';
 
 import LmsApiService from '../../data/services/LmsApiService';
 import ContentHighlightRoutes from './ContentHighlightRoutes';

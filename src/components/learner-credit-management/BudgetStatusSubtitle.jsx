@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Badge, Icon, OverlayTrigger, Stack, Tooltip,
-} from '@edx/paragon';
-import { GroupAdd, Groups, ManageAccounts } from '@edx/paragon/icons';
+} from '@openedx/paragon';
+import { GroupAdd, Groups, ManageAccounts } from '@openedx/paragon/icons';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { formatDate, useEnterpriseCustomer, useEnterpriseGroup } from './data';
@@ -37,7 +37,7 @@ const BudgetStatusSubtitle = ({
       enrollmentType:
       intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.enroll.assignable',
-        defaultMessage: 'Assignable',
+        defaultMessage: 'Assignment',
         description: 'Enrollment type for budgets that are assignable',
       }),
       popoverText:
@@ -91,7 +91,7 @@ const BudgetStatusSubtitle = ({
               key="budget-tooltip"
               placement="top"
               overlay={(
-                <Tooltip>
+                <Tooltip id="budget-tooltip">
                   {budgetTypeToRender.popoverText}
                 </Tooltip>
               )}

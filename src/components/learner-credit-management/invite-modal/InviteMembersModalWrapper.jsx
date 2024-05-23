@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 

@@ -8,10 +8,10 @@ import {
   Button,
   Icon,
   Pagination,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import {
   CheckCircle, Info, Plus, SpinnerIcon, WarningFilled,
-} from '@edx/paragon/icons';
+} from '@openedx/paragon/icons';
 
 import SearchBar from '../SearchBar';
 import CodeSearchResults from '../CodeSearchResults';

@@ -47,6 +47,79 @@ const formatPercentage = ({ decimal, numDecimals = 1 }) => (
   decimal ? `${parseFloat((decimal * 100).toFixed(numDecimals))}%` : '0%'
 );
 
+function i18nFormatTimestamp({ intl, timestamp }) {
+  if (timestamp) {
+    return intl.formatDate(formatTimestamp({ timestamp }), {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+  return timestamp;
+}
+
+function i18nFormatPassedTimestamp({ intl, timestamp }) {
+  if (timestamp) {
+    return i18nFormatTimestamp({ intl, timestamp });
+  }
+  return intl.formatMessage({
+    id: 'admin.portal.lpr.enrollments.table.not.passed.text.status',
+    defaultMessage: 'Has not passed',
+    description: 'Text to display when the learner has not passed the course',
+  });
+}
+
+function i18nFormatProgressStatus({ intl, progressStatus }) {
+  switch (progressStatus) {
+    case 'In Progress':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.in.progress',
+        defaultMessage: 'In Progress',
+        description: 'Text to display when the learner is in progress of the course',
+      });
+    case 'Passed':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.passed',
+        defaultMessage: 'Passed',
+        description: 'Text to display when the learner has passed the course',
+      });
+    case 'Audit Access Expired':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.audit.access.expired',
+        defaultMessage: 'Audit Access Expired',
+        description: 'Text to display when the learner has audit access expired',
+      });
+    case 'Failed':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.failed',
+        defaultMessage: 'Failed',
+        description: 'Text to display when the learner has failed the course',
+      });
+    case 'Cancelled':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.cancelled',
+        defaultMessage: 'Cancelled',
+      });
+    case 'Enrolled':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.enrolled',
+        defaultMessage: 'Enrolled',
+      });
+    case 'Pass':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.pass',
+        defaultMessage: 'Pass',
+      });
+    case 'Pending':
+      return intl.formatMessage({
+        id: 'admin.portal.lpr.progress.status.pending',
+        defaultMessage: 'Pending',
+      });
+    default:
+      return progressStatus;
+  }
+}
+
 const updateUrl = (navigate, currentPath, queryOptions) => {
   if (!queryOptions) {
     return;
@@ -528,4 +601,7 @@ export {
   queryCacheOnErrorHandler,
   makePlural,
   isArchivedContent,
+  i18nFormatTimestamp,
+  i18nFormatPassedTimestamp,
+  i18nFormatProgressStatus,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AlertModal, ActionRow, Button } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { AlertModal, ActionRow, Button } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 import { commonErrorAlertModalPropTypes, getBudgetDisplayName } from '../data';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../../data';

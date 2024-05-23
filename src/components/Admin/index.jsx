@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Alert, Icon } from '@edx/paragon';
-import { Error, Undo } from '@edx/paragon/icons';
+import { Alert, Icon } from '@openedx/paragon';
+import { Error, Undo } from '@openedx/paragon/icons';
 import { Link } from 'react-router-dom';
+import {
+  FormattedDate, FormattedMessage, injectIntl, intlShape,
+} from '@edx/frontend-platform/i18n';
 
 import Hero from '../Hero';
 import EnrollmentsTable from '../EnrollmentsTable';
@@ -53,9 +56,13 @@ class Admin extends React.Component {
   }
 
   getMetadataForAction(actionSlug) {
-    const { enterpriseId } = this.props;
+    const { enterpriseId, intl } = this.props;
     const defaultData = {
-      title: 'Full Report',
+      title: intl.formatMessage({
+        id: 'admin.portal.lpr.report.full.report.title',
+        defaultMessage: 'Full Report',
+        description: 'Title for full report',
+      }),
       component: <EnrollmentsTable />,
       csvFetchMethod: () => (
         EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
@@ -65,7 +72,11 @@ class Admin extends React.Component {
 
     const actionData = {
       'registered-unenrolled-learners': {
-        title: 'Registered Learners Not Yet Enrolled in a Course',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.registered.learners.not.enrolled.title',
+          defaultMessage: 'Registered Learners Not Yet Enrolled in a Course',
+          description: 'Report title for registered learners not yet enrolled in a course',
+        }),
         component: <RegisteredLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchUnenrolledRegisteredLearners(
@@ -77,7 +88,11 @@ class Admin extends React.Component {
         csvButtonId: 'registered-unenrolled-learners',
       },
       'enrolled-learners': {
-        title: 'Number of Courses Enrolled by Learners',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.enrolled.learners.title',
+          defaultMessage: 'Number of Courses Enrolled by Learners',
+          description: 'Report title for number of courses enrolled by learners',
+        }),
         component: <EnrolledLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchEnrolledLearners(enterpriseId, {}, { csv: true })
@@ -85,8 +100,16 @@ class Admin extends React.Component {
         csvButtonId: 'enrolled-learners',
       },
       'enrolled-learners-inactive-courses': {
-        title: 'Learners Not Enrolled in an Active Course',
-        description: 'Learners who have completed all of their courses and/or courses have ended.',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.not.enrolled.in.active.course.title',
+          defaultMessage: 'Learners Not Enrolled in an Active Course',
+          description: 'Report title for learners not enrolled in an active course',
+        }),
+        description: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.not.enrolled.in.active.course.description',
+          defaultMessage: 'Learners who have completed all of their courses and/or courses have ended.',
+          description: 'Report description for learners not enrolled in an active course',
+        }),
         component: <EnrolledLearnersForInactiveCoursesTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses(
@@ -98,8 +121,16 @@ class Admin extends React.Component {
         csvButtonId: 'enrolled-learners-inactive-courses',
       },
       'learners-active-week': {
-        title: 'Learners Enrolled in a Course',
-        subtitle: 'Top Active Learners',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.active.week.title',
+          defaultMessage: 'Learners Enrolled in a Course',
+          description: 'Report title for learners active in the past week',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.active.week.subtitle',
+          defaultMessage: 'Top Active Learners',
+          description: 'Report subtitle for learners active in the past week',
+        }),
         component: <LearnerActivityTable id="learners-active-week" activity="active_past_week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -111,8 +142,16 @@ class Admin extends React.Component {
         csvButtonId: 'learners-active-week',
       },
       'learners-inactive-week': {
-        title: 'Learners Enrolled in a Course',
-        subtitle: 'Not Active in Past Week',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.week.title',
+          defaultMessage: 'Learners Enrolled in a Course',
+          description: 'Report title for learners inactive in the past week',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.week.subtitle',
+          defaultMessage: 'Not Active in Past Week',
+          description: 'Report subtitle for learners inactive in the past week',
+        }),
         component: <LearnerActivityTable id="learners-inactive-week" activity="inactive_past_week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -124,8 +163,16 @@ class Admin extends React.Component {
         csvButtonId: 'learners-inactive-week',
       },
       'learners-inactive-month': {
-        title: 'Learners Enrolled in a Course',
-        subtitle: 'Not Active in Past Month',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.month.title',
+          defaultMessage: 'Learners Enrolled in a Course',
+          description: 'Report title for learners inactive in the past month',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.learners.inactive.month.subtitle',
+          defaultMessage: 'Not Active in Past Month',
+          description: 'Report subtitle for learners inactive in the past month',
+        }),
         component: <LearnerActivityTable id="learners-inactive-month" activity="inactive_past_month" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -137,7 +184,11 @@ class Admin extends React.Component {
         csvButtonId: 'learners-inactive-month',
       },
       'completed-learners': {
-        title: 'Number of Courses Completed by Learner',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.completed.learners.title',
+          defaultMessage: 'Number of Courses Completed by Learner',
+          description: 'Report title for number of courses completed by learners',
+        }),
         component: <CompletedLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCompletedLearners(enterpriseId, {}, { csv: true })
@@ -145,8 +196,16 @@ class Admin extends React.Component {
         csvButtonId: 'completed-learners',
       },
       'completed-learners-week': {
-        title: 'Number of Courses Completed by Learner',
-        subtitle: 'Past Week',
+        title: intl.formatMessage({
+          id: 'admin.portal.lpr.report.completed.learners.past.week.title',
+          defaultMessage: 'Number of Courses Completed by Learner',
+          description: 'Report title for number of courses completed by learners in past week',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'admin.portal.lpr.report.completed.learners.past.week.subtitle',
+          defaultMessage: 'Past Week',
+          description: 'Report title for number of courses completed by learners in past week',
+        }),
         component: <PastWeekPassedLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
@@ -211,14 +270,23 @@ class Admin extends React.Component {
   }
 
   renderDownloadButton() {
-    const { actionSlug } = this.props;
+    const { actionSlug, intl } = this.props;
     const tableMetadata = this.getMetadataForAction(actionSlug);
+    let downloadButtonLabel;
+    if (actionSlug) {
+      downloadButtonLabel = intl.formatMessage({
+        id: 'admin.portal.lpr.current.report.csv.download',
+        defaultMessage: 'Download current report (CSV)',
+        description: 'Download button label for current report',
+      });
+    }
+
     return (
       <DownloadCsvButton
         id={tableMetadata.csvButtonId}
         fetchMethod={tableMetadata.csvFetchMethod}
         disabled={this.isTableDataMissing(actionSlug)}
-        buttonLabel={`Download ${actionSlug ? 'current' : 'full'} report (CSV)`}
+        buttonLabel={downloadButtonLabel}
       />
     );
   }
@@ -232,7 +300,11 @@ class Admin extends React.Component {
     return (
       <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
         <Icon src={Undo} className="mr-2" />
-        Reset to {this.getMetadataForAction().title}
+        <FormattedMessage
+          id="admin.portal.lpr.reset.report.button.label"
+          defaultMessage="Reset to Full Report"
+          description="Label for button that upon click will reset the report to full report"
+        />
       </Link>
     );
   }
@@ -249,7 +321,11 @@ class Admin extends React.Component {
     return (
       <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
         <Icon src={Undo} className="mr-2" />
-        Reset Filters
+        <FormattedMessage
+          id="admin.portal.lpr.reset.filters.button.label"
+          defaultMessage="Reset Filters"
+          description="Label for button that upon click will reset the filters to default"
+        />
       </Link>
     );
   }
@@ -260,8 +336,21 @@ class Admin extends React.Component {
         variant="danger"
         icon={Error}
       >
-        <Alert.Heading>Hey, nice to see you</Alert.Heading>
-        <p>Try refreshing your screen {this.props.error.message}</p>
+        <Alert.Heading>
+          <FormattedMessage
+            id="admin.portal.lpr.error.message.heading"
+            defaultMessage="Hey, nice to see you"
+            description="Error message heading for learner progress report page"
+          />
+        </Alert.Heading>
+        <p>
+          <FormattedMessage
+            id="admin.portal.lpr.error.message.detail"
+            defaultMessage="Try refreshing your screen {errorDetail}"
+            description="Error message detail for learner progress report page"
+            values={{ errorDetail: this.props.error.message }}
+          />
+        </p>
       </Alert>
     );
   }
@@ -273,8 +362,21 @@ class Admin extends React.Component {
         className="mt-3"
         icon={Error}
       >
-        <Alert.Heading>Unable to generate CSV report</Alert.Heading>
-        <p>Please try again. {message}</p>
+        <Alert.Heading>
+          <FormattedMessage
+            id="admin.portal.lpr.error.csv.generation.heading"
+            defaultMessage="Unable to generate CSV report"
+            description="Error message heading for CSV report generation failure"
+          />
+        </Alert.Heading>
+        <p>
+          <FormattedMessage
+            id="admin.portal.lpr.error.csv.generation.detail"
+            defaultMessage="Please try again. {message}"
+            description="Error message detail for CSV report generation failure"
+            values={{ message }}
+          />
+        </p>
       </Alert>
     );
   }
@@ -290,7 +392,6 @@ class Admin extends React.Component {
       insights,
       insightsLoading,
     } = this.props;
-
     const queryParams = new URLSearchParams(search || '');
     const queryParamsLength = Array.from(queryParams.entries()).length;
     const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
@@ -313,7 +414,13 @@ class Admin extends React.Component {
               <div className="row mt-4">
                 <div className="col">
                   <BudgetExpiryAlertAndModal />
-                  <h2>Overview</h2>
+                  <h2>
+                    <FormattedMessage
+                      id="admin.portal.lpr.overview.heading"
+                      defaultMessage="Overview"
+                      description="Heading for the overview section of the learner progress report page"
+                    />
+                  </h2>
                 </div>
               </div>
               <div className="row mt-4">
@@ -369,9 +476,19 @@ class Admin extends React.Component {
                         <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
                           {lastUpdatedDate
                             && (
-                              <>
-                                Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
-                              </>
+                              <FormattedMessage
+                                id="admin.portal.lpr.data.refreshed.date.message"
+                                defaultMessage="Showing data as of {timestamp}"
+                                description="Message to show the last updated date of the data on lpr page"
+                                values={{
+                                  timestamp: <FormattedDate
+                                    value={formatTimestamp({ timestamp: lastUpdatedDate })}
+                                    year="numeric"
+                                    month="long"
+                                    day="numeric"
+                                  />,
+                                }}
+                              />
                             )}
                         </div>
                         <div className="col-12 col-md-6 col-xl-8">
@@ -445,6 +562,8 @@ Admin.propTypes = {
   table: PropTypes.shape({}),
   insightsLoading: PropTypes.bool,
   insights: PropTypes.objectOf(PropTypes.shape),
+  // injected
+  intl: intlShape.isRequired,
 };
 
-export default withParams(withLocation(Admin));
+export default withParams(withLocation(injectIntl(Admin)));

@@ -40,7 +40,7 @@ describe('useInterval hook', () => {
       }
     }, 5000);
     // with a delay of 1 second we expect it to have been called 5 times
-    jest.runTimersToTime(5100);
+    jest.advanceTimersByTime(5100);
   });
   // test not currently working
   it.skip('does not call the function if the delay is null', (done) => {
@@ -56,6 +56,6 @@ describe('useInterval hook', () => {
       }
     }, 5000);
 
-    jest.runTimersToTime(5100);
+    jest.advanceTimersByTime(5100);
   });
 });

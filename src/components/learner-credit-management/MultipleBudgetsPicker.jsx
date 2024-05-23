@@ -7,7 +7,7 @@ import {
   CheckboxFilter,
   Row,
   Col,
-} from '@edx/paragon';
+} from '@openedx/paragon';
 import groupBy from 'lodash/groupBy';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
@@ -85,6 +85,7 @@ const MultipleBudgetsPicker = ({
               description: 'Header for the status column in the budget picker page.',
             }),
             accessor: 'status',
+            filter: 'includesValue',
             Filter: CheckboxFilter,
             filterChoices: reducedChoices,
           },

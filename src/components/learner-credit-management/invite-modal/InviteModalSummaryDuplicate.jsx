@@ -1,6 +1,6 @@
 import React from 'react';
-import { Stack, Icon } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Stack, Icon } from '@openedx/paragon';
+import { Error } from '@openedx/paragon/icons';
 
 const InviteModalSummaryDuplicate = () => (
   <Stack className="duplicate-warning" direction="horizontal" gap={3}>
