@@ -108,7 +108,7 @@ const BaseSubBudgetCard = ({
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
       variant={[BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(budgetLabel.status) ? 'outline-primary' : 'primary'}
     >
-      {(isRetired) ? (
+      {isRetired ? (
         <FormattedMessage
           id="lcm.budgets.budget.card.view.budget.history"
           defaultMessage="View budget history"
@@ -143,7 +143,7 @@ const BaseSubBudgetCard = ({
         title={<BackgroundFetchingWrapper>{budgetType}</BackgroundFetchingWrapper>}
         subtitle={<BackgroundFetchingWrapper>{subtitle}</BackgroundFetchingWrapper>}
         actions={showActions ? renderActions(budgetId) : undefined}
-        className={classNames('align-items-center', { 'mb-4.5': !hasBudgetAggregatesSection })}
+        className={classNames('align-items-center', { 'mb-4.5': !hasBudgetAggregatesSection() })}
       />
     );
   };
