@@ -26,6 +26,7 @@ const BudgetCard = ({ original }) => {
     id,
     isAssignable,
     isRetired,
+    retiredAt,
     name,
     source,
     start,
@@ -51,6 +52,7 @@ const BudgetCard = ({ original }) => {
         enterpriseSlug={enterpriseSlug}
         isAssignable={isAssignable}
         isRetired={isRetired}
+        retiredAt={retiredAt}
       />
     );
   }
@@ -107,6 +109,7 @@ BudgetCard.propTypes = {
     }),
     isAssignable: PropTypes.bool,
     isRetired: PropTypes.bool,
+    retiredAt: PropTypes.string,
     enterpriseUUID: PropTypes.string.isRequired,
     enterpriseSlug: PropTypes.string.isRequired,
     status: PropTypes.string,
