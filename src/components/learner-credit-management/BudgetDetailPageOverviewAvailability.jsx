@@ -154,7 +154,7 @@ const BudgetActions = ({
                     description="Configure access button on the budget detail page overview"
                   />
                 </Button>
-              </Link>,
+              </Link>
             </div>
           </div>
         );
