@@ -19,6 +19,7 @@ import {
   useEnterpriseGroupMembersTableData,
   useSubsidySummaryAnalyticsApi,
   useEnterpriseOffer,
+  useEnterpriseRemovedGroupMembers,
 } from '../../data';
 import { EnterpriseSubsidiesContext } from '../../../EnterpriseSubsidiesContext';
 import {
@@ -50,6 +51,7 @@ jest.mock('../../data', () => ({
   useBudgetDetailActivityOverview: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useCancelContentAssignments: jest.fn(),
+  useEnterpriseRemovedGroupMembers: jest.fn(),
 }));
 
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
@@ -121,6 +123,11 @@ describe('<BudgetDetailPage />', () => {
     useEnterpriseOffer.mockReturnValue({
       isLoading: false,
       data: {},
+    });
+
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
     });
   });
 
@@ -304,6 +311,10 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 1,
+    });
     const mockFetchEnterpriseGroupMembersTableData = jest.fn();
     useEnterpriseGroupMembersTableData.mockReturnValue({
       isLoading: false,
@@ -339,6 +350,7 @@ describe('<BudgetDetailPage />', () => {
 
     const removeToggle = screen.getByTestId('show-removed-toggle');
     userEvent.click(removeToggle);
+    expect(screen.getByText('Show removed (1)')).toBeInTheDocument();
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
       filters: [
         { id: 'memberDetails', value: 'foobar' },
@@ -696,6 +708,10 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 1,
+    });
     const mockFetchEnterpriseGroupMembersTableData = jest.fn();
     const mockGroupData = {
       isLoading: false,
@@ -720,6 +736,7 @@ describe('<BudgetDetailPage />', () => {
 
     const removeToggle = screen.getByTestId('show-removed-toggle');
     userEvent.click(removeToggle);
+    expect(screen.getByText('Show removed (1)')).toBeInTheDocument();
 
     const toggleAllRowsSelected = screen.getByTitle('Toggle All Current Page Rows Selected');
     userEvent.click(toggleAllRowsSelected);
@@ -812,19 +829,19 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.queryByText('Waiting for dukesilver@test.com')).toBeInTheDocument());
     screen.debug(undefined, 10000000);
     screen.getByText('This member must accept their invitation to browse this budget\'s catalog and enroll using their '
-    + 'member permissions by logging in or creating an account within 90 days.');
+      + 'member permissions by logging in or creating an account within 90 days.');
     // click again to close it out
     userEvent.click(screen.getByText('Waiting for member'));
 
     userEvent.click(screen.getByText('Accepted'));
     await waitFor(() => expect(screen.queryByText('Invitation accepted')).toBeInTheDocument());
     screen.getByText('This member has successfully accepted the member invitation and can '
-    + 'now browse this budget\'s catalog and enroll using their member permissions.');
+      + 'now browse this budget\'s catalog and enroll using their member permissions.');
     userEvent.click(screen.getByText('Accepted'));
 
     userEvent.click(screen.getByText('Removed'));
     await waitFor(() => expect(screen.queryByText('Member removed')).toBeInTheDocument());
     screen.getByText('This member has been successfully removed and can not browse this budget\'s '
-    + 'catalog and enroll using their member permissions.');
+      + 'catalog and enroll using their member permissions.');
   });
 });

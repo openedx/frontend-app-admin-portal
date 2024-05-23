@@ -66,6 +66,7 @@ const LearnerCreditGroupMembersTable = ({
   refresh,
   setRefresh,
   groupUuid,
+  removedGroupMembersCount,
 }) => (
   <DataTable
     isSortable
@@ -90,7 +91,9 @@ const LearnerCreditGroupMembersTable = ({
         Header: MemberStatusTableColumnHeader,
         accessor: 'status',
         Cell: MemberStatusTableCell,
-        Filter: MembersTableSwitchFilter,
+        Filter: removedGroupMembersCount > 0 ? (
+          <MembersTableSwitchFilter removedGroupMembersCount={removedGroupMembersCount} />
+        ) : <div />,
         filter: 'status',
       },
       {
@@ -167,6 +170,7 @@ LearnerCreditGroupMembersTable.propTypes = {
   refresh: PropTypes.bool.isRequired,
   setRefresh: PropTypes.func.isRequired,
   groupUuid: PropTypes.string.isRequired,
+  removedGroupMembersCount: PropTypes.number.isRequired,
 };
 
 export default LearnerCreditGroupMembersTable;

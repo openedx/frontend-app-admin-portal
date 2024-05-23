@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Skeleton } from '@openedx/paragon';
 
 import LearnerCreditGroupMembersTable from './LearnerCreditGroupMembersTable';
-import { useEnterpriseGroupMembersTableData, useBudgetId, useSubsidyAccessPolicy } from '../data';
+import {
+  useEnterpriseGroupMembersTableData,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+  useEnterpriseRemovedGroupMembers,
+} from '../data';
 
 const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -20,24 +26,36 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh })
     groupId,
     refresh,
   });
+  const {
+    isRemovedMembersLoading,
+    removedGroupMembersCount,
+  } = useEnterpriseRemovedGroupMembers({
+    policyUuid: subsidyAccessPolicy.uuid,
+    groupId,
+  });
 
   return (
-    <>
-      <div className="mb-4">
-        <h4 className="mt-1">Budget Members</h4>
-        <p className="font-weight-light">
-          Members choose what to learn from the catalog and spend from the budget to enroll.
-        </p>
-      </div>
-      <LearnerCreditGroupMembersTable
-        isLoading={isLoading}
-        tableData={enterpriseGroupMembersTableData}
-        fetchTableData={fetchEnterpriseGroupMembersTableData}
-        refresh={refresh}
-        setRefresh={setRefresh}
-        groupUuid={subsidyAccessPolicy?.groupAssociations[0]}
-      />
-    </>
+    <div>
+      {!isRemovedMembersLoading ? (
+        <>
+          <div className="mb-4">
+            <h4 className="mt-1">Budget Members</h4>
+            <p className="font-weight-light">
+              Members choose what to learn from the catalog and spend from the budget to enroll.
+            </p>
+          </div>
+          <LearnerCreditGroupMembersTable
+            isLoading={isLoading}
+            tableData={enterpriseGroupMembersTableData}
+            fetchTableData={fetchEnterpriseGroupMembersTableData}
+            refresh={refresh}
+            setRefresh={setRefresh}
+            groupUuid={subsidyAccessPolicy?.groupAssociations[0]}
+            removedGroupMembersCount={removedGroupMembersCount}
+          />
+        </>
+      ) : <Skeleton />}
+    </div>
   );
 };
 
