@@ -311,6 +311,10 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 1,
+    });
     const mockFetchEnterpriseGroupMembersTableData = jest.fn();
     useEnterpriseGroupMembersTableData.mockReturnValue({
       isLoading: false,
@@ -346,6 +350,7 @@ describe('<BudgetDetailPage />', () => {
 
     const removeToggle = screen.getByTestId('show-removed-toggle');
     userEvent.click(removeToggle);
+    expect(screen.getByText('Show removed (1)')).toBeInTheDocument();
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
       filters: [
         { id: 'memberDetails', value: 'foobar' },
@@ -703,6 +708,10 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 1,
+    });
     const mockFetchEnterpriseGroupMembersTableData = jest.fn();
     const mockGroupData = {
       isLoading: false,
@@ -727,6 +736,7 @@ describe('<BudgetDetailPage />', () => {
 
     const removeToggle = screen.getByTestId('show-removed-toggle');
     userEvent.click(removeToggle);
+    expect(screen.getByText('Show removed (1)')).toBeInTheDocument();
 
     const toggleAllRowsSelected = screen.getByTitle('Toggle All Current Page Rows Selected');
     userEvent.click(toggleAllRowsSelected);
@@ -833,84 +843,5 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.queryByText('Member removed')).toBeInTheDocument());
     screen.getByText('This member has been successfully removed and can not browse this budget\'s '
       + 'catalog and enroll using their member permissions.');
-  });
-  it('displays removed members count in toggle', () => {
-    const initialState = {
-      portalConfiguration: {
-        ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
-      },
-    };
-    useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
-      activeTabKey: 'members',
-      budgetId: mockAssignableSubsidyAccessPolicy.uuid,
-    });
-    useSubsidyAccessPolicy.mockReturnValue({
-      isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
-    });
-    useBudgetDetailActivityOverview.mockReturnValue({
-      isLoading: false,
-      data: mockEmptyStateBudgetDetailActivityOverview,
-    });
-    useBudgetRedemptions.mockReturnValue({
-      isLoading: false,
-      budgetRedemptions: mockEmptyBudgetRedemptions,
-      fetchBudgetRedemptions: jest.fn(),
-    });
-    useEnterpriseGroupLearners.mockReturnValue({
-      data: {
-        count: 2,
-        currentPage: 1,
-        next: null,
-        numPages: 1,
-        results: [
-          {
-            enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
-            learnerId: 4382,
-            memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-          },
-          {
-            enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7f',
-            learnerId: 4381,
-            memberDetails: { userEmail: 'foobar2@test.com', userName: 'foo bar' },
-          },
-        ],
-      },
-    });
-    useEnterpriseRemovedGroupMembers.mockReturnValue({
-      isRemovedMembersLoading: false,
-      removedGroupMembersCount: 1,
-    });
-    const mockFetchEnterpriseGroupMembersTableData = jest.fn();
-    const mockGroupData = {
-      isLoading: false,
-      enterpriseGroupMembersTableData: {
-        itemCount: 2,
-        pageCount: 1,
-        results: [
-          {
-            memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-            status: 'pending',
-            recentAction: 'Pending: April 02, 2024',
-            enrollmentCount: 1,
-          },
-          {
-            memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
-            status: 'Removed',
-            recentAction: 'Removed: April 03, 2024',
-            enrollmentCount: 1,
-          },
-        ],
-      },
-      fetchEnterpriseGroupMembersTableData: mockFetchEnterpriseGroupMembersTableData,
-    };
-    useEnterpriseGroupMembersTableData.mockReturnValue(mockGroupData);
-    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-    expect(screen.getByText('Show removed (1)')).toBeInTheDocument();
   });
 });
