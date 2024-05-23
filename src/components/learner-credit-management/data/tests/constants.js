@@ -110,6 +110,7 @@ export const mockSubsidySummary = {
   redeemedFunds: 500,
   remainingFunds: 500,
   totalFunds: 1000,
+  groupAssociations: ['test-group-uuid'],
 };
 
 export const mockEnterpriseOfferMetadata = {

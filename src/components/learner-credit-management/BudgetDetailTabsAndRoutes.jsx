@@ -10,7 +10,7 @@ import {
   BUDGET_DETAIL_CATALOG_TAB,
   BUDGET_DETAIL_MEMBERS_TAB,
 } from './data/constants';
-import { useBudgetDetailTabs, useBudgetId, useSubsidyAccessPolicy } from './data';
+import { useBudgetDetailTabs, useBudgetId } from './data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
@@ -26,26 +26,33 @@ const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 
 function isSupportedTabKey({
   tabKey,
-  isBudgetAssignable,
   enterpriseGroupLearners,
   enterpriseFeatures,
+  subsidyAccessPolicy,
+  appliesToAllContexts,
 }) {
+  const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0)
+    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
   const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB];
-  if (enterpriseFeatures.topDownAssignmentRealTimeLcm && isBudgetAssignable) {
+  if (showCatalog) {
     supportedTabs.push(BUDGET_DETAIL_CATALOG_TAB);
   }
-  if (enterpriseGroupLearners?.count > 0) {
+  if (enterpriseGroupLearners?.count > 0 && !appliesToAllContexts) {
     supportedTabs.push(BUDGET_DETAIL_MEMBERS_TAB);
   }
   return supportedTabs.includes(tabKey);
 }
 
-function getInitialTabKey(routeActiveTabKey, { isBudgetAssignable, enterpriseGroupLearners, enterpriseFeatures }) {
+function getInitialTabKey(routeActiveTabKey, {
+  enterpriseFeatures, enterpriseGroupLearners,
+  subsidyAccessPolicy, appliesToAllContexts,
+}) {
   const isValidTabKey = isSupportedTabKey({
     tabKey: routeActiveTabKey,
-    isBudgetAssignable,
     enterpriseGroupLearners,
     enterpriseFeatures,
+    subsidyAccessPolicy,
+    appliesToAllContexts,
   });
   if (!isValidTabKey) {
     return DEFAULT_TAB;
@@ -58,16 +65,20 @@ const BudgetDetailTabsAndRoutes = ({
   enterpriseSlug,
   enterpriseFeatures,
   enterpriseGroupLearners,
+  subsidyAccessPolicy,
+  appliesToAllContexts,
 }) => {
   const { activeTabKey: routeActiveTabKey } = useParams();
-  const { budgetId, subsidyAccessPolicyId } = useBudgetId();
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const isBudgetAssignable = !!subsidyAccessPolicy?.isAssignable;
-
+  const { budgetId } = useBudgetId();
   const navigate = useNavigate();
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
-    { enterpriseFeatures, enterpriseGroupLearners, isBudgetAssignable },
+    {
+      enterpriseFeatures,
+      enterpriseGroupLearners,
+      subsidyAccessPolicy,
+      appliesToAllContexts,
+    },
   ));
 
   const {
@@ -80,10 +91,12 @@ const BudgetDetailTabsAndRoutes = ({
   useEffect(() => {
     const initialTabKey = getInitialTabKey(
       routeActiveTabKey,
-      { enterpriseFeatures, enterpriseGroupLearners, isBudgetAssignable },
+      {
+        enterpriseFeatures, enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts,
+      },
     );
     setActiveTabKey(initialTabKey);
-  }, [routeActiveTabKey, enterpriseFeatures, isBudgetAssignable, enterpriseGroupLearners]);
+  }, [routeActiveTabKey, enterpriseFeatures, enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts]);
 
   const handleTabSelect = (nextActiveTabKey) => {
     setActiveTabKey(nextActiveTabKey);
@@ -100,7 +113,8 @@ const BudgetDetailTabsAndRoutes = ({
 
   const tabs = useBudgetDetailTabs({
     activeTabKey,
-    isBudgetAssignable,
+    subsidyAccessPolicy,
+    appliesToAllContexts,
     enterpriseGroupLearners,
     enterpriseFeatures,
     refreshMembersTab,
@@ -112,9 +126,10 @@ const BudgetDetailTabsAndRoutes = ({
 
   if (!isSupportedTabKey({
     tabKey: routeActiveTabKey || activeTabKey,
-    isBudgetAssignable,
     enterpriseGroupLearners,
     enterpriseFeatures,
+    subsidyAccessPolicy,
+    appliesToAllContexts,
   })) {
     return <NotFoundPage />;
   }
@@ -150,6 +165,11 @@ BudgetDetailTabsAndRoutes.propTypes = {
   enterpriseGroupLearners: PropTypes.shape({
     count: PropTypes.number.isRequired,
   }),
+  subsidyAccessPolicy: PropTypes.shape({
+    isAssignable: PropTypes.bool,
+    groupAssociations: PropTypes.arrayOf(PropTypes.string),
+  }),
+  appliesToAllContexts: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(BudgetDetailTabsAndRoutes);

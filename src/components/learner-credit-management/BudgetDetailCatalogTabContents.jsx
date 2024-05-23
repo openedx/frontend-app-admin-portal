@@ -7,8 +7,7 @@ import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catal
 import { useLocation, useNavigate } from 'react-router-dom';
 import CatalogSearch from './search/CatalogSearch';
 import {
-  LANGUAGE_REFINEMENT,
-  LEARNING_TYPE_REFINEMENT,
+  LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT,
 } from './data';
 import { configuration } from '../../config';
 

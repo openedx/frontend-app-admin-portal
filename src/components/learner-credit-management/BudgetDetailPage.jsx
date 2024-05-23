@@ -3,7 +3,7 @@ import { Skeleton, Stack } from '@openedx/paragon';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
-  useBudgetId, useEnterpriseGroupLearners, useEnterpriseOffer, useSubsidyAccessPolicy,
+  useBudgetId, useEnterpriseGroup, useEnterpriseGroupLearners, useEnterpriseOffer, useSubsidyAccessPolicy,
 } from './data';
 import BudgetDetailTabsAndRoutes from './BudgetDetailTabsAndRoutes';
 import BudgetDetailPageWrapper from './BudgetDetailPageWrapper';
@@ -28,11 +28,15 @@ const BudgetDetailPage = () => {
   }
   const {
     data: enterpriseGroupLearners,
-    isInitialLoading: isEnterpriseGroupInitialLoading,
+    isInitialLoading: isEnterpriseGroupLearnersInitialLoading,
   } = useEnterpriseGroupLearners(groupUuid);
+  const {
+    data: appliesToAllContexts,
+    isInitialLoading: isEnterpriseGroupInitialLoading,
+  } = useEnterpriseGroup(subsidyAccessPolicy);
 
   const isLoading = isSubsidyAccessPolicyInitialLoading || isEnterpriseOfferInitialLoading
-    || isEnterpriseGroupInitialLoading;
+    || isEnterpriseGroupLearnersInitialLoading || isEnterpriseGroupInitialLoading;
 
   if (isLoading) {
     return (
@@ -65,7 +69,11 @@ const BudgetDetailPage = () => {
     >
       <Stack gap={4}>
         <BudgetDetailPageHeader />
-        <BudgetDetailTabsAndRoutes enterpriseGroupLearners={enterpriseGroupLearners} />
+        <BudgetDetailTabsAndRoutes
+          enterpriseGroupLearners={enterpriseGroupLearners}
+          subsidyAccessPolicy={subsidyAccessPolicy}
+          appliesToAllContexts={appliesToAllContexts?.appliesToAllContexts}
+        />
       </Stack>
     </BudgetDetailPageWrapper>
   );

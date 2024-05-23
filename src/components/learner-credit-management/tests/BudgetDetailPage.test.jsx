@@ -16,32 +16,32 @@ import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessA
 
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
-  useSubsidyAccessPolicy,
-  useBudgetRedemptions,
-  useBudgetContentAssignments,
-  useBudgetDetailActivityOverview,
-  useEnterpriseGroupLearners,
-  useIsLargeOrGreater,
-  useSubsidySummaryAnalyticsApi,
-  useEnterpriseOffer,
   formatDate,
   formatPrice,
+  useBudgetContentAssignments,
+  useBudgetDetailActivityOverview,
+  useBudgetRedemptions,
+  useEnterpriseCustomer,
+  useEnterpriseGroup,
+  useEnterpriseGroupLearners,
+  useEnterpriseOffer,
+  useIsLargeOrGreater,
+  useSubsidyAccessPolicy,
+  useSubsidySummaryAnalyticsApi,
   DEFAULT_PAGE,
   PAGE_SIZE,
-  useEnterpriseGroup,
-  useEnterpriseCustomer,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
   mockAssignableSubsidyAccessPolicy,
   mockAssignableSubsidyAccessPolicyWithNoUtilization,
-  mockPerLearnerSpendLimitSubsidyAccessPolicy,
-  mockSubsidyAccessPolicyUUID,
-  mockEnterpriseOfferId,
-  mockSubsidySummary,
-  mockEnterpriseOfferMetadata,
   mockAssignableSubsidyAccessPolicyWithSpendNoAllocations,
   mockAssignableSubsidyAccessPolicyWithSpendNoRedeemed,
+  mockEnterpriseOfferId,
+  mockEnterpriseOfferMetadata,
+  mockPerLearnerSpendLimitSubsidyAccessPolicy,
+  mockSubsidyAccessPolicyUUID,
+  mockSubsidySummary,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
 
@@ -57,18 +57,18 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
-  useBudgetRedemptions: jest.fn(),
   useBudgetContentAssignments: jest.fn(),
+  useBudgetDetailActivityOverview: jest.fn(),
+  useBudgetRedemptions: jest.fn(),
+  useCancelContentAssignments: jest.fn(),
+  useEnterpriseCustomer: jest.fn(),
+  useEnterpriseGroup: jest.fn(),
   useEnterpriseGroupLearners: jest.fn(),
   useEnterpriseGroupMembersTableData: jest.fn(),
+  useEnterpriseOffer: jest.fn(),
+  useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useSubsidyAccessPolicy: jest.fn(),
   useSubsidySummaryAnalyticsApi: jest.fn(),
-  useEnterpriseOffer: jest.fn(),
-  useBudgetDetailActivityOverview: jest.fn(),
-  useIsLargeOrGreater: jest.fn().mockReturnValue(true),
-  useCancelContentAssignments: jest.fn(),
-  useEnterpriseGroup: jest.fn(),
-  useEnterpriseCustomer: jest.fn(),
 }));
 
 jest.mock('../../../data/services/EnterpriseAccessApiService');
@@ -1467,6 +1467,7 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
     const expectedDisplayName = displayName ? `${displayName} catalog` : 'Overview';
     // Catalog tab exists and is active
+    expect(screen.getByText('Catalog')).toBeInTheDocument();
     expect(screen.getByText('Catalog').getAttribute('aria-selected')).toBe('true');
     expect(screen.getByText(expectedDisplayName, { selector: 'h3' }));
   });
@@ -1551,6 +1552,11 @@ describe('<BudgetDetailPage />', () => {
       isLoading: false,
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: true,
+      },
     });
     renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
 

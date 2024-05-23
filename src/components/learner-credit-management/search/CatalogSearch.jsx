@@ -7,7 +7,7 @@ import { SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 import { configuration } from '../../../config';
 import CatalogSearchResults from './CatalogSearchResults';
 import {
-  ENABLE_TESTING, SEARCH_RESULT_PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy,
+  ENABLE_TESTING, SEARCH_RESULT_PAGE_SIZE, useBudgetId, useEnterpriseGroup, useSubsidyAccessPolicy,
 } from '../data';
 
 const CatalogSearch = () => {
@@ -17,6 +17,9 @@ const CatalogSearch = () => {
     data: subsidyAccessPolicy,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const searchFilters = `enterprise_catalog_uuids:${ENABLE_TESTING(subsidyAccessPolicy.catalogUuid)} AND content_type:course`;
+
+  const { data } = useEnterpriseGroup(subsidyAccessPolicy);
+  const showSubtitle = subsidyAccessPolicy?.groupAssociations?.length > 0 && !data.appliesToAllContexts;
 
   return (
     <section>
@@ -37,6 +40,9 @@ const CatalogSearch = () => {
             tagName="h3"
           />
         )
+      )}
+      {showSubtitle && (
+        <p>Members of this budget will be able to browse and enroll the content in this catalog.</p>
       )}
       <InstantSearch indexName={configuration.ALGOLIA.INDEX_NAME} searchClient={searchClient}>
         <div className="enterprise-catalogs-header">

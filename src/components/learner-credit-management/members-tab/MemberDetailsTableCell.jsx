@@ -19,6 +19,7 @@ const MemberDetailsTableCell = ({
       iconAs={Icon}
       className="border rounded-circle mr-3"
       alt="members detail column icon"
+      style={{ opacity: 1, flexShrink: 0 }}
     />
   );
   if (row.original.status === 'removed') {
@@ -32,13 +33,14 @@ const MemberDetailsTableCell = ({
     );
     memberDetailIcon = (
       <IconButton
+        disabled
         isActive
         invertColors
         src={Person}
         iconAs={Icon}
-        className="border border-gray-400 rounded-circle  mr-3"
+        className="border border-gray-400 rounded-circle mr-3"
         alt="members detail column icon"
-        style={{ opacity: 0.2 }}
+        style={{ opacity: 0.2, flexShrink: 0 }}
       />
     );
   } else if (row.original.memberDetails.userName) {
