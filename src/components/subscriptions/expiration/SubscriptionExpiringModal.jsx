@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ActionRow, ModalDialog } from '@openedx/paragon';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { getSubscriptionExpiringCookieName } from '../data/utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
@@ -17,6 +18,7 @@ const SubscriptionExpiringModal = ({
   onAction,
 }) => {
   const { subscription: { agreementNetDaysUntilExpiration, expirationDate } } = useContext(SubscriptionDetailContext);
+  const intl = useIntl();
 
   const handleClose = () => {
     if (expirationThreshold) {
@@ -32,31 +34,55 @@ const SubscriptionExpiringModal = ({
 
   return (
     <ModalDialog
-      title={EXPIRING_MODAL_TITLE}
+      title={intl.formatMessage({
+        id: 'admin.portal.subscription.expiration.modal.title',
+        defaultMessage: 'Renew your expiring subscription',
+        description: 'Title for the subscription expiring modal in the admin portal.',
+      })}
       onClose={handleClose}
       isOpen={isOpen}
       hasCloseButton={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          Your subscription contract expires in {agreementNetDaysUntilExpiration} days
+          {intl.formatMessage({
+            id: 'admin.portal.subscription.expiration.modal.header',
+            defaultMessage: 'Your subscription contract expires in {expirationDays} days',
+            description: 'Header for the subscription expiring modal in the admin portal.',
+          }, { expirationDays: agreementNetDaysUntilExpiration })}
         </ModalDialog.Title>
       </ModalDialog.Header>
 
       <ModalDialog.Body>
         <p>
-          It&apos;s time to renew your subscription contract with edX!
-          The edX customer support team is here to help.
-          Get in touch today to minimize access disruptions for your learners.
+          {
+            intl.formatMessage({
+              id: 'admin.portal.subscription.expiration.modal.body.p1',
+              defaultMessage: `It{apostrophe}s time to renew your subscription contract with edX!
+            The edX customer support team is here to help.
+            Get in touch today to minimize access disruptions for your learners.`,
+              description: 'Body paragraph 1 for the subscription expiring modal in the admin portal.',
+            }, {
+              apostrophe: "'",
+            })
+          }
         </p>
         <i>
-          Access expires on {formatTimestamp({ timestamp: expirationDate })}
+          {intl.formatMessage({
+            id: 'admin.portal.subscription.expiration.modal.body.accessExpires',
+            defaultMessage: 'Access expires on {date}',
+            description: 'Message indicating when access expires in the subscription expiring modal in the admin portal.',
+          }, { date: formatTimestamp({ timestamp: expirationDate }) })}
         </i>
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Dismiss
+            {intl.formatMessage({
+              id: 'admin.portal.subscription.expiration.modal.footer.dismiss.label',
+              defaultMessage: 'Dismiss',
+              description: 'Label for the dismiss button in the footer of the subscription expiring modal in the admin portal.',
+            })}
           </ModalDialog.CloseButton>
           <ContactCustomerSupportButton onClick={onAction} />
         </ActionRow>

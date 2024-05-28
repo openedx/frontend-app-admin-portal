@@ -2,6 +2,7 @@
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 
@@ -30,11 +31,13 @@ const LicenseAllocationHeaderWrapper = ({
   initialSubscriptionDetailContextValue = defaultSubscriptionDetailContextValue,
   initialSubsidyRequestContextValue = defaultSubsidyRequestContextValue,
 }) => (
-  <SubscriptionDetailContext.Provider value={initialSubscriptionDetailContextValue}>
-    <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
-      <LicenseAllocationHeader />
-    </SubsidyRequestsContext.Provider>
-  </SubscriptionDetailContext.Provider>
+  <IntlProvider locale="en">
+    <SubscriptionDetailContext.Provider value={initialSubscriptionDetailContextValue}>
+      <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
+        <LicenseAllocationHeader />
+      </SubsidyRequestsContext.Provider>
+    </SubscriptionDetailContext.Provider>
+  </IntlProvider>
 );
 
 describe('<LicenseAllocationHeader />', () => {

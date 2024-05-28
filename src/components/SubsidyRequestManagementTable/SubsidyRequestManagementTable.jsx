@@ -5,6 +5,7 @@ import {
   TextFilter,
   CheckboxFilter,
 } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import EmailAddressCell from './EmailAddressCell';
 import RequestDateCell from './RequestDateCell';
@@ -26,27 +27,45 @@ const SubsidyRequestManagementTable = ({
   disableApproveButton,
   ...rest
 }) => {
+  const intl = useIntl();
+
   const columns = useMemo(
     () => ([
       {
-        Header: 'Email address',
+        Header: intl.formatMessage({
+          id: 'admin.portal.subsidy.request.management.table.email.address.header',
+          defaultMessage: 'Email address',
+          description: 'Header for the email address column in the subsidy request management table.',
+        }),
         accessor: 'email',
         Cell: EmailAddressCell,
       },
       {
-        Header: 'Course title',
+        Header: intl.formatMessage({
+          id: 'admin.portal.subsidy.request.management.table.course.title.header',
+          defaultMessage: 'Course title',
+          description: 'Header for the course title column in the subsidy request management table.',
+        }),
         accessor: 'courseTitle',
         Cell: CourseTitleCell,
         disableFilters: true,
       },
       {
-        Header: 'Request date',
+        Header: intl.formatMessage({
+          id: 'admin.portal.subsidy.request.management.table.request.date.header',
+          defaultMessage: 'Request date',
+          description: 'Header for the request date column in the subsidy request management table.',
+        }),
         accessor: 'requestDate',
         Cell: RequestDateCell,
         disableFilters: true,
       },
       {
-        Header: 'Request status',
+        Header: intl.formatMessage({
+          id: 'admin.portal.subsidy.request.management.table.request.status.header',
+          defaultMessage: 'Request status',
+          description: 'Header for the request status column in the subsidy request management table.',
+        }),
         accessor: 'requestStatus',
         Cell: RequestStatusCell,
         Filter: CheckboxFilter,
@@ -54,7 +73,7 @@ const SubsidyRequestManagementTable = ({
         filterChoices: requestStatusFilterChoices,
       },
     ]),
-    [requestStatusFilterChoices],
+    [requestStatusFilterChoices, intl],
   );
 
   return (
@@ -90,7 +109,12 @@ const SubsidyRequestManagementTable = ({
       <DataTable.TableControlBar />
       <DataTable.Table />
       {!isLoading && (
-        <DataTable.EmptyTable content="No results found" />
+        <DataTable.EmptyTable content={intl.formatMessage({
+          id: 'admin.portal.subsidy.request.management.table.empty.table.message',
+          defaultMessage: 'No results found',
+          description: 'Message displayed when no results are found in the subsidy request management table.',
+        })}
+        />
       )}
       <DataTable.TableFooter />
     </DataTable>

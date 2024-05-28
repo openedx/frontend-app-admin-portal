@@ -9,6 +9,7 @@ import {
 } from '@openedx/paragon';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import LoadingMessage from '../LoadingMessage';
 import { SubscriptionContext } from './SubscriptionData';
 import SubscriptionExpiration from './expiration/SubscriptionExpiration';
@@ -39,17 +40,30 @@ const MultipleSubscriptionsPage = ({
         <Card.Section className="text-center">
           <Row>
             <Col xs={12} lg={{ span: 8, offset: 2 }}>
-              <h3 className="mb-3">No subscription plans for your organization</h3>
+              <h3 className="mb-3">
+                <FormattedMessage
+                  id="admin.portal.multiple.subscriptions.page.no.plans.heading"
+                  defaultMessage="No subscription plans for your organization"
+                  description="Heading for the message when no subscription plans are found."
+                />
+              </h3>
               <p>
-                We were unable to find any active subscription plans for your organization. Please contact
-                Customer Support if you have questions.
+                <FormattedMessage
+                  id="admin.portal.multiple.subscriptions.page.no.plans.body"
+                  defaultMessage="We were unable to find any active subscription plans for your organization. Please contact Customer Support if you have questions."
+                  description="Body text for the message when no subscription plans are found."
+                />
               </p>
               <Hyperlink
                 className="btn btn-brand"
                 target="_blank"
                 destination={configuration.ENTERPRISE_SUPPORT_URL}
               >
-                Contact support
+                <FormattedMessage
+                  id="admin.portal.multiple.subscriptions.page.contact.support.button"
+                  defaultMessage="Contact support"
+                  description="Label for the 'Contact support' button when no subscription plans are found."
+                />
               </Hyperlink>
             </Col>
           </Row>

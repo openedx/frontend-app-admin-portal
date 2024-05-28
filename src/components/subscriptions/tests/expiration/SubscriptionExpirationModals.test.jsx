@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 import * as enterpriseUtils from '@edx/frontend-enterprise-utils';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import SubscriptionExpirationModals from '../../expiration/SubscriptionExpirationModals';
 import { EXPIRED_MODAL_TITLE } from '../../expiration/SubscriptionExpiredModal';
 import { EXPIRING_MODAL_TITLE } from '../../expiration/SubscriptionExpiringModal';
@@ -31,9 +32,11 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
 // PropType validation for state is done by SubscriptionManagementContext
 
 const ExpirationModalsWithContext = ({ detailState }) => (
-  <SubscriptionManagementContext detailState={detailState}>
-    <SubscriptionExpirationModals enterpriseId="fake-uuid" />
-  </SubscriptionManagementContext>
+  <IntlProvider locale="en">
+    <SubscriptionManagementContext detailState={detailState}>
+      <SubscriptionExpirationModals enterpriseId="fake-uuid" />
+    </SubscriptionManagementContext>
+  </IntlProvider>
 );
 
 describe('<SubscriptionExpirationModals />', () => {
