@@ -9,6 +9,7 @@ import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessA
 import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 
 const GroupMembersCsvDownloadTableAction = ({
+  isEntireTableSelected,
   tableInstance,
 }) => {
   const selectedEmails = Object.keys(tableInstance.state.selectedRowIds);
@@ -55,7 +56,7 @@ const GroupMembersCsvDownloadTableAction = ({
     EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData(
       subsidyAccessPolicyId,
       options,
-      selectedEmails,
+      isEntireTableSelected ? null : selectedEmails,
     ).then(response => {
       // download CSV
       const blob = new Blob([response.data], {
@@ -68,6 +69,13 @@ const GroupMembersCsvDownloadTableAction = ({
       setAlertModalException(err.message);
     });
   };
+
+  let buttonSelectedNumber = 0;
+  if (selectedEmailCount > 0) {
+    buttonSelectedNumber = isEntireTableSelected ? `(${tableInstance.itemCount})` : `(${selectedEmailCount})`;
+  } else {
+    buttonSelectedNumber = `all (${tableInstance.itemCount})`;
+  }
 
   return (
     <>
@@ -99,13 +107,14 @@ const GroupMembersCsvDownloadTableAction = ({
         className="border rounded-0 border-dark-500"
         disabled={tableInstance.itemCount === 0}
       >
-        Download {selectedEmailCount > 0 ? `(${selectedEmailCount})` : `all (${tableInstance.itemCount})`}
+        Download {buttonSelectedNumber}
       </Button>
     </>
   );
 };
 
 GroupMembersCsvDownloadTableAction.propTypes = {
+  isEntireTableSelected: PropTypes.bool,
   tableInstance: PropTypes.shape({
     itemCount: PropTypes.number,
     state: PropTypes.shape({
@@ -131,6 +140,7 @@ GroupMembersCsvDownloadTableAction.defaultProps = {
     itemCount: 0,
     state: {},
   },
+  isEntireTableSelected: false,
 };
 
 export default GroupMembersCsvDownloadTableAction;

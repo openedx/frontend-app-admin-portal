@@ -23,6 +23,7 @@ export const mockAssignableSubsidyAccessPolicy = {
   },
   isAssignable: true,
   subsidyUuid: 'mock-subsidy-uuid',
+  catalogUuid: 'mock-catalog-uuid',
 };
 
 export const mockAssignableSubsidyAccessPolicyWithNoUtilization = {
