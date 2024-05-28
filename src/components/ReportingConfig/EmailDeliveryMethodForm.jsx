@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Form } from '@openedx/paragon';
 import isEmpty from 'lodash/isEmpty';
 import isEmail from 'validator/lib/isEmail';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
   const [checked, setChecked] = useState(false);
@@ -10,7 +11,13 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
     <div className="row">
       <div className="col">
         <Form.Group controlId="email" isInvalid={invalidFields.emailRaw}>
-          <Form.Label>Email(s)</Form.Label>
+          <Form.Label>
+            <FormattedMessage
+              id="reporting.config.email.delivery.method.form.email.label"
+              defaultMessage="Email(s)"
+              description="Label for the email input field in the email delivery method form"
+            />
+          </Form.Label>
           <Form.Control
             as="textarea"
             name="emailRaw"
@@ -24,16 +31,32 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             data-hj-suppress
             autoResize
           />
-          <Form.Text>The email(s), one per line, where the report should be sent.</Form.Text>
+          <Form.Text>
+            <FormattedMessage
+              id="reporting.config.email.delivery.method.form.email.text"
+              defaultMessage="The email(s), one per line, where the report should be sent."
+              description="Text for the email input field in the email delivery method form"
+            />
+          </Form.Text>
           {invalidFields.emailRaw && (
             <Form.Control.Feedback type="invalid">
-              Required. One email per line. Emails must be formatted properly (email@domain.com)
+              <FormattedMessage
+                id="reporting.config.email.delivery.method.form.email.invalid"
+                defaultMessage="Required. One email per line. Emails must be formatted properly (email@domain.com)"
+                description="Error message for invalid email input in the email delivery method form"
+              />
             </Form.Control.Feedback>
           )}
         </Form.Group>
         {config && (
           <Form.Group controlId="changePassword">
-            <Form.Label>Change Password</Form.Label>
+            <Form.Label>
+              <FormattedMessage
+                id="reporting.config.email.delivery.method.form.change.password.label"
+                defaultMessage="Change Password"
+                description="Label for the change password checkbox in the email delivery method form"
+              />
+            </Form.Label>
             <Form.Checkbox
               className="ml-3"
               checked={checked}
@@ -45,7 +68,13 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           controlId="encryptedPassword"
           isInvalid={invalidFields.encryptedPassword}
         >
-          <Form.Label>Password</Form.Label>
+          <Form.Label>
+            <FormattedMessage
+              id="reporting.config.email.delivery.method.form.password.label"
+              defaultMessage="Password"
+              description="Label for the password input field in the email delivery method form"
+            />
+          </Form.Label>
           <Form.Control
             type="password"
             name="encryptedPassword"
@@ -54,11 +83,19 @@ const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             data-hj-suppress
           />
           <Form.Text>
-            This password will be used to secure the zip file. It will be encrypted when stored in the database.
+            <FormattedMessage
+              id="reporting.config.email.delivery.method.form.password.text"
+              defaultMessage="This password will be used to secure the zip file. It will be encrypted when stored in the database."
+              description="Text for the password input field in the email delivery method form"
+            />
           </Form.Text>
           {invalidFields.encryptedPassword && (
             <Form.Control.Feedback type="invalid">
-              Required. Password must not be blank.
+              <FormattedMessage
+                id="reporting.config.email.delivery.method.form.password.invalid"
+                defaultMessage="Required. Password must not be blank."
+                description="Error message for invalid password input in the email delivery method form"
+              />
             </Form.Control.Feedback>
           )}
         </Form.Group>
