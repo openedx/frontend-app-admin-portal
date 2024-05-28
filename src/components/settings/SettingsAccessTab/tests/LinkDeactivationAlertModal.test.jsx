@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   screen,
-  render,
   cleanup,
   act,
 } from '@testing-library/react';
@@ -9,6 +8,7 @@ import userEvent from '@testing-library/user-event';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
 import LinkDeactivationAlertModal from '../LinkDeactivationAlertModal';
+import { renderWithI18nProvider } from '../../../test/testUtils';
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
   __esModule: true,
@@ -29,7 +29,7 @@ describe('<LinkDeactivationAlertModal/>', () => {
     const onDeactivateLinkMock = jest.fn();
     const mockPromiseResolve = Promise.resolve({ data: {} });
     LmsApiService.disableEnterpriseCustomerLink.mockReturnValue(mockPromiseResolve);
-    render(<LinkDeactivationAlertModal
+    renderWithI18nProvider(<LinkDeactivationAlertModal
       isOpen
       inviteKeyUUID={TEST_INVITE_KEY}
       onDeactivateLink={onDeactivateLinkMock}
@@ -45,7 +45,7 @@ describe('<LinkDeactivationAlertModal/>', () => {
   });
   test('`Go back` calls `onClose`', async () => {
     const onCloseMock = jest.fn();
-    render(<LinkDeactivationAlertModal
+    renderWithI18nProvider(<LinkDeactivationAlertModal
       isOpen
       onClose={onCloseMock}
       inviteKeyUUID={TEST_INVITE_KEY}

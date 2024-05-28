@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import DisableLinkManagementAlertModal from '../DisableLinkManagementAlertModal';
+import { renderWithI18nProvider } from '../../../test/testUtils';
 
 const DisableLinkManagementAlertModalWrapper = (props) => (
   <IntlProvider locale="en">
@@ -66,7 +67,7 @@ describe('<DisableLinkManagementAlertModal />', () => {
   });
   test('`Go back` button calls `onClose`', async () => {
     const onCloseMock = jest.fn();
-    render(<DisableLinkManagementAlertModal
+    renderWithI18nProvider(<DisableLinkManagementAlertModal
       isOpen
       onClose={onCloseMock}
       onDisable={() => {}}

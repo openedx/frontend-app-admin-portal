@@ -3,6 +3,7 @@ import {
   Form,
 } from '@openedx/paragon';
 import PropTypes from 'prop-types';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import ConfirmationModal, { CONFIRM_BUTTON_STATES } from '../../ConfirmationModal';
 import { SUBSIDY_TYPE_LABELS } from '../data/constants';
@@ -16,6 +17,7 @@ const SettingsAccessSubsidyTypeSelection = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const intl = useIntl();
 
   const confirmModalButtonState = useMemo(() => {
     if (error) {
@@ -49,11 +51,18 @@ const SettingsAccessSubsidyTypeSelection = ({
     }
   }, [selectedSubsidyType, updateSubsidyRequestConfiguration]);
 
+  const selectedSubsidyTypeLabel = SUBSIDY_TYPE_LABELS[selectedSubsidyType]
+    && intl.formatMessage(SUBSIDY_TYPE_LABELS[selectedSubsidyType]);
+
   return (
     <>
       <p>
-        Select a subsidy type to distribute.
-        Learners will browse and request courses from the associated catalog.
+        <FormattedMessage
+          id="adminPortal.settings.access.subsidyTypeSelection.description"
+          defaultMessage="Select a subsidy type to distribute. Learners will browse and request courses from the associated catalog."
+          description="Description for the subsidy type selection section."
+        />
+
       </p>
       <Form.RadioSet
         name="subsidy-type-selection"
@@ -69,7 +78,7 @@ const SettingsAccessSubsidyTypeSelection = ({
               value={subsidyType}
               onClick={(ev) => handleSelection(ev.target.value)}
             >
-              {SUBSIDY_TYPE_LABELS[subsidyType]}
+              <FormattedMessage {...SUBSIDY_TYPE_LABELS[subsidyType]} />
             </Form.Radio>
           ),
         )}
@@ -78,9 +87,21 @@ const SettingsAccessSubsidyTypeSelection = ({
         isOpen={isModalOpen}
         confirmButtonLabels={
           {
-            [CONFIRM_BUTTON_STATES.default]: 'Confirm selection',
-            [CONFIRM_BUTTON_STATES.pending]: 'Updating subsidy type...',
-            [CONFIRM_BUTTON_STATES.errored]: 'Try again',
+            [CONFIRM_BUTTON_STATES.default]: intl.formatMessage({
+              id: 'adminPortal.settings.access.subsidyTypeSelection.confirm',
+              defaultMessage: 'Confirm selection',
+              description: 'Confirm button label for selecting a subsidy type.',
+            }),
+            [CONFIRM_BUTTON_STATES.pending]: intl.formatMessage({
+              id: 'adminPortal.settings.access.subsidyTypeSelection.updating',
+              defaultMessage: 'Updating subsidy type...',
+              description: 'Updating subsidy type confirmation message.',
+            }),
+            [CONFIRM_BUTTON_STATES.errored]: intl.formatMessage({
+              id: 'adminPortal.settings.access.subsidyTypeSelection.tryAgain',
+              defaultMessage: 'Try again',
+              description: 'Try again button label for selecting a subsidy type.',
+            }),
           }
         }
         confirmButtonState={confirmModalButtonState}
@@ -89,10 +110,12 @@ const SettingsAccessSubsidyTypeSelection = ({
           setSelectedSubsidyType(subsidyRequestConfiguration?.subsidyType);
           setIsModalOpen(false);
         }}
-        body={
-          `Setting your selection to "${SUBSIDY_TYPE_LABELS[selectedSubsidyType]}" is permanent,
-           and can only be changed through customer support.`
-        }
+        body={intl.formatMessage({
+          id: 'adminPortal.settings.access.subsidyTypeSelection.confirmation',
+          defaultMessage: `Setting your selection to "{selectedSubsidyType}" is permanent,
+              and can only be changed through customer support.`,
+          description: 'Confirmation message for selecting a subsidy type.',
+        }, { selectedSubsidyType: selectedSubsidyTypeLabel })}
       />
     </>
   );
