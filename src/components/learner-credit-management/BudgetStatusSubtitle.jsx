@@ -15,6 +15,7 @@ const BudgetStatusSubtitle = ({
 }) => {
   const { data: enterpriseGroup } = useEnterpriseGroup(policy);
   const { data: enterpriseCustomer } = useEnterpriseCustomer(enterpriseUUID);
+  // universal group = all members of the organization are automatically in a group
   const universalGroup = enterpriseGroup?.appliesToAllContexts;
   const intl = useIntl();
   const budgetType = {
@@ -40,13 +41,6 @@ const BudgetStatusSubtitle = ({
         defaultMessage: 'Assignment',
         description: 'Enrollment type for budgets that are assignable',
       }),
-      popoverText:
-      intl.formatMessage({
-        id: 'lcm.budget.detail.page.overview.enroll.assignable.popover',
-        defaultMessage: 'Available to members added to this budget',
-        description: 'Popover text for budgets that are assignable',
-      }),
-      icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
     },
     browseAndEnroll: {
       enrollmentType:
@@ -58,6 +52,21 @@ const BudgetStatusSubtitle = ({
       popoverText:
       intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.enroll.browse.and.enroll.popover',
+        defaultMessage: 'Available to members added to this budget',
+        description: 'Popover text for budgets that are browsable and enrollable',
+      }),
+      icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
+    },
+    orgBrowseAndEnroll: {
+      enrollmentType:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.org.browse.and.enroll',
+        defaultMessage: 'Browse & Enroll',
+        description: 'Enrollment type for budgets that are browsable and enrollable',
+      }),
+      popoverText:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.org.browse.and.enroll.popover',
         defaultMessage: 'Available to all people in your organization',
         description: 'Popover text for budgets that are browsable and enrollable',
       }),
@@ -68,6 +77,8 @@ const BudgetStatusSubtitle = ({
 
   if (isLmsBudget(enterpriseCustomer?.activeIntegrations.length, universalGroup)) {
     budgetTypeToRender = budgetType.lms;
+  } else if (universalGroup) {
+    budgetTypeToRender = budgetType.orgBrowseAndEnroll;
   } else if (isAssignable) {
     budgetTypeToRender = budgetType.assignable;
   } else {
