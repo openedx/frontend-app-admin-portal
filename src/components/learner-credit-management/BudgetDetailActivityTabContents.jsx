@@ -50,7 +50,6 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
             && (
               <NoBnEBudgetActivity
                 openInviteModal={openInviteModal}
-                isEnterpriseGroupsEnabled={isEnterpriseGroupsEnabled}
               />
             )}
           {hasSpentTransactions && <BudgetDetailRedemptions />}

@@ -8,7 +8,7 @@ import {
   useEnterpriseGroupMembersTableData,
   useBudgetId,
   useSubsidyAccessPolicy,
-  useEnterpriseRemovedGroupMembers,
+  useEnterpriseGroupMembers,
 } from '../data';
 
 const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh }) => {
@@ -27,16 +27,17 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh })
     refresh,
   });
   const {
-    isRemovedMembersLoading,
+    isMembersLoading,
     removedGroupMembersCount,
-  } = useEnterpriseRemovedGroupMembers({
+  } = useEnterpriseGroupMembers({
     policyUuid: subsidyAccessPolicy.uuid,
     groupId,
+    includeRemoved: true,
   });
 
   return (
     <div>
-      {!isRemovedMembersLoading ? (
+      {!isMembersLoading ? (
         <>
           <div className="mb-4">
             <h4 className="mt-1">Budget Members</h4>

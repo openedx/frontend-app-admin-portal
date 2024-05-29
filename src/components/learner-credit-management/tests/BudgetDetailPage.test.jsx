@@ -24,6 +24,7 @@ import {
   useEnterpriseCustomer,
   useEnterpriseGroup,
   useEnterpriseGroupLearners,
+  useEnterpriseGroupMembers,
   useEnterpriseOffer,
   useIsLargeOrGreater,
   useSubsidyAccessPolicy,
@@ -64,6 +65,7 @@ jest.mock('../data', () => ({
   useEnterpriseCustomer: jest.fn(),
   useEnterpriseGroup: jest.fn(),
   useEnterpriseGroupLearners: jest.fn(),
+  useEnterpriseGroupMembers: jest.fn(),
   useEnterpriseGroupMembersTableData: jest.fn(),
   useEnterpriseOffer: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
@@ -452,6 +454,11 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+    useEnterpriseGroupMembers.mockReturnValue({
+      isMembersLoading: false,
+      groupMembersCount: 0,
+      removedGroupMembersCount: 0,
+    });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     if (isLoading) {
@@ -604,12 +611,65 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+    useEnterpriseGroupMembers.mockReturnValue({
+      isMembersLoading: false,
+      groupMembersCount: 0,
+      removedGroupMembersCount: 0,
+    });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     // Overview empty state (no content assignments, no spent transactions)
     expect(screen.getByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
     const illustrationTestIds = ['name-your-members-illustration', 'members-browse-illustration', 'enroll-and-spend-illustration'];
     illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
+    expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
+  });
+
+  it('still render bne zero state if there are members but no spend', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
+        },
+      },
+    });
+    useEnterpriseGroupMembers.mockReturnValue({
+      isMembersLoading: false,
+      groupMembersCount: 1,
+      removedGroupMembersCount: 0,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Overview empty state (no content assignments, no spent transactions)
+    screen.debug(undefined, 1000000);
+
+    expect(screen.queryByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
+
     expect(screen.getByText('Invite more members', { selector: 'a' })).toBeInTheDocument();
   });
 
@@ -1504,6 +1564,11 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+    useEnterpriseGroupMembers.mockReturnValue({
+      isMembersLoading: false,
+      groupMembersCount: 0,
+      removedGroupMembersCount: 0,
+    });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     // Catalog tab does NOT exist
@@ -2183,6 +2248,11 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
         },
       },
+    });
+    useEnterpriseGroupMembers.mockReturnValue({
+      isMembersLoading: false,
+      groupMembersCount: 1,
+      removedGroupMembersCount: 0,
     });
     renderWithRouter(
       <BudgetDetailPageWrapper

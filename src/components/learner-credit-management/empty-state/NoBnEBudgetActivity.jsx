@@ -5,8 +5,12 @@ import {
   Button, Card, Col, Row,
 } from '@openedx/paragon';
 import { Link } from 'react-router-dom';
-
-import { useIsLargeOrGreater } from '../data';
+import {
+  useBudgetId,
+  useEnterpriseGroupMembers,
+  useIsLargeOrGreater,
+  useSubsidyAccessPolicy,
+} from '../data';
 import nameYourMembers from '../assets/reading.svg';
 import memberBrowse from '../assets/phoneScroll.svg';
 import enrollAndSpend from '../assets/wallet.svg';
@@ -23,7 +27,17 @@ const EnrollAndSpendIllustration = (props) => (
   <img data-testid="enroll-and-spend-illustration" src={enrollAndSpend} alt="" {...props} />
 );
 
-const NoBnEBudgetActivity = ({ openInviteModal, isEnterpriseGroupsEnabled }) => {
+const NoBnEBudgetActivity = ({ openInviteModal }) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const groupId = subsidyAccessPolicy?.groupAssociations[0];
+  const {
+    groupMembersCount,
+  } = useEnterpriseGroupMembers({
+    policyUuid: subsidyAccessPolicy?.uuid,
+    groupId,
+    includeRemoved: false,
+  });
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (
@@ -89,7 +103,7 @@ const NoBnEBudgetActivity = ({ openInviteModal, isEnterpriseGroupsEnabled }) => 
               as={Link}
               onClick={openInviteModal}
             >
-              {isEnterpriseGroupsEnabled ? 'Invite more members' : 'Get started'}
+              {groupMembersCount > 0 ? 'Invite more members' : 'Get started'}
             </Button>
           </Col>
         </Row>
@@ -100,11 +114,6 @@ const NoBnEBudgetActivity = ({ openInviteModal, isEnterpriseGroupsEnabled }) => 
 
 NoBnEBudgetActivity.propTypes = {
   openInviteModal: PropTypes.func.isRequired,
-  isEnterpriseGroupsEnabled: PropTypes.bool,
-};
-
-NoBnEBudgetActivity.defaultProps = {
-  isEnterpriseGroupsEnabled: false,
 };
 
 export default NoBnEBudgetActivity;
