@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {
   Key, KeyOff, MoreVert,
 } from '@openedx/paragon/icons';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { SSOConfigContext } from './SSOConfigContext';
 import LmsApiService from '../../../data/services/LmsApiService';
 
@@ -29,6 +30,7 @@ const NewSSOConfigCard = ({
   const TIMED_OUT = SUBMITTED && !CONFIGURED && !config.is_pending_configuration;
 
   const { setProviderConfig } = useContext(SSOConfigContext);
+  const intl = useIntl();
 
   const onConfigureClick = (selectedConfig) => {
     setProviderConfig(selectedConfig);
@@ -84,7 +86,15 @@ const NewSSOConfigCard = ({
         <OverlayTrigger
           id="tooltip-enabled"
           placement="top"
-          overlay={<Tooltip id="enabled-tooltip" variant="light">The integration is verified and working</Tooltip>}
+          overlay={(
+            <Tooltip id="enabled-tooltip" variant="light">
+              <FormattedMessage
+                id="adminPortal.settings.sso.enabled.tooltip"
+                defaultMessage="The integration is verified and working"
+                description="Tooltip message for enabled SSO configuration"
+              />
+            </Tooltip>
+          )}
         >
           <Key
             className="bg-success-500 rounded-circle text-white mr-2 p-1"
@@ -96,9 +106,15 @@ const NewSSOConfigCard = ({
         <OverlayTrigger
           id="tooltip-not-validated"
           placement="top"
-          overlay={
-            <Tooltip id="not-validated-tooltip" variant="light">This integration has not been validated. Please follow the testing instructions to validate your integration.</Tooltip>
-          }
+          overlay={(
+            <Tooltip id="not-validated-tooltip" variant="light">
+              <FormattedMessage
+                id="adminPortal.settings.sso.notValidated.tooltip"
+                defaultMessage="This integration has not been validated. Please follow the testing instructions to validate your integration."
+                description="Tooltip message for not validated SSO configuration"
+              />
+            </Tooltip>
+          )}
         >
           {renderKeyOffIcon('existing-sso-config-card-off-not-validated-icon')}
         </OverlayTrigger>
@@ -119,7 +135,11 @@ const NewSSOConfigCard = ({
           variant="light"
           data-testid="existing-sso-config-card-badge-in-progress"
         >
-          In-progress
+          <FormattedMessage
+            id="adminPortal.settings.sso.inProgress"
+            defaultMessage="In-progress"
+            description="Badge for in-progress SSO configuration"
+          />
         </Badge>
       )}
       {VALIDATED && CONFIGURED && !ENABLED && (
@@ -128,7 +148,11 @@ const NewSSOConfigCard = ({
           variant="light"
           data-testid="existing-sso-config-card-badge-disabled"
         >
-          Disabled
+          <FormattedMessage
+            id="adminPortal.settings.sso.disabled"
+            defaultMessage="Disabled"
+            description="Badge for disabled SSO configuration"
+          />
         </Badge>
       )}
     </>
@@ -143,7 +167,11 @@ const NewSSOConfigCard = ({
           variant="outline-primary"
           data-testid="existing-sso-config-card-configure-button"
         >
-          Configure
+          <FormattedMessage
+            id="adminPortal.settings.sso.configure.button"
+            defaultMessage="Configure"
+            description="Button to configure SSO configuration"
+          />
         </Button>
       )}
       {VALIDATED && CONFIGURED && !ENABLED && (
@@ -153,7 +181,11 @@ const NewSSOConfigCard = ({
           variant="outline-primary"
           data-testid="existing-sso-config-card-enable-button"
         >
-          Enable
+          <FormattedMessage
+            id="adminPortal.settings.sso.enable"
+            defaultMessage="Enable"
+            description="Button to enable SSO configuration"
+          />
         </Button>
       )}
     </>
@@ -175,7 +207,12 @@ const NewSSOConfigCard = ({
         )}
         subtitle={(
           <div className="ml-3 mt-2.5">
-            Last modified {convertToReadableDate(config.modified)}
+            <FormattedMessage
+              id="adminPortal.settings.sso.lastModified"
+              defaultMessage="Last modified {date}"
+              description="Last modified date for SSO configuration"
+              values={{ date: convertToReadableDate(config.modified) }}
+            />
           </div>
         )}
         actions={((!SUBMITTED || CONFIGURED) || (ERRORED || TIMED_OUT)) && (
@@ -187,7 +224,12 @@ const NewSSOConfigCard = ({
               src={MoreVert}
               iconAs={Icon}
               variant="primary"
-              alt="Actions dropdown"
+              alt={intl.formatMessage({
+                id: 'adminPortal.settings.sso.actionsDropdown',
+                defaultMessage: 'Actions dropdown',
+                description: 'Alt text for actions dropdown',
+
+              })}
             />
             <Dropdown.Menu>
               {VALIDATED && (
@@ -195,7 +237,11 @@ const NewSSOConfigCard = ({
                   data-testid="existing-sso-config-configure-dropdown"
                   onClick={() => onConfigureClick(config)}
                 >
-                  Configure
+                  <FormattedMessage
+                    id="adminPortal.settings.sso.configure.dropdownItem"
+                    defaultMessage="Configure"
+                    description="Dropdown item to configure SSO configuration"
+                  />
                 </Dropdown.Item>
               )}
               {((!ENABLED || !VALIDATED) || (ERRORED || TIMED_OUT)) && (
@@ -203,7 +249,11 @@ const NewSSOConfigCard = ({
                   data-testid="existing-sso-config-delete-dropdown"
                   onClick={() => onDeleteClick(config)}
                 >
-                  Delete
+                  <FormattedMessage
+                    id="adminPortal.settings.sso.delete"
+                    defaultMessage="Delete"
+                    description="Dropdown item to delete SSO configuration"
+                  />
                 </Dropdown.Item>
               )}
               {ENABLED && VALIDATED && (
@@ -211,7 +261,11 @@ const NewSSOConfigCard = ({
                   data-testid="existing-sso-config-disable-dropdown"
                   onClick={() => onDisableClick(config)}
                 >
-                  Disable
+                  <FormattedMessage
+                    id="adminPortal.settings.sso.disable"
+                    defaultMessage="Disable"
+                    description="Dropdown item to disable SSO configuration"
+                  />
                 </Dropdown.Item>
               )}
             </Dropdown.Menu>

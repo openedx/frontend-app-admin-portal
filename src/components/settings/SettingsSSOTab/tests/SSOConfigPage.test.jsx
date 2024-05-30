@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '../../../test/testUtils';
 import SettingsSSOTab from '../index';
 
@@ -25,10 +26,12 @@ const mockStore = configureMockStore([thunk]);
 const setHasSSOConfig = jest.fn();
 const SettingsSSOWrapper = () => (
   <Provider store={mockStore({ ...initialState })}>
-    <SettingsSSOTab
-      enterpriseId={enterpriseId}
-      setHasSSOConfig={setHasSSOConfig}
-    />
+    <IntlProvider locale="en">
+      <SettingsSSOTab
+        enterpriseId={enterpriseId}
+        setHasSSOConfig={setHasSSOConfig}
+      />
+    </IntlProvider>
   </Provider>
 );
 

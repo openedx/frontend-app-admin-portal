@@ -2,9 +2,9 @@ import omit from 'lodash/omit';
 
 import { AxiosError } from 'axios';
 import type { FormWorkflowHandlerArgs, FormWorkflowStep } from '../../forms/FormWorkflow';
-import SSOConfigConnectStep, { validations as SSOConfigConnectStepValidations } from './steps/NewSSOConfigConnectStep';
-import SSOConfigConfigureStep, { validations as SSOConfigConfigureStepValidations } from './steps/NewSSOConfigConfigureStep';
-import SSOConfigAuthorizeStep, { validations as SSOConfigAuthorizeStepValidations } from './steps/NewSSOConfigAuthorizeStep';
+import SSOConfigConnectStep, { getValidations as getSSOConfigConnectStepValidations } from './steps/NewSSOConfigConnectStep';
+import SSOConfigConfigureStep, { getValidations as getSSOConfigConfigureStepValidations } from './steps/NewSSOConfigConfigureStep';
+import SSOConfigAuthorizeStep, { getValidations as getSSOConfigAuthorizeStepValidations } from './steps/NewSSOConfigAuthorizeStep';
 import SSOConfigConfirmStep from './steps/NewSSOConfigConfirmStep';
 import LmsApiService from '../../../data/services/LmsApiService';
 import handleErrors from '../utils';
@@ -84,7 +84,7 @@ type SSOConfigFormControlVariables = {
 
 type SSOConfigFormContextData = SSOConfigCamelCase & SSOConfigFormControlVariables;
 
-export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
+export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError, intl }) => {
   const advanceConnectStep = async ({
     formFields,
     errHandler,
@@ -163,10 +163,18 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
     {
       index: 0,
       formComponent: SSOConfigConnectStep,
-      validations: SSOConfigConnectStepValidations,
-      stepName: 'Connect',
+      validations: getSSOConfigConnectStepValidations(intl),
+      stepName: intl.formatMessage({
+        id: 'adminPortal.settings.sso.connect',
+        defaultMessage: 'Connect',
+        description: 'Step name for connecting to an identity provider',
+      }),
       nextButtonConfig: () => ({
-        buttonText: 'Next',
+        buttonText: intl.formatMessage({
+          id: 'adminPortal.settings.sso.next',
+          defaultMessage: 'Next',
+          description: 'Button text for moving to the next step',
+        }),
         opensNewWindow: false,
         onClick: advanceConnectStep,
         preventDefaultErrorModal: true,
@@ -174,10 +182,18 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
     }, {
       index: 1,
       formComponent: SSOConfigConfigureStep,
-      validations: SSOConfigConfigureStepValidations,
-      stepName: 'Configure',
+      validations: getSSOConfigConfigureStepValidations(intl),
+      stepName: intl.formatMessage({
+        id: 'adminPortal.settings.sso.configure.stepName',
+        defaultMessage: 'Configure',
+        description: 'Step name for configuring an identity provider',
+      }),
       nextButtonConfig: () => ({
-        buttonText: 'Configure',
+        buttonText: intl.formatMessage({
+          id: 'adminPortal.settings.sso.configure.buttonText',
+          defaultMessage: 'Configure',
+          description: 'Button text for configuring an identity provider',
+        }),
         opensNewWindow: false,
         onClick: saveChanges,
         preventDefaultErrorModal: true,
@@ -187,10 +203,18 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
     }, {
       index: 2,
       formComponent: SSOConfigAuthorizeStep,
-      validations: SSOConfigAuthorizeStepValidations,
-      stepName: 'Authorize',
+      validations: getSSOConfigAuthorizeStepValidations(intl),
+      stepName: intl.formatMessage({
+        id: 'adminPortal.settings.sso.authorize',
+        defaultMessage: 'Authorize',
+        description: 'Step name for authorizing an identity provider',
+      }),
       nextButtonConfig: () => ({
-        buttonText: 'Next',
+        buttonText: intl.formatMessage({
+          id: 'adminPortal.settings.sso.next',
+          defaultMessage: 'Next',
+          description: 'Button text for moving to the next step',
+        }),
         opensNewWindow: false,
         onClick: saveChanges,
         preventDefaultErrorModal: false,
@@ -201,9 +225,17 @@ export const SSOFormWorkflowConfig = ({ enterpriseId, setConfigureError }) => {
       index: 3,
       formComponent: SSOConfigConfirmStep,
       validations: [],
-      stepName: 'Confirm and Test',
+      stepName: intl.formatMessage({
+        id: 'adminPortal.settings.sso.confirmAndTest',
+        defaultMessage: 'Confirm and Test',
+        description: 'Step name for confirming and testing an identity provider',
+      }),
       nextButtonConfig: () => ({
-        buttonText: 'Finish',
+        buttonText: intl.formatMessage({
+          id: 'adminPortal.settings.sso.finish',
+          defaultMessage: 'Finish',
+          description: 'Button text for finishing the configuration',
+        }),
         opensNewWindow: false,
         onClick: () => {},
         preventDefaultErrorModal: false,

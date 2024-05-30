@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import omit from 'lodash/omit';
 import isString from 'lodash/isString';
 
@@ -9,7 +9,7 @@ import { useFormContext } from './FormContext';
 
 type InheritedParagonCheckboxProps = {
   className?: string;
-  children: string;
+  children: ReactNode;
 };
 
 export type ValidatedFormCheckboxProps = {

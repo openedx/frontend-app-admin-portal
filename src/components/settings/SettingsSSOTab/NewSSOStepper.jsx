@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import FormContextWrapper from '../../forms/FormContextWrapper';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOFormWorkflowConfig from './SSOFormWorkflowConfig';
@@ -17,6 +18,8 @@ const NewSSOStepper = ({ enterpriseId, isStepperOpen, setIsStepperOpen }) => {
   } = useContext(SSOConfigContext);
   const providerConfigCamelCase = camelCaseDict(providerConfig || {});
   const [configureError, setConfigureError] = useState(null);
+  const intl = useIntl();
+
   const handleCloseWorkflow = () => {
     setProviderConfig?.(null);
     setIsStepperOpen(false);
@@ -33,8 +36,12 @@ const NewSSOStepper = ({ enterpriseId, isStepperOpen, setIsStepperOpen }) => {
       {isStepperOpen && !configureError && (
         <div>
           <FormContextWrapper
-            workflowTitle="New SSO integration"
-            formWorkflowConfig={SSOFormWorkflowConfig({ enterpriseId, setConfigureError })}
+            workflowTitle={intl.formatMessage({
+              id: 'adminPortal.settings.ssoConfigForm.newSsoIntegration',
+              defaultMessage: 'New SSO integration',
+              description: 'Title for the new SSO integration form',
+            })}
+            formWorkflowConfig={SSOFormWorkflowConfig({ enterpriseId, setConfigureError, intl })}
             onClickOut={handleCloseWorkflow}
             formData={providerConfigCamelCase}
             isStepperOpen={isStepperOpen}

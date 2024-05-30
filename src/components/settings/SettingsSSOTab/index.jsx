@@ -4,6 +4,7 @@ import {
   Alert, ActionRow, Button, Hyperlink, ModalDialog, Toast, Skeleton, Spinner, useToggle,
 } from '@openedx/paragon';
 import { Add, WarningFilled } from '@openedx/paragon/icons';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
 import { useExistingSSOConfigs, useExistingProviderData } from './hooks';
 import NoSSOCard from './NoSSOCard';
@@ -31,6 +32,7 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
   const [pollingNetworkError, setPollingNetworkError] = useState(false);
   const [isStepperOpen, setIsStepperOpen] = useState(true);
   const [isDeletingOldConfigs, setIsDeletingOldConfigs] = useState(false);
+  const intl = useIntl();
 
   const newConfigurationButtonOnClick = async () => {
     setIsDeletingOldConfigs(true);
@@ -65,7 +67,11 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
     return (
       <div>
         <ModalDialog
-          title="New SSO Configuration Dialog"
+          title={intl.formatMessage({
+            id: 'adminPortal.settings.sso.newConfigurationDialog.title',
+            defaultMessage: 'New SSO Configuration Dialog',
+            description: 'Title for the new SSO configuration dialog.',
+          })}
           isOpen={isOpen}
           onClose={close}
           size="md"
@@ -74,22 +80,37 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
         >
           <ModalDialog.Header>
             <ModalDialog.Title>
-              Create new SSO configuration?
+              <FormattedMessage
+                id="adminPortal.settings.sso.newConfigurationDialog.header"
+                defaultMessage="Create new SSO configuration?"
+                description="Header for the new SSO configuration dialog."
+              />
             </ModalDialog.Title>
           </ModalDialog.Header>
           <ModalDialog.Body>
             <p>
-              Only one SSO integration is supported at a time. <br />
+              <FormattedMessage
+                id="adminPortal.settings.sso.newConfigurationDialog.body.header"
+                defaultMessage="Only one SSO integration is supported at a time."
+                description="Body header for the new SSO configuration dialog."
+              />
               <br />
-              To continue updating and editing your SSO integration, select &quot;Cancel&quot; and then
-              &quot;Configure&quot; on the integration card. Creating a new SSO configuration will overwrite and delete
-              your existing SSO configuration.
+              <br />
+              <FormattedMessage
+                id="adminPortal.settings.sso.newConfigurationDialog.body.details"
+                defaultMessage='To continue updating and editing your SSO integration, select "Cancel" and then "Configure" on the integration card. Creating a new SSO configuration will overwrite and delete your existing SSO configuration.'
+                description="Body for the new SSO configuration dialog."
+              />
             </p>
           </ModalDialog.Body>
           <ModalDialog.Footer>
             <ActionRow>
               <ModalDialog.CloseButton variant="tertiary">
-                Cancel
+                <FormattedMessage
+                  id="adminPortal.settings.sso.newConfigurationDialog.cancelButton"
+                  defaultMessage="Cancel"
+                  description="Cancel button for the new SSO configuration dialog."
+                />
               </ModalDialog.CloseButton>
               <Button
                 variant="primary"
@@ -99,14 +120,24 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
                 {isDeletingOldConfigs ? (
                   <Spinner animation="border" size="sm" />
                 ) : (
-                  <>Create new SSO</>
+                  <FormattedMessage
+                    id="adminPortal.settings.sso.newConfigurationDialog.createButton"
+                    defaultMessage="Create new SSO"
+                    description="Create new SSO button for the new SSO configuration dialog."
+                  />
                 )}
               </Button>
             </ActionRow>
           </ModalDialog.Footer>
         </ModalDialog>
         <div className="d-flex">
-          <h2 className="py-2">Single Sign-On (SSO) Integrations</h2>
+          <h2 className="py-2">
+            <FormattedMessage
+              id="adminPortal.settings.sso.singleSignOnIntegrations"
+              defaultMessage="Single Sign-On (SSO) Integrations"
+              description="Header for the SSO integrations page."
+            />
+          </h2>
           <div className="mr-0 ml-auto flex-column d-flex">
             {newButtonVisible && (
               <Button
@@ -115,7 +146,11 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
                 onClick={open}
                 disabled={newButtonDisabled}
               >
-                New
+                <FormattedMessage
+                  id="adminPortal.settings.sso.newConfigurationButton"
+                  defaultMessage="New"
+                  description="New SSO configuration button."
+                />
               </Button>
             )}
             <Hyperlink
@@ -123,7 +158,11 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
               className="btn btn-outline-primary my-2"
               target="_blank"
             >
-              Help Center: Single Sign-On
+              <FormattedMessage
+                id="adminPortal.settings.sso.helpCenterLink"
+                defaultMessage="Help Center: Single Sign-On"
+                description="Help Center link for SSO integrations."
+              />
             </Hyperlink>
           </div>
         </div>
