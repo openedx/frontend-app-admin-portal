@@ -64,7 +64,7 @@ const InviteModalBudgetCard = ({
 
   const { available, utilized, limit } = budgetTotalSummary;
   return (
-    <Card className="budget-overview-card m-3">
+    <Card className="budget-overview-card">
       <Card.Section>
         <Row>
           <Col lg={5}>
