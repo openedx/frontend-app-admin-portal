@@ -77,7 +77,7 @@ const AssignmentAllocationHelpCollapsibles = ({ enterpriseId, course }) => (
         <ul className="x-small pl-4 py-2">
           <li>
             <FormattedMessage
-              id="lcm.budget.detail.page.catalog.tab.course.card.total.assignment.cost"
+              id="lcm.budget.detail.page.catalog.tab.course.card.total.assignment.cost.will.be.earmarked"
               defaultMessage="The total assignment cost will be earmarked as {doubleQoute}assigned{doubleQoute} funds in your
                Learner Credit budget so you can{apostrophe}t overspend."
               description="A step which explains that the total assignment cost will be earmarked as 'assigned' funds in your Learner Credit budget"

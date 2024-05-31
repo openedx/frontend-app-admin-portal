@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ReportingConfigForm from './ReportingConfigForm';
 
 const defaultConfig = {
@@ -121,15 +122,17 @@ describe('<ReportingConfigForm />', () => {
   it('properly handles deletion of configs', () => {
     const mock = jest.fn();
     const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        deleteConfig={mock}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          deleteConfig={mock}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     // It's finding three buttons for some reason??
     wrapper.find('.btn-outline-danger').at(0).simulate('click');
@@ -138,14 +141,16 @@ describe('<ReportingConfigForm />', () => {
 
   it('renders the proper fields when changing the delivery method', () => {
     const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     expect(wrapper.find({ children: 'Email(s)' }));
     wrapper.find('select#deliveryMethod').simulate('change', { target: { value: 'sftp' } });
@@ -158,14 +163,16 @@ describe('<ReportingConfigForm />', () => {
 
   it('Does not submit if email is not formatted or is missing and deliveryMethod is email', () => {
     const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     // test empty email field
     wrapper.find('textarea#email').instance().value = '';
@@ -182,14 +189,16 @@ describe('<ReportingConfigForm />', () => {
     const config = { ...defaultConfig };
     config.hourOfDay = undefined;
     const wrapper = mount((
-      <ReportingConfigForm
-        config={config}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={config}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     wrapper.find('input#hourOfDay').simulate('blur');
     expect(wrapper.find('input#hourOfDay').hasClass('is-invalid')).toBeTruthy();
@@ -200,14 +209,16 @@ describe('<ReportingConfigForm />', () => {
     config.deliveryMethod = 'sftp';
     config.sftpPort = undefined;
     const wrapper = mount((
-      <ReportingConfigForm
-        config={config}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={config}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     wrapper.find('.form-control').forEach(input => input.simulate('blur'));
     // sftpPort
@@ -228,27 +239,31 @@ describe('<ReportingConfigForm />', () => {
     };
 
     const wrapper = mount((
-      <ReportingConfigForm
-        config={configWithOldDataType}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={configWithOldDataType}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
   });
   it('Does not disable data type when using new progress/catalog', () => {
     const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeFalsy();
     wrapper.find('select#dataType').simulate('change', {
@@ -266,27 +281,31 @@ describe('<ReportingConfigForm />', () => {
     };
 
     const wrapper = mount((
-      <ReportingConfigForm
-        config={configWithOldDataType}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={configWithOldDataType}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     expect(wrapper.find('select#dataType').prop('disabled')).toBeTruthy();
   });
   it('Pre-selects enterprise customer catalogs from the reporting config.', () => {
     const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     expect(
       wrapper.find('select#enterpriseCustomerCatalogs').instance().value,
@@ -294,21 +313,26 @@ describe('<ReportingConfigForm />', () => {
   });
   it('Submit enterprise uuid upon report config creation', async () => {
     const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
     const flushPromises = () => new Promise(setImmediate);
     const formData = new FormData();
-    Object.entries(defaultConfig).forEach(([key, value]) => {
-      formData.append(key, value);
+    await act(async () => {
+      Object.entries(defaultConfig).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      const instance = wrapper.find('ReportingConfigForm').instance();
+      await instance.handleSubmit(formData, null);
     });
-    wrapper.instance().handleSubmit(formData, null);
     await act(() => flushPromises());
     expect(createConfig.mock.calls[0][0].get('enterprise_customer_id')).toEqual(enterpriseCustomerUuid);
   });
@@ -317,16 +341,19 @@ describe('<ReportingConfigForm />', () => {
     const mock = jest.fn();
 
     const wrapper = mount((
-      <ReportingConfigForm
-        config={defaultConfig}
-        createConfig={createConfig}
-        updateConfig={updateConfig}
-        availableCatalogs={availableCatalogs}
-        reportingConfigTypes={reportingConfigTypes}
-        enterpriseCustomerUuid={enterpriseCustomerUuid}
-      />
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
     ));
-    wrapper.instance().setState = mock;
+    const instance = wrapper.find('ReportingConfigForm').instance();
+    instance.setState = mock;
 
     const formData = new FormData();
     Object.entries(defaultConfig).forEach(([key, value]) => {
@@ -337,15 +364,17 @@ describe('<ReportingConfigForm />', () => {
         pgp_encryption_key: ['Please enter a valid PGP encryption key.'],
       },
     };
-    wrapper.instance().handleAPIErrorResponse(errorResponse);
-    expect(mock).toHaveBeenCalled();
+    await act(async () => {
+      await instance.handleAPIErrorResponse(errorResponse);
+      expect(mock).toHaveBeenCalled();
+    });
 
     mock.mockClear();
 
-    wrapper.instance().handleAPIErrorResponse({});
+    instance.handleAPIErrorResponse({});
     expect(mock).not.toHaveBeenCalled();
 
-    wrapper.instance().handleAPIErrorResponse(null);
+    instance.handleAPIErrorResponse(null);
     expect(mock).not.toHaveBeenCalled();
   });
 });
