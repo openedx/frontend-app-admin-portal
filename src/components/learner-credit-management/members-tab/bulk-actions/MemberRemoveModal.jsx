@@ -54,14 +54,16 @@ const MemberRemoveModal = ({
   const handleSubmit = useCallback(async () => {
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = () => {
-      const userEmailsToRemove = usersToRemove.map((user) => user.original.memberDetails.userEmail);
-      const requestBody = snakeCaseObject({
-        learnerEmails: userEmailsToRemove,
-        catalogUuid: subsidyAccessPolicy.catalogUuid,
-      });
+      const baseRequestBody = { catalogUuid: subsidyAccessPolicy.catalogUuid };
+      let requestBody;
+      if (removeAllUsers) {
+        requestBody = snakeCaseObject({ remove_all: true, ...baseRequestBody });
+      } else {
+        const userEmailsToRemove = usersToRemove.map((user) => user.original.memberDetails.userEmail);
+        requestBody = snakeCaseObject({ learnerEmails: userEmailsToRemove, ...baseRequestBody });
+      }
       return LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, requestBody);
     };
-
     try {
       const response = await makeRequest();
       setRequestState({ ...initialRequestState, success: true });
@@ -77,6 +79,7 @@ const MemberRemoveModal = ({
     setRequestState,
     groupUuid,
     subsidyAccessPolicy,
+    removeAllUsers,
   ]);
 
   const handleClose = () => {

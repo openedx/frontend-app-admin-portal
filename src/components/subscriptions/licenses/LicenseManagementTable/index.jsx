@@ -13,6 +13,7 @@ import {
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionContext } from '../../SubscriptionData';
 import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
 import {
@@ -29,16 +30,28 @@ import LicenseManagementTableActionColumn from './LicenseManagementTableActionCo
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 
-const userRecentAction = (user) => {
+const userRecentAction = (user, intl) => {
   switch (user.status) {
     case ACTIVATED: {
-      return `Activated: ${formatTimestamp({ timestamp: user.activationDate })}`;
+      return intl.formatMessage({
+        id: 'admin.portal.license.management.user.recent.action.activated.label',
+        defaultMessage: 'Activated: {timestamp}',
+        description: 'Message for activated status with timestamp in license management table.',
+      }, { timestamp: formatTimestamp({ timestamp: user.activationDate }) });
     }
     case REVOKED: {
-      return `Revoked: ${formatTimestamp({ timestamp: user.revokedDate })}`;
+      return intl.formatMessage({
+        id: 'admin.portal.license.management.user.recent.action.revoked.label',
+        defaultMessage: 'Revoked: {timestamp}',
+        description: 'Message for revoked status with timestamp in license management table.',
+      }, { timestamp: formatTimestamp({ timestamp: user.revokedDate }) });
     }
     case ASSIGNED: {
-      return `Invited: ${formatTimestamp({ timestamp: user.lastRemindDate })}`;
+      return intl.formatMessage({
+        id: 'admin.portal.license.management.user.recent.action.invited.label',
+        defaultMessage: 'Invited: {timestamp}',
+        description: 'Message for invited status with timestamp in license management table.',
+      }, { timestamp: formatTimestamp({ timestamp: user.lastRemindDate }) });
     }
     default: {
       return null;
@@ -75,6 +88,8 @@ const LicenseManagementTable = () => {
     loadingUsers,
     setUserStatusFilter,
   } = useContext(SubscriptionDetailContext);
+
+  const intl = useIntl();
 
   const isExpired = dayjs().isAfter(subscription.expirationDate);
 
@@ -161,8 +176,9 @@ const LicenseManagementTable = () => {
       emailLabel: <span data-hj-suppress>{user.userEmail}</span>,
       status: user.status,
       statusBadge: <LicenseManagementUserBadge userStatus={user.status} />,
-      recentAction: userRecentAction(user),
+      recentAction: userRecentAction(user, intl),
     })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [users],
   );
 
@@ -174,14 +190,24 @@ const LicenseManagementTable = () => {
   const onRemindSuccess = () => {
     // Refresh users to get updated lastRemindDate
     forceRefreshUsers();
-    setToastMessage('Users successfully reminded');
+    const toastMessageText = intl.formatMessage({
+      id: 'admin.portal.license.management.on.remind.success.toast.message',
+      defaultMessage: 'Users successfully reminded',
+      description: 'Toast message displayed when users are successfully reminded.',
+    });
+    setToastMessage(toastMessageText);
     setShowToast(true);
   };
   const onRevokeSuccess = () => {
     // Refresh subscription and user data to get updated revoke count and revoked list of users
     forceRefreshSubscription();
     forceRefreshDetailView();
-    setToastMessage('Licenses successfully revoked');
+    const toastMessageText = intl.formatMessage({
+      id: 'admin.portal.license.management.on.revoke.success.toast.message',
+      defaultMessage: 'Licenses successfully revoked',
+      description: 'Toast message displayed when licenses are successfully revoked.',
+    });
+    setToastMessage(toastMessageText);
     setShowToast(true);
   };
 
@@ -219,20 +245,32 @@ const LicenseManagementTable = () => {
           getRowId: row => row.id,
         }}
         EmptyTableComponent={
-          /* eslint-disable react/no-unstable-nested-components */
-          () => {
-            if (loadingUsers) {
-              return null;
+            /* eslint-disable react/no-unstable-nested-components */
+            () => {
+              if (loadingUsers) {
+                return null;
+              }
+              return (
+                <DataTable.EmptyTable
+                  content={intl.formatMessage({
+                    id: 'admin.portal.license.management.empty.table.no.results.label',
+                    defaultMessage: 'No results found',
+                    description: 'Message displayed when no results are found in license management table.',
+                  })}
+                />
+              );
             }
-            return <DataTable.EmptyTable content="No results found" />;
+            /* eslint-enable react/no-unstable-nested-components */
           }
-          /* eslint-enable react/no-unstable-nested-components */
-        }
         fetchData={fetchData}
         data={rows}
         columns={[
           {
-            Header: 'Email address',
+            Header: intl.formatMessage({
+              id: 'admin.portal.license.management.table.column.email',
+              defaultMessage: 'Email address',
+              description: 'Header label for the email address column in the license management table.',
+            }),
             accessor: 'emailLabel',
             /* eslint-disable react/prop-types */
             /* eslint-disable react/no-unstable-nested-components */
@@ -241,28 +279,50 @@ const LicenseManagementTable = () => {
             /* eslint-enable react/no-unstable-nested-components */
           },
           {
-            Header: 'Status',
+            Header: intl.formatMessage({
+              id: 'admin.portal.license.management.table.column.status',
+              defaultMessage: 'Status',
+              description: 'Header label for the status column in the license management table.',
+            }),
             accessor: 'statusBadge',
             Filter: CheckboxFilter,
             filter: 'includesValue',
-            filterChoices: [{
-              name: 'Active',
-              number: overview.activated,
-              value: ACTIVATED,
-            },
-            {
-              name: 'Pending',
-              number: overview.assigned,
-              value: ASSIGNED,
-            },
-            {
-              name: 'Revoked',
-              number: overview.revoked,
-              value: REVOKED,
-            }],
+            filterChoices: [
+              {
+                name: intl.formatMessage({
+                  id: 'admin.portal.license.management.filter.choice.active',
+                  defaultMessage: 'Active',
+                  description: 'Label for the active status filter choice in the license management table.',
+                }),
+                number: overview.activated,
+                value: ACTIVATED,
+              },
+              {
+                name: intl.formatMessage({
+                  id: 'admin.portal.license.management.filter.choice.pending',
+                  defaultMessage: 'Pending',
+                  description: 'Label for the pending status filter choice in the license management table.',
+                }),
+                number: overview.assigned,
+                value: ASSIGNED,
+              },
+              {
+                name: intl.formatMessage({
+                  id: 'admin.portal.license.management.filter.choice.revoked',
+                  defaultMessage: 'Revoked',
+                  description: 'Label for the revoked status filter choice in the license management table.',
+                }),
+                number: overview.revoked,
+                value: REVOKED,
+              },
+            ],
           },
           {
-            Header: 'Recent action',
+            Header: intl.formatMessage({
+              id: 'admin.portal.license.management.table.column.recent.action',
+              defaultMessage: 'Recent action',
+              description: 'Header label for the recent action column in the license management table.',
+            }),
             accessor: 'recentAction',
             disableFilters: true,
           },

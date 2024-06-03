@@ -59,6 +59,13 @@ const KabobMenu = ({
   );
 };
 
+const selectColumn = {
+  id: 'selection',
+  Header: DataTable.ControlledSelectHeader,
+  Cell: DataTable.ControlledSelect,
+  disableSortBy: true,
+};
+
 const LearnerCreditGroupMembersTable = ({
   isLoading,
   tableData,
@@ -70,8 +77,10 @@ const LearnerCreditGroupMembersTable = ({
 }) => (
   <DataTable
     isSortable
-    isSelectable
     manualSortBy
+    isSelectable
+    SelectionStatusComponent={DataTable.ControlledSelectionStatus}
+    manualSelectColumn={selectColumn}
     isPaginated
     manualPagination
     isFilterable

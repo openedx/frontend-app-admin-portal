@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Collapsible, Icon } from '@openedx/paragon';
 import { Check, Close } from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import EnterpriseCatalogApiService from '../../data/services/EnterpriseCatalogApiService';
 import LMSApiService from '../../data/services/LmsApiService';
 import ReportingConfigForm from './ReportingConfigForm';
@@ -118,7 +119,7 @@ class ReportingConfig extends React.Component {
       availableCatalogs,
       reportingConfigTypes,
     } = this.state;
-
+    const { intl } = this.props;
     if (loading) {
       return <LoadingMessage className="overview" />;
     }
@@ -155,15 +156,33 @@ class ReportingConfig extends React.Component {
                       />
                     )}
                     <div className="col">
-                      <h3 className="h6">Report Type:</h3>
+                      <h3 className="h6">
+                        <FormattedMessage
+                          id="admin.portal.reporting.config.title"
+                          defaultMessage="Report Type:"
+                          description="Title for the reporting configuration"
+                        />
+                      </h3>
                       <p>{config.data_type}</p>
                     </div>
                     <div className="col">
-                      <h3 className="h6">Delivery Method:</h3>
+                      <h3 className="h6">
+                        <FormattedMessage
+                          id="admin.portal.reporting.config.delivery.method"
+                          defaultMessage="Delivery Method:"
+                          description="Title for the delivery method of the reporting configuration"
+                        />
+                      </h3>
                       <p>{config.delivery_method}</p>
                     </div>
                     <div className="col">
-                      <h3 className="h6">Frequency:</h3>
+                      <h3 className="h6">
+                        <FormattedMessage
+                          id="admin.portal.reporting.config.frequency"
+                          defaultMessage="Frequency:"
+                          description="Title for the frequency of the reporting configuration"
+                        />
+                      </h3>
                       <p>{config.frequency}</p>
                     </div>
                   </div>
@@ -183,7 +202,11 @@ class ReportingConfig extends React.Component {
           ))}
           <Collapsible
             styling="basic"
-            title="Add a reporting configuration"
+            title={intl.formatMessage({
+              id: 'admin.portal.reporting.config.add',
+              defaultMessage: 'Add a reporting configuration',
+              description: 'Add a reporting configuration',
+            })}
             className="col justify-content-center align-items-center"
             ref={this.newConfigFormRef}
           >
@@ -204,6 +227,8 @@ class ReportingConfig extends React.Component {
 
 ReportingConfig.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
+  // injected
+  intl: intlShape.isRequired,
 };
 
-export default ReportingConfig;
+export default injectIntl(ReportingConfig);

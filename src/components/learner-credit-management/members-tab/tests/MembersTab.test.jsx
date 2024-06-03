@@ -361,14 +361,16 @@ describe('<BudgetDetailPage />', () => {
       sortBy: [{ desc: false, id: 'status' }],
     }));
 
-    // TODO Sorting by enrollment count is currently not supported by the backend
-    // userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
-    // await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
-    //   filters: [],
-    //   pageIndex: 0,
-    //   pageSize: 10,
-    //   sortBy: [{ desc: false, id: 'enrollmentCount' }],
-    // }));
+    userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+    await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
+      filters: [
+        { id: 'memberDetails', value: 'foobar' },
+        { id: 'status', value: true },
+      ],
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [{ desc: false, id: 'enrollmentCount' }],
+    }));
   });
   it('remove learner flow', async () => {
     const initialState = {
@@ -459,6 +461,7 @@ describe('<BudgetDetailPage />', () => {
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
       activeTabKey: 'members',
+      budgetId: mockAssignableSubsidyAccessPolicy.uuid,
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
@@ -525,6 +528,13 @@ describe('<BudgetDetailPage />', () => {
     expect(mockRemoveSpy).toHaveBeenCalled();
     await waitForElementToBeRemoved(() => screen.queryByText('Removing (2)'));
     await waitFor(() => expect(screen.queryByText('2 members successfully removed')).toBeInTheDocument());
+
+    // Because there is only one page of data, and the whole page is selected,
+    // the request should be to remove the entire org
+    expect(LmsApiService.removeEnterpriseLearnersFromGroup).toHaveBeenCalledWith(
+      mockAssignableSubsidyAccessPolicy.groupAssociations[0],
+      { remove_all: true, catalog_uuid: mockAssignableSubsidyAccessPolicy.catalogUuid },
+    );
   });
   it('remove learner flow with the kabob menu', async () => {
     const initialState = {
@@ -716,7 +726,7 @@ describe('<BudgetDetailPage />', () => {
     const mockGroupData = {
       isLoading: false,
       enterpriseGroupMembersTableData: {
-        itemCount: 1,
+        itemCount: 100,
         pageCount: 1,
         results: [{
           memberDetails: { userEmail: 'foobar@test.com', userName: 'ayy lmao' },
@@ -843,5 +853,114 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.queryByText('Member removed')).toBeInTheDocument());
     screen.getByText('This member has been successfully removed and can not browse this budget\'s '
       + 'catalog and enroll using their member permissions.');
+  });
+  it('download learner flow for multiple selected pages of users', async () => {
+    // Setup
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      activeTabKey: 'members',
+      budgetId: mockAssignableSubsidyAccessPolicy.uuid,
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 100,
+        currentPage: 1,
+        next: null,
+        numPages: 4,
+        results: {
+          enterpriseGroupMembershipUuid: 'cde2e374-032f-4c08-8c0d-bf3205fa7c7e',
+          learnerId: 4382,
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+        },
+      },
+    });
+    useEnterpriseGroupMembersTableData.mockReturnValue({
+      isLoading: false,
+      enterpriseGroupMembersTableData: {
+        // Item count tells the table whether or not there are more records that are not displayed by results
+        itemCount: 100,
+        pageCount: 4,
+        results: [{
+          memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
+          status: 'pending',
+          recentAction: 'Pending: April 02, 2024',
+          enrollmentCount: 0,
+        },
+        {
+          memberDetails: { userEmail: 'tammy2@test.com', userName: 'tammy 2' },
+          status: 'pending',
+          recentAction: 'Pending: April 02, 2024',
+          enrollmentCount: 0,
+        }],
+      },
+      fetchEnterpriseGroupMembersTableData: jest.fn(),
+    });
+    EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData.mockResolvedValue({ status: 200 });
+    const mockDownloadSpy = jest.spyOn(EnterpriseAccessApiService, 'fetchSubsidyHydratedGroupMembersData');
+
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+    await waitFor(() => expect(screen.queryByText('dukesilver@test.com')).toBeInTheDocument());
+
+    // Select all the records on the current page
+    const selectAllCheckbox = screen.queryAllByRole('checkbox')[0];
+    userEvent.click(selectAllCheckbox);
+
+    // Download the results
+    const downloadButton = screen.queryByText('Download (2)');
+    userEvent.click(downloadButton);
+    // Expect the mock to have been called once
+    expect(mockDownloadSpy).toHaveBeenCalledTimes(1);
+    // Expect the fetch members call to have been made with the emails of the records selected on the current page
+    expect(EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData).toHaveBeenCalledWith(
+      mockAssignableSubsidyAccessPolicy.uuid,
+      {
+        format_csv: true,
+        traverse_pagination: true,
+        group_uuid: mockAssignableSubsidyAccessPolicy.groupAssociations[0],
+        sort_by: 'member_details',
+      },
+      ['dukesilver@test.com', 'tammy2@test.com'],
+    );
+
+    // Value correlates to the itemCount coming from ``useEnterpriseGroupMembersTableData``
+    // Click the select all to apply the selection to all records passed the currently selected page
+    const selectAllButton = screen.queryByText('Select all 100');
+    userEvent.click(selectAllButton);
+    userEvent.click(downloadButton);
+    // Expect an additional call to the mock
+    expect(mockDownloadSpy).toHaveBeenCalledTimes(2);
+    // Expect the call to fetch member records to be made without any email specification, indicating a fetch of all
+    expect(EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData).toHaveBeenCalledWith(
+      mockAssignableSubsidyAccessPolicy.uuid,
+      {
+        format_csv: true,
+        traverse_pagination: true,
+        group_uuid: mockAssignableSubsidyAccessPolicy.groupAssociations[0],
+        sort_by: 'member_details',
+      },
+      null,
+    );
   });
 });

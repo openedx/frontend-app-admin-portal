@@ -1,7 +1,14 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import StatusTableCell from '../StatusTableCell';
+
+const StatusTableCellWrapper = (props) => (
+  <IntlProvider locale="en">
+    <StatusTableCell {...props} />
+  </IntlProvider>
+);
 
 describe('StatusTableCell', () => {
   it('renders valid status correctly', () => {
@@ -13,7 +20,7 @@ describe('StatusTableCell', () => {
       },
     };
     const tree = renderer
-      .create(<StatusTableCell {...props} />)
+      .create(<StatusTableCellWrapper {...props} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -27,7 +34,7 @@ describe('StatusTableCell', () => {
       },
     };
     const tree = renderer
-      .create(<StatusTableCell {...props} />)
+      .create(<StatusTableCellWrapper {...props} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });

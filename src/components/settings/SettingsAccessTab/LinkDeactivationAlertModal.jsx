@@ -7,6 +7,7 @@ import {
   StatefulButton,
 } from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const LinkDeactivationAlertModal = ({
@@ -16,6 +17,7 @@ const LinkDeactivationAlertModal = ({
   inviteKeyUUID,
 }) => {
   const [deactivationState, setDeactivationState] = useState('default');
+  const intl = useIntl();
 
   const handleClose = () => {
     if (onClose) {
@@ -40,8 +42,16 @@ const LinkDeactivationAlertModal = ({
 
   const deactivateBtnProps = {
     labels: {
-      default: 'Deactivate',
-      pending: 'Deactivating...',
+      default: intl.formatMessage({
+        id: 'adminPortal.settings.access.deactivateLinkButton',
+        defaultMessage: 'Deactivate',
+        description: 'Label for the deactivate link button.',
+      }),
+      pending: intl.formatMessage({
+        id: 'adminPortal.settings.access.deactivateLinkButton.pending',
+        defaultMessage: 'Deactivating...',
+        description: 'Label for the deactivate link button in pending state.',
+      }),
     },
     variant: 'primary',
     state: deactivationState,
@@ -50,22 +60,42 @@ const LinkDeactivationAlertModal = ({
 
   return (
     <AlertModal
-      title="Are you sure?"
+      title={intl.formatMessage({
+        id: 'adminPortal.settings.access.deactivateLinkModalTitle',
+        defaultMessage: 'Are you sure?',
+        description: 'Title for the deactivate link confirmation modal.',
+      })}
       isOpen={isOpen}
       onClose={handleClose}
       footerNode={(
         <ActionRow>
-          <Button variant="tertiary" onClick={handleClose}>Go back</Button>
+          <Button variant="tertiary" onClick={handleClose}>
+            <FormattedMessage
+              id="adminPortal.settings.access.deactivateLinkModalCancel"
+              defaultMessage="Go back"
+              description="Label for the go back button."
+            />
+          </Button>
           <StatefulButton
             {...deactivateBtnProps}
             data-testid="deactivate-modal-confirmation"
           >
-            Deactivate
+            <FormattedMessage
+              id="adminPortal.settings.access.deactivateLinkButton"
+              defaultMessage="Deactivate"
+              description="Label for the deactivate link button."
+            />
           </StatefulButton>
         </ActionRow>
       )}
     >
-      <p>If you disable a link, it cannot be reactivated.</p>
+      <p>
+        <FormattedMessage
+          id="adminPortal.settings.access.deactivateLinkModalDescription"
+          defaultMessage="If you disable a link, it cannot be reactivated."
+          description="Description for the deactivate link confirmation modal."
+        />
+      </p>
     </AlertModal>
   );
 };

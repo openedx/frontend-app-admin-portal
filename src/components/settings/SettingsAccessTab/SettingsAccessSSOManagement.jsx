@@ -5,6 +5,7 @@ import { Info } from '@openedx/paragon/icons';
 import {
   Alert,
 } from '@openedx/paragon';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
 import LmsApiService from '../../../data/services/LmsApiService';
 
@@ -16,6 +17,7 @@ const SettingsAccessSSOManagement = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const intl = useIntl();
 
   const handleFormSwitchChange = useCallback(async (e) => {
     const formSwitchValue = e.target.checked;
@@ -39,18 +41,38 @@ const SettingsAccessSSOManagement = ({
     <>
       {error && (
         <Alert icon={Info} variant="danger" dismissible>
-          <Alert.Heading>Something went wrong</Alert.Heading>
-          There was an issue with your request, please try again.
+          <Alert.Heading>
+            <FormattedMessage
+              id="adminPortal.settings.access.error"
+              defaultMessage="Something went wrong"
+              description="Error message heading"
+            />
+          </Alert.Heading>
+          <FormattedMessage
+            id="adminPortal.settings.access.error.message"
+            defaultMessage="There was an issue with your request, please try again."
+            description="Error message"
+          />
         </Alert>
       )}
       <SettingsAccessTabSection
-        title="Access via Single Sign-on"
+        title={intl.formatMessage({
+          id: 'adminPortal.settings.access.sso.title',
+          defaultMessage: 'Access via Single Sign-on',
+          description: 'Title for the Single Sign-On access section',
+        })}
         checked={enableIntegratedCustomerLearnerPortalSearch}
         disabled={!identityProvider}
         loading={isLoading}
         onFormSwitchChange={handleFormSwitchChange}
       >
-        <p>Give learners with Single Sign-On access to the catalog.</p>
+        <p>
+          <FormattedMessage
+            id="adminPortal.settings.access.sso.description"
+            defaultMessage="Give learners with Single Sign-On access to the catalog."
+            description="Description for the Single Sign-On access section"
+          />
+        </p>
       </SettingsAccessTabSection>
     </>
   );

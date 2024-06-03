@@ -5,6 +5,7 @@ import {
   Form,
   Spinner,
 } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const SettingsAccessTabSection = ({
   title,
@@ -44,7 +45,11 @@ const SettingsAccessTabSection = ({
           helperText={formSwitchHelperText}
           className="justify-content-end"
         >
-          Enable
+          <FormattedMessage
+            id="adminPortal.settings.access.enable"
+            defaultMessage="Enable"
+            description="Label for the switch to enable a feature."
+          />
         </Form.Switch>
       </div>
       {children && (

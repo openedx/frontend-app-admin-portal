@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Hyperlink } from '@openedx/paragon';
 import { WarningFilled } from '@openedx/paragon/icons';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { SSOConfigContext } from './SSOConfigContext';
 import SSOStepper from './SSOStepper';
 import { HELP_CENTER_SAML_LINK } from '../data/constants';
@@ -16,8 +17,11 @@ const NewSSOConfigForm = ({ setIsStepperOpen, isStepperOpen }) => {
     <div className="sso-create-form mt-4.5">
       {!AUTH0_SELF_SERVICE_INTEGRATION && (
         <span>
-          Connect to a SAML identity provider for single sign-on
-          to allow quick access to your organization&apos;s learning catalog.
+          <FormattedMessage
+            id="adminPortal.settings.ssoConfigForm.description"
+            defaultMessage="Connect to a SAML identity provider for single sign-on to allow quick access to your organization's learning catalog."
+            description="Description for the SSO configuration form"
+          />
         </span>
       )}
       {AUTH0_SELF_SERVICE_INTEGRATION ? (

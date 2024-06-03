@@ -3,6 +3,7 @@ import { Alert } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   SUBSCRIPTION_DAYS_REMAINING_MODERATE,
   SUBSCRIPTION_DAYS_REMAINING_SEVERE,
@@ -28,39 +29,75 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
   const daysUntilExpiration = isSubscriptionPlanDetails ? daysUntilPlanExpiration : daysUntilContractExpiration;
   const isSubscriptionExpired = daysUntilExpiration <= 0;
 
+  const intl = useIntl();
+
   const renderPlanDetailsMessage = () => (isSubscriptionExpired ? (
     <>
       <Alert.Heading>
-        This subscription plan&apos;s end date has passed
+        {intl.formatMessage({
+          id: 'admin.portal.subscription.expiration.banner.plan.expired.heading',
+          defaultMessage: 'This subscription plan{apostrophe}s end date has passed',
+          description: 'Heading for expired plan message in subscription expiration banner.',
+        }, { apostrophe: "'" })}
       </Alert.Heading>
-      Administrative actions are no longer available as of the plan end date of
-      {' '}{formatTimestamp({ timestamp: expirationDate })}. You may still view the
-      statuses of your invited learners.
+      {intl.formatMessage({
+        id: 'admin.portal.subscription.expiration.banner.plan.expired.message',
+        defaultMessage: 'Administrative actions are no longer available as of the plan end date of {expirationDate}. You may still view the statuses of your invited learners.',
+        description: 'Message for expired plan message in subscription expiration banner.',
+      }, { expirationDate: formatTimestamp({ timestamp: expirationDate }) })}
     </>
   ) : (
     <>
       <Alert.Heading>
-        This subscription plan&apos;s end date is approaching
+        {intl.formatMessage({
+          id: 'admin.portal.subscription.expiration.banner.plan.approaching.heading',
+          defaultMessage: 'This subscription plan{apostrophe}s end date is approaching',
+          description: 'Heading for approaching plan message in subscription expiration banner.',
+        }, { apostrophe: "'" })}
       </Alert.Heading>
-      Administrative actions will no longer be available beginning {SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS}
-      {' '}hours prior to the plan end date of {formatTimestamp({ timestamp: expirationDate })}.
+      {intl.formatMessage(
+        {
+          id: 'admin.portal.subscription.expiration.banner.plan.approaching.message',
+          defaultMessage: 'Administrative actions will no longer be available beginning {hours} hours prior to the plan end date of {expirationDate}.',
+          description: 'Message for approaching plan message in subscription expiration banner.',
+        },
+        {
+          hours: SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS,
+          expirationDate: formatTimestamp({ timestamp: expirationDate }),
+        },
+      )}
     </>
   ));
 
   const renderContractDetailsMessage = () => (isSubscriptionExpired ? (
     <>
       <Alert.Heading>
-        Your subscription contract has expired
+        {intl.formatMessage({
+          id: 'admin.portal.subscription.expiration.banner.contract.expired.heading',
+          defaultMessage: 'Your subscription contract has expired',
+          description: 'Heading for expired contract message in subscription expiration banner.',
+        })}
       </Alert.Heading>
-      Renew your subscription today to reconnect your learning community.
+      {intl.formatMessage({
+        id: 'admin.portal.subscription.expiration.banner.contract.expired.message',
+        defaultMessage: 'Renew your subscription today to reconnect your learning community.',
+        description: 'Message for expired contract message in subscription expiration banner.',
+      })}
     </>
   ) : (
     <>
       <Alert.Heading>
-        Your subscription contract is expiring soon
+        {intl.formatMessage({
+          id: 'admin.portal.subscription.expiration.banner.contract.approaching.heading',
+          defaultMessage: 'Your subscription contract is expiring soon',
+          description: 'Heading for approaching contract message in subscription expiration banner.',
+        })}
       </Alert.Heading>
-      Your current subscription contract will expire in {daysUntilContractExpiration} days.
-      Renew your subscription today to minimize access disruption for your learners.
+      {intl.formatMessage({
+        id: 'admin.portal.subscription.expiration.banner.contract.approaching.message',
+        defaultMessage: 'Your current subscription contract will expire in {contractExpirationDays} days. Renew your subscription today to minimize access disruption for your learners.',
+        description: 'Message for approaching contract message in subscription expiration banner.',
+      }, { contractExpirationDays: daysUntilContractExpiration })}
     </>
   ));
 

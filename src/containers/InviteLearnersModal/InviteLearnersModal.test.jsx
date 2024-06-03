@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import InviteLearnersModal from './index';
 
@@ -24,15 +25,17 @@ const initialState = {
 
 const InviteLearnersModalWrapper = props => (
   <MemoryRouter>
-    <Provider store={props.store}>
-      <InviteLearnersModal
-        availableSubscriptionCount={10}
-        onClose={() => {}}
-        onSuccess={() => {}}
-        subscriptionUUID="foo"
-        {...props}
-      />
-    </Provider>
+    <IntlProvider locale="en">
+      <Provider store={props.store}>
+        <InviteLearnersModal
+          availableSubscriptionCount={10}
+          onClose={() => {}}
+          onSuccess={() => {}}
+          subscriptionUUID="foo"
+          {...props}
+        />
+      </Provider>
+    </IntlProvider>
   </MemoryRouter>
 );
 

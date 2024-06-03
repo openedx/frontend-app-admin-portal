@@ -8,6 +8,7 @@ import userEvent from '@testing-library/user-event';
 import { screen, render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ManageRequestsTab from '../ManageRequestsTab';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
@@ -148,11 +149,13 @@ const ManageRequestsTabWithRouter = ({
   initialSubsidyRequestContextValue = defaultSubsidyRequestContextValue,
 }) => (
 /* eslint-enable react/prop-types */
-  <Provider store={storeProp}>
-    <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
-      <ManageRequestsTab />
-    </SubsidyRequestsContext.Provider>
-  </Provider>
+  <IntlProvider locale="en">
+    <Provider store={storeProp}>
+      <SubsidyRequestsContext.Provider value={initialSubsidyRequestContextValue}>
+        <ManageRequestsTab />
+      </SubsidyRequestsContext.Provider>
+    </Provider>
+  </IntlProvider>
 );
 
 ManageRequestsTabWithRouter.propTypes = {
