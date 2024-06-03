@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { logError } from '@edx/frontend-platform/logging';
 import { ActionRow, Toast } from '@openedx/paragon';
@@ -40,10 +41,20 @@ const SettingsApiCredentialsTab = ({
           <ShowSuccessToast.Provider value={[showToast, setShowToast]}>
             { hasRegenerationError && <FailedAlert /> }
             <ActionRow>
-              <h2>API credentials</h2>
+              <h2>
+                <FormattedMessage
+                  id="adminPortal.settings.apiCredentialsTab.header"
+                  defaultMessage="API credentials"
+                  description="Header for the API credentials section"
+                />
+              </h2>
               <ActionRow.Spacer />
               <HelpCenterButton url={HELP_CENTER_API_GUIDE}>
-                Help Center: EdX Enterprise API Guide
+                <FormattedMessage
+                  id="adminPortal.settings.apiCredentialsTab.helpCenter"
+                  defaultMessage="Help Center: EdX Enterprise API Guide"
+                  description="Text for the Help Center button linking to the API guide"
+                />
               </HelpCenterButton>
             </ActionRow>
             <div className="mt-4">
@@ -57,7 +68,11 @@ const SettingsApiCredentialsTab = ({
               onClose={() => setShowToast(false)}
               show={showToast}
             >
-              API credentials successfully generated
+              <FormattedMessage
+                id="adminPortal.settings.apiCredentialsTab.successMessage"
+                defaultMessage="API credentials successfully generated"
+                description="Message shown when API credentials are successfully generated"
+              />
             </Toast>
             )}
           </ShowSuccessToast.Provider>

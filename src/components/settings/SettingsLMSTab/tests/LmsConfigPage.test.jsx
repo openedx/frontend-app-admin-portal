@@ -7,6 +7,7 @@ import '@testing-library/jest-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { renderWithRouter } from '../../../test/testUtils';
 import {
@@ -45,25 +46,29 @@ const mockStore = configureMockStore([thunk]);
 
 const SettingsLMSWrapper = () => (
   <Provider store={mockStore({ ...initialState })}>
-    <SettingsLMSTab
-      enterpriseId={enterpriseId}
-      enterpriseSlug={enterpriseSlug}
-      enableSamlConfigurationScreen={enableSamlConfigurationScreen}
-      identityProvider={identityProvider}
-      hasSSOConfig={false}
-    />
+    <IntlProvider locale="en">
+      <SettingsLMSTab
+        enterpriseId={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
+        enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+        identityProvider={identityProvider}
+        hasSSOConfig={false}
+      />
+    </IntlProvider>
   </Provider>
 );
 
 const SettingsLMSWrapperWithSSO = () => (
   <Provider store={mockStore({ ...initialState })}>
-    <SettingsLMSTab
-      enterpriseId={enterpriseId}
-      enterpriseSlug={enterpriseSlug}
-      enableSamlConfigurationScreen={enableSamlConfigurationScreen}
-      identityProvider={identityProvider}
-      hasSSOConfig
-    />
+    <IntlProvider locale="en">
+      <SettingsLMSTab
+        enterpriseId={enterpriseId}
+        enterpriseSlug={enterpriseSlug}
+        enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+        identityProvider={identityProvider}
+        hasSSOConfig
+      />
+    </IntlProvider>
   </Provider>
 );
 
@@ -71,7 +76,7 @@ describe('<SettingsLMSTab />', () => {
   it('Renders with no config card present w/o sso', async () => {
     renderWithRouter(<SettingsLMSWrapper />);
     await waitFor(() => {
-      expect(screen.queryByText('You don\'t have any learning platforms integrated yet.')).toBeTruthy();
+      expect(screen.queryByText('You do not have any learning platforms integrated yet.')).toBeTruthy();
       expect(screen.queryByText('At least one active Single Sign-On (SSO) integration is required to configure a new learning platform integration.')).toBeTruthy();
       expect(screen.queryByText('New SSO integration')).toBeTruthy();
       expect(screen.getByText('New SSO integration').closest('a')).toHaveAttribute('href', '/test-slug/admin/settings/sso');
@@ -80,7 +85,7 @@ describe('<SettingsLMSTab />', () => {
   it('Renders with no config card present w/ sso', async () => {
     renderWithRouter(<SettingsLMSWrapperWithSSO />);
     await waitFor(() => {
-      expect(screen.queryByText('You don\'t have any learning platforms integrated yet.')).toBeTruthy();
+      expect(screen.queryByText('You do not have any learning platforms integrated yet.')).toBeTruthy();
       expect(screen.queryByText('At least one active Single Sign-On (SSO) integration is required to configure a new learning platform integration.')).toBeFalsy();
       expect(screen.queryByText('New learning platform integration')).toBeTruthy();
       userEvent.click(screen.getByText('New learning platform integration'));
@@ -257,12 +262,14 @@ describe('<SettingsLMSTab />', () => {
     };
     const NeedsSSOConfigLMSWrapper = () => (
       <Provider store={mockStore({ ...needsSSOState })}>
-        <SettingsLMSTab
-          enterpriseId={enterpriseId}
-          enterpriseSlug={enterpriseSlug}
-          identityProvider={identityProvider}
-          enableSamlConfigurationScreen={samlConfigurationScreenEnabled}
-        />
+        <IntlProvider locale="en">
+          <SettingsLMSTab
+            enterpriseId={enterpriseId}
+            enterpriseSlug={enterpriseSlug}
+            identityProvider={identityProvider}
+            enableSamlConfigurationScreen={samlConfigurationScreenEnabled}
+          />
+        </IntlProvider>
       </Provider>
     );
     renderWithRouter(<NeedsSSOConfigLMSWrapper />);

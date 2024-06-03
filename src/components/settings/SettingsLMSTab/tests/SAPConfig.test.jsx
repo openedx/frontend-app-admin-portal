@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import SAPConfig from '../LMSConfigs/SAP/SAPConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
@@ -67,26 +68,28 @@ const mockDelete = jest.fn();
 
 function testSAPConfigSetup(formData) {
   return (
-    <FormContextWrapper
-      formWorkflowConfig={SAPConfig({
-        enterpriseCustomerUuid: enterpriseId,
-        onSubmit: mockSetExistingConfigFormData,
-        handleCloseClick: mockOnClick,
-        existingData: formData,
-        existingConfigNames: new Map(),
-        channelMap: {
-          SAP: {
-            post: mockPost,
-            update: mockUpdate,
-            delete: mockDelete,
+    <IntlProvider locale="en">
+      <FormContextWrapper
+        formWorkflowConfig={SAPConfig({
+          enterpriseCustomerUuid: enterpriseId,
+          onSubmit: mockSetExistingConfigFormData,
+          handleCloseClick: mockOnClick,
+          existingData: formData,
+          existingConfigNames: new Map(),
+          channelMap: {
+            SAP: {
+              post: mockPost,
+              update: mockUpdate,
+              delete: mockDelete,
+            },
           },
-        },
-      })}
-      onClickOut={mockOnClick}
-      formData={formData}
-      isStepperOpen
-      dispatch={jest.fn()}
-    />
+        })}
+        onClickOut={mockOnClick}
+        formData={formData}
+        isStepperOpen
+        dispatch={jest.fn()}
+      />
+    </IntlProvider>
   );
 }
 

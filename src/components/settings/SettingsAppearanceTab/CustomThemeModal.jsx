@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import Color from 'color';
 import ColorContrastChecker from 'color-contrast-checker';
 import {
@@ -22,10 +23,28 @@ const CustomThemeModal = ({
   const [accent, setAccent] = useState('');
   const [accentValid, setAccentValid] = useState(true);
 
-  const headerText = 'Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.';
-  const infoText = 'More details about color appearance in the admin and learner experiences and best practices for selecting accessible colors are available in the ';
-  const invalidMessage = 'Must be hexadecimal starting with # (Ex: #1e0b57)';
-  const warningMessage = 'Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below. ';
+  const intl = useIntl();
+
+  const headerText = intl.formatMessage({
+    id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.headerText',
+    defaultMessage: 'Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.',
+    description: 'Header text explaining the purpose of the custom theme modal',
+  });
+  const infoText = intl.formatMessage({
+    id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.infoText',
+    defaultMessage: 'More details about color appearance in the admin and learner experiences and best practices for selecting accessible colors are available in the ',
+    description: 'Informational text about where to find more details on color appearance and best practices',
+  });
+  const invalidMessage = intl.formatMessage({
+    id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.invalidHex',
+    defaultMessage: 'Must be hexadecimal starting with {hash} (Ex: {example})',
+    description: 'Error message for invalid hexadecimal input',
+  }, { hash: '#', example: '#1e0b57' });
+  const warningMessage = intl.formatMessage({
+    id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.warningMessage',
+    defaultMessage: 'Color does not meet the WCAG AA standard of accessibility. Learn more at the help center link below.',
+    description: 'Warning message for colors that dont meet accessibility standards',
+  });
 
   const hexRegExpPattern = '^#([A-Fa-f0-9]{6})$';
   const validHex = new RegExp(hexRegExpPattern);
@@ -73,7 +92,11 @@ const CustomThemeModal = ({
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          {CUSTOM_THEME_LABEL}
+          <FormattedMessage
+            id="adminPortal.settings.portalAppearanceTab.customThemeModalTitle"
+            defaultMessage="Custom Theme"
+            description="Title for the Custom Theme modal"
+          />
         </ModalDialog.Title>
         <p className="mt-4">{headerText}</p>
       </ModalDialog.Header>
@@ -82,7 +105,11 @@ const CustomThemeModal = ({
         <Form>
           <Form.Group controlId="custom-button">
             <Form.Control
-              floatingLabel="Button color"
+              floatingLabel={intl.formatMessage({
+                id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.buttonColor',
+                defaultMessage: 'Button color',
+                description: 'Label for the button color input field',
+              })}
               isInvalid={!buttonValid}
               onChange={(e) => {
                 setButton(e.target.value);
@@ -99,7 +126,11 @@ const CustomThemeModal = ({
           </Form.Group>
           <Form.Group controlId="custom-banner">
             <Form.Control
-              floatingLabel="Banner color"
+              floatingLabel={intl.formatMessage({
+                id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.bannerColor',
+                defaultMessage: 'Banner color',
+                description: 'Label for the banner color input field',
+              })}
               isInvalid={!bannerValid}
               onChange={(e) => {
                 setBanner(e.target.value);
@@ -116,7 +147,11 @@ const CustomThemeModal = ({
           </Form.Group>
           <Form.Group controlId="custom-accent">
             <Form.Control
-              floatingLabel="Accent color"
+              floatingLabel={intl.formatMessage({
+                id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.accentColor',
+                defaultMessage: 'Accent color',
+                description: 'Label for the accent color input field',
+              })}
               isInvalid={!accentValid}
               onChange={(e) => {
                 setAccent(e.target.value);
@@ -135,7 +170,11 @@ const CustomThemeModal = ({
             target="_blank"
             showLaunchIcon={false}
           >
-            Enterprise Help Center.
+            {intl.formatMessage({
+              id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.helpCenterLink',
+              defaultMessage: 'Enterprise Help Center.',
+              description: 'Text for the link to the Enterprise Help Center',
+            })}
           </Hyperlink>
         </p>
       </ModalDialog.Body>
@@ -147,7 +186,11 @@ const CustomThemeModal = ({
             onClick={setCustom}
             disabled={!buttonValid || !bannerValid || !accentValid}
           >
-            Add theme
+            {intl.formatMessage({
+              id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.addThemeButton',
+              defaultMessage: 'Add theme',
+              description: 'Text for the button to add the custom theme',
+            })}
           </Button>
         </ActionRow>
       </ModalDialog.Footer>

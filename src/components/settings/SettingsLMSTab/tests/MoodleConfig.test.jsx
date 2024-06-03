@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import MoodleConfig from '../LMSConfigs/Moodle/MoodleConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
@@ -63,26 +64,28 @@ const mockDelete = jest.fn();
 
 function testMoodleConfigSetup(formData) {
   return (
-    <FormContextWrapper
-      formWorkflowConfig={MoodleConfig({
-        enterpriseCustomerUuid: enterpriseId,
-        onSubmit: mockSetExistingConfigFormData,
-        handleCloseClick: mockOnClick,
-        existingData: formData,
-        existingConfigNames: new Map(),
-        channelMap: {
-          MOODLE: {
-            post: mockPost,
-            update: mockUpdate,
-            delete: mockDelete,
+    <IntlProvider locale="en">
+      <FormContextWrapper
+        formWorkflowConfig={MoodleConfig({
+          enterpriseCustomerUuid: enterpriseId,
+          onSubmit: mockSetExistingConfigFormData,
+          handleCloseClick: mockOnClick,
+          existingData: formData,
+          existingConfigNames: new Map(),
+          channelMap: {
+            MOODLE: {
+              post: mockPost,
+              update: mockUpdate,
+              delete: mockDelete,
+            },
           },
-        },
-      })}
-      onClickOut={mockOnClick}
-      formData={formData}
-      isStepperOpen
-      dispatch={jest.fn()}
-    />
+        })}
+        onClickOut={mockOnClick}
+        formData={formData}
+        isStepperOpen
+        dispatch={jest.fn()}
+      />
+    </IntlProvider>
   );
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Image, SelectableBox } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { channelMapping } from '../../../utils';
 import { LMS_KEYS } from '../data/constants';
@@ -18,8 +19,8 @@ export function LMSSelectorPage(setLms: (string) => void) {
     const { dispatch, formFields } = useFormContext();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setting this value allows the LMSFormWorkflowConfig page to rerender with the state
-    // change, which sets the LMS's associated steps
+      // setting this value allows the LMSFormWorkflowConfig page to rerender with the state
+      // change, which sets the LMS's associated steps
       setLms(e.target.value);
       if (dispatch) {
         dispatch(setFormFieldAction({ fieldId: 'lms', value: e.target.value }));
@@ -29,9 +30,19 @@ export function LMSSelectorPage(setLms: (string) => void) {
       <Container size="lg">
         <span className="pb-4">
           <h3 className="pb-3">
-            Let&apos;s get started
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.lmsSelector.heading"
+              defaultMessage="Let us get started"
+              description="Heading for the LMS selector page"
+            />
           </h3>
-          <p id="lms-selection-heading">Select the LMS or LXP you want to integrate with edX For Business.</p>
+          <p id="lms-selection-heading">
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.lmsSelector.subHeading"
+              defaultMessage="Select the LMS or LXP you want to integrate with edX For Business."
+              description="Subheading for the LMS selector page"
+            />
+          </p>
           <SelectableBox.Set
             type="radio"
             value={formFields?.lms}

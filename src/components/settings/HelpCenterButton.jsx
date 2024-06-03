@@ -1,6 +1,7 @@
 import React from 'react';
 import { Hyperlink } from '@openedx/paragon';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const HelpCenterButton = ({
   url,
@@ -22,7 +23,13 @@ const HelpCenterButton = ({
 };
 
 HelpCenterButton.defaultProps = {
-  children: 'Help Center',
+  children: (
+    <FormattedMessage
+      id="adminPortal.settings.learningPlatformTab.helpCenter.button"
+      defaultMessage="Help Center"
+      description="Default text for the Help Center button"
+    />
+  ),
 };
 
 HelpCenterButton.propTypes = {
