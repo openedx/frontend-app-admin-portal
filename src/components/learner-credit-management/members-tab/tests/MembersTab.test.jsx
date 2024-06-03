@@ -17,9 +17,9 @@ import {
   useBudgetDetailActivityOverview,
   useEnterpriseGroupLearners,
   useEnterpriseGroupMembersTableData,
-  useSubsidySummaryAnalyticsApi,
   useEnterpriseOffer,
-  useEnterpriseGroupMembers,
+  useEnterpriseRemovedGroupMembers,
+  useSubsidySummaryAnalyticsApi,
 } from '../../data';
 import { EnterpriseSubsidiesContext } from '../../../EnterpriseSubsidiesContext';
 import {
@@ -51,7 +51,7 @@ jest.mock('../../data', () => ({
   useBudgetDetailActivityOverview: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useCancelContentAssignments: jest.fn(),
-  useEnterpriseGroupMembers: jest.fn(),
+  useEnterpriseRemovedGroupMembers: jest.fn(),
 }));
 
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
@@ -125,9 +125,8 @@ describe('<BudgetDetailPage />', () => {
       data: {},
     });
 
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
-      groupMembersCount: 0,
       removedGroupMembersCount: 0,
     });
   });
@@ -312,9 +311,8 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
-      groupMembersCount: 1,
       removedGroupMembersCount: 1,
     });
     const mockFetchEnterpriseGroupMembersTableData = jest.fn();
@@ -720,7 +718,7 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
       removedGroupMembersCount: 1,
     });

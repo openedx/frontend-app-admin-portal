@@ -7,7 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import {
   useBudgetId,
-  useEnterpriseGroupMembers,
+  useEnterpriseGroupLearners,
   useIsLargeOrGreater,
   useSubsidyAccessPolicy,
 } from '../data';
@@ -30,14 +30,9 @@ const EnrollAndSpendIllustration = (props) => (
 const NoBnEBudgetActivity = ({ openInviteModal }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const groupId = subsidyAccessPolicy?.groupAssociations[0];
-  const {
-    groupMembersCount,
-  } = useEnterpriseGroupMembers({
-    policyUuid: subsidyAccessPolicy?.uuid,
-    groupId,
-    includeRemoved: false,
-  });
+  const { data } = useEnterpriseGroupLearners(subsidyAccessPolicy?.groupAssociations[0]);
+  const groupMembersCount = data?.count || 0;
+
   const isLargeOrGreater = useIsLargeOrGreater();
 
   return (

@@ -23,7 +23,7 @@ const InviteModalBudgetCard = ({
 }) => {
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const { data } = useEnterpriseGroupLearners(subsidyAccessPolicy.groupAssociations[0]);
+  const { data } = useEnterpriseGroupLearners(subsidyAccessPolicy?.groupAssociations[0]);
 
   const memberSubtitle = data?.count ? `${makePlural(data?.count, 'current member')}` : '';
   const budgetType = (enterpriseOfferId !== null) ? BUDGET_TYPES.ecommerce : BUDGET_TYPES.policy;

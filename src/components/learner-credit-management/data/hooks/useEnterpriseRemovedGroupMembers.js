@@ -6,13 +6,12 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 
-const useEnterpriseGroupMembers = ({ policyUuid, groupId, includeRemoved }) => {
+const useEnterpriseRemovedGroupMembers = ({ policyUuid, groupId }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [groupMembers, setGroupMembers] = useState([]);
   const [removedGroupMembers, setRemovedGroupMembers] = useState([]);
 
   const fetchPaginatedData = useCallback(async (page, results = []) => {
-    const options = { group_uuid: groupId, show_removed: includeRemoved, page };
+    const options = { group_uuid: groupId, show_removed: true, page };
     const response = await EnterpriseAccessApiService.fetchSubsidyHydratedGroupMembersData(policyUuid, options);
     const responseData = camelCaseObject(response.data);
     const resultsCopy = [...results];
@@ -21,14 +20,13 @@ const useEnterpriseGroupMembers = ({ policyUuid, groupId, includeRemoved }) => {
       return fetchPaginatedData(page + 1, resultsCopy);
     }
     return resultsCopy;
-  }, [policyUuid, groupId, includeRemoved]);
+  }, [policyUuid, groupId]);
 
   useEffect(() => {
-    const getMembers = async () => {
+    const getRemovedMembers = async () => {
       try {
         const startingPageIndex = 1;
         const results = await fetchPaginatedData(startingPageIndex);
-        setGroupMembers(results);
         const removedMembers = results.filter(result => result.status === 'removed');
         setRemovedGroupMembers(removedMembers);
       } catch (e) {
@@ -39,15 +37,14 @@ const useEnterpriseGroupMembers = ({ policyUuid, groupId, includeRemoved }) => {
     };
 
     if (policyUuid) {
-      getMembers();
+      getRemovedMembers();
     }
   }, [groupId, policyUuid, fetchPaginatedData]);
 
   return {
     isMembersLoading: isLoading,
-    groupMembersCount: groupMembers.length,
     removedGroupMembersCount: removedGroupMembers.length,
   };
 };
 
-export default useEnterpriseGroupMembers;
+export default useEnterpriseRemovedGroupMembers;

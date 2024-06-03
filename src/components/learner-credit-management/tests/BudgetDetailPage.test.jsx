@@ -24,7 +24,7 @@ import {
   useEnterpriseCustomer,
   useEnterpriseGroup,
   useEnterpriseGroupLearners,
-  useEnterpriseGroupMembers,
+  useEnterpriseRemovedGroupMembers,
   useEnterpriseOffer,
   useIsLargeOrGreater,
   useSubsidyAccessPolicy,
@@ -65,8 +65,8 @@ jest.mock('../data', () => ({
   useEnterpriseCustomer: jest.fn(),
   useEnterpriseGroup: jest.fn(),
   useEnterpriseGroupLearners: jest.fn(),
-  useEnterpriseGroupMembers: jest.fn(),
   useEnterpriseGroupMembersTableData: jest.fn(),
+  useEnterpriseRemovedGroupMembers: jest.fn(),
   useEnterpriseOffer: jest.fn(),
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useSubsidyAccessPolicy: jest.fn(),
@@ -454,9 +454,8 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
-      groupMembersCount: 0,
       removedGroupMembersCount: 0,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -611,9 +610,8 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
-      groupMembersCount: 0,
       removedGroupMembersCount: 0,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -649,9 +647,8 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
-      groupMembersCount: 1,
       removedGroupMembersCount: 0,
     });
     useBudgetDetailActivityOverview.mockReturnValue({
@@ -1564,9 +1561,8 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
-      groupMembersCount: 0,
       removedGroupMembersCount: 0,
     });
     renderWithRouter(<BudgetDetailPageWrapper />);
@@ -2249,9 +2245,8 @@ describe('<BudgetDetailPage />', () => {
         },
       },
     });
-    useEnterpriseGroupMembers.mockReturnValue({
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
       isMembersLoading: false,
-      groupMembersCount: 1,
       removedGroupMembersCount: 0,
     });
     renderWithRouter(
