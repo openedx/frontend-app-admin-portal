@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Stack, Skeleton } from '@openedx/paragon';
@@ -12,10 +13,11 @@ import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
-  const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1;
-  const { openInviteModal } = useContext(BudgetDetailPageContext);
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1
+    && !isEmpty(subsidyAccessPolicy?.groupAssociations);
+  const { openInviteModal } = useContext(BudgetDetailPageContext);
   const {
     isLoading: isBudgetActivityOverviewLoading,
     isFetching: isBudgetActivityOverviewFetching,

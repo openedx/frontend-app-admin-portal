@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { generatePath, useParams, Link } from 'react-router-dom';
@@ -95,7 +96,7 @@ const BudgetActions = ({
   }
 
   if (!isAssignable) {
-    if (enterpriseGroupsV1) {
+    if (enterpriseGroupsV1 && !isEmpty(subsidyAccessPolicy?.groupAssociations)) {
       if (isLmsBudget(enterpriseCustomer?.activeIntegrations.length, enterpriseGroup?.appliesToAllContexts)) {
         return (
           <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
