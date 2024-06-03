@@ -90,6 +90,23 @@ export const mockPerLearnerSpendLimitSubsidyAccessPolicy = {
   uuid: mockSubsidyAccessPolicyUUID,
   subsidyActiveDatetime: new Date(today).toISOString(),
   subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
+  groupAssociations: ['test-group-uuid'],
+  policyType: 'PerLearnerSpendCreditAccessPolicy',
+  displayName: 'Per Learner Spend Limit',
+  spendLimit: 10000 * 100,
+  aggregates: {
+    spendAvailableUsd: 10000,
+    amountAllocatedUsd: 100,
+    amountRedeemedUsd: 350,
+  },
+  isAssignable: false,
+  subsidyUuid: 'mock-subsidy-uuid',
+};
+
+export const mockSpendLimitNoGroupsSubsidyAccessPolicy = {
+  uuid: mockSubsidyAccessPolicyUUID,
+  subsidyActiveDatetime: new Date(today).toISOString(),
+  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   groupAssociations: [],
   policyType: 'PerLearnerSpendCreditAccessPolicy',
   displayName: 'Per Learner Spend Limit',

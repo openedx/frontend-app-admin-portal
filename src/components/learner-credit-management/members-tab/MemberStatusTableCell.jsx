@@ -6,6 +6,7 @@ import {
 import {
   CheckCircle, RemoveCircle, Timelapse,
 } from '@openedx/paragon/icons';
+import { HELP_CENTER_GROUPS_INVITE_LINK } from '../../settings/data/constants';
 
 const MemberStatusTableCell = ({
   row,
@@ -56,7 +57,7 @@ const MemberStatusTableCell = ({
               <div>
                 <p className="mt-2 mb-0 small"><strong>{popoverExtra1}</strong></p>
                 <p className="mb-0 small">{popoverExtra2}
-                  <Hyperlink destination="https://www.edx.org">
+                  <Hyperlink target="_blank" destination={HELP_CENTER_GROUPS_INVITE_LINK}>
                     Help Center: Inviting Budget Members
                   </Hyperlink>
                 </p>
