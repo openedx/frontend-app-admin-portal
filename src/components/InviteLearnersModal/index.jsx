@@ -5,6 +5,7 @@ import {
   Button, Alert, ModalDialog, ActionRow, Spinner,
 } from '@openedx/paragon';
 import { Cancel as ErrorIcon } from '@openedx/paragon/icons';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import emailTemplate from './emailTemplate';
@@ -47,7 +48,7 @@ class InviteLearnersModal extends React.Component {
     }
 
     if (submitFailed && error !== prevProps.error && errorMessageRef) {
-      // When there is an new error, focus on the error message status alert
+      // When there is a new error, focus on the error message status alert
       errorMessageRef.focus();
     }
   }
@@ -97,46 +98,92 @@ class InviteLearnersModal extends React.Component {
       <>
         {submitFailed && this.renderErrorMessage()}
         <form onSubmit={e => e.preventDefault()}>
-          <p>Unassigned licenses: {availableSubscriptionCount}</p>
+          <p>
+            <FormattedMessage
+              id="admin.portal.invite.learners.modal.unassigned.licenses"
+              defaultMessage="Unassigned licenses: {availableSubscriptionCount}"
+              description="Message displaying the number of unassigned licenses available on invite learners modal."
+              values={{ availableSubscriptionCount }}
+            />
+          </p>
           <div className="mt-4">
-            <h3>Add Users</h3>
+            <h3>
+              <FormattedMessage
+                id="admin.portal.invite.learners.modal.add.users"
+                defaultMessage="Add Users"
+                description="Heading for the section to add users on invite learners modal."
+              />
+            </h3>
             <Field
               name="email-addresses"
               component={TextAreaAutoSize}
               label="Email Address"
-              description="To add more than one user, enter one email address per line."
               data-hj-suppress
             />
             <p className="pb-2">
-              OR
+              <FormattedMessage
+                id="admin.portal.invite.learners.modal.or.label"
+                defaultMessage="OR"
+                description="Text indicating an alternative option on invite learners modal."
+              />
             </p>
             <Field
               id="csv-email-addresses"
               name="csv-email-addresses"
               component={FileInput}
-              label="Upload Email Addresses"
+              label={(
+                <FormattedMessage
+                  id="admin.portal.invite.learners.modal.upload.email.addresses.field"
+                  defaultMessage="Upload Email Addresses"
+                  description="Label for upload email addresses field"
+                />
+            )}
               description="The file must be a CSV containing a single column of email addresses."
               accept=".csv"
               normalize={normalizeFileUpload}
               data-hj-suppress
             />
-            <h3>Email Template</h3>
+            <h3>
+              <FormattedMessage
+                id="admin.portal.invite.learners.modal.email.template"
+                defaultMessage="Email Template"
+                description="Heading for the email template section on invite learners modal."
+              />
+            </h3>
             <Field
               name="email-template-greeting"
               component={TextAreaAutoSize}
-              label="Customize Greeting"
+              label={(
+                <FormattedMessage
+                  id="admin.portal.invite.learners.modal.customize.greeting.field"
+                  defaultMessage="Customize Greeting"
+                  description="Label for the greeting customization input field on invite learner modal"
+                />
+            )}
               data-hj-suppress
             />
             <Field
               name="email-template-body"
               component={TextAreaAutoSize}
-              label="Body"
+              label={(
+                <FormattedMessage
+                  id="admin.portal.invite.learners.modal.email.body.text"
+                  defaultMessage="Body"
+                  description="Label for email body text on invite learners modal"
+                />
+              )}
               disabled
             />
             <Field
               name="email-template-closing"
               component={TextAreaAutoSize}
-              label="Customize Closing"
+              label={(
+                <FormattedMessage
+                  id="admin.portal.invite.learners.modal.customize.closing.text"
+                  defaultMessage="Customize Closing"
+                  description="Label for customize closing field on invite learners modal"
+                />
+            )}
               data-hj-suppress
             />
           </div>
@@ -157,7 +204,13 @@ class InviteLearnersModal extends React.Component {
           variant="danger"
           icon={ErrorIcon}
         >
-          <Alert.Heading>Unable to subscribe users</Alert.Heading>
+          <Alert.Heading>
+            <FormattedMessage
+              id="admin.portal.invite.learners.modal.unable.to.subscribe"
+              defaultMessage="Unable to subscribe users"
+              description="Heading for the error message alert when unable to subscribe users."
+            />
+          </Alert.Heading>
           {error.length > 1 ? (
             <ul className="m-0 pl-4">
               {error.map(message => <li key={message}>{message}</li>)}
@@ -186,7 +239,11 @@ class InviteLearnersModal extends React.Component {
       >
         <ModalDialog.Header>
           <ModalDialog.Title>
-            Invite learners
+            <FormattedMessage
+              id="admin.portal.invite.learners.modal.invite.learners.title"
+              defaultMessage="Invite learners"
+              description="Title of the invite learners modal."
+            />
           </ModalDialog.Title>
         </ModalDialog.Header>
         <ModalDialog.Body>
@@ -195,7 +252,11 @@ class InviteLearnersModal extends React.Component {
         <ModalDialog.Footer>
           <ActionRow>
             <ModalDialog.CloseButton variant="link">
-              Cancel
+              <FormattedMessage
+                id="admin.portal.invite.learners.modal.cancel.label"
+                defaultMessage="Cancel"
+                description="Label for the cancel button."
+              />
             </ModalDialog.CloseButton>
             <Button
               key="subscribe-users-submit-btn"
@@ -205,9 +266,13 @@ class InviteLearnersModal extends React.Component {
             >
               <>
                 {submitting && <Spinner animation="border" className="mr-2" variant="primary" size="sm" />}
-                Invite learners
+                <FormattedMessage
+                  id="admin.portal.invite.learners.modal.invite.learners.button"
+                  defaultMessage="Invite learners"
+                  description="Label for the invite learners button."
+                />
               </>
-            </Button>,
+            </Button>
           </ActionRow>
         </ModalDialog.Footer>
       </ModalDialog>

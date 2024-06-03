@@ -9,6 +9,7 @@ import {
   Routes,
 } from 'react-router-dom';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import SubscriptionSubsidyRequests from './SubscriptionSubsidyRequests';
 import SubscriptionPlanRoutes from './SubscriptionPlanRoutes';
@@ -17,7 +18,6 @@ import {
   MANAGE_LEARNERS_TAB,
   MANAGE_REQUESTS_TAB,
   SUBSCRIPTION_TABS_VALUES,
-  SUBSCRIPTION_TABS_LABELS,
   SUBSCRIPTIONS_TAB_PARAM,
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
@@ -29,6 +29,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
   const subsidyType = subsidyRequestConfiguration?.subsidyType;
   const isRequestsTabShown = isSubsidyRequestsEnabled && subsidyType === SUPPORTED_SUBSIDY_TYPES.license;
+  const intl = useIntl();
 
   const requestsTabNotification = useMemo(() => {
     const hasRequests = subsidyRequestsCounts.subscriptionLicenses > 0;
@@ -66,7 +67,11 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
       <Tab
         key={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
         eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
-        title={SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]}
+        title={intl.formatMessage({
+          id: 'admin.portal.subscription.tabs.manage.learners',
+          defaultMessage: 'Manage Learners',
+          description: 'Title for the Manage Learners tab in subscription management.',
+        })}
         className="pt-4"
       >
         {SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB] === subscriptionsTab && (
@@ -79,7 +84,11 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
         <Tab
           key={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
           eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_REQUESTS_TAB]}
-          title={SUBSCRIPTION_TABS_LABELS[MANAGE_REQUESTS_TAB]}
+          title={intl.formatMessage({
+            id: 'admin.portal.subscription.tabs.manage.requests',
+            defaultMessage: 'Manage Requests',
+            description: 'Title for the Manage Requests tab in subscription management.',
+          })}
           className="pt-4"
           notification={requestsTabNotification}
         >
@@ -95,6 +104,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
       );
     }
     return tabs;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscriptionsTab, isRequestsTabShown, requestsTabNotification]);
 
   if ((SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB] !== subscriptionsTab)

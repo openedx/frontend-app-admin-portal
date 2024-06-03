@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { mockNavigate } from 'react-router-dom';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { useSubscriptionFromParams } from '../data/contextHooks';
 import { SubscriptionDetailPage } from '../SubscriptionDetailPage';
 import { SubscriptionManagementContext, SUBSCRIPTION_PLAN_ZERO_STATE } from './TestUtilities';
@@ -61,9 +62,11 @@ const fakeSubscription = {
 };
 
 const SubscriptionDetailPageWrapper = (props) => (
-  <SubscriptionManagementContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE}>
-    <SubscriptionDetailPage {...props} />
-  </SubscriptionManagementContext>
+  <IntlProvider locale="en">
+    <SubscriptionManagementContext detailState={SUBSCRIPTION_PLAN_ZERO_STATE}>
+      <SubscriptionDetailPage {...props} />
+    </SubscriptionManagementContext>
+  </IntlProvider>
 );
 
 describe('<SubscriptionDetailPage />', () => {

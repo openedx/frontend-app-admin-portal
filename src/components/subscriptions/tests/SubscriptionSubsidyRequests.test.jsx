@@ -8,9 +8,9 @@ import {
   cleanup,
 } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import SubscriptionSubsidyRequests from '../SubscriptionSubsidyRequests';
 import { useSubsidyRequests } from '../../SubsidyRequestManagementTable';
 import { SubscriptionContext } from '../SubscriptionData';
@@ -149,15 +149,15 @@ const SubsidySubsidyRequestsWithRouter = ({
   subscriptionsData,
   initialSubsidyRequestsContextValue,
 }) => (
-  <IntlProvider locale="en">
-    <Provider store={storeProp}>
+  <Provider store={storeProp}>
+    <IntlProvider locale="en">
       <SubsidyRequestsContext.Provider value={initialSubsidyRequestsContextValue}>
         <SubscriptionContext.Provider value={subscriptionsData}>
           <SubscriptionSubsidyRequests />
         </SubscriptionContext.Provider>
       </SubsidyRequestsContext.Provider>
-    </Provider>
-  </IntlProvider>
+    </IntlProvider>
+  </Provider>
 );
 
 SubsidySubsidyRequestsWithRouter.propTypes = {

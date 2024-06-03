@@ -11,6 +11,7 @@ import {
 } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
 import { useApplicableSubscriptions } from './data/hooks';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
@@ -36,6 +37,8 @@ export const ApproveLicenseRequestModal = ({
     courseRunIds: [courseId],
     subscriptions,
   });
+
+  const intl = useIntl();
 
   const [selectedSubscriptionUUID, setSelectedSubscriptionUUID] = useState();
   const [isApprovingRequest, setIsApprovingRequest] = useState(false);
@@ -83,7 +86,13 @@ export const ApproveLicenseRequestModal = ({
   return (
     <ModalDialog
       className="subsidy-request-modal"
-      title="Approve License Request"
+      title={(
+        <FormattedMessage
+          id="admin.portal.approve.license.request.modal.title"
+          defaultMessage="Approve License Request"
+          description="Title for the approve license request modal."
+        />
+)}
       isOpen={isOpen}
       hasCloseButton
       onClose={onClose}
@@ -91,7 +100,11 @@ export const ApproveLicenseRequestModal = ({
       <Form>
         <ModalDialog.Header>
           <ModalDialog.Title>
-            License Assignment
+            <FormattedMessage
+              id="admin.portal.approve.license.request.modal.header"
+              defaultMessage="License Assignment"
+              description="Header for the license assignment section in the approve license request modal."
+            />
           </ModalDialog.Title>
           {hasError && (
             <Alert
@@ -100,8 +113,18 @@ export const ApproveLicenseRequestModal = ({
               variant="danger"
               data-testid="approve-license-request-modal-error-alert"
             >
-              <Alert.Heading>Something went wrong</Alert.Heading>
-              Please try again later.
+              <Alert.Heading>
+                <FormattedMessage
+                  id="admin.portal.approve.license.request.modal.error.heading"
+                  defaultMessage="Something went wrong"
+                  description="Heading for the error alert in the approve license request modal."
+                />
+              </Alert.Heading>
+              <FormattedMessage
+                id="admin.portal.approve.license.request.modal.error.body"
+                defaultMessage="Please try again later."
+                description="Body text for the error alert in the approve license request modal."
+              />
             </Alert>
           )}
         </ModalDialog.Header>
@@ -109,13 +132,23 @@ export const ApproveLicenseRequestModal = ({
           {isLoadingApplicableSubscriptions && (
             <div data-testid="approve-license-request-modal-skeleton">
               <Skeleton count={2} />
-              <span className="sr-only">Loading subscription choices...</span>
+              <span className="sr-only">
+                <FormattedMessage
+                  id="admin.portal.approve.license.request.modal.loading"
+                  defaultMessage="Loading subscription choices..."
+                  description="Loading message for the approve license request modal."
+                />
+              </span>
             </div>
           )}
           {applicableSubscriptions.length > 1 && (
             <>
               <p>
-                Please choose a subscription from which to allocate a license.
+                <FormattedMessage
+                  id="admin.portal.approve.license.request.modal.choose.subscription"
+                  defaultMessage="Please choose a subscription from which to allocate a license."
+                  description="Message prompting the user to choose a subscription in the approve license request modal."
+                />
               </p>
               <Form.Group>
                 <Form.RadioSet
@@ -128,11 +161,26 @@ export const ApproveLicenseRequestModal = ({
                       key={subscription.uuid}
                       className="mb-1"
                       value={subscription.uuid}
-                      description={`Expires on ${formatTimestamp({ timestamp: subscription.expirationDate })}`}
+                      description={(
+                        <FormattedMessage
+                          id="admin.portal.approve.license.request.modal.subscription.description"
+                          defaultMessage="Expires on {expirationDate}"
+                          description="Description for the subscription in the approve license request modal."
+                          values={{ expirationDate: formatTimestamp({ timestamp: subscription.expirationDate }) }}
+                        />
+                      )}
                     >
                       <strong>
                         {subscription.title}{' '}
-                        ({subscription.licenses.unassigned} of {subscription.licenses.total} remaining)
+                        (<FormattedMessage
+                          id="admin.portal.approve.license.request.modal.licenses.remaining"
+                          defaultMessage="{unassignedCount} of {totalCount} remaining"
+                          description="Remaining licenses information in the approve license request modal."
+                          values={{
+                            unassignedCount: subscription.licenses.unassigned,
+                            totalCount: subscription.licenses.total,
+                          }}
+                        />)
                       </strong>
                     </Form.Radio>
                   ))}
@@ -142,8 +190,18 @@ export const ApproveLicenseRequestModal = ({
           )}
           {applicableSubscriptions.length > 0 && (
             <p>
-              <strong>Please note:</strong>{' '}
-              Learners can apply this subscription to any course, not just the one they requested.
+              <strong>
+                <FormattedMessage
+                  id="admin.portal.approve.license.request.modal.note"
+                  defaultMessage="Please note:"
+                  description="Note message in the approve license request modal."
+                />
+              </strong>{' '}
+              <FormattedMessage
+                id="admin.portal.approve.license.request.modal.note.description"
+                defaultMessage="Learners can apply this subscription to any course, not just the one they requested."
+                description="Note description in the approve license request modal."
+              />
             </p>
           )}
           {!isLoadingApplicableSubscriptions && applicableSubscriptions.length === 0 && (
@@ -152,23 +210,49 @@ export const ApproveLicenseRequestModal = ({
               variant="danger"
               data-testid="approve-license-request-modal-no-subscriptions-alert"
             >
-              <Alert.Heading>No applicable subscription</Alert.Heading>
-              You do not have a subscription that can be allocated for this request.
+              <Alert.Heading>
+                <FormattedMessage
+                  id="admin.portal.approve.license.request.modal.no.subscriptions.heading"
+                  defaultMessage="No applicable subscription"
+                  description="Heading for the alert when no applicable subscription is found in the approve license request modal."
+                />
+              </Alert.Heading>
+              <FormattedMessage
+                id="admin.portal.approve.license.request.modal.no.subscriptions.body"
+                defaultMessage="You do not have a subscription that can be allocated for this request."
+                description="Body text for the alert when no applicable subscription is found in the approve license request modal."
+              />
             </Alert>
           )}
         </ModalDialog.Body>
         <ModalDialog.Footer>
           <ActionRow>
             <Button variant="tertiary" onClick={onClose}>
-              Close
+              <FormattedMessage
+                id="admin.portal.approve.license.request.modal.button.close"
+                defaultMessage="Close"
+                description="Close button text in the approve license request modal."
+              />
             </Button>
             <StatefulButton
               state={buttonState}
               variant="primary"
               labels={{
-                default: 'Approve',
-                pending: 'Approving...',
-                errored: 'Try again',
+                default: intl.formatMessage({
+                  id: 'admin.portal.approve.license.request.modal.button.approve.default',
+                  defaultMessage: 'Approve',
+                  description: 'Approve button text in the approve license request modal.',
+                }),
+                pending: intl.formatMessage({
+                  id: 'admin.portal.approve.license.request.modal.button.approve.pending',
+                  defaultMessage: 'Approving...',
+                  description: 'Pending state text for the approve button in the approve license request modal.',
+                }),
+                errored: intl.formatMessage({
+                  id: 'admin.portal.approve.license.request.modal.button.approve.errored',
+                  defaultMessage: 'Try again',
+                  description: 'Errored state text for the approve button in the approve license request modal.',
+                }),
               }}
               onClick={approveLicenseRequest}
               disabled={isApprovalButtonDisabled}
