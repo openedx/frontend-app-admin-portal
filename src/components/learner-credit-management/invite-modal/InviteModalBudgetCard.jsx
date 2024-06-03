@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Card, Col, Row, Skeleton,
 } from '@openedx/paragon';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { makePlural } from '../../../utils';
 
 import {
@@ -21,6 +22,7 @@ const InviteModalBudgetCard = ({
   enterpriseUUID,
   enterpriseFeatures,
 }) => {
+  const intl = useIntl();
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const { data } = useEnterpriseGroupLearners(subsidyAccessPolicy.groupAssociations[0]);
@@ -46,6 +48,7 @@ const InviteModalBudgetCard = ({
     date,
     isAssignable,
   } = useBudgetDetailHeaderData({
+    intl,
     subsidyAccessPolicy,
     subsidySummary,
     budgetId: policyOrOfferId,

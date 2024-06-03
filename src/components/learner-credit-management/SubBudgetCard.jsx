@@ -77,6 +77,7 @@ const BaseSubBudgetCard = ({
   });
   const intl = useIntl();
   const budgetLabel = getBudgetStatus({
+    intl,
     startDateStr: start,
     endDateStr: end,
     isBudgetRetired: isRetired,
