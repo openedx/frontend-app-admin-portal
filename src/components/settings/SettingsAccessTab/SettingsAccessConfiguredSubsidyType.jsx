@@ -5,26 +5,37 @@ import {
   Tooltip,
 } from '@openedx/paragon';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { SUBSIDY_TYPE_LABELS } from '../data/constants';
 
 const SettingsAccessConfiguredSubsidyType = ({
   subsidyType,
 }) => (
   <>
-    <p>Learners will browse and request courses from the associated catalog.</p>
+    <p>
+      <FormattedMessage
+        id="adminPortal.settings.access.configuredSubsidyType.description"
+        defaultMessage="Learners will browse and request courses from the associated catalog."
+        description="Description of the configured subsidy type section."
+      />
+    </p>
     <div>
       <OverlayTrigger
         trigger={['hover', 'focus']}
         placement="right"
         overlay={(
           <Tooltip id="configured-subsidy-type-tooltip">
-            Contact support to change your selection
+            <FormattedMessage
+              id="adminPortal.settings.access.configuredSubsidyType.tooltip"
+              defaultMessage="Contact support to change your selection"
+              description="Tooltip message for the configured subsidy type."
+            />
           </Tooltip>
           )}
       >
         <div className="d-inline">
           <CheckCircle className="text-success-500 mr-1" />
-          <span>{SUBSIDY_TYPE_LABELS[subsidyType]}</span>
+          <span><FormattedMessage {...SUBSIDY_TYPE_LABELS[subsidyType]} /></span>
         </div>
       </OverlayTrigger>
     </div>

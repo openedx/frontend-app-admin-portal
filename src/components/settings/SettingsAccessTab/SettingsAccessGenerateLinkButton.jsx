@@ -6,19 +6,10 @@ import {
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
 import { MAX_UNIVERSAL_LINKS } from '../data/constants';
-
-const BUTTON_PROPS = {
-  labels: {
-    default: 'Generate link',
-    pending: 'Generating link',
-    loading: 'Readying link generation',
-  },
-  disabledStates: ['pending', 'loading'],
-  variant: 'primary',
-};
 
 const SettingsAccessGenerateLinkButton = ({
   enterpriseUUID,
@@ -27,8 +18,31 @@ const SettingsAccessGenerateLinkButton = ({
   disabled,
 }) => {
   const [loadingLinkCreation, setLoadingLinkCreation] = useState(false);
+  const intl = useIntl();
 
   const buttonState = loadingLinkCreation ? 'loading' : 'default';
+
+  const BUTTON_PROPS = {
+    labels: {
+      default: intl.formatMessage({
+        id: 'adminPortal.settings.access.generateLinkButton',
+        defaultMessage: 'Generate link',
+        description: 'Label for the generate link button.',
+      }),
+      pending: intl.formatMessage({
+        id: 'adminPortal.settings.access.generateLinkButton.pending',
+        defaultMessage: 'Generating link',
+        description: 'Label for the generate link button in pending state.',
+      }),
+      loading: intl.formatMessage({
+        id: 'adminPortal.settings.access.generateLinkButton.loading',
+        defaultMessage: 'Readying link generation',
+        description: 'Label for the generate link button in loading state.',
+      }),
+    },
+    disabledStates: ['pending', 'loading'],
+    variant: 'primary',
+  };
 
   const handleGenerateLink = async () => {
     setLoadingLinkCreation(true);

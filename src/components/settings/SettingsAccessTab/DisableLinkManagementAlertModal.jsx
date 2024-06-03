@@ -8,6 +8,7 @@ import {
   StatefulButton,
 } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 const DisableLinkManagementAlertModal = ({
   isOpen,
@@ -16,12 +17,21 @@ const DisableLinkManagementAlertModal = ({
   isLoading,
   error,
 }) => {
+  const intl = useIntl();
   const modalDisableButtonState = isLoading ? 'pending' : 'default';
 
   const disableButtonProps = {
     labels: {
-      default: 'Disable',
-      pending: 'Disabling...',
+      default: intl.formatMessage({
+        id: 'adminPortal.settings.access.disableLinkButton',
+        defaultMessage: 'Disable',
+        description: 'Label for the disable link button.',
+      }),
+      pending: intl.formatMessage({
+        id: 'adminPortal.settings.access.disableLinkButton.pending',
+        defaultMessage: 'Disabling...',
+        description: 'Label for the disable link button in pending state.',
+      }),
     },
     state: modalDisableButtonState,
     variant: 'primary',
@@ -30,25 +40,54 @@ const DisableLinkManagementAlertModal = ({
 
   return (
     <AlertModal
-      title="Are you sure?"
+      title={intl.formatMessage({
+        id: 'adminPortal.settings.access.disableLinkModal.title',
+        defaultMessage: 'Are you sure?',
+        description: 'Title for the disable link modal.',
+      })}
       isOpen={isOpen}
       onClose={onClose}
       footerNode={(
         <ActionRow>
-          <Button disabled={isLoading} variant="tertiary" onClick={onClose}>Go back</Button>
-          <StatefulButton disabled={isLoading} {...disableButtonProps}>Disable</StatefulButton>
+          <Button disabled={isLoading} variant="tertiary" onClick={onClose}>
+            <FormattedMessage
+              id="adminPortal.settings.access.disableLinkModal.goBack"
+              defaultMessage="Go back"
+              description="Button text to go back to the previous page."
+            />
+          </Button>
+          <StatefulButton disabled={isLoading} {...disableButtonProps}>
+            <FormattedMessage
+              id="adminPortal.settings.access.disableLinkButton"
+              defaultMessage="Disable"
+              description="Label for the disable link button."
+            />
+          </StatefulButton>
         </ActionRow>
       )}
     >
       {error && (
         <Alert icon={Info} variant="danger" dismissible>
-          <Alert.Heading>Something went wrong</Alert.Heading>
-          There was an issue with your request, please try again.
+          <Alert.Heading>
+            <FormattedMessage
+              id="adminPortal.settings.access.disableLinkModal.error"
+              defaultMessage="Something went wrong"
+              description="Error message for the disable link modal."
+            />
+          </Alert.Heading>
+          <FormattedMessage
+            id="adminPortal.settings.access.disableLinkModal.errorDescription"
+            defaultMessage="There was an issue with your request, please try again."
+            description="Error description for the disable link modal."
+          />
         </Alert>
       )}
       <p>
-        If you disable access via link, all links will be deactivated and your
-        learners will no longer have access. Links cannot be reactivated.
+        <FormattedMessage
+          id="adminPortal.settings.access.disableLinkModal.description"
+          defaultMessage="If you disable access via link, all links will be deactivated and your learners will no longer have access. Links cannot be reactivated."
+          description="Description for the disable link modal."
+        />
       </p>
     </AlertModal>
   );

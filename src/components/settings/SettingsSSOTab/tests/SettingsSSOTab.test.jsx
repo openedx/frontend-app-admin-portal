@@ -13,7 +13,7 @@ import { HELP_CENTER_SAML_LINK } from '../../data/constants';
 import { features } from '../../../../config';
 import SettingsSSOTab from '..';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import { queryClient } from '../../../test/testUtils';
+import { queryClient, renderWithI18nProvider } from '../../../test/testUtils';
 
 const enterpriseId = 'an-id-1';
 jest.mock('../../../../data/services/LmsApiService');
@@ -42,7 +42,7 @@ describe('SAML Config Tab', () => {
     LmsApiService.getProviderConfig.mockImplementation(() => (
       { data: { results: [] } }
     ));
-    render(
+    renderWithI18nProvider(
       <Provider store={store}>
         <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
       </Provider>,
@@ -58,7 +58,7 @@ describe('SAML Config Tab', () => {
     LmsApiService.getProviderConfig.mockImplementation(() => (
       { data: { results: [] } }
     ));
-    render(
+    renderWithI18nProvider(
       <Provider store={store}>
         <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
       </Provider>,
@@ -71,7 +71,7 @@ describe('SAML Config Tab', () => {
     LmsApiService.getProviderConfig.mockImplementation(() => (
       { data: { results: [{ was_valid_at: '10/10/22' }] } }
     ));
-    render(
+    renderWithI18nProvider(
       <Provider store={store}>
         <SettingsSSOTab setHasSSOConfig={mockSetHasSSOConfig} enterpriseId={enterpriseId} />
       </Provider>,

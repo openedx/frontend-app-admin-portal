@@ -9,7 +9,7 @@ import {
   BROWSE_AND_REQUEST_ALERT_COOKIE_PREFIX,
 } from '../subscriptions/data/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
+import { ACCESS_TAB } from '../settings/data/constants';
 
 /**
  * Generates string use to identify cookie
@@ -37,7 +37,7 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug, intl })
    * Redirects user to settings page, access tab
    */
   const handleGoToSettings = () => {
-    navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`);
+    navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.settings}/${ACCESS_TAB}`);
   };
 
   return (

@@ -11,10 +11,15 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { defineMessages, FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useCurrentSettingsTab } from './data/hooks';
 import {
+  ACCESS_TAB,
+  LMS_TAB,
+  SSO_TAB,
+  APPEARANCE_TAB,
+  API_CREDENTIALS_TAB,
   SCHOLAR_THEME,
-  SETTINGS_TAB_LABELS,
   SETTINGS_TABS_VALUES,
   SETTINGS_TAB_PARAM,
 } from './data/constants';
@@ -25,6 +30,34 @@ import SettingsSSOTab from './SettingsSSOTab';
 import SettingsApiCredentialsTab from './SettingsApiCredentialsTab';
 import { features } from '../../config';
 import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
+
+const messages = defineMessages({
+  [ACCESS_TAB]: {
+    id: 'adminPortal.settings.accessTab.label',
+    defaultMessage: 'Configure Access',
+    description: 'Label for the access tab in the settings page.',
+  },
+  [LMS_TAB]: {
+    id: 'adminPortal.settings.lmsTab.label',
+    defaultMessage: 'Learning Platform',
+    description: 'Label for the learning platform tab in the settings page.',
+  },
+  [SSO_TAB]: {
+    id: 'adminPortal.settings.ssoTab.label',
+    defaultMessage: 'Single Sign On (SSO)',
+    description: 'Label for the SSO tab in the settings page.',
+  },
+  [APPEARANCE_TAB]: {
+    id: 'adminPortal.settings.appearanceTab.label',
+    defaultMessage: 'Portal Appearance',
+    description: 'Label for the appearance tab in the settings page.',
+  },
+  [API_CREDENTIALS_TAB]: {
+    id: 'adminPortal.settings.apiCredentialsTab.label',
+    defaultMessage: 'API Credentials',
+    description: 'Label for the API credentials tab in the settings page.',
+  },
+});
 
 const SettingsTabs = ({
   enterpriseId,
@@ -55,9 +88,9 @@ const SettingsTabs = ({
     if (enableLearnerPortal) {
       initialTabs.push(
         <Tab
-          key={SETTINGS_TABS_VALUES.access}
-          eventKey={SETTINGS_TABS_VALUES.access}
-          title={SETTINGS_TAB_LABELS.access}
+          key={ACCESS_TAB}
+          eventKey={ACCESS_TAB}
+          title={<FormattedMessage {...messages[ACCESS_TAB]} />}
         >
           <SettingsAccessTab
             enterpriseId={enterpriseId}
@@ -74,9 +107,9 @@ const SettingsTabs = ({
     if (FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen) {
       initialTabs.push(
         <Tab
-          key={SETTINGS_TABS_VALUES.sso}
-          eventKey={SETTINGS_TABS_VALUES.sso}
-          title={SETTINGS_TAB_LABELS.sso}
+          key={SSO_TAB}
+          eventKey={SSO_TAB}
+          title={<FormattedMessage {...messages[SSO_TAB]} />}
         >
           <SettingsSSOTab
             enterpriseId={enterpriseId}
@@ -88,9 +121,9 @@ const SettingsTabs = ({
     if (SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen) {
       initialTabs.push(
         <Tab
-          key={SETTINGS_TABS_VALUES.lms}
-          eventKey={SETTINGS_TABS_VALUES.lms}
-          title={SETTINGS_TAB_LABELS.lms}
+          key={LMS_TAB}
+          eventKey={LMS_TAB}
+          title={<FormattedMessage {...messages[LMS_TAB]} />}
         >
           <SettingsLMSTab
             enterpriseId={enterpriseId}
@@ -105,9 +138,9 @@ const SettingsTabs = ({
     if (SETTINGS_PAGE_APPEARANCE_TAB) {
       initialTabs.push(
         <Tab
-          key={SETTINGS_TABS_VALUES.appearance}
-          eventKey={SETTINGS_TABS_VALUES.appearance}
-          title={SETTINGS_TAB_LABELS.appearance}
+          key={APPEARANCE_TAB}
+          eventKey={APPEARANCE_TAB}
+          title={<FormattedMessage {...messages[APPEARANCE_TAB]} />}
         >
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
@@ -120,9 +153,9 @@ const SettingsTabs = ({
     if (FEATURE_API_CREDENTIALS_TAB && enableApiCredentialGeneration) {
       initialTabs.push(
         <Tab
-          key={SETTINGS_TABS_VALUES.api_credentials}
-          eventKey={SETTINGS_TABS_VALUES.api_credentials}
-          title={SETTINGS_TAB_LABELS.api_credentials}
+          key={API_CREDENTIALS_TAB}
+          eventKey={API_CREDENTIALS_TAB}
+          title={<FormattedMessage {...messages[API_CREDENTIALS_TAB]} />}
         >
           <SettingsApiCredentialsTab
             enterpriseId={enterpriseId}

@@ -15,7 +15,7 @@ import {
   INVALID_ODATA_API_TIMEOUT_INTERVAL, INVALID_SAPSF_OAUTH_ROOT_URL, INVALID_API_ROOT_URL,
 } from '../../data/constants';
 import { features } from '../../../../config';
-import { getButtonElement } from '../../../test/testUtils';
+import { getButtonElement, renderWithI18nProvider } from '../../../test/testUtils';
 
 jest.mock('../data/actions');
 jest.mock('../../utils');
@@ -108,7 +108,7 @@ describe('SAML Config Tab', () => {
     const mockGetProviderConfig = jest.spyOn(LmsApiService, 'getProviderConfig');
     mockGetProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'success!' }] } });
     contextValue.ssoState.currentStep = 'connect';
-    render(
+    renderWithI18nProvider(
       <Provider store={store}>
         <SSOConfigContext.Provider value={contextValue}>
           <NewSSOConfigForm
@@ -133,7 +133,7 @@ describe('SAML Config Tab', () => {
   });
   test('canceling service provider step', async () => {
     contextValue.ssoState.currentStep = 'serviceprovider';
-    render(
+    renderWithI18nProvider(
       <Provider store={store}>
         <SSOConfigContext.Provider value={contextValue}>
           <NewSSOConfigForm
@@ -168,7 +168,7 @@ describe('SAML Config Tab', () => {
     });
     contextValue.ssoState.currentStep = 'configure';
 
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -200,7 +200,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     contextValue.ssoState.currentStep = 'configure';
 
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -226,7 +226,7 @@ describe('SAML Config Tab', () => {
   test('update config method does not make api call if form is not updated', async () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     contextValue.ssoState.currentStep = 'configure';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -256,7 +256,7 @@ describe('SAML Config Tab', () => {
       throw new Error({ response: { data: 'foobar' } });
     });
     contextValue.ssoState.currentStep = 'configure';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -283,7 +283,7 @@ describe('SAML Config Tab', () => {
   test('canceling without saving configure form', async () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     contextValue.ssoState.currentStep = 'configure';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -315,7 +315,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue('success!');
 
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -348,7 +348,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
     contextValue.ssoState.currentStep = 'configure';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -374,7 +374,7 @@ describe('SAML Config Tab', () => {
   test('idp completed check for url entry', async () => {
     // Setup
     contextValue.ssoState.currentStep = 'idp';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -558,7 +558,7 @@ describe('SAML Config Tab', () => {
       { data: { results: [{ entity_id: 'ayylmao!', public_key: '123abc!', sso_url: 'https://ayylmao.com' }] } },
     );
     contextValue.ssoState.currentStep = 'idp';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -583,7 +583,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
     contextValue.ssoState.currentStep = 'configure';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -662,7 +662,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
     contextValue.ssoState.currentStep = 'configure';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm
@@ -696,7 +696,7 @@ describe('SAML Config Tab', () => {
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
     contextValue.ssoState.currentStep = 'configure';
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <Provider store={store}>
           <NewSSOConfigForm

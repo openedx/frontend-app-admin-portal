@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import SettingsAccessTab from '../index';
 import { SubsidyRequestsContext } from '../../../subsidy-requests';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../../data/constants/subsidyRequests';
@@ -76,11 +77,13 @@ const SettingsAccessTabWrapper = ({
   },
   props = {},
 }) => (
-  <SubsidyRequestsContext.Provider value={subsidyRequestConfigurationContextValue}>
-    <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-      <SettingsAccessTab {...{ ...basicProps, ...props }} />
-    </EnterpriseSubsidiesContext.Provider>
-  </SubsidyRequestsContext.Provider>
+  <IntlProvider>
+    <SubsidyRequestsContext.Provider value={subsidyRequestConfigurationContextValue}>
+      <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+        <SettingsAccessTab {...{ ...basicProps, ...props }} />
+      </EnterpriseSubsidiesContext.Provider>
+    </SubsidyRequestsContext.Provider>
+  </IntlProvider>
 );
 /* eslint-enable react/prop-types */
 
