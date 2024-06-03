@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@openedx/paragon';
-import { getConfig } from '@edx/frontend-platform/config';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { useBudgetId, useSubsidyAccessPolicy } from '../data';
@@ -12,6 +11,7 @@ import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/
 import LmsApiService from '../../../data/services/LmsApiService';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import { BUDGET_DETAIL_MEMBERS_TAB } from '../data/constants';
+import { HELP_CENTER_GROUPS_INVITE_LINK } from '../../settings/data/constants';
 
 const InviteMembersModalWrapper = ({
   isOpen,
@@ -90,7 +90,7 @@ const InviteMembersModalWrapper = ({
             <Button
               variant="tertiary"
               as={Hyperlink}
-              destination={getConfig().ENTERPRISE_SUPPORT_URL}
+              destination={HELP_CENTER_GROUPS_INVITE_LINK}
               target="_blank"
             >
               Help Center: Invite Budget Members
