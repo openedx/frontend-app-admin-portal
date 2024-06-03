@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   screen,
-  render,
   cleanup,
   act,
   waitForElementToBeRemoved,
@@ -9,6 +8,7 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import SettingsAccessTabSection from '../SettingsAccessTabSection';
+import { renderWithI18nProvider } from '../../../test/testUtils';
 
 const generateProps = ({
   checked,
@@ -35,7 +35,7 @@ describe('<SettingsAccessTabSection />', () => {
       onFormSwitchChange: changeSpy,
       onCollapsibleToggle: () => {},
     });
-    render(<SettingsAccessTabSection {...props} />);
+    renderWithI18nProvider(<SettingsAccessTabSection {...props} />);
     expect(screen.queryByText(props.children)).toBeTruthy();
     // click on form.switch
     const enableSwitch = screen.getByText('Enable', { exact: false });
@@ -52,7 +52,7 @@ describe('<SettingsAccessTabSection />', () => {
         onCollapsibleToggle: toggleSpy,
       });
       // is open by default
-      render(<SettingsAccessTabSection {...props} />);
+      renderWithI18nProvider(<SettingsAccessTabSection {...props} />);
       // click on collapsible title
       const titleArea = screen.getByText(props.title);
       await act(async () => { userEvent.click(titleArea); });
@@ -69,7 +69,7 @@ describe('<SettingsAccessTabSection />', () => {
         onFormSwitchChange: toggleSpy,
       });
       // is open by default
-      render(<SettingsAccessTabSection {...props} />);
+      renderWithI18nProvider(<SettingsAccessTabSection {...props} />);
       // click on collapsible title
       const titleArea = screen.getByText(props.title);
       await act(async () => { userEvent.click(titleArea); });

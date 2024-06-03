@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { StatefulButton, Icon, Spinner } from '@openedx/paragon';
 import { Download, Check } from '@openedx/paragon/icons';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import { logError } from '@edx/frontend-platform/logging';
 import { saveAs } from 'file-saver';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
 
-const DownloadCsvButton = () => {
+const DownloadCsvButton = ({ intl }) => {
   const { subscription } = useContext(SubscriptionDetailContext);
   const [buttonState, setButtonState] = useState('default');
 
@@ -43,9 +44,21 @@ const DownloadCsvButton = () => {
       state={buttonState}
       variant="outline-primary"
       labels={{
-        default: 'Download all',
-        pending: 'Downloading',
-        complete: 'Downloaded',
+        default: intl.formatMessage({
+          id: 'admin.portal.download.csv.button.text',
+          defaultMessage: 'Download all',
+          description: 'Default label for the download CSV button.',
+        }),
+        pending: intl.formatMessage({
+          id: 'admin.portal.download.csv.button.downloading.text',
+          defaultMessage: 'Downloading',
+          description: 'Label for when CSV download is pending.',
+        }),
+        complete: intl.formatMessage({
+          id: 'admin.portal.download.csv.button.downloaded.text',
+          defaultMessage: 'Downloaded',
+          description: 'Label for when CSV download is complete.',
+        }),
       }}
       icons={{
         default: <Icon src={Download} />,
@@ -58,4 +71,8 @@ const DownloadCsvButton = () => {
   );
 };
 
-export default DownloadCsvButton;
+DownloadCsvButton.propTypes = {
+  intl: intlShape.isRequired,
+};
+
+export default injectIntl(DownloadCsvButton);

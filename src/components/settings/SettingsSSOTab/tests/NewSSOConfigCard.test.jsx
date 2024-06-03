@@ -1,14 +1,15 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import { act, render, screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import NewSSOConfigCard from '../NewSSOConfigCard';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { renderWithI18nProvider } from '../../../test/testUtils';
 
 describe('New SSO Config Card Tests', () => {
   test('displays enabled and validated status icon properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -33,7 +34,7 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays not validated status icon properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -58,7 +59,7 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays key off icon status icon properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -83,7 +84,7 @@ describe('New SSO Config Card Tests', () => {
     ).toBeInTheDocument();
   });
   test('displays badges properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -106,7 +107,7 @@ describe('New SSO Config Card Tests', () => {
         'existing-sso-config-card-badge-in-progress',
       ),
     ).toBeInTheDocument();
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -156,7 +157,7 @@ describe('New SSO Config Card Tests', () => {
       setProviderConfig: mockSetProviderConfig,
       setRefreshBool: jest.fn(),
     };
-    render(
+    renderWithI18nProvider(
       <SSOConfigContext.Provider value={contextValue}>
         <NewSSOConfigCard
           config={{
@@ -186,7 +187,7 @@ describe('New SSO Config Card Tests', () => {
     expect(mockSetProviderConfig).toHaveBeenCalled();
   });
   test('displays enable button properly', async () => {
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -213,7 +214,7 @@ describe('New SSO Config Card Tests', () => {
   test('handles kebob Delete dropdown option', async () => {
     const spy = jest.spyOn(LmsApiService, 'deleteEnterpriseSsoOrchestrationRecord');
     spy.mockImplementation(() => Promise.resolve({}));
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',
@@ -242,7 +243,7 @@ describe('New SSO Config Card Tests', () => {
   test('handles kebob Disable dropdown option', async () => {
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseSsoOrchestrationRecord');
     spy.mockImplementation(() => Promise.resolve({}));
-    render(
+    renderWithI18nProvider(
       <NewSSOConfigCard
         config={{
           display_name: 'test',

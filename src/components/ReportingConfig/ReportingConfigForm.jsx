@@ -9,6 +9,7 @@ import {
   Check, Close, Download, Error,
 } from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
@@ -245,7 +246,9 @@ class ReportingConfigForm extends React.Component {
   };
 
   render() {
-    const { config, availableCatalogs, reportingConfigTypes } = this.props;
+    const {
+      config, availableCatalogs, reportingConfigTypes, intl,
+    } = this.props;
     const {
       frequency,
       invalidFields,
@@ -277,7 +280,11 @@ class ReportingConfigForm extends React.Component {
               checked={active}
               onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
             >
-              Active
+              <FormattedMessage
+                id="admin.portal.reporting.config.active"
+                defaultMessage="Active"
+                description="Checkbox label for whether the reporting configuration is active"
+              />
             </Form.Checkbox>
           </Form.Group>
         </div>
@@ -285,23 +292,47 @@ class ReportingConfigForm extends React.Component {
           <div className="col col-6">
             {this.renderSelect({
               key: 'dataType',
-              helpText: 'The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report',
-              label: 'Data Type',
+              helpText: intl.formatMessage({
+                id: 'admin.portal.reporting.config.data.type.help',
+                defaultMessage: 'The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report',
+                description: 'Help text for the data type field in the reporting configuration form',
+              }),
+              label: intl.formatMessage({
+                id: 'admin.portal.reporting.config.dataType',
+                defaultMessage: 'Data Type',
+                description: 'Label for the data type field in the reporting configuration form',
+              }),
               options: [...dataTypesOptions, ...selectedDataTypesOption],
               disabled: config && !dataTypesOptionsValues.includes(config.dataType),
             })}
             {this.renderSelect({
               key: 'reportType',
-              helpText: 'The type this report should be sent as, e.g. CSV',
-              label: 'Report Type',
+              helpText: intl.formatMessage({
+                id: 'admin.portal.reporting.config.report.type.help',
+                defaultMessage: 'The type this report should be sent as, e.g. CSV',
+                description: 'Help text for the report type field in the reporting configuration form',
+              }),
+              label: intl.formatMessage({
+                id: 'admin.portal.reporting.config.report.type',
+                defaultMessage: 'Report Type',
+                description: 'Label for the report type field in the reporting configuration form',
+              }),
               options: reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] })),
             })}
           </div>
           <div className="col col-6">
             {this.renderSelect({
               key: 'deliveryMethod',
-              helpText: 'The method in which the data should be sent',
-              label: 'Delivery Method',
+              helpText: intl.formatMessage({
+                id: 'admin.portal.reporting.config.delivery.method.help',
+                defaultMessage: 'The method in which the data should be sent',
+                description: 'Help text for the delivery method field in the reporting configuration form',
+              }),
+              label: intl.formatMessage({
+                id: 'admin.portal.reporting.config.delivery.method.field',
+                defaultMessage: 'Delivery Method',
+                description: 'Label for the delivery method field in the reporting configuration form',
+              }),
               options: reportingConfigTypes.deliveryMethod.map(item => ({ label: item[1], value: item[0] })),
               onChange: event => this.setState({ deliveryMethod: event.target.value }),
               isInvalid: !!APIErrors.deliveryMethod,
@@ -309,8 +340,16 @@ class ReportingConfigForm extends React.Component {
             })}
             {this.renderSelect({
               key: 'frequency',
-              helpText: 'The frequency interval (daily, weekly, or monthly) that the report should be sent',
-              label: 'Frequency',
+              helpText: intl.formatMessage({
+                id: 'admin.portal.reporting.config.frequency.help',
+                defaultMessage: 'The frequency interval (daily, weekly, or monthly) that the report should be sent',
+                description: 'Help text for the frequency field in the reporting configuration form',
+              }),
+              label: intl.formatMessage({
+                id: 'admin.portal.reporting.config.frequency.1',
+                defaultMessage: 'Frequency',
+                description: 'Label for the frequency field in the reporting configuration form',
+              }),
               options: reportingConfigTypes.frequency.map(item => ({ label: item[1], value: item[0] })),
               defaultValue: frequency,
               onChange: event => this.setState({ frequency: event.target.value }),
@@ -321,9 +360,17 @@ class ReportingConfigForm extends React.Component {
           <div className="col">
             {this.renderNumberField({
               key: 'dayOfMonth',
-              helpText: 'The day of the month to send the report. This field is required and only valid when the frequency is monthly',
+              helpText: intl.formatMessage({
+                id: 'admin.portal.reporting.config.day.of.month.help',
+                defaultMessage: 'The day of the month to send the report. This field is required and only valid when the frequency is monthly',
+                description: 'Help text for the day of the month field in the reporting configuration form',
+              }),
               isInvalid: frequency === 'monthly' && invalidFields.dayOfMonth,
-              label: 'Day of Month',
+              label: intl.formatMessage({
+                id: 'admin.portal.reporting.config.day.of.month',
+                defaultMessage: 'Day of Month',
+                description: 'Label for the day of the month field in the reporting configuration form',
+              }),
               max: MONTHLY_MAX,
               min: MONTHLY_MIN,
               disabled: !(frequency === 'monthly'),
@@ -333,8 +380,16 @@ class ReportingConfigForm extends React.Component {
           <div className="col">
             {this.renderSelect({
               key: 'dayOfWeek',
-              helpText: 'The day of the week to send the report. This field is required and only valid when the frequency is weekly',
-              label: 'Day of Week',
+              helpText: intl.formatMessage({
+                id: 'admin.portal.reporting.config.day.of.week.help',
+                defaultMessage: 'The day of the week to send the report. This field is required and only valid when the frequency is weekly',
+                description: 'Help text for the day of the week field in the reporting configuration form',
+              }),
+              label: intl.formatMessage({
+                id: 'admin.portal.reporting.config.day.of.week',
+                defaultMessage: 'Day of Week',
+                description: 'Label for the day of the week field in the reporting configuration form',
+              }),
               options: reportingConfigTypes.dayOfWeek.map(item => ({ label: item[1], value: item[0] })),
               disabled: !(frequency === 'weekly'),
             })}
@@ -342,18 +397,32 @@ class ReportingConfigForm extends React.Component {
           <div className="col">
             {this.renderNumberField({
               key: 'hourOfDay',
-              helpText: 'The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings',
+              helpText: intl.formatMessage({
+                id: 'admin.portal.reporting.config.hour.of.day.help',
+                defaultMessage: 'The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings',
+                description: 'Help text for the hour of the day field in the reporting configuration form',
+              }),
               invalidMessage: 'Required for all frequency types',
               isInvalid: invalidFields.hourOfDay,
               min: 0,
-              label: 'Hour of Day',
+              label: intl.formatMessage({
+                id: 'admin.portal.reporting.config.hour.of.day',
+                defaultMessage: 'Hour of Day',
+                description: 'Label for the hour of the day field in the reporting configuration form',
+              }),
             })}
           </div>
         </div>
         <Form.Group
           isInvalid={!!APIErrors.pgpEncryptionKey}
         >
-          <Form.Label>PGP Encryption Key</Form.Label>
+          <Form.Label>
+            <FormattedMessage
+              id="admin.portal.reporting.config.pgp.encryption.ke"
+              defaultMessage="PGP Encryption Key"
+              description="Label for the PGP Encryption Key field in the reporting configuration form"
+            />
+          </Form.Label>
           <Form.Control
             as="textarea"
             defaultValue={config ? config.pgpEncryptionKey : undefined}
@@ -361,7 +430,11 @@ class ReportingConfigForm extends React.Component {
             onBlur={e => this.handleBlur(e)}
           />
           <Form.Text>
-            The key for encryption, if PGP encrypted file is required
+            <FormattedMessage
+              id="admin.portal.reporting.config.pgp.encryption.key.help"
+              defaultMessage="The key for encryption, if PGP encrypted file is required"
+              description="Help text for the PGP Encryption Key field in the reporting configuration form"
+            />
           </Form.Text>
           {!!APIErrors.pgpEncryptionKey && (
             <Form.Control.Feedback type="invalid">
@@ -387,7 +460,13 @@ class ReportingConfigForm extends React.Component {
           <Form.Group
             isInvalid={!!APIErrors.enableCompression}
           >
-            <Form.Label>Enable Compression</Form.Label>
+            <Form.Label>
+              <FormattedMessage
+                id="admin.portal.reporting.config.enable.compression"
+                defaultMessage="Enable Compression"
+                description="Label for the Enable Compression field in the reporting configuration form"
+              />
+            </Form.Label>
             <Form.Checkbox
               data-testid="compressionCheckbox"
               className="ml-3"
@@ -395,8 +474,11 @@ class ReportingConfigForm extends React.Component {
               onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
             />
             <Form.Text>
-              Specifies whether report should be compressed.
-              Without compression files will not be password protected or encrypted.
+              <FormattedMessage
+                id="admin.portal.reporting.config.enable.compression.help"
+                defaultMessage="Specifies whether report should be compressed. Without compression files will not be password protected or encrypted."
+                description="Help text for the Enable Compression field in the reporting configuration form"
+              />
             </Form.Text>
             {!!APIErrors.enableCompression && (
               <Form.Control.Feedback type="invalid">
@@ -407,7 +489,13 @@ class ReportingConfigForm extends React.Component {
         </div>
         <div className="col">
           <Form.Group controlId="enterpriseCustomerCatalogs">
-            <Form.Label>Enterprise Customer Catalogs</Form.Label>
+            <Form.Label>
+              <FormattedMessage
+                id="admin.portal.reporting.config.enterprise.customer.catalogs"
+                defaultMessage="Enterprise Customer Catalogs"
+                description="Label for the Enterprise Customer Catalogs field in the reporting configuration form"
+              />
+            </Form.Label>
             <Form.Control
               as="select"
               multiple
@@ -418,7 +506,11 @@ class ReportingConfigForm extends React.Component {
               )))}
             </Form.Control>
             <Form.Text>
-              The catalogs that should be included in the report. No selection means all catalogs will be included.
+              <FormattedMessage
+                id="admin.portal.reporting.config.enterprise.customer.catalogs.help"
+                defaultMessage="The catalogs that should be included in the report. No selection means all catalogs will be included."
+                description="Help text for the Enterprise Customer Catalogs field in the reporting configuration form"
+              />
             </Form.Text>
           </Form.Group>
         </div>
@@ -432,10 +524,26 @@ class ReportingConfigForm extends React.Component {
               type="submit"
               id="submitButton"
               labels={{
-                default: 'Submit',
-                pending: 'Saving...',
-                complete: 'Complete',
-                error: 'Error',
+                default: intl.formatMessage({
+                  id: 'admin.portal.reporting.config.submit',
+                  defaultMessage: 'Submit',
+                  description: 'Label for the button when use click to submit the reporting configuration form',
+                }),
+                pending: intl.formatMessage({
+                  id: 'admin.portal.reporting.config.saving',
+                  defaultMessage: 'Saving...',
+                  description: 'Label for the button when the form is being saved',
+                }),
+                complete: intl.formatMessage({
+                  id: 'admin.portal.reporting.config.complete',
+                  defaultMessage: 'Complete',
+                  description: 'Label for the button when the form is complete',
+                }),
+                error: intl.formatMessage({
+                  id: 'admin.portal.reporting.config.error',
+                  defaultMessage: 'Error',
+                  description: 'Label for the button when there is an error',
+                }),
               }}
               icons={{
                 default: <Icon src={Download} />,
@@ -449,7 +557,11 @@ class ReportingConfigForm extends React.Component {
             />
             {submitState === SUBMIT_STATES.ERROR && (
               <Form.Control.Feedback type="invalid">
-                There was an error submitting, please try again.
+                <FormattedMessage
+                  id="admin.portal.reporting.config.error.submitting"
+                  defaultMessage="There was an error submitting, please try again."
+                  description="Error message when there is an error submitting the reporting configuration form"
+                />
               </Form.Control.Feedback>
             )}
           </Form.Group>
@@ -459,7 +571,12 @@ class ReportingConfigForm extends React.Component {
               className="btn-outline-danger mr-3"
               onClick={() => this.props.deleteConfig(config.uuid)}
             >
-              <Icon src={Close} className="danger" /> Delete
+              <Icon src={Close} className="danger" />
+              <FormattedMessage
+                id="admin.portal.reporting.config.delete"
+                defaultMessage="Delete"
+                description="Label for the button to delete the reporting configuration form"
+              />
             </Button>
           )}
         </div>
@@ -514,6 +631,8 @@ ReportingConfigForm.propTypes = {
   createConfig: PropTypes.func.isRequired,
   updateConfig: PropTypes.func,
   deleteConfig: PropTypes.func,
+  // injected
+  intl: intlShape.isRequired,
 };
 
-export default ReportingConfigForm;
+export default injectIntl(ReportingConfigForm);

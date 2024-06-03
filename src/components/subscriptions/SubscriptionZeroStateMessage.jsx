@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Card, Toast } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
@@ -18,15 +19,30 @@ const SubscriptionZeroStateMessage = () => {
     <>
       <Card className="mb-4">
         <Card.Section className="text-center">
-          <h2>Get Started</h2>
+          <h2>
+            <FormattedMessage
+              id="admin.portal.subscription.zero.state.message.get.started"
+              defaultMessage="Get Started"
+              description="Header for getting started with subscription zero state message."
+            />
+          </h2>
           <p className="py-2 lead">
-            Assign your learners to a subscription license to enable their learning experiences on edX.
+            <FormattedMessage
+              id="admin.portal.subscription.zero.state.message.assign.learners"
+              defaultMessage="Assign your learners to a subscription license to enable their learning experiences on edX."
+              description="Description for assigning learners to a subscription license."
+            />
           </p>
           <InviteLearnersButton
             onSuccess={({ numSuccessfulAssignments }) => {
               forceRefresh();
               forceRefreshDetailView();
-              setToastMessage(`${numSuccessfulAssignments} email addresses were successfully added.`);
+              setToastMessage(<FormattedMessage
+                id="admin.portal.subscription.zero.state.message.success.toast"
+                defaultMessage="{numSuccessfulAssignments} email addresses were successfully added."
+                description="Toast message displayed when email addresses are successfully added."
+                values={{ numSuccessfulAssignments }}
+              />);
               setShowToast(true);
             }}
             disabled={isSubscriptionExpired}

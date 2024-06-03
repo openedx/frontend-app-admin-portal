@@ -17,7 +17,7 @@ import {
   BROWSE_AND_REQUEST_ALERT_TEXT,
 } from './data/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { SETTINGS_TABS_VALUES } from '../settings/data/constants';
+import { ACCESS_TAB } from '../settings/data/constants';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -36,7 +36,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${SETTINGS_TABS_VALUES.access}`;
+const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${ACCESS_TAB}`;
 
 const NewFeatureAlertBrowseAndRequestWrapper = () => (
   <Router>

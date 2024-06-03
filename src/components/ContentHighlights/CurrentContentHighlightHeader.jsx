@@ -92,7 +92,7 @@ const CurrentContentHighlightHeader = ({ enterpriseId }) => {
       </ActionRow>
       <p>
         <FormattedMessage
-          id="highlights.catalog.visibility.tab.catalog.visibility.not.updated.alert.error.header.title"
+          id="highlights.catalogVisibility.tab.catalog.error.title"
           defaultMessage="Create up to {maxHighlights} highlights for your learners."
           description="Header title for error alert shown to admin when catalog visibility failed to update."
           values={{

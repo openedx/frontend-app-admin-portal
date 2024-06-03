@@ -4,6 +4,7 @@ import { Info } from '@openedx/paragon/icons';
 import {
   Alert,
 } from '@openedx/paragon';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
 import SettingsAccessTabSection from './SettingsAccessTabSection';
 
@@ -15,6 +16,7 @@ const SettingsAccessSubsidyRequestManagement = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isInitiallyDisabled, setIsInitiallyDisabled] = useState(disabled);
+  const intl = useIntl();
 
   const subsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
 
@@ -54,16 +56,34 @@ const SettingsAccessSubsidyRequestManagement = ({
     <>
       {error && (
         <Alert icon={Info} variant="danger" dismissible>
-          <Alert.Heading>Something went wrong</Alert.Heading>
-          There was an issue with your request, please try again.
+          <Alert.Heading>
+            <FormattedMessage
+              id="settings.access.subsidyRequestManagement.error"
+              defaultMessage="Something went wrong"
+              description="Error message heading for subsidy request management"
+            />
+          </Alert.Heading>
+          <FormattedMessage
+            id="settings.access.subsidyRequestManagement.errorDescription"
+            defaultMessage="There was an issue with your request, please try again."
+            description="Error message description for subsidy request management"
+          />
         </Alert>
       )}
       <SettingsAccessTabSection
-        title="Course requests"
+        title={intl.formatMessage({
+          id: 'settings.access.subsidyRequestManagement.title',
+          defaultMessage: 'Course requests',
+          description: 'Title for the subsidy request management section in the settings access tab',
+        })}
         checked={subsidyRequestsEnabled}
         loading={isLoading}
         onFormSwitchChange={handleFormSwitchChange}
-        formSwitchHelperText={disabled ? 'Enable access channel to activate this feature' : null}
+        formSwitchHelperText={disabled ? intl.formatMessage({
+          id: 'settings.access.subsidyRequestManagement.disabled',
+          defaultMessage: 'Enable access channel to activate this feature',
+          description: 'Helper text for the subsidy request management form switch when it is disabled',
+        }) : null}
         disabled={disabled}
       />
     </>

@@ -140,7 +140,7 @@ const BudgetActions = ({
               </h3>
               <p>
                 <FormattedMessage
-                  id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn"
+                  id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn.description"
                   defaultMessage="All people in your organization can choose what to learn
                 from the catalog and spend from the available balance to enroll."
                   description="Decription which tells that user can choose from the catalog and spend from the available balance to enroll"
@@ -173,7 +173,7 @@ const BudgetActions = ({
               </h3>
               <p>
                 <FormattedMessage
-                  id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn"
+                  id="lcm.budget.detail.page.overview.budget.actions.all.people.choose.learn.1"
                   defaultMessage="All people in your organization can choose what to learn
                 from the catalog and spend from the available balance to enroll."
                   description="Description which tells that user can choose from the catalog and spend from the available balance to enroll"

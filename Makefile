@@ -5,7 +5,7 @@ intl_imports = ./node_modules/.bin/intl-imports.js
 i18n = ./src/i18n
 transifex_input = $(i18n)/transifex_input.json
 # This directory must match .babelrc .
-transifex_temp = ./temp/babel-plugin-react-intl
+transifex_temp = ./temp/babel-plugin-formatjs
 
 shell: ## run a shell on the cookie-cutter container
 	docker exec -it /bin/bash

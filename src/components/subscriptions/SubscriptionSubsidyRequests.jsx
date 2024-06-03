@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Stack } from '@openedx/paragon';
 import { connect } from 'react-redux';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import SubsidyRequestManagementTable, {
   useSubsidyRequests,
@@ -43,8 +44,20 @@ const SubscriptionSubsidyRequests = ({ enterpriseId }) => {
   return (
     <Stack gap={2}>
       <div>
-        <h2>Enrollment requests</h2>
-        <p>Approve or decline enrollment requests for individual learners below.</p>
+        <h2>
+          <FormattedMessage
+            id="admin.portal.manage.request.enrollment.requests.heading"
+            defaultMessage="Enrollment requests"
+            description="Heading for the enrollment requests section in the manage request tab."
+          />
+        </h2>
+        <p>
+          <FormattedMessage
+            id="admin.portal.manage.request.enrollment.requests.description"
+            defaultMessage="Approve or decline enrollment requests for individual learners below."
+            description="Description for the enrollment requests section explaining the actions that can be taken."
+          />
+        </p>
       </div>
       <NoAvailableLicensesBanner subscriptions={subscriptions} />
       <SubsidyRequestManagementTable

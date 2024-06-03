@@ -10,6 +10,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import LmsApiService from '../../../data/services/LmsApiService';
 import NewSSOConfigAlerts from './NewSSOConfigAlerts';
 import NewSSOConfigCard from './NewSSOConfigCard';
@@ -37,6 +38,7 @@ const NewExistingSSOConfigs = ({
   const [updateError, setUpdateError] = useState(null);
 
   const queryClient = useQueryClient();
+  const intl = useIntl();
 
   const renderCards = (gridTitle, configList) => {
     if (configList.length > 0) {
@@ -72,11 +74,20 @@ const NewExistingSSOConfigs = ({
                       icon={Info}
                       onClose={() => (setUpdateError(null))}
                     >
-                      <Alert.Heading>Something went wrong behind the scenes</Alert.Heading>
+                      <Alert.Heading>
+                        <FormattedMessage
+                          id="adminPortal.settings.sso.error.heading"
+                          defaultMessage="Something went wrong behind the scenes"
+                          description="Error heading for SSO configuration error alert."
+                        />
+                      </Alert.Heading>
                       <p>
-                        We were unable to {updateError?.action} your SSO configuration due to an internal error. Please
-                        {' '}try again in a couple of minutes. If the problem persists, contact enterprise customer
-                        {' '}support.
+                        <FormattedMessage
+                          id="adminPortal.settings.sso.error.message"
+                          defaultMessage="We were unable to {action} your SSO configuration due to an internal error. Please try again in a couple of minutes. If the problem persists, contact enterprise customer support."
+                          description="Error message for SSO configuration error alert."
+                          values={{ action: updateError?.action }}
+                        />
                       </p>
                     </Alert>
                   </div>
@@ -211,8 +222,16 @@ const NewExistingSSOConfigs = ({
               setIsStepperOpen={setIsStepperOpen}
             />
           )}
-          {renderCards('Active', activeConfigs)}
-          {renderCards('Inactive', inactiveConfigs)}
+          {renderCards(intl.formatMessage({
+            id: 'adminPortal.settings.sso.active',
+            defaultMessage: 'Active',
+            description: 'Title for the active SSO configurations grid',
+          }), activeConfigs)}
+          {renderCards(intl.formatMessage({
+            id: 'adminPortal.settings.sso.inactive',
+            defaultMessage: 'Inactive',
+            description: 'Title for the inactive SSO configurations grid',
+          }), inactiveConfigs)}
         </>
       )}
       {loading && (

@@ -2,6 +2,7 @@ import React from 'react';
 import { Hyperlink } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { configuration } from '../../config';
 
@@ -30,7 +31,13 @@ ContactCustomerSupportButton.propTypes = {
 };
 
 ContactCustomerSupportButton.defaultProps = {
-  children: 'Contact support',
+  children: (
+    <FormattedMessage
+      id="admin.portal.contact.support.button.label"
+      defaultMessage="Contact support"
+      description="Label for the 'Contact support' button in the admin portal."
+    />
+  ),
   variant: 'outline-primary',
 };
 
