@@ -230,7 +230,7 @@ describe('<InviteMemberModal />', () => {
       });
     });
   });
-  it('throws up errors for incorrectly formatted emails', async () => {
+  it('throws up errors for incorrectly formatted email', async () => {
     render(<InviteModalWrapper />);
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
     const textareaInput = textareaInputLabel.closest('textarea');
@@ -243,6 +243,38 @@ describe('<InviteMemberModal />', () => {
       expect(inviteButton).toBeDisabled();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
+  it('throws up errors for incorrectly formatted emails', async () => {
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    userEvent.type(textareaInput, 'sillygoosethisisntanemail');
+    userEvent.type(textareaInput, '{enter}');
+    userEvent.type(textareaInput, 'neitheristhis');
+    await waitFor(() => {
+      expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
+      expect(screen.getByText('Please check your member emails and try again.')).toBeInTheDocument();
+      expect(screen.getByText('sillygoosethisisntanemail and 1 other email addresses are not valid.')).toBeInTheDocument();
+      const inviteButton = screen.getByRole('button', { name: 'Invite' });
+      expect(inviteButton).toBeDisabled();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('throws up errors for incorrectly formatted emails but allows inviting valid email', async () => {
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    userEvent.type(textareaInput, 'sillygoosethisisntanemail');
+    userEvent.type(textareaInput, '{enter}');
+    userEvent.type(textareaInput, 'neitheristhis');
+    userEvent.type(textareaInput, '{enter}');
+    userEvent.type(textareaInput, 'but@this.is');
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
+      expect(screen.getByText('sillygoosethisisntanemail and 1 other email addresses are not valid.')).toBeInTheDocument();
+      const inviteButton = screen.getByRole('button', { name: 'Invite' });
+      expect(inviteButton).not.toBeDisabled();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
   it('throws up warning for duplicated emails', async () => {
     render(<InviteModalWrapper />);
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
@@ -251,7 +283,26 @@ describe('<InviteMemberModal />', () => {
     userEvent.type(textareaInput, '{enter}');
     userEvent.type(textareaInput, 'oopsallberries@example.com');
     await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('oopsallberries@example.com was entered more than once.')).toBeInTheDocument();
+      expect(screen.getByText('Only 1 invite per email address will be sent.')).toBeInTheDocument();
+      const inviteButton = screen.getByRole('button', { name: 'Invite' });
+      expect(inviteButton).not.toBeDisabled();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('throws up warning for invalid/duplicated emails', async () => {
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    userEvent.type(textareaInput, 'oopsallberries@example.com');
+    userEvent.type(textareaInput, '{enter}');
+    userEvent.type(textareaInput, 'oopsallberries@example.com');
+    userEvent.type(textareaInput, '{enter}');
+    userEvent.type(textareaInput, 'sillygoosethisisntanemail');
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('sillygoosethisisntanemail is not a valid email.')).toBeInTheDocument();
+      expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
       expect(screen.getByText('Only 1 invite per email address will be sent.')).toBeInTheDocument();
       const inviteButton = screen.getByRole('button', { name: 'Invite' });
       expect(inviteButton).not.toBeDisabled();
