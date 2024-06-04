@@ -42,7 +42,7 @@ const useEnterpriseRemovedGroupMembers = ({ policyUuid, groupId }) => {
   }, [groupId, policyUuid, fetchPaginatedData]);
 
   return {
-    isMembersLoading: isLoading,
+    isRemovedMembersLoading: isLoading,
     removedGroupMembersCount: removedGroupMembers.length,
   };
 };

@@ -126,7 +126,7 @@ describe('<BudgetDetailPage />', () => {
     });
 
     useEnterpriseRemovedGroupMembers.mockReturnValue({
-      isMembersLoading: false,
+      isRemovedMembersLoading: false,
       removedGroupMembersCount: 0,
     });
   });
@@ -312,7 +312,7 @@ describe('<BudgetDetailPage />', () => {
       },
     });
     useEnterpriseRemovedGroupMembers.mockReturnValue({
-      isMembersLoading: false,
+      isRemovedMembersLoading: false,
       removedGroupMembersCount: 1,
     });
     const mockFetchEnterpriseGroupMembersTableData = jest.fn();
@@ -719,7 +719,7 @@ describe('<BudgetDetailPage />', () => {
       },
     });
     useEnterpriseRemovedGroupMembers.mockReturnValue({
-      isMembersLoading: false,
+      isRemovedMembersLoading: false,
       removedGroupMembersCount: 1,
     });
     const mockFetchEnterpriseGroupMembersTableData = jest.fn();

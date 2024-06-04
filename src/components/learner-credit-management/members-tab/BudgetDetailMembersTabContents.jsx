@@ -27,7 +27,7 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh })
     refresh,
   });
   const {
-    isMembersLoading,
+    isRemovedMembersLoading,
     removedGroupMembersCount,
   } = useEnterpriseRemovedGroupMembers({
     policyUuid: subsidyAccessPolicy.uuid,
@@ -36,7 +36,7 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh })
 
   return (
     <div>
-      {!isMembersLoading ? (
+      {!isRemovedMembersLoading ? (
         <>
           <div className="mb-4">
             <h4 className="mt-1">Budget Members</h4>
