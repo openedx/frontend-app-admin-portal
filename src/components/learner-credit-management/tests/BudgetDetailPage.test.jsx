@@ -41,6 +41,7 @@ import {
   mockEnterpriseOfferId,
   mockEnterpriseOfferMetadata,
   mockPerLearnerSpendLimitSubsidyAccessPolicy,
+  mockSpendLimitNoGroupsSubsidyAccessPolicy,
   mockSubsidyAccessPolicyUUID,
   mockSubsidySummary,
 } from '../data/tests/constants';
@@ -513,6 +514,49 @@ describe('<BudgetDetailPage />', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
       data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
+
+    // Overview empty state (no content assignments, no spent transactions)
+    expect(screen.queryByText('No budget activity yet? Invite members to browse the catalog and enroll!')).not.toBeInTheDocument();
+  });
+
+  it('does not render bne zero state when the customer does not have any group associations', async () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          enterpriseGroupsV1: true,
+        },
+      },
+    };
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockSpendLimitNoGroupsSubsidyAccessPolicy,
     });
     useEnterpriseGroupLearners.mockReturnValue({
       data: {
