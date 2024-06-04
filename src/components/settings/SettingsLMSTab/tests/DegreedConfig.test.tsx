@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import DegreedConfig from '../LMSConfigs/Degreed/DegreedConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
@@ -63,27 +64,29 @@ const mockDelete = jest.fn();
 
 function testDegreedConfigSetup(formData) {
   return (
-    <FormContextWrapper
-      formWorkflowConfig={DegreedConfig({
-        enterpriseCustomerUuid: enterpriseId,
-        onSubmit: mockSetExistingConfigFormData,
-        handleCloseClick: mockOnClick,
-        existingData: formData,
-        existingConfigNames: new Map(),
-        channelMap: {
-          DEGREED2: {
-            post: mockPost,
-            update: mockUpdate,
-            delete: mockDelete,
+    <IntlProvider locale="en">
+      <FormContextWrapper
+        formWorkflowConfig={DegreedConfig({
+          enterpriseCustomerUuid: enterpriseId,
+          onSubmit: mockSetExistingConfigFormData,
+          handleCloseClick: mockOnClick,
+          existingData: formData,
+          existingConfigNames: new Map(),
+          channelMap: {
+            DEGREED2: {
+              post: mockPost,
+              update: mockUpdate,
+              delete: mockDelete,
+            },
           },
-        },
-      })}
-      workflowTitle="New learning platform integration"
-      onClickOut={mockOnClick}
-      formData={formData}
-      isStepperOpen
-      dispatch={jest.fn()}
-    />
+        })}
+        workflowTitle="New learning platform integration"
+        onClickOut={mockOnClick}
+        formData={formData}
+        isStepperOpen
+        dispatch={jest.fn()}
+      />
+    </IntlProvider>
   );
 }
 async function clearForm() {

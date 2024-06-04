@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { CardGrid, useToggle } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { getStatus } from './utils';
 import ExistingCard from './ExistingCard';
 import ConfigErrorModal from '../ConfigErrorModal';
@@ -49,7 +50,13 @@ const ExistingLMSCardDeck = ({
       />
       { listActive.length > 0 && (
       <>
-        <h4 className="mt-1 mb-4">Active</h4>
+        <h4 className="mt-1 mb-4">
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.activeHeader"
+            defaultMessage="Active"
+            description="Heading for the list of active LMS configurations"
+          />
+        </h4>
         <CardGrid
           className="mr-6"
           columnSizes={{
@@ -65,7 +72,13 @@ const ExistingLMSCardDeck = ({
       )}
       { listInactive.length > 0 && (
       <>
-        <h4 className="mt-1 mb-4">Inactive</h4>
+        <h4 className="mt-1 mb-4">
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.inactiveHeader"
+            defaultMessage="Inactive"
+            description="Heading for the list of inactive LMS configurations"
+          />
+        </h4>
         <CardGrid
           className="mr-6"
           columnSizes={{

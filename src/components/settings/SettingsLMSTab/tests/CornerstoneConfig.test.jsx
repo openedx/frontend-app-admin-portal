@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
 import CornerstoneConfig from '../LMSConfigs/Cornerstone/CornerstoneConfig';
 import FormContextWrapper from '../../../forms/FormContextWrapper';
@@ -38,26 +39,28 @@ const mockDelete = jest.fn();
 
 function testCornerstoneConfigSetup(formData) {
   return (
-    <FormContextWrapper
-      formWorkflowConfig={CornerstoneConfig({
-        enterpriseCustomerUuid: enterpriseId,
-        onSubmit: mockSetExistingConfigFormData,
-        handleCloseClick: mockOnClick,
-        existingData: formData,
-        existingConfigNames: new Map(),
-        channelMap: {
-          CSOD: {
-            post: mockPost,
-            update: mockUpdate,
-            delete: mockDelete,
+    <IntlProvider locale="en">
+      <FormContextWrapper
+        formWorkflowConfig={CornerstoneConfig({
+          enterpriseCustomerUuid: enterpriseId,
+          onSubmit: mockSetExistingConfigFormData,
+          handleCloseClick: mockOnClick,
+          existingData: formData,
+          existingConfigNames: new Map(),
+          channelMap: {
+            CSOD: {
+              post: mockPost,
+              update: mockUpdate,
+              delete: mockDelete,
+            },
           },
-        },
-      })}
-      onClickOut={mockOnClick}
-      formData={formData}
-      isStepperOpen
-      dispatch={jest.fn()}
-    />
+        })}
+        onClickOut={mockOnClick}
+        formData={formData}
+        isStepperOpen
+        dispatch={jest.fn()}
+      />
+    </IntlProvider>
   );
 }
 

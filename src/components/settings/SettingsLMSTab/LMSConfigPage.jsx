@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
 import FormContextWrapper from '../../forms/FormContextWrapper';
 import { getChannelMap } from '../../../utils';
 import { LMSFormWorkflowConfig } from './LMSFormWorkflowConfig';
@@ -17,6 +18,8 @@ const LMSConfigPage = ({
   closeLmsStepper,
   lmsType,
 }) => {
+  const intl = useIntl();
+
   const channelMap = useMemo(() => getChannelMap(), []);
   const handleCloseWorkflow = (submitted, msg) => {
     onClick(submitted ? msg : '');
@@ -37,7 +40,11 @@ const LMSConfigPage = ({
   return (
     <div>
       <FormContextWrapper
-        workflowTitle="New learning platform integration"
+        workflowTitle={intl.formatMessage({
+          id: 'adminPortal.settings.learningPlatformTab.newIntegrationTitle',
+          defaultMessage: 'New learning platform integration',
+          description: 'Title for new learning platform integration workflow',
+        })}
         formWorkflowConfig={formWorkflowConfig}
         onClickOut={handleCloseWorkflow}
         formData={existingConfigFormData}

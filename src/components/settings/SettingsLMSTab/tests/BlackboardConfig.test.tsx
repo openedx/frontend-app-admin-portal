@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import BlackboardConfig from '../LMSConfigs/Blackboard/BlackboardConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
@@ -60,28 +61,30 @@ mockFetchGlobal.mockReturnValue({ data: { results: [{ app_key: 1 }] } });
 
 function testBlackboardConfigSetup(formData) {
   return (
-    <FormContextWrapper
-      formWorkflowConfig={BlackboardConfig({
-        enterpriseCustomerUuid: enterpriseId,
-        onSubmit: mockSetExistingConfigFormData,
-        handleCloseClick: mockOnClick,
-        existingData: formData,
-        existingConfigNames: new Map(),
-        channelMap: {
-          BLACKBOARD: {
-            post: mockPost,
-            update: mockUpdate,
-            fetch: mockFetch,
-            fetchGlobal: mockFetchGlobal,
+    <IntlProvider locale="en">
+      <FormContextWrapper
+        formWorkflowConfig={BlackboardConfig({
+          enterpriseCustomerUuid: enterpriseId,
+          onSubmit: mockSetExistingConfigFormData,
+          handleCloseClick: mockOnClick,
+          existingData: formData,
+          existingConfigNames: new Map(),
+          channelMap: {
+            BLACKBOARD: {
+              post: mockPost,
+              update: mockUpdate,
+              fetch: mockFetch,
+              fetchGlobal: mockFetchGlobal,
+            },
           },
-        },
-      })}
-      workflowTitle="New learning platform integration"
-      onClickOut={mockOnClick}
-      formData={formData}
-      isStepperOpen
-      dispatch={jest.fn()}
-    />
+        })}
+        workflowTitle="New learning platform integration"
+        onClickOut={mockOnClick}
+        formData={formData}
+        isStepperOpen
+        dispatch={jest.fn()}
+      />
+    </IntlProvider>
   );
 }
 

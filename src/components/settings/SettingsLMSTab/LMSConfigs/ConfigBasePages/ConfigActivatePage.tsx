@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { Container, Form, Image } from '@openedx/paragon';
 import { BLACKBOARD_TYPE, CANVAS_TYPE } from '../../../data/constants';
@@ -19,17 +20,29 @@ const ConfigActivatePage = (lmsType: string) => {
             src={channelMapping[lmsType].icon}
           />
           <h3>
-            Activate your {lmsName} integration
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.activatePage.title"
+              defaultMessage="Activate your {lmsName} integration"
+              description="Title for the Activate Page."
+              values={{ lmsName }}
+            />
           </h3>
         </span>
         <p>
-          Your {lmsName} integration has been successfully {verb} and is ready to
-          activate!
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.activatePage.successMessage"
+            defaultMessage="Your {lmsName} integration has been successfully {verb} and is ready to activate!"
+            description="Success message for the Activate Page."
+            values={{ lmsName, verb }}
+          />
         </p>
-
         <p>
-          Once activated, edX For Business will begin syncing content metadata and
-          learner activity with {lmsName}.
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.activatePage.activationInstructions"
+            defaultMessage="Once activated, edX For Business will begin syncing content metadata and learner activity with {lmsName}."
+            description="Activation instructions for the Activate Page."
+            values={{ lmsName }}
+          />
         </p>
       </Form>
     </Container>

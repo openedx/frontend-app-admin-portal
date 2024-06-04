@@ -63,7 +63,7 @@ describe('API Credentials Tab', () => {
     );
     expect(screen.getByText('API credentials')).toBeInTheDocument();
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
-    expect(screen.getByText("You don't have API credentials yet.")).toBeInTheDocument();
+    expect(screen.getByText('You do not have API credentials yet.')).toBeInTheDocument();
     expect(screen.queryByText('Help Center: EdX Enterprise API Guide')).toBeInTheDocument();
     const helpLink = screen.getByText('Help Center: EdX Enterprise API Guide');
     expect(helpLink.getAttribute('href')).toBe(HELP_CENTER_API_GUIDE);

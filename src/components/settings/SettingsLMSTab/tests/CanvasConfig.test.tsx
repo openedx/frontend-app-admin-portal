@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import CanvasConfig from '../LMSConfigs/Canvas/CanvasConfig';
 import { INVALID_LINK, INVALID_NAME } from '../../data/constants';
@@ -58,27 +59,29 @@ mockFetch.mockResolvedValue({ data: { refresh_token: 'foobar' } });
 
 function testCanvasConfigSetup(formData) {
   return (
-    <FormContextWrapper
-      formWorkflowConfig={CanvasConfig({
-        enterpriseCustomerUuid: enterpriseId,
-        onSubmit: mockSetExistingConfigFormData,
-        handleCloseClick: mockOnClick,
-        existingData: formData,
-        existingConfigNames: new Map(),
-        channelMap: {
-          CANVAS: {
-            post: mockPost,
-            update: mockUpdate,
-            fetch: mockFetch,
+    <IntlProvider locale="en">
+      <FormContextWrapper
+        formWorkflowConfig={CanvasConfig({
+          enterpriseCustomerUuid: enterpriseId,
+          onSubmit: mockSetExistingConfigFormData,
+          handleCloseClick: mockOnClick,
+          existingData: formData,
+          existingConfigNames: new Map(),
+          channelMap: {
+            CANVAS: {
+              post: mockPost,
+              update: mockUpdate,
+              fetch: mockFetch,
+            },
           },
-        },
-      })}
-      workflowTitle="New learning platform integration"
-      onClickOut={mockOnClick}
-      formData={formData}
-      isStepperOpen
-      dispatch={jest.fn()}
-    />
+        })}
+        workflowTitle="New learning platform integration"
+        onClickOut={mockOnClick}
+        formData={formData}
+        isStepperOpen
+        dispatch={jest.fn()}
+      />
+    </IntlProvider>
   );
 }
 

@@ -186,7 +186,7 @@ describe('Portal Appearance Tab', () => {
     userEvent.type(screen.getByLabelText('Banner color'), '#03045e');
     userEvent.type(screen.getByLabelText('Button color'), '#828282');
 
-    expect(screen.getByText('Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below.')).toBeInTheDocument();
+    expect(screen.getByText('Color does not meet the WCAG AA standard of accessibility. Learn more at the help center link below.')).toBeInTheDocument();
 
     // user shouldn't be able to add a theme with a bad hex color, but will be able to add one that
     // doesn't meet AA accessibility standards
