@@ -12,7 +12,7 @@ const InviteModalSummaryLearnerList = ({
   learnerEmails,
 }) => {
   const [isTruncated, setIsTruncated] = useState(hasLearnerEmailsSummaryListTruncation(learnerEmails));
-  const truncatedLearnerEmails = learnerEmails.slice(0, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT - 1);
+  const truncatedLearnerEmails = learnerEmails.slice(0, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT);
   const displayedLearnerEmails = isTruncated ? truncatedLearnerEmails : learnerEmails;
 
   useEffect(() => {
