@@ -18,7 +18,7 @@ import {
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
-import isLmsBudget from './utils';
+import isLmsBudget from './data/utils';
 import BudgetDetail from './BudgetDetail';
 
 const BudgetActions = ({

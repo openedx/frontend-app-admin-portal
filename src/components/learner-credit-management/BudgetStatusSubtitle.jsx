@@ -8,7 +8,7 @@ import { GroupAdd, Groups, ManageAccounts } from '@openedx/paragon/icons';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { formatDate, useEnterpriseCustomer, useEnterpriseGroup } from './data';
-import isLmsBudget from './utils';
+import isLmsBudget from './data/utils';
 
 const BudgetStatusSubtitle = ({
   badgeVariant, status, isAssignable, term, date, policy, enterpriseUUID,
