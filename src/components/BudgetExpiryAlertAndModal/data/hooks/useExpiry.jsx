@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   getEnterpriseBudgetExpiringAlertCookieName,
   getEnterpriseBudgetExpiringModalCookieName,
@@ -7,6 +8,7 @@ import {
 } from '../utils';
 
 const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, alertClose) => {
+  const intl = useIntl();
   const [notification, setNotification] = useState(null);
   const [expirationThreshold, setExpirationThreshold] = useState(null);
   const [modal, setModal] = useState(null);
@@ -41,7 +43,7 @@ const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, aler
       budgetsToConsiderForExpirationMessaging[0],
     );
 
-    const { thresholdKey, threshold } = getExpirationMetadata(earliestExpiryBudget.end);
+    const { thresholdKey, threshold } = getExpirationMetadata(intl, earliestExpiryBudget.end);
 
     if (thresholdKey !== null) {
       const { notificationTemplate, modalTemplate } = threshold;
@@ -74,7 +76,7 @@ const useExpiry = (enterpriseId, budgets, modalOpen, modalClose, alertOpen, aler
     if (!isAlertDismissed) {
       alertOpen();
     }
-  }, [budgets, enterpriseId, modalOpen, alertOpen]);
+  }, [budgets, enterpriseId, modalOpen, alertOpen, intl]);
 
   const dismissModal = () => {
     const seenCurrentExpirationModalCookieName = getEnterpriseBudgetExpiringModalCookieName({

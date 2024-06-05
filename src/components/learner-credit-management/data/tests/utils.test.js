@@ -1,3 +1,4 @@
+import { createIntl } from '@edx/frontend-platform/i18n';
 import {
   transformSubsidySummary,
   getBudgetStatus,
@@ -7,6 +8,10 @@ import {
 } from '../utils';
 import { EXEC_ED_OFFER_TYPE } from '../constants';
 
+const intl = createIntl({
+  locale: 'en',
+  messages: {},
+});
 describe('transformSubsidySummary', () => {
   it('should return null if there is no budgetSummary', () => {
     expect(transformSubsidySummary()).toBeNull();
@@ -128,6 +133,7 @@ describe('getBudgetStatus', () => {
     const endDateStr = '2023-08-31';
     const currentDateStr = '2023-09-28';
     const result = getBudgetStatus({
+      intl,
       startDateStr,
       endDateStr,
       currentDate: new Date(currentDateStr),
@@ -181,7 +187,7 @@ const budgets = [
 
 describe('orderBudgets', () => {
   it('should sort offers correctly', () => {
-    const sortedBudgets = orderBudgets(budgets);
+    const sortedBudgets = orderBudgets(intl, budgets);
 
     // Expected order:
     // Active budgets (Budget 2)
@@ -192,7 +198,7 @@ describe('orderBudgets', () => {
   });
 
   it('should handle empty input', () => {
-    const sortedBudgets = orderBudgets([]);
+    const sortedBudgets = orderBudgets(intl, []);
     expect(sortedBudgets).toEqual([]);
   });
 
@@ -202,7 +208,7 @@ describe('orderBudgets', () => {
       { name: 'Budget B', start: '2023-01-01T00:00:00Z', end: '2023-01-15T00:00:00Z' },
     ];
 
-    const sortedBudgets = orderBudgets(duplicateBudgets);
+    const sortedBudgets = orderBudgets(intl, duplicateBudgets);
 
     // Since both offers have the same status ("active") and end date, they should be sorted alphabetically by name.
     expect(sortedBudgets.map((budget) => budget.name)).toEqual(['Budget A', 'Budget B']);
@@ -211,44 +217,44 @@ describe('orderBudgets', () => {
 
 describe('getTranslatedBudgetStatus', () => {
   it('should translate the budget status correctly', () => {
-    const intl = { formatMessage: jest.fn() };
+    const mockintl = { formatMessage: jest.fn() };
     const status = 'Retired';
 
-    getTranslatedBudgetStatus(intl, status);
+    getTranslatedBudgetStatus(mockintl, status);
 
-    expect(intl.formatMessage).toHaveBeenCalledWith({
+    expect(mockintl.formatMessage).toHaveBeenCalledWith({
       id: 'lcm.budgets.budget.card.status.retired',
       defaultMessage: 'Retired',
       description: 'Status for a retired budget',
     });
   });
   it('should handle the case for an unknown value', () => {
-    const intl = { formatMessage: jest.fn() };
+    const mockintl = { formatMessage: jest.fn() };
     const status = 'unknown';
 
-    expect(getTranslatedBudgetStatus(intl, status)).toEqual('');
+    expect(getTranslatedBudgetStatus(mockintl, status)).toEqual('');
   });
 });
 
 describe('getTranslatedBudgetTerm', () => {
   it('should translate the budget term correctly', () => {
-    const intl = { formatMessage: jest.fn() };
+    const mockintl = { formatMessage: jest.fn() };
     const term = 'Expiring';
 
-    getTranslatedBudgetTerm(intl, term);
+    getTranslatedBudgetTerm(mockintl, term);
 
-    expect(intl.formatMessage).toHaveBeenCalledWith({
+    expect(mockintl.formatMessage).toHaveBeenCalledWith({
       id: 'lcm.budgets.budget.card.term.expiring',
       defaultMessage: 'Expiring',
       description: 'Term for when a budget is expiring',
     });
   });
   it('should handle the case when unknown or null term', () => {
-    const intl = { formatMessage: jest.fn() };
+    const mockintl = { formatMessage: jest.fn() };
     const term1 = 'unknown';
     const term2 = null;
 
-    expect(getTranslatedBudgetTerm(intl, term1)).toEqual('');
-    expect(getTranslatedBudgetTerm(intl, term2)).toEqual('');
+    expect(getTranslatedBudgetTerm(mockintl, term1)).toEqual('');
+    expect(getTranslatedBudgetTerm(mockintl, term2)).toEqual('');
   });
 });

@@ -20,11 +20,12 @@ const MultipleBudgetsPicker = ({
   enterpriseSlug,
   enableLearnerPortal,
 }) => {
-  const orderedBudgets = orderBudgets(budgets);
   const intl = useIntl();
+  const orderedBudgets = orderBudgets(intl, budgets);
   const rows = useMemo(
     () => orderedBudgets.map(budget => {
       const budgetLabel = getBudgetStatus({
+        intl,
         startDateStr: budget.start,
         endDateStr: budget.end,
         isBudgetRetired: budget.isRetired,
@@ -38,11 +39,12 @@ const MultipleBudgetsPicker = ({
         enableLearnerPortal,
       });
     }),
-    [orderedBudgets, enterpriseUUID, enterpriseSlug, enableLearnerPortal],
+    [orderedBudgets, enterpriseUUID, enterpriseSlug, enableLearnerPortal, intl],
   );
 
   const budgetLabels = orderedBudgets.map(budget => (
     getBudgetStatus({
+      intl,
       startDateStr: budget.start,
       endDateStr: budget.end,
       isBudgetRetired: budget.isRetired,
