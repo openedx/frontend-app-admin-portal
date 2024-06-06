@@ -38,7 +38,7 @@ const AssignmentEnrollByDateCell = ({ row }) => {
   );
 
   return (
-    <Stack direction="horizontal" gap={1}>
+    <Stack direction="horizontal" gap={1} className="justify-content-center">
       {isDateWithinThreshold && <ExpiringIconButtonWithToolTip />}
       <div className="align-content-center">
         {formattedEnrollByDate}
