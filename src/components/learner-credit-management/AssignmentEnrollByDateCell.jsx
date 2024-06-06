@@ -2,24 +2,29 @@ import PropTypes from 'prop-types';
 import {
   Icon, IconButtonWithTooltip, Stack,
 } from '@openedx/paragon';
-import { WarningFilled } from '@openedx/paragon/icons';
-import classNames from 'classnames';
-import { formatDate } from './data';
+import { Warning } from '@openedx/paragon/icons';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import { ENROLL_BY_DATE_DAYS_THRESHOLD, formatDate } from './data';
 import { isTodayWithinDateThreshold } from '../../utils';
 
-const ExpiringIconButtonWithToolTip = () => (
-  <IconButtonWithTooltip
-    variant="warning"
-    invertColors
-    isActive
-    tooltipContent="Enrollment deadline approaching"
-    tooltipPlacement="left"
-    src={WarningFilled}
-    iconAs={Icon}
-    size="sm"
-    className="bg-transparent"
-  />
-);
+const ExpiringIconButtonWithToolTip = () => {
+  const intl = useIntl();
+  const internationalizedToolTipContent = intl.formatMessage({
+    id: 'lcm.budget.detail.page.assignments.table.columns.enroll.by.date.data.tool.tip.content',
+    defaultMessage: 'Enrollment deadline approaching',
+    description: 'On hover tool tip message for an upcoming enrollment date',
+  });
+  return (
+    <IconButtonWithTooltip
+      variant="warning"
+      tooltipContent={internationalizedToolTipContent}
+      tooltipPlacement="left"
+      src={Warning}
+      iconAs={Icon}
+      size="inline"
+    />
+  );
+};
 
 const AssignmentEnrollByDateCell = ({ row }) => {
   const { original: { earliestPossibleExpiration: { date } } } = row;
@@ -27,22 +32,15 @@ const AssignmentEnrollByDateCell = ({ row }) => {
   const formattedEnrollByDate = formatDate(date);
   const isDateWithinThreshold = isTodayWithinDateThreshold(
     {
-      days: 15,
+      days: ENROLL_BY_DATE_DAYS_THRESHOLD,
       date,
-    },
-  );
-  const className = classNames(
-    'align-content-center',
-    {
-      'ml-4': !isDateWithinThreshold,
-      'pl-3.5': !isDateWithinThreshold,
     },
   );
 
   return (
     <Stack direction="horizontal" gap={1}>
       {isDateWithinThreshold && <ExpiringIconButtonWithToolTip />}
-      <div className={className}>
+      <div className="align-content-center">
         {formattedEnrollByDate}
       </div>
     </Stack>

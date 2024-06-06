@@ -114,12 +114,6 @@ const BudgetAssignmentsTable = ({
           disableFilters: true,
         },
         {
-          // Header:
-          //     intl.formatMessage({
-          //       id: 'lcm.budget.detail.page.assignments.table.columns.enroll.by.date',
-          //       defaultMessage: 'Enroll-by date',
-          //       description: 'Column header for the recent action column in the assignments table',
-          //     }),
           Header: AssignmentEnrollByDateHeader,
           accessor: 'earliestPossibleExpiration',
           Cell: AssignmentEnrollByDateCell,
