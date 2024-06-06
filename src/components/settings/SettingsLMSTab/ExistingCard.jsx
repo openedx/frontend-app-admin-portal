@@ -9,6 +9,7 @@ import {
   CheckCircle, Error, MoreVert, Sync,
 } from '@openedx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { channelMapping } from '../../../utils';
 import handleErrors from '../utils';
 import { getTimeAgo } from './ErrorReporting/utils';
@@ -90,25 +91,71 @@ const ExistingCard = ({
     totalNum = totalNum + missing.length + incorrect.length;
     let strongText;
     if (totalNum === 0) {
-      return <span>Please <strong>authorize your LMS</strong> to submit this form.</span>;
+      return (
+        <span>
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.incorrectFields.authorizeLMSText"
+            defaultMessage="Please {authorizeStrong} to submit this form."
+            values={{
+              authorizeStrong: (
+                <strong>
+                  <FormattedMessage
+                    id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.incorrectFields.authorizeLMSLabel"
+                    defaultMessage="authorize your LMS"
+                  />
+                </strong>
+              ),
+            }}
+          />
+        </span>
+      );
     }
     if (totalNum === 1) {
       strongText = `${totalNum} field`;
     } else { strongText = `${totalNum} fields`; }
-    return <span>Amend <strong>{strongText}</strong> to submit this form.</span>;
+    return (
+      <span>
+        <FormattedMessage
+          id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.incorrectFields.amendFields"
+          defaultMessage="Amend {strongText} to submit this form."
+          values={{ strongText: <strong>{strongText}</strong> }}
+        />
+      </span>
+    );
   };
 
   const getCardButton = () => {
     switch (getStatus(config)) {
       case ACTIVE:
         if (isEdxStaff) {
-          return <Button variant="outline-primary" href={`${redirectPath}${config.channelCode}/${config.id}`}>View sync history</Button>;
+          return (
+            <Button variant="outline-primary" href={`${redirectPath}${config.channelCode}/${config.id}`}>
+              <FormattedMessage
+                id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.viewSyncHistoryButton"
+                defaultMessage="View sync history"
+              />
+            </Button>
+          );
         }
         return null;
       case INCOMPLETE:
-        return <Button variant="outline-primary" onClick={() => editExistingConfig(config, config.channelCode)}>Configure</Button>;
+        return (
+          <Button variant="outline-primary" onClick={() => editExistingConfig(config, config.channelCode)}>
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.configureButton"
+              defaultMessage="Configure"
+            />
+          </Button>
+        );
       case INACTIVE:
-        return <Button variant="outline-primary" onClick={() => toggleConfig(config.id, config.channelCode, true)}>Enable</Button>;
+        return (
+          <Button variant="outline-primary" onClick={() => toggleConfig(config.id, config.channelCode, true)}>
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.enableButton"
+              defaultMessage="Enable"
+            />
+          </Button>
+        );
       default:
         return null;
     }
@@ -117,13 +164,39 @@ const ExistingCard = ({
   const getLastSync = () => {
     if (config.lastSyncErroredAt != null) {
       const timeStamp = getTimeAgo(config.lastSyncErroredAt);
-      return <>Recent sync error:&nbsp; {timeStamp}<Icon className="small-icon text-danger-500" src={Error} /></>;
+      return (
+        <>
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.recentSyncError"
+            defaultMessage="Recent sync error: {timeStamp}"
+            description="Message indicating a recent sync error with the timestamp."
+            values={{ timeStamp }}
+          />
+          <Icon className="small-icon text-danger-500" src={Error} />
+        </>
+      );
     }
     if (config.lastSyncAttemptedAt != null) {
       const timeStamp = getTimeAgo(config.lastSyncAttemptedAt);
-      return <>Last sync:&nbsp; {timeStamp}<Icon className="small-icon text-success-500" src={CheckCircle} /></>;
+      return (
+        <>
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.lastSyncMessage"
+            defaultMessage="Last sync: {timeStamp}"
+            description="Message indicating the last sync with the timestamp."
+            values={{ timeStamp }}
+          />
+          <Icon className="small-icon text-success-500" src={CheckCircle} />
+        </>
+      );
     }
-    return <>Sync not yet attempted</>;
+    return (
+      <FormattedMessage
+        id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.syncNotAttemptedMessage"
+        defaultMessage="Sync not yet attempted"
+        description="Message indicating that sync has not been attempted yet."
+      />
+    );
   };
 
   const isActive = getStatus(config) === ACTIVE;
@@ -144,21 +217,32 @@ const ExistingCard = ({
               data-testid="cancel-delete-config"
               onClick={() => setShowDeleteModal(false)}
             >
-              Cancel
+              <FormattedMessage
+                id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.actionRow.cancel"
+                defaultMessage="Cancel"
+                description="Label for the cancel button in the delete configuration action row."
+              />
             </Button>
             <Button
               variant="danger"
               data-testid="confirm-delete-config"
               onClick={() => deleteConfig(config.id, config.channelCode)}
             >
-              Delete
+              <FormattedMessage
+                id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.actionRow.delete"
+                defaultMessage="Delete"
+                description="Label for the delete button in the delete configuration action row."
+              />
             </Button>
           </ActionRow>
         )}
       >
         <p>
-          Are you sure you want to delete this learning platform integration?
-          Once deleted, any saved integration data will be lost.
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.confirmDeleteMessage"
+            defaultMessage="Are you sure you want to delete this learning platform integration? Once deleted, any saved integration data will be lost."
+            description="Confirmation message displayed before deleting a learning platform integration."
+          />
         </p>
       </AlertModal>
       <Card
@@ -186,39 +270,55 @@ const ExistingCard = ({
                       href={`${redirectPath}${config.channelCode}/${config.id}`}
                       data-testid="dropdown-sync-history-item"
                     >
-                      View sync history
+                      <FormattedMessage
+                        id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.viewSyncHistory"
+                        defaultMessage="View sync history"
+                        description="Text for viewing sync history in dropdown actions."
+                      />
                     </Dropdown.Item>
                   </div>
                 )}
                 {isActive && (
-                  <div className="d-flex">
-                    <Dropdown.Item
-                      onClick={() => toggleConfig(config.id, config.channelCode, false)}
-                      data-testid="dropdown-disable-item"
-                    >
-                      Disable
-                    </Dropdown.Item>
-                  </div>
+                <div className="d-flex">
+                  <Dropdown.Item
+                    onClick={() => toggleConfig(config.id, config.channelCode, false)}
+                    data-testid="dropdown-disable-item"
+                  >
+                    <FormattedMessage
+                      id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.disable"
+                      defaultMessage="Disable"
+                      description="Text for disabling a configuration in dropdown actions."
+                    />
+                  </Dropdown.Item>
+                </div>
                 )}
                 {(isInactive || isIncomplete) && (
-                  <div className="d-flex">
-                    <Dropdown.Item
-                      // Ask before deleting an inactive config
-                      onClick={() => handleClickDelete(isInactive)}
-                      data-testid="dropdown-delete-item"
-                    >
-                      Delete
-                    </Dropdown.Item>
-                  </div>
+                <div className="d-flex">
+                  <Dropdown.Item
+                    // Ask before deleting an inactive config
+                    onClick={() => handleClickDelete(isInactive)}
+                    data-testid="dropdown-delete-item"
+                  >
+                    <FormattedMessage
+                      id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.deleteLabel"
+                      defaultMessage="Delete"
+                      description="Text for deleting a configuration in dropdown actions."
+                    />
+                  </Dropdown.Item>
+                </div>
                 )}
                 {!isIncomplete && (
-                  <div className="d-flex">
-                    <Dropdown.Item
-                      onClick={() => editExistingConfig(config, config.channelCode)}
-                    >
-                      Configure
-                    </Dropdown.Item>
-                  </div>
+                <div className="d-flex">
+                  <Dropdown.Item
+                    onClick={() => editExistingConfig(config, config.channelCode)}
+                  >
+                    <FormattedMessage
+                      id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.configureLabel"
+                      defaultMessage="Configure"
+                      description="Text for configuring a configuration in dropdown actions."
+                    />
+                  </Dropdown.Item>
+                </div>
                 )}
               </Dropdown.Menu>
             </Dropdown>
@@ -240,7 +340,13 @@ const ExistingCard = ({
                   placement="top"
                   overlay={(
                     <Popover className="popover-positioned-top" id="inc-popover">
-                      <Popover.Title as="h5">Next Steps</Popover.Title>
+                      <Popover.Title as="h5">
+                        <FormattedMessage
+                          id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.nextStepsTitle"
+                          defaultMessage="Next Steps"
+                          description="Title for the popover showing next steps in configuration."
+                        />
+                      </Popover.Title>
                       <Popover.Content>
                         {numIncorrectFields(config.isValid)}
                       </Popover.Content>
@@ -249,12 +355,22 @@ const ExistingCard = ({
                 >
                   <span>
                     {isIncomplete && (
-                    <Badge variant="light">Incomplete</Badge>
+                    <FormattedMessage
+                      id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.incompleteBadge"
+                      defaultMessage="Incomplete"
+                      description="Badge indicating that the configuration is incomplete."
+                    />
                     )}
                   </span>
                 </OverlayTrigger>
                 {isInactive && (
-                <Badge variant="light">Disabled</Badge>
+                <Badge variant="light">
+                  <FormattedMessage
+                    id="adminPortal.settings.learningPlatformTab.existingLMSCardDeck.disabledBadge"
+                    defaultMessage="Disabled"
+                    description="Badge indicating that the configuration is disabled."
+                  />
+                </Badge>
                 )}
               </h3>
             </div>

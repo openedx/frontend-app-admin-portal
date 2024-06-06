@@ -159,6 +159,7 @@ export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-
 
 //  Utility function to check the budget status
 export const getBudgetStatus = ({
+  intl,
   startDateStr,
   endDateStr,
   isBudgetRetired,
@@ -188,7 +189,7 @@ export const getBudgetStatus = ({
     };
   }
 
-  if (isPlanApproachingExpiry(endDateStr)) {
+  if (isPlanApproachingExpiry(intl, endDateStr)) {
     return {
       status: BUDGET_STATUSES.expiring,
       badgeVariant: 'warning',
@@ -234,7 +235,7 @@ export const formatPrice = (price, options = {}) => {
  * @param {Array} budgets - An array of budget objects.
  * @returns {Array} - The sorted array of budget objects.
  */
-export const orderBudgets = (budgets) => {
+export const orderBudgets = (intl, budgets) => {
   const statusOrder = {
     Expiring: 1,
     Active: 1,
@@ -245,11 +246,13 @@ export const orderBudgets = (budgets) => {
 
   budgets?.sort((budgetA, budgetB) => {
     const statusA = getBudgetStatus({
+      intl,
       startDateStr: budgetA.start,
       endDateStr: budgetA.end,
       isBudgetRetired: budgetA.isRetired,
     }).status;
     const statusB = getBudgetStatus({
+      intl,
       startDateStr: budgetB.start,
       endDateStr: budgetB.end,
       isBudgetRetired: budgetB.isRetired,

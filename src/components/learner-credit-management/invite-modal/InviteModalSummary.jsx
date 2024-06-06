@@ -2,29 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Card, Stack } from '@openedx/paragon';
+import isEmpty from 'lodash/isEmpty';
 
 import InviteModalSummaryEmptyState from './InviteModalSummaryEmptyState';
 import InviteModalSummaryLearnerList from './InviteModalSummaryLearnerList';
 import InviteModalSummaryErrorState from './InviteModalSummaryErrorState';
 import InviteModalSummaryDuplicate from './InviteModalSummaryDuplicate';
-
-const InviteModalSummaryContents = ({
-  hasLearnerEmails,
-  learnerEmails,
-  hasInputValidationError,
-}) => {
-  if (hasLearnerEmails) {
-    return (
-      <InviteModalSummaryLearnerList
-        learnerEmails={learnerEmails}
-      />
-    );
-  }
-  if (hasInputValidationError) {
-    return <InviteModalSummaryErrorState />;
-  }
-  return <InviteModalSummaryEmptyState />;
-};
 
 const InviteModalSummary = ({
   memberInviteMetadata,
@@ -34,7 +17,40 @@ const InviteModalSummary = ({
     lowerCasedEmails,
     duplicateEmails,
   } = memberInviteMetadata;
-  const hasLearnerEmails = lowerCasedEmails?.length > 0 && isValidInput;
+  const renderCard = (contents, showErrorHighlight) => (
+    <Stack gap={2.5} className="mb-4">
+      <Card
+        className={classNames(
+          'invite-modal-summary-card rounded-0 shadow-none',
+          { invalid: showErrorHighlight && !isValidInput },
+        )}
+      >
+        <Card.Section>
+          {contents}
+        </Card.Section>
+      </Card>
+    </Stack>
+  );
+
+  const hasLearnerEmails = lowerCasedEmails?.length > 0;
+  let cardSections = [];
+  if (hasLearnerEmails) {
+    cardSections = cardSections.concat(
+      renderCard(<InviteModalSummaryLearnerList learnerEmails={lowerCasedEmails} />),
+    );
+  }
+
+  if (!isValidInput) {
+    cardSections = cardSections.concat(
+      renderCard(<InviteModalSummaryErrorState />, true),
+    );
+  }
+
+  if (isEmpty(cardSections)) {
+    cardSections = cardSections.concat(
+      renderCard(<InviteModalSummaryEmptyState />),
+    );
+  }
 
   let summaryHeading = 'Summary';
   if (hasLearnerEmails) {
@@ -43,31 +59,10 @@ const InviteModalSummary = ({
   return (
     <>
       <h5 className="mb-4">{summaryHeading}</h5>
-      <Stack gap={2.5}>
-        <Card
-          className={classNames(
-            'invite-modal-summary-card rounded-0 shadow-none',
-            { invalid: !isValidInput },
-          )}
-        >
-          <Card.Section>
-            <InviteModalSummaryContents
-              learnerEmails={lowerCasedEmails}
-              hasLearnerEmails={hasLearnerEmails}
-              hasInputValidationError={!isValidInput}
-            />
-          </Card.Section>
-        </Card>
-        {duplicateEmails?.length > 0 && <InviteModalSummaryDuplicate />}
-      </Stack>
+      {cardSections}
+      {duplicateEmails?.length > 0 && <InviteModalSummaryDuplicate />}
     </>
   );
-};
-
-InviteModalSummaryContents.propTypes = {
-  hasLearnerEmails: PropTypes.bool.isRequired,
-  learnerEmails: PropTypes.arrayOf(PropTypes.string),
-  hasInputValidationError: PropTypes.bool.isRequired,
 };
 
 InviteModalSummary.propTypes = {

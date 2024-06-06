@@ -63,9 +63,8 @@ const NoAvailableLicensesBanner = ({ subscriptions }) => {
       />,
       <FormattedMessage
         id="admin.portal.manage.request.no.available.licenses.banner.not.enough.licenses.body"
-        defaultMessage="You don{apostrophe}t have any licenses left in your subscriptions. Contact support to get additional licenses and approve outstanding requests."
+        defaultMessage="You do not have any licenses left in your subscriptions. Contact support to get additional licenses and approve outstanding requests."
         description="Body text for the alert when there are not enough licenses left."
-        values={{ apostrophe: '’' }}
       />,
     );
   }

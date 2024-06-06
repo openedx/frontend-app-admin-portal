@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Card, Skeleton } from '@openedx/paragon';
 
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import {
   useBudgetDetailHeaderData,
   useBudgetId,
@@ -19,6 +19,7 @@ const BudgetOverviewContent = ({
   enterpriseUUID,
   enterpriseFeatures,
 }) => {
+  const intl = useIntl();
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
   const budgetType = (enterpriseOfferId !== null) ? BUDGET_TYPES.ecommerce : BUDGET_TYPES.policy;
 
@@ -43,6 +44,7 @@ const BudgetOverviewContent = ({
     date,
     isAssignable,
   } = useBudgetDetailHeaderData({
+    intl,
     subsidyAccessPolicy,
     subsidySummary,
     budgetId: policyOrOfferId,

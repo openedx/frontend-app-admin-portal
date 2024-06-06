@@ -11,6 +11,7 @@ import {
 } from '@openedx/paragon';
 import { Add, Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import HelpCenterButton from '../HelpCenterButton';
 import { camelCaseDictArray, getChannelMap } from '../../../utils';
@@ -149,9 +150,18 @@ const SettingsLMSTab = ({
 
   return (
     <div>
-      <h2 className="py-2">Learning Platform Integrations
+      <h2 className="py-2">
+        <FormattedMessage
+          id="adminPortal.settings.learningPlatformTab.learningPlatformIntegrations.header"
+          defaultMessage="Learning Platform Integrations"
+          description="Header for the Learning Platform Integrations section"
+        />
         <HelpCenterButton url={HELP_CENTER_LINK}>
-          Help Center: Integrations
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.integrationsHelpCenter.button"
+            defaultMessage="Help Center: Integrations"
+            description="Button text for the Help Center link"
+          />
         </HelpCenterButton>
         <div className="mt-3" style={{ pointerEvents: null }}>
           {!configsLoading && !config && (
@@ -162,7 +172,11 @@ const SettingsLMSTab = ({
               disabled={displayNeedsSSOAlert && !hasSSOConfig}
               onClick={openLmsStepper}
             >
-              New
+              <FormattedMessage
+                id="adminPortal.settings.learningPlatformTab.newButton"
+                defaultMessage="New"
+                description="Button text for creating a new LMS integration"
+              />
             </Button>
           )}
         </div>
@@ -174,13 +188,29 @@ const SettingsLMSTab = ({
           icon={Info}
           actions={[
             <Link to={`/${enterpriseSlug}/admin/settings/sso`}>
-              <Button>Configure SSO</Button>
+              <Button>
+                <FormattedMessage
+                  id="adminPortal.settings.learningPlatformTab.configureSSOButton"
+                  defaultMessage="Configure SSO"
+                  description="Button text for configuring SSO"
+                />
+              </Button>
             </Link>,
           ]}
         >
-          <Alert.Heading>No SSO configured</Alert.Heading>
+          <Alert.Heading>
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.noSSOConfigured"
+              defaultMessage="No SSO configured"
+              description="Alert heading for no SSO configured"
+            />
+          </Alert.Heading>
           <p>
-            At least one Single Sign On configuration is needed to create an LMS configuration
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.ssoNeeded"
+              defaultMessage="At least one Single Sign On configuration is needed to create an LMS configuration"
+              description="Alert message indicating that SSO is required to create an LMS configuration"
+            />
           </p>
         </Alert>
       )}

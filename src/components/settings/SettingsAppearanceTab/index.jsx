@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Alert, Button, CardGrid, Dropzone, Image, Toast, useToggle,
 } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { Info } from '@openedx/paragon/icons';
 
 import InfoHover from '../../InfoHover';
@@ -89,10 +90,20 @@ export const SettingsAppearanceTab = ({
   };
   return (
     <>
-      <h2 className="py-2">Portal Appearance</h2>
+      <h2 className="py-2">
+        <FormattedMessage
+          id="adminPortal.settings.portalAppearanceTab.title"
+          defaultMessage="Portal Appearance"
+          description="Title for the portal appearance section."
+        />
+      </h2>
       <p>
-        Customize the appearance of your learner and administrator edX experiences with your
-        organization’s logo and color themes.
+        <FormattedMessage
+          id="adminPortal.settings.portalAppearanceTab.description"
+          defaultMessage="Customize the appearance of your learner and administrator edX experiences with your organization{apostrophe}s logo and color themes."
+          description="Description for the portal appearance section."
+          values={{ apostrophe: "'" }}
+        />
       </p>
       <Alert
         show={configChangeSuccess === false}
@@ -102,45 +113,68 @@ export const SettingsAppearanceTab = ({
         dismissible
         stacked
       >
-        <Alert.Heading>We&apos;re sorry</Alert.Heading>
+        <Alert.Heading>
+          <FormattedMessage
+            id="adminPortal.settings.portalAppearanceTab.errorHeading"
+            defaultMessage="We{apostrophe}re sorry"
+            description="Heading for error alert."
+            values={{ apostrophe: "'" }}
+          />
+        </Alert.Heading>
         <p>
-          Something went wrong behind the scenes. Try again later or contact support for help.
+          <FormattedMessage
+            id="adminPortal.settings.portalAppearanceTab.errorMessage"
+            defaultMessage="Something went wrong behind the scenes. Try again later or contact support for help."
+            description="Error message description."
+          />
         </p>
       </Alert>
       <h3 className="py-2">
-        Logo
+        <FormattedMessage
+          id="adminPortal.settings.portalAppearanceTab.logoTitle"
+          defaultMessage="Logo"
+          description="Title for the logo section."
+        />
         <InfoHover className="" keyName="logo-info-hover" message={logoMessage} />
       </h3>
       {!uploadedFile && (
-      <Dropzone
-        onProcessUpload={handleLogoUpload}
-        errorMessages={{
-          invalidType: 'Invalid file type, only png images allowed.',
-          invalidSize: 'The file size must be under 512 Mb.',
-          multipleDragged: 'Cannot upload more than one file.',
-        }}
-        maxSize={512000}
-        accept={{
-          'image/*': ['.png'],
-        }}
-      />
+        <Dropzone
+          onProcessUpload={handleLogoUpload}
+          errorMessages={{
+            invalidType: 'Invalid file type, only png images allowed.',
+            invalidSize: 'The file size must be under 512 Mb.',
+            multipleDragged: 'Cannot upload more than one file.',
+          }}
+          maxSize={512000}
+          accept={{
+            'image/*': ['.png'],
+          }}
+        />
       )}
       {uploadedFile && (
-      <p className="image-preview">
-        <Image
-          src={global.URL.createObjectURL(uploadedFile)}
-        />
-      </p>
+        <p className="image-preview">
+          <Image
+            src={global.URL.createObjectURL(uploadedFile)}
+          />
+        </p>
       )}
 
       <Toast
         onClose={() => setConfigChangeSuccess(null)}
         show={configChangeSuccess || false}
       >
-        Portal appearance updated successfully.
+        <FormattedMessage
+          id="adminPortal.settings.portalAppearanceTab.successMessage"
+          defaultMessage="Portal appearance updated successfully."
+          description="Success message for updating portal appearance."
+        />
       </Toast>
       <h3 className="py-2 pt-5">
-        Theme
+        <FormattedMessage
+          id="adminPortal.settings.portalAppearanceTab.themeTitle"
+          defaultMessage="Theme"
+          description="Title for the theme section."
+        />
         <InfoHover className="" keyName="theme-info-hover" message={themeMessage} />
       </h3>
       <CardGrid
@@ -161,12 +195,20 @@ export const SettingsAppearanceTab = ({
         {CUSTOM_THEME_LABEL}
       </h3>
       {theme[1] === null && (
-      <p className="mt-0">
-        Rather use your own colors?
-        <Button variant="link" onClick={openCustomModal} className="p-0 pl-1" size="inline">
-          Create a custom theme.
-        </Button>
-      </p>
+        <p className="mt-0">
+          <FormattedMessage
+            id="adminPortal.settings.portalAppearanceTab.createCustomThemeMessage"
+            defaultMessage="Rather use your own colors?"
+            description="Message to create a custom theme."
+          />
+          <Button variant="link" onClick={openCustomModal} className="p-0 pl-1" size="inline">
+            <FormattedMessage
+              id="adminPortal.settings.portalAppearanceTab.createCustomThemeButton"
+              defaultMessage="Create a custom theme."
+              description="Button label to create a custom theme."
+            />
+          </Button>
+        </p>
       )}
       {theme[1] !== null && (
         <ThemeCard className="mt-1" themeVars={theme[1]} theme={theme} setTheme={setTheme} openCustom={openCustomModal} />
@@ -177,7 +219,13 @@ export const SettingsAppearanceTab = ({
         customColors={theme[1]}
         setTheme={setTheme}
       />
-      <Button className="d-flex ml-auto" onClick={saveChanges}>Save changes</Button>
+      <Button className="d-flex ml-auto" onClick={saveChanges}>
+        <FormattedMessage
+          id="adminPortal.settings.portalAppearanceTab.saveChangesButton"
+          defaultMessage="Save changes"
+          description="Button label to save changes."
+        />
+      </Button>
     </>
   );
 };

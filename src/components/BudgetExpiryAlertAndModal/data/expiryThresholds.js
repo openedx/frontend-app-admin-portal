@@ -3,76 +3,168 @@ import parse from 'html-react-parser';
 import { PLAN_EXPIRY_VARIANTS } from './constants';
 
 const expiryThresholds = {
-  120: ({ date }) => ({
+  120: ({ intl, date }) => ({
     notificationTemplate: {
-      title: 'Your Learner Credit plan expires soon',
+      title: intl.formatMessage({
+        id: 'adminPortal.leaernerCredit.expiryNotification.title',
+        defaultMessage: 'Your Learner Credit plan expires soon',
+        description: 'Title for the notification that the Learner Credit plan is expiring soon.',
+      }),
       variant: 'info',
-      message: `Your Learner Credit plan expires ${date}. Contact support today to renew your plan and keep people learning.`,
+      message: intl.formatMessage({
+        id: 'adminPortal.leaernerCredit.expiryNotification.message',
+        defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
+        description: 'Message for the notification that the Learner Credit plan is expiring soon.',
+      }, { date }),
       dismissible: true,
     },
     modalTemplate: {
-      title: 'Your plan expires soon',
-      message: parse(sanitizeHTML(`Your Learner Credit plan expires ${date}. Contact support today to renew your plan and keep people learning.`)),
+      title: intl.formatMessage({
+        id: 'adminPortal.leaernerCredit.expiryModal.title',
+        defaultMessage: 'Your plan expires soon',
+        description: 'Title for the modal that the Learner Credit plan is expiring soon.',
+      }),
+      message: parse(sanitizeHTML(intl.formatMessage({
+        id: 'adminPortal.leaernerCredit.expiryModal.message',
+        defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
+        description: 'Message for the modal that the Learner Credit plan is expiring soon.',
+      }, { date }))),
     },
     variant: PLAN_EXPIRY_VARIANTS.expiring,
   }),
-  90: ({ date }) => ({
+  90: ({ intl, date }) => ({
     notificationTemplate: {
-      title: 'Reminder: Your Learner Credit plan expires soon',
+      title: intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiryReminderNotification.title',
+        defaultMessage: 'Reminder: Your Learner Credit plan expires soon',
+        description: 'Title for the notification that the Learner Credit plan is expiring soon.',
+      }),
       variant: 'info',
-      message: `Your Learner Credit plan expires ${date}. Contact support today to renew your plan and keep people learning.`,
+      message: intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiryReminderNotification.message',
+        defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
+        description: 'Message for the notification that the Learner Credit plan is expiring soon.',
+      }, { date }),
       dismissible: true,
     },
     modalTemplate: {
-      title: 'Reminder: Your plan expires soon',
-      message: parse(sanitizeHTML(`Your Learner Credit plan expires ${date}. Contact support today to renew your plan and keep people learning.`)),
+      title: intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiryReminderModal.title',
+        defaultMessage: 'Reminder: Your plan expires soon',
+        description: 'Title for the modal that the Learner Credit plan is expiring soon.',
+      }),
+      message: parse(sanitizeHTML(intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiryReminderModal.message',
+        defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
+        description: 'Message for the modal that the Learner Credit plan is expiring soon.',
+      }, { date }))),
     },
     variant: PLAN_EXPIRY_VARIANTS.expiring,
   }),
-  60: ({ date }) => ({
+  60: ({ intl, date }) => ({
     notificationTemplate: {
-      title: `Your Learner Credit plan expires ${date}`,
+      title: intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiresNotification.title',
+        defaultMessage: 'Your Learner Credit plan expires {date}',
+        description: 'Title for the notification that the Learner Credit plan is expiring.',
+      }, { date }),
       variant: 'warning',
-      message: 'When your Learner Credit plan expires, you will no longer have access to administrative functions and the remaining balance of your budget(s) will be unusable. Contact support today to renew your plan.',
+      message: intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiresNotification.message',
+        defaultMessage: 'When your Learner Credit plan expires, you will no longer have access to administrative functions and the remaining balance of your budget(s) will be unusable. Contact support today to renew your plan.',
+        description: 'Message for the notification that the Learner Credit plan is expiring.',
+      }),
       dismissible: true,
     },
     modalTemplate: {
-      title: `Your Learner Credit plan expires ${date}`,
-      message: parse(sanitizeHTML(`Your Learner Credit plan expires ${date}. Contact support today to renew your plan and keep people learning.`)),
+      title: intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiresModal.title',
+        defaultMessage: 'Your Learner Credit plan expires {date}',
+        description: 'Title for the modal that the Learner Credit plan is expiring.',
+      }, { date }),
+      message: parse(sanitizeHTML(intl.formatMessage({
+        id: 'adminPortal.learnerCredit.expiresModal.message',
+        defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
+        description: 'Message for the modal that the Learner Credit plan is expiring.',
+      }, { date }))),
     },
     variant: PLAN_EXPIRY_VARIANTS.expiring,
   }),
-  30: ({ date }) => ({
+  30: ({ intl, date }) => ({
     notificationTemplate: {
-      title: 'Your Learner Credit plan expires in less than 30 days',
+      title: intl.formatMessage({
+        id: 'adminPostal.learnerCredit.expiresInThirtyDaysNotification.title',
+        defaultMessage: 'Your Learner Credit plan expires in less than 30 days',
+        description: 'Title for the notification that the Learner Credit plan is expiring in less than 30 days.',
+      }),
       variant: 'danger',
-      message: 'When your plan expires you will lose access to administrative functions and the remaining balance of your plan’s budget(s) will be unusable. Contact support today to renew your plan.',
+      message: intl.formatMessage({
+        id: 'adminPostal.learnerCredit.expiresInThirtyDaysNotification.message',
+        defaultMessage: 'When your plan expires you will lose access to administrative functions and the remaining balance of your plan{apostrophe}s budget(s) will be unusable. Contact support today to renew your plan.',
+        description: 'Message for the notification that the Learner Credit plan is expiring in less than 30 days.',
+      }, { aposrophe: "'" }),
     },
     modalTemplate: {
-      title: 'Your Learner Credit plan expires in less than 30 days',
-      message: parse(sanitizeHTML(`<p>Your Learner Credit plan expires ${date}. Contact support today to renew your plan and keep people learning.</p>`)),
+      title: intl.formatMessage({
+        id: 'adminPostal.learnerCredit.expiresInThirtyDaysModal.title',
+        defaultMessage: 'Your Learner Credit plan expires in less than 30 days',
+        description: 'Title for the modal that the Learner Credit plan is expiring in less than 30 days.',
+      }),
+      message: parse(sanitizeHTML(
+        intl.formatMessage({
+          id: 'adminPostal.learnerCredit.expiresInThirtyDaysModal.message',
+          defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
+          description: 'Message for the modal that the Learner Credit plan is expiring in less than 30 days.',
+        }, { date }),
+      )),
     },
     variant: PLAN_EXPIRY_VARIANTS.expiring,
   }),
-  10: ({ date, days, hours }) => ({
+  10: ({
+    intl, date, days, hours,
+  }) => ({
     notificationTemplate: {
-      title: `Reminder: Your Learner Credit plan expires ${date}`,
+      title: intl.formatMessage({
+        id: 'adminPortal.learnerCreditPlan.expiresInTenDaysNotification.title',
+        defaultMessage: 'Reminder: Your Learner Credit plan expires {date}',
+        description: 'Title for the notification that the Learner Credit plan is expiring.',
+      }, { date }),
       variant: 'danger',
-      message: parse(sanitizeHTML(`Your Learner Credit plan expires in <strong>${days} days and ${hours} hours</strong>. Contact support today to renew your plan.`)),
+      message: parse(sanitizeHTML(intl.formatMessage({
+        id: 'adminPortal.learnerCreditPlan.expiresInTenDaysNotification.message',
+        defaultMessage: 'Your Learner Credit plan expires in <strong>{days} days and {hours} hours</strong>. Contact support today to renew your plan.',
+        description: 'Message for the notification that the Learner Credit plan is expiring.',
+      }, { days, hours, strong: (str) => `<strong>${str}</strong>` }))),
     },
     modalTemplate: {
-      title: `Reminder: Your Learner Credit plan expires ${date}`,
-      message: parse(sanitizeHTML(`<p>Your Learner Credit plan expires ${date}. Contact support today to renew your plan and keep people learning.</p>`)),
+      title: intl.formatMessage({
+        id: 'adminPortal.learnerCreditPlan.expiresInTenDaysModal.title',
+        defaultMessage: 'Reminder: Your Learner Credit plan expires {date}',
+        description: 'Title for the modal that the Learner Credit plan is expiring.',
+      }, { date }),
+      message: parse(sanitizeHTML(intl.formatMessage({
+        id: 'adminPortal.learnerCreditPlan.expiresInTenDaysModal.message',
+        defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
+        description: 'Message for the modal that the Learner Credit plan is expiring.',
+      }, { date }))),
     },
     variant: PLAN_EXPIRY_VARIANTS.expiring,
   }),
-  0: ({ date }) => ({
+  0: ({ intl, date }) => ({
     notificationTemplate: null,
     modalTemplate: {
-      title: 'Your Learner Credit plan has expired',
+      title: intl.formatMessage({
+        id: 'adminPortal.learnerCreditPlan.expiredModal.title',
+        defaultMessage: 'Your Learner Credit plan has expired',
+        description: 'Title for the modal that the Learner Credit plan has expired.',
+      }),
       message: parse(sanitizeHTML(
-        `<p>Your Learner Credit Plan expired on ${date}. You are no longer have access to administrative functions and the remaining balance of your plan's budget(s) are no longer available to spend</p>`
-        + '<p>Please contact your representative if you have any questions or concerns.</p>',
+        intl.formatMessage({
+          id: 'adminPortal.learnerCreditPlan.expiredModal.message',
+          defaultMessage: `Your Learner Credit plan expired on {date}. You no longer have access to administrative functions and the remaining balance of your plan{apostrophe}s budget(s) are no longer available to spend.
+            Please contact your representative if you have any questions or concerns.`,
+          description: 'Message for the modal that the Learner Credit plan has expired.',
+        }, { date, apostrophe: "'" }),
       )),
     },
     variant: PLAN_EXPIRY_VARIANTS.expired,

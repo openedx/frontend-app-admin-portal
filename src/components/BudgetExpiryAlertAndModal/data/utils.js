@@ -22,7 +22,7 @@ export const getExpiredAndNonExpiredBudgets = (budgets) => {
   };
 };
 
-export const getExpirationMetadata = (endDateStr) => {
+export const getExpirationMetadata = (intl, endDateStr) => {
   const endDate = dayjs(endDateStr);
   const today = dayjs();
   const durationDiff = dayjs.duration(endDate.diff(today));
@@ -40,6 +40,7 @@ export const getExpirationMetadata = (endDateStr) => {
   return {
     thresholdKey,
     threshold: ExpiryThresholds[thresholdKey]({
+      intl,
       date: endDate.format('MMM D, YYYY'),
       days: durationDiff.days(),
       hours: durationDiff.hours(),
@@ -48,8 +49,8 @@ export const getExpirationMetadata = (endDateStr) => {
   };
 };
 
-export const isPlanApproachingExpiry = (endDateStr) => {
-  const { thresholdKey, threshold } = getExpirationMetadata(endDateStr);
+export const isPlanApproachingExpiry = (intl, endDateStr) => {
+  const { thresholdKey, threshold } = getExpirationMetadata(intl, endDateStr);
 
   if (!thresholdKey) {
     return false;

@@ -4,6 +4,7 @@ import {
 } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ValidatedFormControl from '../../../../forms/ValidatedFormControl';
 import { BLACKBOARD_TYPE, INVALID_LINK, INVALID_NAME } from '../../../data/constants';
 import { channelMapping, urlValidation } from '../../../../../utils';
@@ -59,6 +60,7 @@ export const validations: FormFieldValidation[] = [
 // Settings page of Blackboard LMS config workflow
 const BlackboardConfigAuthorizePage = () => {
   const { formFields, dispatch, stateMap } = useFormContext();
+  const intl = useIntl();
 
   return (
     <Container size="md">
@@ -68,32 +70,60 @@ const BlackboardConfigAuthorizePage = () => {
           src={channelMapping[BLACKBOARD_TYPE].icon}
         />
         <h3>
-          Authorize connection to Blackboard
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.blackboard.authorizeConnection"
+            defaultMessage="Authorize connection to Blackboard"
+            description="Title for the Blackboard LMS authorization page."
+          />
         </h3>
       </span>
       <Form style={{ maxWidth: '60rem' }}>
         {stateMap?.[LMS_AUTHORIZATION_FAILED] && (
           <Alert variant="danger" className="mb-4" icon={Info}>
-            <h3>Enablement failed</h3>
-            We were unable to enable your Blackboard integration. Please try again
-            or contact enterprise customer support.
+            <h3>
+              <FormattedMessage
+                id="adminPortal.settings.learningPlatformTab.blackboard.enablementFailed"
+                defaultMessage="Enablement failed"
+                description="Error message when Blackboard integration enablement fails."
+              />
+            </h3>
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.blackboard.enablementFailedMessage"
+              defaultMessage="We were unable to enable your Blackboard integration. Please try again or contact enterprise customer support."
+              description="Error message details for Blackboard integration enablement failure."
+            />
           </Alert>
         )}
         {formFields?.refreshToken && (
           <Alert variant="info" className="mb-4" icon={Info}>
-            <h3>Form updates require reauthorization</h3>
-            Your authorization is currently complete. By updating the form below,
-            reauthorization will be required and advancing to the next step will
-            open a new window to complete the process in Blackboard. Return to this window
-            following reauthorization to finish reconfiguring your integration.
+            <h3>
+              <FormattedMessage
+                id="adminPortal.settings.learningPlatformTab.blackboard.formReauthorization"
+                defaultMessage="Form updates require reauthorization"
+                description="Message indicating that form updates require reauthorization for Blackboard integration."
+              />
+            </h3>
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.blackboard.formReauthorizationMessage"
+              defaultMessage="Your authorization is currently complete. By updating the form below, reauthorization will be required and advancing to the next step will open a new window to complete the process in Blackboard. Return to this window following reauthorization to finish reconfiguring your integration."
+              description="Details about form updates requiring reauthorization for Blackboard integration."
+            />
           </Alert>
         )}
         <Form.Group className="my-4.5">
           <ValidatedFormControl
             formId={formFieldNames.DISPLAY_NAME}
             type="text"
-            floatingLabel="Display Name"
-            fieldInstructions="Create a custom name for this LMS"
+            floatingLabel={intl.formatMessage({
+              id: 'adminPortal.settings.learningPlatformTab.blackboard.displayName',
+              defaultMessage: 'Display Name',
+              description: 'Label for the Display Name field in the Blackboard LMS configuration.',
+            })}
+            fieldInstructions={intl.formatMessage({
+              id: 'adminPortal.settings.learningPlatformTab.blackboard.createCustomName',
+              defaultMessage: 'Create a custom name for this LMS',
+              description: 'Instructions for creating a custom name for Blackboard LMS.',
+            })}
           />
         </Form.Group>
         <Form.Group className="my-4.5">
@@ -101,22 +131,42 @@ const BlackboardConfigAuthorizePage = () => {
             formId={formFieldNames.BLACKBOARD_BASE_URL}
             type="text"
             maxLength={255}
-            floatingLabel="Blackboard Base URL"
+            floatingLabel={intl.formatMessage({
+              id: 'adminPortal.settings.learningPlatformTab.blackboard.baseURL',
+              defaultMessage: 'Blackboard Base URL',
+              description: 'Label for the Base URL field in the Blackboard LMS configuration.',
+            })}
           />
         </Form.Group>
         <Alert variant="info" icon={Info}>
-          <h3>Authorization in Blackboard required to complete configuration</h3>
-          Advancing to the next step will open a new window to complete the authorization
-          process in Blackboard. Return to this window following authorization to finish configuring
-          your new integration.
+          <h3>
+            <FormattedMessage
+              id="adminPortal.settings.learningPlatformTab.blackboard.authorizationRequired"
+              defaultMessage="Authorization in Blackboard required to complete configuration"
+              description="Message indicating that Blackboard authorization is required to complete the configuration."
+            />
+          </h3>
+          <FormattedMessage
+            id="adminPortal.settings.learningPlatformTab.blackboard.authorizationRequiredMessage"
+            defaultMessage="Advancing to the next step will open a new window to complete the authorization process in Blackboard. Return to this window following authorization to finish configuring your new integration."
+            description="Details about Blackboard authorization requirement for completing the configuration."
+          />
         </Alert>
         <FormWaitModal
           triggerState={WAITING_FOR_ASYNC_OPERATION}
           onClose={() => dispatch?.(
             setWorkflowStateAction(WAITING_FOR_ASYNC_OPERATION, false),
           )}
-          header="Authorization in progress"
-          text="Please confirm authorization through Blackboard and return to this window once complete."
+          header={intl.formatMessage({
+            id: 'adminPortal.settings.learningPlatformTab.blackboard.authorizationInProgress.header',
+            defaultMessage: 'Authorization in progress',
+            description: 'Header for the authorization in progress modal.',
+          })}
+          text={intl.formatMessage({
+            id: 'adminPortal.settings.learningPlatformTab.blackboard.authorizationInProgress.message',
+            defaultMessage: 'Please confirm authorization through Blackboard and return to this window once complete.',
+            description: 'Text for the authorization in progress modal.',
+          })}
         />
       </Form>
     </Container>
