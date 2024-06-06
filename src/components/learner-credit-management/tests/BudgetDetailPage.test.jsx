@@ -12,6 +12,7 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import { act } from 'react-dom/test-utils';
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
+import dayjs from 'dayjs';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 import BudgetDetailPage from '../BudgetDetailPage';
@@ -139,6 +140,7 @@ const mockLearnerContentAssignment = {
   actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
   errorReason: null,
   assignmentConfiguration: expect.any(Object),
+  earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
 };
 const createMockLearnerContentAssignment = () => ({
   ...mockLearnerContentAssignment,
@@ -1958,6 +1960,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
           {
             uuid: 'test-uuid2',
@@ -1968,6 +1971,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [
@@ -2049,6 +2053,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
           {
             uuid: 'test-uuid2',
@@ -2059,6 +2064,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
           {
             uuid: 'test-uuid3',
@@ -2069,6 +2075,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [
@@ -2149,6 +2156,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
@@ -2218,6 +2226,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
