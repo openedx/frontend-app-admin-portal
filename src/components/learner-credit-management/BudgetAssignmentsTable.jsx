@@ -115,7 +115,6 @@ const BudgetAssignmentsTable = ({
         },
         {
           Header: AssignmentEnrollByDateHeader,
-          headerClassName: 'justify-content-center',
           accessor: 'earliestPossibleExpiration',
           Cell: AssignmentEnrollByDateCell,
           disableFilters: true,
