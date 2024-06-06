@@ -47,7 +47,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
       <p className="small mb-4">
         <FormattedMessage
           id="lcm.budget.detail.page.spent.description"
-          defaultMessage="Spent activity is driven by completed enrollments."
+          defaultMessage="Spent activity is driven by completed enrollments. "
           description="Description for the spent section of the budget detail page"
         />
         {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) ? (

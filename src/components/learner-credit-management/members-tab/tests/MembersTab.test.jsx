@@ -17,9 +17,9 @@ import {
   useBudgetDetailActivityOverview,
   useEnterpriseGroupLearners,
   useEnterpriseGroupMembersTableData,
-  useSubsidySummaryAnalyticsApi,
   useEnterpriseOffer,
   useEnterpriseRemovedGroupMembers,
+  useSubsidySummaryAnalyticsApi,
 } from '../../data';
 import { EnterpriseSubsidiesContext } from '../../../EnterpriseSubsidiesContext';
 import {
