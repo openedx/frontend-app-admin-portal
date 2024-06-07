@@ -41,7 +41,7 @@ export const useBudgetDetailTabs = ({
         className={TAB_CLASS_NAME}
       >
         {activeTabKey === BUDGET_DETAIL_ACTIVITY_TAB && (
-          <ActivityTabElement />
+          <ActivityTabElement appliesToAllContexts={appliesToAllContexts} />
         )}
       </Tab>,
     );

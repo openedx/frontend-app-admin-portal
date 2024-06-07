@@ -11,7 +11,7 @@ import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } 
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
 import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 
-const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures }) => {
+const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, appliesToAllContexts }) => {
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -46,6 +46,12 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures })
 
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     if (isEnterpriseGroupsEnabled) {
+      if (appliesToAllContexts) {
+        return (
+          <BudgetDetailRedemptions />
+        );
+      }
+
       return (
         <>
           {renderBnEActivity
@@ -95,6 +101,7 @@ BudgetDetailActivityTabContents.propTypes = {
     topDownAssignmentRealTimeLcm: PropTypes.bool,
     enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
+  appliesToAllContexts: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailActivityTabContents);

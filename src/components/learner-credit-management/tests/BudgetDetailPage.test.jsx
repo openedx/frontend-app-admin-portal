@@ -645,6 +645,11 @@ describe('<BudgetDetailPage />', () => {
         results: [],
       },
     });
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: false,
+      },
+    });
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
@@ -704,14 +709,69 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: false,
+      },
+    });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     // Overview empty state (no content assignments, no spent transactions)
-    screen.debug(undefined, 1000000);
-
     expect(screen.queryByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
 
     expect(screen.getByText('Invite more members', { selector: 'a' })).toBeInTheDocument();
+  });
+
+  it('does not display bnr budget activity overview empty state and displays empty spent table', async () => {
+    useIsLargeOrGreater.mockReturnValue(true);
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: true,
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    const storeState = {
+      ...initialStoreState,
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          ...initialStoreState.portalConfiguration.enterpriseFeatures,
+          topDownAssignmentRealTimeLcm: false,
+        },
+      },
+    };
+    renderWithRouter(<BudgetDetailPageWrapper initialState={storeState} />);
+
+    // Display spent table when there is no spent activity but appliesToAllContext is true
+    expect(screen.getByText('Search by enrollment details')).toBeInTheDocument();
+    expect(screen.queryByText('Invite more members', { selector: 'a' })).not.toBeInTheDocument();
   });
 
   it.each([
