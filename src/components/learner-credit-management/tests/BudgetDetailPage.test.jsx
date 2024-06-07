@@ -709,11 +709,14 @@ describe('<BudgetDetailPage />', () => {
       budgetRedemptions: mockEmptyBudgetRedemptions,
       fetchBudgetRedemptions: jest.fn(),
     });
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: false,
+      },
+    });
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     // Overview empty state (no content assignments, no spent transactions)
-    screen.debug(undefined, 1000000);
-
     expect(screen.queryByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
 
     expect(screen.getByText('Invite more members', { selector: 'a' })).toBeInTheDocument();
