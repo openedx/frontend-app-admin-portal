@@ -31,6 +31,7 @@ const AssignmentEnrollByDateHeader = () => {
         src={InfoOutline}
         iconAs={Icon}
         size="inline"
+        data-testid="enroll-by-date-tooltip"
       />
     </Stack>
   );

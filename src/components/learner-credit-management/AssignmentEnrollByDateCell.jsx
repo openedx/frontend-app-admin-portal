@@ -22,6 +22,7 @@ const ExpiringIconButtonWithToolTip = () => {
       src={Warning}
       iconAs={Icon}
       size="inline"
+      data-testid="upcoming-allocation-expiration-tooltip"
     />
   );
 };
