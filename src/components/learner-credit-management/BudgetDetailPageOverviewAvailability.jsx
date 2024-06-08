@@ -13,12 +13,15 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import {
-  useBudgetId, useSubsidyAccessPolicy, useEnterpriseCustomer, useEnterpriseGroup,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+  useEnterpriseCustomer,
+  useEnterpriseGroup,
+  isLmsBudget,
 } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
-import isLmsBudget from './data/utils';
 import BudgetDetail from './BudgetDetail';
 
 const BudgetActions = ({

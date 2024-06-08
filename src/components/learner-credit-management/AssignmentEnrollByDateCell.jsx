@@ -3,21 +3,24 @@ import {
   Icon, IconButtonWithTooltip, Stack,
 } from '@openedx/paragon';
 import { Warning } from '@openedx/paragon/icons';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import { ENROLL_BY_DATE_DAYS_THRESHOLD, formatDate } from './data';
 import { isTodayWithinDateThreshold } from '../../utils';
 
-const ExpiringIconButtonWithToolTip = () => {
-  const intl = useIntl();
-  const internationalizedToolTipContent = intl.formatMessage({
-    id: 'lcm.budget.detail.page.assignments.table.columns.enroll.by.date.data.tool.tip.content',
+const messages = defineMessages({
+  tooltipContent: {
+    id: 'lcm.budget.detail.page.assignments.table.columns.enroll-by-date.data.tooltip-content',
     defaultMessage: 'Enrollment deadline approaching',
     description: 'On hover tool tip message for an upcoming enrollment date',
-  });
+  },
+});
+
+const ExpiringIconButtonWithTooltip = () => {
+  const intl = useIntl();
   return (
     <IconButtonWithTooltip
       variant="warning"
-      tooltipContent={internationalizedToolTipContent}
+      tooltipContent={intl.formatMessage(messages.tooltipContent)}
       tooltipPlacement="left"
       src={Warning}
       iconAs={Icon}
@@ -31,7 +34,7 @@ const AssignmentEnrollByDateCell = ({ row }) => {
   const { original: { earliestPossibleExpiration: { date } } } = row;
 
   const formattedEnrollByDate = formatDate(date);
-  const isDateWithinThreshold = isTodayWithinDateThreshold(
+  const isAssignmentExpiringSoon = isTodayWithinDateThreshold(
     {
       days: ENROLL_BY_DATE_DAYS_THRESHOLD,
       date,
@@ -40,8 +43,8 @@ const AssignmentEnrollByDateCell = ({ row }) => {
 
   return (
     <Stack direction="horizontal" gap={1}>
-      {isDateWithinThreshold && <ExpiringIconButtonWithToolTip />}
-      <div className="align-content-center">
+      {isAssignmentExpiringSoon && <ExpiringIconButtonWithTooltip />}
+      <div>
         {formattedEnrollByDate}
       </div>
     </Stack>

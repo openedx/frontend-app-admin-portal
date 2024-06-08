@@ -2314,7 +2314,7 @@ describe('<BudgetDetailPage />', () => {
     {
       modifiedDayOffset: 15,
     },
-  ])('displays upcoming expiring allocation', async ({ modifiedDayOffset }) => {
+  ])('displays upcoming expiring allocation (%s)', async ({ modifiedDayOffset }) => {
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',

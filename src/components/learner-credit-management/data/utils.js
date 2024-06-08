@@ -546,6 +546,7 @@ export const getTranslatedBudgetTerm = (intl, term) => {
   }
 };
 
-export default function isLmsBudget(activeIntegrationsLength, isUniversalGroup) {
-  return activeIntegrationsLength > 0 && isUniversalGroup;
-}
+export const isLmsBudget = (
+  activeIntegrationsLength,
+  isUniversalGroup,
+) => activeIntegrationsLength > 0 && isUniversalGroup;
