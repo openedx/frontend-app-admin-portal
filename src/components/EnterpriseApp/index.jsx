@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 import { breakpoints, MediaQuery } from '@openedx/paragon';
+import {getLocale, isRtl} from '@edx/frontend-platform/i18n';
 
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import Sidebar from '../../containers/Sidebar';
@@ -95,6 +96,7 @@ class EnterpriseApp extends React.Component {
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
     const isUserMissingJWTRoles = !roles?.length;
+    const isLocaleRTL = isRtl(getLocale());
 
     if (error) {
       return this.renderError(error);
@@ -141,7 +143,7 @@ class EnterpriseApp extends React.Component {
                   tabIndex="-1"
                   ref={this.contentWrapperRef}
                   style={{
-                    paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
+                    [isLocaleRTL ? 'paddingRight' : 'paddingLeft']: matchesMediaQ ? sidebarWidth : defaultContentPadding,
                   }}
                 >
                   <EnterpriseAppContent
