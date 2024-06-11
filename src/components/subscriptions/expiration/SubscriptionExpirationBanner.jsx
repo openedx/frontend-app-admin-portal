@@ -36,9 +36,9 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
       <Alert.Heading>
         {intl.formatMessage({
           id: 'admin.portal.subscription.expiration.banner.plan.expired.heading',
-          defaultMessage: 'This subscription plan{apostrophe}s end date has passed',
+          defaultMessage: "This subscription plan's end date has passed",
           description: 'Heading for expired plan message in subscription expiration banner.',
-        }, { apostrophe: "'" })}
+        })}
       </Alert.Heading>
       {intl.formatMessage({
         id: 'admin.portal.subscription.expiration.banner.plan.expired.message',
@@ -51,9 +51,9 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
       <Alert.Heading>
         {intl.formatMessage({
           id: 'admin.portal.subscription.expiration.banner.plan.approaching.heading',
-          defaultMessage: 'This subscription plan{apostrophe}s end date is approaching',
+          defaultMessage: "This subscription plan's end date is approaching",
           description: 'Heading for approaching plan message in subscription expiration banner.',
-        }, { apostrophe: "'" })}
+        })}
       </Alert.Heading>
       {intl.formatMessage(
         {

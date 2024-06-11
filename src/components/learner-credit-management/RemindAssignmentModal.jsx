@@ -47,9 +47,9 @@ const RemindAssignmentModal = ({
         <p>
           <FormattedMessage
             id="lcm.budget.detail.page.catalog.tab.remind.assignment.modal.body2"
-            defaultMessage="When your learner completes enrollment, the associated {doubleQoute}assigned{doubleQoute} funds will be marked as {doubleQoute}spent{doubleQoute}."
+            defaultMessage="When your learner completes enrollment, the associated {doubleQuote}assigned{doubleQuote} funds will be marked as {doubleQuote}spent{doubleQuote}."
             description="Text2 for the body of the remind assignment modal"
-            values={{ doubleQoute: '"' }}
+            values={{ doubleQuote: '"' }}
           />
         </p>
       </ModalDialog.Body>

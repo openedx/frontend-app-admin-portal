@@ -114,9 +114,8 @@ const BudgetActions = ({
               <p>
                 <FormattedMessage
                   id="lcm.budget.detail.page.overview.budget.actions.people.access.edx"
-                  defaultMessage="People who have received access to discover edX content in your integrated learning platform can spend from this budget{apostrophe}s available balance to enroll."
+                  defaultMessage="People who have received access to discover edX content in your integrated learning platform can spend from this budget's available balance to enroll."
                   description="Description which tells that people can spend from the budget's available balance to enroll"
-                  values={{ apostrophe: "'" }}
                 />
               </p>
               <Link to={`/${enterpriseSlug}/admin/settings/access`}>

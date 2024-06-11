@@ -53,9 +53,9 @@ const CancelAssignmentModal = ({
         <p>
           <FormattedMessage
             id="lcm.budget.detail.page.catalog.tab.cancel.assignment.modal.body2"
-            defaultMessage="The learner will be notified that you have canceled the assignment. The funds associated with this course assignment will move from {doubleQoute}assigned{doubleQoute} back to {doubleQoute}available{doubleQoute}."
+            defaultMessage="The learner will be notified that you have canceled the assignment. The funds associated with this course assignment will move from {doubleQuote}assigned{doubleQuote} back to {doubleQuote}available{doubleQuote}."
             description="Body text for the cancel assignment modal which informs the user that the learner will be notified that the assignment has been canceled."
-            values={{ doubleQoute: '"' }}
+            values={{ doubleQuote: '"' }}
           />
         </p>
       </ModalDialog.Body>
