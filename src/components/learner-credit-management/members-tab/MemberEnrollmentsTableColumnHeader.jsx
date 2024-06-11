@@ -8,9 +8,9 @@ import {
 import { InfoOutline } from '@openedx/paragon/icons';
 
 const MemberEnrollmentsTableColumnHeader = () => (
-  <Stack gap={0} direction="horizontal">
+  <Stack gap={1} direction="horizontal">
     <span>
-      <p data-testid="members-table-enrollments-column-header" className="mb-0 mr-1">Enrollments</p>
+      Enrollments
     </span>
     <OverlayTrigger
       key="enrollments-column-tooltip"
