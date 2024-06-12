@@ -78,23 +78,15 @@ const AssignmentAllocationHelpCollapsibles = ({ enterpriseId, course }) => (
           <li>
             <FormattedMessage
               id="lcm.budget.detailsPage.catalog.tab.course.card.total.assignment.cost"
-              defaultMessage="The total assignment cost will be earmarked as {doubleQuote}assigned{doubleQuote} funds in your
-               Learner Credit budget so you can't overspend."
+              defaultMessage={"The total assignment cost will be earmarked as \"assigned\" funds in your Learner Credit budget so you can't overspend."}
               description="A step which explains that the total assignment cost will be earmarked as 'assigned' funds in your Learner Credit budget"
-              values={{
-                doubleQuote: '"',
-              }}
             />
           </li>
           <li>
             <FormattedMessage
               id="lcm.budget.detail.page.catalog.tab.course.card.course.cost.will.convert"
-              defaultMessage="The course cost will automatically convert from {doubleQuote}assigned{doubleQuote} to {doubleQuote}spent{doubleQuote} funds
-                when your learners complete registration."
+              defaultMessage={'The course cost will automatically convert from "assigned" to "spent" funds when your learners complete registration.'}
               description="A step which explains that the course cost will automatically convert from 'assigned' to 'spent' funds when learners complete registration"
-              values={{
-                doubleQuote: '"',
-              }}
             />
           </li>
         </ul>

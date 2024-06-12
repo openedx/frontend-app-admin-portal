@@ -95,11 +95,8 @@ const DeleteArchivedCoursesDialogs = ({
           <p>
             <FormattedMessage
               id="highlights.highlights.tab.archived.courses.modal.message"
-              defaultMessage="Deleting the archived courses in this highlight will remove it from your learners' {doubleQuote}Find a Course{doubleQuote}. This action is permanent and cannot be undone."
+              defaultMessage={"Deleting the archived courses in this highlight will remove it from your learners' \"Find a Course\". This action is permanent and cannot be undone."}
               description="Message shown in the modal to delete archived courses."
-              values={{
-                doubleQuote: '"',
-              }}
             />
           </p>
         </ModalDialog.Body>

@@ -32,14 +32,8 @@ const HighlightStepperTitle = () => (
             <strong>
               <FormattedMessage
                 id="highlights.new.highlights.stepper.stepper.step.pro.tip.text.create.title"
-                defaultMessage="Pro tip: we recommend naming your highlight collection to reflect skills
-                it aims to develop, or to draw the attention of specific groups it targets.
-                For example, {doubleQuote}Recommended for Marketing{doubleQuote}
-                 or {doubleQuote}Develop Leadership Skills{doubleQuote}."
+                defaultMessage={'Pro tip: we recommend naming your highlight collection to reflect skills it aims to develop, or to draw the attention of specific groups it targets. For example, "Recommended for Marketing" or "Develop Leadership Skills".'}
                 description="Create title pro tip message shown to administrators during creation of new content highlights"
-                values={{
-                  doubleQuote: '"',
-                }}
               />
             </strong>
           </p>

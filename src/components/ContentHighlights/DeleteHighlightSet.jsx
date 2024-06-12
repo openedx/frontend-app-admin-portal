@@ -172,11 +172,8 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
         <p>
           <FormattedMessage
             id="highlights.modal.delete.highlight.confirmation.message"
-            defaultMessage="Deleting this highlight will remove it from your learners' {doubleQuote}Find a Course{doubleQuote}. This action is permanent and cannot be undone."
+            defaultMessage={"Deleting this highlight will remove it from your learners' \"Find a Course\". This action is permanent and cannot be undone."}
             description="Confirmation message shown when deleting a highlight."
-            values={{
-              doubleQuote: '"',
-            }}
           />
         </p>
       </AlertModal>

@@ -34,12 +34,10 @@ const AssignmentEnrollByDateCell = ({ row }) => {
   const { original: { earliestPossibleExpiration: { date } } } = row;
 
   const formattedEnrollByDate = formatDate(date);
-  const isAssignmentExpiringSoon = isTodayWithinDateThreshold(
-    {
-      days: ENROLL_BY_DATE_DAYS_THRESHOLD,
-      date,
-    },
-  );
+  const isAssignmentExpiringSoon = isTodayWithinDateThreshold({
+    days: ENROLL_BY_DATE_DAYS_THRESHOLD,
+    date,
+  });
 
   return (
     <Stack direction="horizontal" gap={1}>
