@@ -58,12 +58,10 @@ const SubscriptionExpiringModal = ({
           {
             intl.formatMessage({
               id: 'admin.portal.subscription.expiration.modal.body.p1',
-              defaultMessage: `It{apostrophe}s time to renew your subscription contract with edX!
+              defaultMessage: `It's time to renew your subscription contract with edX!
             The edX customer support team is here to help.
             Get in touch today to minimize access disruptions for your learners.`,
               description: 'Body paragraph 1 for the subscription expiring modal in the admin portal.',
-            }, {
-              apostrophe: "'",
             })
           }
         </p>

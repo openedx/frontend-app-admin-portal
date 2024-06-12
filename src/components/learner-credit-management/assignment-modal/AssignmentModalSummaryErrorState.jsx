@@ -10,9 +10,8 @@ const AssignmentModalSummaryErrorState = () => (
       <div className="h4 mb-0">
         <FormattedMessage
           id="lcm.budget.detail.page.catalog.tab.assign.course.section.error.header"
-          defaultMessage="Learners can{apostrophe}t be assigned as entered."
+          defaultMessage="Learners can't be assigned as entered."
           description="Error message header when course assignment fails due to invalid learner emails."
-          values={{ apostrophe: "'" }}
         />
       </div>
       <span className="small">

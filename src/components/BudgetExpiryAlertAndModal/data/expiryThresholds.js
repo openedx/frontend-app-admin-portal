@@ -93,26 +93,26 @@ const expiryThresholds = {
   30: ({ intl, date }) => ({
     notificationTemplate: {
       title: intl.formatMessage({
-        id: 'adminPostal.learnerCredit.expiresInThirtyDaysNotification.title',
+        id: 'adminPortal.learnerCredit.expiresInThirtyDaysNotification.title',
         defaultMessage: 'Your Learner Credit plan expires in less than 30 days',
         description: 'Title for the notification that the Learner Credit plan is expiring in less than 30 days.',
       }),
       variant: 'danger',
       message: intl.formatMessage({
-        id: 'adminPostal.learnerCredit.expiresInThirtyDaysNotification.message',
-        defaultMessage: 'When your plan expires you will lose access to administrative functions and the remaining balance of your plan{apostrophe}s budget(s) will be unusable. Contact support today to renew your plan.',
+        id: 'adminPortal.learnerCredit.expiresInThirtyDaysNotification.message',
+        defaultMessage: "When your plan expires you will lose access to administrative functions and the remaining balance of your plan's budget(s) will be unusable. Contact support today to renew your plan.",
         description: 'Message for the notification that the Learner Credit plan is expiring in less than 30 days.',
-      }, { aposrophe: "'" }),
+      }),
     },
     modalTemplate: {
       title: intl.formatMessage({
-        id: 'adminPostal.learnerCredit.expiresInThirtyDaysModal.title',
+        id: 'adminPortal.learnerCredit.expiresInThirtyDaysModal.title',
         defaultMessage: 'Your Learner Credit plan expires in less than 30 days',
         description: 'Title for the modal that the Learner Credit plan is expiring in less than 30 days.',
       }),
       message: parse(sanitizeHTML(
         intl.formatMessage({
-          id: 'adminPostal.learnerCredit.expiresInThirtyDaysModal.message',
+          id: 'adminPortal.learnerCredit.expiresInThirtyDaysModal.message',
           defaultMessage: 'Your Learner Credit plan expires {date}. Contact support today to renew your plan and keep people learning.',
           description: 'Message for the modal that the Learner Credit plan is expiring in less than 30 days.',
         }, { date }),
@@ -161,10 +161,10 @@ const expiryThresholds = {
       message: parse(sanitizeHTML(
         intl.formatMessage({
           id: 'adminPortal.learnerCreditPlan.expiredModal.message',
-          defaultMessage: `Your Learner Credit plan expired on {date}. You no longer have access to administrative functions and the remaining balance of your plan{apostrophe}s budget(s) are no longer available to spend.
+          defaultMessage: `Your Learner Credit plan expired on {date}. You no longer have access to administrative functions and the remaining balance of your plan's budget(s) are no longer available to spend.
             Please contact your representative if you have any questions or concerns.`,
           description: 'Message for the modal that the Learner Credit plan has expired.',
-        }, { date, apostrophe: "'" }),
+        }, { date }),
       )),
     },
     variant: PLAN_EXPIRY_VARIANTS.expired,

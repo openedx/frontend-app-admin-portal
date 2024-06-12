@@ -12,6 +12,8 @@ import AssignmentTableCancelAction from './AssignmentTableCancel';
 import { DEFAULT_PAGE, PAGE_SIZE, formatPrice } from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
+import AssignmentEnrollByDateCell from './AssignmentEnrollByDateCell';
+import AssignmentEnrollByDateHeader from './AssignmentEnrollByDateHeader';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -110,6 +112,13 @@ const BudgetAssignmentsTable = ({
           accessor: 'recentAction',
           Cell: AssignmentRecentActionTableCell,
           disableFilters: true,
+        },
+        {
+          Header: AssignmentEnrollByDateHeader,
+          accessor: 'earliestPossibleExpiration',
+          Cell: AssignmentEnrollByDateCell,
+          disableFilters: true,
+          disableSortBy: true,
         },
       ]}
       additionalColumns={[

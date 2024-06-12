@@ -561,6 +561,21 @@ function isArchivedContent(content) {
   return courseRunStatuses.every(status => ARCHIVABLE_STATUSES.includes(status));
 }
 
+/**
+ * Helper function utilizing dayjs's 'isBetween' function to determine
+ * if the date passed is between today and an offset amount of days
+ *
+ * @param date
+ * @param days
+ * @returns {boolean}
+ */
+function isTodayWithinDateThreshold({ date, days }) {
+  const dateToCheck = dayjs(date);
+  const today = dayjs();
+  const offsetDays = dateToCheck.subtract(days, 'days');
+  return today.isBetween(offsetDays, dateToCheck);
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -604,4 +619,5 @@ export {
   i18nFormatTimestamp,
   i18nFormatPassedTimestamp,
   i18nFormatProgressStatus,
+  isTodayWithinDateThreshold,
 };

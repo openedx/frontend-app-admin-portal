@@ -100,9 +100,8 @@ export const SettingsAppearanceTab = ({
       <p>
         <FormattedMessage
           id="adminPortal.settings.portalAppearanceTab.description"
-          defaultMessage="Customize the appearance of your learner and administrator edX experiences with your organization{apostrophe}s logo and color themes."
+          defaultMessage="Customize the appearance of your learner and administrator edX experiences with your organization's logo and color themes."
           description="Description for the portal appearance section."
-          values={{ apostrophe: "'" }}
         />
       </p>
       <Alert
@@ -116,9 +115,8 @@ export const SettingsAppearanceTab = ({
         <Alert.Heading>
           <FormattedMessage
             id="adminPortal.settings.portalAppearanceTab.errorHeading"
-            defaultMessage="We{apostrophe}re sorry"
+            defaultMessage="We're sorry"
             description="Heading for error alert."
-            values={{ apostrophe: "'" }}
           />
         </Alert.Heading>
         <p>

@@ -837,7 +837,6 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.queryByText('dukesilver@test.com')).toBeInTheDocument());
     userEvent.click(screen.getByText('Waiting for member'));
     await waitFor(() => expect(screen.queryByText('Waiting for dukesilver@test.com')).toBeInTheDocument());
-    screen.debug(undefined, 10000000);
     screen.getByText('This member must accept their invitation to browse this budget\'s catalog and enroll using their '
       + 'member permissions by logging in or creating an account within 90 days.');
     // click again to close it out

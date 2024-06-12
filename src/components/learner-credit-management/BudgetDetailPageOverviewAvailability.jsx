@@ -13,12 +13,15 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import {
-  useBudgetId, useSubsidyAccessPolicy, useEnterpriseCustomer, useEnterpriseGroup,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+  useEnterpriseCustomer,
+  useEnterpriseGroup,
+  isLmsBudget,
 } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
-import isLmsBudget from './utils';
 import BudgetDetail from './BudgetDetail';
 
 const BudgetActions = ({
@@ -111,9 +114,8 @@ const BudgetActions = ({
               <p>
                 <FormattedMessage
                   id="lcm.budget.detail.page.overview.budget.actions.people.access.edx"
-                  defaultMessage="People who have received access to discover edX content in your integrated learning platform can spend from this budget{apostrophe}s available balance to enroll."
+                  defaultMessage="People who have received access to discover edX content in your integrated learning platform can spend from this budget's available balance to enroll."
                   description="Description which tells that people can spend from the budget's available balance to enroll"
-                  values={{ apostrophe: "'" }}
                 />
               </p>
               <Link to={`/${enterpriseSlug}/admin/settings/access`}>

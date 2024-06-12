@@ -12,6 +12,7 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import { act } from 'react-dom/test-utils';
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
+import dayjs from 'dayjs';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 import BudgetDetailPage from '../BudgetDetailPage';
@@ -139,6 +140,7 @@ const mockLearnerContentAssignment = {
   actions: [mockSuccessfulLinkedLearnerAction, mockSuccessfulNotifiedAction],
   errorReason: null,
   assignmentConfiguration: expect.any(Object),
+  earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
 };
 const createMockLearnerContentAssignment = () => ({
   ...mockLearnerContentAssignment,
@@ -2018,6 +2020,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
           {
             uuid: 'test-uuid2',
@@ -2028,6 +2031,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [
@@ -2109,6 +2113,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
           {
             uuid: 'test-uuid2',
@@ -2119,6 +2124,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
           {
             uuid: 'test-uuid3',
@@ -2129,6 +2135,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [
@@ -2209,6 +2216,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
@@ -2278,6 +2286,7 @@ describe('<BudgetDetailPage />', () => {
             actions: [mockSuccessfulNotifiedAction],
             errorReason: null,
             state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(5, 'days').toISOString() },
           },
         ],
         learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
@@ -2360,5 +2369,107 @@ describe('<BudgetDetailPage />', () => {
     );
     expect(screen.getByText('• Enroll via Integrated Learning Platform')).toBeInTheDocument();
     expect(screen.getByText('Manage edX in your integrated learning platform')).toBeInTheDocument();
+  });
+  it.each([
+    {
+      modifiedDayOffset: 5,
+    },
+    {
+      modifiedDayOffset: 15,
+    },
+  ])('displays upcoming expiring allocation (%s)', async ({ modifiedDayOffset }) => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockAssignableSubsidyAccessPolicy,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 3,
+        results: [
+          {
+            uuid: 'test-uuid1',
+            contentKey: mockCourseKey,
+            contentQuantity: -19900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-10-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(modifiedDayOffset, 'days').toISOString() },
+          },
+          {
+            uuid: 'test-uuid2',
+            contentKey: mockCourseKey,
+            contentQuantity: -29900,
+            learnerState: 'waiting',
+            recentAction: { actionType: 'assigned', timestamp: '2023-11-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(12, 'days').toISOString() },
+          },
+          {
+            uuid: 'test-uuid3',
+            contentKey: mockCourseKey,
+            contentQuantity: -29900,
+            learnerState: 'notifying',
+            recentAction: { actionType: 'assigned', timestamp: '2023-11-27' },
+            actions: [mockSuccessfulNotifiedAction],
+            errorReason: null,
+            state: 'allocated',
+            earliestPossibleExpiration: { date: dayjs().add(15, 'days').toISOString() },
+          },
+        ],
+        learnerStateCounts: [
+          { learnerState: 'waiting', count: 3 },
+        ],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+    const enrollByDateTooltip = screen.getByTestId('enroll-by-date-tooltip');
+    const expiringAllocationTooltip = screen.queryByTestId('upcoming-allocation-expiration-tooltip');
+
+    expect(screen.getByText('Enroll-by date')).toBeTruthy();
+
+    if (expiringAllocationTooltip) {
+      userEvent.hover(expiringAllocationTooltip);
+      await waitFor(() => expect(screen.getByText('Enrollment deadline approaching')).toBeTruthy());
+    }
+
+    userEvent.hover(enrollByDateTooltip);
+    await waitFor(() => expect(screen.getByText(
+      'Failure to enroll by midnight of enrollment deadline date will release funds back into the budget',
+    )).toBeTruthy());
   });
 });

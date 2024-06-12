@@ -12,17 +12,15 @@ export const NotFound = () => (
       <p className="lead">
         <FormattedMessage
           id="admin.portal.not.found.page.message"
-          defaultMessage="Oops, sorry we can{apostrophe}t find that page!"
+          defaultMessage="Oops, sorry we can't find that page!"
           description="The message displayed on the 404 page"
-          values={{ apostrophe: "'" }}
         />
       </p>
       <p>
         <FormattedMessage
           id="admin.portal.not.found.page.message2"
-          defaultMessage="Either something went wrong or the page doesn{apostrophe}t exist anymore."
+          defaultMessage="Either something went wrong or the page doesn't exist anymore."
           description="The message displayed on the 404 page"
-          values={{ apostrophe: "'" }}
         />
       </p>
     </div>
