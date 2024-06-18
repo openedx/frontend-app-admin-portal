@@ -43,6 +43,7 @@ const BudgetOverviewContent = ({
     term,
     date,
     isAssignable,
+    isRetired,
   } = useBudgetDetailHeaderData({
     intl,
     subsidyAccessPolicy,
@@ -79,6 +80,7 @@ const BudgetOverviewContent = ({
           date={date}
           policy={subsidyAccessPolicy}
           enterpriseUUID={enterpriseUUID}
+          isRetired={isRetired}
         />
         <BudgetDetailPageOverviewAvailability
           budgetId={budgetId}
@@ -91,6 +93,7 @@ const BudgetOverviewContent = ({
           budgetTotalSummary={budgetTotalSummary}
           budgetAggregates={budgetAggregates}
           isAssignable={isAssignable}
+          isRetired={isRetired}
         />
       </Card.Section>
     </Card>

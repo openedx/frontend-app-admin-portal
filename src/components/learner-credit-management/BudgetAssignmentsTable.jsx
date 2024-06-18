@@ -6,10 +6,13 @@ import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
 import AssignmentDetailsTableCell from './AssignmentDetailsTableCell';
 import AssignmentStatusTableCell from './AssignmentStatusTableCell';
+import AssignmentAmountTableCell from './AssignmentAmountTableCell';
 import AssignmentRowActionTableCell from './AssignmentRowActionTableCell';
 import AssignmentTableRemindAction from './AssignmentTableRemind';
 import AssignmentTableCancelAction from './AssignmentTableCancel';
-import { DEFAULT_PAGE, PAGE_SIZE, formatPrice } from './data';
+import {
+  DEFAULT_PAGE, PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy,
+} from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
 import AssignmentEnrollByDateCell from './AssignmentEnrollByDateCell';
@@ -52,10 +55,34 @@ const BudgetAssignmentsTable = ({
       value: learnerState,
     }));
 
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const isRetired = !!subsidyAccessPolicy?.retired;
+
+  const budgetAssignmentsTableData = (() => {
+    if (isRetired) {
+      return {
+        tableActions: [],
+        additionalColumns: [],
+      };
+    }
+
+    return {
+      tableActions: [
+        <AssignmentsTableRefreshAction refresh={fetchTableData} />,
+      ],
+      additionalColumns: [{
+        Header: '',
+        Cell: AssignmentRowActionTableCell,
+        id: 'action',
+      }],
+    };
+  })();
+
   return (
     <DataTable
       isSortable
-      isSelectable
+      isSelectable={!isRetired}
       manualSortBy
       isPaginated
       manualPagination
@@ -86,7 +113,7 @@ const BudgetAssignmentsTable = ({
             description: 'Column header for the amount column in the assignments table',
           }),
           accessor: 'amount',
-          Cell: ({ row }) => `-${formatPrice(row.original.contentQuantity / 100)}`,
+          Cell: AssignmentAmountTableCell,
           disableFilters: true,
         },
         {
@@ -98,6 +125,7 @@ const BudgetAssignmentsTable = ({
           }),
           accessor: 'learnerState',
           Cell: AssignmentStatusTableCell,
+          disableFilters: isRetired,
           Filter: CheckboxFilter,
           filter: 'includesValue',
           filterChoices: statusFilterChoices,
@@ -121,16 +149,8 @@ const BudgetAssignmentsTable = ({
           disableSortBy: true,
         },
       ]}
-      additionalColumns={[
-        {
-          Header: '',
-          Cell: AssignmentRowActionTableCell,
-          id: 'action',
-        },
-      ]}
-      tableActions={[
-        <AssignmentsTableRefreshAction refresh={fetchTableData} />,
-      ]}
+      additionalColumns={budgetAssignmentsTableData.additionalColumns}
+      tableActions={budgetAssignmentsTableData.tableActions}
       initialTableOptions={{
         getRowId: row => row?.uuid?.toString(),
       }}

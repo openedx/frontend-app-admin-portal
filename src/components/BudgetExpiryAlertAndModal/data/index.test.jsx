@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
+import { useParams } from 'react-router-dom';
 import BudgetExpiryAlertAndModal from '../index';
 import { queryClient } from '../../test/testUtils';
 import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hooks';
@@ -14,6 +15,11 @@ import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hook
 jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
   useEnterpriseBudgets: jest.fn(),
+}));
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(),
 }));
 
 const mockStore = configureMockStore([thunk]);
@@ -71,11 +77,13 @@ describe('BudgetExpiryAlertAndModal', () => {
     jest.clearAllMocks();
     useEnterpriseBudgets.mockReturnValue({ data: mockEnterpriseBudget });
   });
+
   it('renders without crashing', () => {
     renderWithRouter(<BudgetExpiryAlertAndModalWrapper />);
     expect(screen.getByTestId('expiry-notification-alert')).toBeTruthy();
     expect(screen.getByText(`Your Learner Credit plan expires ${mockEndDateText}.`, { exact: false })).toBeTruthy();
   });
+
   it('does not render when budget is non expired and disableExpiryMessagingForLearnerCredit is true', () => {
     const updatedInitialStoreState = {
       portalConfiguration: {
@@ -86,5 +94,18 @@ describe('BudgetExpiryAlertAndModal', () => {
     renderWithRouter(<BudgetExpiryAlertAndModalWrapper initialState={updatedInitialStoreState} />);
     expect(screen.queryByTestId('expiry-notification-alert')).toBeFalsy();
     expect(screen.queryByText(`Your Learner Credit plan expires ${mockEndDateText}.`, { exact: false })).toBeFalsy();
+  });
+
+  it('renders Modal and Alert for a specific budget', () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockEnterpriseBudgetUuid,
+      activeTabKey: 'activity',
+    });
+
+    renderWithRouter(<BudgetExpiryAlertAndModalWrapper />);
+    expect(screen.getByTestId('expiry-notification-alert')).toBeTruthy();
+    expect(screen.getByText(`Your Learner Credit plan expires ${mockEndDateText}.`, { exact: false })).toBeTruthy();
   });
 });

@@ -23,7 +23,7 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disable
   const location = useLocation();
 
   const budgetDetailRouteMatch = matchPath(
-    '/:enterpriseSlug/admin/learner-credit/:budgetId',
+    '/:enterpriseSlug/admin/learner-credit/:budgetId/*',
     location.pathname,
   );
 
@@ -35,11 +35,16 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disable
     enablePortalLearnerCreditManagementScreen: true,
     queryOptions: {
       select: (data) => {
+        // Filter out retired budgets
+        const activeBudgets = data.budgets.filter(budget => !budget.isRetired);
+
+        // If budgetId is not specified in the route, return all active budgets
         if (!budgetDetailRouteMatch?.params?.budgetId) {
-          return data.budgets;
+          return activeBudgets;
         }
 
-        return data.budgets.filter(budget => budget.id === budgetDetailRouteMatch.params.budgetId);
+        // Otherwise, return the specific budget that matches the budgetId
+        return activeBudgets.filter(budget => budget.id === budgetDetailRouteMatch.params.budgetId);
       },
     },
   });

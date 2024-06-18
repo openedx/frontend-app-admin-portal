@@ -498,6 +498,7 @@ describe('<BudgetDetailPage />', () => {
       expect(screen.getByTestId('budget-detail-limit')).toHaveTextContent(expected.limit);
     }
   });
+
   it('does not render bne zero state when the groups feature flag disabled', async () => {
     const initialState = {
       portalConfiguration: {
@@ -1372,6 +1373,84 @@ describe('<BudgetDetailPage />', () => {
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
   });
 
+  it('renders with incomplete assignments table data', () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: { ...mockAssignableSubsidyAccessPolicy, retired: true },
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        contentAssignments: { count: 1 },
+        spentTransactions: { count: 0 },
+      },
+    });
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 1,
+        results: [{ ...mockLearnerContentAssignment, contentTitle: null }],
+        learnerStateCounts: [{ learnerState: 'waiting', count: 1 }],
+        numPages: 1,
+        currentPage: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    const assignedSection = within(screen.getByText('Incomplete assignments').closest('section'));
+
+    expect(assignedSection.queryByText('Refresh', { selector: 'button' })).not.toBeInTheDocument();
+    expect(assignedSection.queryByTestId('remind-assignment-test-uuid')).not.toBeInTheDocument();
+    expect(assignedSection.queryByTestId('cancel-assignment-test-uuid')).not.toBeInTheDocument();
+
+    const incompleteStatusChips = assignedSection.queryAllByText('Incomplete');
+
+    expect(incompleteStatusChips).toHaveLength(1);
+    expect(assignedSection.queryAllByText('-$199')).toHaveLength(1);
+    expect(assignedSection.queryAllByText(`Assigned: ${formatDate('2023-10-27')}`)).toHaveLength(1);
+
+    userEvent.click(incompleteStatusChips[0]);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+
+    // Modal popup is visible with expected text
+    const modalPopupContents = within(screen.getByTestId('assignment-status-modalpopup-contents'));
+    expect(modalPopupContents.getByText('Incomplete assignment')).toBeInTheDocument();
+    expect(modalPopupContents.getByText('This budget became inactive before the learner enrolled.', { exact: false })).toBeInTheDocument();
+
+    // Help Center link clicked
+    const helpCenterLink = modalPopupContents.getByText('Help Center: Course Assignments');
+    userEvent.click(helpCenterLink);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+
+    userEvent.click(incompleteStatusChips[0]);
+
+    // Contacting your support link clicked and modal closed
+    const contactSupport = modalPopupContents.getByText('contacting support.');
+    userEvent.click(contactSupport);
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
+  });
+
   it.each([
     {
       learnerState: 'notifying',
@@ -2169,6 +2248,7 @@ describe('<BudgetDetailPage />', () => {
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
+
   it('cancels a single assignment', async () => {
     EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
@@ -2239,6 +2319,7 @@ describe('<BudgetDetailPage />', () => {
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
+
   it('reminds a single assignment', async () => {
     EnterpriseAccessApiService.remindContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
@@ -2309,6 +2390,7 @@ describe('<BudgetDetailPage />', () => {
     );
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
+
   it('displays the custom integrated channel budget card', () => {
     const initialState = {
       portalConfiguration: {

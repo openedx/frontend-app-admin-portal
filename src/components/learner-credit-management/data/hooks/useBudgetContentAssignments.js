@@ -68,15 +68,16 @@ const useBudgetContentAssignments = ({
   const currentArgsRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [contentAssignments, setContentAssignments] = useState(initialContentAssignmentsState);
-  const fetchContentAssignments = useCallback((args) => {
+  const fetchContentAssignments = useCallback(async (args) => {
     if (!isEnabled || !assignmentConfigurationUUID) {
       setIsLoading(false);
       return;
     }
-    const getContentAssignments = async () => {
+
+    try {
       setIsLoading(true);
       const options = {
-        page: args.pageIndex + 1, // `DataTable` uses zeo-indexed array
+        page: args.pageIndex + 1, // `DataTable` uses zero-indexed array
         pageSize: args.pageSize,
       };
       applyFiltersToOptions(args.filters, options);
@@ -91,8 +92,10 @@ const useBudgetContentAssignments = ({
         filters: args.filters,
         sortBy: args.sortBy,
       };
+
       const shouldEmitSegmentEvent = !!currentArgsRef.current && (
         JSON.stringify(argsCopy) !== JSON.stringify(currentArgsRef.current));
+
       if (shouldEmitSegmentEvent) {
         const trackEventMetadata = {
           filters: {
@@ -109,6 +112,7 @@ const useBudgetContentAssignments = ({
           trackEventMetadata,
         );
       }
+
       const assignmentsResponse = await EnterpriseAccessApiService.listContentAssignments(
         assignmentConfigurationUUID,
         options,
@@ -117,11 +121,13 @@ const useBudgetContentAssignments = ({
       setIsLoading(false);
       // Memoizes argsCopy to be referenced against future re-renders
       currentArgsRef.current = argsCopy;
-    };
-    getContentAssignments();
+    } catch (error) {
+      // Set loading state to false to indicate that the operation has completed (even if it failed)
+      setIsLoading(false);
+    }
   }, [isEnabled, assignmentConfigurationUUID, enterpriseId]);
 
-  const debouncedFetchContentAssigments = useMemo(
+  const debouncedFetchContentAssignments = useMemo(
     () => debounce(fetchContentAssignments, 300),
     [fetchContentAssignments],
   );
@@ -129,7 +135,7 @@ const useBudgetContentAssignments = ({
   return {
     isLoading,
     contentAssignments,
-    fetchContentAssignments: debouncedFetchContentAssigments,
+    fetchContentAssignments: debouncedFetchContentAssignments,
   };
 };
 

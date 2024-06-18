@@ -10,6 +10,7 @@ import { Add } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
+import dayjs from 'dayjs';
 import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import {
@@ -23,12 +24,14 @@ import EVENT_NAMES from '../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from './constants';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 import BudgetDetail from './BudgetDetail';
+import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
 const BudgetActions = ({
   budgetId,
   isAssignable,
   enterpriseId,
   enterpriseGroupsV1,
+  isTopDownAssignmentEnabled,
   status,
 }) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
@@ -39,6 +42,19 @@ const BudgetActions = ({
   const { openInviteModal } = useContext(BudgetDetailPageContext);
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
   const globalGroup = enterpriseGroup?.appliesToAllContexts;
+  const { data: budgets } = useEnterpriseBudgets({
+    isTopDownAssignmentEnabled,
+    enterpriseId,
+    enablePortalLearnerCreditManagementScreen: true,
+    queryOptions: {
+      select: (data) => data.budgets.filter(budget => {
+        const isExpired = dayjs().isAfter(budget.end);
+        return !budget.isRetired && !isExpired;
+      }),
+    },
+  });
+
+  const enterpriseHasActiveBudget = budgets?.length > 0;
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -58,6 +74,7 @@ const BudgetActions = ({
     );
   }
 
+  // TODO: Optimize the return statements with JSX components to improve code readability and maintainability.
   if (status === BUDGET_STATUSES.expired) {
     return (
       <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
@@ -98,6 +115,80 @@ const BudgetActions = ({
     );
   }
 
+  // TODO: Optimize the return statements with JSX components to improve code readability and maintainability.
+  if (status === BUDGET_STATUSES.retired) {
+    if (enterpriseHasActiveBudget) {
+      return (
+        <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+          <div>
+            <h3>
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.keep.people.learning.active.budget"
+                defaultMessage="Keep people learning with an active budget"
+                description="Title for the budget actions section on the budget detail page overview"
+              />
+            </h3>
+            <p>
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.retired.view.active.budgets.to.manage.spending"
+                defaultMessage="This budget is retired. View your active budgets to manage spending."
+                description="Description which tells that budget has retired and view your active budgets to manage spending."
+              />
+            </p>
+            <Link to={`/${enterpriseSlug}/admin/learner-credit`}>
+              <Button variant="outline-primary">
+                <FormattedMessage
+                  id="lcm.budget.detail.page.overview.budget.actions.retired.view.active.budgets"
+                  defaultMessage="View active budgets"
+                  description="View active budgets to manage spending."
+                />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+        <div>
+          <h3>
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.keep.people.learning.active.budget"
+              defaultMessage="Keep people learning with an active budget"
+              description="Title for the budget actions section on the budget detail page overview"
+            />
+          </h3>
+          <p>
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.retired.create.new.budget"
+              defaultMessage="This budget is retired. To create a new budget, please contact support."
+              description="Description which tells that budget has retired and to create a new budget by contacting support"
+            />
+          </p>
+          <Button
+            variant="outline-primary"
+            as={Hyperlink}
+            destination={supportUrl}
+            onClick={() => sendEnterpriseTrackEvent(
+              enterpriseId,
+              EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BUDGET_OVERVIEW_CONTACT_US,
+              trackEventMetadata,
+            )}
+            target="_blank"
+          >
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.retired.contact.support"
+              defaultMessage="Contact support"
+              description="Contact support button on retired budget detail page overview"
+            />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // TODO: Optimize the return statements with JSX components to improve code readability and maintainability.
   if (!isAssignable) {
     if (enterpriseGroupsV1 && !isEmpty(subsidyAccessPolicy?.groupAssociations)) {
       if (isLmsBudget(enterpriseCustomer?.activeIntegrations.length, enterpriseGroup?.appliesToAllContexts)) {
@@ -130,7 +221,9 @@ const BudgetActions = ({
             </div>
           </div>
         );
-      } if (globalGroup) {
+      }
+
+      if (globalGroup) {
         return (
           <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
             <div>
@@ -229,6 +322,7 @@ const BudgetActions = ({
         </div>
       );
     }
+
     return (
       <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
         <div>
@@ -317,6 +411,7 @@ BudgetActions.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   enterpriseGroupsV1: PropTypes.bool.isRequired,
+  isTopDownAssignmentEnabled: PropTypes.bool.isRequired,
 };
 
 const BudgetDetailPageOverviewAvailability = ({
@@ -339,6 +434,7 @@ const BudgetDetailPageOverviewAvailability = ({
           enterpriseId={enterpriseId}
           enterpriseGroupsV1={enterpriseFeatures.enterpriseGroupsV1}
           status={status}
+          isTopDownAssignmentEnabled={enterpriseFeatures.topDownAssignmentRealTimeLcm}
         />
       </Col>
     </Row>

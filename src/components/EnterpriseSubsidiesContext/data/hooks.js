@@ -77,6 +77,7 @@ async function fetchEnterpriseBudgets({
       },
       isAssignable: isAssignableSubsidyAccessPolicyType(result),
       isRetired: result.retired,
+      retiredAt: result.retiredAt,
     });
   });
   enterpriseSubsidyResults?.forEach((result) => {

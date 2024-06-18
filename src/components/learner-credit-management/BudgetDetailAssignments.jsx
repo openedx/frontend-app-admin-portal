@@ -10,31 +10,14 @@ import BudgetAssignmentsTable from './BudgetAssignmentsTable';
 import AssignMoreCoursesEmptyStateMinimal from './AssignMoreCoursesEmptyStateMinimal';
 import { useBudgetContentAssignments, useBudgetId, useSubsidyAccessPolicy } from './data';
 
-const BudgetDetailAssignments = ({
-  hasContentAssignments,
-  hasSpentTransactions,
-  enterpriseFeatures,
-  enterpriseId,
+const BudgetDetailAssignmentsHeader = ({
+  isRetired,
 }) => {
   const assignedHeadingRef = useRef();
-  const { subsidyAccessPolicyId } = useBudgetId();
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const navigate = useNavigate();
-
   const location = useLocation();
+
   const { state: locationState } = location;
-  const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
-  const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
-  const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
-  const {
-    isLoading,
-    contentAssignments,
-    fetchContentAssignments,
-  } = useBudgetContentAssignments({
-    isEnabled: isAssignableBudget && hasContentAssignments,
-    assignmentConfigurationUUID,
-    enterpriseId,
-  });
 
   useEffect(() => {
     if (locationState?.budgetActivityScrollToKey === 'assigned') {
@@ -45,18 +28,29 @@ const BudgetDetailAssignments = ({
     }
   }, [navigate, location, locationState]);
 
-  if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
-    return null;
-  }
-
-  if (!hasContentAssignments && hasSpentTransactions) {
+  if (isRetired) {
     return (
-      <AssignMoreCoursesEmptyStateMinimal />
+      <>
+        <h3 className="mb-3" ref={assignedHeadingRef}>
+          <FormattedMessage
+            id="lcm.budget.detail.page.incomplete.assignments.heading"
+            defaultMessage="Incomplete assignments"
+            description="Heading for the incomplete assignments section on the budget detail page"
+          />
+        </h3>
+        <p className="small mb-4 text-info-900">
+          <FormattedMessage
+            id="lcm.budget.detail.page.incomplete.assignments.description"
+            defaultMessage="The assignments below were made before the budget was retired and were never completed by the learner."
+            description="Description for the incomplete assignments section on the budget detail page. Includes a link to learn more."
+          />
+        </p>
+      </>
     );
   }
 
   return (
-    <section className="budget-detail-assignments">
+    <>
       <h3 className="mb-3" ref={assignedHeadingRef}>
         <FormattedMessage
           id="lcm.budget.detail.page.assignments.heading"
@@ -83,6 +77,50 @@ const BudgetDetailAssignments = ({
           }}
         />
       </p>
+    </>
+  );
+};
+
+BudgetDetailAssignmentsHeader.propTypes = {
+  isRetired: PropTypes.bool.isRequired,
+};
+
+const BudgetDetailAssignments = ({
+  hasContentAssignments,
+  hasSpentTransactions,
+  enterpriseFeatures,
+  enterpriseId,
+}) => {
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+
+  const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
+  const isRetired = !!subsidyAccessPolicy?.retired;
+  const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
+  const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
+  const {
+    isLoading,
+    contentAssignments,
+    fetchContentAssignments,
+  } = useBudgetContentAssignments({
+    isEnabled: isAssignableBudget && hasContentAssignments,
+    assignmentConfigurationUUID,
+    enterpriseId,
+  });
+
+  if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
+    return null;
+  }
+
+  if (!hasContentAssignments && hasSpentTransactions) {
+    return (
+      <AssignMoreCoursesEmptyStateMinimal />
+    );
+  }
+
+  return (
+    <section className="budget-detail-assignments">
+      <BudgetDetailAssignmentsHeader isRetired={isRetired} />
       <BudgetAssignmentsTable
         isLoading={isLoading}
         tableData={contentAssignments}
