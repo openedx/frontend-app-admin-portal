@@ -110,5 +110,8 @@
     "react-test-renderer": "^17.0.2",
     "resize-observer-polyfill": "1.5.1",
     "ts-jest": "^29.0.0"
+  },
+  "overrides": {
+    "prop-types": "15.7.2"
   }
 }
