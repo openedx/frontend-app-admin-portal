@@ -71,14 +71,12 @@
     "redux-mock-store": "1.5.4",
     "redux-thunk": "2.3.0",
     "regenerator-runtime": "0.13.7",
-    "sanitize-html": "2.8.1",
-    "scheduler": "^0.23.0",
-    "timeago.js": "^4.0.2",
+    "sanitize-html": "2.12.1",
+    "timeago.js": "4.0.2",
     "universal-cookie": "4.0.4",
-    "url": "0.11.0",
     "use-context-selector": "^1.4.1",
     "uuid": "9.0.0",
-    "validator": "10.11.0"
+    "validator": "13.7.0"
   },
   "peerDependencies": {
     "clean-webpack-plugin": "3.0.0",
@@ -91,8 +89,8 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.0.0",
-    "@openedx/frontend-build": "14.0.3",
     "@faker-js/faker": "^7.6.0",
+    "@openedx/frontend-build": "14.0.3",
     "@testing-library/dom": "9.3.1",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "^11.2.7",
