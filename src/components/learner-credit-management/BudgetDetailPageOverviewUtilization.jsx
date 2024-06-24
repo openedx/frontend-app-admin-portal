@@ -20,6 +20,7 @@ const BudgetDetailPageOverviewUtilization = ({
   isAssignable,
   enterpriseFeatures,
   enterpriseId,
+  isRetired,
 }) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
   const intl = useIntl();
@@ -30,7 +31,13 @@ const BudgetDetailPageOverviewUtilization = ({
     BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
-  if (!budgetId || !enterpriseFeatures.topDownAssignmentRealTimeLcm || utilized <= 0 || !isAssignable) {
+  if (
+    !budgetId
+    || isRetired
+    || !enterpriseFeatures.topDownAssignmentRealTimeLcm
+    || utilized <= 0
+    || !isAssignable
+  ) {
     return null;
   }
 
@@ -87,7 +94,7 @@ const BudgetDetailPageOverviewUtilization = ({
             description="Title for the utilization details collapsible section on the budget detail page"
           />
         </h6>
-)}
+      )}
       onToggle={(open) => sendEnterpriseTrackEvent(
         enterpriseId,
         BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
@@ -184,6 +191,7 @@ BudgetDetailPageOverviewUtilization.propTypes = {
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  isRetired: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({

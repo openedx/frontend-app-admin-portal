@@ -10,15 +10,17 @@ const BudgetDetail = ({
 }) => {
   const currentProgressBarLimit = (available / limit) * 100;
 
-  if (status === BUDGET_STATUSES.expired) {
+  if (status === BUDGET_STATUSES.expired || status === BUDGET_STATUSES.retired) {
     return (
       <Stack className="border border-light-400 p-4">
         <h4>Spent</h4>
         <Stack direction="horizontal" gap={4} className="mt-1">
           <span className="display-1 text-dark" data-testid="budget-detail-spent">{formatPrice(utilized)}</span>
-          <span className="mt-auto small text-monospace" data-testid="budget-detail-unspent">
-            Unspent {formatPrice(available)}
-          </span>
+          {status !== BUDGET_STATUSES.retired && (
+            <span className="mt-auto small text-monospace" data-testid="budget-detail-unspent">
+              Unspent {formatPrice(available)}
+            </span>
+          )}
         </Stack>
       </Stack>
     );

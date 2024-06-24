@@ -11,6 +11,7 @@ import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
 import WaitingForLearner from './assignments-status-chips/WaitingForLearner';
 import { capitalizeFirstLetter } from '../../utils';
 import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import IncompleteAssignment from './assignments-status-chips/IncompleteAssignment';
 
 const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   const { original } = row;
@@ -22,7 +23,7 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
-    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+    retired: isRetired, subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
   } = subsidyAccessPolicy;
 
   const sharedTrackEventMetadata = {
@@ -70,7 +71,13 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     return null;
   }
 
-  // Display the appropriate status chip based on the learner state.
+  // Always display "Incomplete assignment" status chip for retired budgets
+  if (isRetired) {
+    return (
+      <IncompleteAssignment trackEvent={sendGenericTrackEvent} />
+    );
+  }
+
   if (learnerState === 'notifying') {
     return (
       <NotifyingLearner learnerEmail={learnerEmail} trackEvent={sendGenericTrackEvent} />
