@@ -1,6 +1,7 @@
 .enterprise-app {
   position: relative;
   display: flex;
+  min-height: calc(100vh - 185px);
 
   .content-wrapper {
     padding: 10px;
