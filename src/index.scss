@@ -66,6 +66,10 @@ form {
   padding-right: 15px;
 }
 
+.offset-min-height {
+  min-height: calc(100vh - 185px);
+}
+
 .toast-container {
   z-index: $zindex-popover;
 }

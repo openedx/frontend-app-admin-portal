@@ -33,6 +33,7 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
+import GlobalContextProvider from '../GlobalProvider';
 
 // eslint-disable-next-line import/no-unresolved
 const ReactQueryDevtoolsProduction = lazy(() => import('@tanstack/react-query-devtools/production').then((d) => ({
@@ -124,60 +125,62 @@ const AppWrapper = () => {
           {config.MAINTENANCE_ALERT_MESSAGE}
         </SystemWideWarningBanner>
         )}
-        <Header />
-        <Routes>
-          <Route
-            path="/enterprises"
-            element={(
-              <AuthenticatedPageRoute
-                authenticatedAPIClient={apiClient}
-                redirect={`${process.env.BASE_URL}/enterprises`}
-              >
-                <EnterpriseIndexPage />
-              </AuthenticatedPageRoute>
-          )}
-          />
-          <Route
-            path="/:enterpriseSlug/admin/register"
-            element={<PageWrap><AdminRegisterPage /></PageWrap>}
-          />
-          <Route
-            path="/:enterpriseSlug/admin/register/activate"
-            element={<PageWrap><UserActivationPage /></PageWrap>}
-          />
-          <Route
-            path="/:enterpriseSlug/admin?"
-            element={(
-              <PageWrap
-                authenticatedAPIClient={apiClient}
-                redirect={process.env.BASE_URL}
-              >
-                <RedirectComponent />
-              </PageWrap>
-          )}
-          />
-          <Route
-            path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
-            element={(
-              <PageWrap
-                authenticatedAPIClient={apiClient}
-                redirect={process.env.BASE_URL}
-              >
-                <AuthenticatedEnterpriseApp />
-              </PageWrap>
-          )}
-          />
-          <Route
-            path="/"
-            element={(
-              <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
-                <EnterpriseIndexPage />
-              </AuthenticatedPageRoute>
-          )}
-          />
-          <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
-        </Routes>
-        <Footer />
+        <GlobalContextProvider>
+          <Header />
+          <Routes>
+            <Route
+              path="/enterprises"
+              element={(
+                <AuthenticatedPageRoute
+                  authenticatedAPIClient={apiClient}
+                  redirect={`${process.env.BASE_URL}/enterprises`}
+                >
+                  <EnterpriseIndexPage />
+                </AuthenticatedPageRoute>
+           )}
+            />
+            <Route
+              path="/:enterpriseSlug/admin/register"
+              element={<PageWrap><AdminRegisterPage /></PageWrap>}
+            />
+            <Route
+              path="/:enterpriseSlug/admin/register/activate"
+              element={<PageWrap><UserActivationPage /></PageWrap>}
+            />
+            <Route
+              path="/:enterpriseSlug/admin?"
+              element={(
+                <PageWrap
+                  authenticatedAPIClient={apiClient}
+                  redirect={process.env.BASE_URL}
+                >
+                  <RedirectComponent />
+                </PageWrap>
+           )}
+            />
+            <Route
+              path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
+              element={(
+                <PageWrap
+                  authenticatedAPIClient={apiClient}
+                  redirect={process.env.BASE_URL}
+                >
+                  <AuthenticatedEnterpriseApp />
+                </PageWrap>
+           )}
+            />
+            <Route
+              path="/"
+              element={(
+                <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
+                  <EnterpriseIndexPage />
+                </AuthenticatedPageRoute>
+           )}
+            />
+            <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
+          </Routes>
+          <Footer />
+        </GlobalContextProvider>
       </AppProvider>
     </QueryClientProvider>
   );
