@@ -58,6 +58,10 @@ const SSOConfigAuthorizeStep = () => {
   const { testLink } = createSAMLURLs({
     configuration, idpSlug, enterpriseSlug, learnerPortalEnabled,
   });
+  
+  const linkToDownloadMetadataXML =
+    formFields?.spMetadataUrl ||
+    `${configuration.EDX_ACCESS_URL}/samlp/metadata?connection=${enterpriseSlug}-${formFields?.uuid}`;
 
   return (
     <>
@@ -91,7 +95,7 @@ const SSOConfigAuthorizeStep = () => {
         />
       </p>
       <Row className="justify-content-center mb-4 ">
-        <Button as="a" href={formFields?.spMetadataUrl} target="_blank" rel="noopener noreferrer" variant="primary" iconAfter={Download}>
+        <Button as="a" href={linkToDownloadMetadataXML} target="_blank" rel="noopener noreferrer" variant="primary" iconAfter={Download}>
           <FormattedMessage
             id="adminPortal.settings.ssoConfigAuthorizeStep.downloadMetadataButton"
             defaultMessage="edX Service Provider Metadata"
