@@ -12,7 +12,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { DataTable, TextFilter } from '@openedx/paragon';
 
 import LmsApiService from '../../data/services/LmsApiService';
-import { GlobalContext } from '../GlobalProvider';
+import { GlobalContext } from '../GlobalContextProvider';
 
 export const TITLE = 'Enterprise List';
 const PAGE_SIZE = 50;

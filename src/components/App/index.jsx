@@ -33,7 +33,7 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
-import GlobalContextProvider from '../GlobalProvider';
+import GlobalContextProvider from '../GlobalContextProvider';
 
 // eslint-disable-next-line import/no-unresolved
 const ReactQueryDevtoolsProduction = lazy(() => import('@tanstack/react-query-devtools/production').then((d) => ({

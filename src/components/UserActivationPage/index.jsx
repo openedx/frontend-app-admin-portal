@@ -77,7 +77,7 @@ const UserActivationPage = () => {
   // they have not yet verified their email via the "Activate your account" flow, so we should
   // prevent access to the Admin Portal.
   return (
-    <Container className="offset-min-height" style={{ flex: 1 }} fluid>
+    <Container style={{ flex: 1 }} fluid>
       <Row className="my-3 justify-content-md-center">
         <Col xs lg={8} offset={1}>
           <Alert variant="warning">

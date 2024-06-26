@@ -8,10 +8,13 @@ import { configuration } from '../../config';
 import Img from '../Img';
 import messages from './messages';
 import './Footer.scss';
-import useGlobalContext from '../GlobalProvider/useGlobalContext';
-import { FOOTER_HEIGHT } from '../../data/constants/global';
+import { GlobalContext } from '../GlobalContextProvider';
+import { setFooterHeight } from '../../data/actions/global';
 
 class Footer extends React.Component {
+  // eslint-disable-next-line react/static-property-placement
+  static contextType = GlobalContext;
+
   ref = createRef();
 
   constructor(props) {
@@ -22,15 +25,23 @@ class Footer extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.ref.current.offsetHeight);
+    const { footerHeight, dispatch } = this.context;
+    if (this.ref.current?.offsetHeight && footerHeight < this.ref.current?.offsetHeight) {
+      dispatch(setFooterHeight(this.ref.current.offsetHeight));
+    }
   }
 
   componentDidUpdate(prevProps) {
     const { enterpriseLogo } = this.props;
+    const { footerHeight, dispatch } = this.context;
+
     if (enterpriseLogo && enterpriseLogo !== prevProps.enterpriseLogo) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
         enterpriseLogoNotFound: false,
       });
+    }
+    if (this.ref.current?.offsetHeight && footerHeight < this.ref.current?.offsetHeight) {
+      dispatch(setFooterHeight(this.ref.current.offsetHeight));
     }
   }
 

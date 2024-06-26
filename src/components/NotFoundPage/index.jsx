@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import { GlobalContext } from '../GlobalProvider';
+import { GlobalContext } from '../GlobalContextProvider';
 
 export const NotFound = () => {
   const { minHeight } = useContext(GlobalContext);
@@ -33,7 +33,7 @@ export const NotFound = () => {
 
 const NotFoundPage = () => (
   <main role="main">
-    <div className="container-fluid offset-min-height">
+    <div className="container-fluid">
       <NotFound />
     </div>
   </main>

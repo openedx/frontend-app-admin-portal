@@ -4,8 +4,8 @@ import {
 } from '../constants/global';
 
 export const initialState = {
-  headerHeight: null,
-  footerHeight: null,
+  headerHeight: 0,
+  footerHeight: 0,
 };
 
 export const globalReducer = (state = initialState, action) => {

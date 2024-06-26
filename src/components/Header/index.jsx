@@ -16,8 +16,8 @@ import Img from '../Img';
 import { configuration } from '../../config';
 
 import './Header.scss';
-import { headerHeight } from '../../data/actions/global';
-import { GlobalContext } from '../GlobalProvider';
+import { setHeaderHeight } from '../../data/actions/global';
+import { GlobalContext } from '../GlobalContextProvider';
 
 export const Logo = ({ enterpriseLogo, enterpriseName }) => {
   const logo = configuration.LOGO_URL;
@@ -87,12 +87,14 @@ const Header = ({
 }) => {
   const user = getAuthenticatedUser();
   const ref = useRef();
-  const { dispatch } = useContext(GlobalContext);
+  const { headerHeight, dispatch } = useContext(GlobalContext);
+
   useEffect(() => {
-    if (ref.current?.offsetHeight && !global.headerHeight) {
-      dispatch(headerHeight(ref.current?.offsetHeight));
+    if (ref.current?.offsetHeight && headerHeight < ref.current?.offsetHeight) {
+      dispatch(setHeaderHeight(ref.current?.offsetHeight));
     }
-  }, [dispatch, ref.current?.offsetHeight]);
+  }, [dispatch, headerHeight, ref.current?.offsetHeight]);
+
   return (
     <header ref={ref} className="container-fluid border-bottom">
       <Navbar aria-label="header" className="px-0 py-1 justify-content-between">
