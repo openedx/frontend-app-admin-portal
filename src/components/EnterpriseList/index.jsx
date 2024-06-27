@@ -58,7 +58,7 @@ const EnterpriseList = ({ clearPortalConfiguration }) => {
 
   return (
     <main role="main">
-      <div className="container-fluid" style={{ minHeight: `calc(100vh - ${minHeight}px)` }}>
+      <div className="container-fluid" style={{ minHeight }}>
         <div className="row mt-4">
           <div className="col-sm-12 col-md">
             <h1>{TITLE}</h1>
