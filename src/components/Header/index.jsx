@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useContext, useEffect, useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   Dropdown, Navbar, AvatarButton, Nav,
@@ -14,6 +16,8 @@ import Img from '../Img';
 import { configuration } from '../../config';
 
 import './Header.scss';
+import { setHeaderHeight } from '../../data/actions/global';
+import { GlobalContext } from '../GlobalContextProvider';
 
 export const Logo = ({ enterpriseLogo, enterpriseName }) => {
   const logo = configuration.LOGO_URL;
@@ -41,7 +45,6 @@ export const HeaderDropdown = ({ user, enterpriseSlug }) => {
   const { profileImage, username } = user;
   const avatarImage = profileImage?.hasImage ? profileImage.imageUrlMedium : null;
   const avatarScreenReaderText = `Profile image for ${username}`;
-
   return (
     <Dropdown>
       <Dropdown.Toggle
@@ -83,8 +86,17 @@ const Header = ({
   hasSidebarToggle, enterpriseName, enterpriseLogo, enterpriseSlug,
 }) => {
   const user = getAuthenticatedUser();
+  const ref = useRef();
+  const { headerHeight, dispatch } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (ref.current?.offsetHeight && headerHeight < ref.current?.offsetHeight) {
+      dispatch(setHeaderHeight(ref.current?.offsetHeight));
+    }
+  }, [dispatch, headerHeight, ref.current?.offsetHeight]);
+
   return (
-    <header className="container-fluid border-bottom">
+    <header ref={ref} className="container-fluid border-bottom">
       <Navbar aria-label="header" className="px-0 py-1 justify-content-between">
         <Nav aria-label="Main">
           {hasSidebarToggle && <SidebarToggle />}
