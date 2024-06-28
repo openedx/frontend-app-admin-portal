@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { GlobalContext } from '../GlobalContextProvider';
 
 export const NotFound = () => (
   <>
@@ -27,12 +28,16 @@ export const NotFound = () => (
   </>
 );
 
-const NotFoundPage = () => (
-  <main role="main">
-    <div className="container-fluid mt-3">
-      <NotFound />
-    </div>
-  </main>
-);
+const NotFoundPage = () => {
+  const { minHeight } = useContext(GlobalContext);
+
+  return (
+    <main role="main">
+      <div className="container-fluid" style={{ minHeight }}>
+        <NotFound />
+      </div>
+    </main>
+  );
+};
 
 export default NotFoundPage;
