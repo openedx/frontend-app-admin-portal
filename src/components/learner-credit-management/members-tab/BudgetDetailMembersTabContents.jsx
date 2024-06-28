@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Skeleton } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import LearnerCreditGroupMembersTable from './LearnerCreditGroupMembersTable';
 import {
@@ -39,9 +40,19 @@ const BudgetDetailMembersTabContents = ({ enterpriseUUID, refresh, setRefresh })
       {!isRemovedMembersLoading ? (
         <>
           <div className="mb-4">
-            <h4 className="mt-1">Budget Members</h4>
+            <h4 className="mt-1">
+              <FormattedMessage
+                id="learnerCreditManagement.budgetDetail.membersTab.label"
+                defaultMessage="Budget Members"
+                description="Label for the Members tab in the Budget Detail page"
+              />
+            </h4>
             <p className="font-weight-light">
-              Members choose what to learn from the catalog and spend from the budget to enroll.
+              <FormattedMessage
+                id="learnerCreditManagement.budgetDetail.membersTab.description"
+                defaultMessage="Members choose what to learn from the catalog and spend from the budget to enroll."
+                description="Description for the Members tab in the Budget Detail page"
+              />
             </p>
           </div>
           <LearnerCreditGroupMembersTable
