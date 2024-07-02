@@ -58,6 +58,15 @@ const SSOConfigAuthorizeStep = () => {
   const { testLink } = createSAMLURLs({
     configuration, idpSlug, enterpriseSlug, learnerPortalEnabled,
   });
+  
+  /**
+   * Contains link to download service metadata XML which looks like: 
+   * https://access.edx.org/samlp/metadata?connection=rwth-aachen-7cef5c13-7d67-460e-9962-3ec31f91ff20
+   * Built using enterprise slug and uuid
+   */
+  const linkToDownloadMetadataXML =
+    formFields?.spMetadataUrl ||
+    `${configuration.EDX_ACCESS_URL}/samlp/metadata?connection=${enterpriseSlug}-${formFields?.uuid}`;
 
   return (
     <>
@@ -91,7 +100,7 @@ const SSOConfigAuthorizeStep = () => {
         />
       </p>
       <Row className="justify-content-center mb-4 ">
-        <Button as="a" href={formFields?.spMetadataUrl} target="_blank" rel="noopener noreferrer" variant="primary" iconAfter={Download}>
+        <Button as="a" href={linkToDownloadMetadataXML} target="_blank" rel="noopener noreferrer" variant="primary" iconAfter={Download}>
           <FormattedMessage
             id="adminPortal.settings.ssoConfigAuthorizeStep.downloadMetadataButton"
             defaultMessage="edX Service Provider Metadata"
