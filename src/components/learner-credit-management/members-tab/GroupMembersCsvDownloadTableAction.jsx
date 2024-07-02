@@ -5,6 +5,7 @@ import { Download } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import snakeCase from 'lodash/snakeCase';
 import { saveAs } from 'file-saver';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { useBudgetId, useSubsidyAccessPolicy } from '../data';
 
@@ -12,6 +13,7 @@ const GroupMembersCsvDownloadTableAction = ({
   isEntireTableSelected,
   tableInstance,
 }) => {
+  const intl = useIntl();
   const selectedEmails = Object.keys(tableInstance.state.selectedRowIds);
   const selectedEmailCount = selectedEmails.length;
   const [alertModalOpen, setAlertModalOpen] = useState(false);
@@ -74,13 +76,21 @@ const GroupMembersCsvDownloadTableAction = ({
   if (selectedEmailCount > 0) {
     buttonSelectedNumber = isEntireTableSelected ? `(${tableInstance.itemCount})` : `(${selectedEmailCount})`;
   } else {
-    buttonSelectedNumber = `all (${tableInstance.itemCount})`;
+    buttonSelectedNumber = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.all',
+      defaultMessage: 'all ({itemCounts})',
+      description: 'All members selected in the Members table',
+    }, { itemCounts: tableInstance.itemCount });
   }
 
   return (
     <>
       <AlertModal
-        title="Something went wrong"
+        title={intl.formatMessage({
+          id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.error',
+          defaultMessage: 'Something went wrong',
+          description: 'Error title in the Members table',
+        })}
         isOpen={alertModalOpen}
         onClose={() => setAlertModalOpen(false)}
         footerNode={(
@@ -89,14 +99,21 @@ const GroupMembersCsvDownloadTableAction = ({
               variant="tertiary"
               onClick={() => setAlertModalOpen(false)}
             >
-              Close
+              <FormattedMessage
+                id="learnerCreditManagement.budgetDetail.membersTab.membersTable.close"
+                defaultMessage="Close"
+                description="Close button text in the Members table"
+              />
             </Button>
           </ActionRow>
         )}
       >
         <p>
-          We&apos;re sorry but something went wrong while downloading your CSV.
-          Please refer to the error below and try again later.
+          <FormattedMessage
+            id="learnerCreditManagement.budgetDetail.membersTab.membersTable.errorDownload"
+            defaultMessage="We're sorry but something went wrong while downloading your CSV. Please refer to the error below and try again later."
+            description="Error message when downloading CSV in the Members table"
+          />
         </p>
         <p>{alertModalExc}</p>
       </AlertModal>
@@ -107,7 +124,12 @@ const GroupMembersCsvDownloadTableAction = ({
         className="border rounded-0 border-dark-500"
         disabled={tableInstance.itemCount === 0}
       >
-        Download {buttonSelectedNumber}
+        <FormattedMessage
+          id="learnerCreditManagement.budgetDetail.membersTab.membersTable.download"
+          defaultMessage="Download {buttonSelectedNumber}"
+          description="Download button text in the Members table"
+          values={{ buttonSelectedNumber }}
+        />
       </Button>
     </>
   );
