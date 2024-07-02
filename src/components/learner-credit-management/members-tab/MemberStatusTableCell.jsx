@@ -4,7 +4,7 @@ import {
   Chip, Icon, Hyperlink, OverlayTrigger, Popover,
 } from '@openedx/paragon';
 import {
-  CheckCircle, RemoveCircle, Timelapse,
+  CheckCircle, Error, RemoveCircle, Timelapse,
 } from '@openedx/paragon/icons';
 import { HELP_CENTER_GROUPS_INVITE_LINK } from '../../settings/data/constants';
 
@@ -31,6 +31,20 @@ const MemberStatusTableCell = ({
     popoverHeader = 'Invitation accepted';
     popoverBody = 'This member has successfully accepted the member invitation and can '
     + 'now browse this budget\'s catalog and enroll using their member permissions.';
+  } else if (row.original.status === 'internal_api_error') {
+    icon = Error;
+    text = 'Failed: System';
+    popoverHeader = 'Failed: System';
+    popoverBody = 'Something went wrong behind the scenes.';
+    popoverExtra1 = 'Need help?';
+    popoverExtra2 = 'Get help at ';
+  } else if (row.original.status === 'email_error') {
+    icon = Error;
+    text = 'Failed: Bad email';
+    popoverHeader = 'Failed: Bad email';
+    popoverBody = `This member invitation failed because a notification to ${row.original.memberDetails.userEmail} could not be sent.`;
+    popoverExtra1 = 'Resolution steps';
+    popoverExtra2 = 'Remove member from budget, ensure email is correct and re-invite. Get more troubleshooting help at ';
   } else {
     icon = RemoveCircle;
     text = 'Removed';
