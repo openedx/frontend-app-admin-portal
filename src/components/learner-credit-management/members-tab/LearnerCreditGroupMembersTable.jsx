@@ -4,6 +4,7 @@ import {
   DataTable, Dropdown, Icon, IconButton,
 } from '@openedx/paragon';
 import { MoreVert, RemoveCircle } from '@openedx/paragon/icons';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import TableTextFilter from '../TableTextFilter';
 import CustomDataTableEmptyState from '../CustomDataTableEmptyState';
 import MemberDetailsTableCell from './MemberDetailsTableCell';
@@ -41,7 +42,12 @@ const KabobMenu = ({
         />
         <Dropdown.Menu>
           <Dropdown.Item onClick={handleRemoveClick}>
-            <Icon src={RemoveCircle} className="mr-2 text-danger-500" />Remove member
+            <Icon src={RemoveCircle} className="mr-2 text-danger-500" />
+            <FormattedMessage
+              id="learnerCreditManagement.budgetDetail.membersTab.kabobMenu.removeMember"
+              defaultMessage="Remove member"
+              description="Remove member option in the kabob menu"
+            />
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -74,87 +80,98 @@ const LearnerCreditGroupMembersTable = ({
   setRefresh,
   groupUuid,
   removedGroupMembersCount,
-}) => (
-  <DataTable
-    isSortable
-    manualSortBy
-    isSelectable
-    SelectionStatusComponent={DataTable.ControlledSelectionStatus}
-    manualSelectColumn={selectColumn}
-    isPaginated
-    manualPagination
-    isFilterable
-    manualFilters
-    isLoading={isLoading}
-    defaultColumnValues={{ Filter: TableTextFilter }}
-    FilterStatusComponent={FilterStatus}
-    numBreakoutFilters={2}
-    tableActions={[<GroupMembersCsvDownloadTableAction />]}
-    columns={[
-      {
-        Header: 'Member Details',
-        accessor: 'memberDetails',
-        Cell: MemberDetailsTableCell,
-      },
-      {
-        Header: MemberStatusTableColumnHeader,
-        accessor: 'status',
-        Cell: MemberStatusTableCell,
-        Filter: removedGroupMembersCount > 0 ? (
-          <MembersTableSwitchFilter removedGroupMembersCount={removedGroupMembersCount} />
-        ) : <div />,
-        filter: 'status',
-      },
-      {
-        Header: 'Recent action',
-        accessor: 'recentAction',
-        Cell: ({ row }) => row.original.recentAction,
-        disableFilters: true,
-      },
-      {
-        Header: MemberEnrollmentsTableColumnHeader,
-        accessor: 'enrollmentCount',
-        Cell: ({ row }) => row.original.enrollmentCount,
-        disableFilters: true,
-      },
-    ]}
-    initialTableOptions={{
-      getRowId: row => row?.memberDetails.userEmail,
-      autoResetPage: true,
-    }}
-    initialState={{
-      pageSize: MEMBERS_TABLE_PAGE_SIZE,
-      pageIndex: DEFAULT_PAGE,
-      sortBy: [
-        { id: 'memberDetails', desc: true },
-      ],
-      filters: [],
-    }}
-    bulkActions={[
-      <MemberRemoveAction
-        refresh={refresh}
-        setRefresh={setRefresh}
-        groupUuid={groupUuid}
-      />,
-      <GroupMembersCsvDownloadTableAction />,
-    ]}
-    additionalColumns={[
-      {
-        id: 'action',
-        Header: '',
-        // eslint-disable-next-line react/no-unstable-nested-components
-        Cell: (props) => (
-          <KabobMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
-        ),
-      },
-    ]}
-    fetchData={fetchTableData}
-    data={tableData.results}
-    itemCount={tableData.itemCount}
-    pageCount={tableData.pageCount}
-    EmptyTableComponent={CustomDataTableEmptyState}
-  />
-);
+}) => {
+  const intl = useIntl();
+  return (
+    <DataTable
+      isSortable
+      manualSortBy
+      isSelectable
+      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
+      manualSelectColumn={selectColumn}
+      isPaginated
+      manualPagination
+      isFilterable
+      manualFilters
+      isLoading={isLoading}
+      defaultColumnValues={{ Filter: TableTextFilter }}
+      FilterStatusComponent={FilterStatus}
+      numBreakoutFilters={2}
+      tableActions={[<GroupMembersCsvDownloadTableAction />]}
+      columns={[
+        {
+          Header: intl.formatMessage({
+            id: 'learnerCreditManagement.budgetDetail.membersTab.columns.memberDetails',
+            defaultMessage: 'Member Details',
+            description: 'Column header for the Member Details column in the Members tab of the Budget Detail page',
+          }),
+          accessor: 'memberDetails',
+          Cell: MemberDetailsTableCell,
+        },
+        {
+          Header: MemberStatusTableColumnHeader,
+          accessor: 'status',
+          Cell: MemberStatusTableCell,
+          Filter: removedGroupMembersCount > 0 ? (
+            <MembersTableSwitchFilter removedGroupMembersCount={removedGroupMembersCount} />
+          ) : <div />,
+          filter: 'status',
+        },
+        {
+          Header: intl.formatMessage({
+            id: 'learnerCreditManagement.budgetDetail.membersTab.columns.recentAction',
+            defaultMessage: 'Recent action',
+            description: 'Column header for the Recent action column in the Members tab of the Budget Detail page',
+          }),
+          accessor: 'recentAction',
+          Cell: ({ row }) => row.original.recentAction,
+          disableFilters: true,
+        },
+        {
+          Header: MemberEnrollmentsTableColumnHeader,
+          accessor: 'enrollmentCount',
+          Cell: ({ row }) => row.original.enrollmentCount,
+          disableFilters: true,
+        },
+      ]}
+      initialTableOptions={{
+        getRowId: row => row?.memberDetails.userEmail,
+        autoResetPage: true,
+      }}
+      initialState={{
+        pageSize: MEMBERS_TABLE_PAGE_SIZE,
+        pageIndex: DEFAULT_PAGE,
+        sortBy: [
+          { id: 'memberDetails', desc: true },
+        ],
+        filters: [],
+      }}
+      bulkActions={[
+        <MemberRemoveAction
+          refresh={refresh}
+          setRefresh={setRefresh}
+          groupUuid={groupUuid}
+        />,
+        <GroupMembersCsvDownloadTableAction />,
+      ]}
+      additionalColumns={[
+        {
+          id: 'action',
+          Header: '',
+          // eslint-disable-next-line react/no-unstable-nested-components
+          Cell: (props) => (
+            <KabobMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
+          ),
+        },
+      ]}
+      fetchData={fetchTableData}
+      data={tableData.results}
+      itemCount={tableData.itemCount}
+      pageCount={tableData.pageCount}
+      EmptyTableComponent={CustomDataTableEmptyState}
+    />
+  );
+};
 
 KabobMenu.propTypes = {
   row: PropTypes.shape({
