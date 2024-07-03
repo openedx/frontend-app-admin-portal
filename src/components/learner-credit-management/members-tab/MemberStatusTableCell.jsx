@@ -104,9 +104,9 @@ const MemberStatusTableCell = ({
     });
     popoverBody = intl.formatMessage({
       id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedEmailPopoverBody',
-      defaultMessage: 'Something went wrong behind the scenes.',
+      defaultMessage: 'This member invitation failed because a notification to {userEmail} could not be sent.',
       description: 'Popover body for the failed email status',
-    });
+    }, { userEmail: row.original.memberDetails.userEmail });
     popoverExtra1 = intl.formatMessage({
       id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedEmailPopoverExtra1',
       defaultMessage: 'Resolution steps',
