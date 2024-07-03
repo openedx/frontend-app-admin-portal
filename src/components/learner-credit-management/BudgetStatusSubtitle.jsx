@@ -1,4 +1,5 @@
 import React from 'react';
+import isEmpty from 'lodash/isEmpty';
 
 import PropTypes from 'prop-types';
 import {
@@ -8,19 +9,15 @@ import { GroupAdd, Groups, ManageAccounts } from '@openedx/paragon/icons';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  formatDate,
-  useEnterpriseCustomer,
-  useEnterpriseGroup,
-  isLmsBudget,
+  formatDate, useEnterpriseCustomer, useEnterpriseGroup, isLmsBudget,
 } from './data';
 
 const BudgetStatusSubtitle = ({
   badgeVariant, status, isAssignable, term, date, policy, enterpriseUUID, isRetired,
 }) => {
   const { data: enterpriseGroup } = useEnterpriseGroup(policy);
+  const customGroup = !isEmpty(policy?.groupAssociations) && !enterpriseGroup?.appliesToAllContexts;
   const { data: enterpriseCustomer } = useEnterpriseCustomer(enterpriseUUID);
-  // universal group = all members of the organization are automatically in a group
-  const universalGroup = enterpriseGroup?.appliesToAllContexts;
   const intl = useIntl();
   const budgetType = {
     lms: {
@@ -46,6 +43,21 @@ const BudgetStatusSubtitle = ({
         description: 'Enrollment type for budgets that are assignable',
       }),
     },
+    groupsBrowseAndEnroll: {
+      enrollmentType:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.groups.browse.and.enroll',
+        defaultMessage: 'Browse & Enroll',
+        description: 'Enrollment type for budgets that are browsable and enrollable',
+      }),
+      popoverText:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.groups.browse.and.enroll.popover',
+        defaultMessage: 'Available to members added to this budget',
+        description: 'Popover text for budgets that are browsable and enrollable',
+      }),
+      icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
+    },
     browseAndEnroll: {
       enrollmentType:
       intl.formatMessage({
@@ -56,21 +68,6 @@ const BudgetStatusSubtitle = ({
       popoverText:
       intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.enroll.browse.and.enroll.popover',
-        defaultMessage: 'Available to members added to this budget',
-        description: 'Popover text for budgets that are browsable and enrollable',
-      }),
-      icon: <Icon size="xs" src={GroupAdd} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
-    },
-    orgBrowseAndEnroll: {
-      enrollmentType:
-      intl.formatMessage({
-        id: 'lcm.budget.detail.page.overview.enroll.org.browse.and.enroll',
-        defaultMessage: 'Browse & Enroll',
-        description: 'Enrollment type for budgets that are browsable and enrollable',
-      }),
-      popoverText:
-      intl.formatMessage({
-        id: 'lcm.budget.detail.page.overview.enroll.org.browse.and.enroll.popover',
         defaultMessage: 'Available to all people in your organization',
         description: 'Popover text for budgets that are browsable and enrollable',
       }),
@@ -79,10 +76,10 @@ const BudgetStatusSubtitle = ({
   };
   let budgetTypeToRender;
 
-  if (isLmsBudget(enterpriseCustomer?.activeIntegrations.length, universalGroup)) {
+  if (isLmsBudget(enterpriseCustomer?.activeIntegrations.length, enterpriseGroup?.appliesToAllContexts)) {
     budgetTypeToRender = budgetType.lms;
-  } else if (universalGroup) {
-    budgetTypeToRender = budgetType.orgBrowseAndEnroll;
+  } else if (customGroup) {
+    budgetTypeToRender = budgetType.groupsBrowseAndEnroll;
   } else if (isAssignable) {
     budgetTypeToRender = budgetType.assignable;
   } else {
@@ -130,7 +127,9 @@ BudgetStatusSubtitle.propTypes = {
   isAssignable: PropTypes.bool.isRequired,
   term: PropTypes.string,
   date: PropTypes.string,
-  policy: PropTypes.shape({}).isRequired,
+  policy: PropTypes.shape({
+    groupAssociations: PropTypes.shape({}),
+  }).isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   isRetired: PropTypes.bool.isRequired,
 };
