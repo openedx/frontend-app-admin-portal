@@ -123,7 +123,7 @@ class EnterpriseApp extends React.Component {
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
         <BrandStyles enterpriseBranding={enterpriseBranding} />
-        <div className="" style={{ minHeight: this.state.enterpriseAppMinHeight }}>
+        <div className="enterprise-app" style={{ minHeight: this.state.enterpriseAppMinHeight }}>
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
               <>

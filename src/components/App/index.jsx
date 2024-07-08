@@ -137,7 +137,7 @@ const AppWrapper = () => {
                 >
                   <EnterpriseIndexPage />
                 </AuthenticatedPageRoute>
-            )}
+              )}
             />
             <Route
               path="/:enterpriseSlug/admin/register"
@@ -156,7 +156,7 @@ const AppWrapper = () => {
                 >
                   <RedirectComponent />
                 </PageWrap>
-            )}
+              )}
             />
             <Route
               path="/:enterpriseSlug/admin/:enterpriseAppPage/*"

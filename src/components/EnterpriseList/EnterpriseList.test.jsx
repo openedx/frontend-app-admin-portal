@@ -14,7 +14,7 @@ jest.mock('../../data/services/LmsApiService', () => ({
 }));
 
 const EnterpriseListWrapper = () => (
-  <IntlProvider>
+  <IntlProvider locale="en">
     <EnterpriseList clearPortalConfiguration={() => { }} />
   </IntlProvider>
 );
