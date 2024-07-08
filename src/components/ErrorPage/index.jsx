@@ -11,6 +11,14 @@ import ForbiddenPage from '../ForbiddenPage';
 
 function renderErrorComponent(status, message) {
   const errorMessage = message || 'An unknown error has occured.';
+  if (status === 404) {
+    return <NotFoundPage />;
+  }
+
+  if (status === 403) {
+    return <ForbiddenPage />;
+  }
+
   return (
     <>
       <Helmet>
@@ -33,15 +41,6 @@ function renderErrorComponent(status, message) {
 
 const ErrorPage = (props) => {
   const { status, message } = props;
-
-  if (status === 404) {
-    return <NotFoundPage />;
-  }
-
-  if (status === 403) {
-    return <ForbiddenPage />;
-  }
-
   return (
     <main role="main">
       <div className="container-fluid">

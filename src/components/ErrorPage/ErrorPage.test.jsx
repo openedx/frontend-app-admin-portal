@@ -4,24 +4,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import ErrorPage from './index';
-import { GlobalContext } from '../GlobalContextProvider';
-
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
 
 const ErrorPageWrapper = (props) => (
   <MemoryRouter>
     <IntlProvider locale="en">
-      <GlobalContext.Provider value={defaultGlobalContextValue}>
-        <ErrorPage {...props} />
-      </GlobalContext.Provider>
+      <ErrorPage {...props} />
     </IntlProvider>
   </MemoryRouter>
 );

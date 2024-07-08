@@ -12,19 +12,8 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 import { renderWithRouter } from '../test/testUtils';
-import { GlobalContext } from '../GlobalContextProvider';
 
 features.SETTINGS_PAGE = true;
-
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
 
 const defaultEnterpriseAppContextValue = {
   enterpriseCuration: {
@@ -38,19 +27,12 @@ const defaultEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
 };
 
-const GlobalContextProvider = ({ children }) => (
-  <GlobalContext.Provider value={defaultGlobalContextValue}>
-    {children}
-  </GlobalContext.Provider>
-);
-
 const EnterpriseAppContextProvider = ({ children }) => (
   <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
     <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
       {children}
     </EnterpriseSubsidiesContext.Provider>
   </EnterpriseAppContext.Provider>
-
 );
 
 jest.mock('react-router-dom', () => ({
@@ -85,37 +67,27 @@ jest.mock('../../containers/Sidebar', () => ({
   default: () => 'Sidebar',
 }));
 
-const basicProps = {
-  enterpriseSlug: 'foo',
-  fetchPortalConfiguration: jest.fn(),
-  toggleSidebarToggle: jest.fn(),
-  loading: false,
-  enableLearnerPortal: true,
-  enterpriseId: 'uuid',
-  enterpriseName: 'test-enterprise',
-  enterpriseBranding: {
-    primary_color: SCHOLAR_THEME.button,
-    secondary_color: SCHOLAR_THEME.banner,
-    tertiary_color: SCHOLAR_THEME.accent,
-  },
-};
-
-const invalidEnterpriseId = {
-  ...basicProps,
-  enterpriseId: null,
-  enterpriseName: null,
-};
-
-const EnterpriseAppWrapper = (props = basicProps) => (
-  <IntlProvider locale="en">
-    <GlobalContextProvider>
-      <EnterpriseApp {...props} />
-    </GlobalContextProvider>
-  </IntlProvider>
-
-);
-
 describe('<EnterpriseApp />', () => {
+  const basicProps = {
+    enterpriseSlug: 'foo',
+    fetchPortalConfiguration: jest.fn(),
+    toggleSidebarToggle: jest.fn(),
+    loading: false,
+    enableLearnerPortal: true,
+    enterpriseId: 'uuid',
+    enterpriseName: 'test-enterprise',
+    enterpriseBranding: {
+      primary_color: SCHOLAR_THEME.button,
+      secondary_color: SCHOLAR_THEME.banner,
+      tertiary_color: SCHOLAR_THEME.accent,
+    },
+  };
+
+  const invalidEnterpriseId = {
+    ...basicProps,
+    enterpriseId: null,
+    enterpriseName: null,
+  };
   beforeEach(() => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
@@ -125,12 +97,16 @@ describe('<EnterpriseApp />', () => {
   });
 
   it('should show settings page if there is at least one visible tab', () => {
-    renderWithRouter(<EnterpriseAppWrapper {...basicProps} />);
+    renderWithRouter(<EnterpriseApp {...basicProps} />);
     expect(screen.getByText('/admin/settings'));
   });
 
   it('should show error page if enterprise name is invalid', () => {
-    render(<EnterpriseAppWrapper {...invalidEnterpriseId} />);
+    render(
+      <IntlProvider locale="en">
+        <EnterpriseApp {...invalidEnterpriseId} />
+      </IntlProvider>,
+    );
     expect(screen.getByText("Oops, sorry we can't find that page!")).toBeInTheDocument();
   });
 });

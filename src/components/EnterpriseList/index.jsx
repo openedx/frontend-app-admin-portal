@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -13,7 +12,6 @@ import { logError } from '@edx/frontend-platform/logging';
 import { DataTable, TextFilter } from '@openedx/paragon';
 
 import LmsApiService from '../../data/services/LmsApiService';
-import { GlobalContext } from '../GlobalContextProvider';
 
 export const TITLE = 'Enterprise List';
 const PAGE_SIZE = 50;
@@ -54,11 +52,10 @@ const EnterpriseList = ({ clearPortalConfiguration }) => {
     const { name, slug, uuid } = row.original;
     return <Link key={uuid} to={`/${slug}/admin/learners`}>{name}</Link>;
   };
-  const { minHeight } = useContext(GlobalContext);
 
   return (
     <main role="main">
-      <div className="container-fluid" style={{ minHeight }}>
+      <div className="container-fluid">
         <div className="row mt-4">
           <div className="col-sm-12 col-md">
             <h1>{TITLE}</h1>

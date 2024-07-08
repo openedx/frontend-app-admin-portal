@@ -20,7 +20,6 @@ import { features } from '../../config';
 import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
-import { GlobalContext } from '../../components/GlobalContextProvider';
 
 const defaultEnterpriseAppContextValue = {
   enterpriseCuration: {
@@ -72,16 +71,6 @@ getAuthenticatedUser.mockReturnValue({
   username: 'foo',
 });
 
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
-
 const mockStore = configureMockStore([thunk]);
 
 const initialState = {
@@ -89,7 +78,7 @@ const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
     enterpriseSlug: 'test-enterprise-slug',
-    enterpriseName: 'test-enterprise',
+    enterpriseName: 'test-enterpris',
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
@@ -110,14 +99,12 @@ const EnterpriseAppWrapper = ({ store, initialEntries, ...props }) => (
   <MemoryRouter initialEntries={initialEntries || ['/test-enterprise-slug/admin/learners']}>
     <Provider store={store}>
       <IntlProvider locale="en">
-        <GlobalContext.Provider value={defaultGlobalContextValue}>
-          <Routes>
-            <Route
-              path="/:enterpriseSlug/*"
-              element={<EnterpriseApp {...props} />}
-            />
-          </Routes>
-        </GlobalContext.Provider>
+        <Routes>
+          <Route
+            path="/:enterpriseSlug/*"
+            element={<EnterpriseApp {...props} />}
+          />
+        </Routes>
       </IntlProvider>
     </Provider>
   </MemoryRouter>

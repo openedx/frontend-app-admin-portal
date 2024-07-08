@@ -5,12 +5,7 @@ exports[`<NotFoundPage /> renders correctly 1`] = `
   role="main"
 >
   <div
-    className="container-fluid"
-    style={
-      {
-        "minHeight": "calc(100vh - 16px)",
-      }
-    }
+    className="container-fluid mt-3"
   >
     <div
       className="text-center py-5"

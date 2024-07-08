@@ -47,7 +47,6 @@ import {
   mockSubsidySummary,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
-import { GlobalContext } from '../../GlobalContextProvider';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -191,16 +190,6 @@ const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
 
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
-
 const BudgetDetailPageWrapper = ({
   initialState = initialStoreState,
   enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
@@ -211,11 +200,9 @@ const BudgetDetailPageWrapper = ({
     <QueryClientProvider client={queryClient()}>
       <IntlProvider locale="en">
         <Provider store={store}>
-          <GlobalContext.Provider value={defaultGlobalContextValue}>
-            <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
-              <BudgetDetailPage {...rest} />
-            </EnterpriseSubsidiesContext.Provider>
-          </GlobalContext.Provider>
+          <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+            <BudgetDetailPage {...rest} />
+          </EnterpriseSubsidiesContext.Provider>
         </Provider>
       </IntlProvider>
     </QueryClientProvider>
