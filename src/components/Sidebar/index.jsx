@@ -35,9 +35,12 @@ const Sidebar = ({
   onWidthChange,
   isMobile,
   enterpriseGroupsV1,
+  onMount,
 }) => {
-  const navRef = useRef();
-  const widthRef = useRef();
+  const sidebarRef = useRef();
+  const sidebarContentRef = useRef();
+  const sidebarNavRef = useRef();
+  const sidebarWidthRef = useRef();
   const { enterpriseCuration: { enterpriseCuration, isNewArchivedContent } } = useContext(EnterpriseAppContext);
   const { subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
@@ -48,18 +51,31 @@ const Sidebar = ({
   const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
-    if (navRef && navRef.current) {
-      const { width } = navRef.current.getBoundingClientRect();
+    if (sidebarRef && sidebarRef.current) {
+      const { width } = sidebarRef.current.getBoundingClientRect();
       return width;
     }
     return null;
   }, []);
 
   useOnMount(() => {
+    if (!sidebarContentRef.current || !sidebarNavRef.current) {
+      return;
+    }
+    const sidebarContentPadding = {
+      top: parseInt(global.getComputedStyle(sidebarContentRef.current).paddingTop, 10),
+      bottom: parseInt(global.getComputedStyle(sidebarContentRef.current).paddingBottom, 10),
+    };
+    const sidebarNavHeight = sidebarNavRef.current.getBoundingClientRect().height;
+    const sidebarMinHeight = sidebarNavHeight + sidebarContentPadding.top + sidebarContentPadding.bottom;
+    onMount({ sidebarMinHeight });
+  });
+
+  useOnMount(() => {
     if (isExpandedByToggle) {
       // If sidebar is already expanded via the toggle on mount
       const sideBarWidth = getSidebarWidth();
-      widthRef.current = sideBarWidth;
+      sidebarWidthRef.current = sideBarWidth;
       onWidthChange(sideBarWidth);
     }
     async function fetchGroupsData() {
@@ -83,11 +99,11 @@ const Sidebar = ({
 
   useEffect(() => {
     const sideBarWidth = getSidebarWidth();
-    if (widthRef.current !== sideBarWidth) {
+    if (sidebarWidthRef.current !== sideBarWidth) {
       if (!isExpanded) {
         onWidthChange(sideBarWidth);
       }
-      widthRef.current = sideBarWidth;
+      sidebarWidthRef.current = sideBarWidth;
     }
   }, [getSidebarWidth, isExpanded, isExpandedByToggle, isMobile, onWidthChange]);
 
@@ -183,10 +199,10 @@ const Sidebar = ({
       onFocus={() => !isSidebarExpanded && expandSidebar()}
       onMouseLeave={() => shouldSidebarCollapse && collapseSidebar()}
       onBlur={() => shouldSidebarCollapse && collapseSidebar()}
-      ref={navRef}
+      ref={sidebarRef}
     >
-      <div className="sidebar-content py-2">
-        <ul className="nav nav-pills flex-column m-0">
+      <div className="sidebar-content py-2" ref={sidebarContentRef}>
+        <ul className="nav nav-pills flex-column m-0" ref={sidebarNavRef}>
           {getMenuItems().filter(item => !item.hidden).map(({
             id, to, title, icon, notification, external,
           }) => (
@@ -230,6 +246,7 @@ Sidebar.propTypes = {
   enableSubscriptionManagementScreen: PropTypes.bool,
   enableAnalyticsScreen: PropTypes.bool,
   onWidthChange: PropTypes.func,
+  onMount: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   enterpriseGroupsV1: PropTypes.bool,
 };
