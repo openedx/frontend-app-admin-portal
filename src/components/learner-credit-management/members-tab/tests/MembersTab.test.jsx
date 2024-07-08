@@ -812,7 +812,7 @@ describe('<BudgetDetailPage />', () => {
     useEnterpriseGroupMembersTableData.mockReturnValue({
       isLoading: false,
       enterpriseGroupMembersTableData: {
-        itemCount: 3,
+        itemCount: 5,
         pageCount: 1,
         results: [{
           memberDetails: { userEmail: 'dukesilver@test.com', userName: 'duke silver' },
@@ -828,6 +828,16 @@ describe('<BudgetDetailPage />', () => {
           memberDetails: { userEmail: 'annperkins@test.com', userName: 'ann perkins' },
           status: 'accepted',
           recentAction: 'Accepted: April 02, 2024',
+          enrollmentCount: 0,
+        }, {
+          memberDetails: { userEmail: 'andydwyer@test.com', userName: 'andy dwyer' },
+          status: 'internal_api_error',
+          recentAction: 'Errored: April 01, 2024',
+          enrollmentCount: 0,
+        }, {
+          memberDetails: { userEmail: 'donnameagle@test.com', userName: 'donna meagle' },
+          status: 'email_error',
+          recentAction: 'Errored: April 01, 2024',
           enrollmentCount: 0,
         }],
       },
@@ -852,6 +862,13 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.queryByText('Member removed')).toBeInTheDocument());
     screen.getByText('This member has been successfully removed and can not browse this budget\'s '
       + 'catalog and enroll using their member permissions.');
+
+    userEvent.click(screen.getByText('Failed: System'));
+    await waitFor(() => expect(screen.queryByText('Something went wrong behind the scenes.')).toBeInTheDocument());
+
+    userEvent.click(screen.getByText('Failed: Bad email'));
+    await waitFor(() => expect(screen.queryByText('This member invitation failed because a notification to donnameagle@test.com '
+      + 'could not be sent.')).toBeInTheDocument());
   });
   it('download learner flow for multiple selected pages of users', async () => {
     // Setup

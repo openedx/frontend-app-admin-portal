@@ -4,7 +4,7 @@ import {
   Chip, Icon, Hyperlink, OverlayTrigger, Popover,
 } from '@openedx/paragon';
 import {
-  CheckCircle, RemoveCircle, Timelapse,
+  CheckCircle, Error, RemoveCircle, Timelapse,
 } from '@openedx/paragon/icons';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { HELP_CENTER_GROUPS_INVITE_LINK } from '../../settings/data/constants';
@@ -62,6 +62,60 @@ const MemberStatusTableCell = ({
       id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.acceptedPopoverBody',
       defaultMessage: "This member has successfully accepted the member invitation and can now browse this budget's catalog and enroll using their member permissions.",
       description: 'Popover body for the accepted status',
+    });
+  } else if (row.original.status === 'internal_api_error') {
+    icon = Error;
+    text = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedSystem',
+      defaultMessage: 'Failed: System',
+      description: 'Status of the member invitation',
+    });
+    popoverHeader = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedSystemPopoverHeader',
+      defaultMessage: 'Failed: System',
+      description: 'Popover header for the system failed status',
+    });
+    popoverBody = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedSystemPopoverBody',
+      defaultMessage: 'Something went wrong behind the scenes.',
+      description: 'Popover body for the system failed status',
+    });
+    popoverExtra1 = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedSystemPopoverExtra1',
+      defaultMessage: 'Need help?',
+      description: 'Extra text for the system failed status',
+    });
+    popoverExtra2 = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedSystemPopoverExtra2',
+      defaultMessage: 'Get help at ',
+      description: 'Extra text for the system failed status',
+    });
+  } else if (row.original.status === 'email_error') {
+    icon = Error;
+    text = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedEmail',
+      defaultMessage: 'Failed: Bad email',
+      description: 'Status of the member invitation',
+    });
+    popoverHeader = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedEmailPopoverHeader',
+      defaultMessage: 'Failed: Bad email',
+      description: 'Popover header for the failed email status',
+    });
+    popoverBody = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedEmailPopoverBody',
+      defaultMessage: 'This member invitation failed because a notification to {userEmail} could not be sent.',
+      description: 'Popover body for the failed email status',
+    }, { userEmail: row.original.memberDetails.userEmail });
+    popoverExtra1 = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedEmailPopoverExtra1',
+      defaultMessage: 'Resolution steps',
+      description: 'Extra text for the failed email status',
+    });
+    popoverExtra2 = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.failedEmailPopoverExtra2',
+      defaultMessage: 'Remove member from budget, ensure email is correct and re-invite. Get more troubleshooting help at ',
+      description: 'Extra text for the failed email status',
     });
   } else {
     icon = RemoveCircle;
