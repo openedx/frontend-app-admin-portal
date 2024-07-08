@@ -67,8 +67,8 @@ const Sidebar = ({
       bottom: parseInt(global.getComputedStyle(sidebarContentRef.current).paddingBottom, 10),
     };
     const sidebarNavHeight = sidebarNavRef.current.getBoundingClientRect().height;
-    const sidebarMinHeight = sidebarNavHeight + sidebarContentPadding.top + sidebarContentPadding.bottom;
-    onMount({ sidebarMinHeight });
+    const sidebarHeight = sidebarNavHeight + sidebarContentPadding.top + sidebarContentPadding.bottom;
+    onMount({ sidebarHeight });
   });
 
   useOnMount(() => {
@@ -78,6 +78,9 @@ const Sidebar = ({
       sidebarWidthRef.current = sideBarWidth;
       onWidthChange(sideBarWidth);
     }
+  });
+
+  useOnMount(() => {
     async function fetchGroupsData() {
       try {
         const response = await LmsApiService.fetchEnterpriseGroups();

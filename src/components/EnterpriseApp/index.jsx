@@ -135,9 +135,9 @@ class EnterpriseApp extends React.Component {
                       sidebarWidth: width + defaultContentPadding,
                     });
                   }}
-                  onMount={({ sidebarMinHeight }) => {
+                  onMount={({ sidebarHeight }) => {
                     this.setState({
-                      enterpriseAppMinHeight: sidebarMinHeight,
+                      enterpriseAppMinHeight: sidebarHeight,
                     });
                   }}
                   isMobile={!matchesMediaQ}
