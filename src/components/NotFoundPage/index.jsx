@@ -28,7 +28,7 @@ export const NotFound = () => (
 );
 
 const NotFoundPage = () => (
-  <main role="main">
+  <main role="main" style={{ flex: 1 }}>
     <div className="container-fluid mt-3">
       <NotFound />
     </div>
