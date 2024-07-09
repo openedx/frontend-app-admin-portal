@@ -16,12 +16,8 @@ import { SCHOLAR_THEME } from '../settings/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EnterpriseAppContent from './EnterpriseAppContent';
 import { withLocation, withParams } from '../../hoc';
-import { GlobalContext } from '../GlobalContextProvider';
 
 class EnterpriseApp extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
-  static contextType = GlobalContext;
-
   constructor(props) {
     super(props);
 
@@ -30,6 +26,7 @@ class EnterpriseApp extends React.Component {
 
     this.state = {
       sidebarWidth: 61.3, // hardcoded sidebarWidth required for initial render
+      enterpriseAppMinHeight: 0,
     };
   }
 
@@ -126,7 +123,7 @@ class EnterpriseApp extends React.Component {
         enablePortalLearnerCreditManagementScreen={enablePortalLearnerCreditManagementScreen}
       >
         <BrandStyles enterpriseBranding={enterpriseBranding} />
-        <div className="enterprise-app" style={{ minHeight: this.context.minHeight }}>
+        <div className="enterprise-app" style={{ minHeight: this.state.enterpriseAppMinHeight }}>
           <MediaQuery minWidth={breakpoints.large.minWidth}>
             {matchesMediaQ => (
               <>
@@ -136,6 +133,11 @@ class EnterpriseApp extends React.Component {
                   onWidthChange={(width) => {
                     this.setState({
                       sidebarWidth: width + defaultContentPadding,
+                    });
+                  }}
+                  onMount={({ sidebarHeight }) => {
+                    this.setState({
+                      enterpriseAppMinHeight: sidebarHeight,
                     });
                   }}
                   isMobile={!matchesMediaQ}

@@ -19,7 +19,6 @@ import {
   MANAGE_REQUESTS_TAB,
   SUBSCRIPTION_TABS_LABELS,
 } from '../data/constants';
-import { GlobalContext } from '../../GlobalContextProvider';
 
 const MANAGE_LEARNERS_MOCK_CONTENT = 'learners';
 const MANAGE_REQUESTS_MOCK_CONTENT = 'requests';
@@ -37,16 +36,6 @@ jest.mock(
     return <div>{MANAGE_REQUESTS_MOCK_CONTENT}</div>;
   },
 );
-
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
 
 const enterpriseId = 'test-enterprise';
 const enterpriseSlug = 'sluggy';
@@ -74,18 +63,16 @@ const SubscriptionTabsWrapper = ({
     <IntlProvider locale="en">
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
-          <GlobalContext.Provider value={defaultGlobalContextValue}>
-            <Routes>
-              <Route
-                path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab"
-                element={(
-                  <SubsidyRequestsContext.Provider value={value}>
-                    <SubscriptionTabs />
-                  </SubsidyRequestsContext.Provider>
-                  )}
-              />
-            </Routes>
-          </GlobalContext.Provider>
+          <Routes>
+            <Route
+              path="/:enterpriseSlug/admin/subscriptions/:subscriptionsTab"
+              element={(
+                <SubsidyRequestsContext.Provider value={value}>
+                  <SubscriptionTabs />
+                </SubsidyRequestsContext.Provider>
+            )}
+            />
+          </Routes>
         </MemoryRouter>
       </Provider>
     </IntlProvider>

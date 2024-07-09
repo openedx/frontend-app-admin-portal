@@ -8,29 +8,16 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../config';
 
 import Footer from './index';
-import { GlobalContext } from '../../components/GlobalContextProvider';
 
 const mockStore = configureMockStore([thunk]);
-
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
 
 const FooterWrapper = props => (
   <MemoryRouter>
     <IntlProvider locale="en">
-      <GlobalContext.Provider value={defaultGlobalContextValue}>
-        <Footer
-          store={props.store}
-          {...props}
-        />
-      </GlobalContext.Provider>
+      <Footer
+        store={props.store}
+        {...props}
+      />
     </IntlProvider>
   </MemoryRouter>
 );

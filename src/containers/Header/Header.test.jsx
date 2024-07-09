@@ -14,28 +14,15 @@ import SidebarToggle from '../SidebarToggle';
 
 import { configuration } from '../../config';
 import Img from '../../components/Img';
-import { GlobalContext } from '../../components/GlobalContextProvider';
-
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
 
 const mockStore = configureMockStore([thunk]);
 
 const HeaderWrapper = props => (
   <MemoryRouter>
     <Provider store={props.store}>
-      <GlobalContext.Provider value={defaultGlobalContextValue}>
-        <Header
-          {...props}
-        />
-      </GlobalContext.Provider>
+      <Header
+        {...props}
+      />
     </Provider>
   </MemoryRouter>
 );

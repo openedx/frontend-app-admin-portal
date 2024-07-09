@@ -12,19 +12,8 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { SCHOLAR_THEME } from '../settings/data/constants';
 import { EnterpriseAppContext } from './EnterpriseAppContextProvider';
 import { renderWithRouter } from '../test/testUtils';
-import { GlobalContext } from '../GlobalContextProvider';
 
 features.SETTINGS_PAGE = true;
-
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
 
 const defaultEnterpriseAppContextValue = {
   enterpriseCuration: {
@@ -38,19 +27,12 @@ const defaultEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
 };
 
-const GlobalContextProvider = ({ children }) => (
-  <GlobalContext.Provider value={defaultGlobalContextValue}>
-    {children}
-  </GlobalContext.Provider>
-);
-
 const EnterpriseAppContextProvider = ({ children }) => (
   <EnterpriseAppContext.Provider value={defaultEnterpriseAppContextValue}>
     <EnterpriseSubsidiesContext.Provider value={defaultEnterpriseSubsidiesContextValue}>
       {children}
     </EnterpriseSubsidiesContext.Provider>
   </EnterpriseAppContext.Provider>
-
 );
 
 jest.mock('react-router-dom', () => ({
@@ -108,11 +90,8 @@ const invalidEnterpriseId = {
 
 const EnterpriseAppWrapper = (props = basicProps) => (
   <IntlProvider locale="en">
-    <GlobalContextProvider>
-      <EnterpriseApp {...props} />
-    </GlobalContextProvider>
+    <EnterpriseApp {...props} />
   </IntlProvider>
-
 );
 
 describe('<EnterpriseApp />', () => {

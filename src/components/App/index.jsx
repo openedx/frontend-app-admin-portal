@@ -33,7 +33,6 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
-import GlobalContextProvider from '../GlobalContextProvider';
 
 // eslint-disable-next-line import/no-unresolved
 const ReactQueryDevtoolsProduction = lazy(() => import('@tanstack/react-query-devtools/production').then((d) => ({
@@ -107,6 +106,7 @@ const AppWrapper = () => {
     }
     return true;
   }, [config]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
@@ -116,16 +116,16 @@ const AppWrapper = () => {
         </Suspense>
       )}
       <AppProvider store={store}>
-        <Helmet
-          titleTemplate="%s - edX Admin Portal"
-          defaultTitle="edX Admin Portal"
-        />
-        {isMaintenanceAlertOpen && (
-        <SystemWideWarningBanner>
-          {config.MAINTENANCE_ALERT_MESSAGE}
-        </SystemWideWarningBanner>
-        )}
-        <GlobalContextProvider>
+        <div id="app-container">
+          <Helmet
+            titleTemplate="%s - edX Admin Portal"
+            defaultTitle="edX Admin Portal"
+          />
+          {isMaintenanceAlertOpen && (
+            <SystemWideWarningBanner>
+              {config.MAINTENANCE_ALERT_MESSAGE}
+            </SystemWideWarningBanner>
+          )}
           <Header />
           <Routes>
             <Route
@@ -137,7 +137,7 @@ const AppWrapper = () => {
                 >
                   <EnterpriseIndexPage />
                 </AuthenticatedPageRoute>
-           )}
+              )}
             />
             <Route
               path="/:enterpriseSlug/admin/register"
@@ -156,7 +156,7 @@ const AppWrapper = () => {
                 >
                   <RedirectComponent />
                 </PageWrap>
-           )}
+              )}
             />
             <Route
               path="/:enterpriseSlug/admin/:enterpriseAppPage/*"
@@ -167,7 +167,7 @@ const AppWrapper = () => {
                 >
                   <AuthenticatedEnterpriseApp />
                 </PageWrap>
-           )}
+            )}
             />
             <Route
               path="/"
@@ -175,12 +175,12 @@ const AppWrapper = () => {
                 <AuthenticatedPageRoute authenticatedAPIClient={apiClient} redirect={process.env.BASE_URL}>
                   <EnterpriseIndexPage />
                 </AuthenticatedPageRoute>
-           )}
+            )}
             />
             <Route path="*" element={<PageWrap><NotFoundPage /></PageWrap>} />
           </Routes>
           <Footer />
-        </GlobalContextProvider>
+        </div>
       </AppProvider>
     </QueryClientProvider>
   );

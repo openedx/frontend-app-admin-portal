@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
   render, screen,
+  waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { getConfig } from '@edx/frontend-platform/config';
@@ -77,6 +78,8 @@ const initialEnterpriseSubsidiesContextValue = {
   canManageLearnerCredit: true,
 };
 
+const mockOnMount = jest.fn();
+
 const SidebarWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   subsidyRequestsContextValue = initialSubsidyRequestsContextValue,
@@ -91,6 +94,7 @@ const SidebarWrapper = ({
             <SubsidyRequestsContext.Provider value={subsidyRequestsContextValue}>
               <Sidebar
                 baseUrl="/test-enterprise-slug"
+                onMount={mockOnMount}
                 {...props}
               />
             </SubsidyRequestsContext.Provider>
@@ -115,12 +119,15 @@ describe('<Sidebar />', () => {
   let wrapper;
 
   beforeEach(() => {
+    jest.clearAllMocks();
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
     wrapper = mount((
       <SidebarWrapper />
     ));
+    expect(mockOnMount).toHaveBeenCalledTimes(1);
+    expect(mockOnMount).toHaveBeenCalledWith({ sidebarHeight: expect.any(Number) });
   });
 
   it('renders correctly', () => {
@@ -436,7 +443,10 @@ describe('<Sidebar />', () => {
     }
   });
 
-  it('hides highlights when we have groups with a subset of all learners', async () => {
+  it.each([
+    { appliesToAllContexts: true },
+    { appliesToAllContexts: false },
+  ])('hides highlights when we have groups with a subset of all learners (%s)', async ({ appliesToAllContexts }) => {
     getAuthenticatedUser.mockReturnValue({
       administrator: false,
     });
@@ -449,25 +459,20 @@ describe('<Sidebar />', () => {
         },
       },
     });
-
     LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: false }] },
+      data: { results: [{ applies_to_all_contexts: appliesToAllContexts }] },
     }));
     render(<SidebarWrapper store={store} />);
-    const highlightsLink = expect(screen.queryByRole('link', { name: 'Highlights' }));
-    // we have to wait for the async call to set the state
-    setTimeout(() => {
-      expect(highlightsLink).not.toBeInTheDocument();
-    }, 1000);
-
-    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: true }] },
-    }));
-    render(<SidebarWrapper store={store} />);
-    setTimeout(() => {
-      expect(highlightsLink).toBeInTheDocument();
-    }, 1000);
+    const highlightsLink = screen.queryByRole('link', { name: 'Highlights' });
+    await waitFor(() => {
+      if (appliesToAllContexts) {
+        expect(highlightsLink).toBeInTheDocument();
+      } else {
+        expect(highlightsLink).not.toBeInTheDocument();
+      }
+    });
   });
+
   describe('notifications', () => {
     it('displays notification bubble when there are outstanding license requests', () => {
       const contextValue = { subsidyRequestsCounts: { subscriptionLicenses: 2 } };

@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
@@ -8,15 +8,8 @@ import { configuration } from '../../config';
 import Img from '../Img';
 import messages from './messages';
 import './Footer.scss';
-import { GlobalContext } from '../GlobalContextProvider';
-import { setFooterHeight } from '../../data/actions/global';
 
 class Footer extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
-  static contextType = GlobalContext;
-
-  ref = createRef();
-
   constructor(props) {
     super(props);
     this.state = {
@@ -24,24 +17,12 @@ class Footer extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { footerHeight, dispatch } = this.context;
-    if (this.ref.current?.offsetHeight && footerHeight < this.ref.current?.offsetHeight) {
-      dispatch(setFooterHeight(this.ref.current.offsetHeight));
-    }
-  }
-
   componentDidUpdate(prevProps) {
     const { enterpriseLogo } = this.props;
-    const { footerHeight, dispatch } = this.context;
-
     if (enterpriseLogo && enterpriseLogo !== prevProps.enterpriseLogo) {
       this.setState({ // eslint-disable-line react/no-did-update-set-state
         enterpriseLogoNotFound: false,
       });
-    }
-    if (this.ref.current?.offsetHeight && footerHeight < this.ref.current?.offsetHeight) {
-      dispatch(setFooterHeight(this.ref.current.offsetHeight));
     }
   }
 
@@ -64,7 +45,7 @@ class Footer extends React.Component {
     const { formatMessage } = this.props.intl;
 
     return (
-      <footer ref={this.ref} className="container-fluid py-4 border-top">
+      <footer className="container-fluid py-4 border-top">
         <div className="row justify-content-between align-items-center">
           <div className="col-xs-12 col-md-4 logo-links">
             <Link className="logo border-right pr-4" to="/">

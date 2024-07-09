@@ -9,19 +9,8 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import SettingsPage from '../index';
-import { GlobalContext } from '../../GlobalContextProvider';
 
 jest.mock('../SettingsTabs');
-
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
 
 const mockStore = configureMockStore();
 const store = mockStore({
@@ -37,11 +26,9 @@ const settingsPageWithRouter = (route) => (
   <IntlProvider locale="en">
     <MemoryRouter initialEntries={[route]}>
       <Provider store={store}>
-        <GlobalContext.Provider value={defaultGlobalContextValue}>
-          <Routes>
-            <Route path="/settings/*" element={<SettingsPage />} />
-          </Routes>
-        </GlobalContext.Provider>
+        <Routes>
+          <Route path="/settings/*" element={<SettingsPage />} />
+        </Routes>
       </Provider>
     </MemoryRouter>
   </IntlProvider>

@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -10,12 +9,14 @@ import { Link } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { logError } from '@edx/frontend-platform/logging';
-import { DataTable, TextFilter } from '@openedx/paragon';
+import {
+  DataTable, TextFilter, Container, Row, Col,
+} from '@openedx/paragon';
 
 import LmsApiService from '../../data/services/LmsApiService';
-import { GlobalContext } from '../GlobalContextProvider';
 
 export const TITLE = 'Enterprise List';
+
 const PAGE_SIZE = 50;
 
 const EnterpriseList = ({ clearPortalConfiguration }) => {
@@ -54,16 +55,15 @@ const EnterpriseList = ({ clearPortalConfiguration }) => {
     const { name, slug, uuid } = row.original;
     return <Link key={uuid} to={`/${slug}/admin/learners`}>{name}</Link>;
   };
-  const { minHeight } = useContext(GlobalContext);
 
   return (
-    <main role="main">
-      <div className="container-fluid" style={{ minHeight }}>
-        <div className="row mt-4">
-          <div className="col-sm-12 col-md">
+    <main role="main" style={{ flex: 1 }}>
+      <Container className="my-4">
+        <Row>
+          <Col sm={12} md>
             <h1>{TITLE}</h1>
-          </div>
-        </div>
+          </Col>
+        </Row>
         <DataTable
           isPaginated
           manualPagination
@@ -90,7 +90,7 @@ const EnterpriseList = ({ clearPortalConfiguration }) => {
             },
           ]}
         />
-      </div>
+      </Container>
     </main>
   );
 };

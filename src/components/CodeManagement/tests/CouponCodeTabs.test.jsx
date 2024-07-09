@@ -19,7 +19,6 @@ import {
   MANAGE_REQUESTS_TAB,
   COUPON_CODE_TABS_LABELS,
 } from '../data/constants';
-import { GlobalContext } from '../../GlobalContextProvider';
 
 const MANAGE_CODES_MOCK_CONTENT = 'codes';
 const MANAGE_REQUESTS_MOCK_CONTENT = 'requests';
@@ -47,16 +46,6 @@ const initialStore = {
   },
 };
 
-const headerHeight = 0;
-const footerHeight = 0;
-
-const defaultGlobalContextValue = {
-  headerHeight,
-  footerHeight,
-  minHeight: `calc(100vh - ${headerHeight + footerHeight + 16}px)`,
-  dispatch: jest.fn(),
-};
-
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const store = getMockStore({ ...initialStore });
@@ -74,18 +63,16 @@ const CouponCodeTabsWrapper = ({
     <IntlProvider locale="en">
       <Provider store={store}>
         <MemoryRouter initialEntries={[route]}>
-          <GlobalContext.Provider value={defaultGlobalContextValue}>
-            <Routes>
-              <Route
-                path="/:enterpriseSlug/admin/coupons/:couponCodesTab"
-                element={(
-                  <SubsidyRequestsContext.Provider value={contextValue}>
-                    <CouponCodeTabs />
-                  </SubsidyRequestsContext.Provider>
-                  )}
-              />
-            </Routes>
-          </GlobalContext.Provider>
+          <Routes>
+            <Route
+              path="/:enterpriseSlug/admin/coupons/:couponCodesTab"
+              element={(
+                <SubsidyRequestsContext.Provider value={contextValue}>
+                  <CouponCodeTabs />
+                </SubsidyRequestsContext.Provider>
+              )}
+            />
+          </Routes>
         </MemoryRouter>
       </Provider>
     </IntlProvider>
