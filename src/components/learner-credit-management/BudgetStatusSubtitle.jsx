@@ -129,7 +129,7 @@ BudgetStatusSubtitle.propTypes = {
   date: PropTypes.string,
   policy: PropTypes.shape({
     groupAssociations: PropTypes.shape({}),
-  }).isRequired,
+  }),
   enterpriseUUID: PropTypes.string.isRequired,
   isRetired: PropTypes.bool.isRequired,
 };

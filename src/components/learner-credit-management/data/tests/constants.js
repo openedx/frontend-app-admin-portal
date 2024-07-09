@@ -132,7 +132,7 @@ export const mockSubsidySummary = {
 };
 
 export const mockEnterpriseOfferMetadata = {
-  id: 99511,
+  id: mockEnterpriseOfferId,
   startDatetime: new Date(today).toISOString(),
   endDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
   displayName: 'Test Display Name',

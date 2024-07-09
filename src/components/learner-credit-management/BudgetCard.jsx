@@ -61,8 +61,8 @@ const BudgetCard = ({ original }) => {
   if (source === BUDGET_TYPES.ecommerce) {
     return (
       <SubBudgetCard
-        isLoading={isLoadingSubsidySummaryAnalyticsApi}
         id={subsidySummaryAnalyticsApi?.offerId}
+        isLoading={isLoadingSubsidySummaryAnalyticsApi}
         start={start}
         end={end}
         available={subsidySummaryAnalyticsApi?.remainingFunds}
@@ -112,7 +112,6 @@ BudgetCard.propTypes = {
     retiredAt: PropTypes.string,
     enterpriseUUID: PropTypes.string.isRequired,
     enterpriseSlug: PropTypes.string.isRequired,
-    status: PropTypes.string,
   }).isRequired,
 };
 

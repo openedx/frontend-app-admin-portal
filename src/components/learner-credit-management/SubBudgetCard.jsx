@@ -6,18 +6,17 @@ import classNames from 'classnames';
 import {
   Card,
   Button,
-  Col,
   Badge,
   Stack,
-  Skeleton,
 } from '@openedx/paragon';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import {
-  formatPrice, getBudgetStatus, getTranslatedBudgetStatus, getTranslatedBudgetTerm,
-} from './data/utils';
+  getBudgetStatus, getTranslatedBudgetStatus, getTranslatedBudgetTerm,
+} from './data';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
+import SubBudgetCardUtilization from './SubBudgetCardUtilization';
 
 const BaseBackgroundFetchingWrapper = ({
   enterpriseId,
@@ -83,23 +82,24 @@ const BaseSubBudgetCard = ({
     isBudgetRetired: isRetired,
     retiredDateStr: retiredAt,
   });
-  const formattedDate = budgetLabel?.date ? intl.formatDate(
-    dayjs(budgetLabel?.date).toDate(),
+  const {
+    status, term, badgeVariant, date,
+  } = budgetLabel;
+  const formattedDate = date ? intl.formatDate(
+    dayjs(date).toDate(),
     {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
     },
   ) : undefined;
+  const isRetiredOrExpired = [BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(status);
 
   const hasBudgetAggregatesSection = () => {
-    const { status } = budgetLabel;
-
-    return (
-      status === BUDGET_STATUSES.active
-      || status === BUDGET_STATUSES.expiring
-      || status === BUDGET_STATUSES.retired
-    );
+    const statusesWithoutAggregates = [
+      BUDGET_STATUSES.scheduled,
+    ];
+    return !statusesWithoutAggregates.includes(status);
   };
 
   const renderActions = (budgetId) => (
@@ -107,9 +107,9 @@ const BaseSubBudgetCard = ({
       data-testid="view-budget"
       as={Link}
       to={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}`}
-      variant={[BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(budgetLabel.status) ? 'outline-primary' : 'primary'}
+      variant={isRetiredOrExpired ? 'outline-primary' : 'primary'}
     >
-      {isRetired ? (
+      {isRetiredOrExpired ? (
         <FormattedMessage
           id="lcm.budgets.budget.card.view.budget.history"
           defaultMessage="View budget history"
@@ -128,16 +128,16 @@ const BaseSubBudgetCard = ({
   const renderCardHeader = (budgetType, budgetId) => {
     const subtitle = (
       <Stack direction="horizontal" gap={2.5}>
-        <Badge variant={budgetLabel.badgeVariant}>{getTranslatedBudgetStatus(intl, budgetLabel.status)}</Badge>
-        {(budgetLabel.term && formattedDate) && (
+        <Badge variant={badgeVariant}>{getTranslatedBudgetStatus(intl, status)}</Badge>
+        {(term && formattedDate) && (
           <span data-testid="budget-date">
-            {getTranslatedBudgetTerm(intl, budgetLabel.term)} {formattedDate}
+            {getTranslatedBudgetTerm(intl, term)} {formattedDate}
           </span>
         )}
       </Stack>
     );
 
-    const showActions = budgetLabel.status !== BUDGET_STATUSES.scheduled;
+    const showActions = status !== BUDGET_STATUSES.scheduled;
 
     return (
       <Card.Header
@@ -146,72 +146,6 @@ const BaseSubBudgetCard = ({
         actions={showActions ? renderActions(budgetId) : undefined}
         className={classNames('align-items-center', { 'mb-4.5': !hasBudgetAggregatesSection() })}
       />
-    );
-  };
-
-  const renderCardSection = () => {
-    if (!hasBudgetAggregatesSection()) {
-      return null;
-    }
-
-    return (
-      <Card.Section
-        title={!isRetired && (
-          <h4>
-            <FormattedMessage
-              id="lcm.budgets.budget.card.balance"
-              defaultMessage="Balance"
-              description="Header for the balance section of the budget card"
-            />
-          </h4>
-        )}
-        muted
-      >
-        <Col className="d-flex justify-content-start w-md-75" data-testid="aggregates-section">
-          {!isRetired && (
-            <>
-              <Col xs="6" md="auto" className="mb-3 mb-md-0 ml-n4.5">
-                <div className="small font-weight-bold">
-                  <FormattedMessage
-                    id="lcm.budgets.budget.card.available"
-                    defaultMessage="Available"
-                    description="Label for the available balance on the budget card"
-                  />
-                </div>
-                <span className="small">
-                  {isFetchingBudgets ? <Skeleton /> : formatPrice(available)}
-                </span>
-              </Col>
-              {isAssignable && (
-                <Col xs="6" md="auto" className="mb-3 mb-md-0">
-                  <div className="small font-weight-bold">
-                    <FormattedMessage
-                      id="lcm.budgets.budget.card.assigned"
-                      defaultMessage="Assigned"
-                      description="Label for the assigned balance on the budget card"
-                    />
-                  </div>
-                  <span className="small">
-                    {isFetchingBudgets ? <Skeleton /> : formatPrice(pending)}
-                  </span>
-                </Col>
-              )}
-            </>
-          )}
-          <Col xs="6" md="auto" className={classNames('mb-3 mb-md-0', { 'ml-n4.5': isRetired })}>
-            <div className={classNames('font-weight-bold', { h4: isRetired, small: !isRetired })}>
-              <FormattedMessage
-                id="lcm.budgets.budget.card.spent"
-                defaultMessage="Spent"
-                description="Label for the spent balance on the budget card"
-              />
-            </div>
-            <span className={classNames({ 'font-size-base': isRetired })}>
-              {isFetchingBudgets ? <Skeleton /> : formatPrice(spent)}
-            </span>
-          </Col>
-        </Col>
-      </Card.Section>
     );
   };
 
@@ -224,7 +158,16 @@ const BaseSubBudgetCard = ({
       <Card.Body>
         <Stack gap={4.5}>
           {renderCardHeader(displayName || 'Overview', id)}
-          {renderCardSection()}
+          {hasBudgetAggregatesSection() && (
+            <SubBudgetCardUtilization
+              isFetchingBudgets={isFetchingBudgets}
+              isAssignable={isAssignable}
+              status={status}
+              available={available}
+              pending={pending}
+              spent={spent}
+            />
+          )}
         </Stack>
       </Card.Body>
     </Card>
