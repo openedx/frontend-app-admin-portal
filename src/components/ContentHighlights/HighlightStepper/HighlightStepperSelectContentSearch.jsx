@@ -148,9 +148,11 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
     ContentHighlightsContext,
     v => v[0].searchClient,
   );
-    // TODO: replace testEnterpriseId with enterpriseId before push,
-    // uncomment out import and replace with testEnterpriseId to test
-  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
+  // TODO: replace testEnterpriseId with enterpriseId before push,
+  // uncomment out import and replace with testEnterpriseId to test
+  // FIXME: Remove 'AND (NOT content_type:video)' when video content metadata updated to
+  // to identical data-structure as similar algolia search objects, ex. COURSES
+  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)} AND (NOT content_type:video)`;
 
   return (
     <SearchData>
