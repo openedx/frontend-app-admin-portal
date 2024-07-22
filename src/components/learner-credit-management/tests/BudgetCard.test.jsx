@@ -263,7 +263,7 @@ describe('<BudgetCard />', () => {
     expect(firstElementWithTestId).toHaveTextContent(formattedString);
 
     // View budget CTA
-    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    const viewBudgetCTA = screen.getByText('View budget history', { selector: 'a' });
     expect(viewBudgetCTA).toBeInTheDocument();
     expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockEnterpriseOfferId}`);
   });
@@ -320,7 +320,7 @@ describe('<BudgetCard />', () => {
     expect(firstElementWithTestId).toHaveTextContent(formattedString);
 
     // View budget CTA
-    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    const viewBudgetCTA = screen.getByText('View budget history', { selector: 'a' });
     expect(viewBudgetCTA).toBeInTheDocument();
     expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockBudgetUuid}`);
   });
@@ -367,7 +367,7 @@ describe('<BudgetCard />', () => {
     expect(firstElementWithTestId).toHaveTextContent(formattedString);
 
     // View budget CTA
-    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    const viewBudgetCTA = screen.getByText('View budget history', { selector: 'a' });
     expect(viewBudgetCTA).toBeInTheDocument();
     expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockBudgetUuid}`);
   });
@@ -638,7 +638,7 @@ describe('<BudgetCard />', () => {
     },
     {
       status: BUDGET_STATUSES.expired,
-      shouldShow: false,
+      shouldShow: true,
       start: '2022-01-01',
       end: '2023-01-01',
       retiredAt: null,

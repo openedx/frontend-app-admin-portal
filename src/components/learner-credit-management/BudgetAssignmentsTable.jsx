@@ -11,12 +11,13 @@ import AssignmentRowActionTableCell from './AssignmentRowActionTableCell';
 import AssignmentTableRemindAction from './AssignmentTableRemind';
 import AssignmentTableCancelAction from './AssignmentTableCancel';
 import {
-  DEFAULT_PAGE, PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy,
+  DEFAULT_PAGE, PAGE_SIZE,
 } from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
 import AssignmentEnrollByDateCell from './AssignmentEnrollByDateCell';
 import AssignmentEnrollByDateHeader from './AssignmentEnrollByDateHeader';
+import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -45,6 +46,7 @@ const BudgetAssignmentsTable = ({
   isLoading,
   tableData,
   fetchTableData,
+  status,
 }) => {
   const intl = useIntl();
   const statusFilterChoices = tableData.learnerStateCounts
@@ -54,13 +56,10 @@ const BudgetAssignmentsTable = ({
       number: count,
       value: learnerState,
     }));
-
-  const { subsidyAccessPolicyId } = useBudgetId();
-  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const isRetired = !!subsidyAccessPolicy?.retired;
+  const isRetiredOrExpired = [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
 
   const budgetAssignmentsTableData = (() => {
-    if (isRetired) {
+    if (isRetiredOrExpired) {
       return {
         tableActions: [],
         additionalColumns: [],
@@ -82,7 +81,7 @@ const BudgetAssignmentsTable = ({
   return (
     <DataTable
       isSortable
-      isSelectable={!isRetired}
+      isSelectable={!isRetiredOrExpired}
       manualSortBy
       isPaginated
       manualPagination
@@ -95,8 +94,7 @@ const BudgetAssignmentsTable = ({
       SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       columns={[
         {
-          Header:
-          intl.formatMessage({
+          Header: intl.formatMessage({
             id: 'lcm.budget.detail.page.assignments.table.columns.assignment.details',
             defaultMessage: 'Assignment details',
             description: 'Column header for the assignment details column in the assignments table',
@@ -106,8 +104,7 @@ const BudgetAssignmentsTable = ({
           disableSortBy: true,
         },
         {
-          Header:
-          intl.formatMessage({
+          Header: intl.formatMessage({
             id: 'lcm.budget.detail.page.assignments.table.columns.amount',
             defaultMessage: 'Amount',
             description: 'Column header for the amount column in the assignments table',
@@ -117,22 +114,20 @@ const BudgetAssignmentsTable = ({
           disableFilters: true,
         },
         {
-          Header:
-          intl.formatMessage({
+          Header: intl.formatMessage({
             id: 'lcm.budget.detail.page.assignments.table.columns.status',
             defaultMessage: 'Status',
             description: 'Column header for the status column in the assignments table',
           }),
           accessor: 'learnerState',
           Cell: AssignmentStatusTableCell,
-          disableFilters: isRetired,
+          disableFilters: isRetiredOrExpired,
           Filter: CheckboxFilter,
           filter: 'includesValue',
           filterChoices: statusFilterChoices,
         },
         {
-          Header:
-          intl.formatMessage({
+          Header: intl.formatMessage({
             id: 'lcm.budget.detail.page.assignments.table.columns.recent.action',
             defaultMessage: 'Recent action',
             description: 'Column header for the recent action column in the assignments table',
@@ -188,6 +183,7 @@ BudgetAssignmentsTable.propTypes = {
     numPages: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 export default BudgetAssignmentsTable;

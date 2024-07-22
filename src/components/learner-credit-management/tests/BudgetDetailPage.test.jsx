@@ -779,26 +779,36 @@ describe('<BudgetDetailPage />', () => {
 
   it.each([
     {
+      subsidyAccessPolicy: null,
+      enterpriseOfferMetadata: mockEnterpriseOfferMetadata,
       budgetId: mockEnterpriseOfferId,
       isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, true],
     },
     {
+      subsidyAccessPolicy: null,
+      enterpriseOfferMetadata: mockEnterpriseOfferMetadata,
       budgetId: mockEnterpriseOfferId,
       isTopDownAssignmentEnabled: false,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, false],
     },
     {
+      subsidyAccessPolicy: mockPerLearnerSpendLimitSubsidyAccessPolicy,
+      enterpriseOfferMetadata: null,
       budgetId: mockSubsidyAccessPolicyUUID,
       isTopDownAssignmentEnabled: true,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],
     },
     {
+      subsidyAccessPolicy: mockAssignableSubsidyAccessPolicy,
+      enterpriseOfferMetadata: null,
       budgetId: mockSubsidyAccessPolicyUUID,
       isTopDownAssignmentEnabled: false,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, false],
     },
   ])('displays spend table in "Activity" tab with empty results (%s) when enterpriseGroupsV1 feature is false', async ({
+    subsidyAccessPolicy,
+    enterpriseOfferMetadata,
     budgetId,
     isTopDownAssignmentEnabled,
     expectedUseOfferRedemptionsArgs,
@@ -809,9 +819,17 @@ describe('<BudgetDetailPage />', () => {
       budgetId,
       activeTabKey: 'activity',
     });
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: (enterpriseOfferMetadata) ? mockSubsidySummary : undefined,
+    });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
-      data: undefined,
+      data: (subsidyAccessPolicy) || undefined,
+    });
+    useEnterpriseOffer.mockReturnValue({
+      isLoading: false,
+      data: (enterpriseOfferMetadata) || undefined,
     });
     useEnterpriseGroupLearners.mockReturnValue({
       data: {
@@ -853,6 +871,7 @@ describe('<BudgetDetailPage />', () => {
           topDownAssignmentRealTimeLcm: isTopDownAssignmentEnabled,
           enterpriseGroupsV1: false,
         },
+        disableExpiryMessagingForLearnerCredit: false,
       },
     };
     renderWithRouter(<BudgetDetailPageWrapper initialState={storeState} />);
@@ -1373,7 +1392,7 @@ describe('<BudgetDetailPage />', () => {
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
   });
 
-  it('renders with incomplete assignments table data', () => {
+  it('renders with incomplete assignments table data, when budget is retired', () => {
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -1382,7 +1401,10 @@ describe('<BudgetDetailPage />', () => {
     });
     useSubsidyAccessPolicy.mockReturnValue({
       isInitialLoading: false,
-      data: { ...mockAssignableSubsidyAccessPolicy, retired: true },
+      data: {
+        ...mockAssignableSubsidyAccessPolicy,
+        retired: true,
+      },
     });
     useEnterpriseGroupLearners.mockReturnValue({
       data: {

@@ -2,6 +2,7 @@ import { Chip } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { connect } from 'react-redux';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import FailedBadEmail from './assignments-status-chips/FailedBadEmail';
 import FailedCancellation from './assignments-status-chips/FailedCancellation';
 import FailedRedemption from './assignments-status-chips/FailedRedemption';
@@ -10,10 +11,16 @@ import FailedSystem from './assignments-status-chips/FailedSystem';
 import NotifyingLearner from './assignments-status-chips/NotifyingLearner';
 import WaitingForLearner from './assignments-status-chips/WaitingForLearner';
 import { capitalizeFirstLetter } from '../../utils';
-import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import {
+  getBudgetStatus,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from './data';
 import IncompleteAssignment from './assignments-status-chips/IncompleteAssignment';
+import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 
 const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
+  const intl = useIntl();
   const { original } = row;
   const {
     learnerEmail,
@@ -22,10 +29,16 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   } = original;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { status } = getBudgetStatus({
+    intl,
+    startDateStr: subsidyAccessPolicy.subsidyActiveDatetime,
+    endDateStr: subsidyAccessPolicy.subsidyExpirationDatetime,
+    isBudgetRetired: subsidyAccessPolicy.retired,
+  });
   const {
-    retired: isRetired, subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
   } = subsidyAccessPolicy;
-
+  const budgetStatusesWithIncompleteAssignments = [BUDGET_STATUSES.expired, BUDGET_STATUSES.retired];
   const sharedTrackEventMetadata = {
     learnerState,
     subsidyUuid,
@@ -72,7 +85,7 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   }
 
   // Always display "Incomplete assignment" status chip for retired budgets
-  if (isRetired) {
+  if (budgetStatusesWithIncompleteAssignments.includes(status)) {
     return (
       <IncompleteAssignment trackEvent={sendGenericTrackEvent} />
     );

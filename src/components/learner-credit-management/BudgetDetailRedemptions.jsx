@@ -4,12 +4,72 @@ import { connect } from 'react-redux';
 import { Hyperlink } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import LearnerCreditAllocationTable from './LearnerCreditAllocationTable';
-import { useBudgetId, useBudgetRedemptions } from './data';
+import {
+  getBudgetStatus, useBudgetId, useBudgetRedemptions, useEnterpriseOffer, useSubsidyAccessPolicy,
+} from './data';
+import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+
+const BudgetDetailRedemptionsDescription = ({
+  status,
+  enterpriseFeatures,
+}) => {
+  const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
+
+  if (status === BUDGET_STATUSES.expired) {
+    return (
+      <p className="small mb-4">
+        <FormattedMessage
+          id="lcm.budget.detail.page.spent.description.expired"
+          defaultMessage="The enrollments below were completed before this budget expired."
+          description="Description for the spent section of the budget detail page when the budget is expired"
+        />
+      </p>
+    );
+  }
+
+  return (
+    <p className="small mb-4">
+      <FormattedMessage
+        id="lcm.budget.detail.page.spent.description"
+        defaultMessage="Spent activity is driven by completed enrollments. "
+        description="Description for the spent section of the budget detail page"
+      />
+      {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) ? (
+        <FormattedMessage
+          id="lcm.budget.detail.page.spent.description.enterprise"
+          defaultMessage="Enrollment data is automatically updated every 12 hours. Come back later to view more recent enrollments."
+          description="Description for the spent section of the budget detail page for enterprise users"
+        />
+      ) : (
+        <FormattedMessage
+          id="lcm.budget.detail.page.spent.description.learn.more"
+          defaultMessage="<a>Learn more</a>"
+          description="Description for the spent section of the budget detail page with a link to learn more"
+          values={{
+            // eslint-disable-next-line react/no-unstable-nested-components
+            a: (chunks) => (
+              <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
+                {chunks}
+              </Hyperlink>
+            ),
+          }}
+        />
+      )}
+    </p>
+  );
+};
+
+BudgetDetailRedemptionsDescription.propTypes = {
+  status: PropTypes.string.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    topDownAssignmentRealTimeLcm: PropTypes.bool,
+  }).isRequired,
+};
 
 const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
+  const intl = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
   const { state: locationState } = location;
@@ -26,6 +86,9 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     enterpriseFeatures.topDownAssignmentRealTimeLcm,
   );
 
+  const { data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+
   useEffect(() => {
     if (locationState?.budgetActivityScrollToKey === 'spent') {
       spentHeadingRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -34,6 +97,13 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
       navigate(location.pathname, { ...location, state: newState });
     }
   }, [navigate, location, locationState]);
+
+  const { status } = getBudgetStatus({
+    intl,
+    startDateStr: enterpriseOfferMetadata?.startDatetime || subsidyAccessPolicy?.subsidyActiveDatetime,
+    endDateStr: enterpriseOfferMetadata?.endDatetime || subsidyAccessPolicy?.subsidyExpirationDatetime,
+    isBudgetRetired: !!subsidyAccessPolicy?.retired,
+  });
 
   return (
     <section data-testid="spent-section">
@@ -44,34 +114,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
           description="Heading for the spent section of the budget detail page"
         />
       </h3>
-      <p className="small mb-4">
-        <FormattedMessage
-          id="lcm.budget.detail.page.spent.description"
-          defaultMessage="Spent activity is driven by completed enrollments. "
-          description="Description for the spent section of the budget detail page"
-        />
-        {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) ? (
-          <FormattedMessage
-            id="lcm.budget.detail.page.spent.description.enterprise"
-            defaultMessage="Enrollment data is automatically updated every 12 hours. Come back later to view more recent enrollments."
-            description="Description for the spent section of the budget detail page for enterprise users"
-          />
-        ) : (
-          <FormattedMessage
-            id="lcm.budget.detail.page.spent.description.learn.more"
-            defaultMessage="<a>Learn more</a>"
-            description="Description for the spent section of the budget detail page with a link to learn more"
-            values={{
-              // eslint-disable-next-line react/no-unstable-nested-components
-              a: (chunks) => (
-                <Hyperlink destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL} target="_blank">
-                  {chunks}
-                </Hyperlink>
-              ),
-            }}
-          />
-        )}
-      </p>
+      <BudgetDetailRedemptionsDescription enterpriseFeatures={enterpriseFeatures} status={status} />
       <LearnerCreditAllocationTable
         isLoading={isLoading}
         tableData={budgetRedemptions}

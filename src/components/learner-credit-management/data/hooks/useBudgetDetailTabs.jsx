@@ -3,6 +3,8 @@ import { Tab } from '@openedx/paragon';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_CATALOG_TAB, BUDGET_DETAIL_MEMBERS_TAB } from '../constants';
+import { BUDGET_STATUSES } from '../../../EnterpriseApp/data/constants';
+import { getBudgetStatus } from '../utils';
 
 const TAB_CLASS_NAME = 'pt-4.5';
 
@@ -19,9 +21,16 @@ export const useBudgetDetailTabs = ({
   MembersTabElement,
 }) => {
   const intl = useIntl();
-  const isRetired = subsidyAccessPolicy?.retired;
+  const { status } = getBudgetStatus({
+    intl,
+    startDateStr: subsidyAccessPolicy?.subsidyActiveDatetime,
+    endDateStr: subsidyAccessPolicy?.subsidyExpirationDatetime,
+    isBudgetRetired: subsidyAccessPolicy?.retired,
+  });
+  const isCatalogTabDisabled = [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
-  || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
+    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
+
   return useMemo(() => {
     const tabsArray = [];
     tabsArray.push(
@@ -47,7 +56,7 @@ export const useBudgetDetailTabs = ({
         <Tab
           key={BUDGET_DETAIL_CATALOG_TAB}
           eventKey={BUDGET_DETAIL_CATALOG_TAB}
-          disabled={isRetired}
+          disabled={isCatalogTabDisabled}
           title={
             intl.formatMessage({
               id: 'lcm.budget.detail.page.catalog.tab.label',
@@ -100,7 +109,7 @@ export const useBudgetDetailTabs = ({
     appliesToAllContexts,
     intl,
     showCatalog,
-    isRetired,
+    isCatalogTabDisabled,
   ]);
 };
 

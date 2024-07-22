@@ -5,13 +5,19 @@ import { Hyperlink } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import BudgetAssignmentsTable from './BudgetAssignmentsTable';
 import AssignMoreCoursesEmptyStateMinimal from './AssignMoreCoursesEmptyStateMinimal';
-import { useBudgetContentAssignments, useBudgetId, useSubsidyAccessPolicy } from './data';
+import {
+  getBudgetStatus,
+  useBudgetContentAssignments,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from './data';
+import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 
 const BudgetDetailAssignmentsHeader = ({
-  isRetired,
+  status,
 }) => {
   const assignedHeadingRef = useRef();
   const navigate = useNavigate();
@@ -28,7 +34,7 @@ const BudgetDetailAssignmentsHeader = ({
     }
   }, [navigate, location, locationState]);
 
-  if (isRetired) {
+  if ([BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status)) {
     return (
       <>
         <h3 className="mb-3" ref={assignedHeadingRef}>
@@ -38,13 +44,24 @@ const BudgetDetailAssignmentsHeader = ({
             description="Heading for the incomplete assignments section on the budget detail page"
           />
         </h3>
-        <p className="small mb-4 text-info-900">
-          <FormattedMessage
-            id="lcm.budget.detail.page.incomplete.assignments.description"
-            defaultMessage="The assignments below were made before the budget was retired and were never completed by the learner."
-            description="Description for the incomplete assignments section on the budget detail page. Includes a link to learn more."
-          />
-        </p>
+        {status === BUDGET_STATUSES.retired && (
+          <p className="small mb-4 text-info-900">
+            <FormattedMessage
+              id="lcm.budget.detail.page.incomplete.assignments.description.retired"
+              defaultMessage="The assignments below were made before the budget was retired and were never completed by the learner."
+              description="Description for the incomplete assignments section on the budget detail page."
+            />
+          </p>
+        )}
+        {status === BUDGET_STATUSES.expired && (
+          <p className="small mb-4 text-info-900">
+            <FormattedMessage
+              id="lcm.budget.detail.page.incomplete.assignments.description.expired"
+              defaultMessage="The assignments below were made before the budget was expired and were never completed by the learner."
+              description="Description for the incomplete assignments section on the budget detail page."
+            />
+          </p>
+        )}
       </>
     );
   }
@@ -82,7 +99,7 @@ const BudgetDetailAssignmentsHeader = ({
 };
 
 BudgetDetailAssignmentsHeader.propTypes = {
-  isRetired: PropTypes.bool.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 const BudgetDetailAssignments = ({
@@ -91,11 +108,10 @@ const BudgetDetailAssignments = ({
   enterpriseFeatures,
   enterpriseId,
 }) => {
+  const intl = useIntl();
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-
   const isAssignableBudget = !!subsidyAccessPolicy?.isAssignable;
-  const isRetired = !!subsidyAccessPolicy?.retired;
   const assignmentConfigurationUUID = subsidyAccessPolicy?.assignmentConfiguration?.uuid;
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const {
@@ -106,6 +122,12 @@ const BudgetDetailAssignments = ({
     isEnabled: isAssignableBudget && hasContentAssignments,
     assignmentConfigurationUUID,
     enterpriseId,
+  });
+  const { status } = getBudgetStatus({
+    intl,
+    startDateStr: subsidyAccessPolicy.subsidyActiveDatetime,
+    endDateStr: subsidyAccessPolicy.subsidyExpirationDatetime,
+    isBudgetRetired: subsidyAccessPolicy.retired,
   });
 
   if (!isTopDownAssignmentEnabled || !isAssignableBudget) {
@@ -120,11 +142,12 @@ const BudgetDetailAssignments = ({
 
   return (
     <section className="budget-detail-assignments">
-      <BudgetDetailAssignmentsHeader isRetired={isRetired} />
+      <BudgetDetailAssignmentsHeader status={status} />
       <BudgetAssignmentsTable
         isLoading={isLoading}
         tableData={contentAssignments}
         fetchTableData={fetchContentAssignments}
+        status={status}
       />
     </section>
   );
