@@ -123,6 +123,12 @@ const Sidebar = ({
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
     },
     {
+      title: 'AnalyticsV2',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.analyticsv2}`,
+      icon: <Icon src={InsertChartOutlined} />,
+      hidden: !features.ANALYTICS_V2,
+    },
+    {
       title: 'Code Management',
       to: `${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`,
       icon: <Icon src={Tag} />,

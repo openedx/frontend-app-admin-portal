@@ -40,6 +40,7 @@ global.IntersectionObserver = class IntersectionObserver {
 };
 
 global.ResizeObserver = ResizeObserverPolyfill;
+global.URL.createObjectURL = jest.fn();
 
 // TODO: Once there are no more console errors in tests, uncomment the code below
 // const { error } = global.console;
