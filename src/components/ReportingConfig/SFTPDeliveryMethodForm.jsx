@@ -49,7 +49,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               />
             </Form.Label>
             <Form.Control
-              as="number"
+              type="number"
               defaultValue={config ? config.sftpPort : 22}
               onBlur={e => handleBlur(e)}
             />
@@ -127,7 +127,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           >
             <Form.Label>SFTP Password</Form.Label>
             <Form.Control
-              as="password"
+              type="password"
               onBlur={e => handleBlur(e)}
               disabled={config && !checked}
               data-hj-suppress
