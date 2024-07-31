@@ -41,7 +41,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
         </div>
         <div className="col col-2">
           <Form.Group
-          controlId="sftpPort"
+            controlId="sftpPort"
             isInvalid={invalidFields.sftpPort}
           >
             <Form.Label>
