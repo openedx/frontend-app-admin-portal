@@ -11,6 +11,7 @@ import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
+import AnalyticsV2Page from '../AdvanceAnalyticsV2/AnalyticsV2Page';
 import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
@@ -81,6 +82,14 @@ const EnterpriseAppRoutes = ({
           key="analytics"
           path="/"
           element={<PlotlyAnalyticsPage />}
+        />
+      )}
+
+      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analyticsv2 && (
+        <Route
+          key="analyticsv2"
+          path="/"
+          element={<AnalyticsV2Page />}
         />
       )}
 
