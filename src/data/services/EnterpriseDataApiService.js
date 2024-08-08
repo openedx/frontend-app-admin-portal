@@ -142,6 +142,26 @@ class EnterpriseDataApiService {
     const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseUUID}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
+
+  static fetchEnterpriseModuleActivityReport(enterpriseId, options, { csv } = {}) {
+    // TODO: Remove after testing.
+    // const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const enterpriseUUID = '0cb228b0-4dc0-4d4a-bed0-5b7132353cc6';
+    const endpoint = csv ? 'module-performance.csv' : 'module-performance';
+
+    const queryParams = new URLSearchParams({
+      page: 1,
+      page_size: 50,
+      ...options,
+    });
+
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
+
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
 }
 
 export default EnterpriseDataApiService;
