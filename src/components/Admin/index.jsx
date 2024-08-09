@@ -550,7 +550,9 @@ class Admin extends React.Component {
                       description: 'Title for the module activity tab in admin portal.',
                     })}
                   >
-                    <ModuleActivityReport enterpriseId={enterpriseId} />
+                    <div className="mt-3">
+                      <ModuleActivityReport enterpriseId={enterpriseId} />
+                    </div>
                   </Tab>
                 </Tabs>
               </div>

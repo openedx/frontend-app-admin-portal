@@ -11,13 +11,14 @@ const ModuleActivityReport = ({ enterpriseId }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentFilters, setCurrentFilters] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
-  const { isLoading, error, paginationData } = useModuleActivityReport({
-    enterpriseId, page: currentPage, filters: currentFilters,
+  const { isLoading, paginationData } = useModuleActivityReport({
+    enterpriseId, page: currentPage, filters: currentFilters, searchQuery,
   });
 
   const fetchData = useCallback(
     (args) => {
-      let newFilters = { search: searchQuery };
+      let newFilters = { ...currentFilters };
+      // disable pagination and sorting if the search query is not empty
       const sortBy = args.sortBy.at(-1);
       if (!_.isEmpty(sortBy)) {
         const newSortBys = { ordering: `${sortBy.desc ? '-' : ''}${sortBy.id}` };
@@ -31,32 +32,32 @@ const ModuleActivityReport = ({ enterpriseId }) => {
         setCurrentPage(args.pageIndex);
       }
     },
-    [currentFilters, currentPage, setCurrentFilters, setCurrentPage, searchQuery],
+    [currentFilters, currentPage, setCurrentFilters, setCurrentPage],
   );
+  const onSearch = (query) => {
+    if (!_.isEqual(query, searchQuery)) {
+      setCurrentPage(0);
+      setSearchQuery(query);
+    }
+  };
 
   const fetchCsvData = async () => EnterpriseDataApiService.fetchEnterpriseModuleActivityReport(
     enterpriseId,
-    currentFilters,
+    { ...currentFilters, search: searchQuery },
     { csv: true },
   );
 
-  const selectColumn = {
-    id: 'selection',
-    Header: DataTable.ControlledSelectHeader,
-    Cell: DataTable.ControlledSelect,
-    disableSortBy: true,
-  };
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
   return (
     <>
-      <SearchBar onSearch={setSearchQuery} />
+      <SearchBar
+        onSearch={_.debounce(onSearch, 500)}
+        onClear={() => onSearch('')}
+        onChange={_.debounce(onSearch, 500)}
+        className="mt-2 mb-2 w-25 "
+        placeholder="Search email or course title"
+      />
       <DataTable
         isLoading={isLoading}
-        manualSelectColumn={selectColumn}
         SelectionStatusComponent={DataTable.ControlledSelectionStatus}
         isPaginated
         manualPagination

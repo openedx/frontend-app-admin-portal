@@ -3,10 +3,9 @@ import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
 const useModuleActivityReport = ({
-  enterpriseId, page, filters,
+  enterpriseId, page, filters, searchQuery,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const [paginationData, setPaginationData] = useState({
     itemCount: 0,
@@ -20,6 +19,7 @@ const useModuleActivityReport = ({
 
     EnterpriseDataApiService.fetchEnterpriseModuleActivityReport(enterpriseId, {
       page: page + 1,
+      search: searchQuery,
       ...filters,
     })
       .then((response) => {
@@ -35,7 +35,6 @@ const useModuleActivityReport = ({
       })
       .catch((err) => {
         logError(err);
-        setError(err);
 
         // Reset the loading state
         setIsLoading(false);
@@ -44,11 +43,11 @@ const useModuleActivityReport = ({
     enterpriseId,
     page,
     filters,
+    searchQuery,
   ]);
 
   return {
     isLoading,
-    error,
     paginationData,
   };
 };
