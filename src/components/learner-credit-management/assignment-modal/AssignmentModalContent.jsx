@@ -4,12 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Container,
-  Stack,
-  Row,
-  Col,
-  Form,
-  Card,
+  Card, Col, Container, Form, Row, Stack,
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
@@ -56,7 +51,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
     debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
   }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
 
-  // Validate the learner emails emails from user input whenever it changes
+  // Validate the learner emails from user input whenever it changes
   useEffect(() => {
     const allocationMetadata = isAssignEmailAddressesInputValueValid({
       learnerEmails,
@@ -67,7 +62,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
     if (allocationMetadata.validationError?.reason) {
       sendEnterpriseTrackEvent(
         enterpriseId,
-        EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.EMAIL_ADDRESS_VALIDATION,
+        EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_EMAIL_ADDRESS_VALIDATION,
         { validationErrorReason: allocationMetadata.validationError.reason },
       );
     }
