@@ -8,6 +8,7 @@ import { RemoveCircle } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { useRequestState } from '../../../subscriptions/licenses/LicenseManagementModals/LicenseManagementModalHook';
 import { configuration } from '../../../../config';
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -18,20 +19,48 @@ import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
  * @param {number} totalToRemove
  * @returns {Object}
  */
-const generateRemoveModalSubmitLabel = (totalToRemove, isRemoveIndividualUser) => {
-  let buttonNumberLabel = 'all';
+const generateRemoveModalSubmitLabel = (intl, totalToRemove, isRemoveIndividualUser) => {
+  let buttonNumberLabel = intl.formatMessage({
+    id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.remove.all',
+    defaultMessage: 'all',
+    description: 'Button state when user click on remove button for all users',
+  });
 
   if (isRemoveIndividualUser) {
-    buttonNumberLabel = 'member';
+    buttonNumberLabel = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.remove.individual',
+      defaultMessage: 'member',
+      description: 'Button state when user click on remove button for individual user',
+    });
   } else if (Number.isFinite(totalToRemove)) {
-    buttonNumberLabel = `(${totalToRemove})`;
+    buttonNumberLabel = intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.remove.number',
+      defaultMessage: '({totalToRemove})',
+      description: 'Button state when user click on remove button',
+    }, { totalToRemove });
   }
 
   return {
-    default: `Remove ${buttonNumberLabel}`,
-    pending: `Removing ${buttonNumberLabel}`,
-    complete: 'Done',
-    error: `Retry remove ${buttonNumberLabel}`,
+    default: intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.remove',
+      defaultMessage: 'Remove {buttonNumberLabel}',
+      description: 'Button state when user click on remove button',
+    }, { buttonNumberLabel }),
+    pending: intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.removing',
+      defaultMessage: 'Removing {buttonNumberLabel}',
+      description: 'Button state when removing action is in pending state',
+    }, { buttonNumberLabel }),
+    complete: intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.done',
+      defaultMessage: 'Done',
+      description: 'Button state when removing action is completed',
+    }),
+    error: intl.formatMessage({
+      id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.retry',
+      defaultMessage: 'Retry remove {buttonNumberLabel}',
+      description: 'Button state when removing action is failed',
+    }, { buttonNumberLabel }),
   };
 };
 
@@ -45,10 +74,14 @@ const MemberRemoveModal = ({
   groupUuid,
   isRemoveIndividualUser,
 }) => {
+  const intl = useIntl();
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
-  const buttonLabels = generateRemoveModalSubmitLabel(totalToRemove, isRemoveIndividualUser);
+  const buttonLabels = generateRemoveModalSubmitLabel(intl, totalToRemove, isRemoveIndividualUser);
+  const title = intl.formatMessage({
+    id: 'learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.title',
+    defaultMessage: 'Remove member{memberCount, plural, one {} other {s}}?',
+  }, { memberCount: removeAllUsers || totalToRemove > 1 ? 2 : 1 });
 
-  const title = `Remove member${removeAllUsers || totalToRemove > 1 ? 's' : ''}?`;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const handleSubmit = useCallback(async () => {
@@ -115,29 +148,57 @@ const MemberRemoveModal = ({
       </ModalDialog.Header>
       <ModalDialog.Body>
         {requestState.error
-            && (
+          && (
             <Alert variant="danger">
-              <p>There was an error with your request. Please try again.</p>
               <p>
-                If the error persists,{' '}
-                <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
-                  contact customer support.
-                </Hyperlink>
+                <FormattedMessage
+                  id="learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.error"
+                  defaultMessage="There was an error with your request. Please try again."
+                  description="Error message when removing members"
+                />
+              </p>
+              <p>
+                <FormattedMessage
+                  id="learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.errorContactSupport"
+                  defaultMessage="If the error persists, <a>contact customer support</a>."
+                  description="Error message when removing members"
+                  values={{
+                    // eslint-disable-next-line react/no-unstable-nested-components
+                    a: (chunks) => (
+                      <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
+                        {chunks}
+                      </Hyperlink>
+                    ),
+                  }}
+                />
               </p>
             </Alert>
-            )}
-        <p>This action cannot be undone.</p>
+          )}
         <p>
-          The members will be notified and immediately lose access to browse the catalog
-          and enroll using this budget’s available Learner Credit balance. Removal will
-          not impact any current or past enrollments the members may have originated
-          through this budget.
+          <FormattedMessage
+            id="learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.description"
+            defaultMessage="This action cannot be undone."
+            description="Description for the remove member modal"
+          />
+        </p>
+        <p>
+          <FormattedMessage
+            id="learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.description2"
+            defaultMessage="The members will be notified and immediately lose access to browse the catalog
+              and enroll using this budget’s available Learner Credit balance. Removal will
+              not impact any current or past enrollments the members may have originated through this budget."
+            description="Description for the remove member modal"
+          />
         </p>
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Go back
+            <FormattedMessage
+              id="learnerCreditManagement.budgetDetail.membersTab.membersTable.removeModal.cancel"
+              defaultMessage="Go back"
+              description="Cancel button text for the remove member modal"
+            />
           </ModalDialog.CloseButton>
           <StatefulButton
             state={getRemoveButtonState()}

@@ -67,27 +67,34 @@ jest.mock('../../containers/Sidebar', () => ({
   default: () => 'Sidebar',
 }));
 
-describe('<EnterpriseApp />', () => {
-  const basicProps = {
-    enterpriseSlug: 'foo',
-    fetchPortalConfiguration: jest.fn(),
-    toggleSidebarToggle: jest.fn(),
-    loading: false,
-    enableLearnerPortal: true,
-    enterpriseId: 'uuid',
-    enterpriseName: 'test-enterprise',
-    enterpriseBranding: {
-      primary_color: SCHOLAR_THEME.button,
-      secondary_color: SCHOLAR_THEME.banner,
-      tertiary_color: SCHOLAR_THEME.accent,
-    },
-  };
+const basicProps = {
+  enterpriseSlug: 'foo',
+  fetchPortalConfiguration: jest.fn(),
+  toggleSidebarToggle: jest.fn(),
+  loading: false,
+  enableLearnerPortal: true,
+  enterpriseId: 'uuid',
+  enterpriseName: 'test-enterprise',
+  enterpriseBranding: {
+    primary_color: SCHOLAR_THEME.button,
+    secondary_color: SCHOLAR_THEME.banner,
+    tertiary_color: SCHOLAR_THEME.accent,
+  },
+};
 
-  const invalidEnterpriseId = {
-    ...basicProps,
-    enterpriseId: null,
-    enterpriseName: null,
-  };
+const invalidEnterpriseId = {
+  ...basicProps,
+  enterpriseId: null,
+  enterpriseName: null,
+};
+
+const EnterpriseAppWrapper = (props = basicProps) => (
+  <IntlProvider locale="en">
+    <EnterpriseApp {...props} />
+  </IntlProvider>
+);
+
+describe('<EnterpriseApp />', () => {
   beforeEach(() => {
     getAuthenticatedUser.mockReturnValue({
       username: 'edx',
@@ -97,16 +104,12 @@ describe('<EnterpriseApp />', () => {
   });
 
   it('should show settings page if there is at least one visible tab', () => {
-    renderWithRouter(<EnterpriseApp {...basicProps} />);
+    renderWithRouter(<EnterpriseAppWrapper {...basicProps} />);
     expect(screen.getByText('/admin/settings'));
   });
 
   it('should show error page if enterprise name is invalid', () => {
-    render(
-      <IntlProvider locale="en">
-        <EnterpriseApp {...invalidEnterpriseId} />
-      </IntlProvider>,
-    );
+    render(<EnterpriseAppWrapper {...invalidEnterpriseId} />);
     expect(screen.getByText("Oops, sorry we can't find that page!")).toBeInTheDocument();
   });
 });

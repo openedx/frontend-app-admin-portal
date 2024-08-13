@@ -6,18 +6,29 @@ import {
   Icon,
 } from '@openedx/paragon';
 import { InfoOutline } from '@openedx/paragon/icons';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const MemberStatusTableColumnHeader = () => (
   <Stack gap={1} direction="horizontal">
     <span data-testid="members-table-status-column-header">
-      Status
+      <FormattedMessage
+        id="learnerCreditManagement.budgetDetail.membersTab.membersTable.statusColumn"
+        defaultMessage="Status"
+        description="Status column header in the Members table"
+      />
     </span>
     <OverlayTrigger
       key="status-column-tooltip"
       placement="top"
       overlay={(
         <Tooltip id="status-column-tooltip">
-          <div>Status of the member invitation.</div>
+          <div>
+            <FormattedMessage
+              id="learnerCreditManagement.budgetDetail.membersTab.membersTable.statusColumn.tooltip"
+              defaultMessage="Status of the member invitation."
+              description="Tooltip for the Status column header in the Members table"
+            />
+          </div>
         </Tooltip>
       )}
     >

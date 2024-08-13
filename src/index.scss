@@ -17,7 +17,7 @@ $modal-max-width: 650px;
 @import "./components/NumberCard/NumberCard";
 @import "./components/RequestCodesPage/RequestCodesPage";
 @import "./components/Sidebar/Sidebar";
-@import "./components/subscriptions/styles/";
+@import "./components/subscriptions/styles";
 @import "./components/LoadingMessage/LoadingMessage";
 @import "./components/TableComponent/TableComponent";
 @import "./components/TableLoadingOverlay/TableLoadingOverlay";
@@ -26,13 +26,14 @@ $modal-max-width: 650px;
 @import "./components/Admin/Admin";
 @import "./components/settings/settings";
 @import "./components/learner-credit-management/styles";
+@import "./components/AdvanceAnalyticsV2/styles";
 
 // Global
 body {
   overflow-x: hidden;
 }
 
-#root {
+#root #app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;

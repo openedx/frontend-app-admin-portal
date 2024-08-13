@@ -78,7 +78,7 @@ const initialState = {
   portalConfiguration: {
     enterpriseId: 'test-enterprise-id',
     enterpriseSlug: 'test-enterprise-slug',
-    enterpriseName: 'test-enterpris',
+    enterpriseName: 'test-enterprise',
     enableCodeManagementScreen: true,
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,

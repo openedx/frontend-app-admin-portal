@@ -318,7 +318,7 @@ describe('useEnterpriseBudgets', () => {
     );
   });
 
-  it.each('should set `canManageLearnerCredit` to false if no budgets are found', async () => {
+  it('should set `canManageLearnerCredit` to false if no budgets are found', async () => {
     fetchEnterpriseOffersSpy.mockResolvedValue({
       data: {
         results: [],

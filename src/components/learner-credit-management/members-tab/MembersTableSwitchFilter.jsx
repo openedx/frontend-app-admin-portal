@@ -1,6 +1,7 @@
 import { Form, DataTableContext } from '@openedx/paragon';
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const MembersTableSwitchFilter = ({ removedGroupMembersCount }) => {
   const { columns } = useContext(DataTableContext);
@@ -16,7 +17,12 @@ const MembersTableSwitchFilter = ({ removedGroupMembersCount }) => {
       }}
       data-testid="show-removed-toggle"
     >
-      Show removed ({removedGroupMembersCount})
+      <FormattedMessage
+        id="learnerCreditManagement.budgetDetail.membersTab.membersTable.showRemoved"
+        defaultMessage="Show removed ({removedGroupMembersCount})"
+        description="Show removed members switch filter in the Members table"
+        values={{ removedGroupMembersCount }}
+      />
     </Form.Switch>
   );
 };

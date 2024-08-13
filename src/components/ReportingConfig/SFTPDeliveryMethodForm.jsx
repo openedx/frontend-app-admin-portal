@@ -11,6 +11,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
       <div className="row">
         <div className="col">
           <Form.Group
+            controlId="sftpHostname"
             isInvalid={invalidFields.sftpHostname}
           >
             <Form.Label>
@@ -21,6 +22,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               />
             </Form.Label>
             <Form.Control
+              name="sftpHostname"
               defaultValue={config ? config.sftpHostname : undefined}
               onBlur={e => handleBlur(e)}
               data-hj-suppress
@@ -39,6 +41,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
         </div>
         <div className="col col-2">
           <Form.Group
+            controlId="sftpPort"
             isInvalid={invalidFields.sftpPort}
           >
             <Form.Label>
@@ -49,7 +52,8 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               />
             </Form.Label>
             <Form.Control
-              as="number"
+              type="number"
+              name="sftpPort"
               defaultValue={config ? config.sftpPort : 22}
               onBlur={e => handleBlur(e)}
             />
@@ -75,6 +79,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
       <div className="row">
         <div className="col">
           <Form.Group
+            controlId="sftpUsername"
             isInvalid={invalidFields.sftpUsername}
           >
             <Form.Label>
@@ -85,6 +90,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               />
             </Form.Label>
             <Form.Control
+              name="sftpUsername"
               defaultValue={config ? config.sftpUsername : undefined}
               onBlur={e => handleBlur(e)}
               data-hj-suppress
@@ -123,11 +129,13 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             </Form.Group>
           )}
           <Form.Group
+            controlId="encryptedSftpPassword"
             isInvalid={invalidFields.encryptedSftpPassword}
           >
             <Form.Label>SFTP Password</Form.Label>
             <Form.Control
-              as="password"
+              name="encryptedSftpPassword"
+              type="password"
               onBlur={e => handleBlur(e)}
               disabled={config && !checked}
               data-hj-suppress
@@ -150,6 +158,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
             )}
           </Form.Group>
           <Form.Group
+            controlId="sftpFilePath"
             isInvalid={invalidFields.sftpFilePath}
           >
             <Form.Label>
@@ -160,6 +169,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
               />
             </Form.Label>
             <Form.Control
+              name="sftpFilePath"
               defaultValue={config ? config.sftpFilePath : undefined}
               onBlur={e => handleBlur(e)}
               data-hj-suppress

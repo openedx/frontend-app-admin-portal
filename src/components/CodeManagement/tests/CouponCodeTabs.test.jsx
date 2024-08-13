@@ -70,7 +70,7 @@ const CouponCodeTabsWrapper = ({
                 <SubsidyRequestsContext.Provider value={contextValue}>
                   <CouponCodeTabs />
                 </SubsidyRequestsContext.Provider>
-            )}
+              )}
             />
           </Routes>
         </MemoryRouter>

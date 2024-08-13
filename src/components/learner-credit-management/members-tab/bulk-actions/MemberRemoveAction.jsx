@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@openedx/paragon';
 import { RemoveCircle } from '@openedx/paragon/icons';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import MemberRemoveModal from './MemberRemoveModal';
 import useRemoveMember from '../../data/hooks/useRemoveMember';
 
@@ -25,7 +26,12 @@ const MemberRemoveAction = ({
         onClick={handleRemoveClick}
         disabled={!totalToRemove}
       >
-        Remove ({totalToRemove})
+        <FormattedMessage
+          id="learnerCreditManagement.budgetDetail.membersTab.membersTable.remove"
+          defaultMessage="Remove ({totalToRemove})"
+          description="Remove button text in the Members table"
+          values={{ totalToRemove }}
+        />
       </Button>
       <MemberRemoveModal
         isOpen={removeModal.isOpen}

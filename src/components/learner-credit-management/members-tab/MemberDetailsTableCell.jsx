@@ -6,6 +6,7 @@ import {
 import {
   Person,
 } from '@openedx/paragon/icons';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 const MemberDetailsTableCell = ({
   row,
@@ -26,7 +27,11 @@ const MemberDetailsTableCell = ({
     memberDetails = (
       <div className="mb-n3">
         <p className="text-danger-500 font-weight-bold text-uppercase x-small mb-0">
-          Former member
+          <FormattedMessage
+            id="learnerCreditManagement.budgetDetail.membersTab.membersTable.removed.FormerMember"
+            defaultMessage="Former member"
+            description="Status of the member invitation for a removed member"
+          />
         </p>
         <p>{row.original.memberDetails.userEmail}</p>
       </div>

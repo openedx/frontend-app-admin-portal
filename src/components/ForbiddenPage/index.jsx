@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { MailtoLink } from '@openedx/paragon';
 
 const ForbiddenPage = () => (
-  <main role="main">
+  <main role="main" style={{ flex: 1 }}>
     <div className="container-fluid mt-3">
       <Helmet>
         <title>Access Denied</title>

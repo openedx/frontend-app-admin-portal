@@ -3,6 +3,11 @@
 exports[`<NotFoundPage /> renders correctly 1`] = `
 <main
   role="main"
+  style={
+    {
+      "flex": 1,
+    }
+  }
 >
   <div
     className="container-fluid mt-3"

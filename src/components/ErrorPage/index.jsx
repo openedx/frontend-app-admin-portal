@@ -9,8 +9,9 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import NotFoundPage from '../NotFoundPage';
 import ForbiddenPage from '../ForbiddenPage';
 
-function renderErrorComponent(status, message) {
-  const errorMessage = message || 'An unknown error has occured.';
+const ErrorPage = (props) => {
+  const { status, message } = props;
+
   if (status === 404) {
     return <NotFoundPage />;
   }
@@ -19,32 +20,25 @@ function renderErrorComponent(status, message) {
     return <ForbiddenPage />;
   }
 
+  const errorMessage = message || 'An unknown error has occured.';
+
   return (
-    <>
+    <main role="main" style={{ flex: 1 }}>
       <Helmet>
         <title>Error</title>
       </Helmet>
-      <div className="row mt-4">
-        <div className="col">
-          <Alert
-            variant="danger"
-            icon={ErrorIcon}
-          >
-            <Alert.Heading><FormattedMessage id="adminPortal.error.title" defaultMessage="Error" /></Alert.Heading>
-            {errorMessage}
-          </Alert>
-        </div>
-      </div>
-    </>
-  );
-}
-
-const ErrorPage = (props) => {
-  const { status, message } = props;
-  return (
-    <main role="main">
       <div className="container-fluid">
-        {renderErrorComponent(status, message)}
+        <div className="row mt-4">
+          <div className="col">
+            <Alert
+              variant="danger"
+              icon={ErrorIcon}
+            >
+              <Alert.Heading><FormattedMessage id="adminPortal.error.title" defaultMessage="Error" /></Alert.Heading>
+              {errorMessage}
+            </Alert>
+          </div>
+        </div>
       </div>
     </main>
   );
