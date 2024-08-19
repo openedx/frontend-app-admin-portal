@@ -1,5 +1,7 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { snakeCaseObject } from '@edx/frontend-platform/utils';
+import { snakeCaseObject, camelCaseObject } from '@edx/frontend-platform/utils';
+import omitBy from 'lodash/omitBy';
+import isEmpty from 'lodash/isEmpty';
 
 import store from '../store';
 import { configuration } from '../../config';
@@ -137,6 +139,14 @@ class EnterpriseDataApiService {
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchAdminAnalyticsSkills(enterpriseCustomerUUID, options) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
+    const transformOptions = omitBy(snakeCaseObject(options), isEmpty);
+    const queryParams = new URLSearchParams(transformOptions);
+    const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseUUID}/skills/stats?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
   }
 
   static fetchDashboardInsights(enterpriseId) {

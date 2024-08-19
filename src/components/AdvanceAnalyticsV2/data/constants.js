@@ -33,3 +33,29 @@ export const ANALYTICS_TABS = {
   LEADERBOARD: 'leaderboard',
   ENGAGEMENTS: 'engagements',
 };
+
+// Query Key factory for the admin analytics module, intended to be used with `@tanstack/react-query`.
+// Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
+export const advanceAnalyticsQueryKeys = {
+  all: ['admin-analytics'],
+  skills: (enterpriseUUID, requestOptions) => [...advanceAnalyticsQueryKeys.all, 'skills', enterpriseUUID].concat(
+    Object.values(requestOptions),
+  ),
+};
+
+export const skillsColorMap = {
+  'business-management': '#4A1D90',
+  communication: '#DCD6F7',
+  'computer-science': '#BE219A',
+  'data-analysis-statistics': '#F27A68',
+  engineering: '#E7D39A',
+  other: 'grey',
+};
+
+export const skillsTypeColorMap = {
+  'Common Skill': '#6574A6',
+  'Specialized Skill': '#FEAF00',
+  'Hard Skill': '#DC267F',
+  'Soft Skill': '#638FFF',
+  Certification: '#FE6100',
+};
