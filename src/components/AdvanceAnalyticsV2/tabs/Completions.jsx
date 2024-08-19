@@ -1,9 +1,13 @@
 import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import PropTypes from 'prop-types';
 import EmptyChart from '../charts/EmptyChart';
 import Header from '../Header';
+import { ANALYTICS_TABS, CHART_TYPES } from '../data/constants';
 
-const Completions = () => {
+const Completions = ({
+  startDate, endDate, granularity, calculation, enterpriseId,
+}) => {
   const intl = useIntl();
 
   return (
@@ -20,6 +24,14 @@ const Completions = () => {
             defaultMessage: 'See the course completions that result in a passing grade over time.',
             description: 'Subtitle for the completions over time chart.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          activeTab={ANALYTICS_TABS.COMPLETIONS}
+          granularity={granularity}
+          calculation={calculation}
+          chartType={CHART_TYPES.COMPLETIONS_OVER_TIME}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
@@ -35,6 +47,14 @@ const Completions = () => {
             defaultMessage: 'See the courses in which your learners are most often achieving a passing grade.',
             description: 'Subtitle for the top 10 courses by completions chart.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          activeTab={ANALYTICS_TABS.COMPLETIONS}
+          granularity={granularity}
+          calculation={calculation}
+          chartType={CHART_TYPES.TOP_COURSES_BY_COMPLETIONS}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
@@ -50,6 +70,14 @@ const Completions = () => {
             defaultMessage: 'See the subjects your learners are most often achieving a passing grade.',
             description: 'Subtitle for the top 10 subjects by completion chart.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          activeTab={ANALYTICS_TABS.COMPLETIONS}
+          granularity={granularity}
+          calculation={calculation}
+          chartType={CHART_TYPES.TOP_SUBJECTS_BY_COMPLETIONS}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
@@ -65,11 +93,24 @@ const Completions = () => {
             defaultMessage: 'See the individual completions from your organization.',
             description: 'Subtitle for the individual completions datatable.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          activeTab={ANALYTICS_TABS.COMPLETIONS}
+          granularity={granularity}
+          calculation={calculation}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
     </div>
   );
 };
-
+Completions.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  granularity: PropTypes.string.isRequired,
+  calculation: PropTypes.string.isRequired,
+};
 export default Completions;

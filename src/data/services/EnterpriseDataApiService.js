@@ -12,6 +12,8 @@ class EnterpriseDataApiService {
 
   static enterpriseAdminBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/`;
 
+  static enterpriseAdminAnalyticsV2BaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/analytics/`;
+
   static getEnterpriseUUID(enterpriseId) {
     const { enableDemoData } = store.getState().portalConfiguration;
     return enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
@@ -158,6 +160,11 @@ class EnterpriseDataApiService {
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchPlotlyChartsCSV(enterpriseId, chartUrl, options) {
+    const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}/${chartUrl}?${new URLSearchParams(options).toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 }

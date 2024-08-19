@@ -1,9 +1,11 @@
 import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import PropTypes from 'prop-types';
 import Header from '../Header';
 import EmptyChart from '../charts/EmptyChart';
+import { ANALYTICS_TABS, CHART_TYPES } from '../data/constants';
 
-const Skills = () => {
+const Skills = ({ startDate, endDate, enterpriseId }) => {
   const intl = useIntl();
 
   return (
@@ -20,6 +22,12 @@ const Skills = () => {
             defaultMessage: 'See the top skills that are the most in demand in your organization, based on enrollments and completions.',
             description: 'Subtitle for the top skills chart.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          activeTab={ANALYTICS_TABS.SKILLS}
+          chartType={CHART_TYPES.BUBBLE}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
@@ -51,6 +59,12 @@ const Skills = () => {
       </div>
     </div>
   );
+};
+
+Skills.propTypes = {
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 export default Skills;
