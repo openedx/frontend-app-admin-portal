@@ -521,8 +521,8 @@ class Admin extends React.Component {
                       <div className="col">
                         {!error && !loading && !this.hasEmptyData() && (
                           <>
-                            <div className="row pb-3">
-                              <div className="col-12 col-md-6 col-xl-8">
+                            <div className="row pb-3 mt-2">
+                              <div className="col-12 col-md-12 col-xl-12">
                                 {this.renderDownloadButton()}
                               </div>
                             </div>
