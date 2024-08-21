@@ -21,6 +21,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
 
+import dayjs from 'dayjs';
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
 import EnterpriseIndexPage from '../../containers/EnterpriseIndexPage';
@@ -32,7 +33,7 @@ import { SystemWideWarningBanner } from '../system-wide-banner';
 
 import store from '../../data/store';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-import { defaultQueryClientRetryHandler, queryCacheOnErrorHandler } from '../../utils';
+import { defaultQueryClientRetryHandler, isTodayBetweenDates, queryCacheOnErrorHandler } from '../../utils';
 
 // eslint-disable-next-line import/no-unresolved
 const ReactQueryDevtoolsProduction = lazy(() => import('@tanstack/react-query-devtools/production').then((d) => ({
@@ -101,8 +102,15 @@ const AppWrapper = () => {
       return false;
     }
     const startTimestamp = config.MAINTENANCE_ALERT_START_TIMESTAMP;
+    const endTimestamp = config.MAINTENANCE_ALERT_END_TIMESTAMP;
+    if (startTimestamp && endTimestamp) {
+      return isTodayBetweenDates({ startDate: startTimestamp, endDate: endTimestamp });
+    }
     if (startTimestamp) {
-      return new Date() > new Date(startTimestamp);
+      return dayjs().isAfter(dayjs(startTimestamp));
+    }
+    if (endTimestamp) {
+      return dayjs().isBefore(dayjs(endTimestamp));
     }
     return true;
   }, [config]);
