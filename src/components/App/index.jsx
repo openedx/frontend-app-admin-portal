@@ -21,6 +21,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
 
+import dayjs from 'dayjs';
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
 import EnterpriseIndexPage from '../../containers/EnterpriseIndexPage';
@@ -101,8 +102,9 @@ const AppWrapper = () => {
       return false;
     }
     const startTimestamp = config.MAINTENANCE_ALERT_START_TIMESTAMP;
-    if (startTimestamp) {
-      return new Date() > new Date(startTimestamp);
+    const stopTimestamp = config.MAINTENANCE_ALERT_STOP_TIMESTAMP;
+    if (startTimestamp && stopTimestamp) {
+      return dayjs().isBetween(dayjs(startTimestamp), dayjs(stopTimestamp));
     }
     return true;
   }, [config]);
