@@ -102,15 +102,15 @@ const AppWrapper = () => {
       return false;
     }
     const startTimestamp = config.MAINTENANCE_ALERT_START_TIMESTAMP;
-    const endTimeStamp = config.MAINTENANCE_ALERT_STOP_TIMESTAMP;
-    if (startTimestamp && endTimeStamp) {
-      return isTodayBetweenDates({ startDate: startTimestamp, endDate: endTimeStamp });
+    const endTimestamp = config.MAINTENANCE_ALERT_END_TIMESTAMP;
+    if (startTimestamp && endTimestamp) {
+      return isTodayBetweenDates({ startDate: startTimestamp, endDate: endTimestamp });
     }
     if (startTimestamp) {
       return dayjs().isAfter(dayjs(startTimestamp));
     }
-    if (endTimeStamp) {
-      return dayjs().isBefore(dayjs(endTimeStamp));
+    if (endTimestamp) {
+      return dayjs().isBefore(dayjs(endTimestamp));
     }
     return true;
   }, [config]);
