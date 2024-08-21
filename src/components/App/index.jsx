@@ -21,6 +21,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
 
+import dayjs from 'dayjs';
 import Header from '../../containers/Header';
 import Footer from '../../containers/Footer';
 import EnterpriseIndexPage from '../../containers/EnterpriseIndexPage';
@@ -101,9 +102,15 @@ const AppWrapper = () => {
       return false;
     }
     const startTimestamp = config.MAINTENANCE_ALERT_START_TIMESTAMP;
-    const stopTimestamp = config.MAINTENANCE_ALERT_STOP_TIMESTAMP;
-    if (startTimestamp && stopTimestamp) {
-      return isTodayBetweenDates({ startDate: startTimestamp, endDate: stopTimestamp });
+    const endTimeStamp = config.MAINTENANCE_ALERT_STOP_TIMESTAMP;
+    if (startTimestamp && endTimeStamp) {
+      return isTodayBetweenDates({ startDate: startTimestamp, endDate: endTimeStamp });
+    }
+    if (startTimestamp) {
+      return dayjs().isAfter(dayjs(startTimestamp));
+    }
+    if (endTimeStamp) {
+      return dayjs().isBefore(dayjs(endTimeStamp));
     }
     return true;
   }, [config]);
