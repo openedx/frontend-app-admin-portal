@@ -1576,10 +1576,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -3121,10 +3121,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -4666,10 +4666,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -6211,10 +6211,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -7756,10 +7756,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -9301,10 +9301,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -10846,10 +10846,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -12391,10 +12391,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -13936,10 +13936,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -15481,10 +15481,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -17075,10 +17075,10 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
@@ -20342,10 +20342,10 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                 className="col"
               >
                 <div
-                  className="row pb-3"
+                  className="row pb-3 mt-2"
                 >
                   <div
-                    className="col-12 col-md-6 col-xl-8"
+                    className="col-12 col-md-12 col-xl-12"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
