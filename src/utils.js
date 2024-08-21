@@ -575,6 +575,13 @@ function isTodayWithinDateThreshold({ date, days }) {
   const offsetDays = dateToCheck.subtract(days, 'days');
   return today.isBetween(offsetDays, dateToCheck);
 }
+// TODO: Generalize this function with isTodayWithinDateThreshold
+function isTodayBetweenDates({ startDate, endDate }) {
+  const today = dayjs();
+  const formattedStartDate = dayjs(startDate);
+  const formattedEndDate = dayjs(endDate);
+  return today.isBetween(formattedStartDate, formattedEndDate);
+}
 
 export {
   camelCaseDict,
@@ -620,4 +627,5 @@ export {
   i18nFormatPassedTimestamp,
   i18nFormatProgressStatus,
   isTodayWithinDateThreshold,
+  isTodayBetweenDates,
 };
