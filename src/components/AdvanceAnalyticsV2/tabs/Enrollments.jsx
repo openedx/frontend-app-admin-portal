@@ -1,9 +1,13 @@
 import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import PropTypes from 'prop-types';
 import EmptyChart from '../charts/EmptyChart';
 import Header from '../Header';
+import { ANALYTICS_TABS, CHART_TYPES } from '../data/constants';
 
-const Enrollments = () => {
+const Enrollments = ({
+  startDate, endDate, granularity, calculation, enterpriseId,
+}) => {
   const intl = useIntl();
 
   return (
@@ -20,6 +24,14 @@ const Enrollments = () => {
             defaultMessage: 'See audit and certificate track enrollments over time.',
             description: 'Subtitle for the enrollments over time chart.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          granularity={granularity}
+          calculation={calculation}
+          activeTab={ANALYTICS_TABS.ENROLLMENTS}
+          chartType={CHART_TYPES.ENROLLMENTS_OVER_TIME}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
@@ -35,6 +47,14 @@ const Enrollments = () => {
             defaultMessage: 'See the most popular courses at your organization.',
             description: 'Subtitle for the top 10 courses by enrollment chart.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          granularity={granularity}
+          calculation={calculation}
+          activeTab={ANALYTICS_TABS.ENROLLMENTS}
+          chartType={CHART_TYPES.TOP_COURSES_BY_ENROLLMENTS}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
@@ -50,6 +70,14 @@ const Enrollments = () => {
             defaultMessage: 'See the most popular subjects at your organization.',
             description: 'Subtitle for the top 10 subjects by enrollment chart.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          granularity={granularity}
+          calculation={calculation}
+          activeTab={ANALYTICS_TABS.ENROLLMENTS}
+          chartType={CHART_TYPES.TOP_SUBJECTS_BY_ENROLLMENTS}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
@@ -65,11 +93,26 @@ const Enrollments = () => {
             defaultMessage: 'See the individual enrollments from your organization.',
             description: 'Subtitle for the individual enrollments datatable.',
           })}
+          startDate={startDate}
+          endDate={endDate}
+          granularity={granularity}
+          calculation={calculation}
+          activeTab={ANALYTICS_TABS.ENROLLMENTS}
+          enterpriseId={enterpriseId}
+          isDownloadCSV
         />
         <EmptyChart />
       </div>
     </div>
   );
+};
+
+Enrollments.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  granularity: PropTypes.string.isRequired,
+  calculation: PropTypes.string.isRequired,
 };
 
 export default Enrollments;
