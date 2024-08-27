@@ -3,6 +3,7 @@ import {
   Form, Tabs, Tab,
 } from '@openedx/paragon';
 import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import Hero from '../Hero';
@@ -15,10 +16,12 @@ import Skills from './tabs/Skills';
 
 const PAGE_TITLE = 'AnalyticsV2';
 
-const AnalyticsV2Page = () => {
+const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
-  const [granularity, setGranularity] = useState('daily');
-  const [calculation, setCalculation] = useState('total');
+  const [granularity, setGranularity] = useState('Daily');
+  const [calculation, setCalculation] = useState('Total');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const dataRefreshDate = '';
   const intl = useIntl();
 
@@ -52,6 +55,8 @@ const AnalyticsV2Page = () => {
               </Form.Label>
               <Form.Control
                 type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
               />
             </Form.Group>
           </div>
@@ -66,10 +71,12 @@ const AnalyticsV2Page = () => {
               </Form.Label>
               <Form.Control
                 type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
               />
             </Form.Group>
           </div>
-          <div className="col">
+          <div className="col" data-testid="granularity-select">
             <Form.Group>
               <Form.Label>
                 <FormattedMessage
@@ -83,28 +90,28 @@ const AnalyticsV2Page = () => {
                 value={granularity}
                 onChange={(e) => setGranularity(e.target.value)}
               >
-                <option value="daily">
+                <option value="Daily">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.daily',
                     defaultMessage: 'Daily',
                     description: 'Advance analytics granularity filter daily option',
                   })}
                 </option>
-                <option value="weekly">
+                <option value="Weekly">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.weekly',
                     defaultMessage: 'Weekly',
                     description: 'Advance analytics granularity filter weekly option',
                   })}
                 </option>
-                <option value="monthly">
+                <option value="Monthly">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.monthly',
                     defaultMessage: 'Monthly',
                     description: 'Advance analytics granularity filter monthly option',
                   })}
                 </option>
-                <option value="quarterly">
+                <option value="Quarterly">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.quarterly',
                     defaultMessage: 'Quarterly',
@@ -128,28 +135,28 @@ const AnalyticsV2Page = () => {
                 value={calculation}
                 onChange={(e) => setCalculation(e.target.value)}
               >
-                <option value="total">
+                <option value="Total">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.total',
                     defaultMessage: 'Total',
                     description: 'Advance analytics calculation filter total option',
                   })}
                 </option>
-                <option value="running_total">
+                <option value="Running Total">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.running.total',
                     defaultMessage: 'Running Total',
                     description: 'Advance analytics calculation filter running total option',
                   })}
                 </option>
-                <option value="average_3">
+                <option value="Moving Average (3 Period)">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.average.3',
                     defaultMessage: 'Moving Average (3 Period)',
                     description: 'Advance analytics calculation filter moving average 3 period option',
                   })}
                 </option>
-                <option value="average_7">
+                <option value="Moving Average (7 Period)">
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.average.7',
                     defaultMessage: 'Moving Average (7 Period)',
@@ -187,7 +194,13 @@ const AnalyticsV2Page = () => {
                 description: 'Title for the enrollments tab in advance analytics.',
               })}
             >
-              <Enrollments />
+              <Enrollments
+                startDate={startDate}
+                endDate={endDate}
+                granularity={granularity}
+                calculation={calculation}
+                enterpriseId={enterpriseId}
+              />
             </Tab>
             <Tab
               eventKey="engagements"
@@ -197,7 +210,11 @@ const AnalyticsV2Page = () => {
                 description: 'Title for the engagements tab in advance analytics.',
               })}
             >
-              <Engagements />
+              <Engagements
+                startDate={startDate}
+                endDate={endDate}
+                enterpriseId={enterpriseId}
+              />
             </Tab>
             <Tab
               eventKey="completions"
@@ -207,7 +224,13 @@ const AnalyticsV2Page = () => {
                 description: 'Title for the completions tab in advance analytics.',
               })}
             >
-              <Completions />
+              <Completions
+                startDate={startDate}
+                endDate={endDate}
+                granularity={granularity}
+                calculation={calculation}
+                enterpriseId={enterpriseId}
+              />
             </Tab>
             <Tab
               eventKey="leaderboard"
@@ -217,7 +240,11 @@ const AnalyticsV2Page = () => {
                 description: 'Title for the leaderboard tab in advance analytics.',
               })}
             >
-              <Leaderboard />
+              <Leaderboard
+                startDate={startDate}
+                endDate={endDate}
+                enterpriseId={enterpriseId}
+              />
             </Tab>
             <Tab
               eventKey="skills"
@@ -227,7 +254,11 @@ const AnalyticsV2Page = () => {
                 description: 'Title for the skills tab in advance analytics.',
               })}
             >
-              <Skills />
+              <Skills
+                startDate={startDate}
+                endDate={endDate}
+                enterpriseId={enterpriseId}
+              />
             </Tab>
           </Tabs>
         </div>
@@ -236,4 +267,7 @@ const AnalyticsV2Page = () => {
   );
 };
 
+AnalyticsV2Page.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
 export default AnalyticsV2Page;

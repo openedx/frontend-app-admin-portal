@@ -89,7 +89,7 @@ const EnterpriseAppRoutes = ({
         <Route
           key="analyticsv2"
           path="/"
-          element={<AnalyticsV2Page />}
+          element={<AnalyticsV2Page enterpriseId={enterpriseId} />}
         />
       )}
 

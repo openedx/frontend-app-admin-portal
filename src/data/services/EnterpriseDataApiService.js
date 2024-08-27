@@ -12,6 +12,8 @@ class EnterpriseDataApiService {
 
   static enterpriseAdminBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/`;
 
+  static enterpriseAdminAnalyticsV2BaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/analytics/`;
+
   static getEnterpriseUUID(enterpriseId) {
     const { enableDemoData } = store.getState().portalConfiguration;
     return enableDemoData ? configuration.DEMO_ENTEPRISE_UUID : enterpriseId;
@@ -140,6 +142,29 @@ class EnterpriseDataApiService {
   static fetchDashboardInsights(enterpriseId) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseUUID}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchEnterpriseModuleActivityReport(enterpriseId, options, { csv } = {}) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const endpoint = csv ? 'module-performance.csv' : 'module-performance';
+
+    const queryParams = new URLSearchParams({
+      page: 1,
+      page_size: 50,
+      ...options,
+    });
+
+    if (csv) {
+      queryParams.set('no_page', csv);
+    }
+
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/${endpoint}/?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchPlotlyChartsCSV(enterpriseId, chartUrl, options) {
+    const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}/${chartUrl}?${new URLSearchParams(options).toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 }
