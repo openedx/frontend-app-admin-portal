@@ -34,12 +34,28 @@ export const ANALYTICS_TABS = {
   ENGAGEMENTS: 'engagements',
 };
 
+export const analyticsDataTableKeys = {
+  leaderboard: 'leaderboardTable',
+  enrollments: 'enrollmentsTable',
+  engagements: 'engagementsTable',
+  completions: 'completionsTable',
+};
+
+const analyticsDefaultKeys = ['admin-analytics'];
+
+const generateKey = (key, enterpriseUUID, requestOptions) => [
+  ...analyticsDefaultKeys,
+  key,
+  enterpriseUUID,
+].concat(Object.values(requestOptions));
+
 // Query Key factory for the admin analytics module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const advanceAnalyticsQueryKeys = {
-  all: ['admin-analytics'],
-  skills: (enterpriseUUID, requestOptions) => [...advanceAnalyticsQueryKeys.all, 'skills', enterpriseUUID].concat(
-    Object.values(requestOptions),
+  all: analyticsDefaultKeys,
+  skills: (enterpriseUUID, requestOptions) => generateKey('skills', enterpriseUUID, requestOptions),
+  leaderboardTable: (enterpriseUUID, requestOptions) => (
+    generateKey(analyticsDataTableKeys.leaderboard, enterpriseUUID, requestOptions)
   ),
 };
 

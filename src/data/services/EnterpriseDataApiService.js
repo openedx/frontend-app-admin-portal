@@ -3,6 +3,8 @@ import { snakeCaseObject, camelCaseObject } from '@edx/frontend-platform/utils';
 import omitBy from 'lodash/omitBy';
 import isEmpty from 'lodash/isEmpty';
 
+import { isFalsy } from '../../utils';
+
 import store from '../store';
 import { configuration } from '../../config';
 
@@ -15,6 +17,14 @@ class EnterpriseDataApiService {
   static enterpriseAdminBaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/`;
 
   static enterpriseAdminAnalyticsV2BaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/analytics/`;
+
+  static constructDataTableURL(tableKey, baseURL) {
+    const dataTableURLsMap = {
+      leaderboardTable: `${baseURL}/leaderboard`,
+    };
+
+    return dataTableURLsMap[tableKey];
+  }
 
   static getEnterpriseUUID(enterpriseId) {
     const { enableDemoData } = store.getState().portalConfiguration;
@@ -147,6 +157,16 @@ class EnterpriseDataApiService {
     const queryParams = new URLSearchParams(transformOptions);
     const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseUUID}/skills/stats?${queryParams.toString()}`;
     return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
+  }
+
+  static fetchAdminAnalyticsTableData(enterpriseCustomerUUID, tableKey, options) {
+    const baseURL = EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl;
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
+    const transformOptions = omitBy(snakeCaseObject(options), isFalsy);
+    const queryParams = new URLSearchParams(transformOptions);
+    const tableURL = EnterpriseDataApiService.constructDataTableURL(tableKey, `${baseURL}${enterpriseUUID}`);
+    const url = `${tableURL}?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchDashboardInsights(enterpriseId) {
