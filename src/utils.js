@@ -583,6 +583,15 @@ function isTodayBetweenDates({ startDate, endDate }) {
   return today.isBetween(formattedStartDate, formattedEndDate);
 }
 
+/**
+ * Helper function to determine if a value is falsy.
+ * Returns true if value is "", null, or undefined
+ *
+ * @param value
+ * @returns {boolean}
+ */
+const isFalsy = (value) => value == null || value === '';
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -628,4 +637,5 @@ export {
   i18nFormatProgressStatus,
   isTodayWithinDateThreshold,
   isTodayBetweenDates,
+  isFalsy,
 };
