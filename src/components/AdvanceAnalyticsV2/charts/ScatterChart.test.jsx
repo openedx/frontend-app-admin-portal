@@ -40,8 +40,8 @@ describe('ScatterChart', () => {
     expect(traces[1].y).toEqual([4]);
     expect(traces[0].marker.color).toBe('red');
     expect(traces[1].marker.color).toBe('blue');
-    expect(traces[0].marker.size).toEqual([37]);
-    expect(traces[1].marker.size).toEqual([57]);
+    expect(traces[0].marker.size).toEqual([6.045]);
+    expect(traces[1].marker.size).toEqual([6.075]);
     expect(traces[0].customdata[0]).toEqual(['A']);
     expect(traces[1].customdata[0]).toEqual(['B']);
     traces.forEach(trace => {

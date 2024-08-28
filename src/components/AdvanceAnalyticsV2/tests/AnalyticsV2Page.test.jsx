@@ -1,11 +1,13 @@
 import React from 'react';
 import { render, fireEvent, within } from '@testing-library/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import AnalyticsV2Page from '../AnalyticsV2Page';
+import { queryClient } from '../../test/testUtils';
 import '@testing-library/jest-dom';
 
 const mockStore = configureMockStore([thunk]);
@@ -34,11 +36,13 @@ const store = mockStore({
 });
 
 const renderWithProviders = (component) => render(
-  <Provider store={store}>
-    <IntlProvider locale="en">
-      {component}
-    </IntlProvider>
-  </Provider>,
+  <QueryClientProvider client={queryClient()}>
+    <Provider store={store}>
+      <IntlProvider locale="en">
+        {component}
+      </IntlProvider>
+    </Provider>
+  </QueryClientProvider>,
 );
 
 describe('AnalyticsV2Page', () => {
