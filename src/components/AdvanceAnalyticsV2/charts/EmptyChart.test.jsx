@@ -22,14 +22,15 @@ describe('EmptyChart', () => {
         yanchor: 'middle',
       },
     ],
-    xaxis: { visible: false },
-    yaxis: { visible: false },
+    xaxis: { visible: true },
+    yaxis: { visible: true },
     margin: {
       t: 0, b: 0, l: 0, r: 0,
     },
-    paper_bgcolor: 'lightgray',
-    plot_bgcolor: 'lightgray',
+    paper_bgcolor: 'transparent',
+    plot_bgcolor: 'transparent',
     autosize: true,
+    dragmode: false,
   };
 
   it('renders correctly', () => {

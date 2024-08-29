@@ -33,7 +33,7 @@ const ScatterChart = ({
       name: category,
       marker: {
         color: colorMap[category],
-        size: filteredData.map(item => (item[markerSizeKey] + 0.7) * 10),
+        size: filteredData.map(item => item[markerSizeKey] * 0.015).map(size => (size < 5 ? size + 6 : size)),
       },
       customdata: customDataKeys.length ? filteredData.map(item => customDataKeys.map(key => item[key])) : [],
       hovertemplate,
@@ -43,11 +43,16 @@ const ScatterChart = ({
   const layout = {
     margin: { t: 0 },
     legend: {
-      title: '', yanchor: 'top', y: 0.99, xanchor: 'right', x: 0.99, bgcolor: 'white', itemsizing: 'constant',
+      title: '', yanchor: 'top', y: 0.99, xanchor: 'left', x: 0.99, bgcolor: 'white', itemsizing: 'constant',
     },
-    xaxis: { title: xAxisTitle },
-    yaxis: { title: yAxisTitle },
-    dragmode: false,
+    yaxis: {
+      title: yAxisTitle,
+      zeroline: false,
+    },
+    xaxis: {
+      title: xAxisTitle,
+      zeroline: false,
+    },
     autosize: true,
   };
 
