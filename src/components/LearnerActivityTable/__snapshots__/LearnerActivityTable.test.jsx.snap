@@ -2,280 +2,456 @@
 
 exports[`LearnerActivityTable renders active learners table correctly 1`] = `
 <div
-  className="active-week"
+  className="pgn__data-table-layout-wrapper"
 >
   <div
-    className="row"
+    className="pgn__data-table-layout-main"
   >
     <div
-      className="col"
+      className="pgn__data-table-wrapper"
     >
       <div
-        className="table-responsive"
+        className="pgn__data-table-status-bar"
+        data-testid="table-control-bar"
+      >
+        <div
+          className="pgn__data-table-status"
+        >
+          <div
+            className="pgn__data-table-status-left"
+          >
+            <div
+              className="pgn__smart-status"
+              data-testid="row-status"
+            >
+              Showing 1 - 2 of 2.
+            </div>
+          </div>
+          <div
+            className="pgn__data-table-actions-right"
+          >
+            <div
+              className="pgn__data-table-toggle"
+            />
+            <div />
+          </div>
+        </div>
+      </div>
+      <div
+        className="pgn__data-table-container"
+        data-testid="data-table-container"
       >
         <table
-          className="table table-sm table-striped"
+          className="pgn__data-table is-striped"
+          role="table"
         >
-          <thead
-            className=""
-          >
+          <thead>
             <tr
-              className=""
+              role="row"
             >
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Email
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Course Title
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Course Price
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Start Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     End Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Passed Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Current Grade
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Progress Status
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Last Activity Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-down"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
             </tr>
           </thead>
           <tbody
-            className=""
+            role="rowgroup"
           >
             <tr
-              className=""
+              className="pgn__data-table-row"
+              role="row"
             >
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 <span
                   data-hj-suppress={true}
@@ -284,60 +460,61 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 </span>
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Dive into ReactJS
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 $200
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 October 21, 2017
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 May 13, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 23, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 66%
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Failed
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 22, 2018
               </td>
             </tr>
             <tr
-              className=""
+              className="pgn__data-table-row"
+              role="row"
             >
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 <span
                   data-hj-suppress={true}
@@ -346,50 +523,50 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
                 </span>
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Redux with ReactJS
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 $200
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 October 21, 2017
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 May 13, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 22, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 80%
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Passed
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 25, 2018
               </td>
@@ -397,101 +574,105 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="active-week-pagination"
-        className="pagination-default"
+      <div
+        className="pgn__data-table-footer"
+        data-testid="table-footer"
       >
         <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
+          data-testid="row-status"
         >
-          Page 1, Current Page, of 1
+          Showing 1 - 2 of 2.
         </div>
-        <ul
-          className="pagination"
+        <nav
+          aria-label="table pagination"
+          className="pagination-minimal"
         >
-          <li
-            className="page-item disabled"
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
           >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
+            Page 1, Current Page, of 1
+          </div>
+          <ul
+            className="pagination"
           >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
+            <li
+              className="page-item disabled"
             >
-              <div>
-                Next
+              <button
+                aria-label="Previous"
+                className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
                 <span
-                  className="pgn__icon"
+                  className="btn-icon__icon-container"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
+                  <span
+                    className="pgn__icon btn-icon__icon"
                   >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.51 3.87 15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
                 </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+              </button>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Next"
+                className="btn-icon btn-icon-primary btn-icon-md next page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
+                >
+                  <span
+                    className="pgn__icon btn-icon__icon"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6.49 20.13 1.77 1.77 9.9-9.9-9.9-9.9-1.77 1.77L14.62 12l-8.13 8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>
@@ -499,35 +680,543 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
 
 exports[`LearnerActivityTable renders empty state correctly 1`] = `
 <div
-  className="fade alert-content alert alert-warning show"
-  role="alert"
+  className="pgn__data-table-layout-wrapper"
 >
-  <span
-    className="pgn__icon alert-icon"
-  >
-    <svg
-      aria-hidden={true}
-      fill="none"
-      focusable={false}
-      height={24}
-      role="img"
-      viewBox="0 0 24 24"
-      width={24}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
-        fill="currentColor"
-      />
-    </svg>
-  </span>
   <div
-    className="pgn__alert-message-wrapper"
+    className="pgn__data-table-layout-main"
   >
     <div
-      className="alert-message-content"
+      className="pgn__data-table-wrapper"
     >
-      There are no results.
+      <div
+        className="pgn__data-table-status-bar"
+        data-testid="table-control-bar"
+      >
+        <div
+          className="pgn__data-table-status"
+        >
+          <div
+            className="pgn__data-table-status-left"
+          />
+          <div
+            className="pgn__data-table-actions-right"
+          >
+            <div
+              className="pgn__data-table-toggle"
+            />
+            <div />
+          </div>
+        </div>
+      </div>
+      <div
+        className="pgn__data-table-container"
+        data-testid="data-table-container"
+      >
+        <table
+          className="pgn__data-table is-striped"
+          role="table"
+        >
+          <thead>
+            <tr
+              role="row"
+            >
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Email
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Course Title
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Course Price
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Start Date
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    End Date
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Passed Date
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Current Grade
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Progress Status
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Last Activity Date
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-down"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            role="rowgroup"
+          />
+        </table>
+      </div>
+      <div
+        className="pgn__data-table-empty"
+      >
+        No results found
+      </div>
+      <div
+        className="pgn__data-table-footer"
+        data-testid="table-footer"
+      >
+        <nav
+          aria-label="table pagination"
+          className="pagination-minimal"
+        >
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
+          >
+            Page 1, Current Page, of -1
+          </div>
+          <ul
+            className="pagination"
+          >
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Previous"
+                className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
+                >
+                  <span
+                    className="pgn__icon btn-icon__icon"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.51 3.87 15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Next, Page 2"
+                className="btn-icon btn-icon-primary btn-icon-md next page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
+                >
+                  <span
+                    className="pgn__icon btn-icon__icon"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6.49 20.13 1.77 1.77 9.9-9.9-9.9-9.9-1.77 1.77L14.62 12l-8.13 8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>
@@ -535,253 +1224,412 @@ exports[`LearnerActivityTable renders empty state correctly 1`] = `
 
 exports[`LearnerActivityTable renders inactive past month learners table correctly 1`] = `
 <div
-  className="inactive-month"
+  className="pgn__data-table-layout-wrapper"
 >
   <div
-    className="row"
+    className="pgn__data-table-layout-main"
   >
     <div
-      className="col"
+      className="pgn__data-table-wrapper"
     >
       <div
-        className="table-responsive"
+        className="pgn__data-table-status-bar"
+        data-testid="table-control-bar"
+      >
+        <div
+          className="pgn__data-table-status"
+        >
+          <div
+            className="pgn__data-table-status-left"
+          >
+            <div
+              className="pgn__smart-status"
+              data-testid="row-status"
+            >
+              Showing 1 - 2 of 2.
+            </div>
+          </div>
+          <div
+            className="pgn__data-table-actions-right"
+          >
+            <div
+              className="pgn__data-table-toggle"
+            />
+            <div />
+          </div>
+        </div>
+      </div>
+      <div
+        className="pgn__data-table-container"
+        data-testid="data-table-container"
       >
         <table
-          className="table table-sm table-striped"
+          className="pgn__data-table is-striped"
+          role="table"
         >
-          <thead
-            className=""
-          >
+          <thead>
             <tr
-              className=""
+              role="row"
             >
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Email
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Course Title
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Course Price
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Start Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     End Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Current Grade
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Progress Status
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Last Activity Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-down"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
             </tr>
           </thead>
           <tbody
-            className=""
+            role="rowgroup"
           >
             <tr
-              className=""
+              className="pgn__data-table-row"
+              role="row"
             >
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 <span
                   data-hj-suppress={true}
@@ -790,54 +1638,55 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 </span>
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Dive into ReactJS
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 $200
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 October 21, 2017
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 May 13, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 66%
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Failed
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 22, 2018
               </td>
             </tr>
             <tr
-              className=""
+              className="pgn__data-table-row"
+              role="row"
             >
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 <span
                   data-hj-suppress={true}
@@ -846,44 +1695,44 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
                 </span>
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Redux with ReactJS
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 $200
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 October 21, 2017
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 May 13, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 80%
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Passed
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 25, 2018
               </td>
@@ -891,101 +1740,105 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="inactive-month-pagination"
-        className="pagination-default"
+      <div
+        className="pgn__data-table-footer"
+        data-testid="table-footer"
       >
         <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
+          data-testid="row-status"
         >
-          Page 1, Current Page, of 1
+          Showing 1 - 2 of 2.
         </div>
-        <ul
-          className="pagination"
+        <nav
+          aria-label="table pagination"
+          className="pagination-minimal"
         >
-          <li
-            className="page-item disabled"
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
           >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
+            Page 1, Current Page, of 1
+          </div>
+          <ul
+            className="pagination"
           >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
+            <li
+              className="page-item disabled"
             >
-              <div>
-                Next
+              <button
+                aria-label="Previous"
+                className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
                 <span
-                  className="pgn__icon"
+                  className="btn-icon__icon-container"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
+                  <span
+                    className="pgn__icon btn-icon__icon"
                   >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.51 3.87 15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
                 </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+              </button>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Next"
+                className="btn-icon btn-icon-primary btn-icon-md next page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
+                >
+                  <span
+                    className="pgn__icon btn-icon__icon"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6.49 20.13 1.77 1.77 9.9-9.9-9.9-9.9-1.77 1.77L14.62 12l-8.13 8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>
@@ -993,253 +1846,412 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
 
 exports[`LearnerActivityTable renders inactive past week learners table correctly 1`] = `
 <div
-  className="inactive-week"
+  className="pgn__data-table-layout-wrapper"
 >
   <div
-    className="row"
+    className="pgn__data-table-layout-main"
   >
     <div
-      className="col"
+      className="pgn__data-table-wrapper"
     >
       <div
-        className="table-responsive"
+        className="pgn__data-table-status-bar"
+        data-testid="table-control-bar"
+      >
+        <div
+          className="pgn__data-table-status"
+        >
+          <div
+            className="pgn__data-table-status-left"
+          >
+            <div
+              className="pgn__smart-status"
+              data-testid="row-status"
+            >
+              Showing 1 - 2 of 2.
+            </div>
+          </div>
+          <div
+            className="pgn__data-table-actions-right"
+          >
+            <div
+              className="pgn__data-table-toggle"
+            />
+            <div />
+          </div>
+        </div>
+      </div>
+      <div
+        className="pgn__data-table-container"
+        data-testid="data-table-container"
       >
         <table
-          className="table table-sm table-striped"
+          className="pgn__data-table is-striped"
+          role="table"
         >
-          <thead
-            className=""
-          >
+          <thead>
             <tr
-              className=""
+              role="row"
             >
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Email
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      sort ascending
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort-asc"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Course Title
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Course Price
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Start Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     End Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Current Grade
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Progress Status
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
               <th
-                className="sortable"
-                scope="col"
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
               >
-                <button
-                  className="btn btn-header"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button"
+                <span
+                  className="d-flex align-items-center"
                 >
                   <span>
                     Last Activity Date
-                    <span
-                      className="sr-only"
-                      data-testid="table-heading-sr"
-                    >
-                       
-                      click to sort
-                    </span>
-                     
-                    <span
-                      aria-hidden={true}
-                      className="fa fa-sort"
-                    />
                   </span>
-                </button>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-down"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
               </th>
             </tr>
           </thead>
           <tbody
-            className=""
+            role="rowgroup"
           >
             <tr
-              className=""
+              className="pgn__data-table-row"
+              role="row"
             >
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 <span
                   data-hj-suppress={true}
@@ -1248,54 +2260,55 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 </span>
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Dive into ReactJS
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 $200
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 October 21, 2017
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 May 13, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 66%
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Failed
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 22, 2018
               </td>
             </tr>
             <tr
-              className=""
+              className="pgn__data-table-row"
+              role="row"
             >
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 <span
                   data-hj-suppress={true}
@@ -1304,44 +2317,44 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
                 </span>
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Redux with ReactJS
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 $200
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 October 21, 2017
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 May 13, 2018
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 80%
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 Passed
               </td>
               <td
-                className=""
-                scope={null}
+                className="pgn__data-table-cell-wrap"
+                role="cell"
               >
                 September 25, 2018
               </td>
@@ -1349,101 +2362,105 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-  <div
-    className="row mt-2"
-  >
-    <div
-      className="col d-flex justify-content-center"
-    >
-      <nav
-        aria-label="inactive-week-pagination"
-        className="pagination-default"
+      <div
+        className="pgn__data-table-footer"
+        data-testid="table-footer"
       >
         <div
-          aria-atomic={true}
-          aria-live="polite"
-          aria-relevant="text"
-          className="sr-only"
+          data-testid="row-status"
         >
-          Page 1, Current Page, of 1
+          Showing 1 - 2 of 2.
         </div>
-        <ul
-          className="pagination"
+        <nav
+          aria-label="table pagination"
+          className="pagination-minimal"
         >
-          <li
-            className="page-item disabled"
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
           >
-            <button
-              aria-label="Previous"
-              className="previous page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
-            >
-              <div>
-                <span
-                  className="pgn__icon"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
-            </button>
-          </li>
-          <li
-            className="page-item disabled"
+            Page 1, Current Page, of 1
+          </div>
+          <ul
+            className="pagination"
           >
-            <button
-              aria-label="Next"
-              className="next page-link btn btn-primary"
-              disabled={true}
-              onClick={[Function]}
-              tabIndex="-1"
-              type="button"
+            <li
+              className="page-item disabled"
             >
-              <div>
-                Next
+              <button
+                aria-label="Previous"
+                className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
                 <span
-                  className="pgn__icon"
+                  className="btn-icon__icon-container"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
+                  <span
+                    className="pgn__icon btn-icon__icon"
                   >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.51 3.87 15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
                 </span>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </nav>
+              </button>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Next"
+                className="btn-icon btn-icon-primary btn-icon-md next page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
+                >
+                  <span
+                    className="pgn__icon btn-icon__icon"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6.49 20.13 1.77 1.77 9.9-9.9-9.9-9.9-1.77 1.77L14.62 12l-8.13 8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>
