@@ -551,3 +551,5 @@ export const isLmsBudget = (
   activeIntegrationsLength,
   isUniversalGroup,
 ) => activeIntegrationsLength > 0 && isUniversalGroup;
+
+export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());

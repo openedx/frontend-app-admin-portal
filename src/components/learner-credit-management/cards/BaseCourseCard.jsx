@@ -18,12 +18,16 @@ const BaseCourseCard = ({
   footerActions: CardFooterActions,
   enterpriseSlug,
   cardClassName,
+  courseRun,
+  displayImportantDates,
 }) => {
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
   const courseCardMetadata = useCourseCardMetadata({
     course: camelCaseObject(original),
+    courseRun,
     enterpriseSlug,
+    displayImportantDates,
   });
   const {
     imageSrc,
@@ -34,10 +38,8 @@ const BaseCourseCard = ({
     subtitle,
     formattedPrice,
     isExecEdCourseType,
-    courseEnrollmentInfo,
-    execEdEnrollmentInfo,
+    dateFooterText,
   } = courseCardMetadata;
-
   return (
     <Card orientation={isSmall ? 'vertical' : 'horizontal'} className={cardClassName}>
       <Card.ImageCap
@@ -84,7 +86,7 @@ const BaseCourseCard = ({
         </Card.Section>
         <Card.Footer
           orientation={isExtraSmall ? 'horizontal' : 'vertical'}
-          textElement={isExecEdCourseType ? execEdEnrollmentInfo : courseEnrollmentInfo}
+          textElement={dateFooterText}
         >
           {CardFooterActions && <CardFooterActions course={courseCardMetadata} />}
         </Card.Footer>
@@ -113,8 +115,21 @@ BaseCourseCard.propTypes = {
     ),
     title: PropTypes.string,
   }).isRequired,
+  courseRun: PropTypes.shape({
+    enrollBy: PropTypes.number,
+    start: PropTypes.string,
+  }),
   footerActions: PropTypes.elementType,
   cardClassName: PropTypes.string,
+  displayImportantDates: PropTypes.bool,
+};
+
+BaseCourseCard.defaultProps = {
+  courseRun: {
+    enrollBy: null,
+    start: null,
+  },
+  displayImportantDates: false,
 };
 
 export default connect(mapStateToProps)(BaseCourseCard);

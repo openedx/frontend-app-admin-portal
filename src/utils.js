@@ -546,6 +546,12 @@ function makePlural(num, string) {
   return `${num} ${string}`;
 }
 
+const pluralText = (
+  textToPlural,
+  pluralBenchmark,
+  punctuation = '',
+) => (pluralBenchmark > 1 ? `${textToPlural}s${punctuation}` : `${textToPlural}${punctuation}`);
+
 /**
  * Helper function to determine if a content is archived.
  *
@@ -631,6 +637,7 @@ export {
   getActiveTableColumnFilters,
   queryCacheOnErrorHandler,
   makePlural,
+  pluralText,
   isArchivedContent,
   i18nFormatTimestamp,
   i18nFormatPassedTimestamp,

@@ -18,7 +18,6 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
 
   const catalogGroupView = subsidyAccessPolicy?.groupAssociations?.length > 0
     && !data.appliesToAllContexts;
-
   const { linkToCourse, uuid } = course;
   const handleViewCourse = () => {
     sendEnterpriseTrackEvent(

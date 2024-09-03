@@ -9,12 +9,16 @@ import {
   formatPrice,
   getEnrollmentDeadline,
 } from '../../data';
+import { pluralText } from '../../../../utils';
+import AssignmentModalImportantDates from '../../assignment-modal/AssignmentModalmportantDates';
 
 const { ENROLLMENT } = CARD_TEXT;
 
 const useCourseCardMetadata = ({
   course,
   enterpriseSlug,
+  courseRun,
+  displayImportantDates,
 }) => {
   const { config: { ENTERPRISE_LEARNER_PORTAL_URL } } = useContext(AppContext);
   const {
@@ -25,6 +29,7 @@ const useCourseCardMetadata = ({
     normalizedMetadata,
     partners,
     title,
+    courseRuns,
   } = course;
   const formattedPrice = (normalizedMetadata.contentPrice || normalizedMetadata.contentPrice === 0) ? formatPrice(normalizedMetadata.contentPrice) : 'N/A';
   const imageSrc = cardImageUrl || cardFallbackImg;
@@ -53,7 +58,9 @@ const useCourseCardMetadata = ({
   if (isExecEdCourseType) {
     linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
   }
-
+  const assignmentImportantDates = <AssignmentModalImportantDates courseRun={courseRun} />;
+  const availableCourseRuns = `(${courseRuns.length}) available ${pluralText('date', courseRuns.length)}`;
+  const dateFooterText = displayImportantDates ? assignmentImportantDates : availableCourseRuns;
   return {
     ...course,
     subtitle: partners.map(partner => partner.name).join(', '),
@@ -67,6 +74,7 @@ const useCourseCardMetadata = ({
     execEdEnrollmentInfo,
     linkToCourse,
     isExecEdCourseType,
+    dateFooterText,
   };
 };
 

@@ -65,7 +65,6 @@ export const BaseCatalogSearchResults = ({
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
   }, [searchResults, setNoContent]);
-
   if (error) {
     return (
       <Alert className="mt-2" variant="warning">

@@ -23,6 +23,7 @@ import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
 import { LEARNER_CREDIT_ROUTE } from '../constants';
+import NewAssignmentModalDropdown from './NewAssignmentModalDropdown';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -45,6 +46,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const [canAllocateAssignments, setCanAllocateAssignments] = useState(false);
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
+  const [assignmentRun, setAssignmentRun] = useState();
   const {
     successfulAssignmentToast: { displayToastForAssignmentAllocation },
   } = useContext(BudgetDetailPageContext);
@@ -70,7 +72,12 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     enterpriseSlug, enterpriseAppPage, budgetId: subsidyAccessPolicyId, activeTabKey: 'activity',
   });
 
-  const handleOpenAssignmentModal = () => {
+  const handleOpenAssignmentModal = (e) => {
+    // Based on the user selection, we will extract the course run metadata from the key
+    const selectedCourseRun = course.courseRuns.find(({ key }) => key === e.target.closest('[id]').id);
+    // If the selected course run is not found, we default to the advertised course run
+    const courseRunMetadata = selectedCourseRun ?? course.advertisedCourseRun;
+    setAssignmentRun(courseRunMetadata);
     open();
     sendEnterpriseTrackEvent(
       enterpriseId,
@@ -182,10 +189,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       },
     });
   };
-
   return (
     <>
-      <Button onClick={handleOpenAssignmentModal}>{children}</Button>
+      <NewAssignmentModalDropdown id={course.key} onClick={handleOpenAssignmentModal} courseRuns={course.courseRuns}>
+        {children}
+      </NewAssignmentModalDropdown>
       <FullscreenModal
         className="stepper-modal bg-light-200"
         title={intl.formatMessage({
@@ -286,6 +294,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       >
         <AssignmentModalContent
           course={course}
+          courseRun={assignmentRun}
           onEmailAddressesChange={handleEmailAddressesChanged}
         />
       </FullscreenModal>
