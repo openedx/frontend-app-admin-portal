@@ -9,7 +9,10 @@ import {
 } from '@openedx/paragon';
 
 import CourseCard from '../cards/CourseCard';
-import { DEFAULT_PAGE, SEARCH_RESULT_PAGE_SIZE } from '../data';
+import {
+  DEFAULT_PAGE,
+  SEARCH_RESULT_PAGE_SIZE,
+} from '../data';
 
 export const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
@@ -54,7 +57,6 @@ export const BaseCatalogSearchResults = ({
     ],
     [],
   );
-
   const tableData = useMemo(
     () => searchResults?.hits || [],
     [searchResults?.hits],

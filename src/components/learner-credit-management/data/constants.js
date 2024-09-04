@@ -73,6 +73,9 @@ export const MEMBERS_TABLE_PAGE_SIZE = 10;
 // Enroll-by date warning message threshold by days
 export const ENROLL_BY_DATE_DAYS_THRESHOLD = 10;
 
+// Stale enrollment dropoff time
+export const STALE_ENROLLMENT_DROPOFF_DAYS = 90;
+
 // Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {

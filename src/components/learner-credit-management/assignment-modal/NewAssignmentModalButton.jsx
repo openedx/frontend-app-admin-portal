@@ -18,7 +18,13 @@ import { getConfig } from '@edx/frontend-platform/config';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy } from '../data';
+import {
+  enrollableCourseRuns,
+  learnerCreditManagementQueryKeys,
+  STALE_ENROLLMENT_DROPOFF_DAYS,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+} from '../data';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
@@ -66,7 +72,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     courseUuid: course.uuid,
     assignmentConfiguration,
   };
-
+  const availableCourseRuns = enrollableCourseRuns({
+    courseRuns: course.courseRuns,
+    subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
+    staleEnrollmentDropOffTime: STALE_ENROLLMENT_DROPOFF_DAYS,
+  });
   const { mutate } = useAllocateContentAssignments();
   const pathToActivityTab = generatePath(LEARNER_CREDIT_ROUTE, {
     enterpriseSlug, enterpriseAppPage, budgetId: subsidyAccessPolicyId, activeTabKey: 'activity',
@@ -74,7 +84,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
 
   const handleOpenAssignmentModal = (e) => {
     // Based on the user selection, we will extract the course run metadata from the key
-    const selectedCourseRun = course.courseRuns.find(({ key }) => key === e.target.closest('[id]').id);
+    const selectedCourseRun = availableCourseRuns.find(({ key }) => key === e.target.closest('[id]').id);
     // If the selected course run is not found, we default to the advertised course run
     const courseRunMetadata = selectedCourseRun ?? course.advertisedCourseRun;
     setAssignmentRun(courseRunMetadata);
@@ -121,11 +131,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       trackEventMetadata,
     );
   };
-
   const handleAllocateContentAssignments = () => {
+    // If no assignmentRun key exist, fall back to the top level course key
     const payload = snakeCaseObject({
       contentPriceCents: course.normalizedMetadata.contentPrice * 100, // Convert to USD cents
-      contentKey: course.key,
+      contentKey: assignmentRun.key,
       learnerEmails,
     });
     const mutationArgs = {
@@ -191,7 +201,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   };
   return (
     <>
-      <NewAssignmentModalDropdown id={course.key} onClick={handleOpenAssignmentModal} courseRuns={course.courseRuns}>
+      <NewAssignmentModalDropdown id={course.key} onClick={handleOpenAssignmentModal} courseRuns={availableCourseRuns}>
         {children}
       </NewAssignmentModalDropdown>
       <FullscreenModal

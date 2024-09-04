@@ -553,3 +553,14 @@ export const isLmsBudget = (
 ) => activeIntegrationsLength > 0 && isUniversalGroup;
 
 export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
+
+export const enrollableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, staleEnrollmentDropOffTime }) => {
+  const clonedCourseRuns = courseRuns.map(a => ({ ...a, enrollBy: a.enrollBy * 1000 }));
+  const sortedCourseRuns = clonedCourseRuns.sort((a, b) => a.enrollBy - b.enrollBy);
+  const filteredCourseRuns = sortedCourseRuns.filter(
+    ({ enrollBy }) => dayjs(enrollBy).isBefore(
+      dayjs(subsidyExpirationDatetime).add(staleEnrollmentDropOffTime, 'days'),
+    ),
+  );
+  return filteredCourseRuns;
+};

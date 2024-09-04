@@ -55,7 +55,7 @@ AssignmentModalImportantDate.propTypes = {
 
 const AssignmentModalImportantDates = ({ courseRun }) => {
   const intl = useIntl();
-  const enrollByDate = dayjs(courseRun.enrollBy * 1000).format(SHORT_MONTH_DATE_FORMAT) ?? null;
+  const enrollByDate = dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT) ?? null;
   const courseStartDate = dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT) ?? null;
   const courseHasStartedLabel = hasCourseStarted(courseStartDate)
     ? intl.formatMessage(messages.courseStarted)

@@ -4,10 +4,11 @@ import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.pn
 
 import CARD_TEXT from '../../constants';
 import {
+  enrollableCourseRuns,
   EXEC_ED_COURSE_TYPE,
   formatDate,
   formatPrice,
-  getEnrollmentDeadline,
+  getEnrollmentDeadline, STALE_ENROLLMENT_DROPOFF_DAYS, useBudgetId, useSubsidyAccessPolicy,
 } from '../../data';
 import { pluralText } from '../../../../utils';
 import AssignmentModalImportantDates from '../../assignment-modal/AssignmentModalmportantDates';
@@ -21,6 +22,8 @@ const useCourseCardMetadata = ({
   displayImportantDates,
 }) => {
   const { config: { ENTERPRISE_LEARNER_PORTAL_URL } } = useContext(AppContext);
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
     availability,
     cardImageUrl,
@@ -58,9 +61,15 @@ const useCourseCardMetadata = ({
   if (isExecEdCourseType) {
     linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
   }
+
+  const availableCourseRuns = enrollableCourseRuns({
+    courseRuns,
+    subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
+    staleEnrollmentDropOffTime: STALE_ENROLLMENT_DROPOFF_DAYS,
+  });
   const assignmentImportantDates = <AssignmentModalImportantDates courseRun={courseRun} />;
-  const availableCourseRuns = `(${courseRuns.length}) available ${pluralText('date', courseRuns.length)}`;
-  const dateFooterText = displayImportantDates ? assignmentImportantDates : availableCourseRuns;
+  const availableCourseRunsCount = `(${availableCourseRuns.length}) available ${pluralText('date', availableCourseRuns.length)}`;
+  const dateFooterText = displayImportantDates ? assignmentImportantDates : availableCourseRunsCount;
   return {
     ...course,
     subtitle: partners.map(partner => partner.name).join(', '),

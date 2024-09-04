@@ -2,7 +2,11 @@ import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 import keys from 'lodash/keys';
 import {
-  SetShowErrorsArguments, SET_FORM_FIELD, SET_SHOW_ERRORS, SET_STEP, SET_WORKFLOW_STATE, UPDATE_FORM_FIELDS, RESET_EDIT_STATE,
+  SetShowErrorsArguments,
+  SET_FORM_FIELD, SET_SHOW_ERRORS,
+  SET_STEP, SET_WORKFLOW_STATE,
+  UPDATE_FORM_FIELDS,
+  RESET_EDIT_STATE,
 } from './actions';
 import type {
   FormActionArguments, SetFormFieldArguments, SetStepArguments, SetWorkflowStateArguments, UpdateFormFieldArguments,

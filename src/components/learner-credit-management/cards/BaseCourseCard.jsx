@@ -23,6 +23,7 @@ const BaseCourseCard = ({
 }) => {
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
+
   const courseCardMetadata = useCourseCardMetadata({
     course: camelCaseObject(original),
     courseRun,
