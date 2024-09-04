@@ -9,6 +9,7 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import dayjs from 'dayjs';
 import CourseCard from '../CourseCard';
 import {
   formatPrice,
@@ -53,13 +54,29 @@ const originalData = {
   course_type: 'course',
   key: 'course-123x',
   normalized_metadata: {
-    enroll_by_date: '2016-02-18T04:00:00Z',
+    enroll_by_date: dayjs(1892678399 * 1000).toISOString(),
     start_date: '2016-04-18T04:00:00Z',
     content_price: 100,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
   title: 'Course Title',
+  courseRuns: [
+    {
+      key: 'course-v1:edX+course-123x+3T2020',
+      start: '2016-04-18T04:00:00Z',
+      upgrade_deadline: 1892678399,
+      pacing_type: 'self_paced',
+      enroll_by: 1892678399,
+    },
+  ],
+  advertised_course_run: {
+    key: 'course-v1:edX+course-123x+3T2020',
+    start: '2016-04-18T04:00:00Z',
+    upgrade_deadline: 1892678399,
+    pacing_type: 'self_paced',
+    enroll_by: 1892678399,
+  },
 };
 const imageAltText = `${originalData.title} course image`;
 
@@ -109,6 +126,7 @@ const mockSubsidyAccessPolicy = {
   aggregates: {
     spendAvailableUsd: 50000,
   },
+  subsidyExpirationDatetime: '2100-02-18T04:00:00Z',
 };
 const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
 
@@ -194,6 +212,7 @@ describe('Course card works as expected', () => {
     expect(screen.getByText(defaultProps.original.title)).toBeInTheDocument();
     expect(screen.getByText(defaultProps.original.partners[0].name)).toBeInTheDocument();
     expect(screen.getByText('$100')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Assign'));
     expect(screen.getByText('Per learner price')).toBeInTheDocument();
     expect(screen.getByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
     expect(screen.getByText('Course')).toBeInTheDocument();

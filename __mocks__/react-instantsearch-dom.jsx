@@ -2,26 +2,119 @@
 /* eslint-disable react/prop-types */
 
 const React = require('react');
+const dayjs = require('dayjs');
 
 const MockReactInstantSearch = jest.genMockFromModule(
   'react-instantsearch-dom',
 );
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const advertised_course_run = {
-  start: '2020-09-09T04:00:00Z',
-  key: 'course-v1:edX+Bee101+3T2020',
-};
 const mockNormalizedData = {
   start_date: '2020-09-09T04:00:00Z',
-  end_date: '2021-09-09T04:00:00Z',
-  enroll_by_date: '2020-09-15T04:00:00Z',
+  end_date: dayjs('2020-09-09T04:00:00Z').add(1, 'year').toISOString(),
+  enroll_by_date: dayjs('2020-09-09T04:00:00Z').add(3, 'months').toISOString(),
 };
+
+const mockCurrentStartDate = dayjs().add(3, 'months').toISOString();
 
 /* eslint-disable camelcase */
 const fakeHits = [
-  { objectID: '1', aggregation_key: 'course:Bees101', title: 'bla', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Bees101', normalized_metadata: mockNormalizedData },
-  { objectID: '2', aggregation_key: 'course:Wasps200', title: 'blp', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Wasps200', normalized_metadata: mockNormalizedData },
+  {
+    objectID: '1',
+    aggregation_key: 'course:Bees101',
+    title: 'bla',
+    partners: [
+      { name: 'edX' },
+      { name: 'another_unused' },
+    ],
+    advertised_course_run: {
+      key: 'course-v1:edx+Bees101+1010',
+      start: mockCurrentStartDate,
+      end: dayjs(mockCurrentStartDate).add(1, 'year').toISOString(),
+      enroll_by: dayjs(mockCurrentStartDate).unix(),
+      isActive: true,
+      max_effort: 5,
+      min_effort: 1,
+      pacing_type: 'self_paced',
+      weeks_to_complete: 8,
+      upgrade_deadline: dayjs(mockCurrentStartDate).add(3, 'months').unix(),
+    },
+    key: 'Bees101',
+    normalized_metadata: mockNormalizedData,
+    courseRuns: [
+      {
+        key: 'course-v1:edx+Bees101+1010',
+        start: mockCurrentStartDate,
+        end: dayjs(mockCurrentStartDate).add(1, 'year').toISOString(),
+        enroll_by: dayjs(mockCurrentStartDate).unix(),
+        isActive: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: dayjs(mockCurrentStartDate).add(3, 'months').unix(),
+      },
+      {
+        key: 'course-v1:edX+Bee101+3T2020',
+        start: '2020-09-09T04:00:00Z',
+        end: dayjs('2020-09-09T04:00:00Z').add(1, 'year').toISOString(),
+        enroll_by: dayjs('2020-09-09T04:00:00Z').unix(),
+        isActive: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: dayjs('2020-09-09T04:00:00Z').add(3, 'months').unix(),
+      },
+    ],
+  },
+  { objectID: '2',
+    aggregation_key: 'course:Wasps200',
+    title: 'blp',
+    partners: [
+      { name: 'edX' },
+      { name: 'another_unused' },
+    ],
+    advertised_course_run: {
+      key: 'course-v1:edx+Wasps200+1010T2024',
+      start: '2022-10-09T04:00:00Z',
+      end: dayjs('2022-10-09T04:00:00Z').add(1, 'year').toISOString(),
+      enroll_by: dayjs('2022-10-09T04:00:00Z').unix(),
+      isActive: true,
+      max_effort: 5,
+      min_effort: 1,
+      pacing_type: 'self_paced',
+      weeks_to_complete: 8,
+      upgrade_deadline: dayjs('2022-10-09T04:00:00Z').add(3, 'months').unix(),
+    },
+    key: 'Wasps200',
+    normalized_metadata: mockNormalizedData,
+    courseRuns: [
+      {
+        key: 'course-v1:edx+Wasps200+1010T2024',
+        start: '2022-10-09T04:00:00Z',
+        end: dayjs('2022-10-09T04:00:00Z').add(1, 'year').toISOString(),
+        enroll_by: dayjs('2022-10-09T04:00:00Z').unix(),
+        isActive: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: dayjs('2022-10-09T04:00:00Z').add(3, 'months').unix(),
+      },
+      {
+        key: 'course-v1:edX+Wasps200+3T2020',
+        start: '2020-09-09T04:00:00Z',
+        end: dayjs('2020-09-09T04:00:00Z').add(1, 'year').toISOString(),
+        enroll_by: dayjs('2020-09-09T04:00:00Z').unix(),
+        isActive: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: dayjs('2020-09-09T04:00:00Z').add(3, 'months').unix(),
+      },
+    ],
+  },
 ];
 /* eslint-enable camelcase */
 
