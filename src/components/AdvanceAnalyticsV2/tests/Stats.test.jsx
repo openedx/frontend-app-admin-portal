@@ -3,17 +3,18 @@ import { mount } from 'enzyme';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import Stats from '../Stats';
 
+const data = {
+  enrolls: 150400,
+  courses: 365,
+  sessions: 1892,
+  hours: 25349876,
+  completions: 265400,
+};
 describe('Stats', () => {
   it('renders the correct values for each statistic', () => {
     const wrapper = mount(
       <IntlProvider locale="en">
-        <Stats
-          enrollments={150400}
-          distinctCourses={365}
-          dailySessions={1892}
-          learningHours={25349876}
-          completions={265400}
-        />
+        <Stats data={data} isFetching={false} isError={false} />
       </IntlProvider>,
     );
 

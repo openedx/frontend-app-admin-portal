@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Form, Tabs, Tab,
+  Form, Tabs, Tab, Stack,
 } from '@openedx/paragon';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
@@ -13,6 +13,7 @@ import Engagements from './tabs/Engagements';
 import Completions from './tabs/Completions';
 import Leaderboard from './tabs/Leaderboard';
 import Skills from './tabs/Skills';
+import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 
 const PAGE_TITLE = 'AnalyticsV2';
 
@@ -22,28 +23,31 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
   const [calculation, setCalculation] = useState('Total');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const dataRefreshDate = '';
   const intl = useIntl();
-
+  const { isFetching, isError, data } = useEnterpriseAnalyticsAggregatesData({
+    enterpriseCustomerUUID: enterpriseId,
+    startDate,
+    endDate,
+  });
   return (
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <div className="container-fluid w-100">
-        <div className="row data-refresh-msg-container mb-4">
+      <Stack className="container-fluid w-100" gap={4}>
+        <div className="row data-refresh-msg-container">
           <div className="col">
             <span>
               <FormattedMessage
                 id="advance.analytics.data.refresh.msg"
                 defaultMessage="Data updated on {date}"
                 description="Data refresh message"
-                values={{ date: dataRefreshDate }}
+                values={{ date: data?.lastUpdatedAt || '' }}
               />
             </span>
           </div>
         </div>
 
-        <div className="row filter-container mb-4">
+        <div className="row filter-container">
           <div className="col">
             <Form.Group>
               <Form.Label>
@@ -55,7 +59,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               </Form.Label>
               <Form.Control
                 type="date"
-                value={startDate}
+                value={startDate || data?.minEnrollmentDate}
+                min={data?.minEnrollmentDate}
                 onChange={(e) => setStartDate(e.target.value)}
               />
             </Form.Group>
@@ -71,7 +76,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               </Form.Label>
               <Form.Control
                 type="date"
-                value={endDate}
+                value={endDate || data?.maxEnrollmentDate}
+                max={data?.maxEnrollmentDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </Form.Group>
@@ -168,13 +174,11 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
           </div>
         </div>
 
-        <div className="row stats-container mb-4">
+        <div className="row stats-container d-flex justify-content-center">
           <Stats
-            enrollments={0}
-            distinctCourses={0}
-            dailySessions={0}
-            learningHours={0}
-            completions={0}
+            data={data}
+            isFetching={isFetching}
+            isError={isError}
           />
         </div>
 
@@ -213,9 +217,9 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               <Engagements
                 startDate={startDate}
                 endDate={endDate}
+                enterpriseId={enterpriseId}
                 granularity={granularity}
                 calculation={calculation}
-                enterpriseId={enterpriseId}
               />
             </Tab>
             <Tab
@@ -264,7 +268,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
             </Tab>
           </Tabs>
         </div>
-      </div>
+      </Stack>
     </>
   );
 };

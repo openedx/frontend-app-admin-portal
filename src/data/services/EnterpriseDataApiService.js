@@ -167,6 +167,15 @@ class EnterpriseDataApiService {
     return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
   }
 
+  static fetchAdminAggregatesData(enterpriseCustomerUUID, options) {
+    const baseURL = EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl;
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
+    const transformOptions = omitBy(snakeCaseObject(options), isFalsy);
+    const queryParams = new URLSearchParams(transformOptions);
+    const url = `${baseURL}${enterpriseUUID}?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
+  }
+
   static fetchDashboardInsights(enterpriseId) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseUUID}`;

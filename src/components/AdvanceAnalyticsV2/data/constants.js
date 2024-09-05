@@ -77,6 +77,9 @@ export const advanceAnalyticsQueryKeys = {
   leaderboardTable: (enterpriseUUID, requestOptions) => (
     generateKey(analyticsDataTableKeys.leaderboard, enterpriseUUID, requestOptions)
   ),
+  aggregates: (enterpriseUUID, requestOptions) => (
+    generateKey('aggregates', enterpriseUUID, requestOptions)
+  ),
 };
 
 export const skillsColorMap = {
