@@ -10,22 +10,22 @@ import { hasCourseStarted, SHORT_MONTH_DATE_FORMAT } from '../data';
 
 const messages = defineMessages({
   importantDates: {
-    id: 'enterprise.course.about.page.important-dates.title',
+    id: 'lcm.budget.detail.page.catalog.search.allocation.modal.important-dates.title',
     defaultMessage: 'Important dates',
     description: 'Title for the important dates section on the assignment modal',
   },
   enrollByDate: {
-    id: 'enterprise.course.about.page.important-dates.enroll-by-date',
+    id: 'lcm.budget.detail.page.catalog.search.allocation.modal.important-dates.enroll-by-date',
     defaultMessage: 'Enroll-by date',
     description: 'Enroll-by date for the important dates section on the assignment modal',
   },
   courseStarts: {
-    id: 'enterprise.course.about.page.important-dates.course-starts',
+    id: 'lcm.budget.detail.page.catalog.search.allocation.modal.important-dates.course-starts',
     defaultMessage: 'Course starts',
     description: 'Course starts for the important dates section on the assignment modal in future tense',
   },
   courseStarted: {
-    id: 'enterprise.course.about.page.important-dates.course-started',
+    id: 'lcm.budget.detail.page.catalog.search.allocation.modal.important-dates.course-started',
     defaultMessage: 'Course started',
     description: 'Course started the important dates section on the assignment modal in past tense',
   },

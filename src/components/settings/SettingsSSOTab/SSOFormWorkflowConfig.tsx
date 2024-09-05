@@ -4,6 +4,8 @@ import omit from 'lodash/omit';
 import { AxiosError } from 'axios';
 import type { FormWorkflowHandlerArgs, FormWorkflowStep } from '../../forms/FormWorkflow';
 import SSOConfigConnectStep, { getValidations as getSSOConfigConnectStepValidations } from './steps/NewSSOConfigConnectStep';
+// TODO: Resolve dependency issue
+// eslint-disable-next-line import/no-cycle
 import SSOConfigConfigureStep, { getValidations as getSSOConfigConfigureStepValidations } from './steps/NewSSOConfigConfigureStep';
 import SSOConfigAuthorizeStep, { getValidations as getSSOConfigAuthorizeStepValidations } from './steps/NewSSOConfigAuthorizeStep';
 import SSOConfigConfirmStep from './steps/NewSSOConfigConfirmStep';

@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import CourseCard from '../CourseCard';
 import {
   formatPrice,
-  learnerCreditManagementQueryKeys,
+  learnerCreditManagementQueryKeys, SHORT_MONTH_DATE_FORMAT,
   useBudgetId,
   useSubsidyAccessPolicy,
 } from '../../data';
@@ -48,6 +48,9 @@ jest.mock('../../data', () => ({
 }));
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
+const futureStartDate = dayjs().add(5, 'days').toISOString();
+const pastStartDate = dayjs().subtract(5, 'days').toISOString();
+
 const originalData = {
   availability: ['Upcoming'],
   card_image_url: undefined,
@@ -55,7 +58,7 @@ const originalData = {
   key: 'course-123x',
   normalized_metadata: {
     enroll_by_date: dayjs(1892678399 * 1000).toISOString(),
-    start_date: '2016-04-18T04:00:00Z',
+    start_date: futureStartDate,
     content_price: 100,
   },
   original_image_url: '',
@@ -64,7 +67,7 @@ const originalData = {
   courseRuns: [
     {
       key: 'course-v1:edX+course-123x+3T2020',
-      start: '2016-04-18T04:00:00Z',
+      start: futureStartDate,
       upgrade_deadline: 1892678399,
       pacing_type: 'self_paced',
       enroll_by: 1892678399,
@@ -72,7 +75,7 @@ const originalData = {
   ],
   advertised_course_run: {
     key: 'course-v1:edX+course-123x+3T2020',
-    start: '2016-04-18T04:00:00Z',
+    start: futureStartDate,
     upgrade_deadline: 1892678399,
     pacing_type: 'self_paced',
     enroll_by: 1892678399,
@@ -93,9 +96,25 @@ const execEdData = {
   key: 'exec-ed-course-123x',
   entitlements: [{ price: '999.00' }],
   normalized_metadata: {
-    enroll_by_date: '2016-02-18T04:00:00Z',
-    start_date: '2016-04-18T04:00:00Z',
+    enroll_by_date: dayjs(1892678399 * 1000).toISOString(),
+    start_date: futureStartDate,
     content_price: 999,
+  },
+  courseRuns: [
+    {
+      key: 'course-v1:edX+course-123x+3T2020',
+      start: futureStartDate,
+      upgrade_deadline: 1892678399,
+      pacing_type: 'self_paced',
+      enroll_by: 1892678399,
+    },
+  ],
+  advertised_course_run: {
+    key: 'course-v1:edX+course-123x+3T2020',
+    start: futureStartDate,
+    upgrade_deadline: 1892678399,
+    pacing_type: 'self_paced',
+    enroll_by: 1892678399,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
@@ -214,7 +233,7 @@ describe('Course card works as expected', () => {
     expect(screen.getByText('$100')).toBeInTheDocument();
     userEvent.click(screen.getByText('Assign'));
     expect(screen.getByText('Per learner price')).toBeInTheDocument();
-    expect(screen.getByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
     expect(screen.getByText('Course')).toBeInTheDocument();
     // Has card image defined even though the course metadata does not contain an image URL
     const cardImage = screen.getByAltText(imageAltText);
@@ -247,7 +266,8 @@ describe('Course card works as expected', () => {
   test('executive education card renders', () => {
     renderWithRouter(<CourseCardWrapper {...execEdProps} />);
     expect(screen.queryByText('$999')).toBeInTheDocument();
-    expect(screen.queryByText('Starts Apr 18, 2016 • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Assign'));
+    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
     expect(screen.queryByText('Executive Education')).toBeInTheDocument();
     const viewCourseCTA = screen.getByText('View course', { selector: 'a' });
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
@@ -266,6 +286,8 @@ describe('Course card works as expected', () => {
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
     userEvent.click(assignCourseCTA);
+    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Enroll by Dec 22, 2029'));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
 
     const assignmentModal = within(screen.getByRole('dialog'));
@@ -283,6 +305,8 @@ describe('Course card works as expected', () => {
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
     userEvent.click(assignCourseCTA);
+    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Enroll by Dec 22, 2029'));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
 
     const helpCenterButton = screen.getByText('Help Center: Course Assignments');
@@ -298,50 +322,93 @@ describe('Course card works as expected', () => {
       hasAllocationException: true,
       allocationExceptionReason: 'content_not_in_catalog',
       shouldRetryAllocationAfterException: false, // no ability to retry after this error
+      courseTense: {
+        courseStartDate: futureStartDate,
+        expected: 'Course starts',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'not_enough_value_in_subsidy',
       shouldRetryAllocationAfterException: false,
+      courseTense: {
+        courseStartDate: pastStartDate,
+        expected: 'Course started',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'not_enough_value_in_subsidy',
       shouldRetryAllocationAfterException: true,
+      courseTense: {
+        courseStartDate: futureStartDate,
+        expected: 'Course starts',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'policy_spend_limit_reached',
       shouldRetryAllocationAfterException: false,
+      courseTense: {
+        courseStartDate: pastStartDate,
+        expected: 'Course started',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'policy_spend_limit_reached',
       shouldRetryAllocationAfterException: true,
+      courseTense: {
+        courseStartDate: futureStartDate,
+        expected: 'Course starts',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: null,
       shouldRetryAllocationAfterException: false,
+      courseTense: {
+        courseStartDate: pastStartDate,
+        expected: 'Course started',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: null,
       shouldRetryAllocationAfterException: true,
+      courseTense: {
+        courseStartDate: futureStartDate,
+        expected: 'Course starts',
+      },
     },
-    { shouldSubmitAssignments: true, hasAllocationException: false },
-    { shouldSubmitAssignments: false, hasAllocationException: false },
+    {
+      shouldSubmitAssignments: true,
+      hasAllocationException: false,
+      courseTense: {
+        courseStartDate: pastStartDate,
+        expected: 'Course started',
+      },
+    },
+    {
+      shouldSubmitAssignments: false,
+      hasAllocationException: false,
+      courseTense: {
+        courseStartDate: futureStartDate,
+        expected: 'Course starts',
+      },
+    },
   ])('opens assignment modal, fills out information, and submits assignments accordingly - with success or with an exception (%s)', async ({
     shouldSubmitAssignments,
     hasAllocationException,
     allocationExceptionReason,
     shouldRetryAllocationAfterException,
+    courseTense,
   }) => {
     const mockUpdatedLearnerAssignments = [mockLearnerEmails[0]];
     const mockNoChangeLearnerAssignments = [mockLearnerEmails[1]];
@@ -380,10 +447,32 @@ describe('Course card works as expected', () => {
     useQueryClient.mockReturnValue({
       invalidateQueries: mockInvalidateQueries,
     });
-    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+    const props = {
+      original: {
+        ...defaultProps.original,
+        normalized_metadata: {
+          ...defaultProps.original.normalized_metadata,
+          start_date: courseTense.courseStartDate,
+        },
+        courseRuns: [{
+          ...defaultProps.original.courseRuns[0],
+          start: courseTense.courseStartDate,
+        },
+        ],
+        advertised_course_run: {
+          ...defaultProps.original.advertised_course_run,
+          start: courseTense.courseStartDate,
+        },
+      },
+    };
+    renderWithRouter(<CourseCardWrapper {...props} />);
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
+
     userEvent.click(assignCourseCTA);
+
+    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Enroll by Dec 22, 2029'));
 
     const assignmentModal = within(screen.getByRole('dialog'));
 
@@ -396,8 +485,7 @@ describe('Course card works as expected', () => {
     expect(modalCourseCard.getByText(defaultProps.original.partners[0].name)).toBeInTheDocument();
     expect(modalCourseCard.getByText('$100')).toBeInTheDocument();
     expect(modalCourseCard.getByText('Per learner price')).toBeInTheDocument();
-    expect(modalCourseCard.getByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
-    expect(modalCourseCard.getByText('Course')).toBeInTheDocument();
+    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
     const cardImage = modalCourseCard.getByAltText(imageAltText);
     expect(cardImage).toBeInTheDocument();
     expect(cardImage.src).toBeDefined();
@@ -420,7 +508,15 @@ describe('Course card works as expected', () => {
     const expectedAvailableBalance = formatPrice(mockSubsidyAccessPolicy.aggregates.spendAvailableUsd);
     expect(assignmentModal.getByText(expectedAvailableBalance)).toBeInTheDocument();
 
-    // Verify collapsibles
+    // Verify important dates
+    expect(assignmentModal.getByText('Enroll-by date')).toBeInTheDocument();
+    expect(assignmentModal.getByText('Dec 22, 2029')).toBeInTheDocument();
+    expect(assignmentModal.getByText(courseTense.expected)).toBeInTheDocument();
+    expect(assignmentModal.getByText(
+      dayjs(courseTense.courseStartDate).format(SHORT_MONTH_DATE_FORMAT),
+    )).toBeInTheDocument();
+
+    // Verify collapsible
     expect(assignmentModal.getByText('How assigning this course works')).toBeInTheDocument();
     expect(assignmentModal.getByText('Next steps for assigned learners')).toBeInTheDocument();
     expect(assignmentModal.getByText('Learners will be notified of this course assignment by email.')).toBeInTheDocument();
@@ -478,7 +574,7 @@ describe('Course card works as expected', () => {
         mockSubsidyAccessPolicy.uuid,
         expect.objectContaining({
           content_price_cents: 10000,
-          content_key: 'course-123x',
+          content_key: 'course-v1:edX+course-123x+3T2020',
           learner_emails: mockLearnerEmails,
         }),
       );
@@ -598,7 +694,8 @@ describe('Course card works as expected', () => {
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
     userEvent.click(assignCourseCTA);
-
+    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Enroll by Dec 22, 2029'));
     const assignmentModal = within(screen.getByRole('dialog'));
 
     // Verify "Assign" CTA is disabled
