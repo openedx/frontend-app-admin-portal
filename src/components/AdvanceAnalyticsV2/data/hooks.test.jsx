@@ -68,7 +68,7 @@ describe('useEnterpriseAnalyticsData', () => {
 
     expect(result.current).toEqual(
       expect.objectContaining({
-        isLoading: true,
+        isFetching: true,
         error: null,
         data: undefined,
       }),
@@ -89,7 +89,7 @@ describe('useEnterpriseAnalyticsData', () => {
       },
     );
     expect(result.current).toEqual(expect.objectContaining({
-      isLoading: false,
+      isFetching: false,
       error: null,
       data: camelCaseObject(mockAnalyticsCompletionsChartsData),
     }));
@@ -115,7 +115,7 @@ describe('useEnterpriseAnalyticsData', () => {
 
     expect(result.current).toEqual(
       expect.objectContaining({
-        isLoading: true,
+        isFetching: true,
         error: null,
         data: undefined,
       }),
@@ -136,7 +136,7 @@ describe('useEnterpriseAnalyticsData', () => {
       },
     );
     expect(result.current).toEqual(expect.objectContaining({
-      isLoading: false,
+      isFetching: false,
       error: null,
       data: camelCaseObject(mockAnalyticsLeaderboardTableData),
     }));

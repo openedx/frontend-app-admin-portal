@@ -31,10 +31,9 @@ describe('Skills Tab', () => {
   describe('renders static text', () => {
     test('renders all sections with correct classes and content', () => {
       hooks.useEnterpriseAnalyticsData.mockReturnValue({
-        isLoading: true,
+        isFetching: true,
         data: null,
         isError: false,
-        isFetching: false,
         error: null,
       });
 
@@ -79,10 +78,9 @@ describe('Skills Tab', () => {
   describe('when loading data from API', () => {
     test('renders correct messages', () => {
       hooks.useEnterpriseAnalyticsData.mockReturnValue({
-        isLoading: true,
+        isFetching: true,
         data: null,
         isError: false,
-        isFetching: false,
         error: null,
       });
 
@@ -107,10 +105,9 @@ describe('Skills Tab', () => {
   describe('when data successfully loaded from API', () => {
     test('renders charts', () => {
       hooks.useEnterpriseAnalyticsData.mockReturnValue({
-        isLoading: false,
+        isFetching: false,
         data: mockAnalyticsSkillsData,
         isError: false,
-        isFetching: false,
         error: null,
       });
       render(

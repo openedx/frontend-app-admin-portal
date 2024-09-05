@@ -11,7 +11,7 @@ import Engagements from './Engagements';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 
-const mockAnalyticsData = {
+const mockAnalyticsTableData = {
   next: null,
   previous: null,
   count: 2,
@@ -34,12 +34,15 @@ const mockAnalyticsData = {
     },
   ],
 };
+const mockAnalyticsChartsData = {
+  engagementsOverTime: [],
+  topCoursesByEngagement: [],
+  topSubjectsByEngagement: [],
+};
 
 jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 const axiosMock = new MockAdapter(axios);
 getAuthenticatedHttpClient.mockReturnValue(axios);
-axiosMock.onAny().reply(200);
-axios.get = jest.fn(() => Promise.resolve({ data: mockAnalyticsData }));
 
 jest.mock('../charts/LineChart', () => {
   const MockedLineChart = () => <div>Mocked LineChart</div>;
@@ -52,7 +55,14 @@ jest.mock('../charts/BarChart', () => {
 });
 
 describe('Engagements Component', () => {
-  test('renders all sections with correct classes and content', async () => {
+  afterEach(() => {
+    axiosMock.reset();
+  });
+
+  test('renders all charts correctly', async () => {
+    axiosMock.onGet(/\/engagements\/stats(\?.*)/).reply(200, mockAnalyticsChartsData);
+    axiosMock.onGet(/\/engagements(\?.*)/).reply(200, mockAnalyticsTableData);
+
     const { container } = render(
       <QueryClientProvider client={queryClient()}>
         <IntlProvider locale="en">
@@ -105,7 +115,7 @@ describe('Engagements Component', () => {
 
       // ensure the correct number of rows are rendered (including header row)
       const rows = screen.getAllByRole('row');
-      expect(rows).toHaveLength(mockAnalyticsData.count + 1); // +1 for header row
+      expect(rows).toHaveLength(mockAnalyticsTableData.count + 1); // +1 for header row
 
       // validate header row
       const columnHeaders = within(rows[0]).getAllByRole('columnheader');
@@ -114,7 +124,7 @@ describe('Engagements Component', () => {
       });
 
       // validate content of each data row
-      mockAnalyticsData.results.forEach((user, index) => {
+      mockAnalyticsTableData.results.forEach((user, index) => {
         const rowCells = within(rows[index + 1]).getAllByRole('cell'); // Skip header row
         expect(rowCells[0]).toHaveTextContent(user.email);
         expect(rowCells[1]).toHaveTextContent(user.course_title);
@@ -127,10 +137,9 @@ describe('Engagements Component', () => {
   test('renders charts with correct loading messages', () => {
     jest.mock('../data/hooks', () => ({
       useEnterpriseAnalyticsTableData: jest.fn().mockReturnValue({
-        isLoading: true,
+        isFetching: true,
         data: null,
         isError: false,
-        isFetching: false,
         error: null,
       }),
     }));

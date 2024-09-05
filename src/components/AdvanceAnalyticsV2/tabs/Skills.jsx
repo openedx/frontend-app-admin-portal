@@ -12,7 +12,7 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
   const intl = useIntl();
 
   const {
-    isLoading, isError, data,
+    isFetching, isError, data,
   } = useEnterpriseAnalyticsData({
     enterpriseCustomerUUID: enterpriseId,
     key: ANALYTICS_TABS.SKILLS,
@@ -43,7 +43,7 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
         />
 
         <ChartWrapper
-          isLoading={isLoading}
+          isFetching={isFetching}
           isError={isError}
           chartType="ScatterChart"
           chartProps={{
@@ -84,7 +84,7 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
               })}
             />
             <ChartWrapper
-              isLoading={isLoading}
+              isFetching={isFetching}
               isError={isError}
               chartType="BarChart"
               chartProps={{
@@ -118,7 +118,7 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
               })}
             />
             <ChartWrapper
-              isLoading={isLoading}
+              isFetching={isFetching}
               isError={isError}
               chartType="BarChart"
               chartProps={{

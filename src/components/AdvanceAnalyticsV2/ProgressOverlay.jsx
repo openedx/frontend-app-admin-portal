@@ -14,7 +14,7 @@ const ProgressOverlay = ({ isError, message }) => (
 
 ProgressOverlay.propTypes = {
   isError: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
 };
 
 export default ProgressOverlay;

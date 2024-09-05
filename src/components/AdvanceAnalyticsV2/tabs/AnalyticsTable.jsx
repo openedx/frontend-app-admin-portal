@@ -21,7 +21,7 @@ const AnalyticsTable = ({
   const [currentPage, setCurrentPage] = useState(0);
 
   const {
-    isLoading, data, isPreviousData,
+    isFetching, data,
   } = useEnterpriseAnalyticsData({
     enterpriseCustomerUUID: enterpriseId,
     key: analyticsDataTableKeys[name],
@@ -55,7 +55,7 @@ const AnalyticsTable = ({
           isDownloadCSV={enableCSVDownload}
         />
         <DataTable
-          isLoading={isLoading || isPreviousData}
+          isLoading={isFetching}
           isPaginated
           manualPagination
           initialState={{

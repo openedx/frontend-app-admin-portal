@@ -12,7 +12,7 @@ const Engagements = ({
 }) => {
   const intl = useIntl();
   const {
-    isLoading, isError, data,
+    isFetching, isError, data,
   } = useEnterpriseAnalyticsData({
     enterpriseCustomerUUID: enterpriseId,
     key: ANALYTICS_TABS.ENGAGEMENTS,
@@ -44,7 +44,7 @@ const Engagements = ({
           isDownloadCSV
         />
         <ChartWrapper
-          isLoading={isLoading}
+          isFetching={isFetching}
           isError={isError}
           chartType="LineChart"
           chartProps={{
@@ -84,7 +84,7 @@ const Engagements = ({
           isDownloadCSV
         />
         <ChartWrapper
-          isLoading={isLoading}
+          isFetching={isFetching}
           isError={isError}
           chartType="BarChart"
           chartProps={{
@@ -127,11 +127,11 @@ const Engagements = ({
           isDownloadCSV
         />
         <ChartWrapper
-          isLoading={isLoading}
+          isFetching={isFetching}
           isError={isError}
           chartType="BarChart"
           chartProps={{
-            data: data?.topCoursesByEngagement,
+            data: data?.topSubjectsByEngagement,
             xKey: 'courseSubject',
             yKey: 'count',
             colorKey: 'enrollType',

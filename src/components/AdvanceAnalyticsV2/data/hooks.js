@@ -24,8 +24,8 @@ export const useEnterpriseAnalyticsData = ({
       key,
       requestOptions,
     ),
-    staleTime: 0.5 * (1000 * 60 * 60), // 30 minutes. Length of time before your data becomes stale
-    cacheTime: 0.75 * (1000 * 60 * 60), // 45 minutes. Length of time before inactive data gets removed from the cache
+    staleTime: 0.5 * (1000 * 60 * 60), // 30 minutes. The time in milliseconds after data is considered stale.
+    cacheTime: 0.75 * (1000 * 60 * 60), // 45 minutes. Cache data will be garbage collected after this duration.
     keepPreviousData: true,
     ...queryOptions,
   });

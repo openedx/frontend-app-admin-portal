@@ -13,7 +13,7 @@ const Completions = ({
   const intl = useIntl();
 
   const {
-    isLoading, isError, data,
+    isFetching, isError, data,
   } = useEnterpriseAnalyticsData({
     enterpriseCustomerUUID: enterpriseId,
     key: ANALYTICS_TABS.COMPLETIONS,
@@ -47,7 +47,7 @@ const Completions = ({
           isDownloadCSV
         />
         <ChartWrapper
-          isLoading={isLoading}
+          isFetching={isFetching}
           isError={isError}
           chartType="LineChart"
           chartProps={{
@@ -89,7 +89,7 @@ const Completions = ({
           isDownloadCSV
         />
         <ChartWrapper
-          isLoading={isLoading}
+          isFetching={isFetching}
           isError={isError}
           chartType="BarChart"
           chartProps={{
@@ -134,7 +134,7 @@ const Completions = ({
           isDownloadCSV
         />
         <ChartWrapper
-          isLoading={isLoading}
+          isFetching={isFetching}
           isError={isError}
           chartType="BarChart"
           chartProps={{

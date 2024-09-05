@@ -1,41 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ProgressOverlay from '../ProgressOverlay';
+import classNames from 'classnames';
+import {
+  Spinner,
+} from '@openedx/paragon';
 import ScatterChart from './ScatterChart';
 import LineChart from './LineChart';
 import BarChart from './BarChart';
+import EmptyChart from './EmptyChart';
 
 const ChartWrapper = ({
-  isLoading,
+  isFetching,
   isError,
   chartType,
   chartProps,
   loadingMessage,
 }) => {
-  if (isLoading || isError) {
-    return (
-      <ProgressOverlay
-        isError={isError}
-        message={loadingMessage}
-      />
-    );
+  if (isError) {
+    return <EmptyChart />;
   }
 
-  const renderChart = () => {
-    const chartMap = {
-      ScatterChart: <ScatterChart {...chartProps} />,
-      LineChart: <LineChart {...chartProps} />,
-      BarChart: <BarChart {...chartProps} />,
-    };
-
-    return chartMap[chartType];
+  const chartMap = {
+    ScatterChart: <ScatterChart {...chartProps} />,
+    LineChart: <LineChart {...chartProps} />,
+    BarChart: <BarChart {...chartProps} />,
   };
 
-  return renderChart();
+  return (
+    <div className={classNames('analytics-chart-container', { chartType }, { 'is-fetching': isFetching })}>
+      {isFetching && (
+        <div className="spinner-centered">
+          <Spinner animation="border" screenReaderText={loadingMessage} />
+        </div>
+      )}
+      {chartProps.data && chartMap[chartType]}
+    </div>
+  );
 };
 
 ChartWrapper.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   chartType: PropTypes.oneOf(['ScatterChart', 'LineChart', 'BarChart']).isRequired,
   chartProps: PropTypes.object.isRequired,
