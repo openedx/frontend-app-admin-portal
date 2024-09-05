@@ -540,7 +540,7 @@ export const getTranslatedBudgetTerm = (intl, term) => {
       return intl.formatMessage({
         id: 'lcm.budgets.budget.card.term.retired',
         defaultMessage: 'Retired',
-        description: 'Term for when a budget has retired',
+        description: 'Term for when a budget has retire',
       });
     default:
       return '';
