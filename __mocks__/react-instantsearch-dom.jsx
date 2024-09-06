@@ -8,13 +8,13 @@ const MockReactInstantSearch = jest.genMockFromModule(
   'react-instantsearch-dom',
 );
 
-const mockNormalizedData = {
-  start_date: '2020-09-09T04:00:00Z',
-  end_date: dayjs('2020-09-09T04:00:00Z').add(1, 'year').toISOString(),
-  enroll_by_date: dayjs('2020-09-09T04:00:00Z').add(3, 'months').toISOString(),
-};
-
 const mockCurrentStartDate = dayjs().add(3, 'months').toISOString();
+
+const mockNormalizedData = {
+  start_date: mockCurrentStartDate,
+  end_date: dayjs(mockCurrentStartDate).add(1, 'year').toISOString(),
+  enroll_by_date: dayjs(mockCurrentStartDate).add(3, 'months').toISOString(),
+};
 
 /* eslint-disable camelcase */
 const fakeHits = [

@@ -546,11 +546,19 @@ function makePlural(num, string) {
   return `${num} ${string}`;
 }
 
+/**
+ * Pluralizes a word that typically ends with s based on the benchmark passed
+ *
+ * @param textToPlural
+ * @param pluralBenchmark
+ * @param punctuation
+ * @returns {string}
+ */
 const pluralText = (
   textToPlural,
   pluralBenchmark,
   punctuation = '',
-) => (pluralBenchmark > 1 ? `${textToPlural}s${punctuation}` : `${textToPlural}${punctuation}`);
+) => (pluralBenchmark > 1 || pluralBenchmark === 0 ? `${textToPlural}s${punctuation}` : `${textToPlural}${punctuation}`);
 
 /**
  * Helper function to determine if a content is archived.

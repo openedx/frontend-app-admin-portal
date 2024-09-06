@@ -86,8 +86,11 @@ form {
 }
 
 .assignments-important-dates {
-  width: 250px;
+  width: 300px;
+}
 
-  .course-important-date {
-  }
+// TODO: Class override should be a contribution to Paragon if not already
+.pgn__card-logo-cap {
+  object-fit: scale-down !important;
+  object-position: center center !important;
 }

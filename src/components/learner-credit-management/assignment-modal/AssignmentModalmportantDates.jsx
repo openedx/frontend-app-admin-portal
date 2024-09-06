@@ -6,6 +6,7 @@ import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 
 import dayjs from 'dayjs';
+import { logInfo } from '@edx/frontend-platform/logging';
 import { hasCourseStarted, SHORT_MONTH_DATE_FORMAT } from '../data';
 
 const messages = defineMessages({
@@ -55,13 +56,18 @@ AssignmentModalImportantDate.propTypes = {
 
 const AssignmentModalImportantDates = ({ courseRun }) => {
   const intl = useIntl();
-  const enrollByDate = dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT) ?? null;
-  const courseStartDate = dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT) ?? null;
+  const enrollByDate = courseRun.enrollBy ? dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT) : null;
+  const courseStartDate = courseRun.start ? dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT) : null;
   const courseHasStartedLabel = hasCourseStarted(courseStartDate)
     ? intl.formatMessage(messages.courseStarted)
     : intl.formatMessage(messages.courseStarts);
 
+  // This is an edge case that the user should never enter but covered nonetheless
   if (!enrollByDate && !courseStartDate) {
+    logInfo(`[frontend-app-admin-portal][AssignmentModalImportantDates]
+    Component did not render, no courseRun enrollBy date or courseStart date provided
+    courseRun: ${courseRun}
+    `);
     return null;
   }
 
