@@ -2,24 +2,23 @@ import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import Header from '../Header';
-import BarChart from '../charts/BarChart';
 import {
   ANALYTICS_TABS, CHART_TYPES, skillsColorMap, skillsTypeColorMap,
 } from '../data/constants';
-import ScatterChart from '../charts/ScatterChart';
-import ProgressOverlay from '../ProgressOverlay';
-import { useEnterpriseSkillsAnalytics } from '../data/hooks';
+import { useEnterpriseAnalyticsData } from '../data/hooks';
+import ChartWrapper from '../charts/ChartWrapper';
 
 const Skills = ({ startDate, endDate, enterpriseId }) => {
   const intl = useIntl();
 
   const {
-    isLoading, isError, data,
-  } = useEnterpriseSkillsAnalytics(
-    enterpriseId,
+    isFetching, isError, data,
+  } = useEnterpriseAnalyticsData({
+    enterpriseCustomerUUID: enterpriseId,
+    key: ANALYTICS_TABS.SKILLS,
     startDate,
     endDate,
-  );
+  });
 
   return (
     <div className="tab-skills mt-4">
@@ -42,37 +41,37 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
           enterpriseId={enterpriseId}
           isDownloadCSV
         />
-        {(isLoading || isError) ? (
-          <ProgressOverlay
-            isError={isError}
-            message={intl.formatMessage({
-              id: 'advance.analytics.skills.tab.chart.top.skills.loading.message',
-              defaultMessage: 'Loading top skills chart data',
-              description: 'Loading message for the top skills chart.',
-            })}
-          />
-        ) : (
-          <ScatterChart
-            data={data.topSkills}
-            xKey="enrolls"
-            yKey="completions"
-            colorKey="skillType"
-            colorMap={skillsTypeColorMap}
-            xAxisTitle={intl.formatMessage({
+
+        <ChartWrapper
+          isFetching={isFetching}
+          isError={isError}
+          chartType="ScatterChart"
+          chartProps={{
+            data: data?.topSkills,
+            xKey: 'enrolls',
+            yKey: 'completions',
+            colorKey: 'skillType',
+            colorMap: skillsTypeColorMap,
+            xAxisTitle: intl.formatMessage({
               id: 'advance.analytics.skills.tab.chart.top.skills.x.axis.title',
               defaultMessage: 'Enrollments',
               description: 'X-axis title for the top skills chart.',
-            })}
-            yAxisTitle={intl.formatMessage({
+            }),
+            yAxisTitle: intl.formatMessage({
               id: 'advance.analytics.skills.tab.chart.top.skills.y.axis.title',
               defaultMessage: 'Completions',
               description: 'Y-axis title for the top skills chart.',
-            })}
-            markerSizeKey="completions"
-            customDataKeys={['skillName', 'skillType']}
-            hovertemplate="Skill: %{customdata[0]}<br>Enrolls: %{x}<br>Completions: %{y}"
-          />
-        )}
+            }),
+            markerSizeKey: 'completions',
+            customDataKeys: ['skillName', 'skillType'],
+            hovertemplate: 'Skill: %{customdata[0]}<br>Enrolls: %{x}<br>Completions: %{y}',
+          }}
+          loadingMessage={intl.formatMessage({
+            id: 'advance.analytics.skills.tab.chart.top.skills.loading.message',
+            defaultMessage: 'Loading top skills chart data',
+            description: 'Loading message for the top skills chart.',
+          })}
+        />
       </div>
       <div className="row">
         <div className="col-md-6">
@@ -84,30 +83,29 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                 description: 'Title for the top skills by enrollment chart.',
               })}
             />
-            {(isLoading || isError) ? (
-              <ProgressOverlay
-                isError={isError}
-                message={intl.formatMessage({
-                  id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.loading.message',
-                  defaultMessage: 'Loading top skills by enrollment chart data',
-                  description: 'Loading message for the top skills by enrollment chart.',
-                })}
-              />
-            ) : (
-              <BarChart
-                data={data.topSkillsByEnrollments}
-                xKey="skillName"
-                yKey="count"
-                colorKey="primarySubjectName"
-                colorMap={skillsColorMap}
-                yAxisTitle={intl.formatMessage({
+            <ChartWrapper
+              isFetching={isFetching}
+              isError={isError}
+              chartType="BarChart"
+              chartProps={{
+                data: data?.topSkillsByEnrollments,
+                xKey: 'skillName',
+                yKey: 'count',
+                colorKey: 'primarySubjectName',
+                colorMap: skillsColorMap,
+                yAxisTitle: intl.formatMessage({
                   id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.y.axis.title',
                   defaultMessage: 'Number of Enrollments',
                   description: 'Y-axis title for the top skills by enrollment chart.',
-                })}
-                hovertemplate="Skill: %{x}<br>Enrolls: %{y}"
-              />
-            )}
+                }),
+                hovertemplate: 'Skill: %{x}<br>Enrolls: %{y}',
+              }}
+              loadingMessage={intl.formatMessage({
+                id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.loading.message',
+                defaultMessage: 'Loading top skills by enrollment chart data',
+                description: 'Loading message for the top skills by enrollment chart.',
+              })}
+            />
           </div>
         </div>
         <div className="col-md-6">
@@ -119,31 +117,29 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                 description: 'Title for the top skills by completion chart.',
               })}
             />
-            {(isLoading || isError) ? (
-              <ProgressOverlay
-                isError={isError}
-                message={intl.formatMessage({
-                  id: 'advance.analytics.skills.tab.chart.top.skills.by.completion.loading.message',
-                  defaultMessage: 'Loading top skills by completions chart data',
-                  description: 'Loading message for the top skills by completions chart.',
-                })}
-              />
-            ) : (
-              <BarChart
-                isLoading={isLoading}
-                data={data.topSkillsByCompletions}
-                xKey="skillName"
-                yKey="count"
-                colorKey="primarySubjectName"
-                colorMap={skillsColorMap}
-                yAxisTitle={intl.formatMessage({
+            <ChartWrapper
+              isFetching={isFetching}
+              isError={isError}
+              chartType="BarChart"
+              chartProps={{
+                data: data?.topSkillsByCompletions,
+                xKey: 'skillName',
+                yKey: 'count',
+                colorKey: 'primarySubjectName',
+                colorMap: skillsColorMap,
+                yAxisTitle: intl.formatMessage({
                   id: 'advance.analytics.skills.tab.chart.top.skills.by.completion.y.axis.title',
                   defaultMessage: 'Number of Completions',
                   description: 'Y-axis title for the top skills by completion chart.',
-                })}
-                hovertemplate="Skill: %{x}<br>Completions: %{y}"
-              />
-            )}
+                }),
+                hovertemplate: 'Skill: %{x}<br>Completions: %{y}',
+              }}
+              loadingMessage={intl.formatMessage({
+                id: 'advance.analytics.skills.tab.chart.top.skills.by.completion.loading.message',
+                defaultMessage: 'Loading top skills by completions chart data',
+                description: 'Loading message for the top skills by completions chart.',
+              })}
+            />
           </div>
         </div>
       </div>

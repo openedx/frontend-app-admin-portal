@@ -53,7 +53,27 @@ const generateKey = (key, enterpriseUUID, requestOptions) => [
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const advanceAnalyticsQueryKeys = {
   all: analyticsDefaultKeys,
-  skills: (enterpriseUUID, requestOptions) => generateKey('skills', enterpriseUUID, requestOptions),
+  skills: (enterpriseUUID, requestOptions) => (
+    generateKey('skills', enterpriseUUID, requestOptions)
+  ),
+  completions: (enterpriseUUID, requestOptions) => (
+    generateKey('completions', enterpriseUUID, requestOptions)
+  ),
+  engagements: (enterpriseUUID, requestOptions) => (
+    generateKey('engagements', enterpriseUUID, requestOptions)
+  ),
+  enrollments: (enterpriseUUID, requestOptions) => (
+    generateKey('enrollments', enterpriseUUID, requestOptions)
+  ),
+  enrollmentsTable: (enterpriseUUID, requestOptions) => (
+    generateKey(analyticsDataTableKeys.enrollments, enterpriseUUID, requestOptions)
+  ),
+  engagementsTable: (enterpriseUUID, requestOptions) => (
+    generateKey(analyticsDataTableKeys.engagements, enterpriseUUID, requestOptions)
+  ),
+  completionsTable: (enterpriseUUID, requestOptions) => (
+    generateKey(analyticsDataTableKeys.completions, enterpriseUUID, requestOptions)
+  ),
   leaderboardTable: (enterpriseUUID, requestOptions) => (
     generateKey(analyticsDataTableKeys.leaderboard, enterpriseUUID, requestOptions)
   ),
@@ -75,3 +95,5 @@ export const skillsTypeColorMap = {
   'Soft Skill': '#638FFF',
   Certification: '#FE6100',
 };
+
+export const chartColorMap = { certificate: '#3669C9', audit: '#06262B' };
