@@ -153,8 +153,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModal {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).toBeCalledTimes(1);
-        expect(logError).not.toBeCalled();
+        expect(onSuccessMock).not.toBeCalled();
+        expect(logError).toBeCalledTimes(1);
       });
 
       it('handles 404 error response correctly', async () => {
@@ -164,8 +164,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModal {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).toBeCalledTimes(1);
-        expect(logError).not.toBeCalled();
+        expect(onSuccessMock).not.toBeCalled();
+        expect(logError).toBeCalledTimes(1);
       });
 
       it('handles 207 partial success with only 404 errors correctly', async () => {
@@ -205,6 +205,30 @@ describe('<LicenseManagementRevokeModal />', () => {
 
         expect(onSuccessMock).not.toBeCalled();
         expect(logError).toBeCalledTimes(1);
+      });
+
+      it('handles 207 partial success with 404 errors and successful revocations correctly', async () => {
+        const mockPartialSuccess207WithMixed404AndSuccess = { 
+          status: 207, 
+          data: { 
+            error_messages: [
+              { error_response_status: 404, user_email: 'user1@example.com' },
+              { error_response_status: 404, user_email: 'user2@example.com' }
+            ],
+            revocation_results: [
+              { license_uuid: 'license-uuid-3', original_status: 'assigned', user_email: 'user3@example.com' },
+              { license_uuid: 'license-uuid-4', original_status: 'activated', user_email: 'user4@example.com' }
+            ]
+          } 
+        };
+        LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithMixed404AndSuccess);
+
+        render(<LicenseManagementRevokeModal {...props} />);
+        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
+
+        expect(onSuccessMock).toBeCalledTimes(1);
+        expect(onSuccessMock).toHaveBeenCalledWith(mockPartialSuccess207WithMixed404AndSuccess.data);
+        expect(logError).not.toBeCalled();
       });
     });
 
