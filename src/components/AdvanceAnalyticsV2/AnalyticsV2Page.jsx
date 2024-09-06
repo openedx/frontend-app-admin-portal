@@ -213,6 +213,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               <Engagements
                 startDate={startDate}
                 endDate={endDate}
+                granularity={granularity}
+                calculation={calculation}
                 enterpriseId={enterpriseId}
               />
             </Tab>

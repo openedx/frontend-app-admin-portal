@@ -11,7 +11,7 @@ import Leaderboard from './Leaderboard';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 
-jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsTableData');
+jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 
 const axiosMock = new MockAdapter(axios);
 getAuthenticatedHttpClient.mockReturnValue(axios);
@@ -103,11 +103,24 @@ describe('Leaderboard Component', () => {
     expect(headers[4]).toHaveTextContent('Course Completions');
 
     await waitFor(() => {
-      expect(EnterpriseDataApiService.fetchAdminAnalyticsTableData).toHaveBeenCalled();
+      expect(EnterpriseDataApiService.fetchAdminAnalyticsData).toHaveBeenCalled();
 
       // ensure the correct number of rows are rendered (including header row)
       const rows = screen.getAllByRole('row');
       expect(rows).toHaveLength(3 + 1); // +1 for header row
+
+      // validate header row
+      const columns = [
+        'Email',
+        'Learning Hours',
+        'Daily Sessions',
+        'Average Session Length (Hours)',
+        'Course Completions',
+      ];
+      const columnHeaders = within(rows[0]).getAllByRole('columnheader');
+      columns.forEach((column, index) => {
+        expect(columnHeaders[index].textContent).toEqual(column);
+      });
 
       // validate content of each data row
       mockLeaderboardData.results.forEach((user, index) => {

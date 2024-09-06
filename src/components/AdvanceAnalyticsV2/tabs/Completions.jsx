@@ -1,14 +1,27 @@
 import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
-import EmptyChart from '../charts/EmptyChart';
 import Header from '../Header';
-import { ANALYTICS_TABS, CHART_TYPES } from '../data/constants';
+import { ANALYTICS_TABS, CHART_TYPES, chartColorMap } from '../data/constants';
+import AnalyticsTable from './AnalyticsTable';
+import ChartWrapper from '../charts/ChartWrapper';
+import { useEnterpriseAnalyticsData } from '../data/hooks';
 
 const Completions = ({
   startDate, endDate, granularity, calculation, enterpriseId,
 }) => {
   const intl = useIntl();
+
+  const {
+    isFetching, isError, data,
+  } = useEnterpriseAnalyticsData({
+    enterpriseCustomerUUID: enterpriseId,
+    key: ANALYTICS_TABS.COMPLETIONS,
+    startDate,
+    endDate,
+    granularity,
+    calculation,
+  });
 
   return (
     <div className="tab-completions mt-4">
@@ -33,7 +46,26 @@ const Completions = ({
           enterpriseId={enterpriseId}
           isDownloadCSV
         />
-        <EmptyChart />
+        <ChartWrapper
+          isFetching={isFetching}
+          isError={isError}
+          chartType="LineChart"
+          chartProps={{
+            data: data?.completionsOverTime,
+            xKey: 'passedDate',
+            yKey: 'count',
+            colorKey: 'enrollType',
+            colorMap: chartColorMap,
+            xAxisTitle: '',
+            yAxisTitle: 'Number of Completions',
+            hovertemplate: 'Date: %{x}<br>Number of Completions: %{y}',
+          }}
+          loadingMessage={intl.formatMessage({
+            id: 'advance.analytics.completions.tab.chart.top.courses.by.completions.loading.message',
+            defaultMessage: 'Loading top courses by completions chart data',
+            description: 'Loading message for the top courses by completions chart.',
+          })}
+        />
       </div>
       <div className="top-10-courses-by-completions-chart-container mb-4">
         <Header
@@ -56,7 +88,29 @@ const Completions = ({
           enterpriseId={enterpriseId}
           isDownloadCSV
         />
-        <EmptyChart />
+        <ChartWrapper
+          isFetching={isFetching}
+          isError={isError}
+          chartType="BarChart"
+          chartProps={{
+            data: data?.topCoursesByCompletions,
+            xKey: 'courseKey',
+            yKey: 'count',
+            colorKey: 'enrollType',
+            colorMap: chartColorMap,
+            yAxisTitle: intl.formatMessage({
+              id: 'advance.analytics.completions.tab.chart.top.courses.by.completion.y.axis.title',
+              defaultMessage: 'Number of Completions',
+              description: 'Y-axis title for the top courses by completions chart.',
+            }),
+            hovertemplate: 'Course: %{x}<br>Number of Completions: %{y}',
+          }}
+          loadingMessage={intl.formatMessage({
+            id: 'advance.analytics.completions.tab.chart.top.10.courses.by.completions.loading.message',
+            defaultMessage: 'Loading top 10 courses by completions chart data',
+            description: 'Loading message for the top 10 courses by completions chart.',
+          })}
+        />
       </div>
       <div className="top-10-subjects-by-completion-chart-container mb-4">
         <Header
@@ -79,29 +133,84 @@ const Completions = ({
           enterpriseId={enterpriseId}
           isDownloadCSV
         />
-        <EmptyChart />
+        <ChartWrapper
+          isFetching={isFetching}
+          isError={isError}
+          chartType="BarChart"
+          chartProps={{
+            data: data?.topSubjectsByCompletions,
+            xKey: 'courseSubject',
+            yKey: 'count',
+            colorKey: 'enrollType',
+            colorMap: chartColorMap,
+            yAxisTitle: intl.formatMessage({
+              id: 'advance.analytics.completions.tab.chart.top.subjects.by.completion.y.axis.title',
+              defaultMessage: 'Number of Completions',
+              description: 'Y-axis title for the top subjects by completions chart.',
+            }),
+            hovertemplate: 'Subject: %{x}<br>Number of Completions: %{y}',
+          }}
+          loadingMessage={intl.formatMessage({
+            id: 'advance.analytics.completions.tab.chart.top.subjects.by.completions.loading.message',
+            defaultMessage: 'Loading top 10 subjects by completions chart data',
+            description: 'Loading message for the top 10 subjects by completions chart.',
+          })}
+        />
       </div>
       <div className="individual-completions-datatable-container mb-4">
-        <Header
-          title={intl.formatMessage({
+        <AnalyticsTable
+          name={ANALYTICS_TABS.COMPLETIONS}
+          tableTitle={intl.formatMessage({
             id: 'advance.analytics.completion.tab.datatable.individual.completions.title',
             defaultMessage: 'Individual Completions',
             description: 'Title for the individual completions datatable.',
           })}
-          subtitle={intl.formatMessage({
+          tableSubtitle={intl.formatMessage({
             id: 'advance.analytics.completion.tab.datatable.individual.completions.subtitle',
             defaultMessage: 'See the individual completions from your organization.',
             description: 'Subtitle for the individual completions datatable.',
           })}
           startDate={startDate}
           endDate={endDate}
-          activeTab={ANALYTICS_TABS.COMPLETIONS}
-          granularity={granularity}
-          calculation={calculation}
           enterpriseId={enterpriseId}
-          isDownloadCSV
+          enableCSVDownload
+          tableColumns={[
+            {
+              Header: intl.formatMessage({
+                id: 'advance.analytics.completions.tab.table.header.email',
+                defaultMessage: 'Email',
+                description: 'Label for the email column in individual completions table',
+              }),
+              accessor: 'email',
+            },
+            {
+              Header: intl.formatMessage({
+                id: 'advance.analytics.completions.tab.table.header.course.title',
+                defaultMessage: 'Course Title',
+                description: 'Label for the course title column in individual completions table',
+              }),
+              accessor: 'courseTitle',
+            },
+            {
+              Header: intl.formatMessage({
+                id: 'advance.analytics.completions.tab.table.header.course.subject',
+                defaultMessage: 'Course Subject',
+                description: 'Label for the course subject column in individual completions table',
+
+              }),
+              accessor: 'courseSubject',
+            },
+            {
+              Header: intl.formatMessage({
+                id: 'advance.analytics.completions.tab.table.header.passed.date',
+                defaultMessage: 'Passed Date',
+                description: 'Label for the passed date column in individual completions table',
+
+              }),
+              accessor: 'passedDate',
+            },
+          ]}
         />
-        <EmptyChart />
       </div>
     </div>
   );
