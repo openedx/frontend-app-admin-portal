@@ -83,7 +83,7 @@ const LicenseManagementRevokeModal = ({
     // errors when users retry with already revoked emails
     if (errorMessages && errorMessages.length > 0) {
       const nonLicenseNotFoundErrors = errorMessages.filter(
-        error => error.error_response_status !== 404
+        (error) => error.error_response_status !== 404,
       );
       if (nonLicenseNotFoundErrors.length > 0) {
         throw nonLicenseNotFoundErrors;
@@ -116,7 +116,7 @@ const LicenseManagementRevokeModal = ({
       try {
         const response = await LicenseManagerApiService.licenseBulkRevoke(
           subscription.uuid,
-          options
+          options,
         );
 
         if (response.status === 207) {
