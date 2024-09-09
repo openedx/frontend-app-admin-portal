@@ -28,13 +28,14 @@ export const ApproveCouponCodeRequestModal = ({
   onSuccess,
   onClose,
 }) => {
+  const courseRunIds = useMemo(() => [courseId], [courseId]);
   const {
     applicableCoupons,
     isLoading: isLoadingApplicableCoupons,
     error: loadApplicableCouponsError,
   } = useApplicableCoupons({
     enterpriseId: enterpriseCustomerUUID,
-    courseRunIds: [courseId],
+    courseRunIds,
     coupons,
   });
   const [selectedCouponId, setSelectedCouponId] = useState();
