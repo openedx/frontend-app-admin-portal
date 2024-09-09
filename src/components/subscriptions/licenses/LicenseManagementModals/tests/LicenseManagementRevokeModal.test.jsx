@@ -147,7 +147,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       });
 
       it('handles 400 error response correctly', async () => {
-        const mockError400 = { response: { status: 400, data: { error_messages: [{ error: "Not found" }] } } };
+        const mockError400 = { response: { status: 400, data: { error_messages: [{ error: 'Not found' }] } } };
         LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError400);
 
         render(<LicenseManagementRevokeModal {...props} />);
@@ -158,7 +158,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       });
 
       it('handles 404 error response correctly', async () => {
-        const mockError404 = { response: { status: 404, data: { error_messages: [{ error: "Not found" }] } } };
+        const mockError404 = { response: { status: 404, data: { error_messages: [{ error: 'Not found' }] } } };
         LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError404);
 
         render(<LicenseManagementRevokeModal {...props} />);
@@ -169,7 +169,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       });
 
       it('handles 207 partial success with only 404 errors correctly', async () => {
-        const mockPartialSuccess207WithOnly404 = { 
+        const mockPartialSuccess207WithOnly404 = {
           status: 207, 
           data: { 
             error_messages: [{ error_response_status: 404 }] 
