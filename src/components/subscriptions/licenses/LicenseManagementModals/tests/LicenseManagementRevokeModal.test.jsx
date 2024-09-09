@@ -172,8 +172,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         const mockPartialSuccess207WithOnly404 = {
           status: 207,
           data: {
-            error_messages: [{ error_response_status: 404 }]
-          }
+            error_messages: [{ error_response_status: 404 }],
+          },
         };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithOnly404);
 
@@ -190,13 +190,13 @@ describe('<LicenseManagementRevokeModal />', () => {
           data: {
             error_messages: [
               { error_response_status: 404 },
-              { error_response_status: 400 }
+              { error_response_status: 400 },
             ],
             revocation_results: [
               { license_uuid: 'license-uuid-1', original_status: 'assigned', user_email: 'user1@example.com' },
-              { license_uuid: 'license-uuid-2', original_status: 'activated', user_email: 'user2@example.com' }
-            ]
-          }
+              { license_uuid: 'license-uuid-2', original_status: 'activated', user_email: 'user2@example.com' },
+            ],
+          },
         };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithMixedErrors);
 
@@ -213,13 +213,13 @@ describe('<LicenseManagementRevokeModal />', () => {
           data: {
             error_messages: [
               { error_response_status: 404, user_email: 'user1@example.com' },
-              { error_response_status: 404, user_email: 'user2@example.com' }
+              { error_response_status: 404, user_email: 'user2@example.com' },
             ],
             revocation_results: [
               { license_uuid: 'license-uuid-3', original_status: 'assigned', user_email: 'user3@example.com' },
-              { license_uuid: 'license-uuid-4', original_status: 'activated', user_email: 'user4@example.com' }
-            ]
-          }
+              { license_uuid: 'license-uuid-4', original_status: 'activated', user_email: 'user4@example.com' },
+            ],
+          },
         };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithMixed404AndSuccess);
 
