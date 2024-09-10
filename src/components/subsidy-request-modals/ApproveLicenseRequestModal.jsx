@@ -28,13 +28,14 @@ export const ApproveLicenseRequestModal = ({
   onClose,
 }) => {
   const { data: subscriptions } = useContext(SubscriptionContext);
+  const courseRunIds = useMemo(() => [courseId], [courseId]);
   const {
     applicableSubscriptions,
     isLoading: isLoadingApplicableSubscriptions,
     error: loadApplicableSubscriptionsError,
   } = useApplicableSubscriptions({
     enterpriseId: enterpriseCustomerUUID,
-    courseRunIds: [courseId],
+    courseRunIds,
     subscriptions,
   });
 
@@ -92,7 +93,7 @@ export const ApproveLicenseRequestModal = ({
           defaultMessage="Approve License Request"
           description="Title for the approve license request modal."
         />
-)}
+      )}
       isOpen={isOpen}
       hasCloseButton
       onClose={onClose}
