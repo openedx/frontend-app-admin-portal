@@ -76,17 +76,19 @@ const LicenseManagementRevokeModal = ({
   const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
 
   const isExpired = dayjs().isAfter(subscription.expirationDate);
+  const LICENSE_NOT_FOUND_ERROR_CODE = 404;
+  const REQUEST_EXCEEDS_REMAINING_REVOCATIONS_ERROR_CODE = 400;
 
   const handleErrorMessages = (errorMessages) => {
-    // Treat 404 errors as successful revocations to handle already revoked licenses
+    // Treat LICENSE_NOT_FOUND_ERROR_CODE errors as successful revocations to handle already revoked licenses
     // This allows the process to continue for valid licenses and avoids unnecessary
     // errors when users retry with already revoked emails
     if (errorMessages && errorMessages.length > 0) {
-      const nonLicenseNotFoundErrors = errorMessages.filter(
-        (error) => error.error_response_status !== 404,
+      const non404Errors = errorMessages.filter(
+        (error) => error.error_response_status !== LICENSE_NOT_FOUND_ERROR_CODE,
       );
-      if (nonLicenseNotFoundErrors.length > 0) {
-        throw nonLicenseNotFoundErrors;
+      if (non404Errors.length > 0) {
+        throw non404Errors;
       }
     }
   };
@@ -128,10 +130,10 @@ const LicenseManagementRevokeModal = ({
       } catch (error) {
         if (error.response) {
           const { status, data } = error.response;
-          if (status === 400 || status === 404) {
+          if (status === REQUEST_EXCEEDS_REMAINING_REVOCATIONS_ERROR_CODE || status === LICENSE_NOT_FOUND_ERROR_CODE) {
             // Case 2: All revocations failed
             handleErrorMessages(data.unsuccessful_revocations);
-            return data; // treat this as success if all errors were 404
+            return data; // treat this as success if all errors were LICENSE_NOT_FOUND_ERROR_CODE
           }
         }
         throw error;
