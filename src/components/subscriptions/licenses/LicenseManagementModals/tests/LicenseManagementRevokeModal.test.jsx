@@ -147,7 +147,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       });
 
       it('handles 400 error response correctly', async () => {
-        const mockError400 = { response: { status: 400, data: { error_messages: [{ error: 'Not found' }] } } };
+        const mockError400 = { response: { status: 400, data: { unsuccessful_revocations: [{ error: 'Not found' }] } } };
         LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError400);
 
         render(<LicenseManagementRevokeModal {...props} />);
@@ -158,7 +158,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       });
 
       it('handles 404 error response correctly', async () => {
-        const mockError404 = { response: { status: 404, data: { error_messages: [{ error: 'Not found' }] } } };
+        const mockError404 = { response: { status: 404, data: { unsuccessful_revocations: [{ error: 'Not found' }] } } };
         LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError404);
 
         render(<LicenseManagementRevokeModal {...props} />);
@@ -172,7 +172,7 @@ describe('<LicenseManagementRevokeModal />', () => {
         const mockPartialSuccess207WithOnly404 = {
           status: 207,
           data: {
-            error_messages: [{ error_response_status: 404 }],
+            unsuccessful_revocations: [{ error_response_status: 404 }],
           },
         };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithOnly404);
@@ -188,11 +188,11 @@ describe('<LicenseManagementRevokeModal />', () => {
         const mockPartialSuccess207WithMixedErrors = {
           status: 207,
           data: {
-            error_messages: [
+            unsuccessful_revocations: [
               { error_response_status: 404 },
               { error_response_status: 400 },
             ],
-            revocation_results: [
+            successful_revocations: [
               { license_uuid: 'license-uuid-1', original_status: 'assigned', user_email: 'user1@example.com' },
               { license_uuid: 'license-uuid-2', original_status: 'activated', user_email: 'user2@example.com' },
             ],
@@ -211,11 +211,11 @@ describe('<LicenseManagementRevokeModal />', () => {
         const mockPartialSuccess207WithMixed404AndSuccess = {
           status: 207,
           data: {
-            error_messages: [
+            unsuccessful_revocations: [
               { error_response_status: 404, user_email: 'user1@example.com' },
               { error_response_status: 404, user_email: 'user2@example.com' },
             ],
-            revocation_results: [
+            successful_revocations: [
               { license_uuid: 'license-uuid-3', original_status: 'assigned', user_email: 'user3@example.com' },
               { license_uuid: 'license-uuid-4', original_status: 'activated', user_email: 'user4@example.com' },
             ],

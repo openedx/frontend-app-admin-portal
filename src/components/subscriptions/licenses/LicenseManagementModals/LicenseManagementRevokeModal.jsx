@@ -121,7 +121,7 @@ const LicenseManagementRevokeModal = ({
 
         if (response.status === 207) {
           // Case 1: Partial revocation success
-          handleErrorMessages(response.data.error_messages);
+          handleErrorMessages(response.data.unsuccessful_revocations);
           return response.data;
         }
         return response.data;
@@ -130,7 +130,7 @@ const LicenseManagementRevokeModal = ({
           const { status, data } = error.response;
           if (status === 400 || status === 404) {
             // Case 2: All revocations failed
-            handleErrorMessages(data.error_messages);
+            handleErrorMessages(data.unsuccessful_revocations);
             return data; // treat this as success if all errors were 404
           }
         }
