@@ -4,7 +4,7 @@ import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.pn
 
 import CARD_TEXT from '../../constants';
 import {
-  enrollableCourseRuns,
+  assignableCourseRuns,
   EXEC_ED_COURSE_TYPE,
   formatDate,
   formatPrice,
@@ -62,7 +62,7 @@ const useCourseCardMetadata = ({
     linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
   }
 
-  const availableCourseRuns = enrollableCourseRuns({
+  const availableCourseRuns = assignableCourseRuns({
     courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
     staleEnrollmentDropOffTime: STALE_ENROLLMENT_DROPOFF_DAYS,

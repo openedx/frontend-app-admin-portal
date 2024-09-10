@@ -19,9 +19,8 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import {
-  enrollableCourseRuns,
+  assignableCourseRuns,
   learnerCreditManagementQueryKeys,
-  STALE_ENROLLMENT_DROPOFF_DAYS,
   useBudgetId,
   useSubsidyAccessPolicy,
 } from '../data';
@@ -68,14 +67,14 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     isAssignable,
     aggregates,
     contentPriceCents: course.normalizedMetadata.contentPrice * 100,
+    parentContentKey: null,
     contentKey: course.key,
     courseUuid: course.uuid,
     assignmentConfiguration,
   };
-  const availableCourseRuns = enrollableCourseRuns({
+  const availableCourseRuns = assignableCourseRuns({
     courseRuns: course.courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
-    staleEnrollmentDropOffTime: STALE_ENROLLMENT_DROPOFF_DAYS,
   });
   const { mutate } = useAllocateContentAssignments();
   const pathToActivityTab = generatePath(LEARNER_CREDIT_ROUTE, {
@@ -94,6 +93,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGN_COURSE,
       {
         ...sharedEnterpriseTrackEventMetadata,
+        parentContentKey: course.key,
+        contentKey: courseRunMetadata.key,
         isOpen: !isOpen,
       },
     );
@@ -121,6 +122,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   }) => {
     const trackEventMetadata = {
       ...sharedEnterpriseTrackEventMetadata,
+      parentContentKey: course.key,
+      contentKey: assignmentRun.key,
       totalLearnersAllocated,
       totalLearnersAlreadyAllocated,
       response,
@@ -190,6 +193,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_ERROR,
           {
             ...sharedEnterpriseTrackEventMetadata,
+            contentKey: assignmentRun.key,
+            parentContentKey: course.key,
             totalAllocatedLearners: learnerEmails.length,
             errorStatus: httpErrorStatus,
             errorReason,
@@ -219,6 +224,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
             EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_EXIT,
             {
               ...sharedEnterpriseTrackEventMetadata,
+              contentKey: assignmentRun.key,
+              parentContentKey: course.key,
               assignButtonState,
             },
           );

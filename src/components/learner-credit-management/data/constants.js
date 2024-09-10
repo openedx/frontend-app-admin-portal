@@ -76,6 +76,9 @@ export const ENROLL_BY_DATE_DAYS_THRESHOLD = 10;
 // Stale enrollment dropoff time
 export const STALE_ENROLLMENT_DROPOFF_DAYS = 90;
 
+// Start date threshold to default to today days, sets start date to today if course start date is beyond this value
+export const START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS = 14;
+
 // Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {

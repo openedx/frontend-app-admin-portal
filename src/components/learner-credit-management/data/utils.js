@@ -7,6 +7,8 @@ import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   ASSIGNMENT_ENROLLMENT_DEADLINE,
+  STALE_ENROLLMENT_DROPOFF_DAYS,
+  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -552,15 +554,58 @@ export const isLmsBudget = (
   isUniversalGroup,
 ) => activeIntegrationsLength > 0 && isUniversalGroup;
 
-export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
+/**
+ * Determines if the course has already started. Mostly used around text formatting for tense
+ * Introduces 'jitter' in the form of a 30 second offset to take into account any additional
+ * formatting that takes place down stream related to setting values to today's date through dayjs()
+ *
+ * This should also help with reducing 'flaky' tests.
+ *
+ * @param start
+ * @returns {boolean}
+ */
+export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs().subtract(30, 'seconds'));
 
-export const enrollableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, staleEnrollmentDropOffTime }) => {
-  const clonedCourseRuns = courseRuns.map(a => ({ ...a, enrollBy: a.enrollBy * 1000 }));
+/**
+ * Returns assignable course runs within the threshold of within the subsidies expiration date
+ * offset by the STALE_ENROLLMENT_DROPOFF_DAYS constant. It sorts it from the soonest expiring
+ * enroll-by date and the enroll-by date and upgrade deadline has been normalized to ISO format.
+ *
+ * @param courseRuns
+ * @param subsidyExpirationDatetime
+ * @returns {*}
+ */
+export const assignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime }) => {
+  const clonedCourseRuns = courseRuns.map(a => ({
+    ...a,
+    enrollBy: dayjs(a.enrollBy * 1000).toISOString(),
+    upgradeDeadline: dayjs(a.upgradeDeadline * 1000).toISOString(),
+  }));
   const sortedCourseRuns = clonedCourseRuns.sort((a, b) => a.enrollBy - b.enrollBy);
   const filteredCourseRuns = sortedCourseRuns.filter(
     ({ enrollBy }) => dayjs(enrollBy).isBefore(
-      dayjs(subsidyExpirationDatetime).add(staleEnrollmentDropOffTime, 'days'),
+      dayjs(subsidyExpirationDatetime).add(STALE_ENROLLMENT_DROPOFF_DAYS, 'days'),
     ),
   );
   return filteredCourseRuns;
+};
+
+/**
+ * If the start date of the course is before today offset by the START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS
+ * then return today's formatted date. Otherwise, pass-through the start date in ISO format.
+ *
+ * For cases where a start date does not exist, just return today's date.
+ *
+ * @param start
+ * @param format
+ * @returns {string}
+ */
+export const setStaleCourseStartDates = ({ start }) => {
+  if (!start) {
+    return dayjs().toISOString();
+  }
+  if (dayjs(start).isBefore(dayjs().subtract(START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, 'days'))) {
+    return dayjs().toISOString();
+  }
+  return dayjs(start).toISOString();
 };

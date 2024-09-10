@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import dayjs from 'dayjs';
 import { logInfo } from '@edx/frontend-platform/logging';
-import { hasCourseStarted, SHORT_MONTH_DATE_FORMAT } from '../data';
+import { setStaleCourseStartDates, hasCourseStarted, SHORT_MONTH_DATE_FORMAT } from '../data';
 
 const messages = defineMessages({
   importantDates: {
@@ -56,8 +56,12 @@ AssignmentModalImportantDate.propTypes = {
 
 const AssignmentModalImportantDates = ({ courseRun }) => {
   const intl = useIntl();
-  const enrollByDate = courseRun.enrollBy ? dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT) : null;
-  const courseStartDate = courseRun.start ? dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT) : null;
+  const enrollByDate = courseRun.enrollBy
+    ? dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT)
+    : null;
+  const courseStartDate = courseRun.start
+    ? setStaleCourseStartDates({ start: courseRun.start })
+    : null;
   const courseHasStartedLabel = hasCourseStarted(courseStartDate)
     ? intl.formatMessage(messages.courseStarted)
     : intl.formatMessage(messages.courseStarts);
@@ -80,7 +84,7 @@ const AssignmentModalImportantDates = ({ courseRun }) => {
       )}
       {courseStartDate && (
         <AssignmentModalImportantDate label={courseHasStartedLabel}>
-          {courseStartDate}
+          {dayjs(courseStartDate).format(SHORT_MONTH_DATE_FORMAT)}
         </AssignmentModalImportantDate>
       )}
     </section>
