@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import Header from '../Header';
-import { ANALYTICS_TABS, CHART_TYPES, chartColorMap } from '../data/constants';
+import { ANALYTICS_TABS, chartColorMap } from '../data/constants';
 import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
-import { useEnterpriseAnalyticsData } from '../data/hooks';
+import { useEnterpriseEnrollmentsData } from '../data/hooks';
+import DownloadCSVButton from '../DownloadCSVButton';
+
+dayjs.extend(utc);
 
 const Enrollments = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -13,14 +18,50 @@ const Enrollments = ({
   const intl = useIntl();
   const {
     isFetching, isError, data,
-  } = useEnterpriseAnalyticsData({
+  } = useEnterpriseEnrollmentsData({
     enterpriseCustomerUUID: enterpriseId,
-    key: ANALYTICS_TABS.ENROLLMENTS,
     startDate,
     endDate,
     granularity,
     calculation,
   });
+  const enrollmentsOverTimeForCSV = useMemo(() => {
+    if (data?.enrollmentsOverTime) {
+      return data.enrollmentsOverTime.map(({
+        enterpriseEnrollmentDate, enrollmentCount, enrollType,
+      }) => ({
+        enterprise_enrollment_date: dayjs.utc(enterpriseEnrollmentDate).toISOString().split('T')[0],
+        certificate: enrollmentCount,
+        enroll_type: enrollType,
+      }));
+    }
+    return [];
+  }, [data]);
+  const topCoursesByEnrollmentsForCSV = useMemo(() => {
+    if (data?.topCoursesByEnrollments) {
+      return data.topCoursesByEnrollments.map(({
+        courseKey, courseTitle, enrollmentCount, enrollType,
+      }) => ({
+        course_key: courseKey,
+        course_title: courseTitle,
+        certificate: enrollmentCount,
+        enroll_type: enrollType,
+      }));
+    }
+    return [];
+  }, [data]);
+  const topSubjectsByEnrollmentsForCSV = useMemo(() => {
+    if (data?.topSubjectsByEnrollments) {
+      return data.topSubjectsByEnrollments.map(({
+        courseSubject, enrollmentCount, enrollType,
+      }) => ({
+        course_subject: courseSubject,
+        certificate: enrollmentCount,
+        enroll_type: enrollType,
+      }));
+    }
+    return [];
+  }, [data]);
 
   return (
     <div className="tab-enrollments mt-4">
@@ -36,14 +77,12 @@ const Enrollments = ({
             defaultMessage: 'See audit and certificate track enrollments over time.',
             description: 'Subtitle for the enrollments over time chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          granularity={granularity}
-          calculation={calculation}
-          activeTab={ANALYTICS_TABS.ENROLLMENTS}
-          chartType={CHART_TYPES.ENROLLMENTS_OVER_TIME}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSVButton
+              jsonData={enrollmentsOverTimeForCSV}
+              csvFileName={`Enrolments over time - ${startDate} - ${endDate} (${granularity} ${calculation})`}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
@@ -52,7 +91,7 @@ const Enrollments = ({
           chartProps={{
             data: data?.enrollmentsOverTime,
             xKey: 'enterpriseEnrollmentDate',
-            yKey: 'count',
+            yKey: 'enrollmentCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             xAxisTitle: '',
@@ -78,14 +117,12 @@ const Enrollments = ({
             defaultMessage: 'See the most popular courses at your organization.',
             description: 'Subtitle for the top 10 courses by enrollment chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          granularity={granularity}
-          calculation={calculation}
-          activeTab={ANALYTICS_TABS.ENROLLMENTS}
-          chartType={CHART_TYPES.TOP_COURSES_BY_ENROLLMENTS}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSVButton
+              jsonData={topCoursesByEnrollmentsForCSV}
+              csvFileName={`Top Courses by Enrollment - ${startDate} - ${endDate} (${granularity} ${calculation})`}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
@@ -94,7 +131,7 @@ const Enrollments = ({
           chartProps={{
             data: data?.topCoursesByEnrollments,
             xKey: 'courseKey',
-            yKey: 'count',
+            yKey: 'enrollmentCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             xAxisTitle: '',
@@ -120,14 +157,12 @@ const Enrollments = ({
             defaultMessage: 'See the most popular subjects at your organization.',
             description: 'Subtitle for the top 10 subjects by enrollment chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          granularity={granularity}
-          calculation={calculation}
-          activeTab={ANALYTICS_TABS.ENROLLMENTS}
-          chartType={CHART_TYPES.TOP_SUBJECTS_BY_ENROLLMENTS}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSVButton
+              jsonData={topSubjectsByEnrollmentsForCSV}
+              csvFileName={`Top Subjects by Enrollment - ${startDate} - ${endDate} (${granularity} ${calculation})`}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
@@ -136,7 +171,7 @@ const Enrollments = ({
           chartProps={{
             data: data?.topSubjectsByEnrollments,
             xKey: 'courseSubject',
-            yKey: 'count',
+            yKey: 'enrollmentCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             xAxisTitle: '',

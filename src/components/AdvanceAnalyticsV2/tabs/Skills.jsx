@@ -7,6 +7,7 @@ import {
 } from '../data/constants';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
 import ChartWrapper from '../charts/ChartWrapper';
+import DownloadCSV from '../DownloadCSV';
 
 const Skills = ({ startDate, endDate, enterpriseId }) => {
   const intl = useIntl();
@@ -34,12 +35,15 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
             defaultMessage: 'See the top skills that are the most in demand in your organization, based on enrollments and completions.',
             description: 'Subtitle for the top skills chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          activeTab={ANALYTICS_TABS.SKILLS}
-          chartType={CHART_TYPES.BUBBLE}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSV
+              enterpriseId={enterpriseId}
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={ANALYTICS_TABS.SKILLS}
+              chartType={CHART_TYPES.BUBBLE}
+            />
+          )}
         />
 
         <ChartWrapper
