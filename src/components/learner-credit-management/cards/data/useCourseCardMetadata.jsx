@@ -4,11 +4,13 @@ import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.pn
 
 import CARD_TEXT from '../../constants';
 import {
-  assignableCourseRuns,
+  getAssignableCourseRuns,
   EXEC_ED_COURSE_TYPE,
   formatDate,
   formatPrice,
-  getEnrollmentDeadline, STALE_ENROLLMENT_DROPOFF_DAYS, useBudgetId, useSubsidyAccessPolicy,
+  getEnrollmentDeadline,
+  useBudgetId,
+  useSubsidyAccessPolicy,
 } from '../../data';
 import { pluralText } from '../../../../utils';
 import AssignmentModalImportantDates from '../../assignment-modal/AssignmentModalmportantDates';
@@ -19,7 +21,6 @@ const useCourseCardMetadata = ({
   course,
   enterpriseSlug,
   courseRun,
-  displayImportantDates,
 }) => {
   const { config: { ENTERPRISE_LEARNER_PORTAL_URL } } = useContext(AppContext);
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -62,14 +63,12 @@ const useCourseCardMetadata = ({
     linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
   }
 
-  const availableCourseRuns = assignableCourseRuns({
+  const assignableCourseRuns = getAssignableCourseRuns({
     courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
-    staleEnrollmentDropOffTime: STALE_ENROLLMENT_DROPOFF_DAYS,
   });
-  const assignmentImportantDates = <AssignmentModalImportantDates courseRun={courseRun} />;
-  const availableCourseRunsCount = `(${availableCourseRuns.length}) available ${pluralText('date', availableCourseRuns.length)}`;
-  const dateFooterText = displayImportantDates ? assignmentImportantDates : availableCourseRunsCount;
+  const availableCourseRunsCount = `(${assignableCourseRuns.length}) available ${pluralText('date', assignableCourseRuns.length)}`;
+  const footerText = courseRun ? <AssignmentModalImportantDates courseRun={courseRun} /> : availableCourseRunsCount;
   return {
     ...course,
     subtitle: partners.map(partner => partner.name).join(', '),
@@ -83,7 +82,7 @@ const useCourseCardMetadata = ({
     execEdEnrollmentInfo,
     linkToCourse,
     isExecEdCourseType,
-    dateFooterText,
+    footerText,
   };
 };
 

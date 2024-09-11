@@ -39,7 +39,7 @@ const BaseCourseCard = ({
     subtitle,
     formattedPrice,
     isExecEdCourseType,
-    dateFooterText,
+    footerText,
   } = courseCardMetadata;
   return (
     <Card orientation={isSmall ? 'vertical' : 'horizontal'} className={cardClassName}>
@@ -87,7 +87,7 @@ const BaseCourseCard = ({
         </Card.Section>
         <Card.Footer
           orientation={isExtraSmall ? 'horizontal' : 'vertical'}
-          textElement={dateFooterText}
+          textElement={footerText}
         >
           {CardFooterActions && <CardFooterActions course={courseCardMetadata} />}
         </Card.Footer>
@@ -117,7 +117,7 @@ BaseCourseCard.propTypes = {
     title: PropTypes.string,
   }).isRequired,
   courseRun: PropTypes.shape({
-    enrollBy: PropTypes.number,
+    enrollBy: PropTypes.string,
     start: PropTypes.string,
   }),
   footerActions: PropTypes.elementType,
@@ -126,10 +126,7 @@ BaseCourseCard.propTypes = {
 };
 
 BaseCourseCard.defaultProps = {
-  courseRun: {
-    enrollBy: null,
-    start: null,
-  },
+  courseRun: null,
   displayImportantDates: false,
 };
 

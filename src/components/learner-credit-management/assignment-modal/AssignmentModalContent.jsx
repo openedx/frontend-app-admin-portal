@@ -86,7 +86,7 @@ const AssignmentModalContent = ({
                 description="Header for the section to assign a course to learners using learner credit."
               />
             </h3>
-            <BaseCourseCard original={course} courseRun={courseRun} cardClassName="shadow-none" displayImportantDates />
+            <BaseCourseCard original={course} courseRun={courseRun} cardClassName="shadow-none" />
           </Col>
         </Row>
         <Row>
@@ -205,7 +205,7 @@ AssignmentModalContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   course: PropTypes.shape().isRequired, // Pass-thru prop to `BaseCourseCard`
   courseRun: PropTypes.shape({
-    enrollBy: PropTypes.number,
+    enrollBy: PropTypes.string,
     start: PropTypes.string,
   }).isRequired,
   onEmailAddressesChange: PropTypes.func.isRequired,

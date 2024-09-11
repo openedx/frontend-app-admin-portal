@@ -7,7 +7,7 @@ import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   ASSIGNMENT_ENROLLMENT_DEADLINE,
-  STALE_ENROLLMENT_DROPOFF_DAYS,
+  DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
@@ -568,26 +568,26 @@ export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs().subtrac
 
 /**
  * Returns assignable course runs within the threshold of within the subsidies expiration date
- * offset by the STALE_ENROLLMENT_DROPOFF_DAYS constant. It sorts it from the soonest expiring
+ * offset by the DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION constant. It sorts it from the soonest expiring
  * enroll-by date and the enroll-by date and upgrade deadline has been normalized to ISO format.
  *
  * @param courseRuns
  * @param subsidyExpirationDatetime
  * @returns {*}
  */
-export const assignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime }) => {
+export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime }) => {
   const clonedCourseRuns = courseRuns.map(a => ({
     ...a,
-    enrollBy: dayjs(a.enrollBy * 1000).toISOString(),
-    upgradeDeadline: dayjs(a.upgradeDeadline * 1000).toISOString(),
+    enrollBy: dayjs.unix(a.enrollBy).toISOString(),
+    upgradeDeadline: dayjs.unix(a.upgradeDeadline).toISOString(),
   }));
   const sortedCourseRuns = clonedCourseRuns.sort((a, b) => a.enrollBy - b.enrollBy);
-  const filteredCourseRuns = sortedCourseRuns.filter(
+  const assignableCourseRuns = sortedCourseRuns.filter(
     ({ enrollBy }) => dayjs(enrollBy).isBefore(
-      dayjs(subsidyExpirationDatetime).add(STALE_ENROLLMENT_DROPOFF_DAYS, 'days'),
+      dayjs(subsidyExpirationDatetime).add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days'),
     ),
   );
-  return filteredCourseRuns;
+  return assignableCourseRuns;
 };
 
 /**

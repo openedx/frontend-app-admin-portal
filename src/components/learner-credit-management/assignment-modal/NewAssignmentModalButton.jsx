@@ -19,7 +19,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import {
-  assignableCourseRuns,
+  getAssignableCourseRuns,
   learnerCreditManagementQueryKeys,
   useBudgetId,
   useSubsidyAccessPolicy,
@@ -72,7 +72,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     courseUuid: course.uuid,
     assignmentConfiguration,
   };
-  const availableCourseRuns = assignableCourseRuns({
+  const assignableCourseRuns = getAssignableCourseRuns({
     courseRuns: course.courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
   });
@@ -83,7 +83,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
 
   const handleOpenAssignmentModal = (e) => {
     // Based on the user selection, we will extract the course run metadata from the key
-    const selectedCourseRun = availableCourseRuns.find(({ key }) => key === e.target.closest('[id]').id);
+    const selectedCourseRun = assignableCourseRuns.find(({ key }) => key === e.target.closest('[id]').id);
     // If the selected course run is not found, we default to the advertised course run
     const courseRunMetadata = selectedCourseRun ?? course.advertisedCourseRun;
     setAssignmentRun(courseRunMetadata);
@@ -206,7 +206,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   };
   return (
     <>
-      <NewAssignmentModalDropdown id={course.key} onClick={handleOpenAssignmentModal} courseRuns={availableCourseRuns}>
+      <NewAssignmentModalDropdown id={course.key} onClick={handleOpenAssignmentModal} courseRuns={assignableCourseRuns}>
         {children}
       </NewAssignmentModalDropdown>
       <FullscreenModal

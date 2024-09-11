@@ -51,7 +51,7 @@ jest.mock('../../../../data/services/EnterpriseAccessApiService');
 const futureStartDate = dayjs().add(5, 'days').toISOString();
 const pastStartDate = dayjs().subtract(5, 'days').toISOString();
 const enrollByTimestamp = dayjs().subtract(10, 'days').unix();
-const enrollByDropdownText = `Enroll by ${dayjs(enrollByTimestamp * 1000).format(SHORT_MONTH_DATE_FORMAT)}`;
+const enrollByDropdownText = `Enroll by ${dayjs.unix(enrollByTimestamp).format(SHORT_MONTH_DATE_FORMAT)}`;
 
 const originalData = {
   availability: ['Upcoming'],
@@ -59,7 +59,7 @@ const originalData = {
   course_type: 'course',
   key: 'course-123x',
   normalized_metadata: {
-    enroll_by_date: dayjs(1892678399 * 1000).toISOString(),
+    enroll_by_date: dayjs.unix(1892678399).toISOString(),
     start_date: futureStartDate,
     content_price: 100,
   },
@@ -98,7 +98,7 @@ const execEdData = {
   key: 'exec-ed-course-123x',
   entitlements: [{ price: '999.00' }],
   normalized_metadata: {
-    enroll_by_date: dayjs(1892678399 * 1000).toISOString(),
+    enroll_by_date: dayjs.unix(1892678399).toISOString(),
     start_date: futureStartDate,
     content_price: 999,
   },
@@ -515,7 +515,7 @@ describe('Course card works as expected', () => {
     // Verify important dates
     expect(assignmentModal.getByText('Enroll-by date')).toBeInTheDocument();
     expect(assignmentModal.getByText(
-      dayjs(enrollByTimestamp * 1000).format(SHORT_MONTH_DATE_FORMAT),
+      dayjs.unix(enrollByTimestamp).format(SHORT_MONTH_DATE_FORMAT),
     )).toBeInTheDocument();
     if (courseStartDate) {
       expect(assignmentModal.getByText(expectedCourseStartText)).toBeInTheDocument();

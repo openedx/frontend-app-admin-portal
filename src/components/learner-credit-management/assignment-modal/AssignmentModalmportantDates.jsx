@@ -36,9 +36,9 @@ const AssignmentModalImportantDate = ({
   label,
   children,
 }) => (
-  <Row className="course-important-date mx-0 py-1">
-    <Col className="px-0">
-      <Stack direction="horizontal" gap={2}>
+  <Row className="course-important-date">
+    <Col>
+      <Stack direction="horizontal" gap={2} className="font-weight-bolder">
         <Icon size="sm" src={Calendar} />
         {label}
       </Stack>
@@ -77,23 +77,25 @@ const AssignmentModalImportantDates = ({ courseRun }) => {
 
   return (
     <section className="assignments-important-dates small">
-      {enrollByDate && (
+      <Stack direction="vertical" gap={1}>
+        {enrollByDate && (
         <AssignmentModalImportantDate label={intl.formatMessage(messages.enrollByDate)}>
           {enrollByDate}
         </AssignmentModalImportantDate>
-      )}
-      {courseStartDate && (
+        )}
+        {courseStartDate && (
         <AssignmentModalImportantDate label={courseHasStartedLabel}>
           {dayjs(courseStartDate).format(SHORT_MONTH_DATE_FORMAT)}
         </AssignmentModalImportantDate>
-      )}
+        )}
+      </Stack>
     </section>
   );
 };
 
 AssignmentModalImportantDates.propTypes = {
   courseRun: PropTypes.shape({
-    enrollBy: PropTypes.number,
+    enrollBy: PropTypes.string,
     start: PropTypes.string,
   }).isRequired,
 };

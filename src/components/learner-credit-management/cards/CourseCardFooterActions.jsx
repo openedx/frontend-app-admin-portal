@@ -26,32 +26,34 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
       { courseUuid: uuid },
     );
   };
-  return [
-    <Button
-      key="link-to-course"
-      as={Hyperlink}
-      data-testid="hyperlink-view-course"
-      onClick={handleViewCourse}
-      destination={linkToCourse}
-      target="_blank"
-      variant="outline-primary"
-    >
-      <FormattedMessage
-        id="lcm.budget.detail.page.catalog.tab.course.card.view.course"
-        defaultMessage="View course"
-        description="Button text to view course"
-      />
-    </Button>,
-    (!catalogGroupView ? (
-      <NewAssignmentModalButton key="assignment-modal-trigger" course={course}>
+  return (
+    <>
+      <Button
+        key="link-to-course"
+        as={Hyperlink}
+        data-testid="hyperlink-view-course"
+        onClick={handleViewCourse}
+        destination={linkToCourse}
+        target="_blank"
+        variant="outline-primary"
+      >
         <FormattedMessage
-          id="lcm.budget.detail.page.catalog.tab.course.card.assign"
-          defaultMessage="Assign"
-          description="Button text to assign course"
+          id="lcm.budget.detail.page.catalog.tab.course.card.view.course"
+          defaultMessage="View course"
+          description="Button text to view course"
         />
-      </NewAssignmentModalButton>
-    ) : null),
-  ];
+      </Button>
+      {!catalogGroupView && (
+        <NewAssignmentModalButton key="assignment-modal-trigger" course={course}>
+          <FormattedMessage
+            id="lcm.budget.detail.page.catalog.tab.course.card.assign"
+            defaultMessage="Assign"
+            description="Button text to assign course"
+          />
+        </NewAssignmentModalButton>
+      )}
+    </>
+  );
 };
 
 CourseCardFooterActions.propTypes = {
