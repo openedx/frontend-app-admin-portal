@@ -71,14 +71,14 @@ const AssignmentModalImportantDates = ({ courseRun }) => {
     <section className="assignments-important-dates small">
       <Stack direction="vertical" gap={1}>
         {enrollByDate && (
-        <AssignmentModalImportantDate label={intl.formatMessage(messages.enrollByDate)}>
-          {enrollByDate}
-        </AssignmentModalImportantDate>
+          <AssignmentModalImportantDate label={intl.formatMessage(messages.enrollByDate)}>
+            {enrollByDate}
+          </AssignmentModalImportantDate>
         )}
         {courseStartDate && (
-        <AssignmentModalImportantDate label={courseHasStartedLabel}>
-          {dayjs(courseStartDate).format(SHORT_MONTH_DATE_FORMAT)}
-        </AssignmentModalImportantDate>
+          <AssignmentModalImportantDate label={courseHasStartedLabel}>
+            {dayjs(courseStartDate).format(SHORT_MONTH_DATE_FORMAT)}
+          </AssignmentModalImportantDate>
         )}
       </Stack>
     </section>

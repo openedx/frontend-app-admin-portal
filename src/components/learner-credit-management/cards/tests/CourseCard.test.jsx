@@ -17,7 +17,8 @@ import {
   learnerCreditManagementQueryKeys,
   SHORT_MONTH_DATE_FORMAT,
   useBudgetId,
-  useSubsidyAccessPolicy, getNormalizedEnrollByDate,
+  useSubsidyAccessPolicy,
+  getNormalizedEnrollByDate,
 } from '../../data';
 import { getButtonElement, queryClient } from '../../../test/testUtils';
 

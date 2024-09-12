@@ -75,7 +75,6 @@ const useCourseCardMetadata = ({
     courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
   });
-  // const footerText = `(${assignableCourseRuns.length}) available ${pluralText('date', assignableCourseRuns.length)}`;
   const footerText = intl.formatMessage(messages.courseFooterMessage, {
     courseRuns: assignableCourseRuns.length,
     pluralText: pluralText('date', assignableCourseRuns.length),

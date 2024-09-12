@@ -8,7 +8,8 @@ import {
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   ASSIGNMENT_ENROLLMENT_DEADLINE,
   DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
-  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, COURSE_PACING_MAP,
+  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
+  COURSE_PACING_MAP,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';

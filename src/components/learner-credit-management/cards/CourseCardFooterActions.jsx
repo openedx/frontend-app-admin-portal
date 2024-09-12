@@ -29,7 +29,6 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
   return (
     <>
       <Button
-        key="link-to-course"
         as={Hyperlink}
         data-testid="hyperlink-view-course"
         onClick={handleViewCourse}

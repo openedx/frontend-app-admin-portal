@@ -16,10 +16,12 @@ import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import {
-  getAssignableCourseRuns, LEARNER_CREDIT_ROUTE,
+  getAssignableCourseRuns,
+  LEARNER_CREDIT_ROUTE,
   learnerCreditManagementQueryKeys,
   useBudgetId,
   useSubsidyAccessPolicy,
@@ -80,12 +82,16 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     enterpriseSlug, enterpriseAppPage, budgetId: subsidyAccessPolicyId, activeTabKey: 'activity',
   });
 
-  const handleOpenAssignmentModal = (e) => {
-    // Based on the user selection, we will extract the course run metadata from the key
-    const selectedCourseRun = assignableCourseRuns.find(({ key }) => key === e.target.closest('[id]').id);
-    // If the selected course run is not found, we default to the advertised course run
-    const courseRunMetadata = selectedCourseRun ?? course.advertisedCourseRun;
-    setAssignmentRun(courseRunMetadata);
+  const handleOpenAssignmentModal = (selectedCourseRun) => {
+    setAssignmentRun(selectedCourseRun);
+    if (!selectedCourseRun) {
+      logError(`[handleOpenAssignmentModal]: Unable to open learner credit management allocation modal,
+        selectedCourseRun: ${selectedCourseRun}, 
+        parentContentKey: ${course.key},
+        contentKey: ${selectedCourseRun.key},
+        enterpriseUuid: ${enterpriseId},
+        policyUuid: ${subsidyAccessPolicyId}`);
+    }
     open();
     sendEnterpriseTrackEvent(
       enterpriseId,
@@ -93,7 +99,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       {
         ...sharedEnterpriseTrackEventMetadata,
         parentContentKey: course.key,
-        contentKey: courseRunMetadata.key,
+        contentKey: selectedCourseRun.key,
         isOpen: !isOpen,
       },
     );
@@ -134,7 +140,6 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     );
   };
   const handleAllocateContentAssignments = () => {
-    // If no assignmentRun key exist, fall back to the top level course key
     const payload = snakeCaseObject({
       contentPriceCents: course.normalizedMetadata.contentPrice * 100, // Convert to USD cents
       contentKey: assignmentRun.key,
@@ -196,7 +201,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
             parentContentKey: course.key,
             totalAllocatedLearners: learnerEmails.length,
             errorStatus: httpErrorStatus,
-            errorReason,
+
             response: err,
           },
         );

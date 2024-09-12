@@ -20,6 +20,16 @@ const messages = defineMessages({
     defaultMessage: 'No available dates',
     description: 'Dropdown header for the catalog search results section on the lcm budget detail page with no available dates',
   },
+  enrollBy: {
+    id: 'lcm.budget.detail.page.catalog.search.results.assign.dropdown.enroll-by-date-item',
+    defaultMessage: 'Enroll by {enrollByDate}',
+    description: 'Dropdown item for the catalog search results section on the lcm budget detail enroll-by date',
+  },
+  startDate: {
+    id: 'lcm.budget.detail.page.catalog.search.results.assign.dropdown.starts-date-item',
+    defaultMessage: '{startLabel} {startDate}',
+    description: 'Dropdown item for the catalog search results section on the lcm budget detail start date',
+  },
 });
 
 const NewAssignmentModalDropdown = ({
@@ -35,8 +45,14 @@ const NewAssignmentModalDropdown = ({
   };
   const startLabel = ({ start }) => (dayjs(start).isBefore(dayjs()) ? 'Started' : 'Starts');
   return (
-    <Dropdown id={courseKey}>
-      <Dropdown.Toggle variant="primary" id="assign-by-course-runs-dropdown">
+    <Dropdown
+      onSelect={(eventKey, event) => {
+        const courseRunKey = event.target.closest('[data-courserunkey]').getAttribute('data-courserunkey');
+        const selectedCourseRun = courseRuns.find(({ key }) => key === courseRunKey);
+        openAssignmentModal(selectedCourseRun);
+      }}
+    >
+      <Dropdown.Toggle variant="primary" id={`assign-by-course-runs-dropdown-for-${courseKey}`}>
         {children}
       </Dropdown.Toggle>
       <Dropdown.Menu>
@@ -46,15 +62,19 @@ const NewAssignmentModalDropdown = ({
         {courseRuns.length > 0 && courseRuns.map(courseRun => (
           <Dropdown.Item
             key={courseRun.key}
-            id={courseRun.key}
-            onClick={openAssignmentModal}
+            data-courserunkey={courseRun.key}
             onMouseDown={() => setClickedDropdownItem(courseRun)}
             onMouseUp={() => setClickedDropdownItem(null)}
           >
             <Stack>
-              Enroll by {dayjs(getNormalizedEnrollByDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT)}
+              {intl.formatMessage(messages.enrollBy, {
+                enrollByDate: dayjs(getNormalizedEnrollByDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT),
+              })}
               <span className={`small ${getDropdownItemClassName(courseRun)}`}>
-                {startLabel(courseRun)} {dayjs(getNormalizedStartDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT)}
+                {intl.formatMessage(messages.startDate, {
+                  startLabel: startLabel(courseRun),
+                  startDate: dayjs(getNormalizedStartDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT),
+                })}
               </span>
             </Stack>
           </Dropdown.Item>
