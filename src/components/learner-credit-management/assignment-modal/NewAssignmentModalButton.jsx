@@ -19,7 +19,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import {
-  getAssignableCourseRuns,
+  getAssignableCourseRuns, LEARNER_CREDIT_ROUTE,
   learnerCreditManagementQueryKeys,
   useBudgetId,
   useSubsidyAccessPolicy,
@@ -27,7 +27,6 @@ import {
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
-import { LEARNER_CREDIT_ROUTE } from '../constants';
 import NewAssignmentModalDropdown from './NewAssignmentModalDropdown';
 
 const useAllocateContentAssignments = () => useMutation({

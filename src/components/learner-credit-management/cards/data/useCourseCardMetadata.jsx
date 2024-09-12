@@ -3,8 +3,8 @@ import { AppContext } from '@edx/frontend-platform/react';
 import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
-import CARD_TEXT from '../../constants';
 import {
+  CARD_TEXT,
   getAssignableCourseRuns,
   EXEC_ED_COURSE_TYPE,
   formatDate,

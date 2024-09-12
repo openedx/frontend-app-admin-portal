@@ -18,10 +18,9 @@ import {
   useSubsidyAccessPolicy,
   useEnterpriseCustomer,
   useEnterpriseGroup,
-  isLmsBudget,
+  isLmsBudget, LEARNER_CREDIT_ROUTE,
 } from './data';
 import EVENT_NAMES from '../../eventTracking';
-import { LEARNER_CREDIT_ROUTE } from './constants';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 import BudgetDetail from './BudgetDetail';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';

@@ -8,7 +8,7 @@ import {
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   ASSIGNMENT_ENROLLMENT_DEADLINE,
   DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
-  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
+  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, COURSE_PACING_MAP,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -556,15 +556,13 @@ export const isLmsBudget = (
 
 /**
  * Determines if the course has already started. Mostly used around text formatting for tense
- * Introduces 'jitter' in the form of a 30 second offset to take into account any additional
- * formatting that takes place down stream related to setting values to today's date through dayjs()
  *
  * This should also help with reducing 'flaky' tests.
  *
  * @param start
  * @returns {boolean}
  */
-export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs().subtract(30, 'seconds'));
+export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
 
 /**
  * Returns assignable course runs within the threshold of within the subsidies expiration date
@@ -590,6 +588,16 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime 
   return assignableCourseRuns;
 };
 
+export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
+
+export const hasTimeToComplete = ({ end, weeksToComplete }) => {
+  const today = dayjs();
+  const differenceInWeeks = dayjs(end).diff(today, 'week');
+  return weeksToComplete <= differenceInWeeks;
+};
+
+const isWithinMinimumStartDateThreshold = ({ start }) => dayjs(start).isBefore(dayjs().subtract(START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, 'days'));
+
 /**
  * If the start date of the course is before today offset by the START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS
  * then return today's formatted date. Otherwise, pass-through the start date in ISO format.
@@ -600,12 +608,31 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime 
  * @param format
  * @returns {string}
  */
-export const setStaleCourseStartDates = ({ start }) => {
+export const getNormalizedStartDate = ({
+  start, pacingType, end, weeksToComplete,
+}) => {
+  const todayToIso = dayjs().toISOString();
   if (!start) {
-    return dayjs().toISOString();
+    return todayToIso;
   }
-  if (dayjs(start).isBefore(dayjs().subtract(START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, 'days'))) {
-    return dayjs().toISOString();
+  const startDateIso = dayjs(start).toISOString();
+  if (isCourseSelfPaced({ pacingType })) {
+    if (hasTimeToComplete({ end, weeksToComplete }) || isWithinMinimumStartDateThreshold({ start })) {
+      // always today's date (incentives enrollment)
+      return todayToIso;
+    }
+    return startDateIso;
   }
-  return dayjs(start).toISOString();
+  return startDateIso;
+};
+
+export const getNormalizedEnrollByDate = ({ enrollBy }) => {
+  if (!enrollBy) {
+    return null;
+  }
+  const ninetyDayAllocationOffset = dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days');
+  if (dayjs(enrollBy).isAfter(ninetyDayAllocationOffset)) {
+    return ninetyDayAllocationOffset.toISOString();
+  }
+  return enrollBy;
 };

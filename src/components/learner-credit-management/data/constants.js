@@ -22,6 +22,12 @@ export const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   courseListPrice: 'course_list_price',
 };
 
+// Course pace text
+export const COURSE_PACING_MAP = {
+  SELF_PACED: 'self_paced',
+  INSTRUCTOR_PACED: 'instructor_paced',
+};
+
 // Percentage where messaging (e.g., Alert) on low remaining balance will begin appearing
 export const LOW_REMAINING_BALANCE_PERCENT_THRESHOLD = 0.75;
 
@@ -44,6 +50,24 @@ export const BUDGET_DETAIL_TAB_LABELS = {
   [BUDGET_DETAIL_ACTIVITY_TAB]: 'Activity',
   [BUDGET_DETAIL_CATALOG_TAB]: 'Catalog',
   [BUDGET_DETAIL_MEMBERS_TAB]: 'Members',
+};
+
+// Card text for used in useCourseCardMetadata
+export const CARD_TEXT = {
+  BADGE: {
+    course: 'Course',
+    execEd: 'Executive Education',
+  },
+  BUTTON_ACTION: {
+    viewCourse: 'View course',
+    assign: 'Assign',
+  },
+  ENROLLMENT: {
+    text: 'Learner must enroll by',
+  },
+  PRICE: {
+    subText: 'Per learner price',
+  },
 };
 
 // Facet filters
@@ -93,3 +117,6 @@ export const learnerCreditManagementQueryKeys = {
   budgetGroupLearners: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'group learners'],
   enterpriseCustomer: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'enterpriseCustomer', enterpriseId],
 };
+
+// Route to learner credit
+export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:budgetId/:activeTabKey';

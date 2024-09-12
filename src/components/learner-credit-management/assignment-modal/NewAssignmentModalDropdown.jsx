@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import { useState } from 'react';
 import {
-  setStaleCourseStartDates,
+  getNormalizedEnrollByDate,
+  getNormalizedStartDate,
   SHORT_MONTH_DATE_FORMAT,
 } from '../data';
 
@@ -32,6 +33,7 @@ const NewAssignmentModalDropdown = ({
     }
     return 'text-muted';
   };
+  const startLabel = ({ start }) => (dayjs(start).isBefore(dayjs()) ? 'Started' : 'Starts');
   return (
     <Dropdown id={courseKey}>
       <Dropdown.Toggle variant="primary" id="assign-by-course-runs-dropdown">
@@ -50,9 +52,9 @@ const NewAssignmentModalDropdown = ({
             onMouseUp={() => setClickedDropdownItem(null)}
           >
             <Stack>
-              Enroll by {dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT)}
+              Enroll by {dayjs(getNormalizedEnrollByDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT)}
               <span className={`small ${getDropdownItemClassName(courseRun)}`}>
-                Starts {dayjs(setStaleCourseStartDates({ start: courseRun.start })).format(SHORT_MONTH_DATE_FORMAT)}
+                {startLabel(courseRun)} {dayjs(getNormalizedStartDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT)}
               </span>
             </Stack>
           </Dropdown.Item>

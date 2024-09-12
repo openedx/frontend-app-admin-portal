@@ -4,7 +4,9 @@ import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 
 import dayjs from 'dayjs';
-import { setStaleCourseStartDates, hasCourseStarted, SHORT_MONTH_DATE_FORMAT } from '../data';
+import {
+  getNormalizedEnrollByDate, getNormalizedStartDate, hasCourseStarted, SHORT_MONTH_DATE_FORMAT,
+} from '../data';
 
 const messages = defineMessages({
   importantDates: {
@@ -47,12 +49,11 @@ AssignmentModalImportantDate.propTypes = {
 
 const AssignmentModalImportantDates = ({ courseRun }) => {
   const intl = useIntl();
-  const enrollByDate = courseRun.enrollBy
-    ? dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT)
+  const normalizedEnrollByDate = getNormalizedEnrollByDate(courseRun);
+  const enrollByDate = normalizedEnrollByDate
+    ? dayjs(normalizedEnrollByDate).format(SHORT_MONTH_DATE_FORMAT)
     : null;
-  const courseStartDate = courseRun.start
-    ? setStaleCourseStartDates({ start: courseRun.start })
-    : null;
+  const courseStartDate = getNormalizedStartDate(courseRun);
   const courseHasStartedLabel = hasCourseStarted(courseStartDate)
     ? intl.formatMessage(messages.courseStarted)
     : intl.formatMessage(messages.courseStarts);
