@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 
 import dayjs from 'dayjs';
 import {
-  getNormalizedEnrollByDate, getNormalizedStartDate, hasCourseStarted, SHORT_MONTH_DATE_FORMAT,
+  DATETIME_FORMAT,
+  getNormalizedEnrollByDate,
+  getNormalizedStartDate,
+  hasCourseStarted,
+  SHORT_MONTH_DATE_FORMAT,
 } from '../data';
 
 const messages = defineMessages({
@@ -51,7 +55,7 @@ const AssignmentModalImportantDates = ({ courseRun }) => {
   const intl = useIntl();
   const normalizedEnrollByDate = getNormalizedEnrollByDate(courseRun);
   const enrollByDate = normalizedEnrollByDate
-    ? dayjs(normalizedEnrollByDate).format(SHORT_MONTH_DATE_FORMAT)
+    ? dayjs(normalizedEnrollByDate).format(DATETIME_FORMAT)
     : null;
   const courseStartDate = getNormalizedStartDate(courseRun);
   const courseHasStartedLabel = hasCourseStarted(courseStartDate)

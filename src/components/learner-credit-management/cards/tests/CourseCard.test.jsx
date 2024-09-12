@@ -13,9 +13,11 @@ import dayjs from 'dayjs';
 import CourseCard from '../CourseCard';
 import {
   formatPrice,
-  learnerCreditManagementQueryKeys, SHORT_MONTH_DATE_FORMAT,
+  DATETIME_FORMAT,
+  learnerCreditManagementQueryKeys,
+  SHORT_MONTH_DATE_FORMAT,
   useBudgetId,
-  useSubsidyAccessPolicy,
+  useSubsidyAccessPolicy, getNormalizedEnrollByDate,
 } from '../../data';
 import { getButtonElement, queryClient } from '../../../test/testUtils';
 
@@ -266,10 +268,12 @@ describe('Course card works as expected', () => {
   });
 
   test('executive education card renders', () => {
+    const enrollByDate = getNormalizedEnrollByDate({ enrollBy: dayjs('Dec 22, 2029') });
+    const formattedEnrollBy = dayjs(enrollByDate).format(SHORT_MONTH_DATE_FORMAT);
     renderWithRouter(<CourseCardWrapper {...execEdProps} />);
     expect(screen.queryByText('$999')).toBeInTheDocument();
     userEvent.click(screen.getByText('Assign'));
-    expect(screen.getByText('Enroll by Dec 22, 2029')).toBeInTheDocument();
+    expect(screen.getByText(`Enroll by ${formattedEnrollBy}`)).toBeInTheDocument();
     expect(screen.queryByText('Executive Education')).toBeInTheDocument();
     const viewCourseCTA = screen.getByText('View course', { selector: 'a' });
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
@@ -515,7 +519,7 @@ describe('Course card works as expected', () => {
     // Verify important dates
     expect(assignmentModal.getByText('Enroll-by date:')).toBeInTheDocument();
     expect(assignmentModal.getByText(
-      dayjs.unix(enrollByTimestamp).format(SHORT_MONTH_DATE_FORMAT),
+      dayjs.unix(enrollByTimestamp).format(DATETIME_FORMAT),
     )).toBeInTheDocument();
     if (courseStartDate) {
       expect(assignmentModal.getByText(expectedCourseStartText)).toBeInTheDocument();

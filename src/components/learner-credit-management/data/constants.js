@@ -39,6 +39,7 @@ export const NO_BALANCE_REMAINING_DOLLAR_THRESHOLD = 100;
 export const DATE_FORMAT = 'MMMM DD, YYYY';
 
 export const SHORT_MONTH_DATE_FORMAT = 'MMM DD, YYYY';
+export const DATETIME_FORMAT = 'MMM D, YYYY h:mma';
 
 export const EXEC_ED_OFFER_TYPE = 'learner_credit';
 
