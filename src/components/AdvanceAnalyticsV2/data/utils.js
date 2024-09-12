@@ -6,6 +6,7 @@ import { CHART_TYPES, CALCULATION } from './constants';
 
 dayjs.extend(utc);
 dayjs.extend(quarterOfYear);
+import messages from '../messages';
 
 const simulateURL = (activeTab, chartType) => {
   if (!Object.values(CHART_TYPES).includes(chartType)) {
@@ -13,6 +14,19 @@ const simulateURL = (activeTab, chartType) => {
   }
   return `${activeTab}/stats`;
 };
+
+/**
+ * Constructs a chart hover template.
+ *
+ * @param {Object} intl - Internationalization object.
+ * @param {Object} hoverInfo - Object containing hover information to show over chart data points.
+ * @returns {string} The constructed chart hover template.
+ */
+export function constructChartHoverTemplate(intl, hoverInfo) {
+  return Object.entries(hoverInfo)
+    .map(([key, value]) => `${intl.formatMessage(messages[key])}: ${value}`)
+    .join('<br>');
+}
 
 export default simulateURL;
 

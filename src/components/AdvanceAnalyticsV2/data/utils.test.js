@@ -201,3 +201,18 @@ describe('utils', () => {
     });
   });
 });
+import { createIntl } from '@edx/frontend-platform/i18n';
+import { constructChartHoverTemplate } from './utils';
+
+describe('constructChartHoverTemplate', () => {
+  const intl = createIntl({
+    locale: 'en',
+    messages: {},
+  });
+
+  it('should construct a hover template', () => {
+    const hoverInfo = { skill: 'value1', enrollments: 'value2' };
+    const result = constructChartHoverTemplate(intl, hoverInfo);
+    expect(result).toBe('Skill: value1<br>Enrollments: value2');
+  });
+});

@@ -12,6 +12,7 @@ import DownloadCSVButton from '../DownloadCSVButton';
 import { modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
 
 dayjs.extend(utc);
+import { constructChartHoverTemplate } from '../data/utils';
 
 const Enrollments = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -101,7 +102,10 @@ const Enrollments = ({
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Enrollments',
-            hovertemplate: 'Date: %{x}<br>Enrolls: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              date: '%{x}',
+              enrollments: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.enrollments.tab.chart.enrollments.over.time.loading.message',
@@ -141,7 +145,10 @@ const Enrollments = ({
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Enrollments',
-            hovertemplate: 'Course: %{x}<br>Enrolls: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              course: '%{x}',
+              enrollments: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.enrollments.tab.chart.top.courses.by.enrollments.loading.message',
@@ -182,6 +189,10 @@ const Enrollments = ({
             xAxisTitle: '',
             yAxisTitle: 'Number of Enrollments',
             hovertemplate: 'Subject: %{x}<br>Enrolls: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              subject: '%{x}',
+              enrollments: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.enrollments.tab.chart.top.subjects.by.enrollments.loading.message',

@@ -7,6 +7,7 @@ import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
 import DownloadCSV from '../DownloadCSV';
+import { constructChartHoverTemplate } from '../data/utils';
 
 const Completions = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -62,7 +63,10 @@ const Completions = ({
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Completions',
-            hovertemplate: 'Date: %{x}<br>Number of Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              date: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.completions.tab.chart.top.courses.by.completions.loading.message',
@@ -110,7 +114,10 @@ const Completions = ({
               defaultMessage: 'Number of Completions',
               description: 'Y-axis title for the top courses by completions chart.',
             }),
-            hovertemplate: 'Course: %{x}<br>Number of Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              course: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.completions.tab.chart.top.10.courses.by.completions.loading.message',
@@ -158,7 +165,10 @@ const Completions = ({
               defaultMessage: 'Number of Completions',
               description: 'Y-axis title for the top subjects by completions chart.',
             }),
-            hovertemplate: 'Subject: %{x}<br>Number of Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              subject: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.completions.tab.chart.top.subjects.by.completions.loading.message',
