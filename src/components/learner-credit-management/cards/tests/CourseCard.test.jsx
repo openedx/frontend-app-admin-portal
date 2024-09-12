@@ -326,7 +326,7 @@ describe('Course card works as expected', () => {
       shouldRetryAllocationAfterException: false, // no ability to retry after this error
       courseImportantDates: {
         courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts',
+        expectedCourseStartText: 'Course starts:',
       },
     },
     {
@@ -336,7 +336,7 @@ describe('Course card works as expected', () => {
       shouldRetryAllocationAfterException: false,
       courseImportantDates: {
         courseStartDate: pastStartDate,
-        expectedCourseStartText: 'Course started',
+        expectedCourseStartText: 'Course started:',
       },
     },
     {
@@ -346,7 +346,7 @@ describe('Course card works as expected', () => {
       shouldRetryAllocationAfterException: true,
       courseImportantDates: {
         courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts',
+        expectedCourseStartText: 'Course starts:',
       },
     },
     {
@@ -356,7 +356,7 @@ describe('Course card works as expected', () => {
       shouldRetryAllocationAfterException: false,
       courseImportantDates: {
         courseStartDate: pastStartDate,
-        expectedCourseStartText: 'Course started',
+        expectedCourseStartText: 'Course started:',
       },
     },
     {
@@ -366,7 +366,7 @@ describe('Course card works as expected', () => {
       shouldRetryAllocationAfterException: true,
       courseImportantDates: {
         courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts',
+        expectedCourseStartText: 'Course starts:',
       },
     },
     {
@@ -376,7 +376,7 @@ describe('Course card works as expected', () => {
       shouldRetryAllocationAfterException: false,
       courseImportantDates: {
         courseStartDate: pastStartDate,
-        expectedCourseStartText: 'Course started',
+        expectedCourseStartText: 'Course started:',
       },
     },
     {
@@ -386,7 +386,7 @@ describe('Course card works as expected', () => {
       shouldRetryAllocationAfterException: true,
       courseImportantDates: {
         courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts',
+        expectedCourseStartText: 'Course starts:',
       },
     },
     {
@@ -513,7 +513,7 @@ describe('Course card works as expected', () => {
     expect(assignmentModal.getByText(expectedAvailableBalance)).toBeInTheDocument();
 
     // Verify important dates
-    expect(assignmentModal.getByText('Enroll-by date')).toBeInTheDocument();
+    expect(assignmentModal.getByText('Enroll-by date:')).toBeInTheDocument();
     expect(assignmentModal.getByText(
       dayjs.unix(enrollByTimestamp).format(SHORT_MONTH_DATE_FORMAT),
     )).toBeInTheDocument();

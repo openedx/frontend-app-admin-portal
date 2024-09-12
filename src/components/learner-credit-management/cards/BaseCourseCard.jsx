@@ -12,6 +12,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useCourseCardMetadata } from './data';
+import AssignmentModalImportantDates from '../assignment-modal/AssignmentModalmportantDates';
 
 const BaseCourseCard = ({
   original,
@@ -19,7 +20,6 @@ const BaseCourseCard = ({
   enterpriseSlug,
   cardClassName,
   courseRun,
-  displayImportantDates,
 }) => {
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
@@ -28,7 +28,6 @@ const BaseCourseCard = ({
     course: camelCaseObject(original),
     courseRun,
     enterpriseSlug,
-    displayImportantDates,
   });
   const {
     imageSrc,
@@ -67,30 +66,37 @@ const BaseCourseCard = ({
           )}
         />
         <Card.Section>
-          <Badge variant="light">
-            {isExecEdCourseType
-              ? (
-                <FormattedMessage
-                  id="lcm.budget.detail.page.catalog.tab.course.card.executive.education"
-                  defaultMessage="Executive Education"
-                  description="Badge text for Executive Education course"
-                />
-              )
-              : (
-                <FormattedMessage
-                  id="lcm.budget.detail.page.catalog.tab.course.card.course"
-                  defaultMessage="Course"
-                  description="Badge text for Course"
-                />
-              )}
-          </Badge>
+          <Stack gap={4.5}>
+            <div>
+              <Badge variant="light">
+                {isExecEdCourseType
+                  ? (
+                    <FormattedMessage
+                      id="lcm.budget.detail.page.catalog.tab.course.card.executive.education"
+                      defaultMessage="Executive Education"
+                      description="Badge text for Executive Education course"
+                    />
+                  )
+                  : (
+                    <FormattedMessage
+                      id="lcm.budget.detail.page.catalog.tab.course.card.course"
+                      defaultMessage="Course"
+                      description="Badge text for Course"
+                    />
+                  )}
+              </Badge>
+            </div>
+            {courseRun && <AssignmentModalImportantDates courseRun={courseRun} />}
+          </Stack>
         </Card.Section>
+        {CardFooterActions && (
         <Card.Footer
           orientation={isExtraSmall ? 'horizontal' : 'vertical'}
           textElement={footerText}
         >
-          {CardFooterActions && <CardFooterActions course={courseCardMetadata} />}
+          <CardFooterActions course={courseCardMetadata} />
         </Card.Footer>
+        )}
       </Card.Body>
     </Card>
   );
@@ -122,12 +128,10 @@ BaseCourseCard.propTypes = {
   }),
   footerActions: PropTypes.elementType,
   cardClassName: PropTypes.string,
-  displayImportantDates: PropTypes.bool,
 };
 
 BaseCourseCard.defaultProps = {
   courseRun: null,
-  displayImportantDates: false,
 };
 
 export default connect(mapStateToProps)(BaseCourseCard);

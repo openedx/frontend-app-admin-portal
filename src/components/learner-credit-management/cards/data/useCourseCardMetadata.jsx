@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { AppContext } from '@edx/frontend-platform/react';
 import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.png';
 
+import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import CARD_TEXT from '../../constants';
 import {
   getAssignableCourseRuns,
@@ -13,15 +14,22 @@ import {
   useSubsidyAccessPolicy,
 } from '../../data';
 import { pluralText } from '../../../../utils';
-import AssignmentModalImportantDates from '../../assignment-modal/AssignmentModalmportantDates';
 
 const { ENROLLMENT } = CARD_TEXT;
+
+const messages = defineMessages({
+  courseFooterMessage: {
+    id: 'lcm.budget.detail.page.catalog.tab.course.card.footer-text',
+    defaultMessage: '({courseRuns}) available {pluralText}',
+    description: 'Footer text for a course card result for learner credit management',
+  },
+});
 
 const useCourseCardMetadata = ({
   course,
   enterpriseSlug,
-  courseRun,
 }) => {
+  const intl = useIntl();
   const { config: { ENTERPRISE_LEARNER_PORTAL_URL } } = useContext(AppContext);
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -67,8 +75,11 @@ const useCourseCardMetadata = ({
     courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
   });
-  const availableCourseRunsCount = `(${assignableCourseRuns.length}) available ${pluralText('date', assignableCourseRuns.length)}`;
-  const footerText = courseRun ? <AssignmentModalImportantDates courseRun={courseRun} /> : availableCourseRunsCount;
+  // const footerText = `(${assignableCourseRuns.length}) available ${pluralText('date', assignableCourseRuns.length)}`;
+  const footerText = intl.formatMessage(messages.courseFooterMessage, {
+    courseRuns: assignableCourseRuns.length,
+    pluralText: pluralText('date', assignableCourseRuns.length),
+  });
   return {
     ...course,
     subtitle: partners.map(partner => partner.name).join(', '),

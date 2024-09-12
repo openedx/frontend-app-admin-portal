@@ -1,12 +1,9 @@
-import {
-  Col, Icon, Row, Stack,
-} from '@openedx/paragon';
+import { Icon, Stack } from '@openedx/paragon';
 import { Calendar } from '@openedx/paragon/icons';
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 
 import dayjs from 'dayjs';
-import { logInfo } from '@edx/frontend-platform/logging';
 import { setStaleCourseStartDates, hasCourseStarted, SHORT_MONTH_DATE_FORMAT } from '../data';
 
 const messages = defineMessages({
@@ -36,17 +33,11 @@ const AssignmentModalImportantDate = ({
   label,
   children,
 }) => (
-  <Row className="course-important-date">
-    <Col>
-      <Stack direction="horizontal" gap={2} className="font-weight-bolder">
-        <Icon size="sm" src={Calendar} />
-        {label}
-      </Stack>
-    </Col>
-    <Col>
-      {children}
-    </Col>
-  </Row>
+  <Stack direction="horizontal" gap={2}>
+    <Icon size="sm" src={Calendar} />
+    <span className="font-weight-bold">{label}:</span>
+    {children}
+  </Stack>
 );
 
 AssignmentModalImportantDate.propTypes = {
@@ -68,10 +59,6 @@ const AssignmentModalImportantDates = ({ courseRun }) => {
 
   // This is an edge case that the user should never enter but covered nonetheless
   if (!enrollByDate && !courseStartDate) {
-    logInfo(`[frontend-app-admin-portal][AssignmentModalImportantDates]
-    Component did not render, no courseRun enrollBy date or courseStart date provided
-    courseRun: ${courseRun}
-    `);
     return null;
   }
 

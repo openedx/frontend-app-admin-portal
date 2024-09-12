@@ -2,6 +2,7 @@ import { Dropdown, Stack } from '@openedx/paragon';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
+import { useState } from 'react';
 import {
   setStaleCourseStartDates,
   SHORT_MONTH_DATE_FORMAT,
@@ -24,6 +25,13 @@ const NewAssignmentModalDropdown = ({
   id: courseKey, onClick: openAssignmentModal, courseRuns, children,
 }) => {
   const intl = useIntl();
+  const [clickedDropdownItem, setClickedDropdownItem] = useState(null);
+  const getDropdownItemClassName = (courseRun) => {
+    if (clickedDropdownItem && clickedDropdownItem.key === courseRun.key) {
+      return null;
+    }
+    return 'text-muted';
+  };
   return (
     <Dropdown id={courseKey}>
       <Dropdown.Toggle variant="primary" id="assign-by-course-runs-dropdown">
@@ -34,10 +42,16 @@ const NewAssignmentModalDropdown = ({
           {courseRuns.length > 0 ? intl.formatMessage(messages.byDate) : intl.formatMessage(messages.noAvailableDates) }
         </Dropdown.Header>
         {courseRuns.length > 0 && courseRuns.map(courseRun => (
-          <Dropdown.Item key={courseRun.key} id={courseRun.key} onClick={openAssignmentModal}>
+          <Dropdown.Item
+            key={courseRun.key}
+            id={courseRun.key}
+            onClick={openAssignmentModal}
+            onMouseDown={() => setClickedDropdownItem(courseRun)}
+            onMouseUp={() => setClickedDropdownItem(null)}
+          >
             <Stack>
               Enroll by {dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT)}
-              <span className="small text-muted">
+              <span className={`small ${getDropdownItemClassName(courseRun)}`}>
                 Starts {dayjs(setStaleCourseStartDates({ start: courseRun.start })).format(SHORT_MONTH_DATE_FORMAT)}
               </span>
             </Stack>
