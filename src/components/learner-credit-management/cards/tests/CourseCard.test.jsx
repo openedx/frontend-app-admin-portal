@@ -76,6 +76,9 @@ const originalData = {
       upgrade_deadline: 1892678399,
       pacing_type: 'self_paced',
       enroll_by: enrollByTimestamp,
+      is_active: true,
+      weeks_to_complete: 60,
+      end: dayjs().add(1, 'years').toISOString(),
     },
   ],
   advertised_course_run: {
@@ -84,6 +87,9 @@ const originalData = {
     upgrade_deadline: 1892678399,
     pacing_type: 'self_paced',
     enroll_by: enrollByTimestamp,
+    is_active: true,
+    weeks_to_complete: 60,
+    end: dayjs().add(1, 'year').toISOString(),
   },
 };
 const imageAltText = `${originalData.title} course image`;
@@ -110,16 +116,22 @@ const execEdData = {
       key: 'course-v1:edX+course-123x+3T2020',
       start: futureStartDate,
       upgrade_deadline: 1892678399,
-      pacing_type: 'self_paced',
+      pacing_type: 'instructor_paced',
       enroll_by: 1892678399,
+      is_active: true,
+      weeks_to_complete: 60,
+      end: dayjs().add(1, 'year').toISOString(),
     },
   ],
   advertised_course_run: {
     key: 'course-v1:edX+course-123x+3T2020',
     start: futureStartDate,
     upgrade_deadline: 1892678399,
-    pacing_type: 'self_paced',
+    pacing_type: 'instructor_paced',
     enroll_by: 1892678399,
+    is_active: true,
+    weeks_to_complete: 60,
+    end: dayjs().add(1, 'year').toISOString(),
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
@@ -151,6 +163,7 @@ const mockSubsidyAccessPolicy = {
     spendAvailableUsd: 50000,
   },
   subsidyExpirationDatetime: '2100-02-18T04:00:00Z',
+  isLateRedemptionAllowed: false,
 };
 const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
 
@@ -224,6 +237,7 @@ describe('Course card works as expected', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       data: mockSubsidyAccessPolicy,
       isLoading: false,
+      isLateRedemptionAllowed: false,
     });
   });
 

@@ -572,6 +572,7 @@ export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
  *
  * @param courseRuns
  * @param subsidyExpirationDatetime
+ * @param isLateRedemptionAllowed
  * @returns {*}
  */
 export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed }) => {

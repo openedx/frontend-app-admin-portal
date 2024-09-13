@@ -61,7 +61,6 @@ const AssignmentModalImportantDates = ({ courseRun }) => {
   const courseHasStartedLabel = hasCourseStarted(courseStartDate)
     ? intl.formatMessage(messages.courseStarted)
     : intl.formatMessage(messages.courseStarts);
-
   // This is an edge case that the user should never enter but covered nonetheless
   if (!enrollByDate && !courseStartDate) {
     return null;
