@@ -40,7 +40,18 @@ ChartWrapper.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   chartType: PropTypes.oneOf(['ScatterChart', 'LineChart', 'BarChart']).isRequired,
-  chartProps: PropTypes.shape({ data: PropTypes.shape({}) }).isRequired,
+  chartProps: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    xKey: PropTypes.string.isRequired,
+    yKey: PropTypes.string.isRequired,
+    colorKey: PropTypes.string.isRequired,
+    colorMap: PropTypes.objectOf(PropTypes.string).isRequired,
+    hovertemplate: PropTypes.string.isRequired,
+    xAxisTitle: PropTypes.string,
+    yAxisTitle: PropTypes.string,
+    markerSizeKey: PropTypes.string,
+    customDataKeys: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
   loadingMessage: PropTypes.string.isRequired,
 };
 

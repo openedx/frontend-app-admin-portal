@@ -29,6 +29,26 @@ const messages = defineMessages({
     id: 'advance.analytics.learning.hours.label',
     defaultMessage: 'Learning Hours',
   },
+  'Common Skill': {
+    id: 'advance.analytics.common.skill.label',
+    defaultMessage: 'Common Skill',
+  },
+  'Specialized Skill': {
+    id: 'advance.analytics.specialized.skill.label',
+    defaultMessage: 'Specialized Skill',
+  },
+  'Hard Skill': {
+    id: 'advance.analytics.hard.skill.label',
+    defaultMessage: 'Hard Skill',
+  },
+  'Soft Skill': {
+    id: 'advance.analytics.soft.skill.label',
+    defaultMessage: 'Soft Skill',
+  },
+  Certification: {
+    id: 'advance.analytics.certification.label',
+    defaultMessage: 'Certification',
+  },
 });
 
 export default messages;

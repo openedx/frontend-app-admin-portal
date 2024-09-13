@@ -9,10 +9,9 @@ import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
 import { useEnterpriseEnrollmentsData } from '../data/hooks';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
+import { modifyDataToIntroduceEnrollTypeCount, constructChartHoverTemplate } from '../data/utils';
 
 dayjs.extend(utc);
-import { constructChartHoverTemplate } from '../data/utils';
 
 const Enrollments = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -188,7 +187,6 @@ const Enrollments = ({
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Enrollments',
-            hovertemplate: 'Subject: %{x}<br>Enrolls: %{y}',
             hovertemplate: constructChartHoverTemplate(intl, {
               subject: '%{x}',
               enrollments: '%{y}',

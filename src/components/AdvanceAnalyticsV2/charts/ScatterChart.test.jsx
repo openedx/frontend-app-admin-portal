@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import Plot from 'react-plotly.js';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ScatterChart from './ScatterChart';
 
 describe('ScatterChart', () => {
@@ -28,8 +29,10 @@ describe('ScatterChart', () => {
   };
 
   it('renders correctly', () => {
-    const wrapper = shallow(
-      <ScatterChart {...props} />,
+    const wrapper = mount(
+      <IntlProvider locale="en">
+        <ScatterChart {...props} />,
+      </IntlProvider>,
     );
     const plotComponent = wrapper.find(Plot);
     const traces = plotComponent.prop('data');

@@ -3,10 +3,10 @@ import { sum } from 'lodash';
 import utc from 'dayjs/plugin/utc';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import { CHART_TYPES, CALCULATION } from './constants';
+import messages from '../messages';
 
 dayjs.extend(utc);
 dayjs.extend(quarterOfYear);
-import messages from '../messages';
 
 const simulateURL = (activeTab, chartType) => {
   if (!Object.values(CHART_TYPES).includes(chartType)) {

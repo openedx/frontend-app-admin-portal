@@ -1,6 +1,7 @@
 // Jest test for utils.js
 
-import { applyCalculation, applyGranularity } from './utils';
+import { createIntl } from '@edx/frontend-platform/i18n';
+import { applyCalculation, applyGranularity, constructChartHoverTemplate } from './utils';
 import { CALCULATION, GRANULARITY } from './constants';
 
 describe('utils', () => {
@@ -201,8 +202,6 @@ describe('utils', () => {
     });
   });
 });
-import { createIntl } from '@edx/frontend-platform/i18n';
-import { constructChartHoverTemplate } from './utils';
 
 describe('constructChartHoverTemplate', () => {
   const intl = createIntl({

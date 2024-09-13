@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import {
   render, screen, waitFor, within,
 } from '@testing-library/react';
