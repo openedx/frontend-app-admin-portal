@@ -74,11 +74,13 @@ const useCourseCardMetadata = ({
   const assignableCourseRuns = getAssignableCourseRuns({
     courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
+    isLateRedemptionAllowed: subsidyAccessPolicy.isLateRedemptionAllowed,
   });
   const footerText = intl.formatMessage(messages.courseFooterMessage, {
     courseRuns: assignableCourseRuns.length,
     pluralText: pluralText('date', assignableCourseRuns.length),
   });
+
   return {
     ...course,
     subtitle: partners.map(partner => partner.name).join(', '),

@@ -574,24 +574,35 @@ export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
  * @param subsidyExpirationDatetime
  * @returns {*}
  */
-export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime }) => {
+export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed }) => {
   const clonedCourseRuns = courseRuns.map(a => ({
     ...a,
     enrollBy: dayjs.unix(a.enrollBy).toISOString(),
     upgradeDeadline: dayjs.unix(a.upgradeDeadline).toISOString(),
   }));
-  const sortedCourseRuns = clonedCourseRuns.sort((a, b) => a.enrollBy - b.enrollBy);
-  const assignableCourseRuns = sortedCourseRuns.filter(
-    ({ enrollBy }) => dayjs(enrollBy).isBefore(
-      dayjs(subsidyExpirationDatetime).add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days'),
-    ),
-  );
-  return assignableCourseRuns;
+  const assignableCourseRunsFilter = ({ enrollBy, isActive }) => {
+    const enrollByDateThreshold = dayjs(enrollBy).isBefore(
+      Math.max(
+        dayjs(subsidyExpirationDatetime).toDate(),
+        dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days').toDate(),
+      ),
+    );
+    if (isLateRedemptionAllowed) {
+      return enrollByDateThreshold;
+    }
+    return isActive && enrollByDateThreshold;
+  };
+  const assignableCourseRuns = clonedCourseRuns.filter(assignableCourseRunsFilter);
+  const sortedAssignableCourseRuns = assignableCourseRuns.sort((a, b) => a.enrollBy - b.enrollBy);
+  return sortedAssignableCourseRuns;
 };
 
 export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
 
 export const hasTimeToComplete = ({ end, weeksToComplete }) => {
+  if (!weeksToComplete || !end) {
+    return true;
+  }
   const today = dayjs();
   const differenceInWeeks = dayjs(end).diff(today, 'week');
   return weeksToComplete <= differenceInWeeks;

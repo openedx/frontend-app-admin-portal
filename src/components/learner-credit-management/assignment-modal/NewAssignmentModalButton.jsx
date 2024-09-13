@@ -58,7 +58,13 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   } = useContext(BudgetDetailPageContext);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
-    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+    subsidyUuid,
+    assignmentConfiguration,
+    isSubsidyActive,
+    isAssignable,
+    catalogUuid,
+    aggregates,
+    isLateRedemptionAllowed,
   } = subsidyAccessPolicy;
   const sharedEnterpriseTrackEventMetadata = {
     subsidyAccessPolicyId,
@@ -72,16 +78,17 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     contentKey: course.key,
     courseUuid: course.uuid,
     assignmentConfiguration,
+    isLateRedemptionAllowed,
   };
   const assignableCourseRuns = getAssignableCourseRuns({
     courseRuns: course.courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
+    isLateRedemptionAllowed,
   });
   const { mutate } = useAllocateContentAssignments();
   const pathToActivityTab = generatePath(LEARNER_CREDIT_ROUTE, {
     enterpriseSlug, enterpriseAppPage, budgetId: subsidyAccessPolicyId, activeTabKey: 'activity',
   });
-
   const handleOpenAssignmentModal = (selectedCourseRun) => {
     setAssignmentRun(selectedCourseRun);
     if (!selectedCourseRun) {
