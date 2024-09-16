@@ -635,7 +635,6 @@ export const getNormalizedStartDate = ({
       // always today's date (incentives enrollment)
       return todayToIso;
     }
-    return startDateIso;
   }
   return startDateIso;
 };
@@ -644,9 +643,9 @@ export const getNormalizedEnrollByDate = ({ enrollBy }) => {
   if (!enrollBy) {
     return null;
   }
-  const ninetyDayAllocationOffset = dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days');
-  if (dayjs(enrollBy).isAfter(ninetyDayAllocationOffset)) {
-    return ninetyDayAllocationOffset.toISOString();
+  const ninetyDaysFromNow = dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days');
+  if (dayjs(enrollBy).isAfter(ninetyDaysFromNow)) {
+    return ninetyDaysFromNow.toISOString();
   }
   return enrollBy;
 };
