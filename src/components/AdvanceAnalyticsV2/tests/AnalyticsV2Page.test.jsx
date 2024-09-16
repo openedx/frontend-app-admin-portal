@@ -6,6 +6,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { BrowserRouter as Router } from 'react-router-dom';
 import AnalyticsV2Page from '../AnalyticsV2Page';
 import { queryClient } from '../../test/testUtils';
 import '@testing-library/jest-dom';
@@ -36,13 +37,15 @@ const store = mockStore({
 });
 
 const renderWithProviders = (component) => render(
-  <QueryClientProvider client={queryClient()}>
-    <Provider store={store}>
-      <IntlProvider locale="en">
-        {component}
-      </IntlProvider>
-    </Provider>
-  </QueryClientProvider>,
+  <Router>
+    <QueryClientProvider client={queryClient()}>
+      <Provider store={store}>
+        <IntlProvider locale="en">
+          {component}
+        </IntlProvider>
+      </Provider>
+    </QueryClientProvider>
+  </Router>,
 );
 
 describe('AnalyticsV2Page', () => {

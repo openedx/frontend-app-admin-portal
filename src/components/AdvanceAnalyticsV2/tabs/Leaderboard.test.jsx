@@ -7,6 +7,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Leaderboard from './Leaderboard';
 import { queryClient } from '../../test/testUtils';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
@@ -55,15 +56,17 @@ const TEST_ENTERPRISE_ID = '33ce6562-95e0-4ecf-a2a7-7d407eb96f69';
 describe('Leaderboard Component', () => {
   test('renders all sections with correct classes and content', () => {
     const { container } = render(
-      <QueryClientProvider client={queryClient()}>
-        <IntlProvider locale="en">
-          <Leaderboard
-            enterpriseId={TEST_ENTERPRISE_ID}
-            startDate="2021-01-01"
-            endDate="2021-12-31"
-          />
-        </IntlProvider>,
-      </QueryClientProvider>,
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Leaderboard
+              enterpriseId={TEST_ENTERPRISE_ID}
+              startDate="2021-01-01"
+              endDate="2021-12-31"
+            />
+          </IntlProvider>,
+        </QueryClientProvider>
+      </Router>,
     );
 
     const sections = [
@@ -82,15 +85,17 @@ describe('Leaderboard Component', () => {
   });
   test('renders the table rows with correct values', async () => {
     render(
-      <QueryClientProvider client={queryClient()}>
-        <IntlProvider locale="en">
-          <Leaderboard
-            enterpriseId={TEST_ENTERPRISE_ID}
-            startDate="2021-01-01"
-            endDate="2021-12-31"
-          />
-        </IntlProvider>,
-      </QueryClientProvider>,
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Leaderboard
+              enterpriseId={TEST_ENTERPRISE_ID}
+              startDate="2021-01-01"
+              endDate="2021-12-31"
+            />
+          </IntlProvider>,
+        </QueryClientProvider>
+      </Router>,
     );
 
     // validate the header row
