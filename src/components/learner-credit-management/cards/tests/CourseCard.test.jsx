@@ -12,13 +12,13 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import dayjs from 'dayjs';
 import CourseCard from '../CourseCard';
 import {
-  formatPrice,
   DATETIME_FORMAT,
+  formatPrice,
+  getNormalizedEnrollByDate,
   learnerCreditManagementQueryKeys,
   SHORT_MONTH_DATE_FORMAT,
   useBudgetId,
   useSubsidyAccessPolicy,
-  getNormalizedEnrollByDate,
 } from '../../data';
 import { getButtonElement, queryClient } from '../../../test/testUtils';
 
@@ -79,6 +79,7 @@ const originalData = {
       is_active: true,
       weeks_to_complete: 60,
       end: dayjs().add(1, 'years').toISOString(),
+      content_price: '100',
     },
   ],
   advertised_course_run: {
@@ -90,6 +91,7 @@ const originalData = {
     is_active: true,
     weeks_to_complete: 60,
     end: dayjs().add(1, 'year').toISOString(),
+    content_price: '100',
   },
 };
 const imageAltText = `${originalData.title} course image`;
@@ -121,6 +123,7 @@ const execEdData = {
       is_active: true,
       weeks_to_complete: 60,
       end: dayjs().add(1, 'year').toISOString(),
+      content_price: 999,
     },
   ],
   advertised_course_run: {
@@ -132,6 +135,7 @@ const execEdData = {
     is_active: true,
     weeks_to_complete: 60,
     end: dayjs().add(1, 'year').toISOString(),
+    content_price: 999,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],

@@ -4,9 +4,7 @@ import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.pn
 
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import {
-  CARD_TEXT,
   EXEC_ED_COURSE_TYPE,
-  formatDate,
   formatPrice,
   getAssignableCourseRuns,
   getEnrollmentDeadline,
@@ -15,8 +13,6 @@ import {
 } from '../../data';
 import { pluralText } from '../../../../utils';
 
-const { ENROLLMENT } = CARD_TEXT;
-
 const messages = defineMessages({
   courseFooterMessage: {
     id: 'lcm.budget.detail.page.catalog.tab.course.card.footer-text',
@@ -24,6 +20,21 @@ const messages = defineMessages({
     description: 'Footer text for a course card result for learner credit management',
   },
 });
+
+const getContentPriceDisplay = ({ courseRuns }) => {
+  const flatContentPrice = courseRuns.flatMap(run => run?.contentPrice);
+  // Find the max and min prices
+  const maxPrice = Math.max(...flatContentPrice);
+  const minPrice = Math.min(...flatContentPrice);
+  // Heuristic for displaying the price as a range or a singular price based on runs
+  if (flatContentPrice.length > 1 && maxPrice !== minPrice) {
+    return `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`;
+  }
+  if (flatContentPrice.length === 1) {
+    return formatPrice(flatContentPrice[0]);
+  }
+  return 'N/A';
+};
 
 const useCourseCardMetadata = ({
   course,
@@ -34,7 +45,6 @@ const useCourseCardMetadata = ({
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
-    availability,
     cardImageUrl,
     courseType,
     key,
@@ -43,7 +53,15 @@ const useCourseCardMetadata = ({
     title,
     courseRuns,
   } = course;
-  const formattedPrice = (normalizedMetadata.contentPrice || normalizedMetadata.contentPrice === 0) ? formatPrice(normalizedMetadata.contentPrice) : 'N/A';
+  const assignableCourseRuns = getAssignableCourseRuns({
+    courseRuns,
+    subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
+    isLateRedemptionAllowed: subsidyAccessPolicy.isLateRedemptionAllowed,
+  });
+
+  // Extracts the content price from assignable course runs
+  const formattedPrice = getContentPriceDisplay({ courseRuns: assignableCourseRuns });
+
   const imageSrc = cardImageUrl || cardFallbackImg;
 
   let logoSrc;
@@ -54,15 +72,7 @@ const useCourseCardMetadata = ({
   }
 
   const altText = `${title} course image`;
-  const formattedAvailability = availability?.length ? availability.join(', ') : null;
   const enrollmentDeadline = getEnrollmentDeadline(normalizedMetadata.enrollByDate);
-
-  let courseEnrollmentInfo = '';
-  if (formattedAvailability) {
-    courseEnrollmentInfo = `${formattedAvailability} • `;
-  }
-  courseEnrollmentInfo += `${ENROLLMENT.text} ${enrollmentDeadline}`;
-  const execEdEnrollmentInfo = `Starts ${formatDate(normalizedMetadata.startDate)} • ${ENROLLMENT.text} ${enrollmentDeadline}`;
 
   const isExecEdCourseType = courseType === EXEC_ED_COURSE_TYPE;
 
@@ -71,11 +81,6 @@ const useCourseCardMetadata = ({
     linkToCourse = `${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/executive-education-2u/course/${key}`;
   }
 
-  const assignableCourseRuns = getAssignableCourseRuns({
-    courseRuns,
-    subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
-    isLateRedemptionAllowed: subsidyAccessPolicy.isLateRedemptionAllowed,
-  });
   const footerText = intl.formatMessage(messages.courseFooterMessage, {
     courseRuns: assignableCourseRuns.length,
     pluralText: pluralText('date', assignableCourseRuns.length),
@@ -90,8 +95,6 @@ const useCourseCardMetadata = ({
     logoSrc,
     logoAlt,
     enrollmentDeadline,
-    courseEnrollmentInfo,
-    execEdEnrollmentInfo,
     linkToCourse,
     isExecEdCourseType,
     footerText,

@@ -2,17 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  useMediaQuery,
-  breakpoints,
-  Card,
-  Stack,
-  Badge,
+  Badge, breakpoints, Card, Stack, useMediaQuery,
 } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useCourseCardMetadata } from './data';
 import AssignmentModalImportantDates from '../assignment-modal/AssignmentModalmportantDates';
+import { formatPrice } from '../data';
 
 const BaseCourseCard = ({
   original,
@@ -23,7 +20,6 @@ const BaseCourseCard = ({
 }) => {
   const isSmall = useMediaQuery({ maxWidth: breakpoints.small.maxWidth });
   const isExtraSmall = useMediaQuery({ maxWidth: breakpoints.extraSmall.maxWidth });
-
   const courseCardMetadata = useCourseCardMetadata({
     course: camelCaseObject(original),
     courseRun,
@@ -54,7 +50,7 @@ const BaseCourseCard = ({
           subtitle={subtitle}
           actions={(
             <Stack gap={1} className="text-right">
-              <div className="h4 mt-2.5 mb-0">{formattedPrice}</div>
+              <div className="h4 mt-2.5 mb-0">{courseRun ? formatPrice(courseRun.contentPrice) : formattedPrice}</div>
               <span className="micro">
                 <FormattedMessage
                   id="lcm.budget.detail.page.catalog.tab.course.card.price.per.learner"
@@ -124,6 +120,7 @@ BaseCourseCard.propTypes = {
   }).isRequired,
   courseRun: PropTypes.shape({
     enrollBy: PropTypes.string,
+    contentPrice: PropTypes.number,
     start: PropTypes.string,
   }),
   footerActions: PropTypes.elementType,
