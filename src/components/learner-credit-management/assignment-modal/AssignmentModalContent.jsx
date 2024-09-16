@@ -132,7 +132,7 @@ const AssignmentModalContent = ({
                 description="Header for the section that explains how assigning a course works"
               />
             </h5>
-            <AssignmentAllocationHelpCollapsibles course={course} />
+            <AssignmentAllocationHelpCollapsibles courseRun={courseRun} />
           </Col>
           <Col xs={12} lg={{ span: 5, offset: 2 }}>
             <h4 className="mb-4">
