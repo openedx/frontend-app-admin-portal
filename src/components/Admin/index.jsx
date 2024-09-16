@@ -15,7 +15,7 @@ import EnrollmentsTable from '../EnrollmentsTable';
 import RegisteredLearnersTable from '../RegisteredLearnersTable';
 import EnrolledLearnersTable from '../EnrolledLearnersTable';
 import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInactiveCoursesTable';
-import CompletedLearnersTable from '../CompletedLearnersTable';
+import CompletedLearnersTable from './CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
