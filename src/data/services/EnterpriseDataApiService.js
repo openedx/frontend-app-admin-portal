@@ -204,6 +204,18 @@ class EnterpriseDataApiService {
     const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}/${chartUrl}?${new URLSearchParams(options).toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
+
+  static getAnalyticsCSVDownloadURL(key, enterpriseId, options) {
+    const queryParams = new URLSearchParams({
+      ...options,
+      ...{ response_type: 'csv' },
+    });
+    const tableURL = EnterpriseDataApiService.constructAnalyticsDataURL(
+      key,
+      `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}`,
+    );
+    return `${tableURL}?${queryParams.toString()}`;
+  }
 }
 
 export default EnterpriseDataApiService;

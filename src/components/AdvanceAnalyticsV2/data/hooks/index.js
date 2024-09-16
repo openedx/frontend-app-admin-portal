@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { advanceAnalyticsQueryKeys } from './constants';
-import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+import { advanceAnalyticsQueryKeys } from '../constants';
+import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
+
+export { default as useEnterpriseEnrollmentsData } from './useEnterpriseEnrollmentsData';
 
 export const useEnterpriseAnalyticsData = ({
   enterpriseCustomerUUID,
@@ -12,10 +14,11 @@ export const useEnterpriseAnalyticsData = ({
   granularity = undefined,
   calculation = undefined,
   currentPage = undefined,
+  pageSize = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = {
-    startDate, endDate, granularity, calculation, page: currentPage,
+    startDate, endDate, granularity, calculation, page: currentPage, pageSize,
   };
   return useQuery({
     queryKey: advanceAnalyticsQueryKeys[key](enterpriseCustomerUUID, requestOptions),

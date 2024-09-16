@@ -6,6 +6,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import Completions from './Completions';
 import { queryClient } from '../../test/testUtils';
@@ -62,17 +63,19 @@ describe('Completions Component', () => {
     axiosMock.onGet(/\/completions(\?.*)/).reply(200, mockAnalyticsTableData);
 
     const { container } = render(
-      <QueryClientProvider client={queryClient()}>
-        <IntlProvider locale="en">
-          <Completions
-            enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69"
-            startDate="2021-01-01"
-            endDate="2021-12-31"
-            granularity="Daily"
-            calculation="Total"
-          />
-        </IntlProvider>,
-      </QueryClientProvider>,
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Completions
+              enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69"
+              startDate="2021-01-01"
+              endDate="2021-12-31"
+              granularity="Daily"
+              calculation="Total"
+            />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
     );
 
     const sections = [
@@ -142,17 +145,19 @@ describe('Completions Component', () => {
     }));
 
     render(
-      <QueryClientProvider client={queryClient()}>
-        <IntlProvider locale="en">
-          <Completions
-            enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69"
-            startDate="2021-01-01"
-            endDate="2021-12-31"
-            granularity="Daily"
-            calculation="Total"
-          />
-        </IntlProvider>,
-      </QueryClientProvider>,
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Completions
+              enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69"
+              startDate="2021-01-01"
+              endDate="2021-12-31"
+              granularity="Daily"
+              calculation="Total"
+            />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
     );
 
     expect(screen.getByText('Loading top courses by completions chart data')).toBeInTheDocument();
