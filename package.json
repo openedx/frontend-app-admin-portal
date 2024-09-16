@@ -11,7 +11,7 @@
     "i18n_extract": "fedx-scripts formatjs extract --throws",
     "build:with-theme": "THEME=npm:@edx/brand-edx.org@latest npm run install-theme && fedx-scripts webpack",
     "check-types": "tsc --noemit",
-    "lint": "fedx-scripts eslint --ext .js --ext .jsx .; npm run check-types",
+    "lint": "fedx-scripts eslint --ext .js --ext .jsx . && npm run check-types",
     "lint:fix": "fedx-scripts eslint --fix --ext .js --ext .jsx --ext .tsx --ext .ts .",
     "precommit": "npm run lint",
     "prepublishOnly": "npm run build",
