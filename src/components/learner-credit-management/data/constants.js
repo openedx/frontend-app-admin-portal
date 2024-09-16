@@ -53,6 +53,7 @@ export const BUDGET_DETAIL_TAB_LABELS = {
   [BUDGET_DETAIL_MEMBERS_TAB]: 'Members',
 };
 
+// TODO: i18n'tify this
 // Card text for used in useCourseCardMetadata
 export const CARD_TEXT = {
   BADGE: {
@@ -104,8 +105,11 @@ export const DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION = 90;
 // Maximum days allowed from enrollment for a refund on assignments related to policies
 export const MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS = 14;
 
-// Start date threshold to default to today days, sets start date to today if course start date is beyond this value
+// When the start date is before this number of days before today, display the alternate start date (fixed to today).
 export const START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS = 14;
+
+// Default empty content_price value
+export const EMPTY_CONTENT_PRICE_VALUE = 0;
 
 // Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
@@ -123,4 +127,4 @@ export const learnerCreditManagementQueryKeys = {
 };
 
 // Route to learner credit
-export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:budgetId/:activeTabKey';
+export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:budgetId/:activeTabKey?';

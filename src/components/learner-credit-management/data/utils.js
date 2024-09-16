@@ -559,8 +559,6 @@ export const isLmsBudget = (
 /**
  * Determines if the course has already started. Mostly used around text formatting for tense
  *
- * This should also help with reducing 'flaky' tests.
- *
  * @param start
  * @returns {boolean}
  */
@@ -577,10 +575,10 @@ export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
  * @returns {*}
  */
 export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed }) => {
-  const clonedCourseRuns = courseRuns.map(a => ({
-    ...a,
-    enrollBy: dayjs.unix(a.enrollBy).toISOString(),
-    upgradeDeadline: dayjs.unix(a.upgradeDeadline).toISOString(),
+  const clonedCourseRuns = courseRuns.map(courseRun => ({
+    ...courseRun,
+    enrollBy: dayjs.unix(courseRun.enrollBy).toISOString(),
+    upgradeDeadline: dayjs.unix(courseRun.upgradeDeadline).toISOString(),
   }));
   const assignableCourseRunsFilter = ({ enrollBy, isActive }) => {
     const enrollByDateThreshold = dayjs(enrollBy).isBefore(
@@ -618,8 +616,10 @@ const isWithinMinimumStartDateThreshold = ({ start }) => dayjs(start).isBefore(d
  *
  * For cases where a start date does not exist, just return today's date.
  *
- * @param start
- * @param format
+ * @param {string} - start
+ * @param {string} - pacingType
+ * @param {string} - end
+ * @param {number} - weeksToComplete
  * @returns {string}
  */
 export const getNormalizedStartDate = ({

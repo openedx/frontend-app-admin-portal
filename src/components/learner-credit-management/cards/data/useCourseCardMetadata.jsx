@@ -4,6 +4,7 @@ import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.pn
 
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import {
+  EMPTY_CONTENT_PRICE_VALUE,
   EXEC_ED_COURSE_TYPE,
   formatPrice,
   getAssignableCourseRuns,
@@ -22,18 +23,18 @@ const messages = defineMessages({
 });
 
 const getContentPriceDisplay = ({ courseRuns }) => {
-  const flatContentPrice = courseRuns.flatMap(run => run?.contentPrice);
+  const flatContentPrice = courseRuns.flatMap(run => run.contentPrice || EMPTY_CONTENT_PRICE_VALUE);
   // Find the max and min prices
+  if (!flatContentPrice.length) {
+    return formatPrice(EMPTY_CONTENT_PRICE_VALUE);
+  }
   const maxPrice = Math.max(...flatContentPrice);
   const minPrice = Math.min(...flatContentPrice);
   // Heuristic for displaying the price as a range or a singular price based on runs
-  if (flatContentPrice.length > 1 && maxPrice !== minPrice) {
+  if (maxPrice !== minPrice) {
     return `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`;
   }
-  if (flatContentPrice.length === 1) {
-    return formatPrice(flatContentPrice[0]);
-  }
-  return 'N/A';
+  return formatPrice(flatContentPrice[0]);
 };
 
 const useCourseCardMetadata = ({

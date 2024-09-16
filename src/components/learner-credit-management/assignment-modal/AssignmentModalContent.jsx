@@ -27,7 +27,7 @@ const AssignmentModalContent = ({
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
   const intl = useIntl();
-  // TODO: as part of fixed price, this would need to extract the contentPrice from courseRun
+  // TODO: as part of fixed price, this would need to extract the contentPrice from courseRun, ENT-9394
   const { contentPrice } = course.normalizedMetadata;
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;

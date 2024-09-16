@@ -68,7 +68,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     isSubsidyActive,
     isAssignable,
     aggregates,
-    contentPriceCents: course.normalizedMetadata.contentPrice * 100,
+    contentPriceCents: assignmentRun?.contentPrice ? assignmentRun.contentPrice * 100 : 0,
     parentContentKey: null,
     contentKey: course.key,
     courseUuid: course.uuid,
@@ -143,7 +143,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   };
   const handleAllocateContentAssignments = () => {
     const payload = snakeCaseObject({
-      contentPriceCents: course.normalizedMetadata.contentPrice * 100, // Convert to USD cents
+      contentPriceCents: assignmentRun.contentPrice * 100, // Convert to USD cents
       contentKey: assignmentRun.key,
       learnerEmails,
     });
@@ -203,7 +203,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
             parentContentKey: course.key,
             totalAllocatedLearners: learnerEmails.length,
             errorStatus: httpErrorStatus,
-
+            errorReason,
             response: err,
           },
         );
