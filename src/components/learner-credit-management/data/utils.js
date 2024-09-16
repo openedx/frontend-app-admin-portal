@@ -4,12 +4,13 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logInfo } from '@edx/frontend-platform/logging';
 
 import {
-  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
-  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   ASSIGNMENT_ENROLLMENT_DEADLINE,
-  DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
-  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
   COURSE_PACING_MAP,
+  DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
+  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
+  MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS,
+  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -584,7 +585,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   const assignableCourseRunsFilter = ({ enrollBy, isActive }) => {
     const enrollByDateThreshold = dayjs(enrollBy).isBefore(
       Math.max(
-        dayjs(subsidyExpirationDatetime).toDate(),
+        dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate(),
         dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days').toDate(),
       ),
     );

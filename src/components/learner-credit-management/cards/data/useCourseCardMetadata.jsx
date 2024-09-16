@@ -5,10 +5,10 @@ import cardFallbackImg from '@edx/brand/paragon/images/card-imagecap-fallback.pn
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import {
   CARD_TEXT,
-  getAssignableCourseRuns,
   EXEC_ED_COURSE_TYPE,
   formatDate,
   formatPrice,
+  getAssignableCourseRuns,
   getEnrollmentDeadline,
   useBudgetId,
   useSubsidyAccessPolicy,

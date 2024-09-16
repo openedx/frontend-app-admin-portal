@@ -98,8 +98,11 @@ export const MEMBERS_TABLE_PAGE_SIZE = 10;
 // Enroll-by date warning message threshold by days
 export const ENROLL_BY_DATE_DAYS_THRESHOLD = 10;
 
-// Allocation assignmenit expiration dropoff threshold
+// Allocation assignment expiration dropoff threshold
 export const DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION = 90;
+
+// Maximum days allowed from enrollment for a refund on assignments related to policies
+export const MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS = 14;
 
 // Start date threshold to default to today days, sets start date to today if course start date is beyond this value
 export const START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS = 14;

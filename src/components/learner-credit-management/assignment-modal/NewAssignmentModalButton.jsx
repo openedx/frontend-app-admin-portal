@@ -1,13 +1,8 @@
 import React, { useCallback, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useNavigate, generatePath } from 'react-router-dom';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import {
-  FullscreenModal,
-  ActionRow,
-  Button,
-  useToggle,
-  Hyperlink,
-  StatefulButton,
+  ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
