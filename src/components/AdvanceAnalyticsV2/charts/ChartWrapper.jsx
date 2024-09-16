@@ -42,7 +42,7 @@ ChartWrapper.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   chartType: PropTypes.oneOf(['ScatterChart', 'LineChart', 'BarChart']).isRequired,
-  chartProps: PropTypes.object.isRequired,
+  chartProps: PropTypes.shape({ data: PropTypes.shape({}) }).isRequired,
   loadingMessage: PropTypes.string.isRequired,
 };
 

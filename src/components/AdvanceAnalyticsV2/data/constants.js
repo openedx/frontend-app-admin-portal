@@ -43,7 +43,7 @@ export const analyticsDataTableKeys = {
 
 const analyticsDefaultKeys = ['admin-analytics'];
 
-const generateKey = (key, enterpriseUUID, requestOptions) => [
+export const generateKey = (key, enterpriseUUID, requestOptions) => [
   ...analyticsDefaultKeys,
   key,
   enterpriseUUID,
@@ -100,3 +100,17 @@ export const skillsTypeColorMap = {
 };
 
 export const chartColorMap = { certificate: '#3669C9', audit: '#06262B' };
+
+export const GRANULARITY = {
+  DAILY: 'day',
+  WEEKLY: 'week',
+  MONTHLY: 'month',
+  QUARTERLY: 'quarter',
+  YEARLY: 'year',
+};
+export const CALCULATION = {
+  TOTAL: 'total',
+  RUNNING_TOTAL: 'running-total',
+  MOVING_AVERAGE_3_PERIODS: 'moving-average-3-period',
+  MOVING_AVERAGE_7_PERIODS: 'moving-average-7-period',
+};

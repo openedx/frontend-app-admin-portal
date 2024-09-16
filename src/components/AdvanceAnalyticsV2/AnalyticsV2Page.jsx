@@ -14,6 +14,7 @@ import Completions from './tabs/Completions';
 import Leaderboard from './tabs/Leaderboard';
 import Skills from './tabs/Skills';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
+import { GRANULARITY, CALCULATION } from './data/constants';
 
 const PAGE_TITLE = 'AnalyticsV2';
 
@@ -96,28 +97,28 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 value={granularity}
                 onChange={(e) => setGranularity(e.target.value)}
               >
-                <option value="Daily">
+                <option value={GRANULARITY.DAILY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.daily',
                     defaultMessage: 'Daily',
                     description: 'Advance analytics granularity filter daily option',
                   })}
                 </option>
-                <option value="Weekly">
+                <option value={GRANULARITY.WEEKLY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.weekly',
                     defaultMessage: 'Weekly',
                     description: 'Advance analytics granularity filter weekly option',
                   })}
                 </option>
-                <option value="Monthly">
+                <option value={GRANULARITY.MONTHLY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.monthly',
                     defaultMessage: 'Monthly',
                     description: 'Advance analytics granularity filter monthly option',
                   })}
                 </option>
-                <option value="Quarterly">
+                <option value={GRANULARITY.QUARTERLY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.quarterly',
                     defaultMessage: 'Quarterly',
@@ -141,28 +142,28 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 value={calculation}
                 onChange={(e) => setCalculation(e.target.value)}
               >
-                <option value="Total">
+                <option value={CALCULATION.TOTAL}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.total',
                     defaultMessage: 'Total',
                     description: 'Advance analytics calculation filter total option',
                   })}
                 </option>
-                <option value="Running Total">
+                <option value={CALCULATION.RUNNING_TOTAL}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.running.total',
                     defaultMessage: 'Running Total',
                     description: 'Advance analytics calculation filter running total option',
                   })}
                 </option>
-                <option value="Moving Average (3 Period)">
+                <option value={CALCULATION.MOVING_AVERAGE_3_PERIODS}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.average.3',
                     defaultMessage: 'Moving Average (3 Period)',
                     description: 'Advance analytics calculation filter moving average 3 period option',
                   })}
                 </option>
-                <option value="Moving Average (7 Period)">
+                <option value={CALCULATION.MOVING_AVERAGE_7_PERIODS}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.average.7',
                     defaultMessage: 'Moving Average (7 Period)',
