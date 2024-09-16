@@ -6,6 +6,7 @@ import { ANALYTICS_TABS, CHART_TYPES, chartColorMap } from '../data/constants';
 import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
+import DownloadCSV from '../DownloadCSV';
 
 const Engagements = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -36,12 +37,17 @@ const Engagements = ({
             defaultMessage: 'See audit and certificate track hours of learning over time.',
             description: 'Subtitle for the learning hours over time chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          activeTab={ANALYTICS_TABS.ENGAGEMENTS}
-          chartType={CHART_TYPES.ENGAGEMENTS_OVER_TIME}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSV
+              enterpriseId={enterpriseId}
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={ANALYTICS_TABS.ENGAGEMENTS}
+              granularity={granularity}
+              calculation={calculation}
+              chartType={CHART_TYPES.ENGAGEMENTS_OVER_TIME}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
@@ -76,12 +82,17 @@ const Engagements = ({
             defaultMessage: 'See the courses in which your learners spend the most time.',
             description: 'Subtitle for the top 10 courses by learning hours chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          activeTab={ANALYTICS_TABS.ENGAGEMENTS}
-          chartType={CHART_TYPES.TOP_COURSES_BY_ENGAGEMENTS}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSV
+              enterpriseId={enterpriseId}
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={ANALYTICS_TABS.ENGAGEMENTS}
+              granularity={granularity}
+              calculation={calculation}
+              chartType={CHART_TYPES.TOP_COURSES_BY_ENGAGEMENTS}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
@@ -119,12 +130,17 @@ const Engagements = ({
             defaultMessage: 'See the subjects your learners are spending the most time in.',
             description: 'Subtitle for the top 10 subjects by learning hours chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          activeTab={ANALYTICS_TABS.ENGAGEMENTS}
-          chartType={CHART_TYPES.TOP_SUBJECTS_BY_ENGAGEMENTS}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSV
+              enterpriseId={enterpriseId}
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={ANALYTICS_TABS.ENGAGEMENTS}
+              granularity={granularity}
+              calculation={calculation}
+              chartType={CHART_TYPES.TOP_SUBJECTS_BY_ENGAGEMENTS}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}

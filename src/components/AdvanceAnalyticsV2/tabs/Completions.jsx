@@ -6,6 +6,7 @@ import { ANALYTICS_TABS, CHART_TYPES, chartColorMap } from '../data/constants';
 import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
+import DownloadCSV from '../DownloadCSV';
 
 const Completions = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -37,14 +38,17 @@ const Completions = ({
             defaultMessage: 'See the course completions that result in a passing grade over time.',
             description: 'Subtitle for the completions over time chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          activeTab={ANALYTICS_TABS.COMPLETIONS}
-          granularity={granularity}
-          calculation={calculation}
-          chartType={CHART_TYPES.COMPLETIONS_OVER_TIME}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSV
+              enterpriseId={enterpriseId}
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={ANALYTICS_TABS.COMPLETIONS}
+              granularity={granularity}
+              calculation={calculation}
+              chartType={CHART_TYPES.COMPLETIONS_OVER_TIME}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
@@ -79,14 +83,17 @@ const Completions = ({
             defaultMessage: 'See the courses in which your learners are most often achieving a passing grade.',
             description: 'Subtitle for the top 10 courses by completions chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          activeTab={ANALYTICS_TABS.COMPLETIONS}
-          granularity={granularity}
-          calculation={calculation}
-          chartType={CHART_TYPES.TOP_COURSES_BY_COMPLETIONS}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSV
+              enterpriseId={enterpriseId}
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={ANALYTICS_TABS.COMPLETIONS}
+              granularity={granularity}
+              calculation={calculation}
+              chartType={CHART_TYPES.TOP_COURSES_BY_COMPLETIONS}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
@@ -124,14 +131,17 @@ const Completions = ({
             defaultMessage: 'See the subjects your learners are most often achieving a passing grade.',
             description: 'Subtitle for the top 10 subjects by completion chart.',
           })}
-          startDate={startDate}
-          endDate={endDate}
-          activeTab={ANALYTICS_TABS.COMPLETIONS}
-          granularity={granularity}
-          calculation={calculation}
-          chartType={CHART_TYPES.TOP_SUBJECTS_BY_COMPLETIONS}
-          enterpriseId={enterpriseId}
-          isDownloadCSV
+          DownloadCSVComponent={(
+            <DownloadCSV
+              enterpriseId={enterpriseId}
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={ANALYTICS_TABS.COMPLETIONS}
+              granularity={granularity}
+              calculation={calculation}
+              chartType={CHART_TYPES.TOP_SUBJECTS_BY_COMPLETIONS}
+            />
+          )}
         />
         <ChartWrapper
           isFetching={isFetching}
