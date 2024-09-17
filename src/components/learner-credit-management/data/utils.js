@@ -565,9 +565,8 @@ export const isLmsBudget = (
  */
 export const isDateBeforeToday = date => dayjs(date).isBefore(dayjs());
 
-export const minimumEnrollByDateFromToday = ({ today = dayjs(), subsidyExpirationDatetime }) => Math.min(
+export const minimumEnrollByDateFromToday = ({ subsidyExpirationDatetime }) => Math.min(
   dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate(),
-  today.add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days').toDate(),
 );
 
 export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
@@ -625,9 +624,8 @@ export const getNormalizedEnrollByDate = (enrollBy) => {
 
 /**
  * Filters assignable course runs based on the following criteria:
- *  - If hasEnrollBy, we return assignments with enroll before the soonest of the two date: The subsidy expiration
- *    date - refund threshold OR today offset by the 90-day allocation threshold for an assignment denoted as
- *    isEligibleForEnrollment
+ *  - If hasEnrollBy, we return assignments with enroll before the soonest date: The subsidy expiration
+ *    date - refund threshold
  *  - If isLateRedemptionAllowed, we consider only the isLateEnrollmentEligible field returned by Algolia for
  *    each run.
  *
@@ -637,7 +635,8 @@ export const getNormalizedEnrollByDate = (enrollBy) => {
  *  The main purpose of the filter is to ensure that course runs for a
  *  course are within the enterprises LC subsidy duration
  *  The inclusion of the increased sensitivity reduces the chance of a specific run
- *  (which may be allocated but not accepted) falling outside the date range of the subsidy expiration date.
+ *  (which may be allocated but not accepted) falling outside the date range of the subsidy expiration date
+ *  refund threshold.
  *
  *  We transform the assignedCourseRuns data to normalize the start and enrollBy dates based on the functions
  *
@@ -650,7 +649,6 @@ export const getNormalizedEnrollByDate = (enrollBy) => {
  * @returns {*}
  */
 export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed }) => {
-  const today = dayjs();
   const clonedCourseRuns = courseRuns.map(courseRun => ({
     ...courseRun,
     enrollBy: courseRun.hasEnrollBy ? dayjs.unix(courseRun.enrollBy).toISOString() : null,
@@ -662,7 +660,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
     let isEligibleForEnrollment = true;
     if (hasEnrollBy) {
       isEligibleForEnrollment = dayjs(enrollBy).isBefore(
-        minimumEnrollByDateFromToday({ today, subsidyExpirationDatetime }),
+        minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
       );
     }
     // Late redemption filter
@@ -681,7 +679,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
         ...courseRun,
         start: getNormalizedStartDate(courseRun),
         enrollBy: getNormalizedEnrollByDate(
-          minimumEnrollByDateFromToday({ today, subsidyExpirationDatetime }),
+          minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
         ),
         hasEnrollBy: true,
       };
