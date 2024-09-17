@@ -111,6 +111,9 @@ export const START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS = 14;
 // Default empty content_price value
 export const EMPTY_CONTENT_PRICE_VALUE = 0;
 
+// Late enrollments feature
+export const LATE_ENROLLMENTS_BUFFER_DAYS = 30;
+
 // Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {

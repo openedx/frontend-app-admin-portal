@@ -76,6 +76,7 @@ const originalData = {
       upgrade_deadline: 1892678399,
       pacing_type: 'self_paced',
       enroll_by: enrollByTimestamp,
+      has_enroll_by: true,
       is_active: true,
       weeks_to_complete: 60,
       end: dayjs().add(1, 'years').toISOString(),
@@ -88,6 +89,7 @@ const originalData = {
     upgrade_deadline: 1892678399,
     pacing_type: 'self_paced',
     enroll_by: enrollByTimestamp,
+    has_enroll_by: true,
     is_active: true,
     weeks_to_complete: 60,
     end: dayjs().add(1, 'year').toISOString(),
@@ -119,7 +121,8 @@ const execEdData = {
       start: futureStartDate,
       upgrade_deadline: 1892678399,
       pacing_type: 'instructor_paced',
-      enroll_by: 1892678399,
+      enroll_by: enrollByTimestamp,
+      has_enroll_by: true,
       is_active: true,
       weeks_to_complete: 60,
       end: dayjs().add(1, 'year').toISOString(),
@@ -131,7 +134,8 @@ const execEdData = {
     start: futureStartDate,
     upgrade_deadline: 1892678399,
     pacing_type: 'instructor_paced',
-    enroll_by: 1892678399,
+    enroll_by: enrollByTimestamp,
+    has_enroll_by: true,
     is_active: true,
     weeks_to_complete: 60,
     end: dayjs().add(1, 'year').toISOString(),
@@ -287,7 +291,7 @@ describe('Course card works as expected', () => {
   });
 
   test('executive education card renders', () => {
-    const enrollByDate = getNormalizedEnrollByDate({ enrollBy: dayjs('Dec 22, 2029') });
+    const enrollByDate = getNormalizedEnrollByDate({ enrollBy: dayjs.unix(enrollByTimestamp).toISOString() });
     const formattedEnrollBy = dayjs(enrollByDate).format(SHORT_MONTH_DATE_FORMAT);
     renderWithRouter(<CourseCardWrapper {...execEdProps} />);
     expect(screen.queryByText('$999')).toBeInTheDocument();

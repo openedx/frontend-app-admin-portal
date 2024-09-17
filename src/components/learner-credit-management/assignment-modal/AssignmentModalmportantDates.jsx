@@ -8,7 +8,7 @@ import {
   DATETIME_FORMAT,
   getNormalizedEnrollByDate,
   getNormalizedStartDate,
-  hasCourseStarted,
+  isDateBeforeToday,
   SHORT_MONTH_DATE_FORMAT,
 } from '../data';
 
@@ -58,7 +58,7 @@ const AssignmentModalImportantDates = ({ courseRun }) => {
     ? dayjs(normalizedEnrollByDate).format(DATETIME_FORMAT)
     : null;
   const courseStartDate = getNormalizedStartDate(courseRun);
-  const courseHasStartedLabel = hasCourseStarted(courseStartDate)
+  const courseHasStartedLabel = isDateBeforeToday(courseStartDate)
     ? intl.formatMessage(messages.courseStarted)
     : intl.formatMessage(messages.courseStarts);
   // This is an edge case that the user should never enter but covered nonetheless

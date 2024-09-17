@@ -7,6 +7,7 @@ import {
   ASSIGNMENT_ENROLLMENT_DEADLINE,
   COURSE_PACING_MAP,
   DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
+  LATE_ENROLLMENTS_BUFFER_DAYS,
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
@@ -559,15 +560,22 @@ export const isLmsBudget = (
 /**
  * Determines if the course has already started. Mostly used around text formatting for tense
  *
- * @param start
+ * @param date
  * @returns {boolean}
  */
-export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
+export const isDateBeforeToday = date => dayjs(date).isBefore(dayjs());
 
 /**
- * Returns assignable course runs within the threshold of within the subsidies expiration date
- * offset by the DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION constant. It sorts it from the soonest expiring
- * enroll-by date and the enroll-by date and upgrade deadline has been normalized to ISO format.
+ * Filters assignable course runs based on the following criteria:
+ *  - If hasEnrollBy, we return the soonest of two dates: The subsidy expiration date - refund threshold OR today
+ *    offset by the 90-day allocation threshold for an assignment denoted as isEligibleForEnrollment
+ *  - If isLateRedemptionEnabled, we consider only the isLateEnrollmentEligible field returned by Algolia for
+ *    each run.
+ *
+ *  Based on the above criteria, if isLateRedemptionAllowed is false, filter on if the course run isActive AND
+ *  isEligibleForEnrollment
+ *
+ *  Furthermore, we return assignable course runs sorted by the enrollBy date (soonest to latest)
  *
  * @param courseRuns
  * @param subsidyExpirationDatetime
@@ -577,20 +585,27 @@ export const hasCourseStarted = (start) => dayjs(start).isBefore(dayjs());
 export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed }) => {
   const clonedCourseRuns = courseRuns.map(courseRun => ({
     ...courseRun,
-    enrollBy: dayjs.unix(courseRun.enrollBy).toISOString(),
+    enrollBy: courseRun.hasEnrollBy ? dayjs.unix(courseRun.enrollBy).toISOString() : null,
     upgradeDeadline: dayjs.unix(courseRun.upgradeDeadline).toISOString(),
   }));
-  const assignableCourseRunsFilter = ({ enrollBy, isActive }) => {
-    const enrollByDateThreshold = dayjs(enrollBy).isBefore(
-      Math.max(
-        dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate(),
-        dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days').toDate(),
-      ),
-    );
-    if (isLateRedemptionAllowed) {
-      return enrollByDateThreshold;
+  const assignableCourseRunsFilter = ({
+    enrollBy, isActive, hasEnrollBy = false, isLateEnrollmentEligible = false,
+  }) => {
+    let isEligibleForEnrollment = true;
+    if (hasEnrollBy) {
+      isEligibleForEnrollment = dayjs(enrollBy).isBefore(
+        Math.min(
+          dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate(),
+          dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days').toDate(),
+        ),
+      );
     }
-    return isActive && enrollByDateThreshold;
+    if (isDateBeforeToday(enrollBy) && isLateRedemptionAllowed) {
+      const lateEnrollmentCutoff = dayjs().subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
+      isEligibleForEnrollment = dayjs(enrollBy).isAfter(lateEnrollmentCutoff);
+      return isLateEnrollmentEligible && isEligibleForEnrollment;
+    }
+    return isActive && isEligibleForEnrollment;
   };
   const assignableCourseRuns = clonedCourseRuns.filter(assignableCourseRunsFilter);
   const sortedAssignableCourseRuns = assignableCourseRuns.sort((a, b) => a.enrollBy - b.enrollBy);

@@ -62,7 +62,6 @@ const useCourseCardMetadata = ({
 
   // Extracts the content price from assignable course runs
   const formattedPrice = getContentPriceDisplay({ courseRuns: assignableCourseRuns });
-
   const imageSrc = cardImageUrl || cardFallbackImg;
 
   let logoSrc;
