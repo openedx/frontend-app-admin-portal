@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Card, Stack, Icon } from '@openedx/paragon';
+import { Card, Icon, Stack } from '@openedx/paragon';
 import { Error } from '@openedx/paragon/icons';
 
-import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { formatPrice } from '../data';
 import AssignmentModalSummaryEmptyState from './AssignmentModalSummaryEmptyState';
 import AssignmentModalSummaryLearnerList from './AssignmentModalSummaryLearnerList';
@@ -30,6 +30,7 @@ const AssignmentModalSummaryContents = ({
   return <AssignmentModalSummaryEmptyState />;
 };
 
+// TODO: Pass course runs to take into account hte individual run content_price
 const AssignmentModalSummary = ({
   course,
   learnerEmails,

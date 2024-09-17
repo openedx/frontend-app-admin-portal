@@ -655,19 +655,20 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
     upgradeDeadline: dayjs.unix(courseRun.upgradeDeadline).toISOString(),
   }));
   const assignableCourseRunsFilter = ({
-    enrollBy, isActive, hasEnrollBy = false, isLateEnrollmentEligible = false,
+    enrollBy, isActive, hasEnrollBy, isLateEnrollmentEligible,
   }) => {
     let isEligibleForEnrollment = true;
     if (hasEnrollBy) {
       isEligibleForEnrollment = dayjs(enrollBy).isBefore(
         minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
       );
-    }
-    // Late redemption filter
-    if (isDateBeforeToday(enrollBy) && isLateRedemptionAllowed) {
-      const lateEnrollmentCutoff = dayjs().subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
-      isEligibleForEnrollment = dayjs(enrollBy).isAfter(lateEnrollmentCutoff);
-      return isLateEnrollmentEligible && isEligibleForEnrollment;
+      // Late redemption filter
+      // TODO: Fallback to enrollmentStart if no enrollBy field (surface in ALG)
+      if (isDateBeforeToday(enrollBy) && isLateRedemptionAllowed) {
+        const lateEnrollmentCutoff = dayjs().subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
+        isEligibleForEnrollment = dayjs(enrollBy).isAfter(lateEnrollmentCutoff);
+        return isLateEnrollmentEligible && isEligibleForEnrollment;
+      }
     }
     // General courseware filter
     return isActive && isEligibleForEnrollment;
