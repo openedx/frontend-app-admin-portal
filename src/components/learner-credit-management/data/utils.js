@@ -628,15 +628,20 @@ export const getNormalizedEnrollByDate = (enrollBy) => {
  *  - If hasEnrollBy, we return assignments with enroll before the soonest of the two date: The subsidy expiration
  *    date - refund threshold OR today offset by the 90-day allocation threshold for an assignment denoted as
  *    isEligibleForEnrollment
- *  - If isLateRedemptionEnabled, we consider only the isLateEnrollmentEligible field returned by Algolia for
+ *  - If isLateRedemptionAllowed, we consider only the isLateEnrollmentEligible field returned by Algolia for
  *    each run.
  *
  *  Based on the above criteria, if isLateRedemptionAllowed is false, filter on if the course run isActive AND
  *  isEligibleForEnrollment
  *
- *  We transform the assignedCourseRuns data to normalize the start and enrollby dates based on the functions
+ *  The main purpose of the filter is to ensure that course runs for a
+ *  course are within the enterprises LC subsidy duration
+ *  The inclusion of the increased sensitivity reduces the chance of a specific run
+ *  (which may be allocated but not accepted) falling outside the date range of the subsidy expiration date.
  *
- *  Furthermore, we return assignable course runs sorted by the enrollBy date (soonest to latest). If the enrollby dates
+ *  We transform the assignedCourseRuns data to normalize the start and enrollBy dates based on the functions
+ *
+ *  Furthermore, we return assignable course runs sorted by the enrollBy date (soonest to latest). If the enrollBy dates
  *  are equivalent, sort by the start date.
  *
  * @param courseRuns
@@ -687,7 +692,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
       enrollBy: getNormalizedEnrollByDate(courseRun.enrollBy),
     };
   });
-  // Sorts by the enrollBy date. If enrollby is equivalent, sort by start.
+  // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start.
   const sortedAssignableCourseRuns = assignableCourseRuns.sort((a, b) => {
     if (a.enrollBy === b.enrollBy) {
       return dayjs(a.start).unix() - dayjs(b.start).unix();
