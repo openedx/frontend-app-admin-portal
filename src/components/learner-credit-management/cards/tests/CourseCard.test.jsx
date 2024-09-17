@@ -291,7 +291,7 @@ describe('Course card works as expected', () => {
   });
 
   test('executive education card renders', () => {
-    const enrollByDate = getNormalizedEnrollByDate({ enrollBy: dayjs.unix(enrollByTimestamp).toISOString() });
+    const enrollByDate = getNormalizedEnrollByDate(dayjs.unix(enrollByTimestamp).toISOString());
     const formattedEnrollBy = dayjs(enrollByDate).format(SHORT_MONTH_DATE_FORMAT);
     renderWithRouter(<CourseCardWrapper {...execEdProps} />);
     expect(screen.queryByText('$999')).toBeInTheDocument();

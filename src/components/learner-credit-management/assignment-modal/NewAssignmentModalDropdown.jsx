@@ -3,11 +3,7 @@ import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import { useState } from 'react';
-import {
-  getNormalizedEnrollByDate,
-  getNormalizedStartDate,
-  SHORT_MONTH_DATE_FORMAT,
-} from '../data';
+import { SHORT_MONTH_DATE_FORMAT } from '../data';
 
 const messages = defineMessages({
   byDate: {
@@ -68,12 +64,12 @@ const NewAssignmentModalDropdown = ({
           >
             <Stack>
               {intl.formatMessage(messages.enrollBy, {
-                enrollByDate: dayjs(getNormalizedEnrollByDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT),
+                enrollByDate: dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT),
               })}
               <span className={`small ${getDropdownItemClassName(courseRun)}`}>
                 {intl.formatMessage(messages.startDate, {
                   startLabel: startLabel(courseRun),
-                  startDate: dayjs(getNormalizedStartDate(courseRun)).format(SHORT_MONTH_DATE_FORMAT),
+                  startDate: dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT),
                 })}
               </span>
             </Stack>

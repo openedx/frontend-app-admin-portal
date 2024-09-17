@@ -4,13 +4,7 @@ import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 
 import dayjs from 'dayjs';
-import {
-  DATETIME_FORMAT,
-  getNormalizedEnrollByDate,
-  getNormalizedStartDate,
-  isDateBeforeToday,
-  SHORT_MONTH_DATE_FORMAT,
-} from '../data';
+import { DATETIME_FORMAT, isDateBeforeToday, SHORT_MONTH_DATE_FORMAT } from '../data';
 
 const messages = defineMessages({
   importantDates: {
@@ -53,18 +47,17 @@ AssignmentModalImportantDate.propTypes = {
 
 const AssignmentModalImportantDates = ({ courseRun }) => {
   const intl = useIntl();
-  const normalizedEnrollByDate = getNormalizedEnrollByDate(courseRun);
-  const enrollByDate = normalizedEnrollByDate
-    ? dayjs(normalizedEnrollByDate).format(DATETIME_FORMAT)
-    : null;
-  const courseStartDate = getNormalizedStartDate(courseRun);
-  const courseHasStartedLabel = isDateBeforeToday(courseStartDate)
-    ? intl.formatMessage(messages.courseStarted)
-    : intl.formatMessage(messages.courseStarts);
+  const enrollByDate = dayjs(courseRun.enrollBy).format(DATETIME_FORMAT);
+  const courseStartDate = courseRun.start;
+
   // This is an edge case that the user should never enter but covered nonetheless
   if (!enrollByDate && !courseStartDate) {
     return null;
   }
+
+  const courseHasStartedLabel = isDateBeforeToday(courseStartDate)
+    ? intl.formatMessage(messages.courseStarted)
+    : intl.formatMessage(messages.courseStarts);
 
   return (
     <section className="assignments-important-dates small">
