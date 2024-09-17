@@ -61,6 +61,7 @@ const mockSubsidyAccessPolicy = {
     spendAvailableUsd: 50000,
   },
   groupAssociations: ['test-group-uuid'],
+  policyType: 'AssignedLearnerCreditAccessPolicy',
 };
 
 const mockDisplaySuccessfulInvitationToast = jest.fn();
