@@ -142,7 +142,7 @@ const AssignmentModalContent = ({
               />
             </h4>
             <AssignmentModalSummary
-              course={course}
+              courseRun={courseRun}
               learnerEmails={learnerEmails}
               assignmentAllocationMetadata={assignmentAllocationMetadata}
             />
@@ -206,7 +206,7 @@ AssignmentModalContent.propTypes = {
   courseRun: PropTypes.shape({
     enrollBy: PropTypes.string,
     start: PropTypes.string,
-    contentPrice: PropTypes.string,
+    contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   onEmailAddressesChange: PropTypes.func.isRequired,
 };
