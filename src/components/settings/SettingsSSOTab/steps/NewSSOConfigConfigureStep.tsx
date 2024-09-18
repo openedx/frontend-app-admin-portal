@@ -11,6 +11,8 @@ import { urlValidation } from '../../../../utils';
 import { FormWorkflowStep } from '../../../forms/FormWorkflow';
 import { FORM_ERROR_MESSAGE, setStepAction } from '../../../forms/data/actions';
 import { INVALID_IDP_METADATA_ERROR, RECORD_UNDER_CONFIGURATIONS_ERROR } from '../../data/constants';
+// TODO: Resolve dependency issue
+// eslint-disable-next-line import/no-cycle
 import { SSOConfigCamelCase } from '../SSOFormWorkflowConfig';
 
 const messages = defineMessages({

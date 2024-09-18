@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Hyperlink } from '@openedx/paragon';
+import { Hyperlink, Stack } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { configuration } from '../../config';
@@ -21,6 +21,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug, enterpriseId }) => {
       state: row.original.state,
     },
   );
+  const courseKey = row.original.isAssignedCourseRun ? row.original.parentContentKey : row.original.contentKey;
   return (
     <Stack gap={1}>
       <EmailAddressTableCell
@@ -31,7 +32,7 @@ const AssignmentDetailsTableCell = ({ row, enterpriseSlug, enterpriseId }) => {
       <div>
         <Hyperlink
           className="x-small"
-          destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${row.original.contentKey}`}
+          destination={`${ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${courseKey}`}
           onClick={handleOnViewCourseClick}
           target="_blank"
           isInline
@@ -53,6 +54,7 @@ AssignmentDetailsTableCell.propTypes = {
     original: PropTypes.shape({
       uuid: PropTypes.string,
       learnerEmail: PropTypes.string,
+      parentContentKey: PropTypes.string,
       contentKey: PropTypes.string.isRequired,
       contentTitle: PropTypes.string,
       contentQuantity: PropTypes.number,
@@ -62,6 +64,7 @@ AssignmentDetailsTableCell.propTypes = {
       }),
       learnerState: PropTypes.string,
       state: PropTypes.string,
+      isAssignedCourseRun: PropTypes.bool,
     }).isRequired,
   }).isRequired,
   enterpriseSlug: PropTypes.string,

@@ -17,7 +17,9 @@ import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInput
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
 
-const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }) => {
+const AssignmentModalContent = ({
+  enterpriseId, course, courseRun, onEmailAddressesChange,
+}) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
@@ -25,13 +27,12 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
   const intl = useIntl();
+  // TODO: as part of fixed price, this would need to extract the contentPrice from courseRun, ENT-9394
   const { contentPrice } = course.normalizedMetadata;
-
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
   };
-
   const handleEmailAddressesChanged = useCallback((value) => {
     if (!value) {
       setLearnerEmails([]);
@@ -85,7 +86,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
                 description="Header for the section to assign a course to learners using learner credit."
               />
             </h3>
-            <BaseCourseCard original={course} cardClassName="shadow-none" />
+            <BaseCourseCard original={course} courseRun={courseRun} cardClassName="shadow-none" />
           </Col>
         </Row>
         <Row>
@@ -131,7 +132,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
                 description="Header for the section that explains how assigning a course works"
               />
             </h5>
-            <AssignmentAllocationHelpCollapsibles course={course} />
+            <AssignmentAllocationHelpCollapsibles courseRun={courseRun} />
           </Col>
           <Col xs={12} lg={{ span: 5, offset: 2 }}>
             <h4 className="mb-4">
@@ -203,6 +204,10 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
 AssignmentModalContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   course: PropTypes.shape().isRequired, // Pass-thru prop to `BaseCourseCard`
+  courseRun: PropTypes.shape({
+    enrollBy: PropTypes.string,
+    start: PropTypes.string,
+  }).isRequired,
   onEmailAddressesChange: PropTypes.func.isRequired,
 };
 

@@ -5,6 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';

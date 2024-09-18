@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {
-  Spinner,
-} from '@openedx/paragon';
+import { Spinner } from '@openedx/paragon';
 import ScatterChart from './ScatterChart';
 import LineChart from './LineChart';
 import BarChart from './BarChart';

@@ -84,3 +84,9 @@ form {
 .font-size-base {
   font-size: $font-size-base !important;
 }
+
+// TODO: Class override can be removed once Paragon is upgraded to version v22.8.1
+.pgn__card-logo-cap {
+  object-fit: scale-down !important;
+  object-position: center center !important;
+}

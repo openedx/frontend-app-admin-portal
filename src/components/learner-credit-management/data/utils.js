@@ -4,9 +4,14 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logInfo } from '@edx/frontend-platform/logging';
 
 import {
-  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
-  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   ASSIGNMENT_ENROLLMENT_DEADLINE,
+  COURSE_PACING_MAP,
+  DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
+  LATE_ENROLLMENTS_BUFFER_DAYS,
+  LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
+  MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS,
+  NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
+  START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
 import { BUDGET_STATUSES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
@@ -551,3 +556,146 @@ export const isLmsBudget = (
   activeIntegrationsLength,
   isUniversalGroup,
 ) => activeIntegrationsLength > 0 && isUniversalGroup;
+
+/**
+ * Determines if the course has already started. Mostly used around text formatting for tense
+ *
+ * @param date
+ * @returns {boolean}
+ */
+export const isDateBeforeToday = date => dayjs(date).isBefore(dayjs());
+
+export const minimumEnrollByDateFromToday = ({ subsidyExpirationDatetime }) => Math.min(
+  dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate(),
+);
+
+export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
+
+export const hasTimeToComplete = ({ end, weeksToComplete }) => {
+  if (!weeksToComplete || !end) {
+    return true;
+  }
+  const today = dayjs();
+  const differenceInWeeks = dayjs(end).diff(today, 'week');
+  return weeksToComplete <= differenceInWeeks;
+};
+
+const isWithinMinimumStartDateThreshold = ({ start }) => dayjs(start).isBefore(dayjs().subtract(START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, 'days'));
+
+/**
+ * If the start date of the course is before today offset by the START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS
+ * then return today's formatted date. Otherwise, pass-through the start date in ISO format.
+ *
+ * For cases where a start date does not exist, just return today's date.
+ *
+ * @param {string} - start
+ * @param {string} - pacingType
+ * @param {string} - end
+ * @param {number} - weeksToComplete
+ * @returns {string}
+ */
+export const getNormalizedStartDate = ({
+  start, pacingType, end, weeksToComplete,
+}) => {
+  const todayToIso = dayjs().toISOString();
+  if (!start) {
+    return todayToIso;
+  }
+  const startDateIso = dayjs(start).toISOString();
+  if (isCourseSelfPaced({ pacingType })) {
+    if (hasTimeToComplete({ end, weeksToComplete }) || isWithinMinimumStartDateThreshold({ start })) {
+      // always today's date (incentives enrollment)
+      return todayToIso;
+    }
+  }
+  return startDateIso;
+};
+
+export const getNormalizedEnrollByDate = (enrollBy) => {
+  if (!enrollBy) {
+    return null;
+  }
+  const ninetyDaysFromNow = dayjs().add(DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION, 'days');
+  if (dayjs(enrollBy).isAfter(ninetyDaysFromNow)) {
+    return ninetyDaysFromNow.toISOString();
+  }
+  return enrollBy;
+};
+
+/**
+ * Filters assignable course runs based on the following criteria:
+ *  - If hasEnrollBy, we return assignments with enroll before the soonest date: The subsidy expiration
+ *    date - refund threshold
+ *  - If isLateRedemptionAllowed, we consider only the isLateEnrollmentEligible field returned by Algolia for
+ *    each run.
+ *
+ *  Based on the above criteria, if isLateRedemptionAllowed is false, filter on if the course run isActive AND
+ *  isEligibleForEnrollment
+ *
+ *  The main purpose of the filter is to ensure that course runs for a
+ *  course are within the enterprises LC subsidy duration
+ *  The inclusion of the increased sensitivity reduces the chance of a specific run
+ *  (which may be allocated but not accepted) falling outside the date range of the subsidy expiration date
+ *  refund threshold.
+ *
+ *  We transform the assignedCourseRuns data to normalize the start and enrollBy dates based on the functions
+ *
+ *  Furthermore, we return assignable course runs sorted by the enrollBy date (soonest to latest). If the enrollBy dates
+ *  are equivalent, sort by the start date.
+ *
+ * @param courseRuns
+ * @param subsidyExpirationDatetime
+ * @param isLateRedemptionAllowed
+ * @returns {*}
+ */
+export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed }) => {
+  const clonedCourseRuns = courseRuns.map(courseRun => ({
+    ...courseRun,
+    enrollBy: courseRun.hasEnrollBy ? dayjs.unix(courseRun.enrollBy).toISOString() : null,
+    upgradeDeadline: dayjs.unix(courseRun.upgradeDeadline).toISOString(),
+  }));
+  const assignableCourseRunsFilter = ({
+    enrollBy, isActive, hasEnrollBy = false, isLateEnrollmentEligible = false,
+  }) => {
+    let isEligibleForEnrollment = true;
+    if (hasEnrollBy) {
+      isEligibleForEnrollment = dayjs(enrollBy).isBefore(
+        minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
+      );
+    }
+    // Late redemption filter
+    if (isDateBeforeToday(enrollBy) && isLateRedemptionAllowed) {
+      const lateEnrollmentCutoff = dayjs().subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
+      isEligibleForEnrollment = dayjs(enrollBy).isAfter(lateEnrollmentCutoff);
+      return isLateEnrollmentEligible && isEligibleForEnrollment;
+    }
+    // General courseware filter
+    return isActive && isEligibleForEnrollment;
+  };
+  // Main function that transforms the cloned course runs to the normalizedStart and normalizedEnrollBy dates
+  const assignableCourseRuns = clonedCourseRuns.filter(assignableCourseRunsFilter).map(courseRun => {
+    if (!courseRun.hasEnrollBy) {
+      return {
+        ...courseRun,
+        start: getNormalizedStartDate(courseRun),
+        enrollBy: getNormalizedEnrollByDate(
+          minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
+        ),
+        hasEnrollBy: true,
+      };
+    }
+    return {
+      ...courseRun,
+      start: getNormalizedStartDate(courseRun),
+      enrollBy: getNormalizedEnrollByDate(courseRun.enrollBy),
+    };
+  });
+  // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start.
+  const sortedAssignableCourseRuns = assignableCourseRuns.sort((a, b) => {
+    if (a.enrollBy === b.enrollBy) {
+      return dayjs(a.start).unix() - dayjs(b.start).unix();
+    }
+    return a.enrollBy - b.enrollBy;
+  });
+  return sortedAssignableCourseRuns;
+};
