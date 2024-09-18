@@ -134,3 +134,48 @@ export const applyCalculation = (timeSeriesData, countKey, calculation) => {
   // If no calculation is applied,
   return timeSeriesData;
 };
+
+/**
+ * Add new columns to the data based on the allowed enrollment types.
+ *
+ * This will convert the data with the following structure:
+ * [
+ *   {'uniqueKey': 'value1', 'countKey': 10, 'enrollType': 'audit'},
+ *   {'uniqueKey': 'value1', 'countKey': 5, 'enrollType': 'certificate'},
+ *   {'uniqueKey': 'value2', 'countKey': 45, 'enrollType': 'certificate'},
+ *   {'uniqueKey': 'value3', 'countKey': 15, 'enrollType': 'audit'},
+ * ]
+ * into the following structure:
+ * [
+ *  {'uniqueKey': 'value1', 'audit': 10, 'certificate': 5},]
+ *  {'uniqueKey': 'value2', 'certificate': 45},]
+ *  {'uniqueKey': 'value3', 'audit': 15},]
+ *
+ * @param {Array} data - The data to convert.
+ * @param {String} uniqueKey - The key to uniquely identify an entry.
+ * @param {String} countKey - The key to access the count entry in the given data.
+ * @param {String} enrollTypeKey - The key to access the enrollType from the entry.
+ */
+export const modifyDataToIntroduceEnrollTypeCount = (data, uniqueKey, countKey, enrollTypeKey = 'enrollType') => {
+  if (!data || data.length === 0) {
+    return [];
+  }
+  const modifiedData = {};
+  for (let i = 0; i < data.length; i++) {
+    const item = data[i];
+    const uniqueValue = item[uniqueKey];
+    const countValue = item[countKey];
+    const enrollType = item[enrollTypeKey];
+
+    if (uniqueValue in modifiedData) {
+      if (enrollType in modifiedData[uniqueValue]) {
+        modifiedData[uniqueValue][enrollType] += countValue;
+      } else {
+        modifiedData[uniqueValue][enrollType] = countValue;
+      }
+    } else {
+      modifiedData[uniqueValue] = { ...item, [enrollType]: countValue };
+    }
+  }
+  return Object.values(modifiedData);
+};

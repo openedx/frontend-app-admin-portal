@@ -9,6 +9,7 @@ import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
 import { useEnterpriseEnrollmentsData } from '../data/hooks';
 import DownloadCSVButton from '../DownloadCSVButton';
+import { modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
 
 dayjs.extend(utc);
 
@@ -26,41 +27,45 @@ const Enrollments = ({
     calculation,
   });
   const enrollmentsOverTimeForCSV = useMemo(() => {
-    if (data?.enrollmentsOverTime) {
-      return data.enrollmentsOverTime.map(({
-        enterpriseEnrollmentDate, enrollmentCount, enrollType,
-      }) => ({
-        enterprise_enrollment_date: dayjs.utc(enterpriseEnrollmentDate).toISOString().split('T')[0],
-        certificate: enrollmentCount,
-        enroll_type: enrollType,
-      }));
-    }
-    return [];
+    const enrollmentsOverTime = modifyDataToIntroduceEnrollTypeCount(
+      data?.enrollmentsOverTime,
+      'enterpriseEnrollmentDate',
+      'enrollmentCount',
+    );
+    return enrollmentsOverTime.map(({ enterpriseEnrollmentDate, certificate, audit }) => ({
+      enterprise_enrollment_date: dayjs.utc(enterpriseEnrollmentDate).toISOString().split('T')[0],
+      certificate,
+      audit,
+    }));
   }, [data]);
+
   const topCoursesByEnrollmentsForCSV = useMemo(() => {
-    if (data?.topCoursesByEnrollments) {
-      return data.topCoursesByEnrollments.map(({
-        courseKey, courseTitle, enrollmentCount, enrollType,
-      }) => ({
-        course_key: courseKey,
-        course_title: courseTitle,
-        certificate: enrollmentCount,
-        enroll_type: enrollType,
-      }));
-    }
-    return [];
+    const topCoursesByEnrollments = modifyDataToIntroduceEnrollTypeCount(
+      data?.topCoursesByEnrollments,
+      'courseKey',
+      'enrollmentCount',
+    );
+    return topCoursesByEnrollments.map(({
+      courseKey, courseTitle, certificate, audit,
+    }) => ({
+      course_key: courseKey,
+      course_title: courseTitle,
+      certificate,
+      audit,
+    }));
   }, [data]);
+
   const topSubjectsByEnrollmentsForCSV = useMemo(() => {
-    if (data?.topSubjectsByEnrollments) {
-      return data.topSubjectsByEnrollments.map(({
-        courseSubject, enrollmentCount, enrollType,
-      }) => ({
-        course_subject: courseSubject,
-        certificate: enrollmentCount,
-        enroll_type: enrollType,
-      }));
-    }
-    return [];
+    const topSubjectsByEnrollments = modifyDataToIntroduceEnrollTypeCount(
+      data?.topSubjectsByEnrollments,
+      'courseSubject',
+      'enrollmentCount',
+    );
+    return topSubjectsByEnrollments.map(({ courseSubject, certificate, audit }) => ({
+      course_subject: courseSubject,
+      certificate,
+      audit,
+    }));
   }, [data]);
 
   return (
