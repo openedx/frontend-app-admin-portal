@@ -280,11 +280,12 @@ export const orderBudgets = (intl, budgets) => {
 
 /**
  * Formats a date string to MMM D, YYYY format.
- * @param {string} date Date string.
- * @returns Formatted date string.
+ * @param {string} date
+ * @param {string} format
+ * @returns {string}
  */
-export function formatDate(date) {
-  return dayjs(date).format('MMM D, YYYY');
+export function formatDate(date, format = 'MMM D, YYYY') {
+  return dayjs(date).format(format);
 }
 
 // Exec ed and open courses cards should display either the enrollment deadline

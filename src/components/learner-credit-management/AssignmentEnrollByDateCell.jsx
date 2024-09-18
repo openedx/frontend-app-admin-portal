@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
-import {
-  Icon, IconButtonWithTooltip, Stack,
-} from '@openedx/paragon';
+import { Icon, IconButtonWithTooltip, Stack } from '@openedx/paragon';
 import { Warning } from '@openedx/paragon/icons';
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
-import { ENROLL_BY_DATE_DAYS_THRESHOLD, formatDate } from './data';
+import { DATETIME_FORMAT, ENROLL_BY_DATE_DAYS_THRESHOLD, formatDate } from './data';
 import { isTodayWithinDateThreshold } from '../../utils';
 
 const messages = defineMessages({
@@ -33,7 +31,7 @@ const ExpiringIconButtonWithTooltip = () => {
 const AssignmentEnrollByDateCell = ({ row }) => {
   const { original: { earliestPossibleExpiration: { date } } } = row;
 
-  const formattedEnrollByDate = formatDate(date);
+  const formattedEnrollByDate = formatDate(date, DATETIME_FORMAT);
   const isAssignmentExpiringSoon = isTodayWithinDateThreshold({
     days: ENROLL_BY_DATE_DAYS_THRESHOLD,
     date,

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Stack,
-  Icon,
-  IconButtonWithTooltip,
-} from '@openedx/paragon';
+import { Icon, IconButtonWithTooltip, Stack } from '@openedx/paragon';
 import { InfoOutline } from '@openedx/paragon/icons';
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 
@@ -15,7 +11,7 @@ const messages = defineMessages({
   },
   headerTooltipContent: {
     id: 'lcm.budget.detail.page.assignments.table.columns.enroll-by-date.header.tooltip-content',
-    defaultMessage: 'Failure to enroll by midnight of enrollment deadline date will release funds back into the budget',
+    defaultMessage: 'Failure to enroll by the enrollment deadline date will release funds back into the budget',
     description: 'On hover tool tip message for the enroll-by date column',
   },
 });
