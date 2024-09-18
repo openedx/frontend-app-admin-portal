@@ -53,7 +53,7 @@ jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
 const futureStartDate = dayjs().add(5, 'days').toISOString();
 const pastStartDate = dayjs().subtract(5, 'days').toISOString();
-const enrollByTimestamp = dayjs().subtract(10, 'days').unix();
+const enrollByTimestamp = dayjs().add(2, 'days').unix();
 const enrollByDropdownText = `Enroll by ${dayjs.unix(enrollByTimestamp).format(SHORT_MONTH_DATE_FORMAT)}`;
 
 const originalData = {
