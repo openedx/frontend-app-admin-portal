@@ -663,7 +663,6 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
         minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
       );
       // Late redemption filter
-      // TODO: Fallback to enrollmentStart if no enrollBy field (surface in ALG)
       if (isDateBeforeToday(enrollBy) && isLateRedemptionAllowed) {
         const lateEnrollmentCutoff = dayjs().subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
         isEligibleForEnrollment = dayjs(enrollBy).isAfter(lateEnrollmentCutoff);
