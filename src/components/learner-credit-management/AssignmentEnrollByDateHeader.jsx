@@ -11,7 +11,7 @@ const messages = defineMessages({
   },
   headerTooltipContent: {
     id: 'lcm.budget.detail.page.assignments.table.columns.enroll-by-date.header.tooltip-content',
-    defaultMessage: 'Failure to enroll by the enrollment deadline date will release funds back into the budget',
+    defaultMessage: 'Failure to enroll by the enrollment deadline will release funds back into the budget',
     description: 'On hover tool tip message for the enroll-by date column',
   },
 });

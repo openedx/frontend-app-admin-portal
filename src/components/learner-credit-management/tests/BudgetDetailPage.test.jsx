@@ -17,21 +17,21 @@ import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessA
 
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
+  DEFAULT_PAGE,
   formatDate,
   formatPrice,
+  PAGE_SIZE,
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
   useBudgetRedemptions,
   useEnterpriseCustomer,
   useEnterpriseGroup,
   useEnterpriseGroupLearners,
-  useEnterpriseRemovedGroupMembers,
   useEnterpriseOffer,
+  useEnterpriseRemovedGroupMembers,
   useIsLargeOrGreater,
   useSubsidyAccessPolicy,
   useSubsidySummaryAnalyticsApi,
-  DEFAULT_PAGE,
-  PAGE_SIZE,
 } from '../data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
@@ -2573,7 +2573,7 @@ describe('<BudgetDetailPage />', () => {
 
     userEvent.hover(enrollByDateTooltip);
     await waitFor(() => expect(screen.getByText(
-      'Failure to enroll by midnight of enrollment deadline date will release funds back into the budget',
+      'Failure to enroll by the enrollment deadline will release funds back into the budget',
     )).toBeTruthy());
   });
 });
