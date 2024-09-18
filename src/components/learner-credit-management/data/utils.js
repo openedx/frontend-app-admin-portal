@@ -660,13 +660,16 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   }) => {
     let isEligibleForEnrollment = true;
     if (hasEnrollBy) {
-      isEligibleForEnrollment = dayjs(enrollBy).isBefore(
-        minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
+      const enrollByDate = dayjs(enrollBy);
+      // Determine eligibility based on the provided enrollBy is and the subsidy expiration date - refund threshold
+      isEligibleForEnrollment = (
+        !isDateBeforeToday(enrollByDate)
+        && enrollByDate.isBefore(minimumEnrollByDateFromToday({ subsidyExpirationDatetime }))
       );
       // Late redemption filter
       if (isDateBeforeToday(enrollBy) && isLateRedemptionAllowed) {
         const lateEnrollmentCutoff = dayjs().subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
-        isEligibleForEnrollment = dayjs(enrollBy).isAfter(lateEnrollmentCutoff);
+        isEligibleForEnrollment = enrollByDate.isAfter(lateEnrollmentCutoff);
         return isLateEnrollmentEligible && isEligibleForEnrollment;
       }
     }
