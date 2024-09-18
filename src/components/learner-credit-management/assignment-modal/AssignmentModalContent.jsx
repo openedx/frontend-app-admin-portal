@@ -27,8 +27,7 @@ const AssignmentModalContent = ({
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
   const intl = useIntl();
-  // TODO: as part of fixed price, this would need to extract the contentPrice from courseRun, ENT-9394
-  const { contentPrice } = course.normalizedMetadata;
+  const { contentPrice } = courseRun;
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
@@ -143,7 +142,7 @@ const AssignmentModalContent = ({
               />
             </h4>
             <AssignmentModalSummary
-              course={course}
+              courseRun={courseRun}
               learnerEmails={learnerEmails}
               assignmentAllocationMetadata={assignmentAllocationMetadata}
             />
@@ -207,6 +206,7 @@ AssignmentModalContent.propTypes = {
   courseRun: PropTypes.shape({
     enrollBy: PropTypes.string,
     start: PropTypes.string,
+    contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   onEmailAddressesChange: PropTypes.func.isRequired,
 };

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Card, Stack, Icon } from '@openedx/paragon';
+import { Card, Icon, Stack } from '@openedx/paragon';
 import { Error } from '@openedx/paragon/icons';
 
-import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { formatPrice } from '../data';
 import AssignmentModalSummaryEmptyState from './AssignmentModalSummaryEmptyState';
 import AssignmentModalSummaryLearnerList from './AssignmentModalSummaryLearnerList';
@@ -13,13 +13,13 @@ import AssignmentModalSummaryErrorState from './AssignmentModalSummaryErrorState
 const AssignmentModalSummaryContents = ({
   hasLearnerEmails,
   learnerEmails,
-  course,
+  courseRun,
   hasInputValidationError,
 }) => {
   if (hasLearnerEmails) {
     return (
       <AssignmentModalSummaryLearnerList
-        course={course}
+        courseRun={courseRun}
         learnerEmails={learnerEmails}
       />
     );
@@ -31,7 +31,7 @@ const AssignmentModalSummaryContents = ({
 };
 
 const AssignmentModalSummary = ({
-  course,
+  courseRun,
   learnerEmails,
   assignmentAllocationMetadata,
 }) => {
@@ -66,7 +66,7 @@ const AssignmentModalSummary = ({
             <AssignmentModalSummaryContents
               learnerEmails={learnerEmails}
               hasLearnerEmails={hasLearnerEmails}
-              course={course}
+              courseRun={courseRun}
               hasInputValidationError={!isValidInput}
             />
           </Card.Section>
@@ -103,12 +103,16 @@ const AssignmentModalSummary = ({
 AssignmentModalSummaryContents.propTypes = {
   hasLearnerEmails: PropTypes.bool.isRequired,
   learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
-  course: PropTypes.shape().isRequired, // pass-thru prop to child component(s)
+  courseRun: PropTypes.shape({
+    contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }).isRequired, // pass-thru prop to child component(s)
   hasInputValidationError: PropTypes.bool.isRequired,
 };
 
 AssignmentModalSummary.propTypes = {
-  course: PropTypes.shape().isRequired, // pass-thru prop to child component(s)
+  courseRun: PropTypes.shape({
+    contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }).isRequired, // pass-thru prop to child component(s)
   learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
   assignmentAllocationMetadata: PropTypes.shape({
     isValidInput: PropTypes.bool,

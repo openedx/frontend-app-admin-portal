@@ -5,14 +5,11 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import React from 'react';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import dayjs from 'dayjs';
-import { ASSIGNMENT_ENROLLMENT_DEADLINE, DATETIME_FORMAT, getNormalizedEnrollByDate } from '../data';
+import { ASSIGNMENT_ENROLLMENT_DEADLINE, DATETIME_FORMAT } from '../data';
 import EVENT_NAMES from '../../../eventTracking';
 
 const AssignmentAllocationHelpCollapsibles = ({ enterpriseId, courseRun }) => {
-  const normalizedEnrollByDate = getNormalizedEnrollByDate(courseRun);
-  const enrollByDate = normalizedEnrollByDate
-    ? dayjs(normalizedEnrollByDate).format(DATETIME_FORMAT)
-    : null;
+  const enrollByDate = dayjs(courseRun.enrollBy).format(DATETIME_FORMAT);
   return (
     <Stack gap={1}>
       <Collapsible
