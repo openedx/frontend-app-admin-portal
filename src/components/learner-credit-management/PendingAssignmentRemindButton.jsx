@@ -40,6 +40,7 @@ const PendingAssignmentRemindButton = ({ row, enterpriseId }) => {
     isAssignable,
     catalogUuid,
     assignmentConfiguration,
+    assignmentUuid: uuid,
     contentKey,
     contentQuantity,
     learnerState,
