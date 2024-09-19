@@ -8,6 +8,7 @@ import {
 import { useEnterpriseAnalyticsData } from '../data/hooks';
 import ChartWrapper from '../charts/ChartWrapper';
 import DownloadCSV from '../DownloadCSV';
+import { constructChartHoverTemplate } from '../data/utils';
 
 const Skills = ({ startDate, endDate, enterpriseId }) => {
   const intl = useIntl();
@@ -68,7 +69,11 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
             }),
             markerSizeKey: 'completions',
             customDataKeys: ['skillName', 'skillType'],
-            hovertemplate: 'Skill: %{customdata[0]}<br>Enrolls: %{x}<br>Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              skill: '%{customdata[0]}',
+              enrollments: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.skills.tab.chart.top.skills.loading.message',
@@ -102,7 +107,10 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                   defaultMessage: 'Number of Enrollments',
                   description: 'Y-axis title for the top skills by enrollment chart.',
                 }),
-                hovertemplate: 'Skill: %{x}<br>Enrolls: %{y}',
+                hovertemplate: constructChartHoverTemplate(intl, {
+                  skill: '%{x}',
+                  enrollments: '%{y}',
+                }),
               }}
               loadingMessage={intl.formatMessage({
                 id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.loading.message',
@@ -136,7 +144,10 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                   defaultMessage: 'Number of Completions',
                   description: 'Y-axis title for the top skills by completion chart.',
                 }),
-                hovertemplate: 'Skill: %{x}<br>Completions: %{y}',
+                hovertemplate: constructChartHoverTemplate(intl, {
+                  skill: '%{x}',
+                  completions: '%{y}',
+                }),
               }}
               loadingMessage={intl.formatMessage({
                 id: 'advance.analytics.skills.tab.chart.top.skills.by.completion.loading.message',

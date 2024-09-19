@@ -3,6 +3,7 @@ import { sum } from 'lodash';
 import utc from 'dayjs/plugin/utc';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import { CHART_TYPES, CALCULATION } from './constants';
+import messages from '../messages';
 
 dayjs.extend(utc);
 dayjs.extend(quarterOfYear);
@@ -13,6 +14,19 @@ const simulateURL = (activeTab, chartType) => {
   }
   return `${activeTab}/stats`;
 };
+
+/**
+ * Constructs a chart hover template.
+ *
+ * @param {Object} intl - Internationalization object.
+ * @param {Object} hoverInfo - Object containing hover information to show over chart data points.
+ * @returns {string} The constructed chart hover template.
+ */
+export function constructChartHoverTemplate(intl, hoverInfo) {
+  return Object.entries(hoverInfo)
+    .map(([key, value]) => `${intl.formatMessage(messages[key])}: ${value}`)
+    .join('<br>');
+}
 
 export default simulateURL;
 

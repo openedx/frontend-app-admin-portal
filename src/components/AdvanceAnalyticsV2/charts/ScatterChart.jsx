@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import PropTypes from 'prop-types';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
 /**
  * ScatterChart component renders a scatter chart using Plotly.js.
@@ -21,6 +23,7 @@ import PropTypes from 'prop-types';
 const ScatterChart = ({
   data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, markerSizeKey, customDataKeys,
 }) => {
+  const intl = useIntl();
   const categories = Object.keys(colorMap);
 
   const traces = useMemo(() => categories.map(category => {
@@ -30,7 +33,7 @@ const ScatterChart = ({
       y: filteredData.map(item => item[yKey]),
       type: 'scatter',
       mode: 'markers',
-      name: category,
+      name: messages[category] ? intl.formatMessage(messages[category]) : category,
       marker: {
         color: colorMap[category],
         size: filteredData.map(item => item[markerSizeKey] * 0.015).map(size => (size < 5 ? size + 6 : size)),
@@ -38,7 +41,7 @@ const ScatterChart = ({
       customdata: customDataKeys.length ? filteredData.map(item => customDataKeys.map(key => item[key])) : [],
       hovertemplate,
     };
-  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, markerSizeKey, customDataKeys]);
+  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, markerSizeKey, customDataKeys, intl]);
 
   const layout = {
     margin: { t: 0 },

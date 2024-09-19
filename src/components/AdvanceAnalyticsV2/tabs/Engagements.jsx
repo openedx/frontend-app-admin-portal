@@ -7,6 +7,7 @@ import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
 import DownloadCSV from '../DownloadCSV';
+import { constructChartHoverTemplate } from '../data/utils';
 
 const Engagements = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -61,7 +62,10 @@ const Engagements = ({
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Learning Hours',
-            hovertemplate: 'Date: %{x}<br>Learning Hours: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              date: '%{x}',
+              learningHours: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.engagements.tab.chart.learning.hours.over.time.loading.message',
@@ -109,7 +113,10 @@ const Engagements = ({
               defaultMessage: 'Number of Learning Hours',
               description: 'Y-axis title for the top 10 courses by learning hours chart.',
             }),
-            hovertemplate: 'Course: %{x}<br>Learning Hours: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              course: '%{x}',
+              learningHours: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.engagements.tab.chart.top.10.courses.by.learning.hours.loading.message',
@@ -157,7 +164,10 @@ const Engagements = ({
               defaultMessage: 'Number of Learning Hours',
               description: 'Y-axis title for the top 10 subjects by learning hours chart.',
             }),
-            hovertemplate: 'Subject: %{x}<br>Learning Hours: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              subject: '%{x}',
+              learningHours: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.engagements.tab.chart.top.10.subjects.by.learning.hours.loading.message',
