@@ -5,6 +5,8 @@ import { advanceAnalyticsQueryKeys } from '../constants';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
 export { default as useEnterpriseEnrollmentsData } from './useEnterpriseEnrollmentsData';
+export { default as useEnterpriseEngagementData } from './useEnterpriseEngagementData';
+export { default as useEnterpriseCompletionsData } from './useEnterpriseCompletionsData';
 
 export const useEnterpriseAnalyticsData = ({
   enterpriseCustomerUUID,

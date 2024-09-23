@@ -38,7 +38,7 @@ const mockAnalyticsTableData = {
   ],
 };
 const mockAnalyticsChartsData = {
-  engagementsOverTime: [],
+  engagementOverTime: [],
   topCoursesByEngagement: [],
   topSubjectsByEngagement: [],
 };
