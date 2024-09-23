@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import Header from '../Header';
-import { ANALYTICS_TABS, CHART_TYPES, chartColorMap } from '../data/constants';
+import { ANALYTICS_TABS, chartColorMap } from '../data/constants';
 import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
-import { useEnterpriseAnalyticsData } from '../data/hooks';
-import DownloadCSV from '../DownloadCSV';
-import { constructChartHoverTemplate } from '../data/utils';
+import { useEnterpriseEngagementData } from '../data/hooks';
+import DownloadCSVButton from '../DownloadCSVButton';
+import { constructChartHoverTemplate, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
 
 const Engagements = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -15,7 +16,7 @@ const Engagements = ({
   const intl = useIntl();
   const {
     isFetching, isError, data,
-  } = useEnterpriseAnalyticsData({
+  } = useEnterpriseEngagementData({
     enterpriseCustomerUUID: enterpriseId,
     key: ANALYTICS_TABS.ENGAGEMENTS,
     startDate,
@@ -23,6 +24,48 @@ const Engagements = ({
     granularity,
     calculation,
   });
+
+  const engagementOverTimeForCSV = useMemo(() => {
+    const engagementOverTime = modifyDataToIntroduceEnrollTypeCount(
+      data?.engagementOverTime,
+      'activityDate',
+      'learningTimeHours',
+    );
+    return engagementOverTime.map(({ activityDate, certificate, audit }) => ({
+      activity_date: dayjs.utc(activityDate).toISOString().split('T')[0],
+      certificate,
+      audit,
+    }));
+  }, [data]);
+
+  const topCoursesByEngagementForCSV = useMemo(() => {
+    const topCoursesByEngagement = modifyDataToIntroduceEnrollTypeCount(
+      data?.topCoursesByEngagement,
+      'courseKey',
+      'learningTimeHours',
+    );
+    return topCoursesByEngagement.map(({
+      courseKey, courseTitle, certificate, audit,
+    }) => ({
+      course_key: courseKey,
+      course_title: courseTitle,
+      certificate,
+      audit,
+    }));
+  }, [data]);
+
+  const topSubjectsByEngagementForCSV = useMemo(() => {
+    const topSubjectsByEngagement = modifyDataToIntroduceEnrollTypeCount(
+      data?.topSubjectsByEngagement,
+      'courseSubject',
+      'learningTimeHours',
+    );
+    return topSubjectsByEngagement.map(({ courseSubject, certificate, audit }) => ({
+      course_subject: courseSubject,
+      certificate,
+      audit,
+    }));
+  }, [data]);
 
   return (
     <div className="tab-engagements mt-4">
@@ -39,14 +82,9 @@ const Engagements = ({
             description: 'Subtitle for the learning hours over time chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.ENGAGEMENTS}
-              granularity={granularity}
-              calculation={calculation}
-              chartType={CHART_TYPES.ENGAGEMENTS_OVER_TIME}
+            <DownloadCSVButton
+              jsonData={engagementOverTimeForCSV}
+              csvFileName={`Engagement over time - ${startDate} - ${endDate} (${granularity} ${calculation})`}
             />
           )}
         />
@@ -55,9 +93,9 @@ const Engagements = ({
           isError={isError}
           chartType="LineChart"
           chartProps={{
-            data: data?.engagementsOverTime,
+            data: data?.engagementOverTime,
             xKey: 'activityDate',
-            yKey: 'sum',
+            yKey: 'learningTimeHours',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             xAxisTitle: '',
@@ -87,14 +125,9 @@ const Engagements = ({
             description: 'Subtitle for the top 10 courses by learning hours chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.ENGAGEMENTS}
-              granularity={granularity}
-              calculation={calculation}
-              chartType={CHART_TYPES.TOP_COURSES_BY_ENGAGEMENTS}
+            <DownloadCSVButton
+              jsonData={topCoursesByEngagementForCSV}
+              csvFileName={`Top Courses by Engagement - ${startDate} - ${endDate} (${granularity} ${calculation})`}
             />
           )}
         />
@@ -104,8 +137,8 @@ const Engagements = ({
           chartType="BarChart"
           chartProps={{
             data: data?.topCoursesByEngagement,
-            xKey: 'courseKey',
-            yKey: 'count',
+            xKey: 'courseTitle',
+            yKey: 'learningTimeHours',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             yAxisTitle: intl.formatMessage({
@@ -138,14 +171,9 @@ const Engagements = ({
             description: 'Subtitle for the top 10 subjects by learning hours chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.ENGAGEMENTS}
-              granularity={granularity}
-              calculation={calculation}
-              chartType={CHART_TYPES.TOP_SUBJECTS_BY_ENGAGEMENTS}
+            <DownloadCSVButton
+              jsonData={topSubjectsByEngagementForCSV}
+              csvFileName={`Top Subjects by Engagement - ${startDate} - ${endDate} (${granularity} ${calculation})`}
             />
           )}
         />
@@ -156,7 +184,7 @@ const Engagements = ({
           chartProps={{
             data: data?.topSubjectsByEngagement,
             xKey: 'courseSubject',
-            yKey: 'count',
+            yKey: 'learningTimeHours',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             yAxisTitle: intl.formatMessage({
