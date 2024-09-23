@@ -3,12 +3,12 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import Header from '../Header';
 import {
-  ANALYTICS_TABS, CHART_TYPES, skillsColorMap, skillsTypeColorMap,
+  ANALYTICS_TABS, skillsColorMap, skillsTypeColorMap,
 } from '../data/constants';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
 import ChartWrapper from '../charts/ChartWrapper';
-import DownloadCSV from '../DownloadCSV';
 import { constructChartHoverTemplate } from '../data/utils';
+import DownloadCSVButton from '../DownloadCSVButton';
 
 const Skills = ({ startDate, endDate, enterpriseId }) => {
   const intl = useIntl();
@@ -37,12 +37,9 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
             description: 'Subtitle for the top skills chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.SKILLS}
-              chartType={CHART_TYPES.BUBBLE}
+            <DownloadCSVButton
+              jsonData={data?.topSkills || []}
+              csvFileName={`Skills by Enrollment and Completion - ${startDate} - ${endDate}`}
             />
           )}
         />
@@ -100,7 +97,7 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                 data: data?.topSkillsByEnrollments,
                 xKey: 'skillName',
                 yKey: 'count',
-                colorKey: 'primarySubjectName',
+                colorKey: 'subjectName',
                 colorMap: skillsColorMap,
                 yAxisTitle: intl.formatMessage({
                   id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.y.axis.title',
@@ -137,7 +134,7 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                 data: data?.topSkillsByCompletions,
                 xKey: 'skillName',
                 yKey: 'count',
-                colorKey: 'primarySubjectName',
+                colorKey: 'subjectName',
                 colorMap: skillsColorMap,
                 yAxisTitle: intl.formatMessage({
                   id: 'advance.analytics.skills.tab.chart.top.skills.by.completion.y.axis.title',
