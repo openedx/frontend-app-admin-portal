@@ -4,7 +4,7 @@ import { Chip } from '@openedx/paragon';
 import { Send } from '@openedx/paragon/icons';
 import BaseModalPopup from './BaseModalPopup';
 import EVENT_NAMES from '../../../eventTracking';
-import { useAssignmentStatusChip } from '../data';
+import { useStatusChip } from '../data';
 
 const NotifyingLearner = ({ learnerEmail, trackEvent }) => {
   const [target, setTarget] = useState(null);
@@ -14,7 +14,7 @@ const NotifyingLearner = ({ learnerEmail, trackEvent }) => {
     openChipModal,
     closeChipModal,
     isChipModalOpen,
-  } = useAssignmentStatusChip({
+  } = useStatusChip({
     chipInteractionEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_NOTIFY_LEARNER,
     trackEvent,
   });
