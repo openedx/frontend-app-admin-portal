@@ -15,6 +15,7 @@ import {
   LATE_ENROLLMENTS_BUFFER_DAYS,
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS,
+  MAX_MILLISECONDS,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
@@ -572,22 +573,25 @@ export const minimumEnrollByDateFromToday = ({ subsidyExpirationDatetime }) => M
 
 const subsidyExpirationRefundCutoffDate = ({ subsidyExpirationDatetime }) => dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate();
 
-const startDateThreshold = ({ enrollmentStart, start, subsidyExpirationDatetime }) => {
-  const timeStampStartDate = dayjs(start).unix();
-  const timeStampEnrollmentStartDate = dayjs(enrollmentStart).unix();
-  const earliestStartDate = Math.min(timeStampStartDate, timeStampEnrollmentStartDate);
-  const isEarliestStartDateBeforeRefundDate = dayjs(
+const isStartDateWithinThreshold = ({ enrollStart, start, subsidyExpirationDatetime }) => {
+  if (!start && !enrollStart) {
+    return true;
+  }
+  const timeStampStartDate = dayjs(start).unix() || MAX_MILLISECONDS;
+  const timeStampEnrollStartDate = dayjs(enrollStart).unix() || MAX_MILLISECONDS;
+  const earliestStartDate = Math.min(timeStampStartDate, timeStampEnrollStartDate);
+  return dayjs(
     earliestStartDate,
   ).isBefore(subsidyExpirationRefundCutoffDate({ subsidyExpirationDatetime }), 'seconds');
-  return (!start && !enrollmentStart) || isEarliestStartDateBeforeRefundDate;
 };
 
-const enrollByDateThreshold = ({ enrollBy, isLateRedemptionAllowed = false }) => {
+const isEnrollByDateWithinThreshold = ({ enrollBy, isLateRedemptionAllowed = false }) => {
+  if (!enrollBy) { return true; }
   let enrollByCutoffDate = dayjs();
   if (isLateRedemptionAllowed) {
     enrollByCutoffDate = enrollByCutoffDate.subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
   }
-  return !enrollBy || dayjs(enrollBy).isAfter(enrollByCutoffDate, 'seconds');
+  return dayjs(enrollBy).isAfter(enrollByCutoffDate, 'seconds');
 };
 
 export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
@@ -673,23 +677,27 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   const clonedCourseRuns = courseRuns.map(courseRun => ({
     ...courseRun,
     enrollBy: courseRun.hasEnrollBy ? dayjs.unix(courseRun.enrollBy).toISOString() : null,
+    enrollStart: courseRun.hasEnrollStart ? dayjs.unix(courseRun.enrollStart).toISOString() : null,
     upgradeDeadline: dayjs.unix(courseRun.upgradeDeadline).toISOString(),
   }));
   const assignableCourseRunsFilter = ({
-    enrollBy, start, isActive, hasEnrollBy, isLateEnrollmentEligible,
+    enrollBy, enrollStart, start, isActive, hasEnrollBy, isLateEnrollmentEligible,
   }) => {
-    let isEligibleForEnrollment = true;
-    // Determine eligibility based on the provided enrollBy, start, and enrollmentStart date
-    isEligibleForEnrollment = enrollByDateThreshold({ enrollBy, isLateRedemptionAllowed }) && startDateThreshold({
-      enrollmentStart: dayjs().toDate(),
-      start,
-      subsidyExpirationDatetime,
-    });
-    if (hasEnrollBy) {
-      // Late redemption filter
-      if (isDateBeforeToday(enrollBy) && isLateRedemptionAllowed) {
-        return isLateEnrollmentEligible && isEligibleForEnrollment;
-      }
+    // Determine eligibility based on the provided enrollBy, start, and enrollStart date
+    const isEligibleForEnrollment = isEnrollByDateWithinThreshold(
+      {
+        enrollBy,
+        isLateRedemptionAllowed,
+      },
+    ) && isStartDateWithinThreshold(
+      {
+        enrollStart,
+        start,
+        subsidyExpirationDatetime,
+      },
+    );
+    if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
+      return isLateEnrollmentEligible && isEligibleForEnrollment;
     }
     // General courseware filter
     return isActive && isEligibleForEnrollment;

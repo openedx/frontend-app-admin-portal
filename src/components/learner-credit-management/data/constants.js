@@ -114,6 +114,8 @@ export const EMPTY_CONTENT_PRICE_VALUE = 0;
 // Late enrollments feature
 export const LATE_ENROLLMENTS_BUFFER_DAYS = 30;
 
+export const MAX_MILLISECONDS = 8640000000000000;
+
 // Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {
