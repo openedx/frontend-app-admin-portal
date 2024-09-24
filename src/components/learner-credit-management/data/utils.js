@@ -587,11 +587,11 @@ const isStartDateWithinThreshold = ({ enrollStart, start, subsidyExpirationDatet
 
 const isEnrollByDateWithinThreshold = ({ enrollBy, isLateRedemptionAllowed = false }) => {
   if (!enrollBy) { return true; }
-  let enrollByCutoffDate = dayjs();
+  let enrollmentEffectiveDate = dayjs();
   if (isLateRedemptionAllowed) {
-    enrollByCutoffDate = enrollByCutoffDate.subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
+    enrollmentEffectiveDate = enrollmentEffectiveDate.subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
   }
-  return dayjs(enrollBy).isAfter(enrollByCutoffDate, 'seconds');
+  return dayjs(enrollBy).isAfter(enrollmentEffectiveDate, 'seconds');
 };
 
 export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
