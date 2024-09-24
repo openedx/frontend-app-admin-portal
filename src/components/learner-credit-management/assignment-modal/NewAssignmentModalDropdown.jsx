@@ -1,7 +1,7 @@
+import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import { Dropdown, Stack } from '@openedx/paragon';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import { useState } from 'react';
 import { SHORT_MONTH_DATE_FORMAT } from '../data';
 
@@ -29,7 +29,10 @@ const messages = defineMessages({
 });
 
 const NewAssignmentModalDropdown = ({
-  id: courseKey, onClick: openAssignmentModal, courseRuns, children,
+  id: courseKey,
+  onClick: openAssignmentModal,
+  courseRuns,
+  children,
 }) => {
   const intl = useIntl();
   const [clickedDropdownItem, setClickedDropdownItem] = useState(null);

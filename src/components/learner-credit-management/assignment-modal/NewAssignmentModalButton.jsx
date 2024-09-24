@@ -1,29 +1,26 @@
-import React, { useCallback, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { getConfig } from '@edx/frontend-platform/config';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 import {
   ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@openedx/paragon';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
+import PropTypes from 'prop-types';
+import React, { useCallback, useContext, useState } from 'react';
 import { connect } from 'react-redux';
-import { getConfig } from '@edx/frontend-platform/config';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
-import AssignmentModalContent from './AssignmentModalContent';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
+import EVENT_NAMES from '../../../eventTracking';
+import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import {
-  getAssignableCourseRuns,
-  LEARNER_CREDIT_ROUTE,
-  learnerCreditManagementQueryKeys,
-  useBudgetId,
+  getAssignableCourseRuns, learnerCreditManagementQueryKeys, LEARNER_CREDIT_ROUTE, useBudgetId,
   useSubsidyAccessPolicy,
 } from '../data';
+import AssignmentModalContent from './AssignmentModalContent';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
-import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
-import EVENT_NAMES from '../../../eventTracking';
 import NewAssignmentModalDropdown from './NewAssignmentModalDropdown';
 
 const useAllocateContentAssignments = () => useMutation({
@@ -88,7 +85,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setAssignmentRun(selectedCourseRun);
     if (!selectedCourseRun) {
       logError(`[handleOpenAssignmentModal]: Unable to open learner credit management allocation modal,
-        selectedCourseRun: ${selectedCourseRun}, 
+        selectedCourseRun: ${selectedCourseRun},
         parentContentKey: ${course.key},
         contentKey: ${selectedCourseRun.key},
         enterpriseUuid: ${enterpriseId},
