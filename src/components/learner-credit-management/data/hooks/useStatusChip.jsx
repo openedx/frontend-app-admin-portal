@@ -13,7 +13,7 @@ import { useToggle } from '@openedx/paragon';
  * isChipModalOpen: *
  * }}
  */
-export default function useAssignmentStatusChip({ chipInteractionEventName, chipHelpCenterEventName, trackEvent }) {
+export default function useStatusChip({ chipInteractionEventName, chipHelpCenterEventName, trackEvent }) {
   const [isChipModalOpen, open, close] = useToggle(false);
   const openChipModal = () => {
     open();
