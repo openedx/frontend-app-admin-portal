@@ -9,7 +9,7 @@ import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
 import { useEnterpriseEnrollmentsData } from '../data/hooks';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
+import { modifyDataToIntroduceEnrollTypeCount, constructChartHoverTemplate } from '../data/utils';
 
 dayjs.extend(utc);
 
@@ -101,7 +101,10 @@ const Enrollments = ({
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Enrollments',
-            hovertemplate: 'Date: %{x}<br>Enrolls: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              date: '%{x}',
+              enrollments: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.enrollments.tab.chart.enrollments.over.time.loading.message',
@@ -135,13 +138,16 @@ const Enrollments = ({
           chartType="BarChart"
           chartProps={{
             data: data?.topCoursesByEnrollments,
-            xKey: 'courseKey',
+            xKey: 'courseTitle',
             yKey: 'enrollmentCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Enrollments',
-            hovertemplate: 'Course: %{x}<br>Enrolls: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              course: '%{x}',
+              enrollments: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.enrollments.tab.chart.top.courses.by.enrollments.loading.message',
@@ -181,7 +187,10 @@ const Enrollments = ({
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Enrollments',
-            hovertemplate: 'Subject: %{x}<br>Enrolls: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              subject: '%{x}',
+              enrollments: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.enrollments.tab.chart.top.subjects.by.enrollments.loading.message',

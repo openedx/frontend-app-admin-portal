@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import {
   render, screen, waitFor, within,
 } from '@testing-library/react';
@@ -37,7 +38,7 @@ const mockAnalyticsTableData = {
   ],
 };
 const mockAnalyticsChartsData = {
-  engagementsOverTime: [],
+  engagementOverTime: [],
   topCoursesByEngagement: [],
   topSubjectsByEngagement: [],
 };

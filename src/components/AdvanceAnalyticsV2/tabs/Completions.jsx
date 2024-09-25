@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
 import Header from '../Header';
-import { ANALYTICS_TABS, CHART_TYPES, chartColorMap } from '../data/constants';
+import { ANALYTICS_TABS, chartColorMap } from '../data/constants';
 import AnalyticsTable from './AnalyticsTable';
 import ChartWrapper from '../charts/ChartWrapper';
-import { useEnterpriseAnalyticsData } from '../data/hooks';
-import DownloadCSV from '../DownloadCSV';
+import { useEnterpriseCompletionsData } from '../data/hooks';
+import DownloadCSVButton from '../DownloadCSVButton';
+import { constructChartHoverTemplate, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
 
 const Completions = ({
   startDate, endDate, granularity, calculation, enterpriseId,
@@ -15,7 +17,7 @@ const Completions = ({
 
   const {
     isFetching, isError, data,
-  } = useEnterpriseAnalyticsData({
+  } = useEnterpriseCompletionsData({
     enterpriseCustomerUUID: enterpriseId,
     key: ANALYTICS_TABS.COMPLETIONS,
     startDate,
@@ -23,6 +25,48 @@ const Completions = ({
     granularity,
     calculation,
   });
+
+  const completionsOverTimeForCSV = useMemo(() => {
+    const completionsOverTime = modifyDataToIntroduceEnrollTypeCount(
+      data?.completionsOverTime,
+      'passedDate',
+      'completionCount',
+    );
+    return completionsOverTime.map(({ activityDate, certificate, audit }) => ({
+      activity_date: dayjs.utc(activityDate).toISOString().split('T')[0],
+      certificate,
+      audit,
+    }));
+  }, [data]);
+
+  const topCoursesByCompletionForCSV = useMemo(() => {
+    const topCoursesByCompletions = modifyDataToIntroduceEnrollTypeCount(
+      data?.topCoursesByCompletions,
+      'courseKey',
+      'completionCount',
+    );
+    return topCoursesByCompletions.map(({
+      courseKey, courseTitle, certificate, audit,
+    }) => ({
+      course_key: courseKey,
+      course_title: courseTitle,
+      certificate,
+      audit,
+    }));
+  }, [data]);
+
+  const topSubjectsByCompletionsForCSV = useMemo(() => {
+    const topSubjectsByCompletions = modifyDataToIntroduceEnrollTypeCount(
+      data?.topSubjectsByCompletions,
+      'courseSubject',
+      'completionCount',
+    );
+    return topSubjectsByCompletions.map(({ courseSubject, certificate, audit }) => ({
+      course_subject: courseSubject,
+      certificate,
+      audit,
+    }));
+  }, [data]);
 
   return (
     <div className="tab-completions mt-4">
@@ -39,14 +83,9 @@ const Completions = ({
             description: 'Subtitle for the completions over time chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.COMPLETIONS}
-              granularity={granularity}
-              calculation={calculation}
-              chartType={CHART_TYPES.COMPLETIONS_OVER_TIME}
+            <DownloadCSVButton
+              jsonData={completionsOverTimeForCSV}
+              csvFileName={`Completions over time - ${startDate} - ${endDate} (${granularity} ${calculation})`}
             />
           )}
         />
@@ -57,12 +96,15 @@ const Completions = ({
           chartProps={{
             data: data?.completionsOverTime,
             xKey: 'passedDate',
-            yKey: 'count',
+            yKey: 'completionCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             xAxisTitle: '',
             yAxisTitle: 'Number of Completions',
-            hovertemplate: 'Date: %{x}<br>Number of Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              date: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.completions.tab.chart.top.courses.by.completions.loading.message',
@@ -84,14 +126,9 @@ const Completions = ({
             description: 'Subtitle for the top 10 courses by completions chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.COMPLETIONS}
-              granularity={granularity}
-              calculation={calculation}
-              chartType={CHART_TYPES.TOP_COURSES_BY_COMPLETIONS}
+            <DownloadCSVButton
+              jsonData={topCoursesByCompletionForCSV}
+              csvFileName={`Top Courses by Completion - ${startDate} - ${endDate} (${granularity} ${calculation})`}
             />
           )}
         />
@@ -101,8 +138,8 @@ const Completions = ({
           chartType="BarChart"
           chartProps={{
             data: data?.topCoursesByCompletions,
-            xKey: 'courseKey',
-            yKey: 'count',
+            xKey: 'courseTitle',
+            yKey: 'completionCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             yAxisTitle: intl.formatMessage({
@@ -110,7 +147,10 @@ const Completions = ({
               defaultMessage: 'Number of Completions',
               description: 'Y-axis title for the top courses by completions chart.',
             }),
-            hovertemplate: 'Course: %{x}<br>Number of Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              course: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.completions.tab.chart.top.10.courses.by.completions.loading.message',
@@ -132,14 +172,9 @@ const Completions = ({
             description: 'Subtitle for the top 10 subjects by completion chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.COMPLETIONS}
-              granularity={granularity}
-              calculation={calculation}
-              chartType={CHART_TYPES.TOP_SUBJECTS_BY_COMPLETIONS}
+            <DownloadCSVButton
+              jsonData={topSubjectsByCompletionsForCSV}
+              csvFileName={`Top Subjects by Completion - ${startDate} - ${endDate} (${granularity} ${calculation})`}
             />
           )}
         />
@@ -150,7 +185,7 @@ const Completions = ({
           chartProps={{
             data: data?.topSubjectsByCompletions,
             xKey: 'courseSubject',
-            yKey: 'count',
+            yKey: 'completionCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
             yAxisTitle: intl.formatMessage({
@@ -158,7 +193,10 @@ const Completions = ({
               defaultMessage: 'Number of Completions',
               description: 'Y-axis title for the top subjects by completions chart.',
             }),
-            hovertemplate: 'Subject: %{x}<br>Number of Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              subject: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.completions.tab.chart.top.subjects.by.completions.loading.message',

@@ -13,11 +13,14 @@ const mockEndDate = dayjs().add(2, 'years').toISOString();
 const mockEnrollByDate = dayjs().add(9, 'months').toISOString();
 const mockEnrollByTimestamp = dayjs(mockEnrollByDate).unix();
 const mockUpgradeDeadlineTimestamp = dayjs().add(3, 'months').unix();
+const mockEnrollStartDate = dayjs().add(2, 'months').toISOString();
+const mockEnrollStartTimestamp = dayjs(mockEnrollStartDate).unix();
 
 const mockNormalizedData = {
   start_date: mockCurrentStartDate,
   end_date: mockEndDate,
   enroll_by_date: mockEnrollByDate,
+  enroll_start_date: mockEnrollStartDate,
 };
 
 /* eslint-disable camelcase */
@@ -36,6 +39,8 @@ const fakeHits = [
       end: mockEndDate,
       enroll_by: mockEnrollByTimestamp,
       has_enroll_by: true,
+      enroll_start: mockEnrollStartTimestamp,
+      has_enroll_start: true,
       is_active: true,
       max_effort: 5,
       min_effort: 1,
@@ -53,6 +58,8 @@ const fakeHits = [
         end: mockEndDate,
         enroll_by: mockEnrollByTimestamp,
         has_enroll_by: true,
+        enroll_start: mockEnrollStartTimestamp,
+        has_enroll_start: true,
         is_active: true,
         max_effort: 5,
         min_effort: 1,
@@ -67,6 +74,8 @@ const fakeHits = [
         end: dayjs('2020-09-09T04:00:00Z').add(1, 'year').toISOString(),
         enroll_by: mockEnrollByTimestamp,
         has_enroll_by: true,
+        enroll_start: mockEnrollStartTimestamp,
+        has_enroll_start: true,
         is_active: true,
         max_effort: 5,
         min_effort: 1,
@@ -90,6 +99,8 @@ const fakeHits = [
       end: mockEndDate,
       enroll_by: mockEnrollByTimestamp,
       has_enroll_by: true,
+      enroll_start: mockEnrollStartTimestamp,
+      has_enroll_start: true,
       is_active: true,
       max_effort: 5,
       min_effort: 1,
@@ -107,6 +118,8 @@ const fakeHits = [
         end: dayjs('2022-10-09T04:00:00Z').add(1, 'year').toISOString(),
         enroll_by: mockEnrollByTimestamp,
         has_enroll_by: true,
+        enroll_start: mockEnrollStartTimestamp,
+        has_enroll_start: true,
         is_active: true,
         max_effort: 5,
         min_effort: 1,

@@ -1,6 +1,7 @@
 // Jest test for utils.js
 
-import { applyCalculation, applyGranularity } from './utils';
+import { createIntl } from '@edx/frontend-platform/i18n';
+import { applyCalculation, applyGranularity, constructChartHoverTemplate } from './utils';
 import { CALCULATION, GRANULARITY } from './constants';
 
 describe('utils', () => {
@@ -199,5 +200,18 @@ describe('utils', () => {
         { date: '2025-01-10', count: 200 },
       ]);
     });
+  });
+});
+
+describe('constructChartHoverTemplate', () => {
+  const intl = createIntl({
+    locale: 'en',
+    messages: {},
+  });
+
+  it('should construct a hover template', () => {
+    const hoverInfo = { skill: 'value1', enrollments: 'value2' };
+    const result = constructChartHoverTemplate(intl, hoverInfo);
+    expect(result).toBe('Skill: value1<br>Enrollments: value2');
   });
 });

@@ -3,11 +3,12 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import Header from '../Header';
 import {
-  ANALYTICS_TABS, CHART_TYPES, skillsColorMap, skillsTypeColorMap,
+  ANALYTICS_TABS, skillsColorMap, skillsTypeColorMap,
 } from '../data/constants';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
 import ChartWrapper from '../charts/ChartWrapper';
-import DownloadCSV from '../DownloadCSV';
+import { constructChartHoverTemplate } from '../data/utils';
+import DownloadCSVButton from '../DownloadCSVButton';
 
 const Skills = ({ startDate, endDate, enterpriseId }) => {
   const intl = useIntl();
@@ -36,12 +37,9 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
             description: 'Subtitle for the top skills chart.',
           })}
           DownloadCSVComponent={(
-            <DownloadCSV
-              enterpriseId={enterpriseId}
-              startDate={startDate}
-              endDate={endDate}
-              activeTab={ANALYTICS_TABS.SKILLS}
-              chartType={CHART_TYPES.BUBBLE}
+            <DownloadCSVButton
+              jsonData={data?.topSkills || []}
+              csvFileName={`Skills by Enrollment and Completion - ${startDate} - ${endDate}`}
             />
           )}
         />
@@ -68,7 +66,11 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
             }),
             markerSizeKey: 'completions',
             customDataKeys: ['skillName', 'skillType'],
-            hovertemplate: 'Skill: %{customdata[0]}<br>Enrolls: %{x}<br>Completions: %{y}',
+            hovertemplate: constructChartHoverTemplate(intl, {
+              skill: '%{customdata[0]}',
+              enrollments: '%{x}',
+              completions: '%{y}',
+            }),
           }}
           loadingMessage={intl.formatMessage({
             id: 'advance.analytics.skills.tab.chart.top.skills.loading.message',
@@ -95,14 +97,17 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                 data: data?.topSkillsByEnrollments,
                 xKey: 'skillName',
                 yKey: 'count',
-                colorKey: 'primarySubjectName',
+                colorKey: 'subjectName',
                 colorMap: skillsColorMap,
                 yAxisTitle: intl.formatMessage({
                   id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.y.axis.title',
                   defaultMessage: 'Number of Enrollments',
                   description: 'Y-axis title for the top skills by enrollment chart.',
                 }),
-                hovertemplate: 'Skill: %{x}<br>Enrolls: %{y}',
+                hovertemplate: constructChartHoverTemplate(intl, {
+                  skill: '%{x}',
+                  enrollments: '%{y}',
+                }),
               }}
               loadingMessage={intl.formatMessage({
                 id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.loading.message',
@@ -129,14 +134,17 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
                 data: data?.topSkillsByCompletions,
                 xKey: 'skillName',
                 yKey: 'count',
-                colorKey: 'primarySubjectName',
+                colorKey: 'subjectName',
                 colorMap: skillsColorMap,
                 yAxisTitle: intl.formatMessage({
                   id: 'advance.analytics.skills.tab.chart.top.skills.by.completion.y.axis.title',
                   defaultMessage: 'Number of Completions',
                   description: 'Y-axis title for the top skills by completion chart.',
                 }),
-                hovertemplate: 'Skill: %{x}<br>Completions: %{y}',
+                hovertemplate: constructChartHoverTemplate(intl, {
+                  skill: '%{x}',
+                  completions: '%{y}',
+                }),
               }}
               loadingMessage={intl.formatMessage({
                 id: 'advance.analytics.skills.tab.chart.top.skills.by.completion.loading.message',
