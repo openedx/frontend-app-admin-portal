@@ -50,7 +50,7 @@ const Leaderboard = ({ startDate, endDate, enterpriseId }) => {
                 description: 'Label for the daily sessions column in the leaderboard table',
 
               }),
-              accessor: 'dailySessions',
+              accessor: 'sessionCount',
             },
             {
               Header: intl.formatMessage({
@@ -67,7 +67,7 @@ const Leaderboard = ({ startDate, endDate, enterpriseId }) => {
                 defaultMessage: 'Course Completions',
                 description: 'Label for the course completions column in the leaderboard table',
               }),
-              accessor: 'courseCompletions',
+              accessor: 'courseCompletionCount',
             },
           ]}
         />

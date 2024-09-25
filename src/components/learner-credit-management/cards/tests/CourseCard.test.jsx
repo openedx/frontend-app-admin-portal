@@ -51,9 +51,11 @@ jest.mock('../../data', () => ({
 }));
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
-const futureStartDate = dayjs().add(5, 'days').toISOString();
-const pastStartDate = dayjs().subtract(5, 'days').toISOString();
-const enrollByTimestamp = dayjs().add(2, 'days').unix();
+const futureStartDate = dayjs().add(10, 'days').toISOString();
+const pastStartDate = dayjs().subtract(10, 'days').toISOString();
+const enrollStartDate = dayjs().add(3, 'days').toISOString();
+const enrollStartTimestamp = dayjs(enrollStartDate).unix();
+const enrollByTimestamp = dayjs().add(5, 'days').unix();
 const enrollByDropdownText = `Enroll by ${dayjs.unix(enrollByTimestamp).format(SHORT_MONTH_DATE_FORMAT)}`;
 
 const originalData = {
@@ -64,6 +66,7 @@ const originalData = {
   normalized_metadata: {
     enroll_by_date: dayjs.unix(1892678399).toISOString(),
     start_date: futureStartDate,
+    enroll_start_date: enrollStartDate,
     content_price: 100,
   },
   original_image_url: '',
@@ -77,6 +80,8 @@ const originalData = {
       pacing_type: 'self_paced',
       enroll_by: enrollByTimestamp,
       has_enroll_by: true,
+      enroll_start: enrollStartTimestamp,
+      has_enroll_start: true,
       is_active: true,
       weeks_to_complete: 60,
       end: dayjs().add(1, 'years').toISOString(),
@@ -90,6 +95,8 @@ const originalData = {
     pacing_type: 'self_paced',
     enroll_by: enrollByTimestamp,
     has_enroll_by: true,
+    enroll_start: enrollStartTimestamp,
+    has_enroll_start: true,
     is_active: true,
     weeks_to_complete: 60,
     end: dayjs().add(1, 'year').toISOString(),
@@ -123,6 +130,8 @@ const execEdData = {
       pacing_type: 'instructor_paced',
       enroll_by: enrollByTimestamp,
       has_enroll_by: true,
+      enroll_start: enrollStartTimestamp,
+      has_enroll_start: true,
       is_active: true,
       weeks_to_complete: 60,
       end: dayjs().add(1, 'year').toISOString(),
@@ -136,6 +145,8 @@ const execEdData = {
     pacing_type: 'instructor_paced',
     enroll_by: enrollByTimestamp,
     has_enroll_by: true,
+    enroll_start: enrollStartTimestamp,
+    has_enroll_start: true,
     is_active: true,
     weeks_to_complete: 60,
     end: dayjs().add(1, 'year').toISOString(),
