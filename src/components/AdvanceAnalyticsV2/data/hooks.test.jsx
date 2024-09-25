@@ -27,11 +27,11 @@ const mockAnalyticsCompletionsChartsData = {
 const mockAnalyticsLeaderboardTableData = [
   {
     email: 'user@example.com',
-    dailySessions: 243,
+    sessionCount: 243,
     learningTimeSeconds: 1111,
     learningTimeHours: 3.4,
     averageSessionLength: 1.6,
-    courseCompletions: 4,
+    courseCompletionCount: 4,
   },
 ];
 

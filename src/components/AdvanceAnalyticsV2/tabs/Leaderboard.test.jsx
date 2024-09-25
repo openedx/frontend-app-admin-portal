@@ -28,24 +28,24 @@ const mockLeaderboardData = {
   results: [
     {
       email: 'user100@example.com',
-      daily_sessions: 74,
+      session_count: 74,
       learning_time_hours: 13.1,
       average_session_length: 1.8,
-      course_completions: 3,
+      course_completion_count: 3,
     },
     {
       email: 'user200@example.com',
-      daily_sessions: 48,
+      session_count: 48,
       learning_time_hours: 131.9,
       average_session_length: 2.7,
-      course_completions: 1,
+      course_completion_count: 1,
     },
     {
       email: 'user300@example.com',
-      daily_sessions: 92,
+      session_count: 92,
       learning_time_hours: 130,
       average_session_length: 1.4,
-      course_completions: 3,
+      course_completion_count: 3,
     },
   ],
 };
@@ -134,9 +134,9 @@ describe('Leaderboard Component', () => {
         const rowCells = within(rows[index + 1]).getAllByRole('cell'); // Skip header row
         expect(rowCells[0]).toHaveTextContent(user.email);
         expect(rowCells[1]).toHaveTextContent(user.learning_time_hours);
-        expect(rowCells[2]).toHaveTextContent(user.daily_sessions);
+        expect(rowCells[2]).toHaveTextContent(user.session_count);
         expect(rowCells[3]).toHaveTextContent(user.average_session_length);
-        expect(rowCells[4]).toHaveTextContent(user.course_completions);
+        expect(rowCells[4]).toHaveTextContent(user.course_completion_count);
       });
     });
   });
