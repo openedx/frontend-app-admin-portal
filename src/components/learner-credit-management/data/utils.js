@@ -577,8 +577,8 @@ const isStartDateWithinThreshold = ({ enrollStart, start, subsidyExpirationDatet
   if (!start && !enrollStart) {
     return true;
   }
-  const timeStampStartDate = dayjs(start).unix() || MAX_MILLISECONDS;
-  const timeStampEnrollStartDate = dayjs(enrollStart).unix() || MAX_MILLISECONDS;
+  const timeStampStartDate = dayjs(start).valueOf() || MAX_MILLISECONDS;
+  const timeStampEnrollStartDate = dayjs(enrollStart).valueOf() || MAX_MILLISECONDS;
   const earliestStartDate = Math.min(timeStampStartDate, timeStampEnrollStartDate);
   return dayjs(
     earliestStartDate,
