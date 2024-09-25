@@ -1,69 +1,81 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import TableContainer from '../../containers/TableContainer';
+import { DataTable } from '@openedx/paragon';
 import { i18nFormatTimestamp } from '../../utils';
-import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+import useEnrolledLearnersForInactiveCourses from './data/hooks/useEnrolledLearnersForInactiveCourses';
 
-const EnrolledLearnersForInactiveCoursesTable = () => {
+const UserEmail = ({ row }) => (
+  <span data-hj-suppress>{row.original.userEmail}</span>
+);
+
+UserEmail.propTypes = {
+  row: PropTypes.shape({
+    original: PropTypes.shape({
+      userEmail: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
+const EnrolledLearnersForInactiveCoursesTable = (enterpriseId) => {
   const intl = useIntl();
-
-  const tableColumns = [
-    {
-      label: intl.formatMessage({
-        id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.user_email.column.heading',
-        defaultMessage: 'Email',
-        description: 'Column heading for the user email column in the enrolled learners table for inactive courses',
-      }),
-      key: 'user_email',
-      columnSortable: true,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.enrollment_count.column.heading',
-        defaultMessage: 'Total Course Enrollment Count',
-        description: 'Column heading for the course enrollment count column in the enrolled learners table for inactive courses',
-      }),
-      key: 'enrollment_count',
-      columnSortable: true,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.course_completion_count.column.heading',
-        defaultMessage: 'Total Completed Courses Count',
-        description: 'Column heading for the completed courses count column in the enrolled learners table for inactive courses',
-      }),
-      key: 'course_completion_count',
-      columnSortable: true,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.last_activity_date.column.heading',
-        defaultMessage: 'Last Activity Date',
-        description: 'Column heading for the last activity date column in the enrolled learners table for inactive courses',
-      }),
-      key: 'last_activity_date',
-      columnSortable: true,
-    },
-  ];
-
-  const formatLearnerData = learners => learners.map(learner => ({
-    ...learner,
-    user_email: <span data-hj-suppress>{learner.user_email}</span>,
-    last_activity_date: i18nFormatTimestamp({
-      intl, timestamp: learner.last_activity_date,
-    }),
-  }));
+  const {
+    isLoading,
+    enrolledLearnersForInactiveCourses: tableData,
+    fetchEnrolledLearnersForInactiveCourses: fetchTableData,
+  } = useEnrolledLearnersForInactiveCourses(enterpriseId);
 
   return (
-    <TableContainer
-      id="enrolled-learners-inactive-courses"
-      className="enrolled-learners-inactive-courses"
-      fetchMethod={EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses}
-      columns={tableColumns}
-      formatData={formatLearnerData}
-      tableSortable
+    <DataTable
+      isSortable
+      manualSortBy
+      isPaginated
+      manualPagination
+      isLoading={isLoading}
+      columns={[
+        {
+          Header: intl.formatMessage({
+            id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.user_email.column.heading',
+            defaultMessage: 'Email',
+          }),
+          accessor: 'userEmail',
+          Cell: UserEmail,
+        },
+        {
+          Header: intl.formatMessage({
+            id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.enrollment_count.column.heading',
+            defaultMessage: 'Total Course Enrollment Count',
+          }),
+          accessor: 'enrollmentCount',
+        },
+        {
+          Header: intl.formatMessage({
+            id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.course_completion_count.column.heading',
+            defaultMessage: 'Total Completed Courses Count',
+          }),
+          accessor: 'courseCompletionCount',
+        },
+        {
+          Header: intl.formatMessage({
+            id: 'admin.portal.lpr.enrolled.learners.inactive.courses.table.last_activity_date.column.heading',
+            defaultMessage: 'Last Activity Date',
+          }),
+          accessor: 'lastActivityDate',
+          Cell: ({ cell: { value } }) => i18nFormatTimestamp({ intl, timestamp: value }),
+        },
+      ]}
+      initialState={{
+        pageIndex: 20,
+        pageSize: 0,
+        sortBy: [{ id: 'lastActivityDate', desc: true }],
+        selectedRowsOrdered: [],
+      }}
+      fetchData={fetchTableData}
+      data={tableData.results}
+      itemCount={tableData.itemCount}
+      pageCount={tableData.pageCount}
     />
   );
 };
