@@ -664,8 +664,7 @@ const isEnrollByDateWithinThreshold = ({ hasEnrollBy, enrollBy, isLateRedemption
  *  (which may be allocated but not accepted) falling outside the date range of the subsidy expiration date
  *  refund threshold.
  *
- *  We transform the assignedCourseRuns data to normalize the start and
- *  enrollBy and enrollStart dates based on the functions
+ *  We transform the assignedCourseRuns data to normalize the start, enrollBy and enrollStart dates
  *
  *  Furthermore, we return assignable course runs sorted by the enrollBy date (soonest to latest). If the enrollBy dates
  *  are equivalent, sort by the start date.
@@ -686,12 +685,12 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   const assignableCourseRunsFilter = ({
     enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible,
   }) => {
-    const isWithinEnrollByDateThreshold = isEnrollByDateWithinThreshold({
+    const isEnrollByDateValid = isEnrollByDateWithinThreshold({
       hasEnrollBy,
       enrollBy,
       isLateRedemptionAllowed,
     });
-    const isWithinStartDateThreshold = isStartDateWithinThreshold({
+    const isStartDateValid = isStartDateWithinThreshold({
       hasEnrollStart,
       enrollStart,
       start,
@@ -699,19 +698,18 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
     });
 
     // Determine eligibility based on the provided enrollBy, start, and enrollStart date
-    const isEligibleForEnrollment = isWithinEnrollByDateThreshold && isWithinStartDateThreshold;
+    const isEligibleForEnrollment = isEnrollByDateValid && isStartDateValid;
 
     if (!isEligibleForEnrollment) {
       // Basic checks against this content's critical dates and their relation to
       // the current date and subsidy expiration date have failed.
       return false;
     }
-    if (isLateRedemptionAllowed) {
+    if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
       // Special case: late enrollment has been enabled by ECS for this budget, and
       // isEligibleForEnrollment already succeeded, so we know that late enrollment
       // would be happy given enrollment deadline of the course.  Now all we need
       // to do is make sure the run itself is generally eligible for late enrollment
-      // (e.g. it is published and not archived, etc.)
       return isLateEnrollmentEligible;
     }
     // General courseware filter
