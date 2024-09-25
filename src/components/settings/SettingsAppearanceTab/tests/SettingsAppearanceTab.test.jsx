@@ -104,6 +104,25 @@ describe('Portal Appearance Tab', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
+  test('drops invalid image file type into dropzone', async () => {
+    render(
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <SettingsAppearanceTab
+            enterpriseId={enterpriseId}
+            enterpriseBranding={enterpriseBranding}
+            updatePortalConfiguration={mockPortalUpdate}
+          />
+        </Provider>
+      </IntlProvider>,
+    );
+    const fakeFile = new File(['hello'], 'hello.jpg', { type: 'image/jpg' });
+    const dropzone = screen.getByRole('presentation', { hidden: true });
+    userEvent.upload(dropzone.firstChild, fakeFile);
+    await waitFor(() => {
+      expect(screen.getByText('Invalid file type, only png images allowed.')).toBeInTheDocument();
+    });
+  });
   test('renders curated theme cards', async () => {
     render(
       <IntlProvider locale="en">
