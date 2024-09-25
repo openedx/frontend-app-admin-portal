@@ -138,7 +138,7 @@ const Completions = ({
           chartType="BarChart"
           chartProps={{
             data: data?.topCoursesByCompletions,
-            xKey: 'courseKey',
+            xKey: 'courseTitle',
             yKey: 'completionCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
