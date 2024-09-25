@@ -15,7 +15,6 @@ import {
   LATE_ENROLLMENTS_BUFFER_DAYS,
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS,
-  MAX_MILLISECONDS,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
@@ -567,32 +566,7 @@ export const isLmsBudget = (
  */
 export const isDateBeforeToday = date => dayjs(date).isBefore(dayjs());
 
-export const minimumEnrollByDateFromToday = ({ subsidyExpirationDatetime }) => Math.min(
-  dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate(),
-);
-
 const subsidyExpirationRefundCutoffDate = ({ subsidyExpirationDatetime }) => dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate();
-
-const isStartDateWithinThreshold = ({ enrollStart, start, subsidyExpirationDatetime }) => {
-  if (!start && !enrollStart) {
-    return true;
-  }
-  const timeStampStartDate = dayjs(start).unix() || MAX_MILLISECONDS;
-  const timeStampEnrollStartDate = dayjs(enrollStart).unix() || MAX_MILLISECONDS;
-  const earliestStartDate = Math.min(timeStampStartDate, timeStampEnrollStartDate);
-  return dayjs(
-    earliestStartDate,
-  ).isBefore(subsidyExpirationRefundCutoffDate({ subsidyExpirationDatetime }), 'seconds');
-};
-
-const isEnrollByDateWithinThreshold = ({ enrollBy, isLateRedemptionAllowed = false }) => {
-  if (!enrollBy) { return true; }
-  let enrollmentEffectiveDate = dayjs();
-  if (isLateRedemptionAllowed) {
-    enrollmentEffectiveDate = enrollmentEffectiveDate.subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
-  }
-  return dayjs(enrollBy).isAfter(enrollmentEffectiveDate, 'seconds');
-};
 
 export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
 
@@ -647,15 +621,42 @@ export const getNormalizedEnrollByDate = (enrollBy) => {
   return enrollBy;
 };
 
+const isStartDateWithinThreshold = ({
+  hasEnrollStart, enrollStart, start, subsidyExpirationDatetime,
+}) => {
+  if (!start && !hasEnrollStart) {
+    return true;
+  }
+  const validStartDates = [];
+  if (start) {
+    validStartDates.push(dayjs(start).valueOf());
+  }
+  if (hasEnrollStart) {
+    validStartDates.push(dayjs(enrollStart).valueOf());
+  }
+  const earliestStartDate = Math.min(...validStartDates);
+  const subsidyExpirationDate = subsidyExpirationRefundCutoffDate({ subsidyExpirationDatetime });
+  return dayjs(earliestStartDate).isBefore(subsidyExpirationDate, 'seconds');
+};
+
+const isEnrollByDateWithinThreshold = ({ hasEnrollBy, enrollBy, isLateRedemptionAllowed = false }) => {
+  if (!hasEnrollBy) { return true; }
+  let enrollmentEffectiveDate = dayjs();
+  if (isLateRedemptionAllowed) {
+    enrollmentEffectiveDate = enrollmentEffectiveDate.subtract(LATE_ENROLLMENTS_BUFFER_DAYS, 'days');
+  }
+  return dayjs(enrollBy).isAfter(enrollmentEffectiveDate, 'seconds');
+};
+
 /**
  * Filters assignable course runs based on the following criteria:
- *  - If hasEnrollBy, we return assignments with enroll before the soonest date: The subsidy expiration
- *    date - refund threshold
- *  - If isLateRedemptionAllowed, we consider only the isLateEnrollmentEligible field returned by Algolia for
- *    each run.
+ *  - If the start date or enrollStart date (min date) is before the subsidy expiration - 14 day threshold
+ *    AND
+ *    If the enrollBy date is after current date
  *
  *  Based on the above criteria, if isLateRedemptionAllowed is false, filter on if the course run isActive AND
- *  isEligibleForEnrollment
+ *  isEligibleForEnrollment otherwise, if isLateRedemptionAllowed, the enrollBy date is modified to take into account
+ *  late enrollment in the initial comparison.
  *
  *  The main purpose of the filter is to ensure that course runs for a
  *  course are within the enterprises LC subsidy duration
@@ -663,7 +664,7 @@ export const getNormalizedEnrollByDate = (enrollBy) => {
  *  (which may be allocated but not accepted) falling outside the date range of the subsidy expiration date
  *  refund threshold.
  *
- *  We transform the assignedCourseRuns data to normalize the start and enrollBy dates based on the functions
+ *  We transform the assignedCourseRuns data to normalize the start, enrollBy and enrollStart dates
  *
  *  Furthermore, we return assignable course runs sorted by the enrollBy date (soonest to latest). If the enrollBy dates
  *  are equivalent, sort by the start date.
@@ -680,28 +681,41 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
     enrollStart: courseRun.hasEnrollStart ? dayjs.unix(courseRun.enrollStart).toISOString() : null,
     upgradeDeadline: dayjs.unix(courseRun.upgradeDeadline).toISOString(),
   }));
+
   const assignableCourseRunsFilter = ({
-    enrollBy, enrollStart, start, isActive, hasEnrollBy, isLateEnrollmentEligible,
+    enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible,
   }) => {
+    const isEnrollByDateValid = isEnrollByDateWithinThreshold({
+      hasEnrollBy,
+      enrollBy,
+      isLateRedemptionAllowed,
+    });
+    const isStartDateValid = isStartDateWithinThreshold({
+      hasEnrollStart,
+      enrollStart,
+      start,
+      subsidyExpirationDatetime,
+    });
+
     // Determine eligibility based on the provided enrollBy, start, and enrollStart date
-    const isEligibleForEnrollment = isEnrollByDateWithinThreshold(
-      {
-        enrollBy,
-        isLateRedemptionAllowed,
-      },
-    ) && isStartDateWithinThreshold(
-      {
-        enrollStart,
-        start,
-        subsidyExpirationDatetime,
-      },
-    );
+    const isEligibleForEnrollment = isEnrollByDateValid && isStartDateValid;
+
+    if (!isEligibleForEnrollment) {
+      // Basic checks against this content's critical dates and their relation to
+      // the current date and subsidy expiration date have failed.
+      return false;
+    }
     if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
-      return isLateEnrollmentEligible && isEligibleForEnrollment;
+      // Special case: late enrollment has been enabled by ECS for this budget, and
+      // isEligibleForEnrollment already succeeded, so we know that late enrollment
+      // would be happy given enrollment deadline of the course.  Now all we need
+      // to do is make sure the run itself is generally eligible for late enrollment
+      return isLateEnrollmentEligible;
     }
     // General courseware filter
-    return isActive && isEligibleForEnrollment;
+    return isActive;
   };
+
   // Main function that transforms the cloned course runs to the normalizedStart and normalizedEnrollBy dates
   const assignableCourseRuns = clonedCourseRuns.filter(assignableCourseRunsFilter).map(courseRun => {
     if (!courseRun.hasEnrollBy) {
@@ -709,7 +723,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
         ...courseRun,
         start: getNormalizedStartDate(courseRun),
         enrollBy: getNormalizedEnrollByDate(
-          minimumEnrollByDateFromToday({ subsidyExpirationDatetime }),
+          subsidyExpirationRefundCutoffDate({ subsidyExpirationDatetime }),
         ),
         hasEnrollBy: true,
       };
