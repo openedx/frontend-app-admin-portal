@@ -736,10 +736,17 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   });
   // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start.
   const sortedAssignableCourseRuns = assignableCourseRuns.sort((a, b) => {
-    if (a.enrollBy === b.enrollBy) {
-      return dayjs(a.start).unix() - dayjs(b.start).unix();
+    // Label relevant timestamps when to timestamp to milliseconds for the most granular sort
+    const prevEnrollByDateTimestamp = dayjs(a.enrollBy).valueOf();
+    const nextEnrollByDateTimestamp = dayjs(b.enrollBy).valueOf();
+    const prevStartDateTimestamp = dayjs(a.start).valueOf();
+    const nextStartDateTimestamp = dayjs(b.start).valueOf();
+
+    // Compare start dates to verify they are equivalent
+    if (dayjs(a.start).isSame(b.start, 'day')) {
+      return prevEnrollByDateTimestamp - nextEnrollByDateTimestamp;
     }
-    return a.enrollBy - b.enrollBy;
+    return prevStartDateTimestamp - nextStartDateTimestamp;
   });
   return sortedAssignableCourseRuns;
 };

@@ -66,13 +66,13 @@ const NewAssignmentModalDropdown = ({
             onMouseUp={() => setClickedDropdownItem(null)}
           >
             <Stack>
-              {intl.formatMessage(messages.enrollBy, {
-                enrollByDate: dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT),
+              {intl.formatMessage(messages.startDate, {
+                startLabel: startLabel(courseRun),
+                startDate: dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT),
               })}
               <span className={`small ${getDropdownItemClassName(courseRun)}`}>
-                {intl.formatMessage(messages.startDate, {
-                  startLabel: startLabel(courseRun),
-                  startDate: dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT),
+                {intl.formatMessage(messages.enrollBy, {
+                  enrollByDate: dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT),
                 })}
               </span>
             </Stack>
