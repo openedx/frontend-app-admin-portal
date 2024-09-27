@@ -648,6 +648,21 @@ const isEnrollByDateWithinThreshold = ({ hasEnrollBy, enrollBy, isLateRedemption
   return dayjs(enrollBy).isAfter(enrollmentEffectiveDate, 'seconds');
 };
 
+export const startAndEnrollBySortLogic = (prev, next) => {
+  // Label relevant timestamps to milliseconds for the most granular sort
+  const prevEnrollByDateTimestamp = dayjs(prev.enrollBy).valueOf();
+  const nextEnrollByDateTimestamp = dayjs(next.enrollBy).valueOf();
+  const prevStartDateTimestamp = dayjs(prev.start).valueOf();
+  const nextStartDateTimestamp = dayjs(next.start).valueOf();
+
+  // When start dates are equivalent, compare enrollBy dates.
+  if (dayjs(prev.start).isSame(next.start, 'day')) {
+    return prevEnrollByDateTimestamp - nextEnrollByDateTimestamp;
+  }
+  // Otherwise, compare start dates
+  return prevStartDateTimestamp - nextStartDateTimestamp;
+};
+
 /**
  * Filters assignable course runs based on the following criteria:
  *  - If the start date or enrollStart date (min date) is before the subsidy expiration - 14 day threshold
@@ -734,12 +749,6 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
       enrollBy: getNormalizedEnrollByDate(courseRun.enrollBy),
     };
   });
-  // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start.
-  const sortedAssignableCourseRuns = assignableCourseRuns.sort((a, b) => {
-    if (a.enrollBy === b.enrollBy) {
-      return dayjs(a.start).unix() - dayjs(b.start).unix();
-    }
-    return a.enrollBy - b.enrollBy;
-  });
-  return sortedAssignableCourseRuns;
+  // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start
+  return assignableCourseRuns.sort(startAndEnrollBySortLogic);
 };
