@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import PeopleManagementPage from '..';
 
 const mockStore = configureMockStore([thunk]);
@@ -21,14 +22,22 @@ const initialStoreState = {
   },
 };
 
+const defaultEnterpriseSubsidiesContextValue = {
+  enterpriseSubsidyTypes: ['budget', 'license'],
+  isLoading: false,
+};
+
 const PeopleManagementPageWrapper = ({
   initialState = initialStoreState,
+  enterpriseSubsidiesContextValue = defaultEnterpriseSubsidiesContextValue,
 }) => {
   const store = getMockStore(initialState);
   return (
     <IntlProvider locale="en">
       <Provider store={store}>
-        <PeopleManagementPage />
+        <EnterpriseSubsidiesContext.Provider value={enterpriseSubsidiesContextValue}>
+          <PeopleManagementPage />
+        </EnterpriseSubsidiesContext.Provider>
       </Provider>
     </IntlProvider>
   );
