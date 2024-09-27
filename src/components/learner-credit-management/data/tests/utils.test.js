@@ -1,10 +1,12 @@
 import { createIntl } from '@edx/frontend-platform/i18n';
+import dayjs from 'dayjs';
 import {
-  transformSubsidySummary,
   getBudgetStatus,
-  orderBudgets,
   getTranslatedBudgetStatus,
   getTranslatedBudgetTerm,
+  orderBudgets,
+  startAndEnrollBySortLogic,
+  transformSubsidySummary,
 } from '../utils';
 import { EXEC_ED_OFFER_TYPE } from '../constants';
 
@@ -256,5 +258,88 @@ describe('getTranslatedBudgetTerm', () => {
 
     expect(getTranslatedBudgetTerm(mockintl, term1)).toEqual('');
     expect(getTranslatedBudgetTerm(mockintl, term2)).toEqual('');
+  });
+});
+
+describe('startAndEnrollBySortLogic', () => {
+  it.each([
+    // Unique start and enroll-by dates
+    {
+      sampleData: [
+        {
+          enrollBy: dayjs().add(1, 'day').toISOString(),
+          start: dayjs().add(3, 'day').toISOString(),
+          expectedOrder: 2,
+        },
+        {
+          enrollBy: dayjs().subtract(2, 'day').toISOString(),
+          start: dayjs().add(1, 'day').toISOString(),
+          expectedOrder: 1,
+        },
+        {
+          enrollBy: dayjs().subtract(6, 'day').toISOString(),
+          start: dayjs().add(12, 'day').toISOString(),
+          expectedOrder: 4,
+        },
+        {
+          enrollBy: dayjs().add(3, 'day').toISOString(),
+          start: dayjs().add(5, 'day').toISOString(),
+          expectedOrder: 3,
+        },
+      ],
+    },
+    // unique start, same enroll by dates
+    {
+      sampleData: [
+        {
+          enrollBy: dayjs().add(1, 'day').toISOString(),
+          start: dayjs().add(3, 'day').toISOString(),
+          expectedOrder: 2,
+        },
+        {
+          enrollBy: dayjs().subtract(1, 'day').toISOString(),
+          start: dayjs().add(1, 'day').toISOString(),
+          expectedOrder: 1,
+        },
+        {
+          enrollBy: dayjs().subtract(6, 'day').toISOString(),
+          start: dayjs().add(12, 'day').toISOString(),
+          expectedOrder: 4,
+        },
+        {
+          enrollBy: dayjs().add(6, 'day').toISOString(),
+          start: dayjs().add(5, 'day').toISOString(),
+          expectedOrder: 3,
+        },
+      ],
+    },
+    // unique enroll-by, same start dates
+    {
+      sampleData: [
+        {
+          enrollBy: dayjs().add(1, 'day').toISOString(),
+          start: dayjs().add(1, 'day').toISOString(),
+          expectedOrder: 1,
+        },
+        {
+          enrollBy: dayjs().subtract(2, 'day').toISOString(),
+          start: dayjs().add(1, 'day').toISOString(),
+          expectedOrder: 2,
+        },
+        {
+          enrollBy: dayjs().subtract(6, 'day').toISOString(),
+          start: dayjs().add(12, 'day').toISOString(),
+          expectedOrder: 4,
+        },
+        {
+          enrollBy: dayjs().add(3, 'day').toISOString(),
+          start: dayjs().add(12, 'day').toISOString(),
+          expectedOrder: 3,
+        },
+      ],
+    },
+  ])('sorts start date and enroll by date as expected', ({ sampleData }) => {
+    const sortedDates = sampleData.sort(startAndEnrollBySortLogic);
+    expect(sortedDates).toEqual(sampleData.sort((a, b) => a.expectedOrder - b.expectedOrder));
   });
 });

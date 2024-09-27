@@ -3,6 +3,7 @@ import { Dropdown, Stack } from '@openedx/paragon';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import classNames from 'classnames';
 import { SHORT_MONTH_DATE_FORMAT } from '../data';
 
 const messages = defineMessages({
@@ -40,7 +41,7 @@ const NewAssignmentModalDropdown = ({
     if (clickedDropdownItem && clickedDropdownItem.key === courseRun.key) {
       return null;
     }
-    return 'text-muted';
+    return true;
   };
   const startLabel = ({ start }) => (dayjs(start).isBefore(dayjs()) ? 'Started' : 'Starts');
   return (
@@ -70,7 +71,7 @@ const NewAssignmentModalDropdown = ({
                 startLabel: startLabel(courseRun),
                 startDate: dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT),
               })}
-              <span className={`small ${getDropdownItemClassName(courseRun)}`}>
+              <span className={classNames('small', { 'text-muted': getDropdownItemClassName(courseRun) })}>
                 {intl.formatMessage(messages.enrollBy, {
                   enrollByDate: dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT),
                 })}

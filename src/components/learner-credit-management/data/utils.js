@@ -648,6 +648,21 @@ const isEnrollByDateWithinThreshold = ({ hasEnrollBy, enrollBy, isLateRedemption
   return dayjs(enrollBy).isAfter(enrollmentEffectiveDate, 'seconds');
 };
 
+export const startAndEnrollBySortLogic = (prev, next) => {
+  // Label relevant timestamps to milliseconds for the most granular sort
+  const prevEnrollByDateTimestamp = dayjs(prev.enrollBy).valueOf();
+  const nextEnrollByDateTimestamp = dayjs(next.enrollBy).valueOf();
+  const prevStartDateTimestamp = dayjs(prev.start).valueOf();
+  const nextStartDateTimestamp = dayjs(next.start).valueOf();
+
+  // When start dates are equivalent, compare enrollBy dates.
+  if (dayjs(prev.start).isSame(next.start, 'day')) {
+    return prevEnrollByDateTimestamp - nextEnrollByDateTimestamp;
+  }
+  // Otherwise, compare start dates
+  return prevStartDateTimestamp - nextStartDateTimestamp;
+};
+
 /**
  * Filters assignable course runs based on the following criteria:
  *  - If the start date or enrollStart date (min date) is before the subsidy expiration - 14 day threshold
@@ -734,19 +749,6 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
       enrollBy: getNormalizedEnrollByDate(courseRun.enrollBy),
     };
   });
-  // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start.
-  const sortedAssignableCourseRuns = assignableCourseRuns.sort((a, b) => {
-    // Label relevant timestamps when to timestamp to milliseconds for the most granular sort
-    const prevEnrollByDateTimestamp = dayjs(a.enrollBy).valueOf();
-    const nextEnrollByDateTimestamp = dayjs(b.enrollBy).valueOf();
-    const prevStartDateTimestamp = dayjs(a.start).valueOf();
-    const nextStartDateTimestamp = dayjs(b.start).valueOf();
-
-    // Compare start dates to verify they are equivalent
-    if (dayjs(a.start).isSame(b.start, 'day')) {
-      return prevEnrollByDateTimestamp - nextEnrollByDateTimestamp;
-    }
-    return prevStartDateTimestamp - nextStartDateTimestamp;
-  });
-  return sortedAssignableCourseRuns;
+  // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start
+  return assignableCourseRuns.sort(startAndEnrollBySortLogic);
 };
