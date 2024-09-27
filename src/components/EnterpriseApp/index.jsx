@@ -82,6 +82,7 @@ class EnterpriseApp extends React.Component {
       enableAnalyticsScreen,
       enableReportingConfigurationsScreen,
       enablePortalLearnerCreditManagementScreen,
+      enterpriseGroupsV2,
       enterpriseId,
       enterpriseName,
       enterpriseFeatures,
@@ -158,6 +159,7 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
+                    enterpriseGroupsV2={enterpriseGroupsV2}
                   >
                     <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
                   </EnterpriseAppContent>
@@ -186,6 +188,7 @@ EnterpriseApp.defaultProps = {
   enableAnalyticsScreen: false,
   enableReportingConfigurationsScreen: false,
   enablePortalLearnerCreditManagementScreen: false,
+  enterpriseGroupsV2: false,
   loading: true,
 };
 
@@ -212,6 +215,7 @@ EnterpriseApp.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool,
+  enterpriseGroupsV2: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
 };
