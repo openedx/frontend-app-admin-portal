@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
 import DownloadCsvButton from './DownloadCSVButton';
-import useModuleActivityReport from '../data/hooks';
+import useModuleActivityReport from '../data/hooks/useModuleActivityReport';
 import SearchBar from '../../SearchBar';
 
 const ModuleActivityReport = ({ enterpriseId }) => {
