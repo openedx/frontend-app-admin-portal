@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ActionRow, Button } from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { getConfig } from '@edx/frontend-platform/config';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
@@ -9,8 +8,14 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import LinkDeactivationAlertModal from './LinkDeactivationAlertModal';
 import LinkCopiedToast from './LinkCopiedToast';
 import { SETTINGS_ACCESS_EVENTS } from '../../../eventTracking';
+import getInviteURL from './utils';
 
-const ActionsTableCell = ({ row, onDeactivateLink, enterpriseUUID }) => {
+const ActionsTableCell = ({
+  row,
+  onDeactivateLink,
+  enterpriseUUID,
+  enterpriseSlug,
+}) => {
   const [isLinkDeactivationModalOpen, setIsLinkDeactivationModalOpen] = useState(false);
   const [isCopyLinkToastOpen, setIsCopyLinkToastOpen] = useState(false);
   const { isValid, uuid: inviteKeyUUID } = row.original;
@@ -25,7 +30,7 @@ const ActionsTableCell = ({ row, onDeactivateLink, enterpriseUUID }) => {
       return;
     }
     const addToClipboard = async () => {
-      const inviteURL = `${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/invite/${inviteKeyUUID}`;
+      const inviteURL = getInviteURL(enterpriseSlug, inviteKeyUUID);
       try {
         await navigator.clipboard.writeText(inviteURL);
         setIsCopyLinkToastOpen(true);
@@ -107,6 +112,7 @@ ActionsTableCell.propTypes = {
   }).isRequired,
   onDeactivateLink: PropTypes.func,
   enterpriseUUID: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 ActionsTableCell.defaultProps = {
