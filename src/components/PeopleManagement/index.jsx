@@ -34,7 +34,7 @@ const PeopleManagementPage = () => {
     <FormattedMessage
       id="admin.portal.people.management.page.tooltip.content"
       defaultMessage="Only available for Learner Credit"
-      description="Tooltip to say this is only available for Learner Credit (not codes or subcriptions)."
+      description="Tooltip to say this is only available for Learner Credit (not codes or subscriptions)."
     />
   );
 
