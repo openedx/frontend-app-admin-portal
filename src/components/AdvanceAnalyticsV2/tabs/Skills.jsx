@@ -7,7 +7,7 @@ import {
 } from '../data/constants';
 import { useEnterpriseAnalyticsData } from '../data/hooks';
 import ChartWrapper from '../charts/ChartWrapper';
-import { constructChartHoverTemplate } from '../data/utils';
+import { constructChartHoverTemplate, calculateMarkerSizes } from '../data/utils';
 import DownloadCSVButton from '../DownloadCSVButton';
 
 const Skills = ({ startDate, endDate, enterpriseId }) => {
@@ -21,6 +21,8 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
     startDate,
     endDate,
   });
+
+  const markerSizes = calculateMarkerSizes(data?.topSkills, 'completions');
 
   return (
     <div className="tab-skills mt-4">
@@ -64,7 +66,7 @@ const Skills = ({ startDate, endDate, enterpriseId }) => {
               defaultMessage: 'Completions',
               description: 'Y-axis title for the top skills chart.',
             }),
-            markerSizeKey: 'completions',
+            markerSizes, // Pass marker sizes directly to ScatterChart
             customDataKeys: ['skillName', 'skillType'],
             hovertemplate: constructChartHoverTemplate(intl, {
               skill: '%{customdata[0]}',

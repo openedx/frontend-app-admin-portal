@@ -15,13 +15,13 @@ import messages from '../messages';
  * @param {string} hovertemplate - A template for the hover text.
  * @param {string} xAxisTitle - The title for the x-axis.
  * @param {string} yAxisTitle - The title for the y-axis.
- * @param {string} markerSizeKey - Key for the marker size values in the data objects.
+ * @param {number[]} markerSizes - An array of sizes for the markers.
  * @param {string[]} customDataKeys - Array of keys for custom data to be included in the hover template.
  *
  * @returns The rendered Plotly scatter chart.
  */
 const ScatterChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, markerSizeKey, customDataKeys,
+  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, markerSizes, customDataKeys,
 }) => {
   const intl = useIntl();
   const categories = Object.keys(colorMap);
@@ -36,12 +36,14 @@ const ScatterChart = ({
       name: messages[category] ? intl.formatMessage(messages[category]) : category,
       marker: {
         color: colorMap[category],
-        size: filteredData.map(item => item[markerSizeKey] * 0.015).map(size => (size < 5 ? size + 6 : size)),
+        size: filteredData.map((item, index) => markerSizes[index]), // Use the pre-calculated sizes from props
+        sizeref: 0.2,
+        sizemode: 'area',
       },
       customdata: customDataKeys.length ? filteredData.map(item => customDataKeys.map(key => item[key])) : [],
       hovertemplate,
     };
-  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, markerSizeKey, customDataKeys, intl]);
+  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, markerSizes, customDataKeys, intl]);
 
   const layout = {
     margin: { t: 0 },
@@ -87,7 +89,7 @@ ScatterChart.propTypes = {
   hovertemplate: PropTypes.string.isRequired,
   xAxisTitle: PropTypes.string,
   yAxisTitle: PropTypes.string.isRequired,
-  markerSizeKey: PropTypes.string.isRequired,
+  markerSizes: PropTypes.arrayOf(PropTypes.number).isRequired,
   customDataKeys: PropTypes.arrayOf(PropTypes.string),
 };
 

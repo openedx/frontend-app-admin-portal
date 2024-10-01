@@ -193,3 +193,32 @@ export const modifyDataToIntroduceEnrollTypeCount = (data, uniqueKey, countKey, 
   }
   return Object.values(modifiedData);
 };
+
+/**
+ * Calculates the marker sizes for a set of data objects based on a specified numeric property.
+ * Marker sizes are mapped to a range between a minimum and maximum size.
+ *
+ * @param {Array<Object>} dataArray - An array of objects containing the data.
+ * @param {string} property - The key of the numeric property used to calculate the sizes (e.g., 'completions').
+ * @param {number} [minSize=10] - The minimum marker size in pixels.
+ * @param {number} [maxSize=60] - The maximum marker size in pixels.
+ * @returns {Array<number>} - An array of marker sizes corresponding to the values of the specified property.
+ */
+export const calculateMarkerSizes = (dataArray = [], property, minSize = 10, maxSize = 60) => {
+  if (!dataArray.length || !property) {
+    return [];
+  }
+
+  const propertyValues = dataArray.map(d => d[property]);
+  const minValue = Math.min(...propertyValues);
+  const maxValue = Math.max(...propertyValues);
+
+  return dataArray.map(item => {
+    if (maxValue - minValue === 0) {
+      return minSize; // Avoid division by zero if all values are the same
+    }
+
+    // Scale the marker size between minSize and maxSize based on the specified property
+    return ((item[property] - minValue) / (maxValue - minValue)) * (maxSize - minSize) + minSize;
+  });
+};
