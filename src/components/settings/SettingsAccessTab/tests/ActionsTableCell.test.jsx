@@ -25,7 +25,7 @@ const TEST_INVITE_KEY_UUID = 'test-uuid-1';
 
 const ActionsTableCellWrapper = (props) => (
   <IntlProvider locale="en">
-    <ActionsTableCell enterpriseUUID="test-enterprise-id" {...props} />
+    <ActionsTableCell enterpriseUUID="test-enterprise-id" enterpriseSlug="test-enterprise" {...props} />
   </IntlProvider>
 );
 
@@ -65,7 +65,7 @@ describe('ActionsTableCell', () => {
     );
     const copyBtn = screen.getByText('Copy');
     userEvent.click(copyBtn);
-    const expectedURL = `http://localhost:8734/invite/${TEST_INVITE_KEY_UUID}`;
+    const expectedURL = `http://localhost:8734/test-enterprise/invite/${TEST_INVITE_KEY_UUID}`;
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(expectedURL);
     await waitFor(() => expect(screen.getByText('Link copied to clipboard')));
   });
