@@ -30,6 +30,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
     startDate,
     endDate,
   });
+  const currentDate = new Date().toISOString().split('T')[0];
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -77,8 +78,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               </Form.Label>
               <Form.Control
                 type="date"
-                value={endDate || data?.maxEnrollmentDate}
-                max={data?.maxEnrollmentDate}
+                value={endDate || currentDate}
+                max={currentDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </Form.Group>
