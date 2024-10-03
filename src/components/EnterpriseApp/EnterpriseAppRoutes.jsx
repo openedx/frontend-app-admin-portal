@@ -17,6 +17,7 @@ import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadP
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
 import LearnerCreditManagementRoutes from '../learner-credit-management';
+import PeopleManagementPage from '../PeopleManagement';
 
 const EnterpriseAppRoutes = ({
   email,
@@ -27,6 +28,7 @@ const EnterpriseAppRoutes = ({
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
   enableContentHighlightsPage,
+  enterpriseGroupsV2,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { enterpriseAppPage } = useParams();
@@ -115,6 +117,13 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
+      {enterpriseGroupsV2 && enterpriseAppPage === ROUTE_NAMES.peopleManagement && (
+        <Route
+          path="/*"
+          element={<PeopleManagementPage />}
+        />
+      )}
+
       {enableContentHighlightsPage && enterpriseAppPage === ROUTE_NAMES.contentHighlights && (
         <Route
           path="/*"
@@ -136,6 +145,7 @@ EnterpriseAppRoutes.propTypes = {
   enableSubscriptionManagementPage: PropTypes.bool.isRequired,
   enableAnalyticsPage: PropTypes.bool.isRequired,
   enableContentHighlightsPage: PropTypes.bool.isRequired,
+  enterpriseGroupsV2: PropTypes.bool.isRequired,
 };
 
 export default EnterpriseAppRoutes;

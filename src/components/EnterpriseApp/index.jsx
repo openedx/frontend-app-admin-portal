@@ -158,6 +158,7 @@ class EnterpriseApp extends React.Component {
                     enableReportingPage={features.REPORTING_CONFIGURATIONS && enableReportingConfigurationsScreen}
                     enableSubscriptionManagementPage={enableSubscriptionManagementScreen}
                     enableAnalyticsPage={features.ANALYTICS && enableAnalyticsScreen}
+                    enterpriseGroupsV2={enterpriseFeatures.enterpriseGroupsV2}
                   >
                     <FeatureAnnouncementBanner enterpriseSlug={enterpriseSlug} />
                   </EnterpriseAppContent>
@@ -195,6 +196,7 @@ EnterpriseApp.propTypes = {
   enterpriseName: PropTypes.string,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
+    enterpriseGroupsV2: PropTypes.bool,
   }),
   enterpriseBranding: PropTypes.shape({
     primary_color: PropTypes.string,

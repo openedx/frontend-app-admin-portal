@@ -6,7 +6,8 @@ import classNames from 'classnames';
 import { Icon } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
+  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline,
+  Person, Settings, Support, Tag, TrendingUp,
 } from '@openedx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
@@ -35,6 +36,7 @@ const Sidebar = ({
   onWidthChange,
   isMobile,
   enterpriseGroupsV1,
+  enterpriseGroupsV2,
   onMount,
 }) => {
   const sidebarRef = useRef();
@@ -150,6 +152,12 @@ const Sidebar = ({
       hidden: !canManageLearnerCredit,
     },
     {
+      title: 'People Management',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
+      icon: <Icon src={Person} />,
+      hidden: !enterpriseGroupsV2,
+    },
+    {
       title: intl.formatMessage({
         id: 'sidebar.menu.item.highlights.title',
         defaultMessage: 'Highlights',
@@ -258,6 +266,7 @@ Sidebar.propTypes = {
   onMount: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   enterpriseGroupsV1: PropTypes.bool,
+  enterpriseGroupsV2: PropTypes.bool,
 };
 
 export default Sidebar;
