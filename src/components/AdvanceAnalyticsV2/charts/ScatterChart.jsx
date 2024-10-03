@@ -28,6 +28,8 @@ const ScatterChart = ({
 
   const traces = useMemo(() => categories.map(category => {
     const filteredData = data.filter(item => item[colorKey] === category);
+    // Create a Map to get the index of each item for bubble marker size calculation.
+    const dataIndexMap = new Map(data.map((item, index) => [item, index]));
     return {
       x: filteredData.map(item => item[xKey]),
       y: filteredData.map(item => item[yKey]),
@@ -36,7 +38,10 @@ const ScatterChart = ({
       name: messages[category] ? intl.formatMessage(messages[category]) : category,
       marker: {
         color: colorMap[category],
-        size: filteredData.map((item, index) => markerSizes[index]), // Use the pre-calculated sizes from props
+        size: filteredData.map(item => {
+          const index = dataIndexMap.get(item);
+          return markerSizes[index]; // Use the pre-calculated sizes from props
+        }),
         sizeref: 0.2,
         sizemode: 'area',
       },
