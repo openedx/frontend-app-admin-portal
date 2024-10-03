@@ -1,7 +1,9 @@
 // Jest test for utils.js
 
 import { createIntl } from '@edx/frontend-platform/i18n';
-import { applyCalculation, applyGranularity, constructChartHoverTemplate } from './utils';
+import {
+  applyCalculation, applyGranularity, constructChartHoverTemplate, calculateMarkerSizes,
+} from './utils';
 import { CALCULATION, GRANULARITY } from './constants';
 
 describe('utils', () => {
@@ -199,6 +201,36 @@ describe('utils', () => {
         { date: '2024-10-10', count: 300 },
         { date: '2025-01-10', count: 200 },
       ]);
+    });
+  });
+  describe('calculateMarkerSizes', () => {
+    it('should calculate correct marker sizes based on a property', () => {
+      const data = {
+        topSkills: [
+          {
+            skill_name: 'Test Skill 1',
+            completions: 5,
+          },
+          {
+            skill_name: 'Test Skill 2',
+            completions: 10,
+          },
+          {
+            skill_name: 'Test Skill 3',
+            completions: 15,
+          },
+        ],
+      };
+      const expectedSizes = [10, 35, 60];
+
+      const result = calculateMarkerSizes(data?.topSkills, 'completions');
+
+      expect(result).toEqual(expectedSizes);
+    });
+
+    it('should return empty array if data is empty', () => {
+      const result = calculateMarkerSizes([], 'completions');
+      expect(result).toEqual([]);
     });
   });
 });
