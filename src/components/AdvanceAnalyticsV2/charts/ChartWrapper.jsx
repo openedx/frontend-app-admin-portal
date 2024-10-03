@@ -49,7 +49,7 @@ ChartWrapper.propTypes = {
     hovertemplate: PropTypes.string.isRequired,
     xAxisTitle: PropTypes.string,
     yAxisTitle: PropTypes.string,
-    markerSizeKey: PropTypes.string,
+    markerSizes: PropTypes.arrayOf(PropTypes.number), // An array of sizes for the markers.
     customDataKeys: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   loadingMessage: PropTypes.string.isRequired,
