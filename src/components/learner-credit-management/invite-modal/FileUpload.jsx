@@ -8,7 +8,7 @@ import { InsertDriveFile } from '@openedx/paragon/icons';
 import { formatBytes } from '../../MultipleFileInputField/utils';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
 
-const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
+const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue, isGroupsInvite }) => {
   const [uploadedFile, setUploadedFile] = useState(undefined);
   const UploadedFile = (
     <>
@@ -33,6 +33,7 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
   return (
     <Form.Group>
       <Dropzone
+        className="bg-light-100"
         onProcessUpload={handleFileUpload}
         maxSize={1048576} // 1MB
         inputComponent={uploadedFile ? UploadedFile : false}
@@ -45,7 +46,7 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
           multipleDragged: 'Cannot upload more than one file.',
         }}
       />
-      <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload />
+      <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload/>
     </Form.Group>
   );
 };

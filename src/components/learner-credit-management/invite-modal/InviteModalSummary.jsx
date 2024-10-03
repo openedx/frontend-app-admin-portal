@@ -11,6 +11,7 @@ import InviteModalSummaryDuplicate from './InviteModalSummaryDuplicate';
 
 const InviteModalSummary = ({
   memberInviteMetadata,
+  isGroupsInvite,
 }) => {
   const {
     isValidInput,
@@ -48,7 +49,7 @@ const InviteModalSummary = ({
 
   if (isEmpty(cardSections)) {
     cardSections = cardSections.concat(
-      renderCard(<InviteModalSummaryEmptyState />),
+      renderCard(<InviteModalSummaryEmptyState isGroupsInvite/>),
     );
   }
 

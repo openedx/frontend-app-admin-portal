@@ -45,6 +45,16 @@ class LmsApiService {
 
   static enterpriseGroupListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
 
+  static createEnterpriseGroup(options) {
+    const postParams = {
+      budget_type: options.budgetType,
+      name: options.name,
+      enterprise_customer: options.enterpriseCustomer,
+    };
+    const createEnterpriseGroupUrl = `${LmsApiService.enterpriseGroupUrl}`;
+    return LmsApiService.apiClient().post(createEnterpriseGroupUrl, postParams);
+  }
+
   static fetchEnterpriseSsoOrchestrationRecord(configurationUuid) {
     const enterpriseSsoOrchestrationFetchUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}${configurationUuid}`;
     return LmsApiService.apiClient().get(enterpriseSsoOrchestrationFetchUrl);

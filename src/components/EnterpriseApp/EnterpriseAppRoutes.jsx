@@ -32,7 +32,7 @@ const EnterpriseAppRoutes = ({
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { enterpriseAppPage } = useParams();
-
+  console.log(enterpriseGroupsV2)
   return (
     <Routes>
       {enterpriseAppPage === ROUTE_NAMES.learners && (

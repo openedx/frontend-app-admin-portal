@@ -1,0 +1,1 @@
+export const MAX_LENGTH_GROUP_NAME = 60
