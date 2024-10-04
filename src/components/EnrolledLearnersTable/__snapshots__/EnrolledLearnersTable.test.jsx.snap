@@ -2,35 +2,328 @@
 
 exports[`EnrolledLearnersTable renders empty state correctly 1`] = `
 <div
-  className="fade alert-content alert alert-warning show"
-  role="alert"
+  className="pgn__data-table-layout-wrapper"
 >
-  <span
-    className="pgn__icon alert-icon"
-  >
-    <svg
-      aria-hidden={true}
-      fill="none"
-      focusable={false}
-      height={24}
-      role="img"
-      viewBox="0 0 24 24"
-      width={24}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
-        fill="currentColor"
-      />
-    </svg>
-  </span>
   <div
-    className="pgn__alert-message-wrapper"
+    className="pgn__data-table-layout-main"
   >
     <div
-      className="alert-message-content"
+      className="pgn__data-table-wrapper"
     >
-      There are no results.
+      <div
+        className="pgn__data-table-status-bar"
+        data-testid="table-control-bar"
+      >
+        <div
+          className="pgn__data-table-actions"
+        >
+          <div
+            className="pgn__data-table-actions-left"
+          >
+            <div
+              className="pgn__data-table-filters"
+            >
+              <div
+                className="pgn__data-table-filters-breakout-filter"
+              >
+                <div
+                  className="pgn__form-group"
+                >
+                  <label
+                    className="pgn__form-label sr-only"
+                    htmlFor="text-filter-label-header_userEmail-1"
+                  >
+                    Search email
+                  </label>
+                  <div
+                    className="pgn__form-control-decorator-group"
+                  >
+                    <input
+                      className="form-control"
+                      id="text-filter-label-header_userEmail-1"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      placeholder="Search email"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="pgn__data-table-actions-right"
+          >
+            <div />
+          </div>
+        </div>
+        <div
+          className="pgn__data-table-status"
+        >
+          <div
+            className="pgn__data-table-status-left"
+          />
+          <div
+            className="pgn__data-table-toggle"
+          />
+        </div>
+      </div>
+      <div
+        className="pgn__data-table-container is-loading"
+        data-testid="data-table-container"
+      >
+        <div
+          className="pgn__data-table-spinner"
+          data-testid="data-table-spinner"
+        >
+          <div
+            className="pgn__spinner spinner-border"
+            role="status"
+          >
+            <span
+              className="sr-only"
+            >
+              loading
+            </span>
+          </div>
+        </div>
+        <table
+          className="pgn__data-table is-striped"
+          role="table"
+        >
+          <thead>
+            <tr
+              role="row"
+            >
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Email
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Account Created
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-down"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                colSpan={1}
+                onClick={[Function]}
+                role="columnheader"
+                style={
+                  {
+                    "cursor": "pointer",
+                  }
+                }
+                title="Toggle SortBy"
+              >
+                <span
+                  className="d-flex align-items-center"
+                >
+                  <span>
+                    Total Course Enrollment Count
+                  </span>
+                  <span
+                    className="pgn__icon"
+                    data-testid="arrow-drop-up-down"
+                    style={
+                      {
+                        "opacity": 0.5,
+                      }
+                    }
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            role="rowgroup"
+          />
+        </table>
+      </div>
+      <div
+        className="pgn__data-table-footer"
+        data-testid="table-footer"
+      >
+        <nav
+          aria-label="table pagination"
+          className="pagination-minimal"
+        >
+          <div
+            aria-atomic={true}
+            aria-live="polite"
+            aria-relevant="text"
+            className="sr-only"
+          >
+            Page 1, Current Page, of -1
+          </div>
+          <ul
+            className="pagination"
+          >
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Previous"
+                className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
+                >
+                  <span
+                    className="pgn__icon btn-icon__icon"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M17.51 3.87 15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <button
+                aria-label="Next, Page 2"
+                className="btn-icon btn-icon-primary btn-icon-md next page-link"
+                disabled={true}
+                onClick={[Function]}
+                tabIndex="-1"
+                type="button"
+              >
+                <span
+                  className="btn-icon__icon-container"
+                >
+                  <span
+                    className="pgn__icon btn-icon__icon"
+                  >
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6.49 20.13 1.77 1.77 9.9-9.9-9.9-9.9-1.77 1.77L14.62 12l-8.13 8.13Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 </div>

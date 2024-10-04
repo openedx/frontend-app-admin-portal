@@ -2,61 +2,97 @@ import React from 'react';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import TableContainer from '../../containers/TableContainer';
+import { DataTable, TextFilter } from '@openedx/paragon';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { DEFAULT_PAGE, PAGE_SIZE } from '../learner-credit-management/data';
+import useEnrolledLearners from './data/hooks/useEnrolledLearners';
 import { i18nFormatTimestamp } from '../../utils';
-import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
-const EnrolledLearnersTable = () => {
+const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
+
+const UserEmail = ({ row }) => (
+  <span data-hj-suppress>{row.original.userEmail}</span>
+);
+
+UserEmail.propTypes = {
+  row: PropTypes.shape({
+    original: PropTypes.shape({
+      userEmail: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
+const EnrolledLearnersTable = ({ enterpriseId }) => {
   const intl = useIntl();
-
-  const tableColumns = [
-    {
-      label: intl.formatMessage({
-        id: 'admin.portal.lpr.enrolled.learners.table.user_email.column.heading',
-        defaultMessage: 'Email',
-        description: 'Column heading for the user email column in the enrolled learners table',
-      }),
-      key: 'user_email',
-      columnSortable: true,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'admin.portal.lpr.enrolled.learners.table.lms_user_created.column.heading',
-        defaultMessage: 'Account Created',
-        description: 'Column heading for the lms user created column in the enrolled learners table',
-      }),
-      key: 'lms_user_created',
-      columnSortable: true,
-    },
-    {
-      label: intl.formatMessage({
-        id: 'admin.portal.lpr.enrolled.learners.table.enrollment_count.column.heading',
-        defaultMessage: 'Total Course Enrollment Count',
-        description: 'Column heading for the course enrollment count column in the enrolled learners table',
-      }),
-      key: 'enrollment_count',
-      columnSortable: true,
-    },
-  ];
-
-  const formatLearnerData = learners => learners.map(learner => ({
-    ...learner,
-    user_email: <span data-hj-suppress>{learner.user_email}</span>,
-    lms_user_created: i18nFormatTimestamp({
-      intl, timestamp: learner.lms_user_created,
-    }),
-  }));
+  const {
+    isLoading,
+    enrolledLearners: tableData,
+    fetchEnrolledLearners: fetchTableData,
+  } = useEnrolledLearners(enterpriseId);
 
   return (
-    <TableContainer
-      id="enrolled-learners"
-      className="enrolled-learners"
-      fetchMethod={EnterpriseDataApiService.fetchEnrolledLearners}
-      columns={tableColumns}
-      formatData={formatLearnerData}
-      tableSortable
+    <DataTable
+      isSortable
+      manualSortBy
+      isPaginated
+      manualPagination
+      isFilterable
+      manualFilters
+      isLoading={isLoading}
+      FilterStatusComponent={FilterStatus}
+      defaultColumnValues={{ Filter: TextFilter }}
+      columns={[
+        {
+          Header: intl.formatMessage({
+            id: 'admin.portal.lpr.enrolled.learners.table.user_email.column.heading',
+            defaultMessage: 'Email',
+            description: 'Column heading for the user email column in the enrolled learners table',
+          }),
+          accessor: 'userEmail',
+          Cell: UserEmail,
+        },
+        {
+          Header: intl.formatMessage({
+            id: 'admin.portal.lpr.enrolled.learners.table.lms_user_created.column.heading',
+            defaultMessage: 'Account Created',
+            description: 'Column heading for the lms user created column in the enrolled learners table',
+          }),
+          accessor: 'lmsUserCreated',
+          Cell: ({ row }) => i18nFormatTimestamp({ intl, timestamp: row.values.lmsUserCreated }),
+          disableFilters: true,
+        },
+        {
+          Header: intl.formatMessage({
+            id: 'admin.portal.lpr.enrolled.learners.table.enrollment_count.column.heading',
+            defaultMessage: 'Total Course Enrollment Count',
+            description: 'Column heading for the course enrollment count column in the enrolled learners table',
+          }),
+          accessor: 'enrollmentCount',
+          disableFilters: true,
+        },
+      ]}
+      initialState={{
+        pageSize: PAGE_SIZE,
+        pageIndex: DEFAULT_PAGE,
+        sortBy: [
+          { id: 'lmsUserCreated', desc: true },
+        ],
+      }}
+      fetchData={fetchTableData}
+      data={tableData.results}
+      itemCount={tableData.itemCount}
+      pageCount={tableData.pageCount}
     />
   );
 };
 
-export default EnrolledLearnersTable;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+EnrolledLearnersTable.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(EnrolledLearnersTable);
