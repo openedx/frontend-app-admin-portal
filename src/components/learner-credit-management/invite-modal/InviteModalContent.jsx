@@ -6,6 +6,7 @@ import debounce from 'lodash.debounce';
 import {
   Col, Container, Form, Row,
 } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import InviteModalSummary from './InviteModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';
@@ -14,17 +15,44 @@ import InviteModalInputFeedback from './InviteModalInputFeedback';
 import InviteModalMembershipInfo from './InviteModalMembershipInfo';
 import InviteModalBudgetCard from './InviteModalBudgetCard';
 import InviteModalPermissions from './InviteModalPermissions';
+import InviteSummaryCount from './InviteSummaryCount';
+import MAX_LENGTH_GROUP_NAME from '../../PeopleManagement/constants';
 
-const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => {
+const InviteModalContent = ({
+  onEmailAddressesChange,
+  subsidyAccessPolicy,
+  isGroupInvite,
+  onSetGroupName,
+}) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [inputType, setInputType] = useState('email');
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
-  const [memberInviteMetadata, setMemberInviteMetadata] = useState({});
+  const [memberInviteMetadata, setMemberInviteMetadata] = useState({
+    isValidInput: null,
+    lowerCasedEmails: [],
+    duplicateEmails: [],
+  });
+  const [groupNameLength, setGroupNameLength] = useState(0);
+  const [groupName, setGroupName] = useState('');
 
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
   };
+
+  const handleGroupNameChange = useCallback((e) => {
+    if (!e.target.value) {
+      setGroupName('');
+      onSetGroupName('');
+      return;
+    }
+    if (e.target.value.length > MAX_LENGTH_GROUP_NAME) {
+      return;
+    }
+    setGroupName(e.target.value);
+    setGroupNameLength(e.target.value.length);
+    onSetGroupName(e.target.value);
+  }, [onSetGroupName]);
 
   const handleEmailAddressesChanged = useCallback((value) => {
     if (!value) {
@@ -57,6 +85,52 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
       onEmailAddressesChange([]);
     }
   }, [onEmailAddressesChange, learnerEmails]);
+
+  if (isGroupInvite) {
+    return (
+      <Container size="lg" className="py-3">
+        <h3>
+          <FormattedMessage
+            id="people-management.page.create-group.section.header"
+            defaultMessage="Create a custom group of members"
+            description="Header for the section to create a new group."
+          />
+        </h3>
+        <Row>
+          <Col>
+            <h4 className="mt-4">Name your group</h4>
+            <Form.Control
+              value={groupName}
+              onChange={handleGroupNameChange}
+              label="name-your-group"
+              data-testid="group-name"
+              placeholder="Name"
+            />
+            <Form.Control.Feedback className="mb-4">
+              {groupNameLength} / {MAX_LENGTH_GROUP_NAME}
+            </Form.Control.Feedback>
+          </Col>
+          <Col />
+        </Row>
+        <Row>
+          <Col>
+            <h4>Select group members</h4>
+            <p>Upload a CSV or select members from the table below.</p>
+            <FileUpload
+              memberInviteMetadata={memberInviteMetadata}
+              setEmailAddressesInputValue={setEmailAddressesInputValue}
+            />
+          </Col>
+          <Col>
+            <h4>Details</h4>
+            <InviteModalSummary isGroupInvite memberInviteMetadata={memberInviteMetadata} />
+            {isGroupInvite && <InviteSummaryCount memberInviteMetadata={memberInviteMetadata} />}
+            <hr className="my-4" />
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
 
   return (
     <Container size="lg" className="py-3">
@@ -111,6 +185,8 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
 InviteModalContent.propTypes = {
   onEmailAddressesChange: PropTypes.func.isRequired,
   subsidyAccessPolicy: PropTypes.shape(),
+  isGroupInvite: PropTypes.bool.isRequired,
+  onSetGroupName: PropTypes.func,
 };
 
 export default InviteModalContent;

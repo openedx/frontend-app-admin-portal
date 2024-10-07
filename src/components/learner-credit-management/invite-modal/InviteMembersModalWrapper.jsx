@@ -115,6 +115,7 @@ const InviteMembersModalWrapper = ({
         <InviteModalContent
           onEmailAddressesChange={handleEmailAddressesChanged}
           subsidyAccessPolicy={subsidyAccessPolicy}
+          isGroupInvite={false}
         />
       </FullscreenModal>
       <SystemErrorAlertModal
