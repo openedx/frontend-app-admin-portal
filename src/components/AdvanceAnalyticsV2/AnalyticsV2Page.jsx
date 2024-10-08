@@ -43,7 +43,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 id="advance.analytics.data.refresh.msg"
                 defaultMessage="Data updated on {date}"
                 description="Data refresh message"
-                values={{ date: data?.lastUpdatedAt || '' }}
+                values={{ date: data?.lastUpdatedAt || currentDate }}
               />
             </span>
           </div>
@@ -64,6 +64,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 value={startDate || data?.minEnrollmentDate}
                 min={data?.minEnrollmentDate}
                 onChange={(e) => setStartDate(e.target.value)}
+                disabled={isFetching}
               />
             </Form.Group>
           </div>
@@ -81,6 +82,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 value={endDate || currentDate}
                 max={currentDate}
                 onChange={(e) => setEndDate(e.target.value)}
+                disabled={isFetching}
               />
             </Form.Group>
           </div>
@@ -97,6 +99,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 as="select"
                 value={granularity}
                 onChange={(e) => setGranularity(e.target.value)}
+                disabled={isFetching}
               >
                 <option value={GRANULARITY.DAILY}>
                   {intl.formatMessage({
@@ -142,6 +145,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 as="select"
                 value={calculation}
                 onChange={(e) => setCalculation(e.target.value)}
+                disabled={isFetching}
               >
                 <option value={CALCULATION.TOTAL}>
                   {intl.formatMessage({
