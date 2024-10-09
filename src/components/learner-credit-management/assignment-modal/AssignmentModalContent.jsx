@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Card, Col, Container, Form, Row, Stack,
+  Card, Col, Container, Form, Row, Stack, MenuItem, Menu, SelectMenu, DropdownButton, Dropdown
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
@@ -12,6 +12,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 import BaseCourseCard from '../cards/BaseCourseCard';
 import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
+import { useEnterpriseCustomerFlexGroup } from '../data/hooks/useEnterpriseGroup';
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInputValueValid } from '../cards/data';
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
@@ -22,6 +23,8 @@ const AssignmentModalContent = ({
 }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const { enterpriseCustomerFlexGroup } = useEnterpriseCustomerFlexGroup(enterpriseId);
+  console.log(enterpriseCustomerFlexGroup)
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
@@ -97,6 +100,27 @@ const AssignmentModalContent = ({
                 description="Header for the section where we assign a course to learners"
               />
             </h4>
+            <Form.Group className="group-dropdown mb-4">
+              <Form.CheckboxSet
+                name="color-two"
+                onChange={(e) => console.log(e.target.value)}
+                defaultValue={['green']}
+                className="group-dropdown"
+              >
+                <Form.Label>Groups</Form.Label>
+                <SelectMenu className="group-dropdown mt-0" defaultMessage="Select group">
+                  <MenuItem className="group-dropdown" as={Form.Checkbox} value="red">Blue red red red red</MenuItem>
+                </SelectMenu>
+
+              </Form.CheckboxSet>
+              <Form.Control.Feedback>
+                <FormattedMessage
+                  id="lcm.budget.detail.page.catalog.tab.assign.course.section.assign.to.flex.group.help.text"
+                  defaultMessage="Select one or more group to add its members to the assignment."
+                  description="Help text for the flex group drop down menu to add learners from selected group."
+                />
+              </Form.Control.Feedback>
+            </Form.Group>
             <Form.Group className="mb-5">
               <Form.Control
                 as="textarea"
