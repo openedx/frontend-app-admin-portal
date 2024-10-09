@@ -16,7 +16,7 @@ import Skills from './tabs/Skills';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION } from './data/constants';
 
-const PAGE_TITLE = 'AnalyticsV2';
+const PAGE_TITLE = 'Analytics';
 
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
