@@ -11,6 +11,7 @@ import InviteModalSummaryDuplicate from './InviteModalSummaryDuplicate';
 
 const InviteModalSummary = ({
   memberInviteMetadata,
+  isGroupInvite,
 }) => {
   const {
     isValidInput,
@@ -48,7 +49,7 @@ const InviteModalSummary = ({
 
   if (isEmpty(cardSections)) {
     cardSections = cardSections.concat(
-      renderCard(<InviteModalSummaryEmptyState />),
+      renderCard(<InviteModalSummaryEmptyState isGroupInvite={isGroupInvite} />),
     );
   }
 
@@ -71,7 +72,7 @@ InviteModalSummary.propTypes = {
     lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
     duplicateEmails: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
-
+  isGroupInvite: PropTypes.bool,
 };
 
 export default InviteModalSummary;
