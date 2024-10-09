@@ -18,7 +18,7 @@ import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION, ANALYTICS_WARNING_BANNER_COOKIE } from './data/constants';
 import WarningBanner from './WarningBanner';
 
-const PAGE_TITLE = 'AnalyticsV2';
+const PAGE_TITLE = 'Analytics';
 
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
