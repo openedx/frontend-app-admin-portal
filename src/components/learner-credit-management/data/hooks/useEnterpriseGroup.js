@@ -6,7 +6,7 @@ import { learnerCreditManagementQueryKeys } from '../constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 /**
- * Retrieves a enterprise group by UUID from the API.
+ * Retrieves a enterprise group by the policy the  from the API.
  *
  * @param {*} queryKey The queryKey from the associated `useQuery` call.
  * @returns The enterprise group object

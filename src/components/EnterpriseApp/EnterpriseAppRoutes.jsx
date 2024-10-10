@@ -20,6 +20,7 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
 import LearnerCreditManagementRoutes from '../learner-credit-management';
 import PeopleManagementPage from '../PeopleManagement';
+import GroupDetailPage from '../PeopleManagement/GroupDetailPage';
 
 const EnterpriseAppRoutes = ({
   email,
@@ -121,12 +122,20 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
-      {enterpriseGroupsV2 && enterpriseAppPage === ROUTE_NAMES.peopleManagement && (
+      {enterpriseGroupsV2 && enterpriseAppPage === ROUTE_NAMES.peopleManagement && ([
+        <Route
+          path="/:groupUuid"
+          key="group-detail"
+          element={(
+            <GroupDetailPage />
+          )}
+        />,
         <Route
           path="/*"
+          key="people-management"
           element={<PeopleManagementPage />}
-        />
-      )}
+        />,
+      ])}
 
       {enableContentHighlightsPage && enterpriseAppPage === ROUTE_NAMES.contentHighlights && (
         <Route

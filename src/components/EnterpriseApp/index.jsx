@@ -214,6 +214,7 @@ EnterpriseApp.propTypes = {
   enableAnalyticsScreen: PropTypes.bool,
   enableReportingConfigurationsScreen: PropTypes.bool,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool,
+  enterpriseGroupsV2: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
 };
