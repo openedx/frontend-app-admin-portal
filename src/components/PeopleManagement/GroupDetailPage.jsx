@@ -41,8 +41,7 @@ const GroupDetailPage = () => {
 
   return (
     <div className="pt-4 pl-4">
-      {isLoading && <Skeleton className="mt-3" height={200} count={1} />}
-      {!isLoading && (
+      {!isLoading ? (
         <>
           <DeleteGroupModal
             group={enterpriseGroup}
@@ -117,7 +116,7 @@ const GroupDetailPage = () => {
             </Card.Footer>
           </Card>
         </>
-      )}
+      ) : <Skeleton className="mt-3" height={200} count={1} /> }
     </div>
   );
 };

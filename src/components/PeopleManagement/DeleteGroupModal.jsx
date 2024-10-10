@@ -20,12 +20,10 @@ const DeleteGroupModal = ({
   const [isErrorOpen, openError, closeError] = useToggle(false);
   const removeEnterpriseGroup = async () => {
     try {
-      const response = await LmsApiService.removeEnterpriseGroup(group?.uuid);
-      if (response.status === 204) {
-        close();
-        // redirect back to the people management page
-        window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`;
-      }
+      await LmsApiService.removeEnterpriseGroup(group?.uuid);
+      close();
+      // redirect back to the people management page
+      window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`;
     } catch (error) {
       logError(error);
       openError();
