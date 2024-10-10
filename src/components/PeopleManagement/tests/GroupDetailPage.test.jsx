@@ -83,8 +83,6 @@ describe('<GroupDetailPageWrapper >', () => {
 
     const formData = { name: 'new name!' };
     await waitFor(() => expect(spy).toHaveBeenCalledWith(TEST_GROUP.uuid, formData));
-    // toast message
-    await waitFor(() => expect(screen.getByText('Group name updated')).toBeInTheDocument());
   });
   it('edit flex group name error', async () => {
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseGroup');
@@ -120,9 +118,13 @@ describe('<GroupDetailPageWrapper >', () => {
 
     await waitFor(() => expect(spy).toHaveBeenCalledWith(TEST_GROUP.uuid));
   });
-  it('delete flex group', async () => {
-    const spy = jest.spyOn(LmsApiService, 'removeEnterpriseGroup');
-    LmsApiService.removeEnterpriseGroup.mockResolvedValueOnce({ status: 404 });
+  it('delete flex group error', async () => {
+    const mockRemoveGroup = jest.spyOn(LmsApiService, 'removeEnterpriseGroup');
+    mockRemoveGroup.mockRejectedValue({
+      customAttributes: {
+        httpErrorStatus: 404,
+      },
+    });
     render(<GroupDetailPageWrapper />);
     const deleteGroupIcon = screen.getByTestId('delete-group-icon');
     deleteGroupIcon.click();
@@ -132,7 +134,7 @@ describe('<GroupDetailPageWrapper >', () => {
     const deleteGroupButton = screen.getByTestId('delete-group-button');
     deleteGroupButton.click();
 
-    await waitFor(() => expect(spy).toHaveBeenCalledWith(TEST_GROUP.uuid));
+    await waitFor(() => expect(mockRemoveGroup).toHaveBeenCalledWith(TEST_GROUP.uuid));
     // error modal
     await waitFor(() => expect(screen.getByText('Something went wrong')).toBeInTheDocument());
   });

@@ -1,8 +1,8 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
-  Breadcrumb, Card, Hyperlink, Icon, IconButton, IconButtonWithTooltip, Skeleton, Toast, useToggle,
+  Breadcrumb, Card, Hyperlink, Icon, IconButton, IconButtonWithTooltip, Skeleton, useToggle,
 } from '@openedx/paragon';
 import { Delete, Edit } from '@openedx/paragon/icons';
 
@@ -17,14 +17,17 @@ const GroupDetailPage = () => {
   const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useToggle(false);
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [groupName, setGroupName] = useState(enterpriseGroup?.name);
+
+  const handleNameUpdate = (name) => {
+    setGroupName(name);
+  };
 
   useEffect(() => {
     if (enterpriseGroup !== undefined) {
       setIsLoading(false);
+      handleNameUpdate(enterpriseGroup.name);
     }
   }, [enterpriseGroup]);
 
@@ -41,9 +44,6 @@ const GroupDetailPage = () => {
       {isLoading && <Skeleton className="mt-3" height={200} count={1} />}
       {!isLoading && (
         <>
-          <Toast onClose={() => setShowToast(false)} show={showToast}>
-            {toastMessage}
-          </Toast>
           <DeleteGroupModal
             group={enterpriseGroup}
             isOpen={isDeleteModalOpen}
@@ -53,9 +53,7 @@ const GroupDetailPage = () => {
             group={enterpriseGroup}
             isOpen={isEditModalOpen}
             close={closeEditModal}
-            setShowToast={setShowToast}
-            setToastMessage={setToastMessage}
-            forceUpdate={forceUpdate}
+            handleNameUpdate={handleNameUpdate}
           />
           <Breadcrumb
             aria-label="people management breadcrumb navigation"
@@ -70,14 +68,14 @@ const GroupDetailPage = () => {
                 href: `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`,
               },
             ]}
-            activeLabel={enterpriseGroup.name}
+            activeLabel={groupName}
           />
           <Card orientation="horizontal">
             <Card.Body>
               <Card.Header
                 title={(
                   <>
-                    <span className="pr-1">{enterpriseGroup.name}</span>
+                    <span className="pr-1">{groupName}</span>
                     <IconButton
                       key="editGroupTooltip"
                       src={Edit}

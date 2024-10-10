@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 import {
   ActionRow, Form, ModalDialog, Spinner, StatefulButton, useToggle,
 } from '@openedx/paragon';
@@ -10,7 +11,7 @@ import LmsApiService from '../../data/services/LmsApiService';
 import GeneralErrorModal from './GeneralErrorModal';
 
 const EditGroupNameModal = ({
-  group, isOpen, close, setShowToast, setToastMessage, forceUpdate,
+  group, isOpen, close, handleNameUpdate,
 }) => {
   const intl = useIntl();
   const [isErrorOpen, openError, closeError] = useToggle(false);
@@ -30,19 +31,20 @@ const EditGroupNameModal = ({
     setName(e.target.value);
   };
 
+  const handleCloseModal = (newName) => {
+    close();
+    handleNameUpdate(newName);
+    setButtonState('complete');
+  };
+
   const editEnterpriseGroup = async () => {
     setButtonState('pending');
     try {
       const formData = { name };
       const response = await LmsApiService.updateEnterpriseGroup(group.uuid, formData);
-      if (response.status === 200) {
-        setButtonState('complete');
-        close();
-        setShowToast(true);
-        setToastMessage('Group name updated');
-        forceUpdate();
-      }
+      handleCloseModal(response.data.name);
     } catch (error) {
+      logError(error);
       openError();
     }
     setButtonState('default');
@@ -123,9 +125,7 @@ EditGroupNameModal.propTypes = {
   }),
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  setShowToast: PropTypes.func.isRequired,
-  setToastMessage: PropTypes.func.isRequired,
-  forceUpdate: PropTypes.func.isRequired,
+  handleNameUpdate: PropTypes.func.isRequired,
 };
 
 export default EditGroupNameModal;

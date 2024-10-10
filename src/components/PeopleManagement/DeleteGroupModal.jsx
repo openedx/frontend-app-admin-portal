@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 import {
   ActionRow, Button, ModalDialog, useToggle,
 } from '@openedx/paragon';
 import { RemoveCircleOutline } from '@openedx/paragon/icons';
+
 import GeneralErrorModal from './GeneralErrorModal';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 
@@ -17,12 +19,15 @@ const DeleteGroupModal = ({
   const { enterpriseSlug } = useParams();
   const [isErrorOpen, openError, closeError] = useToggle(false);
   const removeEnterpriseGroup = async () => {
-    const response = await LmsApiService.removeEnterpriseGroup(group?.uuid);
-    if (response.status === 204) {
-      close();
-      // redirect back to the people management page
-      window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`;
-    } else {
+    try {
+      const response = await LmsApiService.removeEnterpriseGroup(group?.uuid);
+      if (response.status === 204) {
+        close();
+        // redirect back to the people management page
+        window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`;
+      }
+    } catch (error) {
+      logError(error);
       openError();
     }
   };
