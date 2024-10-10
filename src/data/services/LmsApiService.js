@@ -446,6 +446,16 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
   };
 
+  static removeEnterpriseGroup = async (groupUuid) => {
+    const removeGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+    return LmsApiService.apiClient().delete(removeGroupEndpoint);
+  };
+
+  static updateEnterpriseGroup = async (groupUuid, formData) => {
+    const updateGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+    return LmsApiService.apiClient().patch(updateGroupEndpoint, formData);
+  };
+
   static removeEnterpriseLearnersFromGroup = async (groupUuid, formData) => {
     const removeLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/remove_learners/`;
     return LmsApiService.apiClient().post(removeLearnerEndpoint, formData);
