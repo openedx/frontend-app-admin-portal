@@ -20,13 +20,17 @@ const GroupDetailPage = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [groupName, setGroupName] = useState(enterpriseGroup.name);
 
   useEffect(() => {
     if (enterpriseGroup !== undefined) {
       setIsLoading(false);
     }
   }, [enterpriseGroup]);
+
+  const handleNameUpdate = (name) => {
+    setGroupName(name);
+  };
 
   const tooltipContent = (
     <FormattedMessage
@@ -55,7 +59,7 @@ const GroupDetailPage = () => {
             close={closeEditModal}
             setShowToast={setShowToast}
             setToastMessage={setToastMessage}
-            forceUpdate={forceUpdate}
+            handleNameUpdate={handleNameUpdate}
           />
           <Breadcrumb
             aria-label="people management breadcrumb navigation"
@@ -77,7 +81,7 @@ const GroupDetailPage = () => {
               <Card.Header
                 title={(
                   <>
-                    <span className="pr-1">{enterpriseGroup.name}</span>
+                    <span className="pr-1">{groupName}</span>
                     <IconButton
                       key="editGroupTooltip"
                       src={Edit}

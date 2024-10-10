@@ -10,13 +10,21 @@ import LmsApiService from '../../data/services/LmsApiService';
 import GeneralErrorModal from './GeneralErrorModal';
 
 const EditGroupNameModal = ({
-  group, isOpen, close, setShowToast, setToastMessage, forceUpdate,
+  group, isOpen, close, setShowToast, setToastMessage, forceUpdate, handleNameUpdate
 }) => {
   const intl = useIntl();
   const [isErrorOpen, openError, closeError] = useToggle(false);
   const [name, setName] = useState(group.name);
   const [nameLength, setNameLength] = useState(group.name.length || 0);
   const [buttonState, setButtonState] = useState('default');
+
+  const handleCloseModal = () => {
+    close();
+    handleNameUpdate(name);
+    setButtonState('complete');
+    setShowToast(true);
+    setToastMessage('Group name updated');
+  }
 
   const handleGroupNameChange = (e) => {
     if (!e.target.value) {
@@ -35,15 +43,10 @@ const EditGroupNameModal = ({
     try {
       const formData = { name };
       const response = await LmsApiService.updateEnterpriseGroup(group.uuid, formData);
-      if (response.status === 200) {
-        setButtonState('complete');
-        close();
-        setShowToast(true);
-        setToastMessage('Group name updated');
-        forceUpdate();
-      }
+      handleCloseModal(response.data.name);
     } catch (error) {
       openError();
+      // log error here 
     }
     setButtonState('default');
   };
