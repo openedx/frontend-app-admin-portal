@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Routes, Route, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { features } from '../../config';
 
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../CodeManagement';
@@ -12,6 +13,7 @@ import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import AnalyticsV2Page from '../AdvanceAnalyticsV2/AnalyticsV2Page';
+import FeatureNotSupportedPage from '../FeatureNotSupportedPage';
 import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
@@ -38,7 +40,7 @@ const EnterpriseAppRoutes = ({
       {enterpriseAppPage === ROUTE_NAMES.learners && (
         <Route
           path="/:actionSlug?"
-          element={<AdminPage />}
+          element={features.ANALYTICS_SUPPORTED ? <AdminPage /> : <FeatureNotSupportedPage />}
         />
       )}
 
@@ -83,7 +85,7 @@ const EnterpriseAppRoutes = ({
         <Route
           key="analytics"
           path="/"
-          element={<PlotlyAnalyticsPage />}
+          element={features.ANALYTICS_SUPPORTED ? <PlotlyAnalyticsPage /> : <FeatureNotSupportedPage />}
         />
       )}
 
@@ -91,7 +93,9 @@ const EnterpriseAppRoutes = ({
         <Route
           key="analyticsv2"
           path="/"
-          element={<AnalyticsV2Page enterpriseId={enterpriseId} />}
+          element={features.ANALYTICS_SUPPORTED
+            ? <AnalyticsV2Page enterpriseId={enterpriseId} />
+            : <FeatureNotSupportedPage />}
         />
       )}
 
