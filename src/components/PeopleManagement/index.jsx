@@ -10,6 +10,7 @@ import cardImage from './images/ZeroStateImage.svg';
 import Hero from '../Hero';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import CreateGroupModal from './CreateGroupModal';
 
 const PeopleManagementPage = () => {
   const intl = useIntl();
@@ -67,6 +68,7 @@ const PeopleManagementPage = () => {
               description="CTA button text to open new group modal."
             />
           </Button>
+          <CreateGroupModal isModalOpen={isModalOpen} openModel={openModal} closeModal={closeModal} />
         </ActionRow>
         <Card>
           <Card.ImageCap

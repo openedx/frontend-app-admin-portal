@@ -89,4 +89,29 @@ describe('LmsApiService', () => {
     const activeCustomer = await LmsApiService.fetchEnterpriseLearnerData({ username: mockUsername });
     expect(activeCustomer).toEqual([{ active: true, enterpriseCustomer: { uuid: 'test-uuid' } }]);
   });
+  test('createEnterpriseGroup returns uuid for the post request', async () => {
+    axios.post.mockReturnValue({
+      status: 201,
+      data: {
+        uuid: 'test-uuid',
+        name: 'test-name',
+        enterprise_customer: 'test-enterprise-customer',
+        members: [],
+      },
+    });
+    const response = await LmsApiService.createEnterpriseGroup({
+      name: 'test-name',
+      enterprise_customer: 'test-customer-uuid',
+      members: [],
+    });
+    expect(response).toEqual({
+      status: 201,
+      data: {
+        uuid: 'test-uuid',
+        name: 'test-name',
+        enterprise_customer: 'test-enterprise-customer',
+        members: [],
+      },
+    });
+  });
 });
