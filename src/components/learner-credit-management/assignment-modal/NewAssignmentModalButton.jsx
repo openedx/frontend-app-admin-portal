@@ -17,7 +17,7 @@ import EVENT_NAMES from '../../../eventTracking';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import {
   getAssignableCourseRuns, learnerCreditManagementQueryKeys, LEARNER_CREDIT_ROUTE, useBudgetId,
-  useSubsidyAccessPolicy,
+  useSubsidyAccessPolicy, useEnterpriseFlexGroup,
 } from '../data';
 import AssignmentModalContent from './AssignmentModalContent';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
@@ -45,6 +45,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
   const [assignmentRun, setAssignmentRun] = useState();
+  const { data: enterpriseFlexGroup } = useEnterpriseFlexGroup(enterpriseId);
   const {
     successfulAssignmentToast: { displayToastForAssignmentAllocation },
   } = useContext(BudgetDetailPageContext);
@@ -316,6 +317,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           course={course}
           courseRun={assignmentRun}
           onEmailAddressesChange={handleEmailAddressesChanged}
+          enterpriseFlexGroup={enterpriseFlexGroup}
         />
       </FullscreenModal>
       <CreateAllocationErrorAlertModals
