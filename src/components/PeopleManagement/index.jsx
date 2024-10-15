@@ -22,9 +22,7 @@ const PeopleManagementPage = () => {
 
   const { enterpriseSubsidyTypes } = useContext(EnterpriseSubsidiesContext);
 
-  const hasLearnerCredit = enterpriseSubsidyTypes.includes(
-    SUBSIDY_TYPES.budget,
-  );
+  const hasLearnerCredit = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.budget);
   const hasOtherSubsidyTypes = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.license)
     || enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.coupon);
 
@@ -41,7 +39,7 @@ const PeopleManagementPage = () => {
             <span className="d-flex">
               <h3 className="mt-2">
                 <FormattedMessage
-                  id="admin.portal.people.management.page.title"
+                  id="adminPortal.peopleManagement.title"
                   defaultMessage="Your organization's groups"
                   description="Title for people management zero state."
                 />
@@ -49,14 +47,14 @@ const PeopleManagementPage = () => {
             </span>
             {hasLearnerCredit && (
               <FormattedMessage
-                id="admin.portal.people.management.page.subtitle.lc"
+                id="adminPortal.peopleManagement.subtitle.lc"
                 defaultMessage="Monitor group learning progress, assign more courses, and invite members to new Learner Credit budgets."
                 description="Subtitle for people management with learner credit."
               />
             )}
             {!hasLearnerCredit && hasOtherSubsidyTypes && (
               <FormattedMessage
-                id="admin.portal.people.management.page.subtitle.noLc"
+                id="adminPortal.peopleManagement.subtitle.noLc"
                 defaultMessage="Monitor group learning progress."
                 description="Subtitle for people management without learner credit."
               />
@@ -65,7 +63,7 @@ const PeopleManagementPage = () => {
           <ActionRow.Spacer />
           <Button iconBefore={Add} onClick={openModal}>
             <FormattedMessage
-              id="admin.portal.people.management.page.newgroup.button"
+              id="adminPortal.peopleManagement.newGroup.button"
               defaultMessage="Create group"
               description="CTA button text to open new group modal."
             />
@@ -81,7 +79,7 @@ const PeopleManagementPage = () => {
           <span className="text-center align-self-center">
             <h2 className="h3 mb-3 mt-3">
               <FormattedMessage
-                id="admin.portal.people.management.page.zerostate.card.header"
+                id="adminPortal.peopleManagement.zeroStateCard.header"
                 defaultMessage="You don't have any groups yet."
                 description="Header message shown to admin there's no groups created yet."
               />
@@ -89,14 +87,14 @@ const PeopleManagementPage = () => {
             <p className="mx-2">
               {hasLearnerCredit && (
                 <FormattedMessage
-                  id="admin.portal.people.management.page.zerostate.card.subtitle.lc"
+                  id="adminPortal.peopleManagement.zeroStateCard.subtitle.lc"
                   defaultMessage="Once a group is created, you can track members' progress, assign extra courses, and invite them to additional budgets."
                   description="Detail message shown to admin benefits of creating a group with learner credit."
                 />
               )}
               {!hasLearnerCredit && hasOtherSubsidyTypes && (
                 <FormattedMessage
-                  id="admin.portal.people.management.page.zerostate.card.subtitle.noLc"
+                  id="adminPortal.peopleManagement.zeroStateCard.subtitle.noLc"
                   defaultMessage="Once a group is created, you can track members' progress."
                   description="Detail message shown to admin benefits of creating a group without learner credit."
                 />
