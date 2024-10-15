@@ -57,7 +57,7 @@ const DeleteGroupModal = ({
             id="people.management.delete.group.modal.body.2"
             defaultMessage={
             'By deleting this group you will no longer be able to track analytics associated'
-            + 'with this group and the group will be removed from your People Management page.'
+            + ' with this group and the group will be removed from your People Management page.'
           }
             description="Warning shown when deleting a group part 2."
           />

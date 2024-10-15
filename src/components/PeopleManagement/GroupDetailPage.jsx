@@ -10,6 +10,7 @@ import { useEnterpriseGroupUuid } from '../learner-credit-management/data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
+import formatDates from './utils';
 
 const GroupDetailPage = () => {
   const intl = useIntl();
@@ -89,7 +90,9 @@ const GroupDetailPage = () => {
               )}
                 subtitle={`${enterpriseGroup.acceptedMembersCount} accepted members`}
               />
-              <Card.Section className="pt-1 x-small">Created on</Card.Section>
+              <Card.Section className="pt-1 x-small">
+                Created on {formatDates(enterpriseGroup.created)}
+              </Card.Section>
             </Card.Body>
             <Card.Footer
               className="justify-content-end"
