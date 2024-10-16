@@ -22,6 +22,7 @@ import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import LmsApiService from '../../data/services/LmsApiService';
+import { GROUP_TYPE_BUDGET } from '../PeopleManagement/constants';
 
 const Sidebar = ({
   baseUrl,
@@ -89,7 +90,7 @@ const Sidebar = ({
         // we only want to hide the feature if a customer has a group this does not
         // apply to all contexts/include all users
         response.data.results.forEach((group) => {
-          if (group.group_type === 'budget') {
+          if (group.group_type === GROUP_TYPE_BUDGET) {
             setHasBudgetGroup(true);
           }
         });

@@ -16,6 +16,7 @@ import ContentHighlightsContextProvider from './ContentHighlightsContext';
 import ContentHighlightToast from './ContentHighlightToast';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { withLocation } from '../../hoc';
+import { GROUP_TYPE_BUDGET } from '../PeopleManagement/constants';
 
 const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
       try {
         const response = await LmsApiService.fetchEnterpriseGroups();
         response.data.results.forEach((group) => {
-          if (group.group_type === 'budget') {
+          if (group.group_type === GROUP_TYPE_BUDGET) {
             setHasBudgetGroup(true);
           }
         });

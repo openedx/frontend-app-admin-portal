@@ -10,6 +10,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import ContentHighlights from '../ContentHighlights';
 import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { GROUP_TYPE_BUDGET } from '../../PeopleManagement/constants';
 
 jest.mock('../../../data/services/LmsApiService');
 
@@ -86,7 +87,7 @@ describe('<ContentHighlights>', () => {
   });
   it('Displays the alert if custom groups is enabled and user is staff', () => {
     LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ group_type: 'budget' }] },
+      data: { results: [{ group_type: GROUP_TYPE_BUDGET }] },
     }));
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
   });
