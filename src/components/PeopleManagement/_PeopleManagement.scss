@@ -1,0 +1,13 @@
+.group-detail-card {
+  background-color: $light-200;
+  .card-button {
+    justify-content: flex-start !important;
+  }
+  .pgn__card-section {
+    padding: .25rem 1.25rem 1.25rem 1.25rem;
+  }
+}
+
+.collapsible-basic .collapsible-trigger {
+  justify-content: right;
+}
