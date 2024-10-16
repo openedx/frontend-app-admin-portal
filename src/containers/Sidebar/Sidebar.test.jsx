@@ -444,9 +444,9 @@ describe('<Sidebar />', () => {
   });
 
   it.each([
-    { appliesToAllContexts: true },
-    { appliesToAllContexts: false },
-  ])('hides highlights when we have groups with a subset of all learners (%s)', async ({ appliesToAllContexts }) => {
+    { groupType: 'budget' },
+    { groupType: 'flex' },
+  ])('hides highlights when we have budget groups (%s)', async ({ groupType }) => {
     getAuthenticatedUser.mockReturnValue({
       administrator: false,
     });
@@ -460,12 +460,12 @@ describe('<Sidebar />', () => {
       },
     });
     LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: appliesToAllContexts }] },
+      data: { results: [{ group_type: groupType }] },
     }));
     render(<SidebarWrapper store={store} />);
     const highlightsLink = screen.queryByRole('link', { name: 'Highlights' });
     await waitFor(() => {
-      if (appliesToAllContexts) {
+      if (groupType === 'flex') {
         expect(highlightsLink).toBeInTheDocument();
       } else {
         expect(highlightsLink).not.toBeInTheDocument();

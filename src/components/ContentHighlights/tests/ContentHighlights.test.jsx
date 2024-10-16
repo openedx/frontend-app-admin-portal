@@ -86,7 +86,7 @@ describe('<ContentHighlights>', () => {
   });
   it('Displays the alert if custom groups is enabled and user is staff', () => {
     LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ applies_to_all_contexts: true }] },
+      data: { results: [{ group_type: 'budget' }] },
     }));
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
   });

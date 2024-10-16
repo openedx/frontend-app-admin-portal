@@ -22,7 +22,7 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
   const { state: locationState } = location;
   const [toasts, setToasts] = useState([]);
   const isEdxStaff = getAuthenticatedUser().administrator;
-  const [isSubGroup, setIsSubGroup] = useState(false);
+  const [hasBudgetGroup, setHasBudgetGroup] = useState(false);
   const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
   const intl = useIntl();
 
@@ -31,8 +31,8 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
       try {
         const response = await LmsApiService.fetchEnterpriseGroups();
         response.data.results.forEach((group) => {
-          if (group.applies_to_all_contexts === false) {
-            setIsSubGroup(true);
+          if (group.group_type === 'budget') {
+            setHasBudgetGroup(true);
           }
         });
       } catch (error) {
@@ -102,7 +102,7 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
           description: 'Hero title for the highlights page.',
         })}
       />
-      {isSubGroup && (
+      {hasBudgetGroup && (
         <Alert variant="warning" className="mt-4 mb-0" icon={WarningFilled}>
           <Alert.Heading>
             <FormattedMessage

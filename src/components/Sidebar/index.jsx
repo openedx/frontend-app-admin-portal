@@ -48,8 +48,8 @@ const Sidebar = ({
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const isEdxStaff = getAuthenticatedUser().administrator;
-  const [isSubGroup, setIsSubGroup] = useState(false);
-  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup && !isEdxStaff;
+  const [hasBudgetGroup, setHasBudgetGroup] = useState(false);
+  const hideHighlightsForGroups = enterpriseGroupsV1 && hasBudgetGroup && !isEdxStaff;
   const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
@@ -89,8 +89,8 @@ const Sidebar = ({
         // we only want to hide the feature if a customer has a group this does not
         // apply to all contexts/include all users
         response.data.results.forEach((group) => {
-          if (group.applies_to_all_contexts === false) {
-            setIsSubGroup(true);
+          if (group.group_type === 'budget') {
+            setHasBudgetGroup(true);
           }
         });
       } catch (error) {
