@@ -14,17 +14,18 @@ import { withLocation, withNavigate } from '../../hoc';
 
 class AdminSearchForm extends React.Component {
   componentDidUpdate(prevProps) {
-    const { searchParams: { searchQuery, searchCourseQuery, searchDateQuery } } = this.props;
+    const { searchParams: { searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery } } = this.props;
     const {
       searchParams: {
         searchQuery: prevSearchQuery,
         searchCourseQuery: prevSearchCourseQuery,
         searchDateQuery: prevSearchDateQuery,
+        searchBudgetQuery: prevSearchBudgetQuery,
       },
     } = prevProps;
 
     if (searchQuery !== prevSearchQuery || searchCourseQuery !== prevSearchCourseQuery
-        || searchDateQuery !== prevSearchDateQuery) {
+        || searchDateQuery !== prevSearchDateQuery || searchBudgetQuery !== prevSearchBudgetQuery) {
       this.handleSearch();
     }
   }
@@ -45,11 +46,24 @@ class AdminSearchForm extends React.Component {
     updateUrl(navigate, location.pathname, updateParams);
   }
 
+  onBudgetSelect(event) {
+    const { navigate, location } = this.props;
+    const updateParams = {
+      budget_uuid: event.target.value,
+      page: 1,
+    };
+    if (event.target.value === '') {
+      updateParams.budget_uuid = '';
+    }
+    updateUrl(navigate, location.pathname, updateParams);
+  }
+
   render() {
     const {
       intl,
       tableData,
-      searchParams: { searchCourseQuery, searchDateQuery, searchQuery },
+      budgets,
+      searchParams: { searchCourseQuery, searchDateQuery, searchQuery, searchBudgetQuery },
     } = this.props;
     const courseTitles = Array.from(new Set(tableData.map(en => en.course_title).sort()));
     const courseDates = Array.from(new Set(tableData.map(en => en.course_start_date).sort().reverse()));
@@ -151,7 +165,7 @@ class AdminSearchForm extends React.Component {
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+            <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
               <Form.Label id="search-email-label" className="mb-2">
                 <FormattedMessage
                   id="admin.portal.lpr.filter.by.email.input.label"
@@ -175,6 +189,39 @@ class AdminSearchForm extends React.Component {
                 className="py-0"
                 inputProps={{ 'data-hj-suppress': true }}
               />
+            </div>
+            <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+              <Form.Group>
+                <Form.Label className="search-label mb-2">
+                  <FormattedMessage
+                    id="admin.portal.lpr.filter.by.budget.dropdown.label"
+                    defaultMessage="Filter by budget"
+                    description="Label for the budget filter dropdown in the admin portal LPR page."
+                  />
+                </Form.Label>
+                <Form.Control
+                  className="w-100"
+                  as="select"
+                  value={searchBudgetQuery}
+                  onChange={e => this.onBudgetSelect(e)}
+                >
+                  <option value="">
+                    {intl.formatMessage({
+                      id: 'admin.portal.lpr.filter.by.budget.dropdown.option.all.budgets',
+                      defaultMessage: 'All budgets',
+                      description: 'Label for the all budgets option in the budget filter dropdown in the admin portal LPR page.',
+                    })}
+                  </option>
+                  {budgets.map(budget => (
+                    <option
+                      value={budget.subsidy_access_policy_display_name}
+                      key={budget.subsidy_access_policy_uuid}
+                    >
+                      {budget.subsidy_access_policy_display_name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
             </div>
           </div>
         </div>

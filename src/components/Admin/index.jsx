@@ -49,6 +49,7 @@ class Admin extends React.Component {
     if (enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
+      this.props.fetchEnterpriseBudgets(enterpriseId);
     }
   }
 
@@ -57,6 +58,7 @@ class Admin extends React.Component {
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
+      this.props.fetchEnterpriseBudgets(enterpriseId);
     }
   }
 
@@ -64,6 +66,7 @@ class Admin extends React.Component {
     // Clear the overview data
     this.props.clearDashboardAnalytics();
     this.props.clearDashboardInsights();
+    this.props.clearEnterpriseBudgets();
   }
 
   getMetadataForAction(actionSlug) {
@@ -403,6 +406,7 @@ class Admin extends React.Component {
       insights,
       insightsLoading,
       intl,
+      budgets
     } = this.props;
     const { activeTab } = this.state;
 
@@ -412,10 +416,13 @@ class Admin extends React.Component {
     const tableMetadata = this.getMetadataForAction(actionSlug);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
 
+    console.log('budgets', budgets);
+
     const searchParams = {
       searchQuery: queryParams.get('search') || '',
       searchCourseQuery: queryParams.get('search_course') || '',
       searchDateQuery: queryParams.get('search_start_date') || '',
+      searchBudgetQuery: queryParams.get('budget_uuid') || '',
     };
 
     return (
@@ -531,6 +538,7 @@ class Admin extends React.Component {
                                 searchParams={searchParams}
                                 searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
                                 tableData={this.getTableData() ? this.getTableData().results : []}
+                                budgets={budgets}
                               />
                             )}
                           </>

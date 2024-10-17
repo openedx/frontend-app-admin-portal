@@ -9,6 +9,7 @@ import Admin from '../../components/Admin';
 import { paginateTable } from '../../data/actions/table';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { fetchDashboardInsights, clearDashboardInsights } from '../../data/actions/dashboardInsights';
+import { fetchEnterpriseBudgets, clearEnterpriseBudgets } from '../../data/actions/enterpriseBudgets';
 
 const mapStateToProps = state => ({
   loading: state.dashboardAnalytics.loading,
@@ -23,6 +24,8 @@ const mapStateToProps = state => ({
   table: state.table,
   insightsLoading: state.dashboardInsights.loading,
   insights: state.dashboardInsights.insights,
+  budgetsLoading: state.enterpriseBudgets.loading,
+  budgets: state.enterpriseBudgets.budgets,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -40,6 +43,12 @@ const mapDispatchToProps = dispatch => ({
   },
   clearDashboardInsights: () => {
     dispatch(clearDashboardInsights());
+  },
+  fetchEnterpriseBudgets: (enterpriseId) => {
+    dispatch(fetchEnterpriseBudgets(enterpriseId));
+  },
+  clearEnterpriseBudgets: () => {
+    dispatch(clearEnterpriseBudgets());
   },
 });
 
