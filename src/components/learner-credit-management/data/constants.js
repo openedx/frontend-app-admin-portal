@@ -127,6 +127,7 @@ export const learnerCreditManagementQueryKeys = {
   group: (groupUuid) => [...learnerCreditManagementQueryKeys.all, 'group', groupUuid],
   budgetGroupLearners: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'group learners'],
   enterpriseCustomer: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'enterpriseCustomer', enterpriseId],
+  flexGroup: (enterpriseId) => [...learnerCreditManagementQueryKeys.enterpriseCustomer(enterpriseId), 'flexGroup'],
 };
 
 // Route to learner credit

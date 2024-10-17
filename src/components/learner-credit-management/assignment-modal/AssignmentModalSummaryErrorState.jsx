@@ -21,7 +21,7 @@ const AssignmentModalSummaryErrorState = () => (
           description="Error message when course assignment fails due to invalid learner emails."
         />
       </span>
-    </div>.
+    </div>
   </Stack>
 );
 

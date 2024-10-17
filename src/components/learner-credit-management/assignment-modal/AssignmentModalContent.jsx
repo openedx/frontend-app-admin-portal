@@ -8,6 +8,7 @@ import {
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 
 import { connect } from 'react-redux';
 import BaseCourseCard from '../cards/BaseCourseCard';
@@ -16,9 +17,12 @@ import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInputValueValid } from '../cards/data';
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
+import AssignmentModalFlexGroup from './AssignmentModalFlexGroup';
+import { getGroupMemberEmails } from '../data/hooks/useEnterpriseFlexGroups';
+import useGroupDropdownToggle from '../data/hooks/useGroupDropdownToggle';
 
 const AssignmentModalContent = ({
-  enterpriseId, course, courseRun, onEmailAddressesChange,
+  enterpriseId, course, courseRun, onEmailAddressesChange, enterpriseFlexGroups, onGroupSelectionsChanged,
 }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -28,6 +32,92 @@ const AssignmentModalContent = ({
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
   const intl = useIntl();
   const { contentPrice } = courseRun;
+  const [groupMemberEmails, setGroupMemberEmails] = useState([]);
+  const [checkedGroups, setCheckedGroups] = useState({});
+  const [dropdownToggleLabel, setDropdownToggleLabel] = useState('Select group');
+  const {handleCheckedGroupsChanged, handleGroupsChanged, handleSubmitGroup} = useGroupDropdownToggle({
+    setCheckedGroups, setGroupMemberEmails, onGroupSelectionsChanged, checkedGroups, groupMemberEmails,
+  })
+
+
+  // const handleCheckedGroupsChanged = async (e) => {
+  //   const { value, checked, id } = e.target;
+  //   // if (checked) {
+  //   //   try {
+  //   //     const memberEmails = await getGroupMemberEmails(id);
+  //   //     setCheckedGroups((prev) => ({
+  //   //       ...prev,
+  //   //       [id]: {
+  //   //         checked,
+  //   //         name: value,
+  //   //         memberEmails,
+  //   //       }
+  //   //     }));
+  //   //     const newEmails = [];
+  //   //     const updatedMembers = memberEmails.filter(member => !groupMemberEmails.includes(member));
+  //   //     setGroupMemberEmails(prev => [...prev, ...memberEmails])
+  //   //   } catch (err) {
+  //   //     logError(err);
+  //   //   }
+  //   // } else if (!checked) {
+  //   //   setCheckedGroups((prev) => ({
+  //   //     ...prev,
+  //   //     [id]: {
+  //   //       ...prev[id],
+  //   //       checked: false,
+  //   //     }
+  //   //   }));
+  //   //   let membersToRemove = checkedGroups[id].memberEmails;
+  //   //   console.log(membersToRemove)
+  //   //   const updatedMembers = groupMemberEmails.filter(member => !membersToRemove.includes(member));
+  //   //   setGroupMemberEmails(updatedMembers);
+  //   // }
+  //   if (checked) {
+  //     try {
+  //       const memberEmails = await getGroupMemberEmails(id);
+  //       setCheckedGroups((prev) => ({
+  //         ...prev,
+  //         [id]: {
+  //           checked,
+  //           name: value,
+  //           memberEmails,
+  //         },
+  //       }));
+  //     } catch (err) {
+  //       logError(err);
+  //     }
+  //   } else if (!checked) {
+  //     setCheckedGroups((prev) => ({
+  //       ...prev,
+  //       [id]: {
+  //         ...prev[id],
+  //         checked: false,
+  //       },
+  //     }));
+  //   }
+  // };
+
+  // const handleGroupsChanged = useCallback(async (groups) => {
+  //   if (Object.keys(groups).length === 0) {
+  //     setGroupMemberEmails([]);
+  //     onGroupSelectionsChanged([]);
+  //   }
+  // }, [onGroupSelectionsChanged]);
+
+  // const handleSubmitGroup = () => {
+  //   const memberEmails = [];
+  //   Object.keys(checkedGroups).forEach(group => {
+  //     if (checkedGroups[group].checked) {
+  //       checkedGroups[group].memberEmails.forEach(email => {
+  //         if (!memberEmails.includes(email)) {
+  //           memberEmails.push(email);
+  //         }
+  //       });
+  //     }
+  //   });
+  //   setGroupMemberEmails(memberEmails);
+  // };
+
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
@@ -51,10 +141,22 @@ const AssignmentModalContent = ({
     debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
   }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
 
+  useEffect(() => {
+    handleGroupsChanged(checkedGroups);
+    const selectedGroups = Object.keys(checkedGroups).filter(group => checkedGroups[group].checked === true);
+    if (selectedGroups.length === 1) {
+      setDropdownToggleLabel(`${checkedGroups[selectedGroups[0]]?.name} (${checkedGroups[selectedGroups[0]]?.memberEmails.length})`);
+    } else if (selectedGroups.length > 1) {
+      setDropdownToggleLabel(`${selectedGroups.length} groups selected`);
+    } else {
+      setDropdownToggleLabel('Select group');
+    }
+  }, [checkedGroups, handleGroupsChanged]);
+
   // Validate the learner emails from user input whenever it changes
   useEffect(() => {
     const allocationMetadata = isAssignEmailAddressesInputValueValid({
-      learnerEmails,
+      learnerEmails: [...learnerEmails, ...groupMemberEmails],
       remainingBalance: spendAvailable,
       contentPrice,
     });
@@ -68,10 +170,20 @@ const AssignmentModalContent = ({
     }
     if (allocationMetadata.canAllocate) {
       onEmailAddressesChange(learnerEmails, { canAllocate: true });
+      onGroupSelectionsChanged(groupMemberEmails, { canAllocate: true });
     } else {
       onEmailAddressesChange([]);
+      onGroupSelectionsChanged([]);
     }
-  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable, enterpriseId]);
+  }, [
+    onEmailAddressesChange,
+    learnerEmails,
+    contentPrice,
+    spendAvailable,
+    enterpriseId,
+    groupMemberEmails,
+    onGroupSelectionsChanged,
+  ]);
 
   return (
     <Container size="lg" className="py-3">
@@ -97,6 +209,15 @@ const AssignmentModalContent = ({
                 description="Header for the section where we assign a course to learners"
               />
             </h4>
+            {enterpriseFlexGroups.length > 0 && (
+              <AssignmentModalFlexGroup
+                checkedGroups={checkedGroups}
+                enterpriseFlexGroups={enterpriseFlexGroups}
+                onCheckedGroupsChanged={handleCheckedGroupsChanged}
+                onHandleSubmitGroup={handleSubmitGroup}
+                dropdownToggleLabel={dropdownToggleLabel}
+              />
+            )}
             <Form.Group className="mb-5">
               <Form.Control
                 as="textarea"
@@ -143,7 +264,7 @@ const AssignmentModalContent = ({
             </h4>
             <AssignmentModalSummary
               courseRun={courseRun}
-              learnerEmails={learnerEmails}
+              learnerEmails={[...learnerEmails, ...groupMemberEmails]}
               assignmentAllocationMetadata={assignmentAllocationMetadata}
             />
             <hr className="my-4" />
@@ -209,6 +330,12 @@ AssignmentModalContent.propTypes = {
     contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   onEmailAddressesChange: PropTypes.func.isRequired,
+  onGroupSelectionsChanged: PropTypes.func.isRequired,
+  enterpriseFlexGroups: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    uuid: PropTypes.string,
+    acceptedMembersCount: PropTypes.number,
+  })),
 };
 
 const mapStateToProps = state => ({
