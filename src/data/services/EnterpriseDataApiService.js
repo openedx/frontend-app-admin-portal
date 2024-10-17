@@ -182,6 +182,12 @@ class EnterpriseDataApiService {
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
+  static fetchEnterpriseBudgets(enterpriseId) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/budgets/`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
   static fetchEnterpriseModuleActivityReport(enterpriseId, options, { csv } = {}) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const endpoint = csv ? 'module-performance.csv' : 'module-performance';
