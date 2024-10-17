@@ -29,6 +29,15 @@
   .pgn__menu-select-popup {
     width: inherit;
     justify-content: space-between;
+  };
+
+  .btn-primary {
+    color: black !important;
+    background-color: white !important;
+  }; 
+  .btn-primary:hover {
+    color: black !important;
+    background-color: white !important;
   }
 }
 // Must be defined outside of `.learner-credit-management` to ensure the styles are applied to the contents of
