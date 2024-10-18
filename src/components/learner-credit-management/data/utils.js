@@ -698,7 +698,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   }));
 
   const assignableCourseRunsFilter = ({
-    enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible,
+    enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible, restrictionType,
   }) => {
     const isEnrollByDateValid = isEnrollByDateWithinThreshold({
       hasEnrollBy,
@@ -726,6 +726,14 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
       // would be happy given enrollment deadline of the course.  Now all we need
       // to do is make sure the run itself is generally eligible for late enrollment
       return isLateEnrollmentEligible;
+    }
+    // ENT-9359 (epic for Custom Presentations/Restricted Runs):
+    // Temporarily hide all restricted runs unconditionally on the run assignment
+    // dropdown during implementation of the overall feature. ENT-9411 is most likely
+    // the ticket to replace this code with something to actually show restricted
+    // runs conditionally.
+    if (restrictionType) {
+      return false;
     }
     // General courseware filter
     return isActive;
