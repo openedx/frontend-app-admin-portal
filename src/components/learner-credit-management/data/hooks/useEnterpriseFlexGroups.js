@@ -4,12 +4,12 @@ import { learnerCreditManagementQueryKeys } from '../constants';
 import { fetchPaginatedData } from '../../../../data/services/apiServiceUtils';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
-export const getGroupMemberEmails = async (groupUUID)=> {
+export const getGroupMemberEmails = async (groupUUID) => {
   const url = `${LmsApiService.enterpriseGroupUrl}${groupUUID}/learners`;
   const { results } = await fetchPaginatedData(url);
   const memberEmails = results.map(result => result?.memberDetails?.userEmail);
   return memberEmails;
-}
+};
 
 /**
  * Hook to get a list of flex groups associated with an enterprise customer.

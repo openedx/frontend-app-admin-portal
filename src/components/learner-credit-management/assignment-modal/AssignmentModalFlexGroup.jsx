@@ -11,14 +11,15 @@ const AssignmentModalFlexGroup = ({
   checkedGroups,
   onHandleSubmitGroup,
   dropdownToggleLabel,
+  dropdownRef,
 }) => {
   const renderFlexGroupSelection = enterpriseFlexGroups.map(flexGroup => (
     <MenuItem
       as={Form.Checkbox}
-      className="group-dropdown mt-2 mb-2 ml-3"
+      className="group-dropdown mt-2 mb-2"
       key={flexGroup.uuid}
       onChange={onCheckedGroupsChanged}
-      checked={checkedGroups.checked}
+      checked={checkedGroups[flexGroup.uuid]?.checked}
       value={flexGroup.name}
       id={flexGroup.uuid}
     >
@@ -27,18 +28,15 @@ const AssignmentModalFlexGroup = ({
   ));
 
   return (
-    <Form.Group className="group-dropdown mb-4.5">
-      <Dropdown autoClose="outside" className="group-dropdown">
+    <Form.Group className="group-dropdown mb-4.5 pr-1.5">
+      <Dropdown ref={dropdownRef} autoClose="outside" className="group-dropdown">
         Groups
-        <Dropdown.Toggle onBlur={()=>console.log('hello')} id="group-select-toggle" className="group-dropdown mt-2">
+        <Dropdown.Toggle variant="outline-primary" id="group-select-toggle" className="group-dropdown mt-2">
           {dropdownToggleLabel}
         </Dropdown.Toggle>
-        <Dropdown.Menu className="group-dropdown">
+        <Dropdown.Menu className="pl-3 pr-3 group-dropdown">
           {renderFlexGroupSelection}
-          {/* <hr /> */}
-          <div className="row justify-content-center mt-4">
-            <Button size="sm" className="mr-3" variant="brand" onClick={onHandleSubmitGroup}>Apply selections</Button>
-          </div>
+          <Button className="mt-3 justify-content-center" block onClick={onHandleSubmitGroup}>Apply selections</Button>
         </Dropdown.Menu>
       </Dropdown>
       <Form.Control.Feedback>
@@ -66,6 +64,11 @@ AssignmentModalFlexGroup.propTypes = {
     uuid: PropTypes.string,
     acceptedMembersCount: PropTypes.number,
   })),
+  dropdownToggleLabel: PropTypes.string.isRequired,
+  dropdownRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
 };
 
 export default AssignmentModalFlexGroup;

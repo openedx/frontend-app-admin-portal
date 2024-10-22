@@ -8,7 +8,6 @@ import {
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { logError } from '@edx/frontend-platform/logging';
 
 import { connect } from 'react-redux';
 import BaseCourseCard from '../cards/BaseCourseCard';
@@ -18,7 +17,6 @@ import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInput
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
 import AssignmentModalFlexGroup from './AssignmentModalFlexGroup';
-import { getGroupMemberEmails } from '../data/hooks/useEnterpriseFlexGroups';
 import useGroupDropdownToggle from '../data/hooks/useGroupDropdownToggle';
 
 const AssignmentModalContent = ({
@@ -35,89 +33,19 @@ const AssignmentModalContent = ({
   const [groupMemberEmails, setGroupMemberEmails] = useState([]);
   const [checkedGroups, setCheckedGroups] = useState({});
   const [dropdownToggleLabel, setDropdownToggleLabel] = useState('Select group');
-  const {handleCheckedGroupsChanged, handleGroupsChanged, handleSubmitGroup} = useGroupDropdownToggle({
-    setCheckedGroups, setGroupMemberEmails, onGroupSelectionsChanged, checkedGroups, groupMemberEmails,
-  })
-
-
-  // const handleCheckedGroupsChanged = async (e) => {
-  //   const { value, checked, id } = e.target;
-  //   // if (checked) {
-  //   //   try {
-  //   //     const memberEmails = await getGroupMemberEmails(id);
-  //   //     setCheckedGroups((prev) => ({
-  //   //       ...prev,
-  //   //       [id]: {
-  //   //         checked,
-  //   //         name: value,
-  //   //         memberEmails,
-  //   //       }
-  //   //     }));
-  //   //     const newEmails = [];
-  //   //     const updatedMembers = memberEmails.filter(member => !groupMemberEmails.includes(member));
-  //   //     setGroupMemberEmails(prev => [...prev, ...memberEmails])
-  //   //   } catch (err) {
-  //   //     logError(err);
-  //   //   }
-  //   // } else if (!checked) {
-  //   //   setCheckedGroups((prev) => ({
-  //   //     ...prev,
-  //   //     [id]: {
-  //   //       ...prev[id],
-  //   //       checked: false,
-  //   //     }
-  //   //   }));
-  //   //   let membersToRemove = checkedGroups[id].memberEmails;
-  //   //   console.log(membersToRemove)
-  //   //   const updatedMembers = groupMemberEmails.filter(member => !membersToRemove.includes(member));
-  //   //   setGroupMemberEmails(updatedMembers);
-  //   // }
-  //   if (checked) {
-  //     try {
-  //       const memberEmails = await getGroupMemberEmails(id);
-  //       setCheckedGroups((prev) => ({
-  //         ...prev,
-  //         [id]: {
-  //           checked,
-  //           name: value,
-  //           memberEmails,
-  //         },
-  //       }));
-  //     } catch (err) {
-  //       logError(err);
-  //     }
-  //   } else if (!checked) {
-  //     setCheckedGroups((prev) => ({
-  //       ...prev,
-  //       [id]: {
-  //         ...prev[id],
-  //         checked: false,
-  //       },
-  //     }));
-  //   }
-  // };
-
-  // const handleGroupsChanged = useCallback(async (groups) => {
-  //   if (Object.keys(groups).length === 0) {
-  //     setGroupMemberEmails([]);
-  //     onGroupSelectionsChanged([]);
-  //   }
-  // }, [onGroupSelectionsChanged]);
-
-  // const handleSubmitGroup = () => {
-  //   const memberEmails = [];
-  //   Object.keys(checkedGroups).forEach(group => {
-  //     if (checkedGroups[group].checked) {
-  //       checkedGroups[group].memberEmails.forEach(email => {
-  //         if (!memberEmails.includes(email)) {
-  //           memberEmails.push(email);
-  //         }
-  //       });
-  //     }
-  //   });
-  //   setGroupMemberEmails(memberEmails);
-  // };
-
+  const {
+    dropdownRef,
+    handleCheckedGroupsChanged,
+    handleGroupsChanged,
+    handleSubmitGroup,
+  } = useGroupDropdownToggle({
+    checkedGroups,
+    dropdownToggleLabel,
+    onGroupSelectionsChanged,
+    setCheckedGroups,
+    setDropdownToggleLabel,
+    setGroupMemberEmails,
+  });
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
@@ -212,10 +140,11 @@ const AssignmentModalContent = ({
             {enterpriseFlexGroups.length > 0 && (
               <AssignmentModalFlexGroup
                 checkedGroups={checkedGroups}
+                dropdownRef={dropdownRef}
+                dropdownToggleLabel={dropdownToggleLabel}
                 enterpriseFlexGroups={enterpriseFlexGroups}
                 onCheckedGroupsChanged={handleCheckedGroupsChanged}
                 onHandleSubmitGroup={handleSubmitGroup}
-                dropdownToggleLabel={dropdownToggleLabel}
               />
             )}
             <Form.Group className="mb-5">
