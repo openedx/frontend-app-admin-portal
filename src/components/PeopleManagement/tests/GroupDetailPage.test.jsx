@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { useEnterpriseGroupUuid } from '../../learner-credit-management/data';
-import GroupDetailPage from '../GroupDetailPage';
+import GroupDetailPage from '../GroupDetailPage/GroupDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';

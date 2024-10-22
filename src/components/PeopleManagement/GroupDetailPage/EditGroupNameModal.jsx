@@ -6,9 +6,9 @@ import {
   ActionRow, Form, ModalDialog, Spinner, StatefulButton, useToggle,
 } from '@openedx/paragon';
 
-import MAX_LENGTH_GROUP_NAME from './constants';
-import LmsApiService from '../../data/services/LmsApiService';
-import GeneralErrorModal from './GeneralErrorModal';
+import { MAX_LENGTH_GROUP_NAME } from '../constants';
+import LmsApiService from '../../../data/services/LmsApiService';
+import GeneralErrorModal from '../GeneralErrorModal';
 
 const EditGroupNameModal = ({
   group, isOpen, close, handleNameUpdate,

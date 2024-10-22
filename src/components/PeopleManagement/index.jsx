@@ -13,6 +13,7 @@ import CreateGroupModal from './CreateGroupModal';
 import { useAllEnterpriseGroups } from '../learner-credit-management/data';
 import ZeroState from './ZeroState';
 import GroupCardGrid from './GroupCardGrid';
+import PeopleManagementTable from './PeopleManagementTable';
 
 const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
@@ -38,6 +39,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
       setGroups(data.results);
     }
   }, [data]);
+
 
   return (
     <>
@@ -78,16 +80,37 @@ const PeopleManagementPage = ({ enterpriseId }) => {
               description="CTA button text to open new group modal."
             />
           </Button>
-          <CreateGroupModal isModalOpen={isModalOpen} openModel={openModal} closeModal={closeModal} />
+          <CreateGroupModal
+            isModalOpen={isModalOpen}
+            openModel={openModal}
+            closeModal={closeModal}
+          />
         </ActionRow>
         {groups && groups.length > 0 ? (
-          <GroupCardGrid groups={groups} />) : <ZeroState />}
+          <GroupCardGrid groups={groups} />
+        ) : (
+          <ZeroState />
+        )}
+        <h3 className="mt-3">
+          <FormattedMessage
+            id="adminPortal.peopleManagement.dataTable.title"
+            defaultMessage="Your organization's members"
+            description="Title for people management data table."
+          />
+        </h3>
+        <FormattedMessage
+          className="mb-4"
+          id="adminPortal.peopleManagement.dataTable.subtitle"
+          defaultMessage="View all members of your organization."
+          description="Subtitle for people management members data table."
+        />
+        <PeopleManagementTable />
       </div>
     </>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
