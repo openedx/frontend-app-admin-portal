@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Col, Container, Form, Row,
+  Col, Container, Form, Row, DataTable, TextFilter, CheckboxFilter
 } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
@@ -17,6 +17,7 @@ import InviteModalBudgetCard from './InviteModalBudgetCard';
 import InviteModalPermissions from './InviteModalPermissions';
 import InviteSummaryCount from './InviteSummaryCount';
 import MAX_LENGTH_GROUP_NAME from '../../PeopleManagement/constants';
+import EnterpriseCustomerUserDatatable from './EnterpriseCustomerUserDatatable';
 
 const InviteModalContent = ({
   onEmailAddressesChange,
@@ -128,6 +129,7 @@ const InviteModalContent = ({
             <hr className="my-4" />
           </Col>
         </Row>
+        <EnterpriseCustomerUserDatatable />
       </Container>
     );
   }
@@ -151,17 +153,17 @@ const InviteModalContent = ({
             </Form.RadioSet>
           </Form.Group>
           {inputType === INPUT_TYPE.EMAIL && (
-          <Form.Group className="mb-5">
-            <Form.Control
-              as="textarea"
-              value={emailAddressesInputValue}
-              onChange={handleEmailAddressInputChange}
-              floatingLabel="Member email addresses"
-              rows={10}
-              data-hj-suppress
-            />
-            <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload={false} />
-          </Form.Group>
+            <Form.Group className="mb-5">
+              <Form.Control
+                as="textarea"
+                value={emailAddressesInputValue}
+                onChange={handleEmailAddressInputChange}
+                floatingLabel="Member email addresses"
+                rows={10}
+                data-hj-suppress
+              />
+              <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload={false} />
+            </Form.Group>
           )}
           {inputType === INPUT_TYPE.CSV && (
             <FileUpload
@@ -178,6 +180,7 @@ const InviteModalContent = ({
           <InviteModalPermissions subsidyAccessPolicy={subsidyAccessPolicy} />
         </Col>
       </Row>
+
     </Container>
   );
 };

@@ -429,6 +429,7 @@ class LmsApiService {
     });
     const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
     const response = await LmsApiService.fetchData(url);
+    console.log(response)
     return response;
   };
 
