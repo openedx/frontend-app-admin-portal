@@ -1,6 +1,7 @@
 import { createIntl } from '@edx/frontend-platform/i18n';
 import dayjs from 'dayjs';
 import {
+  getAssignableCourseRuns,
   getBudgetStatus,
   getTranslatedBudgetStatus,
   getTranslatedBudgetTerm,
@@ -341,5 +342,43 @@ describe('startAndEnrollBySortLogic', () => {
   ])('sorts start date and enroll by date as expected', ({ sampleData }) => {
     const sortedDates = sampleData.sort(startAndEnrollBySortLogic);
     expect(sortedDates).toEqual(sampleData.sort((a, b) => a.expectedOrder - b.expectedOrder));
+  });
+});
+
+describe('getAssignableCourseRuns', () => {
+  it('includes a late, non-restricted course run when late-redemption eligible', () => {
+    const courseRuns = [
+      {
+        key: 'the-course-run',
+        enrollBy: dayjs().subtract(1, 'day'),
+        hasEnrollBy: true,
+        upgradeDeadline: dayjs().add(1, 'day'),
+        start: dayjs().subtract(1, 'day'),
+        isActive: true,
+      },
+    ];
+    const subsidyExpirationDatetime = dayjs().add(100, 'day');
+    const isLateRedemptionAllowed = true;
+
+    const result = getAssignableCourseRuns({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed });
+    expect(result.length).toEqual(1);
+    expect(result[0].key).toEqual('the-course-run');
+  });
+  it('returns an empty list given only a restricted run , even when late-redemption eligible', () => {
+    const courseRuns = [
+      {
+        enrollBy: dayjs().subtract(1, 'day'),
+        hasEnrollBy: true,
+        restrictionType: 'b2b-enterprise',
+        upgradeDeadline: dayjs().subtract(1, 'day'),
+        start: dayjs().subtract(1, 'day'),
+        isActive: true,
+      },
+    ];
+    const subsidyExpirationDatetime = dayjs().add(100, 'day');
+    const isLateRedemptionAllowed = true;
+
+    const result = getAssignableCourseRuns({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed });
+    expect(result).toEqual([]);
   });
 });

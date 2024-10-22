@@ -720,13 +720,6 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
       // the current date and subsidy expiration date have failed.
       return false;
     }
-    if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
-      // Special case: late enrollment has been enabled by ECS for this budget, and
-      // isEligibleForEnrollment already succeeded, so we know that late enrollment
-      // would be happy given enrollment deadline of the course.  Now all we need
-      // to do is make sure the run itself is generally eligible for late enrollment
-      return isLateEnrollmentEligible;
-    }
     // ENT-9359 (epic for Custom Presentations/Restricted Runs):
     // Temporarily hide all restricted runs unconditionally on the run assignment
     // dropdown during implementation of the overall feature. ENT-9411 is most likely
@@ -734,6 +727,13 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
     // runs conditionally.
     if (restrictionType) {
       return false;
+    }
+    if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
+      // Special case: late enrollment has been enabled by ECS for this budget, and
+      // isEligibleForEnrollment already succeeded, so we know that late enrollment
+      // would be happy given enrollment deadline of the course.  Now all we need
+      // to do is make sure the run itself is generally eligible for late enrollment
+      return isLateEnrollmentEligible;
     }
     // General courseware filter
     return isActive;
