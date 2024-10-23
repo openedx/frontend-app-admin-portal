@@ -54,6 +54,10 @@ const store = mockStore({
     loading: null,
     insights: null,
   },
+  enterpriseBudgets: {
+    loading: null,
+    budgets: null,
+  },
 });
 
 const AdminWrapper = props => (
@@ -78,8 +82,14 @@ const AdminWrapper = props => (
             pathname: '/',
           }}
           {...props}
+          budgets={[{
+            subsidy_access_policy_uuid: '8d6503dd-e40d-42b8-442b-37dd4c5450e3',
+            subsidy_access_policy_display_name: 'Everything',
+          }]}
           fetchDashboardInsights={() => {}}
           clearDashboardInsights={() => {}}
+          fetchEnterpriseBudgets={() => {}}
+          clearEnterpriseBudgets={() => {}}
         />
       </IntlProvider>
     </Provider>
@@ -97,6 +107,7 @@ describe('<Admin />', () => {
     lastUpdatedDate: '2018-07-31T23:14:35Z',
     numberOfUsers: 3,
     insights: null,
+    budgets: [],
   };
 
   describe('renders correctly', () => {
@@ -363,6 +374,26 @@ describe('<Admin />', () => {
             <AdminWrapper
               {...baseProps}
               insights={insights}
+            />
+          ))
+          .toJSON();
+
+        expect(tree).toMatchSnapshot();
+      });
+    });
+
+    describe('with enterprise budgets data', () => {
+      it('renders budgets correctly', () => {
+        const budgetUUID = '8d6503dd-e40d-42b8-442b-37dd4c5450e3';
+        const budgets = [{
+          subsidy_access_policy_uuid: budgetUUID,
+          subsidy_access_policy_display_name: 'Everything',
+        }];
+        const tree = renderer
+          .create((
+            <AdminWrapper
+              {...baseProps}
+              budgets={budgets}
             />
           ))
           .toJSON();

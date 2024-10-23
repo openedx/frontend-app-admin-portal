@@ -16,7 +16,7 @@ import InviteModalMembershipInfo from './InviteModalMembershipInfo';
 import InviteModalBudgetCard from './InviteModalBudgetCard';
 import InviteModalPermissions from './InviteModalPermissions';
 import InviteSummaryCount from './InviteSummaryCount';
-import MAX_LENGTH_GROUP_NAME from '../../PeopleManagement/constants';
+import { MAX_LENGTH_GROUP_NAME } from '../../PeopleManagement/constants';
 
 const InviteModalContent = ({
   onEmailAddressesChange,

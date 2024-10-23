@@ -49,6 +49,7 @@ class Admin extends React.Component {
     if (enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
+      this.props.fetchEnterpriseBudgets(enterpriseId);
     }
   }
 
@@ -57,6 +58,7 @@ class Admin extends React.Component {
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
+      this.props.fetchEnterpriseBudgets(enterpriseId);
     }
   }
 
@@ -64,6 +66,7 @@ class Admin extends React.Component {
     // Clear the overview data
     this.props.clearDashboardAnalytics();
     this.props.clearDashboardInsights();
+    this.props.clearEnterpriseBudgets();
   }
 
   getMetadataForAction(actionSlug) {
@@ -324,7 +327,7 @@ class Admin extends React.Component {
     const { location: { search, pathname } } = this.props;
     // remove the querys from the path
     const queryParams = new URLSearchParams(search);
-    ['search', 'search_course', 'search_start_date'].forEach((searchTerm) => {
+    ['search', 'search_course', 'search_start_date', 'budget_uuid'].forEach((searchTerm) => {
       queryParams.delete(searchTerm);
     });
     const resetQuery = queryParams.toString();
@@ -403,6 +406,7 @@ class Admin extends React.Component {
       insights,
       insightsLoading,
       intl,
+      budgets,
     } = this.props;
     const { activeTab } = this.state;
 
@@ -416,6 +420,7 @@ class Admin extends React.Component {
       searchQuery: queryParams.get('search') || '',
       searchCourseQuery: queryParams.get('search_course') || '',
       searchDateQuery: queryParams.get('search_start_date') || '',
+      searchBudgetQuery: queryParams.get('budget_uuid') || '',
     };
 
     return (
@@ -531,6 +536,7 @@ class Admin extends React.Component {
                                 searchParams={searchParams}
                                 searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
                                 tableData={this.getTableData() ? this.getTableData().results : []}
+                                budgets={budgets}
                               />
                             )}
                           </>
@@ -580,6 +586,7 @@ Admin.defaultProps = {
   table: null,
   insightsLoading: false,
   insights: null,
+  budgets: [],
 };
 
 Admin.propTypes = {
@@ -587,6 +594,8 @@ Admin.propTypes = {
   clearDashboardAnalytics: PropTypes.func.isRequired,
   fetchDashboardInsights: PropTypes.func.isRequired,
   clearDashboardInsights: PropTypes.func.isRequired,
+  fetchEnterpriseBudgets: PropTypes.func.isRequired,
+  clearEnterpriseBudgets: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
@@ -606,6 +615,7 @@ Admin.propTypes = {
   csv: PropTypes.shape({}),
   actionSlug: PropTypes.string,
   table: PropTypes.shape({}),
+  budgets: PropTypes.arrayOf(PropTypes.shape({})),
   insightsLoading: PropTypes.bool,
   insights: PropTypes.objectOf(PropTypes.shape),
   // injected
