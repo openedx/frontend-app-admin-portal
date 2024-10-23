@@ -29,8 +29,8 @@ const DownloadCsvButton = ({ data, testId, fetchData }) => {
   };
 
   const handleClick = async () => {
+    setButtonState('pending');
     fetchData().then((response) => {
-      setButtonState('pending');
       const blob = new Blob([response.data], {
         type: 'text/csv',
       });

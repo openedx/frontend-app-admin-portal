@@ -45,6 +45,16 @@ class LmsApiService {
 
   static enterpriseGroupListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
 
+  static createEnterpriseGroup(options) {
+    const postParams = {
+      name: options.groupName,
+      enterprise_customer: options.enterpriseUUID,
+      members: [],
+    };
+    const createEnterpriseGroupUrl = `${LmsApiService.enterpriseGroupListUrl}`;
+    return LmsApiService.apiClient().post(createEnterpriseGroupUrl, postParams);
+  }
+
   static fetchEnterpriseSsoOrchestrationRecord(configurationUuid) {
     const enterpriseSsoOrchestrationFetchUrl = `${LmsApiService.enterpriseSsoOrchestrationUrl}${configurationUuid}`;
     return LmsApiService.apiClient().get(enterpriseSsoOrchestrationFetchUrl);
@@ -422,6 +432,11 @@ class LmsApiService {
     return response;
   };
 
+  static fetchAllEnterpriseGroups = async (options) => {
+    const groupsEndpoint = `${LmsApiService.enterpriseGroupListUrl}?${options.toString()}`;
+    return LmsApiService.apiClient().get(groupsEndpoint);
+  };
+
   static fetchEnterpriseGroup = async (groupUuid) => {
     const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().get(groupEndpoint);
@@ -444,6 +459,16 @@ class LmsApiService {
       enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
     }
     return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
+  };
+
+  static removeEnterpriseGroup = async (groupUuid) => {
+    const removeGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+    return LmsApiService.apiClient().delete(removeGroupEndpoint);
+  };
+
+  static updateEnterpriseGroup = async (groupUuid, formData) => {
+    const updateGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
+    return LmsApiService.apiClient().patch(updateGroupEndpoint, formData);
   };
 
   static removeEnterpriseLearnersFromGroup = async (groupUuid, formData) => {

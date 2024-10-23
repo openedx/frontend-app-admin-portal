@@ -22,7 +22,7 @@ const InviteModalInputFeedback = ({ memberInviteMetadata, isCsvUpload }) => {
       <div>
         {!memberInviteMetadata.lowerCasedEmails.length > 0 ? (
           <Form.Control.Feedback>
-            <p className="mb-0">Maximum invite at a time: {MAX_EMAIL_ENTRY_LIMIT} emails</p>
+            <p className="mb-0">Maximum members at a time: {MAX_EMAIL_ENTRY_LIMIT} emails</p>
           </Form.Control.Feedback>
         ) : null}
       </div>

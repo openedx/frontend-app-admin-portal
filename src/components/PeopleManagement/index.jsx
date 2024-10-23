@@ -1,17 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
-import {
-  ActionRow, Button, Card, useToggle,
-} from '@openedx/paragon';
+import { ActionRow, Button, useToggle } from '@openedx/paragon';
 import { Add } from '@openedx/paragon/icons';
 
-import cardImage from './images/ZeroStateImage.svg';
 import Hero from '../Hero';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
+import CreateGroupModal from './CreateGroupModal';
+import { useAllEnterpriseGroups } from '../learner-credit-management/data';
+import ZeroState from './ZeroState';
+import GroupCardGrid from './GroupCardGrid';
 
-const PeopleManagementPage = () => {
+const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
   const PAGE_TITLE = intl.formatMessage({
     id: 'admin.portal.people.management.page',
@@ -20,15 +23,21 @@ const PeopleManagementPage = () => {
   });
 
   const { enterpriseSubsidyTypes } = useContext(EnterpriseSubsidiesContext);
+  const { data } = useAllEnterpriseGroups(enterpriseId);
 
-  const hasLearnerCredit = enterpriseSubsidyTypes.includes(
-    SUBSIDY_TYPES.budget,
-  );
+  const hasLearnerCredit = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.budget);
   const hasOtherSubsidyTypes = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.license)
     || enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.coupon);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, openModal, closeModal] = useToggle(false);
+  const [groups, setGroups] = useState();
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setGroups(data.results);
+    }
+  }, [data]);
 
   return (
     <>
@@ -40,22 +49,22 @@ const PeopleManagementPage = () => {
             <span className="d-flex">
               <h3 className="mt-2">
                 <FormattedMessage
-                  id="admin.portal.people.management.page.title"
+                  id="adminPortal.peopleManagement.title"
                   defaultMessage="Your organization's groups"
-                  description="Title for people management zero state."
+                  description="Title for people management page."
                 />
               </h3>
             </span>
             {hasLearnerCredit && (
               <FormattedMessage
-                id="admin.portal.people.management.page.subtitle.lc"
+                id="adminPortal.peopleManagement.subtitle.lc"
                 defaultMessage="Monitor group learning progress, assign more courses, and invite members to new Learner Credit budgets."
                 description="Subtitle for people management with learner credit."
               />
             )}
             {!hasLearnerCredit && hasOtherSubsidyTypes && (
               <FormattedMessage
-                id="admin.portal.people.management.page.subtitle.noLc"
+                id="adminPortal.peopleManagement.subtitle.noLc"
                 defaultMessage="Monitor group learning progress."
                 description="Subtitle for people management without learner credit."
               />
@@ -64,47 +73,26 @@ const PeopleManagementPage = () => {
           <ActionRow.Spacer />
           <Button iconBefore={Add} onClick={openModal}>
             <FormattedMessage
-              id="admin.portal.people.management.page.newgroup.button"
+              id="adminPortal.peopleManagement.newGroup.button"
               defaultMessage="Create group"
               description="CTA button text to open new group modal."
             />
           </Button>
+          <CreateGroupModal isModalOpen={isModalOpen} openModel={openModal} closeModal={closeModal} />
         </ActionRow>
-        <Card>
-          <Card.ImageCap
-            className="mh-100"
-            src={cardImage}
-            srcAlt="Two people carrying a cartoon arrow"
-          />
-          <span className="text-center align-self-center">
-            <h2 className="h3 mb-3 mt-3">
-              <FormattedMessage
-                id="admin.portal.people.management.page.zerostate.card.header"
-                defaultMessage="You don't have any groups yet."
-                description="Header message shown to admin there's no groups created yet."
-              />
-            </h2>
-            <p className="mx-2">
-              {hasLearnerCredit && (
-                <FormattedMessage
-                  id="admin.portal.people.management.page.zerostate.card.subtitle.lc"
-                  defaultMessage="Once a group is created, you can track members' progress, assign extra courses, and invite them to additional budgets."
-                  description="Detail message shown to admin benefits of creating a group with learner credit."
-                />
-              )}
-              {!hasLearnerCredit && hasOtherSubsidyTypes && (
-                <FormattedMessage
-                  id="admin.portal.people.management.page.zerostate.card.subtitle.noLc"
-                  defaultMessage="Once a group is created, you can track members' progress."
-                  description="Detail message shown to admin benefits of creating a group without learner credit."
-                />
-              )}
-            </p>
-          </span>
-        </Card>
+        {groups && groups.length > 0 ? (
+          <GroupCardGrid groups={groups} />) : <ZeroState />}
       </div>
     </>
   );
 };
 
-export default PeopleManagementPage;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+PeopleManagementPage.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(PeopleManagementPage);
