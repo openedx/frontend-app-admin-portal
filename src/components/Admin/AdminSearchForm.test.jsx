@@ -5,11 +5,16 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import AdminSearchForm from './AdminSearchForm';
 import SearchBar from '../SearchBar';
+import { updateUrl } from '../../utils';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useLocation: jest.fn(),
   useNavigate: jest.fn(),
+}));
+
+jest.mock('../../utils', () => ({
+  updateUrl: jest.fn(),
 }));
 
 const DEFAULT_PROPS = {
@@ -47,5 +52,33 @@ describe('<AdminSearchForm />', () => {
       wrapper.setProps({ searchParams });
       expect(spy).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('select the correct budget', () => {
+    const budgetUUID = '8d6503dd-e40d-42b8-442b-37dd4c5450e3';
+    const budgets = [{
+      subsidy_access_policy_uuid: budgetUUID,
+      subsidy_access_policy_display_name: 'Everything',
+    }];
+    const props = {
+      ...DEFAULT_PROPS,
+      budgets,
+      location: { pathname: '/admin/learners' },
+    };
+    const wrapper = mount(
+      <AdminSearchFormWrapper {...props} />,
+    );
+    const selectElement = wrapper.find('.budgets-dropdown select');
+
+    selectElement.simulate('change', { target: { value: budgetUUID } });
+    expect(updateUrl).toHaveBeenCalled();
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      {
+        budget_uuid: budgetUUID,
+        page: 1,
+      },
+    );
   });
 });
