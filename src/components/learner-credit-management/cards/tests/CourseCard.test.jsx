@@ -19,12 +19,14 @@ import {
   SHORT_MONTH_DATE_FORMAT,
   useBudgetId,
   useSubsidyAccessPolicy,
+  useEnterpriseFlexGroups,
 } from '../../data';
 import { getButtonElement, queryClient } from '../../../test/testUtils';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../data';
+import { getGroupMemberEmails } from '../../data/hooks/useEnterpriseFlexGroups';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -48,7 +50,9 @@ jest.mock('../../data', () => ({
   ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
+  useEnterpriseFlexGroups: jest.fn(),
 }));
+jest.mock('../../data/hooks/useEnterpriseFlexGroups');
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
 
 const futureStartDate = dayjs().add(10, 'days').toISOString();
@@ -185,6 +189,24 @@ const mockSubsidyAccessPolicy = {
   isLateRedemptionAllowed: false,
 };
 const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
+const mockEnterpriseFlexGroup = [
+  {
+    enterpriseCustomer: 'test-enterprise-customer-1',
+    name: 'Group 1',
+    uuid: 'test-uuid',
+    acceptedMembersCount: 2,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+  {
+    enterpriseCustomer: 'test-enterprise-customer-2',
+    name: 'Group 2',
+    uuid: 'test-uuid-2',
+    acceptedMembersCount: 1,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+];
 
 const mockDisplaySuccessfulAssignmentToast = jest.fn();
 const defaultBudgetDetailPageContextValue = {
@@ -257,6 +279,9 @@ describe('Course card works as expected', () => {
       data: mockSubsidyAccessPolicy,
       isLoading: false,
       isLateRedemptionAllowed: false,
+    });
+    useEnterpriseFlexGroups.mockReturnValue({
+      data: mockEnterpriseFlexGroup,
     });
   });
 
@@ -784,5 +809,53 @@ describe('Course card works as expected', () => {
         expect(getButtonElement('Assign', { screenOverride: assignmentModal })).not.toBeDisabled();
       }
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+
+  test('opens assignment modal and selects flex group assignments', async () => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      data: {
+        ...mockSubsidyAccessPolicy,
+        aggregates: {
+          ...mockSubsidyAccessPolicy.aggregates,
+          spendAvailableUsd: 1000,
+        },
+      },
+      isLoading: false,
+    });
+    getGroupMemberEmails.mockReturnValue(mockLearnerEmails);
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+    userEvent.click(screen.getByText(enrollByDropdownText));
+    const assignmentModal = within(screen.getByRole('dialog'));
+
+    // Verify "Assign" CTA is disabled
+    expect(getButtonElement('Assign', { screenOverride: assignmentModal })).toBeDisabled();
+
+    // Verify dropdown menu
+    expect(
+      assignmentModal.getByText('Select one or more group to add its members to the assignment.'),
+    ).toBeInTheDocument();
+    const dropdownMenu = assignmentModal.getByText('Select group');
+    expect(dropdownMenu).toBeInTheDocument();
+    userEvent.click(dropdownMenu);
+    const group1 = assignmentModal.getByText('Group 1 (2)');
+    const group2 = assignmentModal.getByText('Group 2 (1)');
+    expect(group1).toBeInTheDocument();
+    expect(group2).toBeInTheDocument();
+
+    userEvent.click(group1);
+    userEvent.click(group2);
+    const applyButton = assignmentModal.getByText('Apply selections');
+
+    await waitFor(() => {
+      userEvent.click(applyButton);
+      expect(assignmentModal.getByText('2 groups selected')).toBeInTheDocument();
+      expect(assignmentModal.getByText('hello@example.com')).toBeInTheDocument();
+      expect(assignmentModal.getByText('world@example.com')).toBeInTheDocument();
+      expect(assignmentModal.getByText('dinesh@example.com')).toBeInTheDocument();
+    });
   });
 });

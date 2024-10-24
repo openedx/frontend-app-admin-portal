@@ -23,6 +23,14 @@
   }
 }
 
+.group-dropdown {
+  width: inherit;
+  .btn,
+  .pgn__menu-select-popup {
+    width: inherit;
+    justify-content: space-between;
+  };
+}
 // Must be defined outside of `.learner-credit-management` to ensure the styles are applied to the contents of
 // the `FullscreenModal`, which renders in a React Portal.
 .assignment-modal-collapsible-trigger {
