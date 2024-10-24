@@ -429,7 +429,6 @@ class LmsApiService {
     });
     const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
     const response = await LmsApiService.fetchData(url);
-    console.log(response)
     return response;
   };
 
@@ -475,6 +474,15 @@ class LmsApiService {
   static removeEnterpriseLearnersFromGroup = async (groupUuid, formData) => {
     const removeLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/remove_learners/`;
     return LmsApiService.apiClient().post(removeLearnerEndpoint, formData);
+  };
+
+  static fetchEnterpriseLearners = async (options) => {
+    const enterpriseLearnerUrl = `${configuration.LMS_BASE_URL}/enterprise/api/v1/enterprise-learner/`;
+    const queryParams = new URLSearchParams({
+      ...options,
+    });
+    const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
   };
 }
 

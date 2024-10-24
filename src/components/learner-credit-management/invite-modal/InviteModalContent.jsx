@@ -36,6 +36,16 @@ const InviteModalContent = ({
   const [groupNameLength, setGroupNameLength] = useState(0);
   const [groupName, setGroupName] = useState('');
 
+  const handleAssignMembersTableAction = useCallback((value) => {
+    if (!value) {
+      setLearnerEmails([]);
+      onEmailAddressesChange([]);
+      return;
+    }
+
+    setLearnerEmails(value)
+  }, [])
+  
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
@@ -129,7 +139,7 @@ const InviteModalContent = ({
             <hr className="my-4" />
           </Col>
         </Row>
-        <EnterpriseCustomerUserDatatable />
+        <EnterpriseCustomerUserDatatable onHandleAssignMembersTableAction={handleAssignMembersTableAction} />
       </Container>
     );
   }

@@ -1,96 +1,91 @@
-import React, {
-  useCallback, useState, useMemo, useEffect
-} from 'react';
 import {
   DataTable, TextFilter
 } from '@openedx/paragon';
 import { connect } from 'react-redux';
-import debounce from 'lodash.debounce';
-import { logError } from '@edx/frontend-platform/logging';
-import { camelCaseObject } from '@edx/frontend-platform';
-import LmsApiService from '../../../data/services/LmsApiService';
 
-const EnterpriseCustomerUserDatatable = ({ enterpriseId }) => {
-  // const [enterpriseCustomerUserList, setEnterpriseCustomerUserList] = useState({
-  //   itemCount: 0,
-  //   pageCount: 0,
-  //   results: [],
-  // });
-  const [enterpriseCustomerUserList, setEnterpriseCustomerUserList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const fetchData = useCallback( async (args) => {
-    // const fetch = async () => {
-      try {
-        setIsLoading(true);
-        const options = {
-          enterprise_customer: enterpriseId,
-        };
-        // options.page = args.currentPage + 1;
-        // const options = {}
-        const data = await LmsApiService.fetchEnterpriseLearnerData(options);
-        const result = camelCaseObject(data);
-        setEnterpriseCustomerUserList(result);
-      } catch (error) {
-        logError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    // }
-  }, [enterpriseId]);
+import useEnterpriseLearnersTableData from '../data/hooks/useEnterpriseLearnersTableData';
+import { formatTimestamp } from '../../../utils';
+import { DEFAULT_PAGE } from '../data';
+import { Button } from '@openedx/paragon'
 
-  // const debouncedFetchData = useMemo(() => debounce(
-  //   fetchData,
-  //   300,
-  // ), [fetchData]);
-  useEffect(() => {
-    fetchData();
-  }, [enterpriseId, fetchData])
+const MemberDetailsCell = (table) => {
+  return (
+    <div>
+      {table.row.original.user.email}
+    </div>
+  );
+};
 
+const MemberJoinedDateCell = ({ row }) => (
+  <div>
+    {formatTimestamp({ timestamp: row.original.created, format: 'MMM DD, YYYY' })}
+  </div>
+);
+
+const AssignAction = ({ selectedFlatRows, onHandleAssignMembersTableAction }) => {
+  const handleOnClick = () => {
+    const emails = [];
+    Object.keys(selectedFlatRows).forEach(key => {
+      const { original } = selectedFlatRows[key];
+      emails.push(original.user.email);
+    })
+    onHandleAssignMembersTableAction(emails);
+  };
 
   return (
+    <Button onClick={handleOnClick}>
+      Assign
+    </Button>
+  );
+};
+
+const TableAction = ({ tableInstance }) => (
+  // Here is access to the tableInstance
+  <Button onClick={() => console.log('TableAction', tableInstance)}>
+    Enroll
+  </Button>
+);
+
+const EnterpriseCustomerUserDatatable = ({ enterpriseId, onHandleAssignMembersTableAction }) => {
+  const { isLoading, enterpriseCustomerUserTableData, fetchEnterpriseLearnersData } = useEnterpriseLearnersTableData(enterpriseId);
+  return (
     <DataTable
-      isPaginated
-      isSelectable
-      // initialState={{
-      //   pageSize: 8,
-      //   pageIndex: 0,
-      //   sortBy: [],
-      //   filters: [],
-      // }}
-      initialState={{
-        pageSize: 10,
-      }}
-      isFilterable
-      isSortable
-      defaultColumnValues={{ Filter: TextFilter }}
-      itemCount={enterpriseCustomerUserList.length}
-      data={enterpriseCustomerUserList}
+      bulkActions={[
+        <AssignAction onHandleAssignMembersTableAction={onHandleAssignMembersTableAction} />
+      ]}
       columns={[
         {
           Header: 'Member details',
-          accessor: 'email',
-          Cell: ({ row }) => row.original.user.email,
+          accessor: 'user.email',
+          Cell: MemberDetailsCell,
         },
-        // {
-        //   Header: 'Joined organization',
-        //   accessor: 'created',
-        //   Cell: ({ row }) => console.log(row),
-        // },
+        {
+          Header: 'Joined organization',
+          accessor: 'created',
+          Cell: MemberJoinedDateCell,
+          disableFilters: true,
+        },
       ]}
+      initialState={{
+        pageIndex: DEFAULT_PAGE,
+        filters: [],
+      }}
+      data={enterpriseCustomerUserTableData.results}
+      defaultColumnValues={{ Filter: TextFilter }}
+      fetchData={fetchEnterpriseLearnersData}
+      isFilterable
       isLoading={isLoading}
-      isExpandable
-      // manualPagination
-      // manualFilters
-      // fetchData={fetchData}
-      // pageCount={enterpriseCustomerUserList.pageCount}
-    >
-      <DataTable.TableControlBar />
-      <DataTable.Table />
-      <DataTable.EmptyTable content="No results found" />
-      <DataTable.TableFooter />
-    </DataTable>
-  )
-}
+      isPaginated
+      isSelectable
+      itemCount={enterpriseCustomerUserTableData.itemCount}
+      manualFilters
+      manualPagination
+      pageCount={enterpriseCustomerUserTableData.pageCount}
+      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
+    />
+  );
+};
+
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
