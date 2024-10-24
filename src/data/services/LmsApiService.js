@@ -475,6 +475,15 @@ class LmsApiService {
     const removeLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/remove_learners/`;
     return LmsApiService.apiClient().post(removeLearnerEndpoint, formData);
   };
+
+  static fetchEnterpriseLearners = async (options) => {
+    const enterpriseLearnerUrl = `${configuration.LMS_BASE_URL}/enterprise/api/v1/enterprise-learner/`;
+    const queryParams = new URLSearchParams({
+      ...options,
+    });
+    const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
+  };
 }
 
 export default LmsApiService;
