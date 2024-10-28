@@ -39,6 +39,23 @@ const AssignAction = ({ selectedFlatRows, onHandleAssignMembersTableAction }) =>
   );
 };
 
+const UnAssign = ({ selectedFlatRows, onHandleAssignMembersTableAction }) => {
+  const handleOnClick = () => {
+    const emails = [];
+    Object.keys(selectedFlatRows).forEach(key => {
+      const { original } = selectedFlatRows[key];
+      emails.push(original.user.email);
+    })
+    onHandleAssignMembersTableAction(emails);
+  };
+
+  return (
+    <Button variant='brand' onClick={handleOnClick}>
+      Unassign
+    </Button>
+  );
+};
+
 const TableAction = ({ tableInstance }) => (
   // Here is access to the tableInstance
   <Button onClick={() => console.log('TableAction', tableInstance)}>
@@ -51,7 +68,9 @@ const EnterpriseCustomerUserDatatable = ({ enterpriseId, onHandleAssignMembersTa
   return (
     <DataTable
       bulkActions={[
-        <AssignAction onHandleAssignMembersTableAction={onHandleAssignMembersTableAction} />
+        <AssignAction onHandleAssignMembersTableAction={onHandleAssignMembersTableAction} />,
+        <UnAssign onHandleAssignMembersTableAction={onHandleAssignMembersTableAction} />
+
       ]}
       columns={[
         {
