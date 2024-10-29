@@ -18,10 +18,18 @@ import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpColl
 import EVENT_NAMES from '../../../eventTracking';
 import AssignmentModalFlexGroup from './AssignmentModalFlexGroup';
 import useGroupDropdownToggle from '../data/hooks/useGroupDropdownToggle';
+import { GROUP_DROPDOWN_TEXT } from '../../PeopleManagement/constants';
 
 const AssignmentModalContent = ({
-  enterpriseId, course, courseRun, onEmailAddressesChange, enterpriseFlexGroups, onGroupSelectionsChanged,
+  enterpriseId,
+  course,
+  courseRun,
+  onEmailAddressesChange,
+  enterpriseFlexGroups,
+  onGroupSelectionsChanged,
+  enterpriseFeatures,
 }) => {
+  const shouldShowGroupsDropdown = enterpriseFeatures.enterpriseGroupsV2 && enterpriseFlexGroups?.length > 0;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
@@ -32,7 +40,7 @@ const AssignmentModalContent = ({
   const { contentPrice } = courseRun;
   const [groupMemberEmails, setGroupMemberEmails] = useState([]);
   const [checkedGroups, setCheckedGroups] = useState({});
-  const [dropdownToggleLabel, setDropdownToggleLabel] = useState('Select group');
+  const [dropdownToggleLabel, setDropdownToggleLabel] = useState(GROUP_DROPDOWN_TEXT);
   const {
     dropdownRef,
     handleCheckedGroupsChanged,
@@ -77,7 +85,7 @@ const AssignmentModalContent = ({
     } else if (selectedGroups.length > 1) {
       setDropdownToggleLabel(`${selectedGroups.length} groups selected`);
     } else {
-      setDropdownToggleLabel('Select group');
+      setDropdownToggleLabel(GROUP_DROPDOWN_TEXT);
     }
   }, [checkedGroups, handleGroupsChanged]);
 
@@ -137,7 +145,7 @@ const AssignmentModalContent = ({
                 description="Header for the section where we assign a course to learners"
               />
             </h4>
-            {enterpriseFlexGroups.length > 0 && (
+            {shouldShowGroupsDropdown && (
               <AssignmentModalFlexGroup
                 checkedGroups={checkedGroups}
                 dropdownRef={dropdownRef}
@@ -265,10 +273,14 @@ AssignmentModalContent.propTypes = {
     uuid: PropTypes.string,
     acceptedMembersCount: PropTypes.number,
   })),
+  enterpriseFeatures: PropTypes.shape({
+    enterpriseGroupsV2: PropTypes.bool.isRequired,
+  }),
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 export default connect(mapStateToProps)(AssignmentModalContent);

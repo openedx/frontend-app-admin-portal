@@ -1,6 +1,7 @@
 import { useCallback, useRef, useEffect } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 import { getGroupMemberEmails } from './useEnterpriseFlexGroups';
+import { GROUP_DROPDOWN_TEXT } from '../../../PeopleManagement/constants';
 
 const useGroupDropdownToggle = ({
   setCheckedGroups,
@@ -44,7 +45,7 @@ const useGroupDropdownToggle = ({
     // Handles user clicking outside of the dropdown menu.
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownToggleLabel('Select group');
+        setDropdownToggleLabel(GROUP_DROPDOWN_TEXT);
         Object.keys(checkedGroups).forEach(group => {
           // If the user has checked the boxes but has not applied the selections,
           // we clear the selection when the user closes the menu.

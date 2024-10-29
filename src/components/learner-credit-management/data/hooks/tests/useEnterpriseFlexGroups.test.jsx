@@ -5,6 +5,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 
 import { fetchPaginatedData } from '../../../../../data/services/apiServiceUtils';
 import LmsApiService from '../../../../../data/services/LmsApiService';
+import { getGroupMemberEmails } from '../useEnterpriseFlexGroups';
 
 const axiosMock = new MockAdapter(axios);
 jest.mock('../../../../../data/services/apiServiceUtils');
@@ -82,8 +83,6 @@ describe('useEnterpriseFlexGroups', () => {
 });
 
 describe('getGroupMemberEmails', () => {
-  const enterpriseGroupLearnerUrl = `${LmsApiService.enterpriseGroupUrl}${mockGroupUuid}/learners`;
-
   beforeEach(() => {
     jest.clearAllMocks();
     fetchPaginatedData.mockReturnValue(
@@ -92,12 +91,10 @@ describe('getGroupMemberEmails', () => {
         response: camelCaseObject(mockLearners),
       },
     );
-    axiosMock.reset();
   });
 
-  it('returns the api call with a 200', async () => {
-    axiosMock.onGet(enterpriseGroupLearnerUrl).reply(200, mockLearners);
-    const { results } = await fetchPaginatedData(mockGroupUuid);
-    expect(results).toEqual(camelCaseObject(mockLearners.results));
+  it('returns the member emails', async () => {
+    const groupMemberEmails = await getGroupMemberEmails(mockGroupUuid);
+    expect(groupMemberEmails).toEqual([camelCaseObject(mockLearners).results[0].memberDetails.userEmail]);
   });
 });
