@@ -21,3 +21,5 @@ export { default as useEnterpriseGroupUuid } from './useEnterpriseGroupUuid';
 export { default as useAllEnterpriseGroups } from './useAllEnterpriseGroups';
 export { default as useContentMetadata } from './useContentMetadata';
 export { default as useEnterpriseRemovedGroupMembers } from './useEnterpriseRemovedGroupMembers';
+export { default as useGroupDropdownToggle } from './useGroupDropdownToggle';
+export { default as useEnterpriseFlexGroups } from './useEnterpriseFlexGroups';
