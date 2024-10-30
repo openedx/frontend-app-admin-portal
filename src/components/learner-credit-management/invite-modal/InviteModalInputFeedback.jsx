@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { MAX_EMAIL_ENTRY_LIMIT } from '../cards/data';
 
 const InviteModalInputFeedback = ({ memberInviteMetadata, isCsvUpload }) => {
-  console.log('here')
   if (memberInviteMetadata.validationError) {
     if (!memberInviteMetadata.isValidInput) {
       return (

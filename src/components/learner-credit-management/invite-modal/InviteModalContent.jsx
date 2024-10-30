@@ -3,7 +3,12 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import { Col, Container, Form, Row } from '@openedx/paragon';
+import {
+  Col,
+  Container,
+  Form,
+  Row,
+} from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import InviteModalSummary from './InviteModalSummary';
@@ -14,7 +19,7 @@ import InviteModalMembershipInfo from './InviteModalMembershipInfo';
 import InviteModalBudgetCard from './InviteModalBudgetCard';
 import InviteModalPermissions from './InviteModalPermissions';
 import InviteSummaryCount from './InviteSummaryCount';
-import MAX_LENGTH_GROUP_NAME from '../../PeopleManagement/constants';
+import { MAX_LENGTH_GROUP_NAME } from '../../PeopleManagement/constants';
 import EnterpriseCustomerUserDatatable from './EnterpriseCustomerUserDatatable';
 
 const InviteModalContent = ({
@@ -40,9 +45,8 @@ const InviteModalContent = ({
       onEmailAddressesChange([]);
       return;
     }
-
-    setLearnerEmails(prev => [...prev, ...value])
-  }, [])
+    setLearnerEmails(prev => [...prev, ...value]);
+  }, [onEmailAddressesChange]);
 
   const handleRemoveMembersBulkAction = useCallback((value) => {
     if (!value) {
@@ -50,11 +54,8 @@ const InviteModalContent = ({
       onEmailAddressesChange([]);
       return;
     }
-
-    setLearnerEmails(prev => {
-     return prev.filter((el) => !value.includes(el));
-    })
-  }, [])
+    setLearnerEmails(prev => prev.filter((el) => !value.includes(el)));
+  }, [onEmailAddressesChange]);
 
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
@@ -152,6 +153,7 @@ const InviteModalContent = ({
         <EnterpriseCustomerUserDatatable
           onHandleAddMembersBulkAction={handleAddMembersBulkAction}
           onHandleRemoveMembersBulkAction={handleRemoveMembersBulkAction}
+          learnerEmails={learnerEmails}
         />
       </Container>
     );

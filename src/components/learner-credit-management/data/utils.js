@@ -698,7 +698,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   }));
 
   const assignableCourseRunsFilter = ({
-    enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible,
+    enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible, restrictionType,
   }) => {
     const isEnrollByDateValid = isEnrollByDateWithinThreshold({
       hasEnrollBy,
@@ -718,6 +718,14 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
     if (!isEligibleForEnrollment) {
       // Basic checks against this content's critical dates and their relation to
       // the current date and subsidy expiration date have failed.
+      return false;
+    }
+    // ENT-9359 (epic for Custom Presentations/Restricted Runs):
+    // Temporarily hide all restricted runs unconditionally on the run assignment
+    // dropdown during implementation of the overall feature. ENT-9411 is most likely
+    // the ticket to replace this code with something to actually show restricted
+    // runs conditionally.
+    if (restrictionType) {
       return false;
     }
     if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
