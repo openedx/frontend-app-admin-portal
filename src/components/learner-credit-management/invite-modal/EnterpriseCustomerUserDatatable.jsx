@@ -22,54 +22,48 @@ const MemberJoinedDateCell = ({ row }) => (
   </div>
 );
 
-const AssignAction = ({ selectedFlatRows, onHandleAssignMembersTableAction }) => {
+const AddMembersBulkAction = (props) => {
+  console.log(props)
   const handleOnClick = () => {
     const emails = [];
-    Object.keys(selectedFlatRows).forEach(key => {
-      const { original } = selectedFlatRows[key];
+    Object.keys(props.selectedFlatRows).forEach(key => {
+      const { original } = props.selectedFlatRows[key];
       emails.push(original.user.email);
     })
-    onHandleAssignMembersTableAction(emails);
+    props.onHandleAddMembersBulkAction(emails);
   };
 
   return (
     <Button onClick={handleOnClick}>
-      Assign
+      Add
     </Button>
   );
 };
 
-const UnAssign = ({ selectedFlatRows, onHandleUnassignMembersTableAction }) => {
+const RemoveMembersBulkAction = ({ selectedFlatRows, onHandleRemoveMembersBulkAction }) => {
   const handleOnClick = () => {
     const emails = [];
     Object.keys(selectedFlatRows).forEach(key => {
       const { original } = selectedFlatRows[key];
       emails.push(original.user.email);
     })
-    onHandleUnassignMembersTableAction(emails);
+    onHandleRemoveMembersBulkAction(emails);
   };
 
   return (
     <Button variant='brand' onClick={handleOnClick}>
-      Unassign
+      Remove
     </Button>
   );
 };
 
-const TableAction = ({ tableInstance }) => (
-  // Here is access to the tableInstance
-  <Button onClick={() => console.log('TableAction', tableInstance)}>
-    Enroll
-  </Button>
-);
-
-const EnterpriseCustomerUserDatatable = ({ enterpriseId, onHandleAssignMembersTableAction, onHandleUnassignMembersTableAction }) => {
+const EnterpriseCustomerUserDatatable = ({ enterpriseId, onHandleAddMembersBulkAction, onHandleRemoveMembersBulkAction }) => {
   const { isLoading, enterpriseCustomerUserTableData, fetchEnterpriseLearnersData } = useEnterpriseLearnersTableData(enterpriseId);
   return (
     <DataTable
       bulkActions={[
-        <AssignAction onHandleAssignMembersTableAction={onHandleAssignMembersTableAction} />,
-        <UnAssign onHandleUnassignMembersTableAction={onHandleUnassignMembersTableAction} />
+        <AddMembersBulkAction onHandleAddMembersBulkAction={onHandleAddMembersBulkAction} />,
+        <RemoveMembersBulkAction onHandleRemoveMembersBulkAction={onHandleRemoveMembersBulkAction} />
 
       ]}
       columns={[

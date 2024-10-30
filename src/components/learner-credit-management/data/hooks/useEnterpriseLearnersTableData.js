@@ -24,7 +24,6 @@ const useEnterpriseLearnersTableData = (enterpriseId) => {
       options.page = args.pageIndex + 1;
       const response = await LmsApiService.fetchEnterpriseLearners(options);
       const { data } = camelCaseObject(response);
-      console.log(data)
       setEnterpriseCustomerUserTableData({
         itemCount: data.count,
         pageCount: data.numPages ?? Math.floor(data.count / options.pageSize),

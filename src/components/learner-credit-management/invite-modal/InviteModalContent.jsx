@@ -3,9 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import {
-  Col, Container, Form, Row, DataTable, TextFilter, CheckboxFilter
-} from '@openedx/paragon';
+import { Col, Container, Form, Row } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import InviteModalSummary from './InviteModalSummary';
@@ -36,17 +34,17 @@ const InviteModalContent = ({
   const [groupNameLength, setGroupNameLength] = useState(0);
   const [groupName, setGroupName] = useState('');
 
-  const handleAssignMembersTableAction = useCallback((value) => {
+  const handleAddMembersBulkAction = useCallback((value) => {
     if (!value) {
       setLearnerEmails([]);
       onEmailAddressesChange([]);
       return;
     }
 
-    setLearnerEmails(value)
+    setLearnerEmails(prev => [...prev, ...value])
   }, [])
 
-  const handleUnassignMembersTableAction = useCallback((value) => {
+  const handleRemoveMembersBulkAction = useCallback((value) => {
     if (!value) {
       setLearnerEmails([]);
       onEmailAddressesChange([]);
@@ -84,7 +82,7 @@ const InviteModalContent = ({
       return;
     }
     const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
-    setLearnerEmails(emails);
+    setLearnerEmails(prev => [...prev, ...emails]);
   }, [onEmailAddressesChange]);
 
   const debouncedHandleEmailAddressesChanged = useMemo(
@@ -147,13 +145,13 @@ const InviteModalContent = ({
           <Col>
             <h4>Details</h4>
             <InviteModalSummary isGroupInvite memberInviteMetadata={memberInviteMetadata} />
-            {isGroupInvite && <InviteSummaryCount memberInviteMetadata={memberInviteMetadata} />}
+            <InviteSummaryCount memberInviteMetadata={memberInviteMetadata} />
             <hr className="my-4" />
           </Col>
         </Row>
         <EnterpriseCustomerUserDatatable
-          onHandleAssignMembersTableAction={handleAssignMembersTableAction}
-          onHandleUnassignMembersTableAction={handleUnassignMembersTableAction}
+          onHandleAddMembersBulkAction={handleAddMembersBulkAction}
+          onHandleRemoveMembersBulkAction={handleRemoveMembersBulkAction}
         />
       </Container>
     );
@@ -205,7 +203,6 @@ const InviteModalContent = ({
           <InviteModalPermissions subsidyAccessPolicy={subsidyAccessPolicy} />
         </Col>
       </Row>
-
     </Container>
   );
 };
