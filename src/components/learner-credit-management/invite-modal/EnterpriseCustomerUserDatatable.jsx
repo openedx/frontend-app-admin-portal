@@ -39,14 +39,14 @@ const AssignAction = ({ selectedFlatRows, onHandleAssignMembersTableAction }) =>
   );
 };
 
-const UnAssign = ({ selectedFlatRows, onHandleAssignMembersTableAction }) => {
+const UnAssign = ({ selectedFlatRows, onHandleUnassignMembersTableAction }) => {
   const handleOnClick = () => {
     const emails = [];
     Object.keys(selectedFlatRows).forEach(key => {
       const { original } = selectedFlatRows[key];
       emails.push(original.user.email);
     })
-    onHandleAssignMembersTableAction(emails);
+    onHandleUnassignMembersTableAction(emails);
   };
 
   return (
@@ -63,13 +63,13 @@ const TableAction = ({ tableInstance }) => (
   </Button>
 );
 
-const EnterpriseCustomerUserDatatable = ({ enterpriseId, onHandleAssignMembersTableAction }) => {
+const EnterpriseCustomerUserDatatable = ({ enterpriseId, onHandleAssignMembersTableAction, onHandleUnassignMembersTableAction }) => {
   const { isLoading, enterpriseCustomerUserTableData, fetchEnterpriseLearnersData } = useEnterpriseLearnersTableData(enterpriseId);
   return (
     <DataTable
       bulkActions={[
         <AssignAction onHandleAssignMembersTableAction={onHandleAssignMembersTableAction} />,
-        <UnAssign onHandleAssignMembersTableAction={onHandleAssignMembersTableAction} />
+        <UnAssign onHandleUnassignMembersTableAction={onHandleUnassignMembersTableAction} />
 
       ]}
       columns={[

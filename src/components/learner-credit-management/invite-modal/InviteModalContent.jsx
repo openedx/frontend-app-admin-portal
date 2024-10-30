@@ -45,7 +45,19 @@ const InviteModalContent = ({
 
     setLearnerEmails(value)
   }, [])
-  
+
+  const handleUnassignMembersTableAction = useCallback((value) => {
+    if (!value) {
+      setLearnerEmails([]);
+      onEmailAddressesChange([]);
+      return;
+    }
+
+    setLearnerEmails(prev => {
+     return prev.filter((el) => !value.includes(el));
+    })
+  }, [])
+
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
@@ -139,7 +151,10 @@ const InviteModalContent = ({
             <hr className="my-4" />
           </Col>
         </Row>
-        <EnterpriseCustomerUserDatatable onHandleAssignMembersTableAction={handleAssignMembersTableAction} />
+        <EnterpriseCustomerUserDatatable
+          onHandleAssignMembersTableAction={handleAssignMembersTableAction}
+          onHandleUnassignMembersTableAction={handleUnassignMembersTableAction}
+        />
       </Container>
     );
   }
