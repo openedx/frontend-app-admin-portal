@@ -16,10 +16,20 @@ import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInputValueValid } from '../cards/data';
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
+import AssignmentModalFlexGroup from './AssignmentModalFlexGroup';
+import useGroupDropdownToggle from '../data/hooks/useGroupDropdownToggle';
+import { GROUP_DROPDOWN_TEXT } from '../../PeopleManagement/constants';
 
 const AssignmentModalContent = ({
-  enterpriseId, course, courseRun, onEmailAddressesChange,
+  enterpriseId,
+  course,
+  courseRun,
+  onEmailAddressesChange,
+  enterpriseFlexGroups,
+  onGroupSelectionsChanged,
+  enterpriseFeatures,
 }) => {
+  const shouldShowGroupsDropdown = enterpriseFeatures.enterpriseGroupsV2 && enterpriseFlexGroups?.length > 0;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
@@ -28,6 +38,22 @@ const AssignmentModalContent = ({
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
   const intl = useIntl();
   const { contentPrice } = courseRun;
+  const [groupMemberEmails, setGroupMemberEmails] = useState([]);
+  const [checkedGroups, setCheckedGroups] = useState({});
+  const [dropdownToggleLabel, setDropdownToggleLabel] = useState(GROUP_DROPDOWN_TEXT);
+  const {
+    dropdownRef,
+    handleCheckedGroupsChanged,
+    handleGroupsChanged,
+    handleSubmitGroup,
+  } = useGroupDropdownToggle({
+    checkedGroups,
+    dropdownToggleLabel,
+    onGroupSelectionsChanged,
+    setCheckedGroups,
+    setDropdownToggleLabel,
+    setGroupMemberEmails,
+  });
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
@@ -51,10 +77,22 @@ const AssignmentModalContent = ({
     debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
   }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
 
+  useEffect(() => {
+    handleGroupsChanged(checkedGroups);
+    const selectedGroups = Object.keys(checkedGroups).filter(group => checkedGroups[group].checked === true);
+    if (selectedGroups.length === 1) {
+      setDropdownToggleLabel(`${checkedGroups[selectedGroups[0]]?.name} (${checkedGroups[selectedGroups[0]]?.memberEmails.length})`);
+    } else if (selectedGroups.length > 1) {
+      setDropdownToggleLabel(`${selectedGroups.length} groups selected`);
+    } else {
+      setDropdownToggleLabel(GROUP_DROPDOWN_TEXT);
+    }
+  }, [checkedGroups, handleGroupsChanged]);
+
   // Validate the learner emails from user input whenever it changes
   useEffect(() => {
     const allocationMetadata = isAssignEmailAddressesInputValueValid({
-      learnerEmails,
+      learnerEmails: [...learnerEmails, ...groupMemberEmails],
       remainingBalance: spendAvailable,
       contentPrice,
     });
@@ -68,10 +106,20 @@ const AssignmentModalContent = ({
     }
     if (allocationMetadata.canAllocate) {
       onEmailAddressesChange(learnerEmails, { canAllocate: true });
+      onGroupSelectionsChanged(groupMemberEmails, { canAllocate: true });
     } else {
       onEmailAddressesChange([]);
+      onGroupSelectionsChanged([]);
     }
-  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable, enterpriseId]);
+  }, [
+    onEmailAddressesChange,
+    learnerEmails,
+    contentPrice,
+    spendAvailable,
+    enterpriseId,
+    groupMemberEmails,
+    onGroupSelectionsChanged,
+  ]);
 
   return (
     <Container size="lg" className="py-3">
@@ -97,6 +145,16 @@ const AssignmentModalContent = ({
                 description="Header for the section where we assign a course to learners"
               />
             </h4>
+            {shouldShowGroupsDropdown && (
+              <AssignmentModalFlexGroup
+                checkedGroups={checkedGroups}
+                dropdownRef={dropdownRef}
+                dropdownToggleLabel={dropdownToggleLabel}
+                enterpriseFlexGroups={enterpriseFlexGroups}
+                onCheckedGroupsChanged={handleCheckedGroupsChanged}
+                onHandleSubmitGroup={handleSubmitGroup}
+              />
+            )}
             <Form.Group className="mb-5">
               <Form.Control
                 as="textarea"
@@ -143,7 +201,7 @@ const AssignmentModalContent = ({
             </h4>
             <AssignmentModalSummary
               courseRun={courseRun}
-              learnerEmails={learnerEmails}
+              learnerEmails={[...learnerEmails, ...groupMemberEmails]}
               assignmentAllocationMetadata={assignmentAllocationMetadata}
             />
             <hr className="my-4" />
@@ -209,10 +267,20 @@ AssignmentModalContent.propTypes = {
     contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   onEmailAddressesChange: PropTypes.func.isRequired,
+  onGroupSelectionsChanged: PropTypes.func.isRequired,
+  enterpriseFlexGroups: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    uuid: PropTypes.string,
+    acceptedMembersCount: PropTypes.number,
+  })),
+  enterpriseFeatures: PropTypes.shape({
+    enterpriseGroupsV2: PropTypes.bool.isRequired,
+  }),
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 export default connect(mapStateToProps)(AssignmentModalContent);
