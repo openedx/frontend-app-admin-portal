@@ -16,10 +16,9 @@ import InviteModalMembershipInfo from './InviteModalMembershipInfo';
 import InviteModalBudgetCard from './InviteModalBudgetCard';
 import InviteModalPermissions from './InviteModalPermissions';
 import InviteSummaryCount from './InviteSummaryCount';
-import { MAX_LENGTH_GROUP_NAME } from '../../PeopleManagement/constants';
+import { MAX_LENGTH_GROUP_NAME, GROUP_DROPDOWN_TEXT } from '../../PeopleManagement/constants';
 import { useGroupDropdownToggle } from '../data';
 import InviteModalFlexGroup from './InviteModalFlexGroup';
-import { GROUP_DROPDOWN_TEXT } from '../../PeopleManagement/constants';
 
 const InviteModalContent = ({
   onEmailAddressesChange,
@@ -230,6 +229,12 @@ InviteModalContent.propTypes = {
   subsidyAccessPolicy: PropTypes.shape(),
   isGroupInvite: PropTypes.bool.isRequired,
   onSetGroupName: PropTypes.func,
+  onGroupSelectionsChanged: PropTypes.func,
+  enterpriseFlexGroups: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    uuid: PropTypes.string,
+    acceptedMembersCount: PropTypes.number,
+  })),
 };
 
 export default InviteModalContent;

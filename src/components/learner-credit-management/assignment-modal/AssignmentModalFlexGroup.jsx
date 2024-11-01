@@ -5,9 +5,10 @@ import {
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 
-const InviteModalFlexGroup = ({
+const AssignmentModalFlexGroup = ({
   enterpriseFlexGroups,
   onCheckedGroupsChanged,
+  checkedGroups,
   onHandleSubmitGroup,
   dropdownToggleLabel,
   dropdownRef,
@@ -18,7 +19,7 @@ const InviteModalFlexGroup = ({
       className="group-dropdown mt-2 mb-2"
       key={flexGroup.uuid}
       onChange={onCheckedGroupsChanged}
-      checked={false || [flexGroup.uuid]?.checked}
+      checked={checkedGroups[flexGroup.uuid]?.checked}
       value={flexGroup.name}
       id={flexGroup.uuid}
     >
@@ -49,7 +50,13 @@ const InviteModalFlexGroup = ({
   );
 };
 
-InviteModalFlexGroup.propTypes = {
+AssignmentModalFlexGroup.propTypes = {
+  checkedGroups: PropTypes.shape({
+    id: PropTypes.string,
+    memberEmails: PropTypes.arrayOf(PropTypes.string),
+    name: PropTypes.string,
+    checked: PropTypes.bool,
+  }).isRequired,
   onHandleSubmitGroup: PropTypes.func.isRequired,
   onCheckedGroupsChanged: PropTypes.func.isRequired,
   enterpriseFlexGroups: PropTypes.arrayOf(PropTypes.shape({
@@ -64,4 +71,4 @@ InviteModalFlexGroup.propTypes = {
   ]),
 };
 
-export default InviteModalFlexGroup;
+export default AssignmentModalFlexGroup;

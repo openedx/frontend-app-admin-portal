@@ -44,7 +44,6 @@ const useGroupDropdownToggle = ({
   useEffect(() => {
     // Handles user clicking outside of the dropdown menu.
     function handleClickOutside(event) {
-      console.log(dropdownRef)
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownToggleLabel(GROUP_DROPDOWN_TEXT);
         Object.keys(checkedGroups).forEach(group => {

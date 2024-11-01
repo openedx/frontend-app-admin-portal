@@ -148,6 +148,7 @@ InviteMembersModalWrapper.propTypes = {
   handleTabSelect: PropTypes.func.isRequired,
   setRefresh: PropTypes.func.isRequired,
   refresh: PropTypes.bool.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
