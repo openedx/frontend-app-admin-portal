@@ -21,6 +21,7 @@ const InviteMembersModalWrapper = ({
   setRefresh,
   refresh,
   enterpriseId,
+  enterpriseFeatures,
 }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
@@ -33,6 +34,7 @@ const InviteMembersModalWrapper = ({
   const {
     successfulInvitationToast: { displayToastForInvitation },
   } = useContext(BudgetDetailPageContext);
+  const shouldShowGroupsDropdown = enterpriseFeatures.enterpriseGroupsV2 && enterpriseFlexGroups?.length > 0;
 
   const handleCloseInviteModal = () => {
     close();
@@ -130,6 +132,7 @@ const InviteMembersModalWrapper = ({
           isGroupInvite={false}
           onGroupSelectionsChanged={handleGroupSelectionsChanged}
           enterpriseFlexGroups={enterpriseFlexGroups}
+          shouldShowGroupsDropdown={shouldShowGroupsDropdown}
         />
       </FullscreenModal>
       <SystemErrorAlertModal
@@ -149,10 +152,14 @@ InviteMembersModalWrapper.propTypes = {
   setRefresh: PropTypes.func.isRequired,
   refresh: PropTypes.bool.isRequired,
   enterpriseId: PropTypes.string.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    enterpriseGroupsV2: PropTypes.bool.isRequired,
+  }),
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 export default connect(mapStateToProps)(InviteMembersModalWrapper);
