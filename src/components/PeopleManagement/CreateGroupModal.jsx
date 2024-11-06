@@ -8,8 +8,8 @@ import {
   ActionRow, Button, FullscreenModal, StatefulButton, useToggle,
 } from '@openedx/paragon';
 import LmsApiService from '../../data/services/LmsApiService';
-import InviteModalContent from '../learner-credit-management/invite-modal/InviteModalContent';
 import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import CreateGroupModalContent from './CreateGroupModalContent';
 
 const CreateGroupModal = ({
   isModalOpen,
@@ -103,7 +103,7 @@ const CreateGroupModal = ({
           </ActionRow>
         )}
       >
-        <InviteModalContent
+        <CreateGroupModalContent
           onSetGroupName={setGroupName}
           onEmailAddressesChange={handleEmailAddressesChange}
           isGroupInvite

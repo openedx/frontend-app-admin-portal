@@ -32,6 +32,7 @@ const initialStoreState = {
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
       enterpriseGroupsV1: true,
+      enterpriseGroupsV2: true,
     },
   },
 };
@@ -57,7 +58,7 @@ const CreateGroupModalWrapper = ({
   );
 };
 
-describe('<InviteMemberModal />', () => {
+describe('<CreateGroupModal />', () => {
   it('Modal renders as expected', async () => {
     render(<CreateGroupModalWrapper />);
     expect(screen.getByText('Create a custom group of members')).toBeInTheDocument();

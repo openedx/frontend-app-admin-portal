@@ -5,7 +5,7 @@ import {
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 
-const AssignmentModalFlexGroup = ({
+const FlexGroupDropdown = ({
   enterpriseFlexGroups,
   onCheckedGroupsChanged,
   checkedGroups,
@@ -50,7 +50,7 @@ const AssignmentModalFlexGroup = ({
   );
 };
 
-AssignmentModalFlexGroup.propTypes = {
+FlexGroupDropdown.propTypes = {
   checkedGroups: PropTypes.shape({
     id: PropTypes.string,
     memberEmails: PropTypes.arrayOf(PropTypes.string),
@@ -71,4 +71,4 @@ AssignmentModalFlexGroup.propTypes = {
   ]),
 };
 
-export default AssignmentModalFlexGroup;
+export default FlexGroupDropdown;
