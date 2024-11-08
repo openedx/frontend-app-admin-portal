@@ -22,3 +22,4 @@ export { default as useAllEnterpriseGroups } from './useAllEnterpriseGroups';
 export { default as useContentMetadata } from './useContentMetadata';
 export { default as useEnterpriseRemovedGroupMembers } from './useEnterpriseRemovedGroupMembers';
 export { default as useEnterpriseFlexGroups } from './useEnterpriseFlexGroups';
+export { default as useGroupDropdownToggle } from './useGroupDropdownToggle';

@@ -24,7 +24,7 @@ jest.mock('@tanstack/react-query', () => ({
 }));
 jest.mock('../../../data/services/LmsApiService');
 jest.mock('../../learner-credit-management/data/hooks/useEnterpriseLearnersTableData', () => ({
-  // ...jest.requireActual('../../learner-credit-management/data/hooks/useEnterpriseLearnersTableData'),
+  ...jest.requireActual('../../learner-credit-management/data/hooks/useEnterpriseLearnersTableData'),
   useEnterpriseLearnersTableData: jest.fn(),
   useGetAllEnterpriseLearnerEmails: jest.fn(),
 }));
@@ -106,7 +106,7 @@ const CreateGroupModalWrapper = ({
   );
 };
 
-describe('<InviteMemberModal />', () => {
+describe('<CreateGroupModal />', () => {
   beforeEach(() => {
     useEnterpriseLearnersTableData.mockReturnValue({
       isLoading: false,
@@ -119,7 +119,6 @@ describe('<InviteMemberModal />', () => {
       addButtonState: 'complete',
     });
   });
-
   it('Modal renders as expected', async () => {
     render(<CreateGroupModalWrapper />);
     expect(screen.getByText('Create a custom group of members')).toBeInTheDocument();
@@ -163,18 +162,24 @@ describe('<InviteMemberModal />', () => {
     const groupNameInput = screen.getByTestId('group-name');
     userEvent.type(groupNameInput, 'test group name');
 
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
     // testing interaction with adding members from the datatable
-    const membersCheckbox = screen.getAllByTitle('Toggle Row Selected')[0];
-    userEvent.click(membersCheckbox);
+    const membersCheckbox = screen.getAllByTitle('Toggle Row Selected');
+    userEvent.click(membersCheckbox[0]);
+    userEvent.click(membersCheckbox[1]);
     const addMembersButton = screen.getByText('Add');
     userEvent.click(addMembersButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Summary (2)')).toBeInTheDocument();
-      expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
+      expect(screen.getByText('Summary (3)')).toBeInTheDocument();
       // checking that each user appears twice, once in the datatable and once in the summary section
       expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(2);
-    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+      expect(screen.getAllByText('testuser-2@2u.com')).toHaveLength(2);
+    });
 
     // testing interaction with removing members from the datatable
     const removeMembersButton = screen.getByText('Remove');
@@ -228,7 +233,9 @@ describe('<InviteMemberModal />', () => {
     const createButton = screen.getByRole('button', { name: 'Create' });
     userEvent.click(createButton);
     await waitFor(() => {
-      expect(screen.getByText('We\'re sorry. Something went wrong behind the scenes. Please try again, or reach out to customer support for help.')).toBeInTheDocument();
+      expect(screen.getByText(
+        'We\'re sorry. Something went wrong behind the scenes. Please try again, or reach out to customer support for help.',
+      )).toBeInTheDocument();
     });
   });
 });

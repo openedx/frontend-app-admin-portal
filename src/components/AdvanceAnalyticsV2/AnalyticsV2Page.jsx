@@ -20,7 +20,7 @@ const PAGE_TITLE = 'AnalyticsV2';
 
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
-  const [granularity, setGranularity] = useState('Daily');
+  const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
   const [calculation, setCalculation] = useState('Total');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
