@@ -23,7 +23,7 @@ describe('Stats', () => {
     expect(wrapper.find('.title-distinct-courses').text()).toEqual('Distinct Courses');
     expect(wrapper.find('.value-distinct-courses').text()).toEqual('365');
     expect(wrapper.find('.title-daily-sessions').text()).toEqual('Daily Sessions');
-    expect(wrapper.find('.value-daily-sessions').text()).toEqual('1.89K');
+    expect(wrapper.find('.value-daily-sessions').text()).toEqual('1892');
     expect(wrapper.find('.title-learning-hours').text()).toEqual('Learning Hours');
     expect(wrapper.find('.value-learning-hours').text()).toEqual('25.35M');
     expect(wrapper.find('.title-completions').text()).toEqual('Completions');

@@ -66,8 +66,9 @@ const AnalyticsTable = ({
               <Icon src={Download} className="mr-2" />
               <FormattedMessage
                 id="adminPortal.AnalyticsV2.downloadCSV.button"
-                defaultMessage="Download Enrollments CSV"
-                description="Button to download the enrollments CSV file."
+                defaultMessage="Download {respectiveTableName} CSV"
+                description="Button to download CSV for respective table"
+                values={{ respectiveTableName: name.charAt(0).toUpperCase() + name.slice(1) }}
               />
             </Link>
           )}
