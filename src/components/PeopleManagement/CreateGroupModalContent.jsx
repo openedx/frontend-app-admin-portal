@@ -13,6 +13,7 @@ import InviteSummaryCount from '../learner-credit-management/invite-modal/Invite
 import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
 import { MAX_LENGTH_GROUP_NAME } from './constants';
+import EnterpriseCustomerUserDatatable from '../learner-credit-management/invite-modal/EnterpriseCustomerUserDatatable';
 
 const CreateGroupModalContent = ({
   onEmailAddressesChange,
@@ -42,6 +43,24 @@ const CreateGroupModalContent = ({
     setGroupNameLength(e.target.value.length);
     onSetGroupName(e.target.value);
   }, [onSetGroupName]);
+
+  const handleAddMembersBulkAction = useCallback((value) => {
+    if (!value) {
+      setLearnerEmails([]);
+      onEmailAddressesChange([]);
+      return;
+    }
+    setLearnerEmails(prev => [...prev, ...value]);
+  }, [onEmailAddressesChange]);
+
+  const handleRemoveMembersBulkAction = useCallback((value) => {
+    if (!value) {
+      setLearnerEmails([]);
+      onEmailAddressesChange([]);
+      return;
+    }
+    setLearnerEmails(prev => prev.filter((el) => !value.includes(el)));
+  }, [onEmailAddressesChange]);
 
   const handleEmailAddressesChanged = useCallback((value) => {
     if (!value) {
@@ -123,6 +142,11 @@ const CreateGroupModalContent = ({
           <hr className="my-4" />
         </Col>
       </Row>
+      <EnterpriseCustomerUserDatatable
+        onHandleAddMembersBulkAction={handleAddMembersBulkAction}
+        onHandleRemoveMembersBulkAction={handleRemoveMembersBulkAction}
+        learnerEmails={learnerEmails}
+      />
     </Container>
   );
 };

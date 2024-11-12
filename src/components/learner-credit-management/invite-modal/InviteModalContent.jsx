@@ -4,7 +4,10 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Col, Container, Form, Row,
+  Col,
+  Container,
+  Form,
+  Row,
 } from '@openedx/paragon';
 
 import InviteModalSummary from './InviteModalSummary';
@@ -58,7 +61,7 @@ const InviteModalContent = ({
       return;
     }
     const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
-    setLearnerEmails(emails);
+    setLearnerEmails(prev => [...prev, ...emails]);
   }, [onEmailAddressesChange]);
 
   const debouncedHandleEmailAddressesChanged = useMemo(
