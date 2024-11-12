@@ -31,6 +31,10 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
     endDate,
   });
   const currentDate = new Date().toISOString().split('T')[0];
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -43,7 +47,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 id="advance.analytics.data.refresh.msg"
                 defaultMessage="Data updated on {date}"
                 description="Data refresh message"
-                values={{ date: data?.lastUpdatedAt || currentDate }}
+                values={{ date: formatDate(data?.lastUpdatedAt || currentDate) }}
               />
             </span>
           </div>
@@ -191,6 +195,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
         <div className="tabs-container">
           <Tabs
             variant="tabs"
+            className="d-flex justify-content-between px-2"
             activeKey={activeTab}
             onSelect={(tab) => {
               setActiveTab(tab);

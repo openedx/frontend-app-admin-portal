@@ -62,7 +62,7 @@ const AnalyticsTable = ({
           title={tableTitle}
           subtitle={tableSubtitle}
           DownloadCSVComponent={(
-            <Link to={CSVDownloadURL} target="_blank" className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
+            <Link to={CSVDownloadURL} target="_blank" className="btn btn-sm btn-primary float-right">
               <Icon src={Download} className="mr-2" />
               <FormattedMessage
                 id="adminPortal.AnalyticsV2.downloadCSV.button"
