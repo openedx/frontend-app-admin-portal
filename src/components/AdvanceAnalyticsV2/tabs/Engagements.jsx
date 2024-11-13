@@ -137,7 +137,7 @@ const Engagements = ({
           chartType="BarChart"
           chartProps={{
             data: data?.topCoursesByEngagement,
-            xKey: 'courseTitle',
+            xKey: 'courseKey',
             yKey: 'learningTimeHours',
             colorKey: 'enrollType',
             colorMap: chartColorMap,
