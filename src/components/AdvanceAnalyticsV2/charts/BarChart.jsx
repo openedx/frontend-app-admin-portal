@@ -19,7 +19,7 @@ import PropTypes from 'prop-types';
 const BarChart = ({
   data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle,
 }) => {
-  const categories = Object.keys(colorMap);
+  const categories = Object.keys(colorMap).sort();
 
   const traces = useMemo(() => categories.map(category => {
     const filteredData = data.filter(item => item[colorKey] === category);
