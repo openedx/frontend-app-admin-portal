@@ -22,8 +22,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
   const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
   const [calculation, setCalculation] = useState('Total');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const intl = useIntl();
   const { isFetching, isError, data } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
@@ -195,7 +195,6 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
         <div className="tabs-container">
           <Tabs
             variant="tabs"
-            className="d-flex justify-content-between px-2"
             activeKey={activeTab}
             onSelect={(tab) => {
               setActiveTab(tab);
@@ -210,8 +209,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Enrollments
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
                 enterpriseId={enterpriseId}
@@ -226,8 +225,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Engagements
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
                 granularity={granularity}
                 calculation={calculation}
@@ -242,8 +241,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Completions
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
                 enterpriseId={enterpriseId}
@@ -258,8 +257,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Leaderboard
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
               />
             </Tab>
@@ -272,8 +271,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Skills
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
               />
             </Tab>
