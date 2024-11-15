@@ -11,6 +11,8 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from './utils';
+import GroupMembersTable from './GroupMembersTable';
+import useEnterpriseGroupLearnersTableData from '../learner-credit-management/data/hooks/useEnterpriseGroupLearnersTableData';
 
 const GroupDetailPage = () => {
   const intl = useIntl();
@@ -20,7 +22,11 @@ const GroupDetailPage = () => {
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
   const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
-
+  const {
+    isLoading: isTableLoading,
+    enterpriseGroupLearnersTableData,
+    fetchEnterpriseGroupLearnersTableData,
+  } = useEnterpriseGroupLearnersTableData({ groupUuid });
   const handleNameUpdate = (name) => {
     setGroupName(name);
   };
@@ -119,7 +125,29 @@ const GroupDetailPage = () => {
             </Card.Footer>
           </Card>
         </>
-      ) : <Skeleton className="mt-3" height={200} count={1} /> }
+      ) : <Skeleton className="mt-3" height={200} count={1} />}
+      <div className="mb-4 mt-5">
+        <h4 className="mt-1">
+          <FormattedMessage
+            id="people.management.group.details.page.label"
+            defaultMessage="Group members"
+            description="Label for the groups detail page with members"
+          />
+        </h4>
+        <p className="font-weight-light">
+          <FormattedMessage
+            id="people.management.group.details.page.label"
+            defaultMessage="Add and remove group members."
+            description="Description for the members table in the Groups detail page"
+          />
+        </p>
+      </div>
+      <GroupMembersTable
+        isLoading={isTableLoading}
+        tableData={enterpriseGroupLearnersTableData}
+        fetchTableData={fetchEnterpriseGroupLearnersTableData}
+        groupUuid={groupUuid}
+      />
     </div>
   );
 };
