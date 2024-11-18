@@ -8,6 +8,8 @@
   }
 }
 
-.collapsible-basic .collapsible-trigger {
-  justify-content: right;
+.group-collapsible {
+  .collapsible-basic .collapsible-trigger {
+    justify-content: right;
+  }
 }

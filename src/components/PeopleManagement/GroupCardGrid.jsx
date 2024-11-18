@@ -33,6 +33,7 @@ const GroupCardGrid = ({ groups }) => {
         <Collapsible
           styling="basic"
           title={`Show all ${groups.length} groups`}
+          className="group-collapsible"
         >
           <CardGrid
             columnSizes={{
