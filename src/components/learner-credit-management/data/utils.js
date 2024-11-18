@@ -14,7 +14,6 @@ import {
   DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
   LATE_ENROLLMENTS_BUFFER_DAYS,
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
-  MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
@@ -566,7 +565,7 @@ export const isLmsBudget = (
  */
 export const isDateBeforeToday = date => dayjs(date).isBefore(dayjs());
 
-const subsidyExpirationRefundCutoffDate = ({ subsidyExpirationDatetime }) => dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate();
+const subsidyExpirationRefundCutoffDate = ({ subsidyExpirationDatetime }) => dayjs(subsidyExpirationDatetime).toDate();
 
 export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
 
