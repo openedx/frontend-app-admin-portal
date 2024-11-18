@@ -102,9 +102,6 @@ export const ENROLL_BY_DATE_DAYS_THRESHOLD = 10;
 // Allocation assignment expiration dropoff threshold
 export const DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION = 90;
 
-// Maximum days allowed from enrollment for a refund on assignments related to policies
-export const MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS = 14;
-
 // When the start date is before this number of days before today, display the alternate start date (fixed to today).
 export const START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS = 14;
 
