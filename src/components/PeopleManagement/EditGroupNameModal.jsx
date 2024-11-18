@@ -6,7 +6,7 @@ import {
   ActionRow, Form, ModalDialog, Spinner, StatefulButton, useToggle,
 } from '@openedx/paragon';
 
-import MAX_LENGTH_GROUP_NAME from './constants';
+import { MAX_LENGTH_GROUP_NAME } from './constants';
 import LmsApiService from '../../data/services/LmsApiService';
 import GeneralErrorModal from './GeneralErrorModal';
 
