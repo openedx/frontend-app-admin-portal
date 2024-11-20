@@ -120,7 +120,7 @@ class LmsApiService {
   }
 
   static fetchReportingConfigs(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`);
+    return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}&page_size=100`);
   }
 
   static fetchReportingConfigTypes(uuid) {
