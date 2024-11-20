@@ -18,6 +18,7 @@ InviteSummaryCount.propTypes = {
     isValidInput: PropTypes.bool,
     lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
     duplicateEmails: PropTypes.arrayOf(PropTypes.string),
+    emailsNotInOrg: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
 

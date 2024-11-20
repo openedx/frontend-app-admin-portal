@@ -14,11 +14,13 @@ import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
 import { MAX_LENGTH_GROUP_NAME } from './constants';
 import EnterpriseCustomerUserDatatable from '../learner-credit-management/invite-modal/EnterpriseCustomerUserDatatable';
+import { useEnterpriseLearners } from '../learner-credit-management/data';
 
 const CreateGroupModalContent = ({
   onEmailAddressesChange,
   onSetGroupName,
   isGroupInvite,
+  enterpriseUUID,
 }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
@@ -26,9 +28,11 @@ const CreateGroupModalContent = ({
     isValidInput: null,
     lowerCasedEmails: [],
     duplicateEmails: [],
+    emailsNotInOrg: [],
   });
   const [groupNameLength, setGroupNameLength] = useState(0);
   const [groupName, setGroupName] = useState('');
+  const { allEnterpriseLearners } = useEnterpriseLearners({ enterpriseUUID });
 
   const handleGroupNameChange = useCallback((e) => {
     if (!e.target.value) {
@@ -86,6 +90,7 @@ const CreateGroupModalContent = ({
   useEffect(() => {
     const inviteMetadata = isInviteEmailAddressesInputValueValid({
       learnerEmails,
+      allEnterpriseLearners,
     });
     setMemberInviteMetadata(inviteMetadata);
     if (inviteMetadata.canInvite) {
@@ -93,7 +98,7 @@ const CreateGroupModalContent = ({
     } else {
       onEmailAddressesChange([]);
     }
-  }, [onEmailAddressesChange, learnerEmails]);
+  }, [onEmailAddressesChange, learnerEmails, allEnterpriseLearners]);
 
   return (
     <Container size="lg" className="py-3">
@@ -155,6 +160,7 @@ CreateGroupModalContent.propTypes = {
   onEmailAddressesChange: PropTypes.func.isRequired,
   onSetGroupName: PropTypes.func,
   isGroupInvite: PropTypes.bool,
+  enterpriseUUID: PropTypes.string.isRequired,
 };
 
 export default CreateGroupModalContent;

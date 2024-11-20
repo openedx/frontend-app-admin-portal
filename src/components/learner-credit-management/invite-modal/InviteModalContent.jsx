@@ -31,7 +31,12 @@ const InviteModalContent = ({
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [inputType, setInputType] = useState('email');
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
-  const [memberInviteMetadata, setMemberInviteMetadata] = useState({});
+  const [memberInviteMetadata, setMemberInviteMetadata] = useState({
+    isValidInput: null,
+    lowerCasedEmails: [],
+    duplicateEmails: [],
+    emailsNotInOrg: [],
+  });
   const [groupMemberEmails, setGroupMemberEmails] = useState([]);
   const [checkedGroups, setCheckedGroups] = useState({});
   const [dropdownToggleLabel, setDropdownToggleLabel] = useState(GROUP_DROPDOWN_TEXT);
