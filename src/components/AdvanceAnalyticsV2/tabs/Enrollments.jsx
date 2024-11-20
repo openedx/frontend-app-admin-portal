@@ -138,7 +138,7 @@ const Enrollments = ({
           chartType="BarChart"
           chartProps={{
             data: data?.topCoursesByEnrollments,
-            xKey: 'courseTitle',
+            xKey: 'courseKey',
             yKey: 'enrollmentCount',
             colorKey: 'enrollType',
             colorMap: chartColorMap,

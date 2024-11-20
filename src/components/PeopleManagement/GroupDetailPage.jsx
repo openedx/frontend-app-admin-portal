@@ -136,7 +136,7 @@ const GroupDetailPage = () => {
         </h4>
         <p className="font-weight-light">
           <FormattedMessage
-            id="people.management.group.details.page.label"
+            id="people.management.group.details.page.description"
             defaultMessage="Add and remove group members."
             description="Description for the members table in the Groups detail page"
           />
