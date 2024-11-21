@@ -114,3 +114,5 @@ export const CALCULATION = {
   MOVING_AVERAGE_3_PERIODS: 'moving-average-3-period',
   MOVING_AVERAGE_7_PERIODS: 'moving-average-7-period',
 };
+
+export const ANALYTICS_WARNING_BANNER_COOKIE = 'hide-warning-banner-on-analytics';
