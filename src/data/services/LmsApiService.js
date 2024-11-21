@@ -119,8 +119,13 @@ class LmsApiService {
     return LmsApiService.apiClient().post(requestCodesUrl, postParams);
   }
 
-  static fetchReportingConfigs(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`);
+  static fetchReportingConfigs(uuid, pageNumber) {
+    let url = `${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`;
+    if (pageNumber) {
+      url += `&page=${pageNumber}`;
+    }
+
+    return LmsApiService.apiClient().get(url);
   }
 
   static fetchReportingConfigTypes(uuid) {

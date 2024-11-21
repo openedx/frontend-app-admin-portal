@@ -1,7 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { act } from 'react-dom/test-utils';
+
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { Pagination } from '@openedx/paragon';
+
 import ReportingConfig from './index';
 import LmsApiService from '../../data/services/LmsApiService';
 
@@ -169,5 +172,59 @@ describe('<ReportingConfig />', () => {
 
     const afterClickingDeleteButton = wrapper.find('button[data-testid="deleteConfigButton"]');
     expect(afterClickingDeleteButton.exists()).toBe(false);
+  });
+  it('should not render Pagination when reportingConfigs is empty', async () => {
+    LmsApiService.fetchReportingConfigs.mockResolvedValue({
+      data: {
+        results: [],
+        count: 0,
+        num_pages: 0,
+      },
+    });
+
+    let wrapper;
+    await act(async () => {
+      wrapper = mount(
+        <IntlProvider locale="en">
+          <ReportingConfig {...defaultProps} intl={mockIntl} />
+        </IntlProvider>,
+      );
+    });
+
+    wrapper.update();
+
+    // Check that Pagination component is not rendered when no configs
+    const paginationComponent = wrapper.find(Pagination);
+    expect(paginationComponent.exists()).toBe(false);
+  });
+  it('should render Pagination when reportingConfigs has items', async () => {
+    let wrapper;
+
+    LmsApiService.fetchReportingConfigs.mockResolvedValue({
+      data: {
+        results: [{
+          enterpriseCustomerId: 'test-customer-uuid',
+          active: true,
+          delivery_method: 'email',
+          uuid: 'test-config-uuid',
+        }],
+        count: 1,
+        num_pages: 1,
+      },
+    });
+
+    await act(async () => {
+      wrapper = mount(
+        <IntlProvider locale="en">
+          <ReportingConfig {...defaultProps} intl={mockIntl} />
+        </IntlProvider>,
+      );
+    });
+
+    wrapper.update();
+
+    // Check that Pagination component is rendered when configs exist
+    const paginationComponent = wrapper.find(Pagination);
+    expect(paginationComponent.exists()).toBe(true);
   });
 });
