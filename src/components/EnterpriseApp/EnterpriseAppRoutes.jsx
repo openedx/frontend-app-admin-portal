@@ -82,17 +82,17 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics && (
+      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.legacyAnalytics && (
         <Route
-          key="analytics"
+          key="legacy-analytics"
           path="/"
           element={features.ANALYTICS_SUPPORTED ? <PlotlyAnalyticsPage /> : <FeatureNotSupportedPage />}
         />
       )}
 
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analyticsv2 && (
+      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics && (
         <Route
-          key="analyticsv2"
+          key="analytics"
           path="/"
           element={features.ANALYTICS_SUPPORTED
             ? <AnalyticsV2Page enterpriseId={enterpriseId} />
