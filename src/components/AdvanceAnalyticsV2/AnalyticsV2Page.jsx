@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import Cookies from 'universal-cookie';
 import Hero from '../Hero';
 import Stats from './Stats';
 import Enrollments from './tabs/Enrollments';
@@ -14,7 +15,8 @@ import Completions from './tabs/Completions';
 import Leaderboard from './tabs/Leaderboard';
 import Skills from './tabs/Skills';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
-import { GRANULARITY, CALCULATION } from './data/constants';
+import { GRANULARITY, CALCULATION, ANALYTICS_WARNING_BANNER_COOKIE } from './data/constants';
+import WarningBanner from './WarningBanner';
 
 const PAGE_TITLE = 'AnalyticsV2';
 
@@ -24,12 +26,14 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
   const [calculation, setCalculation] = useState('Total');
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const cookies = new Cookies();
   const intl = useIntl();
   const { isFetching, isError, data } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
     startDate,
     endDate,
   });
+  const showWarningBanner = cookies.get(ANALYTICS_WARNING_BANNER_COOKIE);
   const currentDate = new Date().toISOString().split('T')[0];
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -39,6 +43,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
+      {!showWarningBanner && <WarningBanner />}
       <Stack className="container-fluid w-100" gap={4}>
         <div className="row data-refresh-msg-container">
           <div className="col">
