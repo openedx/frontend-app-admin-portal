@@ -33,6 +33,11 @@ const subsEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
 
+jest.mock('@tanstack/react-query', () => ({
+  ...jest.requireActual('@tanstack/react-query'),
+  useQueryClient: jest.fn(),
+}));
+
 jest.mock('../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../learner-credit-management/data'),
   useAllEnterpriseGroups: jest.fn(),
