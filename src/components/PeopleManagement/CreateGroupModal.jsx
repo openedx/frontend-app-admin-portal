@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import {
@@ -10,6 +11,7 @@ import {
 import LmsApiService from '../../data/services/LmsApiService';
 import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import CreateGroupModalContent from './CreateGroupModalContent';
+import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
 
 const CreateGroupModal = ({
   isModalOpen,
@@ -27,6 +29,7 @@ const CreateGroupModal = ({
     closeModal();
     setCreateButtonState('default');
   };
+  const queryClient = useQueryClient();
 
   const handleCreateGroup = async () => {
     setCreateButtonState('pending');
@@ -49,6 +52,9 @@ const CreateGroupModal = ({
         learnerEmails,
       });
       await LmsApiService.inviteEnterpriseLearnersToGroup(groupCreationResponse.data.uuid, requestBody);
+      queryClient.invalidateQueries({
+        queryKey: learnerCreditManagementQueryKeys.group(enterpriseUUID),
+      });
       setCreateButtonState('complete');
       handleCloseCreateGroupModal();
     } catch (err) {
