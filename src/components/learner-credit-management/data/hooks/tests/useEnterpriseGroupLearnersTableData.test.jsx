@@ -1,22 +1,7 @@
-import { QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
-
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LmsApiService from '../../../../../data/services/LmsApiService';
-import { queryClient } from '../../../../test/testUtils';
 import useEnterpriseGroupLearnersTableData from '../useEnterpriseGroupLearnersTableData';
-
-jest.mock('../../../../../data/services/LmsApiService', () => ({
-  fetchEnterpriseGroupLearners: jest.fn(),
-}));
-
-jest.mock('@edx/frontend-platform/utils', () => ({
-  camelCaseObject: jest.fn(),
-}));
-
-const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
-);
 
 describe('useEnterpriseGroupLearnersTableData', () => {
   it('should fetch and return enterprise learners', async () => {
@@ -39,14 +24,21 @@ describe('useEnterpriseGroupLearnersTableData', () => {
         status: 'accepted',
       }],
     };
-    LmsApiService.fetchEnterpriseGroupLearners.mockResolvedValue(mockData);
-    camelCaseObject.mockResolvedValue(mockData);
+    const mockEnterpriseGroupLearners = jest.spyOn(LmsApiService, 'fetchEnterpriseGroupLearners');
+    mockEnterpriseGroupLearners.mockResolvedValue({ data: mockData });
 
-    const { waitForNextUpdate } = renderHook(
-      () => useEnterpriseGroupLearnersTableData(mockGroupUUID),
-      { wrapper },
+    const { result, waitForNextUpdate } = renderHook(
+      () => useEnterpriseGroupLearnersTableData({ groupUuid: mockGroupUUID }),
     );
+    result.current.fetchEnterpriseGroupLearnersTableData({
+      pageIndex: 0,
+      pageSize: 10,
+      filters: [],
+      sortBy: [],
+    });
     await waitForNextUpdate();
-    expect(LmsApiService.fetchEnterpriseGroupLearners).toHaveBeenCalledWith(mockGroupUUID);
+    expect(LmsApiService.fetchEnterpriseGroupLearners).toHaveBeenCalledWith(mockGroupUUID, { page: 1 });
+    expect(result.current.isLoading).toEqual(false);
+    expect(result.current.enterpriseGroupLearnersTableData.results).toEqual(camelCaseObject(mockData.results));
   });
 });
