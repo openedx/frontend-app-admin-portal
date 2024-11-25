@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LmsApiService from '../../../../../data/services/LmsApiService';
-import useEnterpriseGroupLearnersTableData from '../useEnterpriseGroupLearnersTableData';
+import { useEnterpriseGroupLearnersTableData } from '../..';
 
 describe('useEnterpriseGroupLearnersTableData', () => {
   it('should fetch and return enterprise learners', async () => {
@@ -22,6 +22,7 @@ describe('useEnterpriseGroupLearnersTableData', () => {
         },
         recent_action: 'Accepted: November 06, 2024',
         status: 'accepted',
+        enrollments: 1,
       }],
     };
     const mockEnterpriseGroupLearners = jest.spyOn(LmsApiService, 'fetchEnterpriseGroupLearners');
