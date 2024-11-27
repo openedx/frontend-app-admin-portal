@@ -1,7 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
 export const ROUTE_NAMES = {
-  legacyAnalytics: 'legacy-analytics',
   analytics: 'analytics',
   appearance: 'appearance',
   bulkEnrollment: 'enrollment',

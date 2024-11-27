@@ -11,7 +11,6 @@ import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
-import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import AnalyticsV2Page from '../AdvanceAnalyticsV2/AnalyticsV2Page';
 import FeatureNotSupportedPage from '../FeatureNotSupportedPage';
 import { ROUTE_NAMES } from './data/constants';
@@ -79,14 +78,6 @@ const EnterpriseAppRoutes = ({
           key="subscription-management"
           path="/*"
           element={<SubscriptionManagementPage />}
-        />
-      )}
-
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.legacyAnalytics && (
-        <Route
-          key="legacy-analytics"
-          path="/"
-          element={features.ANALYTICS_SUPPORTED ? <PlotlyAnalyticsPage /> : <FeatureNotSupportedPage />}
         />
       )}
 
