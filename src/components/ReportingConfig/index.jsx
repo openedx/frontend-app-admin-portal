@@ -34,10 +34,15 @@ class ReportingConfig extends React.Component {
       LMSApiService.fetchReportingConfigTypes(this.props.enterpriseId),
     ])
       .then((responses) => {
+        let totalPages = responses[0].status === STATUS_FULFILLED ? responses[0].value.data.num_pages : 1;
+        if (!totalPages) {
+          totalPages = 1;
+        }
+
         this.setState({
+          totalPages,
           currentPage: 1,
-          totalRecords: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.count : 1,
-          totalPages: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.num_pages : 1,
+          totalRecords: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.count : 0,
           reportingConfigs: responses[0].status === STATUS_FULFILLED ? responses[0].value.data.results : undefined,
           availableCatalogs: responses[1].status === STATUS_FULFILLED ? responses[1].value.data.results : undefined,
           reportingConfigTypes: responses[2].status === STATUS_FULFILLED ? responses[2].value.data : undefined,
@@ -128,7 +133,7 @@ class ReportingConfig extends React.Component {
     try {
       const response = await LMSApiService.fetchReportingConfigs(this.props.enterpriseId, page);
       this.setState({
-        totalPages: response.data.num_pages,
+        totalPages: response.data.num_pages || 1,
         totalRecords: response.data.count,
         currentPage: page,
         reportingConfigs: response.data.results,
