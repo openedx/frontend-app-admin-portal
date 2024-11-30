@@ -8,107 +8,78 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
 import EnrolledLearnersForInactiveCoursesTable from '.';
+import useEnrolledLearnersForInactiveCourses from './data/hooks/useEnrolledLearnersForInactiveCourses';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
-const enrolledLearnersForInactiveCoursesEmptyStore = mockStore({
+
+jest.mock('./data/hooks/useEnrolledLearnersForInactiveCourses', () => (
+  jest.fn().mockReturnValue({})
+));
+
+const store = mockStore({
   portalConfiguration: {
     enterpriseId,
-  },
-  table: {
-    'enrolled-learners-inactive-courses': {
-      data: {
-        results: [],
-        current_page: 1,
-        num_pages: 1,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
-  },
-});
-const enrolledLearnersForInactiveCoursesStore = mockStore({
-  portalConfiguration: {
-    enterpriseId,
-  },
-  table: {
-    'enrolled-learners-inactive-courses': {
-      data: {
-        count: 3,
-        num_pages: 1,
-        current_page: 1,
-        results: [
-          {
-            id: 1,
-            enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
-            lms_user_id: 11,
-            enterprise_user_id: 222,
-            enterprise_sso_uid: 'harry',
-            user_account_creation_timestamp: '2015-02-12T23:14:35Z',
-            user_email: 'test_user_1@example.com',
-            user_username: 'test_user_1',
-            user_country_code: 'US',
-            last_activity_date: '2017-06-23',
-            enrollment_count: 2,
-            course_completion_count: 1,
-          },
-          {
-            id: 1,
-            enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
-            lms_user_id: 22,
-            enterprise_user_id: 333,
-            enterprise_sso_uid: 'harry',
-            user_account_creation_timestamp: '2016-05-12T22:14:36Z',
-            user_email: 'test_user_2@example.com',
-            user_username: 'test_user_2',
-            user_country_code: 'US',
-            last_activity_date: '2018-01-15',
-            enrollment_count: 5,
-            course_completion_count: 5,
-          },
-          {
-            id: 1,
-            enterprise_id: '72416e52-8c77-4860-9584-15e5b06220fb',
-            lms_user_id: 33,
-            enterprise_user_id: 444,
-            enterprise_sso_uid: 'harry',
-            user_account_creation_timestamp: '2017-12-12T18:10:15Z',
-            user_email: 'test_user_3@example.com',
-            user_username: 'test_user_3',
-            user_country_code: 'US',
-            last_activity_date: '2017-11-18',
-            enrollment_count: 6,
-            course_completion_count: 4,
-          },
-        ],
-        next: null,
-        start: 0,
-        previous: null,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
   },
 });
 
-const EnrolledLearnersForInactiveCoursesEmptyTableWrapper = props => (
-  <MemoryRouter>
-    <IntlProvider locale="en">
-      <Provider store={enrolledLearnersForInactiveCoursesEmptyStore}>
-        <EnrolledLearnersForInactiveCoursesTable
-          {...props}
-        />
-      </Provider>
-    </IntlProvider>
-  </MemoryRouter>
-);
+const mockUseEnrolledLearnersForInactiveCourses = {
+  isLoading: false,
+  enrolledLearnersForInactiveCourses: {
+    itemCount: 3,
+    pageCount: 1,
+    results: [
+      {
+        id: 1,
+        enterpriseId: '72416e52-8c77-4860-9584-15e5b06220fb',
+        lmsUserId: 11,
+        enterpriseUserId: 222,
+        enterpriseSsoUid: 'harry',
+        userAccountCreationTimestamp: '2015-02-12T23:14:35Z',
+        userEmail: 'test_user_1@example.com',
+        userUsername: 'test_user_1',
+        userCountryCode: 'US',
+        lastActivityDate: '2017-06-23',
+        enrollmentCount: 2,
+        courseCompletionCount: 1,
+      },
+      {
+        id: 1,
+        enterpriseId: '72416e52-8c77-4860-9584-15e5b06220fb',
+        lmsUserId: 22,
+        enterpriseUserId: 333,
+        enterpriseSsoUid: 'harry',
+        userAccountCreationTimestamp: '2016-05-12T22:14:36Z',
+        userEmail: 'test_user_2@example.com',
+        userUsername: 'test_user_2',
+        userCountryCode: 'US',
+        lastActivityDate: '2018-01-15',
+        enrollmentCount: 5,
+        courseCompletionCount: 5,
+      },
+      {
+        id: 1,
+        enterpriseId: '72416e52-8c77-4860-9584-15e5b06220fb',
+        lmsUserId: 33,
+        enterpriseUserId: 444,
+        enterpriseSsoUid: 'harry',
+        userAccountCreationTimestamp: '2017-12-12T18:10:15Z',
+        userEmail: 'test_user_3@example.com',
+        userUsername: 'test_user_3',
+        userCountryCode: 'US',
+        lastActivityDate: '2017-11-18',
+        enrollmentCount: 6,
+        courseCompletionCount: 4,
+      },
+    ],
+  },
+  fetchEnrolledLearnersForInactiveCourses: jest.fn(),
+};
 
 const EnrolledLearnersForInactiveCoursesWrapper = props => (
   <MemoryRouter>
     <IntlProvider locale="en">
-      <Provider store={enrolledLearnersForInactiveCoursesStore}>
+      <Provider store={store}>
         <EnrolledLearnersForInactiveCoursesTable
           {...props}
         />
@@ -119,15 +90,27 @@ const EnrolledLearnersForInactiveCoursesWrapper = props => (
 
 describe('EnrolledLearnersForInactiveCoursesTable', () => {
   it('renders empty state correctly', () => {
+    useEnrolledLearnersForInactiveCourses.mockReturnValueOnce({
+      ...mockUseEnrolledLearnersForInactiveCourses,
+      enrolledLearnersForInactiveCourses: {
+        itemCount: 0,
+        pageCount: 0,
+        results: [],
+      },
+    });
     const tree = renderer
       .create((
-        <EnrolledLearnersForInactiveCoursesEmptyTableWrapper />
+        <EnrolledLearnersForInactiveCoursesWrapper />
       ))
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
 
   it('renders enrolled learners for inactive courses table correctly', () => {
+    useEnrolledLearnersForInactiveCourses.mockReturnValueOnce(
+      mockUseEnrolledLearnersForInactiveCourses,
+    );
+
     const tree = renderer
       .create((
         <EnrolledLearnersForInactiveCoursesWrapper />
@@ -137,7 +120,10 @@ describe('EnrolledLearnersForInactiveCoursesTable', () => {
   });
 
   it('renders enrolled learners for inactive courses table with correct data', () => {
-    const tableId = 'enrolled-learners-inactive-courses';
+    useEnrolledLearnersForInactiveCourses.mockReturnValueOnce(
+      mockUseEnrolledLearnersForInactiveCourses,
+    );
+
     const columnTitles = [
       'Email', 'Total Course Enrollment Count', 'Total Completed Courses Count', 'Last Activity Date',
     ];
@@ -167,18 +153,18 @@ describe('EnrolledLearnersForInactiveCoursesTable', () => {
     ));
 
     // Verify that table has correct number of columns
-    expect(wrapper.find(`.${tableId} thead th`).length).toEqual(columnTitles.length);
+    expect(wrapper.find('[role="table"] thead th').length).toEqual(columnTitles.length);
 
     // Verify only expected columns are shown
-    wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
+    wrapper.find('[role="table"] thead th').forEach((column, index) => {
       expect(column.text()).toContain(columnTitles[index]);
     });
 
     // Verify that table has correct number of rows
-    expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(rowsData.length);
+    expect(wrapper.find('[role="table"] tbody tr').length).toEqual(rowsData.length);
 
     // Verify each row in table has correct data
-    wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
+    wrapper.find('[role="table"] tbody tr').forEach((row, rowIndex) => {
       row.find('td').forEach((cell, colIndex) => {
         expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
       });
