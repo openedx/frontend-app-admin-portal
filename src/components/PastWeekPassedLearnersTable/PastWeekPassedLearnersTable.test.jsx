@@ -8,6 +8,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { mount } from 'enzyme';
 
 import PastWeekPassedLearnersTable from '.';
+import usePastWeekPassedLearners from './data/hooks/usePastWeekPassedLearners';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
@@ -15,39 +16,36 @@ const store = mockStore({
   portalConfiguration: {
     enterpriseId,
   },
-  table: {
-    'completed-learners-week': {
-      data: {
-        count: 2,
-        num_pages: 1,
-        current_page: 1,
-        results: [
-          {
-            id: 1,
-            passed_date: '2018-09-23T16:27:34.690065Z',
-            course_title: 'Dive into ReactJS',
-            course_key: 'edX/ReactJS',
-            user_email: 'awesome.me@example.com',
-          },
-          {
-            id: 5,
-            passed_date: '2018-09-22T16:27:34.690065Z',
-            course_title: 'Redux with ReactJS',
-            course_key: 'edX/Redux_ReactJS',
-            user_email: 'new@example.com',
-
-          },
-        ],
-        next: null,
-        start: 0,
-        previous: null,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
-  },
 });
+
+const mockUsePastWeekPassedLearners = {
+  isLoading: false,
+  pastWeekPassedLearners: {
+    itemCount: 2,
+    pageCount: 1,
+    results: [
+      {
+        id: 1,
+        passedDate: '2018-09-23T16:27:34.690065Z',
+        courseTitle: 'Dive into ReactJS',
+        courseKey: 'edX/ReactJS',
+        userEmail: 'awesome.me@example.com',
+      },
+      {
+        id: 5,
+        passedDate: '2018-09-22T16:27:34.690065Z',
+        courseTitle: 'Redux with ReactJS',
+        courseKey: 'edX/Redux_ReactJS',
+        userEmail: 'new@example.com',
+      },
+    ],
+  },
+  fetchPastWeekPassedLearners: jest.fn(),
+};
+
+jest.mock('./data/hooks/usePastWeekPassedLearners', () => (
+  jest.fn().mockReturnValue({})
+));
 
 const PastWeekPassedLearnersWrapper = props => (
   <MemoryRouter>
@@ -62,7 +60,11 @@ const PastWeekPassedLearnersWrapper = props => (
 );
 
 describe('PastWeekPassedLearnersTable', () => {
-  let wrapper;
+  beforeEach(() => {
+    usePastWeekPassedLearners.mockReturnValue(mockUsePastWeekPassedLearners);
+  });
+
+  afterEach(() => jest.clearAllMocks());
 
   it('renders table correctly', () => {
     const tree = renderer
@@ -74,7 +76,6 @@ describe('PastWeekPassedLearnersTable', () => {
   });
 
   it('renders table with correct data', () => {
-    const tableId = 'completed-learners-week';
     const columnTitles = ['Email', 'Course Title', 'Passed Date'];
     const rowsData = [
       [
@@ -89,23 +90,23 @@ describe('PastWeekPassedLearnersTable', () => {
       ],
     ];
 
-    wrapper = mount((
+    const wrapper = mount((
       <PastWeekPassedLearnersWrapper />
     ));
 
     // Verify that table has correct number of columns
-    expect(wrapper.find(`.${tableId} thead th`).length).toEqual(3);
+    expect(wrapper.find('[role="table"] thead th').length).toEqual(3);
 
     // Verify only expected columns are shown
-    wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
+    wrapper.find('[role="table"] thead th').forEach((column, index) => {
       expect(column.text()).toContain(columnTitles[index]);
     });
 
     // Verify that table has correct number of rows
-    expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(2);
+    expect(wrapper.find('[role="table"] tbody tr').length).toEqual(2);
 
     // Verify each row in table has correct data
-    wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
+    wrapper.find('[role="table"] tbody tr').forEach((row, rowIndex) => {
       row.find('td').forEach((cell, colIndex) => {
         expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
       });
