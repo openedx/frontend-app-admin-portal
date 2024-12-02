@@ -9,9 +9,8 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { generatePath, useParams, Link } from 'react-router-dom';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { formatPrice } from './data';
+import { formatPrice, LEARNER_CREDIT_ROUTE } from './data';
 import EVENT_NAMES from '../../eventTracking';
-import { LEARNER_CREDIT_ROUTE } from './constants';
 
 const BudgetDetailPageOverviewUtilization = ({
   budgetId,

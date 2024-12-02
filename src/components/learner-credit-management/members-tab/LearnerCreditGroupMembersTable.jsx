@@ -83,93 +83,95 @@ const LearnerCreditGroupMembersTable = ({
 }) => {
   const intl = useIntl();
   return (
-    <DataTable
-      isSortable
-      manualSortBy
-      isSelectable
-      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
-      manualSelectColumn={selectColumn}
-      isPaginated
-      manualPagination
-      isFilterable
-      manualFilters
-      isLoading={isLoading}
-      defaultColumnValues={{ Filter: TableTextFilter }}
-      FilterStatusComponent={FilterStatus}
-      numBreakoutFilters={2}
-      tableActions={[<GroupMembersCsvDownloadTableAction />]}
-      columns={[
-        {
-          Header: intl.formatMessage({
-            id: 'learnerCreditManagement.budgetDetail.membersTab.columns.memberDetails',
-            defaultMessage: 'Member Details',
-            description: 'Column header for the Member Details column in the Members tab of the Budget Detail page',
-          }),
-          accessor: 'memberDetails',
-          Cell: MemberDetailsTableCell,
-        },
-        {
-          Header: MemberStatusTableColumnHeader,
-          accessor: 'status',
-          Cell: MemberStatusTableCell,
-          Filter: removedGroupMembersCount > 0 ? (
-            <MembersTableSwitchFilter removedGroupMembersCount={removedGroupMembersCount} />
-          ) : <div />,
-          filter: 'status',
-        },
-        {
-          Header: intl.formatMessage({
-            id: 'learnerCreditManagement.budgetDetail.membersTab.columns.recentAction',
-            defaultMessage: 'Recent action',
-            description: 'Column header for the Recent action column in the Members tab of the Budget Detail page',
-          }),
-          accessor: 'recentAction',
-          Cell: ({ row }) => row.original.recentAction,
-          disableFilters: true,
-        },
-        {
-          Header: MemberEnrollmentsTableColumnHeader,
-          accessor: 'enrollmentCount',
-          Cell: ({ row }) => row.original.enrollmentCount,
-          disableFilters: true,
-        },
-      ]}
-      initialTableOptions={{
-        getRowId: row => row?.memberDetails.userEmail,
-        autoResetPage: true,
-      }}
-      initialState={{
-        pageSize: MEMBERS_TABLE_PAGE_SIZE,
-        pageIndex: DEFAULT_PAGE,
-        sortBy: [
-          { id: 'memberDetails', desc: true },
-        ],
-        filters: [],
-      }}
-      bulkActions={[
-        <MemberRemoveAction
-          refresh={refresh}
-          setRefresh={setRefresh}
-          groupUuid={groupUuid}
-        />,
-        <GroupMembersCsvDownloadTableAction />,
-      ]}
-      additionalColumns={[
-        {
-          id: 'action',
-          Header: '',
-          // eslint-disable-next-line react/no-unstable-nested-components
-          Cell: (props) => (
-            <KabobMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
-          ),
-        },
-      ]}
-      fetchData={fetchTableData}
-      data={tableData.results}
-      itemCount={tableData.itemCount}
-      pageCount={tableData.pageCount}
-      EmptyTableComponent={CustomDataTableEmptyState}
-    />
+    <span className="budget-detail-assignments">
+      <DataTable
+        isSortable
+        manualSortBy
+        isSelectable
+        SelectionStatusComponent={DataTable.ControlledSelectionStatus}
+        manualSelectColumn={selectColumn}
+        isPaginated
+        manualPagination
+        isFilterable
+        manualFilters
+        isLoading={isLoading}
+        defaultColumnValues={{ Filter: TableTextFilter }}
+        FilterStatusComponent={FilterStatus}
+        numBreakoutFilters={2}
+        tableActions={[<GroupMembersCsvDownloadTableAction />]}
+        columns={[
+          {
+            Header: intl.formatMessage({
+              id: 'learnerCreditManagement.budgetDetail.membersTab.columns.memberDetails',
+              defaultMessage: 'Member Details',
+              description: 'Column header for the Member Details column in the Members tab of the Budget Detail page',
+            }),
+            accessor: 'memberDetails',
+            Cell: MemberDetailsTableCell,
+          },
+          {
+            Header: MemberStatusTableColumnHeader,
+            accessor: 'status',
+            Cell: MemberStatusTableCell,
+            Filter: removedGroupMembersCount > 0 ? (
+              <MembersTableSwitchFilter removedGroupMembersCount={removedGroupMembersCount} />
+            ) : <div />,
+            filter: 'status',
+          },
+          {
+            Header: intl.formatMessage({
+              id: 'learnerCreditManagement.budgetDetail.membersTab.columns.recentAction',
+              defaultMessage: 'Recent action',
+              description: 'Column header for the Recent action column in the Members tab of the Budget Detail page',
+            }),
+            accessor: 'recentAction',
+            Cell: ({ row }) => row.original.recentAction,
+            disableFilters: true,
+          },
+          {
+            Header: MemberEnrollmentsTableColumnHeader,
+            accessor: 'enrollmentCount',
+            Cell: ({ row }) => row.original.enrollmentCount,
+            disableFilters: true,
+          },
+        ]}
+        initialTableOptions={{
+          getRowId: row => row?.memberDetails.userEmail,
+          autoResetPage: true,
+        }}
+        initialState={{
+          pageSize: MEMBERS_TABLE_PAGE_SIZE,
+          pageIndex: DEFAULT_PAGE,
+          sortBy: [
+            { id: 'memberDetails', desc: true },
+          ],
+          filters: [],
+        }}
+        bulkActions={[
+          <MemberRemoveAction
+            refresh={refresh}
+            setRefresh={setRefresh}
+            groupUuid={groupUuid}
+          />,
+          <GroupMembersCsvDownloadTableAction />,
+        ]}
+        additionalColumns={[
+          {
+            id: 'action',
+            Header: '',
+            // eslint-disable-next-line react/no-unstable-nested-components
+            Cell: (props) => (
+              <KabobMenu {...props} groupUuid={groupUuid} refresh={refresh} setRefresh={setRefresh} />
+            ),
+          },
+        ]}
+        fetchData={fetchTableData}
+        data={tableData.results}
+        itemCount={tableData.itemCount}
+        pageCount={tableData.pageCount}
+        EmptyTableComponent={CustomDataTableEmptyState}
+      />
+    </span>
   );
 };
 

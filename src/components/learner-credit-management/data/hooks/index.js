@@ -12,10 +12,15 @@ export { default as useSuccessfulAssignmentToastContextValue } from './useSucces
 export { default as useSuccessfulCancellationToastContextValue } from './useSuccessfulCancellationToastContextValue';
 export { default as useSuccessfulReminderToastContextValue } from './useSuccessfulReminderToastContextValue';
 export { default as useEnterpriseOffer } from './useEnterpriseOffer';
-export { default as useAssignmentStatusChip } from './useAssignmentStatusChip';
+export { default as useStatusChip } from './useStatusChip';
 export { default as useEnterpriseGroupLearners } from './useEnterpriseGroupLearners';
 export { default as useEnterpriseGroupMembersTableData } from './useEnterpriseGroupMembersTableData';
 export { default as useEnterpriseCustomer } from './useEnterpriseCustomer';
 export { default as useEnterpriseGroup } from './useEnterpriseGroup';
+export { default as useEnterpriseGroupUuid } from './useEnterpriseGroupUuid';
+export { default as useAllEnterpriseGroups } from './useAllEnterpriseGroups';
 export { default as useContentMetadata } from './useContentMetadata';
 export { default as useEnterpriseRemovedGroupMembers } from './useEnterpriseRemovedGroupMembers';
+export { default as useEnterpriseFlexGroups } from './useEnterpriseFlexGroups';
+export { default as useGroupDropdownToggle } from './useGroupDropdownToggle';
+export { default as useEnterpriseLearners } from './useEnterpriseLearners';

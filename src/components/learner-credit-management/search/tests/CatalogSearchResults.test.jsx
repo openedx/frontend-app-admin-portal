@@ -104,6 +104,7 @@ const searchResults = {
   nbPages: 6,
   hits: [
     {
+      key: 'Bees101',
       title: TEST_COURSE_NAME,
       partners: [{ name: TEST_PARTNER, logo_image_url: '' }],
       enterprise_catalog_query_titles: TEST_CATALOGS,
@@ -113,10 +114,12 @@ const searchResults = {
       availability: ['Available Now'],
       content_type: CONTENT_TYPE_COURSE,
       advertised_course_run: {
+        key: 'course-v1:edx+Bees101+1010',
         start: '2020-01-24T05:00:00Z',
         end: '2080-01-01T17:00:00Z',
         upgrade_deadline: 1892678399,
         pacing_type: 'self_paced',
+        enroll_by: 1892678399,
       },
       normalized_metadata: {
         start_date: '2020-09-09T04:00:00Z',
@@ -124,8 +127,19 @@ const searchResults = {
         enroll_by_date: '2020-09-15T04:00:00Z',
         content_price: 199,
       },
+      courseRuns: [
+        {
+          key: 'course-v1:edx+Bees101+1010',
+          start: '2020-01-24T05:00:00Z',
+          end: '2080-01-01T17:00:00Z',
+          upgrade_deadline: 1892678399,
+          pacing_type: 'self_paced',
+          enroll_by: 1892678399,
+        },
+      ],
     },
     {
+      key: 'Wasps200',
       title: TEST_COURSE_NAME_2,
       partners: [{ name: TEST_PARTNER_2, logo_image_url: '' }],
       enterprise_catalog_query_titles: TEST_CATALOGS_2,
@@ -135,10 +149,12 @@ const searchResults = {
       availability: ['Available Now'],
       content_type: CONTENT_TYPE_COURSE,
       advertised_course_run: {
+        key: 'course-v1:edX+Wasps200+3T2020',
         start: '2020-01-24T05:00:00Z',
         end: '2080-01-01T17:00:00Z',
         upgrade_deadline: 1892678399,
         pacing_type: 'self_paced',
+        enroll_by: 1892678399,
       },
       normalized_metadata: {
         start_date: '2020-09-09T04:00:00Z',
@@ -146,6 +162,16 @@ const searchResults = {
         enroll_by_date: '2020-09-15T04:00:00Z',
         content_price: 199,
       },
+      courseRuns: [
+        {
+          key: 'course-v1:edX+Wasps200+3T2020',
+          start: '2020-01-24T05:00:00Z',
+          end: '2080-01-01T17:00:00Z',
+          upgrade_deadline: 1892678399,
+          pacing_type: 'self_paced',
+          enroll_by: 1892678399,
+        },
+      ],
     },
   ],
   page: 1,

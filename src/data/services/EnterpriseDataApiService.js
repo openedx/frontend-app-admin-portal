@@ -1,7 +1,6 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { snakeCaseObject, camelCaseObject } from '@edx/frontend-platform/utils';
 import omitBy from 'lodash/omitBy';
-import isEmpty from 'lodash/isEmpty';
 
 import { isFalsy } from '../../utils';
 
@@ -18,12 +17,19 @@ class EnterpriseDataApiService {
 
   static enterpriseAdminAnalyticsV2BaseUrl = `${configuration.DATA_API_BASE_URL}/enterprise/api/v1/admin/analytics/`;
 
-  static constructDataTableURL(tableKey, baseURL) {
-    const dataTableURLsMap = {
+  static constructAnalyticsDataURL(key, baseURL) {
+    const dataURLsMap = {
+      skills: `${baseURL}/skills/stats`,
+      completions: `${baseURL}/completions/stats`,
+      engagements: `${baseURL}/engagements/stats`,
+      enrollments: `${baseURL}/enrollments/stats`,
       leaderboardTable: `${baseURL}/leaderboard`,
+      completionsTable: `${baseURL}/completions`,
+      engagementsTable: `${baseURL}/engagements`,
+      enrollmentsTable: `${baseURL}/enrollments`,
     };
 
-    return dataTableURLsMap[tableKey];
+    return dataURLsMap[key];
   }
 
   static getEnterpriseUUID(enterpriseId) {
@@ -151,27 +157,34 @@ class EnterpriseDataApiService {
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
-  static fetchAdminAnalyticsSkills(enterpriseCustomerUUID, options) {
-    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
-    const transformOptions = omitBy(snakeCaseObject(options), isEmpty);
-    const queryParams = new URLSearchParams(transformOptions);
-    const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseUUID}/skills/stats?${queryParams.toString()}`;
-    return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
-  }
-
-  static fetchAdminAnalyticsTableData(enterpriseCustomerUUID, tableKey, options) {
+  static fetchAdminAnalyticsData(enterpriseCustomerUUID, key, options) {
     const baseURL = EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl;
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
     const transformOptions = omitBy(snakeCaseObject(options), isFalsy);
     const queryParams = new URLSearchParams(transformOptions);
-    const tableURL = EnterpriseDataApiService.constructDataTableURL(tableKey, `${baseURL}${enterpriseUUID}`);
+    const tableURL = EnterpriseDataApiService.constructAnalyticsDataURL(key, `${baseURL}${enterpriseUUID}`);
     const url = `${tableURL}?${queryParams.toString()}`;
-    return EnterpriseDataApiService.apiClient().get(url);
+    return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
+  }
+
+  static fetchAdminAggregatesData(enterpriseCustomerUUID, options) {
+    const baseURL = EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl;
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseCustomerUUID);
+    const transformOptions = omitBy(snakeCaseObject(options), isFalsy);
+    const queryParams = new URLSearchParams(transformOptions);
+    const url = `${baseURL}${enterpriseUUID}?${queryParams.toString()}`;
+    return EnterpriseDataApiService.apiClient().get(url).then((response) => camelCaseObject(response.data));
   }
 
   static fetchDashboardInsights(enterpriseId) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const url = `${EnterpriseDataApiService.enterpriseAdminBaseUrl}insights/${enterpriseUUID}`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static fetchEnterpriseBudgets(enterpriseId) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/budgets/`;
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
@@ -196,6 +209,18 @@ class EnterpriseDataApiService {
   static fetchPlotlyChartsCSV(enterpriseId, chartUrl, options) {
     const url = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}/${chartUrl}?${new URLSearchParams(options).toString()}`;
     return EnterpriseDataApiService.apiClient().get(url);
+  }
+
+  static getAnalyticsCSVDownloadURL(key, enterpriseId, options) {
+    const queryParams = new URLSearchParams({
+      ...options,
+      ...{ response_type: 'csv' },
+    });
+    const tableURL = EnterpriseDataApiService.constructAnalyticsDataURL(
+      key,
+      `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${enterpriseId}`,
+    );
+    return `${tableURL}?${queryParams.toString()}`;
   }
 }
 

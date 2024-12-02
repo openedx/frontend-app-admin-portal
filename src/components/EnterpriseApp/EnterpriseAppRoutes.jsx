@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Routes, Route, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { features } from '../../config';
 
 import AdminPage from '../../containers/AdminPage';
 import CodeManagementPage from '../CodeManagement';
@@ -10,13 +11,15 @@ import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
-import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import AnalyticsV2Page from '../AdvanceAnalyticsV2/AnalyticsV2Page';
+import FeatureNotSupportedPage from '../FeatureNotSupportedPage';
 import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
 import LearnerCreditManagementRoutes from '../learner-credit-management';
+import PeopleManagementPage from '../PeopleManagement';
+import GroupDetailPage from '../PeopleManagement/GroupDetailPage';
 
 const EnterpriseAppRoutes = ({
   email,
@@ -27,6 +30,7 @@ const EnterpriseAppRoutes = ({
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
   enableContentHighlightsPage,
+  enterpriseGroupsV2,
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { enterpriseAppPage } = useParams();
@@ -36,7 +40,7 @@ const EnterpriseAppRoutes = ({
       {enterpriseAppPage === ROUTE_NAMES.learners && (
         <Route
           path="/:actionSlug?"
-          element={<AdminPage />}
+          element={features.ANALYTICS_SUPPORTED ? <AdminPage /> : <FeatureNotSupportedPage />}
         />
       )}
 
@@ -81,15 +85,9 @@ const EnterpriseAppRoutes = ({
         <Route
           key="analytics"
           path="/"
-          element={<PlotlyAnalyticsPage />}
-        />
-      )}
-
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analyticsv2 && (
-        <Route
-          key="analyticsv2"
-          path="/"
-          element={<AnalyticsV2Page enterpriseId={enterpriseId} />}
+          element={features.ANALYTICS_SUPPORTED
+            ? <AnalyticsV2Page enterpriseId={enterpriseId} />
+            : <FeatureNotSupportedPage />}
         />
       )}
 
@@ -115,6 +113,21 @@ const EnterpriseAppRoutes = ({
         />
       )}
 
+      {enterpriseGroupsV2 && enterpriseAppPage === ROUTE_NAMES.peopleManagement && ([
+        <Route
+          path="/:groupUuid"
+          key="group-detail"
+          element={(
+            <GroupDetailPage />
+          )}
+        />,
+        <Route
+          path="/*"
+          key="people-management"
+          element={<PeopleManagementPage />}
+        />,
+      ])}
+
       {enableContentHighlightsPage && enterpriseAppPage === ROUTE_NAMES.contentHighlights && (
         <Route
           path="/*"
@@ -136,6 +149,7 @@ EnterpriseAppRoutes.propTypes = {
   enableSubscriptionManagementPage: PropTypes.bool.isRequired,
   enableAnalyticsPage: PropTypes.bool.isRequired,
   enableContentHighlightsPage: PropTypes.bool.isRequired,
+  enterpriseGroupsV2: PropTypes.bool.isRequired,
 };
 
 export default EnterpriseAppRoutes;

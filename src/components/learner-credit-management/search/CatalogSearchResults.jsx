@@ -9,7 +9,10 @@ import {
 } from '@openedx/paragon';
 
 import CourseCard from '../cards/CourseCard';
-import { DEFAULT_PAGE, SEARCH_RESULT_PAGE_SIZE } from '../data';
+import {
+  DEFAULT_PAGE,
+  SEARCH_RESULT_PAGE_SIZE,
+} from '../data';
 
 export const ERROR_MESSAGE = 'An error occurred while retrieving data';
 
@@ -54,7 +57,6 @@ export const BaseCatalogSearchResults = ({
     ],
     [],
   );
-
   const tableData = useMemo(
     () => searchResults?.hits || [],
     [searchResults?.hits],
@@ -65,7 +67,6 @@ export const BaseCatalogSearchResults = ({
   useEffect(() => {
     setNoContent(searchResults === null || searchResults?.nbHits === 0);
   }, [searchResults, setNoContent]);
-
   if (error) {
     return (
       <Alert className="mt-2" variant="warning">

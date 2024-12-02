@@ -1,28 +1,27 @@
-import React, { useCallback, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useParams, useNavigate, generatePath } from 'react-router-dom';
-import {
-  FullscreenModal,
-  ActionRow,
-  Button,
-  useToggle,
-  Hyperlink,
-  StatefulButton,
-} from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
-import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
+import {
+  ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
+} from '@openedx/paragon';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import PropTypes from 'prop-types';
+import React, { useCallback, useContext, useState } from 'react';
+import { connect } from 'react-redux';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import AssignmentModalContent from './AssignmentModalContent';
+import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { learnerCreditManagementQueryKeys, useBudgetId, useSubsidyAccessPolicy } from '../data';
-import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
-import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import EVENT_NAMES from '../../../eventTracking';
-import { LEARNER_CREDIT_ROUTE } from '../constants';
+import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
+import {
+  getAssignableCourseRuns, learnerCreditManagementQueryKeys, LEARNER_CREDIT_ROUTE, useBudgetId,
+  useSubsidyAccessPolicy, useEnterpriseFlexGroups,
+} from '../data';
+import AssignmentModalContent from './AssignmentModalContent';
+import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
+import NewAssignmentModalDropdown from './NewAssignmentModalDropdown';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -42,15 +41,24 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const [isOpen, open, close] = useToggle(false);
   const [learnerEmails, setLearnerEmails] = useState([]);
+  const [groupLearnerEmails, setGroupLearnerEmails] = useState([]);
   const [canAllocateAssignments, setCanAllocateAssignments] = useState(false);
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
+  const [assignmentRun, setAssignmentRun] = useState();
+  const { data: enterpriseFlexGroups } = useEnterpriseFlexGroups(enterpriseId);
   const {
     successfulAssignmentToast: { displayToastForAssignmentAllocation },
   } = useContext(BudgetDetailPageContext);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const {
-    subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
+    subsidyUuid,
+    assignmentConfiguration,
+    isSubsidyActive,
+    isAssignable,
+    catalogUuid,
+    aggregates,
+    isLateRedemptionAllowed,
   } = subsidyAccessPolicy;
   const sharedEnterpriseTrackEventMetadata = {
     subsidyAccessPolicyId,
@@ -59,24 +67,40 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     isSubsidyActive,
     isAssignable,
     aggregates,
-    contentPriceCents: course.normalizedMetadata.contentPrice * 100,
+    contentPriceCents: assignmentRun?.contentPrice ? assignmentRun.contentPrice * 100 : 0,
+    parentContentKey: null,
     contentKey: course.key,
     courseUuid: course.uuid,
     assignmentConfiguration,
+    isLateRedemptionAllowed,
   };
-
+  const assignableCourseRuns = getAssignableCourseRuns({
+    courseRuns: course.courseRuns,
+    subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
+    isLateRedemptionAllowed,
+  });
   const { mutate } = useAllocateContentAssignments();
   const pathToActivityTab = generatePath(LEARNER_CREDIT_ROUTE, {
     enterpriseSlug, enterpriseAppPage, budgetId: subsidyAccessPolicyId, activeTabKey: 'activity',
   });
-
-  const handleOpenAssignmentModal = () => {
+  const handleOpenAssignmentModal = (selectedCourseRun) => {
+    setAssignmentRun(selectedCourseRun);
+    if (!selectedCourseRun) {
+      logError(`[handleOpenAssignmentModal]: Unable to open learner credit management allocation modal,
+        selectedCourseRun: ${selectedCourseRun},
+        parentContentKey: ${course.key},
+        contentKey: ${selectedCourseRun.key},
+        enterpriseUuid: ${enterpriseId},
+        policyUuid: ${subsidyAccessPolicyId}`);
+    }
     open();
     sendEnterpriseTrackEvent(
       enterpriseId,
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGN_COURSE,
       {
         ...sharedEnterpriseTrackEventMetadata,
+        parentContentKey: course.key,
+        contentKey: selectedCourseRun.key,
         isOpen: !isOpen,
       },
     );
@@ -97,6 +121,14 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     setCanAllocateAssignments(canAllocate);
   }, []);
 
+  const handleGroupSelectionsChanged = useCallback((
+    value,
+    { canAllocate = false } = {},
+  ) => {
+    setGroupLearnerEmails(value);
+    setCanAllocateAssignments(canAllocate);
+  }, []);
+
   const onSuccessEnterpriseTrackEvents = ({
     totalLearnersAllocated,
     totalLearnersAlreadyAllocated,
@@ -104,6 +136,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   }) => {
     const trackEventMetadata = {
       ...sharedEnterpriseTrackEventMetadata,
+      parentContentKey: course.key,
+      contentKey: assignmentRun.key,
       totalLearnersAllocated,
       totalLearnersAlreadyAllocated,
       response,
@@ -114,12 +148,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       trackEventMetadata,
     );
   };
-
   const handleAllocateContentAssignments = () => {
     const payload = snakeCaseObject({
-      contentPriceCents: course.normalizedMetadata.contentPrice * 100, // Convert to USD cents
-      contentKey: course.key,
-      learnerEmails,
+      contentPriceCents: assignmentRun.contentPrice * 100, // Convert to USD cents
+      contentKey: assignmentRun.key,
+      learnerEmails: [...learnerEmails, ...groupLearnerEmails],
     });
     const mutationArgs = {
       subsidyAccessPolicyId,
@@ -173,7 +206,9 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_ERROR,
           {
             ...sharedEnterpriseTrackEventMetadata,
-            totalAllocatedLearners: learnerEmails.length,
+            contentKey: assignmentRun.key,
+            parentContentKey: course.key,
+            totalAllocatedLearners: learnerEmails.length + groupLearnerEmails.length,
             errorStatus: httpErrorStatus,
             errorReason,
             response: err,
@@ -182,10 +217,11 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       },
     });
   };
-
   return (
     <>
-      <Button onClick={handleOpenAssignmentModal}>{children}</Button>
+      <NewAssignmentModalDropdown id={course.key} onClick={handleOpenAssignmentModal} courseRuns={assignableCourseRuns}>
+        {children}
+      </NewAssignmentModalDropdown>
       <FullscreenModal
         className="stepper-modal bg-light-200"
         title={intl.formatMessage({
@@ -201,6 +237,8 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
             EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_EXIT,
             {
               ...sharedEnterpriseTrackEventMetadata,
+              contentKey: assignmentRun.key,
+              parentContentKey: course.key,
               assignButtonState,
             },
           );
@@ -286,7 +324,10 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       >
         <AssignmentModalContent
           course={course}
+          courseRun={assignmentRun}
           onEmailAddressesChange={handleEmailAddressesChanged}
+          enterpriseFlexGroups={enterpriseFlexGroups}
+          onGroupSelectionsChanged={handleGroupSelectionsChanged}
         />
       </FullscreenModal>
       <CreateAllocationErrorAlertModals

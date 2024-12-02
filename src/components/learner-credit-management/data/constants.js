@@ -22,6 +22,12 @@ export const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   courseListPrice: 'course_list_price',
 };
 
+// Course pace text
+export const COURSE_PACING_MAP = {
+  SELF_PACED: 'self_paced',
+  INSTRUCTOR_PACED: 'instructor_paced',
+};
+
 // Percentage where messaging (e.g., Alert) on low remaining balance will begin appearing
 export const LOW_REMAINING_BALANCE_PERCENT_THRESHOLD = 0.75;
 
@@ -31,6 +37,9 @@ export const LOW_REMAINING_BALANCE_PERCENT_THRESHOLD = 0.75;
 export const NO_BALANCE_REMAINING_DOLLAR_THRESHOLD = 100;
 
 export const DATE_FORMAT = 'MMMM DD, YYYY';
+
+export const SHORT_MONTH_DATE_FORMAT = 'MMM D, YYYY';
+export const DATETIME_FORMAT = 'MMM D, YYYY h:mma';
 
 export const EXEC_ED_OFFER_TYPE = 'learner_credit';
 
@@ -42,6 +51,25 @@ export const BUDGET_DETAIL_TAB_LABELS = {
   [BUDGET_DETAIL_ACTIVITY_TAB]: 'Activity',
   [BUDGET_DETAIL_CATALOG_TAB]: 'Catalog',
   [BUDGET_DETAIL_MEMBERS_TAB]: 'Members',
+};
+
+// TODO: i18n'tify this
+// Card text for used in useCourseCardMetadata
+export const CARD_TEXT = {
+  BADGE: {
+    course: 'Course',
+    execEd: 'Executive Education',
+  },
+  BUTTON_ACTION: {
+    viewCourse: 'View course',
+    assign: 'Assign',
+  },
+  ENROLLMENT: {
+    text: 'Learner must enroll by',
+  },
+  PRICE: {
+    subText: 'Per learner price',
+  },
 };
 
 // Facet filters
@@ -71,6 +99,18 @@ export const MEMBERS_TABLE_PAGE_SIZE = 10;
 // Enroll-by date warning message threshold by days
 export const ENROLL_BY_DATE_DAYS_THRESHOLD = 10;
 
+// Allocation assignment expiration dropoff threshold
+export const DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION = 90;
+
+// When the start date is before this number of days before today, display the alternate start date (fixed to today).
+export const START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS = 14;
+
+// Default empty content_price value
+export const EMPTY_CONTENT_PRICE_VALUE = 0;
+
+// Late enrollments feature
+export const LATE_ENROLLMENTS_BUFFER_DAYS = 30;
+
 // Query Key factory for the learner credit management module, intended to be used with `@tanstack/react-query`.
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const learnerCreditManagementQueryKeys = {
@@ -84,4 +124,8 @@ export const learnerCreditManagementQueryKeys = {
   group: (groupUuid) => [...learnerCreditManagementQueryKeys.all, 'group', groupUuid],
   budgetGroupLearners: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'group learners'],
   enterpriseCustomer: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'enterpriseCustomer', enterpriseId],
+  flexGroup: (enterpriseId) => [...learnerCreditManagementQueryKeys.enterpriseCustomer(enterpriseId), 'flexGroup'],
 };
+
+// Route to learner credit
+export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:budgetId/:activeTabKey?';

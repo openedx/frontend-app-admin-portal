@@ -145,7 +145,7 @@ export const SettingsAppearanceTab = ({
           }}
           maxSize={512000}
           accept={{
-            'image/*': ['.png'],
+            'image/png': ['.png'],
           }}
         />
       )}

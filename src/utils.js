@@ -170,6 +170,9 @@ const getPageOptionsFromUrl = () => {
   if (query.has('search_course')) {
     pageOptions.search_course = query.get('search_course');
   }
+  if (query.has('budget_uuid')) {
+    pageOptions.budget_uuid = query.get('budget_uuid');
+  }
   if (query.has('search_start_date')) {
     pageOptions.search_start_date = query.get('search_start_date');
   }
@@ -547,6 +550,20 @@ function makePlural(num, string) {
 }
 
 /**
+ * Pluralizes a word that typically ends with s based on the benchmark passed
+ *
+ * @param textToPlural
+ * @param pluralBenchmark
+ * @param punctuation
+ * @returns {string}
+ */
+const pluralText = (
+  textToPlural,
+  pluralBenchmark,
+  punctuation = '',
+) => (pluralBenchmark > 1 || pluralBenchmark === 0 ? `${textToPlural}s${punctuation}` : `${textToPlural}${punctuation}`);
+
+/**
  * Helper function to determine if a content is archived.
  *
  * @param {Object} content (can be program, course, or pathway)
@@ -631,6 +648,7 @@ export {
   getActiveTableColumnFilters,
   queryCacheOnErrorHandler,
   makePlural,
+  pluralText,
   isArchivedContent,
   i18nFormatTimestamp,
   i18nFormatPassedTimestamp,

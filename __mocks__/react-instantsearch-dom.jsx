@@ -2,26 +2,148 @@
 /* eslint-disable react/prop-types */
 
 const React = require('react');
+const dayjs = require('dayjs');
 
 const MockReactInstantSearch = jest.genMockFromModule(
   'react-instantsearch-dom',
 );
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const advertised_course_run = {
-  start: '2020-09-09T04:00:00Z',
-  key: 'course-v1:edX+Bee101+3T2020',
-};
+const mockCurrentStartDate = dayjs().add(3, 'months').toISOString();
+const mockEndDate = dayjs().add(2, 'years').toISOString();
+const mockEnrollByDate = dayjs().add(9, 'months').toISOString();
+const mockEnrollByTimestamp = dayjs(mockEnrollByDate).unix();
+const mockUpgradeDeadlineTimestamp = dayjs().add(3, 'months').unix();
+const mockEnrollStartDate = dayjs().add(2, 'months').toISOString();
+const mockEnrollStartTimestamp = dayjs(mockEnrollStartDate).unix();
+
 const mockNormalizedData = {
-  start_date: '2020-09-09T04:00:00Z',
-  end_date: '2021-09-09T04:00:00Z',
-  enroll_by_date: '2020-09-15T04:00:00Z',
+  start_date: mockCurrentStartDate,
+  end_date: mockEndDate,
+  enroll_by_date: mockEnrollByDate,
+  enroll_start_date: mockEnrollStartDate,
 };
 
 /* eslint-disable camelcase */
 const fakeHits = [
-  { objectID: '1', aggregation_key: 'course:Bees101', title: 'bla', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Bees101', normalized_metadata: mockNormalizedData },
-  { objectID: '2', aggregation_key: 'course:Wasps200', title: 'blp', partners: [{ name: 'edX' }, { name: 'another_unused' }], advertised_course_run, key: 'Wasps200', normalized_metadata: mockNormalizedData },
+  {
+    objectID: '1',
+    aggregation_key: 'course:Bees101',
+    title: 'bla',
+    partners: [
+      { name: 'edX' },
+      { name: 'another_unused' },
+    ],
+    advertised_course_run: {
+      key: 'course-v1:edx+Bees101+1010',
+      start: mockCurrentStartDate,
+      end: mockEndDate,
+      enroll_by: mockEnrollByTimestamp,
+      has_enroll_by: true,
+      enroll_start: mockEnrollStartTimestamp,
+      has_enroll_start: true,
+      is_active: true,
+      max_effort: 5,
+      min_effort: 1,
+      pacing_type: 'self_paced',
+      weeks_to_complete: 8,
+      upgrade_deadline: mockUpgradeDeadlineTimestamp,
+      content_price: 100,
+    },
+    key: 'Bees101',
+    normalized_metadata: mockNormalizedData,
+    courseRuns: [
+      {
+        key: 'course-v1:edx+Bees101+1010',
+        start: mockCurrentStartDate,
+        end: mockEndDate,
+        enroll_by: mockEnrollByTimestamp,
+        has_enroll_by: true,
+        enroll_start: mockEnrollStartTimestamp,
+        has_enroll_start: true,
+        is_active: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: mockUpgradeDeadlineTimestamp,
+        content_price: 100,
+      },
+      {
+        key: 'course-v1:edX+Bee101+3T2020',
+        start: '2020-09-09T04:00:00Z',
+        end: dayjs('2020-09-09T04:00:00Z').add(1, 'year').toISOString(),
+        enroll_by: mockEnrollByTimestamp,
+        has_enroll_by: true,
+        enroll_start: mockEnrollStartTimestamp,
+        has_enroll_start: true,
+        is_active: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: mockUpgradeDeadlineTimestamp,
+        content_price: 100,
+      },
+    ],
+  },
+  { objectID: '2',
+    aggregation_key: 'course:Wasps200',
+    title: 'blp',
+    partners: [
+      { name: 'edX' },
+      { name: 'another_unused' },
+    ],
+    advertised_course_run: {
+      key: 'course-v1:edx+Wasps200+1010T2024',
+      start: mockCurrentStartDate,
+      end: mockEndDate,
+      enroll_by: mockEnrollByTimestamp,
+      has_enroll_by: true,
+      enroll_start: mockEnrollStartTimestamp,
+      has_enroll_start: true,
+      is_active: true,
+      max_effort: 5,
+      min_effort: 1,
+      pacing_type: 'self_paced',
+      weeks_to_complete: 8,
+      upgrade_deadline: mockUpgradeDeadlineTimestamp,
+      content_price: 100,
+    },
+    key: 'Wasps200',
+    normalized_metadata: mockNormalizedData,
+    courseRuns: [
+      {
+        key: 'course-v1:edx+Wasps200+1010T2024',
+        start: '2022-10-09T04:00:00Z',
+        end: dayjs('2022-10-09T04:00:00Z').add(1, 'year').toISOString(),
+        enroll_by: mockEnrollByTimestamp,
+        has_enroll_by: true,
+        enroll_start: mockEnrollStartTimestamp,
+        has_enroll_start: true,
+        is_active: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: mockUpgradeDeadlineTimestamp,
+        content_price: 100,
+      },
+      {
+        key: 'course-v1:edX+Wasps200+3T2020',
+        start: '2020-09-09T04:00:00Z',
+        end: dayjs('2020-09-09T04:00:00Z').add(1, 'year').toISOString(),
+        enroll_by: mockEnrollByTimestamp,
+        has_enroll_by: true,
+        is_active: true,
+        max_effort: 5,
+        min_effort: 1,
+        pacing_type: 'self_paced',
+        weeks_to_complete: 8,
+        upgrade_deadline: mockUpgradeDeadlineTimestamp,
+        content_price: 100,
+      },
+    ],
+  },
 ];
 /* eslint-enable camelcase */
 

@@ -6,7 +6,8 @@ import classNames from 'classnames';
 import { Icon } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline, Settings, Support, Tag, TrendingUp,
+  BookOpen, CreditCard, Description, InsertChartOutlined, MoneyOutline,
+  Person, Settings, Support, Tag, TrendingUp,
 } from '@openedx/paragon/icons';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { getConfig } from '@edx/frontend-platform/config';
@@ -21,6 +22,7 @@ import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import LmsApiService from '../../data/services/LmsApiService';
+import { GROUP_TYPE_BUDGET } from '../PeopleManagement/constants';
 
 const Sidebar = ({
   baseUrl,
@@ -35,6 +37,7 @@ const Sidebar = ({
   onWidthChange,
   isMobile,
   enterpriseGroupsV1,
+  enterpriseGroupsV2,
   onMount,
 }) => {
   const sidebarRef = useRef();
@@ -46,8 +49,8 @@ const Sidebar = ({
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const isEdxStaff = getAuthenticatedUser().administrator;
-  const [isSubGroup, setIsSubGroup] = useState(false);
-  const hideHighlightsForGroups = enterpriseGroupsV1 && isSubGroup && !isEdxStaff;
+  const [hasBudgetGroup, setHasBudgetGroup] = useState(false);
+  const hideHighlightsForGroups = enterpriseGroupsV1 && hasBudgetGroup && !isEdxStaff;
   const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
@@ -87,8 +90,8 @@ const Sidebar = ({
         // we only want to hide the feature if a customer has a group this does not
         // apply to all contexts/include all users
         response.data.results.forEach((group) => {
-          if (group.applies_to_all_contexts === false) {
-            setIsSubGroup(true);
+          if (group.group_type === GROUP_TYPE_BUDGET) {
+            setHasBudgetGroup(true);
           }
         });
       } catch (error) {
@@ -123,12 +126,6 @@ const Sidebar = ({
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
     },
     {
-      title: 'AnalyticsV2',
-      to: `${baseUrl}/admin/${ROUTE_NAMES.analyticsv2}`,
-      icon: <Icon src={InsertChartOutlined} />,
-      hidden: !features.ANALYTICS_V2,
-    },
-    {
       title: 'Code Management',
       to: `${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`,
       icon: <Icon src={Tag} />,
@@ -148,6 +145,12 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`,
       icon: <Icon src={MoneyOutline} />,
       hidden: !canManageLearnerCredit,
+    },
+    {
+      title: 'People Management',
+      to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
+      icon: <Icon src={Person} />,
+      hidden: !enterpriseGroupsV2,
     },
     {
       title: intl.formatMessage({
@@ -258,6 +261,7 @@ Sidebar.propTypes = {
   onMount: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   enterpriseGroupsV1: PropTypes.bool,
+  enterpriseGroupsV2: PropTypes.bool,
 };
 
 export default Sidebar;

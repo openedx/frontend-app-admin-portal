@@ -4,7 +4,10 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Col, Container, Form, Row,
+  Col,
+  Container,
+  Form,
+  Row,
 } from '@openedx/paragon';
 
 import InviteModalSummary from './InviteModalSummary';
@@ -14,12 +17,42 @@ import InviteModalInputFeedback from './InviteModalInputFeedback';
 import InviteModalMembershipInfo from './InviteModalMembershipInfo';
 import InviteModalBudgetCard from './InviteModalBudgetCard';
 import InviteModalPermissions from './InviteModalPermissions';
+import { GROUP_DROPDOWN_TEXT } from '../../PeopleManagement/constants';
+import { useGroupDropdownToggle } from '../data';
+import FlexGroupDropdown from '../FlexGroupDropdown';
 
-const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => {
+const InviteModalContent = ({
+  onEmailAddressesChange,
+  subsidyAccessPolicy,
+  onGroupSelectionsChanged,
+  enterpriseFlexGroups,
+  shouldShowGroupsDropdown,
+}) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [inputType, setInputType] = useState('email');
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
-  const [memberInviteMetadata, setMemberInviteMetadata] = useState({});
+  const [memberInviteMetadata, setMemberInviteMetadata] = useState({
+    isValidInput: null,
+    lowerCasedEmails: [],
+    duplicateEmails: [],
+    emailsNotInOrg: [],
+  });
+  const [groupMemberEmails, setGroupMemberEmails] = useState([]);
+  const [checkedGroups, setCheckedGroups] = useState({});
+  const [dropdownToggleLabel, setDropdownToggleLabel] = useState(GROUP_DROPDOWN_TEXT);
+  const {
+    dropdownRef,
+    handleCheckedGroupsChanged,
+    handleGroupsChanged,
+    handleSubmitGroup,
+  } = useGroupDropdownToggle({
+    checkedGroups,
+    dropdownToggleLabel,
+    onGroupSelectionsChanged,
+    setCheckedGroups,
+    setDropdownToggleLabel,
+    setGroupMemberEmails,
+  });
 
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
@@ -33,7 +66,7 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
       return;
     }
     const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
-    setLearnerEmails(emails);
+    setLearnerEmails(prev => [...prev, ...emails]);
   }, [onEmailAddressesChange]);
 
   const debouncedHandleEmailAddressesChanged = useMemo(
@@ -48,15 +81,29 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
   // Validate the learner emails emails from user input whenever it changes
   useEffect(() => {
     const inviteMetadata = isInviteEmailAddressesInputValueValid({
-      learnerEmails,
+      learnerEmails: [...learnerEmails, ...groupMemberEmails],
     });
     setMemberInviteMetadata(inviteMetadata);
     if (inviteMetadata.canInvite) {
       onEmailAddressesChange(learnerEmails, { canInvite: true });
+      onGroupSelectionsChanged(groupMemberEmails, { canInvite: true });
     } else {
       onEmailAddressesChange([]);
+      onGroupSelectionsChanged([]);
     }
-  }, [onEmailAddressesChange, learnerEmails]);
+  }, [onEmailAddressesChange, learnerEmails, groupMemberEmails, onGroupSelectionsChanged]);
+
+  useEffect(() => {
+    handleGroupsChanged(checkedGroups);
+    const selectedGroups = Object.keys(checkedGroups).filter(group => checkedGroups[group].checked === true);
+    if (selectedGroups.length === 1) {
+      setDropdownToggleLabel(`${checkedGroups[selectedGroups[0]]?.name} (${checkedGroups[selectedGroups[0]]?.memberEmails.length})`);
+    } else if (selectedGroups.length > 1) {
+      setDropdownToggleLabel(`${selectedGroups.length} groups selected`);
+    } else {
+      setDropdownToggleLabel(GROUP_DROPDOWN_TEXT);
+    }
+  }, [checkedGroups, handleGroupsChanged]);
 
   return (
     <Container size="lg" className="py-3">
@@ -65,7 +112,17 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
       <Row className="mt-3">
         <Col>
           <h4 className="mb-4">Send invite to</h4>
-          <Form.Group>
+          <Form.Group className="group-dropdown">
+            {shouldShowGroupsDropdown && (
+              <FlexGroupDropdown
+                checkedGroups={checkedGroups}
+                dropdownRef={dropdownRef}
+                dropdownToggleLabel={dropdownToggleLabel}
+                enterpriseFlexGroups={enterpriseFlexGroups}
+                onCheckedGroupsChanged={handleCheckedGroupsChanged}
+                onHandleSubmitGroup={handleSubmitGroup}
+              />
+            )}
             <Form.RadioSet
               name="input-type"
               onChange={(e) => setInputType(e.target.value)}
@@ -77,17 +134,17 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
             </Form.RadioSet>
           </Form.Group>
           {inputType === INPUT_TYPE.EMAIL && (
-          <Form.Group className="mb-5">
-            <Form.Control
-              as="textarea"
-              value={emailAddressesInputValue}
-              onChange={handleEmailAddressInputChange}
-              floatingLabel="Member email addresses"
-              rows={10}
-              data-hj-suppress
-            />
-            <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload={false} />
-          </Form.Group>
+            <Form.Group className="mb-5">
+              <Form.Control
+                as="textarea"
+                value={emailAddressesInputValue}
+                onChange={handleEmailAddressInputChange}
+                floatingLabel="Member email addresses"
+                rows={10}
+                data-hj-suppress
+              />
+              <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload={false} />
+            </Form.Group>
           )}
           {inputType === INPUT_TYPE.CSV && (
             <FileUpload
@@ -111,6 +168,13 @@ const InviteModalContent = ({ onEmailAddressesChange, subsidyAccessPolicy }) => 
 InviteModalContent.propTypes = {
   onEmailAddressesChange: PropTypes.func.isRequired,
   subsidyAccessPolicy: PropTypes.shape(),
+  onGroupSelectionsChanged: PropTypes.func,
+  enterpriseFlexGroups: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    uuid: PropTypes.string,
+    acceptedMembersCount: PropTypes.number,
+  })),
+  shouldShowGroupsDropdown: PropTypes.bool,
 };
 
 export default InviteModalContent;
