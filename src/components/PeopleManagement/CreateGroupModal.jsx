@@ -113,6 +113,7 @@ const CreateGroupModal = ({
           onSetGroupName={setGroupName}
           onEmailAddressesChange={handleEmailAddressesChange}
           isGroupInvite
+          enterpriseUUID={enterpriseUUID}
         />
       </FullscreenModal>
       <SystemErrorAlertModal

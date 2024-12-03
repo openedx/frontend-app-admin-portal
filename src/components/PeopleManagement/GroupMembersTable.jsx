@@ -89,7 +89,7 @@ const GroupMembersTable = ({
           {
             Header: EnrollmentsTableColumnHeader,
             accessor: 'enrollmentCount',
-            Cell: () => 0,
+            Cell: ({ row }) => row.original.enrollments,
             disableFilters: true,
           },
         ]}

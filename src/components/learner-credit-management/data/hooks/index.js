@@ -24,3 +24,4 @@ export { default as useEnterpriseRemovedGroupMembers } from './useEnterpriseRemo
 export { default as useEnterpriseFlexGroups } from './useEnterpriseFlexGroups';
 export { default as useGroupDropdownToggle } from './useGroupDropdownToggle';
 export { default as useEnterpriseGroupLearnersTableData } from './useEnterpriseGroupLearnersTableData';
+export { default as useEnterpriseLearners } from './useEnterpriseLearners';
