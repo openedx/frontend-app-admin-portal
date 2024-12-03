@@ -126,7 +126,7 @@ describe('LmsApiService', () => {
         }],
       },
     });
-    const response = await LmsApiService.fetchReportingConfigs();
+    const response = await LmsApiService.fetchReportingConfigs('test-enterprise-customer', 1);
     expect(response).toEqual({
       status: 200,
       data: {
