@@ -8,8 +8,9 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import TableTextFilter from '../learner-credit-management/TableTextFilter';
 import CustomDataTableEmptyState from '../learner-credit-management/CustomDataTableEmptyState';
 import MemberDetailsTableCell from '../learner-credit-management/members-tab/MemberDetailsTableCell';
-import { DEFAULT_PAGE, MEMBERS_TABLE_PAGE_SIZE } from '../learner-credit-management/data';
 import EnrollmentsTableColumnHeader from './EnrollmentsTableColumnHeader';
+import { GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE } from './constants';
+import RecentActionTableCell from './RecentActionTableCell';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -70,8 +71,8 @@ const GroupMembersTable = ({
           {
             Header: intl.formatMessage({
               id: 'people.management.groups.detail.page.members.columns.memberDetails',
-              defaultMessage: 'Member Details',
-              description: 'Column header for the Member Details column in the People management Groups detail page',
+              defaultMessage: 'Member details',
+              description: 'Column header for the Member details column in the People management Groups detail page',
             }),
             accessor: 'memberDetails',
             Cell: MemberDetailsTableCell,
@@ -83,7 +84,7 @@ const GroupMembersTable = ({
               description: 'Column header for the Recent action column in the People management Groups detail page',
             }),
             accessor: 'recentAction',
-            Cell: ({ row }) => row.original.recentAction,
+            Cell: RecentActionTableCell,
             disableFilters: true,
           },
           {
@@ -98,8 +99,8 @@ const GroupMembersTable = ({
           autoResetPage: true,
         }}
         initialState={{
-          pageSize: MEMBERS_TABLE_PAGE_SIZE,
-          pageIndex: DEFAULT_PAGE,
+          pageSize: GROUP_MEMBERS_TABLE_PAGE_SIZE,
+          pageIndex: GROUP_MEMBERS_TABLE_DEFAULT_PAGE,
           sortBy: [
             { id: 'memberDetails', desc: true },
           ],

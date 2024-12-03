@@ -91,7 +91,7 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByText('View group progress')).toBeInTheDocument();
     expect(screen.getByText('Add and remove group members.')).toBeInTheDocument();
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
-    userEvent.click(screen.getByText('Member Details'));
+    userEvent.click(screen.getByText('Member details'));
     await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
       filters: [],
       pageIndex: 0,

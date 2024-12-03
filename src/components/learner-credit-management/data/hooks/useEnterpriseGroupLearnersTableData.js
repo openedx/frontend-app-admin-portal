@@ -43,7 +43,7 @@ const useEnterpriseGroupLearnersTableData = ({ groupUuid }) => {
         setEnterpriseGroupLearnersTableData({
           itemCount: data.count,
           pageCount: data.numPages ?? Math.floor(data.count / options.pageSize),
-          results: data.results,
+          results: data.results.filter(result => result.activatedAt),
         });
       } catch (error) {
         logError(error);
