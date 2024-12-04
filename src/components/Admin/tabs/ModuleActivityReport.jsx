@@ -157,6 +157,7 @@ const ModuleActivityReport = ({ enterpriseId }) => {
         ]}
       >
         <DataTable.TableControlBar />
+        <DataTable.Table />
         <DataTable.EmptyTable
           content={intl.formatMessage({
             id: 'adminPortal.LPR.moduleActivityReport.table.empty',
