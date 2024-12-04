@@ -87,7 +87,6 @@ const initialStoreState = {
     enterpriseSlug,
     enableLearnerPortal: true,
     enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
       enterpriseGroupsV1: true,
     },
   },
@@ -766,7 +765,6 @@ describe('<BudgetDetailPage />', () => {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
           ...initialStoreState.portalConfiguration.enterpriseFeatures,
-          topDownAssignmentRealTimeLcm: false,
         },
       },
     };
@@ -782,35 +780,30 @@ describe('<BudgetDetailPage />', () => {
       subsidyAccessPolicy: null,
       enterpriseOfferMetadata: mockEnterpriseOfferMetadata,
       budgetId: mockEnterpriseOfferId,
-      isTopDownAssignmentEnabled: true,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, true],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null],
     },
     {
       subsidyAccessPolicy: null,
       enterpriseOfferMetadata: mockEnterpriseOfferMetadata,
       budgetId: mockEnterpriseOfferId,
-      isTopDownAssignmentEnabled: false,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null, false],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, mockEnterpriseOfferId, null],
     },
     {
       subsidyAccessPolicy: mockPerLearnerSpendLimitSubsidyAccessPolicy,
       enterpriseOfferMetadata: null,
       budgetId: mockSubsidyAccessPolicyUUID,
-      isTopDownAssignmentEnabled: true,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, true],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID],
     },
     {
       subsidyAccessPolicy: mockAssignableSubsidyAccessPolicy,
       enterpriseOfferMetadata: null,
       budgetId: mockSubsidyAccessPolicyUUID,
-      isTopDownAssignmentEnabled: false,
-      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, false],
+      expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID],
     },
   ])('displays spend table in "Activity" tab with empty results (%s) when enterpriseGroupsV1 feature is false', async ({
     subsidyAccessPolicy,
     enterpriseOfferMetadata,
     budgetId,
-    isTopDownAssignmentEnabled,
     expectedUseOfferRedemptionsArgs,
   }) => {
     useParams.mockReturnValue({
@@ -868,7 +861,6 @@ describe('<BudgetDetailPage />', () => {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
           ...initialStoreState.portalConfiguration.enterpriseFeatures,
-          topDownAssignmentRealTimeLcm: isTopDownAssignmentEnabled,
           enterpriseGroupsV1: false,
         },
         disableExpiryMessagingForLearnerCredit: false,
@@ -888,9 +880,7 @@ describe('<BudgetDetailPage />', () => {
     const spentSection = within(screen.getByTestId('spent-section'));
     expect(spentSection.getByText('No results found')).toBeInTheDocument();
     expect(spentSection.getByText('Spent activity is driven by completed enrollments.', { exact: false })).toBeInTheDocument();
-    const isSubsidyAccessPolicyWithAnalyticsApi = (
-      budgetId === mockSubsidyAccessPolicyUUID && !isTopDownAssignmentEnabled
-    );
+    const isSubsidyAccessPolicyWithAnalyticsApi = (budgetId === mockSubsidyAccessPolicyUUID);
     if (budgetId === mockEnterpriseOfferId || isSubsidyAccessPolicyWithAnalyticsApi) {
       // This copy is only present when the "Spent" table is backed by the
       // analytics API (i.e., budget is an enterprise offer or a subsidy access
@@ -1781,60 +1771,6 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.queryByText('No budget activity yet? Assign a course!')).not.toBeInTheDocument();
   });
 
-  it('hides catalog tab when enterpriseFeatures.topDownAssignmentRealTimeLcm is disabled', () => {
-    const initialState = {
-      portalConfiguration: {
-        ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          topDownAssignmentRealTimeLcm: false,
-        },
-      },
-    };
-    useParams.mockReturnValue({
-      enterpriseSlug: 'test-enterprise-slug',
-      enterpriseAppPage: 'test-enterprise-page',
-      budgetId: mockSubsidyAccessPolicyUUID,
-      activeTabKey: 'activity',
-    });
-    useSubsidyAccessPolicy.mockReturnValue({
-      isInitialLoading: false,
-      data: mockAssignableSubsidyAccessPolicy,
-    });
-    useEnterpriseGroupLearners.mockReturnValue({
-      data: {
-        count: 0,
-        currentPage: 1,
-        next: null,
-        numPages: 1,
-        results: [],
-      },
-    });
-    useBudgetDetailActivityOverview.mockReturnValue({
-      isLoading: false,
-      data: {
-        contentAssignments: undefined,
-        spentTransactions: { count: 0 },
-      },
-    });
-    useBudgetRedemptions.mockReturnValue({
-      isLoading: false,
-      budgetRedemptions: mockEmptyBudgetRedemptions,
-      fetchBudgetRedemptions: jest.fn(),
-    });
-    useEnterpriseGroup.mockReturnValue({
-      data: {
-        appliesToAllContexts: true,
-      },
-    });
-    renderWithRouter(<BudgetDetailPageWrapper initialState={initialState} />);
-
-    // Catalog tab does NOT exist
-    expect(screen.queryByText('Catalog')).toBeFalsy();
-
-    // Ensure no assignments-related empty states are rendered
-    expect(screen.queryByText('No budget activity yet? Assign a course!')).not.toBeInTheDocument();
-  });
-
   it('defaults to activity tab is no activeTabKey is provided', () => {
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -2472,7 +2408,6 @@ describe('<BudgetDetailPage />', () => {
       />,
     );
     expect(screen.getByText('• Enroll via Integrated Learning Platform')).toBeInTheDocument();
-    expect(screen.getByText('Manage edX in your integrated learning platform')).toBeInTheDocument();
   });
   it.each([
     {

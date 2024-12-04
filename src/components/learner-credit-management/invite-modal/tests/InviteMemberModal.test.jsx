@@ -47,7 +47,6 @@ const initialStoreState = {
     enterpriseSlug,
     enableLearnerPortal: true,
     enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
       enterpriseGroupsV1: true,
       enterpriseGroupsV2: true,
     },

@@ -13,7 +13,6 @@ import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 
 const BudgetDetailRedemptionsDescription = ({
   status,
-  enterpriseFeatures,
 }) => {
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
 
@@ -36,7 +35,7 @@ const BudgetDetailRedemptionsDescription = ({
         defaultMessage="Spent activity is driven by completed enrollments. "
         description="Description for the spent section of the budget detail page"
       />
-      {(enterpriseOfferId || (subsidyAccessPolicyId && !enterpriseFeatures.topDownAssignmentRealTimeLcm)) ? (
+      {(enterpriseOfferId || subsidyAccessPolicyId) ? (
         <FormattedMessage
           id="lcm.budget.detail.page.spent.description.enterprise"
           defaultMessage="Enrollment data is automatically updated every 12 hours. Come back later to view more recent enrollments."
@@ -63,12 +62,9 @@ const BudgetDetailRedemptionsDescription = ({
 
 BudgetDetailRedemptionsDescription.propTypes = {
   status: PropTypes.string.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
-  }).isRequired,
 };
 
-const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
+const BudgetDetailRedemptions = ({ enterpriseUUID }) => {
   const intl = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
@@ -83,7 +79,6 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
     enterpriseUUID,
     enterpriseOfferId,
     subsidyAccessPolicyId,
-    enterpriseFeatures.topDownAssignmentRealTimeLcm,
   );
 
   const { data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
@@ -114,7 +109,7 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
           description="Heading for the spent section of the budget detail page"
         />
       </h3>
-      <BudgetDetailRedemptionsDescription enterpriseFeatures={enterpriseFeatures} status={status} />
+      <BudgetDetailRedemptionsDescription status={status} />
       <LearnerCreditAllocationTable
         isLoading={isLoading}
         tableData={budgetRedemptions}
@@ -125,15 +120,11 @@ const BudgetDetailRedemptions = ({ enterpriseFeatures, enterpriseUUID }) => {
 };
 
 const mapStateToProps = state => ({
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
   enterpriseUUID: state.portalConfiguration.enterpriseId,
 });
 
 BudgetDetailRedemptions.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
-  }).isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetDetailRedemptions);

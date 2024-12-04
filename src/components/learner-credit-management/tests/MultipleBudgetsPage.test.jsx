@@ -28,9 +28,7 @@ const initialStore = {
     enterpriseId,
     enterpriseSlug,
     enableLearnerPortal: true,
-    enterpriseFeatures: {
-      topDownAssignmentRealTimeLcm: true,
-    },
+    enterpriseFeatures: {},
     enablePortalLearnerCreditManagementScreen: true,
   },
 };

@@ -27,12 +27,11 @@ const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 function isSupportedTabKey({
   tabKey,
   enterpriseGroupLearners,
-  enterpriseFeatures,
   subsidyAccessPolicy,
   appliesToAllContexts,
 }) {
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0)
-    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
+    || !!subsidyAccessPolicy?.isAssignable;
   const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB];
   if (showCatalog) {
     supportedTabs.push(BUDGET_DETAIL_CATALOG_TAB);
@@ -44,13 +43,11 @@ function isSupportedTabKey({
 }
 
 function getInitialTabKey(routeActiveTabKey, {
-  enterpriseFeatures, enterpriseGroupLearners,
-  subsidyAccessPolicy, appliesToAllContexts,
+  enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts,
 }) {
   const isValidTabKey = isSupportedTabKey({
     tabKey: routeActiveTabKey,
     enterpriseGroupLearners,
-    enterpriseFeatures,
     subsidyAccessPolicy,
     appliesToAllContexts,
   });
@@ -63,7 +60,6 @@ function getInitialTabKey(routeActiveTabKey, {
 const BudgetDetailTabsAndRoutes = ({
   enterpriseId,
   enterpriseSlug,
-  enterpriseFeatures,
   enterpriseGroupLearners,
   subsidyAccessPolicy,
   appliesToAllContexts,
@@ -74,7 +70,6 @@ const BudgetDetailTabsAndRoutes = ({
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
     {
-      enterpriseFeatures,
       enterpriseGroupLearners,
       subsidyAccessPolicy,
       appliesToAllContexts,
@@ -92,11 +87,11 @@ const BudgetDetailTabsAndRoutes = ({
     const initialTabKey = getInitialTabKey(
       routeActiveTabKey,
       {
-        enterpriseFeatures, enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts,
+        enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts,
       },
     );
     setActiveTabKey(initialTabKey);
-  }, [routeActiveTabKey, enterpriseFeatures, enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts]);
+  }, [routeActiveTabKey, enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts]);
 
   const handleTabSelect = (nextActiveTabKey) => {
     setActiveTabKey(nextActiveTabKey);
@@ -116,7 +111,6 @@ const BudgetDetailTabsAndRoutes = ({
     subsidyAccessPolicy,
     appliesToAllContexts,
     enterpriseGroupLearners,
-    enterpriseFeatures,
     refreshMembersTab,
     setRefreshMembersTab,
     ActivityTabElement: BudgetDetailActivityTabContents,
@@ -127,7 +121,6 @@ const BudgetDetailTabsAndRoutes = ({
   if (!isSupportedTabKey({
     tabKey: routeActiveTabKey || activeTabKey,
     enterpriseGroupLearners,
-    enterpriseFeatures,
     subsidyAccessPolicy,
     appliesToAllContexts,
   })) {
@@ -155,13 +148,11 @@ const BudgetDetailTabsAndRoutes = ({
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 BudgetDetailTabsAndRoutes.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  enterpriseFeatures: PropTypes.shape().isRequired,
   enterpriseGroupLearners: PropTypes.shape({
     count: PropTypes.number.isRequired,
   }),

@@ -24,7 +24,6 @@ const MultipleBudgetsPage = ({
   enterpriseUUID,
   enterpriseSlug,
   enableLearnerPortal,
-  enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
 }) => {
   const intl = useIntl();
@@ -37,7 +36,6 @@ const MultipleBudgetsPage = ({
   const { data: budgetsOverview } = useEnterpriseBudgets({
     enterpriseId: enterpriseUUID,
     enablePortalLearnerCreditManagementScreen,
-    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
   const {
     budgets = [],
@@ -121,7 +119,6 @@ const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
 });
 
@@ -129,9 +126,6 @@ MultipleBudgetsPage.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
-  }).isRequired,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
 };
 

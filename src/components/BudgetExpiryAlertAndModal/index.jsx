@@ -17,7 +17,7 @@ import EVENT_NAMES from '../../eventTracking';
 
 import useExpiry from './data/hooks/useExpiry';
 
-const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disableExpiryMessagingForLearnerCredit }) => {
+const BudgetExpiryAlertAndModal = ({ enterpriseUUID, disableExpiryMessagingForLearnerCredit }) => {
   const [modalIsOpen, modalOpen, modalClose] = useToggle(false);
   const [alertIsOpen, alertOpen, alertClose] = useToggle(false);
   const location = useLocation();
@@ -30,7 +30,6 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disable
   const supportUrl = configuration.ENTERPRISE_SUPPORT_URL;
 
   const { data: budgets } = useEnterpriseBudgets({
-    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
     enterpriseId: enterpriseUUID,
     enablePortalLearnerCreditManagementScreen: true,
     queryOptions: {
@@ -148,15 +147,11 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disable
 
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
   disableExpiryMessagingForLearnerCredit: state.portalConfiguration.disableExpiryMessagingForLearnerCredit,
 });
 
 BudgetExpiryAlertAndModal.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool.isRequired,
-  }),
   disableExpiryMessagingForLearnerCredit: PropTypes.bool.isRequired,
 };
 

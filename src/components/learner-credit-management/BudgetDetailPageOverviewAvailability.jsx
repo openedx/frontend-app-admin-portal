@@ -430,11 +430,10 @@ const BudgetDetailPageOverviewAvailability = ({
       <Col lg={5}>
         <BudgetActions
           budgetId={budgetId}
-          isAssignable={isAssignable && enterpriseFeatures.topDownAssignmentRealTimeLcm}
+          isAssignable={isAssignable}
           enterpriseId={enterpriseId}
           enterpriseGroupsV1={enterpriseFeatures.enterpriseGroupsV1}
           status={status}
-          isTopDownAssignmentEnabled={enterpriseFeatures.topDownAssignmentRealTimeLcm}
         />
       </Col>
     </Row>
@@ -450,7 +449,6 @@ BudgetDetailPageOverviewAvailability.propTypes = {
   }).isRequired,
   isAssignable: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
     enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,

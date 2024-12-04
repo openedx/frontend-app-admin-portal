@@ -15,7 +15,6 @@ export const useBudgetDetailTabs = ({
   enterpriseGroupLearners,
   refreshMembersTab,
   setRefreshMembersTab,
-  enterpriseFeatures,
   ActivityTabElement,
   CatalogTabElement,
   MembersTabElement,
@@ -29,7 +28,7 @@ export const useBudgetDetailTabs = ({
   });
   const isCatalogTabDisabled = [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
-    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
+    || !!subsidyAccessPolicy?.isAssignable;
 
   return useMemo(() => {
     const tabsArray = [];

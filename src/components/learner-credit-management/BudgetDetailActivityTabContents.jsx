@@ -12,7 +12,6 @@ import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity
 import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, appliesToAllContexts }) => {
-  const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1
@@ -24,7 +23,6 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
     data: budgetActivityOverview,
   } = useBudgetDetailActivityOverview({
     enterpriseUUID,
-    isTopDownAssignmentEnabled,
   });
 
   // If the budget activity overview data is loading (either the initial request OR any
@@ -44,7 +42,7 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
   // If enterprise groups is turned on, it's learner credit NOT enterprise offers w/ no spend
   const renderBnEActivity = isEnterpriseGroupsEnabled && (enterpriseOfferId == null) && !hasSpentTransactions;
 
-  if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
+  if (!subsidyAccessPolicy?.isAssignable) {
     if (isEnterpriseGroupsEnabled) {
       if (appliesToAllContexts) {
         return (
@@ -98,7 +96,6 @@ const mapStateToProps = state => ({
 BudgetDetailActivityTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
     enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
   appliesToAllContexts: PropTypes.bool.isRequired,

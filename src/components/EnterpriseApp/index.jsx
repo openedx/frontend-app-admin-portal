@@ -195,7 +195,6 @@ EnterpriseApp.propTypes = {
   enterpriseId: PropTypes.string,
   enterpriseName: PropTypes.string,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
     enterpriseGroupsV2: PropTypes.bool,
   }),
   enterpriseBranding: PropTypes.shape({

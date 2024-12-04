@@ -17,7 +17,6 @@ import BudgetStatusSubtitle from './BudgetStatusSubtitle';
 
 const BudgetOverviewContent = ({
   enterpriseUUID,
-  enterpriseFeatures,
 }) => {
   const intl = useIntl();
   const { subsidyAccessPolicyId, enterpriseOfferId } = useBudgetId();
@@ -50,7 +49,6 @@ const BudgetOverviewContent = ({
     subsidySummary,
     budgetId: policyOrOfferId,
     enterpriseOfferMetadata,
-    isTopDownAssignmentEnabled: enterpriseFeatures.topDownAssignmentRealTimeLcm,
   });
 
   if (!subsidyAccessPolicy && (isLoadingSubsidySummary || isLoadingEnterpriseOffer)) {
@@ -102,14 +100,10 @@ const BudgetOverviewContent = ({
 
 const mapStateToProps = state => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 BudgetOverviewContent.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
-  }).isRequired,
 };
 
 export default connect(mapStateToProps)(BudgetOverviewContent);

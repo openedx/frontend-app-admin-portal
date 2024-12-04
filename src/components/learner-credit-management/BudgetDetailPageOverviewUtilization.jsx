@@ -17,7 +17,6 @@ const BudgetDetailPageOverviewUtilization = ({
   budgetTotalSummary: { utilized },
   budgetAggregates,
   isAssignable,
-  enterpriseFeatures,
   enterpriseId,
   isRetired,
 }) => {
@@ -33,7 +32,6 @@ const BudgetDetailPageOverviewUtilization = ({
   if (
     !budgetId
     || isRetired
-    || !enterpriseFeatures.topDownAssignmentRealTimeLcm
     || utilized <= 0
     || !isAssignable
   ) {
@@ -186,15 +184,11 @@ BudgetDetailPageOverviewUtilization.propTypes = {
   budgetTotalSummary: PropTypes.shape(budgetTotalSummaryShape).isRequired,
   budgetAggregates: PropTypes.shape(budgetAggregatesShape).isRequired,
   isAssignable: PropTypes.bool.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
-  }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
   isRetired: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
