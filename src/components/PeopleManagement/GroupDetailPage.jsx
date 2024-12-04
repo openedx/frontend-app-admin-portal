@@ -11,6 +11,7 @@ import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from './utils';
+import AddMembersModal from './AddMembersModal';
 
 const GroupDetailPage = () => {
   const intl = useIntl();
@@ -20,7 +21,7 @@ const GroupDetailPage = () => {
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
   const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
-
+  const [isAddMembersModalOpen, openAddMembersModal, closeAddMembersModal] = useToggle(false);
   const handleNameUpdate = (name) => {
     setGroupName(name);
   };
@@ -87,7 +88,7 @@ const GroupDetailPage = () => {
                       data-testid="edit-modal-icon"
                     />
                   </>
-              )}
+                )}
                 subtitle={`${enterpriseGroup.acceptedMembersCount} accepted members`}
               />
               <Card.Section className="pt-1 x-small">
@@ -116,10 +117,21 @@ const GroupDetailPage = () => {
               >
                 View group progress
               </Hyperlink>
+              <IconButton
+                key="editGroupTooltip"
+                src={Edit}
+                iconAs={Icon}
+                alt="Edit group"
+                className="mr-2"
+                onClick={openAddMembersModal}
+                size="sm"
+                data-testid="edit-modal-icon"
+              />
+              <AddMembersModal groupName={groupName} isModalOpen={isAddMembersModalOpen} closeModal={closeAddMembersModal} />
             </Card.Footer>
           </Card>
         </>
-      ) : <Skeleton className="mt-3" height={200} count={1} /> }
+      ) : <Skeleton className="mt-3" height={200} count={1} />}
     </div>
   );
 };
