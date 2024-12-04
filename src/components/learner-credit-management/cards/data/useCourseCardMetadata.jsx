@@ -10,14 +10,16 @@ import {
   getAssignableCourseRuns,
   getEnrollmentDeadline,
   useBudgetId,
+  useCatalogContainsContentItemsMultipleQueries,
   useSubsidyAccessPolicy,
 } from '../../data';
 import { pluralText } from '../../../../utils';
+import { ENTERPRISE_RESTRICTION_TYPE } from '../../data/constants';
 
 const messages = defineMessages({
   courseFooterMessage: {
     id: 'lcm.budget.detail.page.catalog.tab.course.card.footer-text',
-    defaultMessage: '({courseRuns}) available {pluralText}',
+    defaultMessage: '({numCourseRuns}) available {pluralText}',
     description: 'Footer text for a course card result for learner credit management',
   },
 });
@@ -54,10 +56,24 @@ const useCourseCardMetadata = ({
     title,
     courseRuns,
   } = course;
+  const {
+    dataByContentKey: catalogContainsRestrictedRunsData,
+    isLoading: isLoadingCatalogContainsRestrictedRuns,
+  } = useCatalogContainsContentItemsMultipleQueries(
+    subsidyAccessPolicy.catalogUuid,
+    courseRuns?.filter(
+      // Pass only restricted runs.
+      run => run.restrictionType === ENTERPRISE_RESTRICTION_TYPE,
+    ).map(
+      run => run.key,
+    ),
+  );
+
   const assignableCourseRuns = getAssignableCourseRuns({
     courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
     isLateRedemptionAllowed: subsidyAccessPolicy.isLateRedemptionAllowed,
+    catalogContainsRestrictedRunsData,
   });
 
   // Extracts the content price from assignable course runs
@@ -82,7 +98,7 @@ const useCourseCardMetadata = ({
   }
 
   const footerText = intl.formatMessage(messages.courseFooterMessage, {
-    courseRuns: assignableCourseRuns.length,
+    numCourseRuns: assignableCourseRuns.length,
     pluralText: pluralText('date', assignableCourseRuns.length),
   });
 
@@ -98,6 +114,7 @@ const useCourseCardMetadata = ({
     linkToCourse,
     isExecEdCourseType,
     footerText,
+    isLoadingCatalogContainsRestrictedRuns,
   };
 };
 

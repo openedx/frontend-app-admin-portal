@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Badge, breakpoints, Card, Stack, useMediaQuery,
+  Badge, breakpoints, Card, Skeleton, Stack, useMediaQuery,
 } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
@@ -35,7 +35,14 @@ const BaseCourseCard = ({
     formattedPrice,
     isExecEdCourseType,
     footerText,
+    isLoadingCatalogContainsRestrictedRuns,
   } = courseCardMetadata;
+  const coursePrice = (
+    isLoadingCatalogContainsRestrictedRuns
+      ? <span data-testid="course-price-skeleton"><Skeleton /></span>
+      : formattedPrice
+  );
+  const cardPrice = courseRun ? formatPrice(courseRun.contentPrice) : coursePrice;
   return (
     <Card orientation={isSmall ? 'vertical' : 'horizontal'} className={cardClassName}>
       <Card.ImageCap
@@ -50,7 +57,7 @@ const BaseCourseCard = ({
           subtitle={subtitle}
           actions={(
             <Stack gap={1} className="text-right">
-              <div className="h4 mt-2.5 mb-0">{courseRun ? formatPrice(courseRun.contentPrice) : formattedPrice}</div>
+              <div className="h4 mt-2.5 mb-0">{cardPrice}</div>
               <span className="micro">
                 <FormattedMessage
                   id="lcm.budget.detail.page.catalog.tab.course.card.price.per.learner"
