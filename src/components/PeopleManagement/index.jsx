@@ -40,7 +40,6 @@ const PeopleManagementPage = ({ enterpriseId }) => {
     }
   }, [data]);
 
-
   return (
     <>
       <Helmet title={PAGE_TITLE} />

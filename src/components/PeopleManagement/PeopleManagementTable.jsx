@@ -1,79 +1,68 @@
-import { CardView, Container, DataTable, TextFilter } from "@openedx/paragon";
-import { useIntl } from "@edx/frontend-platform/i18n";
+import React from 'react';
+import { CardView, DataTable } from '@openedx/paragon';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import OrgMemberCard from "./OrgMemberCard";
+import TableTextFilter from '../learner-credit-management/TableTextFilter';
+import CustomDataTableEmptyState from '../learner-credit-management/CustomDataTableEmptyState';
+import OrgMemberCard from './OrgMemberCard';
+import useEnterpriseMembersTableData from './data/hooks/useEnterpriseMembersTableData';
 
-const PeopleManagementTable = () => {
-  const pageSize = 10;
-  const intl = useIntl();
-  // const tableColumns = [
-  //   {
-  //     Header: "Name",
-  //     accessor: "name",
-  //   },
-  //   {
-  //     Header: "Email",
-  //     accessor: "email",
-  //   },
-  //   {
-  //     Header: "Joined org",
-  //     accessor: "joinedOrg",
-  //   },
-  //   {
-  //     Header: "Enrollments",
-  //     accessor: "enrollments",
-  //   },
-  // ];
+const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
+
+const PeopleManagementTable = ({ enterpriseId }) => {
+  const {
+    isLoading: isTableLoading,
+    enterpriseMembersTableData,
+    fetchEnterpriseMembersTableData,
+  } = useEnterpriseMembersTableData({ enterpriseId });
+
+  const tableColumns = [{ Header: 'Name', accessor: 'name' }];
 
   return (
     <DataTable
-      className="pt-4 mt-4"
-      isFilterable
       isSortable
-      defaultColumnValues={{ Filter: TextFilter }}
-      // isLoading={isFetching}
+      manualSortBy
       isPaginated
       manualPagination
+      isFilterable
+      manualFilters
+      isLoading={isTableLoading}
+      defaultColumnValues={{ Filter: TableTextFilter }}
+      FilterStatusComponent={FilterStatus}
+      numBreakoutFilters={2}
+      columns={tableColumns}
       initialState={{
-        pageSize,
+        pageSize: 10,
         pageIndex: 0,
+        sortBy: [
+          { id: 'enterpriseCustomerUser.name', desc: true },
+        ],
+        filters: [],
       }}
-      // itemCount={paginatedData.itemCount}
-      // pageCount={paginatedData.pageCount}
-      // fetchData={fetchData}
-      // data={paginatedData.data}
-      data={[
-        {
-          name: "April Ludgate",
-          email: "aprilludgate@pawnee.gov",
-          joinedOrg: "Jan 21, 2021",
-          enrollments: 3,
-        },
-        {
-          name: "Ben Wyatt",
-          email: "benwyatt@pawnee.gov",
-          joinedOrg: "Oct 31, 2022",
-          enrollments: 1,
-        },
-      ]}
-      columns={tableColumns}>
+      fetchData={fetchEnterpriseMembersTableData}
+      data={enterpriseMembersTableData.results}
+      itemCount={enterpriseMembersTableData.itemCount}
+      pageCount={enterpriseMembersTableData.pageCount}
+      EmptyTableComponent={CustomDataTableEmptyState}
+    >
       <DataTable.TableControlBar />
       <CardView
         className="d-block"
         CardComponent={OrgMemberCard}
         columnSizes={{ xs: 12 }}
       />
-      {/* <DataTable.Table /> */}
-      {/* <DataTable.EmptyTable
-      content={intl.formatMessage({
-        id: 'peopleManagement.dataTable.empty',
-        defaultMessage: 'No results found.',
-        description: 'Message displayed when the table has no data.',
-      })}
-    /> */}
       <DataTable.TableFooter />
     </DataTable>
   );
 };
 
-export default PeopleManagementTable;
+PeopleManagementTable.propTypes = {
+  enterpriseId: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(PeopleManagementTable);
