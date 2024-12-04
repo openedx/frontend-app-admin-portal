@@ -5,9 +5,10 @@ import '@testing-library/jest-dom/extend-expect';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
+import userEvent from '@testing-library/user-event';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { useEnterpriseGroupUuid } from '../../learner-credit-management/data';
+import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../../learner-credit-management/data';
 import GroupDetailPage from '../GroupDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 
@@ -25,6 +26,7 @@ const getMockStore = store => mockStore(store);
 jest.mock('../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../learner-credit-management/data'),
   useEnterpriseGroupUuid: jest.fn(),
+  useEnterpriseGroupLearnersTableData: jest.fn(),
 }));
 jest.mock('../../../data/services/LmsApiService');
 jest.mock('react-router-dom', () => ({
@@ -60,11 +62,50 @@ describe('<GroupDetailPageWrapper >', () => {
   beforeEach(() => {
     useEnterpriseGroupUuid.mockReturnValue({ data: TEST_GROUP });
   });
-  it('renders the GroupDetailPage', () => {
+  it('renders the GroupDetailPage', async () => {
+    const mockFetchEnterpriseGroupLearnersTableData = jest.fn();
+    useEnterpriseGroupLearnersTableData.mockReturnValue({
+      fetchEnterpriseGroupLearnersTableData: mockFetchEnterpriseGroupLearnersTableData,
+      isLoading: false,
+      enterpriseGroupLearnersTableData: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [{
+          activatedAt: '2024-11-06T21:01:32.953901Z',
+          enterprise_group_membership_uuid: TEST_GROUP,
+          memberDetails: {
+            userEmail: 'test@2u.com',
+            userName: 'Test 2u',
+          },
+          recentAction: 'Accepted: November 06, 2024',
+          status: 'accepted',
+          enrollments: 1,
+        }],
+      },
+    });
     render(<GroupDetailPageWrapper />);
     expect(screen.queryAllByText(TEST_GROUP.name)).toHaveLength(2);
     expect(screen.getByText('0 accepted members')).toBeInTheDocument();
     expect(screen.getByText('View group progress')).toBeInTheDocument();
+    expect(screen.getByText('Add and remove group members.')).toBeInTheDocument();
+    expect(screen.getByText('Test 2u')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Member details'));
+    await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
+      filters: [],
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [{ desc: true, id: 'memberDetails' }],
+    }));
+
+    userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+    await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
+      filters: [],
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [{ desc: false, id: 'enrollmentCount' }],
+    }));
   });
   it('edit flex group name', async () => {
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseGroup');
