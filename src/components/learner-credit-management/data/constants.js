@@ -125,7 +125,18 @@ export const learnerCreditManagementQueryKeys = {
   budgetGroupLearners: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'group learners'],
   enterpriseCustomer: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'enterpriseCustomer', enterpriseId],
   flexGroup: (enterpriseId) => [...learnerCreditManagementQueryKeys.enterpriseCustomer(enterpriseId), 'flexGroup'],
+  catalog: (catalog) => [...learnerCreditManagementQueryKeys.all, 'catalog', catalog],
+  catalogContainsContentItem: (catalogUuid, contentKey) => [
+    ...learnerCreditManagementQueryKeys.catalog(catalogUuid),
+    'containsContentItem',
+    contentKey,
+  ],
 };
 
 // Route to learner credit
 export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:budgetId/:activeTabKey?';
+
+// [ENT-9359] Restricted runs/custom presentations.
+// The `restriction_type` metadata key for course runs may have this value,
+// indicating that the run is restricted.
+export const ENTERPRISE_RESTRICTION_TYPE = 'custom-b2b-enterprise';

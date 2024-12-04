@@ -40,7 +40,11 @@ const useEnterpriseMembersTableData = ({ enterpriseId }) => {
         setIsLoading(false);
       }
     };
-    fetch();
+    if (args.filters.length && args.filters[0].value.length > 2) {
+      fetch();
+    } else if (!args.filters.length) {
+      fetch();
+    }
   }, [enterpriseId]);
 
   const debouncedFetchEnterpriseMembersData = useMemo(

@@ -1,5 +1,5 @@
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
-import { Dropdown, Stack } from '@openedx/paragon';
+import { Dropdown, Skeleton, Stack } from '@openedx/paragon';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
@@ -34,6 +34,7 @@ const NewAssignmentModalDropdown = ({
   onClick: openAssignmentModal,
   courseRuns,
   children,
+  isLoading,
 }) => {
   const intl = useIntl();
   const [clickedDropdownItem, setClickedDropdownItem] = useState(null);
@@ -59,26 +60,35 @@ const NewAssignmentModalDropdown = ({
         <Dropdown.Header className="text-uppercase">
           {courseRuns.length > 0 ? intl.formatMessage(messages.byDate) : intl.formatMessage(messages.noAvailableDates) }
         </Dropdown.Header>
-        {courseRuns.length > 0 && courseRuns.map(courseRun => (
-          <Dropdown.Item
-            key={courseRun.key}
-            data-courserunkey={courseRun.key}
-            onMouseDown={() => setClickedDropdownItem(courseRun)}
-            onMouseUp={() => setClickedDropdownItem(null)}
-          >
-            <Stack>
-              {intl.formatMessage(messages.startDate, {
-                startLabel: startLabel(courseRun),
-                startDate: dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT),
-              })}
-              <span className={classNames('small', { 'text-muted': getDropdownItemClassName(courseRun) })}>
-                {intl.formatMessage(messages.enrollBy, {
-                  enrollByDate: dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT),
+        {courseRuns.length > 0 && courseRuns.map(courseRun => {
+          if (isLoading) {
+            return (
+              <Dropdown.Item className="d-block" data-testid="assignment-dropdown-item-skeleton">
+                <Skeleton />
+              </Dropdown.Item>
+            );
+          }
+          return (
+            <Dropdown.Item
+              key={courseRun.key}
+              data-courserunkey={courseRun.key}
+              onMouseDown={() => setClickedDropdownItem(courseRun)}
+              onMouseUp={() => setClickedDropdownItem(null)}
+            >
+              <Stack>
+                {intl.formatMessage(messages.startDate, {
+                  startLabel: startLabel(courseRun),
+                  startDate: dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT),
                 })}
-              </span>
-            </Stack>
-          </Dropdown.Item>
-        ))}
+                <span className={classNames('small', { 'text-muted': getDropdownItemClassName(courseRun) })}>
+                  {intl.formatMessage(messages.enrollBy, {
+                    enrollByDate: dayjs(courseRun.enrollBy).format(SHORT_MONTH_DATE_FORMAT),
+                  })}
+                </span>
+              </Stack>
+            </Dropdown.Item>
+          );
+        })}
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -93,6 +103,7 @@ NewAssignmentModalDropdown.propTypes = {
     start: PropTypes.string,
   })).isRequired,
   children: PropTypes.node.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default NewAssignmentModalDropdown;

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
-import { learnerCreditManagementQueryKeys } from '../constants';
+import { learnerCreditManagementQueryKeys } from '../../../learner-credit-management/data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 /**
