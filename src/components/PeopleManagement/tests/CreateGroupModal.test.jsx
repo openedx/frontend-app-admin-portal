@@ -16,7 +16,7 @@ import CreateGroupModal from '../CreateGroupModal';
 import {
   useEnterpriseLearnersTableData,
   useGetAllEnterpriseLearnerEmails,
-} from '../../learner-credit-management/data/hooks/useEnterpriseLearnersTableData';
+} from '../data/hooks/useEnterpriseLearnersTableData';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 
 jest.mock('@tanstack/react-query', () => ({

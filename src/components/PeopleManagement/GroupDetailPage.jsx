@@ -7,11 +7,13 @@ import {
 import { Delete, Edit } from '@openedx/paragon/icons';
 
 import { useEnterpriseGroupUuid } from '../learner-credit-management/data';
+import { useEnterpriseGroupLearnersTableData } from './data/hooks';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from './utils';
 import AddMembersModal from './AddMembersModal';
+import GroupMembersTable from './GroupMembersTable';
 
 const GroupDetailPage = () => {
   const intl = useIntl();
@@ -22,6 +24,11 @@ const GroupDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
   const [isAddMembersModalOpen, openAddMembersModal, closeAddMembersModal] = useToggle(false);
+  const {
+    isLoading: isTableLoading,
+    enterpriseGroupLearnersTableData,
+    fetchEnterpriseGroupLearnersTableData,
+  } = useEnterpriseGroupLearnersTableData({ groupUuid, isAddMembersModalOpen });
   const handleNameUpdate = (name) => {
     setGroupName(name);
   };
@@ -117,21 +124,39 @@ const GroupDetailPage = () => {
               >
                 View group progress
               </Hyperlink>
-              <IconButton
-                key="editGroupTooltip"
-                src={Edit}
-                iconAs={Icon}
-                alt="Edit group"
-                className="mr-2"
-                onClick={openAddMembersModal}
-                size="sm"
-                data-testid="edit-modal-icon"
-              />
-              <AddMembersModal groupName={groupName} isModalOpen={isAddMembersModalOpen} closeModal={closeAddMembersModal} />
             </Card.Footer>
           </Card>
         </>
       ) : <Skeleton className="mt-3" height={200} count={1} />}
+      <div className="mb-4 mt-5">
+        <h4 className="mt-1">
+          <FormattedMessage
+            id="people.management.group.details.page.label"
+            defaultMessage="Group members"
+            description="Label for the groups detail page with members"
+          />
+        </h4>
+        <p className="font-weight-light">
+          <FormattedMessage
+            id="people.management.group.details.page.description"
+            defaultMessage="Add and remove group members."
+            description="Description for the members table in the Groups detail page"
+          />
+        </p>
+      </div>
+      <GroupMembersTable
+        isLoading={isTableLoading}
+        tableData={enterpriseGroupLearnersTableData}
+        fetchTableData={fetchEnterpriseGroupLearnersTableData}
+        groupUuid={groupUuid}
+        openAddMembersModal={openAddMembersModal}
+      />
+      <AddMembersModal
+        groupUuid={groupUuid}
+        groupName={groupName}
+        isModalOpen={isAddMembersModalOpen}
+        closeModal={closeAddMembersModal}
+      />
     </div>
   );
 };

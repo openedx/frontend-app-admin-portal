@@ -13,7 +13,7 @@ import InviteSummaryCount from '../learner-credit-management/invite-modal/Invite
 import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
 import { MAX_LENGTH_GROUP_NAME } from './constants';
-import EnterpriseCustomerUserDatatable from '../learner-credit-management/invite-modal/EnterpriseCustomerUserDatatable';
+import EnterpriseCustomerUserDatatable from './EnterpriseCustomerUserDatatable';
 import { useEnterpriseLearners } from '../learner-credit-management/data';
 
 const CreateGroupModalContent = ({

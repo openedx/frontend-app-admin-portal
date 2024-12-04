@@ -10,56 +10,47 @@ import {
 } from '@openedx/paragon';
 import LmsApiService from '../../data/services/LmsApiService';
 import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
-import AddGroupModalContent from './AddGroupModalContent';
+import AddMembersModalContent from './AddMembersModalContent';
 import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
+import { useAllEnterpriseGroupLearners } from './data/hooks';
 
 const AddMembersModal = ({
   isModalOpen,
   closeModal,
   enterpriseUUID,
   groupName,
+  groupUuid,
 }) => {
   const intl = useIntl();
   const [learnerEmails, setLearnerEmails] = useState([]);
-  const [createButtonState, setCreateButtonState] = useState('default');
-  const [canCreateGroup, setCanCreateGroup] = useState(false);
-  const [canInviteMembers, setCanInviteMembers] = useState(false);
+  const [addButtonState, setAddButtonState] = useState('default');
+  const [canAddMembers, setCanAddMembersGroup] = useState(false);
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
-  const handleCloseCreateGroupModal = () => {
+  const handleCloseAddMembersModal = () => {
     closeModal();
-    setCreateButtonState('default');
+    setAddButtonState('default');
   };
   const queryClient = useQueryClient();
+  const {
+    isLoading,
+    enterpriseGroupLearners,
+  } = useAllEnterpriseGroupLearners(groupUuid);
 
-  const handleCreateGroup = async () => {
-    setCreateButtonState('pending');
-    const options = {
-      enterpriseUUID,
-      groupName,
-    };
-    let groupCreationResponse;
-
-    try {
-      groupCreationResponse = await LmsApiService.createEnterpriseGroup(options);
-    } catch (err) {
-      logError(err);
-      setCreateButtonState('error');
-      openSystemErrorModal();
-    }
-
+  const handleAddMembers = async () => {
+    setAddButtonState('pending');
     try {
       const requestBody = snakeCaseObject({
         learnerEmails,
       });
-      await LmsApiService.inviteEnterpriseLearnersToGroup(groupCreationResponse.data.uuid, requestBody);
+      await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, requestBody);
       queryClient.invalidateQueries({
-        queryKey: learnerCreditManagementQueryKeys.group(enterpriseUUID),
+        queryKey: learnerCreditManagementQueryKeys.group(groupUuid),
       });
-      setCreateButtonState('complete');
-      handleCloseCreateGroupModal();
+      setAddButtonState('complete');
+      handleCloseAddMembersModal();
     } catch (err) {
       logError(err);
-      setCreateButtonState('error');
+      setAddButtonState('error');
       openSystemErrorModal();
     }
   };
@@ -69,71 +60,78 @@ const AddMembersModal = ({
     { canInvite = false } = {},
   ) => {
     setLearnerEmails(value);
-    setCanInviteMembers(canInvite);
+    setCanAddMembersGroup(canInvite);
   }, []);
 
   useEffect(() => {
-    setCanCreateGroup(false);
-    if (canInviteMembers) {
-      setCanCreateGroup(true);
+    setCanAddMembersGroup(false);
+    if (canAddMembers) {
+      setCanAddMembersGroup(true);
     }
-  }, [canInviteMembers]);
+  }, [canAddMembers]);
 
   return (
-    <>
-      <FullscreenModal
-        className="stepper-modal bg-light-200"
-        isOpen={isModalOpen}
-        onClose={handleCloseCreateGroupModal}
-        title={intl.formatMessage({
-          id: 'peopleManagement.tab.create.group.modal.title',
-          defaultMessage: 'New group',
-          description: 'Title for creating a new group modal',
-        })}
-        footerNode={(
-          <ActionRow>
-            <ActionRow.Spacer />
-            <Button variant="tertiary" onClick={handleCloseCreateGroupModal}>Cancel</Button>
-            <StatefulButton
-              labels={{
-                default: 'Create',
-                pending: 'Creating...',
-                complete: 'Created',
-                error: 'Try again',
-              }}
-              variant="primary"
-              state={createButtonState}
-              disabled={!canCreateGroup}
-              onClick={handleCreateGroup}
+    <div>
+      {!isLoading ? (
+        <div>
+          <FullscreenModal
+            className="stepper-modal bg-light-200"
+            isOpen={isModalOpen}
+            onClose={handleCloseAddMembersModal}
+            title={intl.formatMessage({
+              id: 'peopleManagement.tab.add.members.modal.title',
+              defaultMessage: 'New group',
+              description: 'Title for adding members modal',
+            })}
+            footerNode={(
+              <ActionRow>
+                <ActionRow.Spacer />
+                <Button variant="tertiary" onClick={handleCloseAddMembersModal}>Cancel</Button>
+                <StatefulButton
+                  labels={{
+                    default: 'Add',
+                    pending: 'Adding...',
+                    complete: 'Added',
+                    error: 'Try again',
+                  }}
+                  variant="primary"
+                  state={addButtonState}
+                  disabled={!canAddMembers}
+                  onClick={handleAddMembers}
+                />
+              </ActionRow>
+            )}
+          >
+            <AddMembersModalContent
+              groupName={groupName}
+              onEmailAddressesChange={handleEmailAddressesChange}
+              isGroupInvite
+              enterpriseUUID={enterpriseUUID}
+              enterpriseGroupLearners={enterpriseGroupLearners}
             />
-          </ActionRow>
-        )}
-      >
-        <AddGroupModalContent
-          groupName={groupName}
-          onEmailAddressesChange={handleEmailAddressesChange}
-          isGroupInvite
-          enterpriseUUID={enterpriseUUID}
-        />
-      </FullscreenModal>
-      <SystemErrorAlertModal
-        isErrorModalOpen={isSystemErrorModalOpen}
-        closeErrorModal={closeSystemErrorModal}
-        closeAssignmentModal={handleCloseCreateGroupModal}
-        retry={handleCreateGroup}
-      />
-    </>
+          </FullscreenModal>
+          <SystemErrorAlertModal
+            isErrorModalOpen={isSystemErrorModalOpen}
+            closeErrorModal={closeSystemErrorModal}
+            closeAssignmentModal={handleCloseAddMembersModal}
+            retry={handleAddMembers}
+          />
+        </div>
+      ) : null}
+    </div>
   );
 };
-
-const mapStateToProps = state => ({
-  enterpriseUUID: state.portalConfiguration.enterpriseId,
-});
 
 AddMembersModal.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
+  groupUuid: PropTypes.string.isRequired,
+  groupName: PropTypes.string,
 };
+
+const mapStateToProps = state => ({
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+});
 
 export default connect(mapStateToProps)(AddMembersModal);

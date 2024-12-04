@@ -462,6 +462,15 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
   };
 
+  static fetchAllEnterpriseGroupLearners = async (groupUuid) => {
+    const queryParams = new URLSearchParams({
+      page: 1,
+    });
+    const url = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
+    const response = await LmsApiService.fetchData(url);
+    return response;
+  };
+
   static removeEnterpriseGroup = async (groupUuid) => {
     const removeGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().delete(removeGroupEndpoint);
