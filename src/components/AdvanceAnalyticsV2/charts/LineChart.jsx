@@ -41,7 +41,6 @@ const LineChart = ({
     },
     xaxis: { title: xAxisTitle },
     yaxis: { title: yAxisTitle },
-    dragmode: false,
     autosize: true,
   };
 

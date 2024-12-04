@@ -12,11 +12,8 @@ jest.mock('../AdvanceAnalyticsV2/AnalyticsV2Page', () => function AnalyticsV2Pag
 jest.mock('../../containers/AdminPage', () => function AdminPageMock() {
   return <div>AdminPage Mock Component</div>;
 });
-jest.mock('../PlotlyAnalytics', () => ({
-  PlotlyAnalyticsPage: () => <div>PlotlyAnalyticsPage Mock Component</div>,
-}));
 
-let mockEnterpriseAppPage = 'analyticsv2';
+let mockEnterpriseAppPage = 'analytics';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -66,12 +63,5 @@ describe('EnterpriseAppRoutes', () => {
     features.ANALYTICS_SUPPORTED = true;
     renderWithProviders(defaultProps);
     expect(screen.getByText('AdminPage Mock Component')).toBeInTheDocument();
-  });
-
-  it('renders Analytics when ANALYTICS_SUPPORTED is true', () => {
-    mockEnterpriseAppPage = 'analytics';
-    features.ANALYTICS_SUPPORTED = true;
-    renderWithProviders(defaultProps);
-    expect(screen.getByText('PlotlyAnalyticsPage Mock Component')).toBeInTheDocument();
   });
 });

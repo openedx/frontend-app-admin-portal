@@ -9,7 +9,10 @@ import classNames from 'classnames';
 const Stats = ({
   isFetching, isError, data,
 }) => {
-  const formatter = Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 2 });
+  const formatNumber = (number) => (number >= 10000
+    ? new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 2 }).format(number)
+    : String(number));
+
   if (isError) {
     return (
       <FormattedMessage
@@ -35,7 +38,7 @@ const Stats = ({
               description="Title for the enrollments stat."
             />
           </p>
-          <p className="font-weight-bolder analytics-stat-number value-enrollments">{formatter.format(data?.enrolls || 0)}</p>
+          <p className="font-weight-bolder analytics-stat-number value-enrollments">{formatNumber(data?.enrolls || 0)}</p>
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center">
           <p className="mb-0 small title-distinct-courses">
@@ -45,7 +48,7 @@ const Stats = ({
               description="Title for the distinct courses stat."
             />
           </p>
-          <p className="font-weight-bolder analytics-stat-number value-distinct-courses">{formatter.format(data?.courses || 0)}</p>
+          <p className="font-weight-bolder analytics-stat-number value-distinct-courses">{formatNumber(data?.courses || 0)}</p>
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center">
           <p className="mb-0 small title-daily-sessions">
@@ -55,7 +58,7 @@ const Stats = ({
               description="Title for the daily sessions stat."
             />
           </p>
-          <p className="font-weight-bolder analytics-stat-number value-daily-sessions">{formatter.format(data?.sessions || 0)}</p>
+          <p className="font-weight-bolder analytics-stat-number value-daily-sessions">{formatNumber(data?.sessions || 0)}</p>
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center">
           <p className="mb-0 small title-learning-hours">
@@ -65,7 +68,7 @@ const Stats = ({
               description="Title for the learning hours stat."
             />
           </p>
-          <p className="font-weight-bolder analytics-stat-number value-learning-hours">{formatter.format(data?.hours || 0)}</p>
+          <p className="font-weight-bolder analytics-stat-number value-learning-hours">{formatNumber(data?.hours || 0)}</p>
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center">
           <p className="mb-0 small title-completions">
@@ -75,7 +78,7 @@ const Stats = ({
               description="Title for the completions stat."
             />
           </p>
-          <p className="font-weight-bolder analytics-stat-number value-completions">{formatter.format(data?.completions || 0)}</p>
+          <p className="font-weight-bolder analytics-stat-number value-completions">{formatNumber(data?.completions || 0)}</p>
         </div>
       </div>
     </div>

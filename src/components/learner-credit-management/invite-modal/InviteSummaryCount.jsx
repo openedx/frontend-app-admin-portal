@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Card } from '@openedx/paragon';
 
 const InviteSummaryCount = ({ memberInviteMetadata }) => (
-  <Card className="d-flex px-3 py-2 rounded-0 shadow-none">
+  <Card className="mt-2 d-flex px-3 py-2 rounded-0 shadow-none">
     <Card.Footer className="p-0 justify-content-between" orientation="horizontal">
       <span>
         Total members to add
@@ -18,6 +18,7 @@ InviteSummaryCount.propTypes = {
     isValidInput: PropTypes.bool,
     lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
     duplicateEmails: PropTypes.arrayOf(PropTypes.string),
+    emailsNotInOrg: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
 

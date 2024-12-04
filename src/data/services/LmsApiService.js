@@ -47,6 +47,8 @@ class LmsApiService {
 
   static enterpriseGroupListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
 
+  static enterpriseLearnerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-learner/`;
+
   static createEnterpriseGroup(options) {
     const postParams = {
       name: options.groupName,
@@ -120,7 +122,7 @@ class LmsApiService {
   }
 
   static fetchReportingConfigs(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`);
+    return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}&page_size=100`);
   }
 
   static fetchReportingConfigTypes(uuid) {
@@ -433,12 +435,11 @@ class LmsApiService {
   }
 
   static fetchEnterpriseLearnerData = async (options) => {
-    const enterpriseLearnerUrl = `${configuration.LMS_BASE_URL}/enterprise/api/v1/enterprise-learner/`;
     const queryParams = new URLSearchParams({
       ...options,
       page: 1,
     });
-    const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
+    const url = `${LmsApiService.enterpriseLearnerUrl}?${queryParams.toString()}`;
     const response = await LmsApiService.fetchData(url);
     return response;
   };
@@ -485,6 +486,14 @@ class LmsApiService {
   static removeEnterpriseLearnersFromGroup = async (groupUuid, formData) => {
     const removeLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/remove_learners/`;
     return LmsApiService.apiClient().post(removeLearnerEndpoint, formData);
+  };
+
+  static fetchEnterpriseLearners = async (options) => {
+    const queryParams = new URLSearchParams({
+      ...options,
+    });
+    const url = `${LmsApiService.enterpriseLearnerUrl}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
   };
 }
 

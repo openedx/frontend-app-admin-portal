@@ -11,6 +11,13 @@ const InviteModalInputFeedback = ({ memberInviteMetadata, isCsvUpload }) => {
         </Form.Control.Feedback>
       );
     }
+    if (memberInviteMetadata.emailsNotInOrg.length > 0) {
+      return (
+        <Form.Control.Feedback type="invalid">
+          {memberInviteMetadata.validationError.message}
+        </Form.Control.Feedback>
+      );
+    }
     return (
       <Form.Control.Feedback className="text-info-500">
         {memberInviteMetadata.validationError.message}
@@ -46,6 +53,7 @@ InviteModalInputFeedback.propTypes = {
     lowerCasedEmails: PropTypes.arrayOf(
       PropTypes.shape({}),
     ),
+    emailsNotInOrg: PropTypes.arrayOf(PropTypes.string),
   }),
   isCsvUpload: PropTypes.bool,
 };

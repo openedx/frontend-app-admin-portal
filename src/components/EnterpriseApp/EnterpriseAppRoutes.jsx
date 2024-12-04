@@ -11,7 +11,6 @@ import NotFoundPage from '../NotFoundPage';
 import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
-import { PlotlyAnalyticsPage } from '../PlotlyAnalytics';
 import AnalyticsV2Page from '../AdvanceAnalyticsV2/AnalyticsV2Page';
 import FeatureNotSupportedPage from '../FeatureNotSupportedPage';
 import { ROUTE_NAMES } from './data/constants';
@@ -85,14 +84,6 @@ const EnterpriseAppRoutes = ({
       {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics && (
         <Route
           key="analytics"
-          path="/"
-          element={features.ANALYTICS_SUPPORTED ? <PlotlyAnalyticsPage /> : <FeatureNotSupportedPage />}
-        />
-      )}
-
-      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analyticsv2 && (
-        <Route
-          key="analyticsv2"
           path="/"
           element={features.ANALYTICS_SUPPORTED
             ? <AnalyticsV2Page enterpriseId={enterpriseId} />

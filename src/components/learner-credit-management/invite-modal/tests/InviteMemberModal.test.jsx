@@ -13,12 +13,13 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import {
-  useBudgetId, useEnterpriseGroupLearners, useSubsidyAccessPolicy, useContentMetadata,
+  useBudgetId, useContentMetadata, useEnterpriseFlexGroups, useEnterpriseGroupLearners, useSubsidyAccessPolicy,
 } from '../../data';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../cards/data';
 import { queryClient } from '../../../test/testUtils';
 
 import InviteMembersModalWrapper from '../InviteMembersModalWrapper';
+import { getGroupMemberEmails } from '../../data/hooks/useEnterpriseFlexGroups';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -30,9 +31,11 @@ jest.mock('../../data', () => ({
   useSubsidyAccessPolicy: jest.fn(),
   useEnterpriseGroupLearners: jest.fn(),
   useContentMetadata: jest.fn(),
+  useEnterpriseFlexGroups: jest.fn(),
 }));
 jest.mock('../../../../data/services/LmsApiService');
 jest.mock('../../../../data/services/EnterpriseCatalogApiService');
+jest.mock('../../data/hooks/useEnterpriseFlexGroups');
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -46,6 +49,7 @@ const initialStoreState = {
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
       enterpriseGroupsV1: true,
+      enterpriseGroupsV2: true,
     },
   },
 };
@@ -75,6 +79,24 @@ const defaultBudgetDetailPageContextValue = {
 };
 
 const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
+const mockEnterpriseFlexGroup = [
+  {
+    enterpriseCustomer: 'test-enterprise-customer-1',
+    name: 'Group 1',
+    uuid: 'test-uuid',
+    acceptedMembersCount: 2,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+  {
+    enterpriseCustomer: 'test-enterprise-customer-2',
+    name: 'Group 2',
+    uuid: 'test-uuid-2',
+    acceptedMembersCount: 1,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+];
 const defaultProps = {
   isOpen: true,
   close: jest.fn(),
@@ -107,6 +129,10 @@ describe('<InviteMemberModal />', () => {
     });
     useContentMetadata.mockReturnValue({ data: { count: 5280 } });
     useEnterpriseGroupLearners.mockReturnValue({ data: { count: 3 } });
+    useEnterpriseFlexGroups.mockReturnValue({
+      data: mockEnterpriseFlexGroup,
+    });
+    getGroupMemberEmails.mockReturnValue(mockLearnerEmails);
   });
 
   afterEach(() => {
@@ -166,6 +192,34 @@ describe('<InviteMemberModal />', () => {
       const formFeedbackText = 'Maximum members invite at a time: 1000';
       expect(screen.queryByText(formFeedbackText)).not.toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+
+  it('renders group dropdown', async () => {
+    render(<InviteModalWrapper />);
+
+    // Verify dropdown menu
+    expect(
+      screen.getByText('Select one or more group to add its members to the assignment.'),
+    ).toBeInTheDocument();
+    const dropdownMenu = screen.getByText('Select group');
+    expect(dropdownMenu).toBeInTheDocument();
+    userEvent.click(dropdownMenu);
+    const group1 = screen.getByText('Group 1 (2)');
+    const group2 = screen.getByText('Group 2 (1)');
+    expect(group1).toBeInTheDocument();
+    expect(group2).toBeInTheDocument();
+
+    userEvent.click(group1);
+    userEvent.click(group2);
+    const applyButton = screen.getByText('Apply selections');
+
+    await waitFor(() => {
+      userEvent.click(applyButton);
+      expect(screen.getByText('2 groups selected')).toBeInTheDocument();
+      expect(screen.getByText('hello@example.com')).toBeInTheDocument();
+      expect(screen.getByText('world@example.com')).toBeInTheDocument();
+      expect(screen.getByText('dinesh@example.com')).toBeInTheDocument();
+    });
   });
   it('does not allow non-csv files', async () => {
     render(<InviteModalWrapper />);
