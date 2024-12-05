@@ -8,8 +8,8 @@ import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../../learner-credit-management/data';
-import GroupDetailPage from '../GroupDetailPage';
+import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../data/hooks';
+import GroupDetailPage from '../GroupDetailPage/GroupDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
@@ -23,8 +23,8 @@ const TEST_GROUP = {
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 
-jest.mock('../../learner-credit-management/data', () => ({
-  ...jest.requireActual('../../learner-credit-management/data'),
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
   useEnterpriseGroupUuid: jest.fn(),
   useEnterpriseGroupLearnersTableData: jest.fn(),
 }));

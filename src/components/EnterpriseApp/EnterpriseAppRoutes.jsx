@@ -19,7 +19,7 @@ import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
 import LearnerCreditManagementRoutes from '../learner-credit-management';
 import PeopleManagementPage from '../PeopleManagement';
-import GroupDetailPage from '../PeopleManagement/GroupDetailPage';
+import GroupDetailPage from '../PeopleManagement/GroupDetailPage/GroupDetailPage';
 
 const EnterpriseAppRoutes = ({
   email,

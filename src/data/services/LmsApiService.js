@@ -17,6 +17,8 @@ class LmsApiService {
 
   static enterpriseCustomerBrandingUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-branding/update-branding/`;
 
+  static enterpriseCustomerMembersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-members/`;
+
   static providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_config/`;
 
   static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
@@ -351,6 +353,15 @@ class LmsApiService {
   static updateEnterpriseCustomerBranding(enterpriseUUID, options) {
     const url = `${LmsApiService.enterpriseCustomerBrandingUrl}${enterpriseUUID}/`;
     return LmsApiService.apiClient().patch(url, options);
+  }
+
+  static fetchEnterpriseCustomerMembers(enterpriseUUID, options) {
+    let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
+    if (options) {
+      const queryParams = new URLSearchParams(options);
+      url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}?${queryParams.toString()}`;
+    }
+    return LmsApiService.apiClient().get(url, options);
   }
 
   /**
