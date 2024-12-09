@@ -11,7 +11,7 @@ import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from '../utils';
-import GroupMembersTable from '../GroupMembersTable';
+import GroupMembersTable from './GroupMembersTable';
 
 const GroupDetailPage = () => {
   const intl = useIntl();
@@ -21,10 +21,13 @@ const GroupDetailPage = () => {
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
   const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
+
   const {
     isLoading: isTableLoading,
     enterpriseGroupLearnersTableData,
     fetchEnterpriseGroupLearnersTableData,
+    refresh,
+    setRefresh,
   } = useEnterpriseGroupLearnersTableData({ groupUuid });
   const handleNameUpdate = (name) => {
     setGroupName(name);
@@ -146,6 +149,8 @@ const GroupDetailPage = () => {
         tableData={enterpriseGroupLearnersTableData}
         fetchTableData={fetchEnterpriseGroupLearnersTableData}
         groupUuid={groupUuid}
+        refresh={refresh}
+        setRefresh={setRefresh}
       />
     </div>
   );

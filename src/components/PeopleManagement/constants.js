@@ -13,4 +13,5 @@ export const GROUP_MEMBERS_TABLE_DEFAULT_PAGE = 0; // `DataTable` uses zero-inde
 export const peopleManagementQueryKeys = {
   all: ['people-management'],
   members: (enterpriseUuid) => [...peopleManagementQueryKeys.all, 'members', enterpriseUuid],
+  removeMember: (groupUuid) => [...peopleManagementQueryKeys.all, 'removeMember', groupUuid],
 };
