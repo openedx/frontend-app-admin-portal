@@ -8,10 +8,10 @@ import {
 } from '@openedx/paragon';
 import { RemoveCircleOutline } from '@openedx/paragon/icons';
 
-import GeneralErrorModal from './GeneralErrorModal';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import GeneralErrorModal from '../GeneralErrorModal';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 
-import LmsApiService from '../../data/services/LmsApiService';
+import LmsApiService from '../../../data/services/LmsApiService';
 
 const DeleteGroupModal = ({
   group, isOpen, close,

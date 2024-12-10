@@ -6,14 +6,13 @@ import {
 } from '@openedx/paragon';
 import { Delete, Edit } from '@openedx/paragon/icons';
 
-import { useEnterpriseGroupUuid } from '../learner-credit-management/data';
-import { useEnterpriseGroupLearnersTableData } from './data/hooks';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { useEnterpriseGroupLearnersTableData, useEnterpriseGroupUuid } from '../data/hooks';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
-import formatDates from './utils';
-import AddMembersModal from './AddMembersModal';
-import GroupMembersTable from './GroupMembersTable';
+import formatDates from '../utils';
+import GroupMembersTable from '../GroupMembersTable';
+import AddMembersModal from '../AddMembersModal';
 
 const GroupDetailPage = () => {
   const intl = useIntl();

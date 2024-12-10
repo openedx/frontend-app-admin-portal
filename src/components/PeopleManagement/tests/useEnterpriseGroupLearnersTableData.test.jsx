@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
-import LmsApiService from '../../../../../data/services/LmsApiService';
-import { useEnterpriseGroupLearnersTableData } from '../../../../PeopleManagement/data/hooks';
+import LmsApiService from '../../../data/services/LmsApiService';
+import { useEnterpriseGroupLearnersTableData } from '../data/hooks';
 
 describe('useEnterpriseGroupLearnersTableData', () => {
   it('should fetch and return enterprise learners', async () => {
