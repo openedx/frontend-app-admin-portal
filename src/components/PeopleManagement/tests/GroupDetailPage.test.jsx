@@ -6,11 +6,13 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../data/hooks';
 import GroupDetailPage from '../GroupDetailPage/GroupDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { queryClient } from '../../test/testUtils';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 const enterpriseUUID = '1234';
@@ -23,6 +25,10 @@ const TEST_GROUP = {
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 
+jest.mock('@tanstack/react-query', () => ({
+  ...jest.requireActual('@tanstack/react-query'),
+  useQueryClient: jest.fn(),
+}));
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
   useEnterpriseGroupUuid: jest.fn(),
@@ -52,7 +58,9 @@ const GroupDetailPageWrapper = ({
   return (
     <IntlProvider locale="en">
       <Provider store={store}>
-        <GroupDetailPage />
+        <QueryClientProvider client={queryClient()}>
+          <GroupDetailPage />
+        </QueryClientProvider>
       </Provider>
     </IntlProvider>
   );

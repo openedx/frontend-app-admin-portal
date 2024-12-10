@@ -8,7 +8,7 @@ import debounce from 'lodash.debounce';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
 
-const useEnterpriseGroupLearnersTableData = ({ groupUuid }) => {
+const useEnterpriseGroupLearnersTableData = ({ groupUuid, isAddMembersModalOpen }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [enterpriseGroupLearnersTableData, setEnterpriseGroupLearnersTableData] = useState({
     itemCount: 0,
@@ -52,7 +52,8 @@ const useEnterpriseGroupLearnersTableData = ({ groupUuid }) => {
       }
     };
     fetch();
-  }, [groupUuid]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupUuid, isAddMembersModalOpen]);
 
   const debouncedFetchEnterpriseGroupLearnersData = useMemo(
     () => debounce(fetchEnterpriseGroupLearnersData, 300),
