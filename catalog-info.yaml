@@ -1,0 +1,12 @@
+# This file records information about this repo. Its use is described in OEP-55:
+# https://open-edx-proposals.readthedocs.io/en/latest/processes/oep-0055-proc-project-maintainers.html
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: 'frontend-app-admin-portal'
+  description: "Frontend code for an enterprise learning administrator dashboard."
+spec:
+  owner: edx/business-enterprise-team
+  type: 'library'
+  lifecycle: ''
