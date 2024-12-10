@@ -24,8 +24,8 @@ jest.mock('@tanstack/react-query', () => ({
   useQueryClient: jest.fn(),
 }));
 jest.mock('../../../data/services/LmsApiService');
-jest.mock('../../learner-credit-management/data/hooks/useEnterpriseLearnersTableData', () => ({
-  ...jest.requireActual('../../learner-credit-management/data/hooks/useEnterpriseLearnersTableData'),
+jest.mock('../data/hooks/useEnterpriseLearnersTableData', () => ({
+  ...jest.requireActual('../data/hooks/useEnterpriseLearnersTableData'),
   useEnterpriseLearnersTableData: jest.fn(),
   useGetAllEnterpriseLearnerEmails: jest.fn(),
 }));
@@ -176,7 +176,7 @@ describe('<CreateGroupModal />', () => {
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
 
     // testing interaction with adding members from the datatable
-    const membersCheckbox = screen.getAllByTitle('Toggle Row Selected');
+    const membersCheckbox = screen.getAllByTitle('Toggle row selected');
     userEvent.click(membersCheckbox[0]);
     userEvent.click(membersCheckbox[1]);
     const addMembersButton = screen.getByText('Add');
