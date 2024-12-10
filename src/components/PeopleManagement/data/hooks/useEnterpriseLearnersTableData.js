@@ -11,6 +11,7 @@ import { fetchPaginatedData } from '../../../../data/services/apiServiceUtils';
 export const useGetAllEnterpriseLearnerEmails = ({
   enterpriseId,
   onHandleAddMembersBulkAction,
+  enterpriseGroupLearners,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [addButtonState, setAddButtonState] = useState('default');
@@ -20,7 +21,11 @@ export const useGetAllEnterpriseLearnerEmails = ({
     try {
       const url = `${LmsApiService.enterpriseLearnerUrl}?enterprise_customer=${enterpriseId}`;
       const { results } = await fetchPaginatedData(url);
-      const learnerEmails = results.map(result => result?.user?.email).filter(email => email !== undefined);
+      const addedMemberEmails = enterpriseGroupLearners.map(learner => learner.memberDetails.userEmail);
+      const learnerEmails = results
+        .map(result => result?.user?.email)
+        .filter(email => email !== undefined)
+        .filter(email => !addedMemberEmails.includes(email));
       onHandleAddMembersBulkAction(learnerEmails);
     } catch (error) {
       logError(error);
@@ -29,7 +34,7 @@ export const useGetAllEnterpriseLearnerEmails = ({
       setIsLoading(false);
       setAddButtonState('complete');
     }
-  }, [enterpriseId, onHandleAddMembersBulkAction]);
+  }, [enterpriseId, onHandleAddMembersBulkAction, enterpriseGroupLearners]);
 
   return {
     isLoading,

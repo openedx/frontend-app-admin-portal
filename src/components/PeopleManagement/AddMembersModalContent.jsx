@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Col, Container, Form, Row,
+  Col, Container, Row,
 } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
@@ -12,15 +12,15 @@ import InviteModalSummary from '../learner-credit-management/invite-modal/Invite
 import InviteSummaryCount from '../learner-credit-management/invite-modal/InviteSummaryCount';
 import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
-import { MAX_LENGTH_GROUP_NAME } from './constants';
 import EnterpriseCustomerUserDatatable from './EnterpriseCustomerUserDatatable';
 import { useEnterpriseLearners } from '../learner-credit-management/data';
 
-const CreateGroupModalContent = ({
+const AddMembersModalContent = ({
   onEmailAddressesChange,
-  onSetGroupName,
   isGroupInvite,
   enterpriseUUID,
+  groupName,
+  enterpriseGroupLearners,
 }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
@@ -30,23 +30,7 @@ const CreateGroupModalContent = ({
     duplicateEmails: [],
     emailsNotInOrg: [],
   });
-  const [groupNameLength, setGroupNameLength] = useState(0);
-  const [groupName, setGroupName] = useState('');
   const { allEnterpriseLearners } = useEnterpriseLearners({ enterpriseUUID });
-
-  const handleGroupNameChange = useCallback((e) => {
-    if (!e.target.value) {
-      setGroupName('');
-      onSetGroupName('');
-      return;
-    }
-    if (e.target.value.length > MAX_LENGTH_GROUP_NAME) {
-      return;
-    }
-    setGroupName(e.target.value);
-    setGroupNameLength(e.target.value.length);
-    onSetGroupName(e.target.value);
-  }, [onSetGroupName]);
 
   const handleAddMembersBulkAction = useCallback((value) => {
     if (!value) {
@@ -111,23 +95,16 @@ const CreateGroupModalContent = ({
       </h3>
       <Row>
         <Col>
-          <h4 className="mt-4">Name your group</h4>
-          <Form.Control
-            value={groupName}
-            onChange={handleGroupNameChange}
-            label="name-your-group"
-            data-testid="group-name"
-            placeholder="Name"
-          />
-          <Form.Control.Feedback className="mb-4">
-            {groupNameLength} / {MAX_LENGTH_GROUP_NAME}
-          </Form.Control.Feedback>
+          <h4 className="mt-4">Add new members to your group</h4>
+          <p>Only members registered with your organization can be added to your group. Learn more</p>
+          <h4 className="mt-4">Group Name</h4>
+          <p className="font-weight-bold">{groupName}</p>
         </Col>
         <Col />
       </Row>
       <Row>
         <Col>
-          <h4>Select group members</h4>
+          <h4 className="mt-2">Select group members</h4>
           <p>
             <FormattedMessage
               id="people.management.page.create.group.csv.upload"
@@ -151,16 +128,18 @@ const CreateGroupModalContent = ({
         onHandleAddMembersBulkAction={handleAddMembersBulkAction}
         onHandleRemoveMembersBulkAction={handleRemoveMembersBulkAction}
         learnerEmails={learnerEmails}
+        enterpriseGroupLearners={enterpriseGroupLearners}
       />
     </Container>
   );
 };
 
-CreateGroupModalContent.propTypes = {
+AddMembersModalContent.propTypes = {
   onEmailAddressesChange: PropTypes.func.isRequired,
-  onSetGroupName: PropTypes.func,
   isGroupInvite: PropTypes.bool,
   enterpriseUUID: PropTypes.string.isRequired,
+  groupName: PropTypes.string,
+  enterpriseGroupLearners: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-export default CreateGroupModalContent;
+export default AddMembersModalContent;

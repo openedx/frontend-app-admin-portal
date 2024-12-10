@@ -11,6 +11,7 @@ import MemberDetailsTableCell from '../learner-credit-management/members-tab/Mem
 import EnrollmentsTableColumnHeader from './EnrollmentsTableColumnHeader';
 import { GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE } from './constants';
 import RecentActionTableCell from './RecentActionTableCell';
+import AddMemberTableAction from './AddMemberTableAction';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -49,6 +50,7 @@ const GroupMembersTable = ({
   tableData,
   fetchTableData,
   groupUuid,
+  openAddMembersModal,
 }) => {
   const intl = useIntl();
   return (
@@ -67,6 +69,9 @@ const GroupMembersTable = ({
         defaultColumnValues={{ Filter: TableTextFilter }}
         FilterStatusComponent={FilterStatus}
         numBreakoutFilters={2}
+        tableActions={[
+          <AddMemberTableAction openModal={openAddMembersModal} />,
+        ]}
         columns={[
           {
             Header: intl.formatMessage({
@@ -136,6 +141,7 @@ GroupMembersTable.propTypes = {
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
   groupUuid: PropTypes.string.isRequired,
+  openAddMembersModal: PropTypes.func.isRequired,
 };
 
 export default GroupMembersTable;
