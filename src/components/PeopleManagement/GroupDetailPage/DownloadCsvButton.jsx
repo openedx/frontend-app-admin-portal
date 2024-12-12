@@ -7,11 +7,13 @@ import {
   Toast, StatefulButton, Icon, Spinner, useToggle,
 } from '@openedx/paragon';
 import { Download, Check } from '@openedx/paragon/icons';
-import { logError } from '@edx/frontend-platform/logging';
+import { jsonToCsv } from '../utils';
+import GeneralErrorModal from '../GeneralErrorModal';
 
-const DownloadCsvButton = ({ data, testId, fetchData }) => {
+const DownloadCsvButton = ({ data, testId }) => {
   const [buttonState, setButtonState] = useState('pageLoading');
   const [isOpen, open, close] = useToggle(false);
+  const [isErrorModalOpen, openErrorModal, closeErrorModal] = useToggle(false);
   const intl = useIntl();
 
   useEffect(() => {
@@ -28,18 +30,28 @@ const DownloadCsvButton = ({ data, testId, fetchData }) => {
     return `${year}-${month}-${day}-group-detail-report.csv`;
   };
 
+  const createCsvData = (jsonData) => jsonToCsv(jsonData.map(row => ({
+    Email: row.memberDetails.userEmail,
+    Username: row.memberDetails.userName,
+    Enrollments: row.enrollments,
+    // we have to strip out the comma so it doesn't mess up the csv parsing
+    'Recent action': row.recent_action.replace(/,/g, ''),
+  })));
+
   const handleClick = async () => {
     setButtonState('pending');
-    fetchData().then((response) => {
-      const blob = new Blob([response.data.results], {
+    try {
+      const csv = createCsvData(data);
+      const blob = new Blob([csv], {
         type: 'text/csv',
       });
       saveAs(blob, getCsvFileName());
       open();
+    } catch {
+      openErrorModal();
+    } finally {
       setButtonState('complete');
-    }).catch((err) => {
-      logError(err);
-    });
+    }
   };
 
   const toastText = intl.formatMessage({
@@ -55,6 +67,10 @@ const DownloadCsvButton = ({ data, testId, fetchData }) => {
        {toastText}
      </Toast>
      )}
+      <GeneralErrorModal
+        isOpen={isErrorModalOpen}
+        close={closeErrorModal}
+      />
       <StatefulButton
         state={buttonState}
         className="download-button"
@@ -103,7 +119,6 @@ DownloadCsvButton.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.object,
   ),
-  fetchData: PropTypes.func.isRequired,
   testId: PropTypes.string,
 };
 

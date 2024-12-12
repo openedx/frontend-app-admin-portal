@@ -16,7 +16,6 @@ import {
 } from '../constants';
 import RecentActionTableCell from '../RecentActionTableCell';
 import DownloadCsvButton from './DownloadCsvButton';
-import LmsApiService from '../../../data/services/LmsApiService';
 import RemoveMemberModal from './RemoveMemberModal';
 import GeneralErrorModal from '../GeneralErrorModal';
 
@@ -91,11 +90,6 @@ const GroupMembersTable = ({
   refresh,
   setRefresh,
 }) => {
-  const fetchCsvData = async () => LmsApiService.fetchEnterpriseGroupLearners(
-    groupUuid,
-    // { ...currentFilters, search: searchQuery },
-    { csv: true },
-  );
   const intl = useIntl();
   return (
     <span className="budget-detail-assignments">
@@ -169,7 +163,6 @@ const GroupMembersTable = ({
         ]}
         tableActions={[
           <DownloadCsvButton
-            fetchData={fetchCsvData}
             data={tableData.results}
             testId="group-members-download"
           />,
