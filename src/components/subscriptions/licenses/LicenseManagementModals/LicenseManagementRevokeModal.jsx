@@ -76,13 +76,29 @@ const LicenseManagementRevokeModal = ({
   const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
 
   const isExpired = dayjs().isAfter(subscription.expirationDate);
+  const LICENSE_NOT_FOUND_ERROR_CODE = 404;
+  const REQUEST_EXCEEDS_REMAINING_REVOCATIONS_ERROR_CODE = 400;
+
+  const handleErrorMessages = (errorMessages) => {
+    // Treat LICENSE_NOT_FOUND_ERROR_CODE errors as successful revocations to handle already revoked licenses
+    // This allows the process to continue for valid licenses and avoids unnecessary
+    // errors when users retry with already revoked emails
+    if (errorMessages && errorMessages.length > 0) {
+      const non404Errors = errorMessages.filter(
+        (error) => error.error_response_status !== LICENSE_NOT_FOUND_ERROR_CODE,
+      );
+      if (non404Errors.length > 0) {
+        throw non404Errors;
+      }
+    }
+  };
 
   const handleSubmit = useCallback(async () => {
     if (onSubmit) {
       onSubmit();
     }
     setRequestState({ ...initialRequestState, loading: true });
-    const makeRequest = () => {
+    const makeRequest = async () => {
       const filtersPresent = activeFilters.length > 0;
 
       // If all users are selected and there are no filters, hit revoke-all endpoint
@@ -99,8 +115,29 @@ const LicenseManagementRevokeModal = ({
       } else {
         options.filters = transformFiltersForRequest(activeFilters);
       }
+      try {
+        const response = await LicenseManagerApiService.licenseBulkRevoke(
+          subscription.uuid,
+          options,
+        );
 
-      return LicenseManagerApiService.licenseBulkRevoke(subscription.uuid, options);
+        if (response.status === 207) {
+          // Case 1: Partial revocation success
+          handleErrorMessages(response.data.unsuccessful_revocations);
+          return response.data;
+        }
+        return response.data;
+      } catch (error) {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === REQUEST_EXCEEDS_REMAINING_REVOCATIONS_ERROR_CODE || status === LICENSE_NOT_FOUND_ERROR_CODE) {
+            // Case 2: All revocations failed
+            handleErrorMessages(data.unsuccessful_revocations);
+            return data; // treat this as success if all errors were LICENSE_NOT_FOUND_ERROR_CODE
+          }
+        }
+        throw error;
+      }
     };
 
     try {
@@ -164,6 +201,9 @@ const LicenseManagementRevokeModal = ({
                   contact customer support.
                 </Hyperlink>
               </p>
+              {requestState.error?.map?.((err, index) => (
+                <p key={err.error}>{`Error: ${index + 1}: ${err.error}`}</p>
+              ))}
             </Alert>
             )}
         {showRevocationCapAlert(subscription.isRevocationCapEnabled, subscription.revocations)

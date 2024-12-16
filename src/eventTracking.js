@@ -178,6 +178,18 @@ export const LEARNER_CREDIT_MANAGEMENT_EVENTS = {
   // Budget Expiry
   BUDGET_EXPIRY_ALERT_CONTACT_SUPPORT: `${LEARNER_CREDIT_BUDGET_EXPIRY_PREFIX}.alert.contact_support.clicked`,
   BUDGET_EXPIRY_MODAL_CONTACT_SUPPORT: `${LEARNER_CREDIT_BUDGET_EXPIRY_PREFIX}.modal.contact_support.clicked`,
+  // Members tab
+  MEMBERS_DATATABLE_STATUS_CHIP_ACCEPTED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_accepted.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_FAILED_SYSTEM: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_failed_system.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_FAILED_BAD_EMAIL: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_failed_bad_email.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_PENDING: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_pending.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_REMOVED: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_removed.clicked`,
+
+  MEMBERS_DATATABLE_STATUS_CHIP_ACCEPTED_HELP_CENTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_accepted_help_center.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_FAILED_SYSTEM_HELP_CENTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_failed_system_help_center.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_FAILED_BAD_EMAIL_HELP_CENTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_failed_bad_email_help_center.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_PENDING_HELP_CENTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_pending_help_center.clicked`,
+  MEMBERS_DATATABLE_STATUS_CHIP_REMOVED_HELP_CENTER: `${LEARNER_CREDIT_MANAGEMENT_PREFIX}.members_tab.status_chip_removed_help_center.clicked`,
 };
 
 const EVENT_NAMES = {

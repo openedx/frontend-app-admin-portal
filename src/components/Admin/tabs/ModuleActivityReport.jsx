@@ -125,6 +125,14 @@ const ModuleActivityReport = ({ enterpriseId }) => {
           },
           {
             Header: intl.formatMessage({
+              id: 'adminPortal.LPR.moduleActivityReport.table.header.extensionsRequested',
+              defaultMessage: 'Extension Requests',
+              description: 'Header for the extensions requested column in the module activity report table',
+            }),
+            accessor: 'extensions_requested',
+          },
+          {
+            Header: intl.formatMessage({
               id: 'adminPortal.LPR.moduleActivityReport.table.header.hoursOnline',
               defaultMessage: 'Learning Hours',
               description: 'Header for the learning hours column in the module activity report table',

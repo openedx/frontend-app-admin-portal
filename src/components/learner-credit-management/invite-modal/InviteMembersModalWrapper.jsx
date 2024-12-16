@@ -4,8 +4,9 @@ import {
   ActionRow, Button, FullscreenModal, Hyperlink, StatefulButton, useToggle,
 } from '@openedx/paragon';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
+import { connect } from 'react-redux';
 
-import { useBudgetId, useSubsidyAccessPolicy } from '../data';
+import { useBudgetId, useSubsidyAccessPolicy, useEnterpriseFlexGroups } from '../data';
 import InviteModalContent from './InviteModalContent';
 import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -19,16 +20,21 @@ const InviteMembersModalWrapper = ({
   handleTabSelect,
   setRefresh,
   refresh,
+  enterpriseId,
+  enterpriseFeatures,
 }) => {
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [canInviteMembers, setCanInviteMembers] = useState(false);
   const [inviteButtonState, setInviteButtonState] = useState('default');
+  const [groupLearnerEmails, setGroupLearnerEmails] = useState([]);
+  const { data: enterpriseFlexGroups } = useEnterpriseFlexGroups(enterpriseId);
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
   const {
     successfulInvitationToast: { displayToastForInvitation },
   } = useContext(BudgetDetailPageContext);
+  const shouldShowGroupsDropdown = enterpriseFeatures.enterpriseGroupsV2 && enterpriseFlexGroups?.length > 0;
 
   const handleCloseInviteModal = () => {
     close();
@@ -46,10 +52,18 @@ const InviteMembersModalWrapper = ({
     setCanInviteMembers(canInvite);
   }, []);
 
+  const handleGroupSelectionsChanged = useCallback((
+    value,
+    { canInvite = false } = {},
+  ) => {
+    setGroupLearnerEmails(value);
+    setCanInviteMembers(canInvite);
+  }, []);
+
   const handleInviteMembers = async () => {
     setInviteButtonState('pending');
     const requestBody = snakeCaseObject({
-      learnerEmails,
+      learnerEmails: [...learnerEmails, ...groupLearnerEmails],
       catalogUuid: subsidyAccessPolicy.catalogUuid,
       actByDate: subsidyAccessPolicy.subsidyExpirationDatetime,
     });
@@ -115,6 +129,10 @@ const InviteMembersModalWrapper = ({
         <InviteModalContent
           onEmailAddressesChange={handleEmailAddressesChanged}
           subsidyAccessPolicy={subsidyAccessPolicy}
+          isGroupInvite={false}
+          onGroupSelectionsChanged={handleGroupSelectionsChanged}
+          enterpriseFlexGroups={enterpriseFlexGroups}
+          shouldShowGroupsDropdown={shouldShowGroupsDropdown}
         />
       </FullscreenModal>
       <SystemErrorAlertModal
@@ -133,6 +151,15 @@ InviteMembersModalWrapper.propTypes = {
   handleTabSelect: PropTypes.func.isRequired,
   setRefresh: PropTypes.func.isRequired,
   refresh: PropTypes.bool.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
+  enterpriseFeatures: PropTypes.shape({
+    enterpriseGroupsV2: PropTypes.bool.isRequired,
+  }),
 };
 
-export default InviteMembersModalWrapper;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
+});
+
+export default connect(mapStateToProps)(InviteMembersModalWrapper);

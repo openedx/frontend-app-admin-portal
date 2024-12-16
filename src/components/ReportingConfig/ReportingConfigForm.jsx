@@ -498,6 +498,7 @@ class ReportingConfigForm extends React.Component {
             </Form.Label>
             <Form.Control
               as="select"
+              name="enterpriseCustomerCatalogUuids"
               multiple
               defaultValue={selectedCatalogs}
             >

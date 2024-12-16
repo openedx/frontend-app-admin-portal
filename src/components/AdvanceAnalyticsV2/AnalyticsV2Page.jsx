@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Form, Tabs, Tab,
+  Form, Tabs, Tab, Stack,
 } from '@openedx/paragon';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import Cookies from 'universal-cookie';
 import Hero from '../Hero';
 import Stats from './Stats';
 import Enrollments from './tabs/Enrollments';
@@ -13,37 +14,51 @@ import Engagements from './tabs/Engagements';
 import Completions from './tabs/Completions';
 import Leaderboard from './tabs/Leaderboard';
 import Skills from './tabs/Skills';
+import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
+import { GRANULARITY, CALCULATION, ANALYTICS_WARNING_BANNER_COOKIE } from './data/constants';
+import WarningBanner from './WarningBanner';
 
-const PAGE_TITLE = 'AnalyticsV2';
+const PAGE_TITLE = 'Analytics';
 
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
-  const [granularity, setGranularity] = useState('Daily');
+  const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
   const [calculation, setCalculation] = useState('Total');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const dataRefreshDate = '';
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const cookies = new Cookies();
   const intl = useIntl();
-
+  const { isFetching, isError, data } = useEnterpriseAnalyticsAggregatesData({
+    enterpriseCustomerUUID: enterpriseId,
+    startDate,
+    endDate,
+  });
+  const showWarningBanner = cookies.get(ANALYTICS_WARNING_BANNER_COOKIE);
+  const currentDate = new Date().toISOString().split('T')[0];
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
   return (
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <div className="container-fluid w-100">
-        <div className="row data-refresh-msg-container mb-4">
+      {!showWarningBanner && <WarningBanner />}
+      <Stack className="container-fluid w-100" gap={4}>
+        <div className="row data-refresh-msg-container">
           <div className="col">
             <span>
               <FormattedMessage
                 id="advance.analytics.data.refresh.msg"
                 defaultMessage="Data updated on {date}"
                 description="Data refresh message"
-                values={{ date: dataRefreshDate }}
+                values={{ date: formatDate(data?.lastUpdatedAt || currentDate) }}
               />
             </span>
           </div>
         </div>
 
-        <div className="row filter-container mb-4">
+        <div className="row filter-container">
           <div className="col">
             <Form.Group>
               <Form.Label>
@@ -55,8 +70,10 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               </Form.Label>
               <Form.Control
                 type="date"
-                value={startDate}
+                value={startDate || data?.minEnrollmentDate}
+                min={data?.minEnrollmentDate}
                 onChange={(e) => setStartDate(e.target.value)}
+                disabled={isFetching}
               />
             </Form.Group>
           </div>
@@ -71,8 +88,10 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               </Form.Label>
               <Form.Control
                 type="date"
-                value={endDate}
+                value={endDate || currentDate}
+                max={currentDate}
                 onChange={(e) => setEndDate(e.target.value)}
+                disabled={isFetching}
               />
             </Form.Group>
           </div>
@@ -89,29 +108,30 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 as="select"
                 value={granularity}
                 onChange={(e) => setGranularity(e.target.value)}
+                disabled={isFetching}
               >
-                <option value="Daily">
+                <option value={GRANULARITY.DAILY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.daily',
                     defaultMessage: 'Daily',
                     description: 'Advance analytics granularity filter daily option',
                   })}
                 </option>
-                <option value="Weekly">
+                <option value={GRANULARITY.WEEKLY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.weekly',
                     defaultMessage: 'Weekly',
                     description: 'Advance analytics granularity filter weekly option',
                   })}
                 </option>
-                <option value="Monthly">
+                <option value={GRANULARITY.MONTHLY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.monthly',
                     defaultMessage: 'Monthly',
                     description: 'Advance analytics granularity filter monthly option',
                   })}
                 </option>
-                <option value="Quarterly">
+                <option value={GRANULARITY.QUARTERLY}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.granularity.option.quarterly',
                     defaultMessage: 'Quarterly',
@@ -134,29 +154,30 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 as="select"
                 value={calculation}
                 onChange={(e) => setCalculation(e.target.value)}
+                disabled={isFetching}
               >
-                <option value="Total">
+                <option value={CALCULATION.TOTAL}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.total',
                     defaultMessage: 'Total',
                     description: 'Advance analytics calculation filter total option',
                   })}
                 </option>
-                <option value="Running Total">
+                <option value={CALCULATION.RUNNING_TOTAL}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.running.total',
                     defaultMessage: 'Running Total',
                     description: 'Advance analytics calculation filter running total option',
                   })}
                 </option>
-                <option value="Moving Average (3 Period)">
+                <option value={CALCULATION.MOVING_AVERAGE_3_PERIODS}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.average.3',
                     defaultMessage: 'Moving Average (3 Period)',
                     description: 'Advance analytics calculation filter moving average 3 period option',
                   })}
                 </option>
-                <option value="Moving Average (7 Period)">
+                <option value={CALCULATION.MOVING_AVERAGE_7_PERIODS}>
                   {intl.formatMessage({
                     id: 'advance.analytics.filter.calculation.option.average.7',
                     defaultMessage: 'Moving Average (7 Period)',
@@ -168,13 +189,11 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
           </div>
         </div>
 
-        <div className="row stats-container mb-4">
+        <div className="row stats-container d-flex justify-content-center">
           <Stats
-            enrollments={0}
-            distinctCourses={0}
-            dailySessions={0}
-            learningHours={0}
-            completions={0}
+            data={data}
+            isFetching={isFetching}
+            isError={isError}
           />
         </div>
 
@@ -195,8 +214,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Enrollments
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
                 enterpriseId={enterpriseId}
@@ -211,9 +230,11 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Engagements
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
+                granularity={granularity}
+                calculation={calculation}
               />
             </Tab>
             <Tab
@@ -225,8 +246,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Completions
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
                 enterpriseId={enterpriseId}
@@ -241,8 +262,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Leaderboard
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
               />
             </Tab>
@@ -255,14 +276,14 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Skills
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
               />
             </Tab>
           </Tabs>
         </div>
-      </div>
+      </Stack>
     </>
   );
 };

@@ -5,7 +5,7 @@ import { Error } from '@openedx/paragon/icons';
 
 import { getConfig } from '@edx/frontend-platform/config';
 import BaseModalPopup from './BaseModalPopup';
-import { useAssignmentStatusChip } from '../data';
+import { useStatusChip } from '../data';
 import EVENT_NAMES from '../../../eventTracking';
 import { configuration } from '../../../config';
 
@@ -21,7 +21,7 @@ const IncompleteAssignment = ({ trackEvent }) => {
     closeChipModal,
     isChipModalOpen,
     helpCenterTrackEvent,
-  } = useAssignmentStatusChip({
+  } = useStatusChip({
     chipInteractionEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_INCOMPLETE_ASSIGNMENT,
     chipHelpCenterEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_INCOMPLETE_ASSIGNMENT_HELP_CENTER,
     trackEvent,

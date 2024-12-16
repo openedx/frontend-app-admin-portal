@@ -7,7 +7,7 @@ import { getConfig } from '@edx/frontend-platform/config';
 
 import BaseModalPopup from './BaseModalPopup';
 import EVENT_NAMES from '../../../eventTracking';
-import { useAssignmentStatusChip } from '../data';
+import { useStatusChip } from '../data';
 
 const FailedSystem = ({ trackEvent }) => {
   const [target, setTarget] = useState(null);
@@ -21,7 +21,7 @@ const FailedSystem = ({ trackEvent }) => {
     closeChipModal,
     isChipModalOpen,
     helpCenterTrackEvent,
-  } = useAssignmentStatusChip({
+  } = useStatusChip({
     chipInteractionEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_SYSTEM,
     chipHelpCenterEventName: BUDGET_DETAILS_ASSIGNED_DATATABLE_CHIP_FAILED_SYSTEM_HELP_CENTER,
     trackEvent,

@@ -2,17 +2,17 @@
 
 export const ROUTE_NAMES = {
   analytics: 'analytics',
-  analyticsv2: 'analyticsv2',
+  appearance: 'appearance',
   bulkEnrollment: 'enrollment',
   bulkEnrollmentResults: 'bulk-enrollment-results',
   codeManagement: 'coupons',
+  contentHighlights: 'content-highlights',
   learners: 'learners',
   learnerCredit: 'learner-credit',
+  peopleManagement: 'people-management',
   reporting: 'reporting',
-  appearance: 'appearance',
   settings: 'settings',
   subscriptionManagement: 'subscriptions',
-  contentHighlights: 'content-highlights',
 };
 
 export const BUDGET_STATUSES = {

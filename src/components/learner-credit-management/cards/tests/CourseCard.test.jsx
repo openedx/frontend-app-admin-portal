@@ -6,21 +6,34 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
+import { getConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import dayjs from 'dayjs';
 import CourseCard from '../CourseCard';
 import {
+  DATETIME_FORMAT,
   formatPrice,
+  getNormalizedEnrollByDate,
   learnerCreditManagementQueryKeys,
+  SHORT_MONTH_DATE_FORMAT,
   useBudgetId,
   useSubsidyAccessPolicy,
+  useEnterpriseFlexGroups,
+  useCatalogContainsContentItemsMultipleQueries,
 } from '../../data';
 import { getButtonElement, queryClient } from '../../../test/testUtils';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../data';
+import { getGroupMemberEmails } from '../../data/hooks/useEnterpriseFlexGroups';
+import { ENTERPRISE_RESTRICTION_TYPE } from '../../data/constants';
+
+jest.mock('@edx/frontend-platform', () => ({
+  getConfig: jest.fn(() => ({})),
+}));
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -44,8 +57,18 @@ jest.mock('../../data', () => ({
   ...jest.requireActual('../../data'),
   useBudgetId: jest.fn(),
   useSubsidyAccessPolicy: jest.fn(),
+  useEnterpriseFlexGroups: jest.fn(),
+  useCatalogContainsContentItemsMultipleQueries: jest.fn(),
 }));
+jest.mock('../../data/hooks/useEnterpriseFlexGroups');
 jest.mock('../../../../data/services/EnterpriseAccessApiService');
+
+const futureStartDate = dayjs().add(10, 'days').toISOString();
+const pastStartDate = dayjs().subtract(10, 'days').toISOString();
+const enrollStartDate = dayjs().add(3, 'days').toISOString();
+const enrollStartTimestamp = dayjs(enrollStartDate).unix();
+const enrollByTimestamp = dayjs().add(5, 'days').unix();
+const enrollByDropdownText = `Enroll by ${dayjs.unix(enrollByTimestamp).format(SHORT_MONTH_DATE_FORMAT)}`;
 
 const originalData = {
   availability: ['Upcoming'],
@@ -53,13 +76,44 @@ const originalData = {
   course_type: 'course',
   key: 'course-123x',
   normalized_metadata: {
-    enroll_by_date: '2016-02-18T04:00:00Z',
-    start_date: '2016-04-18T04:00:00Z',
+    enroll_by_date: dayjs.unix(1892678399).toISOString(),
+    start_date: futureStartDate,
+    enroll_start_date: enrollStartDate,
     content_price: 100,
   },
   original_image_url: '',
   partners: [{ logo_image_url: '', name: 'Course Provider' }],
   title: 'Course Title',
+  courseRuns: [
+    {
+      key: 'course-v1:edX+course-123x+3T2020',
+      start: futureStartDate,
+      upgrade_deadline: 1892678399,
+      pacing_type: 'self_paced',
+      enroll_by: enrollByTimestamp,
+      has_enroll_by: true,
+      enroll_start: enrollStartTimestamp,
+      has_enroll_start: true,
+      is_active: true,
+      weeks_to_complete: 60,
+      end: dayjs().add(1, 'years').toISOString(),
+      content_price: '100',
+    },
+  ],
+  advertised_course_run: {
+    key: 'course-v1:edX+course-123x+3T2020',
+    start: futureStartDate,
+    upgrade_deadline: 1892678399,
+    pacing_type: 'self_paced',
+    enroll_by: enrollByTimestamp,
+    has_enroll_by: true,
+    enroll_start: enrollStartTimestamp,
+    has_enroll_start: true,
+    is_active: true,
+    weeks_to_complete: 60,
+    end: dayjs().add(1, 'year').toISOString(),
+    content_price: '100',
+  },
 };
 const imageAltText = `${originalData.title} course image`;
 
@@ -76,8 +130,38 @@ const execEdData = {
   key: 'exec-ed-course-123x',
   entitlements: [{ price: '999.00' }],
   normalized_metadata: {
-    enroll_by_date: '2016-02-18T04:00:00Z',
-    start_date: '2016-04-18T04:00:00Z',
+    enroll_by_date: dayjs.unix(1892678399).toISOString(),
+    start_date: futureStartDate,
+    content_price: 999,
+  },
+  courseRuns: [
+    {
+      key: 'course-v1:edX+course-123x+3T2020',
+      start: futureStartDate,
+      upgrade_deadline: 1892678399,
+      pacing_type: 'instructor_paced',
+      enroll_by: enrollByTimestamp,
+      has_enroll_by: true,
+      enroll_start: enrollStartTimestamp,
+      has_enroll_start: true,
+      is_active: true,
+      weeks_to_complete: 60,
+      end: dayjs().add(1, 'year').toISOString(),
+      content_price: 999,
+    },
+  ],
+  advertised_course_run: {
+    key: 'course-v1:edX+course-123x+3T2020',
+    start: futureStartDate,
+    upgrade_deadline: 1892678399,
+    pacing_type: 'instructor_paced',
+    enroll_by: enrollByTimestamp,
+    has_enroll_by: true,
+    enroll_start: enrollStartTimestamp,
+    has_enroll_start: true,
+    is_active: true,
+    weeks_to_complete: 60,
+    end: dayjs().add(1, 'year').toISOString(),
     content_price: 999,
   },
   original_image_url: '',
@@ -96,6 +180,9 @@ const initialStoreState = {
   portalConfiguration: {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
+    enterpriseFeatures: {
+      enterpriseGroupsV2: true,
+    },
   },
 };
 
@@ -109,8 +196,28 @@ const mockSubsidyAccessPolicy = {
   aggregates: {
     spendAvailableUsd: 50000,
   },
+  subsidyExpirationDatetime: '2100-02-18T04:00:00Z',
+  isLateRedemptionAllowed: false,
 };
 const mockLearnerEmails = ['hello@example.com', 'world@example.com', 'dinesh@example.com'];
+const mockEnterpriseFlexGroup = [
+  {
+    enterpriseCustomer: 'test-enterprise-customer-1',
+    name: 'Group 1',
+    uuid: 'test-uuid',
+    acceptedMembersCount: 2,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+  {
+    enterpriseCustomer: 'test-enterprise-customer-2',
+    name: 'Group 2',
+    uuid: 'test-uuid-2',
+    acceptedMembersCount: 1,
+    groupType: 'flex',
+    created: '2024-05-31T02:23:33.311109Z',
+  },
+];
 
 const mockDisplaySuccessfulAssignmentToast = jest.fn();
 const defaultBudgetDetailPageContextValue = {
@@ -182,6 +289,15 @@ describe('Course card works as expected', () => {
     useSubsidyAccessPolicy.mockReturnValue({
       data: mockSubsidyAccessPolicy,
       isLoading: false,
+      isLateRedemptionAllowed: false,
+    });
+    useEnterpriseFlexGroups.mockReturnValue({
+      data: mockEnterpriseFlexGroup,
+    });
+    useCatalogContainsContentItemsMultipleQueries.mockReturnValue({
+      data: {},
+      dataByContentKey: {},
+      isLoading: false,
     });
   });
 
@@ -194,8 +310,9 @@ describe('Course card works as expected', () => {
     expect(screen.getByText(defaultProps.original.title)).toBeInTheDocument();
     expect(screen.getByText(defaultProps.original.partners[0].name)).toBeInTheDocument();
     expect(screen.getByText('$100')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Assign'));
     expect(screen.getByText('Per learner price')).toBeInTheDocument();
-    expect(screen.getByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
     expect(screen.getByText('Course')).toBeInTheDocument();
     // Has card image defined even though the course metadata does not contain an image URL
     const cardImage = screen.getByAltText(imageAltText);
@@ -226,9 +343,12 @@ describe('Course card works as expected', () => {
   });
 
   test('executive education card renders', () => {
+    const enrollByDate = getNormalizedEnrollByDate(dayjs.unix(enrollByTimestamp).toISOString());
+    const formattedEnrollBy = dayjs(enrollByDate).format(SHORT_MONTH_DATE_FORMAT);
     renderWithRouter(<CourseCardWrapper {...execEdProps} />);
     expect(screen.queryByText('$999')).toBeInTheDocument();
-    expect(screen.queryByText('Starts Apr 18, 2016 • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
+    userEvent.click(screen.getByText('Assign'));
+    expect(screen.getByText(`Enroll by ${formattedEnrollBy}`)).toBeInTheDocument();
     expect(screen.queryByText('Executive Education')).toBeInTheDocument();
     const viewCourseCTA = screen.getByText('View course', { selector: 'a' });
     expect(viewCourseCTA.href).toContain('https://enterprise.stage.edx.org/test-enterprise-slug/executive-education-2u/course/exec-ed-course-123x');
@@ -247,6 +367,8 @@ describe('Course card works as expected', () => {
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
     userEvent.click(assignCourseCTA);
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+    userEvent.click(screen.getByText(enrollByDropdownText));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
 
     const assignmentModal = within(screen.getByRole('dialog'));
@@ -264,6 +386,8 @@ describe('Course card works as expected', () => {
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
     userEvent.click(assignCourseCTA);
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+    userEvent.click(screen.getByText(enrollByDropdownText));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
 
     const helpCenterButton = screen.getByText('Help Center: Course Assignments');
@@ -279,50 +403,93 @@ describe('Course card works as expected', () => {
       hasAllocationException: true,
       allocationExceptionReason: 'content_not_in_catalog',
       shouldRetryAllocationAfterException: false, // no ability to retry after this error
+      courseImportantDates: {
+        courseStartDate: futureStartDate,
+        expectedCourseStartText: 'Course starts:',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'not_enough_value_in_subsidy',
       shouldRetryAllocationAfterException: false,
+      courseImportantDates: {
+        courseStartDate: pastStartDate,
+        expectedCourseStartText: 'Course started:',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'not_enough_value_in_subsidy',
       shouldRetryAllocationAfterException: true,
+      courseImportantDates: {
+        courseStartDate: futureStartDate,
+        expectedCourseStartText: 'Course starts:',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'policy_spend_limit_reached',
       shouldRetryAllocationAfterException: false,
+      courseImportantDates: {
+        courseStartDate: pastStartDate,
+        expectedCourseStartText: 'Course started:',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: 'policy_spend_limit_reached',
       shouldRetryAllocationAfterException: true,
+      courseImportantDates: {
+        courseStartDate: futureStartDate,
+        expectedCourseStartText: 'Course starts:',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: null,
       shouldRetryAllocationAfterException: false,
+      courseImportantDates: {
+        courseStartDate: pastStartDate,
+        expectedCourseStartText: 'Course started:',
+      },
     },
     {
       shouldSubmitAssignments: true,
       hasAllocationException: true,
       allocationExceptionReason: null,
       shouldRetryAllocationAfterException: true,
+      courseImportantDates: {
+        courseStartDate: futureStartDate,
+        expectedCourseStartText: 'Course starts:',
+      },
     },
-    { shouldSubmitAssignments: true, hasAllocationException: false },
-    { shouldSubmitAssignments: false, hasAllocationException: false },
+    {
+      shouldSubmitAssignments: true,
+      hasAllocationException: false,
+      courseImportantDates: {
+        courseStartDate: null,
+        expectedCourseStartText: '',
+      },
+    },
+    {
+      shouldSubmitAssignments: false,
+      hasAllocationException: false,
+      courseImportantDates: {
+        courseStartDate: null,
+        expectedCourseStartText: '',
+      },
+    },
   ])('opens assignment modal, fills out information, and submits assignments accordingly - with success or with an exception (%s)', async ({
     shouldSubmitAssignments,
     hasAllocationException,
     allocationExceptionReason,
     shouldRetryAllocationAfterException,
+    courseImportantDates,
   }) => {
     const mockUpdatedLearnerAssignments = [mockLearnerEmails[0]];
     const mockNoChangeLearnerAssignments = [mockLearnerEmails[1]];
@@ -361,10 +528,34 @@ describe('Course card works as expected', () => {
     useQueryClient.mockReturnValue({
       invalidateQueries: mockInvalidateQueries,
     });
-    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+    const {
+      courseStartDate, expectedCourseStartText,
+    } = courseImportantDates;
+    const props = {
+      original: {
+        ...defaultProps.original,
+        normalized_metadata: {
+          ...defaultProps.original.normalized_metadata,
+          start_date: courseStartDate,
+        },
+        courseRuns: [{
+          ...defaultProps.original.courseRuns[0],
+          start: courseStartDate,
+        },
+        ],
+        advertised_course_run: {
+          ...defaultProps.original.advertised_course_run,
+          start: courseStartDate,
+        },
+      },
+    };
+    renderWithRouter(<CourseCardWrapper {...props} />);
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
+
     userEvent.click(assignCourseCTA);
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+    userEvent.click(screen.getByText(enrollByDropdownText));
 
     const assignmentModal = within(screen.getByRole('dialog'));
 
@@ -377,8 +568,7 @@ describe('Course card works as expected', () => {
     expect(modalCourseCard.getByText(defaultProps.original.partners[0].name)).toBeInTheDocument();
     expect(modalCourseCard.getByText('$100')).toBeInTheDocument();
     expect(modalCourseCard.getByText('Per learner price')).toBeInTheDocument();
-    expect(modalCourseCard.getByText('Upcoming • Learner must enroll by Feb 18, 2016')).toBeInTheDocument();
-    expect(modalCourseCard.getByText('Course')).toBeInTheDocument();
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
     const cardImage = modalCourseCard.getByAltText(imageAltText);
     expect(cardImage).toBeInTheDocument();
     expect(cardImage.src).toBeDefined();
@@ -401,7 +591,19 @@ describe('Course card works as expected', () => {
     const expectedAvailableBalance = formatPrice(mockSubsidyAccessPolicy.aggregates.spendAvailableUsd);
     expect(assignmentModal.getByText(expectedAvailableBalance)).toBeInTheDocument();
 
-    // Verify collapsibles
+    // Verify important dates
+    expect(assignmentModal.getByText('Enroll-by date:')).toBeInTheDocument();
+    expect(assignmentModal.getByText(
+      dayjs.unix(enrollByTimestamp).format(DATETIME_FORMAT),
+    )).toBeInTheDocument();
+    if (courseStartDate) {
+      expect(assignmentModal.getByText(expectedCourseStartText)).toBeInTheDocument();
+      expect(assignmentModal.getByText(
+        dayjs(courseStartDate).format(SHORT_MONTH_DATE_FORMAT),
+      )).toBeInTheDocument();
+    }
+
+    // Verify collapsible
     expect(assignmentModal.getByText('How assigning this course works')).toBeInTheDocument();
     expect(assignmentModal.getByText('Next steps for assigned learners')).toBeInTheDocument();
     expect(assignmentModal.getByText('Learners will be notified of this course assignment by email.')).toBeInTheDocument();
@@ -459,7 +661,7 @@ describe('Course card works as expected', () => {
         mockSubsidyAccessPolicy.uuid,
         expect.objectContaining({
           content_price_cents: 10000,
-          content_key: 'course-123x',
+          content_key: 'course-v1:edX+course-123x+3T2020',
           learner_emails: mockLearnerEmails,
         }),
       );
@@ -579,7 +781,8 @@ describe('Course card works as expected', () => {
     const assignCourseCTA = getButtonElement('Assign');
     expect(assignCourseCTA).toBeInTheDocument();
     userEvent.click(assignCourseCTA);
-
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+    userEvent.click(screen.getByText(enrollByDropdownText));
     const assignmentModal = within(screen.getByRole('dialog'));
 
     // Verify "Assign" CTA is disabled
@@ -622,5 +825,192 @@ describe('Course card works as expected', () => {
         expect(getButtonElement('Assign', { screenOverride: assignmentModal })).not.toBeDisabled();
       }
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+
+  test('opens assignment modal and selects flex group assignments', async () => {
+    useSubsidyAccessPolicy.mockReturnValue({
+      data: {
+        ...mockSubsidyAccessPolicy,
+        aggregates: {
+          ...mockSubsidyAccessPolicy.aggregates,
+          spendAvailableUsd: 1000,
+        },
+      },
+      isLoading: false,
+    });
+    getGroupMemberEmails.mockReturnValue(mockLearnerEmails);
+    renderWithRouter(<CourseCardWrapper {...defaultProps} />);
+    const assignCourseCTA = getButtonElement('Assign');
+    expect(assignCourseCTA).toBeInTheDocument();
+    userEvent.click(assignCourseCTA);
+    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+    userEvent.click(screen.getByText(enrollByDropdownText));
+    const assignmentModal = within(screen.getByRole('dialog'));
+
+    // Verify "Assign" CTA is disabled
+    expect(getButtonElement('Assign', { screenOverride: assignmentModal })).toBeDisabled();
+
+    // Verify dropdown menu
+    expect(
+      assignmentModal.getByText('Select one or more group to add its members to the assignment.'),
+    ).toBeInTheDocument();
+    const dropdownMenu = assignmentModal.getByText('Select group');
+    expect(dropdownMenu).toBeInTheDocument();
+    userEvent.click(dropdownMenu);
+    const group1 = assignmentModal.getByText('Group 1 (2)');
+    const group2 = assignmentModal.getByText('Group 2 (1)');
+    expect(group1).toBeInTheDocument();
+    expect(group2).toBeInTheDocument();
+
+    userEvent.click(group1);
+    userEvent.click(group2);
+    const applyButton = assignmentModal.getByText('Apply selections');
+
+    await waitFor(() => {
+      userEvent.click(applyButton);
+      expect(assignmentModal.getByText('2 groups selected')).toBeInTheDocument();
+      expect(assignmentModal.getByText('hello@example.com')).toBeInTheDocument();
+      expect(assignmentModal.getByText('world@example.com')).toBeInTheDocument();
+      expect(assignmentModal.getByText('dinesh@example.com')).toBeInTheDocument();
+    });
+  });
+
+  test.each([
+    // The "pure" case, i.e. course contains only unrestricted runs.
+    {
+      runs: [
+        originalData.courseRuns[0],
+      ],
+      containsContentItemsMockDataByContentKey: {},
+      containsContentItemsIsLoading: false,
+      expectedCoursePriceSkeleton: false,
+      expectedNumRunSkeletons: 0,
+      expectedAssignableEnrollByDates: [
+        originalData.courseRuns[0].enroll_by,
+      ],
+    },
+    // The "mixed" case, i.e. course contains both restricted and unrestricted runs.
+    {
+      runs: [
+        originalData.courseRuns[0],
+        {
+          ...originalData.courseRuns[0],
+          restrictionType: ENTERPRISE_RESTRICTION_TYPE,
+          key: 'course-v1:edX+course-123x+3T2020.restricted',
+          start: dayjs(futureStartDate).add(10, 'days').toISOString(),
+          enroll_by: dayjs.unix(enrollByTimestamp).add(10, 'days').unix(),
+          enroll_start: dayjs.unix(enrollStartTimestamp).add(10, 'days').unix(),
+          content_price: '100',
+        },
+      ],
+      containsContentItemsMockDataByContentKey: {
+        'course-v1:edX+course-123x+3T2020.restricted': { containsContentItems: true },
+      },
+      containsContentItemsIsLoading: false,
+      expectedCoursePriceSkeleton: false,
+      expectedNumRunSkeletons: 0,
+      expectedAssignableEnrollByDates: [
+        originalData.courseRuns[0].enroll_by,
+        dayjs.unix(enrollByTimestamp).add(10, 'days').unix(),
+      ],
+    },
+    // The "unicorn course" case, i.e. course contains only restricted runs.
+    {
+      runs: [
+        {
+          ...originalData.courseRuns[0],
+          restrictionType: ENTERPRISE_RESTRICTION_TYPE,
+          key: 'course-v1:edX+course-123x+3T2020.restricted',
+          start: dayjs(futureStartDate).add(10, 'days').toISOString(),
+          enroll_by: dayjs.unix(enrollByTimestamp).add(10, 'days').unix(),
+          enroll_start: dayjs.unix(enrollStartTimestamp).add(10, 'days').unix(),
+          content_price: '100',
+        },
+      ],
+      containsContentItemsMockDataByContentKey: {
+        'course-v1:edX+course-123x+3T2020.restricted': { containsContentItems: true },
+      },
+      containsContentItemsIsLoading: false,
+      expectedCoursePriceSkeleton: false,
+      expectedNumRunSkeletons: 0,
+      expectedAssignableEnrollByDates: [
+        dayjs.unix(enrollByTimestamp).add(10, 'days').unix(),
+      ],
+    },
+    // Ensure skeletons appear when the contains_content_items API calls are still loading.
+    {
+      runs: [
+        originalData.courseRuns[0],
+        {
+          ...originalData.courseRuns[0],
+          restrictionType: ENTERPRISE_RESTRICTION_TYPE,
+          key: 'course-v1:edX+course-123x+3T2020.restricted',
+          start: dayjs(futureStartDate).add(10, 'days').toISOString(),
+          enroll_by: dayjs.unix(enrollByTimestamp).add(10, 'days').unix(),
+          enroll_start: dayjs.unix(enrollStartTimestamp).add(10, 'days').unix(),
+          content_price: '100',
+        },
+      ],
+      containsContentItemsMockDataByContentKey: {
+        // undefined is meant to simulate that data is still loading.
+        'course-v1:edX+course-123x+3T2020.restricted': undefined,
+      },
+      containsContentItemsIsLoading: true,
+      expectedCoursePriceSkeleton: true,
+      // The number of run skeletons that appear in the Assign drop-down should
+      // be equal to the number of _unrestricted_ runs. getAssignableCourseRuns
+      // initially won't assume that the restricted runs are assignable, so
+      // won't return them to be counted.
+      expectedNumRunSkeletons: 1,
+      expectedAssignableEnrollByDates: [],
+    },
+  ])('course card renders assignable restricted runs (%s)', async ({
+    runs,
+    containsContentItemsMockDataByContentKey,
+    containsContentItemsIsLoading,
+    expectedCoursePriceSkeleton,
+    expectedNumRunSkeletons,
+    expectedAssignableEnrollByDates,
+  }) => {
+    getConfig.mockReturnValue({
+      FEATURE_ENABLE_RESTRICTED_RUN_ASSIGNMENT: true,
+    });
+    const data = {
+      ...originalData,
+      courseRuns: runs,
+      advertised_course_run: runs[0],
+      normalized_metadata: {
+        enroll_by_date: dayjs.unix(runs[0].upgrade_deadline).toISOString(),
+        start_date: runs[0].start,
+        enroll_start_date: enrollStartDate,
+        content_price: runs[0].content_price,
+      },
+    };
+    const props = {
+      original: data,
+    };
+    useCatalogContainsContentItemsMultipleQueries.mockReturnValue({
+      dataByContentKey: containsContentItemsMockDataByContentKey,
+      isLoading: containsContentItemsIsLoading,
+    });
+
+    renderWithRouter(<CourseCardWrapper {...props} />);
+    if (expectedCoursePriceSkeleton) {
+      expect(screen.queryByTestId('course-price-skeleton')).toBeInTheDocument();
+      userEvent.click(screen.getByText('Assign'));
+      await waitFor(() => {
+        expect(screen.queryAllByTestId('assignment-dropdown-item-skeleton').length).toBe(expectedNumRunSkeletons);
+      });
+    } else {
+      expect(screen.queryByTestId('course-price-skeleton')).not.toBeInTheDocument();
+      userEvent.click(screen.getByText('Assign'));
+      await waitFor(() => {
+        expectedAssignableEnrollByDates.forEach((enrollByDate) => {
+          expect(screen.getByText(
+            `Enroll by ${dayjs.unix(enrollByDate).format(SHORT_MONTH_DATE_FORMAT)}`,
+          )).toBeInTheDocument();
+        });
+      });
+    }
   });
 });

@@ -8,15 +8,19 @@ import InviteModalSummaryEmptyState from './InviteModalSummaryEmptyState';
 import InviteModalSummaryLearnerList from './InviteModalSummaryLearnerList';
 import InviteModalSummaryErrorState from './InviteModalSummaryErrorState';
 import InviteModalSummaryDuplicate from './InviteModalSummaryDuplicate';
+import LearnerNotInOrgErrorState from '../../PeopleManagement/LearnerNotInOrgErrorState';
 
 const InviteModalSummary = ({
   memberInviteMetadata,
+  isGroupInvite,
 }) => {
   const {
     isValidInput,
     lowerCasedEmails,
     duplicateEmails,
+    emailsNotInOrg,
   } = memberInviteMetadata;
+  const hasEmailsNotInOrg = emailsNotInOrg.length > 0;
   const renderCard = (contents, showErrorHighlight) => (
     <Stack gap={2.5} className="mb-4">
       <Card
@@ -46,9 +50,15 @@ const InviteModalSummary = ({
     );
   }
 
+  if (hasEmailsNotInOrg) {
+    cardSections = cardSections.concat(
+      <LearnerNotInOrgErrorState />,
+    );
+  }
+
   if (isEmpty(cardSections)) {
     cardSections = cardSections.concat(
-      renderCard(<InviteModalSummaryEmptyState />),
+      renderCard(<InviteModalSummaryEmptyState isGroupInvite={isGroupInvite} />),
     );
   }
 
@@ -70,8 +80,9 @@ InviteModalSummary.propTypes = {
     isValidInput: PropTypes.bool,
     lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
     duplicateEmails: PropTypes.arrayOf(PropTypes.string),
+    emailsNotInOrg: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
-
+  isGroupInvite: PropTypes.bool,
 };
 
 export default InviteModalSummary;

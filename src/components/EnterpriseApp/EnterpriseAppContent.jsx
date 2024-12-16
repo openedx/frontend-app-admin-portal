@@ -13,6 +13,7 @@ const EnterpriseAppContent = ({
   enableReportingPage,
   enableSubscriptionManagementPage,
   enableAnalyticsPage,
+  enterpriseGroupsV2,
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enterpriseAppContext = useContext(EnterpriseAppContext);
@@ -32,6 +33,7 @@ const EnterpriseAppContent = ({
       enableSubscriptionManagementPage={enableSubscriptionManagementPage}
       enableAnalyticsPage={enableAnalyticsPage}
       enableContentHighlightsPage={isContentHighlightsEnabled}
+      enterpriseGroupsV2={enterpriseGroupsV2}
     />
   );
 };
@@ -44,6 +46,7 @@ EnterpriseAppContent.propTypes = {
   enableReportingPage: PropTypes.bool.isRequired,
   enableSubscriptionManagementPage: PropTypes.bool.isRequired,
   enableAnalyticsPage: PropTypes.bool.isRequired,
+  enterpriseGroupsV2: PropTypes.bool.isRequired,
 };
 
 export default EnterpriseAppContent;

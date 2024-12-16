@@ -15,8 +15,16 @@ const mockAnalyticsSkillsData = {
   top_skills_by_completions: [],
 };
 
-axiosMock.onAny().reply(200);
-axios.get = jest.fn(() => Promise.resolve({ data: mockAnalyticsSkillsData }));
+const mockAnalyticsLeaderboardTableData = [
+  {
+    email: 'user@example.com',
+    sessionCount: 243,
+    learningTimeSeconds: 1111,
+    learningTimeHours: 3.4,
+    averageSessionLength: 1.6,
+    courseCompletionCount: 4,
+  },
+];
 
 const mockEnterpriseUUID = '33ce6562-95e0-4ecf-a2a7-7d407eb96f69';
 
@@ -24,21 +32,36 @@ describe('EnterpriseDataApiService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+  afterEach(() => {
+    axiosMock.reset();
+  });
 
-  test('fetchAdminAnalyticsSkills calls correct API endpoint', async () => {
+  test('fetchAdminAnalyticsData calls correct chart data API endpoint', async () => {
     const requestOptions = { startDate: '2021-01-01', endDate: '2021-12-31' };
     const queryParams = new URLSearchParams(snakeCaseObject(requestOptions));
     const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${mockEnterpriseUUID}`;
     const analyticsSkillsURL = `${baseURL}/skills/stats?${queryParams.toString()}`;
-    const response = await EnterpriseDataApiService.fetchAdminAnalyticsSkills(mockEnterpriseUUID, requestOptions);
-    expect(axios.get).toBeCalledWith(analyticsSkillsURL);
+    axiosMock.onGet(`${analyticsSkillsURL}`).reply(200, mockAnalyticsSkillsData);
+    const response = await EnterpriseDataApiService.fetchAdminAnalyticsData(mockEnterpriseUUID, 'skills', requestOptions);
+    expect(axiosMock.history.get[0].url).toBe(analyticsSkillsURL);
     expect(response).toEqual(camelCaseObject(mockAnalyticsSkillsData));
   });
-  test('fetchAdminAnalyticsSkills remove falsy query params', () => {
+  test('fetchAdminAnalyticsData calls correct table data API endpoint', async () => {
+    const requestOptions = { startDate: '2021-01-01', endDate: '2021-12-31' };
+    const queryParams = new URLSearchParams(snakeCaseObject(requestOptions));
+    const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${mockEnterpriseUUID}`;
+    const analyticsLeaderboardURL = `${baseURL}/leaderboard?${queryParams.toString()}`;
+    axiosMock.onGet(`${analyticsLeaderboardURL}`).reply(200, mockAnalyticsLeaderboardTableData);
+    const response = await EnterpriseDataApiService.fetchAdminAnalyticsData(mockEnterpriseUUID, 'leaderboardTable', requestOptions);
+    expect(axiosMock.history.get[0].url).toBe(analyticsLeaderboardURL);
+    expect(response).toEqual(camelCaseObject(mockAnalyticsLeaderboardTableData));
+  });
+  test('fetchAdminAnalyticsData remove falsy query params', () => {
     const requestOptions = { startDate: '', endDate: null, otherDate: undefined };
     const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${mockEnterpriseUUID}`;
-    const analyticsSkillsURL = `${baseURL}/skills/stats?`;
-    EnterpriseDataApiService.fetchAdminAnalyticsSkills(mockEnterpriseUUID, requestOptions);
-    expect(axios.get).toBeCalledWith(analyticsSkillsURL);
+    const analyticsEnrollmentsURL = `${baseURL}/enrollments/stats?`;
+    axiosMock.onGet(`${analyticsEnrollmentsURL}`).reply(200, []);
+    EnterpriseDataApiService.fetchAdminAnalyticsData(mockEnterpriseUUID, 'enrollments', requestOptions);
+    expect(axiosMock.history.get[0].url).toBe(analyticsEnrollmentsURL);
   });
 });

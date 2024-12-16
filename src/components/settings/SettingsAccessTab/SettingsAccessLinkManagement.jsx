@@ -26,6 +26,7 @@ import { MAX_UNIVERSAL_LINKS } from '../data/constants';
 
 const SettingsAccessLinkManagement = ({
   enterpriseUUID,
+  enterpriseSlug,
   isUniversalLinkEnabled,
   updatePortalConfiguration,
 }) => {
@@ -157,7 +158,13 @@ const SettingsAccessLinkManagement = ({
                 description: 'Column header for the link management data table in the settings page.',
               }),
               accessor: 'link',
-              Cell: LinkTableCell,
+              // eslint-disable-next-line react/no-unstable-nested-components
+              Cell: (props) => (
+                <LinkTableCell
+                  {...props}
+                  enterpriseSlug={enterpriseSlug}
+                />
+              ),
             },
             {
               Header: intl.formatMessage({
@@ -196,6 +203,7 @@ const SettingsAccessLinkManagement = ({
                 <ActionsTableCell
                   {...props}
                   enterpriseUUID={enterpriseUUID}
+                  enterpriseSlug={enterpriseSlug}
                   onDeactivateLink={handleDeactivatedLink}
                 />
               ),
@@ -229,6 +237,7 @@ const SettingsAccessLinkManagement = ({
 
 const mapStateToProps = (state) => ({
   enterpriseUUID: state.portalConfiguration.enterpriseId,
+  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   isUniversalLinkEnabled: state.portalConfiguration.enableUniversalLink,
 });
 
@@ -238,6 +247,7 @@ const mapDispatchToProps = dispatch => ({
 
 SettingsAccessLinkManagement.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
   isUniversalLinkEnabled: PropTypes.bool.isRequired,
   updatePortalConfiguration: PropTypes.func.isRequired,
 };

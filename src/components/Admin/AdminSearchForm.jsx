@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { Form } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
@@ -14,17 +15,22 @@ import { withLocation, withNavigate } from '../../hoc';
 
 class AdminSearchForm extends React.Component {
   componentDidUpdate(prevProps) {
-    const { searchParams: { searchQuery, searchCourseQuery, searchDateQuery } } = this.props;
+    const {
+      searchParams: {
+        searchQuery, searchCourseQuery, searchDateQuery, searchBudgetQuery,
+      },
+    } = this.props;
     const {
       searchParams: {
         searchQuery: prevSearchQuery,
         searchCourseQuery: prevSearchCourseQuery,
         searchDateQuery: prevSearchDateQuery,
+        searchBudgetQuery: prevSearchBudgetQuery,
       },
     } = prevProps;
 
     if (searchQuery !== prevSearchQuery || searchCourseQuery !== prevSearchCourseQuery
-        || searchDateQuery !== prevSearchDateQuery) {
+        || searchDateQuery !== prevSearchDateQuery || searchBudgetQuery !== prevSearchBudgetQuery) {
       this.handleSearch();
     }
   }
@@ -45,14 +51,27 @@ class AdminSearchForm extends React.Component {
     updateUrl(navigate, location.pathname, updateParams);
   }
 
+  onBudgetSelect(event) {
+    const { navigate, location } = this.props;
+    const updateParams = {
+      budget_uuid: event.target.value,
+      page: 1,
+    };
+    updateUrl(navigate, location.pathname, updateParams);
+  }
+
   render() {
     const {
       intl,
       tableData,
-      searchParams: { searchCourseQuery, searchDateQuery, searchQuery },
+      budgets,
+      searchParams: {
+        searchCourseQuery, searchDateQuery, searchQuery, searchBudgetQuery,
+      },
     } = this.props;
     const courseTitles = Array.from(new Set(tableData.map(en => en.course_title).sort()));
     const courseDates = Array.from(new Set(tableData.map(en => en.course_start_date).sort().reverse()));
+    const columnWidth = budgets?.length ? 'col-md-3' : 'col-md-6';
 
     return (
       <div className="row">
@@ -151,7 +170,7 @@ class AdminSearchForm extends React.Component {
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+            <div className={classNames('col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3', columnWidth)}>
               <Form.Label id="search-email-label" className="mb-2">
                 <FormattedMessage
                   id="admin.portal.lpr.filter.by.email.input.label"
@@ -176,6 +195,41 @@ class AdminSearchForm extends React.Component {
                 inputProps={{ 'data-hj-suppress': true }}
               />
             </div>
+            {budgets?.length && (
+            <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+              <Form.Group>
+                <Form.Label className="search-label mb-2">
+                  <FormattedMessage
+                    id="admin.portal.lpr.filter.by.budget.dropdown.label"
+                    defaultMessage="Filter by budget"
+                    description="Label for the budget filter dropdown in the admin portal LPR page."
+                  />
+                </Form.Label>
+                <Form.Control
+                  className="w-100 budgets-dropdown"
+                  as="select"
+                  value={searchBudgetQuery}
+                  onChange={e => this.onBudgetSelect(e)}
+                >
+                  <option value="">
+                    {intl.formatMessage({
+                      id: 'admin.portal.lpr.filter.by.budget.dropdown.option.all.budgets',
+                      defaultMessage: 'All budgets',
+                      description: 'Label for the all budgets option in the budget filter dropdown in the admin portal LPR page.',
+                    })}
+                  </option>
+                  {budgets.map(budget => (
+                    <option
+                      value={budget.subsidy_access_policy_uuid}
+                      key={budget.subsidy_access_policy_uuid}
+                    >
+                      {budget.subsidy_access_policy_display_name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </div>
+            )}
           </div>
         </div>
       </div>
@@ -193,8 +247,10 @@ AdminSearchForm.propTypes = {
     searchQuery: PropTypes.string,
     searchCourseQuery: PropTypes.string,
     searchDateQuery: PropTypes.string,
+    searchBudgetQuery: PropTypes.string,
   }).isRequired,
   tableData: PropTypes.arrayOf(PropTypes.shape({})),
+  budgets: PropTypes.arrayOf(PropTypes.shape({})),
   navigate: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string,

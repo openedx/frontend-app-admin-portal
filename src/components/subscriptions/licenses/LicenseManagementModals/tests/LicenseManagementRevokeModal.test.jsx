@@ -127,6 +127,111 @@ describe('<LicenseManagementRevokeModal />', () => {
       });
       expect(logError).toBeCalledTimes(1);
     });
+
+    describe('handles different bulk-revoke API response cases', () => {
+      const props = { ...basicProps, usersToRevoke: [sampleUser], totalToRevoke: 1 };
+
+      beforeEach(() => {
+        jest.clearAllMocks();
+      });
+
+      it('handles 200 success response correctly', async () => {
+        const mockSuccess200 = { status: 200, data: { success: true } };
+        LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockSuccess200);
+
+        render(<LicenseManagementRevokeModal {...props} />);
+        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
+
+        expect(onSuccessMock).toBeCalledTimes(1);
+        expect(logError).not.toBeCalled();
+      });
+
+      it('handles 400 error response correctly', async () => {
+        const mockError400 = { response: { status: 400, data: { unsuccessful_revocations: [{ error: 'Not found' }] } } };
+        LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError400);
+
+        render(<LicenseManagementRevokeModal {...props} />);
+        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
+
+        expect(onSuccessMock).not.toBeCalled();
+        expect(logError).toBeCalledTimes(1);
+      });
+
+      it('handles 404 error response correctly', async () => {
+        const mockError404 = { response: { status: 404, data: { unsuccessful_revocations: [{ error: 'Not found' }] } } };
+        LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError404);
+
+        render(<LicenseManagementRevokeModal {...props} />);
+        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
+
+        expect(onSuccessMock).not.toBeCalled();
+        expect(logError).toBeCalledTimes(1);
+      });
+
+      it('handles 207 partial success with only 404 errors correctly', async () => {
+        const mockPartialSuccess207WithOnly404 = {
+          status: 207,
+          data: {
+            unsuccessful_revocations: [{ error_response_status: 404 }],
+          },
+        };
+        LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithOnly404);
+
+        render(<LicenseManagementRevokeModal {...props} />);
+        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
+
+        expect(onSuccessMock).toBeCalledTimes(1);
+        expect(logError).not.toBeCalled();
+      });
+
+      it('handles 207 partial success with mixed errors correctly', async () => {
+        const mockPartialSuccess207WithMixedErrors = {
+          status: 207,
+          data: {
+            unsuccessful_revocations: [
+              { error_response_status: 404 },
+              { error_response_status: 400 },
+            ],
+            successful_revocations: [
+              { license_uuid: 'license-uuid-1', original_status: 'assigned', user_email: 'user1@example.com' },
+              { license_uuid: 'license-uuid-2', original_status: 'activated', user_email: 'user2@example.com' },
+            ],
+          },
+        };
+        LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithMixedErrors);
+
+        render(<LicenseManagementRevokeModal {...props} />);
+        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
+
+        expect(onSuccessMock).not.toBeCalled();
+        expect(logError).toBeCalledTimes(1);
+      });
+
+      it('handles 207 partial success with 404 errors and successful revocations correctly', async () => {
+        const mockPartialSuccess207WithMixed404AndSuccess = {
+          status: 207,
+          data: {
+            unsuccessful_revocations: [
+              { error_response_status: 404, user_email: 'user1@example.com' },
+              { error_response_status: 404, user_email: 'user2@example.com' },
+            ],
+            successful_revocations: [
+              { license_uuid: 'license-uuid-3', original_status: 'assigned', user_email: 'user3@example.com' },
+              { license_uuid: 'license-uuid-4', original_status: 'activated', user_email: 'user4@example.com' },
+            ],
+          },
+        };
+        LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithMixed404AndSuccess);
+
+        render(<LicenseManagementRevokeModal {...props} />);
+        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
+
+        expect(onSuccessMock).toBeCalledTimes(1);
+        expect(onSuccessMock).toHaveBeenCalledWith(mockPartialSuccess207WithMixed404AndSuccess.data);
+        expect(logError).not.toBeCalled();
+      });
+    });
+
     it('displays alert if licenseRevokeAll has error', async () => {
       LicenseManagerApiService.licenseRevokeAll.mockRejectedValue(new Error('something went wrong'));
       const props = { ...basicProps, revokeAllUsers: true, totalToRevoke: null };

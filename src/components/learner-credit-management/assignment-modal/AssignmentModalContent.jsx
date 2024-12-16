@@ -11,13 +11,29 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { connect } from 'react-redux';
 import BaseCourseCard from '../cards/BaseCourseCard';
-import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../data';
+import {
+  formatPrice,
+  useBudgetId,
+  useSubsidyAccessPolicy,
+  useGroupDropdownToggle,
+} from '../data';
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInputValueValid } from '../cards/data';
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
+import FlexGroupDropdown from '../FlexGroupDropdown';
+import { GROUP_DROPDOWN_TEXT } from '../../PeopleManagement/constants';
 
-const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }) => {
+const AssignmentModalContent = ({
+  enterpriseId,
+  course,
+  courseRun,
+  onEmailAddressesChange,
+  enterpriseFlexGroups,
+  onGroupSelectionsChanged,
+  enterpriseFeatures,
+}) => {
+  const shouldShowGroupsDropdown = enterpriseFeatures.enterpriseGroupsV2 && enterpriseFlexGroups?.length > 0;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
@@ -25,13 +41,27 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [assignmentAllocationMetadata, setAssignmentAllocationMetadata] = useState({});
   const intl = useIntl();
-  const { contentPrice } = course.normalizedMetadata;
-
+  const { contentPrice } = courseRun;
+  const [groupMemberEmails, setGroupMemberEmails] = useState([]);
+  const [checkedGroups, setCheckedGroups] = useState({});
+  const [dropdownToggleLabel, setDropdownToggleLabel] = useState(GROUP_DROPDOWN_TEXT);
+  const {
+    dropdownRef,
+    handleCheckedGroupsChanged,
+    handleGroupsChanged,
+    handleSubmitGroup,
+  } = useGroupDropdownToggle({
+    checkedGroups,
+    dropdownToggleLabel,
+    onGroupSelectionsChanged,
+    setCheckedGroups,
+    setDropdownToggleLabel,
+    setGroupMemberEmails,
+  });
   const handleEmailAddressInputChange = (e) => {
     const inputValue = e.target.value;
     setEmailAddressesInputValue(inputValue);
   };
-
   const handleEmailAddressesChanged = useCallback((value) => {
     if (!value) {
       setLearnerEmails([]);
@@ -51,10 +81,22 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
     debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
   }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
 
+  useEffect(() => {
+    handleGroupsChanged(checkedGroups);
+    const selectedGroups = Object.keys(checkedGroups).filter(group => checkedGroups[group].checked === true);
+    if (selectedGroups.length === 1) {
+      setDropdownToggleLabel(`${checkedGroups[selectedGroups[0]]?.name} (${checkedGroups[selectedGroups[0]]?.memberEmails.length})`);
+    } else if (selectedGroups.length > 1) {
+      setDropdownToggleLabel(`${selectedGroups.length} groups selected`);
+    } else {
+      setDropdownToggleLabel(GROUP_DROPDOWN_TEXT);
+    }
+  }, [checkedGroups, handleGroupsChanged]);
+
   // Validate the learner emails from user input whenever it changes
   useEffect(() => {
     const allocationMetadata = isAssignEmailAddressesInputValueValid({
-      learnerEmails,
+      learnerEmails: [...learnerEmails, ...groupMemberEmails],
       remainingBalance: spendAvailable,
       contentPrice,
     });
@@ -68,10 +110,20 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
     }
     if (allocationMetadata.canAllocate) {
       onEmailAddressesChange(learnerEmails, { canAllocate: true });
+      onGroupSelectionsChanged(groupMemberEmails, { canAllocate: true });
     } else {
       onEmailAddressesChange([]);
+      onGroupSelectionsChanged([]);
     }
-  }, [onEmailAddressesChange, learnerEmails, contentPrice, spendAvailable, enterpriseId]);
+  }, [
+    onEmailAddressesChange,
+    learnerEmails,
+    contentPrice,
+    spendAvailable,
+    enterpriseId,
+    groupMemberEmails,
+    onGroupSelectionsChanged,
+  ]);
 
   return (
     <Container size="lg" className="py-3">
@@ -85,7 +137,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
                 description="Header for the section to assign a course to learners using learner credit."
               />
             </h3>
-            <BaseCourseCard original={course} cardClassName="shadow-none" />
+            <BaseCourseCard original={course} courseRun={courseRun} cardClassName="shadow-none" />
           </Col>
         </Row>
         <Row>
@@ -97,6 +149,16 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
                 description="Header for the section where we assign a course to learners"
               />
             </h4>
+            {shouldShowGroupsDropdown && (
+              <FlexGroupDropdown
+                checkedGroups={checkedGroups}
+                dropdownRef={dropdownRef}
+                dropdownToggleLabel={dropdownToggleLabel}
+                enterpriseFlexGroups={enterpriseFlexGroups}
+                onCheckedGroupsChanged={handleCheckedGroupsChanged}
+                onHandleSubmitGroup={handleSubmitGroup}
+              />
+            )}
             <Form.Group className="mb-5">
               <Form.Control
                 as="textarea"
@@ -131,7 +193,7 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
                 description="Header for the section that explains how assigning a course works"
               />
             </h5>
-            <AssignmentAllocationHelpCollapsibles course={course} />
+            <AssignmentAllocationHelpCollapsibles courseRun={courseRun} />
           </Col>
           <Col xs={12} lg={{ span: 5, offset: 2 }}>
             <h4 className="mb-4">
@@ -142,8 +204,8 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
               />
             </h4>
             <AssignmentModalSummary
-              course={course}
-              learnerEmails={learnerEmails}
+              courseRun={courseRun}
+              learnerEmails={[...learnerEmails, ...groupMemberEmails]}
               assignmentAllocationMetadata={assignmentAllocationMetadata}
             />
             <hr className="my-4" />
@@ -203,11 +265,26 @@ const AssignmentModalContent = ({ enterpriseId, course, onEmailAddressesChange }
 AssignmentModalContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   course: PropTypes.shape().isRequired, // Pass-thru prop to `BaseCourseCard`
+  courseRun: PropTypes.shape({
+    enrollBy: PropTypes.string,
+    start: PropTypes.string,
+    contentPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }).isRequired,
   onEmailAddressesChange: PropTypes.func.isRequired,
+  onGroupSelectionsChanged: PropTypes.func.isRequired,
+  enterpriseFlexGroups: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    uuid: PropTypes.string,
+    acceptedMembersCount: PropTypes.number,
+  })),
+  enterpriseFeatures: PropTypes.shape({
+    enterpriseGroupsV2: PropTypes.bool.isRequired,
+  }),
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 export default connect(mapStateToProps)(AssignmentModalContent);

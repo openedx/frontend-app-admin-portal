@@ -43,7 +43,7 @@ export const analyticsDataTableKeys = {
 
 const analyticsDefaultKeys = ['admin-analytics'];
 
-const generateKey = (key, enterpriseUUID, requestOptions) => [
+export const generateKey = (key, enterpriseUUID, requestOptions) => [
   ...analyticsDefaultKeys,
   key,
   enterpriseUUID,
@@ -53,9 +53,32 @@ const generateKey = (key, enterpriseUUID, requestOptions) => [
 // Inspired by https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories.
 export const advanceAnalyticsQueryKeys = {
   all: analyticsDefaultKeys,
-  skills: (enterpriseUUID, requestOptions) => generateKey('skills', enterpriseUUID, requestOptions),
+  skills: (enterpriseUUID, requestOptions) => (
+    generateKey('skills', enterpriseUUID, requestOptions)
+  ),
+  completions: (enterpriseUUID, requestOptions) => (
+    generateKey('completions', enterpriseUUID, requestOptions)
+  ),
+  engagements: (enterpriseUUID, requestOptions) => (
+    generateKey('engagements', enterpriseUUID, requestOptions)
+  ),
+  enrollments: (enterpriseUUID, requestOptions) => (
+    generateKey('enrollments', enterpriseUUID, requestOptions)
+  ),
+  enrollmentsTable: (enterpriseUUID, requestOptions) => (
+    generateKey(analyticsDataTableKeys.enrollments, enterpriseUUID, requestOptions)
+  ),
+  engagementsTable: (enterpriseUUID, requestOptions) => (
+    generateKey(analyticsDataTableKeys.engagements, enterpriseUUID, requestOptions)
+  ),
+  completionsTable: (enterpriseUUID, requestOptions) => (
+    generateKey(analyticsDataTableKeys.completions, enterpriseUUID, requestOptions)
+  ),
   leaderboardTable: (enterpriseUUID, requestOptions) => (
     generateKey(analyticsDataTableKeys.leaderboard, enterpriseUUID, requestOptions)
+  ),
+  aggregates: (enterpriseUUID, requestOptions) => (
+    generateKey('aggregates', enterpriseUUID, requestOptions)
   ),
 };
 
@@ -75,3 +98,21 @@ export const skillsTypeColorMap = {
   'Soft Skill': '#638FFF',
   Certification: '#FE6100',
 };
+
+export const chartColorMap = { certificate: '#3669C9', audit: '#06262B' };
+
+export const GRANULARITY = {
+  DAILY: 'day',
+  WEEKLY: 'week',
+  MONTHLY: 'month',
+  QUARTERLY: 'quarter',
+  YEARLY: 'year',
+};
+export const CALCULATION = {
+  TOTAL: 'total',
+  RUNNING_TOTAL: 'running-total',
+  MOVING_AVERAGE_3_PERIODS: 'moving-average-3-period',
+  MOVING_AVERAGE_7_PERIODS: 'moving-average-7-period',
+};
+
+export const ANALYTICS_WARNING_BANNER_COOKIE = 'hide-warning-banner-on-analytics';

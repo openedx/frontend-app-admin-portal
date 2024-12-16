@@ -43,7 +43,7 @@ export const TAB_TITLES = {
 export const MAX_HIGHLIGHT_TITLE_LENGTH = 60;
 
 // Max highlight sets per enterprise curation
-export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 12;
+export const MAX_HIGHLIGHT_SETS_PER_ENTERPRISE_CURATION = 16;
 
 // Max number of content items per highlight set
 export const MAX_CONTENT_ITEMS_PER_HIGHLIGHT_SET = 24;

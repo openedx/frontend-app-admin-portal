@@ -24,17 +24,16 @@ jest.mock('../charts/BarChart', () => {
 });
 
 jest.mock('../../../data/services/EnterpriseDataApiService', () => ({
-  fetchAdminAnalyticsSkills: jest.fn(),
+  fetchAdminAnalyticsData: jest.fn(),
 }));
 
 describe('Skills Tab', () => {
   describe('renders static text', () => {
     test('renders all sections with correct classes and content', () => {
-      hooks.useEnterpriseSkillsAnalytics.mockReturnValue({
-        isLoading: true,
+      hooks.useEnterpriseAnalyticsData.mockReturnValue({
+        isFetching: true,
         data: null,
         isError: false,
-        isFetching: false,
         error: null,
       });
 
@@ -78,11 +77,10 @@ describe('Skills Tab', () => {
 
   describe('when loading data from API', () => {
     test('renders correct messages', () => {
-      hooks.useEnterpriseSkillsAnalytics.mockReturnValue({
-        isLoading: true,
+      hooks.useEnterpriseAnalyticsData.mockReturnValue({
+        isFetching: true,
         data: null,
         isError: false,
-        isFetching: false,
         error: null,
       });
 
@@ -106,11 +104,10 @@ describe('Skills Tab', () => {
 
   describe('when data successfully loaded from API', () => {
     test('renders charts', () => {
-      hooks.useEnterpriseSkillsAnalytics.mockReturnValue({
-        isLoading: false,
+      hooks.useEnterpriseAnalyticsData.mockReturnValue({
+        isFetching: false,
         data: mockAnalyticsSkillsData,
         isError: false,
-        isFetching: false,
         error: null,
       });
       render(
