@@ -14,6 +14,15 @@ const useEnterpriseMembersTableData = ({ enterpriseId }) => {
     pageCount: 0,
     results: [],
   });
+
+  const fetchAllEnterpriseMembersData = useCallback(async () => {
+    const { options, itemCount } = enterpriseMembersTableData;
+    // Take the existing filters but specify we're taking all results on one page
+    const fetchAllOptions = { ...options, page: 1, page_size: itemCount };
+    const response = await LmsApiService.fetchEnterpriseCustomerMembers(enterpriseId, fetchAllOptions);
+    return camelCaseObject(response.data);
+  }, [enterpriseId, enterpriseMembersTableData]);
+
   const fetchEnterpriseMembersData = useCallback((args) => {
     const fetch = async () => {
       try {
@@ -33,6 +42,7 @@ const useEnterpriseMembersTableData = ({ enterpriseId }) => {
           itemCount: data.count,
           pageCount: data.numPages ?? Math.floor(data.count / options.pageSize),
           results: data.results,
+          options,
         });
       } catch (error) {
         logError(error);
@@ -56,6 +66,7 @@ const useEnterpriseMembersTableData = ({ enterpriseId }) => {
     isLoading,
     enterpriseMembersTableData,
     fetchEnterpriseMembersTableData: debouncedFetchEnterpriseMembersData,
+    fetchAllEnterpriseMembersData,
   };
 };
 
