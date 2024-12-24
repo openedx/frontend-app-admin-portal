@@ -50,6 +50,7 @@ class Admin extends React.Component {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
       this.props.fetchEnterpriseBudgets(enterpriseId);
+      this.props.fetchEnterpriseGroups(enterpriseId);
     }
   }
 
@@ -59,6 +60,7 @@ class Admin extends React.Component {
       this.props.fetchDashboardAnalytics(enterpriseId);
       this.props.fetchDashboardInsights(enterpriseId);
       this.props.fetchEnterpriseBudgets(enterpriseId);
+      this.props.fetchEnterpriseGroups(enterpriseId);
     }
   }
 
@@ -67,6 +69,7 @@ class Admin extends React.Component {
     this.props.clearDashboardAnalytics();
     this.props.clearDashboardInsights();
     this.props.clearEnterpriseBudgets();
+    this.props.clearEnterpriseGroups();
   }
 
   getMetadataForAction(actionSlug) {
@@ -327,7 +330,7 @@ class Admin extends React.Component {
     const { location: { search, pathname } } = this.props;
     // remove the querys from the path
     const queryParams = new URLSearchParams(search);
-    ['search', 'search_course', 'search_start_date', 'budget_uuid'].forEach((searchTerm) => {
+    ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'].forEach((searchTerm) => {
       queryParams.delete(searchTerm);
     });
     const resetQuery = queryParams.toString();
@@ -407,6 +410,7 @@ class Admin extends React.Component {
       insightsLoading,
       intl,
       budgets,
+      groups,
     } = this.props;
     const { activeTab } = this.state;
 
@@ -421,6 +425,7 @@ class Admin extends React.Component {
       searchCourseQuery: queryParams.get('search_course') || '',
       searchDateQuery: queryParams.get('search_start_date') || '',
       searchBudgetQuery: queryParams.get('budget_uuid') || '',
+      searchGroupQuery: queryParams.get('group_uuid') || '',
     };
 
     const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
@@ -539,6 +544,7 @@ class Admin extends React.Component {
                                 searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
                                 tableData={this.getTableData() ? this.getTableData().results : []}
                                 budgets={budgets}
+                                groups={groups}
                               />
                             )}
                           </>
@@ -589,6 +595,7 @@ Admin.defaultProps = {
   insightsLoading: false,
   insights: null,
   budgets: [],
+  groups: [],
 };
 
 Admin.propTypes = {
@@ -598,6 +605,8 @@ Admin.propTypes = {
   clearDashboardInsights: PropTypes.func.isRequired,
   fetchEnterpriseBudgets: PropTypes.func.isRequired,
   clearEnterpriseBudgets: PropTypes.func.isRequired,
+  fetchEnterpriseGroups: PropTypes.func.isRequired,
+  clearEnterpriseGroups: PropTypes.func.isRequired,
   enterpriseId: PropTypes.string,
   searchEnrollmentsList: PropTypes.func.isRequired,
   location: PropTypes.shape({
@@ -618,6 +627,7 @@ Admin.propTypes = {
   actionSlug: PropTypes.string,
   table: PropTypes.shape({}),
   budgets: PropTypes.arrayOf(PropTypes.shape({})),
+  groups: PropTypes.arrayOf(PropTypes.shape({})),
   insightsLoading: PropTypes.bool,
   insights: PropTypes.objectOf(PropTypes.shape),
   // injected
