@@ -81,4 +81,32 @@ describe('<AdminSearchForm />', () => {
       },
     );
   });
+
+  it('select the correct group', () => {
+    const groupUUID = '7d6503dd-e40d-42b8-442b-37dd4c5450e3';
+    const groups = [{
+      enterprise_group_uuid: groupUUID,
+      enterprise_group_name: 'Test Group',
+    }];
+    const props = {
+      ...DEFAULT_PROPS,
+      groups,
+      location: { pathname: '/admin/learners' },
+    };
+    const wrapper = mount(
+      <AdminSearchFormWrapper {...props} />,
+    );
+    const selectElement = wrapper.find('.groups-dropdown select');
+
+    selectElement.simulate('change', { target: { value: groupUUID } });
+    expect(updateUrl).toHaveBeenCalled();
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      {
+        group_uuid: groupUUID,
+        page: 1,
+      },
+    );
+  });
 });
