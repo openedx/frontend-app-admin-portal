@@ -8,11 +8,11 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import {
   ActionRow, Button, FullscreenModal, StatefulButton, useToggle,
 } from '@openedx/paragon';
-import LmsApiService from '../../data/services/LmsApiService';
-import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import LmsApiService from '../../../data/services/LmsApiService';
+import SystemErrorAlertModal from '../../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import AddMembersModalContent from './AddMembersModalContent';
-import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
-import { useAllEnterpriseGroupLearners } from './data/hooks';
+import { learnerCreditManagementQueryKeys } from '../../learner-credit-management/data';
+import { useAllEnterpriseGroupLearners } from '../data/hooks';
 
 const AddMembersModal = ({
   isModalOpen,
@@ -69,7 +69,6 @@ const AddMembersModal = ({
       setCanAddMembersGroup(true);
     }
   }, [canAddMembers]);
-
   return (
     <div>
       {!isLoading ? (
@@ -80,7 +79,7 @@ const AddMembersModal = ({
             onClose={handleCloseAddMembersModal}
             title={intl.formatMessage({
               id: 'peopleManagement.tab.add.members.modal.title',
-              defaultMessage: 'New group',
+              defaultMessage: 'Add members',
               description: 'Title for adding members modal',
             })}
             footerNode={(

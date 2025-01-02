@@ -12,7 +12,7 @@ import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from '../utils';
 import GroupMembersTable from '../GroupMembersTable';
-import AddMembersModal from '../AddMembersModal';
+import AddMembersModal from '../AddMembersModal/AddMembersModal';
 
 const GroupDetailPage = () => {
   const intl = useIntl();

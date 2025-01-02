@@ -4,20 +4,19 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Col, Container, Row,
+  Col, Container, Row, Hyperlink,
 } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import InviteModalSummary from '../learner-credit-management/invite-modal/InviteModalSummary';
-import InviteSummaryCount from '../learner-credit-management/invite-modal/InviteSummaryCount';
-import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
-import EnterpriseCustomerUserDatatable from './EnterpriseCustomerUserDatatable';
-import { useEnterpriseLearners } from '../learner-credit-management/data';
+import AddMembersModalSummary from './AddMembersModalSummary';
+import InviteSummaryCount from '../../learner-credit-management/invite-modal/InviteSummaryCount';
+import FileUpload from '../../learner-credit-management/invite-modal/FileUpload';
+import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../../learner-credit-management/cards/data';
+import EnterpriseCustomerUserDatatable from '../EnterpriseCustomerUserDatatable';
+import { useEnterpriseLearners } from '../../learner-credit-management/data';
 
 const AddMembersModalContent = ({
   onEmailAddressesChange,
-  isGroupInvite,
   enterpriseUUID,
   groupName,
   enterpriseGroupLearners,
@@ -89,15 +88,21 @@ const AddMembersModalContent = ({
       <h3>
         <FormattedMessage
           id="people.management.page.create.group.section.header"
-          defaultMessage="Create a custom group of members"
+          defaultMessage="Add new members to your group"
           description="Header for the section to create a new group."
         />
       </h3>
       <Row>
         <Col>
-          <h4 className="mt-4">Add new members to your group</h4>
-          <p>Only members registered with your organization can be added to your group. Learn more</p>
-          <h4 className="mt-4">Group Name</h4>
+          <p>Only members registered with your organization can be added to your group. &nbsp;
+            <Hyperlink
+              destination="www.edX.org"
+              target="_blank"
+            >
+              Learn more.
+            </Hyperlink>
+          </p>
+          <h4 className="mt-4 text-uppercase">Group Name</h4>
           <p className="font-weight-bold">{groupName}</p>
         </Col>
         <Col />
@@ -107,9 +112,9 @@ const AddMembersModalContent = ({
           <h4 className="mt-2">Select group members</h4>
           <p>
             <FormattedMessage
-              id="people.management.page.create.group.csv.upload"
+              id="people.management.page.add.members.csv.upload"
               defaultMessage="Upload a CSV or select members from the table below."
-              description="Upload csv section and datatable with members to add to the new group."
+              description="Upload csv section and datatable with members to add to the existing group."
             />
           </p>
           <FileUpload
@@ -119,7 +124,7 @@ const AddMembersModalContent = ({
         </Col>
         <Col>
           <h4>Details</h4>
-          <InviteModalSummary isGroupInvite={isGroupInvite} memberInviteMetadata={memberInviteMetadata} />
+          <AddMembersModalSummary memberInviteMetadata={memberInviteMetadata} />
           <InviteSummaryCount memberInviteMetadata={memberInviteMetadata} />
           <hr className="my-4" />
         </Col>
@@ -136,7 +141,6 @@ const AddMembersModalContent = ({
 
 AddMembersModalContent.propTypes = {
   onEmailAddressesChange: PropTypes.func.isRequired,
-  isGroupInvite: PropTypes.bool,
   enterpriseUUID: PropTypes.string.isRequired,
   groupName: PropTypes.string,
   enterpriseGroupLearners: PropTypes.arrayOf(PropTypes.shape({})),
