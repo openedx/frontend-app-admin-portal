@@ -423,6 +423,8 @@ class Admin extends React.Component {
       searchBudgetQuery: queryParams.get('budget_uuid') || '',
     };
 
+    const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
+
     return (
       <main role="main" className="learner-progress-report">
         {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
@@ -445,7 +447,7 @@ class Admin extends React.Component {
               <div className="row mt-4">
                 <div className="col">
                   {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
-                    insights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                    hasCompleteInsights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
                   )}
                 </div>
               </div>
