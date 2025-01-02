@@ -87,9 +87,9 @@ const AddMembersModalContent = ({
     <Container size="lg" className="py-3">
       <h3>
         <FormattedMessage
-          id="people.management.page.create.group.section.header"
+          id="people.management.add.members.section.header"
           defaultMessage="Add new members to your group"
-          description="Header for the section to create a new group."
+          description="Header for the section to add members to an existing group."
         />
       </h3>
       <Row>
