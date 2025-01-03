@@ -14,3 +14,5 @@ export const peopleManagementQueryKeys = {
   all: ['people-management'],
   members: (enterpriseUuid) => [...peopleManagementQueryKeys.all, 'members', enterpriseUuid],
 };
+
+export const MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT = 15;

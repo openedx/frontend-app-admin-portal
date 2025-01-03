@@ -12,12 +12,13 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { queryClient } from '../../test/testUtils';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../learner-credit-management/cards/data';
-import CreateGroupModal from '../CreateGroupModal';
+import AddMembersModal from '../AddMembersModal/AddMembersModal';
 import {
   useEnterpriseLearnersTableData,
   useGetAllEnterpriseLearnerEmails,
 } from '../data/hooks/useEnterpriseLearnersTableData';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
+import { useAllEnterpriseGroupLearners } from '../data/hooks';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -29,6 +30,10 @@ jest.mock('../data/hooks/useEnterpriseLearnersTableData', () => ({
   useEnterpriseLearnersTableData: jest.fn(),
   useGetAllEnterpriseLearnerEmails: jest.fn(),
 }));
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useAllEnterpriseGroupLearners: jest.fn(),
+}));
 jest.mock('../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../learner-credit-management/data'),
   useEnterpriseLearners: jest.fn(),
@@ -36,6 +41,7 @@ jest.mock('../../learner-credit-management/data', () => ({
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
+const TEST_GROUP = 'test-group-uuid';
 const enterpriseSlug = 'test-enterprise';
 const enterpriseUUID = '1234';
 const initialStoreState = {
@@ -54,7 +60,9 @@ const initialStoreState = {
 const defaultProps = {
   isModalOpen: true,
   closeModal: jest.fn(),
-  enterpriseUUID: 'test-uuid',
+  enterpriseUUID,
+  groupName: 'test-group-name',
+  groupUuid: TEST_GROUP,
 };
 
 const mockTabledata = {
@@ -94,9 +102,20 @@ const mockTabledata = {
         dateJoined: '2023-05-09T16:18:22Z',
       },
     },
+    {
+      id: 4,
+      user: {
+        id: 4,
+        username: 'testuser-4',
+        firstName: '',
+        lastName: '',
+        email: 'testuser-4@2u.com',
+        dateJoined: '2023-05-09T16:18:22Z',
+      },
+    },
   ],
 };
-const CreateGroupModalWrapper = ({
+const AddMembersModalWrapper = ({
   initialState = initialStoreState,
 }) => {
   const store = getMockStore({ ...initialState });
@@ -104,14 +123,14 @@ const CreateGroupModalWrapper = ({
     <IntlProvider locale="en">
       <Provider store={store}>
         <QueryClientProvider client={queryClient()}>
-          <CreateGroupModal {...defaultProps} />
+          <AddMembersModal {...defaultProps} />
         </QueryClientProvider>
       </Provider>
     </IntlProvider>
   );
 };
 
-describe('<CreateGroupModal />', () => {
+describe('<AddMembersModal />', () => {
   beforeEach(() => {
     useEnterpriseLearnersTableData.mockReturnValue({
       isLoading: false,
@@ -124,19 +143,34 @@ describe('<CreateGroupModal />', () => {
       addButtonState: 'complete',
     });
     useEnterpriseLearners.mockReturnValue({
-      allEnterpriseLearners: ['testuser-3@2u.com', 'testuser-2@2u.com', 'testuser-1@2u.com', 'tomhaverford@pawnee.org'],
+      allEnterpriseLearners: ['testuser-3@2u.com', 'testuser-3@2u.com', 'testuser-2@2u.com', 'testuser-1@2u.com', 'tomhaverford@pawnee.org'],
+    });
+    useAllEnterpriseGroupLearners.mockReturnValue({
+      isLoading: false,
+      enterpriseGroupLearners: [{
+        activatedAt: '2024-11-06T21:01:32.953901Z',
+        enterprise_group_membership_uuid: TEST_GROUP,
+        memberDetails: {
+          userEmail: 'testuser-3@2u.com',
+          userName: '',
+        },
+        recentAction: 'Accepted: November 06, 2024',
+        status: 'accepted',
+        enrollments: 1,
+      }],
     });
   });
-  it('Modal renders as expected', async () => {
-    render(<CreateGroupModalWrapper />);
-    expect(screen.getByText('Create a custom group of members')).toBeInTheDocument();
-    expect(screen.getByText('Name your group')).toBeInTheDocument();
+
+  it('renders as expected', async () => {
+    render(<AddMembersModalWrapper />);
+    expect(screen.getByText('Add new members to your group')).toBeInTheDocument();
     expect(screen.getByText('Select group members')).toBeInTheDocument();
     expect(screen.getByText('Upload a CSV or select members from the table below.')).toBeInTheDocument();
     expect(screen.getByText('You haven\'t uploaded any members yet.')).toBeInTheDocument();
     expect(screen.getByText('Upload a CSV file or select members to get started.')).toBeInTheDocument();
-    expect(screen.getByText('Create')).toBeInTheDocument();
+    expect(screen.getByText('Add')).toBeInTheDocument();
     expect(screen.getByText('Cancel')).toBeInTheDocument();
+    expect(screen.getByText('test-group-name')).toBeInTheDocument();
 
     // renders datatable
     expect(screen.getByText('Member details')).toBeInTheDocument();
@@ -148,17 +182,13 @@ describe('<CreateGroupModal />', () => {
     expect(screen.getByText('testuser-3')).toBeInTheDocument();
     expect(screen.getByText('testuser-3@2u.com')).toBeInTheDocument();
   });
-  it('creates groups and assigns learners', async () => {
-    const mockCreateGroup = jest.spyOn(LmsApiService, 'createEnterpriseGroup');
+  it('adds members to a group', async () => {
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');
-
-    const mockGroupData = { uuid: 'test-uuid' };
-    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
 
     const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
     LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
 
-    render(<CreateGroupModalWrapper />);
+    render(<AddMembersModalWrapper />);
     expect(screen.getByText('You haven\'t uploaded any members yet.')).toBeInTheDocument();
     expect(screen.getByText('Upload a CSV file or select members to get started.')).toBeInTheDocument();
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
@@ -167,8 +197,6 @@ describe('<CreateGroupModal />', () => {
       value: [fakeFile],
     });
     fireEvent.drop(dropzone);
-    const groupNameInput = screen.getByTestId('group-name');
-    userEvent.type(groupNameInput, 'test group name');
 
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
@@ -179,7 +207,7 @@ describe('<CreateGroupModal />', () => {
     const membersCheckbox = screen.getAllByTitle('Toggle row selected');
     userEvent.click(membersCheckbox[0]);
     userEvent.click(membersCheckbox[1]);
-    const addMembersButton = screen.getByText('Add');
+    const addMembersButton = screen.getAllByText('Add')[0];
     userEvent.click(addMembersButton);
 
     await waitFor(() => {
@@ -205,25 +233,19 @@ describe('<CreateGroupModal />', () => {
       expect(screen.queryByText(formFeedbackText)).not.toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
 
-    const createButton = screen.getByRole('button', { name: 'Create' });
-    userEvent.click(createButton);
-    expect(mockCreateGroup).toHaveBeenCalledTimes(1);
+    const addButton = screen.getAllByText('Add')[1];
+    userEvent.click(addButton);
     await waitFor(() => {
       expect(mockInvite).toHaveBeenCalledTimes(1);
     });
   });
   it('displays error for email not belonging in an org', async () => {
-    const mockGroupData = { uuid: 'test-uuid' };
-    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
-
     const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
     LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
     useEnterpriseLearners.mockReturnValue({
       allEnterpriseLearners: ['testuser-3@2u.com'],
     });
-    render(<CreateGroupModalWrapper />);
-    const groupNameInput = screen.getByTestId('group-name');
-    userEvent.type(groupNameInput, 'test group name');
+    render(<AddMembersModalWrapper />);
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
     const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
     Object.defineProperty(dropzone, 'files', {
@@ -236,13 +258,11 @@ describe('<CreateGroupModal />', () => {
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
   it('displays system error modal', async () => {
-    const mockCreateGroup = jest.spyOn(LmsApiService, 'createEnterpriseGroup');
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');
     const error = new Error('An error occurred');
-    mockCreateGroup.mockRejectedValueOnce(error);
     mockInvite.mockRejectedValueOnce(error);
 
-    render(<CreateGroupModalWrapper />);
+    render(<AddMembersModalWrapper />);
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
     const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
     Object.defineProperty(dropzone, 'files', {
@@ -257,12 +277,8 @@ describe('<CreateGroupModal />', () => {
       const formFeedbackText = 'Maximum members at a time: 1000';
       expect(screen.queryByText(formFeedbackText)).not.toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
-
-    const groupNameInput = screen.getByTestId('group-name');
-    expect(groupNameInput).toBeInTheDocument();
-    userEvent.type(groupNameInput, 'test group name');
-    const createButton = screen.getByRole('button', { name: 'Create' });
-    userEvent.click(createButton);
+    const addButton = screen.getByRole('button', { name: 'Add' });
+    userEvent.click(addButton);
     await waitFor(() => {
       expect(screen.getByText(
         'We\'re sorry. Something went wrong behind the scenes. Please try again, or reach out to customer support for help.',
