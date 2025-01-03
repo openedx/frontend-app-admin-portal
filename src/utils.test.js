@@ -1,5 +1,6 @@
 import { logError } from '@edx/frontend-platform/logging';
 import { createIntl } from '@edx/frontend-platform/i18n';
+import { saveAs } from 'file-saver';
 
 import {
   camelCaseDict,
@@ -13,12 +14,23 @@ import {
   queryCacheOnErrorHandler,
   i18nFormatPassedTimestamp,
   i18nFormatProgressStatus,
+  getTimeStampedFilename,
+  downloadCsv,
 } from './utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
   ...jest.requireActual('@edx/frontend-platform/logging'),
   logError: jest.fn(),
 }));
+
+jest.mock('file-saver', () => ({
+  ...jest.requireActual('file-saver'),
+  saveAs: jest.fn(),
+}));
+
+jest.useFakeTimers({ advanceTimers: true }).setSystemTime(new Date('2024-01-20'));
+
+global.Blob = jest.fn();
 
 const intl = createIntl({
   locale: 'en',
@@ -164,6 +176,39 @@ describe('utils', () => {
         const formattedProgressStatus = i18nFormatProgressStatus({ intl, progressStatus });
         expect(formattedProgressStatus).toEqual(progressStatus);
       });
+    });
+  });
+  describe('getTimeStampedFilename', () => {
+    it('generates timestamped filename', () => {
+      const expectedFileName = '2024-01-20-somefile.txt';
+      expect(getTimeStampedFilename('somefile.txt')).toEqual(expectedFileName);
+    });
+  });
+  describe('downloadCsv', () => {
+    it('downloads properly formatted csv', () => {
+      const fileName = 'somefile.csv';
+      const data = [
+        {
+          a: 1, b: 2, c: 3, d: 4,
+        },
+        {
+          a: 'apple', b: 'banana', c: 'comma, please', d: 'donut',
+        },
+      ];
+      const headers = ['a', 'b', 'c', 'd'];
+      const dataEntryToRow = (entry) => {
+        const changeItUp = (field) => (isValidNumber(field) ? field + 1 : field);
+        const {
+          a, b, c, d,
+        } = entry;
+        return [a, b, c, d].map(changeItUp);
+      };
+      downloadCsv(fileName, data, headers, dataEntryToRow);
+      const expectedBlob = ['a,b,c,d\n2,3,4,5\napple,banana,"comma, please",donut'];
+      expect(global.Blob).toHaveBeenCalledWith(expectedBlob, {
+        type: 'text/csv',
+      });
+      expect(saveAs).toHaveBeenCalledWith({}, fileName);
     });
   });
 });
