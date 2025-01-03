@@ -10,6 +10,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 
 const useEnterpriseGroupLearnersTableData = ({ groupUuid }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [enterpriseGroupLearnersTableData, setEnterpriseGroupLearnersTableData] = useState({
     itemCount: 0,
     pageCount: 0,
@@ -56,14 +57,16 @@ const useEnterpriseGroupLearnersTableData = ({ groupUuid }) => {
 
   const debouncedFetchEnterpriseGroupLearnersData = useMemo(
     () => debounce(fetchEnterpriseGroupLearnersData, 300),
-    [fetchEnterpriseGroupLearnersData],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fetchEnterpriseGroupLearnersData, refresh],
   );
 
   return {
     isLoading,
     enterpriseGroupLearnersTableData,
     fetchEnterpriseGroupLearnersTableData: debouncedFetchEnterpriseGroupLearnersData,
+    refresh,
+    setRefresh,
   };
 };
-
 export default useEnterpriseGroupLearnersTableData;
