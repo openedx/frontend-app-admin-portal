@@ -7,6 +7,7 @@ import TableTextFilter from '../learner-credit-management/TableTextFilter';
 import CustomDataTableEmptyState from '../learner-credit-management/CustomDataTableEmptyState';
 import OrgMemberCard from './OrgMemberCard';
 import useEnterpriseMembersTableData from './data/hooks/useEnterpriseMembersTableData';
+import DownloadCsvButton from './DownloadCSVButton';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -15,10 +16,10 @@ const PeopleManagementTable = ({ enterpriseId }) => {
     isLoading: isTableLoading,
     enterpriseMembersTableData,
     fetchEnterpriseMembersTableData,
+    fetchAllEnterpriseMembersData,
   } = useEnterpriseMembersTableData({ enterpriseId });
 
   const tableColumns = [{ Header: 'Name', accessor: 'name' }];
-
   return (
     <DataTable
       isSortable
@@ -45,6 +46,13 @@ const PeopleManagementTable = ({ enterpriseId }) => {
       itemCount={enterpriseMembersTableData.itemCount}
       pageCount={enterpriseMembersTableData.pageCount}
       EmptyTableComponent={CustomDataTableEmptyState}
+      tableActions={[
+        <DownloadCsvButton
+          fetchData={fetchAllEnterpriseMembersData}
+          totalCt={enterpriseMembersTableData.itemCount}
+          testId="people-report-download"
+        />,
+      ]}
     >
       <DataTable.TableControlBar />
       <CardView
