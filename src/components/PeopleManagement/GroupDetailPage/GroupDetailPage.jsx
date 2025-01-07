@@ -150,6 +150,7 @@ const GroupDetailPage = () => {
         fetchTableData={fetchEnterpriseGroupLearnersTableData}
         fetchAllData={fetchAllEnterpriseGroupLearnersData}
         dataCount={enterpriseGroupLearnersTableData.itemCount}
+        groupUuid={groupUuid}
         refresh={refresh}
         setRefresh={setRefresh}
       />

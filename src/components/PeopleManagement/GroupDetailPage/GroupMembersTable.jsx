@@ -28,7 +28,6 @@ const KabobMenu = ({
 }) => {
   const [isRemoveModalOpen, openRemoveModal, closeRemoveModal] = useToggle(false);
   const [isErrorModalOpen, openErrorModal, closeErrorModal] = useToggle(false);
-
   return (
     <>
       <RemoveMemberModal
@@ -44,7 +43,7 @@ const KabobMenu = ({
         isOpen={isErrorModalOpen}
         close={closeErrorModal}
       />
-      <Dropdown>
+      <Dropdown drop="top">
         <Dropdown.Toggle
           id="kabob-menu-dropdown"
           data-testid="kabob-menu-dropdown"
@@ -93,6 +92,7 @@ const GroupMembersTable = ({
   setRefresh,
 }) => {
   const intl = useIntl();
+  console.log(groupUuid);
   return (
     <span className="budget-detail-assignments">
       <DataTable

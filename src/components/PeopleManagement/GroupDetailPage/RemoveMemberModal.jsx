@@ -16,7 +16,7 @@ const RemoveMemberModal = ({
       const rowEmail = row.id;
       const formData = new FormData();
       formData.append('learner_emails', rowEmail);
-      await LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, 'hello');
+      await LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, formData);
       setRefresh(!refresh);
       close();
     } catch (error) {
