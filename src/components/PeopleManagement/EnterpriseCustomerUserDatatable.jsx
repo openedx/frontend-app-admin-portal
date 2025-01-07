@@ -93,7 +93,6 @@ const EnterpriseCustomerUserDatatable = ({
         getRowId: row => row.id.toString(),
       }}
       pageCount={enterpriseCustomerUserTableData.pageCount}
-      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       manualSelectColumn={
         {
           id: 'selection',

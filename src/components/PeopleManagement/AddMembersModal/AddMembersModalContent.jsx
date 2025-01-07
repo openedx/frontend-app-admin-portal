@@ -103,7 +103,7 @@ const AddMembersModalContent = ({
             </Hyperlink>
           </p>
           <h4 className="mt-4 text-uppercase">Group Name</h4>
-          <p className="font-weight-bold">{groupName}</p>
+          <p className="font-weight-bold lead">{groupName}</p>
         </Col>
         <Col />
       </Row>
