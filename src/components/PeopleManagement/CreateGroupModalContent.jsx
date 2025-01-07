@@ -94,7 +94,7 @@ const CreateGroupModalContent = ({
     });
     setMemberInviteMetadata(inviteMetadata);
     if (inviteMetadata.canInvite) {
-      onEmailAddressesChange(learnerEmails, { canInvite: true });
+      onEmailAddressesChange(inviteMetadata.lowerCasedEmails, { canInvite: true });
     } else {
       onEmailAddressesChange([]);
     }

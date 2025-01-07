@@ -23,7 +23,7 @@ const DownloadCsvIconButton = ({ fetchAllData, dataCount, testId }) => {
       description: 'Toast message for the download button on the group detail page.',
     },
     downloadHoverText: {
-      id: 'adminPortal.peopleManagement.groupDetail.downloadCsv.toast',
+      id: 'adminPortal.peopleManagement.groupDetail.downloadCsv.hoverTooltip',
       defaultMessage: `Download (${dataCount})`,
       description: 'Tooltip message for the download button on the group detail page.',
     },

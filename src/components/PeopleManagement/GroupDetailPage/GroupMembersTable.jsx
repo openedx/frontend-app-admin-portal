@@ -92,7 +92,6 @@ const GroupMembersTable = ({
   setRefresh,
 }) => {
   const intl = useIntl();
-  console.log(groupUuid);
   return (
     <span className="budget-detail-assignments">
       <DataTable
