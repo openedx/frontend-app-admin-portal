@@ -15,7 +15,7 @@ import {
   GROUP_MEMBERS_TABLE_PAGE_SIZE,
 } from '../constants';
 import RecentActionTableCell from '../RecentActionTableCell';
-import DownloadCsvButton from './DownloadCsvButton';
+import DownloadCsvIconButton from './DownloadCsvIconButton';
 import RemoveMemberModal from './RemoveMemberModal';
 import GeneralErrorModal from '../GeneralErrorModal';
 
@@ -44,7 +44,7 @@ const KabobMenu = ({
         isOpen={isErrorModalOpen}
         close={closeErrorModal}
       />
-      <Dropdown drop="top">
+      <Dropdown>
         <Dropdown.Toggle
           id="kabob-menu-dropdown"
           data-testid="kabob-menu-dropdown"
@@ -86,6 +86,8 @@ const GroupMembersTable = ({
   isLoading,
   tableData,
   fetchTableData,
+  fetchAllData,
+  dataCount,
   groupUuid,
   refresh,
   setRefresh,
@@ -162,8 +164,9 @@ const GroupMembersTable = ({
           },
         ]}
         tableActions={[
-          <DownloadCsvButton
-            data={tableData.results}
+          <DownloadCsvIconButton
+            fetchAllData={fetchAllData}
+            dataCount={dataCount}
             testId="group-members-download"
           />,
         ]}
@@ -185,6 +188,8 @@ GroupMembersTable.propTypes = {
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
+  fetchAllData: PropTypes.func.isRequired,
+  dataCount: PropTypes.number.isRequired,
   groupUuid: PropTypes.string.isRequired,
   refresh: PropTypes.bool.isRequired,
   setRefresh: PropTypes.func.isRequired,

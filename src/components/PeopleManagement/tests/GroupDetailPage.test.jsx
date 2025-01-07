@@ -150,9 +150,17 @@ describe('<GroupDetailPageWrapper >', () => {
     LmsApiService.removeEnterpriseGroup.mockResolvedValueOnce({ status: 204 });
     render(<GroupDetailPageWrapper />);
     const deleteGroupIcon = screen.getByTestId('delete-group-icon');
+    // Open tooltip
+    expect(screen.queryByRole('tooltip')).toBeNull();
+    fireEvent.mouseOver(deleteGroupIcon);
+    await waitFor(() => {
+      expect(screen.queryByRole('tooltip')).not.toBeNull();
+      expect(screen.getAllByText('Delete group')).toHaveLength(1);
+    });
     deleteGroupIcon.click();
 
-    expect(screen.getByText('Delete group')).toBeInTheDocument();
+    // Open delete group modal
+    expect(screen.getByText('Delete group?')).toBeInTheDocument();
     expect(screen.getByText('This action cannot be undone.'));
     const deleteGroupButton = screen.getByTestId('delete-group-button');
     deleteGroupButton.click();

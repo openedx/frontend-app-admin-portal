@@ -26,6 +26,7 @@ const GroupDetailPage = () => {
     isLoading: isTableLoading,
     enterpriseGroupLearnersTableData,
     fetchEnterpriseGroupLearnersTableData,
+    fetchAllEnterpriseGroupLearnersData,
     refresh,
     setRefresh,
   } = useEnterpriseGroupLearnersTableData({ groupUuid });
@@ -109,7 +110,6 @@ const GroupDetailPage = () => {
               <IconButtonWithTooltip
                 alt="icon to trash group"
                 key="trashGroupTooltip"
-                tooltipPlacement="top"
                 tooltipContent={tooltipContent}
                 src={Delete}
                 iconAs={Icon}
@@ -148,7 +148,8 @@ const GroupDetailPage = () => {
         isLoading={isTableLoading}
         tableData={enterpriseGroupLearnersTableData}
         fetchTableData={fetchEnterpriseGroupLearnersTableData}
-        groupUuid={groupUuid}
+        fetchAllData={fetchAllEnterpriseGroupLearnersData}
+        dataCount={enterpriseGroupLearnersTableData.itemCount}
         refresh={refresh}
         setRefresh={setRefresh}
       />

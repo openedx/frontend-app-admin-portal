@@ -45,6 +45,7 @@ const useEnterpriseGroupLearnersTableData = ({ groupUuid }) => {
           itemCount: data.count,
           pageCount: data.numPages ?? Math.floor(data.count / options.pageSize),
           results: data.results.filter(result => result.activatedAt),
+          options,
         });
       } catch (error) {
         logError(error);
@@ -61,10 +62,18 @@ const useEnterpriseGroupLearnersTableData = ({ groupUuid }) => {
     [fetchEnterpriseGroupLearnersData, refresh],
   );
 
+  const fetchAllEnterpriseGroupLearnersData = useCallback(async () => {
+    const { options, itemCount } = enterpriseGroupLearnersTableData;
+    const fetchAllOptions = { ...options, page: 1, page_size: itemCount };
+    const response = await LmsApiService.fetchEnterpriseGroupLearners(groupUuid, fetchAllOptions);
+    return camelCaseObject(response.data);
+  }, [groupUuid, enterpriseGroupLearnersTableData]);
+
   return {
     isLoading,
     enterpriseGroupLearnersTableData,
     fetchEnterpriseGroupLearnersTableData: debouncedFetchEnterpriseGroupLearnersData,
+    fetchAllEnterpriseGroupLearnersData,
     refresh,
     setRefresh,
   };
