@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
-import { learnerCreditManagementQueryKeys } from '../../../learner-credit-management/data/constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { peopleManagementQueryKeys } from '../../constants';
 
 /**
  * Retrieves an enterprise group by the group UUID from the API.
@@ -17,7 +17,7 @@ const getEnterpriseGroupUuid = async ({ groupUuid }) => {
 };
 
 const useEnterpriseGroupUuid = (groupUuid, { queryOptions } = {}) => useQuery({
-  queryKey: learnerCreditManagementQueryKeys.group(groupUuid),
+  queryKey: peopleManagementQueryKeys.group(groupUuid),
   queryFn: () => getEnterpriseGroupUuid({ groupUuid }),
   ...queryOptions,
 });

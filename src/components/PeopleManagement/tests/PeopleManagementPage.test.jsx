@@ -146,10 +146,14 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText('Show all 4 groups')).toBeInTheDocument();
     expect(screen.queryByText('fruity pebbles')).not.toBeInTheDocument();
 
-    const collapsible = screen.getByText('Show all 4 groups');
-    collapsible.click();
+    const closedCollapsible = screen.getByText('Show all 4 groups');
+    closedCollapsible.click();
     await waitFor(() => {
       expect(screen.getByText('fruity pebbles')).toBeInTheDocument();
     });
+
+    expect(screen.queryByText('Show all 4 groups')).toBeNull();
+    const openCollapsible = screen.getByText('Show less');
+    expect(openCollapsible).toBeInTheDocument();
   });
 });

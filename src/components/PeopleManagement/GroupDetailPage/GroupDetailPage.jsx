@@ -12,6 +12,7 @@ import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from '../utils';
 import GroupMembersTable from './GroupMembersTable';
+import AddMembersModal from '../AddMembersModal/AddMembersModal';
 
 const GroupDetailPage = () => {
   const intl = useIntl();
@@ -21,7 +22,7 @@ const GroupDetailPage = () => {
   const [isEditModalOpen, openEditModal, closeEditModal] = useToggle(false);
   const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
-
+  const [isAddMembersModalOpen, openAddMembersModal, closeAddMembersModal] = useToggle(false);
   const {
     isLoading: isTableLoading,
     enterpriseGroupLearnersTableData,
@@ -29,7 +30,7 @@ const GroupDetailPage = () => {
     fetchAllEnterpriseGroupLearnersData,
     refresh,
     setRefresh,
-  } = useEnterpriseGroupLearnersTableData({ groupUuid });
+  } = useEnterpriseGroupLearnersTableData({ groupUuid, isAddMembersModalOpen });
   const handleNameUpdate = (name) => {
     setGroupName(name);
   };
@@ -96,7 +97,7 @@ const GroupDetailPage = () => {
                       data-testid="edit-modal-icon"
                     />
                   </>
-              )}
+                )}
                 subtitle={`${enterpriseGroup.acceptedMembersCount} accepted members`}
               />
               <Card.Section className="pt-1 x-small">
@@ -153,6 +154,13 @@ const GroupDetailPage = () => {
         groupUuid={groupUuid}
         refresh={refresh}
         setRefresh={setRefresh}
+        openAddMembersModal={openAddMembersModal}
+      />
+      <AddMembersModal
+        groupUuid={groupUuid}
+        groupName={groupName}
+        isModalOpen={isAddMembersModalOpen}
+        closeModal={closeAddMembersModal}
       />
     </div>
   );

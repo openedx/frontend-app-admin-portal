@@ -18,10 +18,9 @@ import RecentActionTableCell from '../RecentActionTableCell';
 import DownloadCsvIconButton from './DownloadCsvIconButton';
 import RemoveMemberModal from './RemoveMemberModal';
 import GeneralErrorModal from '../GeneralErrorModal';
+import AddMemberTableAction from './AddMemberTableAction';
 
-const FilterStatus = (rest) => (
-  <DataTable.FilterStatus showFilteredFields={false} {...rest} />
-);
+const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
 const KabobMenu = ({
   row, groupUuid, refresh, setRefresh,
@@ -90,6 +89,7 @@ const GroupMembersTable = ({
   groupUuid,
   refresh,
   setRefresh,
+  openAddMembersModal,
 }) => {
   const intl = useIntl();
   return (
@@ -113,8 +113,7 @@ const GroupMembersTable = ({
             Header: intl.formatMessage({
               id: 'people.management.groups.detail.page.members.columns.memberDetails',
               defaultMessage: 'Member details',
-              description:
-                'Column header for the Member details column in the People management Groups detail page',
+              description: 'Column header for the Member details column in the People management Groups detail page',
             }),
             accessor: 'memberDetails',
             Cell: MemberDetailsTableCell,
@@ -123,8 +122,7 @@ const GroupMembersTable = ({
             Header: intl.formatMessage({
               id: 'people.management.groups.detail.page.members.columns.recentAction',
               defaultMessage: 'Recent action',
-              description:
-                'Column header for the Recent action column in the People management Groups detail page',
+              description: 'Column header for the Recent action column in the People management Groups detail page',
             }),
             accessor: 'recentAction',
             Cell: RecentActionTableCell,
@@ -138,7 +136,7 @@ const GroupMembersTable = ({
           },
         ]}
         initialTableOptions={{
-          getRowId: (row) => row?.memberDetails.userEmail,
+          getRowId: row => row?.memberDetails.userEmail,
           autoResetPage: true,
         }}
         initialState={{
@@ -163,6 +161,7 @@ const GroupMembersTable = ({
           },
         ]}
         tableActions={[
+          <AddMemberTableAction openModal={openAddMembersModal} />,
           <DownloadCsvIconButton
             fetchAllData={fetchAllData}
             dataCount={dataCount}
@@ -192,6 +191,7 @@ GroupMembersTable.propTypes = {
   groupUuid: PropTypes.string.isRequired,
   refresh: PropTypes.bool.isRequired,
   setRefresh: PropTypes.func.isRequired,
+  openAddMembersModal: PropTypes.func.isRequired,
 };
 
 export default GroupMembersTable;
