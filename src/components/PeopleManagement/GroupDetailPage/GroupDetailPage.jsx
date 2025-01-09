@@ -10,7 +10,7 @@ import { useEnterpriseGroupLearnersTableData, useEnterpriseGroupUuid } from '../
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
-import { formatDates } from '../utils';
+import formatDates from '../utils';
 import GroupMembersTable from './GroupMembersTable';
 
 const GroupDetailPage = () => {

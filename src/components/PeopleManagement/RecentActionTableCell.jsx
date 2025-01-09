@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { formatDates } from './utils';
+import formatDates from './utils';
 
 const RecentActionTableCell = ({
   row,

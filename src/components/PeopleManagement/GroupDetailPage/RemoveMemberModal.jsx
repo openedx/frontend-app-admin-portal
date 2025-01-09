@@ -49,8 +49,8 @@ const RemoveMemberModal = ({
           <FormattedMessage
             id="peopleManagement.groupMember.delete.body.2"
             defaultMessage="This member will no longer be included
-          in the group’s progress report. Removal will not impact
-          any current access this member has to Learner Credit budgets."
+              in the group’s progress report. Removal will not impact
+              any current access this member has to Learner Credit budgets."
             description="Warning shown when deleting a member from a group."
           />
         </p>

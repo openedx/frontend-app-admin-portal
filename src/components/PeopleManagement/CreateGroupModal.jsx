@@ -11,7 +11,7 @@ import {
 import LmsApiService from '../../data/services/LmsApiService';
 import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import CreateGroupModalContent from './CreateGroupModalContent';
-import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
+import { peopleManagementQueryKeys } from './constants';
 
 const CreateGroupModal = ({
   isModalOpen,
@@ -53,7 +53,7 @@ const CreateGroupModal = ({
       });
       await LmsApiService.inviteEnterpriseLearnersToGroup(groupCreationResponse.data.uuid, requestBody);
       queryClient.invalidateQueries({
-        queryKey: learnerCreditManagementQueryKeys.group(enterpriseUUID),
+        queryKey: peopleManagementQueryKeys.group(enterpriseUUID),
       });
       setCreateButtonState('complete');
       handleCloseCreateGroupModal();
