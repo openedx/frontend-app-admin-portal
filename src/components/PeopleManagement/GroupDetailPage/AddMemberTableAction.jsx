@@ -3,7 +3,13 @@ import { Add } from '@openedx/paragon/icons';
 import PropTypes from 'prop-types';
 
 const AddMemberTableAction = ({ openModal }) => (
-  <Button iconBefore={Add} onClick={openModal} variant="outline-primary">Add members</Button>
+  <Button
+    className="align-top"
+    iconBefore={Add}
+    onClick={openModal}
+    variant="outline-primary"
+  >Add members
+  </Button>
 );
 
 AddMemberTableAction.propTypes = {

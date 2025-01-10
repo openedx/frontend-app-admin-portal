@@ -11,7 +11,7 @@ import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import DeleteGroupModal from './DeleteGroupModal';
 import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from '../utils';
-import GroupMembersTable from '../GroupMembersTable';
+import GroupMembersTable from './GroupMembersTable';
 import AddMembersModal from '../AddMembersModal/AddMembersModal';
 
 const GroupDetailPage = () => {
@@ -27,6 +27,9 @@ const GroupDetailPage = () => {
     isLoading: isTableLoading,
     enterpriseGroupLearnersTableData,
     fetchEnterpriseGroupLearnersTableData,
+    fetchAllEnterpriseGroupLearnersData,
+    refresh,
+    setRefresh,
   } = useEnterpriseGroupLearnersTableData({ groupUuid, isAddMembersModalOpen });
   const handleNameUpdate = (name) => {
     setGroupName(name);
@@ -108,7 +111,6 @@ const GroupDetailPage = () => {
               <IconButtonWithTooltip
                 alt="icon to trash group"
                 key="trashGroupTooltip"
-                tooltipPlacement="top"
                 tooltipContent={tooltipContent}
                 src={Delete}
                 iconAs={Icon}
@@ -147,7 +149,11 @@ const GroupDetailPage = () => {
         isLoading={isTableLoading}
         tableData={enterpriseGroupLearnersTableData}
         fetchTableData={fetchEnterpriseGroupLearnersTableData}
+        fetchAllData={fetchAllEnterpriseGroupLearnersData}
+        dataCount={enterpriseGroupLearnersTableData.itemCount}
         groupUuid={groupUuid}
+        refresh={refresh}
+        setRefresh={setRefresh}
         openAddMembersModal={openAddMembersModal}
       />
       <AddMembersModal

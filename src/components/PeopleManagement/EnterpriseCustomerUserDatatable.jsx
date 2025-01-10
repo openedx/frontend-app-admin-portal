@@ -7,7 +7,7 @@ import {
 } from '@openedx/paragon';
 import { GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE } from './constants';
 import MemberDetailsCell from './MemberDetailsCell';
-import AddMembersBulkAction from './AddMembersBulkAction';
+import AddMembersBulkAction from './GroupDetailPage/AddMembersBulkAction';
 import RemoveMembersBulkAction from './RemoveMembersBulkAction';
 import MemberJoinedDateCell from './MemberJoinedDateCell';
 import { useEnterpriseMembersTableData } from './data/hooks';

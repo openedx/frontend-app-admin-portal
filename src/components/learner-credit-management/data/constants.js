@@ -121,10 +121,10 @@ export const learnerCreditManagementQueryKeys = {
   budgetEnterpriseOffer: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'ecommerce'],
   budgetActivity: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'activity'],
   budgetActivityOverview: (budgetId) => [...learnerCreditManagementQueryKeys.budgetActivity(budgetId), 'overview'],
-  group: (groupUuid) => [...learnerCreditManagementQueryKeys.all, 'group', groupUuid],
   budgetGroupLearners: (budgetId) => [...learnerCreditManagementQueryKeys.budget(budgetId), 'group learners'],
   enterpriseCustomer: (enterpriseId) => [...learnerCreditManagementQueryKeys.all, 'enterpriseCustomer', enterpriseId],
   flexGroup: (enterpriseId) => [...learnerCreditManagementQueryKeys.enterpriseCustomer(enterpriseId), 'flexGroup'],
+  group: (groupUuid) => [...learnerCreditManagementQueryKeys.all, 'group', groupUuid],
   catalog: (catalog) => [...learnerCreditManagementQueryKeys.all, 'catalog', catalog],
   catalogContainsContentItem: (catalogUuid, contentKey) => [
     ...learnerCreditManagementQueryKeys.catalog(catalogUuid),

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { StatefulButton } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { useGetAllEnterpriseLearnerEmails } from './data/hooks/useEnterpriseLearnersTableData';
-import { getSelectedEmailsByRow } from './utils';
+import { useGetAllEnterpriseLearnerEmails } from '../data/hooks/useEnterpriseLearnersTableData';
+import { getSelectedEmailsByRow } from '../utils';
 
 const AddMembersBulkAction = ({
   isEntireTableSelected,
