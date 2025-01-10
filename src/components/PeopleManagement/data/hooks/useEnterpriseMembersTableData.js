@@ -3,6 +3,7 @@ import {
 } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
+import _ from 'lodash';
 import debounce from 'lodash.debounce';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
@@ -28,6 +29,13 @@ const useEnterpriseMembersTableData = ({ enterpriseId }) => {
       try {
         setIsLoading(true);
         const options = {};
+        if (args?.sortBy.length > 0) {
+          const sortByValue = args.sortBy[0].id;
+          options.sort_by = _.snakeCase(sortByValue);
+          if (!args.sortBy[0].desc) {
+            options.is_reversed = !args.sortBy[0].desc;
+          }
+        }
         args.filters.forEach((filter) => {
           const { id, value } = filter;
           if (id === 'name') {

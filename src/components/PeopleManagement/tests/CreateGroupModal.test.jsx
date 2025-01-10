@@ -14,11 +14,15 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../learner-credit-management/cards/data';
 import CreateGroupModal from '../CreateGroupModal';
 import {
-  useEnterpriseLearnersTableData,
   useGetAllEnterpriseLearnerEmails,
 } from '../data/hooks/useEnterpriseLearnersTableData';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
+import { useEnterpriseMembersTableData } from '../data/hooks';
 
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
+  useEnterpriseMembersTableData: jest.fn(),
+}));
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQueryClient: jest.fn(),
@@ -62,36 +66,35 @@ const mockTabledata = {
   pageCount: 1,
   results: [
     {
-      id: 1,
-      user: {
-        id: 1,
-        username: 'testuser-1',
-        firstName: '',
-        lastName: '',
+      enterpriseCustomerUser: {
+        user_id: 1,
+        name: 'Test User 1',
         email: 'testuser-1@2u.com',
-        dateJoined: '2023-05-09T16:18:22Z',
+        joinedOrg: 'July 5, 2021',
       },
     },
     {
-      id: 2,
-      user: {
-        id: 2,
-        username: 'testuser-2',
-        firstName: '',
-        lastName: '',
+      enterpriseCustomerUser: {
+        user_id: 2,
+        name: 'Test User 2',
         email: 'testuser-2@2u.com',
-        dateJoined: '2023-05-09T16:18:22Z',
+        joinedOrg: 'July 2, 2022',
       },
     },
     {
-      id: 3,
-      user: {
-        id: 3,
-        username: 'testuser-3',
-        firstName: '',
-        lastName: '',
+      enterpriseCustomerUser: {
+        user_id: 3,
+        name: 'Test User 3',
         email: 'testuser-3@2u.com',
-        dateJoined: '2023-05-09T16:18:22Z',
+        joinedOrg: 'July 3, 2023',
+      },
+    },
+    {
+      enterpriseCustomerUser: {
+        user_id: 4,
+        name: 'Test User 4',
+        email: 'testuser-4@2u.com',
+        joinedOrg: 'July 4, 2024',
       },
     },
   ],
@@ -113,10 +116,10 @@ const CreateGroupModalWrapper = ({
 
 describe('<CreateGroupModal />', () => {
   beforeEach(() => {
-    useEnterpriseLearnersTableData.mockReturnValue({
+    useEnterpriseMembersTableData.mockReturnValue({
       isLoading: false,
-      enterpriseCustomerUserTableData: mockTabledata,
-      fetchEnterpriseLearnersData: jest.fn(),
+      enterpriseMembersTableData: mockTabledata,
+      fetchEnterpriseMembersTableData: jest.fn(),
     });
     useGetAllEnterpriseLearnerEmails.mockReturnValue({
       isLoading: false,
@@ -141,11 +144,11 @@ describe('<CreateGroupModal />', () => {
     // renders datatable
     expect(screen.getByText('Member details')).toBeInTheDocument();
     expect(screen.getByText('Joined organization')).toBeInTheDocument();
-    expect(screen.getByText('testuser-1')).toBeInTheDocument();
+    expect(screen.getByText('Test User 1')).toBeInTheDocument();
     expect(screen.getByText('testuser-1@2u.com')).toBeInTheDocument();
-    expect(screen.getByText('testuser-2')).toBeInTheDocument();
+    expect(screen.getByText('Test User 2')).toBeInTheDocument();
     expect(screen.getByText('testuser-2@2u.com')).toBeInTheDocument();
-    expect(screen.getByText('testuser-3')).toBeInTheDocument();
+    expect(screen.getByText('Test User 3')).toBeInTheDocument();
     expect(screen.getByText('testuser-3@2u.com')).toBeInTheDocument();
   });
   it('creates groups and assigns learners', async () => {
