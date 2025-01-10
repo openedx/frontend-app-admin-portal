@@ -10,6 +10,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 
 const useEnterpriseGroupLearnersTableData = ({ groupUuid, isAddMembersModalOpen }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [enterpriseGroupLearnersTableData, setEnterpriseGroupLearnersTableData] = useState({
     itemCount: 0,
     pageCount: 0,
@@ -44,6 +45,7 @@ const useEnterpriseGroupLearnersTableData = ({ groupUuid, isAddMembersModalOpen 
           itemCount: data.count,
           pageCount: data.numPages ?? Math.floor(data.count / options.pageSize),
           results: data.results.filter(result => result.activatedAt),
+          options,
         });
       } catch (error) {
         logError(error);
@@ -57,14 +59,24 @@ const useEnterpriseGroupLearnersTableData = ({ groupUuid, isAddMembersModalOpen 
 
   const debouncedFetchEnterpriseGroupLearnersData = useMemo(
     () => debounce(fetchEnterpriseGroupLearnersData, 300),
-    [fetchEnterpriseGroupLearnersData],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fetchEnterpriseGroupLearnersData, refresh],
   );
+
+  const fetchAllEnterpriseGroupLearnersData = useCallback(async () => {
+    const { options, itemCount } = enterpriseGroupLearnersTableData;
+    const fetchAllOptions = { ...options, page: 1, page_size: itemCount };
+    const response = await LmsApiService.fetchEnterpriseGroupLearners(groupUuid, fetchAllOptions);
+    return camelCaseObject(response.data);
+  }, [groupUuid, enterpriseGroupLearnersTableData]);
 
   return {
     isLoading,
     enterpriseGroupLearnersTableData,
     fetchEnterpriseGroupLearnersTableData: debouncedFetchEnterpriseGroupLearnersData,
+    fetchAllEnterpriseGroupLearnersData,
+    refresh,
+    setRefresh,
   };
 };
-
 export default useEnterpriseGroupLearnersTableData;
