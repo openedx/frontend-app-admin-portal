@@ -90,19 +90,20 @@ const PeopleManagementPage = ({ enterpriseId }) => {
         ) : (
           <ZeroState />
         )}
-        <h3 className="mt-3">
+        <h3 className="mt-4.5">
           <FormattedMessage
             id="adminPortal.peopleManagement.dataTable.title"
             defaultMessage="Your organization's members"
             description="Title for people management data table."
           />
         </h3>
-        <FormattedMessage
-          className="mb-4"
-          id="adminPortal.peopleManagement.dataTable.subtitle"
-          defaultMessage="View all members of your organization."
-          description="Subtitle for people management members data table."
-        />
+        <p className="mb-2">
+          <FormattedMessage
+            id="adminPortal.peopleManagement.dataTable.subtitle"
+            defaultMessage="View all members of your organization."
+            description="Subtitle for people management members data table."
+          />
+        </p>
         <PeopleManagementTable />
       </div>
     </>

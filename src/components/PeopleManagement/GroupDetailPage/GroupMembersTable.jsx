@@ -9,7 +9,6 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import TableTextFilter from '../../learner-credit-management/TableTextFilter';
 import CustomDataTableEmptyState from '../../learner-credit-management/CustomDataTableEmptyState';
 import MemberDetailsTableCell from '../../learner-credit-management/members-tab/MemberDetailsTableCell';
-import EnrollmentsTableColumnHeader from '../EnrollmentsTableColumnHeader';
 import {
   GROUP_MEMBERS_TABLE_DEFAULT_PAGE,
   GROUP_MEMBERS_TABLE_PAGE_SIZE,
@@ -129,7 +128,11 @@ const GroupMembersTable = ({
             disableFilters: true,
           },
           {
-            Header: EnrollmentsTableColumnHeader,
+            Header: intl.formatMessage({
+              id: 'people.management.groups.detail.page.members.columns.recentAction',
+              defaultMessage: 'Enrollments',
+              description: 'Enrollments column header in the Members table in the People management Groups detail page',
+            }),
             accessor: 'enrollmentCount',
             Cell: ({ row }) => row.original.enrollments,
             disableFilters: true,
