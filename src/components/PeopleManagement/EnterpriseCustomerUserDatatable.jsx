@@ -5,12 +5,12 @@ import {
   TextFilter,
   CheckboxControl,
 } from '@openedx/paragon';
-import { useEnterpriseLearnersTableData } from './data/hooks/useEnterpriseLearnersTableData';
 import { GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE } from './constants';
 import MemberDetailsCell from './MemberDetailsCell';
 import AddMembersBulkAction from './GroupDetailPage/AddMembersBulkAction';
 import RemoveMembersBulkAction from './RemoveMembersBulkAction';
 import MemberJoinedDateCell from './MemberJoinedDateCell';
+import { useEnterpriseMembersTableData } from './data/hooks';
 
 export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
   const {
@@ -32,9 +32,8 @@ export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
     </div>
   );
 };
+const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
-// TO-DO: add search functionality on member details once the learner endpoint is updated
-// to support search
 const EnterpriseCustomerUserDatatable = ({
   enterpriseId,
   learnerEmails,
@@ -44,9 +43,9 @@ const EnterpriseCustomerUserDatatable = ({
 }) => {
   const {
     isLoading,
-    enterpriseCustomerUserTableData,
-    fetchEnterpriseLearnersData,
-  } = useEnterpriseLearnersTableData(enterpriseId, enterpriseGroupLearners);
+    enterpriseMembersTableData,
+    fetchEnterpriseMembersTableData,
+  } = useEnterpriseMembersTableData({ enterpriseId });
 
   return (
     <DataTable
@@ -65,12 +64,12 @@ const EnterpriseCustomerUserDatatable = ({
       columns={[
         {
           Header: 'Member details',
-          accessor: 'user.email',
+          accessor: 'name',
           Cell: MemberDetailsCell,
         },
         {
           Header: 'Joined organization',
-          accessor: 'created',
+          accessor: 'joinedOrg',
           Cell: MemberJoinedDateCell,
           disableFilters: true,
         },
@@ -78,21 +77,28 @@ const EnterpriseCustomerUserDatatable = ({
       initialState={{
         pageIndex: GROUP_MEMBERS_TABLE_DEFAULT_PAGE,
         pageSize: GROUP_MEMBERS_TABLE_PAGE_SIZE,
+        sortBy: [
+          { id: 'name', desc: true },
+        ],
+        filters: [],
       }}
-      data={enterpriseCustomerUserTableData.results}
+      data={enterpriseMembersTableData.results}
       defaultColumnValues={{ Filter: TextFilter }}
-      fetchData={fetchEnterpriseLearnersData}
+      FilterStatusComponent={FilterStatus}
+      fetchData={fetchEnterpriseMembersTableData}
       isFilterable
       isLoading={isLoading}
       isPaginated
       isSelectable
-      itemCount={enterpriseCustomerUserTableData.itemCount}
+      itemCount={enterpriseMembersTableData.itemCount}
       manualFilters
       manualPagination
+      isSortable
+      manualSortBy
       initialTableOptions={{
-        getRowId: row => row.id.toString(),
+        getRowId: row => row.enterpriseCustomerUser.name.toString(),
       }}
-      pageCount={enterpriseCustomerUserTableData.pageCount}
+      pageCount={enterpriseMembersTableData.pageCount}
       manualSelectColumn={
         {
           id: 'selection',
