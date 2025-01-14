@@ -129,7 +129,7 @@ const GroupMembersTable = ({
           },
           {
             Header: intl.formatMessage({
-              id: 'people.management.groups.detail.page.members.columns.recentAction',
+              id: 'people.management.groups.detail.page.members.columns.enrollments',
               defaultMessage: 'Enrollments',
               description: 'Enrollments column header in the Members table in the People management Groups detail page',
             }),
