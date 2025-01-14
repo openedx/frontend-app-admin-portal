@@ -22,6 +22,24 @@ const EnrollmentsTable = () => {
     },
     {
       label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.user_first_name',
+        defaultMessage: 'First Name',
+        description: 'Title for the first name column in the enrollments table',
+      }),
+      key: 'user_first_name',
+      columnSortable: true,
+    },
+    {
+      label: intl.formatMessage({
+        id: 'adminPortal.enrollmentsTable.user_last_name',
+        defaultMessage: 'Last Name',
+        description: 'Title for the last name column in the enrollments table',
+      }),
+      key: 'user_last_name',
+      columnSortable: true,
+    },
+    {
+      label: intl.formatMessage({
         id: 'adminPortal.enrollmentsTable.courseTitle',
         defaultMessage: 'Course Title',
       }),
