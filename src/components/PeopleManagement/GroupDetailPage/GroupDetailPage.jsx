@@ -13,6 +13,7 @@ import EditGroupNameModal from './EditGroupNameModal';
 import formatDates from '../utils';
 import GroupMembersTable from './GroupMembersTable';
 import AddMembersModal from '../AddMembersModal/AddMembersModal';
+import { makePlural } from '../../../utils';
 
 const GroupDetailPage = () => {
   const intl = useIntl();
@@ -98,7 +99,7 @@ const GroupDetailPage = () => {
                     />
                   </>
                 )}
-                subtitle={`${enterpriseGroup.acceptedMembersCount} accepted members`}
+                subtitle={makePlural(enterpriseGroup.acceptedMembersCount, 'member')}
               />
               <Card.Section className="pt-1 x-small">
                 Created on {formatDates(enterpriseGroup.created)}
