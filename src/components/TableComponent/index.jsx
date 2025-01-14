@@ -31,7 +31,7 @@ class TableComponent extends React.Component {
       const currentQueryParams = new URLSearchParams(location.search);
       const page = currentQueryParams.get('page');
       const ordering = currentQueryParams.get('ordering');
-      if (ordering !== prevOrdering) {
+      if (ordering && ordering !== prevOrdering) {
         this.props.sortTable(ordering);
       } else if (page !== prevPage) {
         this.props.paginateTable(parseInt(page, 10));
