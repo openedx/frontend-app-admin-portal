@@ -35,6 +35,13 @@ const useEnterpriseMembersTableData = ({ enterpriseId }) => {
             options.user_query = value;
           }
         });
+        // if (args?.sortBy.length > 0) {
+        //   const sortByValue = args.sortBy[0].id;
+        //   options.sort_by = _.snakeCase(sortByValue);
+        // if (!args.sortBy[0].desc) {
+        //   options.is_reversed = !args.sortBy[0].desc;
+        // }
+
         if (args?.sortBy.length > 0) {
           const sortByValue = args.sortBy[0].id;
           options.sort_by = _.snakeCase(sortByValue);
@@ -42,6 +49,7 @@ const useEnterpriseMembersTableData = ({ enterpriseId }) => {
             options.is_reversed = !args.sortBy[0].desc;
           }
         }
+        // }
         options.page = args.pageIndex + 1;
         const response = await LmsApiService.fetchEnterpriseCustomerMembers(enterpriseId, options);
         const data = camelCaseObject(response.data);
