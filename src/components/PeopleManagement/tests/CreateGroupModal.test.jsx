@@ -129,7 +129,7 @@ describe('<CreateGroupModal />', () => {
   });
   it('Modal renders as expected', async () => {
     render(<CreateGroupModalWrapper />);
-    expect(screen.getByText('Create a custom group of members')).toBeInTheDocument();
+    expect(screen.getByText('Create a custom group')).toBeInTheDocument();
     expect(screen.getByText('Name your group')).toBeInTheDocument();
     expect(screen.getByText('Select group members')).toBeInTheDocument();
     expect(screen.getByText('Upload a CSV or select members from the table below.')).toBeInTheDocument();
