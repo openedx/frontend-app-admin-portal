@@ -3,7 +3,12 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
-import { ActionRow, Button, useToggle } from '@openedx/paragon';
+import {
+  ActionRow,
+  Button,
+  Skeleton,
+  useToggle,
+} from '@openedx/paragon';
 import { Add } from '@openedx/paragon/icons';
 
 import Hero from '../Hero';
@@ -24,7 +29,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
   });
 
   const { enterpriseSubsidyTypes } = useContext(EnterpriseSubsidiesContext);
-  const { data } = useAllEnterpriseGroups(enterpriseId);
+  const { data, isLoading: isGroupsLoading } = useAllEnterpriseGroups(enterpriseId);
 
   const hasLearnerCredit = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.budget);
   const hasOtherSubsidyTypes = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.license)
@@ -39,6 +44,15 @@ const PeopleManagementPage = ({ enterpriseId }) => {
       setGroups(data.results);
     }
   }, [data]);
+
+  let groupsCardSection = (<Skeleton height="20vh" />);
+  if (!isGroupsLoading) {
+    if (groups && groups.length > 0) {
+      groupsCardSection = (<GroupCardGrid groups={groups} />);
+    } else {
+      groupsCardSection = (<ZeroState />);
+    }
+  }
 
   return (
     <>
@@ -85,12 +99,8 @@ const PeopleManagementPage = ({ enterpriseId }) => {
             closeModal={closeModal}
           />
         </ActionRow>
-        {groups && groups.length > 0 ? (
-          <GroupCardGrid groups={groups} />
-        ) : (
-          <ZeroState />
-        )}
-        <h3 className="mt-4.5">
+        {groupsCardSection}
+        <h3 className="mt-3">
           <FormattedMessage
             id="adminPortal.peopleManagement.dataTable.title"
             defaultMessage="Your organization's members"
