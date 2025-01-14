@@ -67,7 +67,7 @@ const mockTabledata = {
   results: [
     {
       enterpriseCustomerUser: {
-        user_id: 1,
+        userId: 1,
         name: 'Test User 1',
         email: 'testuser-1@2u.com',
         joinedOrg: 'July 5, 2021',
@@ -75,7 +75,7 @@ const mockTabledata = {
     },
     {
       enterpriseCustomerUser: {
-        user_id: 2,
+        userId: 2,
         name: 'Test User 2',
         email: 'testuser-2@2u.com',
         joinedOrg: 'July 2, 2022',
@@ -83,7 +83,7 @@ const mockTabledata = {
     },
     {
       enterpriseCustomerUser: {
-        user_id: 3,
+        userId: 3,
         name: 'Test User 3',
         email: 'testuser-3@2u.com',
         joinedOrg: 'July 3, 2023',
@@ -91,7 +91,7 @@ const mockTabledata = {
     },
     {
       enterpriseCustomerUser: {
-        user_id: 4,
+        userId: 4,
         name: 'Test User 4',
         email: 'testuser-4@2u.com',
         joinedOrg: 'July 4, 2024',

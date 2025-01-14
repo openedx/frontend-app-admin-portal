@@ -18,7 +18,7 @@ export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
     checked,
     ...toggleRowSelectedProps
   } = row.getToggleRowSelectedProps();
-  const isAddedMember = enterpriseGroupLearners.find(learner => learner.enterpriseCustomerUserId === Number(row.id));
+  const isAddedMember = enterpriseGroupLearners.find(learner => learner.lmsUserId === Number(row.id));
   return (
     <div>
       <CheckboxControl
@@ -96,7 +96,7 @@ const EnterpriseCustomerUserDatatable = ({
       isSortable
       manualSortBy
       initialTableOptions={{
-        getRowId: row => row.enterpriseCustomerUser.name.toString(),
+        getRowId: row => row.enterpriseCustomerUser.userId.toString(),
       }}
       pageCount={enterpriseMembersTableData.pageCount}
       manualSelectColumn={
