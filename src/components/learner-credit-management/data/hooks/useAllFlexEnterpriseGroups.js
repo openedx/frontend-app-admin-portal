@@ -10,15 +10,16 @@ import { fetchPaginatedData } from '../../../../data/services/apiServiceUtils';
  * @param {*} queryKey The queryKey from the associated `useQuery` call.
  * @returns The enterprise group object
  */
-const getAllEnterpriseGroups = async ({ enterpriseId }) => {
-  const { results } = await fetchPaginatedData(`${LmsApiService.enterpriseGroupListUrl}?enterprise_uuids${enterpriseId}?group_type=flex`);
-  return results;
+const getAllFlexEnterpriseGroups = async ({ enterpriseId }) => {
+  const { results } = await fetchPaginatedData(`${LmsApiService.enterpriseGroupListUrl}?enterprise_uuids=${enterpriseId}`);
+  const flexGroups = results.filter(result => result.groupType === 'flex');
+  return flexGroups;
 };
 
-const useAllEnterpriseGroups = (enterpriseId, { queryOptions } = {}) => useQuery({
+const useAllFlexEnterpriseGroups = (enterpriseId, { queryOptions } = {}) => useQuery({
   queryKey: learnerCreditManagementQueryKeys.group(enterpriseId),
-  queryFn: () => getAllEnterpriseGroups({ enterpriseId }),
+  queryFn: () => getAllFlexEnterpriseGroups({ enterpriseId }),
   ...queryOptions,
 });
 
-export default useAllEnterpriseGroups;
+export default useAllFlexEnterpriseGroups;
