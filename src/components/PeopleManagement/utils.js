@@ -16,8 +16,8 @@ export const getSelectedEmailsByRow = (selectedFlatRows) => {
   const emails = [];
   Object.keys(selectedFlatRows).forEach(key => {
     const { original } = selectedFlatRows[key];
-    if (original.user !== null) {
-      emails.push(original.user.email);
+    if (original.enterpriseCustomerUser !== null) {
+      emails.push(original.enterpriseCustomerUser.email);
     }
   });
   return emails;
