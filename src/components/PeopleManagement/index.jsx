@@ -3,7 +3,12 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
-import { ActionRow, Button, useToggle } from '@openedx/paragon';
+import {
+  ActionRow,
+  Button,
+  Skeleton,
+  useToggle,
+} from '@openedx/paragon';
 import { Add } from '@openedx/paragon/icons';
 
 import Hero from '../Hero';
@@ -24,7 +29,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
   });
 
   const { enterpriseSubsidyTypes } = useContext(EnterpriseSubsidiesContext);
-  const { data } = useAllEnterpriseGroups(enterpriseId);
+  const { data, isLoading: isGroupsLoading } = useAllEnterpriseGroups(enterpriseId);
 
   const hasLearnerCredit = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.budget);
   const hasOtherSubsidyTypes = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.license)
@@ -36,9 +41,18 @@ const PeopleManagementPage = ({ enterpriseId }) => {
 
   useEffect(() => {
     if (data !== undefined) {
-      setGroups(data.results);
+      setGroups(data);
     }
   }, [data]);
+
+  let groupsCardSection = (<Skeleton height="20vh" />);
+  if (!isGroupsLoading) {
+    if (groups && groups.length > 0) {
+      groupsCardSection = (<GroupCardGrid groups={groups} />);
+    } else {
+      groupsCardSection = (<ZeroState />);
+    }
+  }
 
   return (
     <>
@@ -85,11 +99,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
             closeModal={closeModal}
           />
         </ActionRow>
-        {groups && groups.length > 0 ? (
-          <GroupCardGrid groups={groups} />
-        ) : (
-          <ZeroState />
-        )}
+        {groupsCardSection}
         <h3 className="mt-3">
           <FormattedMessage
             id="adminPortal.peopleManagement.dataTable.title"
@@ -97,12 +107,13 @@ const PeopleManagementPage = ({ enterpriseId }) => {
             description="Title for people management data table."
           />
         </h3>
-        <FormattedMessage
-          className="mb-4"
-          id="adminPortal.peopleManagement.dataTable.subtitle"
-          defaultMessage="View all members of your organization."
-          description="Subtitle for people management members data table."
-        />
+        <p className="mb-2">
+          <FormattedMessage
+            id="adminPortal.peopleManagement.dataTable.subtitle"
+            defaultMessage="View all members of your organization."
+            description="Subtitle for people management members data table."
+          />
+        </p>
         <PeopleManagementTable />
       </div>
     </>

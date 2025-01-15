@@ -449,11 +449,6 @@ class LmsApiService {
     return response;
   };
 
-  static fetchAllEnterpriseGroups = async (options) => {
-    const groupsEndpoint = `${LmsApiService.enterpriseGroupListUrl}?${options.toString()}`;
-    return LmsApiService.apiClient().get(groupsEndpoint);
-  };
-
   static fetchEnterpriseGroup = async (groupUuid) => {
     const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().get(groupEndpoint);
