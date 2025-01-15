@@ -37,7 +37,7 @@ const PeopleManagementTable = ({ enterpriseId }) => {
         pageSize: 10,
         pageIndex: 0,
         sortBy: [
-          { id: 'enterpriseCustomerUser.name', desc: true },
+          { id: 'name', desc: true },
         ],
         filters: [],
       }}
