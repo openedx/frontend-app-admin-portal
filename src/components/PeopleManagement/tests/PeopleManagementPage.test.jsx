@@ -116,7 +116,7 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText("Once a group is created, you can track members' progress.")).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage group card grid', () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: mockGroupsResponse } });
+    useAllEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">
@@ -131,7 +131,7 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText('4 members')).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage group card grid with collapsible', async () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: mockMultipleGroupsResponse } });
+    useAllEnterpriseGroups.mockReturnValue({ data: mockMultipleGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">

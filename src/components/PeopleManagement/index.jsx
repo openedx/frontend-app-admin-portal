@@ -41,7 +41,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
 
   useEffect(() => {
     if (data !== undefined) {
-      setGroups(data.results);
+      setGroups(data);
     }
   }, [data]);
 
