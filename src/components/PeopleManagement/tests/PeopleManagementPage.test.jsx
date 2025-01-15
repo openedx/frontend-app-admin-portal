@@ -43,6 +43,11 @@ jest.mock('../../learner-credit-management/data', () => ({
   useAllEnterpriseGroups: jest.fn(),
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useSearchParams: jest.fn(),
+}));
+
 const mockGroupsResponse = [{
   enterpriseCustomer: enterpriseUUID,
   name: 'only cool people',
@@ -155,5 +160,22 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.queryByText('Show all 4 groups')).toBeNull();
     const openCollapsible = screen.getByText('Show less');
     expect(openCollapsible).toBeInTheDocument();
+  });
+  it('renders group deleted toast after redirect', async () => {
+    useAllEnterpriseGroups.mockReturnValue({ data: { results: {} } });
+    // eslint-disable-next-line no-global-assign
+    window = Object.create(window);
+    const params = '?toast=true';
+    Object.defineProperty(window, 'location', {
+      value: {
+        search: params,
+      },
+      writable: true,
+    });
+    expect(window.location.search).toEqual(params);
+    render(<PeopleManagementPageWrapper />);
+    await waitFor(() => {
+      expect(screen.queryByText('Group deleted')).toBeInTheDocument();
+    });
   });
 });

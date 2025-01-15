@@ -50,7 +50,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
   }, [data]);
 
   useEffect(() => {
-  // parameter is for confirmation toast after deleting a group
+    // parameter is for confirmation toast after deleting a group
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has('toast')) {
       openToast();
@@ -61,11 +61,9 @@ const PeopleManagementPage = ({ enterpriseId }) => {
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      {isToastOpen && (
-        <Toast onClose={closeToast} show={isToastOpen}>
-          {toastText}
-        </Toast>
-      )}
+      <Toast onClose={closeToast} show={isToastOpen}>
+        {toastText}
+      </Toast>
       <div className="mx-3 mt-4">
         <ActionRow className="mb-4">
           <span className="flex-column">
