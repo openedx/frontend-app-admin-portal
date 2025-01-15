@@ -95,7 +95,7 @@ describe('<GroupDetailPageWrapper >', () => {
     });
     render(<GroupDetailPageWrapper />);
     expect(screen.queryAllByText(TEST_GROUP.name)).toHaveLength(2);
-    expect(screen.getByText('0 accepted members')).toBeInTheDocument();
+    expect(screen.getByText('0 members')).toBeInTheDocument();
     expect(screen.getByText('View group progress')).toBeInTheDocument();
     expect(screen.getByText('Add and remove group members.')).toBeInTheDocument();
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('<GroupDetailPageWrapper >', () => {
       sortBy: [{ desc: true, id: 'memberDetails' }],
     }));
 
-    userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+    userEvent.click(screen.getByText('Enrollments'));
     await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
       filters: [],
       pageIndex: 0,

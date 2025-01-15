@@ -105,7 +105,7 @@ const CreateGroupModalContent = ({
       <h3>
         <FormattedMessage
           id="people.management.page.create.group.section.header"
-          defaultMessage="Create a custom group of members"
+          defaultMessage="Create a custom group"
           description="Header for the section to create a new group."
         />
       </h3>
