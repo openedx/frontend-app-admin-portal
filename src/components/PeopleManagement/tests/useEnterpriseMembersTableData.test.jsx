@@ -32,10 +32,10 @@ describe('useEnterpriseMembersTableData', () => {
       pageIndex: 0,
       pageSize: 10,
       filters: [],
-      sortBy: [],
+      sortBy: [{ id: 'joinedOrg', desc: false }],
     });
     await waitForNextUpdate();
-    expect(LmsApiService.fetchEnterpriseCustomerMembers).toHaveBeenCalledWith(mockEnterpriseUUID, { page: 1 });
+    expect(LmsApiService.fetchEnterpriseCustomerMembers).toHaveBeenCalledWith(mockEnterpriseUUID, { page: 1, is_reversed: true, sort_by: 'joined_org' });
     expect(result.current.isLoading).toEqual(false);
     expect(result.current.enterpriseMembersTableData.results).toEqual(camelCaseObject(mockData.results));
   });

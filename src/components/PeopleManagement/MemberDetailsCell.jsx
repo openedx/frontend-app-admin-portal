@@ -4,10 +4,10 @@ import { Stack } from '@openedx/paragon';
 const MemberDetailsCell = ({ row }) => (
   <Stack gap={1}>
     <div className="font-weight-bold">
-      {row.original?.user?.username}
+      {row.original?.enterpriseCustomerUser?.name}
     </div>
     <div>
-      {row.original?.user?.email}
+      {row.original?.enterpriseCustomerUser?.email}
     </div>
   </Stack>
 );
@@ -15,9 +15,9 @@ const MemberDetailsCell = ({ row }) => (
 MemberDetailsCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
-      user: PropTypes.shape({
+      enterpriseCustomerUser: PropTypes.shape({
+        name: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,
   }).isRequired,
