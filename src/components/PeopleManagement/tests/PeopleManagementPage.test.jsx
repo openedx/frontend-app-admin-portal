@@ -162,7 +162,7 @@ describe('<PeopleManagementPage >', () => {
     expect(openCollapsible).toBeInTheDocument();
   });
   it('renders group deleted toast after redirect', async () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: {} } });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
     // eslint-disable-next-line no-global-assign
     window = Object.create(window);
     const params = '?toast=true';
