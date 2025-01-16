@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { useAllEnterpriseGroups } from '../../learner-credit-management/data';
+import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import PeopleManagementPage from '..';
 
@@ -40,7 +40,7 @@ jest.mock('@tanstack/react-query', () => ({
 
 jest.mock('../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../learner-credit-management/data'),
-  useAllEnterpriseGroups: jest.fn(),
+  useAllFlexEnterpriseGroups: jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -94,7 +94,7 @@ const PeopleManagementPageWrapper = ({
 
 describe('<PeopleManagementPage >', () => {
   it('renders the PeopleManagementPage zero state', () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: {} } });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
     render(<PeopleManagementPageWrapper />);
     expect(document.querySelector('h3').textContent).toEqual("Your organization's groups");
     expect(screen.getByText("You don't have any groups yet.")).toBeInTheDocument();
@@ -103,7 +103,7 @@ describe('<PeopleManagementPage >', () => {
     )).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage zero state without LC', () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: [] } });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: [] } });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">
@@ -121,7 +121,7 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText("Once a group is created, you can track members' progress.")).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage group card grid', () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">
@@ -136,7 +136,7 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText('4 members')).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage group card grid with collapsible', async () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: mockMultipleGroupsResponse });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: mockMultipleGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">

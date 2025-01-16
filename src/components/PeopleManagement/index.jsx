@@ -12,7 +12,7 @@ import Hero from '../Hero';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import CreateGroupModal from './CreateGroupModal';
-import { useAllEnterpriseGroups } from '../learner-credit-management/data';
+import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import ZeroState from './ZeroState';
 import GroupCardGrid from './GroupCardGrid';
 import PeopleManagementTable from './PeopleManagementTable';
@@ -33,7 +33,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
   });
 
   const { enterpriseSubsidyTypes } = useContext(EnterpriseSubsidiesContext);
-  const { data, isLoading: isGroupsLoading } = useAllEnterpriseGroups(enterpriseId);
+  const { data, isLoading: isGroupsLoading } = useAllFlexEnterpriseGroups(enterpriseId);
 
   const hasLearnerCredit = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.budget);
   const hasOtherSubsidyTypes = enterpriseSubsidyTypes.includes(SUBSIDY_TYPES.license)
