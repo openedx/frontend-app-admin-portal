@@ -58,6 +58,10 @@ const store = mockStore({
     loading: null,
     budgets: null,
   },
+  enterpriseGroups: {
+    loading: null,
+    groups: [],
+  },
 });
 
 const AdminWrapper = props => (
@@ -86,10 +90,16 @@ const AdminWrapper = props => (
             subsidy_access_policy_uuid: '8d6503dd-e40d-42b8-442b-37dd4c5450e3',
             subsidy_access_policy_display_name: 'Everything',
           }]}
+          groups={[{
+            enterprise_group_uuid: '7d6503dd-e40d-42b8-442b-37dd4c5450e3',
+            enterprise_group_name: 'Test Group',
+          }]}
           fetchDashboardInsights={() => {}}
           clearDashboardInsights={() => {}}
           fetchEnterpriseBudgets={() => {}}
           clearEnterpriseBudgets={() => {}}
+          fetchEnterpriseGroups={() => {}}
+          clearEnterpriseGroups={() => {}}
         />
       </IntlProvider>
     </Provider>
@@ -108,6 +118,7 @@ describe('<Admin />', () => {
     numberOfUsers: 3,
     insights: null,
     budgets: [],
+    groups: [],
   };
 
   describe('renders correctly', () => {
@@ -394,6 +405,25 @@ describe('<Admin />', () => {
             <AdminWrapper
               {...baseProps}
               budgets={budgets}
+            />
+          ))
+          .toJSON();
+
+        expect(tree).toMatchSnapshot();
+      });
+    });
+
+    describe('with enterprise groups data', () => {
+      it('renders groups correctly', () => {
+        const groups = [{
+          enterprise_group_uuid: 'test-group-uuid',
+          enterprise_group_name: 'test-group-name',
+        }];
+        const tree = renderer
+          .create((
+            <AdminWrapper
+              {...baseProps}
+              groups={groups}
             />
           ))
           .toJSON();
