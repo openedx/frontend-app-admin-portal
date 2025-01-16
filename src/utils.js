@@ -174,6 +174,9 @@ const getPageOptionsFromUrl = () => {
   if (query.has('budget_uuid')) {
     pageOptions.budget_uuid = query.get('budget_uuid');
   }
+  if (query.has('group_uuid')) {
+    pageOptions.group_uuid = query.get('group_uuid');
+  }
   if (query.has('search_start_date')) {
     pageOptions.search_start_date = query.get('search_start_date');
   }

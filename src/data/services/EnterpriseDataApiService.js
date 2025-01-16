@@ -182,6 +182,12 @@ class EnterpriseDataApiService {
     return EnterpriseDataApiService.apiClient().get(url);
   }
 
+  static fetchEnterpriseGroups(enterpriseId) {
+    const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
+    const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/groups/`;
+    return EnterpriseDataApiService.apiClient().get(url);
+  }
+
   static fetchEnterpriseBudgets(enterpriseId) {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/budgets/`;
