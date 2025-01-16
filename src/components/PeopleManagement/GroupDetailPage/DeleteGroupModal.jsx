@@ -22,8 +22,12 @@ const DeleteGroupModal = ({
     try {
       await LmsApiService.removeEnterpriseGroup(group?.uuid);
       close();
+      const param = {
+        toast: true,
+      };
+      const urlParams = new URLSearchParams(param);
       // redirect back to the people management page
-      window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`;
+      window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/?${urlParams.toString()}`;
     } catch (error) {
       logError(error);
       openError();

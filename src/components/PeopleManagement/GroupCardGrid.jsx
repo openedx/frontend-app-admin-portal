@@ -39,7 +39,7 @@ const GroupCardGrid = ({ groups }) => {
                 lg: 6,
                 xl: 4,
               }}
-              hasEqualColumnHeights="true"
+              hasEqualColumnHeights
             >
               {overflowGroups.map((group) => (
                 <GroupDetailCard group={group} />
@@ -61,7 +61,7 @@ const GroupCardGrid = ({ groups }) => {
 };
 
 GroupCardGrid.propTypes = {
-  groups: PropTypes.shape.isRequired,
+  groups: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default GroupCardGrid;

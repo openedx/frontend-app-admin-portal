@@ -4,10 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
-  ActionRow,
-  Button,
-  Skeleton,
-  useToggle,
+  ActionRow, Button, Skeleton, Toast, useToggle,
 } from '@openedx/paragon';
 import { Add } from '@openedx/paragon/icons';
 
@@ -28,6 +25,13 @@ const PeopleManagementPage = ({ enterpriseId }) => {
     description: 'Title for the people management page.',
   });
 
+  const [isToastOpen, openToast, closeToast] = useToggle(false);
+  const toastText = intl.formatMessage({
+    id: 'admin.portal.people.management.group.deleted.toast',
+    defaultMessage: 'Group deleted',
+    description: 'Toast text after a user has deleted a group.',
+  });
+
   const { enterpriseSubsidyTypes } = useContext(EnterpriseSubsidiesContext);
   const { data, isLoading: isGroupsLoading } = useAllFlexEnterpriseGroups(enterpriseId);
 
@@ -45,6 +49,14 @@ const PeopleManagementPage = ({ enterpriseId }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    // parameter is for confirmation toast after deleting a group
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has('toast')) {
+      openToast();
+    }
+  }, [openToast]);
+
   let groupsCardSection = (<Skeleton height="20vh" />);
   if (!isGroupsLoading) {
     if (groups && groups.length > 0) {
@@ -58,6 +70,9 @@ const PeopleManagementPage = ({ enterpriseId }) => {
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
+      <Toast onClose={closeToast} show={isToastOpen}>
+        {toastText}
+      </Toast>
       <div className="mx-3 mt-4">
         <ActionRow className="mb-4">
           <span className="flex-column">
