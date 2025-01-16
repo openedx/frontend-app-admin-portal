@@ -17,7 +17,7 @@ export { default as useEnterpriseGroupLearners } from './useEnterpriseGroupLearn
 export { default as useEnterpriseGroupMembersTableData } from './useEnterpriseGroupMembersTableData';
 export { default as useEnterpriseCustomer } from './useEnterpriseCustomer';
 export { default as useEnterpriseGroup } from './useEnterpriseGroup';
-export { default as useAllEnterpriseGroups } from './useAllEnterpriseGroups';
+export { default as useAllFlexEnterpriseGroups } from './useAllFlexEnterpriseGroups';
 export { default as useContentMetadata } from './useContentMetadata';
 export { default as useEnterpriseRemovedGroupMembers } from './useEnterpriseRemovedGroupMembers';
 export { default as useEnterpriseFlexGroups } from './useEnterpriseFlexGroups';
