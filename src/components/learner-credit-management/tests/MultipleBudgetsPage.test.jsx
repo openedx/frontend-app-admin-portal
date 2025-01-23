@@ -66,6 +66,24 @@ jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
           isCurrent: true,
           isRetired: false,
         },
+        {
+          source: 'subsidy',
+          id: '392f1fe1-ee91-4f44-b174-13ecf59866ef',
+          name: 'Subsidy 5 scheduled',
+          start: '2099-06-07T15:38:29Z',
+          end: '3099-06-07T15:38:30Z',
+          isCurrent: false,
+          isRetired: false,
+        },
+        {
+          source: 'subsidy',
+          id: '392f1fe1-ee91-4f44-b174-13ecf59866ef',
+          name: 'Subsidy 6 active',
+          start: '2020-06-07T15:38:29Z',
+          end: '3099-06-07T15:38:30Z',
+          isCurrent: true,
+          isRetired: false,
+        },
       ],
     },
   }),
@@ -117,6 +135,17 @@ describe('<MultipleBudgetsPage />', () => {
       userEvent.click(checkbox);
     });
     waitFor(() => expect(screen.getByText('Showing 3 of 3.')).toBeInTheDocument());
+  });
+  it('shows only active and scheduled budgets on initial render', () => {
+    render(<MultipleBudgetsPageWrapper enterpriseUUID={enterpriseUUID} enterpriseSlug={enterpriseId} />);
+    expect(screen.getByText('Budgets'));
+    const clearFilterButton = screen.getByText('Clear filters');
+    // only scheduled and active budgets are rendered first
+    expect(screen.getByText('Showing 1 - 2 of 5.')).toBeInTheDocument();
+
+    userEvent.click(clearFilterButton);
+    // budget page renders all 5 budgets once user clears filter
+    waitFor(() => expect(screen.getByText('Showing 5 of 5.')).toBeInTheDocument());
   });
   it('Shows loading spinner', () => {
     const enterpriseSubsidiesContextValue = {

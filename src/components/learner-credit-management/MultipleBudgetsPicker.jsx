@@ -52,13 +52,13 @@ const MultipleBudgetsPicker = ({
   ));
   const budgetLabelsByStatus = groupBy(budgetLabels, 'status');
 
-  const preBudgetFilters = [];
+  const preSelectedBudgetFilters = [];
   if (budgetLabelsByStatus.Active) {
-    preBudgetFilters.push('Active');
+    preSelectedBudgetFilters.push('Active');
   }
 
   if (budgetLabelsByStatus.Scheduled) {
-    preBudgetFilters.push('Scheduled');
+    preSelectedBudgetFilters.push('Scheduled');
   }
 
   const reducedChoices = Object.keys(budgetLabelsByStatus).map(budgetLabel => ({
@@ -88,7 +88,7 @@ const MultipleBudgetsPicker = ({
         initialState={{
           filters: [{
             id: 'status',
-            value: preBudgetFilters,
+            value: preSelectedBudgetFilters,
           }],
         }}
         columns={[

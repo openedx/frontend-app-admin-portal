@@ -6,7 +6,17 @@ import {
   FormLabel,
 } from '@openedx/paragon';
 import PropTypes from 'prop-types';
-import { newId } from './data/utils';
+
+let lastId = 0;
+
+export const newId = (prefix = 'id') => {
+  lastId += 1;
+  return `${prefix}${lastId}`;
+};
+
+// BudgetCheckboxFilter builds on top of Paragon's CheckboxFilter component to support preselected filtering
+// where the checkboxes are checked based on the filterValue.
+// https://github.com/openedx/paragon/blob/release-23.x/src/DataTable/filters/CheckboxFilter.jsx
 
 const BudgetCheckboxFilter = ({
   column: {
@@ -30,6 +40,7 @@ const BudgetCheckboxFilter = ({
   return (
     <Form.Group role="group" aria-labelledby={ariaLabel.current}>
       <FormLabel id={ariaLabel.current} className="pgn__checkbox-filter-label">{Header}</FormLabel>
+      {/* To add support to preselected filters in the paragon CheckboxFilter, include the value prop */}
       <Form.CheckboxSet name={Header} value={checkedBoxes}>
         {filterChoices.map(({ name, number, value }) => (
           <Form.Checkbox
