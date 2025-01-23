@@ -99,6 +99,8 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByText('View group progress')).toBeInTheDocument();
     expect(screen.getByText('Add and remove group members.')).toBeInTheDocument();
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
+    const lprUrl = screen.getByText('View group progress');
+    expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345');
     userEvent.click(screen.getByText('Member details'));
     await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
       filters: [],
