@@ -768,3 +768,10 @@ export const getAssignableCourseRuns = ({
   // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start
   return assignableCourseRuns.sort(startAndEnrollBySortLogic);
 };
+
+let lastId = 0;
+
+export const newId = (prefix = 'id') => {
+  lastId += 1;
+  return `${prefix}${lastId}`;
+};
