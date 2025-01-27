@@ -7,6 +7,5 @@ metadata:
   name: 'frontend-app-admin-portal'
   description: "Frontend code for an enterprise learning administrator dashboard."
 spec:
-  owner: edx/business-enterprise-team
+  owner: group:openedx-unmaintained
   type: 'library'
-  lifecycle: ''
