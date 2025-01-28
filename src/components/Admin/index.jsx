@@ -475,7 +475,7 @@ class Admin extends React.Component {
                 </div>
               </div>
 
-              <div className="row mt-4">
+              <div className="row mt-4" id="learner-progress-report">
                 <div className="col">
                   <div className="row">
                     <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
