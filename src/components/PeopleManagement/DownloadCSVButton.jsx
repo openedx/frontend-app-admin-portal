@@ -86,6 +86,7 @@ const DownloadCsvButton = ({ testId, fetchData, totalCt }) => {
         }}
         disabledStates={['pending', 'pageLoading']}
         onClick={handleClick}
+        variant="outline-primary"
       />
     </>
   );

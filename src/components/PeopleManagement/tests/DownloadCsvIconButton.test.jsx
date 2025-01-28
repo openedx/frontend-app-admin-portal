@@ -52,6 +52,12 @@ const DEFAULT_PROPS = {
   fetchAllData: jest.fn(() => Promise.resolve(mockData)),
   dataCount: mockData.results.length,
   testId,
+  groupName: 'Enterprise',
+  tableInstance: {
+    state: {
+      selectedRowIds: {},
+    },
+  },
 };
 
 const DownloadCsvIconButtonWrapper = props => (
@@ -73,7 +79,7 @@ describe('DownloadCsvIconButton', () => {
       fireEvent.mouseOver(downloadIcon);
     });
     await waitFor(() => {
-      expect(screen.getByText('Download (2)')).toBeInTheDocument();
+      expect(screen.getByText('Download all (2)')).toBeInTheDocument();
     });
 
     // Click the download button
@@ -81,7 +87,7 @@ describe('DownloadCsvIconButton', () => {
     await flushPromises();
 
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
-    const expectedFileName = '2024-04-20-group-report.csv';
+    const expectedFileName = '2024-04-20-Enterprise.csv';
     const expectedHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
     expect(downloadCsv).toHaveBeenCalledWith(expectedFileName, mockData.results, expectedHeaders, expect.any(Function));
   });
