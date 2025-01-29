@@ -122,7 +122,7 @@ const GroupDetailPage = () => {
               <Hyperlink
                 className="btn btn-primary"
                 target="_blank"
-                destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}`}
+                destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}`}
               >
                 View group progress
               </Hyperlink>
