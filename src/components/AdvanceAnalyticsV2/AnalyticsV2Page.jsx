@@ -17,6 +17,7 @@ import Skills from './tabs/Skills';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION, ANALYTICS_WARNING_BANNER_COOKIE } from './data/constants';
 import WarningBanner from './WarningBanner';
+import { formatTimestamp } from '../../utils';
 
 const PAGE_TITLE = 'Analytics';
 
@@ -35,10 +36,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
   });
   const showWarningBanner = cookies.get(ANALYTICS_WARNING_BANNER_COOKIE);
   const currentDate = new Date().toISOString().split('T')[0];
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  const defaultDataUpdatedDate = new Date().toISOString();
   return (
     <>
       <Helmet title={PAGE_TITLE} />
@@ -52,7 +50,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 id="advance.analytics.data.refresh.msg"
                 defaultMessage="Data updated on {date}"
                 description="Data refresh message"
-                values={{ date: formatDate(data?.lastUpdatedAt || currentDate) }}
+                values={{ date: formatTimestamp({ timestamp: data?.lastUpdatedAt || defaultDataUpdatedDate }) }}
               />
             </span>
           </div>
