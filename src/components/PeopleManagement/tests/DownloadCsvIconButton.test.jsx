@@ -109,4 +109,74 @@ describe('DownloadCsvIconButton', () => {
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
     expect(logError).toHaveBeenCalled();
   });
+  it('shows correct download text hover and csv content for singular selection', async () => {
+    const props = {
+      ...DEFAULT_PROPS,
+      tableInstance: {
+        state: {
+          selectedRowIds: {
+            'ga-linda@oz.com': true,
+          },
+        },
+      },
+    };
+    render(<DownloadCsvIconButtonWrapper {...props} />);
+    const downloadIcon = screen.getByTestId(testId);
+
+    expect(downloadIcon).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.mouseOver(downloadIcon);
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Download (1)')).toBeInTheDocument();
+    });
+
+    // Click the download button
+    screen.getByTestId(testId).click();
+    await flushPromises();
+
+    expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
+    const expectedFileName = '2024-04-20-Enterprise.csv';
+    const expectedHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
+    expect(downloadCsv).toHaveBeenCalledWith(
+      expectedFileName,
+      [mockData.results[0]],
+      expectedHeaders,
+      expect.any(Function),
+    );
+  });
+  it('shows correct download text hover and csv content for all selection', async () => {
+    const props = {
+      ...DEFAULT_PROPS,
+      tableInstance: {
+        state: {
+          selectedRowIds: {
+            'ga-linda@oz.com': true,
+            'elphaba@oz.com': true,
+          },
+        },
+      },
+    };
+    render(<DownloadCsvIconButtonWrapper {...props} />);
+    const downloadIcon = screen.getByTestId(testId);
+
+    expect(downloadIcon).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.mouseOver(downloadIcon);
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Download all (2)')).toBeInTheDocument();
+    });
+
+    // Click the download button
+    screen.getByTestId(testId).click();
+    await flushPromises();
+
+    expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
+    const expectedFileName = '2024-04-20-Enterprise.csv';
+    const expectedHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
+    expect(downloadCsv).toHaveBeenCalledWith(expectedFileName, mockData.results, expectedHeaders, expect.any(Function));
+  });
 });
