@@ -61,6 +61,10 @@ const MultipleBudgetsPicker = ({
     preSelectedBudgetFilters.push('Scheduled');
   }
 
+  if (budgetLabelsByStatus.Expiring) {
+    preSelectedBudgetFilters.push('Expiring');
+  }
+
   const reducedChoices = Object.keys(budgetLabelsByStatus).map(budgetLabel => ({
     name: getTranslatedBudgetStatus(intl, budgetLabel),
     number: budgetLabelsByStatus[budgetLabel].length,
