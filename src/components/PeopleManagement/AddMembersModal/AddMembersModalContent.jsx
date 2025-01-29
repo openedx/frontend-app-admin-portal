@@ -12,7 +12,7 @@ import AddMembersModalSummary from './AddMembersModalSummary';
 import InviteSummaryCount from '../../learner-credit-management/invite-modal/InviteSummaryCount';
 import FileUpload from '../../learner-credit-management/invite-modal/FileUpload';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../../learner-credit-management/cards/data';
-import EnterpriseCustomerUserDatatable from '../EnterpriseCustomerUserDatatable';
+import EnterpriseCustomerUserDataTable from '../EnterpriseCustomerUserDataTable';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 
 const AddMembersModalContent = ({
@@ -129,7 +129,7 @@ const AddMembersModalContent = ({
           <hr className="my-4" />
         </Col>
       </Row>
-      <EnterpriseCustomerUserDatatable
+      <EnterpriseCustomerUserDataTable
         onHandleAddMembersBulkAction={handleAddMembersBulkAction}
         onHandleRemoveMembersBulkAction={handleRemoveMembersBulkAction}
         learnerEmails={learnerEmails}
