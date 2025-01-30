@@ -90,6 +90,7 @@ const GroupMembersTable = ({
   refresh,
   setRefresh,
   openAddMembersModal,
+  groupName,
 }) => {
   const intl = useIntl();
   return (
@@ -170,6 +171,7 @@ const GroupMembersTable = ({
             fetchAllData={fetchAllData}
             dataCount={dataCount}
             testId="group-members-download"
+            groupName={groupName}
           />,
         ]}
         fetchData={fetchTableData}
@@ -196,6 +198,7 @@ GroupMembersTable.propTypes = {
   refresh: PropTypes.bool.isRequired,
   setRefresh: PropTypes.func.isRequired,
   openAddMembersModal: PropTypes.func.isRequired,
+  groupName: PropTypes.string,
 };
 
 export default GroupMembersTable;
