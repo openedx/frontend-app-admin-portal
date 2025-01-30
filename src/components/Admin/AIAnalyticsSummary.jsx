@@ -19,7 +19,7 @@ const AnalyticsDetailCard = ({
   const messages = defineMessages({
     errorMessage: {
       id: 'adminPortal.analyticsCardText.errorMessage',
-      defaultMessage: 'An error occurred: {error_message}',
+      defaultMessage: 'We encountered an issue while fetching analytics data. Kindly try again later or contact support for assistance. (Error: {error_message})',
       description: 'Message shown to the user in case of error returned byt analytics API.',
       values: { error_message: error?.message },
     },
@@ -38,7 +38,7 @@ const AnalyticsDetailCard = ({
         </Badge>
         <Stack gap={1} direction="horizontal">
           <p className="card-text text-justify small">
-            ${
+            {
               error ? (
                 <FormattedMessage {...messages.errorMessage} />
               ) : (

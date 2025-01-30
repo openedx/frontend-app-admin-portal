@@ -1,3 +1,4 @@
+import { getConfig } from '@edx/frontend-platform';
 import { logInfo } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import dayjs from 'dayjs';
@@ -14,7 +15,6 @@ import {
   DAYS_UNTIL_ASSIGNMENT_ALLOCATION_EXPIRATION,
   LATE_ENROLLMENTS_BUFFER_DAYS,
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
-  MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
 } from './constants';
@@ -566,7 +566,7 @@ export const isLmsBudget = (
  */
 export const isDateBeforeToday = date => dayjs(date).isBefore(dayjs());
 
-const subsidyExpirationRefundCutoffDate = ({ subsidyExpirationDatetime }) => dayjs(subsidyExpirationDatetime).subtract(MAX_ALLOWABLE_REFUND_THRESHOLD_DAYS, 'days').toDate();
+const subsidyExpirationRefundCutoffDate = ({ subsidyExpirationDatetime }) => dayjs(subsidyExpirationDatetime).toDate();
 
 export const isCourseSelfPaced = ({ pacingType }) => pacingType === COURSE_PACING_MAP.SELF_PACED;
 
@@ -689,7 +689,11 @@ export const startAndEnrollBySortLogic = (prev, next) => {
  * @param isLateRedemptionAllowed
  * @returns {*}
  */
-export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed }) => {
+export const getAssignableCourseRuns = ({
+  courseRuns, subsidyExpirationDatetime,
+  isLateRedemptionAllowed,
+  catalogContainsRestrictedRunsData,
+}) => {
   const clonedCourseRuns = courseRuns.map(courseRun => ({
     ...courseRun,
     enrollBy: courseRun.hasEnrollBy ? dayjs.unix(courseRun.enrollBy).toISOString() : null,
@@ -698,7 +702,7 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
   }));
 
   const assignableCourseRunsFilter = ({
-    enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible, restrictionType,
+    key, enrollBy, enrollStart, start, hasEnrollBy, hasEnrollStart, isActive, isLateEnrollmentEligible, restrictionType,
   }) => {
     const isEnrollByDateValid = isEnrollByDateWithinThreshold({
       hasEnrollBy,
@@ -721,12 +725,16 @@ export const getAssignableCourseRuns = ({ courseRuns, subsidyExpirationDatetime,
       return false;
     }
     // ENT-9359 (epic for Custom Presentations/Restricted Runs):
-    // Temporarily hide all restricted runs unconditionally on the run assignment
-    // dropdown during implementation of the overall feature. ENT-9411 is most likely
-    // the ticket to replace this code with something to actually show restricted
-    // runs conditionally.
+    // Hide any restricted runs that are not considered to be "contained" in the policy's catalog.
     if (restrictionType) {
-      return false;
+      // Always filter out restricted runs if the feature to show them isn't even enabled.
+      if (!getConfig().FEATURE_ENABLE_RESTRICTED_RUN_ASSIGNMENT) {
+        return false;
+      }
+      // Only filter out restricted runs if the run isn't part of the policy's catalog.
+      if (!catalogContainsRestrictedRunsData?.[key]?.containsContentItems) {
+        return false;
+      }
     }
     if (hasEnrollBy && isLateRedemptionAllowed && isDateBeforeToday(enrollBy)) {
       // Special case: late enrollment has been enabled by ECS for this budget, and

@@ -119,12 +119,13 @@ export const isAssignEmailAddressesInputValueValid = ({
  * input, including a validation error when appropriate, and whether the member invitation
  * should proceed.
  */
-export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
+export const isInviteEmailAddressesInputValueValid = ({ learnerEmails, allEnterpriseLearners = null }) => {
   let validationError;
   const learnerEmailsCount = learnerEmails.length;
   const lowerCasedEmails = [];
   const invalidEmails = [];
   const duplicateEmails = [];
+  const emailsNotInOrg = [];
 
   learnerEmails.forEach((email) => {
     const lowerCasedEmail = email.toLowerCase();
@@ -135,6 +136,9 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     } else if (lowerCasedEmails.includes(lowerCasedEmail)) {
       // Check for duplicates (case-insensitive)
       duplicateEmails.push(email);
+      // Check if email belongs in the org
+    } else if (allEnterpriseLearners && !allEnterpriseLearners.includes(email)) {
+      emailsNotInOrg.push(email);
     } else {
       // Add to list of lower-cased emails already handled
       lowerCasedEmails.push(lowerCasedEmail);
@@ -174,6 +178,15 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     ensureValidationErrorObjectExists();
     validationError.reason = 'duplicate_email';
     validationError.message = message;
+  } else if (emailsNotInOrg.length > 0) {
+    let message = `${emailsNotInOrg[0]} is not available to be added to a group.`;
+    if (emailsNotInOrg.length > 1) {
+      message = `${emailsNotInOrg[0]} and ${makePlural(emailsNotInOrg.length - 1, 'other email address')}
+      are not available to be added to a group.`;
+    }
+    ensureValidationErrorObjectExists();
+    validationError.reason = 'email_not_in_org';
+    validationError.message = message;
   }
   return {
     canInvite,
@@ -182,5 +195,6 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails }) => {
     invalidEmails,
     isValidInput,
     validationError,
+    emailsNotInOrg,
   };
 };

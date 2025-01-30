@@ -46,6 +46,10 @@ const store = mockStore({
     loading: null,
     budgets: null,
   },
+  enterpriseGroups: {
+    loading: null,
+    groups: [],
+  },
 });
 
 describe('<AdminPage />', () => {

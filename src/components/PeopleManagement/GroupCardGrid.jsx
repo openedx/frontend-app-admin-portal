@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { CardGrid, Collapsible } from '@openedx/paragon';
+import { CardGrid, Collapsible, Icon } from '@openedx/paragon';
+import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
 
 import GroupDetailCard from './GroupDetailCard';
 
@@ -30,30 +31,37 @@ const GroupCardGrid = ({ groups }) => {
         ))}
       </CardGrid>
       {overflowGroups && (
-        <Collapsible
-          styling="basic"
-          title={`Show all ${groups.length} groups`}
-        >
-          <CardGrid
-            columnSizes={{
-              xs: 6,
-              lg: 6,
-              xl: 4,
-            }}
-            hasEqualColumnHeights="true"
-          >
-            {overflowGroups.map((group) => (
-              <GroupDetailCard group={group} />
-            ))}
-          </CardGrid>
-        </Collapsible>
+        <Collapsible.Advanced>
+          <Collapsible.Body>
+            <CardGrid
+              columnSizes={{
+                xs: 6,
+                lg: 6,
+                xl: 4,
+              }}
+              hasEqualColumnHeights
+            >
+              {overflowGroups.map((group) => (
+                <GroupDetailCard group={group} />
+              ))}
+            </CardGrid>
+          </Collapsible.Body>
+          <Collapsible.Trigger className="d-flex justify-content-end text-info">
+            <Collapsible.Visible whenClosed>
+              Show all {groups.length} groups <Icon src={ExpandMore} />
+            </Collapsible.Visible>
+            <Collapsible.Visible whenOpen>
+              Show less <Icon src={ExpandLess} />
+            </Collapsible.Visible>
+          </Collapsible.Trigger>
+        </Collapsible.Advanced>
       )}
     </>
   );
 };
 
 GroupCardGrid.propTypes = {
-  groups: PropTypes.shape.isRequired,
+  groups: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default GroupCardGrid;

@@ -44,7 +44,6 @@ const features = {
   CODE_MANAGEMENT: process.env.FEATURE_CODE_MANAGEMENT || hasFeatureFlagEnabled('CODE_MANAGEMENT'),
   REPORTING_CONFIGURATIONS: process.env.FEATURE_REPORTING_CONFIGURATIONS || hasFeatureFlagEnabled('REPORTING_CONFIGURATIONS'),
   ANALYTICS: process.env.FEATURE_ANALYTICS || hasFeatureFlagEnabled('ANALYTICS'),
-  ANALYTICS_V2: process.env.FEATURE_ANALYTICS_V2 || hasFeatureFlagEnabled('ANALYTICS_V2'),
   ANALYTICS_SUPPORTED: process.env.ANALYTICS_SUPPORTED || hasFeatureFlagEnabled('ANALYTICS_SUPPORTED'),
   SAML_CONFIGURATION: process.env.FEATURE_SAML_CONFIGURATION || hasFeatureFlagEnabled('SAML_CONFIGURATION'),
   SUPPORT: process.env.FEATURE_SUPPORT || hasFeatureFlagEnabled('SUPPORT'),

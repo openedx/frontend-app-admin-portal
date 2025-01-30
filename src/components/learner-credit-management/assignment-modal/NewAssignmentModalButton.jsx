@@ -16,12 +16,18 @@ import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessA
 import EVENT_NAMES from '../../../eventTracking';
 import { BudgetDetailPageContext } from '../BudgetDetailPageWrapper';
 import {
-  getAssignableCourseRuns, learnerCreditManagementQueryKeys, LEARNER_CREDIT_ROUTE, useBudgetId,
-  useSubsidyAccessPolicy, useEnterpriseFlexGroups,
+  getAssignableCourseRuns,
+  LEARNER_CREDIT_ROUTE,
+  learnerCreditManagementQueryKeys,
+  useBudgetId,
+  useCatalogContainsContentItemsMultipleQueries,
+  useEnterpriseFlexGroups,
+  useSubsidyAccessPolicy,
 } from '../data';
 import AssignmentModalContent from './AssignmentModalContent';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import NewAssignmentModalDropdown from './NewAssignmentModalDropdown';
+import { ENTERPRISE_RESTRICTION_TYPE } from '../data/constants';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -74,10 +80,23 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     assignmentConfiguration,
     isLateRedemptionAllowed,
   };
+  const {
+    dataByContentKey: catalogContainsRestrictedRunsData,
+    isLoading: isLoadingCatalogContainsRestrictedRuns,
+  } = useCatalogContainsContentItemsMultipleQueries(
+    catalogUuid,
+    course.courseRuns?.filter(
+      // Pass only restricted runs.
+      run => run.restrictionType === ENTERPRISE_RESTRICTION_TYPE,
+    ).map(
+      run => run.key,
+    ),
+  );
   const assignableCourseRuns = getAssignableCourseRuns({
     courseRuns: course.courseRuns,
     subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
     isLateRedemptionAllowed,
+    catalogContainsRestrictedRunsData,
   });
   const { mutate } = useAllocateContentAssignments();
   const pathToActivityTab = generatePath(LEARNER_CREDIT_ROUTE, {
@@ -219,7 +238,12 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
   };
   return (
     <>
-      <NewAssignmentModalDropdown id={course.key} onClick={handleOpenAssignmentModal} courseRuns={assignableCourseRuns}>
+      <NewAssignmentModalDropdown
+        id={course.key}
+        onClick={handleOpenAssignmentModal}
+        courseRuns={assignableCourseRuns}
+        isLoading={isLoadingCatalogContainsRestrictedRuns}
+      >
         {children}
       </NewAssignmentModalDropdown>
       <FullscreenModal

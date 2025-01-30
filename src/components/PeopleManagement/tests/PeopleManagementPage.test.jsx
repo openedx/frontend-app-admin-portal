@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { useAllEnterpriseGroups } from '../../learner-credit-management/data';
+import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import PeopleManagementPage from '..';
 
@@ -33,9 +33,19 @@ const subsEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
 
+jest.mock('@tanstack/react-query', () => ({
+  ...jest.requireActual('@tanstack/react-query'),
+  useQueryClient: jest.fn(),
+}));
+
 jest.mock('../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../learner-credit-management/data'),
-  useAllEnterpriseGroups: jest.fn(),
+  useAllFlexEnterpriseGroups: jest.fn(),
+}));
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useSearchParams: jest.fn(),
 }));
 
 const mockGroupsResponse = [{
@@ -84,7 +94,7 @@ const PeopleManagementPageWrapper = ({
 
 describe('<PeopleManagementPage >', () => {
   it('renders the PeopleManagementPage zero state', () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: {} } });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
     render(<PeopleManagementPageWrapper />);
     expect(document.querySelector('h3').textContent).toEqual("Your organization's groups");
     expect(screen.getByText("You don't have any groups yet.")).toBeInTheDocument();
@@ -93,7 +103,7 @@ describe('<PeopleManagementPage >', () => {
     )).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage zero state without LC', () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: [] } });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: [] } });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">
@@ -111,7 +121,7 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText("Once a group is created, you can track members' progress.")).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage group card grid', () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: mockGroupsResponse } });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">
@@ -126,7 +136,7 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText('4 members')).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage group card grid with collapsible', async () => {
-    useAllEnterpriseGroups.mockReturnValue({ data: { results: mockMultipleGroupsResponse } });
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: mockMultipleGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
       <IntlProvider locale="en">
@@ -141,10 +151,31 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText('Show all 4 groups')).toBeInTheDocument();
     expect(screen.queryByText('fruity pebbles')).not.toBeInTheDocument();
 
-    const collapsible = screen.getByText('Show all 4 groups');
-    collapsible.click();
+    const closedCollapsible = screen.getByText('Show all 4 groups');
+    closedCollapsible.click();
     await waitFor(() => {
       expect(screen.getByText('fruity pebbles')).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText('Show all 4 groups')).toBeNull();
+    const openCollapsible = screen.getByText('Show less');
+    expect(openCollapsible).toBeInTheDocument();
+  });
+  it('renders group deleted toast after redirect', async () => {
+    useAllFlexEnterpriseGroups.mockReturnValue({ data: mockGroupsResponse });
+    // eslint-disable-next-line no-global-assign
+    window = Object.create(window);
+    const params = '?toast=true';
+    Object.defineProperty(window, 'location', {
+      value: {
+        search: params,
+      },
+      writable: true,
+    });
+    expect(window.location.search).toEqual(params);
+    render(<PeopleManagementPageWrapper />);
+    await waitFor(() => {
+      expect(screen.queryByText('Group deleted')).toBeInTheDocument();
     });
   });
 });

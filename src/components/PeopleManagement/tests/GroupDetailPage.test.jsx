@@ -5,11 +5,14 @@ import '@testing-library/jest-dom/extend-expect';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
+import userEvent from '@testing-library/user-event';
+import { QueryClientProvider } from '@tanstack/react-query';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { useEnterpriseGroupUuid } from '../../learner-credit-management/data';
-import GroupDetailPage from '../GroupDetailPage';
+import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../data/hooks';
+import GroupDetailPage from '../GroupDetailPage/GroupDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { queryClient } from '../../test/testUtils';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 const enterpriseUUID = '1234';
@@ -22,9 +25,14 @@ const TEST_GROUP = {
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 
-jest.mock('../../learner-credit-management/data', () => ({
-  ...jest.requireActual('../../learner-credit-management/data'),
+jest.mock('@tanstack/react-query', () => ({
+  ...jest.requireActual('@tanstack/react-query'),
+  useQueryClient: jest.fn(),
+}));
+jest.mock('../data/hooks', () => ({
+  ...jest.requireActual('../data/hooks'),
   useEnterpriseGroupUuid: jest.fn(),
+  useEnterpriseGroupLearnersTableData: jest.fn(),
 }));
 jest.mock('../../../data/services/LmsApiService');
 jest.mock('react-router-dom', () => ({
@@ -50,7 +58,9 @@ const GroupDetailPageWrapper = ({
   return (
     <IntlProvider locale="en">
       <Provider store={store}>
-        <GroupDetailPage />
+        <QueryClientProvider client={queryClient()}>
+          <GroupDetailPage />
+        </QueryClientProvider>
       </Provider>
     </IntlProvider>
   );
@@ -60,11 +70,52 @@ describe('<GroupDetailPageWrapper >', () => {
   beforeEach(() => {
     useEnterpriseGroupUuid.mockReturnValue({ data: TEST_GROUP });
   });
-  it('renders the GroupDetailPage', () => {
+  it('renders the GroupDetailPage', async () => {
+    const mockFetchEnterpriseGroupLearnersTableData = jest.fn();
+    useEnterpriseGroupLearnersTableData.mockReturnValue({
+      fetchEnterpriseGroupLearnersTableData: mockFetchEnterpriseGroupLearnersTableData,
+      isLoading: false,
+      enterpriseGroupLearnersTableData: {
+        count: 1,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [{
+          activatedAt: '2024-11-06T21:01:32.953901Z',
+          enterprise_group_membership_uuid: TEST_GROUP,
+          memberDetails: {
+            userEmail: 'test@2u.com',
+            userName: 'Test 2u',
+          },
+          recentAction: 'Accepted: November 06, 2024',
+          status: 'accepted',
+          enrollments: 1,
+        }],
+      },
+    });
     render(<GroupDetailPageWrapper />);
     expect(screen.queryAllByText(TEST_GROUP.name)).toHaveLength(2);
-    expect(screen.getByText('0 accepted members')).toBeInTheDocument();
+    expect(screen.getByText('0 members')).toBeInTheDocument();
     expect(screen.getByText('View group progress')).toBeInTheDocument();
+    expect(screen.getByText('Add and remove group members.')).toBeInTheDocument();
+    expect(screen.getByText('Test 2u')).toBeInTheDocument();
+    const lprUrl = screen.getByText('View group progress');
+    expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345');
+    userEvent.click(screen.getByText('Member details'));
+    await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
+      filters: [],
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [{ desc: true, id: 'memberDetails' }],
+    }));
+
+    userEvent.click(screen.getByText('Enrollments'));
+    await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
+      filters: [],
+      pageIndex: 0,
+      pageSize: 10,
+      sortBy: [{ desc: false, id: 'enrollmentCount' }],
+    }));
   });
   it('edit flex group name', async () => {
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseGroup');
@@ -109,9 +160,17 @@ describe('<GroupDetailPageWrapper >', () => {
     LmsApiService.removeEnterpriseGroup.mockResolvedValueOnce({ status: 204 });
     render(<GroupDetailPageWrapper />);
     const deleteGroupIcon = screen.getByTestId('delete-group-icon');
+    // Open tooltip
+    expect(screen.queryByRole('tooltip')).toBeNull();
+    fireEvent.mouseOver(deleteGroupIcon);
+    await waitFor(() => {
+      expect(screen.queryByRole('tooltip')).not.toBeNull();
+      expect(screen.getAllByText('Delete group')).toHaveLength(1);
+    });
     deleteGroupIcon.click();
 
-    expect(screen.getByText('Delete group')).toBeInTheDocument();
+    // Open delete group modal
+    expect(screen.getByText('Delete group?')).toBeInTheDocument();
     expect(screen.getByText('This action cannot be undone.'));
     const deleteGroupButton = screen.getByTestId('delete-group-button');
     deleteGroupButton.click();

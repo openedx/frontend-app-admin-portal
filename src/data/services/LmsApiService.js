@@ -17,6 +17,8 @@ class LmsApiService {
 
   static enterpriseCustomerBrandingUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-branding/update-branding/`;
 
+  static enterpriseCustomerMembersUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-members/`;
+
   static providerConfigUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_config/`;
 
   static providerDataUrl = `${LmsApiService.baseUrl}/auth/saml/v0/provider_data/`;
@@ -44,6 +46,8 @@ class LmsApiService {
   static enterpriseGroupUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-group/`;
 
   static enterpriseGroupListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
+
+  static enterpriseLearnerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-learner/`;
 
   static createEnterpriseGroup(options) {
     const postParams = {
@@ -117,8 +121,13 @@ class LmsApiService {
     return LmsApiService.apiClient().post(requestCodesUrl, postParams);
   }
 
-  static fetchReportingConfigs(uuid) {
-    return LmsApiService.apiClient().get(`${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`);
+  static fetchReportingConfigs(uuid, pageNumber) {
+    let url = `${LmsApiService.reportingConfigUrl}?enterprise_customer=${uuid}`;
+    if (pageNumber) {
+      url += `&page=${pageNumber}`;
+    }
+
+    return LmsApiService.apiClient().get(url);
   }
 
   static fetchReportingConfigTypes(uuid) {
@@ -351,6 +360,15 @@ class LmsApiService {
     return LmsApiService.apiClient().patch(url, options);
   }
 
+  static fetchEnterpriseCustomerMembers(enterpriseUUID, options) {
+    let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
+    if (options) {
+      const queryParams = new URLSearchParams(options);
+      url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}?${queryParams.toString()}`;
+    }
+    return LmsApiService.apiClient().get(url, options);
+  }
+
   /**
    * Disables EnterpriseCustomerInviteKey
    * @param {string} enterpriseCustomerInviteKeyUUID uuid EnterpriseCustomerInviteKey to disable
@@ -422,19 +440,13 @@ class LmsApiService {
   }
 
   static fetchEnterpriseLearnerData = async (options) => {
-    const enterpriseLearnerUrl = `${configuration.LMS_BASE_URL}/enterprise/api/v1/enterprise-learner/`;
     const queryParams = new URLSearchParams({
       ...options,
       page: 1,
     });
-    const url = `${enterpriseLearnerUrl}?${queryParams.toString()}`;
+    const url = `${LmsApiService.enterpriseLearnerUrl}?${queryParams.toString()}`;
     const response = await LmsApiService.fetchData(url);
     return response;
-  };
-
-  static fetchAllEnterpriseGroups = async (options) => {
-    const groupsEndpoint = `${LmsApiService.enterpriseGroupListUrl}?${options.toString()}`;
-    return LmsApiService.apiClient().get(groupsEndpoint);
   };
 
   static fetchEnterpriseGroup = async (groupUuid) => {
@@ -461,6 +473,15 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
   };
 
+  static fetchAllEnterpriseGroupLearners = async (groupUuid) => {
+    const queryParams = new URLSearchParams({
+      page: 1,
+    });
+    const url = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
+    const response = await LmsApiService.fetchData(url);
+    return response;
+  };
+
   static removeEnterpriseGroup = async (groupUuid) => {
     const removeGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().delete(removeGroupEndpoint);
@@ -474,6 +495,14 @@ class LmsApiService {
   static removeEnterpriseLearnersFromGroup = async (groupUuid, formData) => {
     const removeLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/remove_learners/`;
     return LmsApiService.apiClient().post(removeLearnerEndpoint, formData);
+  };
+
+  static fetchEnterpriseLearners = async (options) => {
+    const queryParams = new URLSearchParams({
+      ...options,
+    });
+    const url = `${LmsApiService.enterpriseLearnerUrl}?${queryParams.toString()}`;
+    return LmsApiService.apiClient().get(url);
   };
 }
 

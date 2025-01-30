@@ -6,12 +6,12 @@ import { logError } from '@edx/frontend-platform/logging';
 import {
   ActionRow, Button, ModalDialog, useToggle,
 } from '@openedx/paragon';
-import { RemoveCircleOutline } from '@openedx/paragon/icons';
+import { RemoveCircle } from '@openedx/paragon/icons';
 
-import GeneralErrorModal from './GeneralErrorModal';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import GeneralErrorModal from '../GeneralErrorModal';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 
-import LmsApiService from '../../data/services/LmsApiService';
+import LmsApiService from '../../../data/services/LmsApiService';
 
 const DeleteGroupModal = ({
   group, isOpen, close,
@@ -22,8 +22,12 @@ const DeleteGroupModal = ({
     try {
       await LmsApiService.removeEnterpriseGroup(group?.uuid);
       close();
+      const param = {
+        toast: true,
+      };
+      const urlParams = new URLSearchParams(param);
       // redirect back to the people management page
-      window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`;
+      window.location.href = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/?${urlParams.toString()}`;
     } catch (error) {
       logError(error);
       openError();
@@ -56,7 +60,7 @@ const DeleteGroupModal = ({
           <FormattedMessage
             id="people.management.delete.group.modal.body.2"
             defaultMessage={
-            'By deleting this group you will no longer be able to track analytics associated'
+            'By deleting this group, you will no longer be able to track analytics associated'
             + ' with this group and the group will be removed from your People Management page.'
           }
             description="Warning shown when deleting a group part 2."
@@ -67,7 +71,7 @@ const DeleteGroupModal = ({
             <ModalDialog.CloseButton variant="tertiary">
               Go back
             </ModalDialog.CloseButton>
-            <Button variant="danger" data-testid="delete-group-button" onClick={removeEnterpriseGroup} iconBefore={RemoveCircleOutline}>
+            <Button variant="danger" data-testid="delete-group-button" onClick={removeEnterpriseGroup} iconBefore={RemoveCircle}>
               Delete group
             </Button>
           </ActionRow>

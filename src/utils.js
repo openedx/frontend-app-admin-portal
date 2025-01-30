@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { saveAs } from 'file-saver';
 import camelCase from 'lodash/camelCase';
 import snakeCase from 'lodash/snakeCase';
 import isArray from 'lodash/isArray';
@@ -172,6 +173,9 @@ const getPageOptionsFromUrl = () => {
   }
   if (query.has('budget_uuid')) {
     pageOptions.budget_uuid = query.get('budget_uuid');
+  }
+  if (query.has('group_uuid')) {
+    pageOptions.group_uuid = query.get('group_uuid');
   }
   if (query.has('search_start_date')) {
     pageOptions.search_start_date = query.get('search_start_date');
@@ -609,6 +613,48 @@ function isTodayBetweenDates({ startDate, endDate }) {
  */
 const isFalsy = (value) => value == null || value === '';
 
+/**
+ * Generate filename with current timestamp prepended to given suffix
+ *
+ * @param {string} suffix
+ * @returns {string}
+ */
+function getTimeStampedFilename(suffix) {
+  const padTwoZeros = (num) => num.toString().padStart(2, '0');
+  const currentDate = new Date();
+  const year = currentDate.getUTCFullYear();
+  const month = padTwoZeros(currentDate.getUTCMonth() + 1);
+  const day = padTwoZeros(currentDate.getUTCDate());
+  return `${year}-${month}-${day}-${suffix}`;
+}
+
+/**
+ * Transform data to csv format and save to file
+ *
+ * @param {string} fileName
+ *  Name of the file to save to
+ * @param {Array<object>} data
+ *  Data to transform to csv format
+ * @param {Array<string>} headers
+ *  Text headers for the file
+ * @param {(object) => Array<string|number>} dataEntryToRow
+ *  Transform function, taking a single data entry and converting it to array of string or numeric values
+ *  that will represent a row of data in the csv document
+ *  Note: Enclosing quotes will be added to any string fields containing commas
+ */
+function downloadCsv(fileName, data, headers, dataEntryToRow) {
+  // If a cell in a csv document contains commas, we need to enclose cell in quotes
+  const escapeCommas = (cell) => (isString(cell) && cell.includes(',') ? `"${cell}"` : cell);
+  const generateCsvRow = (entry) => dataEntryToRow(entry).map(escapeCommas);
+
+  const body = data.map(generateCsvRow).join('\n');
+  const csvText = `${headers}\n${body}`;
+  const blob = new Blob([csvText], {
+    type: 'text/csv',
+  });
+  saveAs(blob, fileName);
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -656,4 +702,6 @@ export {
   isTodayWithinDateThreshold,
   isTodayBetweenDates,
   isFalsy,
+  getTimeStampedFilename,
+  downloadCsv,
 };

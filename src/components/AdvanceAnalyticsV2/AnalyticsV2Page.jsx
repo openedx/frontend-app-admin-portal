@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
+import Cookies from 'universal-cookie';
 import Hero from '../Hero';
 import Stats from './Stats';
 import Enrollments from './tabs/Enrollments';
@@ -14,27 +15,33 @@ import Completions from './tabs/Completions';
 import Leaderboard from './tabs/Leaderboard';
 import Skills from './tabs/Skills';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
-import { GRANULARITY, CALCULATION } from './data/constants';
+import { GRANULARITY, CALCULATION, ANALYTICS_WARNING_BANNER_COOKIE } from './data/constants';
+import WarningBanner from './WarningBanner';
+import { formatTimestamp } from '../../utils';
 
-const PAGE_TITLE = 'AnalyticsV2';
+const PAGE_TITLE = 'Analytics';
 
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
-  const [granularity, setGranularity] = useState('Daily');
+  const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
   const [calculation, setCalculation] = useState('Total');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const cookies = new Cookies();
   const intl = useIntl();
   const { isFetching, isError, data } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
     startDate,
     endDate,
   });
+  const showWarningBanner = cookies.get(ANALYTICS_WARNING_BANNER_COOKIE);
   const currentDate = new Date().toISOString().split('T')[0];
+  const defaultDataUpdatedDate = new Date().toISOString();
   return (
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
+      {!showWarningBanner && <WarningBanner />}
       <Stack className="container-fluid w-100" gap={4}>
         <div className="row data-refresh-msg-container">
           <div className="col">
@@ -43,7 +50,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 id="advance.analytics.data.refresh.msg"
                 defaultMessage="Data updated on {date}"
                 description="Data refresh message"
-                values={{ date: data?.lastUpdatedAt || currentDate }}
+                values={{ date: formatTimestamp({ timestamp: data?.lastUpdatedAt || defaultDataUpdatedDate }) }}
               />
             </span>
           </div>
@@ -205,8 +212,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Enrollments
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
                 enterpriseId={enterpriseId}
@@ -221,8 +228,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Engagements
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
                 granularity={granularity}
                 calculation={calculation}
@@ -237,8 +244,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Completions
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
                 enterpriseId={enterpriseId}
@@ -253,8 +260,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Leaderboard
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
               />
             </Tab>
@@ -267,8 +274,8 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               })}
             >
               <Skills
-                startDate={startDate}
-                endDate={endDate}
+                startDate={startDate || data?.minEnrollmentDate}
+                endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
               />
             </Tab>

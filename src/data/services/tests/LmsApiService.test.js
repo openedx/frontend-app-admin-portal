@@ -114,4 +114,29 @@ describe('LmsApiService', () => {
       },
     });
   });
+  test('fetchReportingConfigs returns reporting configs', async () => {
+    axios.get.mockResolvedValue({
+      status: 200,
+      data: {
+        results: [{
+          active: true,
+          data_type: 'test-data-type',
+          uuid: 'test-uuid',
+          enterprise_customer: 'test-enterprise-customer',
+        }],
+      },
+    });
+    const response = await LmsApiService.fetchReportingConfigs('test-enterprise-customer', 1);
+    expect(response).toEqual({
+      status: 200,
+      data: {
+        results: [{
+          active: true,
+          data_type: 'test-data-type',
+          uuid: 'test-uuid',
+          enterprise_customer: 'test-enterprise-customer',
+        }],
+      },
+    });
+  });
 });

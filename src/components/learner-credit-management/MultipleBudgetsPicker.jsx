@@ -4,7 +4,6 @@ import {
   DataTable,
   CardView,
   TextFilter,
-  CheckboxFilter,
   Row,
   Col,
 } from '@openedx/paragon';
@@ -13,6 +12,7 @@ import groupBy from 'lodash/groupBy';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import BudgetCard from './BudgetCard';
 import { getBudgetStatus, getTranslatedBudgetStatus, orderBudgets } from './data/utils';
+import BudgetCheckboxFilter from './BudgetCheckboxFilter';
 
 const MultipleBudgetsPicker = ({
   budgets,
@@ -51,6 +51,20 @@ const MultipleBudgetsPicker = ({
     })
   ));
   const budgetLabelsByStatus = groupBy(budgetLabels, 'status');
+
+  const preSelectedBudgetFilters = [];
+  if (budgetLabelsByStatus.Active) {
+    preSelectedBudgetFilters.push('Active');
+  }
+
+  if (budgetLabelsByStatus.Scheduled) {
+    preSelectedBudgetFilters.push('Scheduled');
+  }
+
+  if (budgetLabelsByStatus.Expiring) {
+    preSelectedBudgetFilters.push('Expiring');
+  }
+
   const reducedChoices = Object.keys(budgetLabelsByStatus).map(budgetLabel => ({
     name: getTranslatedBudgetStatus(intl, budgetLabel),
     number: budgetLabelsByStatus[budgetLabel].length,
@@ -75,6 +89,12 @@ const MultipleBudgetsPicker = ({
         isFilterable
         itemCount={orderedBudgets.length || 0}
         data={rows}
+        initialState={{
+          filters: [{
+            id: 'status',
+            value: preSelectedBudgetFilters,
+          }],
+        }}
         columns={[
           {
             Header: 'budget name',
@@ -88,7 +108,7 @@ const MultipleBudgetsPicker = ({
             }),
             accessor: 'status',
             filter: 'includesValue',
-            Filter: CheckboxFilter,
+            Filter: BudgetCheckboxFilter,
             filterChoices: reducedChoices,
           },
         ]}
