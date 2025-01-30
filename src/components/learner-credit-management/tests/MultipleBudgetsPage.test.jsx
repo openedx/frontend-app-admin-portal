@@ -34,6 +34,14 @@ const initialStore = {
     enablePortalLearnerCreditManagementScreen: true,
   },
 };
+
+// helper function to set expiring date 1 month from today
+const getOneMonthFromToday = () => {
+  const oneMonthFromToday = new Date();
+  oneMonthFromToday.setMonth(oneMonthFromToday.getMonth() + 1);
+  return oneMonthFromToday.toISOString().replace(/\.\d{3}Z$/, 'Z');
+};
+
 jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
   useEnterpriseBudgets: jest.fn().mockReturnValue({
@@ -81,6 +89,15 @@ jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
           name: 'Subsidy 6 active',
           start: '2020-06-07T15:38:29Z',
           end: '3099-06-07T15:38:30Z',
+          isCurrent: true,
+          isRetired: false,
+        },
+        {
+          source: 'subsidy',
+          id: '392f1fe1-ee91-4f44-b174-13ecf59866ef',
+          name: 'Subsidy 6 expiring',
+          start: '2020-06-07T15:38:29Z',
+          end: getOneMonthFromToday(),
           isCurrent: true,
           isRetired: false,
         },
@@ -140,12 +157,12 @@ describe('<MultipleBudgetsPage />', () => {
     render(<MultipleBudgetsPageWrapper enterpriseUUID={enterpriseUUID} enterpriseSlug={enterpriseId} />);
     expect(screen.getByText('Budgets'));
     const clearFilterButton = screen.getByText('Clear filters');
-    // only scheduled and active budgets are rendered first
-    expect(screen.getByText('Showing 1 - 2 of 5.')).toBeInTheDocument();
+    // only scheduled, active, and expiring budgets are rendered first
+    expect(screen.getByText('Showing 1 - 3 of 6.')).toBeInTheDocument();
 
     userEvent.click(clearFilterButton);
     // budget page renders all 5 budgets once user clears filter
-    waitFor(() => expect(screen.getByText('Showing 5 of 5.')).toBeInTheDocument());
+    waitFor(() => expect(screen.getByText('Showing 6 of 6.')).toBeInTheDocument());
   });
   it('Shows loading spinner', () => {
     const enterpriseSubsidiesContextValue = {
