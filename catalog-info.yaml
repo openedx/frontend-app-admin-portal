@@ -33,11 +33,3 @@ spec:
 
   # (Required) Acceptable Lifecycle Values: experimental, production, deprecated
   lifecycle: 'production'
-
-  # (Optional) The value can be the name of any known component.
-  subcomponentOf: '<name_of_a_component>'
-
-  # (Optional) An array of different components or resources.
-  dependsOn:
-  - '<component_or_resource>'
-  - '<another_component_or_resource>'
