@@ -7,6 +7,7 @@ import ReportingConfigForm from './ReportingConfigForm';
 const defaultConfig = {
   enterpriseCustomerId: 'test-customer-uuid',
   active: true,
+  includeDate: false,
   deliveryMethod: 'email',
   email: ['test_email@example.com'],
   emailRaw: 'test_email@example.com',
@@ -376,5 +377,29 @@ describe('<ReportingConfigForm />', () => {
 
     instance.handleAPIErrorResponse(null);
     expect(mock).not.toHaveBeenCalled();
+  });
+  it("should update the includeDate state when the 'Include Date' checkbox is clicked", async () => {
+    const wrapper = mount((
+      <IntlProvider locale="en">
+        <ReportingConfigForm
+          config={defaultConfig}
+          createConfig={createConfig}
+          updateConfig={updateConfig}
+          availableCatalogs={availableCatalogs}
+          reportingConfigTypes={reportingConfigTypes}
+          enterpriseCustomerUuid={enterpriseCustomerUuid}
+        />
+      </IntlProvider>
+    ));
+
+    const instance = wrapper.find('ReportingConfigForm').instance();
+    expect(instance.state.includeDate).toBeFalsy();
+
+    await act(async () => {
+      wrapper.find('[data-testid="includeDateCheckbox"]').first().prop('onChange')();
+    });
+
+    wrapper.update();
+    expect(instance.state.includeDate).toBeTruthy();
   });
 });
