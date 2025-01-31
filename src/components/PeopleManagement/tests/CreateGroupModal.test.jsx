@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { queryClient } from '../../test/testUtils';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -27,6 +27,10 @@ jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQueryClient: jest.fn(),
 }));
+const mockInvalidateQueries = jest.fn();
+useQueryClient.mockReturnValue({
+  invalidateQueries: mockInvalidateQueries,
+});
 jest.mock('../../../data/services/LmsApiService');
 jest.mock('../data/hooks/useEnterpriseLearnersTableData', () => ({
   ...jest.requireActual('../data/hooks/useEnterpriseLearnersTableData'),
@@ -214,6 +218,7 @@ describe('<CreateGroupModal />', () => {
     await waitFor(() => {
       expect(mockInvite).toHaveBeenCalledTimes(1);
     });
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['learner-credit-management', 'group', '1234'] });
   });
   it('displays error for email not belonging in an org', async () => {
     const mockGroupData = { uuid: 'test-uuid' };
