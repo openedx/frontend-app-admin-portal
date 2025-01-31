@@ -1,8 +1,7 @@
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useEffect, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
 import {
   Col,
   Container,
@@ -11,7 +10,7 @@ import {
 } from '@openedx/paragon';
 
 import InviteModalSummary from './InviteModalSummary';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';
+import { INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';
 import FileUpload from './FileUpload';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
 import InviteModalMembershipInfo from './InviteModalMembershipInfo';
@@ -66,17 +65,22 @@ const InviteModalContent = ({
       return;
     }
     const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
-    setLearnerEmails(prev => [...prev, ...emails]);
+    setLearnerEmails(emails);
   }, [onEmailAddressesChange]);
 
-  const debouncedHandleEmailAddressesChanged = useMemo(
-    () => debounce(handleEmailAddressesChanged, EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY),
-    [handleEmailAddressesChanged],
-  );
+  const handleCsvUpload = (inputValue) => {
+    setEmailAddressesInputValue(inputValue);
+    handleEmailAddressesChanged(inputValue);
+  };
 
-  useEffect(() => {
-    debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
-  }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
+  const handleKeyPress = (e) => {
+    if (e.code === 'Enter') {
+      handleEmailAddressesChanged(emailAddressesInputValue);
+    }
+  };
+
+  // On non-typing action like mouse moving or tab navigation, perform email validation
+  const handleNonTypingAction = () => handleEmailAddressesChanged(emailAddressesInputValue);
 
   // Validate the learner emails emails from user input whenever it changes
   useEffect(() => {
@@ -139,6 +143,9 @@ const InviteModalContent = ({
                 as="textarea"
                 value={emailAddressesInputValue}
                 onChange={handleEmailAddressInputChange}
+                onKeyDown={handleKeyPress}
+                onBlur={handleNonTypingAction}
+                onMouseMove={handleNonTypingAction}
                 floatingLabel="Member email addresses"
                 rows={10}
                 data-hj-suppress
@@ -149,7 +156,7 @@ const InviteModalContent = ({
           {inputType === INPUT_TYPE.CSV && (
             <FileUpload
               memberInviteMetadata={memberInviteMetadata}
-              setEmailAddressesInputValue={setEmailAddressesInputValue}
+              setEmailAddressesInputValue={handleCsvUpload}
             />
           )}
           <InviteModalMembershipInfo subsidyAccessPolicy={subsidyAccessPolicy} />
