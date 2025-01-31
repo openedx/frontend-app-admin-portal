@@ -165,6 +165,7 @@ describe('<InviteMemberModal />', () => {
 
     userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
     expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
@@ -255,7 +256,8 @@ describe('<InviteMemberModal />', () => {
       value: [fakeFile],
     });
     fireEvent.drop(dropzone);
-
+    // TODO: Test csv upload
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText('tammiswanson is not a valid email.')).toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
@@ -269,6 +271,7 @@ describe('<InviteMemberModal />', () => {
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
     const textareaInput = textareaInputLabel.closest('textarea');
     userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+    userEvent.tab();
     expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
     await waitFor(() => {
       expect(screen.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
@@ -290,6 +293,7 @@ describe('<InviteMemberModal />', () => {
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
     const textareaInput = textareaInputLabel.closest('textarea');
     userEvent.type(textareaInput, 'sillygoosethisisntanemail');
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
       expect(screen.getByText('Please check your member emails and try again.')).toBeInTheDocument();
@@ -305,6 +309,7 @@ describe('<InviteMemberModal />', () => {
     userEvent.type(textareaInput, 'sillygoosethisisntanemail');
     userEvent.type(textareaInput, '{enter}');
     userEvent.type(textareaInput, 'neitheristhis');
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
       expect(screen.getByText('Please check your member emails and try again.')).toBeInTheDocument();
@@ -322,6 +327,7 @@ describe('<InviteMemberModal />', () => {
     userEvent.type(textareaInput, 'neitheristhis');
     userEvent.type(textareaInput, '{enter}');
     userEvent.type(textareaInput, 'but@this.is');
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('Members can\'t be invited as entered.')).toBeInTheDocument();
@@ -337,6 +343,7 @@ describe('<InviteMemberModal />', () => {
     userEvent.type(textareaInput, 'oopsallberries@example.com');
     userEvent.type(textareaInput, '{enter}');
     userEvent.type(textareaInput, 'oopsallberries@example.com');
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('oopsallberries@example.com was entered more than once.')).toBeInTheDocument();
@@ -354,6 +361,7 @@ describe('<InviteMemberModal />', () => {
     userEvent.type(textareaInput, 'oopsallberries@example.com');
     userEvent.type(textareaInput, '{enter}');
     userEvent.type(textareaInput, 'sillygoosethisisntanemail');
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('sillygoosethisisntanemail is not a valid email.')).toBeInTheDocument();
@@ -372,6 +380,7 @@ describe('<InviteMemberModal />', () => {
     userEvent.type(textareaInput, 'oopsallberries@example.com');
     userEvent.type(textareaInput, '{enter}');
     userEvent.type(textareaInput, 'sillygoosethisisntanemail');
+    userEvent.tab();
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('sillygoosethisisntanemail is not a valid email.')).toBeInTheDocument();
