@@ -141,5 +141,24 @@ describe('<NumberCard />', () => {
       const action = getNumberCard(wrapper).find('.footer-body .btn-link').hostNodes().first();
       expect(action.find('.ml-2').exists()).toBeTruthy();
     });
+    it('should scroll element into view if element exists', () => {
+      document.body.innerHTML = '<div id="learner-progress-report"></div>';
+      const element = document.getElementById('learner-progress-report');
+      const mockScrollIntoView = jest.fn();
+      element.scrollIntoView = mockScrollIntoView;
+      const instance = wrapper.find('NumberCard').instance();
+
+      instance.toggleDetails = jest.fn();
+
+      jest.useFakeTimers();
+
+      instance.handleDetailsActionClick();
+
+      jest.runAllTimers();
+
+      expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+
+      jest.useRealTimers();
+    });
   });
 });
