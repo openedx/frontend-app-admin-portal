@@ -49,6 +49,7 @@ const KabobMenu = ({
           src={MoreVert}
           iconAs={Icon}
           variant="primary"
+          alt="Kabob menu dropdown"
         />
         <Dropdown.Menu>
           <Dropdown.Item onClick={openRemoveModal}>

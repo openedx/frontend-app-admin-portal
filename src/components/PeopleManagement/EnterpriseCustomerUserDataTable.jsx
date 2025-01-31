@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  DataTable,
-  TextFilter,
-  CheckboxControl,
+  CheckboxControl, DataTable, TextFilter,
 } from '@openedx/paragon';
-import { GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE } from './constants';
+import {
+  GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE,
+} from './constants';
 import MemberDetailsCell from './MemberDetailsCell';
 import AddMembersBulkAction from './GroupDetailPage/AddMembersBulkAction';
 import RemoveMembersBulkAction from './RemoveMembersBulkAction';
@@ -34,7 +34,7 @@ export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
 };
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
-const EnterpriseCustomerUserDatatable = ({
+const EnterpriseCustomerUserDataTable = ({
   enterpriseId,
   learnerEmails,
   onHandleAddMembersBulkAction,
@@ -47,6 +47,12 @@ const EnterpriseCustomerUserDatatable = ({
     fetchEnterpriseMembersTableData,
   } = useEnterpriseMembersTableData({ enterpriseId });
 
+  const selectColumn = {
+    id: 'selection',
+    Header: DataTable.ControlledSelectHeader,
+    Cell: DataTable.ControlledSelect,
+    disableSortBy: true,
+  };
   return (
     <DataTable
       bulkActions={[
@@ -99,24 +105,17 @@ const EnterpriseCustomerUserDatatable = ({
         getRowId: row => row.enterpriseCustomerUser.userId.toString(),
       }}
       pageCount={enterpriseMembersTableData.pageCount}
-      manualSelectColumn={
-        {
-          id: 'selection',
-          Header: DataTable.ControlledSelectHeader,
-          /* eslint-disable react/no-unstable-nested-components */
-          Cell: (props) => <BaseSelectWithContext enterpriseGroupLearners={enterpriseGroupLearners} {...props} />,
-          disableSortBy: true,
-        }
-      }
+      manualSelectColumn={selectColumn}
+      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
     />
   );
 };
 
-EnterpriseCustomerUserDatatable.defaultProps = {
+EnterpriseCustomerUserDataTable.defaultProps = {
   enterpriseGroupLearners: [],
 };
 
-EnterpriseCustomerUserDatatable.propTypes = {
+EnterpriseCustomerUserDataTable.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
   onHandleRemoveMembersBulkAction: PropTypes.func.isRequired,
@@ -129,7 +128,6 @@ BaseSelectWithContext.propTypes = {
     getToggleRowSelectedProps: PropTypes.func.isRequired,
     id: PropTypes.string,
   }).isRequired,
-  contextKey: PropTypes.string.isRequired,
   enterpriseGroupLearners: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
@@ -137,4 +135,4 @@ const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
-export default connect(mapStateToProps)(EnterpriseCustomerUserDatatable);
+export default connect(mapStateToProps)(EnterpriseCustomerUserDataTable);

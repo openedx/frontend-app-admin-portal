@@ -59,12 +59,16 @@ const AddMembersBulkAction = ({
   );
 };
 
+AddMembersBulkAction.defaultProps = {
+  selectedFlatRows: [],
+};
+
 AddMembersBulkAction.propTypes = {
-  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()),
   enterpriseId: PropTypes.string.isRequired,
   onHandleAddMembersBulkAction: PropTypes.func.isRequired,
   isEntireTableSelected: PropTypes.bool,
-  enterpriseGroupLearners: PropTypes.arrayOf(PropTypes.string),
+  enterpriseGroupLearners: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default AddMembersBulkAction;
