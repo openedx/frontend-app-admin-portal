@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
   Breadcrumb, Card, Hyperlink, Icon, IconButton, IconButtonWithTooltip, Skeleton, useToggle,
 } from '@openedx/paragon';
 import { Delete, Edit } from '@openedx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { useEnterpriseGroupLearnersTableData, useEnterpriseGroupUuid } from '../data/hooks';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
@@ -14,8 +17,9 @@ import formatDates from '../utils';
 import GroupMembersTable from './GroupMembersTable';
 import AddMembersModal from '../AddMembersModal/AddMembersModal';
 import { makePlural } from '../../../utils';
+import EVENT_NAMES from '../../../eventTracking';
 
-const GroupDetailPage = () => {
+const GroupDetailPage = ({ enterpriseUUID }) => {
   const intl = useIntl();
   const { enterpriseSlug, groupUuid } = useParams();
   const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
@@ -123,6 +127,12 @@ const GroupDetailPage = () => {
                 className="btn btn-primary"
                 target="_blank"
                 destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}`}
+                onClick={() => {
+                  sendEnterpriseTrackEvent(
+                    enterpriseUUID,
+                    EVENT_NAMES.PEOPLE_MANAGEMENT.VIEW_GROUP_BUTTON,
+                  );
+                }}
               >
                 View group progress
               </Hyperlink>
@@ -168,4 +178,12 @@ const GroupDetailPage = () => {
   );
 };
 
-export default GroupDetailPage;
+GroupDetailPage.propTypes = {
+  enterpriseUUID: PropTypes.string,
+};
+
+const mapStateToProps = state => ({
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(GroupDetailPage);

@@ -7,6 +7,7 @@ import {
   ActionRow, Button, Skeleton, Toast, useToggle,
 } from '@openedx/paragon';
 import { Add } from '@openedx/paragon/icons';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import Hero from '../Hero';
 import { SUBSIDY_TYPES } from '../../data/constants/subsidyTypes';
@@ -16,6 +17,7 @@ import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import ZeroState from './ZeroState';
 import GroupCardGrid from './GroupCardGrid';
 import PeopleManagementTable from './PeopleManagementTable';
+import EVENT_NAMES from '../../eventTracking';
 
 const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
@@ -50,6 +52,13 @@ const PeopleManagementPage = ({ enterpriseId }) => {
   }, [data]);
 
   useEffect(() => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.PEOPLE_MANAGEMENT.PAGE_VISIT,
+    );
+  }, [enterpriseId]);
+
+  useEffect(() => {
     // parameter is for confirmation toast after deleting a group
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has('toast')) {
@@ -65,6 +74,14 @@ const PeopleManagementPage = ({ enterpriseId }) => {
       groupsCardSection = (<ZeroState />);
     }
   }
+
+  const handleOnClickCreateGroup = () => {
+    openModal();
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      EVENT_NAMES.PEOPLE_MANAGEMENT.CREATE_GROUP_BUTTON_CLICK,
+    );
+  };
 
   return (
     <>
@@ -101,7 +118,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
             )}
           </span>
           <ActionRow.Spacer />
-          <Button iconBefore={Add} onClick={openModal}>
+          <Button iconBefore={Add} onClick={handleOnClickCreateGroup}>
             <FormattedMessage
               id="adminPortal.peopleManagement.newGroup.button"
               defaultMessage="Create group"

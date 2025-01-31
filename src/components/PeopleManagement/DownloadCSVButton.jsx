@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import {
   Icon, Spinner, StatefulButton, Toast, useToggle,
@@ -8,6 +10,7 @@ import {
 import { Download, Check } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import { downloadCsv, getTimeStampedFilename } from '../../utils';
+import EVENT_NAMES from '../../eventTracking';
 
 const csvHeaders = ['Name', 'Email', 'Joined Organization', 'Enrollments'];
 
@@ -16,7 +19,12 @@ const dataEntryToRow = (entry) => {
   return [name, email, joinedOrg, enrollments];
 };
 
-const DownloadCsvButton = ({ testId, fetchData, totalCt }) => {
+const DownloadCsvButton = ({
+  enterpriseUUID,
+  testId,
+  fetchData,
+  totalCt,
+}) => {
   const [buttonState, setButtonState] = useState('pageLoading');
   const [isToastOpen, openToast, closeToast] = useToggle(false);
   const intl = useIntl();
@@ -34,8 +42,23 @@ const DownloadCsvButton = ({ testId, fetchData, totalCt }) => {
       downloadCsv(fileName, response.results, csvHeaders, dataEntryToRow);
       openToast();
       setButtonState('complete');
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_ALL_ORG_MEMBERS,
+        {
+          status: 'success',
+        },
+      );
     }).catch((err) => {
       logError(err);
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_ALL_ORG_MEMBERS,
+        {
+          status: 'error',
+          message: err,
+        },
+      );
     });
   };
 
@@ -101,6 +124,11 @@ DownloadCsvButton.propTypes = {
   fetchData: PropTypes.func.isRequired,
   totalCt: PropTypes.number,
   testId: PropTypes.string,
+  enterpriseUUID: PropTypes.string,
 };
 
-export default DownloadCsvButton;
+const mapStateToProps = state => ({
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(DownloadCsvButton);

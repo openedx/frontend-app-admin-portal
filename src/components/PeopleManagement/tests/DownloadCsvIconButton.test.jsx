@@ -4,12 +4,25 @@ import { logError } from '@edx/frontend-platform/logging';
 import {
   act, fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 
 import '@testing-library/jest-dom/extend-expect';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import userEvent from '@testing-library/user-event';
 import DownloadCsvIconButton from '../GroupDetailPage/DownloadCsvIconButton';
 import { downloadCsv } from '../../../utils';
+import EVENT_NAMES from '../../../eventTracking';
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('file-saver', () => ({
   ...jest.requireActual('file-saver'),
@@ -59,11 +72,20 @@ const DEFAULT_PROPS = {
     },
   },
 };
+const enterpriseId = 'test-enterprise-id';
+const mockStore = configureMockStore([thunk]);
+const store = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
+});
 
 const DownloadCsvIconButtonWrapper = props => (
-  <IntlProvider locale="en">
-    <DownloadCsvIconButton {...props} />
-  </IntlProvider>
+  <Provider store={store}>
+    <IntlProvider locale="en">
+      <DownloadCsvIconButton {...props} />
+    </IntlProvider>
+  </Provider>
 );
 
 describe('DownloadCsvIconButton', () => {
@@ -85,7 +107,11 @@ describe('DownloadCsvIconButton', () => {
     // Click the download button
     screen.getByTestId(testId).click();
     await flushPromises();
-
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      enterpriseId,
+      EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_GROUP_MEMBERS,
+      { status: 'success' },
+    );
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
     const expectedFileName = '2024-04-20-Enterprise.csv';
     const expectedHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
@@ -108,6 +134,14 @@ describe('DownloadCsvIconButton', () => {
 
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();
     expect(logError).toHaveBeenCalled();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      enterpriseId,
+      EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_GROUP_MEMBERS,
+      {
+        status: 'error',
+        message: new Error('Error fetching data'),
+      },
+    );
   });
   it('shows correct download text hover and csv content for singular selection', async () => {
     const props = {

@@ -7,11 +7,13 @@ import { Form } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 
 import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import SearchBar from '../SearchBar';
 import { formatTimestamp, updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
 import { withLocation, withNavigate } from '../../hoc';
+import EVENT_NAMES from '../../eventTracking';
 
 class AdminSearchForm extends React.Component {
   componentDidUpdate(prevProps) {
@@ -31,8 +33,8 @@ class AdminSearchForm extends React.Component {
     } = prevProps;
 
     if (searchQuery !== prevSearchQuery || searchCourseQuery !== prevSearchCourseQuery
-        || searchDateQuery !== prevSearchDateQuery || searchBudgetQuery !== prevSearchBudgetQuery
-        || searchGroupQuery !== prevSearchGroupQuery) {
+      || searchDateQuery !== prevSearchDateQuery || searchBudgetQuery !== prevSearchBudgetQuery
+      || searchGroupQuery !== prevSearchGroupQuery) {
       this.handleSearch();
     }
   }
@@ -69,6 +71,11 @@ class AdminSearchForm extends React.Component {
       page: 1,
     };
     updateUrl(navigate, location.pathname, updateParams);
+    sendEnterpriseTrackEvent(
+      this.props.enterpriseId,
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_GROUP_DROPDOWN,
+      { group: event.target.value },
+    );
   }
 
   render() {
@@ -81,7 +88,6 @@ class AdminSearchForm extends React.Component {
         searchCourseQuery, searchDateQuery, searchQuery, searchBudgetQuery, searchGroupQuery,
       },
     } = this.props;
-
     const courseTitles = Array.from(new Set(tableData.map(en => en.course_title).sort()));
     const courseDates = Array.from(new Set(tableData.map(en => en.course_start_date).sort().reverse()));
     const columnWidth = (budgets?.length || groups?.length) ? 'col-md-3' : 'col-md-6';
@@ -252,7 +258,7 @@ class AdminSearchForm extends React.Component {
                   </Form.Control>
                 </Form.Group>
               </div>
-            ) : null }
+            ) : null}
             <div className={classNames('col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3', columnWidth)}>
               <Form.Label id="search-email-label" className="mb-2">
                 <FormattedMessage
@@ -305,6 +311,7 @@ AdminSearchForm.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),
+  enterpriseId: PropTypes.string,
   // injected
   intl: intlShape.isRequired,
 };

@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
+import { connect } from 'react-redux';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
 import { Card, Hyperlink } from '@openedx/paragon';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import EVENT_NAMES from '../../eventTracking';
 
-const GroupDetailCard = ({ group }) => {
+const GroupDetailCard = ({ enterpriseUUID, group }) => {
   const { enterpriseSlug } = useParams();
   return (
     <Card className="group-detail-card">
@@ -15,6 +19,12 @@ const GroupDetailCard = ({ group }) => {
         <Hyperlink
           className="btn btn-outline-primary"
           destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/${group.uuid}`}
+          onClick={() => {
+            sendEnterpriseTrackEvent(
+              enterpriseUUID,
+              EVENT_NAMES.PEOPLE_MANAGEMENT.VIEW_GROUP_PROGRESS_BUTTON,
+            );
+          }}
         >
           View group
         </Hyperlink>
@@ -29,6 +39,11 @@ GroupDetailCard.propTypes = {
     name: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
   }).isRequired,
+  enterpriseUUID: PropTypes.string,
 };
 
-export default GroupDetailCard;
+const mapStateToProps = state => ({
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(GroupDetailCard);
