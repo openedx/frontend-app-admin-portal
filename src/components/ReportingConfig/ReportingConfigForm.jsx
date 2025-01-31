@@ -51,6 +51,7 @@ class ReportingConfigForm extends React.Component {
     active: this.props.config ? this.props.config.active : false,
     enableCompression: this.props.config ? this.props.config.enableCompression : true,
     submitState: SUBMIT_STATES.DEFAULT,
+    includeDate: this.props.config ? this.props.config.includeDate : false,
   };
 
   /**
@@ -127,6 +128,7 @@ class ReportingConfigForm extends React.Component {
     let requiredFields = [];
     formData.append('active', this.state.active);
     formData.append('enableCompression', this.state.enableCompression);
+    formData.append('includeDate', this.state.includeDate);
     if (formData.get('deliveryMethod') === 'email') {
       requiredFields = config ? [...REQUIRED_EMAIL_FIELDS] : [...REQUIRED_NEW_EMAIL_FIELDS];
       // transform email field to match what the api is looking for
@@ -257,6 +259,7 @@ class ReportingConfigForm extends React.Component {
       active,
       enableCompression,
       submitState,
+      includeDate,
     } = this.state;
     const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
     const dataTypesOptions = reportingConfigTypes.dataType.map((item, index) => ({
@@ -515,6 +518,30 @@ class ReportingConfigForm extends React.Component {
             </Form.Text>
           </Form.Group>
         </div>
+        <div className="col">
+          <Form.Group>
+            <Form.Label>
+              <FormattedMessage
+                id="admin.portal.reporting.config.include.date"
+                defaultMessage="Include Date"
+                description="Label for the Include Date field in the reporting configuration form"
+              />
+            </Form.Label>
+            <Form.Checkbox
+              data-testid="includeDateCheckbox"
+              className="ml-3"
+              checked={includeDate}
+              onChange={() => this.setState(prevState => ({ includeDate: !prevState.includeDate }))}
+            />
+            <Form.Text>
+              <FormattedMessage
+                id="admin.portal.reporting.config.include.date.option.help"
+                defaultMessage="Specifies whether the report's filename should include the date."
+                description="Help text for the Include Date field in the reporting configuration form"
+              />
+            </Form.Text>
+          </Form.Group>
+        </div>
         <div className="row justify-content-between align-items-center form-group">
           <Form.Group
             className="mb-0"
@@ -596,6 +623,7 @@ ReportingConfigForm.propTypes = {
   config: PropTypes.shape({
     active: PropTypes.bool,
     enableCompression: PropTypes.bool,
+    includeDate: PropTypes.bool,
     dataType: PropTypes.string,
     dayOfMonth: PropTypes.number,
     dayOfWeek: PropTypes.number,
