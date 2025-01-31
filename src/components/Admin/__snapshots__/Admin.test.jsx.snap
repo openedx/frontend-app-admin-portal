@@ -126,6 +126,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -1504,6 +1505,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -3165,6 +3167,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -4826,6 +4829,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -6487,6 +6491,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -8148,6 +8153,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -9809,6 +9815,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -11470,6 +11477,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -13131,6 +13139,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -14792,6 +14801,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -16453,6 +16463,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -18163,6 +18174,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -19824,6 +19836,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -21485,6 +21498,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -22642,6 +22656,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -23533,6 +23548,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
@@ -24956,6 +24972,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
     </div>
     <div
       className="row mt-4"
+      id="learner-progress-report"
     >
       <div
         className="col"
