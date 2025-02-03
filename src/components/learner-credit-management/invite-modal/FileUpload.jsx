@@ -4,11 +4,10 @@ import {
   Dropzone, Form, Icon,
 } from '@openedx/paragon';
 import { InsertDriveFile } from '@openedx/paragon/icons';
-
 import { formatBytes } from '../../MultipleFileInputField/utils';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
 
-const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
+const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue, setIsCreateGroupFileUpload }) => {
   const [uploadedFile, setUploadedFile] = useState(undefined);
   const UploadedFile = (
     <>
@@ -29,6 +28,9 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
       setEmailAddressesInputValue(text);
     };
     reader.readAsText(file);
+    if (setIsCreateGroupFileUpload) {
+      setIsCreateGroupFileUpload(true);
+    }
   };
   return (
     <Form.Group>
@@ -50,6 +52,10 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
   );
 };
 
+FileUpload.defaultProps = {
+  setIsCreateGroupFileUpload: null,
+};
+
 FileUpload.propTypes = {
   memberInviteMetadata: PropTypes.shape({
     validationError: PropTypes.shape({
@@ -57,6 +63,7 @@ FileUpload.propTypes = {
     }),
   }).isRequired,
   setEmailAddressesInputValue: PropTypes.func.isRequired,
+  setIsCreateGroupFileUpload: PropTypes.func,
 };
 
 export default FileUpload;

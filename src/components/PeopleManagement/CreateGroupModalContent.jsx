@@ -18,6 +18,7 @@ import { useEnterpriseLearners } from '../learner-credit-management/data';
 
 const CreateGroupModalContent = ({
   onEmailAddressesChange,
+  setIsCreateGroupFileUpload,
   onSetGroupName,
   isGroupInvite,
   enterpriseUUID,
@@ -138,6 +139,7 @@ const CreateGroupModalContent = ({
           <FileUpload
             memberInviteMetadata={memberInviteMetadata}
             setEmailAddressesInputValue={setEmailAddressesInputValue}
+            setIsCreateGroupFileUpload={setIsCreateGroupFileUpload}
           />
         </Col>
         <Col>
@@ -161,6 +163,7 @@ CreateGroupModalContent.propTypes = {
   onSetGroupName: PropTypes.func,
   isGroupInvite: PropTypes.bool,
   enterpriseUUID: PropTypes.string.isRequired,
+  setIsCreateGroupFileUpload: PropTypes.func,
 };
 
 export default CreateGroupModalContent;

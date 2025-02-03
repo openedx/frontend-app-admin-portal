@@ -62,6 +62,7 @@ const defaultProps = {
   enterpriseUUID,
   groupName: 'test-group-name',
   groupUuid: TEST_GROUP,
+  setIsCreateGroupFileUpload: jest.fn(),
 };
 
 const mockTabledata = {
