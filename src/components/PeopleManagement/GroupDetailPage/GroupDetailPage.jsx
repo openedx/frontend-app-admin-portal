@@ -156,6 +156,7 @@ const GroupDetailPage = () => {
         refresh={refresh}
         setRefresh={setRefresh}
         openAddMembersModal={openAddMembersModal}
+        groupName={groupName}
       />
       <AddMembersModal
         groupUuid={groupUuid}

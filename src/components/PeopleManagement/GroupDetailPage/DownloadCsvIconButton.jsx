@@ -12,9 +12,17 @@ import { downloadCsv, getTimeStampedFilename } from '../../../utils';
 
 const csvHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
 
-const DownloadCsvIconButton = ({ fetchAllData, dataCount, testId }) => {
+const DownloadCsvIconButton = ({
+  fetchAllData,
+  dataCount,
+  testId,
+  tableInstance: { state },
+  groupName,
+}) => {
   const [isToastOpen, openToast, closeToast] = useToggle(false);
   const [isErrorModalOpen, openErrorModal, closeErrorModal] = useToggle(false);
+  const selectedRowsCount = Object.keys(state.selectedRowIds).length;
+  const downloadHoverTextMessage = selectedRowsCount === dataCount || !selectedRowsCount ? `Download all (${dataCount})` : `Download (${selectedRowsCount})`;
   const intl = useIntl();
   const messages = defineMessages({
     downloadToastText: {
@@ -24,7 +32,7 @@ const DownloadCsvIconButton = ({ fetchAllData, dataCount, testId }) => {
     },
     downloadHoverText: {
       id: 'adminPortal.peopleManagement.groupDetail.downloadCsv.hoverTooltip',
-      defaultMessage: `Download (${dataCount})`,
+      defaultMessage: downloadHoverTextMessage,
       description: 'Tooltip message for the download button on the group detail page.',
     },
   });
@@ -36,8 +44,11 @@ const DownloadCsvIconButton = ({ fetchAllData, dataCount, testId }) => {
 
   const handleClick = async () => {
     fetchAllData().then((response) => {
-      const fileName = getTimeStampedFilename('group-report.csv');
-      downloadCsv(fileName, response.results, csvHeaders, dataEntryToRow);
+      const fileName = getTimeStampedFilename(`${groupName}.csv`);
+      const selectedRowIdsToDownload = selectedRowsCount ? (response.results.filter(result => (
+        state.selectedRowIds[result.memberDetails.userEmail]
+      ))) : response.results;
+      downloadCsv(fileName, selectedRowIdsToDownload, csvHeaders, dataEntryToRow);
       openToast();
     }).catch((err) => {
       logError(err);
@@ -47,12 +58,12 @@ const DownloadCsvIconButton = ({ fetchAllData, dataCount, testId }) => {
 
   return (
     <>
-      { isToastOpen
-     && (
-     <Toast onClose={closeToast} show={isToastOpen}>
-       {intl.formatMessage(messages.downloadToastText)}
-     </Toast>
-     )}
+      {isToastOpen
+        && (
+          <Toast onClose={closeToast} show={isToastOpen}>
+            {intl.formatMessage(messages.downloadToastText)}
+          </Toast>
+        )}
       <GeneralErrorModal
         isOpen={isErrorModalOpen}
         close={closeErrorModal}
@@ -78,6 +89,10 @@ DownloadCsvIconButton.propTypes = {
   fetchAllData: PropTypes.func.isRequired,
   dataCount: PropTypes.number.isRequired,
   testId: PropTypes.string,
+  groupName: PropTypes.string,
+  tableInstance: PropTypes.shape({
+    state: PropTypes.shape(),
+  }),
 };
 
 export default DownloadCsvIconButton;
