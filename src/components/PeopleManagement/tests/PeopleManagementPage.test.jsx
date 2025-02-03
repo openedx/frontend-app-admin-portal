@@ -6,10 +6,13 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import userEvent from '@testing-library/user-event';
 
 import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import PeopleManagementPage from '..';
+import EVENT_NAMES from '../../../eventTracking';
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = (store) => mockStore(store);
@@ -32,6 +35,14 @@ const subsEnterpriseSubsidiesContextValue = {
   enterpriseSubsidyTypes: ['license'],
   isLoading: false,
 };
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -147,6 +158,18 @@ describe('<PeopleManagementPage >', () => {
         </Provider>
       </IntlProvider>,
     );
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      enterpriseUUID,
+      EVENT_NAMES.PEOPLE_MANAGEMENT.PAGE_VISIT,
+    );
+    const viewGroupBtn = screen.getAllByText('View group')[0];
+    userEvent.click(viewGroupBtn);
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.VIEW_GROUP_BUTTON,
+      );
+    });
     expect(screen.getByText('captain crunch')).toBeInTheDocument();
     expect(screen.getByText('Show all 4 groups')).toBeInTheDocument();
     expect(screen.queryByText('fruity pebbles')).not.toBeInTheDocument();

@@ -8,10 +8,13 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import {
   ActionRow, Button, FullscreenModal, StatefulButton, useToggle,
 } from '@openedx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
 import LmsApiService from '../../data/services/LmsApiService';
 import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import CreateGroupModalContent from './CreateGroupModalContent';
 import { peopleManagementQueryKeys } from './constants';
+import EVENT_NAMES from '../../eventTracking';
 
 const CreateGroupModal = ({
   isModalOpen,
@@ -24,6 +27,8 @@ const CreateGroupModal = ({
   const [groupName, setGroupName] = useState('');
   const [canCreateGroup, setCanCreateGroup] = useState(false);
   const [canInviteMembers, setCanInviteMembers] = useState(false);
+  const [isCreateGroupFileUpload, setIsCreateGroupFileUpload] = useState(false);
+  const [isCreateGroupListSelection, setIsCreateGroupListSelection] = useState(false);
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
   const handleCloseCreateGroupModal = () => {
     closeModal();
@@ -38,13 +43,41 @@ const CreateGroupModal = ({
       groupName,
     };
     let groupCreationResponse;
-
     try {
       groupCreationResponse = await LmsApiService.createEnterpriseGroup(options);
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.CREATE_GROUP_MODAL_BUTTON_SUBMIT,
+        { status: 'success' },
+      );
+      if (isCreateGroupListSelection && isCreateGroupFileUpload) {
+        sendEnterpriseTrackEvent(
+          enterpriseUUID,
+          EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_CSV_AND_LIST,
+        );
+      } else if (isCreateGroupListSelection) {
+        sendEnterpriseTrackEvent(
+          enterpriseUUID,
+          EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_LIST_SELECTION,
+        );
+      } else if (isCreateGroupFileUpload) {
+        sendEnterpriseTrackEvent(
+          enterpriseUUID,
+          EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_UPLOAD_CSV,
+        );
+      }
     } catch (err) {
       logError(err);
       setCreateButtonState('error');
       openSystemErrorModal();
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.CREATE_GROUP_MODAL_BUTTON_SUBMIT,
+        {
+          status: 'error',
+          message: err,
+        },
+      );
     }
 
     try {
@@ -114,6 +147,8 @@ const CreateGroupModal = ({
           onEmailAddressesChange={handleEmailAddressesChange}
           isGroupInvite
           enterpriseUUID={enterpriseUUID}
+          setIsCreateGroupFileUpload={setIsCreateGroupFileUpload}
+          setIsCreateGroupListSelection={setIsCreateGroupListSelection}
         />
       </FullscreenModal>
       <SystemErrorAlertModal
