@@ -66,7 +66,7 @@ describe('<SettingsAccessSSOManagement />', () => {
     });
   });
 
-  it('should show alert if an error occured', async () => {
+  it('should show alert if an error occurred', async () => {
     LmsApiService.updateEnterpriseCustomer.mockRejectedValue(new Error());
     render(<SettingsAccessSSOManagementWrapper {...basicProps} />);
 

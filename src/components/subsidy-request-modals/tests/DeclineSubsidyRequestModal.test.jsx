@@ -83,7 +83,7 @@ describe('<DeclineSubsidyRequestModal />', () => {
     });
   });
 
-  it('should render alert if an error occured', async () => {
+  it('should render alert if an error occurred', async () => {
     const mockDeclineRequestFn = jest.fn().mockRejectedValue(new Error('something went wrong'));
 
     const { getByTestId } = render(
