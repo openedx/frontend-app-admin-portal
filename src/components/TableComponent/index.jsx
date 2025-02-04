@@ -130,10 +130,7 @@ class TableComponent extends React.Component {
 
   renderErrorMessage() {
     return (
-      <Alert
-        variant="danger"
-        icon={Error}
-      >
+      <Alert variant="danger" icon={Error}>
         <Alert.Heading>Unable to load data</Alert.Heading>
         <p>Try refreshing your screen {this.props.error.message}</p>
       </Alert>
@@ -141,22 +138,16 @@ class TableComponent extends React.Component {
   }
 
   renderEmptyDataMessage() {
+    const { customEmptyMessage } = this.props;
     return (
-      <Alert
-        variant="warning"
-        icon={Error}
-      >
-        There are no results.
+      <Alert variant="warning" icon={Error}>
+        {!customEmptyMessage ? 'There are no results.' : customEmptyMessage}
       </Alert>
     );
   }
 
   render() {
-    const {
-      data,
-      loading,
-      error,
-    } = this.props;
+    const { data, loading, error } = this.props;
 
     return (
       <>
@@ -179,6 +170,7 @@ TableComponent.propTypes = {
   tableSortable: PropTypes.bool,
   defaultSortIndex: PropTypes.number,
   defaultSortType: PropTypes.string,
+  customEmptyMessage: PropTypes.string,
 
   // Props expected from TableContainer / redux store
   enterpriseId: PropTypes.string.isRequired,
@@ -209,6 +201,7 @@ TableComponent.defaultProps = {
   pageCount: undefined,
   error: null,
   loading: false,
+  customEmptyMessage: null,
 };
 
 export default withLocation(withNavigate(TableComponent));

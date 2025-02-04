@@ -102,6 +102,21 @@ class LearnerActivityTable extends React.Component {
     return tableColumns;
   }
 
+  getEmptyTableDataMessage() {
+    const { intl } = this.props;
+    const emptyTableDataMessage = intl.formatMessage({
+      id: 'admin.portal.lpr.learner.activity.table.empty.groups.message',
+      defaultMessage: 'We are currently processing the latest updates. The data is refreshed twice a day. Thank you for your patience, and please check back soon.',
+      description: 'Empty table message when groups data is pending.',
+    });
+
+    const query = new URLSearchParams(window.location.search);
+    if (query.has('group_uuid')) {
+      return emptyTableDataMessage;
+    }
+    return null;
+  }
+
   formatTableData = enrollments => enrollments.map(enrollment => ({
     ...enrollment,
     user_email: <span data-hj-suppress>{enrollment.user_email}</span>,
@@ -122,7 +137,6 @@ class LearnerActivityTable extends React.Component {
 
   render() {
     const { activity, id } = this.props;
-
     return (
       <TableContainer
         id={id}
@@ -138,6 +152,7 @@ class LearnerActivityTable extends React.Component {
         columns={this.getTableColumns()}
         formatData={this.formatTableData}
         tableSortable
+        customEmptyMessage={this.getEmptyTableDataMessage()}
       />
     );
   }

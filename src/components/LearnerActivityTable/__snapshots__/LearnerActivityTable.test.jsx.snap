@@ -533,6 +533,42 @@ exports[`LearnerActivityTable renders empty state correctly 1`] = `
 </div>
 `;
 
+exports[`LearnerActivityTable renders empty state correctly if groups have no loaded 1`] = `
+<div
+  className="fade alert-content alert alert-warning show"
+  role="alert"
+>
+  <span
+    className="pgn__icon alert-icon"
+  >
+    <svg
+      aria-hidden={true}
+      fill="none"
+      focusable={false}
+      height={24}
+      role="img"
+      viewBox="0 0 24 24"
+      width={24}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"
+        fill="currentColor"
+      />
+    </svg>
+  </span>
+  <div
+    className="pgn__alert-message-wrapper"
+  >
+    <div
+      className="alert-message-content"
+    >
+      We are currently processing the latest updates. The data is refreshed twice a day. Thank you for your patience, and please check back soon.
+    </div>
+  </div>
+</div>
+`;
+
 exports[`LearnerActivityTable renders inactive past month learners table correctly 1`] = `
 <div
   className="inactive-month"
