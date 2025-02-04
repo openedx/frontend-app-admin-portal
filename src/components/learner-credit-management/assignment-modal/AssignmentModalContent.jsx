@@ -32,6 +32,7 @@ const AssignmentModalContent = ({
   enterpriseFlexGroups,
   onGroupSelectionsChanged,
   enterpriseFeatures,
+  setHasSelectedBulkGroupAssign,
 }) => {
   const shouldShowGroupsDropdown = enterpriseFeatures.enterpriseGroupsV2 && enterpriseFlexGroups?.length > 0;
   const { subsidyAccessPolicyId } = useBudgetId();
@@ -91,7 +92,11 @@ const AssignmentModalContent = ({
     } else {
       setDropdownToggleLabel(GROUP_DROPDOWN_TEXT);
     }
-  }, [checkedGroups, handleGroupsChanged]);
+
+    if (selectedGroups.length >= 1) {
+      setHasSelectedBulkGroupAssign(true);
+    }
+  }, [checkedGroups, handleGroupsChanged, setHasSelectedBulkGroupAssign]);
 
   // Validate the learner emails from user input whenever it changes
   useEffect(() => {
@@ -280,6 +285,7 @@ AssignmentModalContent.propTypes = {
   enterpriseFeatures: PropTypes.shape({
     enterpriseGroupsV2: PropTypes.bool.isRequired,
   }),
+  setHasSelectedBulkGroupAssign: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

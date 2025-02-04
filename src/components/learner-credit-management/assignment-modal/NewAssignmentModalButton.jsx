@@ -57,6 +57,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
     successfulAssignmentToast: { displayToastForAssignmentAllocation },
   } = useContext(BudgetDetailPageContext);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
+  const [hasSelectedBulkGroupAssign, setHasSelectedBulkGroupAssign] = useState(false);
   const {
     subsidyUuid,
     assignmentConfiguration,
@@ -166,6 +167,13 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
       EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_ALLOCATION_LEARNER_ASSIGNMENT,
       trackEventMetadata,
     );
+    if (hasSelectedBulkGroupAssign) {
+      sendEnterpriseTrackEvent(
+        enterpriseId,
+        EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.BULK_GROUP_ASSIGNMENT,
+        trackEventMetadata,
+      );
+    }
   };
   const handleAllocateContentAssignments = () => {
     const payload = snakeCaseObject({
@@ -352,6 +360,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           onEmailAddressesChange={handleEmailAddressesChanged}
           enterpriseFlexGroups={enterpriseFlexGroups}
           onGroupSelectionsChanged={handleGroupSelectionsChanged}
+          setHasSelectedBulkGroupAssign={setHasSelectedBulkGroupAssign}
         />
       </FullscreenModal>
       <CreateAllocationErrorAlertModals
