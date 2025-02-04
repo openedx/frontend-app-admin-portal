@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  CheckboxControl, DataTable, TextFilter,
+  Button, CheckboxControl, DataTable, DataTableContext, TextFilter,
 } from '@openedx/paragon';
+
+import BaseSelectionStatus from '../BulkEnrollmentPage/table/BaseSelectionStatus';
 import {
   GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE,
 } from './constants';
@@ -34,6 +37,7 @@ export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
 };
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
+
 const EnterpriseCustomerUserDataTable = ({
   enterpriseId,
   learnerEmails,
@@ -47,10 +51,76 @@ const EnterpriseCustomerUserDataTable = ({
     fetchEnterpriseMembersTableData,
   } = useEnterpriseMembersTableData({ enterpriseId });
 
+
+  const SelectionStatus = () => {
+  
+    // const { page, toggleAllRowsSelected, state, controlledTableSelections,
+    //  } = useContext(DataTableContext);
+    // const numSelectedRowsOnPage = page.filter(r => r.isSelected).length;
+
+    // const { selectedRowIds } = state;
+    // const numSelectedRows = Object.keys(selectedRowIds || {}).length;
+    // // const numSelectedRows = enterpriseGroupLearners.length;
+    // console.log(state)
+    // console.log(controlledTableSelections)
+
+  
+    // const handleClearSelection = () => {
+    //   toggleAllRowsSelected(false);
+    // };
+  
+    // return (
+    //   <>
+    //     <span>{numSelectedRows} selected ({numSelectedRowsOnPage} shown below)</span>
+    //     {numSelectedRows > 0 && (
+    //       <Button
+    //         variant="link"
+    //         size="inline"
+    //         onClick={handleClearSelection}
+    //       >
+    //         Clear selection
+    //       </Button>
+    //     )}
+    //   </>
+    // );
+    const {
+      itemCount,
+      page,
+      controlledTableSelections: [{ selectedRows, isEntireTableSelected }, dispatch],
+    } = useContext(DataTableContext);
+  
+    useEffect(
+      () => {
+        if (isEntireTableSelected) {
+          const selectedRowIds = getRowIds(selectedRows);
+          // const unselectedPageRows = getUnselectedPageRows(selectedRowIds, page);
+          // if (unselectedPageRows.length) {
+          //   dispatch(setSelectedRowsAction(unselectedPageRows, itemCount));
+          // }
+        }
+      },
+      [isEntireTableSelected, selectedRows, itemCount, page, dispatch],
+    );
+  
+    const numSelectedRows = isEntireTableSelected ? itemCount : selectedRows.length;
+    const numSelectedRowsOnPage = (page || []).filter(r => r.isSelected).length;
+  
+    const selectionStatusProps = {
+      className,
+      numSelectedRows,
+      numSelectedRowsOnPage,
+      clearSelectionText,
+      onSelectAll: () => dispatch(setSelectAllRowsAllPagesAction()),
+      onClear: () => dispatch(clearSelectionAction()),
+    };
+    return <BaseSelectionStatus {...selectionStatusProps} />;
+  };
+
   const selectColumn = {
     id: 'selection',
     Header: DataTable.ControlledSelectHeader,
-    Cell: DataTable.ControlledSelect,
+    // Cell: DataTable.ControlledSelect,
+    Cell: (props) => <BaseSelectWithContext enterpriseGroupLearners={enterpriseGroupLearners} {...props} />,
     disableSortBy: true,
   };
   return (
