@@ -104,7 +104,7 @@ const PeopleManagementPageWrapper = ({
 };
 
 describe('<PeopleManagementPage >', () => {
-  it('renders the PeopleManagementPage zero state', () => {
+  it('renders the PeopleManagementPage zero state', async () => {
     useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
     render(<PeopleManagementPageWrapper />);
     expect(document.querySelector('h3').textContent).toEqual("Your organization's groups");
@@ -112,6 +112,15 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText(
       'Monitor group learning progress, assign more courses, and invite members to new Learner Credit budgets.',
     )).toBeInTheDocument();
+    const createGroupBtn = screen.getByText('Create group');
+    expect(createGroupBtn).toBeInTheDocument();
+    userEvent.click(createGroupBtn);
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.CREATE_GROUP_BUTTON_CLICK,
+      );
+    });
   });
   it('renders the PeopleManagementPage zero state without LC', () => {
     useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: [] } });

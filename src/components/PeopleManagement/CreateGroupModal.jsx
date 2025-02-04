@@ -13,8 +13,8 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import LmsApiService from '../../data/services/LmsApiService';
 import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import CreateGroupModalContent from './CreateGroupModalContent';
-import { peopleManagementQueryKeys } from './constants';
 import EVENT_NAMES from '../../eventTracking';
+import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
 
 const CreateGroupModal = ({
   isModalOpen,
@@ -66,6 +66,8 @@ const CreateGroupModal = ({
           EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_UPLOAD_CSV,
         );
       }
+      setIsCreateGroupListSelection(false);
+      setIsCreateGroupFileUpload(false);
     } catch (err) {
       logError(err);
       setCreateButtonState('error');
@@ -86,7 +88,7 @@ const CreateGroupModal = ({
       });
       await LmsApiService.inviteEnterpriseLearnersToGroup(groupCreationResponse.data.uuid, requestBody);
       queryClient.invalidateQueries({
-        queryKey: peopleManagementQueryKeys.group(enterpriseUUID),
+        queryKey: learnerCreditManagementQueryKeys.group(enterpriseUUID),
       });
       setCreateButtonState('complete');
       handleCloseCreateGroupModal();

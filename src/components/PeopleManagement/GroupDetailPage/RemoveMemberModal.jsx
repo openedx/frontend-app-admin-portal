@@ -5,18 +5,25 @@ import {
 } from '@openedx/paragon';
 import { RemoveCircle } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
+import { useQueryClient } from '@tanstack/react-query';
 
 import LmsApiService from '../../../data/services/LmsApiService';
+import { peopleManagementQueryKeys } from '../constants';
 
 const RemoveMemberModal = ({
   groupUuid, row, isOpen, close, openError, refresh, setRefresh,
 }) => {
+  const queryClient = useQueryClient();
+
   const removeEnterpriseGroupMember = async () => {
     try {
       const rowEmail = row.id;
       const formData = new FormData();
       formData.append('learner_emails', rowEmail);
       await LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, formData);
+      queryClient.invalidateQueries({
+        queryKey: peopleManagementQueryKeys.group(groupUuid),
+      });
       setRefresh(!refresh);
       close();
     } catch (error) {
@@ -65,6 +72,7 @@ const RemoveMemberModal = ({
             variant="danger"
             onClick={removeEnterpriseGroupMember}
             iconBefore={RemoveCircle}
+            data-testid="remove-member-confirm"
           >Remove member
           </Button>
         </ActionRow>
