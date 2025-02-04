@@ -60,10 +60,16 @@ class NumberCard extends React.Component {
   }
 
   handleDetailsActionClick(event) {
+    const element = document.getElementById('learner-progress-report');
     if (event) {
       event.target.click();
     }
     this.toggleDetails();
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    }
   }
 
   handleToggleDetailsKeyDown(event) {
