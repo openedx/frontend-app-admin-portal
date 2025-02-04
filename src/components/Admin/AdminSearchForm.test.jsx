@@ -2,10 +2,12 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { FormControl } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import AdminSearchForm from './AdminSearchForm';
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
+import EVENT_NAMES from '../../eventTracking';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -17,10 +19,19 @@ jest.mock('../../utils', () => ({
   updateUrl: jest.fn(),
 }));
 
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
+
 const DEFAULT_PROPS = {
   searchEnrollmentsList: () => {},
   searchParams: {},
   tableData: [],
+  enterpriseId: 'test-id',
 };
 
 const AdminSearchFormWrapper = props => (
@@ -100,6 +111,13 @@ describe('<AdminSearchForm />', () => {
 
     selectElement.simulate('change', { target: { value: groupUUID } });
     expect(updateUrl).toHaveBeenCalled();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      'test-id',
+      EVENT_NAMES.LEARNER_PROGRESS_REPORT.FILTER_BY_GROUP_DROPDOWN,
+      {
+        group: groupUUID,
+      },
+    );
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
       '/admin/learners',

@@ -545,6 +545,7 @@ class Admin extends React.Component {
                                 tableData={this.getTableData() ? this.getTableData().results : []}
                                 budgets={budgets}
                                 groups={groups}
+                                enterpriseId={enterpriseId}
                               />
                             )}
                           </>

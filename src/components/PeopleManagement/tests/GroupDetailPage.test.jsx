@@ -8,11 +8,13 @@ import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../data/hooks';
 import GroupDetailPage from '../GroupDetailPage/GroupDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { queryClient } from '../../test/testUtils';
+import EVENT_NAMES from '../../../eventTracking';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 const enterpriseUUID = '1234';
@@ -46,6 +48,13 @@ jest.mock('react-router-dom', () => ({
     groupUuid: TEST_GROUP.uuid,
   }),
 }));
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 const initialStoreState = {
   portalConfiguration: {
@@ -112,6 +121,13 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
     const lprUrl = screen.getByText('View group progress');
     expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345');
+    userEvent.click(lprUrl);
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.VIEW_GROUP_PROGRESS_BUTTON,
+      );
+    });
     userEvent.click(screen.getByText('Member details'));
     await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
       filters: [],
