@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  Button, CheckboxControl, DataTable, DataTableContext, TextFilter,
+  Button,
+  CheckboxControl, DataTable, DataTableContext, Icon, IconButtonWithTooltip, Table, TextFilter,
 } from '@openedx/paragon';
 
-import BaseSelectionStatus from '../BulkEnrollmentPage/table/BaseSelectionStatus';
 import {
   GROUP_MEMBERS_TABLE_DEFAULT_PAGE, GROUP_MEMBERS_TABLE_PAGE_SIZE,
 } from './constants';
@@ -14,6 +13,9 @@ import AddMembersBulkAction from './GroupDetailPage/AddMembersBulkAction';
 import RemoveMembersBulkAction from './RemoveMembersBulkAction';
 import MemberJoinedDateCell from './MemberJoinedDateCell';
 import { useEnterpriseMembersTableData } from './data/hooks';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import classNames from 'classnames';
+import { HelpOutline } from '@openedx/paragon/icons';
 
 export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
   const {
@@ -27,8 +29,7 @@ export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
       <CheckboxControl
         {...toggleRowSelectedProps}
         title="Toggle row selected"
-        checked={isAddedMember || checked}
-        isIndeterminate={false}
+        checked={checked}
         disabled={isAddedMember}
         style={{ cursor: isAddedMember ? null : 'pointer' }}
       />
@@ -37,6 +38,87 @@ export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
 };
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
+const EnterpriseCustomerUserDataTableContext = createContext();
+
+const useCheckboxControlProps = (props) => {
+  const updatedProps = useMemo(
+    () => {
+      const { indeterminate, ...rest } = props;
+      return { isIndeterminate: indeterminate, ...rest };
+    },
+    [props],
+  );
+  return updatedProps;
+};
+
+const addSelectedRowAction = (row, itemCount) => ({
+  type: 'ADD ROW',
+  row,
+  itemCount,
+});
+
+const deleteSelectedRowAction = (rowId) => ({
+  type: 'DELETE ROW',
+  rowId,
+});
+
+function getSelectedRowsFromGroupLearners(enterpriseGroupLearners) {
+  const selections = enterpriseGroupLearners.reduce((acc, learner) => {
+    acc[learner.lmsUserId] = true;
+    return acc;
+  }, {});
+  return selections;
+}
+
+const CustomSelectColumnCell = ({ row }) => {
+  const { enterpriseGroupLearners } = useContext(EnterpriseCustomerUserDataTableContext);
+  const [isAddedMember, setIsAddedMember] = useState(false);
+  const {
+    itemCount,
+    controlledTableSelections: [, dispatch],
+  } = useContext(DataTableContext);
+
+  const toggleSelected = useCallback(
+    () => {
+      if (row.isSelected) {
+        dispatch(deleteSelectedRowAction(row.id));
+      } else {
+        dispatch(addSelectedRowAction(row, itemCount));
+      }
+    },
+    [itemCount, row, dispatch],
+  );
+
+  useEffect(() => {
+    setIsAddedMember(!!enterpriseGroupLearners.find(learner => learner.lmsUserId === Number(row.id)));
+  }, [enterpriseGroupLearners, row.id]);
+
+  const checkboxControlProps = useCheckboxControlProps(
+    row.getToggleRowSelectedProps(),
+  );
+
+  if (isAddedMember) {
+    return (
+      <IconButtonWithTooltip
+        tooltipContent={<div>This learner is already a member of this group.</div>}
+        src={HelpOutline}
+        iconAs={Icon}
+        size="inline"
+      />
+    );
+  }
+
+  return (
+    <div className="pgn__data-table__controlled-select">
+      <CheckboxControl
+        {...checkboxControlProps}
+        onChange={toggleSelected}
+        disabled={isAddedMember}
+        style={{ cursor: isAddedMember ? null : 'pointer' }}
+      />
+    </div>
+  );
+};
 
 const EnterpriseCustomerUserDataTable = ({
   enterpriseId,
@@ -51,133 +133,79 @@ const EnterpriseCustomerUserDataTable = ({
     fetchEnterpriseMembersTableData,
   } = useEnterpriseMembersTableData({ enterpriseId });
 
-
-  const SelectionStatus = () => {
-  
-    // const { page, toggleAllRowsSelected, state, controlledTableSelections,
-    //  } = useContext(DataTableContext);
-    // const numSelectedRowsOnPage = page.filter(r => r.isSelected).length;
-
-    // const { selectedRowIds } = state;
-    // const numSelectedRows = Object.keys(selectedRowIds || {}).length;
-    // // const numSelectedRows = enterpriseGroupLearners.length;
-    // console.log(state)
-    // console.log(controlledTableSelections)
-
-  
-    // const handleClearSelection = () => {
-    //   toggleAllRowsSelected(false);
-    // };
-  
-    // return (
-    //   <>
-    //     <span>{numSelectedRows} selected ({numSelectedRowsOnPage} shown below)</span>
-    //     {numSelectedRows > 0 && (
-    //       <Button
-    //         variant="link"
-    //         size="inline"
-    //         onClick={handleClearSelection}
-    //       >
-    //         Clear selection
-    //       </Button>
-    //     )}
-    //   </>
-    // );
-    const {
-      itemCount,
-      page,
-      controlledTableSelections: [{ selectedRows, isEntireTableSelected }, dispatch],
-    } = useContext(DataTableContext);
-  
-    useEffect(
-      () => {
-        if (isEntireTableSelected) {
-          const selectedRowIds = getRowIds(selectedRows);
-          // const unselectedPageRows = getUnselectedPageRows(selectedRowIds, page);
-          // if (unselectedPageRows.length) {
-          //   dispatch(setSelectedRowsAction(unselectedPageRows, itemCount));
-          // }
-        }
-      },
-      [isEntireTableSelected, selectedRows, itemCount, page, dispatch],
-    );
-  
-    const numSelectedRows = isEntireTableSelected ? itemCount : selectedRows.length;
-    const numSelectedRowsOnPage = (page || []).filter(r => r.isSelected).length;
-  
-    const selectionStatusProps = {
-      className,
-      numSelectedRows,
-      numSelectedRowsOnPage,
-      clearSelectionText,
-      onSelectAll: () => dispatch(setSelectAllRowsAllPagesAction()),
-      onClear: () => dispatch(clearSelectionAction()),
-    };
-    return <BaseSelectionStatus {...selectionStatusProps} />;
-  };
-
   const selectColumn = {
     id: 'selection',
     Header: DataTable.ControlledSelectHeader,
     // Cell: DataTable.ControlledSelect,
-    Cell: (props) => <BaseSelectWithContext enterpriseGroupLearners={enterpriseGroupLearners} {...props} />,
+    Cell: CustomSelectColumnCell,
     disableSortBy: true,
   };
+
+  const contextValue = useMemo(() => ({
+    enterpriseGroupLearners,
+  }), [enterpriseGroupLearners]);
+
   return (
-    <DataTable
-      bulkActions={[
-        <AddMembersBulkAction
-          onHandleAddMembersBulkAction={onHandleAddMembersBulkAction}
-          enterpriseId={enterpriseId}
-          enterpriseGroupLearners={enterpriseGroupLearners}
-        />,
-        <RemoveMembersBulkAction
-          enterpriseId={enterpriseId}
-          learnerEmails={learnerEmails}
-          onHandleRemoveMembersBulkAction={onHandleRemoveMembersBulkAction}
-        />,
-      ]}
-      columns={[
-        {
-          Header: 'Member details',
-          accessor: 'name',
-          Cell: MemberDetailsCell,
-        },
-        {
-          Header: 'Joined organization',
-          accessor: 'joinedOrg',
-          Cell: MemberJoinedDateCell,
-          disableFilters: true,
-        },
-      ]}
-      initialState={{
-        pageIndex: GROUP_MEMBERS_TABLE_DEFAULT_PAGE,
-        pageSize: GROUP_MEMBERS_TABLE_PAGE_SIZE,
-        sortBy: [
-          { id: 'name', desc: true },
-        ],
-        filters: [],
-      }}
-      data={enterpriseMembersTableData.results}
-      defaultColumnValues={{ Filter: TextFilter }}
-      FilterStatusComponent={FilterStatus}
-      fetchData={fetchEnterpriseMembersTableData}
-      isFilterable
-      isLoading={isLoading}
-      isPaginated
-      isSelectable
-      itemCount={enterpriseMembersTableData.itemCount}
-      manualFilters
-      manualPagination
-      isSortable
-      manualSortBy
-      initialTableOptions={{
-        getRowId: row => row.enterpriseCustomerUser.userId.toString(),
-      }}
-      pageCount={enterpriseMembersTableData.pageCount}
-      manualSelectColumn={selectColumn}
-      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
-    />
+    <EnterpriseCustomerUserDataTableContext.Provider value={contextValue}>
+      <DataTable
+        bulkActions={[
+          <AddMembersBulkAction
+            onHandleAddMembersBulkAction={onHandleAddMembersBulkAction}
+            enterpriseId={enterpriseId}
+            enterpriseGroupLearners={enterpriseGroupLearners}
+          />,
+          <RemoveMembersBulkAction
+            enterpriseId={enterpriseId}
+            learnerEmails={learnerEmails}
+            onHandleRemoveMembersBulkAction={onHandleRemoveMembersBulkAction}
+          />,
+        ]}
+        columns={[
+          {
+            Header: 'Member details',
+            accessor: 'name',
+            Cell: MemberDetailsCell,
+          },
+          {
+            Header: 'Joined organization',
+            accessor: 'joinedOrg',
+            Cell: MemberJoinedDateCell,
+            disableFilters: true,
+          },
+        ]}
+        initialState={{
+          pageIndex: GROUP_MEMBERS_TABLE_DEFAULT_PAGE,
+          pageSize: GROUP_MEMBERS_TABLE_PAGE_SIZE,
+          sortBy: [
+            { id: 'name', desc: true },
+          ],
+          filters: [],
+          // selectedRowIds: getSelectedRowsFromGroupLearners(enterpriseGroupLearners),
+        }}
+        data={enterpriseMembersTableData.results}
+        defaultColumnValues={{ Filter: TextFilter }}
+        FilterStatusComponent={FilterStatus}
+        fetchData={fetchEnterpriseMembersTableData}
+        isFilterable
+        isLoading={isLoading}
+        isPaginated
+        isSelectable
+        itemCount={enterpriseMembersTableData.itemCount}
+        manualFilters
+        manualPagination
+        isSortable
+        manualSortBy
+        initialTableOptions={{
+          getRowId: row => row.enterpriseCustomerUser.userId.toString(),
+        }}
+        pageCount={enterpriseMembersTableData.pageCount}
+        manualSelectColumn={selectColumn}
+        SelectionStatusComponent={DataTable.ControlledSelectionStatus}
+        // onSelectedRowsChanged={(selectedRows) => {
+        //   console.log('DEBUG?! onSelectedRowsChanged selectedRows', selectedRows);
+        // }}
+      />
+    </EnterpriseCustomerUserDataTableContext.Provider>
   );
 };
 
