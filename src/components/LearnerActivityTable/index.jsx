@@ -122,7 +122,6 @@ class LearnerActivityTable extends React.Component {
 
   render() {
     const { activity, id } = this.props;
-
     return (
       <TableContainer
         id={id}

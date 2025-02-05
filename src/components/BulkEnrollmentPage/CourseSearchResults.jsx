@@ -17,7 +17,7 @@ import { BaseSelectWithContext } from './table/BulkEnrollSelect';
 import { NUM_CONTENT_ITEMS_PER_PAGE } from './stepper/constants';
 import { setSelectedRowsAction } from './data/actions';
 
-const ERROR_MESSAGE = 'An error occured while retrieving data';
+const ERROR_MESSAGE = 'An error occurred while retrieving data';
 export const NO_DATA_MESSAGE = 'There are no course results';
 export const ENROLL_TEXT = 'Enroll learners';
 export const TABLE_HEADERS = {

@@ -20,7 +20,7 @@ const ErrorPage = (props) => {
     return <ForbiddenPage />;
   }
 
-  const errorMessage = message || 'An unknown error has occured.';
+  const errorMessage = message || 'An unknown error has occurred.';
 
   return (
     <main role="main" style={{ flex: 1 }}>

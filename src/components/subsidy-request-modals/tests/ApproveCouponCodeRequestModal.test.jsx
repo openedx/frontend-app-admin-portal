@@ -130,7 +130,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     });
   });
 
-  it('should render alert if an error occured', async () => {
+  it('should render alert if an error occurred', async () => {
     EnterpriseAccessApiService.approveCouponCodeRequests.mockRejectedValue(new Error('something went wrong'));
 
     const { getByTestId } = render(

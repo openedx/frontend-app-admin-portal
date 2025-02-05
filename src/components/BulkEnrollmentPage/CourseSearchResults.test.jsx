@@ -120,7 +120,7 @@ describe('<CourseSearchResults />', () => {
   });
   it('returns an error message if there\'s an error', () => {
     const errorMsg = 'It did not work';
-    const expectedError = `An error occured while retrieving data ${errorMsg}`;
+    const expectedError = `An error occurred while retrieving data ${errorMsg}`;
     renderWithRouter(<CourseSearchWrapper props={{ ...defaultProps, error: { message: errorMsg } }} />);
     expect(screen.getByText(expectedError));
   });

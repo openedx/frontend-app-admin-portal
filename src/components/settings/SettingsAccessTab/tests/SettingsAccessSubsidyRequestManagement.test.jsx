@@ -93,7 +93,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
     });
   });
 
-  it('should show alert if an error occured', async () => {
+  it('should show alert if an error occurred', async () => {
     const mockUpdateSubsidyRequestConfiguration = jest.fn().mockRejectedValue(new Error());
     const props = {
       ...basicProps,
