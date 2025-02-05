@@ -23,9 +23,13 @@ const RemoveMembersBulkAction = ({
   );
 };
 
+RemoveMembersBulkAction.defaultProps = {
+  selectedFlatRows: null,
+};
+
 RemoveMembersBulkAction.propTypes = {
   learnerEmails: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  selectedFlatRows: PropTypes.arrayOf(PropTypes.shape()),
   onHandleRemoveMembersBulkAction: PropTypes.func.isRequired,
   isEntireTableSelected: PropTypes.bool,
 };
