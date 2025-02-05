@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { queryClient } from '../../test/testUtils';
@@ -18,6 +19,7 @@ import {
 } from '../data/hooks/useEnterpriseLearnersTableData';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 import { useEnterpriseMembersTableData } from '../data/hooks';
+import EVENT_NAMES from '../../../eventTracking';
 
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
@@ -41,6 +43,13 @@ jest.mock('../../learner-credit-management/data', () => ({
   ...jest.requireActual('../../learner-credit-management/data'),
   useEnterpriseLearners: jest.fn(),
 }));
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -217,6 +226,74 @@ describe('<CreateGroupModal />', () => {
     expect(mockCreateGroup).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(mockInvite).toHaveBeenCalledTimes(1);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.CREATE_GROUP_MODAL_BUTTON_SUBMIT,
+        { status: 'success' },
+      );
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_CSV_AND_LIST,
+      );
+    });
+  });
+  it('only sends tracking event for group creation with list selection', async () => {
+    const mockGroupData = { uuid: 'test-uuid' };
+    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
+
+    const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
+    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
+
+    render(<CreateGroupModalWrapper />);
+    const groupNameInput = screen.getByTestId('group-name');
+    userEvent.type(groupNameInput, 'test group name');
+
+    const membersCheckbox = screen.getAllByTitle('Toggle row selected');
+    userEvent.click(membersCheckbox[0]);
+    userEvent.click(membersCheckbox[1]);
+    const addMembersButton = screen.getByText('Add');
+    userEvent.click(addMembersButton);
+
+    const createButton = screen.getByRole('button', { name: 'Create' });
+    userEvent.click(createButton);
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_LIST_SELECTION,
+      );
+    });
+  });
+  it('only sends tracking event for group creation with csv upload', async () => {
+    const mockGroupData = { uuid: 'test-uuid' };
+    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
+
+    const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
+    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
+
+    render(<CreateGroupModalWrapper />);
+    expect(screen.getByText('You haven\'t uploaded any members yet.')).toBeInTheDocument();
+    expect(screen.getByText('Upload a CSV file or select members to get started.')).toBeInTheDocument();
+    const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone);
+    const groupNameInput = screen.getByTestId('group-name');
+    userEvent.type(groupNameInput, 'test group name');
+
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
+    const createButton = screen.getByRole('button', { name: 'Create' });
+    userEvent.click(createButton);
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_UPLOAD_CSV,
+      );
     });
     expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['learner-credit-management', 'group', '1234'] });
   });

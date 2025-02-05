@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
+import { connect } from 'react-redux';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import {
   Icon, IconButtonWithTooltip, Toast, useToggle,
 } from '@openedx/paragon';
@@ -9,10 +11,12 @@ import { Download } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import GeneralErrorModal from '../GeneralErrorModal';
 import { downloadCsv, getTimeStampedFilename } from '../../../utils';
+import EVENT_NAMES from '../../../eventTracking';
 
 const csvHeaders = ['Name', 'Email', 'Recent action', 'Enrollments'];
 
 const DownloadCsvIconButton = ({
+  enterpriseUUID,
   fetchAllData,
   dataCount,
   testId,
@@ -50,9 +54,22 @@ const DownloadCsvIconButton = ({
       ))) : response.results;
       downloadCsv(fileName, selectedRowIdsToDownload, csvHeaders, dataEntryToRow);
       openToast();
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_GROUP_MEMBERS,
+        { status: 'success' },
+      );
     }).catch((err) => {
       logError(err);
       openErrorModal();
+      sendEnterpriseTrackEvent(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_GROUP_MEMBERS,
+        {
+          status: 'error',
+          message: err,
+        },
+      );
     });
   };
 
@@ -86,6 +103,7 @@ DownloadCsvIconButton.defaultProps = {
 };
 
 DownloadCsvIconButton.propTypes = {
+  enterpriseUUID: PropTypes.string,
   fetchAllData: PropTypes.func.isRequired,
   dataCount: PropTypes.number.isRequired,
   testId: PropTypes.string,
@@ -95,4 +113,8 @@ DownloadCsvIconButton.propTypes = {
   }),
 };
 
-export default DownloadCsvIconButton;
+const mapStateToProps = state => ({
+  enterpriseUUID: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(DownloadCsvIconButton);

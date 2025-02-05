@@ -17,10 +17,12 @@ import EnterpriseCustomerUserDatatable from './EnterpriseCustomerUserDatatable';
 import { useEnterpriseLearners } from '../learner-credit-management/data';
 
 const CreateGroupModalContent = ({
+  enterpriseUUID,
+  isGroupInvite,
   onEmailAddressesChange,
   onSetGroupName,
-  isGroupInvite,
-  enterpriseUUID,
+  setIsCreateGroupFileUpload,
+  setIsCreateGroupListSelection,
 }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
   const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
@@ -55,7 +57,8 @@ const CreateGroupModalContent = ({
       return;
     }
     setLearnerEmails(prev => [...prev, ...value]);
-  }, [onEmailAddressesChange]);
+    setIsCreateGroupListSelection(true);
+  }, [onEmailAddressesChange, setIsCreateGroupListSelection]);
 
   const handleRemoveMembersBulkAction = useCallback((value) => {
     if (!value) {
@@ -138,6 +141,7 @@ const CreateGroupModalContent = ({
           <FileUpload
             memberInviteMetadata={memberInviteMetadata}
             setEmailAddressesInputValue={setEmailAddressesInputValue}
+            setIsCreateGroupFileUpload={setIsCreateGroupFileUpload}
           />
         </Col>
         <Col>
@@ -161,6 +165,8 @@ CreateGroupModalContent.propTypes = {
   onSetGroupName: PropTypes.func,
   isGroupInvite: PropTypes.bool,
   enterpriseUUID: PropTypes.string.isRequired,
+  setIsCreateGroupFileUpload: PropTypes.func,
+  setIsCreateGroupListSelection: PropTypes.func,
 };
 
 export default CreateGroupModalContent;
