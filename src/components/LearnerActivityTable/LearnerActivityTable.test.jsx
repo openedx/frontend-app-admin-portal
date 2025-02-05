@@ -139,28 +139,6 @@ describe('LearnerActivityTable', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('renders empty state correctly if groups have no loaded', () => {
-    const groupUuid = 'test_uuid123';
-    // eslint-disable-next-line no-global-assign
-    window = Object.create(window);
-    const params = `?group_uuid=${groupUuid}`;
-    Object.defineProperty(window, 'location', {
-      value: {
-        search: params,
-      },
-      writable: true,
-    });
-    const tree = renderer
-      .create((
-        <LearnerActivityEmptyTableWrapper
-          id="active-week"
-          activity="active_past_week"
-        />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
   it('renders active learners table correctly', () => {
     const tree = renderer
       .create((

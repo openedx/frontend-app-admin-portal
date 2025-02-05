@@ -47,18 +47,18 @@ class TableComponent extends React.Component {
     const {
       className,
       currentPage,
-      pageCount,
-      tableSortable,
       data,
-      ordering,
+      defaultSortIndex,
+      defaultSortType,
+      enterpriseId,
       formatData,
       id,
       loading,
-      enterpriseId,
-      defaultSortIndex,
-      defaultSortType,
-      navigate,
       location,
+      navigate,
+      ordering,
+      pageCount,
+      tableSortable,
     } = this.props;
 
     const sortByColumn = (column, direction) => {
