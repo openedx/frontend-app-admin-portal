@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import {
-  Col, Container, Form, Row,
+  Col, Container, Form, Hyperlink, Row,
 } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
@@ -12,7 +12,7 @@ import InviteModalSummary from '../learner-credit-management/invite-modal/Invite
 import InviteSummaryCount from '../learner-credit-management/invite-modal/InviteSummaryCount';
 import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
-import { MAX_LENGTH_GROUP_NAME } from './constants';
+import { MAX_LENGTH_GROUP_NAME, HELP_CENTER_URL } from './constants';
 import EnterpriseCustomerUserDatatable from './EnterpriseCustomerUserDatatable';
 import { useEnterpriseLearners } from '../learner-credit-management/data';
 
@@ -114,6 +114,17 @@ const CreateGroupModalContent = ({
       </h3>
       <Row>
         <Col>
+          <FormattedMessage
+            id="people.management.create.groups.modal"
+            defaultMessage="Only members registered with your organization can be added to a group."
+            description="Subtitle for the create group modal"
+          />
+          <Hyperlink
+            destination={HELP_CENTER_URL}
+            target="_blank"
+          >
+            Learn more.
+          </Hyperlink>
           <h4 className="mt-4">Name your group</h4>
           <Form.Control
             value={groupName}

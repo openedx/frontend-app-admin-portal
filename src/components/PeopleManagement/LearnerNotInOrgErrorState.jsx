@@ -4,6 +4,7 @@ import {
 } from '@openedx/paragon';
 import classNames from 'classnames';
 import { Error } from '@openedx/paragon/icons';
+import { HELP_CENTER_URL } from './constants';
 
 const LearnerNotInOrgErrorState = () => (
   <Stack gap={2.5} className="mb-4">
@@ -20,7 +21,7 @@ const LearnerNotInOrgErrorState = () => (
             <div className="h4 mb-0">Some people can&apos;t be added.</div>
             <span className="small">Check that all people in the file are registered with your organization.
               <Hyperlink
-                destination="https://www.edx.org"
+                destination={HELP_CENTER_URL}
                 target="_blank"
               >
                 Learn more

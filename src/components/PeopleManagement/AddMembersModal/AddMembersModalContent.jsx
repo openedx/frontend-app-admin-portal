@@ -14,6 +14,7 @@ import FileUpload from '../../learner-credit-management/invite-modal/FileUpload'
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../../learner-credit-management/cards/data';
 import EnterpriseCustomerUserDatatable from '../EnterpriseCustomerUserDatatable';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
+import { HELP_CENTER_URL } from '../constants';
 
 const AddMembersModalContent = ({
   onEmailAddressesChange,
@@ -94,14 +95,17 @@ const AddMembersModalContent = ({
       </h3>
       <Row>
         <Col>
-          <p>Only members registered with your organization can be added to your group. &nbsp;
-            <Hyperlink
-              destination="www.edX.org"
-              target="_blank"
-            >
-              Learn more.
-            </Hyperlink>
-          </p>
+          <FormattedMessage
+            id="people.management.add.members.modal"
+            defaultMessage="Only members registered with your organization can be added to a group."
+            description="Subtitle for the add members modal"
+          />
+          <Hyperlink
+            destination={HELP_CENTER_URL}
+            target="_blank"
+          >
+            Learn more.
+          </Hyperlink>
           <h4 className="mt-4 text-uppercase">Group Name</h4>
           <p className="font-weight-bold lead">{groupName}</p>
         </Col>
