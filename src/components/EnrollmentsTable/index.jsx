@@ -11,6 +11,19 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 const EnrollmentsTable = () => {
   const intl = useIntl();
 
+  const customEmptyMessage = () => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.has('group_uuid')) {
+      const emptyTableDataMessage = intl.formatMessage({
+        id: 'admin.portal.lpr.learner.activity.table.empty.groups.message',
+        defaultMessage: 'We are currently processing the latest updates. The data is refreshed twice a day. Thank you for your patience, and please check back soon.',
+        description: 'Empty table message when groups data is pending.',
+      });
+      return emptyTableDataMessage;
+    }
+    return null;
+  };
+
   const enrollmentTableColumns = [
     {
       label: intl.formatMessage({
@@ -132,6 +145,7 @@ const EnrollmentsTable = () => {
       defaultSortIndex={8}
       defaultSortType="desc"
       tableSortable
+      customEmptyMessage={customEmptyMessage()}
     />
   );
 };
