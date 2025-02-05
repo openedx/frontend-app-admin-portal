@@ -18,3 +18,5 @@ export const peopleManagementQueryKeys = {
 };
 
 export const MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT = 15;
+
+export const HELP_CENTER_URL = 'https://enterprise-support.edx.org/s/topic/0TORc000000GBQvOAO/admin-experience';
