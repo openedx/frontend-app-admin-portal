@@ -2,12 +2,25 @@ import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 import { act, render, screen } from '@testing-library/react';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 
 import '@testing-library/jest-dom/extend-expect';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import userEvent from '@testing-library/user-event';
 import DownloadCsvButton from '../DownloadCSVButton';
 import { downloadCsv } from '../../../utils';
+import EVENT_NAMES from '../../../eventTracking';
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('file-saver', () => ({
   ...jest.requireActual('file-saver'),
@@ -51,11 +64,20 @@ const DEFAULT_PROPS = {
   fetchData: jest.fn(() => Promise.resolve(mockData)),
   testId,
 };
+const enterpriseId = 'test-enterprise-id';
+const mockStore = configureMockStore([thunk]);
+const store = mockStore({
+  portalConfiguration: {
+    enterpriseId,
+  },
+});
 
 const DownloadCSVButtonWrapper = props => (
-  <IntlProvider locale="en">
-    <DownloadCsvButton {...props} />
-  </IntlProvider>
+  <Provider store={store}>
+    <IntlProvider locale="en">
+      <DownloadCsvButton {...props} />
+    </IntlProvider>
+  </Provider>
 );
 
 describe('DownloadCSVButton', () => {
@@ -71,7 +93,11 @@ describe('DownloadCSVButton', () => {
     // Click the download button.
     screen.getByTestId(testId).click();
     await flushPromises();
-
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      enterpriseId,
+      EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_ALL_ORG_MEMBERS,
+      { status: 'success' },
+    );
     expect(DEFAULT_PROPS.fetchData).toHaveBeenCalled();
     const expectedFileName = '2024-01-20-people-report.csv';
     const expectedHeaders = ['Name', 'Email', 'Joined Organization', 'Enrollments'];
@@ -94,5 +120,13 @@ describe('DownloadCSVButton', () => {
 
     expect(DEFAULT_PROPS.fetchData).toHaveBeenCalled();
     expect(logError).toHaveBeenCalled();
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      enterpriseId,
+      EVENT_NAMES.PEOPLE_MANAGEMENT.DOWNLOAD_ALL_ORG_MEMBERS,
+      {
+        status: 'error',
+        message: new Error('Error fetching data'),
+      },
+    );
   });
 });

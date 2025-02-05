@@ -6,13 +6,15 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../data/hooks';
 import GroupDetailPage from '../GroupDetailPage/GroupDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { queryClient } from '../../test/testUtils';
+import EVENT_NAMES from '../../../eventTracking';
 
 const TEST_ENTERPRISE_SLUG = 'test-enterprise';
 const enterpriseUUID = '1234';
@@ -29,6 +31,10 @@ jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
   useQueryClient: jest.fn(),
 }));
+const mockInvalidateQueries = jest.fn();
+useQueryClient.mockReturnValue({
+  invalidateQueries: mockInvalidateQueries,
+});
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
   useEnterpriseGroupUuid: jest.fn(),
@@ -42,6 +48,13 @@ jest.mock('react-router-dom', () => ({
     groupUuid: TEST_GROUP.uuid,
   }),
 }));
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 const initialStoreState = {
   portalConfiguration: {
@@ -66,33 +79,40 @@ const GroupDetailPageWrapper = ({
   );
 };
 
+const setupMockTableData = () => {
+  const mockFetchEnterpriseGroupLearnersTableData = jest.fn();
+  useEnterpriseGroupLearnersTableData.mockReturnValue({
+    fetchEnterpriseGroupLearnersTableData: mockFetchEnterpriseGroupLearnersTableData,
+    isLoading: false,
+    enterpriseGroupLearnersTableData: {
+      count: 1,
+      currentPage: 1,
+      next: null,
+      numPages: 1,
+      results: [{
+        activatedAt: '2024-11-06T21:01:32.953901Z',
+        enterprise_group_membership_uuid: TEST_GROUP,
+        memberDetails: {
+          userEmail: 'test@2u.com',
+          userName: 'Test 2u',
+        },
+        recentAction: 'Accepted: November 06, 2024',
+        status: 'accepted',
+        enrollments: 1,
+      }],
+    },
+  });
+  return {
+    mockFetchEnterpriseGroupLearnersTableData,
+  };
+};
+
 describe('<GroupDetailPageWrapper >', () => {
   beforeEach(() => {
     useEnterpriseGroupUuid.mockReturnValue({ data: TEST_GROUP });
   });
   it('renders the GroupDetailPage', async () => {
-    const mockFetchEnterpriseGroupLearnersTableData = jest.fn();
-    useEnterpriseGroupLearnersTableData.mockReturnValue({
-      fetchEnterpriseGroupLearnersTableData: mockFetchEnterpriseGroupLearnersTableData,
-      isLoading: false,
-      enterpriseGroupLearnersTableData: {
-        count: 1,
-        currentPage: 1,
-        next: null,
-        numPages: 1,
-        results: [{
-          activatedAt: '2024-11-06T21:01:32.953901Z',
-          enterprise_group_membership_uuid: TEST_GROUP,
-          memberDetails: {
-            userEmail: 'test@2u.com',
-            userName: 'Test 2u',
-          },
-          recentAction: 'Accepted: November 06, 2024',
-          status: 'accepted',
-          enrollments: 1,
-        }],
-      },
-    });
+    const { mockFetchEnterpriseGroupLearnersTableData } = setupMockTableData();
     render(<GroupDetailPageWrapper />);
     expect(screen.queryAllByText(TEST_GROUP.name)).toHaveLength(2);
     expect(screen.getByText('0 members')).toBeInTheDocument();
@@ -101,6 +121,13 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
     const lprUrl = screen.getByText('View group progress');
     expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345');
+    userEvent.click(lprUrl);
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.VIEW_GROUP_PROGRESS_BUTTON,
+      );
+    });
     userEvent.click(screen.getByText('Member details'));
     await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
       filters: [],
@@ -196,5 +223,27 @@ describe('<GroupDetailPageWrapper >', () => {
     await waitFor(() => expect(mockRemoveGroup).toHaveBeenCalledWith(TEST_GROUP.uuid));
     // error modal
     await waitFor(() => expect(screen.getByText('Something went wrong')).toBeInTheDocument());
+  });
+  it('removes group member', async () => {
+    const spyRemoveLearners = jest.spyOn(LmsApiService, 'removeEnterpriseLearnersFromGroup');
+    setupMockTableData();
+    render(<GroupDetailPageWrapper />);
+    expect(screen.getByText('Test 2u')).toBeInTheDocument();
+    // Click on kebab
+    const learnerKebab = screen.getByTestId('kabob-menu-dropdown');
+    learnerKebab.click();
+    // Click remove
+    const removeButton = screen.getByText('Remove member');
+    removeButton.click();
+    // Click confirm
+    const removeConfirm = screen.getByTestId('remove-member-confirm');
+    removeConfirm.click();
+    // Verify remove was called
+    await waitFor(() => expect(spyRemoveLearners).toHaveBeenCalled());
+    const [uuidArg, learnersFormDataArg] = spyRemoveLearners.mock.lastCall;
+    expect(uuidArg).toEqual('12345');
+    const learnersJson = Object.fromEntries(learnersFormDataArg);
+    expect(learnersJson).toEqual({ learner_emails: 'test@2u.com' });
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['people-management', 'group', '12345'] });
   });
 });

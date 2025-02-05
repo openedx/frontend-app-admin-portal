@@ -6,6 +6,9 @@
   "patch": {
     "automerge": true
   },
+  "major": {
+    "dependencyDashboardApproval": true
+  },
   "rebaseWhen": "behind-base-branch",
   "packageRules": [
     {
