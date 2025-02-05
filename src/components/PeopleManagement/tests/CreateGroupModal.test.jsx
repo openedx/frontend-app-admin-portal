@@ -153,7 +153,8 @@ describe('<CreateGroupModal />', () => {
     expect(screen.getByText('Upload a CSV file or select members to get started.')).toBeInTheDocument();
     expect(screen.getByText('Create')).toBeInTheDocument();
     expect(screen.getByText('Cancel')).toBeInTheDocument();
-
+    expect(screen.getByText('Only members registered with your organization can be added to a group.')).toBeInTheDocument();
+    expect(screen.getByText('Learn more.').getAttribute('href')).toBe('https://enterprise-support.edx.org/s/topic/0TORc000000GBQvOAO/admin-experience');
     // renders datatable
     expect(screen.getByText('Member details')).toBeInTheDocument();
     expect(screen.getByText('Joined organization')).toBeInTheDocument();
