@@ -51,6 +51,7 @@ class ReportingConfigForm extends React.Component {
     active: this.props.config ? this.props.config.active : false,
     enableCompression: this.props.config ? this.props.config.enableCompression : true,
     submitState: SUBMIT_STATES.DEFAULT,
+    includeDate: this.props.config ? this.props.config.includeDate : true,
   };
 
   /**
@@ -127,6 +128,7 @@ class ReportingConfigForm extends React.Component {
     let requiredFields = [];
     formData.append('active', this.state.active);
     formData.append('enableCompression', this.state.enableCompression);
+    formData.append('includeDate', this.state.includeDate);
     if (formData.get('deliveryMethod') === 'email') {
       requiredFields = config ? [...REQUIRED_EMAIL_FIELDS] : [...REQUIRED_NEW_EMAIL_FIELDS];
       // transform email field to match what the api is looking for
@@ -257,6 +259,7 @@ class ReportingConfigForm extends React.Component {
       active,
       enableCompression,
       submitState,
+      includeDate,
     } = this.state;
     const selectedCatalogs = (config?.enterpriseCustomerCatalogs || []).map(item => item.uuid);
     const dataTypesOptions = reportingConfigTypes.dataType.map((item, index) => ({
@@ -456,65 +459,83 @@ class ReportingConfigForm extends React.Component {
             handleBlur={this.handleBlur}
           />
         )}
-        <div className="col">
-          <Form.Group
-            isInvalid={!!APIErrors.enableCompression}
-          >
-            <Form.Label>
-              <FormattedMessage
-                id="admin.portal.reporting.config.enable.compression"
-                defaultMessage="Enable Compression"
-                description="Label for the Enable Compression field in the reporting configuration form"
-              />
-            </Form.Label>
-            <Form.Checkbox
-              data-testid="compressionCheckbox"
-              className="ml-3"
-              checked={enableCompression}
-              onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
+        <Form.Group
+          isInvalid={!!APIErrors.enableCompression}
+        >
+          <Form.Label>
+            <FormattedMessage
+              id="admin.portal.reporting.config.enable.compression"
+              defaultMessage="Enable Compression"
+              description="Label for the Enable Compression field in the reporting configuration form"
             />
-            <Form.Text>
-              <FormattedMessage
-                id="admin.portal.reporting.config.enable.compression.help"
-                defaultMessage="Specifies whether report should be compressed. Without compression files will not be password protected or encrypted."
-                description="Help text for the Enable Compression field in the reporting configuration form"
-              />
-            </Form.Text>
-            {!!APIErrors.enableCompression && (
-              <Form.Control.Feedback type="invalid">
-                {APIErrors.enableCompression}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-        </div>
-        <div className="col">
-          <Form.Group controlId="enterpriseCustomerCatalogs">
-            <Form.Label>
-              <FormattedMessage
-                id="admin.portal.reporting.config.enterprise.customer.catalogs"
-                defaultMessage="Enterprise Customer Catalogs"
-                description="Label for the Enterprise Customer Catalogs field in the reporting configuration form"
-              />
-            </Form.Label>
-            <Form.Control
-              as="select"
-              name="enterpriseCustomerCatalogUuids"
-              multiple
-              defaultValue={selectedCatalogs}
-            >
-              {availableCatalogs && (availableCatalogs.map((item) => (
-                <option key={item.uuid} value={item.uuid}>Catalog {item.title} with UUID {item.uuid}</option>
-              )))}
-            </Form.Control>
-            <Form.Text>
-              <FormattedMessage
-                id="admin.portal.reporting.config.enterprise.customer.catalogs.help"
-                defaultMessage="The catalogs that should be included in the report. No selection means all catalogs will be included."
-                description="Help text for the Enterprise Customer Catalogs field in the reporting configuration form"
-              />
-            </Form.Text>
-          </Form.Group>
-        </div>
+          </Form.Label>
+          <Form.Checkbox
+            data-testid="compressionCheckbox"
+            className="ml-3"
+            checked={enableCompression}
+            onChange={() => this.setState(prevState => ({ enableCompression: !prevState.enableCompression }))}
+          />
+          <Form.Text>
+            <FormattedMessage
+              id="admin.portal.reporting.config.enable.compression.help"
+              defaultMessage="Specifies whether report should be compressed. Without compression files will not be password protected or encrypted."
+              description="Help text for the Enable Compression field in the reporting configuration form"
+            />
+          </Form.Text>
+          {!!APIErrors.enableCompression && (
+            <Form.Control.Feedback type="invalid">
+              {APIErrors.enableCompression}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>
+            <FormattedMessage
+              id="admin.portal.reporting.config.include.date"
+              defaultMessage="Include Date"
+              description="Label for the Include Date field in the reporting configuration form"
+            />
+          </Form.Label>
+          <Form.Checkbox
+            data-testid="includeDateCheckbox"
+            className="ml-3"
+            checked={includeDate}
+            onChange={() => this.setState(prevState => ({ includeDate: !prevState.includeDate }))}
+          />
+          <Form.Text>
+            <FormattedMessage
+              id="admin.portal.reporting.config.include.date.option.help"
+              defaultMessage="Specifies whether the report's filename should include the date."
+              description="Help text for the Include Date field in the reporting configuration form"
+            />
+          </Form.Text>
+        </Form.Group>
+        <Form.Group controlId="enterpriseCustomerCatalogs">
+          <Form.Label>
+            <FormattedMessage
+              id="admin.portal.reporting.config.enterprise.customer.catalogs"
+              defaultMessage="Enterprise Customer Catalogs"
+              description="Label for the Enterprise Customer Catalogs field in the reporting configuration form"
+            />
+          </Form.Label>
+          <Form.Control
+            as="select"
+            name="enterpriseCustomerCatalogUuids"
+            multiple
+            defaultValue={selectedCatalogs}
+          >
+            {availableCatalogs && (availableCatalogs.map((item) => (
+              <option key={item.uuid} value={item.uuid}>Catalog {item.title} with UUID {item.uuid}</option>
+            )))}
+          </Form.Control>
+          <Form.Text>
+            <FormattedMessage
+              id="admin.portal.reporting.config.enterprise.customer.catalogs.help"
+              defaultMessage="The catalogs that should be included in the report. No selection means all catalogs will be included."
+              description="Help text for the Enterprise Customer Catalogs field in the reporting configuration form"
+            />
+          </Form.Text>
+        </Form.Group>
         <div className="row justify-content-between align-items-center form-group">
           <Form.Group
             className="mb-0"
@@ -596,6 +617,7 @@ ReportingConfigForm.propTypes = {
   config: PropTypes.shape({
     active: PropTypes.bool,
     enableCompression: PropTypes.bool,
+    includeDate: PropTypes.bool,
     dataType: PropTypes.string,
     dayOfMonth: PropTypes.number,
     dayOfWeek: PropTypes.number,
