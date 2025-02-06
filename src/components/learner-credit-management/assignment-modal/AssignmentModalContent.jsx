@@ -59,28 +59,26 @@ const AssignmentModalContent = ({
     setDropdownToggleLabel,
     setGroupMemberEmails,
   });
-  const handleEmailAddressInputChange = (e) => {
-    const inputValue = e.target.value;
-    setEmailAddressesInputValue(inputValue);
-  };
+
   const handleEmailAddressesChanged = useCallback((value) => {
     if (!value) {
       setLearnerEmails([]);
-      onEmailAddressesChange([]);
       return;
     }
     const emails = value.split('\n').filter((email) => email.trim().length > 0);
     setLearnerEmails(emails);
-  }, [onEmailAddressesChange]);
+  }, []);
 
   const debouncedHandleEmailAddressesChanged = useMemo(
     () => debounce(handleEmailAddressesChanged, EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY),
     [handleEmailAddressesChanged],
   );
 
-  useEffect(() => {
-    debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
-  }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
+  const handleEmailAddressInputChange = (e) => {
+    const inputValue = e.target.value;
+    debouncedHandleEmailAddressesChanged(inputValue);
+    setEmailAddressesInputValue(inputValue);
+  };
 
   useEffect(() => {
     handleGroupsChanged(checkedGroups);
