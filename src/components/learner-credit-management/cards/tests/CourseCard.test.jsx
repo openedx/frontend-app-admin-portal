@@ -793,14 +793,36 @@ describe('CourseCard', () => {
       const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
       expect(submitAssignmentCTA).toBeInTheDocument();
 
-      expect(submitAssignmentCTA).not.toBeDisabled();
+      expect(submitAssignmentCTA).toBeDisabled();
 
+      // Test user adding email addresses by typing into the input field
       userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
       expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
 
       await waitFor(() => {
-      // Verify that assign button in footer is enabled
+        expect(assignmentModal.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
+
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
         expect(submitAssignmentCTA).not.toBeDisabled();
+      });
+
+      // Test user deleting the input field content by typing backspace
+      userEvent.type(textareaInput, '{backspace}'.repeat(mockLearnerEmails.join('\n').length));
+      expect(textareaInput).toHaveValue('');
+
+      await waitFor(() => {
+        expect(assignmentModal.queryByText(`Summary (${mockLearnerEmails.length})`)).not.toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
+
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA).toBeDisabled();
       });
     });
   });
