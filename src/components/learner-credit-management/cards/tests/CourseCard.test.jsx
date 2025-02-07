@@ -763,7 +763,7 @@ describe('CourseCard', () => {
       }
     });
 
-    test('allows allocation if email address text area is empty', async () => {
+    test('prevents allocation if emails are empty', async () => {
       const shouldSubmitAssignments = true;
       const hasAllocationException = false;
       const courseImportantDates = {
@@ -822,7 +822,103 @@ describe('CourseCard', () => {
         const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
         expect(submitAssignmentCTA2).toBeInTheDocument();
         // Verify that assign button in footer is enabled
-        expect(submitAssignmentCTA).toBeDisabled();
+        expect(submitAssignmentCTA2).toBeDisabled();
+      });
+    });
+
+    test('allows allocation if groups are assigned but emails are empty', async () => {
+      const shouldSubmitAssignments = true;
+      const hasAllocationException = false;
+      const courseImportantDates = {
+        courseStartDate: null,
+        expectedCourseStartText: '',
+      };
+      const {
+        props, expectedCourseStartText, courseStartDate, mockInvalidateQueries,
+        mockCreatedLearnerAssignments,
+        mockUpdatedLearnerAssignments,
+        mockNoChangeLearnerAssignments,
+      } = setupAssignments({
+        hasAllocationException,
+        allocationExceptionReason: undefined,
+        courseImportantDates,
+      });
+
+      useSubsidyAccessPolicy.mockReturnValue({
+        data: {
+          ...mockSubsidyAccessPolicy,
+          aggregates: {
+            ...mockSubsidyAccessPolicy.aggregates,
+            spendAvailableUsd: 1000,
+          },
+        },
+        isLoading: false,
+      });
+
+      getGroupMemberEmails.mockReturnValue(['email@example.com', 'jhodge@example.com', '123@example.com']);
+      const assignmentModal = renderAssignmentModal({ props });
+
+      // Verify empty state
+      expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
+      const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
+      expect(textareaInputLabel).toBeInTheDocument();
+      const textareaInput = textareaInputLabel.closest('textarea');
+      expect(textareaInput).toBeInTheDocument();
+
+      const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
+      expect(submitAssignmentCTA).toBeInTheDocument();
+
+      expect(submitAssignmentCTA).toBeDisabled();
+
+      expect(
+        assignmentModal.getByText('Select one or more group to add its members to the assignment.'),
+      ).toBeInTheDocument();
+      const dropdownMenu = assignmentModal.getByText('Select group');
+      expect(dropdownMenu).toBeInTheDocument();
+      userEvent.click(dropdownMenu);
+      const group1 = assignmentModal.getByText('Group 1 (2)');
+      const group2 = assignmentModal.getByText('Group 2 (1)');
+      expect(group1).toBeInTheDocument();
+      expect(group2).toBeInTheDocument();
+
+      userEvent.click(group1);
+      userEvent.click(group2);
+      const applyButton = assignmentModal.getByText('Apply selections');
+
+      await waitFor(() => {
+        userEvent.click(applyButton);
+        expect(assignmentModal.getByText('2 groups selected')).toBeInTheDocument();
+        expect(assignmentModal.getByText('email@example.com')).toBeInTheDocument();
+      });
+
+      // Test user adding email addresses by typing into the input field
+      userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+      expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
+
+      await waitFor(() => {
+        expect(assignmentModal.getByText(`Summary (${3 + mockLearnerEmails.length})`)).toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
+
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA).not.toBeDisabled();
+      });
+
+      // Test user deleting the input field content by typing backspace
+      userEvent.type(textareaInput, '{backspace}'.repeat(mockLearnerEmails.join('\n').length));
+      expect(textareaInput).toHaveValue('');
+
+      await waitFor(() => {
+        expect(assignmentModal.queryByText('Summary (3)')).toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
+
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA2).not.toBeDisabled();
       });
     });
   });
