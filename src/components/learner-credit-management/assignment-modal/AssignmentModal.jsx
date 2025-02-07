@@ -28,7 +28,6 @@ import AssignmentModalContent from './AssignmentModalContent';
 import CreateAllocationErrorAlertModals from './CreateAllocationErrorAlertModals';
 import NewAssignmentModalDropdown from './NewAssignmentModalDropdown';
 import { ENTERPRISE_RESTRICTION_TYPE } from '../data/constants';
-import AssignmentModal from './AssignmentModal';
 
 const useAllocateContentAssignments = () => useMutation({
   mutationFn: async ({
@@ -40,7 +39,7 @@ const useAllocateContentAssignments = () => useMutation({
   },
 });
 
-export const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
+const AssignmentModal = ({ enterpriseId, course }) => {
   const intl = useIntl();
   const navigate = useNavigate();
   const { enterpriseSlug, enterpriseAppPage } = useParams();
@@ -53,6 +52,7 @@ export const NewAssignmentModalButton = ({ enterpriseId, course, children }) => 
   const [assignButtonState, setAssignButtonState] = useState('default');
   const [createAssignmentsErrorReason, setCreateAssignmentsErrorReason] = useState();
   const [assignmentRun, setAssignmentRun] = useState();
+  const { data: enterpriseFlexGroups } = useEnterpriseFlexGroups(enterpriseId);
   const {
     successfulAssignmentToast: { displayToastForAssignmentAllocation },
   } = useContext(BudgetDetailPageContext);
@@ -81,54 +81,35 @@ export const NewAssignmentModalButton = ({ enterpriseId, course, children }) => 
     assignmentConfiguration,
     isLateRedemptionAllowed,
   };
-  const {
-    dataByContentKey: catalogContainsRestrictedRunsData,
-    isLoading: isLoadingCatalogContainsRestrictedRuns,
-  } = useCatalogContainsContentItemsMultipleQueries(
-    catalogUuid,
-    course.courseRuns?.filter(
-      // Pass only restricted runs.
-      run => run.restrictionType === ENTERPRISE_RESTRICTION_TYPE,
-    ).map(
-      run => run.key,
-    ),
-  );
-  const assignableCourseRuns = getAssignableCourseRuns({
-    courseRuns: course.courseRuns,
-    subsidyExpirationDatetime: subsidyAccessPolicy.subsidyExpirationDatetime,
-    isLateRedemptionAllowed,
-    catalogContainsRestrictedRunsData,
-  });
+
   const { mutate } = useAllocateContentAssignments();
   const pathToActivityTab = generatePath(LEARNER_CREDIT_ROUTE, {
     enterpriseSlug, enterpriseAppPage, budgetId: subsidyAccessPolicyId, activeTabKey: 'activity',
   });
-  const handleOpenAssignmentModal = (selectedCourseRun) => {
-    setAssignmentRun(selectedCourseRun);
-    if (!selectedCourseRun) {
-      logError(`[handleOpenAssignmentModal]: Unable to open learner credit management allocation modal,
-        selectedCourseRun: ${selectedCourseRun},
-        parentContentKey: ${course.key},
-        contentKey: ${selectedCourseRun.key},
-        enterpriseUuid: ${enterpriseId},
-        policyUuid: ${subsidyAccessPolicyId}`);
-    }
-    open();
-    sendEnterpriseTrackEvent(
-      enterpriseId,
-      EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGN_COURSE,
-      {
-        ...sharedEnterpriseTrackEventMetadata,
-        parentContentKey: course.key,
-        contentKey: selectedCourseRun.key,
-        isOpen: !isOpen,
-      },
-    );
-  };
+
   const handleCloseAssignmentModal = () => {
     close();
     setAssignButtonState('default');
   };
+
+  // Callback function for when emails are changed in the
+  // child AssignmentModalContent component. Must be memoized as
+  // the function is used within a `useEffect`'s dependency array.
+  const handleEmailAddressesChanged = useCallback((
+    value,
+    { canAllocate = false } = {},
+  ) => {
+    setLearnerEmails(value);
+    setCanAllocateAssignments(canAllocate);
+  }, []);
+
+  const handleGroupSelectionsChanged = useCallback((
+    value,
+    { canAllocate = false } = {},
+  ) => {
+    setGroupLearnerEmails(value);
+    setCanAllocateAssignments(canAllocate);
+  }, []);
 
   const onSuccessEnterpriseTrackEvents = ({
     totalLearnersAllocated,
@@ -225,34 +206,118 @@ export const NewAssignmentModalButton = ({ enterpriseId, course, children }) => 
       },
     });
   };
+
   return (
-    <>
-      <NewAssignmentModalDropdown
-        id={course.key}
-        onClick={handleOpenAssignmentModal}
-        courseRuns={assignableCourseRuns}
-        isLoading={isLoadingCatalogContainsRestrictedRuns}
-      >
-        {children}
-      </NewAssignmentModalDropdown>
-      <AssignmentModal enterpriseId={enterpriseId} course={course} />
-      <CreateAllocationErrorAlertModals
-        errorReason={createAssignmentsErrorReason}
-        retry={handleAllocateContentAssignments}
-        closeAssignmentModal={handleCloseAssignmentModal}
+    <FullscreenModal
+      className="stepper-modal bg-light-200"
+      title={intl.formatMessage({
+        id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.title',
+        defaultMessage: 'Assign this course',
+        description: 'Title for the assignment modal',
+      })}
+      isOpen={isOpen}
+      onClose={() => {
+        handleCloseAssignmentModal();
+        sendEnterpriseTrackEvent(
+          enterpriseId,
+          EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_EXIT,
+          {
+            ...sharedEnterpriseTrackEventMetadata,
+            contentKey: assignmentRun.key,
+            parentContentKey: course.key,
+            assignButtonState,
+          },
+        );
+      }}
+      footerNode={(
+        <ActionRow>
+          <Button
+            variant="tertiary"
+            as={Hyperlink}
+            onClick={() => sendEnterpriseTrackEvent(
+              enterpriseId,
+              EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_HELP_CENTER,
+              {
+                ...sharedEnterpriseTrackEventMetadata,
+                assignButtonState,
+              },
+            )}
+            destination={getConfig().ENTERPRISE_SUPPORT_LEARNER_CREDIT_URL}
+            showLaunchIcon
+            target="_blank"
+          >
+            <FormattedMessage
+              id="lcm.budget.detail.page.catalog.tab.help.center.cta"
+              defaultMessage="Help Center: Course Assignments"
+              description="Button text to open the help center for course assignments"
+            />
+          </Button>
+          <ActionRow.Spacer />
+          <Button
+            variant="tertiary"
+            onClick={() => {
+              handleCloseAssignmentModal();
+              sendEnterpriseTrackEvent(
+                enterpriseId,
+                EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT.ASSIGNMENT_MODAL_CANCEL,
+                {
+                  ...sharedEnterpriseTrackEventMetadata,
+                  assignButtonState,
+                },
+              );
+            }}
+          >
+            <FormattedMessage
+              id="lcm.budget.detail.page.catalog.tab.assignment.modal.cancel.button"
+              defaultMessage="Cancel"
+              description="Button text to cancel the assignment modal"
+            />
+          </Button>
+          <StatefulButton
+            labels={{
+              default:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button',
+            defaultMessage: 'Assign',
+            description: 'Button text to assign course',
+          }),
+              pending:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button.pending',
+            defaultMessage: 'Assigning...',
+            description: 'Button text to indicate that the course is being assigned',
+          }),
+              complete:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button.complete',
+            defaultMessage: 'Assigned',
+            description: 'Button text to indicate that the course has been assigned',
+          }),
+              error:
+          intl.formatMessage({
+            id: 'lcm.budget.detail.page.catalog.tab.assignment.modal.assign.button.error',
+            defaultMessage: 'Try again',
+            description: 'Button text to indicate that the assignment failed and to try again',
+          }),
+            }}
+            variant="primary"
+            state={assignButtonState}
+            disabled={!canAllocateAssignments}
+            onClick={handleAllocateContentAssignments}
+          />
+        </ActionRow>
+)}
+    >
+      <AssignmentModalContent
+        course={course}
+        courseRun={assignmentRun}
+        onEmailAddressesChange={handleEmailAddressesChanged}
+        enterpriseFlexGroups={enterpriseFlexGroups}
+        onGroupSelectionsChanged={handleGroupSelectionsChanged}
+        setHasSelectedBulkGroupAssign={setHasSelectedBulkGroupAssign}
       />
-    </>
+    </FullscreenModal>
   );
 };
 
-NewAssignmentModalButton.propTypes = {
-  enterpriseId: PropTypes.string.isRequired,
-  course: PropTypes.shape().isRequired, // Pass-thru prop to `BaseCourseCard`
-  children: PropTypes.node.isRequired, // Represents the button text
-};
-
-const mapStateToProps = state => ({
-  enterpriseId: state.portalConfiguration.enterpriseId,
-});
-
-export default connect(mapStateToProps)(NewAssignmentModalButton);
+export default AssignmentModal;
