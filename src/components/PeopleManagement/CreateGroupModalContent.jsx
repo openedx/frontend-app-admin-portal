@@ -1,8 +1,8 @@
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useEffect, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
+import _ from 'lodash';
 import {
   Col, Container, Form, Hyperlink, Row,
 } from '@openedx/paragon';
@@ -11,10 +11,11 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import InviteModalSummary from '../learner-credit-management/invite-modal/InviteModalSummary';
 import InviteSummaryCount from '../learner-credit-management/invite-modal/InviteSummaryCount';
 import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
+import { isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
 import { HELP_CENTER_URL, MAX_LENGTH_GROUP_NAME } from './constants';
 import EnterpriseCustomerUserDataTable from './EnterpriseCustomerUserDataTable';
 import { useEnterpriseLearners } from '../learner-credit-management/data';
+import { splitAndTrim } from '../../utils';
 
 const CreateGroupModalContent = ({
   enterpriseUUID,
@@ -25,7 +26,6 @@ const CreateGroupModalContent = ({
   setIsCreateGroupListSelection,
 }) => {
   const [learnerEmails, setLearnerEmails] = useState([]);
-  const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
   const [memberInviteMetadata, setMemberInviteMetadata] = useState({
     isValidInput: null,
     lowerCasedEmails: [],
@@ -69,25 +69,12 @@ const CreateGroupModalContent = ({
     setLearnerEmails(prev => prev.filter((el) => !value.includes(el)));
   }, [onEmailAddressesChange]);
 
-  const handleEmailAddressesChanged = useCallback((value) => {
-    if (!value) {
-      setLearnerEmails([]);
-      onEmailAddressesChange([]);
-      return;
-    }
-    // handles csv upload value and formats emails into an array of strings
-    const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
-    setLearnerEmails(emails);
-  }, [onEmailAddressesChange]);
-
-  const debouncedHandleEmailAddressesChanged = useMemo(
-    () => debounce(handleEmailAddressesChanged, EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY),
-    [handleEmailAddressesChanged],
-  );
-
-  useEffect(() => {
-    debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
-  }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
+  const handleCsvUpload = useCallback((emails) => {
+    // Merge new emails with old emails (removing duplicates)
+    const allEmails = _.union(learnerEmails, splitAndTrim('\n', emails));
+    setLearnerEmails(allEmails);
+    setIsCreateGroupFileUpload(true);
+  }, [learnerEmails, setIsCreateGroupFileUpload]);
 
   // Validate the learner emails emails from user input whenever it changes
   useEffect(() => {
@@ -151,7 +138,7 @@ const CreateGroupModalContent = ({
           </p>
           <FileUpload
             memberInviteMetadata={memberInviteMetadata}
-            setEmailAddressesInputValue={setEmailAddressesInputValue}
+            setEmailAddressesInputValue={handleCsvUpload}
             setIsCreateGroupFileUpload={setIsCreateGroupFileUpload}
           />
         </Col>

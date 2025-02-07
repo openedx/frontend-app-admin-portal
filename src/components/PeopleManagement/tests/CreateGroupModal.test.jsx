@@ -129,6 +129,7 @@ const CreateGroupModalWrapper = ({
 
 describe('<CreateGroupModal />', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     useEnterpriseMembersTableData.mockReturnValue({
       isLoading: false,
       enterpriseMembersTableData: mockTabledata,
@@ -298,6 +299,54 @@ describe('<CreateGroupModal />', () => {
       );
     });
     expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['learner-credit-management', 'group', '1234'] });
+  });
+  it('removes and re-adds user from csv file', async () => {
+    const mockGroupData = { uuid: 'test-uuid' };
+    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
+
+    const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
+    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
+
+    render(<CreateGroupModalWrapper />);
+    const fakeFile = new File(['testuser-1@2u.com\ntestuser-2@2u.com'], 'emails.csv', { type: 'text/csv' });
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+      writable: true,
+    });
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(screen.getByText('Summary (2)')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
+    // testing interaction with removing members from the datatable
+    const membersCheckboxes = screen.getAllByRole('checkbox');
+    // skipping first one because it's the select all checkbox
+    userEvent.click(membersCheckboxes[1]);
+    const removeMembersButton = screen.getByText('Remove');
+    userEvent.click(removeMembersButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(1);
+      expect(screen.getAllByText('testuser-2@2u.com')).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
+    const dropzone2 = screen.getByText('emails.csv');
+    Object.defineProperty(dropzone2, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone2);
+
+    const groupNameInput = screen.getByTestId('group-name');
+    userEvent.type(groupNameInput, 'test group name');
+
+    await waitFor(() => {
+      expect(screen.getByText('Summary (2)')).toBeInTheDocument();
+      expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(2);
+      expect(screen.getAllByText('testuser-2@2u.com')).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
   it('displays error for email not belonging in an org', async () => {
     const mockGroupData = { uuid: 'test-uuid' };
