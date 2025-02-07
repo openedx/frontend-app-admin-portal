@@ -762,6 +762,47 @@ describe('CourseCard', () => {
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
       }
     });
+
+    test('allows allocation if email address text area is empty', async () => {
+      const shouldSubmitAssignments = true;
+      const hasAllocationException = false;
+      const courseImportantDates = {
+        courseStartDate: null,
+        expectedCourseStartText: '',
+      };
+      const {
+        props, expectedCourseStartText, courseStartDate, mockInvalidateQueries,
+        mockCreatedLearnerAssignments,
+        mockUpdatedLearnerAssignments,
+        mockNoChangeLearnerAssignments,
+      } = setupAssignments({
+        hasAllocationException,
+        allocationExceptionReason: undefined,
+        courseImportantDates,
+      });
+
+      const assignmentModal = renderAssignmentModal({ props });
+
+      // Verify empty state
+      expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
+      const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
+      expect(textareaInputLabel).toBeInTheDocument();
+      const textareaInput = textareaInputLabel.closest('textarea');
+      expect(textareaInput).toBeInTheDocument();
+
+      const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
+      expect(submitAssignmentCTA).toBeInTheDocument();
+
+      expect(submitAssignmentCTA).not.toBeDisabled();
+
+      userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+      expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
+
+      await waitFor(() => {
+      // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA).not.toBeDisabled();
+      });
+    });
   });
 
   test.each([
