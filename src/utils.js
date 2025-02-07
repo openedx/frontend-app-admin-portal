@@ -655,6 +655,13 @@ function downloadCsv(fileName, data, headers, dataEntryToRow) {
   saveAs(blob, fileName);
 }
 
+/**
+ * Split a string by given separator, and return array of trimmed, non-blank string entries
+ */
+function splitAndTrim(separator, str) {
+  return str.split(separator).map((subStr) => subStr.trim()).filter((subStr) => subStr.length > 0);
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -704,4 +711,5 @@ export {
   isFalsy,
   getTimeStampedFilename,
   downloadCsv,
+  splitAndTrim,
 };

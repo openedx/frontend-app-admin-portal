@@ -16,6 +16,7 @@ import {
   i18nFormatProgressStatus,
   getTimeStampedFilename,
   downloadCsv,
+  splitAndTrim,
 } from './utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
@@ -209,6 +210,12 @@ describe('utils', () => {
         type: 'text/csv',
       });
       expect(saveAs).toHaveBeenCalledWith({}, fileName);
+    });
+  });
+  describe('splitAndTrim', () => {
+    it('returns split and trimmed string array', () => {
+      const csvStr = 'a,b,,c ,';
+      expect(splitAndTrim(',', csvStr)).toEqual(['a', 'b', 'c']);
     });
   });
 });
