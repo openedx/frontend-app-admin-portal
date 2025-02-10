@@ -679,7 +679,9 @@ describe('CourseCard', () => {
           expect(assignmentModal.getByText(learnerEmail)).toBeInTheDocument();
         });
         expect(assignmentModal.getByText('Total assignment cost')).toBeInTheDocument();
-        const expectedAssignmentCost = mockLearnerEmails.length * defaultProps.original.normalized_metadata.content_price;
+        const expectedAssignmentCost = (
+          mockLearnerEmails.length * defaultProps.original.normalized_metadata.content_price
+        );
         expect(assignmentModal.getByText(formatPrice(expectedAssignmentCost))).toBeInTheDocument();
         expect(assignmentModal.getByText('Remaining after assignment')).toBeInTheDocument();
         const expectedBalanceAfterAssignment = (
@@ -764,17 +766,13 @@ describe('CourseCard', () => {
     });
 
     test('prevents allocation if emails are empty', async () => {
-      const shouldSubmitAssignments = true;
       const hasAllocationException = false;
       const courseImportantDates = {
         courseStartDate: null,
         expectedCourseStartText: '',
       };
       const {
-        props, expectedCourseStartText, courseStartDate, mockInvalidateQueries,
-        mockCreatedLearnerAssignments,
-        mockUpdatedLearnerAssignments,
-        mockNoChangeLearnerAssignments,
+        props,
       } = setupAssignments({
         hasAllocationException,
         allocationExceptionReason: undefined,
@@ -827,17 +825,13 @@ describe('CourseCard', () => {
     });
 
     test('allows allocation if groups are assigned but emails are empty', async () => {
-      const shouldSubmitAssignments = true;
       const hasAllocationException = false;
       const courseImportantDates = {
         courseStartDate: null,
         expectedCourseStartText: '',
       };
       const {
-        props, expectedCourseStartText, courseStartDate, mockInvalidateQueries,
-        mockCreatedLearnerAssignments,
-        mockUpdatedLearnerAssignments,
-        mockNoChangeLearnerAssignments,
+        props,
       } = setupAssignments({
         hasAllocationException,
         allocationExceptionReason: undefined,
