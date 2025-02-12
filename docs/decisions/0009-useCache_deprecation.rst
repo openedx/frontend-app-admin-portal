@@ -11,7 +11,8 @@ Context
 
 Frontend platform offers a variety of helpers to facilitate API calls to our backend services. Part of their suite of
 helper functions are `getAuthenticatedHttpClient` which allows a `useCache` option. The inclusion of the `useCache` option
-treats the original `getAuthenticatedHttpClient` as a `cachedAuthenticatedHttpClient`(`src <https://github.com/openedx/frontend-platform/blob/15ef507e41127b4fd4ace5d31f7e527381678572/src/auth/AxiosJwtAuthService.js#L111-L117>`_).
+treats the original `getAuthenticatedHttpClient` as a
+`cachedAuthenticatedHttpClient` `method <https://github.com/openedx/frontend-platform/blob/15ef507e41127b4fd4ace5d31f7e527381678572/src/auth/AxiosJwtAuthService.js#L111-L117>`_.
 This has the effect of modifying the headers of the API request to our backend service. Within the the
 `Access-Control-Request-Headers` preflight request or OPTIONS call, the inclusion of `useCache` resulted in the
 `Cache-Control` header also being sent resulting in an unresolved API response and breaking usability for certain
