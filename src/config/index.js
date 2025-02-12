@@ -34,7 +34,6 @@ const configuration = {
   LOGO_URL: process.env.LOGO_URL,
   LOGO_WHITE_URL: process.env.LOGO_WHITE_URL,
   LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
-  USE_API_CACHE: process.env.USE_API_CACHE,
   PLOTLY_SERVER_URL: process.env.PLOTLY_SERVER_URL,
   DEMO_ENTEPRISE_UUID: process.env.DEMO_ENTEPRISE_UUID,
 };
