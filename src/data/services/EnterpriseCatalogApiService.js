@@ -29,11 +29,7 @@ class EnterpriseCatalogApiService {
       queryParams.set('course_run_ids', courseRunIds.join(','));
     }
     const url = `${EnterpriseCatalogApiService.baseUrl}/enterprise-customer/${enterpriseId}/contains_content_items/?${queryParams.toString()}`;
-    return EnterpriseCatalogApiService.apiClient(
-      {
-        useCache: configuration.USE_API_CACHE,
-      },
-    ).get(url);
+    return EnterpriseCatalogApiService.apiClient().get(url);
   }
 
   static fetchEnterpriseCustomerCatalogs(enterpriseId) {
