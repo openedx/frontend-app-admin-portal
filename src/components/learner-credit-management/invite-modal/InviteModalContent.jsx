@@ -66,7 +66,7 @@ const InviteModalContent = ({
       return;
     }
     const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
-    setLearnerEmails(prev => [...prev, ...emails]);
+    setLearnerEmails(emails);
   }, [onEmailAddressesChange]);
 
   const debouncedHandleEmailAddressesChanged = useMemo(

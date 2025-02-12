@@ -334,9 +334,10 @@ describe('<InviteMemberModal />', () => {
     render(<InviteModalWrapper />);
     const textareaInputLabel = screen.getByLabelText('Member email addresses');
     const textareaInput = textareaInputLabel.closest('textarea');
-    userEvent.type(textareaInput, 'oopsallberries@example.com');
+    const duplicateEmail = 'oopsallberries@example.com';
+    userEvent.type(textareaInput, duplicateEmail);
     userEvent.type(textareaInput, '{enter}');
-    userEvent.type(textareaInput, 'oopsallberries@example.com');
+    userEvent.type(textareaInput, duplicateEmail);
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('oopsallberries@example.com was entered more than once.')).toBeInTheDocument();
@@ -344,6 +345,30 @@ describe('<InviteMemberModal />', () => {
       const inviteButton = screen.getByRole('button', { name: 'Invite' });
       expect(inviteButton).not.toBeDisabled();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    // Remove duplicate and verify message goes away
+    userEvent.type(textareaInput, '{backspace}'.repeat(duplicateEmail.length));
+    await waitFor(() => {
+      expect(screen.queryByText('oopsallberries@example.com was entered more than once.')).not.toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+  });
+  it('does not throw up spurious warnings for duplicated emails on edit', async () => {
+    render(<InviteModalWrapper />);
+    const textareaInputLabel = screen.getByLabelText('Member email addresses');
+    const textareaInput = textareaInputLabel.closest('textarea');
+    const emailSuffix = '@example.com';
+    userEvent.type(textareaInput, `a${emailSuffix}`);
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.queryAllByText('a@example.com')).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    // Add new character to email address
+    userEvent.type(textareaInput, '{arrowleft}'.repeat(emailSuffix.length));
+    userEvent.type(textareaInput, 'b');
+    // Validate that new email address is shown, and old one is not still present
+    await waitFor(() => {
+      expect(screen.queryAllByText('ab@example.com')).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    expect(screen.queryByText('a@example.com')).not.toBeInTheDocument();
   });
   it('throws up warning for invalid/duplicated emails', async () => {
     render(<InviteModalWrapper />);
