@@ -56,7 +56,8 @@ const CreateGroupModalContent = ({
       onEmailAddressesChange([]);
       return;
     }
-    setLearnerEmails(prev => [...prev, ...value]);
+    // Merge new emails with old emails (removing duplicates)
+    setLearnerEmails(prev => _.union(prev, value));
     setIsCreateGroupListSelection(true);
   }, [onEmailAddressesChange, setIsCreateGroupListSelection]);
 
