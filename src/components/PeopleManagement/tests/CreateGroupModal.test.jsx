@@ -348,6 +348,40 @@ describe('<CreateGroupModal />', () => {
       expect(screen.getAllByText('testuser-2@2u.com')).toHaveLength(2);
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
+  it('should clear errors from bad csv file after uploading good csv file', async () => {
+    render(<CreateGroupModalWrapper />);
+    const fakeFile = new File(['iamnotanemail'], 'bademails.csv', { type: 'text/csv' });
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+      writable: true,
+    });
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(screen.getByText('bademails.csv')).toBeInTheDocument();
+      expect(screen.getByText("Members can't be invited as entered.")).toBeInTheDocument();
+      expect(screen.getByText('iamnotanemail is not a valid email.')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
+    const dropzone2 = screen.getByText('bademails.csv');
+    const fakeFile2 = new File(['testuser-1@2u.com'], 'goodemails.csv', { type: 'text/csv' });
+    Object.defineProperty(dropzone2, 'files', {
+      value: [fakeFile2],
+    });
+    fireEvent.drop(dropzone2);
+
+    const groupNameInput = screen.getByTestId('group-name');
+    userEvent.type(groupNameInput, 'test group name');
+
+    await waitFor(() => {
+      expect(screen.getByText('goodemails.csv')).toBeInTheDocument();
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    expect(screen.queryByText("Members can't be invited as entered.")).not.toBeInTheDocument();
+    expect(screen.queryByText('iamnotanemail is not a valid email.')).not.toBeInTheDocument();
+  });
   it('displays error for email not belonging in an org', async () => {
     const mockGroupData = { uuid: 'test-uuid' };
     LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });

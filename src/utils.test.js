@@ -17,6 +17,7 @@ import {
   getTimeStampedFilename,
   downloadCsv,
   splitAndTrim,
+  removeStringsFromList,
 } from './utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
@@ -216,6 +217,13 @@ describe('utils', () => {
     it('returns split and trimmed string array', () => {
       const csvStr = 'a,b,,c ,';
       expect(splitAndTrim(',', csvStr)).toEqual(['a', 'b', 'c']);
+    });
+  });
+  describe('removeStringsFromList', () => {
+    it('should remove strings from list', () => {
+      const list = ['a', 'b', 'c', 'd'];
+      const remove = ['b', 'd'];
+      expect(removeStringsFromList(list, remove)).toEqual(['a', 'c']);
     });
   });
 });

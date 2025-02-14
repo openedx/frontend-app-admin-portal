@@ -2,7 +2,7 @@ import isEmail from 'validator/lib/isEmail';
 
 import { MAX_EMAIL_ENTRY_LIMIT, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
 import { formatPrice } from '../../data';
-import { makePlural } from '../../../../utils';
+import { makePlural, removeStringsFromList } from '../../../../utils';
 
 /**
  * Transforms and formats a policy's display name for rendering within the assignment modal's allocation alert modals.
@@ -37,7 +37,7 @@ export const hasLearnerEmailsSummaryListTruncation = (learnerEmails) => (
  * @param {Number} contentPrice Price of the content (USD).
  * @param {Array<String>} remainingBalance Amount remaining in the budget (USD).
  *
- * @returns Object containing various properties about the validity of the learner emails
+ * @returns EmailValidityReport containing various properties about the validity of the learner emails
  * input, including a validation error when appropriate, and whether the assignment allocation
  * should proceed.
  */
@@ -53,9 +53,9 @@ export const isAssignEmailAddressesInputValueValid = ({
   const remainingBalanceAfterAssignment = remainingBalance - totalAssignmentCost;
   const hasEnoughBalanceForAssignment = remainingBalanceAfterAssignment >= 0;
 
-  const lowerCasedEmails = [];
-  const invalidEmails = [];
-  const duplicateEmails = [];
+  const lowerCasedEmails: string[] = [];
+  const invalidEmails: string[] = [];
+  const duplicateEmails: string[] = [];
 
   learnerEmails.forEach((email) => {
     const lowerCasedEmail = email.toLowerCase();
@@ -109,23 +109,48 @@ export const isAssignEmailAddressesInputValueValid = ({
   };
 };
 
+export type LearnerEmailsValidityArgs = {
+  learnerEmails: string[],
+  allEnterpriseLearners: string[] | null,
+};
+
+export type LearnerEmailsValidityReport = {
+  /* Whether we can invite with the current set of learner emails */
+  canInvite: boolean,
+  /* If there are no invalid emails and the count of emails is under the limit */
+  isValidInput: boolean,
+  /* List of valid lower-cased emails */
+  lowerCasedEmails: string[],
+  /* List of duplicate emails */
+  duplicateEmails: string[],
+  /* List of entries that are not valid email addresses */
+  invalidEmails: string[],
+  /* List of emails that aren't in the organization */
+  emailsNotInOrg: string[],
+  /* Error message shown to the user */
+  validationError: string,
+};
+
 /**
  * Determine the validity of the learner emails user input. The input is valid if
  * all emails are valid. Invalid and duplicate emails are returned.
  *
  * @param {Array<String>} learnerEmails List of learner emails.
  *
- * @returns Object containing various properties about the validity of the learner emails
+ * @returns LearnerEmailsValidityReport Object containing various properties about the validity of the learner emails
  * input, including a validation error when appropriate, and whether the member invitation
  * should proceed.
  */
-export const isInviteEmailAddressesInputValueValid = ({ learnerEmails, allEnterpriseLearners = null }) => {
+export const isInviteEmailAddressesInputValueValid = ({
+  learnerEmails,
+  allEnterpriseLearners = null,
+}: LearnerEmailsValidityArgs): LearnerEmailsValidityReport => {
   let validationError;
   const learnerEmailsCount = learnerEmails.length;
-  const lowerCasedEmails = [];
-  const invalidEmails = [];
-  const duplicateEmails = [];
-  const emailsNotInOrg = [];
+  const lowerCasedEmails: string[] = [];
+  const invalidEmails: string[] = [];
+  const duplicateEmails: string[] = [];
+  const emailsNotInOrg: string[] = [];
 
   learnerEmails.forEach((email) => {
     const lowerCasedEmail = email.toLowerCase();
@@ -159,7 +184,7 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails, allEnterp
     if (learnerEmailsCount > MAX_EMAIL_ENTRY_LIMIT) {
       validationError.reason = 'over_email_max';
       validationError.message = `${learnerEmailsCount} emails entered (${MAX_EMAIL_ENTRY_LIMIT} maximum). `
-      + `Delete ${learnerEmailsCount - MAX_EMAIL_ENTRY_LIMIT} emails to proceed.`;
+        + `Delete ${learnerEmailsCount - MAX_EMAIL_ENTRY_LIMIT} emails to proceed.`;
     }
     if (invalidEmails.length > 0) {
       validationError.reason = 'invalid_email';
@@ -197,4 +222,22 @@ export const isInviteEmailAddressesInputValueValid = ({ learnerEmails, allEnterp
     validationError,
     emailsNotInOrg,
   };
+};
+
+/**
+ * Remove invalid emails from list based on
+ *
+ * @param {Array<String>} learnerEmails List of learner emails.
+ *
+ * @returns Object containing various properties about the validity of the learner emails
+ * input, including a validation error when appropriate, and whether the member invitation
+ * should proceed.
+ */
+export const removeInvalidEmailsFromList = (
+  learnerEmails: string[],
+  inviteMetadata: LearnerEmailsValidityReport,
+): string[] => {
+  const { duplicateEmails, invalidEmails, emailsNotInOrg } = inviteMetadata;
+  const allInvalidEmails = [...(duplicateEmails || []), ...(invalidEmails || []), ...(emailsNotInOrg || [])];
+  return removeStringsFromList(learnerEmails, allInvalidEmails);
 };
