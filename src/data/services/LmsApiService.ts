@@ -1,8 +1,25 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import type { AxiosResponse } from 'axios';
 
 import { configuration } from '../../config';
 import generateFormattedStatusUrl from './apiServiceUtils';
+import { EnterpriseGroup, Paginated } from '../../types';
+
+export type CreateEnterpriseGroupArgs = {
+  /* The name of the group to create */
+  groupName: string,
+  /* The uuid of the new group's enterprise customer */
+  enterpriseUUID: string
+};
+
+export type UpdateEnterpriseGroupArgs = {
+  /* The updated name of the group */
+  name: string,
+};
+
+export type EnterpriseGroupResponse = Promise<AxiosResponse<EnterpriseGroup>>;
+export type EnterpriseGroupListResponse = Promise<AxiosResponse<Paginated<EnterpriseGroup>>>;
 
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
@@ -49,10 +66,10 @@ class LmsApiService {
 
   static enterpriseLearnerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-learner/`;
 
-  static createEnterpriseGroup(options) {
+  static createEnterpriseGroup({ groupName, enterpriseUUID }: CreateEnterpriseGroupArgs): EnterpriseGroup {
     const postParams = {
-      name: options.groupName,
-      enterprise_customer: options.enterpriseUUID,
+      name: groupName,
+      enterprise_customer: enterpriseUUID,
       members: [],
     };
     const createEnterpriseGroupUrl = `${LmsApiService.enterpriseGroupListUrl}`;
@@ -428,7 +445,7 @@ class LmsApiService {
     );
   };
 
-  static async fetchData(url, linkedEnterprises = []) {
+  static async fetchData(url, linkedEnterprises: any[] = []) {
     const response = await getAuthenticatedHttpClient().get(url);
     const responseData = camelCaseObject(response.data);
     const linkedEnterprisesCopy = [...linkedEnterprises];
@@ -449,12 +466,12 @@ class LmsApiService {
     return response;
   };
 
-  static fetchEnterpriseGroup = async (groupUuid) => {
+  static fetchEnterpriseGroup = async (groupUuid: string): EnterpriseGroupResponse => {
     const groupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().get(groupEndpoint);
   };
 
-  static fetchEnterpriseGroups = async () => {
+  static fetchEnterpriseGroups = async (): EnterpriseGroupListResponse => {
     const url = `${LmsApiService.enterpriseGroupUrl}`;
     return LmsApiService.apiClient().get(url);
   };
@@ -475,19 +492,22 @@ class LmsApiService {
 
   static fetchAllEnterpriseGroupLearners = async (groupUuid) => {
     const queryParams = new URLSearchParams({
-      page: 1,
+      page: '1',
     });
     const url = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners?${queryParams.toString()}`;
     const response = await LmsApiService.fetchData(url);
     return response;
   };
 
-  static removeEnterpriseGroup = async (groupUuid) => {
+  static removeEnterpriseGroup = async (groupUuid: string): Promise<AxiosResponse> => {
     const removeGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().delete(removeGroupEndpoint);
   };
 
-  static updateEnterpriseGroup = async (groupUuid, formData) => {
+  static updateEnterpriseGroup = async (
+    groupUuid: string,
+    formData: UpdateEnterpriseGroupArgs,
+  ): EnterpriseGroupResponse => {
     const updateGroupEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/`;
     return LmsApiService.apiClient().patch(updateGroupEndpoint, formData);
   };
