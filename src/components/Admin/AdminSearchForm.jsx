@@ -122,10 +122,10 @@ class AdminSearchForm extends React.Component {
                     </option>
                     {groups.map(group => (
                       <option
-                        value={group.enterprise_group_uuid}
-                        key={group.enterprise_group_uuid}
+                        value={group.uuid}
+                        key={group.uuid}
                       >
-                        {group.enterprise_group_name}
+                        {group.name}
                       </option>
                     ))}
                   </Form.Control>
