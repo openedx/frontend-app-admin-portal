@@ -16,6 +16,8 @@ import AddMembersBulkAction from './GroupDetailPage/AddMembersBulkAction';
 import RemoveMembersBulkAction from './RemoveMembersBulkAction';
 import MemberJoinedDateCell from './MemberJoinedDateCell';
 import { useEnterpriseMembersTableData } from './data/hooks';
+import { useGetAllEnterpriseLearnerEmails } from './data/hooks/useEnterpriseLearnersTableData';
+import { getSelectedEmailsByRow } from './utils';
 
 export const BaseSelectWithContext = ({ row, enterpriseGroupLearners }) => {
   const {
@@ -59,7 +61,7 @@ const deleteSelectedRowAction = (rowId) => ({
   type: 'DELETE ROW', rowId,
 });
 
-const CustomSelectColumnCell = ({ row }) => {
+const CustomSelectColumnCell = ({row, isEntireTableSelected, selectedFlatRows, onHandleAddMembersBulkAction, enterpriseId}) => {
   const { enterpriseGroupLearners } = useContext(EnterpriseCustomerUserDataTableContext);
   const [isAddedMember, setIsAddedMember] = useState(false);
   const {
@@ -67,12 +69,33 @@ const CustomSelectColumnCell = ({ row }) => {
     controlledTableSelections: [, dispatch],
   } = useContext(DataTableContext);
 
+  const { fetchLearnerEmails, addButtonState } = useGetAllEnterpriseLearnerEmails({
+    enterpriseId,
+    isEntireTableSelected,
+    onHandleAddMembersBulkAction,
+    enterpriseGroupLearners,
+  });
+  const handleOnClick = () => {
+    console.log(isEntireTableSelected)
+    if (isEntireTableSelected) {
+      fetchLearnerEmails();
+      return;
+    }
+    const addedMemberEmails = enterpriseGroupLearners.map(learner => learner.memberDetails.userEmail);
+    console.log(selectedFlatRows)
+    const emails = getSelectedEmailsByRow(selectedFlatRows).filter(email => !addedMemberEmails.includes(email));
+    onHandleAddMembersBulkAction(emails);
+  };
+
   const toggleSelected = useCallback(
     () => {
       if (row.isSelected) {
+        console.log('hello')
         dispatch(deleteSelectedRowAction(row.id));
       } else {
+        console.log('adding cell')
         dispatch(addSelectedRowAction(row, itemCount));
+        handleOnClick()
       }
     },
     [itemCount, row, dispatch],
@@ -123,12 +146,12 @@ const EnterpriseCustomerUserDataTable = ({
     fetchEnterpriseMembersTableData,
   } = useEnterpriseMembersTableData({ enterpriseId });
 
-  const selectColumn = {
-    id: 'selection',
-    Header: DataTable.ControlledSelectHeader,
-    Cell: CustomSelectColumnCell,
-    disableSortBy: true,
-  };
+  // const selectColumn = {
+  //   id: 'selection',
+  //   Header: DataTable.ControlledSelectHeader,
+  //   Cell: CustomSelectColumnCell,
+  //   disableSortBy: true,
+  // };
 
   const contextValue = useMemo(() => ({
     enterpriseGroupLearners,
@@ -137,18 +160,18 @@ const EnterpriseCustomerUserDataTable = ({
   return (
     <EnterpriseCustomerUserDataTableContext.Provider value={contextValue}>
       <DataTable
-        bulkActions={[
-          <AddMembersBulkAction
-            onHandleAddMembersBulkAction={onHandleAddMembersBulkAction}
-            enterpriseId={enterpriseId}
-            enterpriseGroupLearners={enterpriseGroupLearners}
-          />,
-          <RemoveMembersBulkAction
-            enterpriseId={enterpriseId}
-            learnerEmails={learnerEmails}
-            onHandleRemoveMembersBulkAction={onHandleRemoveMembersBulkAction}
-          />,
-        ]}
+        // bulkActions={[
+        //   <AddMembersBulkAction
+        //     onHandleAddMembersBulkAction={onHandleAddMembersBulkAction}
+        //     enterpriseId={enterpriseId}
+        //     enterpriseGroupLearners={enterpriseGroupLearners}
+        //   />,
+        //   <RemoveMembersBulkAction
+        //     enterpriseId={enterpriseId}
+        //     learnerEmails={learnerEmails}
+        //     onHandleRemoveMembersBulkAction={onHandleRemoveMembersBulkAction}
+        //   />,
+        // ]}
         columns={[
           {
             Header: 'Member details',
@@ -187,7 +210,15 @@ const EnterpriseCustomerUserDataTable = ({
           getRowId: row => row.enterpriseCustomerUser.userId.toString(),
         }}
         pageCount={enterpriseMembersTableData.pageCount}
-        manualSelectColumn={selectColumn}
+        manualSelectColumn={
+          {
+            id: 'selection',
+            Header: DataTable.ControlledSelectHeader,
+            /* eslint-disable react/no-unstable-nested-components */
+            Cell: (row) => <CustomSelectColumnCell enterpriseId={enterpriseId} onHandleAddMembersBulkAction={onHandleAddMembersBulkAction} {...row} />,
+            disableSortBy: true,
+          }
+        }
         SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       />
     </EnterpriseCustomerUserDataTableContext.Provider>
