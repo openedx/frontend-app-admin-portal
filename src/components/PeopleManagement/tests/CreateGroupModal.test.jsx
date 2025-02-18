@@ -439,4 +439,22 @@ describe('<CreateGroupModal />', () => {
       )).toBeInTheDocument();
     });
   });
+  it('does not show duplicate error when members are bulk added multiple times', async () => {
+    render(<CreateGroupModalWrapper />);
+    // testing interaction with adding members from the datatable
+    const membersCheckboxes = screen.getAllByRole('checkbox');
+    // skipping first one because its the select all checkbox
+    userEvent.click(membersCheckboxes[1]);
+    const addMembersButton = screen.getByText('Add');
+    userEvent.click(addMembersButton);
+    // Select a second member while keeping first selected, and add again
+    userEvent.click(membersCheckboxes[2]);
+    userEvent.click(addMembersButton);
+
+    await waitFor(() => {
+      expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(2);
+      expect(screen.getAllByText('testuser-2@2u.com')).toHaveLength(2);
+    });
+    expect(screen.queryByText('Only 1 invite per email address will be sent.')).not.toBeInTheDocument();
+  });
 });
