@@ -255,7 +255,7 @@ const CourseCardWrapper = ({
   );
 };
 
-describe('Course card works as expected', () => {
+describe('CourseCard', () => {
   const mockAllocateContentAssignments = jest.spyOn(EnterpriseAccessApiService, 'allocateContentAssignments');
 
   // Helper function to find the assignment error modal after failed allocation attempt
@@ -397,337 +397,524 @@ describe('Course card works as expected', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 
-  test.each([
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: true,
-      allocationExceptionReason: 'content_not_in_catalog',
-      shouldRetryAllocationAfterException: false, // no ability to retry after this error
-      courseImportantDates: {
-        courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts:',
-      },
-    },
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: true,
-      allocationExceptionReason: 'not_enough_value_in_subsidy',
-      shouldRetryAllocationAfterException: false,
-      courseImportantDates: {
-        courseStartDate: pastStartDate,
-        expectedCourseStartText: 'Course started:',
-      },
-    },
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: true,
-      allocationExceptionReason: 'not_enough_value_in_subsidy',
-      shouldRetryAllocationAfterException: true,
-      courseImportantDates: {
-        courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts:',
-      },
-    },
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: true,
-      allocationExceptionReason: 'policy_spend_limit_reached',
-      shouldRetryAllocationAfterException: false,
-      courseImportantDates: {
-        courseStartDate: pastStartDate,
-        expectedCourseStartText: 'Course started:',
-      },
-    },
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: true,
-      allocationExceptionReason: 'policy_spend_limit_reached',
-      shouldRetryAllocationAfterException: true,
-      courseImportantDates: {
-        courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts:',
-      },
-    },
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: true,
-      allocationExceptionReason: null,
-      shouldRetryAllocationAfterException: false,
-      courseImportantDates: {
-        courseStartDate: pastStartDate,
-        expectedCourseStartText: 'Course started:',
-      },
-    },
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: true,
-      allocationExceptionReason: null,
-      shouldRetryAllocationAfterException: true,
-      courseImportantDates: {
-        courseStartDate: futureStartDate,
-        expectedCourseStartText: 'Course starts:',
-      },
-    },
-    {
-      shouldSubmitAssignments: true,
-      hasAllocationException: false,
-      courseImportantDates: {
-        courseStartDate: null,
-        expectedCourseStartText: '',
-      },
-    },
-    {
-      shouldSubmitAssignments: false,
-      hasAllocationException: false,
-      courseImportantDates: {
-        courseStartDate: null,
-        expectedCourseStartText: '',
-      },
-    },
-  ])('opens assignment modal, fills out information, and submits assignments accordingly - with success or with an exception (%s)', async ({
-    shouldSubmitAssignments,
-    hasAllocationException,
-    allocationExceptionReason,
-    shouldRetryAllocationAfterException,
-    courseImportantDates,
-  }) => {
-    const mockUpdatedLearnerAssignments = [mockLearnerEmails[0]];
-    const mockNoChangeLearnerAssignments = [mockLearnerEmails[1]];
-    const mockCreatedLearnerAssignments = mockLearnerEmails.slice(2).map(learnerEmail => ({
-      uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
-      assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
-      learner_email: learnerEmail,
-      lms_user_id: 0,
-      content_key: 'string',
-      content_title: 'string',
-      content_quantity: 0,
-      state: 'allocated',
-      transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
-      last_notification_at: '2019-08-24T14:15:22Z',
-      actions: [],
-    }));
+  describe('assignments submission', () => {
+    const setupAssignments = ({
+      hasAllocationException,
+      allocationExceptionReason,
+      courseImportantDates,
+    }) => {
+      const mockUpdatedLearnerAssignments = [mockLearnerEmails[0]];
+      const mockNoChangeLearnerAssignments = [mockLearnerEmails[1]];
+      const mockCreatedLearnerAssignments = mockLearnerEmails.slice(2).map(learnerEmail => ({
+        uuid: '095be615-a8ad-4c33-8e9c-c7612fbf6c9f',
+        assignment_configuration: 'fd456a98-653b-41e9-94d1-94d7b136832a',
+        learner_email: learnerEmail,
+        lms_user_id: 0,
+        content_key: 'string',
+        content_title: 'string',
+        content_quantity: 0,
+        state: 'allocated',
+        transaction_uuid: '3a6bcbed-b7dc-4791-84fe-b20f12be4001',
+        last_notification_at: '2019-08-24T14:15:22Z',
+        actions: [],
+      }));
 
-    if (hasAllocationException) {
+      if (hasAllocationException) {
       // mock Axios error
-      mockAllocateContentAssignments.mockRejectedValue({
-        customAttributes: {
-          httpErrorStatus: allocationExceptionReason ? 422 : 500,
-          httpErrorResponseData: JSON.stringify([{ reason: allocationExceptionReason }]),
-        },
+        mockAllocateContentAssignments.mockRejectedValue({
+          customAttributes: {
+            httpErrorStatus: allocationExceptionReason ? 422 : 500,
+            httpErrorResponseData: JSON.stringify([{ reason: allocationExceptionReason }]),
+          },
+        });
+      } else {
+        mockAllocateContentAssignments.mockResolvedValue({
+          data: {
+            updated: mockUpdatedLearnerAssignments,
+            created: mockCreatedLearnerAssignments,
+            no_change: mockNoChangeLearnerAssignments,
+          },
+        });
+      }
+      const mockInvalidateQueries = jest.fn();
+      useQueryClient.mockReturnValue({
+        invalidateQueries: mockInvalidateQueries,
       });
-    } else {
-      mockAllocateContentAssignments.mockResolvedValue({
-        data: {
-          updated: mockUpdatedLearnerAssignments,
-          created: mockCreatedLearnerAssignments,
-          no_change: mockNoChangeLearnerAssignments,
+      const {
+        courseStartDate, expectedCourseStartText,
+      } = courseImportantDates;
+      const props = {
+        original: {
+          ...defaultProps.original,
+          normalized_metadata: {
+            ...defaultProps.original.normalized_metadata,
+            start_date: courseStartDate,
+          },
+          courseRuns: [{
+            ...defaultProps.original.courseRuns[0],
+            start: courseStartDate,
+          },
+          ],
+          advertised_course_run: {
+            ...defaultProps.original.advertised_course_run,
+            start: courseStartDate,
+          },
         },
-      });
-    }
-    const mockInvalidateQueries = jest.fn();
-    useQueryClient.mockReturnValue({
-      invalidateQueries: mockInvalidateQueries,
-    });
-    const {
-      courseStartDate, expectedCourseStartText,
-    } = courseImportantDates;
-    const props = {
-      original: {
-        ...defaultProps.original,
-        normalized_metadata: {
-          ...defaultProps.original.normalized_metadata,
-          start_date: courseStartDate,
-        },
-        courseRuns: [{
-          ...defaultProps.original.courseRuns[0],
-          start: courseStartDate,
-        },
-        ],
-        advertised_course_run: {
-          ...defaultProps.original.advertised_course_run,
-          start: courseStartDate,
+      };
+      return {
+        props,
+        expectedCourseStartText,
+        courseStartDate,
+        mockInvalidateQueries,
+        mockCreatedLearnerAssignments,
+        mockUpdatedLearnerAssignments,
+        mockNoChangeLearnerAssignments,
+      };
+    };
+
+    const renderAssignmentModal = ({ props }) => {
+      renderWithRouter(<CourseCardWrapper {...props} />);
+      const assignCourseCTA = getButtonElement('Assign');
+      expect(assignCourseCTA).toBeInTheDocument();
+
+      userEvent.click(assignCourseCTA);
+      expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+      userEvent.click(screen.getByText(enrollByDropdownText));
+
+      const assignmentModal = within(screen.getByRole('dialog'));
+      return assignmentModal;
+    };
+
+    test.each([
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: true,
+        allocationExceptionReason: 'content_not_in_catalog',
+        shouldRetryAllocationAfterException: false, // no ability to retry after this error
+        courseImportantDates: {
+          courseStartDate: futureStartDate,
+          expectedCourseStartText: 'Course starts:',
         },
       },
-    };
-    renderWithRouter(<CourseCardWrapper {...props} />);
-    const assignCourseCTA = getButtonElement('Assign');
-    expect(assignCourseCTA).toBeInTheDocument();
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: true,
+        allocationExceptionReason: 'not_enough_value_in_subsidy',
+        shouldRetryAllocationAfterException: false,
+        courseImportantDates: {
+          courseStartDate: pastStartDate,
+          expectedCourseStartText: 'Course started:',
+        },
+      },
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: true,
+        allocationExceptionReason: 'not_enough_value_in_subsidy',
+        shouldRetryAllocationAfterException: true,
+        courseImportantDates: {
+          courseStartDate: futureStartDate,
+          expectedCourseStartText: 'Course starts:',
+        },
+      },
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: true,
+        allocationExceptionReason: 'policy_spend_limit_reached',
+        shouldRetryAllocationAfterException: false,
+        courseImportantDates: {
+          courseStartDate: pastStartDate,
+          expectedCourseStartText: 'Course started:',
+        },
+      },
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: true,
+        allocationExceptionReason: 'policy_spend_limit_reached',
+        shouldRetryAllocationAfterException: true,
+        courseImportantDates: {
+          courseStartDate: futureStartDate,
+          expectedCourseStartText: 'Course starts:',
+        },
+      },
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: true,
+        allocationExceptionReason: null,
+        shouldRetryAllocationAfterException: false,
+        courseImportantDates: {
+          courseStartDate: pastStartDate,
+          expectedCourseStartText: 'Course started:',
+        },
+      },
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: true,
+        allocationExceptionReason: null,
+        shouldRetryAllocationAfterException: true,
+        courseImportantDates: {
+          courseStartDate: futureStartDate,
+          expectedCourseStartText: 'Course starts:',
+        },
+      },
+      {
+        shouldSubmitAssignments: true,
+        hasAllocationException: false,
+        courseImportantDates: {
+          courseStartDate: null,
+          expectedCourseStartText: '',
+        },
+      },
+      {
+        shouldSubmitAssignments: false,
+        hasAllocationException: false,
+        courseImportantDates: {
+          courseStartDate: null,
+          expectedCourseStartText: '',
+        },
+      },
+    ])('opens assignment modal, fills out information, and submits assignments accordingly - with success or with an exception (%s)', async ({
+      shouldSubmitAssignments,
+      hasAllocationException,
+      allocationExceptionReason,
+      shouldRetryAllocationAfterException,
+      courseImportantDates,
+    }) => {
+      const {
+        props, expectedCourseStartText, courseStartDate, mockInvalidateQueries,
+        mockCreatedLearnerAssignments,
+        mockUpdatedLearnerAssignments,
+        mockNoChangeLearnerAssignments,
+      } = setupAssignments({
+        hasAllocationException,
+        allocationExceptionReason,
+        courseImportantDates,
+      });
 
-    userEvent.click(assignCourseCTA);
-    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
-    userEvent.click(screen.getByText(enrollByDropdownText));
+      const assignmentModal = renderAssignmentModal({ props });
 
-    const assignmentModal = within(screen.getByRole('dialog'));
+      expect(assignmentModal.getByText('Assign this course')).toBeInTheDocument();
+      expect(assignmentModal.getByText('Use Learner Credit to assign this course')).toBeInTheDocument();
 
-    expect(assignmentModal.getByText('Assign this course')).toBeInTheDocument();
-    expect(assignmentModal.getByText('Use Learner Credit to assign this course')).toBeInTheDocument();
+      // Verify course card is displayed WITHOUT footer actions
+      const modalCourseCard = within(assignmentModal.getByText('Course Title').closest('.pgn__card'));
+      expect(modalCourseCard.getByText(defaultProps.original.title)).toBeInTheDocument();
+      expect(modalCourseCard.getByText(defaultProps.original.partners[0].name)).toBeInTheDocument();
+      expect(modalCourseCard.getByText('$100')).toBeInTheDocument();
+      expect(modalCourseCard.getByText('Per learner price')).toBeInTheDocument();
+      expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
+      const cardImage = modalCourseCard.getByAltText(imageAltText);
+      expect(cardImage).toBeInTheDocument();
+      expect(cardImage.src).toBeDefined();
+      expect(modalCourseCard.queryByText('View course', { selector: 'a' })).not.toBeInTheDocument();
+      expect(getButtonElement('Assign', { screenOverride: modalCourseCard, isQueryByRole: true })).not.toBeInTheDocument();
 
-    // Verify course card is displayed WITHOUT footer actions
-    const modalCourseCard = within(assignmentModal.getByText('Course Title').closest('.pgn__card'));
-    expect(modalCourseCard.getByText(defaultProps.original.title)).toBeInTheDocument();
-    expect(modalCourseCard.getByText(defaultProps.original.partners[0].name)).toBeInTheDocument();
-    expect(modalCourseCard.getByText('$100')).toBeInTheDocument();
-    expect(modalCourseCard.getByText('Per learner price')).toBeInTheDocument();
-    expect(screen.getByText(enrollByDropdownText)).toBeInTheDocument();
-    const cardImage = modalCourseCard.getByAltText(imageAltText);
-    expect(cardImage).toBeInTheDocument();
-    expect(cardImage.src).toBeDefined();
-    expect(modalCourseCard.queryByText('View course', { selector: 'a' })).not.toBeInTheDocument();
-    expect(getButtonElement('Assign', { screenOverride: modalCourseCard, isQueryByRole: true })).not.toBeInTheDocument();
+      // Verify empty state
+      expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
+      const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
+      expect(textareaInputLabel).toBeInTheDocument();
+      const textareaInput = textareaInputLabel.closest('textarea');
+      expect(textareaInput).toBeInTheDocument();
+      expect(assignmentModal.getByText('To add more than one learner, enter one email address per line.')).toBeInTheDocument();
+      expect(assignmentModal.getByText('Pay by Learner Credit')).toBeInTheDocument();
+      expect(assignmentModal.getByText('Summary')).toBeInTheDocument();
+      expect(assignmentModal.getByText("You haven't entered any learners yet.")).toBeInTheDocument();
+      expect(assignmentModal.getByText('Add learner emails to get started.')).toBeInTheDocument();
+      expect(assignmentModal.getByText(`Learner Credit Budget: ${mockSubsidyAccessPolicy.displayName}`)).toBeInTheDocument();
+      expect(assignmentModal.getByText('Available balance')).toBeInTheDocument();
+      const expectedAvailableBalance = formatPrice(mockSubsidyAccessPolicy.aggregates.spendAvailableUsd);
+      expect(assignmentModal.getByText(expectedAvailableBalance)).toBeInTheDocument();
 
-    // Verify empty state
-    expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
-    const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
-    expect(textareaInputLabel).toBeInTheDocument();
-    const textareaInput = textareaInputLabel.closest('textarea');
-    expect(textareaInput).toBeInTheDocument();
-    expect(assignmentModal.getByText('To add more than one learner, enter one email address per line.')).toBeInTheDocument();
-    expect(assignmentModal.getByText('Pay by Learner Credit')).toBeInTheDocument();
-    expect(assignmentModal.getByText('Summary')).toBeInTheDocument();
-    expect(assignmentModal.getByText("You haven't entered any learners yet.")).toBeInTheDocument();
-    expect(assignmentModal.getByText('Add learner emails to get started.')).toBeInTheDocument();
-    expect(assignmentModal.getByText(`Learner Credit Budget: ${mockSubsidyAccessPolicy.displayName}`)).toBeInTheDocument();
-    expect(assignmentModal.getByText('Available balance')).toBeInTheDocument();
-    const expectedAvailableBalance = formatPrice(mockSubsidyAccessPolicy.aggregates.spendAvailableUsd);
-    expect(assignmentModal.getByText(expectedAvailableBalance)).toBeInTheDocument();
-
-    // Verify important dates
-    expect(assignmentModal.getByText('Enroll-by date:')).toBeInTheDocument();
-    expect(assignmentModal.getByText(
-      dayjs.unix(enrollByTimestamp).format(DATETIME_FORMAT),
-    )).toBeInTheDocument();
-    if (courseStartDate) {
-      expect(assignmentModal.getByText(expectedCourseStartText)).toBeInTheDocument();
+      // Verify important dates
+      expect(assignmentModal.getByText('Enroll-by date:')).toBeInTheDocument();
       expect(assignmentModal.getByText(
-        dayjs(courseStartDate).format(SHORT_MONTH_DATE_FORMAT),
+        dayjs.unix(enrollByTimestamp).format(DATETIME_FORMAT),
       )).toBeInTheDocument();
-    }
+      if (courseStartDate) {
+        expect(assignmentModal.getByText(expectedCourseStartText)).toBeInTheDocument();
+        expect(assignmentModal.getByText(
+          dayjs(courseStartDate).format(SHORT_MONTH_DATE_FORMAT),
+        )).toBeInTheDocument();
+      }
 
-    // Verify collapsible
-    expect(assignmentModal.getByText('How assigning this course works')).toBeInTheDocument();
-    expect(assignmentModal.getByText('Next steps for assigned learners')).toBeInTheDocument();
-    expect(assignmentModal.getByText('Learners will be notified of this course assignment by email.')).toBeInTheDocument();
-    const budgetImpact = assignmentModal.getByText('Impact on your Learner Credit budget');
-    expect(budgetImpact).toBeInTheDocument();
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    expect(assignmentModal.queryByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).not.toBeInTheDocument();
-    userEvent.click(budgetImpact);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
-    expect(assignmentModal.getByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).toBeInTheDocument();
-    const managingAssignment = assignmentModal.getByText('Managing this assignment');
-    expect(managingAssignment).toBeInTheDocument();
-    expect(assignmentModal.queryByText('You will be able to monitor the status of this assignment', { exact: false })).not.toBeInTheDocument();
-    userEvent.click(managingAssignment);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
-    expect(assignmentModal.getByText('You will be able to monitor the status of this assignment', { exact: false })).toBeInTheDocument();
-    const nextSteps = assignmentModal.getByText('Next steps for assigned learners');
-    userEvent.click(nextSteps);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
+      // Verify collapsible
+      expect(assignmentModal.getByText('How assigning this course works')).toBeInTheDocument();
+      expect(assignmentModal.getByText('Next steps for assigned learners')).toBeInTheDocument();
+      expect(assignmentModal.getByText('Learners will be notified of this course assignment by email.')).toBeInTheDocument();
+      const budgetImpact = assignmentModal.getByText('Impact on your Learner Credit budget');
+      expect(budgetImpact).toBeInTheDocument();
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+      expect(assignmentModal.queryByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).not.toBeInTheDocument();
+      userEvent.click(budgetImpact);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+      expect(assignmentModal.getByText('The total assignment cost will be earmarked as "assigned" funds', { exact: false })).toBeInTheDocument();
+      const managingAssignment = assignmentModal.getByText('Managing this assignment');
+      expect(managingAssignment).toBeInTheDocument();
+      expect(assignmentModal.queryByText('You will be able to monitor the status of this assignment', { exact: false })).not.toBeInTheDocument();
+      userEvent.click(managingAssignment);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(3);
+      expect(assignmentModal.getByText('You will be able to monitor the status of this assignment', { exact: false })).toBeInTheDocument();
+      const nextSteps = assignmentModal.getByText('Next steps for assigned learners');
+      userEvent.click(nextSteps);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
 
-    // Verify modal footer
-    expect(assignmentModal.getByText('Help Center: Course Assignments')).toBeInTheDocument();
-    const cancelAssignmentCTA = getButtonElement('Cancel', { screenOverride: assignmentModal });
-    expect(cancelAssignmentCTA).toBeInTheDocument();
-    const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
-    expect(submitAssignmentCTA).toBeInTheDocument();
+      // Verify modal footer
+      expect(assignmentModal.getByText('Help Center: Course Assignments')).toBeInTheDocument();
+      const cancelAssignmentCTA = getButtonElement('Cancel', { screenOverride: assignmentModal });
+      expect(cancelAssignmentCTA).toBeInTheDocument();
+      const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
+      expect(submitAssignmentCTA).toBeInTheDocument();
 
-    if (shouldSubmitAssignments) {
+      if (shouldSubmitAssignments) {
       // Verify textarea receives input
+        userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+        expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
+
+        // Verify assignment summary UI updates
+        await waitFor(() => {
+          expect(assignmentModal.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
+        }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+        expect(assignmentModal.queryByText('You haven\'t entered any learners yet.')).not.toBeInTheDocument();
+        expect(assignmentModal.queryByText('Add learner emails to get started.')).not.toBeInTheDocument();
+        mockLearnerEmails.forEach((learnerEmail) => {
+          expect(assignmentModal.getByText(learnerEmail)).toBeInTheDocument();
+        });
+        expect(assignmentModal.getByText('Total assignment cost')).toBeInTheDocument();
+        const expectedAssignmentCost = (
+          mockLearnerEmails.length * defaultProps.original.normalized_metadata.content_price
+        );
+        expect(assignmentModal.getByText(formatPrice(expectedAssignmentCost))).toBeInTheDocument();
+        expect(assignmentModal.getByText('Remaining after assignment')).toBeInTheDocument();
+        const expectedBalanceAfterAssignment = (
+          mockSubsidyAccessPolicy.aggregates.spendAvailableUsd - expectedAssignmentCost
+        );
+        expect(assignmentModal.getByText(formatPrice(expectedBalanceAfterAssignment))).toBeInTheDocument();
+
+        // Verify assignment is submitted successfully
+        userEvent.click(submitAssignmentCTA);
+        await waitFor(() => expect(mockAllocateContentAssignments).toHaveBeenCalledTimes(1));
+        expect(mockAllocateContentAssignments).toHaveBeenCalledWith(
+          mockSubsidyAccessPolicy.uuid,
+          expect.objectContaining({
+            content_price_cents: 10000,
+            content_key: 'course-v1:edX+course-123x+3T2020',
+            learner_emails: mockLearnerEmails,
+          }),
+        );
+
+        // Verify error states
+        if (hasAllocationException) {
+          expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
+
+          // Assert the correct error modal is displayed
+          if (allocationExceptionReason === 'content_not_in_catalog') {
+            const assignmentErrorModal = getAssignmentErrorModal();
+            expect(assignmentErrorModal.getByText(`This course is not in your ${mockSubsidyAccessPolicy.displayName} budget's catalog`)).toBeInTheDocument();
+            const exitCTA = getButtonElement('Exit', { screenOverride: assignmentErrorModal });
+            userEvent.click(exitCTA);
+            await waitFor(() => {
+            // Verify all modals close (error modal + assignment modal)
+              expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            });
+          } else if (['not_enough_value_in_subsidy', 'policy_spend_limit_reached'].includes(allocationExceptionReason)) {
+            const assignmentErrorModal = getAssignmentErrorModal();
+            const errorModalTitle = 'Not enough balance';
+            expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
+            if (shouldRetryAllocationAfterException) {
+              await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
+            } else {
+              await simulateClickErrorModalExit(assignmentErrorModal);
+            }
+          } else {
+            const assignmentErrorModal = getAssignmentErrorModal();
+            const errorModalTitle = 'Something went wrong';
+            expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
+            if (shouldRetryAllocationAfterException) {
+              await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
+              expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
+            } else {
+              await simulateClickErrorModalExit(assignmentErrorModal);
+              expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
+            }
+          }
+        } else {
+        // Verify success state
+          expect(mockInvalidateQueries).toHaveBeenCalledTimes(2);
+          expect(mockInvalidateQueries).toHaveBeenCalledWith({
+            queryKey: learnerCreditManagementQueryKeys.budget(mockSubsidyAccessPolicy.uuid),
+          });
+          expect(mockInvalidateQueries).toHaveBeenCalledWith({
+            queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseUUID),
+          });
+          expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
+          await waitFor(() => {
+          // Verify all modals close (error modal + assignment modal)
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+            // Verify toast notification was displayed
+            expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledTimes(1);
+            expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledWith({
+              totalLearnersAllocated: mockCreatedLearnerAssignments.length + mockUpdatedLearnerAssignments.length,
+              totalLearnersAlreadyAllocated: mockNoChangeLearnerAssignments.length,
+            });
+          });
+        }
+      } else {
+      // Otherwise, verify modal closes when cancel button is clicked
+        userEvent.click(cancelAssignmentCTA);
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      }
+    });
+
+    test('prevents allocation if emails are empty', async () => {
+      const hasAllocationException = false;
+      const courseImportantDates = {
+        courseStartDate: null,
+        expectedCourseStartText: '',
+      };
+      const {
+        props,
+      } = setupAssignments({
+        hasAllocationException,
+        allocationExceptionReason: undefined,
+        courseImportantDates,
+      });
+
+      const assignmentModal = renderAssignmentModal({ props });
+
+      // Verify empty state
+      expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
+      const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
+      expect(textareaInputLabel).toBeInTheDocument();
+      const textareaInput = textareaInputLabel.closest('textarea');
+      expect(textareaInput).toBeInTheDocument();
+
+      const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
+      expect(submitAssignmentCTA).toBeInTheDocument();
+
+      expect(submitAssignmentCTA).toBeDisabled();
+
+      // Test user adding email addresses by typing into the input field
       userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
       expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
 
-      // Verify assignment summary UI updates
       await waitFor(() => {
         expect(assignmentModal.getByText(`Summary (${mockLearnerEmails.length})`)).toBeInTheDocument();
-      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
-      expect(assignmentModal.queryByText('You haven\'t entered any learners yet.')).not.toBeInTheDocument();
-      expect(assignmentModal.queryByText('Add learner emails to get started.')).not.toBeInTheDocument();
-      mockLearnerEmails.forEach((learnerEmail) => {
-        expect(assignmentModal.getByText(learnerEmail)).toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
+
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA).not.toBeDisabled();
       });
-      expect(assignmentModal.getByText('Total assignment cost')).toBeInTheDocument();
-      const expectedAssignmentCost = mockLearnerEmails.length * defaultProps.original.normalized_metadata.content_price;
-      expect(assignmentModal.getByText(formatPrice(expectedAssignmentCost))).toBeInTheDocument();
-      expect(assignmentModal.getByText('Remaining after assignment')).toBeInTheDocument();
-      const expectedBalanceAfterAssignment = (
-        mockSubsidyAccessPolicy.aggregates.spendAvailableUsd - expectedAssignmentCost
-      );
-      expect(assignmentModal.getByText(formatPrice(expectedBalanceAfterAssignment))).toBeInTheDocument();
 
-      // Verify assignment is submitted successfully
-      userEvent.click(submitAssignmentCTA);
-      await waitFor(() => expect(mockAllocateContentAssignments).toHaveBeenCalledTimes(1));
-      expect(mockAllocateContentAssignments).toHaveBeenCalledWith(
-        mockSubsidyAccessPolicy.uuid,
-        expect.objectContaining({
-          content_price_cents: 10000,
-          content_key: 'course-v1:edX+course-123x+3T2020',
-          learner_emails: mockLearnerEmails,
-        }),
-      );
+      // Test user deleting the input field content by typing backspace
+      userEvent.type(textareaInput, '{backspace}'.repeat(mockLearnerEmails.join('\n').length));
+      expect(textareaInput).toHaveValue('');
 
-      // Verify error states
-      if (hasAllocationException) {
-        expect(getButtonElement('Try again', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'false');
+      await waitFor(() => {
+        expect(assignmentModal.queryByText(`Summary (${mockLearnerEmails.length})`)).not.toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
 
-        // Assert the correct error modal is displayed
-        if (allocationExceptionReason === 'content_not_in_catalog') {
-          const assignmentErrorModal = getAssignmentErrorModal();
-          expect(assignmentErrorModal.getByText(`This course is not in your ${mockSubsidyAccessPolicy.displayName} budget's catalog`)).toBeInTheDocument();
-          const exitCTA = getButtonElement('Exit', { screenOverride: assignmentErrorModal });
-          userEvent.click(exitCTA);
-          await waitFor(() => {
-            // Verify all modals close (error modal + assignment modal)
-            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-          });
-        } else if (['not_enough_value_in_subsidy', 'policy_spend_limit_reached'].includes(allocationExceptionReason)) {
-          const assignmentErrorModal = getAssignmentErrorModal();
-          const errorModalTitle = 'Not enough balance';
-          expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
-          if (shouldRetryAllocationAfterException) {
-            await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
-          } else {
-            await simulateClickErrorModalExit(assignmentErrorModal);
-          }
-        } else {
-          const assignmentErrorModal = getAssignmentErrorModal();
-          const errorModalTitle = 'Something went wrong';
-          expect(assignmentErrorModal.getByText(errorModalTitle)).toBeInTheDocument();
-          if (shouldRetryAllocationAfterException) {
-            await simulateClickErrorModalTryAgain(errorModalTitle, assignmentErrorModal);
-            expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
-          } else {
-            await simulateClickErrorModalExit(assignmentErrorModal);
-            expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
-          }
-        }
-      } else {
-        // Verify success state
-        expect(mockInvalidateQueries).toHaveBeenCalledTimes(2);
-        expect(mockInvalidateQueries).toHaveBeenCalledWith({
-          queryKey: learnerCreditManagementQueryKeys.budget(mockSubsidyAccessPolicy.uuid),
-        });
-        expect(mockInvalidateQueries).toHaveBeenCalledWith({
-          queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseUUID),
-        });
-        expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
-        await waitFor(() => {
-          // Verify all modals close (error modal + assignment modal)
-          expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA2).toBeDisabled();
+      });
+    });
 
-          // Verify toast notification was displayed
-          expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledTimes(1);
-          expect(mockDisplaySuccessfulAssignmentToast).toHaveBeenCalledWith({
-            totalLearnersAllocated: mockCreatedLearnerAssignments.length + mockUpdatedLearnerAssignments.length,
-            totalLearnersAlreadyAllocated: mockNoChangeLearnerAssignments.length,
-          });
-        });
-      }
-    } else {
-      // Otherwise, verify modal closes when cancel button is clicked
-      userEvent.click(cancelAssignmentCTA);
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    }
+    test('allows allocation if groups are assigned but emails are empty', async () => {
+      const hasAllocationException = false;
+      const courseImportantDates = {
+        courseStartDate: null,
+        expectedCourseStartText: '',
+      };
+      const {
+        props,
+      } = setupAssignments({
+        hasAllocationException,
+        allocationExceptionReason: undefined,
+        courseImportantDates,
+      });
+
+      useSubsidyAccessPolicy.mockReturnValue({
+        data: {
+          ...mockSubsidyAccessPolicy,
+          aggregates: {
+            ...mockSubsidyAccessPolicy.aggregates,
+            spendAvailableUsd: 1000,
+          },
+        },
+        isLoading: false,
+      });
+
+      getGroupMemberEmails.mockReturnValue(['email@example.com', 'jhodge@example.com', '123@example.com']);
+      const assignmentModal = renderAssignmentModal({ props });
+
+      // Verify empty state
+      expect(assignmentModal.getByText('Assign to')).toBeInTheDocument();
+      const textareaInputLabel = assignmentModal.getByLabelText('Learner email addresses');
+      expect(textareaInputLabel).toBeInTheDocument();
+      const textareaInput = textareaInputLabel.closest('textarea');
+      expect(textareaInput).toBeInTheDocument();
+
+      const submitAssignmentCTA = getButtonElement('Assign', { screenOverride: assignmentModal });
+      expect(submitAssignmentCTA).toBeInTheDocument();
+
+      expect(submitAssignmentCTA).toBeDisabled();
+
+      expect(
+        assignmentModal.getByText('Select one or more group to add its members to the assignment.'),
+      ).toBeInTheDocument();
+      const dropdownMenu = assignmentModal.getByText('Select group');
+      expect(dropdownMenu).toBeInTheDocument();
+      userEvent.click(dropdownMenu);
+      const group1 = assignmentModal.getByText('Group 1 (2)');
+      const group2 = assignmentModal.getByText('Group 2 (1)');
+      expect(group1).toBeInTheDocument();
+      expect(group2).toBeInTheDocument();
+
+      userEvent.click(group1);
+      userEvent.click(group2);
+      const applyButton = assignmentModal.getByText('Apply selections');
+
+      await waitFor(() => {
+        userEvent.click(applyButton);
+        expect(assignmentModal.getByText('2 groups selected')).toBeInTheDocument();
+        expect(assignmentModal.getByText('email@example.com')).toBeInTheDocument();
+      });
+
+      // Test user adding email addresses by typing into the input field
+      userEvent.type(textareaInput, mockLearnerEmails.join('{enter}'));
+      expect(textareaInput).toHaveValue(mockLearnerEmails.join('\n'));
+
+      await waitFor(() => {
+        expect(assignmentModal.getByText(`Summary (${3 + mockLearnerEmails.length})`)).toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
+
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA).not.toBeDisabled();
+      });
+
+      // Test user deleting the input field content by typing backspace
+      userEvent.type(textareaInput, '{backspace}'.repeat(mockLearnerEmails.join('\n').length));
+      expect(textareaInput).toHaveValue('');
+
+      await waitFor(() => {
+        expect(assignmentModal.queryByText('Summary (3)')).toBeInTheDocument();
+      }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 100 });
+
+      await waitFor(() => {
+        const submitAssignmentCTA2 = getButtonElement('Assign', { screenOverride: assignmentModal });
+        expect(submitAssignmentCTA2).toBeInTheDocument();
+        // Verify that assign button in footer is enabled
+        expect(submitAssignmentCTA2).not.toBeDisabled();
+      });
+    });
   });
 
   test.each([

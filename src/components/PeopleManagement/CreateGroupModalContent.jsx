@@ -11,7 +11,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import InviteModalSummary from '../learner-credit-management/invite-modal/InviteModalSummary';
 import InviteSummaryCount from '../learner-credit-management/invite-modal/InviteSummaryCount';
 import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
-import { isInviteEmailAddressesInputValueValid } from '../learner-credit-management/cards/data';
+import { isInviteEmailAddressesInputValueValid, removeInvalidEmailsFromList } from '../learner-credit-management/cards/data';
 import { HELP_CENTER_URL, MAX_LENGTH_GROUP_NAME } from './constants';
 import EnterpriseCustomerUserDataTable from './EnterpriseCustomerUserDataTable';
 import { useEnterpriseLearners } from '../learner-credit-management/data';
@@ -56,7 +56,8 @@ const CreateGroupModalContent = ({
       onEmailAddressesChange([]);
       return;
     }
-    setLearnerEmails(prev => [...prev, ...value]);
+    // Merge new emails with old emails (removing duplicates)
+    setLearnerEmails(prev => _.union(prev, value));
     setIsCreateGroupListSelection(true);
   }, [onEmailAddressesChange, setIsCreateGroupListSelection]);
 
@@ -70,11 +71,13 @@ const CreateGroupModalContent = ({
   }, [onEmailAddressesChange]);
 
   const handleCsvUpload = useCallback((emails) => {
+    // Remove errored emails from the main list
+    const cleanEmails = removeInvalidEmailsFromList(learnerEmails, memberInviteMetadata);
     // Merge new emails with old emails (removing duplicates)
-    const allEmails = _.union(learnerEmails, splitAndTrim('\n', emails));
+    const allEmails = _.union(cleanEmails, splitAndTrim('\n', emails));
     setLearnerEmails(allEmails);
     setIsCreateGroupFileUpload(true);
-  }, [learnerEmails, setIsCreateGroupFileUpload]);
+  }, [learnerEmails, memberInviteMetadata, setIsCreateGroupFileUpload]);
 
   // Validate the learner emails emails from user input whenever it changes
   useEffect(() => {

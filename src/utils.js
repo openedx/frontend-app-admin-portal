@@ -662,6 +662,19 @@ function splitAndTrim(separator, str) {
   return str.split(separator).map((subStr) => subStr.trim()).filter((subStr) => subStr.length > 0);
 }
 
+/**
+ *
+ * @param {Array<string>} list
+ *  List of strings to remove from
+ * @param {Array<string>} stringsToRemove
+ *  Strings that should be removed from list
+ * @returns {Array<string>}
+ */
+function removeStringsFromList(list, stringsToRemove) {
+  const removalSet = new Set([...stringsToRemove]);
+  return list.filter((item) => !removalSet.has(item));
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -712,4 +725,5 @@ export {
   getTimeStampedFilename,
   downloadCsv,
   splitAndTrim,
+  removeStringsFromList,
 };
