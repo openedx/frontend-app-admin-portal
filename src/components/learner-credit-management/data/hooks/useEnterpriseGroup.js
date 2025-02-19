@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { camelCaseObject } from '@edx/frontend-platform/utils';
 import isEmpty from 'lodash/isEmpty';
 
 import { learnerCreditManagementQueryKeys } from '../constants';
@@ -15,7 +16,8 @@ const getEnterpriseGroup = async ({ subsidyAccessPolicy }) => {
     return null;
   }
   const response = await LmsApiService.fetchEnterpriseGroup(subsidyAccessPolicy.groupAssociations[0]);
-  return response.data;
+  const enterpriseGroup = camelCaseObject(response.data);
+  return enterpriseGroup;
 };
 
 const useEnterpriseGroup = (subsidyAccessPolicy, { queryOptions } = {}) => useQuery({
