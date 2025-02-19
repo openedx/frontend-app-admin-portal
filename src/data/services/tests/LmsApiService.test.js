@@ -109,7 +109,7 @@ describe('LmsApiService', () => {
       data: {
         uuid: 'test-uuid',
         name: 'test-name',
-        enterprise_customer: 'test-enterprise-customer',
+        enterpriseCustomer: 'test-enterprise-customer',
         members: [],
       },
     });
