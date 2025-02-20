@@ -66,14 +66,20 @@ class LmsApiService {
 
   static enterpriseLearnerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-learner/`;
 
-  static createEnterpriseGroup({ groupName, enterpriseUUID }: CreateEnterpriseGroupArgs): EnterpriseGroup {
+  static async createEnterpriseGroup(
+    {
+      groupName,
+      enterpriseUUID,
+    }: CreateEnterpriseGroupArgs,
+  ): EnterpriseGroupResponse {
     const postParams = {
       name: groupName,
       enterprise_customer: enterpriseUUID,
       members: [],
     };
     const createEnterpriseGroupUrl = `${LmsApiService.enterpriseGroupListUrl}`;
-    return camelCaseObject(LmsApiService.apiClient().post(createEnterpriseGroupUrl, postParams));
+    const response = await LmsApiService.apiClient().post(createEnterpriseGroupUrl, postParams);
+    return camelCaseObject(response);
   }
 
   static fetchEnterpriseSsoOrchestrationRecord(configurationUuid) {
