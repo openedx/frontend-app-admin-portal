@@ -1,16 +1,18 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import PropTypes from 'prop-types';
 import {
-  Icon, IconButton, Stack,
+  Hyperlink, Icon, IconButton, Stack,
 } from '@openedx/paragon';
 import {
   Person,
 } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 
-const MemberDetailsTableCell = ({
-  row,
-}) => {
+const MemberDetailsTableCell = ({ row }) => {
+  const { enterpriseSlug, groupUuid } = useParams();
+  const hyperlink = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/${groupUuid}/learner-detail/${row.original.lmsUserId}`;
   let memberDetails;
   let memberDetailIcon = (
     <IconButton
@@ -52,7 +54,12 @@ const MemberDetailsTableCell = ({
     memberDetails = (
       <div className="mb-n3">
         <p className="font-weight-bold mb-0">
-          {row.original.memberDetails.userName}
+          <Hyperlink
+            destination={hyperlink}
+            isInline
+          >
+            {row.original.memberDetails.userName}
+          </Hyperlink>
         </p>
         <p>{row.original.memberDetails.userEmail}</p>
       </div>
@@ -75,6 +82,7 @@ const MemberDetailsTableCell = ({
 MemberDetailsTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
+      lmsUserId: PropTypes.string.isRequired,
       memberDetails: PropTypes.shape({
         userEmail: PropTypes.string.isRequired,
         userName: PropTypes.string,
