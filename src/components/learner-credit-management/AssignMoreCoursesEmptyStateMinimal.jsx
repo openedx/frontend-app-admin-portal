@@ -4,9 +4,10 @@ import { Button, Card } from '@openedx/paragon';
 
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import {
-  formatDate, formatPrice, useBudgetId, usePathToCatalogTab, useSubsidyAccessPolicy,
+  formatDate, useBudgetId, usePathToCatalogTab, useSubsidyAccessPolicy,
 } from './data';
 import nameYourLearner from './assets/reading.svg';
+import { formatPrice } from '../../utils';
 
 const AssignMoreCoursesEmptyStateMinimal = () => {
   const { subsidyAccessPolicyId } = useBudgetId();

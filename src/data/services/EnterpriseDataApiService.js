@@ -1,5 +1,5 @@
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { snakeCaseObject, camelCaseObject } from '@edx/frontend-platform/utils';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 import omitBy from 'lodash/omitBy';
 
 import { isFalsy } from '../../utils';

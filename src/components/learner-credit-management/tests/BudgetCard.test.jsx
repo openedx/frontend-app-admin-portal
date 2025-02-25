@@ -4,20 +4,17 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import dayjs from 'dayjs';
-import {
-  screen,
-  render,
-  within,
-} from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { QueryClientProvider } from '@tanstack/react-query';
 import BudgetCard from '../BudgetCard';
-import { formatPrice, useSubsidySummaryAnalyticsApi, useBudgetRedemptions } from '../data';
+import { useBudgetRedemptions, useSubsidySummaryAnalyticsApi } from '../data';
 import { BUDGET_STATUSES, BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import { queryClient } from '../../test/testUtils';
+import { formatPrice } from '../../../utils';
 
 jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),

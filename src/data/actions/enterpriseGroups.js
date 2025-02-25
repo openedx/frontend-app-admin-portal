@@ -5,7 +5,7 @@ import {
   FETCH_ENTERPRISE_GROUPS_FAILURE,
   CLEAR_ENTERPRISE_GROUPS,
 } from '../constants/enterpriseGroups';
-import EnterpriseDataApiService from '../services/EnterpriseDataApiService';
+import { getAllFlexEnterpriseGroups } from '../../components/learner-credit-management/data/hooks/useAllFlexEnterpriseGroups';
 
 const fetchEnterpriseGroupsRequest = () => ({ type: FETCH_ENTERPRISE_GROUPS_REQUEST });
 const fetchEnterpriseGroupsSuccess = data => ({
@@ -20,9 +20,9 @@ const fetchEnterpriseGroupsFailure = error => ({
 const fetchEnterpriseGroups = enterpriseId => (
   (dispatch) => {
     dispatch(fetchEnterpriseGroupsRequest());
-    return EnterpriseDataApiService.fetchEnterpriseGroups(enterpriseId)
+    return getAllFlexEnterpriseGroups({ enterpriseId })
       .then((response) => {
-        dispatch(fetchEnterpriseGroupsSuccess(response.data));
+        dispatch(fetchEnterpriseGroupsSuccess(response));
       })
       .catch((error) => {
         logError(error);

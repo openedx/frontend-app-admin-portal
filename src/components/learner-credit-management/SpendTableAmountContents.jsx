@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Stack } from '@openedx/paragon';
 
-import { formatPrice } from './data';
+import { formatPrice } from '../../utils';
 
 const SpendTableAmountContents = ({ row }) => {
   const formattedContentPrice = formatPrice(row.original.courseListPrice);

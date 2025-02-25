@@ -6,14 +6,13 @@ import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import {
   EMPTY_CONTENT_PRICE_VALUE,
   EXEC_ED_COURSE_TYPE,
-  formatPrice,
   getAssignableCourseRuns,
   getEnrollmentDeadline,
   useBudgetId,
   useCatalogContainsContentItemsMultipleQueries,
   useSubsidyAccessPolicy,
 } from '../../data';
-import { pluralText } from '../../../../utils';
+import { formatPrice, pluralText } from '../../../../utils';
 import { ENTERPRISE_RESTRICTION_TYPE } from '../../data/constants';
 
 const messages = defineMessages({

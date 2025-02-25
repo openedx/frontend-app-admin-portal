@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import TableComponent from '../../components/TableComponent';
-import { paginateTable, sortTable, clearTable } from '../../data/actions/table';
+import { clearTable, paginateTable, sortTable } from '../../data/actions/table';
 
 const mapStateToProps = (state, ownProps) => {
   const tableState = state.table[ownProps.id] || {};

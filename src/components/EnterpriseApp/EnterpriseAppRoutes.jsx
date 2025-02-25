@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { features } from '../../config';
 
@@ -34,7 +34,6 @@ const EnterpriseAppRoutes = ({
 }) => {
   const { canManageLearnerCredit } = useContext(EnterpriseSubsidiesContext);
   const { enterpriseAppPage } = useParams();
-
   return (
     <Routes>
       {enterpriseAppPage === ROUTE_NAMES.learners && (

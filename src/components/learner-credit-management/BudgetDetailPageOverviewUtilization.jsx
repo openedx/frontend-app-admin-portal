@@ -2,15 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Stack, Collapsible, Row, Col, Button,
+  Button, Col, Collapsible, Row, Stack,
 } from '@openedx/paragon';
 import { ArrowDownward } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { generatePath, useParams, Link } from 'react-router-dom';
+import { generatePath, Link, useParams } from 'react-router-dom';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { formatPrice, LEARNER_CREDIT_ROUTE } from './data';
+import { LEARNER_CREDIT_ROUTE } from './data';
 import EVENT_NAMES from '../../eventTracking';
+import { formatPrice } from '../../utils';
 
 const BudgetDetailPageOverviewUtilization = ({
   budgetId,

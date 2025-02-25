@@ -6,7 +6,8 @@ import { Person } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { hasLearnerEmailsSummaryListTruncation, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from '../cards/data';
-import { formatPrice } from '../data';
+
+import { formatPrice } from '../../../utils';
 
 const AssignmentModalSummaryLearnerList = ({
   courseRun,

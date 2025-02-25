@@ -4,7 +4,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import TableContainer from '../../containers/TableContainer';
 import {
-  i18nFormatTimestamp, i18nFormatPassedTimestamp, i18nFormatProgressStatus, formatPercentage,
+  formatPercentage, i18nFormatPassedTimestamp, i18nFormatProgressStatus, i18nFormatTimestamp,
 } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 
@@ -134,7 +134,6 @@ const EnrollmentsTable = () => {
     course_list_price: enrollment.course_list_price ? `$${enrollment.course_list_price}` : '',
     current_grade: formatPercentage({ decimal: enrollment.current_grade }),
   }));
-
   return (
     <TableContainer
       id="enrollments"
