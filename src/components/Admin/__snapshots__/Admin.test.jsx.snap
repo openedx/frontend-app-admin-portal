@@ -779,6 +779,138 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -2413,6 +2545,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -4103,6 +4367,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -5737,6 +6133,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -7427,6 +7955,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -9061,6 +9721,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -10751,6 +11543,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -12385,6 +13309,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -14075,6 +15131,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -15737,6 +16925,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -17371,6 +18691,138 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -19110,6 +20562,138 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -20744,6 +22328,138 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -22434,6 +24150,138 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                                 </span>
                               </span>
                             </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
                           </tr>
                         </thead>
                         <tbody
@@ -23281,6 +25129,138 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -24173,6 +26153,138 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"
@@ -25880,6 +27992,138 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                               >
                                 <span>
                                   Log Views
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: Before
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes: After
+                                </span>
+                                <span
+                                  className="pgn__icon"
+                                  data-testid="arrow-drop-up-down"
+                                  style={
+                                    {
+                                      "opacity": 0.5,
+                                    }
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m7 10 5-5 5 5H7ZM7 14l5 5 5-5H7Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
+                              </span>
+                            </th>
+                            <th
+                              colSpan={1}
+                              onClick={[Function]}
+                              role="columnheader"
+                              style={
+                                {
+                                  "cursor": "pointer",
+                                }
+                              }
+                              title="Toggle SortBy"
+                            >
+                              <span
+                                className="d-flex align-items-center"
+                              >
+                                <span>
+                                  Learning Outcomes % Difference
                                 </span>
                                 <span
                                   className="pgn__icon"

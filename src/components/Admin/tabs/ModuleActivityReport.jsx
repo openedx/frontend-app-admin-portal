@@ -147,6 +147,30 @@ const ModuleActivityReport = ({ enterpriseId }) => {
             }),
             accessor: 'log_viewed',
           },
+          {
+            Header: intl.formatMessage({
+              id: 'adminPortal.LPR.moduleActivityReport.table.header.learningOutcomesBefore',
+              defaultMessage: 'Learning Outcomes: Before',
+              description: 'Header for the learning outcomes before the user has started the course column in the module activity report table',
+            }),
+            accessor: 'avg_before_lo_score',
+          },
+          {
+            Header: intl.formatMessage({
+              id: 'adminPortal.LPR.moduleActivityReport.table.header.learningOutcomesAfter',
+              defaultMessage: 'Learning Outcomes: After',
+              description: 'Header for the learning outcomes after the user has completed the course column in the module activity report table',
+            }),
+            accessor: 'avg_after_lo_score',
+          },
+          {
+            Header: intl.formatMessage({
+              id: 'adminPortal.LPR.moduleActivityReport.table.header.learningOutcomesPercentageDifference',
+              defaultMessage: 'Learning Outcomes % Difference',
+              description: 'Header for the learning outcomes percentage difference for learning outcome before and after the course column in the module activity report table',
+            }),
+            accessor: 'avg_lo_percentage_difference',
+          },
         ]}
         tableActions={[
           <DownloadCsvButton
