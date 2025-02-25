@@ -1686,11 +1686,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -3348,11 +3344,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -5010,11 +5002,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -6672,11 +6660,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -8334,11 +8318,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -9996,11 +9976,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -11658,11 +11634,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -13320,11 +13292,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -14982,11 +14950,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -16644,11 +16608,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -18355,11 +18315,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -20017,11 +19973,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -21679,11 +21631,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
@@ -25153,11 +25101,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                               >
                                 All Groups
                               </option>
-                              <option
-                                value="7d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Test Group
-                              </option>
+                              <option />
                             </select>
                           </div>
                         </div>
