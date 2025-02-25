@@ -27,6 +27,9 @@ const getMockData = ({ count }) => {
       percentage_completed_activities: `${(i % 100)}%`,
       hours_online: `${i} Hours Online`,
       log_viewed: `${i} Log Views`,
+      avg_before_lo_score: 3.00,
+      avg_after_lo_score: 5.00,
+      avg_lo_percentage_difference: 50,
     });
   }
   return data;
@@ -59,5 +62,8 @@ describe('ModuleActivityReport', () => {
     expect(screen.getByText('% Activities Complete')).toBeInTheDocument();
     expect(screen.getByText('Learning Hours')).toBeInTheDocument();
     expect(screen.getByText('Log Views')).toBeInTheDocument();
+    expect(screen.getByText('Learning Outcomes: Before')).toBeInTheDocument();
+    expect(screen.getByText('Learning Outcomes: After')).toBeInTheDocument();
+    expect(screen.getByText('Learning Outcomes % Difference')).toBeInTheDocument();
   });
 });
