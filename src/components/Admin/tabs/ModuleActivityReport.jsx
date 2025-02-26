@@ -121,7 +121,9 @@ const ModuleActivityReport = ({ enterpriseId }) => {
               defaultMessage: '% Activities Complete',
               description: 'Header for the percentage of activities completed column in the module activity report table',
             }),
-            accessor: 'percentage_completed_activities',
+            Cell: ({ row }) => (
+              `${row.original.percentage_completed_activities} %`
+            ),
           },
           {
             Header: intl.formatMessage({
@@ -169,7 +171,9 @@ const ModuleActivityReport = ({ enterpriseId }) => {
               defaultMessage: 'Learning Outcomes % Difference',
               description: 'Header for the learning outcomes percentage difference for learning outcome before and after the course column in the module activity report table',
             }),
-            accessor: 'avg_lo_percentage_difference',
+            Cell: ({ row }) => (
+              _.isNumber(row.original.avg_lo_percentage_difference) ? `${row.original.avg_lo_percentage_difference} %` : row.original.avg_lo_percentage_difference
+            ),
           },
         ]}
         tableActions={[
