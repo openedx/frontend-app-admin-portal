@@ -8,22 +8,23 @@ import { toggleSidebarToggle } from '../../data/actions/sidebar';
 const mapStateToProps = (state) => {
   const enterpriseListState = state.table['enterprise-list'] || {};
   return {
-    enterprises: enterpriseListState.data,
-    error: state.portalConfiguration.error,
+    adminPortalLearnerProfileViewEnabled: state.portalConfiguration.adminPortalLearnerProfileViewEnabled,
     disableExpiryMessagingForLearnerCredit: state.portalConfiguration.disableExpiryMessagingForLearnerCredit,
-    enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
-    enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen,
-    enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
     enableAnalyticsScreen: state.portalConfiguration.enableAnalyticsScreen,
+    enableCodeManagementScreen: state.portalConfiguration.enableCodeManagementScreen,
     enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
     enableLmsConfigurationsScreen: state.portalConfiguration.enableLmsConfigurationsScreen,
-    enableReportingConfigurationsScreen: state.portalConfiguration.enableReportingConfigScreen,
     enablePortalLearnerCreditManagementScreen: state.portalConfiguration.enablePortalLearnerCreditManagementScreen,
+    enableReportingConfigurationsScreen: state.portalConfiguration.enableReportingConfigScreen,
+    enableSamlConfigurationScreen: state.portalConfiguration.enableSamlConfigurationScreen,
+    enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen,
+    enterpriseBranding: state.portalConfiguration.enterpriseBranding,
+    enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
     enterpriseGroupsV2: state.portalConfiguration.enterpriseGroupsV2,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,
-    enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
-    enterpriseBranding: state.portalConfiguration.enterpriseBranding,
+    enterprises: enterpriseListState.data,
+    error: state.portalConfiguration.error,
     loading: state.portalConfiguration.loading,
   };
 };
