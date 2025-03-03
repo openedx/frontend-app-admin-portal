@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { useEnterpriseGroupUuid, useEnterpriseGroupLearnersTableData } from '../data/hooks';
 import GroupDetailPage from '../GroupDetailPage/GroupDetailPage';
@@ -61,6 +61,9 @@ const initialStoreState = {
     enterpriseId: enterpriseUUID,
     enterpriseSlug: TEST_ENTERPRISE_SLUG,
     enterpriseGroupsV2: true,
+    enterpriseFeatures: {
+      adminPortalLearnerProfileViewEnabled: true,
+    },
   },
 };
 
@@ -118,7 +121,8 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByText('0 members')).toBeInTheDocument();
     expect(screen.getByText('View group progress')).toBeInTheDocument();
     expect(screen.getByText('Add and remove group members.')).toBeInTheDocument();
-    expect(screen.getByText('Test 2u')).toBeInTheDocument();
+    // when adminPortalLearnerProfileViewEnabled, name turns into a link
+    expect(screen.getByRole('link', { name: 'Test 2u' })).toBeInTheDocument();
     const lprUrl = screen.getByText('View group progress');
     expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345');
     userEvent.click(lprUrl);
@@ -143,6 +147,19 @@ describe('<GroupDetailPageWrapper >', () => {
       pageSize: 10,
       sortBy: [{ desc: false, id: 'enrollmentCount' }],
     }));
+  });
+  it('renders the GroupDetailPage when adminPortalLearnerProfileViewEnabled is false', async () => {
+    const initialState = {
+      portalConfiguration: {
+        ...initialStoreState.portalConfiguration,
+        enterpriseFeatures: {
+          adminPortalLearnerProfileViewEnabled: false,
+        },
+      },
+    };
+    renderWithRouter(<GroupDetailPageWrapper initialState={initialState} />);
+    expect(screen.queryByRole('link', { name: 'Test 2u' })).not.toBeInTheDocument();
+    expect(screen.getByText('Test 2u')).toBeInTheDocument();
   });
   it('edit flex group name', async () => {
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseGroup');

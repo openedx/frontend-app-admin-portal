@@ -1,12 +1,18 @@
 import PropTypes from 'prop-types';
-
+import { connect } from 'react-redux';
+import { useParams } from 'react-router';
 import {
-  Avatar, Card, Col, Row,
+  Avatar, Card, Col, Hyperlink, Row,
 } from '@openedx/paragon';
 
-const OrgMemberCard = ({ original }) => {
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+
+const OrgMemberCard = ({ original, learnerProfileViewEnabled }) => {
+  const { enterpriseSlug } = useParams();
   const { enterpriseCustomerUser, enrollments } = original;
-  const { name, joinedOrg, email } = enterpriseCustomerUser;
+  const {
+    name, joinedOrg, email, userId,
+  } = enterpriseCustomerUser;
 
   return (
     <Card orientation="horizontal">
@@ -32,6 +38,16 @@ const OrgMemberCard = ({ original }) => {
               <h5 className="pt-2 text-uppercase">Enrollments</h5>
               {enrollments}
             </Col>
+            {learnerProfileViewEnabled && (
+              <Col>
+                <Hyperlink
+                  className="pt-4"
+                  destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/learner-detail/${userId}`}
+                >
+                  View more
+                </Hyperlink>
+              </Col>
+            )}
           </Row>
         </Card.Section>
       </Card.Body>
@@ -42,12 +58,18 @@ const OrgMemberCard = ({ original }) => {
 OrgMemberCard.propTypes = {
   original: PropTypes.shape({
     enterpriseCustomerUser: PropTypes.shape({
+      userId: PropTypes.number.isRequired,
       email: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       joinedOrg: PropTypes.string.isRequired,
     }),
     enrollments: PropTypes.number.isRequired,
   }),
+  learnerProfileViewEnabled: PropTypes.bool,
 };
 
-export default OrgMemberCard;
+const mapStateToProps = state => ({
+  learnerProfileViewEnabled: state.portalConfiguration.enterpriseFeatures?.adminPortalLearnerProfileViewEnabled,
+});
+
+export default connect(mapStateToProps)(OrgMemberCard);
