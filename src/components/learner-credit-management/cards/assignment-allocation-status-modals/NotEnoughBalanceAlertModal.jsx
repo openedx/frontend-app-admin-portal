@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AlertModal, ActionRow, Button } from '@openedx/paragon';
+import { ActionRow, AlertModal, Button } from '@openedx/paragon';
 import { Error } from '@openedx/paragon/icons';
 
 import { commonErrorAlertModalPropTypes, getBudgetDisplayName } from '../data';
-import { formatPrice, useBudgetId, useSubsidyAccessPolicy } from '../../data';
+import { useBudgetId, useSubsidyAccessPolicy } from '../../data';
+import { formatPrice } from '../../../../utils';
 
 const NotEnoughBalanceAlertModal = ({
   isErrorModalOpen,

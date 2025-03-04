@@ -5,10 +5,10 @@ import { Card, Icon, Stack } from '@openedx/paragon';
 import { Error } from '@openedx/paragon/icons';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import { formatPrice } from '../data';
 import AssignmentModalSummaryEmptyState from './AssignmentModalSummaryEmptyState';
 import AssignmentModalSummaryLearnerList from './AssignmentModalSummaryLearnerList';
 import AssignmentModalSummaryErrorState from './AssignmentModalSummaryErrorState';
+import { formatPrice } from '../../../utils';
 
 const AssignmentModalSummaryContents = ({
   hasLearnerEmails,

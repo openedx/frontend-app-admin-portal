@@ -16,9 +16,18 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import { features } from './config';
 
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE,
-  HELP_CENTER_BLACKBOARD, HELP_CENTER_CANVAS, HELP_CENTER_CORNERSTONE,
-  HELP_CENTER_DEGREED, HELP_CENTER_MOODLE, HELP_CENTER_SAP, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE,
+  CANVAS_TYPE,
+  CORNERSTONE_TYPE,
+  DEGREED2_TYPE,
+  HELP_CENTER_BLACKBOARD,
+  HELP_CENTER_CANVAS,
+  HELP_CENTER_CORNERSTONE,
+  HELP_CENTER_DEGREED,
+  HELP_CENTER_MOODLE,
+  HELP_CENTER_SAP,
+  MOODLE_TYPE,
+  SAP_TYPE,
 } from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';
@@ -675,6 +684,16 @@ function removeStringsFromList(list, stringsToRemove) {
   return list.filter((item) => !removalSet.has(item));
 }
 
+const formatPrice = (price, options = {}) => {
+  const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    ...options,
+  });
+  return USDollar.format(Math.abs(price));
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -726,4 +745,5 @@ export {
   downloadCsv,
   splitAndTrim,
   removeStringsFromList,
+  formatPrice,
 };

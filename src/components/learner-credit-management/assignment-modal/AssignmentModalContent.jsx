@@ -11,18 +11,14 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
 import { connect } from 'react-redux';
 import BaseCourseCard from '../cards/BaseCourseCard';
-import {
-  formatPrice,
-  useBudgetId,
-  useSubsidyAccessPolicy,
-  useGroupDropdownToggle,
-} from '../data';
+import { useBudgetId, useGroupDropdownToggle, useSubsidyAccessPolicy } from '../data';
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInputValueValid } from '../cards/data';
 import AssignmentAllocationHelpCollapsibles from './AssignmentAllocationHelpCollapsibles';
 import EVENT_NAMES from '../../../eventTracking';
 import FlexGroupDropdown from '../FlexGroupDropdown';
 import { GROUP_DROPDOWN_TEXT } from '../../PeopleManagement/constants';
+import { formatPrice } from '../../../utils';
 
 const AssignmentModalContent = ({
   enterpriseId,
