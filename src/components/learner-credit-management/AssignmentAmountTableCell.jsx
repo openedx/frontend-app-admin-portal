@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import {
-  formatPrice, getBudgetStatus, useBudgetId, useSubsidyAccessPolicy,
-} from './data';
+import { getBudgetStatus, useBudgetId, useSubsidyAccessPolicy } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import { formatPrice } from '../../utils';
 
 const AssignmentAmountTableCell = ({ row }) => {
   const intl = useIntl();

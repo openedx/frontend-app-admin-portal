@@ -34,6 +34,7 @@ import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
 import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 import ModuleActivityReport from './tabs/ModuleActivityReport';
+import EnrollmentsTablePOC from '../EnrollmentsTable/EnrollmentsTable';
 
 class Admin extends React.Component {
   constructor() {
@@ -531,28 +532,27 @@ class Admin extends React.Component {
                   >
                     <div className="row">
                       <div className="col">
-                        {!error && !loading && !this.hasEmptyData() && (
-                          <>
-                            <div className="row pb-3 mt-2">
-                              <div className="col-12 col-md-12 col-xl-12">
-                                {this.renderDownloadButton()}
-                              </div>
-                            </div>
-                            {this.displaySearchBar() && (
-                              <AdminSearchForm
-                                searchParams={searchParams}
-                                searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                                tableData={this.getTableData() ? this.getTableData().results : []}
-                                budgets={budgets}
-                                groups={groups}
-                                enterpriseId={enterpriseId}
-                              />
-                            )}
-                          </>
+                        {/* {!error && !loading && !this.hasEmptyData() && ( */}
+                        <div className="row pb-3 mt-2">
+                          <div className="col-12 col-md-12 col-xl-12">
+                            {this.renderDownloadButton()}
+                          </div>
+                        </div>
+                        {this.displaySearchBar() && (
+                        <AdminSearchForm
+                          searchParams={searchParams}
+                          searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
+                          tableData={this.getTableData() ? this.getTableData().results : []}
+                          budgets={budgets}
+                          groups={groups}
+                          enterpriseId={enterpriseId}
+                        />
                         )}
+                        {/* )} */}
                         {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
                         <div className="mt-3 mb-5">
-                          {enterpriseId && tableMetadata.component}
+                          <EnrollmentsTablePOC searchParams={searchParams} />
+                          {/* {enterpriseId && tableMetadata.component} */}
                         </div>
                       </div>
                     </div>

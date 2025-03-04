@@ -14,14 +14,13 @@ import dayjs from 'dayjs';
 import CourseCard from '../CourseCard';
 import {
   DATETIME_FORMAT,
-  formatPrice,
   getNormalizedEnrollByDate,
   learnerCreditManagementQueryKeys,
   SHORT_MONTH_DATE_FORMAT,
   useBudgetId,
-  useSubsidyAccessPolicy,
-  useEnterpriseFlexGroups,
   useCatalogContainsContentItemsMultipleQueries,
+  useEnterpriseFlexGroups,
+  useSubsidyAccessPolicy,
 } from '../../data';
 import { getButtonElement, queryClient } from '../../../test/testUtils';
 
@@ -30,6 +29,7 @@ import { BudgetDetailPageContext } from '../../BudgetDetailPageWrapper';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../data';
 import { getGroupMemberEmails } from '../../data/hooks/useEnterpriseFlexGroups';
 import { ENTERPRISE_RESTRICTION_TYPE } from '../../data/constants';
+import { formatPrice } from '../../../../utils';
 
 jest.mock('@edx/frontend-platform', () => ({
   getConfig: jest.fn(() => ({})),

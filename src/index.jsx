@@ -4,11 +4,7 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  initialize,
-  APP_INIT_ERROR,
-  APP_READY,
-  subscribe,
-  mergeConfig,
+  APP_INIT_ERROR, APP_READY, initialize, mergeConfig, subscribe,
 } from '@edx/frontend-platform';
 import { ErrorPage } from '@edx/frontend-platform/react';
 import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
@@ -50,3 +46,4 @@ initialize({
   requireAuthenticatedUser: false,
   hydrateAuthenticatedUser: true,
 });
+export { formatPrice } from './utils';

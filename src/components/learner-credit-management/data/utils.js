@@ -223,16 +223,6 @@ export const getBudgetStatus = ({
   };
 };
 
-export const formatPrice = (price, options = {}) => {
-  const USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    ...options,
-  });
-  return USDollar.format(Math.abs(price));
-};
-
 /**
  * Orders a list of budgets based on their status, end date, and name.
  * Active budgets come first, followed by scheduled budgets, and then expired budgets.

@@ -9,7 +9,8 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { useCourseCardMetadata } from './data';
 import AssignmentModalImportantDates from '../assignment-modal/AssignmentModalmportantDates';
-import { formatPrice } from '../data';
+
+import { formatPrice } from '../../../utils';
 
 const BaseCourseCard = ({
   original,

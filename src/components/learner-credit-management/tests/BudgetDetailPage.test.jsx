@@ -19,7 +19,6 @@ import BudgetDetailPage from '../BudgetDetailPage';
 import {
   DEFAULT_PAGE,
   formatDate,
-  formatPrice,
   PAGE_SIZE,
   useBudgetContentAssignments,
   useBudgetDetailActivityOverview,
@@ -47,6 +46,7 @@ import {
   mockSubsidySummary,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
+import { formatPrice } from '../../../utils';
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
