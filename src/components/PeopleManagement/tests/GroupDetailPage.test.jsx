@@ -244,6 +244,6 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(uuidArg).toEqual('12345');
     const learnersJson = Object.fromEntries(learnersFormDataArg);
     expect(learnersJson).toEqual({ learner_emails: 'test@2u.com' });
-    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['people-management', 'group', '12345'] });
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['people-management', 'learners', '12345'] });
   });
 });
