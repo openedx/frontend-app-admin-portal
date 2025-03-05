@@ -1,8 +1,7 @@
-import React, {
-  useCallback, useEffect, useMemo, useState,
+import {
+  useCallback, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
 import {
   Col, Container, Row, Hyperlink,
 } from '@openedx/paragon';
@@ -11,78 +10,34 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import AddMembersModalSummary from './AddMembersModalSummary';
 import InviteSummaryCount from '../../learner-credit-management/invite-modal/InviteSummaryCount';
 import FileUpload from '../../learner-credit-management/invite-modal/FileUpload';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isInviteEmailAddressesInputValueValid } from '../../learner-credit-management/cards/data';
 import EnterpriseCustomerUserDataTable from '../EnterpriseCustomerUserDataTable';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 import { HELP_CENTER_URL } from '../constants';
+import { removeStringsFromList, splitAndTrim } from '../../../utils';
+import { addEmailsAction, initializeEnterpriseEmailsAction } from '../data/actions';
+import { useValidatedEmailsContext } from '../data/ValidatedEmailsContext';
 
 const AddMembersModalContent = ({
-  onEmailAddressesChange,
   enterpriseUUID,
   groupName,
   enterpriseGroupLearners,
 }) => {
-  const [learnerEmails, setLearnerEmails] = useState([]);
-  const [emailAddressesInputValue, setEmailAddressesInputValue] = useState('');
-  const [memberInviteMetadata, setMemberInviteMetadata] = useState({
-    isValidInput: null,
-    lowerCasedEmails: [],
-    duplicateEmails: [],
-    emailsNotInOrg: [],
-  });
+  const memberInviteMetadata = useValidatedEmailsContext();
+  const { dispatch, lowerCasedEmails } = memberInviteMetadata;
   const { allEnterpriseLearners } = useEnterpriseLearners({ enterpriseUUID });
 
-  const handleAddMembersBulkAction = useCallback((value) => {
-    if (!value) {
-      setLearnerEmails([]);
-      onEmailAddressesChange([]);
-      return;
-    }
-    setLearnerEmails(prev => [...prev, ...value]);
-  }, [onEmailAddressesChange]);
-
-  const handleRemoveMembersBulkAction = useCallback((value) => {
-    if (!value) {
-      setLearnerEmails([]);
-      onEmailAddressesChange([]);
-      return;
-    }
-    setLearnerEmails(prev => prev.filter((el) => !value.includes(el)));
-  }, [onEmailAddressesChange]);
-
-  const handleEmailAddressesChanged = useCallback((value) => {
-    if (!value) {
-      setLearnerEmails([]);
-      onEmailAddressesChange([]);
-      return;
-    }
-    // handles csv upload value and formats emails into an array of strings
-    const emails = value.split('\n').map((email) => email.trim()).filter((email) => email.length > 0);
-    setLearnerEmails(emails);
-  }, [onEmailAddressesChange]);
-
-  const debouncedHandleEmailAddressesChanged = useMemo(
-    () => debounce(handleEmailAddressesChanged, EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY),
-    [handleEmailAddressesChanged],
-  );
+  const handleCsvUpload = useCallback((csv) => {
+    let emails = splitAndTrim('\n', csv);
+    emails = removeStringsFromList(emails, lowerCasedEmails);
+    dispatch(addEmailsAction({ emails, clearErroredEmails: true, actionType: 'UPLOAD_CSV_ACTION' }));
+  }, [dispatch, lowerCasedEmails]);
 
   useEffect(() => {
-    debouncedHandleEmailAddressesChanged(emailAddressesInputValue);
-  }, [emailAddressesInputValue, debouncedHandleEmailAddressesChanged]);
-
-  // Validate the learner emails emails from user input whenever it changes
-  useEffect(() => {
-    const inviteMetadata = isInviteEmailAddressesInputValueValid({
-      learnerEmails,
-      allEnterpriseLearners,
-    });
-    setMemberInviteMetadata(inviteMetadata);
-    if (inviteMetadata.canInvite) {
-      onEmailAddressesChange(learnerEmails, { canInvite: true });
-    } else {
-      onEmailAddressesChange([]);
+    const groupEnterpriseLearners = enterpriseGroupLearners.map((learner) => learner?.memberDetails?.userEmail);
+    if (allEnterpriseLearners) {
+      dispatch(initializeEnterpriseEmailsAction({ allEnterpriseLearners, groupEnterpriseLearners }));
     }
-  }, [onEmailAddressesChange, learnerEmails, allEnterpriseLearners]);
+  }, [dispatch, allEnterpriseLearners, enterpriseGroupLearners]);
 
   return (
     <Container size="lg" className="py-3">
@@ -123,7 +78,7 @@ const AddMembersModalContent = ({
           </p>
           <FileUpload
             memberInviteMetadata={memberInviteMetadata}
-            setEmailAddressesInputValue={setEmailAddressesInputValue}
+            setEmailAddressesInputValue={handleCsvUpload}
           />
         </Col>
         <Col>
@@ -133,18 +88,12 @@ const AddMembersModalContent = ({
           <hr className="my-4" />
         </Col>
       </Row>
-      <EnterpriseCustomerUserDataTable
-        onHandleAddMembersBulkAction={handleAddMembersBulkAction}
-        onHandleRemoveMembersBulkAction={handleRemoveMembersBulkAction}
-        learnerEmails={learnerEmails}
-        enterpriseGroupLearners={enterpriseGroupLearners}
-      />
+      <EnterpriseCustomerUserDataTable />
     </Container>
   );
 };
 
 AddMembersModalContent.propTypes = {
-  onEmailAddressesChange: PropTypes.func.isRequired,
   enterpriseUUID: PropTypes.string.isRequired,
   groupName: PropTypes.string,
   enterpriseGroupLearners: PropTypes.arrayOf(PropTypes.shape({})),

@@ -22,7 +22,7 @@ const RemoveMemberModal = ({
       formData.append('learner_emails', rowEmail);
       await LmsApiService.removeEnterpriseLearnersFromGroup(groupUuid, formData);
       queryClient.invalidateQueries({
-        queryKey: peopleManagementQueryKeys.group(groupUuid),
+        queryKey: peopleManagementQueryKeys.learners(groupUuid),
       });
       setRefresh(!refresh);
       close();
