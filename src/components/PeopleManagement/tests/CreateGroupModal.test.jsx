@@ -20,6 +20,7 @@ import {
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 import { useEnterpriseMembersTableData } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
+import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
 
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
@@ -112,15 +113,19 @@ const mockTabledata = {
     },
   ],
 };
-const CreateGroupModalWrapper = ({
-  initialState = initialStoreState,
-}) => {
-  const store = getMockStore({ ...initialState });
+
+const CreateGroupModalWrapper = () => {
+  const store = getMockStore({ ...initialStoreState });
+  const initialContextOverride = {
+    groupEnterpriseLearners: mockTabledata.results.map((user) => user.email),
+  };
   return (
     <IntlProvider locale="en">
       <Provider store={store}>
         <QueryClientProvider client={queryClient()}>
-          <CreateGroupModal {...defaultProps} />
+          <ValidatedEmailsContextProvider initialContextOverride={initialContextOverride}>
+            <CreateGroupModal {...defaultProps} />
+          </ValidatedEmailsContextProvider>
         </QueryClientProvider>
       </Provider>
     </IntlProvider>
@@ -194,12 +199,9 @@ describe('<CreateGroupModal />', () => {
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
 
     // testing interaction with adding members from the datatable
-    const membersCheckboxes = screen.getAllByRole('checkbox');
-    // skipping first one because its the select all checkbox
+    let membersCheckboxes = screen.getAllByRole('checkbox');
+    userEvent.click(membersCheckboxes[0]);
     userEvent.click(membersCheckboxes[1]);
-    userEvent.click(membersCheckboxes[2]);
-    const addMembersButton = screen.getByText('Add');
-    userEvent.click(addMembersButton);
 
     await waitFor(() => {
       expect(screen.getByText('Summary (3)')).toBeInTheDocument();
@@ -209,8 +211,9 @@ describe('<CreateGroupModal />', () => {
     });
 
     // testing interaction with removing members from the datatable
-    const removeMembersButton = screen.getByText('Remove');
-    userEvent.click(removeMembersButton);
+    membersCheckboxes = screen.getAllByRole('checkbox');
+    userEvent.click(membersCheckboxes[0]);
+    userEvent.click(membersCheckboxes[1]);
 
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
@@ -254,8 +257,6 @@ describe('<CreateGroupModal />', () => {
     const membersCheckbox = screen.getAllByTitle('Toggle Row Selected');
     userEvent.click(membersCheckbox[0]);
     userEvent.click(membersCheckbox[1]);
-    const addMembersButton = screen.getByText('Add');
-    userEvent.click(addMembersButton);
 
     const createButton = screen.getByRole('button', { name: 'Create' });
     userEvent.click(createButton);
@@ -322,10 +323,7 @@ describe('<CreateGroupModal />', () => {
 
     // testing interaction with removing members from the datatable
     const membersCheckboxes = screen.getAllByRole('checkbox');
-    // skipping first one because it's the select all checkbox
-    userEvent.click(membersCheckboxes[1]);
-    const removeMembersButton = screen.getByText('Remove');
-    userEvent.click(removeMembersButton);
+    userEvent.click(membersCheckboxes[0]);
 
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
@@ -443,13 +441,9 @@ describe('<CreateGroupModal />', () => {
     render(<CreateGroupModalWrapper />);
     // testing interaction with adding members from the datatable
     const membersCheckboxes = screen.getAllByRole('checkbox');
-    // skipping first one because its the select all checkbox
-    userEvent.click(membersCheckboxes[1]);
-    const addMembersButton = screen.getByText('Add');
-    userEvent.click(addMembersButton);
+    userEvent.click(membersCheckboxes[0]);
     // Select a second member while keeping first selected, and add again
-    userEvent.click(membersCheckboxes[2]);
-    userEvent.click(addMembersButton);
+    userEvent.click(membersCheckboxes[1]);
 
     await waitFor(() => {
       expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(2);

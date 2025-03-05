@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import { useState } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ import SystemErrorAlertModal from '../../learner-credit-management/cards/assignm
 import AddMembersModalContent from './AddMembersModalContent';
 import { peopleManagementQueryKeys } from '../constants';
 import { useAllEnterpriseGroupLearners } from '../data/hooks';
+import { useValidatedEmailsContext } from '../data/ValidatedEmailsContext';
 
 const AddMembersModal = ({
   isModalOpen,
@@ -22,9 +23,8 @@ const AddMembersModal = ({
   groupUuid,
 }) => {
   const intl = useIntl();
-  const [learnerEmails, setLearnerEmails] = useState([]);
+  const { lowerCasedEmails: learnerEmails, canInvite: canInviteMembers } = useValidatedEmailsContext();
   const [addButtonState, setAddButtonState] = useState('default');
-  const [canAddMembers, setCanAddMembersGroup] = useState(false);
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
   const handleCloseAddMembersModal = () => {
     closeModal();
@@ -33,7 +33,7 @@ const AddMembersModal = ({
   const queryClient = useQueryClient();
   const {
     isLoading,
-    enterpriseGroupLearners,
+    data: enterpriseGroupLearners,
   } = useAllEnterpriseGroupLearners(groupUuid);
 
   const handleAddMembers = async () => {
@@ -44,7 +44,7 @@ const AddMembersModal = ({
       });
       await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, requestBody);
       queryClient.invalidateQueries({
-        queryKey: peopleManagementQueryKeys.group(groupUuid),
+        queryKey: peopleManagementQueryKeys.learners(groupUuid),
       });
       setAddButtonState('complete');
       handleCloseAddMembersModal();
@@ -55,20 +55,6 @@ const AddMembersModal = ({
     }
   };
 
-  const handleEmailAddressesChange = useCallback((
-    value,
-    { canInvite = false } = {},
-  ) => {
-    setLearnerEmails(value);
-    setCanAddMembersGroup(canInvite);
-  }, []);
-
-  useEffect(() => {
-    setCanAddMembersGroup(false);
-    if (canAddMembers) {
-      setCanAddMembersGroup(true);
-    }
-  }, [canAddMembers]);
   return (
     <div>
       {!isLoading ? (
@@ -95,7 +81,7 @@ const AddMembersModal = ({
                   }}
                   variant="primary"
                   state={addButtonState}
-                  disabled={!canAddMembers}
+                  disabled={!canInviteMembers}
                   onClick={handleAddMembers}
                 />
               </ActionRow>
@@ -103,7 +89,6 @@ const AddMembersModal = ({
           >
             <AddMembersModalContent
               groupName={groupName}
-              onEmailAddressesChange={handleEmailAddressesChange}
               isGroupInvite
               enterpriseUUID={enterpriseUUID}
               enterpriseGroupLearners={enterpriseGroupLearners}

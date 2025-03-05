@@ -18,6 +18,7 @@ import ZeroState from './ZeroState';
 import GroupCardGrid from './GroupCardGrid';
 import PeopleManagementTable from './PeopleManagementTable';
 import EVENT_NAMES from '../../eventTracking';
+import ValidatedEmailsContextProvider from './data/ValidatedEmailsContextProvider';
 
 const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
@@ -125,11 +126,13 @@ const PeopleManagementPage = ({ enterpriseId }) => {
               description="CTA button text to open new group modal."
             />
           </Button>
-          <CreateGroupModal
-            isModalOpen={isModalOpen}
-            openModel={openModal}
-            closeModal={closeModal}
-          />
+          <ValidatedEmailsContextProvider>
+            <CreateGroupModal
+              isModalOpen={isModalOpen}
+              openModel={openModal}
+              closeModal={closeModal}
+            />
+          </ValidatedEmailsContextProvider>
         </ActionRow>
         {groupsCardSection}
         <h3 className="mt-3">
