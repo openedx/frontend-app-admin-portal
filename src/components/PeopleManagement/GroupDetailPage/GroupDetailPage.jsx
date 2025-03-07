@@ -126,7 +126,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
               <Hyperlink
                 className="btn btn-primary"
                 target="_blank"
-                destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}`}
+                destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}#fullreport`}
                 onClick={() => {
                   sendEnterpriseTrackEvent(
                     enterpriseUUID,

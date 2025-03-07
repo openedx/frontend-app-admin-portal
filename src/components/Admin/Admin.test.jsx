@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import dayjs from 'dayjs';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
@@ -30,6 +30,9 @@ jest.mock('../EnterpriseSubsidiesContext/data/hooks', () => ({
     data: [],
   }),
 }));
+
+const scrollIntoViewMock = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
@@ -659,6 +662,49 @@ describe('<Admin />', () => {
       render(<AdminWrapper {...baseProps} />);
 
       expect(screen.queryByTestId('expiry-notification-alert')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('scroll to report section when fragment present', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('scrolls when fragment present', async () => {
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { hash: '#fullreport' }
+          }
+        />
+      ));
+      // Setting prop to trigger componentDidUpdate
+      wrapper.setProps({
+        enterpriseId: 'forcing-change-to-trigger-scroll',
+      });
+      await waitFor(() => {
+        expect(wrapper.text()).toContain('Full Report');
+      });
+      expect(scrollIntoViewMock).toHaveBeenCalled();
+    });
+    it('does not scroll when fragment absent', async () => {
+      const wrapper = mount((
+        <AdminWrapper
+          {...baseProps}
+          location={
+            {}
+          }
+        />
+      ));
+      // Setting prop to trigger componentDidUpdate
+      wrapper.setProps({
+        enterpriseId: 'forcing-change-to-trigger-scroll',
+      });
+      await waitFor(() => {
+        expect(wrapper.text()).toContain('Full Report');
+      });
+      expect(scrollIntoViewMock).not.toHaveBeenCalled();
     });
   });
 });
