@@ -13,11 +13,9 @@ import { queryClient } from '../../test/testUtils';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY } from '../../learner-credit-management/cards/data';
 import AddMembersModal from '../AddMembersModal/AddMembersModal';
-import {
-  useGetAllEnterpriseLearnerEmails,
-} from '../data/hooks/useEnterpriseLearnersTableData';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 import { useAllEnterpriseGroupLearners, useEnterpriseMembersTableData } from '../data/hooks';
+import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
 
 jest.mock('@tanstack/react-query', () => ({
   ...jest.requireActual('@tanstack/react-query'),
@@ -28,10 +26,6 @@ useQueryClient.mockReturnValue({
   invalidateQueries: mockInvalidateQueries,
 });
 jest.mock('../../../data/services/LmsApiService');
-jest.mock('../data/hooks/useEnterpriseLearnersTableData', () => ({
-  ...jest.requireActual('../data/hooks/useEnterpriseLearnersTableData'),
-  useGetAllEnterpriseLearnerEmails: jest.fn(),
-}));
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
   useAllEnterpriseGroupLearners: jest.fn(),
@@ -66,7 +60,6 @@ const defaultProps = {
   enterpriseUUID,
   groupName: 'test-group-name',
   groupUuid: TEST_GROUP,
-  setIsCreateGroupFileUpload: jest.fn(),
 };
 
 const mockTabledata = {
@@ -107,15 +100,19 @@ const mockTabledata = {
     },
   ],
 };
-const AddMembersModalWrapper = ({
-  initialState = initialStoreState,
-}) => {
-  const store = getMockStore({ ...initialState });
+
+const AddMembersModalWrapper = () => {
+  const store = getMockStore({ ...initialStoreState });
+  const initialContextOverride = {
+    groupEnterpriseLearners: mockTabledata.results.map((user) => user.email),
+  };
   return (
     <IntlProvider locale="en">
       <Provider store={store}>
         <QueryClientProvider client={queryClient()}>
-          <AddMembersModal {...defaultProps} />
+          <ValidatedEmailsContextProvider initialContextOverride={initialContextOverride}>
+            <AddMembersModal {...defaultProps} />
+          </ValidatedEmailsContextProvider>
         </QueryClientProvider>
       </Provider>
     </IntlProvider>
@@ -129,17 +126,12 @@ describe('<AddMembersModal />', () => {
       enterpriseMembersTableData: mockTabledata,
       fetchEnterpriseMembersTableData: jest.fn(),
     });
-    useGetAllEnterpriseLearnerEmails.mockReturnValue({
-      isLoading: false,
-      fetchLearnerEmails: jest.fn(),
-      addButtonState: 'complete',
-    });
     useEnterpriseLearners.mockReturnValue({
       allEnterpriseLearners: ['testuser-3@2u.com', 'testuser-3@2u.com', 'testuser-2@2u.com', 'testuser-1@2u.com', 'tomhaverford@pawnee.org'],
     });
     useAllEnterpriseGroupLearners.mockReturnValue({
       isLoading: false,
-      enterpriseGroupLearners: [{
+      data: [{
         activatedAt: '2024-11-06T21:01:32.953901Z',
         enterprise_group_membership_uuid: TEST_GROUP,
         memberDetails: {
@@ -199,10 +191,8 @@ describe('<AddMembersModal />', () => {
 
     // testing interaction with adding members from the datatable
     const membersCheckboxes = screen.getAllByRole('checkbox');
+    userEvent.click(membersCheckboxes[0]);
     userEvent.click(membersCheckboxes[1]);
-    userEvent.click(membersCheckboxes[2]);
-    const addMembersButton = screen.getAllByText('Add')[0];
-    userEvent.click(addMembersButton);
 
     await waitFor(() => {
       expect(screen.getByText('Summary (3)')).toBeInTheDocument();
@@ -212,8 +202,8 @@ describe('<AddMembersModal />', () => {
     });
 
     // testing interaction with removing members from the datatable
-    const removeMembersButton = screen.getByText('Remove');
-    userEvent.click(removeMembersButton);
+    userEvent.click(membersCheckboxes[0]);
+    userEvent.click(membersCheckboxes[1]);
 
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
@@ -227,12 +217,12 @@ describe('<AddMembersModal />', () => {
       expect(screen.queryByText(formFeedbackText)).not.toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
 
-    const addButton = screen.getAllByText('Add')[1];
+    const addButton = screen.getByText('Add');
     userEvent.click(addButton);
     await waitFor(() => {
       expect(mockInvite).toHaveBeenCalledTimes(1);
     });
-    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['people-management', 'group', 'test-group-uuid'] });
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['people-management', 'learners', 'test-group-uuid'] });
   });
   it('displays error for email not belonging in an org', async () => {
     const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
