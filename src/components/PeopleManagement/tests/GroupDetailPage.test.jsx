@@ -120,7 +120,7 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByText('Add and remove group members.')).toBeInTheDocument();
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
     const lprUrl = screen.getByText('View group progress');
-    expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345');
+    expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345#fullreport');
     userEvent.click(lprUrl);
     await waitFor(() => {
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
