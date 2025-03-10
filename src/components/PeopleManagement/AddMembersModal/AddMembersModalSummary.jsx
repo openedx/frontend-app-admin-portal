@@ -1,5 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Card, Stack } from '@openedx/paragon';
 import isEmpty from 'lodash/isEmpty';
@@ -9,19 +7,18 @@ import AddMemberModalSummaryLearnerList from './AddMemberModalSummaryLearnerList
 import AddMemberModalSummaryErrorState from './AddMemberModalSummaryErrorState';
 import AddMemberModalSummaryDuplicate from './AddMemberModalSummaryDuplicate';
 import LearnerNotInOrgErrorState from '../LearnerNotInOrgErrorState';
+import { useValidatedEmailsContext } from '../data/ValidatedEmailsContext';
 
-const AddMembersModalSummary = ({
-  memberInviteMetadata,
-}) => {
+const AddMembersModalSummary = () => {
   const {
     isValidInput,
     lowerCasedEmails,
     duplicateEmails,
     emailsNotInOrg,
-  } = memberInviteMetadata;
+  } = useValidatedEmailsContext() || {};
   const hasEmailsNotInOrg = emailsNotInOrg.length > 0;
-  const renderCard = (contents, showErrorHighlight) => (
-    <Stack gap={2.5} className="mb-4">
+  const renderCard = (contents, idx, showErrorHighlight) => (
+    <Stack gap={2.5} className="mb-4" key={idx}>
       <Card
         className={classNames(
           'invite-modal-summary-card rounded-0 shadow-none',
@@ -35,29 +32,31 @@ const AddMembersModalSummary = ({
     </Stack>
   );
 
+  let idx = 0;
   const hasLearnerEmails = lowerCasedEmails?.length > 0;
   let cardSections = [];
   if (hasLearnerEmails) {
     cardSections = cardSections.concat(
-      renderCard(<AddMemberModalSummaryLearnerList learnerEmails={lowerCasedEmails} />),
+      renderCard(<AddMemberModalSummaryLearnerList learnerEmails={lowerCasedEmails} />, ++idx),
     );
   }
 
   if (!isValidInput) {
     cardSections = cardSections.concat(
-      renderCard(<AddMemberModalSummaryErrorState />, true),
+      renderCard(<AddMemberModalSummaryErrorState />, ++idx, true),
     );
   }
 
   if (hasEmailsNotInOrg) {
     cardSections = cardSections.concat(
       <LearnerNotInOrgErrorState />,
+      ++idx,
     );
   }
 
   if (isEmpty(cardSections)) {
     cardSections = cardSections.concat(
-      renderCard(<AddMemberModalSummaryEmptyState />),
+      renderCard(<AddMemberModalSummaryEmptyState />, ++idx),
     );
   }
 
@@ -72,15 +71,6 @@ const AddMembersModalSummary = ({
       {duplicateEmails?.length > 0 && <AddMemberModalSummaryDuplicate />}
     </>
   );
-};
-
-AddMembersModalSummary.propTypes = {
-  memberInviteMetadata: PropTypes.shape({
-    isValidInput: PropTypes.bool,
-    lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
-    duplicateEmails: PropTypes.arrayOf(PropTypes.string),
-    emailsNotInOrg: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
 };
 
 export default AddMembersModalSummary;
