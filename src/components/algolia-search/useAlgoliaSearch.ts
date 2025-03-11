@@ -15,11 +15,6 @@ interface UseSecuredAlgoliaApiKeyArgs {
   enterpriseId: string;
 }
 
-function calculateStaleTime(validUntilISO) {
-  const timeDifference = dayjs(validUntilISO).diff(dayjs());
-  return Math.max(0, timeDifference);
-}
-
 type CatalogUuidsToCatalogQueryUuids = Record<string, string>;
 
 interface SecuredAlgoliaApiKeyResponse {
@@ -36,6 +31,19 @@ interface UseSecuredAlgoliaApiKeyResult {
   catalogUuidsToCatalogQueryUuids: CatalogUuidsToCatalogQueryUuids;
 }
 
+interface UseAlgoliaSearchArgs {
+  enterpriseId: string;
+  enterpriseFeatures: EnterpriseFeatures;
+}
+
+export interface UseAlgoliaSearchResult {
+  isCatalogQueryFiltersEnabled: boolean;
+  securedAlgoliaApiKey: UseQueryResult;
+  isLoading: boolean;
+  searchClient: SearchClient | null;
+  catalogUuidsToCatalogQueryUuids: Record<string, string> | undefined;
+}
+
 async function fetchSecuredAlgoliaApiKey(enterpriseId: string): Promise<UseSecuredAlgoliaApiKeyResult> {
   const url = `${configuration.ENTERPRISE_CATALOG_BASE_URL}/api/v1/enterprise-customer/${enterpriseId}/secured-algolia-api-key/`;
   const response: AxiosResponse<SecuredAlgoliaApiKeyResponse> = await getAuthenticatedHttpClient().get(url);
@@ -47,6 +55,11 @@ async function fetchSecuredAlgoliaApiKey(enterpriseId: string): Promise<UseSecur
     // Return the original mappings to avoid the camelCasing of uuid keys
     catalogUuidsToCatalogQueryUuids: originalResult.catalog_uuids_to_catalog_query_uuids,
   };
+}
+
+function calculateStaleTime(validUntilISO) {
+  const timeDifference = dayjs(validUntilISO).diff(dayjs());
+  return Math.max(0, timeDifference);
 }
 
 function useSecuredAlgoliaApiKey({
@@ -69,19 +82,6 @@ function useSecuredAlgoliaApiKey({
   }, [queryResult.data]);
 
   return queryResult;
-}
-
-interface UseAlgoliaSearchArgs {
-  enterpriseId: string;
-  enterpriseFeatures: EnterpriseFeatures;
-}
-
-export interface UseAlgoliaSearchResult {
-  isCatalogQueryFiltersEnabled: boolean;
-  securedAlgoliaApiKey: UseQueryResult;
-  isLoading: boolean;
-  searchClient: SearchClient | null;
-  catalogUuidsToCatalogQueryUuids: Record<string, string> | undefined;
 }
 
 function useAlgoliaSearch({
