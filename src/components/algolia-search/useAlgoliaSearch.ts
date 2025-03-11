@@ -5,6 +5,7 @@ import { getAuthenticatedHttpClient, getAuthenticatedUser } from '@edx/frontend-
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import type { AxiosResponse } from 'axios';
+import dayjs from 'dayjs';
 
 import { configuration } from '../../config';
 import { EnterpriseFeatures } from '../../types';
@@ -15,11 +16,7 @@ interface UseSecuredAlgoliaApiKeyArgs {
 }
 
 function calculateStaleTime(validUntilISO) {
-  const validUntilDate = new Date(validUntilISO);
-  const now = new Date();
-  const timeDifference = validUntilDate.getTime() - now.getTime();
-
-  // Ensure staleTime is not negative (if the key has already expired)
+  const timeDifference = dayjs(validUntilISO).diff(dayjs());
   return Math.max(0, timeDifference);
 }
 
