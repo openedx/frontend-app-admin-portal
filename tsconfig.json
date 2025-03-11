@@ -2,7 +2,7 @@
   "extends": "@edx/typescript-config",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["src/**/*", "__mocks__/**/*"],
   "exclude": ["dist", "src/icons/*"],

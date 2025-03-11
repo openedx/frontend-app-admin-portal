@@ -54,11 +54,7 @@ const NewFeatureAlertBrowseAndRequest = ({ enterpriseId, enterpriseSlug, intl })
           })}
         </Button>,
       ]}
-      dismissible={intl.formatMessage({
-        id: 'admin.portal.new.feature.alert.dismissible.text',
-        defaultMessage: 'Dismiss',
-        description: 'Text for dismissible alert.',
-      })}
+      dismissible
     >
       {intl.formatMessage({
         id: 'admin.portal.new.feature.alert.text',
