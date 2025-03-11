@@ -107,17 +107,6 @@ function useAlgoliaSearch({
     isInitialLoading: isInitialLoadingSecuredAlgoliaApiKey,
   } = securedAlgoliaApiKeyResult;
 
-  useEffect(() => {
-    if (isInitialLoadingSecuredAlgoliaApiKey) {
-      // Do nothing until the securedAlgoliaApiKey is loaded
-      return;
-    }
-    const hasApiKey = !!(securedAlgoliaApiKeyData?.apiKey || configuration.ALGOLIA.SEARCH_API_KEY);
-    if (!configuration.ALGOLIA.APP_ID || !hasApiKey) {
-      logError('Algolia not configured for the application. Please provide the Algolia APP_ID and SEARCH_API_KEY in the configuration.');
-    }
-  }, [isInitialLoadingSecuredAlgoliaApiKey, securedAlgoliaApiKeyData?.apiKey]);
-
   const searchClient = useMemo(() => {
     if (!configuration.ALGOLIA.APP_ID || isInitialLoadingSecuredAlgoliaApiKey) {
       return null;
