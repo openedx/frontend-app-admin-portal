@@ -1,6 +1,11 @@
 ========================================================
-Architectural Decision Record: Algolia Search Filtering Migration
+10. Architectural Decision Record: Algolia Search Filtering Migration
 ========================================================
+
+Status
+------
+
+Accepted (March 2025)
 
 Context
 -------
