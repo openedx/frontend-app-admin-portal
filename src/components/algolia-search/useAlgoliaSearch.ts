@@ -41,7 +41,7 @@ export interface UseAlgoliaSearchResult {
   securedAlgoliaApiKey: UseQueryResult;
   isLoading: boolean;
   searchClient: SearchClient | null;
-  catalogUuidsToCatalogQueryUuids: Record<string, string> | undefined;
+  catalogUuidsToCatalogQueryUuids: CatalogUuidsToCatalogQueryUuids | undefined;
 }
 
 async function fetchSecuredAlgoliaApiKey(enterpriseId: string): Promise<UseSecuredAlgoliaApiKeyResult> {
@@ -57,9 +57,15 @@ async function fetchSecuredAlgoliaApiKey(enterpriseId: string): Promise<UseSecur
   };
 }
 
-function calculateStaleTime(validUntilISO) {
-  const timeDifference = dayjs(validUntilISO).diff(dayjs());
-  return Math.max(0, timeDifference);
+function calculateStaleTime(
+  validUntil,
+  bufferMs = 1000 * 60, // 1 minute
+) {
+  if (!validUntil) {
+    return undefined;
+  }
+  const timeDifference = dayjs(validUntil).diff(dayjs());
+  return Math.max(0, timeDifference - bufferMs);
 }
 
 function useSecuredAlgoliaApiKey({
