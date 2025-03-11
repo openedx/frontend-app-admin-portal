@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient, getAuthenticatedUser } from '@edx/frontend-platform/auth';
@@ -88,7 +88,10 @@ function useAlgoliaSearch({
   enterpriseId,
   enterpriseFeatures,
 }: UseAlgoliaSearchArgs): UseAlgoliaSearchResult {
-  const isCatalogQueryFiltersEnabled = !!enterpriseFeatures.catalogQuerySearchFiltersEnabled;
+  const isCatalogQueryFiltersEnabled = !!(
+    enterpriseFeatures.catalogQuerySearchFiltersEnabled
+    && !!configuration.ALGOLIA.APP_ID
+  );
   const securedAlgoliaApiKeyResult = useSecuredAlgoliaApiKey({
     enterpriseId,
     isCatalogQueryFiltersEnabled,
@@ -109,10 +112,19 @@ function useAlgoliaSearch({
     }
   }, [isInitialLoadingSecuredAlgoliaApiKey, securedAlgoliaApiKeyData?.apiKey]);
 
-  let searchClient: SearchClient | null = null;
-  if (configuration.ALGOLIA.APP_ID && configuration.ALGOLIA.SEARCH_API_KEY) {
-    searchClient = algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
-  }
+  const searchClient = useMemo(() => {
+    if (!configuration.ALGOLIA.APP_ID || isInitialLoadingSecuredAlgoliaApiKey) {
+      return null;
+    }
+    if (securedAlgoliaApiKeyData?.apiKey) {
+      return algoliasearch(configuration.ALGOLIA.APP_ID, securedAlgoliaApiKeyData.apiKey);
+    }
+    if (configuration.ALGOLIA.SEARCH_API_KEY) {
+      return algoliasearch(configuration.ALGOLIA.APP_ID, configuration.ALGOLIA.SEARCH_API_KEY);
+    }
+    logError('Algolia not configured for the application.');
+    return null;
+  }, [isInitialLoadingSecuredAlgoliaApiKey, securedAlgoliaApiKeyData?.apiKey]);
 
   return {
     isCatalogQueryFiltersEnabled,
