@@ -10,7 +10,7 @@ import { fetchPaginatedData } from '../../../../data/services/apiServiceUtils';
  * @param {*} queryKey The queryKey from the associated `useQuery` call.
  * @returns The enterprise group object
  */
-const getAllFlexEnterpriseGroups = async ({ enterpriseId }) => {
+export const getAllFlexEnterpriseGroups = async ({ enterpriseId }) => {
   const { results } = await fetchPaginatedData(`${LmsApiService.enterpriseGroupListUrl}?enterprise_uuids=${enterpriseId}`);
   const flexGroups = results.filter(result => result.groupType === 'flex');
   return flexGroups;

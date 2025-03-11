@@ -121,7 +121,9 @@ const ModuleActivityReport = ({ enterpriseId }) => {
               defaultMessage: '% Activities Complete',
               description: 'Header for the percentage of activities completed column in the module activity report table',
             }),
-            accessor: 'percentage_completed_activities',
+            Cell: ({ row }) => (
+              `${row.original.percentage_completed_activities} %`
+            ),
           },
           {
             Header: intl.formatMessage({
@@ -146,6 +148,32 @@ const ModuleActivityReport = ({ enterpriseId }) => {
               description: 'Header for the log views column in the module activity report table',
             }),
             accessor: 'log_viewed',
+          },
+          {
+            Header: intl.formatMessage({
+              id: 'adminPortal.LPR.moduleActivityReport.table.header.learningOutcomesBefore',
+              defaultMessage: 'Learning Outcomes: Before',
+              description: 'Header for the learning outcomes before the user has started the course column in the module activity report table',
+            }),
+            accessor: 'avg_before_lo_score',
+          },
+          {
+            Header: intl.formatMessage({
+              id: 'adminPortal.LPR.moduleActivityReport.table.header.learningOutcomesAfter',
+              defaultMessage: 'Learning Outcomes: After',
+              description: 'Header for the learning outcomes after the user has completed the course column in the module activity report table',
+            }),
+            accessor: 'avg_after_lo_score',
+          },
+          {
+            Header: intl.formatMessage({
+              id: 'adminPortal.LPR.moduleActivityReport.table.header.learningOutcomesPercentageDifference',
+              defaultMessage: 'Learning Outcomes % Difference',
+              description: 'Header for the learning outcomes percentage difference for learning outcome before and after the course column in the module activity report table',
+            }),
+            Cell: ({ row }) => (
+              _.isNumber(row.original.avg_lo_percentage_difference) ? `${row.original.avg_lo_percentage_difference} %` : row.original.avg_lo_percentage_difference
+            ),
           },
         ]}
         tableActions={[

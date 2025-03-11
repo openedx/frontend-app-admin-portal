@@ -100,19 +100,27 @@ describe('LmsApiService', () => {
       },
     });
     const response = await LmsApiService.createEnterpriseGroup({
-      name: 'test-name',
-      enterprise_customer: 'test-customer-uuid',
-      members: [],
+      groupName: 'test-name',
+      enterpriseUUID: 'test-customer-uuid',
     });
+
     expect(response).toEqual({
       status: 201,
       data: {
         uuid: 'test-uuid',
         name: 'test-name',
-        enterprise_customer: 'test-enterprise-customer',
+        enterpriseCustomer: 'test-enterprise-customer',
         members: [],
       },
     });
+    expect(axios.post).toHaveBeenCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise_group/`,
+      {
+        name: 'test-name',
+        enterprise_customer: 'test-customer-uuid',
+        members: [],
+      },
+    );
   });
   test('fetchReportingConfigs returns reporting configs', async () => {
     axios.get.mockResolvedValue({

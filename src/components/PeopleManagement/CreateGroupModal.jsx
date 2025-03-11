@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import SystemErrorAlertModal from '../learner-credit-management/cards/assignment
 import CreateGroupModalContent from './CreateGroupModalContent';
 import EVENT_NAMES from '../../eventTracking';
 import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
+import { useValidatedEmailsContext } from './data/ValidatedEmailsContext';
 
 const CreateGroupModal = ({
   isModalOpen,
@@ -22,13 +23,15 @@ const CreateGroupModal = ({
   enterpriseUUID,
 }) => {
   const intl = useIntl();
-  const [learnerEmails, setLearnerEmails] = useState([]);
+  const {
+    lowerCasedEmails: learnerEmails,
+    canInvite: canInviteMembers,
+    isCreateGroupFileUpload,
+    isCreateGroupListSelection,
+  } = useValidatedEmailsContext();
   const [createButtonState, setCreateButtonState] = useState('default');
   const [groupName, setGroupName] = useState('');
   const [canCreateGroup, setCanCreateGroup] = useState(false);
-  const [canInviteMembers, setCanInviteMembers] = useState(false);
-  const [isCreateGroupFileUpload, setIsCreateGroupFileUpload] = useState(false);
-  const [isCreateGroupListSelection, setIsCreateGroupListSelection] = useState(false);
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
   const handleCloseCreateGroupModal = () => {
     closeModal();
@@ -66,8 +69,6 @@ const CreateGroupModal = ({
           EVENT_NAMES.PEOPLE_MANAGEMENT.GROUP_CREATE_WITH_UPLOAD_CSV,
         );
       }
-      setIsCreateGroupListSelection(false);
-      setIsCreateGroupFileUpload(false);
     } catch (err) {
       logError(err);
       setCreateButtonState('error');
@@ -98,14 +99,6 @@ const CreateGroupModal = ({
       openSystemErrorModal();
     }
   };
-
-  const handleEmailAddressesChange = useCallback((
-    value,
-    { canInvite = false } = {},
-  ) => {
-    setLearnerEmails(value);
-    setCanInviteMembers(canInvite);
-  }, []);
 
   useEffect(() => {
     setCanCreateGroup(false);
@@ -146,11 +139,8 @@ const CreateGroupModal = ({
       >
         <CreateGroupModalContent
           onSetGroupName={setGroupName}
-          onEmailAddressesChange={handleEmailAddressesChange}
           isGroupInvite
           enterpriseUUID={enterpriseUUID}
-          setIsCreateGroupFileUpload={setIsCreateGroupFileUpload}
-          setIsCreateGroupListSelection={setIsCreateGroupListSelection}
         />
       </FullscreenModal>
       <SystemErrorAlertModal

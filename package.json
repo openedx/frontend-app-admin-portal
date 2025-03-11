@@ -91,6 +91,7 @@
   },
   "devDependencies": {
     "@edx/browserslist-config": "1.5.0",
+    "@edx/typescript-config": "1.1.0",
     "@faker-js/faker": "^7.6.0",
     "@openedx/frontend-build": "14.2.2",
     "@testing-library/dom": "9.3.4",

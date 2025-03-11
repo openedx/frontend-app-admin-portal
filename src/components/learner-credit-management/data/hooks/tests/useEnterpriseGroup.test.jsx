@@ -27,7 +27,7 @@ describe('useEnterpriseGroup', () => {
   it('should fetch and return enterprise group', async () => {
     jest.spyOn(LmsApiService, 'fetchEnterpriseGroup').mockResolvedValueOnce({
       data: {
-        enterprise_customer: 'customer-uuid',
+        enterpriseCustomer: 'customer-uuid',
         name: 'groupidy group',
         uuid: 'group-uuid',
       },
@@ -47,7 +47,7 @@ describe('useEnterpriseGroup', () => {
   it('should return null if no group associations are listed', async () => {
     jest.spyOn(LmsApiService, 'fetchEnterpriseGroup').mockResolvedValueOnce({
       data: {
-        enterprise_customer: 'customer-uuid',
+        enterpriseCustomer: 'customer-uuid',
         name: 'groupidy group',
         uuid: 'group-uuid',
       },
