@@ -10,48 +10,69 @@ import {
 } from './data/hooks';
 import EnterpriseAppSkeleton from './EnterpriseAppSkeleton';
 
-/**
- * @typedef THighlightSet
- * @property {String} uuid
- * @property {Boolean} isPublished
- * @property {String} title
- * @property {String[]} highlightedContentUuids
- */
+export type THighlightSet = {
+  uuid: string;
+  isPublished: boolean;
+  title: string;
+  highlightedContentUuids: string[];
+};
 
-/**
- * @typedef TEnterpriseCuration
- * @property {String} uuid
- * @property {String} title
- * @property {Boolean} isHighlightFeatureActive
- * @property {Boolean} canOnlyViewHighlightSets
- * @property {THighlightSet[]} highlightSets
- * @property {String} created
- * @property {String} modified
- */
+export type TEnterpriseCuration = {
+  uuid: string;
+  title: string;
+  isHighlightFeatureActive: boolean;
+  canOnlyViewHighlightSets: boolean;
+  highlightSets: THighlightSet[];
+  created: string;
+  modified: string;
+  // [tech debt] unclear whether `toastText` *should* be in this type.
+  toastText?: string;
+};
 
-/**
- * @typedef TEnterpriseCurationData
- * @property {TEnterpriseCuration} enterpriseCuration
- * @property {Boolean} isLoading
- * @property {Error} fetchError
- */
+export type TEnterpriseCurationData = {
+  enterpriseCuration: TEnterpriseCuration;
+  isLoading: boolean;
+  fetchError: Error | null;
+};
 
-/**
- * @typedef {Object} TEnterpriseAppContext
- * @property {TEnterpriseCurationData} enterpriseCuration
- */
+export type TEnterpriseAppContext = {
+  enterpriseCuration: TEnterpriseCurationData;
+};
 
-/** @type {React.Context<TEnterpriseAppContext>} */
-export const EnterpriseAppContext = createContext();
+interface EnterpriseAppContextProviderProps {
+  enterpriseId: string;
+  enterpriseName: string;
+  enterpriseFeatures: {
+    topDownAssignmentRealTimeLcm?: boolean;
+  };
+  enablePortalLearnerCreditManagementScreen: boolean;
+  children: React.ReactNode;
+}
 
-const EnterpriseAppContextProvider = ({
+export const EnterpriseAppContext = createContext<TEnterpriseAppContext>({
+  enterpriseCuration: {
+    enterpriseCuration: {
+      uuid: '',
+      title: '',
+      isHighlightFeatureActive: false,
+      canOnlyViewHighlightSets: false,
+      highlightSets: [],
+      created: '',
+      modified: '',
+    },
+    isLoading: true,
+    fetchError: null,
+  },
+});
+
+const EnterpriseAppContextProvider: React.FC<EnterpriseAppContextProviderProps> = ({
   enterpriseId,
   enterpriseName,
   enterpriseFeatures,
   enablePortalLearnerCreditManagementScreen,
   children,
 }) => {
-  const { authenticatedUser } = useContext(AppContext);
+  const { authenticatedUser }: AppContextValue = useContext(AppContext);
   // subsidies for the enterprise customer
   const enterpriseSubsidiesContext = useEnterpriseSubsidiesContext({
     enterpriseId,
@@ -87,7 +108,7 @@ const EnterpriseAppContextProvider = ({
   // into a singular `EnterpriseAppContext.Provider`.
   const enterpriseAppContext = useMemo(() => ({
     enterpriseCuration: enterpriseCurationContext,
-  }), [enterpriseCurationContext]);
+  } as TEnterpriseAppContext), [enterpriseCurationContext]);
 
   if (isLoading) {
     return <EnterpriseAppSkeleton />;
@@ -109,7 +130,7 @@ EnterpriseAppContextProvider.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   enterpriseName: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
-    topDownAssignmentRealTimeLcm: PropTypes.bool,
+    topDownAssignmentRealTimeLcm: PropTypes.bool.isRequired,
   }).isRequired,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,

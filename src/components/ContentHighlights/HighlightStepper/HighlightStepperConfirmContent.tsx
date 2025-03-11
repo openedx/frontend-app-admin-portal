@@ -10,6 +10,7 @@ import {
   Icon,
   CardGrid,
   Alert,
+  Skeleton,
 } from '@openedx/paragon';
 import { Assignment } from '@openedx/paragon/icons';
 import { camelCaseObject } from '@edx/frontend-platform';
@@ -26,6 +27,7 @@ import {
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentConfirmContentCard from './ContentConfirmContentCard';
 import SkeletonContentCardContainer from '../SkeletonContentCardContainer';
+import HighlightSearchUnavailableAlert from './HighlightSearchUnavailableAlert';
 
 export const BaseReviewContentSelections = ({
   searchResults,
@@ -74,7 +76,15 @@ const ReviewContentSelections = connectStateResults(BaseReviewContentSelections)
 export const SelectedContent = ({ enterpriseId }) => {
   const searchClient = useContextSelector(
     ContentHighlightsContext,
-    v => v[0].searchClient,
+    v => v[0].algolia.searchClient,
+  );
+  const hasSecuredAlgoliaApiKey = useContextSelector(
+    ContentHighlightsContext,
+    v => !!v[0].algolia.securedAlgoliaApiKey,
+  );
+  const isLoadingSecuredAlgoliaApiKey = useContextSelector(
+    ContentHighlightsContext,
+    v => !!v[0].algolia.isLoading,
   );
   const currentSelectedRowIdsRaw = useContextSelector(
     ContentHighlightsContext,
@@ -85,15 +95,29 @@ export const SelectedContent = ({ enterpriseId }) => {
 
   /* eslint-disable max-len */
   /**
-   * Results in a string like:
-   * `enterprise_customer_uuids:e783bb19-277f-479e-9c41-8b0ed31b4060 AND (aggregation_key:'course:edX+DemoX' OR aggregation_key:'course:edX+DemoX2')
+   * Results in a string like::
+   *   Secured Algolia API key (filters by catalog query uuids):
+   *   `(aggregation_key:'course:edX+DemoX' OR aggregation_key:'course:edX+DemoX2')`
+   *
+   *   Legacy:
+   *   `enterprise_customer_uuids:e783bb19-277f-479e-9c41-8b0ed31b4060 AND (aggregation_key:'course:edX+DemoX' OR aggregation_key:'course:edX+DemoX2')
    */
   /* eslint-enable max-len */
   const algoliaFilters = useMemo(() => {
+    if (isLoadingSecuredAlgoliaApiKey) {
+      // Don't show any results until the secured API key is loaded (if enabled)
+      return '';
+    }
+    let filterString = '';
+    if (!hasSecuredAlgoliaApiKey) {
+      filterString = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
+    }
     // import testEnterpriseId from the existing ../data/constants folder and replace with enterpriseId to test locally
-    let filterString = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
     if (currentSelectedRowIds.length > 0) {
-      filterString += ' AND (';
+      if (filterString) {
+        filterString += ' AND ';
+      }
+      filterString += '(';
       currentSelectedRowIds.forEach((selectedRowId, index) => {
         if (index !== 0) {
           filterString += ' OR ';
@@ -103,13 +127,28 @@ export const SelectedContent = ({ enterpriseId }) => {
       filterString += ')';
     }
     return filterString;
-  }, [currentSelectedRowIds, enterpriseId]);
+  }, [currentSelectedRowIds, enterpriseId, hasSecuredAlgoliaApiKey, isLoadingSecuredAlgoliaApiKey]);
 
   if (currentSelectedRowIds.length === 0) {
     return (
       <Alert data-testid="selected-content-no-results" variant="warning">
         {DEFAULT_ERROR_MESSAGE.EMPTY_SELECTEDROWIDS}
       </Alert>
+    );
+  }
+
+  if (isLoadingSecuredAlgoliaApiKey) {
+    return (
+      <>
+        <Skeleton height={360} />
+        <div className="sr-only">Loading selected content...</div>
+      </>
+    );
+  }
+
+  if (!searchClient) {
+    return (
+      <HighlightSearchUnavailableAlert className="mt-4" />
     );
   }
 

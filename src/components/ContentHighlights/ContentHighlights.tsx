@@ -14,17 +14,24 @@ import ContentHighlightRoutes from './ContentHighlightRoutes';
 import Hero from '../Hero';
 import ContentHighlightsContextProvider from './ContentHighlightsContext';
 import ContentHighlightToast from './ContentHighlightToast';
-import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import { EnterpriseAppContext, TEnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
 import { withLocation } from '../../hoc';
 import { GROUP_TYPE_BUDGET } from '../PeopleManagement/constants';
+
+type ContentHighlightsToastProps = {
+  toastText: string;
+  uuid: string;
+};
 
 const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
   const navigate = useNavigate();
   const { state: locationState } = location;
-  const [toasts, setToasts] = useState([]);
+  const [toasts, setToasts] = useState<ContentHighlightsToastProps[]>([]);
   const isEdxStaff = getAuthenticatedUser().administrator;
   const [hasBudgetGroup, setHasBudgetGroup] = useState(false);
-  const { enterpriseCuration: { enterpriseCuration } } = useContext(EnterpriseAppContext);
+  const {
+    enterpriseCuration: { enterpriseCuration },
+  }: TEnterpriseAppContext = useContext(EnterpriseAppContext);
   const intl = useIntl();
 
   useEffect(() => {
@@ -32,7 +39,7 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
       try {
         const response = await LmsApiService.fetchEnterpriseGroups();
         response.data.results.forEach((group) => {
-          if (group.group_type === GROUP_TYPE_BUDGET) {
+          if (group.groupType === GROUP_TYPE_BUDGET) {
             setHasBudgetGroup(true);
           }
         });
@@ -44,12 +51,14 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
       fetchGroupsData();
     }
   }, [enterpriseGroupsV1, isEdxStaff]);
+
   useEffect(() => {
-    if (locationState?.highlightToast) {
-      setToasts((prevState) => [...prevState, {
-        toastText: enterpriseCuration?.toastText,
+    if (locationState?.highlightToast && enterpriseCuration?.toastText) {
+      const newToast = {
+        toastText: enterpriseCuration.toastText,
         uuid: uuidv4(),
-      }]);
+      };
+      setToasts((prevState) => [...prevState, newToast]);
       const newState = { ...locationState };
       delete newState.highlightToast;
       navigate(location.pathname, { ...location, state: newState, replace: true });
@@ -94,6 +103,7 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
       navigate(location.pathname, { ...location, state: newState, replace: true });
     }
   }, [enterpriseCuration?.toastText, navigate, location, locationState, intl]);
+
   return (
     <ContentHighlightsContextProvider>
       <Hero
@@ -122,7 +132,9 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
         </Alert>
       )}
       <ContentHighlightRoutes />
-      {toasts.map(({ toastText, uuid }) => (<ContentHighlightToast toastText={toastText} key={uuid} />))}
+      {toasts.map(({ toastText, uuid }) => (
+        <ContentHighlightToast toastText={toastText} key={uuid} />
+      ))}
     </ContentHighlightsContextProvider>
   );
 };
