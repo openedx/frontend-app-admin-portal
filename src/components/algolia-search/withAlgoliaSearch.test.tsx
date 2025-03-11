@@ -21,8 +21,8 @@ jest.mock('@edx/frontend-platform/auth');
 jest.mock('algoliasearch/lite', () => {
   const search = jest.fn(() => Promise.resolve({ hits: [] }));
   const initIndex = jest.fn(() => ({ search }));
-  const algoliasearch = jest.fn(() => ({ initIndex }));
-  return algoliasearch;
+  const mockAlgoliasearch = jest.fn(() => ({ initIndex }));
+  return mockAlgoliasearch;
 });
 
 const axiosMock = new MockAdapter(axios);
