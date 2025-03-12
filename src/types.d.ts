@@ -27,4 +27,8 @@ export type EnterpriseGroup = {
   created: string,
 };
 
+export type EnterpriseFeatures = {
+  catalogQuerySearchFiltersEnabled?: boolean,
+};
+
 export as namespace Types;
