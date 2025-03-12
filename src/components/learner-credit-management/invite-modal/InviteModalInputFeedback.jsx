@@ -51,7 +51,7 @@ InviteModalInputFeedback.propTypes = {
       message: PropTypes.number,
     }),
     lowerCasedEmails: PropTypes.arrayOf(
-      PropTypes.shape({}),
+      PropTypes.string,
     ),
     emailsNotInOrg: PropTypes.arrayOf(PropTypes.string),
   }),

@@ -18,6 +18,7 @@ import GroupMembersTable from './GroupMembersTable';
 import AddMembersModal from '../AddMembersModal/AddMembersModal';
 import { makePlural } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
+import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
 
 const GroupDetailPage = ({ enterpriseUUID }) => {
   const intl = useIntl();
@@ -126,7 +127,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
               <Hyperlink
                 className="btn btn-primary"
                 target="_blank"
-                destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}`}
+                destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}?group_uuid=${groupUuid}#fullreport`}
                 onClick={() => {
                   sendEnterpriseTrackEvent(
                     enterpriseUUID,
@@ -168,12 +169,14 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
         openAddMembersModal={openAddMembersModal}
         groupName={groupName}
       />
-      <AddMembersModal
-        groupUuid={groupUuid}
-        groupName={groupName}
-        isModalOpen={isAddMembersModalOpen}
-        closeModal={closeAddMembersModal}
-      />
+      <ValidatedEmailsContextProvider>
+        <AddMembersModal
+          groupUuid={groupUuid}
+          groupName={groupName}
+          isModalOpen={isAddMembersModalOpen}
+          closeModal={closeAddMembersModal}
+        />
+      </ValidatedEmailsContextProvider>
     </div>
   );
 };

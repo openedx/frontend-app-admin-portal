@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
@@ -37,12 +37,20 @@ import ModuleActivityReport from './tabs/ModuleActivityReport';
 import EnrollmentsTablePOC from '../EnrollmentsTable/EnrollmentsTable';
 
 class Admin extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
 
-    this.state = {
+    this.fullReportRef = createRef();
+    const state = {
       activeTab: 'learner-progress-report',
     };
+
+    // Prepare to scroll to report section when it loads
+    if (props?.location?.hash === '#fullreport') {
+      state.navigateToReport = true;
+    }
+
+    this.state = state;
   }
 
   componentDidMount() {
@@ -56,6 +64,12 @@ class Admin extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    const element = this.fullReportRef.current;
+    // Scroll to report section if #fullreport in url
+    if (element && this.state.navigateToReport) {
+      element.scrollIntoView();
+      this.setState({ navigateToReport: false });
+    }
     const { enterpriseId } = this.props;
     if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
       this.props.fetchDashboardAnalytics(enterpriseId);
@@ -480,7 +494,7 @@ class Admin extends React.Component {
                 <div className="col">
                   <div className="row">
                     <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
-                      <h2 className="table-title">{tableMetadata.title}</h2>
+                      <h2 className="table-title" ref={this.fullReportRef}>{tableMetadata.title}</h2>
                     </div>
                     <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
                       {actionSlug && this.renderUrlResetButton()}
@@ -613,6 +627,7 @@ Admin.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string,
     pathname: PropTypes.string,
+    hash: PropTypes.string,
   }),
   activeLearners: PropTypes.shape({
     past_week: PropTypes.number,
