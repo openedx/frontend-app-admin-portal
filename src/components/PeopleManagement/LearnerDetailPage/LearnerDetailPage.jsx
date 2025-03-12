@@ -1,64 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { logError } from '@edx/frontend-platform/logging';
 import {
   Breadcrumb, Card, Icon, Skeleton,
 } from '@openedx/paragon';
 import { Person } from '@openedx/paragon/icons';
 
-import { camelCaseObject } from '@edx/frontend-platform/utils';
-import LmsApiService from '../../../data/services/LmsApiService';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import formatDates from '../utils';
 import { useEnterpriseGroupUuid } from '../data/hooks';
+import { useEnterpriseLearnerData } from './data/hooks';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
   const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
-  const [learnerData, setLearnerData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchLearnerData() {
-      try {
-        const options = {
-          enterprise_customer: enterpriseUUID,
-          user_id: learnerId,
-        };
-        const data = await LmsApiService.fetchEnterpriseLearnerData(options);
-        const results = await camelCaseObject(data);
-        setLearnerData(results[0].user);
-      } catch (error) {
-        logError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchLearnerData();
-  }, [enterpriseUUID, learnerId]);
+  const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
 
   const intl = useIntl();
-  const links = [{
-    label: intl.formatMessage({
-      id: 'adminPortal.peopleManagement.learnerDetailPage.breadcrumb.peopleManagement',
-      defaultMessage: 'People Management',
-      description: 'Breadcrumb label to go back to People Management page',
-    }),
-    to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`,
-  }];
-  if (groupUuid) {
-    links.push({
+  const links = useMemo(() => {
+    const baseLinks = [{
       label: intl.formatMessage({
-        id: 'adminPortal.peopleManagement.learnerDetailPage.breadcrumb.groupName',
-        defaultMessage: `${enterpriseGroup?.name}`,
-        description: 'Breadcrumb label to go back to group detail page',
+        id: 'adminPortal.peopleManagement.learnerDetailPage.breadcrumb.peopleManagement',
+        defaultMessage: 'People Management',
+        description: 'Breadcrumb label to go back to People Management page',
       }),
-      to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/${groupUuid}`,
-    });
-  }
+      to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}`,
+    }];
+    if (groupUuid) {
+      baseLinks.push({
+        label: intl.formatMessage({
+          id: 'adminPortal.peopleManagement.learnerDetailPage.breadcrumb.groupName',
+          defaultMessage: `${enterpriseGroup?.name}`,
+          description: 'Breadcrumb label to go back to group detail page',
+        }),
+        to: `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/${groupUuid}`,
+      });
+    }
+    return baseLinks;
+  }, [intl, enterpriseSlug, groupUuid, enterpriseGroup]);
   return (
     <div className="pt-4 pl-4">
       <Breadcrumb
