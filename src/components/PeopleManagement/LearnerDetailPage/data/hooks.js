@@ -24,11 +24,7 @@ export const useEnterpriseLearnerData = (enterpriseUUID, learnerId) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const options = {
-          enterprise_customer: enterpriseUUID,
-          user_id: learnerId,
-        };
-        const data = await LmsApiService.fetchEnterpriseLearnerData(options);
+        const data = await LmsApiService.fetchEnterpriseLearnerData(enterpriseUUID, learnerId, undefined);
         const results = await camelCaseObject(data);
         setLearnerData(results[0].user);
       } catch (err) {

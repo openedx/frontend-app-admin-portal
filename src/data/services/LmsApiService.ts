@@ -462,10 +462,19 @@ class LmsApiService {
     return linkedEnterprisesCopy;
   }
 
-  static fetchEnterpriseLearnerData = async (options) => {
+  static fetchEnterpriseLearnerData = async (enterpriseCustomer?: string, userId?: string, username?: string) => {
+    const options: any = {};
+    if (userId !== undefined) {
+      options.user_id = userId;
+    } if (username !== undefined) {
+      options.username = username;
+    } if (enterpriseCustomer !== undefined) {
+      options.enterprise_customer = enterpriseCustomer;
+    }
+
     const queryParams = new URLSearchParams({
       ...options,
-      page: 1,
+      page: '1',
     });
     const url = `${LmsApiService.enterpriseLearnerUrl}?${queryParams.toString()}`;
     const response = await LmsApiService.fetchData(url);
@@ -486,12 +495,12 @@ class LmsApiService {
     return response;
   };
 
-  static inviteEnterpriseLearnersToGroup = async (groupUuid, formData) => {
+  static inviteEnterpriseLearnersToGroup = async (groupUuid: string, formData) => {
     const assignLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/assign_learners/`;
     return LmsApiService.apiClient().post(assignLearnerEndpoint, formData);
   };
 
-  static fetchEnterpriseGroupLearners = async (groupUuid, options) => {
+  static fetchEnterpriseGroupLearners = async (groupUuid: string, options) => {
     let enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners`;
     if (options) {
       const queryParams = new URLSearchParams(options);
@@ -500,7 +509,7 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseGroupLearnersEndpoint);
   };
 
-  static fetchAllEnterpriseGroupLearners = async (groupUuid) => {
+  static fetchAllEnterpriseGroupLearners = async (groupUuid: string) => {
     const queryParams = new URLSearchParams({
       page: '1',
     });

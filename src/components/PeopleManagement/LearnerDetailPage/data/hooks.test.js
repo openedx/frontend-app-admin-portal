@@ -23,18 +23,13 @@ const TEST_ENTERPRISE_USER = [{
   },
 }];
 
-const mockOptions = {
-  enterprise_customer: ENTERPRISE_UUID,
-  user_id: LEARNER_ID,
-};
-
 describe('useFetchLearnerData', () => {
   it('should fetch enterprise learner data', async () => {
     const spy = jest.spyOn(LmsApiService, 'fetchEnterpriseLearnerData');
     LmsApiService.fetchEnterpriseLearnerData.mockResolvedValueOnce({ data: TEST_ENTERPRISE_USER });
     renderHook(() => useEnterpriseLearnerData(ENTERPRISE_UUID, LEARNER_ID));
     await waitFor(() => {
-      expect(spy).toHaveBeenCalledWith(mockOptions);
+      expect(spy).toHaveBeenCalledWith(ENTERPRISE_UUID, LEARNER_ID, undefined);
     });
   });
 });

@@ -8,14 +8,10 @@ const useEnterpriseLearners = ({
   enterpriseUUID,
 }) => {
   const [allEnterpriseLearners, setAllEnterpriseLearners] = useState([]);
-
   useEffect(() => {
     const fetchLearnerEmails = async () => {
       try {
-        const options = {
-          enterprise_customer: enterpriseUUID,
-        };
-        const data = await LmsApiService.fetchEnterpriseLearnerData(options);
+        const data = await LmsApiService.fetchEnterpriseLearnerData(enterpriseUUID, undefined, undefined);
         const results = await camelCaseObject(data);
         const learnerEmails = results.map(result => result?.user?.email);
         setAllEnterpriseLearners(learnerEmails);
