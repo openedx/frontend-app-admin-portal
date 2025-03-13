@@ -13,13 +13,14 @@ TypeScript is a strongly-typed superset of JavaScript, designed to address some 
 
 TypeScript can be readily added to an existing JavaScript codebase in a piecemeal fashion, both by adding TypeScript files (.ts) that will live alongside JavaScript files (.js), and by converting existing JavaScript files to TypeScript, but not adding type contracts immediately.
 
-While TypeScript support has been added to the ``frontend-app-admin-portal`` MFE, there haven't been any systematic efforts to migrate to using it, or guidance given to those who would like to leverage it as part of their regular feature work.
+While TypeScript support has been accepted across the edX ecosystem (https://docs.openedx.org/projects/openedx-proposals/en/latest/best-practices/oep-0067/decisions/frontend/0008-typescript.html) and added to the ``frontend-app-admin-portal`` MFE, there haven't been any systematic efforts to migrate to using it, or guidance given to those who would like to leverage it as part of their regular feature work.
 
 Decision
 --------
 Instead of doing an all-at-once migration of existing JavaScript code to TypeScript, we will instead prioritize implementing new code in TypeScript in a targeted fashion. 
 			
 While one can argue that TypeScript code is always an improvement over equivalent JavaScript code, due to providing more documentation and type safety, there are two important caveats.
+
 1. Similar to any refactoring effort, there are always costs and risks involved in a migration from JavaScript to TypeScript.
 2. TypeScript's type annotations provide more of a win in certain contexts than in others.  
 			
