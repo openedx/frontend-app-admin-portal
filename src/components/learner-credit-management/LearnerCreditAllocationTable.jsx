@@ -7,11 +7,7 @@ import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
 import SpendTableEnrollmentDetails from './SpendTableEnrollmentDetails';
 
-import {
-  PAGE_SIZE,
-  DEFAULT_PAGE,
-  formatDate,
-} from './data';
+import { DEFAULT_PAGE, formatDate, PAGE_SIZE } from './data';
 import SpendTableAmountContents from './SpendTableAmountContents';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;

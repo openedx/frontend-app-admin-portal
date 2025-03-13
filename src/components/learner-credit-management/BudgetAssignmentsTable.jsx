@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DataTable, CheckboxFilter } from '@openedx/paragon';
+import { CheckboxFilter, DataTable } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import TableTextFilter from './TableTextFilter';
 import CustomDataTableEmptyState from './CustomDataTableEmptyState';
@@ -10,9 +10,7 @@ import AssignmentAmountTableCell from './AssignmentAmountTableCell';
 import AssignmentRowActionTableCell from './AssignmentRowActionTableCell';
 import AssignmentTableRemindAction from './AssignmentTableRemind';
 import AssignmentTableCancelAction from './AssignmentTableCancel';
-import {
-  DEFAULT_PAGE, PAGE_SIZE,
-} from './data';
+import { DEFAULT_PAGE, PAGE_SIZE } from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
 import AssignmentEnrollByDateCell from './AssignmentEnrollByDateCell';
@@ -91,7 +89,6 @@ const BudgetAssignmentsTable = ({
       defaultColumnValues={{ Filter: TableTextFilter }}
       manualSelectColumn={selectColumn}
       FilterStatusComponent={FilterStatus}
-      SelectionStatusComponent={DataTable.ControlledSelectionStatus}
       columns={[
         {
           Header: intl.formatMessage({
