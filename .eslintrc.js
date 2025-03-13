@@ -14,7 +14,7 @@ config.ignorePatterns = ["*.json", ".eslintrc.js", "*.config.js", "jsdom-with-gl
 
 config.overrides =  [
   {
-    files: ['*.test.js', '*.test.jsx'],
+    files: ['*.test.js', '*.test.jsx', '*.test.ts', '*.test.tsx'],
     parser: "@typescript-eslint/parser",
     parserOptions: {
       project: [
@@ -24,7 +24,7 @@ config.overrides =  [
     }
   },
   {
-    files: ['*.test.js', '*.test.jsx'],
+    files: ['*.test.js', '*.test.jsx', '*.test.ts', '*.test.tsx'],
     rules: {
       'react/prop-types': 'off',
       'react/jsx-no-constructed-context-values': 'off',

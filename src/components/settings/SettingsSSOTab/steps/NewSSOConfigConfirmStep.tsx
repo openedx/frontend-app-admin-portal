@@ -1,6 +1,5 @@
-import React from 'react';
 import {
-  Alert, Hyperlink, OverlayTrigger, Popover,
+  Alert, Button, OverlayTrigger, Popover,
 } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
@@ -22,13 +21,13 @@ const IncognitoPopover = () => (
       </Popover>
       )}
   >
-    <Hyperlink>
+    <Button variant="link" size="inline">
       <FormattedMessage
         id="adminPortal.settings.ssoConfigAuthorizeStep.incognitoWindow"
         defaultMessage="incognito window"
         description="Link text for opening a new window in incognito mode"
       />
-    </Hyperlink>
+    </Button>
   </OverlayTrigger>
 );
 
