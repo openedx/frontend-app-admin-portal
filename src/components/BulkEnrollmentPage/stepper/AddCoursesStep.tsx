@@ -137,22 +137,11 @@ export const BaseAddCoursesStep: React.FC<AddCoursesStepProps> = ({
     algolia.isLoading,
   ]);
 
-  if (algolia.isCatalogQueryFiltersEnabled) {
-    if (algolia.isLoading) {
-      return (
-        <BaseAddCoursesStepContents>
-          <Skeleton height={360} />
-          <div data-testid="skeleton-algolia-loading-courses" className="sr-only">Loading courses...</div>
-        </BaseAddCoursesStepContents>
-      );
-    }
+  if (algolia.isCatalogQueryFiltersEnabled && algolia.isLoading) {
     return (
       <BaseAddCoursesStepContents>
-        <SearchEnabled
-          selectedCourses={selectedCourses}
-          algolia={algolia}
-          subscription={subscription}
-        />
+        <Skeleton height={360} />
+        <div data-testid="skeleton-algolia-loading-courses" className="sr-only">Loading courses...</div>
       </BaseAddCoursesStepContents>
     );
   }

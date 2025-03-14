@@ -96,11 +96,12 @@ export const SelectedContent = ({ enterpriseId }) => {
   /* eslint-disable max-len */
   /**
    * Results in a string like::
+   *
    *   Secured Algolia API key (filters by catalog query uuids):
-   *   `(aggregation_key:'course:edX+DemoX' OR aggregation_key:'course:edX+DemoX2')`
+   *     `(aggregation_key:'course:edX+DemoX' OR aggregation_key:'course:edX+DemoX2')`
    *
    *   Legacy:
-   *   `enterprise_customer_uuids:e783bb19-277f-479e-9c41-8b0ed31b4060 AND (aggregation_key:'course:edX+DemoX' OR aggregation_key:'course:edX+DemoX2')
+   *     `enterprise_customer_uuids:e783bb19-277f-479e-9c41-8b0ed31b4060 AND (aggregation_key:'course:edX+DemoX' OR aggregation_key:'course:edX+DemoX2')
    */
   /* eslint-enable max-len */
   const algoliaFilters = useMemo(() => {
@@ -110,9 +111,10 @@ export const SelectedContent = ({ enterpriseId }) => {
     }
     let filterString = '';
     if (!hasSecuredAlgoliaApiKey) {
-      filterString = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
+      // import testEnterpriseId from the existing ../data/constants folder and replace with
+      // enterpriseId to test locally
+      filterString += `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)}`;
     }
-    // import testEnterpriseId from the existing ../data/constants folder and replace with enterpriseId to test locally
     if (currentSelectedRowIds.length > 0) {
       if (filterString) {
         filterString += ' AND ';
