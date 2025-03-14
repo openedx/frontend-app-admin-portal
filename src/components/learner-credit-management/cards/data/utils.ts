@@ -1,8 +1,7 @@
 import isEmail from 'validator/lib/isEmail';
 
 import { MAX_EMAIL_ENTRY_LIMIT, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
-import { formatPrice } from '../../data';
-import { makePlural, removeStringsFromList } from '../../../../utils';
+import { formatPrice, makePlural, removeStringsFromList } from '../../../../utils';
 
 /**
  * Transforms and formats a policy's display name for rendering within the assignment modal's allocation alert modals.

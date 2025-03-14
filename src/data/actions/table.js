@@ -2,13 +2,13 @@ import { logError } from '@edx/frontend-platform/logging';
 import { getPageOptionsFromUrl } from '../../utils';
 
 import {
+  CLEAR_TABLE,
+  PAGINATION_FAILURE,
   PAGINATION_REQUEST,
   PAGINATION_SUCCESS,
-  PAGINATION_FAILURE,
+  SORT_FAILURE,
   SORT_REQUEST,
   SORT_SUCCESS,
-  SORT_FAILURE,
-  CLEAR_TABLE,
 } from '../constants/table';
 
 const paginationRequest = (tableId, options) => ({
