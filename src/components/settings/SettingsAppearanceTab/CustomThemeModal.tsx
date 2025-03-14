@@ -1,107 +1,38 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
-import Color from 'color';
 import ColorContrastChecker from 'color-contrast-checker';
 import {
   ActionRow, Button, Form, Hyperlink, Icon, ModalDialog,
 } from '@openedx/paragon';
 import { InfoOutline } from '@openedx/paragon/icons';
+
 import {
-  CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK, DARK_COLOR, WHITE_COLOR,
+  CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK,
 } from '../data/constants';
+import ColorEntryField from './ColorEntryField';
+import { ColorAccessibilityChecker, Theme } from './types';
 
-const ColorEntryField = ({
-  controlId,
-  floatingLabel,
-  setField,
-  fieldValid,
-  setFieldValid,
-  fieldWarning,
-  setFieldWarning,
-  defaultColor,
-  a11yCheck,
-}) => {
-  const [isTouched, setTouched] = useState(false);
-
-  const hexRegExpPattern = '^#([A-Fa-f0-9]{6})$';
-  const validHex = new RegExp(hexRegExpPattern);
-
-  const whiteColor = Color(WHITE_COLOR);
-  const darkColor = Color(DARK_COLOR);
-  const getA11yTextColor = color => (color.isDark() ? whiteColor : darkColor);
-
-  const intl = useIntl();
-
-  const invalidMessage = intl.formatMessage({
-    id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.invalidHex',
-    defaultMessage: 'Must be hexadecimal starting with {hash} (Ex: {example})',
-    description: 'Error message for invalid hexadecimal input',
-  }, { hash: '#', example: '#1e0b57' });
-  const warningMessage = intl.formatMessage({
-    id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.warningMessage',
-    defaultMessage: 'Color does not meet the WCAG AA standard of accessibility. Learn more at the help center link below.',
-    description: 'Warning message for colors that dont meet accessibility standards',
-  });
-
-  const validateColor = (input, setter, warningSetter) => {
-    if (!input.match(validHex)) {
-      setter(false);
-    } else {
-      const inputColor = Color(input);
-      const textColor = getA11yTextColor(inputColor);
-      // checker params -> background, foreground, font size
-      if (a11yCheck?.(input, textColor)) {
-        warningSetter?.(true);
-      }
-      setter(true);
-    }
-  };
-
-  return (
-    <Form.Group controlId={controlId} key={controlId}>
-      <Form.Control
-        floatingLabel={floatingLabel}
-        isInvalid={!fieldValid}
-        onChange={(e) => {
-          setTouched(true);
-          const input = e.target.value;
-          setField(input);
-          validateColor(input, setFieldValid, setFieldWarning);
-        }}
-        defaultValue={defaultColor}
-      />
-      {isTouched && !fieldValid && (
-        <Form.Control.Feedback type="invalid">{invalidMessage}</Form.Control.Feedback>
-      )}
-      {warningMessage && isTouched && fieldValid && fieldWarning && (
-        <Form.Control.Feedback type="warning">{warningMessage}</Form.Control.Feedback>
-      )}
-    </Form.Group>
-  );
-};
-
-ColorEntryField.propTypes = {
-  controlId: PropTypes.string.isRequired,
-  floatingLabel: PropTypes.string.isRequired,
-  setField: PropTypes.func.isRequired,
-  fieldValid: PropTypes.bool.isRequired,
-  setFieldValid: PropTypes.func.isRequired,
-  fieldWarning: PropTypes.string.isRequired,
-  setFieldWarning: PropTypes.func.isRequired,
-  defaultColor: PropTypes.string.isRequired,
-  a11yCheck: PropTypes.func.isRequired,
+type CustomThemeModalProps = {
+  // Whether modal is open
+  isOpen: boolean,
+  // Handler for closing the modal
+  close: () => void,
+  // Existing custom theme
+  customColors: Theme | null,
+  // Callback for setting theme
+  setTheme: (theme: Theme) => void,
 };
 
 const CustomThemeModal = ({
   isOpen, close, customColors, setTheme,
-}) => {
+}: CustomThemeModalProps) => {
   const [button, setButton] = useState('');
   const [buttonValid, setButtonValid] = useState(false);
-  const [buttonWarning, setButtonWarning] = useState('');
+  const [buttonWarning, setButtonWarning] = useState(false);
   const [banner, setBanner] = useState('');
   const [bannerValid, setBannerValid] = useState(false);
-  const [bannerWarning, setBannerWarning] = useState('');
+  const [bannerWarning, setBannerWarning] = useState(false);
   const [accent, setAccent] = useState('');
   const [accentValid, setAccentValid] = useState(false);
 
@@ -118,7 +49,11 @@ const CustomThemeModal = ({
     description: 'Informational text about where to find more details on color appearance and best practices',
   });
 
-  const a11yChecker = new ColorContrastChecker();
+  const colorContrastChecker = new ColorContrastChecker();
+  const a11yChecker = (fontSize: number): ColorAccessibilityChecker => {
+    const func = (color, textColor) => !colorContrastChecker.isLevelAA(color, textColor.hex(), fontSize);
+    return func;
+  };
 
   const setCustom = () => {
     const CUSTOM_THEME = {
@@ -126,8 +61,8 @@ const CustomThemeModal = ({
       button: (button === '' ? customColors?.button : button),
       banner: (banner === '' ? customColors?.banner : banner),
       accent: (accent === '' ? customColors?.accent : accent),
-    };
-    setTheme([CUSTOM_THEME, CUSTOM_THEME]);
+    } as Theme;
+    setTheme(CUSTOM_THEME);
     close();
   };
 
@@ -161,7 +96,7 @@ const CustomThemeModal = ({
             setFieldValid={setButtonValid}
             setFieldWarning={setButtonWarning}
             defaultColor={customColors?.button}
-            a11yCheck={(input, textColor) => !a11yChecker.isLevelAA(input, textColor.hex(), 18)}
+            a11yCheck={a11yChecker(18)}
             floatingLabel={
               intl.formatMessage({
                 id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.buttonColor',
@@ -179,7 +114,7 @@ const CustomThemeModal = ({
             setFieldValid={setBannerValid}
             setFieldWarning={setBannerWarning}
             defaultColor={customColors?.banner}
-            a11yCheck={(input, textColor) => !a11yChecker.isLevelAA(input, textColor.hex(), 40)}
+            a11yCheck={a11yChecker(40)}
             floatingLabel={
               intl.formatMessage({
                 id: 'adminPortal.settings.portalAppearanceTab.customThemeModal.bannerColor',
