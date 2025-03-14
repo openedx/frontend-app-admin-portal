@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Row, Col, Toast, Button,
+  Button, Col, Row, Toast,
 } from '@openedx/paragon';
 
 import { Link } from 'react-router-dom';
