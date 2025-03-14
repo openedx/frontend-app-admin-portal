@@ -13,18 +13,24 @@ import CustomThemeModal from './CustomThemeModal';
 import {
   ACUMEN_THEME, CAMBRIDGE_THEME, CUSTOM_THEME_LABEL, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
 } from '../data/constants';
+import { Theme } from './types';
+
+// this variable is [selected , null] if the user has not created a custom
+// theme and it is [selectedTheme, [customName, #primary, #secondary, #tertiary]] if they have
+// (they can't be two variables because of rules regarding setting react hooks)
+export type ThemeSelectionState = [Theme, Theme | null];
 
 export const SettingsAppearanceTab = ({
   enterpriseId, enterpriseBranding, updatePortalConfiguration,
 }) => {
   const logoMessage = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
   const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
-  const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
+  const [configChangeSuccess, setConfigChangeSuccess] = useState<boolean | null>(null);
   const [uploadedFile, setUploadedFile] = useState(undefined);
   const [customModalIsOpen, openCustomModal, closeCustomModal] = useToggle(false);
   const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
 
-  function getStartingTheme() {
+  function getStartingTheme(): ThemeSelectionState {
     for (let i = 0; i < curatedThemes.length; i++) {
       if (curatedThemes[i].button === enterpriseBranding.primary_color
         && curatedThemes[i].banner === enterpriseBranding.secondary_color
@@ -41,10 +47,11 @@ export const SettingsAppearanceTab = ({
     return [CUSTOM_THEME, CUSTOM_THEME];
   }
 
-  // this variable is [selected , null] if the user has not created a custom
-  // theme and it is [selectedTheme, [customName, #primary, #secondary, #tertiary]] if they have
-  // (they can't be two variables because of rules regarding setting react hooks)
-  const [theme, setTheme] = useState(getStartingTheme());
+  const [theme, setTheme] = useState<ThemeSelectionState>(getStartingTheme());
+
+  const setCustomTheme = (customTheme: Theme) => {
+    setTheme([customTheme, customTheme]);
+  };
 
   const handleLogoUpload = async ({
     fileData, handleError,
@@ -209,13 +216,13 @@ export const SettingsAppearanceTab = ({
         </p>
       )}
       {theme[1] !== null && (
-        <ThemeCard className="mt-1" themeVars={theme[1]} theme={theme} setTheme={setTheme} openCustom={openCustomModal} />
+        <ThemeCard themeVars={theme[1]} theme={theme} setTheme={setTheme} openCustom={openCustomModal} />
       )}
       <CustomThemeModal
         isOpen={customModalIsOpen}
         close={closeCustomModal}
         customColors={theme[1]}
-        setTheme={setTheme}
+        setTheme={setCustomTheme}
       />
       <Button className="d-flex ml-auto" onClick={saveChanges}>
         <FormattedMessage
