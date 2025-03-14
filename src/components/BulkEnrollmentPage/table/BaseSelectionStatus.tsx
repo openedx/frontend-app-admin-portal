@@ -2,12 +2,21 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DataTableContext } from '@openedx/paragon';
 
+type DataTablePage = {
+  isSelected: boolean;
+};
+
+type DataTableContextValue = {
+  page: DataTablePage[];
+  toggleAllRowsSelected: (selected: boolean) => void;
+};
+
 // This selection status component uses the BulkEnrollContext to show selection status rather than the data table state.
 const BaseSelectionStatus = ({
   className,
   selectedRows,
 }) => {
-  const { page, toggleAllRowsSelected } = useContext(DataTableContext);
+  const { page, toggleAllRowsSelected }: DataTableContextValue = useContext(DataTableContext);
   const numSelectedRowsOnPage = page.filter(r => r.isSelected).length;
 
   const numSelectedRows = selectedRows.length;
@@ -40,7 +49,7 @@ BaseSelectionStatus.propTypes = {
   className: PropTypes.string,
   selectedRows: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    values: PropTypes.shape().isRequired,
+    values: PropTypes.shape({}).isRequired,
   })).isRequired,
 };
 

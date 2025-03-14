@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
@@ -7,25 +6,42 @@ import thunk from 'redux-thunk';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import ContentHighlights from '../ContentHighlights';
-import { EnterpriseAppContext } from '../../EnterpriseApp/EnterpriseAppContextProvider';
+import {
+  EnterpriseAppContext, TEnterpriseAppContext, TEnterpriseCuration, THighlightSet,
+} from '../../EnterpriseApp/EnterpriseAppContextProvider';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { GROUP_TYPE_BUDGET } from '../../PeopleManagement/constants';
+import { useAlgoliaSearch } from '../../algolia-search';
+import type { UseAlgoliaSearchResult } from '../../algolia-search/useAlgoliaSearch';
 
 jest.mock('../../../data/services/LmsApiService');
 
+jest.mock('../../algolia-search/useAlgoliaSearch', () => jest.fn());
+
 const mockStore = configureMockStore([thunk]);
-const initialEnterpriseAppContextValue = {
+const initialEnterpriseAppContextValue: TEnterpriseAppContext = {
   enterpriseCuration: {
     enterpriseCuration: {
-      highlightSets: [],
+      uuid: 'test-curation-uuid',
+      title: 'Curation Title',
+      isHighlightFeatureActive: true,
+      canOnlyViewHighlightSets: false,
+      highlightSets: [] as THighlightSet[],
+      created: '2021-01-01T00:00:00Z',
+      modified: '2021-01-01T00:00:00Z',
     },
+    isLoading: false,
+    fetchError: null,
   },
 };
 const initialState = {
   portalConfiguration:
     {
+      enterpriseId: 'test-enterprise-uuid',
       enterpriseSlug: 'test-enterprise',
+      enterpriseFeatures: {},
     },
 };
 
@@ -47,6 +63,13 @@ describe('<ContentHighlights>', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
+    (useAlgoliaSearch as jest.Mock).mockReturnValue({
+      isCatalogQueryFiltersEnabled: false,
+      securedAlgoliaApiKey: null,
+      isLoading: false,
+      searchClient: null,
+      catalogUuidsToCatalogQueryUuids: null,
+    } as UseAlgoliaSearchResult);
   });
   it('Displays the Hero', () => {
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
@@ -61,17 +84,20 @@ describe('<ContentHighlights>', () => {
     expect(screen.getByText('deleted', { exact: false })).toBeInTheDocument();
   });
   it('Displays the toast highlight', () => {
-    const toastMessage = {
-      enterpriseCuration: {
-        enterpriseCuration: {
-          toastText: 'highlighted',
-          highlightSets: [],
-        },
-      },
+    const mockEnterpriseCuration: TEnterpriseCuration = {
+      ...initialEnterpriseAppContextValue.enterpriseCuration.enterpriseCuration,
+      toastText: 'highlighted',
     };
+    const mockEnterpriseAppContext = {
+      ...initialEnterpriseAppContextValue,
+      enterpriseCuration: {
+        ...initialEnterpriseAppContextValue.enterpriseCuration,
+        enterpriseCuration: mockEnterpriseCuration,
+      },
+    } as TEnterpriseAppContext;
     renderWithRouter(
       <ContentHighlightsWrapper
-        enterpriseAppContextValue={toastMessage}
+        enterpriseAppContextValue={mockEnterpriseAppContext}
         location={{ state: { highlightToast: true } }}
       />,
     );
@@ -86,8 +112,8 @@ describe('<ContentHighlights>', () => {
     expect(screen.getByText('Archived courses deleted')).toBeInTheDocument();
   });
   it('Displays the alert if custom groups is enabled and user is staff', () => {
-    LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
-      data: { results: [{ group_type: GROUP_TYPE_BUDGET }] },
+    (LmsApiService.fetchEnterpriseGroups as jest.Mock).mockImplementation(() => Promise.resolve({
+      data: { results: [{ groupType: GROUP_TYPE_BUDGET }] },
     }));
     renderWithRouter(<ContentHighlightsWrapper location={{ state: {} }} />);
   });
