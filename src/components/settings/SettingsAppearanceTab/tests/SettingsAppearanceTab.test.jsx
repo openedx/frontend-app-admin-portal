@@ -193,6 +193,7 @@ describe('Portal Appearance Tab', () => {
       userEvent.click(createCustom);
     });
     expect(screen.getByText('Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.')).toBeInTheDocument();
+    expect(screen.getByText('Add theme')).toBeDisabled();
     userEvent.type(screen.getByLabelText('Banner color'), 'bad number');
     expect(screen.getByText('Must be hexadecimal starting with # (Ex: #1e0b57)')).toBeInTheDocument();
     userEvent.type(screen.getByLabelText('Button color'), '#023E8A');
