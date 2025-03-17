@@ -15,9 +15,9 @@ import {
 import { BulkEnrollContext, Subscription } from '../BulkEnrollmentContext';
 
 import CourseSearchResults from '../CourseSearchResults';
-import { withAlgoliaSearch } from '../../algolia-search';
-import { UseAlgoliaSearchResult } from '../../algolia-search/useAlgoliaSearch';
-import { SelectedRow } from '../data/reducer';
+import { withAlgoliaSearch, type UseAlgoliaSearchResult } from '../../algolia-search';
+import type { SelectedRow } from '../data/types';
+import SearchUnavailableAlert from '../../algolia-search/SearchUnavailableAlert';
 
 const currentEpoch = Math.round((new Date()).getTime() / 1000);
 const MAX_COURSES = 7;
@@ -71,12 +71,13 @@ const BaseSearchEnabled: React.FC<SearchEnabledProps> = ({
   algolia,
 }) => {
   const algoliaFilters = useAlgoliaFilters(subscription, algolia);
+
   return (
     <>
       <DismissibleCourseWarning defaultShow={(selectedCourses?.length || 0) > MAX_COURSES} />
       <SearchData>
         <InstantSearch
-          indexName={configuration.ALGOLIA.INDEX_NAME}
+          indexName={configuration.ALGOLIA.INDEX_NAME!}
           searchClient={algolia.searchClient}
         >
           <Configure
@@ -142,6 +143,14 @@ export const BaseAddCoursesStep: React.FC<AddCoursesStepProps> = ({
       <BaseAddCoursesStepContents>
         <Skeleton height={360} />
         <div data-testid="skeleton-algolia-loading-courses" className="sr-only">Loading courses...</div>
+      </BaseAddCoursesStepContents>
+    );
+  }
+
+  if (!algolia.searchClient) {
+    return (
+      <BaseAddCoursesStepContents>
+        <SearchUnavailableAlert className="mt-4" />
       </BaseAddCoursesStepContents>
     );
   }

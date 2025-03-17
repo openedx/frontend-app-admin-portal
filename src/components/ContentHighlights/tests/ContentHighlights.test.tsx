@@ -14,7 +14,7 @@ import {
 import LmsApiService from '../../../data/services/LmsApiService';
 import { GROUP_TYPE_BUDGET } from '../../PeopleManagement/constants';
 import { useAlgoliaSearch } from '../../algolia-search';
-import type { UseAlgoliaSearchResult } from '../../algolia-search/useAlgoliaSearch';
+import type { UseAlgoliaSearchResult } from '../../algolia-search';
 
 jest.mock('../../../data/services/LmsApiService');
 
