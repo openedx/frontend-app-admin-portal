@@ -13,7 +13,7 @@ import { BulkEnrollContext, BulkEnrollContextValue, Subscription } from '../Bulk
 import { TABLE_HEADERS } from '../CourseSearchResults';
 
 import '../../../../__mocks__/react-instantsearch-dom';
-import { BaseAddCoursesStep } from './AddCoursesStep';
+import { AddCoursesStep } from './AddCoursesStep';
 import { renderWithRouter } from '../../test/testUtils';
 import type { SelectedRow } from '../data/types';
 import type { UseAlgoliaSearchResult } from '../../algolia-search';
@@ -90,7 +90,7 @@ const StepperWrapper = ({
     <IntlProvider locale="en">
       <Provider store={store || defaultMockStore}>
         <BulkEnrollContext.Provider value={value}>
-          <BaseAddCoursesStep
+          <AddCoursesStep
             {...props}
             algolia={algolia || defaultAlgoliaProps}
             subscription={subscription}

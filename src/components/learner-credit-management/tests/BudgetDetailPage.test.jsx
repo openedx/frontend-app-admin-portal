@@ -1,4 +1,5 @@
 import React from 'react';
+import algoliasearch from 'algoliasearch/lite';
 import { useParams } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
@@ -7,14 +8,15 @@ import configureMockStore from 'redux-mock-store';
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
 import dayjs from 'dayjs';
-import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import BudgetDetailPage from '../BudgetDetailPage';
 import {
   DEFAULT_PAGE,
@@ -25,6 +27,7 @@ import {
   useBudgetDetailActivityOverview,
   useBudgetRedemptions,
   useEnterpriseCustomer,
+  useEnterpriseFlexGroups,
   useEnterpriseGroup,
   useEnterpriseGroupLearners,
   useEnterpriseOffer,
@@ -47,6 +50,12 @@ import {
   mockSubsidySummary,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
+import { useAlgoliaSearch } from '../../algolia-search';
+
+jest.mock('@edx/frontend-platform/auth', () => ({
+  ...jest.requireActual('@edx/frontend-platform/auth'),
+  getAuthenticatedUser: jest.fn(),
+}));
 
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
@@ -57,6 +66,8 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: jest.fn(),
 }));
+
+jest.mock('../../algolia-search/useAlgoliaSearch');
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
@@ -73,6 +84,7 @@ jest.mock('../data', () => ({
   useIsLargeOrGreater: jest.fn().mockReturnValue(true),
   useSubsidyAccessPolicy: jest.fn(),
   useSubsidySummaryAnalyticsApi: jest.fn(),
+  useEnterpriseFlexGroups: jest.fn(),
 }));
 
 jest.mock('../../../data/services/EnterpriseAccessApiService');
@@ -213,6 +225,14 @@ describe('<BudgetDetailPage />', () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
+    getAuthenticatedUser.mockReturnValue({
+      userId: 3,
+    });
+
+    useEnterpriseFlexGroups.mockReturnValue({
+      data: [],
+    });
+
     useSubsidySummaryAnalyticsApi.mockReturnValue({
       isLoading: false,
       subsidySummary: {},
@@ -244,6 +264,16 @@ describe('<BudgetDetailPage />', () => {
         enterpriseGroupLearners: {
           count: 40,
         },
+      },
+    });
+
+    useAlgoliaSearch.mockReturnValue({
+      isCatalogQueryFiltersEnabled: true,
+      securedAlgoliaApiKey: 'mock-secured-algolia-api-key',
+      isLoading: false,
+      searchClient: algoliasearch('test-app-id', 'test-api-key'),
+      catalogUuidsToCatalogQueryUuids: {
+        [mockSubsidyAccessPolicyUUID]: 'test-catalog-query-uuid',
       },
     });
   });
