@@ -5,6 +5,7 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
 
 import { ADD_COURSES_TITLE, WARNING_ALERT_TITLE_TEXT } from './constants';
@@ -14,8 +15,8 @@ import { TABLE_HEADERS } from '../CourseSearchResults';
 import '../../../../__mocks__/react-instantsearch-dom';
 import { BaseAddCoursesStep } from './AddCoursesStep';
 import { renderWithRouter } from '../../test/testUtils';
-import { SelectedRow } from '../data/reducer';
-import { UseAlgoliaSearchResult } from '../../algolia-search/useAlgoliaSearch';
+import type { SelectedRow } from '../data/types';
+import type { UseAlgoliaSearchResult } from '../../algolia-search';
 
 const mockEnterpriseCatalogUuid = 'fake-enterprise-catalog-uuid';
 const mockEnterpriseCatalogQueryUuid = 'fake-enterprise-catalog-query-uuid';
@@ -57,6 +58,8 @@ const defaultMockStore = mockStore({
     enterpriseFeatures: {},
   },
 });
+
+const searchClient = algoliasearch('appId', 'test-api-key');
 
 interface StepperWrapperProps {
   store?: ReturnType<typeof mockStore>;
@@ -109,6 +112,16 @@ describe('AddCoursesStep', () => {
     expect(screen.getByTestId('skeleton-algolia-loading-courses')).toBeInTheDocument();
   });
 
+  it('displays search unavailable error without searchClient', () => {
+    const algolia: UseAlgoliaSearchResult = {
+      ...defaultAlgoliaProps,
+      isCatalogQueryFiltersEnabled: true,
+      searchClient: null,
+    };
+    renderWithRouter(<StepperWrapper {...defaultProps} algolia={algolia} />);
+    expect(screen.getByText('search functionality is currently unavailable', { exact: false })).toBeInTheDocument();
+  });
+
   it.each([
     { usesCatalogQuerySearchFilters: false },
     { usesCatalogQuerySearchFilters: true },
@@ -119,6 +132,7 @@ describe('AddCoursesStep', () => {
       catalogUuidsToCatalogQueryUuids: usesCatalogQuerySearchFilters
         ? { [mockEnterpriseCatalogUuid]: mockEnterpriseCatalogQueryUuid }
         : null,
+      searchClient,
     };
     renderWithRouter(<StepperWrapper {...defaultProps} algolia={algolia} />);
 
@@ -143,6 +157,7 @@ describe('AddCoursesStep', () => {
       catalogUuidsToCatalogQueryUuids: usesCatalogQuerySearchFilters
         ? { [mockEnterpriseCatalogUuid]: mockEnterpriseCatalogQueryUuid }
         : null,
+      searchClient,
     };
     renderWithRouter(
       <StepperWrapper

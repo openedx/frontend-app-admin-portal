@@ -1,10 +1,8 @@
 import { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import { createContext } from 'use-context-selector';
 import { SearchClient } from 'algoliasearch/lite';
 
-import { withAlgoliaSearch } from '../algolia-search';
-import { UseAlgoliaSearchResult } from '../algolia-search/useAlgoliaSearch';
+import { withAlgoliaSearch, type UseAlgoliaSearchResult } from '../algolia-search';
 
 export type StepperModalState = {
   isOpen: boolean;
@@ -32,10 +30,10 @@ export type ContentHighlightsContextValue = [
   }>>,
 ];
 
-type ContentHighlightsContextProviderProps = {
+interface ContentHighlightsContextProviderProps {
   children: React.ReactNode;
   algolia: UseAlgoliaSearchResult;
-};
+}
 
 const initialState = {
   stepperModal: {
@@ -78,15 +76,6 @@ const ContentHighlightsContextProvider = ({ children, algolia }: ContentHighligh
       {children}
     </ContentHighlightsContext.Provider>
   );
-};
-
-ContentHighlightsContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-  algolia: PropTypes.shape({
-    searchClient: PropTypes.shape({}),
-    securedAlgoliaApiKey: PropTypes.string,
-    isLoading: PropTypes.bool,
-  }).isRequired,
 };
 
 export default withAlgoliaSearch(ContentHighlightsContextProvider);
