@@ -112,6 +112,16 @@ describe('AddCoursesStep', () => {
     expect(screen.getByTestId('skeleton-algolia-loading-courses')).toBeInTheDocument();
   });
 
+  it('displays search unavailable error without searchClient', () => {
+    const algolia: UseAlgoliaSearchResult = {
+      ...defaultAlgoliaProps,
+      isCatalogQueryFiltersEnabled: true,
+      searchClient: null,
+    };
+    renderWithRouter(<StepperWrapper {...defaultProps} algolia={algolia} />);
+    expect(screen.getByText('search functionality is currently unavailable', { exact: false })).toBeInTheDocument();
+  });
+
   it.each([
     { usesCatalogQuerySearchFilters: false },
     { usesCatalogQuerySearchFilters: true },
