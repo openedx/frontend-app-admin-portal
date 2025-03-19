@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { Col, Skeleton, Card } from '@openedx/paragon';
+import { Card, Col, Skeleton } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import classNames from 'classnames';
-import { formatPrice } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import { formatPrice } from '../../utils';
 
 const SubBudgetCardUtilization = ({
   isAssignable,
