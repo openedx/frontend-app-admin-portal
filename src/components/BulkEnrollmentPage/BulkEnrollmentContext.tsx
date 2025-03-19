@@ -3,7 +3,8 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import selectedRowsReducer, { Action, SelectedRow } from './data/reducer';
+import selectedRowsReducer from './data/reducer';
+import type { Action, SelectedRow } from './data/types';
 
 export type Subscription = {
   uuid: string;

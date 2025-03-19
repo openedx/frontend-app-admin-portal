@@ -16,7 +16,7 @@ import SelectContentSelectionCheckbox from './SelectContentSelectionCheckbox';
 import SelectContentSearchPagination from './SelectContentSearchPagination';
 import SkeletonContentCard from '../SkeletonContentCard';
 import { useContentHighlightsContext } from '../data/hooks';
-import HighlightSearchUnavailableAlert from './HighlightSearchUnavailableAlert';
+import { SearchUnavailableAlert } from '../../algolia-search';
 
 const defaultActiveStateValue = 'card';
 
@@ -173,9 +173,8 @@ const HighlightStepperSelectContent: React.FC<HighlightStepperSelectContentProps
   }
 
   if (!searchClient) {
-    // Without a search client, we cannot search.
     return (
-      <HighlightSearchUnavailableAlert className="mt-4" />
+      <SearchUnavailableAlert className="mt-4" />
     );
   }
 
@@ -192,7 +191,7 @@ const HighlightStepperSelectContent: React.FC<HighlightStepperSelectContentProps
   return (
     <SearchData>
       <InstantSearch
-        indexName={configuration.ALGOLIA.INDEX_NAME}
+        indexName={configuration.ALGOLIA.INDEX_NAME!}
         searchClient={searchClient}
       >
         <Configure

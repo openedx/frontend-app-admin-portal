@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import { Alert } from '@openedx/paragon';
 import { Error as ErrorIcon } from '@openedx/paragon/icons';
 
-interface HighlightSearchUnavailableAlertProps {
+interface SearchUnavailableAlertProps {
   className?: string;
 }
 
-const HighlightSearchUnavailableAlert: React.FC<HighlightSearchUnavailableAlertProps> = ({ className }) => (
+const SearchUnavailableAlert: React.FC<SearchUnavailableAlertProps> = ({ className }) => (
   <Alert variant="danger" icon={ErrorIcon} className={className}>
     <Alert.Heading>Search Unavailable</Alert.Heading>
     <p>
@@ -22,8 +22,8 @@ const HighlightSearchUnavailableAlert: React.FC<HighlightSearchUnavailableAlertP
   </Alert>
 );
 
-HighlightSearchUnavailableAlert.propTypes = {
+SearchUnavailableAlert.propTypes = {
   className: PropTypes.string,
 };
 
-export default HighlightSearchUnavailableAlert;
+export default SearchUnavailableAlert;

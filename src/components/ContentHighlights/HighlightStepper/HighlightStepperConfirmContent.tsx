@@ -27,7 +27,7 @@ import {
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import ContentConfirmContentCard from './ContentConfirmContentCard';
 import SkeletonContentCardContainer from '../SkeletonContentCardContainer';
-import HighlightSearchUnavailableAlert from './HighlightSearchUnavailableAlert';
+import { SearchUnavailableAlert } from '../../algolia-search';
 
 export const BaseReviewContentSelections = ({
   searchResults,
@@ -40,7 +40,7 @@ export const BaseReviewContentSelections = ({
     );
   }
   if (!searchResults) {
-    return (<div data-testid="base-content-no-results" />);
+    return <div data-testid="base-content-no-results" />;
   }
   const { hits } = camelCaseObject(searchResults);
   // ensures content is persisted in the order it was selected from the previous step.
@@ -150,13 +150,13 @@ export const SelectedContent = ({ enterpriseId }) => {
 
   if (!searchClient) {
     return (
-      <HighlightSearchUnavailableAlert className="mt-4" />
+      <SearchUnavailableAlert className="mt-4" />
     );
   }
 
   return (
     <InstantSearch
-      indexName={configuration.ALGOLIA.INDEX_NAME}
+      indexName={configuration.ALGOLIA.INDEX_NAME!}
       searchClient={searchClient}
     >
       <Configure

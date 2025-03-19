@@ -1,0 +1,3 @@
+export const SET_SELECTED_ROWS = 'SET SELECTED ROWS';
+export const DELETE_ROW = 'DELETE ROW';
+export const CLEAR_SELECTION = 'CLEAR SELECTION';
