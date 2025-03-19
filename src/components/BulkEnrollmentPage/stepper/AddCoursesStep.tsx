@@ -108,7 +108,7 @@ interface AddCoursesStepProps {
   algolia: UseAlgoliaSearchResult;
 }
 
-export const BaseAddCoursesStep: React.FC<AddCoursesStepProps> = ({
+export const AddCoursesStep: React.FC<AddCoursesStepProps> = ({
   subscription,
   algolia,
 }) => {
@@ -166,4 +166,4 @@ export const BaseAddCoursesStep: React.FC<AddCoursesStepProps> = ({
   );
 };
 
-export default withAlgoliaSearch(BaseAddCoursesStep);
+export default withAlgoliaSearch(AddCoursesStep);

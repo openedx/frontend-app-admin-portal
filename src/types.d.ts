@@ -40,6 +40,8 @@ declare global {
     groupType: EnterpriseGroupType,
     /* Date group was created */
     created: string,
+    /* Whether group applies to all contexts */
+    appliesToAllContexts: boolean,
   };
 
   type EnterpriseFeatures = {

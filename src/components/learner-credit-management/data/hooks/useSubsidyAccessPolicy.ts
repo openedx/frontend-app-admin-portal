@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
+import type { AxiosResponse } from 'axios';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../constants';
 import { isAssignableSubsidyAccessPolicyType } from '../../../../utils';
+import { SubsidyAccessPolicy } from '../types';
 
 /**
  * Retrieves a subsidy access policy by UUID from the API.
@@ -13,17 +15,16 @@ import { isAssignableSubsidyAccessPolicyType } from '../../../../utils';
  */
 const getSubsidyAccessPolicy = async ({ queryKey }) => {
   const subsidyAccessPolicyUUID = queryKey[2];
-  const response = await EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID);
-  const subsidyAccessPolicy = camelCaseObject(response.data);
+  const response: AxiosResponse = await EnterpriseAccessApiService.retrieveSubsidyAccessPolicy(subsidyAccessPolicyUUID);
+  const subsidyAccessPolicy: SubsidyAccessPolicy = camelCaseObject(response.data);
   subsidyAccessPolicy.isAssignable = isAssignableSubsidyAccessPolicyType(subsidyAccessPolicy);
   return subsidyAccessPolicy;
 };
 
-const useSubsidyAccessPolicy = (subsidyAccessPolicyId, { queryOptions } = {}) => useQuery({
+const useSubsidyAccessPolicy = (subsidyAccessPolicyId) => useQuery({
   queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
   queryFn: getSubsidyAccessPolicy,
   enabled: !!subsidyAccessPolicyId,
-  ...queryOptions,
 });
 
 export default useSubsidyAccessPolicy;
