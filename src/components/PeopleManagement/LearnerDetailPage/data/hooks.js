@@ -15,18 +15,19 @@ import LmsApiService from '../../../../data/services/LmsApiService';
 export const useEnterpriseLearnerData = (enterpriseUUID, learnerId) => {
   const [isLoading, setIsLoading] = useState(true);
   const [learnerData, setLearnerData] = useState({
-    firstName: '',
-    lastName: '',
+    userId: '',
+    name: '',
     email: '',
-    dateJoined: null,
+    joinedOn: null,
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await LmsApiService.fetchEnterpriseLearnerData(enterpriseUUID, learnerId, undefined);
+        const options = { user_id: learnerId };
+        const data = await LmsApiService.fetchEnterpriseCustomerMembers(enterpriseUUID, options);
         const results = await camelCaseObject(data);
-        setLearnerData(results[0].user);
+        setLearnerData(results.data.results[0].enterpriseCustomerUser);
       } catch (err) {
         logError(err);
       } finally {

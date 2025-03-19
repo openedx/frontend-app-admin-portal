@@ -9,13 +9,13 @@ import {
 import { Person } from '@openedx/paragon/icons';
 
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
-import formatDates from '../utils';
 import { useEnterpriseGroupUuid } from '../data/hooks';
 import { useEnterpriseLearnerData } from './data/hooks';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
   const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
+
   const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
 
   const intl = useIntl();
@@ -46,7 +46,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
         ariaLabel="Learner detail page breadcrumb navigation"
         links={links}
         linkAs={Link}
-        activeLabel={`${learnerData?.firstName} ${learnerData?.lastName}`}
+        activeLabel={`${learnerData?.name}`}
       />
       {isLoading ? (
         <Skeleton
@@ -57,9 +57,9 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
         <Card className="learner-detail-card">
           <Icon src={Person} className="learner-detail-icon" />
           <Card.Section className="text-center">
-            <h2>{learnerData?.firstName} {learnerData?.lastName}</h2>
+            <h2>{learnerData?.name}</h2>
             <p className="mb-1 small">{learnerData?.email}</p>
-            <p className="mb-1 small">Joined on {formatDates(learnerData?.dateJoined)}</p>
+            <p className="mb-1 small">Joined on {learnerData?.joinedOrg}</p>
           </Card.Section>
         </Card>
       )}

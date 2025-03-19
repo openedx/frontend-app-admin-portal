@@ -4,7 +4,7 @@ import type { AxiosResponse } from 'axios';
 
 import { configuration } from '../../config';
 import generateFormattedStatusUrl from './apiServiceUtils';
-import { EnterpriseGroup, PaginatedCurrentPage } from '../../types';
+import { EnterpriseGroup, EnterpriseLearner, PaginatedCurrentPage } from '../../types';
 
 export type CreateEnterpriseGroupArgs = {
   /* The name of the group to create */
@@ -20,6 +20,7 @@ export type UpdateEnterpriseGroupArgs = {
 
 export type EnterpriseGroupResponse = Promise<AxiosResponse<EnterpriseGroup>>;
 export type EnterpriseGroupListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroup>>>;
+export type EnterpriseLearnersListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseLearner>>>;
 
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
@@ -383,7 +384,7 @@ class LmsApiService {
     return LmsApiService.apiClient().patch(url, options);
   }
 
-  static fetchEnterpriseCustomerMembers(enterpriseUUID, options) {
+  static fetchEnterpriseCustomerMembers(enterpriseUUID: string, options: any) {
     let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}/`;
     if (options) {
       const queryParams = new URLSearchParams(options);
@@ -500,7 +501,7 @@ class LmsApiService {
     return LmsApiService.apiClient().post(assignLearnerEndpoint, formData);
   };
 
-  static fetchEnterpriseGroupLearners = async (groupUuid: string, options) => {
+  static fetchEnterpriseGroupLearners = async (groupUuid: string, options) : EnterpriseLearnersListResponse => {
     let enterpriseGroupLearnersEndpoint = `${LmsApiService.enterpriseGroupUrl}${groupUuid}/learners`;
     if (options) {
       const queryParams = new URLSearchParams(options);

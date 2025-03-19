@@ -24,14 +24,20 @@ const TEST_GROUP = {
   groupType: 'flex',
 };
 
-const TEST_ENTERPRISE_USER = [{
-  user: {
-    firstName: 'Art',
-    lastName: 'Donaldson',
-    email: 'artdonaldson@atp.com',
-    dateJoined: '2024-09-15T12:53:43Z',
+const TEST_ENTERPRISE_USER = {
+  data: {
+    results: [{
+      enterprise_customer_user: {
+        user_id: 1234,
+        email: 'artdonaldson@atp.com',
+        joined_org: 'Jun 30, 2023',
+        name: 'Art Donaldson',
+      },
+      enrollments: 0,
+    },
+    ],
   },
-}];
+};
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -78,7 +84,7 @@ const LearnerDetailPageWrapper = ({
 describe('LearnerDetailPage', () => {
   beforeEach(() => {
     useEnterpriseGroupUuid.mockReturnValue({ data: TEST_GROUP });
-    LmsApiService.fetchEnterpriseLearnerData.mockResolvedValue(TEST_ENTERPRISE_USER);
+    LmsApiService.fetchEnterpriseCustomerMembers.mockResolvedValue(TEST_ENTERPRISE_USER);
   });
   it('renders breadcrumb from people management page', async () => {
     useParams.mockReturnValue({
@@ -111,7 +117,7 @@ describe('LearnerDetailPage', () => {
     render(<LearnerDetailPageWrapper />);
     // one as the active label on the breadcrumb, one on the card
     await waitFor(() => expect(screen.getAllByText('Art Donaldson')).toHaveLength(2));
-    expect(screen.getByText(TEST_ENTERPRISE_USER[0].user.email)).toBeInTheDocument();
-    expect(screen.getByText('Joined on September 15, 2024')).toBeInTheDocument();
+    expect(screen.getByText('artdonaldson@atp.com')).toBeInTheDocument();
+    expect(screen.getByText('Joined on Jun 30, 2023')).toBeInTheDocument();
   });
 });

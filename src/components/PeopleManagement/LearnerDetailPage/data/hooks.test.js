@@ -8,28 +8,33 @@ jest.mock('@edx/frontend-platform/logging', () => ({
 }));
 
 jest.mock('../../../../data/services/LmsApiService', () => ({
-  fetchEnterpriseLearnerData: jest.fn(),
+  fetchEnterpriseCustomerMembers: jest.fn(),
 }));
 
 const ENTERPRISE_UUID = 'test-enterprise-uuid';
 const LEARNER_ID = 1;
 
-const TEST_ENTERPRISE_USER = [{
-  user: {
-    first_name: 'Alicent',
-    last_name: 'Hightower',
-    email: 'ahightower@atp.com',
-    date_joined: '2024-09-15T12:53:43Z',
+const TEST_ENTERPRISE_USER = {
+  results: [{
+    enterprise_customer_user: {
+      user_id: 53841887,
+      email: 'ahightower@dragons.com',
+      joined_org: 'Jun 30, 2023',
+      name: 'Alicent Hightower',
+    },
+    enrollments: 0,
   },
-}];
+  ],
+};
 
 describe('useFetchLearnerData', () => {
   it('should fetch enterprise learner data', async () => {
-    const spy = jest.spyOn(LmsApiService, 'fetchEnterpriseLearnerData');
-    LmsApiService.fetchEnterpriseLearnerData.mockResolvedValueOnce({ data: TEST_ENTERPRISE_USER });
+    const spy = jest.spyOn(LmsApiService, 'fetchEnterpriseCustomerMembers');
+    LmsApiService.fetchEnterpriseCustomerMembers.mockResolvedValueOnce({ data: TEST_ENTERPRISE_USER });
     renderHook(() => useEnterpriseLearnerData(ENTERPRISE_UUID, LEARNER_ID));
+    const options = { user_id: LEARNER_ID };
     await waitFor(() => {
-      expect(spy).toHaveBeenCalledWith(ENTERPRISE_UUID, LEARNER_ID, undefined);
+      expect(spy).toHaveBeenCalledWith(ENTERPRISE_UUID, options);
     });
   });
 });

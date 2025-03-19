@@ -27,6 +27,34 @@ export type EnterpriseGroup = {
   created: string,
 };
 
+export type EnterpriseCustomer = {
+  /* not extensive list of properties */
+  name: string,
+  uuid: string,
+  slug: string,
+};
+
+export type User = {
+  id: number,
+  username: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  dateJoined: string,
+  isStaff: boolean,
+  isActive: boolean,
+};
+
+export type EnterpriseLearner = {
+  /* not extensive list of properties */
+  id: number,
+  enterpriseCustomer: EnterpriseCustomer,
+  userId: number,
+  created: string,
+  user: User,
+  active: boolean,
+};
+
 export type EnterpriseFeatures = {
   catalogQuerySearchFiltersEnabled?: boolean,
 };
