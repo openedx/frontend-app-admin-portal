@@ -53,12 +53,10 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-/* eslint-disable react/prop-types */
 const ContentHighlightStepperWrapper = ({
   enterpriseAppContextValue = initialEnterpriseAppContextValue,
   ...props
 }) => {
-  /* eslint-enable react/prop-types */
   const contextValue = useState({
     stepperModal: {
       isOpen: false,
@@ -67,7 +65,11 @@ const ContentHighlightStepperWrapper = ({
       currentSelectedRowIds: testCourseAggregation,
     },
     contentHighlights: [],
-    searchClient,
+    algolia: {
+      searchClient,
+      securedAlgoliaApiKey: null,
+      isLoading: false,
+    },
   });
   return (
     <IntlProvider locale="en">

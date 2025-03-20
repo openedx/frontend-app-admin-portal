@@ -60,7 +60,9 @@ const ContentHighlightSetCard = ({
       onClick={handleHighlightSetClick}
       data-testid="highlight-set-card"
     >
-      <Card.ImageCap src={imageCapSrc} srcAlt="" />
+      {imageCapSrc && (
+        <Card.ImageCap src={imageCapSrc} srcAlt="" />
+      )}
       <Card.Header title={title} />
       <Card.Section>
         {cardItemText()}
