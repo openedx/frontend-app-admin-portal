@@ -492,18 +492,6 @@ describe('<Admin />', () => {
         csvFetchMethod: 'fetchEnrolledLearnersForInactiveCourses',
         csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
-      'learners-active-week': {
-        csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [enterpriseId, { learnerActivity: 'active_past_week' }, { csv: true }],
-      },
-      'learners-inactive-week': {
-        csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [enterpriseId, { learnerActivity: 'inactive_past_week' }, { csv: true }],
-      },
-      'learners-inactive-month': {
-        csvFetchMethod: 'fetchCourseEnrollments',
-        csvFetchParams: [enterpriseId, { learnerActivity: 'inactive_past_month' }, { csv: true }],
-      },
       'completed-learners': {
         csvFetchMethod: 'fetchCompletedLearners',
         csvFetchParams: [enterpriseId, {}, { csv: true }],
