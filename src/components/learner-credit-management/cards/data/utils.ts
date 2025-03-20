@@ -162,7 +162,7 @@ export const isInviteEmailAddressesInputValueValid = ({
       // Check for duplicates (case-insensitive)
       duplicateEmails.push(email);
       // Check if email belongs in the org
-    } else if (allEnterpriseLearners && !allEnterpriseLearners.includes(email)) {
+    } else if (allEnterpriseLearners && !allEnterpriseLearners.includes(lowerCasedEmail)) {
       emailsNotInOrg.push(email);
     } else {
       // Add to list of lower-cased emails already handled
