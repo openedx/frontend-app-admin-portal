@@ -5,8 +5,8 @@ import { Email } from '@openedx/paragon/icons';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import {
-  useLicenseManagementModalState,
   licenseManagementModalZeroState as modalZeroState,
+  useLicenseManagementModalState,
 } from '../../LicenseManagementModals/LicenseManagementModalHook';
 import LicenseManagementRemindModal from '../../LicenseManagementModals/LicenseManagementRemindModal';
 import { canRemindLicense } from '../../../data/utils';
@@ -66,7 +66,6 @@ const RemindBulkAction = ({
     tableItemCount,
     activeFilters,
   });
-
   const handleRemindClick = () => {
     setRemindModal({
       isOpen: true,
