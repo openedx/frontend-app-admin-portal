@@ -4,7 +4,7 @@ import type { AxiosResponse } from 'axios';
 
 import { configuration } from '../../config';
 import generateFormattedStatusUrl from './apiServiceUtils';
-import { EnterpriseGroup, PaginatedCurrentPage } from '../../types';
+import { EnterpriseGroup, EnterpriseGroupMembership, PaginatedCurrentPage } from '../../types';
 
 export type CreateEnterpriseGroupArgs = {
   /* The name of the group to create */
@@ -18,8 +18,14 @@ export type UpdateEnterpriseGroupArgs = {
   name: string,
 };
 
+export type EnterpriseGroupMembershipArgs = {
+  lmsUserId: string,
+  enterpriseUuid: string,
+};
+
 export type EnterpriseGroupResponse = Promise<AxiosResponse<EnterpriseGroup>>;
 export type EnterpriseGroupListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroup>>>;
+export type EnterpriseGroupMembershipResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroupMembership>>>;
 
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
@@ -63,6 +69,8 @@ class LmsApiService {
   static enterpriseGroupUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-group/`;
 
   static enterpriseGroupListUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise_group/`;
+
+  static enterpriseGroupMembershipUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-group-membership/`;
 
   static enterpriseLearnerUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-learner/`;
 
@@ -544,6 +552,15 @@ class LmsApiService {
     });
     const url = `${LmsApiService.enterpriseLearnerUrl}?${queryParams.toString()}`;
     return LmsApiService.apiClient().get(url);
+  };
+
+  static fetchEnterpriseGroupMemberships = async ({ lmsUserId, enterpriseUuid }:
+  EnterpriseGroupMembershipArgs): EnterpriseGroupMembershipResponse => {
+    const queryString = `?lms_user_id=${lmsUserId}&enterprise_uuid=${enterpriseUuid}`;
+    const groupEndpoint = `${LmsApiService.enterpriseGroupMembershipUrl}${queryString}`;
+    const response = await LmsApiService.apiClient().get(groupEndpoint);
+    response.data = camelCaseObject(response.data);
+    return response;
   };
 }
 

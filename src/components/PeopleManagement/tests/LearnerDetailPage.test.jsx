@@ -8,7 +8,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { useEnterpriseGroupUuid } from '../data/hooks';
+import { useEnterpriseGroupUuid, useEnterpriseGroupMemberships } from '../data/hooks';
 import LearnerDetailPage from '../LearnerDetailPage/LearnerDetailPage';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -23,6 +23,18 @@ const TEST_GROUP = {
   acceptedMembersCount: 0,
   groupType: 'flex',
 };
+
+const TEST_GROUPS = [
+  {
+    groupUuid: TEST_GROUP.uuid,
+    groupName: TEST_GROUP.name,
+    recentAction: 'Accepted: March 10, 2025',
+  }, {
+    groupUuid: '6721',
+    groupName: 'Another Group',
+    recentAction: 'Removed: March 17, 2025',
+  },
+];
 
 const TEST_ENTERPRISE_USER = [{
   user: {
@@ -53,6 +65,7 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
+  useEnterpriseGroupMemberships: jest.fn(),
   useEnterpriseGroupUuid: jest.fn(),
 }));
 
@@ -78,6 +91,13 @@ const LearnerDetailPageWrapper = ({
 describe('LearnerDetailPage', () => {
   beforeEach(() => {
     useEnterpriseGroupUuid.mockReturnValue({ data: TEST_GROUP });
+    useEnterpriseGroupMemberships.mockReturnValue({
+      data: {
+        data: {
+          results: TEST_GROUPS,
+        },
+      },
+    });
     LmsApiService.fetchEnterpriseLearnerData.mockResolvedValue(TEST_ENTERPRISE_USER);
   });
   it('renders breadcrumb from people management page', async () => {
@@ -99,9 +119,9 @@ describe('LearnerDetailPage', () => {
     });
     render(<LearnerDetailPageWrapper />);
     const expectedLink = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.peopleManagement}/${TEST_GROUP.uuid}`;
-    const groupDetailBreadcrumb = screen.getByText(TEST_GROUP.name);
-    expect(groupDetailBreadcrumb).toBeInTheDocument();
-    expect(groupDetailBreadcrumb).toHaveAttribute('href', expectedLink);
+    const groupDetailBreadcrumbs = screen.getAllByText(TEST_GROUP.name);
+    expect(groupDetailBreadcrumbs).toHaveLength(2);
+    expect(groupDetailBreadcrumbs[0]).toHaveAttribute('href', expectedLink);
   });
   it('renders learner detail card', async () => {
     useParams.mockReturnValue({
@@ -113,5 +133,23 @@ describe('LearnerDetailPage', () => {
     await waitFor(() => expect(screen.getAllByText('Art Donaldson')).toHaveLength(2));
     expect(screen.getByText(TEST_ENTERPRISE_USER[0].user.email)).toBeInTheDocument();
     expect(screen.getByText('Joined on September 15, 2024')).toBeInTheDocument();
+  });
+  it('renders groups section', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: ENTERPRISE_SLUG,
+      learnerId: LMS_USER_ID,
+    });
+    render(<LearnerDetailPageWrapper />);
+    await waitFor(() => {
+      expect(screen.getByText('Groups')).toBeInTheDocument();
+    });
+    const firstGroupLink = screen.getByText(TEST_GROUP.name);
+    expect(firstGroupLink).toBeInTheDocument();
+    expect(firstGroupLink).toHaveAttribute('href', '/test-slug/admin/people-management/1276');
+    const secondGroupLink = screen.getByText('Another Group');
+    expect(secondGroupLink).toBeInTheDocument();
+    expect(secondGroupLink).toHaveAttribute('href', '/test-slug/admin/people-management/6721');
+    expect(screen.getByText('Accepted: March 10, 2025').toBeInTheDocument);
+    expect(screen.getByText('Removed: March 17, 2025').toBeInTheDocument);
   });
 });

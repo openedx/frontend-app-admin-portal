@@ -27,6 +27,27 @@ export type EnterpriseGroup = {
   created: string,
 };
 
+export type EnterpriseGroupMemberDetails = {
+  userEmail: string,
+  userName: string
+};
+
+export type EnterpriseGroupMembership = {
+  enterpriseCustomerUserId: number,
+  lmsUserId: number,
+  pendingEnterpriseCustomerUserId: number | null,
+  enterpriseGroupMembershipUuid: string,
+  recentAction: string,
+  /* TODO: enumerate status values */
+  status: string,
+  /* Date string */
+  activatedAt: string,
+  enrollments: number,
+  groupName: string,
+  groupUuid: string,
+  memberDetails: EnterpriseGroupMemberDetails,
+};
+
 export type EnterpriseFeatures = {
   catalogQuerySearchFiltersEnabled?: boolean,
 };
