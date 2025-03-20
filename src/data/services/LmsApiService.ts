@@ -4,7 +4,6 @@ import type { AxiosResponse } from 'axios';
 
 import { configuration } from '../../config';
 import generateFormattedStatusUrl from './apiServiceUtils';
-import { EnterpriseGroup, EnterpriseLearner, PaginatedCurrentPage } from '../../types';
 
 export type CreateEnterpriseGroupArgs = {
   /* The name of the group to create */

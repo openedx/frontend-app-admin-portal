@@ -40,7 +40,11 @@ const HighlightStepperConfirmContentWrapper = ({ children, currentSelectedRowIds
       currentSelectedRowIds,
     },
     contentHighlights: [],
-    searchClient,
+    algolia: {
+      searchClient,
+      securedAlgoliaApiKey: null,
+      isLoading: false,
+    },
   });
   return (
     <IntlProvider locale="en">

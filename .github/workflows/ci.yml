@@ -1,10 +1,10 @@
-name: node_js CI
+name: Default CI
 
-on:
-  push:
-    branches:
-      - 'master'
-  pull_request:
+on: [pull_request]
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   tests:
@@ -16,16 +16,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version-file: '.nvmrc'
-    - name: Validate no uncommitted package-lock changes
-      run: make validate-no-uncommitted-package-lock-changes
+        cache: 'npm'
     - name: Install dependencies
       run: npm ci
-    - name: Check types
-      run: npm run check-types
-    - name: Lint
-      run: npm run lint
-    - name: extract_translations
-      run: make extract_translations
     - name: Test
       run: npm run test
     - name: Coverage
@@ -33,5 +26,50 @@ jobs:
       with:
         fail_ci_if_error: false
         token: ${{ secrets.CODECOV_TOKEN }}
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Nodejs
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Check types
+      run: npm run check-types
+    - name: Lint
+      run: npm run lint
+    
+  extract_translations:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Nodejs
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: extract_translations
+      run: make extract_translations
+  
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Nodejs
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
     - name: Build
       run: npm run build

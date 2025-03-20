@@ -3,25 +3,23 @@ import isEmpty from 'lodash/isEmpty';
 
 import { learnerCreditManagementQueryKeys } from '../constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
+import { SubsidyAccessPolicy } from '../types';
 
 /**
- * Retrieves a enterprise group by the policy the from the API.
- *
- * @param {*} queryKey The queryKey from the associated `useQuery` call.
+ * Retrieves a enterprise group by the policy the  from the API.
  * @returns The enterprise group object
  */
-const getEnterpriseGroup = async ({ subsidyAccessPolicy }) => {
-  if (isEmpty(subsidyAccessPolicy?.groupAssociations)) {
+const getEnterpriseGroup = async ({ subsidyAccessPolicy }: { subsidyAccessPolicy?: SubsidyAccessPolicy }) => {
+  if (!subsidyAccessPolicy || isEmpty(subsidyAccessPolicy.groupAssociations)) {
     return null;
   }
   const response = await LmsApiService.fetchEnterpriseGroup(subsidyAccessPolicy.groupAssociations[0]);
   return response.data;
 };
 
-const useEnterpriseGroup = (subsidyAccessPolicy, { queryOptions } = {}) => useQuery({
+const useEnterpriseGroup = (subsidyAccessPolicy: SubsidyAccessPolicy | undefined) => useQuery({
   queryKey: learnerCreditManagementQueryKeys.group(subsidyAccessPolicy?.uuid),
   queryFn: () => getEnterpriseGroup({ subsidyAccessPolicy }),
-  ...queryOptions,
 });
 
 export default useEnterpriseGroup;

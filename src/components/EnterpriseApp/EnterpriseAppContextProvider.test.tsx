@@ -63,10 +63,26 @@ describe('<EnterpriseAppContextProvider />', () => {
   }) => {
     const mockUseEnterpriseSubsidiesContext = jest.spyOn(enterpriseSubsidiesContext, 'useEnterpriseSubsidiesContext').mockReturnValue({
       isLoading: isLoadingEnterpriseSubsidies,
+      customerAgreement: undefined,
+      canManageLearnerCredit: false,
+      coupons: [],
+      enterpriseSubsidyTypes: [],
     });
     const mockUseSubsidyRequestsContext = jest.spyOn(subsidyRequestsContext, 'useSubsidyRequestsContext').mockReturnValue(
       {
         isLoading: isLoadingSubsidyRequests,
+        updateSubsidyRequestConfiguration: jest.fn(),
+        subsidyRequestConfiguration: {
+          enterpriseSubsidyTypes: [],
+        },
+        decrementCouponCodeRequestCount: jest.fn(),
+        decrementLicenseRequestCount: jest.fn(),
+        enterpriseSubsidyTypesForRequests: [],
+        refreshsubsidyRequestsCounts: jest.fn(),
+        subsidyRequestsCounts: {
+          couponCodes: 0,
+          subscriptionLicenses: 0,
+        },
       },
     );
     const mockUseEnterpriseCurationContext = jest.spyOn(hooks, 'useEnterpriseCurationContext').mockReturnValue(

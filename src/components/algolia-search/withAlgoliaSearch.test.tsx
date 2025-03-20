@@ -13,7 +13,7 @@ import algoliasearch from 'algoliasearch/lite';
 import '@testing-library/jest-dom/extend-expect';
 
 import withAlgoliaSearch from './withAlgoliaSearch';
-import { UseAlgoliaSearchResult } from './useAlgoliaSearch';
+import type { UseAlgoliaSearchResult } from './useAlgoliaSearch';
 import { queryClient } from '../test/testUtils';
 import { configuration } from '../../config';
 
