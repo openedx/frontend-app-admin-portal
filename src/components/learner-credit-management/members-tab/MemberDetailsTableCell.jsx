@@ -66,9 +66,15 @@ const MemberDetailsTableCell = ({ row, learnerProfileViewEnabled }) => {
     );
   } else {
     memberDetails = (
-      <p className="align-middle mb-0">
-        {row.original.memberDetails.userEmail}
-      </p>
+      <span>
+        {learnerProfileViewEnabled ? (
+          <Hyperlink destination={hyperlink} isInline>
+            <p className="align-middle mb-0">{row.original.memberDetails.userEmail}</p>
+          </Hyperlink>
+        ) : (
+          <p className="align-middle mb-0">{row.original.memberDetails.userEmail}</p>
+        )}
+      </span>
     );
   }
   return (

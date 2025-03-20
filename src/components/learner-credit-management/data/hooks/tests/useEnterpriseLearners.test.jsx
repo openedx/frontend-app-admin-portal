@@ -39,7 +39,9 @@ describe('useEnterpriseLearners', () => {
       { wrapper },
     );
     await waitForNextUpdate();
-    expect(LmsApiService.fetchEnterpriseLearnerData).toHaveBeenCalledWith('test-id', undefined, undefined);
+    expect(LmsApiService.fetchEnterpriseLearnerData).toHaveBeenCalledWith({
+      enterprise_customer: 'test-id',
+    });
     expect(camelCaseObject).toHaveBeenCalledWith(mockData);
     expect(result.current.allEnterpriseLearners).toEqual(['test@2u.com']);
   });

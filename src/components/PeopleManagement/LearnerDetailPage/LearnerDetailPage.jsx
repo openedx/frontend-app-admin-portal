@@ -18,6 +18,13 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
 
   const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
 
+  const activeLabel = () => {
+    if (!isLoading && !learnerData?.name) {
+      return learnerData?.email;
+    }
+    return learnerData?.name;
+  };
+
   const intl = useIntl();
   const links = useMemo(() => {
     const baseLinks = [{
@@ -46,7 +53,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
         ariaLabel="Learner detail page breadcrumb navigation"
         links={links}
         linkAs={Link}
-        activeLabel={`${learnerData?.name}`}
+        activeLabel={`${activeLabel()}`}
       />
       {isLoading ? (
         <Skeleton

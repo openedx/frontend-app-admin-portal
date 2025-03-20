@@ -72,7 +72,7 @@ describe('LmsApiService', () => {
         }],
       },
     });
-    LmsApiService.fetchEnterpriseLearnerData(undefined, undefined, mockUsername);
+    LmsApiService.fetchEnterpriseLearnerData({ username: mockUsername });
     expect(axios.get).toBeCalledWith(
       `${lmsBaseUrl}/enterprise/api/v1/enterprise-learner/?username=${mockUsername}&page=1`,
     );

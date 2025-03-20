@@ -21,7 +21,7 @@ const useUpdateActiveEnterpriseForUser = ({ enterpriseId, user }) => {
     isLoading: isLoadingActiveEnterprise,
   } = useQuery({
     queryKey: ['activeLinkedEnterpriseCustomer', username],
-    queryFn: () => LmsApiService.fetchEnterpriseLearnerData(undefined, undefined, username),
+    queryFn: () => LmsApiService.fetchEnterpriseLearnerData({ username }),
     meta: {
       errorMessage: "Failed to fetch user's active enterprise",
     },

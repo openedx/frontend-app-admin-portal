@@ -22,6 +22,8 @@ export type EnterpriseGroupResponse = Promise<AxiosResponse<EnterpriseGroup>>;
 export type EnterpriseGroupListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroup>>>;
 export type EnterpriseLearnersListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseLearner>>>;
 
+export type FetchEnterpriseLearnerDataArgs = { enterpriseCustomer?: string, userId?: string, username?: string };
+
 class LmsApiService {
   static apiClient = getAuthenticatedHttpClient;
 
@@ -463,16 +465,9 @@ class LmsApiService {
     return linkedEnterprisesCopy;
   }
 
-  static fetchEnterpriseLearnerData = async (enterpriseCustomer?: string, userId?: string, username?: string) => {
-    const options: any = {};
-    if (userId !== undefined) {
-      options.user_id = userId;
-    } if (username !== undefined) {
-      options.username = username;
-    } if (enterpriseCustomer !== undefined) {
-      options.enterprise_customer = enterpriseCustomer;
-    }
-
+  static fetchEnterpriseLearnerData = async (
+    options : FetchEnterpriseLearnerDataArgs,
+  ) : EnterpriseLearnersListResponse => {
     const queryParams = new URLSearchParams({
       ...options,
       page: '1',

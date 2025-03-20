@@ -18,7 +18,7 @@ export const useEnterpriseLearnerData = (enterpriseUUID, learnerId) => {
     userId: '',
     name: '',
     email: '',
-    joinedOn: null,
+    joinedOrg: null,
   });
 
   useEffect(() => {
