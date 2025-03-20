@@ -44,6 +44,34 @@ declare global {
     appliesToAllContexts: boolean,
   };
 
+  type EnterpriseCustomer = {
+    /* not extensive list of properties */
+    name: string,
+    uuid: string,
+    slug: string,
+  };
+
+  type User = {
+    id: number,
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    dateJoined: string,
+    isStaff: boolean,
+    isActive: boolean,
+  };
+
+  type EnterpriseLearner = {
+    /* not extensive list of properties */
+    id: number,
+    enterpriseCustomer: EnterpriseCustomer,
+    userId: number,
+    created: string,
+    user: User,
+    active: boolean,
+  };
+
   type EnterpriseFeatures = {
     catalogQuerySearchFiltersEnabled?: boolean,
   };
