@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
-import { DataTable, CardView } from '@openedx/paragon';
+import { DataTable, CardView, Skeleton } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
+import { connect } from 'react-redux';
 
 import { configuration } from '../../../config';
 import { ENABLE_TESTING, FOOTER_TEXT_BY_CONTENT_TYPE, MAX_PAGE_SIZE } from '../data/constants';
@@ -15,6 +16,7 @@ import SelectContentSelectionCheckbox from './SelectContentSelectionCheckbox';
 import SelectContentSearchPagination from './SelectContentSearchPagination';
 import SkeletonContentCard from '../SkeletonContentCard';
 import { useContentHighlightsContext } from '../data/hooks';
+import { SearchUnavailableAlert } from '../../algolia-search';
 
 const defaultActiveStateValue = 'card';
 
@@ -122,11 +124,11 @@ const BaseHighlightStepperSelectContentDataTable = ({
 };
 
 BaseHighlightStepperSelectContentDataTable.propTypes = {
-  selectedRowIds: PropTypes.shape().isRequired,
+  selectedRowIds: PropTypes.shape({}).isRequired,
   onSelectedRowsChanged: PropTypes.func.isRequired,
   isSearchStalled: PropTypes.bool.isRequired,
   searchResults: PropTypes.shape({
-    hits: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    hits: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     nbHits: PropTypes.number.isRequired,
     nbPages: PropTypes.number.isRequired,
   }),
@@ -138,7 +140,11 @@ BaseHighlightStepperSelectContentDataTable.defaultProps = {
 
 const HighlightStepperSelectContentDataTable = connectStateResults(BaseHighlightStepperSelectContentDataTable);
 
-const HighlightStepperSelectContent = ({ enterpriseId }) => {
+type HighlightStepperSelectContentProps = {
+  enterpriseId: string;
+};
+
+const HighlightStepperSelectContent: React.FC<HighlightStepperSelectContentProps> = ({ enterpriseId }) => {
   const { setCurrentSelectedRowIds } = useContentHighlightsContext();
   const currentSelectedRowIds = useContextSelector(
     ContentHighlightsContext,
@@ -146,18 +152,46 @@ const HighlightStepperSelectContent = ({ enterpriseId }) => {
   );
   const searchClient = useContextSelector(
     ContentHighlightsContext,
-    v => v[0].searchClient,
+    v => v[0].algolia.searchClient,
   );
-  // TODO: replace testEnterpriseId with enterpriseId before push,
-  // uncomment out import and replace with testEnterpriseId to test
-  // FIXME: Remove 'AND (NOT content_type:video)' when video content metadata updated to
+  const hasSecuredAlgoliaApiKey = useContextSelector(
+    ContentHighlightsContext,
+    v => !!v[0].algolia.securedAlgoliaApiKey,
+  );
+  const isLoadingSecuredAlgoliaApiKey = useContextSelector(
+    ContentHighlightsContext,
+    v => v[0].algolia.isLoading,
+  );
+
+  if (isLoadingSecuredAlgoliaApiKey) {
+    return (
+      <>
+        <Skeleton height={360} />
+        <div className="sr-only">Loading courses...</div>
+      </>
+    );
+  }
+
+  if (!searchClient) {
+    return (
+      <SearchUnavailableAlert className="mt-4" />
+    );
+  }
+
+  // FIXME: Remove 'NOT content_type:video' when video content metadata updated to
   // to identical data-structure as similar algolia search objects, ex. COURSES
-  const searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)} AND (NOT content_type:video)`;
+  const baseSearchFilters = 'NOT content_type:video';
+  let searchFilters;
+  if (hasSecuredAlgoliaApiKey) {
+    searchFilters = baseSearchFilters;
+  } else {
+    searchFilters = `enterprise_customer_uuids:${ENABLE_TESTING(enterpriseId)} AND (${baseSearchFilters})`;
+  }
 
   return (
     <SearchData>
       <InstantSearch
-        indexName={configuration.ALGOLIA.INDEX_NAME}
+        indexName={configuration.ALGOLIA.INDEX_NAME!}
         searchClient={searchClient}
       >
         <Configure
@@ -178,4 +212,8 @@ HighlightStepperSelectContent.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-export default HighlightStepperSelectContent;
+const mapStateToProps = state => ({
+  enterpriseId: state.portalConfiguration.enterpriseId,
+});
+
+export default connect(mapStateToProps)(HighlightStepperSelectContent);

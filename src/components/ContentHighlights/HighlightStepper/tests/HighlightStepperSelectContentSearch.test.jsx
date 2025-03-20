@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import algoliasearch from 'algoliasearch/lite';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -38,17 +38,26 @@ const searchClient = algoliasearch(
   configuration.ALGOLIA.SEARCH_API_KEY,
 );
 
-const HighlightStepperSelectContentSearchWrapper = ({ children, currentSelectedRowIds = [] }) => {
-  const contextValue = useState({
-    stepperModal: {
-      isOpen: false,
-      highlightTitle: null,
-      titleStepValidationError: null,
-      currentSelectedRowIds,
-    },
-    contentHighlights: [],
+const initialHighlightStepperState = {
+  stepperModal: {
+    isOpen: false,
+    highlightTitle: null,
+    titleStepValidationError: null,
+    currentSelectedRowIds: {},
+  },
+  contentHighlights: [],
+  algolia: {
     searchClient,
-  });
+    securedAlgoliaApiKey: null,
+    isLoading: false,
+  },
+};
+
+const HighlightStepperSelectContentSearchWrapper = ({
+  initialStepperState = initialHighlightStepperState,
+  children,
+}) => {
+  const contextValue = useState(initialStepperState);
   return (
     <IntlProvider locale="en">
       <Provider store={mockStore(initialState)}>
@@ -85,26 +94,69 @@ jest.mock('react-instantsearch-dom', () => ({
 }));
 
 describe('HighlightStepperSelectContentSearch', () => {
-  test('renders the search results with nothing selected', async () => {
+  test('renders loading state while secured algolia api key is loading', () => {
+    const highlightStepperState = {
+      ...initialHighlightStepperState,
+      algolia: {
+        isLoading: true,
+        securedAlgoliaApiKey: null,
+        searchClient: null,
+      },
+    };
     renderWithRouter(
-      <HighlightStepperSelectContentSearchWrapper>
+      <HighlightStepperSelectContentSearchWrapper initialStepperState={highlightStepperState}>
         <HighlightStepperSelectContent />
       </HighlightStepperSelectContentSearchWrapper>,
     );
-    waitFor(() => {
-      expect(screen.getByText(`Showing ${mockCourseData.length} of ${mockCourseData.length}`, { exact: false })).toBeInTheDocument();
-    });
-    expect(screen.getByText('Search courses')).toBeInTheDocument();
+    expect(screen.getByText('Loading courses...')).toBeInTheDocument();
   });
-  test('renders the search results with all selected', async () => {
+
+  test.each([
+    { usesCatalogQueryFilters: false },
+    { usesCatalogQueryFilters: true },
+  ])('renders the search results with nothing selected (%s)', async ({ usesCatalogQueryFilters }) => {
+    const algoliaArgs = { ...initialHighlightStepperState.algolia };
+    if (usesCatalogQueryFilters) {
+      Object.assign(algoliaArgs, {
+        securedAlgoliaApiKey: 'mock-secured-algolia-api-key',
+      });
+    }
+    const highlightStepperState = {
+      ...initialHighlightStepperState,
+      algolia: algoliaArgs,
+    };
     renderWithRouter(
-      <HighlightStepperSelectContentSearchWrapper currentSelectedRowIds={testCourseAggregation}>
+      <HighlightStepperSelectContentSearchWrapper initialStepperState={highlightStepperState}>
+        <HighlightStepperSelectContent />
+      </HighlightStepperSelectContentSearchWrapper>,
+    );
+    expect(screen.getByText(`Showing 1 - ${mockCourseData.length} of ${mockCourseData.length}`, { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('Search courses')).toBeInTheDocument();
+    mockCourseData.forEach((course) => {
+      expect(screen.getByRole('link', {
+        name: `${course.title} in a new tab`,
+        exact: false,
+      })).toBeInTheDocument();
+    });
+  });
+
+  test('renders the search results with all selected', async () => {
+    const highlightStepperState = {
+      ...initialHighlightStepperState,
+      stepperModal: {
+        ...initialHighlightStepperState.stepperModal,
+        currentSelectedRowIds: testCourseAggregation,
+      },
+    };
+    renderWithRouter(
+      <HighlightStepperSelectContentSearchWrapper initialStepperState={highlightStepperState}>
         <HighlightStepperSelectContent />
       </HighlightStepperSelectContentSearchWrapper>,
     );
     expect(screen.getByText(`${mockCourseData.length} selected (${mockCourseData.length} shown below)`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText('Clear selection')).toBeInTheDocument();
   });
+
   test('sends track event on click', async () => {
     renderWithRouter(
       <HighlightStepperSelectContentSearchWrapper currentSelectedRowIds={testCourseAggregation}>

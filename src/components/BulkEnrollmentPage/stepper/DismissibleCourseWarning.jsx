@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { Alert } from '@openedx/paragon';
 import { WarningFilled } from '@openedx/paragon/icons';
@@ -7,8 +8,8 @@ import { WARNING_ALERT_TITLE_TEXT, WARNING_ALERT_BODY_TEXT } from './constants';
 /**
  * Displays simple dismissible banner to remind admins.
  */
-const DismissibleCourseWarning = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const DismissibleCourseWarning = ({ defaultShow = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultShow);
   return (
     <Alert
       variant="warning"
@@ -23,6 +24,10 @@ const DismissibleCourseWarning = () => {
       </p>
     </Alert>
   );
+};
+
+DismissibleCourseWarning.propTypes = {
+  defaultShow: PropTypes.bool,
 };
 
 export default DismissibleCourseWarning;

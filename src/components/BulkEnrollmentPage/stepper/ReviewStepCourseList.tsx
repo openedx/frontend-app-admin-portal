@@ -1,13 +1,16 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { InstantSearch, Configure, connectStateResults } from 'react-instantsearch-dom';
-import algoliasearch from 'algoliasearch/lite';
 import { camelCaseObject } from '@edx/frontend-platform';
+import { Col, Skeleton } from '@openedx/paragon';
 
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import ReviewList from './ReviewList';
 import { configuration } from '../../../config';
 import { setSelectedRowsAction } from '../data/actions';
+import { SearchUnavailableAlert, withAlgoliaSearch } from '../../algolia-search';
+import type { SelectedRow } from '../data/types';
+import type { UseAlgoliaSearchResult } from '../../algolia-search';
 
 const COURSES = {
   singular: 'course',
@@ -16,12 +19,7 @@ const COURSES = {
   removal: 'Remove course',
 };
 
-const searchClient = algoliasearch(
-  configuration.ALGOLIA.APP_ID,
-  configuration.ALGOLIA.SEARCH_API_KEY,
-);
-
-const BaseContentSelections = ({
+export const BaseContentSelections = ({
   searchResults,
   isSearchStalled,
   returnToSelection,
@@ -30,7 +28,7 @@ const BaseContentSelections = ({
     courses: [selectedCourses, coursesDispatch],
   } = useContext(BulkEnrollContext);
 
-  const transformedSelectedRows = useMemo(() => {
+  const transformedSelectedRows: SelectedRow[] = useMemo(() => {
     const selectedRows = camelCaseObject(searchResults?.hits || []);
     // NOTE: The current implementation of `ReviewItem` relies on the data schema
     // from `DataTable` where each selected row has a `values` object containing
@@ -108,30 +106,46 @@ export const useSearchFiltersForSelectedCourses = (selectedCourses) => {
   return searchFilters;
 };
 
-const ReviewStepCourseList = ({
+interface ReviewStepCourseListProps {
+  returnToSelection: () => void;
+  algolia: UseAlgoliaSearchResult;
+}
+
+export const BaseReviewStepCourseList = ({
   returnToSelection,
-}) => {
+  algolia,
+}: ReviewStepCourseListProps) => {
   const {
     courses: [selectedCourses],
   } = useContext(BulkEnrollContext);
   const searchFilters = useSearchFiltersForSelectedCourses(selectedCourses);
 
+  if (algolia.isCatalogQueryFiltersEnabled && algolia.isLoading) {
+    return (
+      <Col>
+        <Skeleton height={360} />
+        <div data-testid="skeleton-algolia-loading-courses" className="sr-only">Loading courses...</div>
+      </Col>
+    );
+  }
+
+  if (!algolia.searchClient) {
+    return (
+      <Col>
+        <SearchUnavailableAlert />
+      </Col>
+    );
+  }
+
   return (
     <InstantSearch
-      indexName={configuration.ALGOLIA.INDEX_NAME}
-      searchClient={searchClient}
+      indexName={configuration.ALGOLIA.INDEX_NAME!}
+      searchClient={algolia.searchClient}
     >
-      <Configure
-        filters={searchFilters}
-        hitsPerPage={1000}
-      />
+      <Configure filters={searchFilters} />
       <ContentSelections returnToSelection={returnToSelection} />
     </InstantSearch>
   );
 };
 
-ReviewStepCourseList.propTypes = {
-  returnToSelection: PropTypes.func.isRequired,
-};
-
-export default ReviewStepCourseList;
+export default withAlgoliaSearch(BaseReviewStepCourseList);

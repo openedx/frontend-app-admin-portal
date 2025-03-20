@@ -3,12 +3,11 @@ import algoliasearch, { SearchClient } from 'algoliasearch/lite';
 import { logError } from '@edx/frontend-platform/logging';
 import { getAuthenticatedHttpClient, getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import type { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 
 import { configuration } from '../../config';
-import { EnterpriseFeatures } from '../../types';
 
 interface UseSecuredAlgoliaApiKeyArgs {
   isCatalogQueryFiltersEnabled: boolean;
@@ -20,7 +19,7 @@ type CatalogUuidsToCatalogQueryUuids = Record<string, string>;
 interface SecuredAlgoliaApiKeyResponse {
   algolia: {
     secured_api_Key: string,
-    valid_Until: string,
+    valid_until: string,
   },
   catalog_uuids_to_catalog_query_uuids: CatalogUuidsToCatalogQueryUuids,
 }
@@ -38,10 +37,10 @@ interface UseAlgoliaSearchArgs {
 
 export interface UseAlgoliaSearchResult {
   isCatalogQueryFiltersEnabled: boolean;
-  securedAlgoliaApiKey: UseQueryResult;
+  securedAlgoliaApiKey: string | null;
   isLoading: boolean;
   searchClient: SearchClient | null;
-  catalogUuidsToCatalogQueryUuids: CatalogUuidsToCatalogQueryUuids | undefined;
+  catalogUuidsToCatalogQueryUuids: CatalogUuidsToCatalogQueryUuids | null;
 }
 
 async function fetchSecuredAlgoliaApiKey(enterpriseId: string): Promise<UseSecuredAlgoliaApiKeyResult> {
@@ -64,9 +63,17 @@ function calculateStaleTime(
   if (!validUntil) {
     return undefined;
   }
-  const timeDifference = dayjs(validUntil).diff(dayjs());
-  return Math.max(0, timeDifference - bufferMs);
+  const now = dayjs();
+  const validUntilTime = dayjs(validUntil);
+  const staleTime = Math.max(validUntilTime.diff(now, 'milliseconds') - bufferMs, 0);
+
+  return staleTime;
 }
+
+export const querySecuredAlgoliaApiKey = ({ enterpriseId, authenticatedUser }) => ({
+  queryKey: ['securedAlgoliaApiKey', 'enterpriseCustomer', enterpriseId, 'lmsUserId', authenticatedUser.userId],
+  queryFn: async () => fetchSecuredAlgoliaApiKey(enterpriseId),
+});
 
 function useSecuredAlgoliaApiKey({
   isCatalogQueryFiltersEnabled,
@@ -75,8 +82,7 @@ function useSecuredAlgoliaApiKey({
   const [validUntil, setValidUntil] = useState<string | null>(null);
   const authenticatedUser = getAuthenticatedUser();
   const queryResult = useQuery({
-    queryKey: ['securedAlgoliaApiKey', 'enterpriseCustomer', enterpriseId, 'lmsUserId', authenticatedUser.userId],
-    queryFn: async () => fetchSecuredAlgoliaApiKey(enterpriseId),
+    ...querySecuredAlgoliaApiKey({ enterpriseId, authenticatedUser }),
     staleTime: calculateStaleTime(validUntil),
     enabled: isCatalogQueryFiltersEnabled,
   });
@@ -123,10 +129,10 @@ function useAlgoliaSearch({
 
   return {
     isCatalogQueryFiltersEnabled,
-    securedAlgoliaApiKey: securedAlgoliaApiKeyResult,
+    securedAlgoliaApiKey: securedAlgoliaApiKeyData?.apiKey || null,
     isLoading: isInitialLoadingSecuredAlgoliaApiKey,
     searchClient,
-    catalogUuidsToCatalogQueryUuids: securedAlgoliaApiKeyData?.catalogUuidsToCatalogQueryUuids,
+    catalogUuidsToCatalogQueryUuids: securedAlgoliaApiKeyData?.catalogUuidsToCatalogQueryUuids || null,
   };
 }
 

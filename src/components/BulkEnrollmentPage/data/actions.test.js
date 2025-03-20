@@ -1,11 +1,13 @@
 import {
   setSelectedRowsAction,
   deleteSelectedRowAction,
+  clearSelectionAction,
+} from './actions';
+import {
   SET_SELECTED_ROWS,
   DELETE_ROW,
-  clearSelectionAction,
   CLEAR_SELECTION,
-} from './actions';
+} from './constants';
 
 describe('selectedRows actions', () => {
   it('setSelectedRows returns an action with rows and the correct type', () => {

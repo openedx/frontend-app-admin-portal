@@ -1,6 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import { InstantSearch } from 'react-instantsearch-dom';
-import algoliasearch from 'algoliasearch/lite';
+import { useEffect, useRef } from 'react';
 import { Row, Col } from '@openedx/paragon';
 
 import { SearchData, SEARCH_FACET_FILTERS } from '@edx/frontend-enterprise-catalog-search';
@@ -9,7 +7,6 @@ import CatalogSearch from './search/CatalogSearch';
 import {
   LANGUAGE_REFINEMENT, LEARNING_TYPE_REFINEMENT,
 } from './data';
-import { configuration } from '../../config';
 
 const BudgetDetailCatalogTabContents = () => {
   const navigate = useNavigate();
@@ -32,11 +29,6 @@ const BudgetDetailCatalogTabContents = () => {
     }
   });
 
-  const searchClient = algoliasearch(
-    configuration.ALGOLIA.APP_ID,
-    configuration.ALGOLIA.SEARCH_API_KEY,
-  );
-
   useEffect(() => {
     if (locationState?.budgetActivityScrollToKey === 'catalog') {
       catalogContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -49,15 +41,8 @@ const BudgetDetailCatalogTabContents = () => {
   return (
     <Row data-testid="budget-detail-catalog-tab-contents" ref={catalogContainerRef}>
       <Col>
-        <SearchData
-          searchFacetFilters={[...SEARCH_FACET_FILTERS]}
-        >
-          <InstantSearch
-            indexName={configuration.ALGOLIA.INDEX_NAME}
-            searchClient={searchClient}
-          >
-            <CatalogSearch />
-          </InstantSearch>
+        <SearchData searchFacetFilters={[...SEARCH_FACET_FILTERS]}>
+          <CatalogSearch />
         </SearchData>
       </Col>
     </Row>
