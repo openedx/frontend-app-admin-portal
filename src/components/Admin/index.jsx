@@ -18,7 +18,6 @@ import EnrolledLearnersForInactiveCoursesTable from '../EnrolledLearnersForInact
 import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
-import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import AdminCards from '../../containers/AdminCards';
 import AdminSearchForm from './AdminSearchForm';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
@@ -34,6 +33,8 @@ import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
 import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 import ModuleActivityReport from './tabs/ModuleActivityReport';
+import { TableDataProvider } from './TableDataContext';
+import DownloadButtonWrapper from './DownloadButtonWrapper';
 
 class Admin extends React.Component {
   constructor(props) {
@@ -264,11 +265,7 @@ class Admin extends React.Component {
     return tableData && tableData.data;
   }
 
-  displaySearchBar() {
-    return !this.props.actionSlug;
-  }
-
-  isTableDataMissing(id) {
+  isTableDataMissing = (id) => {
     const tableData = this.getTableData(id);
     if (!tableData) {
       return true;
@@ -276,6 +273,10 @@ class Admin extends React.Component {
     const isTableLoading = tableData.loading;
     const isTableEmpty = tableData.results && !tableData.results.length;
     return isTableLoading || isTableEmpty;
+  };
+
+  displaySearchBar() {
+    return !this.props.actionSlug;
   }
 
   hasAnalyticsData() {
@@ -313,11 +314,11 @@ class Admin extends React.Component {
     }
 
     return (
-      <DownloadCsvButton
-        id={tableMetadata.csvButtonId}
-        fetchMethod={tableMetadata.csvFetchMethod}
-        disabled={this.isTableDataMissing(actionSlug)}
-        buttonLabel={downloadButtonLabel}
+      <DownloadButtonWrapper
+        tableMetadata={tableMetadata}
+        actionSlug={actionSlug}
+        downloadButtonLabel={downloadButtonLabel}
+        isTableDataMissing={this.isTableDataMissing}
       />
     );
   }
@@ -528,24 +529,25 @@ class Admin extends React.Component {
                       />
                     )}
                 </div>
-                <Tabs
-                  variant="tabs"
-                  activeKey={activeTab}
-                  onSelect={(tab) => {
-                    this.setState({ activeTab: tab });
-                  }}
-                >
-                  <Tab
-                    eventKey="learner-progress-report"
-                    title={intl.formatMessage({
-                      id: 'adminPortal.lpr.tab.learnerProgressReport.title',
-                      defaultMessage: 'Learner Progress Report',
-                      description: 'Title for the learner progress report tab in admin portal.',
-                    })}
+                <TableDataProvider>
+                  <Tabs
+                    variant="tabs"
+                    activeKey={activeTab}
+                    onSelect={(tab) => {
+                      this.setState({ activeTab: tab });
+                    }}
                   >
-                    <div className="row">
-                      <div className="col">
-                        {!error && !loading && !this.hasEmptyData() && (
+                    <Tab
+                      eventKey="learner-progress-report"
+                      title={intl.formatMessage({
+                        id: 'adminPortal.lpr.tab.learnerProgressReport.title',
+                        defaultMessage: 'Learner Progress Report',
+                        description: 'Title for the learner progress report tab in admin portal.',
+                      })}
+                    >
+                      <div className="row">
+                        <div className="col">
+                          {!error && !loading && !this.hasEmptyData() && (
                           <>
                             <div className="row pb-3 mt-2">
                               <div className="col-12 col-md-12 col-xl-12">
@@ -563,27 +565,28 @@ class Admin extends React.Component {
                               />
                             )}
                           </>
-                        )}
-                        {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
-                        <div className="mt-3 mb-5">
-                          {enterpriseId && tableMetadata.component}
+                          )}
+                          {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
+                          <div className="mt-3 mb-5">
+                            {enterpriseId && tableMetadata.component}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Tab>
-                  <Tab
-                    eventKey="module-activity"
-                    title={intl.formatMessage({
-                      id: 'adminPortal.lpr.tab.moduleActivity.title',
-                      defaultMessage: 'Module Activity (Executive Education)',
-                      description: 'Title for the module activity tab in admin portal.',
-                    })}
-                  >
-                    <div className="mt-3">
-                      <ModuleActivityReport enterpriseId={enterpriseId} />
-                    </div>
-                  </Tab>
-                </Tabs>
+                    </Tab>
+                    <Tab
+                      eventKey="module-activity"
+                      title={intl.formatMessage({
+                        id: 'adminPortal.lpr.tab.moduleActivity.title',
+                        defaultMessage: 'Module Activity (Executive Education)',
+                        description: 'Title for the module activity tab in admin portal.',
+                      })}
+                    >
+                      <div className="mt-3">
+                        <ModuleActivityReport enterpriseId={enterpriseId} />
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </TableDataProvider>
               </div>
             </div>
           </>
