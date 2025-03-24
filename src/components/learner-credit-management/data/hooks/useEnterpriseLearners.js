@@ -8,7 +8,6 @@ const useEnterpriseLearners = ({
   enterpriseUUID,
 }) => {
   const [allEnterpriseLearners, setAllEnterpriseLearners] = useState([]);
-
   useEffect(() => {
     const fetchLearnerEmails = async () => {
       try {

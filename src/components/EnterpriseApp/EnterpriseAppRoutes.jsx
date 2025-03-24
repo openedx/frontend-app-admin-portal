@@ -20,6 +20,7 @@ import ContentHighlights from '../ContentHighlights';
 import LearnerCreditManagementRoutes from '../learner-credit-management';
 import PeopleManagementPage from '../PeopleManagement';
 import GroupDetailPage from '../PeopleManagement/GroupDetailPage/GroupDetailPage';
+import LearnerDetailPage from '../PeopleManagement/LearnerDetailPage/LearnerDetailPage';
 
 const EnterpriseAppRoutes = ({
   email,
@@ -117,9 +118,17 @@ const EnterpriseAppRoutes = ({
         <Route
           path="/:groupUuid"
           key="group-detail"
-          element={(
-            <GroupDetailPage />
-          )}
+          element={<GroupDetailPage />}
+        />,
+        <Route
+          path="/:groupUuid/learner-detail/:learnerId"
+          key="group-learner-detail"
+          element={<LearnerDetailPage />}
+        />,
+        <Route
+          path="/learner-detail/:learnerId"
+          key="learner-detail"
+          element={<LearnerDetailPage />}
         />,
         <Route
           path="/*"
