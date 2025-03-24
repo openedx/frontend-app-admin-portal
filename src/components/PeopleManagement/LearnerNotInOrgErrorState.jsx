@@ -23,6 +23,8 @@ const LearnerNotInOrgErrorState = () => (
               <Hyperlink
                 destination={HELP_CENTER_URL}
                 target="_blank"
+                variant="inline"
+                className="ml-1"
               >
                 Learn more
               </Hyperlink>
