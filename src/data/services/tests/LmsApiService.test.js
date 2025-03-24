@@ -4,6 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import LmsApiService from '../LmsApiService';
 import { configuration } from '../../../config';
+import { camelCaseDict } from '../../../utils';
 
 const lmsBaseUrl = `${configuration.LMS_BASE_URL}`;
 const mockEnterpriseUUID = 'test-enterprise-id';
@@ -18,6 +19,9 @@ axios.post = jest.fn();
 axios.get = jest.fn();
 
 describe('LmsApiService', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   test('updateEnterpriseCustomer calls the LMS to update the enterprise customer', () => {
     LmsApiService.updateEnterpriseCustomer(
       mockEnterpriseUUID,
@@ -146,5 +150,38 @@ describe('LmsApiService', () => {
         }],
       },
     });
+  });
+  test('fetchEnterpriseGroupMemberships returns group memberships', async () => {
+    const mockPayload = {
+      status: 200,
+      data: {
+        results: [
+          {
+            next: null,
+            previous: null,
+            count: 2,
+            num_pages: 1,
+            current_page: 1,
+            start: 0,
+            results: [
+              {
+                lms_user_id: 1234,
+                member_details: {
+                  user_email: 'testname@edx.org',
+                  user_name: 'testname',
+                },
+                group_name: 'test group',
+              },
+            ],
+          },
+        ],
+      },
+    };
+    axios.get.mockResolvedValue(mockPayload);
+    const response = await LmsApiService.fetchEnterpriseGroupMemberships({ lmsUserId: '1234', enterpriseUuid: 'test-uuid' });
+    expect(axios.get).toHaveBeenCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-group-membership/?lms_user_id=1234&enterprise_uuid=test-uuid`,
+    );
+    expect(response).toEqual(camelCaseDict(mockPayload));
   });
 });
