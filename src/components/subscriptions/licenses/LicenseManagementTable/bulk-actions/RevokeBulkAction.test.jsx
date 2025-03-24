@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
@@ -7,18 +7,15 @@ import dayjs from 'dayjs';
 import '@testing-library/jest-dom/extend-expect';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
 
+import { ACTIVATED, ASSIGNED, REVOKED } from '../../../data/constants';
 import {
-  ASSIGNED,
-  ACTIVATED,
-  REVOKED,
-} from '../../../data/constants';
-import {
-  TEST_ENTERPRISE_CUSTOMER_UUID,
-  TEST_SUBSCRIPTION_PLAN_UUID,
   TEST_ENTERPRISE_CUSTOMER_CATALOG_UUID,
   TEST_ENTERPRISE_CUSTOMER_SLUG,
+  TEST_ENTERPRISE_CUSTOMER_UUID,
+  TEST_SUBSCRIPTION_PLAN_UUID,
 } from '../../../tests/TestUtilities';
 
 import RevokeBulkAction from './RevokeBulkAction';
@@ -40,9 +37,11 @@ const initialStore = mockStore({
 });
 
 const RevokeBulkActionWithProvider = ({ store = initialStore, ...rest }) => (
-  <Provider store={store}>
-    <RevokeBulkAction {...rest} />
-  </Provider>
+  <IntlProvider locale="en">
+    <Provider store={store}>
+      <RevokeBulkAction {...rest} />
+    </Provider>
+  </IntlProvider>
 );
 
 const mockOnRevokeSuccess = jest.fn();
