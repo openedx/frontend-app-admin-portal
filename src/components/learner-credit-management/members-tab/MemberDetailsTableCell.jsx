@@ -1,16 +1,17 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
-  Icon, IconButton, Stack,
+  Hyperlink, Icon, IconButton, Stack,
 } from '@openedx/paragon';
-import {
-  Person,
-} from '@openedx/paragon/icons';
+import { Person } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 
-const MemberDetailsTableCell = ({
-  row,
-}) => {
+const MemberDetailsTableCell = ({ row, learnerProfileViewEnabled }) => {
+  const { enterpriseSlug, groupUuid } = useParams();
+  const hyperlink = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/${groupUuid}/learner-detail/${row.original.lmsUserId}`;
   let memberDetails;
   let memberDetailIcon = (
     <IconButton
@@ -52,16 +53,28 @@ const MemberDetailsTableCell = ({
     memberDetails = (
       <div className="mb-n3">
         <p className="font-weight-bold mb-0">
-          {row.original.memberDetails.userName}
+          {learnerProfileViewEnabled ? (
+            <Hyperlink destination={hyperlink} isInline>
+              {row.original.memberDetails.userName}
+            </Hyperlink>
+          ) : (
+            <span>{row.original.memberDetails.userName}</span>
+          )}
         </p>
         <p>{row.original.memberDetails.userEmail}</p>
       </div>
     );
   } else {
     memberDetails = (
-      <p className="align-middle mb-0">
-        {row.original.memberDetails.userEmail}
-      </p>
+      <span>
+        {learnerProfileViewEnabled ? (
+          <Hyperlink destination={hyperlink} isInline>
+            <p className="align-middle mb-0">{row.original.memberDetails.userEmail}</p>
+          </Hyperlink>
+        ) : (
+          <p className="align-middle mb-0">{row.original.memberDetails.userEmail}</p>
+        )}
+      </span>
     );
   }
   return (
@@ -75,6 +88,7 @@ const MemberDetailsTableCell = ({
 MemberDetailsTableCell.propTypes = {
   row: PropTypes.shape({
     original: PropTypes.shape({
+      lmsUserId: PropTypes.string.isRequired,
       memberDetails: PropTypes.shape({
         userEmail: PropTypes.string.isRequired,
         userName: PropTypes.string,
@@ -84,6 +98,11 @@ MemberDetailsTableCell.propTypes = {
       memberEnrollments: PropTypes.string,
     }).isRequired,
   }).isRequired,
+  learnerProfileViewEnabled: PropTypes.bool.isRequired,
 };
 
-export default MemberDetailsTableCell;
+const mapStateToProps = state => ({
+  learnerProfileViewEnabled: state.portalConfiguration.enterpriseFeatures?.adminPortalLearnerProfileViewEnabled,
+});
+
+export default connect(mapStateToProps)(MemberDetailsTableCell);

@@ -22,7 +22,7 @@ import AddMemberTableAction from './AddMemberTableAction';
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
 const KabobMenu = ({
-  row, groupUuid, refresh, setRefresh,
+  groupUuid, refresh, row, setRefresh,
 }) => {
   const [isRemoveModalOpen, openRemoveModal, closeRemoveModal] = useToggle(false);
   const [isErrorModalOpen, openErrorModal, closeErrorModal] = useToggle(false);
@@ -67,9 +67,9 @@ const KabobMenu = ({
 };
 
 KabobMenu.propTypes = {
-  row: PropTypes.shape({}).isRequired,
   groupUuid: PropTypes.string.isRequired,
   refresh: PropTypes.bool.isRequired,
+  row: PropTypes.shape({}).isRequired,
   setRefresh: PropTypes.func.isRequired,
 };
 
@@ -81,16 +81,16 @@ const selectColumn = {
 };
 
 const GroupMembersTable = ({
-  isLoading,
-  tableData,
-  fetchTableData,
-  fetchAllData,
   dataCount,
+  fetchAllData,
+  fetchTableData,
+  groupName,
   groupUuid,
+  isLoading,
+  openAddMembersModal,
   refresh,
   setRefresh,
-  openAddMembersModal,
-  groupName,
+  tableData,
 }) => {
   const intl = useIntl();
   return (
@@ -185,20 +185,20 @@ const GroupMembersTable = ({
 };
 
 GroupMembersTable.propTypes = {
+  dataCount: PropTypes.number.isRequired,
+  fetchAllData: PropTypes.func.isRequired,
+  fetchTableData: PropTypes.func.isRequired,
+  groupName: PropTypes.string,
+  groupUuid: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  openAddMembersModal: PropTypes.func.isRequired,
+  refresh: PropTypes.bool.isRequired,
+  setRefresh: PropTypes.func.isRequired,
   tableData: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.shape({})),
     itemCount: PropTypes.number.isRequired,
     pageCount: PropTypes.number.isRequired,
   }).isRequired,
-  fetchTableData: PropTypes.func.isRequired,
-  fetchAllData: PropTypes.func.isRequired,
-  dataCount: PropTypes.number.isRequired,
-  groupUuid: PropTypes.string.isRequired,
-  refresh: PropTypes.bool.isRequired,
-  setRefresh: PropTypes.func.isRequired,
-  openAddMembersModal: PropTypes.func.isRequired,
-  groupName: PropTypes.string,
 };
 
 export default GroupMembersTable;
