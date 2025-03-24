@@ -147,7 +147,7 @@ export const isInviteEmailAddressesInputValueValid = ({
 }: LearnerEmailsValidityArgs): LearnerEmailsValidityReport => {
   let validationError;
   const learnerEmailsCount = learnerEmails.length;
-  const lowerCasedEmails: string[] = [];
+  const validatedEmails: string[] = [];
   const invalidEmails: string[] = [];
   const duplicateEmails: string[] = [];
   const emailsNotInOrg: string[] = [];
@@ -158,20 +158,20 @@ export const isInviteEmailAddressesInputValueValid = ({
     // Validate the email address
     if (!isEmail(email)) {
       invalidEmails.push(email);
-    } else if (lowerCasedEmails.includes(lowerCasedEmail)) {
+    } else if (validatedEmails.includes(lowerCasedEmail)) {
       // Check for duplicates (case-insensitive)
       duplicateEmails.push(email);
       // Check if email belongs in the org
-    } else if (allEnterpriseLearners && !allEnterpriseLearners.includes(email)) {
+    } else if (allEnterpriseLearners && !allEnterpriseLearners.includes(lowerCasedEmail)) {
       emailsNotInOrg.push(email);
     } else {
       // Add to list of lower-cased emails already handled
-      lowerCasedEmails.push(lowerCasedEmail);
+      validatedEmails.push(lowerCasedEmail);
     }
   });
 
   const isValidInput = invalidEmails.length === 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
-  const canInvite = lowerCasedEmails.length > 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
+  const canInvite = validatedEmails.length > 0 && learnerEmailsCount < MAX_EMAIL_ENTRY_LIMIT;
 
   const ensureValidationErrorObjectExists = () => {
     if (!validationError) {
@@ -215,7 +215,7 @@ export const isInviteEmailAddressesInputValueValid = ({
   }
   return {
     canInvite,
-    lowerCasedEmails,
+    lowerCasedEmails: validatedEmails,
     duplicateEmails,
     invalidEmails,
     isValidInput,

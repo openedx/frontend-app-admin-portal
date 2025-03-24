@@ -242,6 +242,26 @@ describe('<AddMembersModal />', () => {
       expect(/tomhaverford@pawnee.org email address is not available to be added to a group./i);
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
+  it('does not display error for email that differs from org email in casing', async () => {
+    const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
+    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
+    useEnterpriseLearners.mockReturnValue({
+      allEnterpriseLearners: ['testuser-3@2u.com'],
+    });
+    render(<AddMembersModalWrapper />);
+    const fakeFile = new File(['TestUser-3@2u.com'], 'emails.csv', { type: 'text/csv' });
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone);
+    await waitFor(() => {
+      expect(screen.getByText('emails.csv')).toBeInTheDocument();
+      expect(screen.getAllByText('testuser-3@2u.com', { exact: false })).toHaveLength(2);
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+    expect(screen.queryByText(/Some people can't be added/i)).not.toBeInTheDocument();
+    expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+  });
   it('displays system error modal', async () => {
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');
     const error = new Error('An error occurred');
