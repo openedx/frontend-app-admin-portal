@@ -44,6 +44,25 @@ declare global {
     appliesToAllContexts: boolean,
   };
 
+  export type EnterpriseGroupMemberDetails = {
+    userEmail: string,
+    userName: string
+  };
+
+  export type EnterpriseGroupMembership = {
+    enterpriseCustomerUserId: number,
+    lmsUserId: number,
+    pendingEnterpriseCustomerUserId: number | null,
+    enterpriseGroupMembershipUuid: string,
+    recentAction: string,
+    status: string,
+    activatedAt: string,
+    enrollments: number,
+    groupName: string,
+    groupUuid: string,
+    memberDetails: EnterpriseGroupMemberDetails,
+  };
+
   type EnterpriseCustomer = {
     /* not extensive list of properties */
     name: string,

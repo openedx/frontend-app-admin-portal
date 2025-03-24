@@ -11,6 +11,7 @@ import { Person } from '@openedx/paragon/icons';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { useEnterpriseGroupUuid } from '../data/hooks';
 import { useEnterpriseLearnerData } from './data/hooks';
+import LearnerDetailGroupMemberships from './LearnerDetailGroupMemberships';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
@@ -48,7 +49,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
     return baseLinks;
   }, [intl, enterpriseSlug, groupUuid, enterpriseGroup]);
   return (
-    <div className="pt-4 pl-4">
+    <div className="pt-4 pl-4 mb-3">
       <Breadcrumb
         ariaLabel="Learner detail page breadcrumb navigation"
         links={links}
@@ -70,6 +71,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
           </Card.Section>
         </Card>
       )}
+      <LearnerDetailGroupMemberships enterpriseUuid={enterpriseUUID} lmsUserId={learnerId} />
     </div>
   );
 };
