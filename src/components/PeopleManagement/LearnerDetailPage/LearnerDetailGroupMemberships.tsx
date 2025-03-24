@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Hyperlink, Skeleton,
+  Hyperlink, Icon, Skeleton,
 } from '@openedx/paragon';
+import { NorthEast } from '@openedx/paragon/icons';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { groupDetailPageUrl } from '../utils';
 import { useEnterpriseGroupMemberships } from '../data/hooks';
@@ -16,15 +18,23 @@ const GroupMembershipLink = ({ groupMembership }: GroupMembershipLinkProps) => {
   const { enterpriseSlug } = useParams() as { enterpriseSlug: string };
   const { groupUuid, groupName, recentAction } = groupMembership;
   const groupDetailUrl = groupDetailPageUrl({ enterpriseSlug, groupUuid });
+
   return (
     <div className="pl-3">
       <Hyperlink
         className="font-weight-bold pb-2"
         destination={groupDetailUrl}
         target="_blank"
-        isInline
+        showLaunchIcon={false}
       >
         {groupName}
+        <Icon
+          id="SampleIcon"
+          size="xs"
+          src={NorthEast}
+          screenReaderText="Visit group detail page"
+          className="ml-1 mb-1"
+        />
       </Hyperlink>
       <p className="small pb-2">{recentAction}</p>
     </div>
@@ -42,6 +52,12 @@ GroupMembershipLink.propTypes = {
 const LearnerDetailGroupMemberships = ({ enterpriseUuid, lmsUserId }: EnterpriseGroupMembershipArgs) => {
   const { isLoading, data } = useEnterpriseGroupMemberships({ enterpriseUuid, lmsUserId });
   const groupMemberships = data?.data?.results;
+  const intl = useIntl();
+  const groupsHeader = intl.formatMessage({
+    id: 'adminPortal.peopleManagement.learnerDetailPage.groupsHeader',
+    defaultMessage: 'Groups',
+    description: 'Header for groups the learner is part of',
+  });
 
   return (
     <div>
@@ -52,7 +68,7 @@ const LearnerDetailGroupMemberships = ({ enterpriseUuid, lmsUserId }: Enterprise
         />
       ) : (groupMemberships && (
         <div className="pt-3">
-          <h3 className="pb-3">Groups</h3>
+          <h3 className="pb-3">{groupsHeader}</h3>
           <div className="learner-detail-section">
             {groupMemberships?.map((groupMembership) => (<GroupMembershipLink groupMembership={groupMembership} />))}
           </div>
@@ -71,3 +87,6 @@ LearnerDetailGroupMemberships.propTypes = {
 };
 
 export default LearnerDetailGroupMemberships;
+
+// 21:1  error  Trailing spaces not allowed  no-trailing-spaces
+// 60:5  error  Missing semicolon            @typescript-eslint/semi
