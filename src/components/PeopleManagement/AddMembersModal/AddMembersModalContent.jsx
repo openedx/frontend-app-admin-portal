@@ -52,7 +52,7 @@ const AddMembersModalContent = ({
         <Col>
           <FormattedMessage
             id="people.management.add.members.modal"
-            defaultMessage="Only members registered with your organization can be added to a group."
+            defaultMessage="Only members registered with your organization can be added to a group. "
             description="Subtitle for the add members modal"
           />
           <Hyperlink
