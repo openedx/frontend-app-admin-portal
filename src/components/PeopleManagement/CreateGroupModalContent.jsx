@@ -67,12 +67,14 @@ const CreateGroupModalContent = ({
         <Col>
           <FormattedMessage
             id="people.management.create.groups.modal"
-            defaultMessage="Only members registered with your organization can be added to a group. "
+            defaultMessage="Only members registered with your organization can be added to a group."
             description="Subtitle for the create group modal"
           />
           <Hyperlink
             destination={HELP_CENTER_URL}
             target="_blank"
+            variant="inline"
+            className="ml-1"
           >
             Learn more.
           </Hyperlink>
