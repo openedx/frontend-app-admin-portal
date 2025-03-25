@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { Card, Hyperlink } from '@openedx/paragon';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import EVENT_NAMES from '../../eventTracking';
+import { groupDetailPageUrl } from './utils';
 
 const GroupDetailCard = ({ enterpriseUUID, group }) => {
   const { enterpriseSlug } = useParams();
+  const groupDetailUrl = groupDetailPageUrl({ enterpriseSlug, groupUuid: group.uuid });
   return (
     <Card className="group-detail-card">
       <Card.Header title={group.name} />
@@ -18,7 +19,7 @@ const GroupDetailCard = ({ enterpriseUUID, group }) => {
       <Card.Footer className="card-button">
         <Hyperlink
           className="btn btn-outline-primary"
-          destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/${group.uuid}`}
+          destination={groupDetailUrl}
           onClick={() => {
             sendEnterpriseTrackEvent(
               enterpriseUUID,
