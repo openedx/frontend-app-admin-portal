@@ -17,10 +17,10 @@ const INITIAL_SSO_STATE = {
   },
 };
 
-const SSOConfigConfigureStepWraper = ({ store = defaultStore, initalState = INITIAL_SSO_STATE, children }) => (
+const SSOConfigConfigureStepWrapper = ({ store = defaultStore, initialState = INITIAL_SSO_STATE, children }) => (
   <IntlProvider locale="en">
     <Provider store={store}>
-      <SSOConfigContextProvider initialState={initalState}>
+      <SSOConfigContextProvider initialState={initialState}>
         {children}
       </SSOConfigContextProvider>
     </Provider>
@@ -30,7 +30,7 @@ const SSOConfigConfigureStepWraper = ({ store = defaultStore, initalState = INIT
 describe('SSO Config Configure step', () => {
   test('renders page with all form fields', () => {
     render(
-      <SSOConfigConfigureStepWraper>
+      <SSOConfigConfigureStepWrapper>
         <SSOConfigConfigureStep
           showExitModal={false}
           configValues={null}
@@ -44,7 +44,7 @@ describe('SSO Config Configure step', () => {
           setFormUpdated={jest.fn()}
           setConfigNextButtonDisabled={jest.fn()}
         />
-      </SSOConfigConfigureStepWraper>,
+      </SSOConfigConfigureStepWrapper>,
     );
     screen.getByLabelText('SSO Configuration Name');
     screen.getByLabelText('Maximum Session Length (seconds)');
@@ -59,7 +59,7 @@ describe('SSO Config Configure step', () => {
     const configValues = null;
 
     render(
-      <SSOConfigConfigureStepWraper>
+      <SSOConfigConfigureStepWrapper>
         <SSOConfigConfigureStep
           showExitModal={false}
           configValues={configValues}
@@ -73,7 +73,7 @@ describe('SSO Config Configure step', () => {
           setFormUpdated={mockSetFormUpdated}
           setConfigNextButtonDisabled={jest.fn()}
         />
-      </SSOConfigConfigureStepWraper>,
+      </SSOConfigConfigureStepWrapper>,
     );
     expect(configValues).toBeNull();
     userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'f');
@@ -88,7 +88,7 @@ describe('SSO Config Configure step', () => {
   test('page form validation', () => {
     const mockSetConfigNextButtonDisabled = jest.fn();
     render(
-      <SSOConfigConfigureStepWraper>
+      <SSOConfigConfigureStepWrapper>
         <SSOConfigConfigureStep
           showExitModal={false}
           configValues={null}
@@ -102,7 +102,7 @@ describe('SSO Config Configure step', () => {
           setFormUpdated={jest.fn()}
           setConfigNextButtonDisabled={mockSetConfigNextButtonDisabled}
         />
-      </SSOConfigConfigureStepWraper>,
+      </SSOConfigConfigureStepWrapper>,
     );
     userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'reallyreallyreallyreallyreallylongname');
     userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '2000000');
@@ -112,7 +112,7 @@ describe('SSO Config Configure step', () => {
   });
   test('error with default values', () => {
     render(
-      <SSOConfigConfigureStepWraper>
+      <SSOConfigConfigureStepWrapper>
         <SSOConfigConfigureStep
           connectError
           configValues={null}
@@ -126,7 +126,7 @@ describe('SSO Config Configure step', () => {
           refreshBool={false}
           setConfigNextButtonDisabled={jest.fn()}
         />
-      </SSOConfigConfigureStepWraper>,
+      </SSOConfigConfigureStepWrapper>,
     );
     expect(screen.queryByText("We weren't able to establish a connection due to improperly configured fields. We've pre-populated the form for you. You can accept our suggestions, make your own changes and try connecting again, or contact support."));
     expect(screen.getByLabelText('User ID Attribute').value).toEqual('userid');
