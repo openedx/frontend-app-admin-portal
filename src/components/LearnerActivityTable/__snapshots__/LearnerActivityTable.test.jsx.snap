@@ -425,34 +425,45 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
           >
             <button
               aria-label="Previous"
-              className="previous page-link btn btn-primary"
+              className="previous page-link btn btn-tertiary"
               disabled={true}
               onClick={[Function]}
               tabIndex="-1"
               type="button"
             >
-              <div>
-                <span
-                  className="pgn__icon"
+              <span
+                className="pgn__icon btn-icon-before"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
+                  <path
+                    d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Previous
+            </button>
+          </li>
+          <li
+            className="page-item active"
+          >
+            <button
+              aria-label="Page 1, Current Page"
+              className="page-link btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              1
             </button>
           </li>
           <li
@@ -460,34 +471,32 @@ exports[`LearnerActivityTable renders active learners table correctly 1`] = `
           >
             <button
               aria-label="Next"
-              className="next page-link btn btn-primary"
+              className="previous page-link btn btn-tertiary"
               disabled={true}
               onClick={[Function]}
               tabIndex="-1"
               type="button"
             >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
+              Next
+              <span
+                className="pgn__icon btn-icon-after"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
+                  <path
+                    d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
             </button>
           </li>
         </ul>
@@ -919,34 +928,45 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
           >
             <button
               aria-label="Previous"
-              className="previous page-link btn btn-primary"
+              className="previous page-link btn btn-tertiary"
               disabled={true}
               onClick={[Function]}
               tabIndex="-1"
               type="button"
             >
-              <div>
-                <span
-                  className="pgn__icon"
+              <span
+                className="pgn__icon btn-icon-before"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
+                  <path
+                    d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Previous
+            </button>
+          </li>
+          <li
+            className="page-item active"
+          >
+            <button
+              aria-label="Page 1, Current Page"
+              className="page-link btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              1
             </button>
           </li>
           <li
@@ -954,34 +974,32 @@ exports[`LearnerActivityTable renders inactive past month learners table correct
           >
             <button
               aria-label="Next"
-              className="next page-link btn btn-primary"
+              className="previous page-link btn btn-tertiary"
               disabled={true}
               onClick={[Function]}
               tabIndex="-1"
               type="button"
             >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
+              Next
+              <span
+                className="pgn__icon btn-icon-after"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
+                  <path
+                    d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
             </button>
           </li>
         </ul>
@@ -1377,34 +1395,45 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
           >
             <button
               aria-label="Previous"
-              className="previous page-link btn btn-primary"
+              className="previous page-link btn btn-tertiary"
               disabled={true}
               onClick={[Function]}
               tabIndex="-1"
               type="button"
             >
-              <div>
-                <span
-                  className="pgn__icon"
+              <span
+                className="pgn__icon btn-icon-before"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </div>
+                  <path
+                    d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              Previous
+            </button>
+          </li>
+          <li
+            className="page-item active"
+          >
+            <button
+              aria-label="Page 1, Current Page"
+              className="page-link btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              1
             </button>
           </li>
           <li
@@ -1412,34 +1441,32 @@ exports[`LearnerActivityTable renders inactive past week learners table correctl
           >
             <button
               aria-label="Next"
-              className="next page-link btn btn-primary"
+              className="previous page-link btn btn-tertiary"
               disabled={true}
               onClick={[Function]}
               tabIndex="-1"
               type="button"
             >
-              <div>
-                Next
-                <span
-                  className="pgn__icon"
+              Next
+              <span
+                className="pgn__icon btn-icon-after"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="none"
+                  focusable={false}
+                  height={24}
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </div>
+                  <path
+                    d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
             </button>
           </li>
         </ul>
