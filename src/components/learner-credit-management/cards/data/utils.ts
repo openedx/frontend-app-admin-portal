@@ -111,7 +111,6 @@ export const isAssignEmailAddressesInputValueValid = ({
 
 export type LearnerEmailsValidityArgs = {
   learnerEmails: string[],
-  allEnterpriseLearners: string[] | null,
 };
 
 export type LearnerEmailsValidityReport = {
@@ -143,7 +142,6 @@ export type LearnerEmailsValidityReport = {
  */
 export const isInviteEmailAddressesInputValueValid = ({
   learnerEmails,
-  allEnterpriseLearners = null,
 }: LearnerEmailsValidityArgs): LearnerEmailsValidityReport => {
   let validationError;
   const learnerEmailsCount = learnerEmails.length;
@@ -161,9 +159,6 @@ export const isInviteEmailAddressesInputValueValid = ({
     } else if (validatedEmails.includes(lowerCasedEmail)) {
       // Check for duplicates (case-insensitive)
       duplicateEmails.push(email);
-      // Check if email belongs in the org
-    } else if (allEnterpriseLearners && !allEnterpriseLearners.includes(lowerCasedEmail)) {
-      emailsNotInOrg.push(email);
     } else {
       // Add to list of lower-cased emails already handled
       validatedEmails.push(lowerCasedEmail);

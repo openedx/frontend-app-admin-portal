@@ -367,29 +367,6 @@ describe('<CreateGroupModal />', () => {
     expect(screen.queryByText("Members can't be invited as entered.")).not.toBeInTheDocument();
     expect(screen.queryByText('iamnotanemail is not a valid email.')).not.toBeInTheDocument();
   });
-  it('displays error for email not belonging in an org', async () => {
-    const mockGroupData = { uuid: 'test-uuid' };
-    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
-
-    const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
-    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
-    useEnterpriseLearners.mockReturnValue({
-      allEnterpriseLearners: ['testuser-3@2u.com'],
-    });
-    render(<CreateGroupModalWrapper />);
-    const groupNameInput = screen.getByTestId('group-name');
-    userEvent.type(groupNameInput, 'test group name');
-    const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
-    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
-    Object.defineProperty(dropzone, 'files', {
-      value: [fakeFile],
-    });
-    fireEvent.drop(dropzone);
-    await waitFor(() => {
-      expect(screen.getByText(/Some people can't be added/i)).toBeInTheDocument();
-      expect(/tomhaverford@pawnee.org email address is not available to be added to a group./i);
-    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
-  });
   it('displays system error modal', async () => {
     const mockCreateGroup = jest.spyOn(LmsApiService, 'createEnterpriseGroup');
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');

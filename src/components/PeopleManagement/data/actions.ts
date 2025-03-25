@@ -4,20 +4,16 @@ export type ValidatedEmailsActionArguments<Arguments> = {
 };
 
 export type InitializeArguments = {
-  // All learners in the enterprise
-  allEnterpriseLearners: string[],
   // Just the learners in the enterprise group
   groupEnterpriseLearners?: string[],
 };
 export const INITIALIZE_ENTERPRISE_EMAILS = 'INITIALIZE ENTERPRISE EMAILS';
 // Construct action for initializing context
 export const initializeEnterpriseEmailsAction = ({
-  allEnterpriseLearners,
   groupEnterpriseLearners,
 }: InitializeArguments): ValidatedEmailsActionArguments<InitializeArguments> => ({
   type: INITIALIZE_ENTERPRISE_EMAILS,
   arguments: {
-    allEnterpriseLearners,
     groupEnterpriseLearners,
   },
 });

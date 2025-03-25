@@ -48,11 +48,10 @@ export const ValidatedEmailsReducer: ValidatedEmailsReducerType = (
 ) => {
   switch (action.type) {
     case INITIALIZE_ENTERPRISE_EMAILS: {
-      const { allEnterpriseLearners, groupEnterpriseLearners } = action.arguments as InitializeArguments;
+      const { groupEnterpriseLearners } = action.arguments as InitializeArguments;
       return {
         ...initialContext,
         groupEnterpriseLearners: [...(groupEnterpriseLearners || [])],
-        allEnterpriseLearners: [...allEnterpriseLearners],
       };
     } case ADD_EMAILS: {
       const { emails: addedEmails, clearErroredEmails, actionType } = action.arguments as AddEmailsArguments;
@@ -66,7 +65,6 @@ export const ValidatedEmailsReducer: ValidatedEmailsReducerType = (
       };
       const emailValidation = isInviteEmailAddressesInputValueValid({
         learnerEmails: emails,
-        allEnterpriseLearners: newState.allEnterpriseLearners as string[],
       });
       return { ...newState, ...emailValidation };
     } case REMOVE_EMAILS: {
