@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Alert, Button, CardGrid, Dropzone, Image, Toast, useToggle,
 } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Info } from '@openedx/paragon/icons';
 
 import InfoHover from '../../InfoHover';
@@ -11,7 +11,13 @@ import LmsApiService from '../../../data/services/LmsApiService';
 import ThemeCard from './ThemeCard';
 import CustomThemeModal from './CustomThemeModal';
 import {
-  ACUMEN_THEME, CAMBRIDGE_THEME, CUSTOM_THEME_LABEL, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
+  ACUMEN_THEME,
+  CAMBRIDGE_THEME,
+  CUSTOM_THEME_LABEL,
+  IMPACT_THEME,
+  PIONEER_THEME,
+  SAGE_THEME,
+  SCHOLAR_THEME,
 } from '../data/constants';
 import { Theme } from './types';
 
@@ -29,6 +35,12 @@ export const SettingsAppearanceTab = ({
   const [uploadedFile, setUploadedFile] = useState(undefined);
   const [customModalIsOpen, openCustomModal, closeCustomModal] = useToggle(false);
   const curatedThemes = [ACUMEN_THEME, CAMBRIDGE_THEME, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME];
+  const intl = useIntl();
+  const updatedAppearanceToastText = intl.formatMessage({
+    id: 'adminPortal.settings.portalAppearanceTab.successMessage',
+    defaultMessage: 'Portal appearance updated successfully.',
+    description: 'Success message for updating portal appearance.',
+  });
 
   function getStartingTheme(): ThemeSelectionState {
     for (let i = 0; i < curatedThemes.length; i++) {
@@ -95,6 +107,7 @@ export const SettingsAppearanceTab = ({
       setConfigChangeSuccess(false);
     }
   };
+
   return (
     <>
       <h2 className="py-2">
@@ -168,11 +181,7 @@ export const SettingsAppearanceTab = ({
         onClose={() => setConfigChangeSuccess(null)}
         show={configChangeSuccess || false}
       >
-        <FormattedMessage
-          id="adminPortal.settings.portalAppearanceTab.successMessage"
-          defaultMessage="Portal appearance updated successfully."
-          description="Success message for updating portal appearance."
-        />
+        {updatedAppearanceToastText}
       </Toast>
       <h3 className="py-2 pt-5">
         <FormattedMessage
