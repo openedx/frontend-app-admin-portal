@@ -130,7 +130,7 @@ const SSOConfigConfigureStep = ({
   };
 
   // these are the suggested values we've come back to this step after an error
-  // https://edx.readthedocs.io/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_integrate_open/tpa_SAML_IdP.html#configure-the-saml-identity-provider
+  // https://docs.openedx.org/en/latest/site_ops/install_configure_run_guide/configuration/tpa/tpa_integrate_open/tpa_SAML_IdP.html#configure-the-saml-identity-provider
   const errorData = {
     displayName: '',
     userId: 'userid',
