@@ -366,41 +366,24 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
         >
           Showing 1 - 3 of 24.
         </div>
-        <nav
-          aria-label="table pagination"
-          className="pagination-reduced"
+        <div
+          className="pgn__dropdown pgn__dropdown-light dropdown"
+          data-testid="dropdown"
         >
-          <div
-            aria-atomic={true}
-            aria-live="polite"
-            aria-relevant="text"
-            className="sr-only"
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-tertiary"
+            disabled={false}
+            id="Pagination dropdown"
+            onClick={[Function]}
+            type="button"
           >
-            Page 1, Current Page, of 2
-          </div>
-          <ul
-            className="pagination"
-          >
-            <li>
-              <div
-                className="pgn__dropdown pgn__dropdown-light dropdown"
-                data-testid="dropdown"
-              >
-                <button
-                  aria-expanded={false}
-                  aria-haspopup={true}
-                  className="dropdown-toggle btn btn-tertiary"
-                  disabled={false}
-                  id="Pagination dropdown"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  1 of 2
-                </button>
-              </div>
-            </li>
-          </ul>
-        </nav>
+            1
+             of 
+            2
+          </button>
+        </div>
         <nav
           aria-label="table pagination"
           className="pagination-minimal"
@@ -457,7 +440,7 @@ exports[`SubsidyRequestManagementTable renders data in a table as expected 1`] =
             >
               <button
                 aria-label="Next, Page 2"
-                className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                className="btn-icon btn-icon-primary btn-icon-md next page-link"
                 disabled={false}
                 onClick={[Function]}
                 type="button"

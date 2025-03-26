@@ -1,19 +1,22 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {
-  act, cleanup, render, screen, waitFor,
+  render, screen, act, cleanup, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import BulkEnrollmentSubmit, { BulkEnrollmentAlertModal, generateSuccessMessage } from './BulkEnrollmentSubmit';
+import BulkEnrollmentSubmit, {
+  BulkEnrollmentAlertModal,
+  generateSuccessMessage,
+} from './BulkEnrollmentSubmit';
 import {
-  ALERT_MODAL_TITLE_TEXT,
-  CUSTOMER_SUPPORT_HYPERLINK_TEST_ID,
-  FINAL_BUTTON_TEST_ID,
   NOTIFY_CHECKBOX_TEST_ID,
-  SUPPORT_EMAIL_BODY,
+  FINAL_BUTTON_TEST_ID,
+  CUSTOMER_SUPPORT_HYPERLINK_TEST_ID,
+  ALERT_MODAL_TITLE_TEXT,
   SUPPORT_EMAIL_SUBJECT,
+  SUPPORT_EMAIL_BODY,
 } from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 import { clearSelectionAction } from '../data/actions';
@@ -88,12 +91,7 @@ const BulkEnrollmentSubmitWrapper = ({ bulkEnrollInfo = defaultBulkEnrollInfo, .
       <BulkEnrollmentSubmit {...props} />
     </BulkEnrollContext.Provider>
   </IntlProvider>
-);
 
-const BulkEnrollmentAlertModalWrapper = ({ alertProps = defaultAlertProps, ...props }) => (
-  <IntlProvider locale="en">
-    <BulkEnrollmentAlertModal {...alertProps} {...props} />
-  </IntlProvider>
 );
 
 describe('generateSuccessMessage', () => {
@@ -113,13 +111,13 @@ describe('BulkEnrollmentAlertModal', () => {
   });
 
   it('renders an alert', () => {
-    render(<BulkEnrollmentAlertModalWrapper {...defaultAlertProps} />);
+    render(<BulkEnrollmentAlertModal {...defaultAlertProps} />);
     expect(screen.getByText(ALERT_MODAL_TITLE_TEXT)).toBeInTheDocument();
   });
 
   it('links to support', async () => {
     renderWithRouter(
-      <BulkEnrollmentAlertModalWrapper {...defaultAlertProps} />,
+      <BulkEnrollmentAlertModal {...defaultAlertProps} />,
       {
         route: '/',
         path: '/',
@@ -133,7 +131,7 @@ describe('BulkEnrollmentAlertModal', () => {
   });
 
   it('calls toggleClose when the close button is clicked', () => {
-    render(<BulkEnrollmentAlertModalWrapper {...defaultAlertProps} />);
+    render(<BulkEnrollmentAlertModal {...defaultAlertProps} />);
     const closeButton = screen.getByText('OK');
     userEvent.click(closeButton);
     expect(defaultAlertProps.toggleClose).toBeCalledTimes(1);

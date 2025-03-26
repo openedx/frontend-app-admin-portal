@@ -2,13 +2,12 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { INVALID_LENGTH, INVALID_NAME } from '../../data/constants';
 import SSOConfigConfigureStep from './SSOConfigConfigureStep';
-import { SSO_INITIAL_STATE, SSOConfigContextProvider } from '../SSOConfigContext';
+import { SSOConfigContextProvider, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import { getMockStore, initialStore } from '../testutils';
 
-const defaultStore = getMockStore({ ...initialStore });
+const store = getMockStore({ ...initialStore });
 const INITIAL_SSO_STATE = {
   ...SSO_INITIAL_STATE,
   providerConfig: {
@@ -17,34 +16,26 @@ const INITIAL_SSO_STATE = {
   },
 };
 
-const SSOConfigConfigureStepWrapper = ({ store = defaultStore, initialState = INITIAL_SSO_STATE, children }) => (
-  <IntlProvider locale="en">
-    <Provider store={store}>
-      <SSOConfigContextProvider initialState={initialState}>
-        {children}
-      </SSOConfigContextProvider>
-    </Provider>
-  </IntlProvider>
-);
-
 describe('SSO Config Configure step', () => {
   test('renders page with all form fields', () => {
     render(
-      <SSOConfigConfigureStepWrapper>
-        <SSOConfigConfigureStep
-          showExitModal={false}
-          configValues={null}
-          setConfigValues={jest.fn()}
-          connectError={false}
-          setProviderConfig={jest.fn()}
-          saveOnQuit={jest.fn()}
-          closeExitModal={jest.fn()}
-          setRefreshBool={jest.fn()}
-          refreshBool={false}
-          setFormUpdated={jest.fn()}
-          setConfigNextButtonDisabled={jest.fn()}
-        />
-      </SSOConfigConfigureStepWrapper>,
+      <Provider store={store}>
+        <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
+          <SSOConfigConfigureStep
+            showExitModal={false}
+            configValues={null}
+            setConfigValues={jest.fn()}
+            connectError={false}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
+            setFormUpdated={jest.fn()}
+            setConfigNextButtonDisabled={jest.fn()}
+          />
+        </SSOConfigContextProvider>
+      </Provider>,
     );
     screen.getByLabelText('SSO Configuration Name');
     screen.getByLabelText('Maximum Session Length (seconds)');
@@ -57,23 +48,24 @@ describe('SSO Config Configure step', () => {
   test('updating fields fires setFormUpdated', async () => {
     const mockSetFormUpdated = jest.fn();
     const configValues = null;
-
     render(
-      <SSOConfigConfigureStepWrapper>
-        <SSOConfigConfigureStep
-          showExitModal={false}
-          configValues={configValues}
-          setProviderConfig={jest.fn()}
-          saveOnQuit={jest.fn()}
-          closeExitModal={jest.fn()}
-          setRefreshBool={jest.fn()}
-          refreshBool={false}
-          setConfigValues={jest.fn()}
-          connectError={false}
-          setFormUpdated={mockSetFormUpdated}
-          setConfigNextButtonDisabled={jest.fn()}
-        />
-      </SSOConfigConfigureStepWrapper>,
+      <Provider store={store}>
+        <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
+          <SSOConfigConfigureStep
+            showExitModal={false}
+            configValues={configValues}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
+            setConfigValues={jest.fn()}
+            connectError={false}
+            setFormUpdated={mockSetFormUpdated}
+            setConfigNextButtonDisabled={jest.fn()}
+          />
+        </SSOConfigContextProvider>
+      </Provider>,
     );
     expect(configValues).toBeNull();
     userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'f');
@@ -88,21 +80,23 @@ describe('SSO Config Configure step', () => {
   test('page form validation', () => {
     const mockSetConfigNextButtonDisabled = jest.fn();
     render(
-      <SSOConfigConfigureStepWrapper>
-        <SSOConfigConfigureStep
-          showExitModal={false}
-          configValues={null}
-          setProviderConfig={jest.fn()}
-          saveOnQuit={jest.fn()}
-          closeExitModal={jest.fn()}
-          setRefreshBool={jest.fn()}
-          refreshBool={false}
-          setConfigValues={jest.fn()}
-          connectError={false}
-          setFormUpdated={jest.fn()}
-          setConfigNextButtonDisabled={mockSetConfigNextButtonDisabled}
-        />
-      </SSOConfigConfigureStepWrapper>,
+      <Provider store={store}>
+        <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
+          <SSOConfigConfigureStep
+            showExitModal={false}
+            configValues={null}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
+            setConfigValues={jest.fn()}
+            connectError={false}
+            setFormUpdated={jest.fn()}
+            setConfigNextButtonDisabled={mockSetConfigNextButtonDisabled}
+          />
+        </SSOConfigContextProvider>
+      </Provider>,
     );
     userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'reallyreallyreallyreallyreallylongname');
     userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '2000000');
@@ -112,21 +106,23 @@ describe('SSO Config Configure step', () => {
   });
   test('error with default values', () => {
     render(
-      <SSOConfigConfigureStepWrapper>
-        <SSOConfigConfigureStep
-          connectError
-          configValues={null}
-          setConfigValues={jest.fn()}
-          setFormUpdated={jest.fn()}
-          showExitModal={false}
-          setProviderConfig={jest.fn()}
-          saveOnQuit={jest.fn()}
-          closeExitModal={jest.fn()}
-          setRefreshBool={jest.fn()}
-          refreshBool={false}
-          setConfigNextButtonDisabled={jest.fn()}
-        />
-      </SSOConfigConfigureStepWrapper>,
+      <Provider store={store}>
+        <SSOConfigContextProvider initialState={INITIAL_SSO_STATE}>
+          <SSOConfigConfigureStep
+            connectError
+            configValues={null}
+            setConfigValues={jest.fn()}
+            setFormUpdated={jest.fn()}
+            showExitModal={false}
+            setProviderConfig={jest.fn()}
+            saveOnQuit={jest.fn()}
+            closeExitModal={jest.fn()}
+            setRefreshBool={jest.fn()}
+            refreshBool={false}
+            setConfigNextButtonDisabled={jest.fn()}
+          />
+        </SSOConfigContextProvider>
+      </Provider>,
     );
     expect(screen.queryByText("We weren't able to establish a connection due to improperly configured fields. We've pre-populated the form for you. You can accept our suggestions, make your own changes and try connecting again, or contact support."));
     expect(screen.getByLabelText('User ID Attribute').value).toEqual('userid');

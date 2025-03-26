@@ -11,7 +11,9 @@ import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import BulkEnrollContextProvider from './BulkEnrollmentContext';
-import { BaseCourseSearchResults, NO_DATA_MESSAGE, TABLE_HEADERS } from './CourseSearchResults';
+import {
+  BaseCourseSearchResults, NO_DATA_MESSAGE, TABLE_HEADERS,
+} from './CourseSearchResults';
 import { renderWithRouter } from '../test/testUtils';
 import '../../../__mocks__/react-instantsearch-dom';
 
@@ -113,8 +115,8 @@ describe('<CourseSearchResults />', () => {
   });
   it('displays search pagination', () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
-    expect(screen.getByLabelText('Previous'));
-    expect(screen.getByLabelText('Next'));
+    expect(screen.getByText('Navigate Right'));
+    expect(screen.getByText('Navigate Left'));
   });
   it('returns an error message if there\'s an error', () => {
     const errorMsg = 'It did not work';
