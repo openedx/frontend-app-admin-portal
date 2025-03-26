@@ -14,8 +14,9 @@ export const BaseSearchPagination = ({
     <Pagination
       variant="reduced"
       currentPage={currentRefinement}
-      handlePageSelect={(pageNum) => refine(pageNum)}
+      onPageSelect={(pageNum) => refine(pageNum)}
       pageCount={nbPages}
+      icons={{}}
     />
     <ActionRow.Spacer />
     <Pagination
