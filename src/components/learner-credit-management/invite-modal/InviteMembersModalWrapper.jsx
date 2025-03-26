@@ -6,7 +6,7 @@ import {
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import { connect } from 'react-redux';
 
-import { useBudgetId, useSubsidyAccessPolicy, useEnterpriseFlexGroups } from '../data';
+import { useBudgetId, useEnterpriseFlexGroups, useSubsidyAccessPolicy } from '../data';
 import InviteModalContent from './InviteModalContent';
 import SystemErrorAlertModal from '../cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -95,6 +95,7 @@ const InviteMembersModalWrapper = ({
       <FullscreenModal
         className="stepper-modal bg-light-200"
         title="New members"
+        isOverflowVisible={false}
         isOpen={isOpen}
         onClose={() => {
           handleCloseInviteModal();

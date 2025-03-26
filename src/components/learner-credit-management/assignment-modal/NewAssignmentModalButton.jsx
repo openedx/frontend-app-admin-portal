@@ -262,6 +262,7 @@ const NewAssignmentModalButton = ({ enterpriseId, course, children }) => {
           description: 'Title for the assignment modal',
         })}
         isOpen={isOpen}
+        isOverflowVisible={false}
         onClose={() => {
           handleCloseAssignmentModal();
           sendEnterpriseTrackEvent(

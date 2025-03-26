@@ -89,6 +89,7 @@ export const ApproveCouponCodeRequestModal = ({
       isOpen={isOpen}
       hasCloseButton
       onClose={onClose}
+      isOverflowVisible={false}
     >
       <Form>
         <ModalDialog.Header>

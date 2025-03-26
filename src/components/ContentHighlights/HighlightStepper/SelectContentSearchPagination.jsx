@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connectPagination } from 'react-instantsearch-dom';
-import { ActionRow, Pagination, DataTable } from '@openedx/paragon';
+import { ActionRow, DataTable, Pagination } from '@openedx/paragon';
 
 export const BaseSearchPagination = ({
   nbPages,
@@ -11,7 +11,8 @@ export const BaseSearchPagination = ({
   <ActionRow>
     <DataTable.RowStatus />
     <ActionRow.Spacer />
-    <Pagination.Reduced
+    <Pagination
+      variant="reduced"
       currentPage={currentRefinement}
       handlePageSelect={(pageNum) => refine(pageNum)}
       pageCount={nbPages}

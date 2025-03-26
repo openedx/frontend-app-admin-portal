@@ -42,6 +42,7 @@ const SubscriptionExpiringModal = ({
       onClose={handleClose}
       isOpen={isOpen}
       hasCloseButton={false}
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

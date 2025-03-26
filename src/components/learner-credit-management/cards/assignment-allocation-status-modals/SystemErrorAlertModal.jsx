@@ -30,6 +30,7 @@ const SystemErrorAlertModal = ({
           <Button onClick={retry} data-autofocus>Try again</Button>
         </ActionRow>
       )}
+      isOverflowVisible={false}
     >
       <p>
         We&apos;re sorry. Something went wrong behind the scenes. Please

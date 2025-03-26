@@ -402,6 +402,7 @@ export class BaseCodeAssignmentModal extends React.Component {
         onClose={onClose}
         className="code-assignment"
         hasCloseButton
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>

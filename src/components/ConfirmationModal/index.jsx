@@ -83,6 +83,7 @@ const ConfirmationModal = ({
       variant="default"
       isOpen={isOpen}
       onClose={onClose}
+      isOverflowVisible={false}
       {...rest}
     >
       <ModalDialog.Header>

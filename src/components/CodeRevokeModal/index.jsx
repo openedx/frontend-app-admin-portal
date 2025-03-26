@@ -224,6 +224,7 @@ class CodeRevokeModal extends React.Component {
         onClose={onClose}
         className="code-revoke"
         hasCloseButton
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>

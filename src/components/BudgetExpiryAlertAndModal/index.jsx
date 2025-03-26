@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react';
 import {
-  ActionRow,
-  Alert, AlertModal,
-  Button, Hyperlink,
-  useToggle,
+  ActionRow, Alert, AlertModal, Button, Hyperlink, useToggle,
 } from '@openedx/paragon';
 
 import PropTypes from 'prop-types';
@@ -138,6 +135,7 @@ const BudgetExpiryAlertAndModal = ({ enterpriseUUID, enterpriseFeatures, disable
               </Button>
             </ActionRow>
           )}
+          isOverflowVisible={false}
         >
           {modal.message}
         </AlertModal>

@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow,
-  AlertModal,
-  Alert,
-  Button,
-  StatefulButton,
+  ActionRow, Alert, AlertModal, Button, StatefulButton,
 } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
@@ -65,6 +61,7 @@ const DisableLinkManagementAlertModal = ({
           </StatefulButton>
         </ActionRow>
       )}
+      isOverflowVisible={false}
     >
       {error && (
         <Alert icon={Info} variant="danger" dismissible>

@@ -53,6 +53,7 @@ const RegenerateCredentialWarningModal = ({
         hasCloseButton
         isFullscreenOnMobile
         isFullscreenScroll
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>

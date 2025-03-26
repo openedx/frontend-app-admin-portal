@@ -9,7 +9,8 @@ import {
   ActionRow, Button, FullscreenModal, StatefulButton, useToggle,
 } from '@openedx/paragon';
 import LmsApiService from '../../../data/services/LmsApiService';
-import SystemErrorAlertModal from '../../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import SystemErrorAlertModal
+  from '../../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import AddMembersModalContent from './AddMembersModalContent';
 import { peopleManagementQueryKeys } from '../constants';
 import { useAllEnterpriseGroupLearners } from '../data/hooks';
@@ -86,6 +87,7 @@ const AddMembersModal = ({
                 />
               </ActionRow>
             )}
+            isOverflowVisible={false}
           >
             <AddMembersModalContent
               groupName={groupName}

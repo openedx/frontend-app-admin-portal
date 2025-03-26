@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -11,7 +11,8 @@ import {
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import LmsApiService from '../../data/services/LmsApiService';
-import SystemErrorAlertModal from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
+import SystemErrorAlertModal
+  from '../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
 import CreateGroupModalContent from './CreateGroupModalContent';
 import EVENT_NAMES from '../../eventTracking';
 import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
@@ -136,6 +137,7 @@ const CreateGroupModal = ({
             />
           </ActionRow>
         )}
+        isOverflowVisible={false}
       >
         <CreateGroupModalContent
           onSetGroupName={setGroupName}

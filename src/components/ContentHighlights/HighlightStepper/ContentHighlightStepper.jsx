@@ -1,17 +1,11 @@
 import React, {
-  useCallback, useState, useContext, useEffect,
+  useCallback, useContext, useEffect, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { connect } from 'react-redux';
 import {
-  Stepper,
-  FullscreenModal,
-  Button,
-  StatefulButton,
-  useToggle,
-  AlertModal,
-  ActionRow,
+  ActionRow, AlertModal, Button, FullscreenModal, StatefulButton, Stepper, useToggle,
 } from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
@@ -326,6 +320,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
             </>
 
           )}
+          isOverflowVisible={false}
         >
           <Stepper.Step
             eventKey={STEPPER_STEP_LABELS.CREATE_TITLE}
@@ -375,6 +370,7 @@ const ContentHighlightStepper = ({ enterpriseId }) => {
         })}
         isOpen={isCloseAlertOpen}
         onClose={closeCloseAlert}
+        isOverflowVisible={false}
       >
         <p>
           <FormattedMessage

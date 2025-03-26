@@ -56,6 +56,7 @@ const BulkEnrollStepper = ({
         size="xl"
         onClose={onClose}
         className="bulk-enroll-modal"
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>
