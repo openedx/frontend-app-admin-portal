@@ -124,8 +124,6 @@ export type LearnerEmailsValidityReport = {
   duplicateEmails: string[],
   /* List of entries that are not valid email addresses */
   invalidEmails: string[],
-  /* List of emails that aren't in the organization */
-  emailsNotInOrg: string[],
   /* Error message shown to the user */
   validationError: string,
 };
@@ -148,7 +146,6 @@ export const isInviteEmailAddressesInputValueValid = ({
   const validatedEmails: string[] = [];
   const invalidEmails: string[] = [];
   const duplicateEmails: string[] = [];
-  const emailsNotInOrg: string[] = [];
 
   learnerEmails.forEach((email) => {
     const lowerCasedEmail = email.toLowerCase();
@@ -198,16 +195,8 @@ export const isInviteEmailAddressesInputValueValid = ({
     ensureValidationErrorObjectExists();
     validationError.reason = 'duplicate_email';
     validationError.message = message;
-  } else if (emailsNotInOrg.length > 0) {
-    let message = `${emailsNotInOrg[0]} is not available to be added to a group.`;
-    if (emailsNotInOrg.length > 1) {
-      message = `${emailsNotInOrg[0]} and ${makePlural(emailsNotInOrg.length - 1, 'other email address')}
-      are not available to be added to a group.`;
-    }
-    ensureValidationErrorObjectExists();
-    validationError.reason = 'email_not_in_org';
-    validationError.message = message;
   }
+
   return {
     canInvite,
     lowerCasedEmails: validatedEmails,
@@ -215,7 +204,6 @@ export const isInviteEmailAddressesInputValueValid = ({
     invalidEmails,
     isValidInput,
     validationError,
-    emailsNotInOrg,
   };
 };
 
@@ -232,7 +220,7 @@ export const removeInvalidEmailsFromList = (
   learnerEmails: string[],
   inviteMetadata: LearnerEmailsValidityReport,
 ): string[] => {
-  const { duplicateEmails, invalidEmails, emailsNotInOrg } = inviteMetadata;
-  const allInvalidEmails = [...(duplicateEmails || []), ...(invalidEmails || []), ...(emailsNotInOrg || [])];
+  const { duplicateEmails, invalidEmails } = inviteMetadata;
+  const allInvalidEmails = [...(duplicateEmails || []), ...(invalidEmails || [])];
   return removeStringsFromList(learnerEmails, allInvalidEmails);
 };

@@ -21,7 +21,6 @@ export const initialContext: ValidatedEmailsContext = {
   lowerCasedEmails: [],
   duplicateEmails: [],
   invalidEmails: [],
-  emailsNotInOrg: [],
   validationError: undefined,
 };
 export const ValidatedEmailsContextObject: Context<ValidatedEmailsContext> = createContext({ ...initialContext });

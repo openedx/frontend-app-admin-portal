@@ -21,9 +21,9 @@ export type ValidatedEmailsReducerType = (
 const allEmails = (state: ValidatedEmailsContext) => {
   // Return all emails from the context regardless of error status
   const {
-    lowerCasedEmails, duplicateEmails, emailsNotInOrg, invalidEmails,
+    lowerCasedEmails, duplicateEmails, invalidEmails,
   } = state;
-  return [lowerCasedEmails, duplicateEmails, emailsNotInOrg, invalidEmails].flatMap((list) => list || []);
+  return [lowerCasedEmails, duplicateEmails, invalidEmails].flatMap((list) => list || []);
 };
 
 const getUpdatedEmailsAndState = (
@@ -34,7 +34,7 @@ const getUpdatedEmailsAndState = (
   if (clearErroredEmails) {
     // Clear errored email fields if option is set
     const newState = {
-      ...state, duplicateEmails: [], emailsNotInOrg: [], invalidEmails: [],
+      ...state, duplicateEmails: [], invalidEmails: [],
     };
     return [newState, [...(newState.lowerCasedEmails || []), ...addedEmails]];
   }
