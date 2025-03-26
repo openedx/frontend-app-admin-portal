@@ -16,6 +16,8 @@ export const BaseSearchPagination = ({
       currentPage={currentRefinement}
       onPageSelect={(pageNum) => refine(pageNum)}
       pageCount={nbPages}
+      // This field is intentionally left as an empty object to
+      // remove redundant pagination chevrons
       icons={{}}
     />
     <ActionRow.Spacer />
