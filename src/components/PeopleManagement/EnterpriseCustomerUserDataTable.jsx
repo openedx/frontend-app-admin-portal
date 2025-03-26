@@ -40,7 +40,7 @@ const deleteSelectedRowAction = (rowId) => ({
 
 const CustomSelectColumnCell = ({ row }) => {
   const { isSelected: isTableSelected } = row;
-  const selectedEmail = row?.original?.enterpriseCustomerUser?.email;
+  const selectedEmail = row?.original?.enterpriseCustomerUser?.email.toLowerCase();
   const dataTableContext = useContext(DataTableContext);
   const {
     itemCount,

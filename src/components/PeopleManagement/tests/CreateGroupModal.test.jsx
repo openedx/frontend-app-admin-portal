@@ -98,8 +98,8 @@ const mockTabledata = {
     {
       enterpriseCustomerUser: {
         userId: 4,
-        name: 'Test User 4',
-        email: 'testuser-4@2u.com',
+        name: 'Non-lowercased User Email',
+        email: 'testUser-NonLowercase@2u.com',
         joinedOrg: 'July 4, 2024',
       },
     },
@@ -414,5 +414,33 @@ describe('<CreateGroupModal />', () => {
       expect(screen.getAllByText('testuser-2@2u.com')).toHaveLength(2);
     });
     expect(screen.queryByText('Only 1 invite per email address will be sent.')).not.toBeInTheDocument();
+  });
+  it('can add/remove members with non-lowercased emails', async () => {
+    const mockGroupData = { uuid: 'test-uuid' };
+    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
+
+    const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
+    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
+
+    render(<CreateGroupModalWrapper />);
+    const groupNameInput = screen.getByTestId('group-name');
+    userEvent.type(groupNameInput, 'test group name');
+
+    // Add non-lowercased member
+    const membersCheckbox = screen.getAllByTitle('Toggle Row Selected');
+    userEvent.click(membersCheckbox[3]);
+
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('testuser-nonlowercase@2u.com')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
+    // Remove non-lowercased member
+    userEvent.click(membersCheckbox[3]);
+
+    await waitFor(() => {
+      expect(screen.queryByText('Summary (1)')).not.toBeInTheDocument();
+      expect(screen.queryByText('testuser-nonlowercase@2u.com')).not.toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
 });
