@@ -7,9 +7,7 @@ import {
 } from '@openedx/paragon';
 import { InfoOutline } from '@openedx/paragon/icons';
 
-import {
-  CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK,
-} from '../data/constants';
+import { CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK } from '../data/constants';
 import ColorEntryField from './ColorEntryField';
 import { ColorAccessibilityChecker, Theme } from './types';
 
@@ -74,6 +72,7 @@ const CustomThemeModal = ({
       size="md"
       hasCloseButton
       isFullscreenOnMobile
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
