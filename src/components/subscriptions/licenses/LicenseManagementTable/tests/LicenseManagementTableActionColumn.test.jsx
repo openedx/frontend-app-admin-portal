@@ -1,6 +1,9 @@
 import React from 'react';
 import {
-  act, cleanup, render, screen,
+  act,
+  screen,
+  render,
+  cleanup,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -8,11 +11,17 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import LicenseManagementTableActionColumn from '../LicenseManagementTableActionColumn';
-import { ACTIVATED, ASSIGNED, REVOKED } from '../../../data/constants';
+import {
+  ASSIGNED,
+  ACTIVATED,
+  REVOKED,
+} from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
-import { TEST_ENTERPRISE_CUSTOMER_UUID, TEST_SUBSCRIPTION_PLAN_UUID } from '../../../tests/TestUtilities';
+import {
+  TEST_ENTERPRISE_CUSTOMER_UUID,
+  TEST_SUBSCRIPTION_PLAN_UUID,
+} from '../../../tests/TestUtilities';
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -52,11 +61,9 @@ const basicProps = {
 };
 
 const LicenseManagementTableActionColumnWithContext = (props) => (
-  <IntlProvider locale="en">
-    <Provider store={store}>
-      <LicenseManagementTableActionColumn {...props} />
-    </Provider>
-  </IntlProvider>
+  <Provider store={store}>
+    <LicenseManagementTableActionColumn {...props} />
+  </Provider>
 );
 
 describe('<LicenseManagementTableActionColumn />', () => {

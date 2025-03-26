@@ -1,13 +1,15 @@
 import React from 'react';
 import {
-  act, render, screen, waitFor,
+  act,
+  render,
+  screen,
+  waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import ExistingSSOConfigs from '../ExistingSSOConfigs';
 import handleErrors from '../../utils';
@@ -233,17 +235,15 @@ describe('<ExistingSSOConfigs />', () => {
     });
     handleErrors.mockResolvedValue('ayylmao');
     render(
-      <IntlProvider locale="en">
-        <Provider store={store}>
-          <ExistingSSOConfigs
-            configs={incompleteConfig}
-            refreshBool
-            setRefreshBool={mockSetRefreshBool}
-            enterpriseId={enterpriseId}
-            providerData={providerData}
-          />
-        </Provider>
-      </IntlProvider>,
+      <Provider store={store}>
+        <ExistingSSOConfigs
+          configs={incompleteConfig}
+          refreshBool
+          setRefreshBool={mockSetRefreshBool}
+          enterpriseId={enterpriseId}
+          providerData={providerData}
+        />
+      </Provider>,
     );
     act(() => {
       userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));

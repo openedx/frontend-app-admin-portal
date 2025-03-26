@@ -1,14 +1,17 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import {
-  act, cleanup, render, screen, waitFor,
+  screen,
+  render,
+  cleanup,
+  act,
+  waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 import LicenseManagerApiService from '../../../../../data/services/LicenseManagerAPIService';
 import LicenseManagementRemindModal from '../LicenseManagementRemindModal';
 import { ASSIGNED } from '../../../data/constants';
@@ -50,11 +53,9 @@ const sampleUser = {
 };
 
 const LicenseManagementRemindModalWithStore = (props) => (
-  <IntlProvider locale="en">
-    <Provider store={store}>
-      <LicenseManagementRemindModal {...props} />
-    </Provider>
-  </IntlProvider>
+  <Provider store={store}>
+    <LicenseManagementRemindModal {...props} />
+  </Provider>
 );
 
 describe('<LicenseManagementRemindModal />', () => {
