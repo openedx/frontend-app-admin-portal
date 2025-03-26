@@ -140,7 +140,6 @@ const CreateGroupModal = ({
         <CreateGroupModalContent
           onSetGroupName={setGroupName}
           isGroupInvite
-          enterpriseUUID={enterpriseUUID}
         />
       </FullscreenModal>
       <SystemErrorAlertModal

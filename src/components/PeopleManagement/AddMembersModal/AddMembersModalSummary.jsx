@@ -6,7 +6,6 @@ import AddMemberModalSummaryEmptyState from './AddMemberModalSummaryEmptyState';
 import AddMemberModalSummaryLearnerList from './AddMemberModalSummaryLearnerList';
 import AddMemberModalSummaryErrorState from './AddMemberModalSummaryErrorState';
 import AddMemberModalSummaryDuplicate from './AddMemberModalSummaryDuplicate';
-import LearnerNotInOrgErrorState from '../LearnerNotInOrgErrorState';
 import { useValidatedEmailsContext } from '../data/ValidatedEmailsContext';
 
 const AddMembersModalSummary = () => {
@@ -14,9 +13,7 @@ const AddMembersModalSummary = () => {
     isValidInput,
     lowerCasedEmails,
     duplicateEmails,
-    emailsNotInOrg,
   } = useValidatedEmailsContext() || {};
-  const hasEmailsNotInOrg = emailsNotInOrg.length > 0;
   const renderCard = (contents, idx, showErrorHighlight) => (
     <Stack gap={2.5} className="mb-4" key={idx}>
       <Card
@@ -44,13 +41,6 @@ const AddMembersModalSummary = () => {
   if (!isValidInput) {
     cardSections = cardSections.concat(
       renderCard(<AddMemberModalSummaryErrorState />, ++idx, true),
-    );
-  }
-
-  if (hasEmailsNotInOrg) {
-    cardSections = cardSections.concat(
-      <LearnerNotInOrgErrorState />,
-      ++idx,
     );
   }
 

@@ -6,7 +6,6 @@ import { LearnerEmailsValidityReport } from '../../learner-credit-management/car
 import { ValidatedEmailsActionArguments } from './actions';
 
 export type ValidatedEmailsContext = {
-  allEnterpriseLearners: string[],
   groupEnterpriseLearners: string[],
   isCreateGroupFileUpload: boolean,
   isCreateGroupListSelection: boolean,
@@ -14,7 +13,6 @@ export type ValidatedEmailsContext = {
 } & Partial<LearnerEmailsValidityReport>;
 
 export const initialContext: ValidatedEmailsContext = {
-  allEnterpriseLearners: [],
   groupEnterpriseLearners: [],
   canInvite: false,
   isValidInput: true,
@@ -23,7 +21,6 @@ export const initialContext: ValidatedEmailsContext = {
   lowerCasedEmails: [],
   duplicateEmails: [],
   invalidEmails: [],
-  emailsNotInOrg: [],
   validationError: undefined,
 };
 export const ValidatedEmailsContextObject: Context<ValidatedEmailsContext> = createContext({ ...initialContext });

@@ -12,13 +12,11 @@ import InviteSummaryCount from '../learner-credit-management/invite-modal/Invite
 import FileUpload from '../learner-credit-management/invite-modal/FileUpload';
 import { HELP_CENTER_URL, MAX_LENGTH_GROUP_NAME } from './constants';
 import EnterpriseCustomerUserDataTable from './EnterpriseCustomerUserDataTable';
-import { useEnterpriseLearners } from '../learner-credit-management/data';
 import { removeStringsFromList, splitAndTrim } from '../../utils';
 import { useValidatedEmailsContext } from './data/ValidatedEmailsContext';
 import { addEmailsAction, initializeEnterpriseEmailsAction } from './data/actions';
 
 const CreateGroupModalContent = ({
-  enterpriseUUID,
   isGroupInvite,
   onSetGroupName,
 }) => {
@@ -26,7 +24,6 @@ const CreateGroupModalContent = ({
   const { dispatch, lowerCasedEmails } = memberInviteMetadata;
   const [groupNameLength, setGroupNameLength] = useState(0);
   const [groupName, setGroupName] = useState('');
-  const { allEnterpriseLearners } = useEnterpriseLearners({ enterpriseUUID });
 
   const handleGroupNameChange = useCallback((e) => {
     if (!e.target.value) {
@@ -49,10 +46,9 @@ const CreateGroupModalContent = ({
   }, [dispatch, lowerCasedEmails]);
 
   useEffect(() => {
-    if (allEnterpriseLearners) {
-      dispatch(initializeEnterpriseEmailsAction({ allEnterpriseLearners }));
-    }
-  }, [dispatch, allEnterpriseLearners]);
+    // Initialize upon first entry
+    dispatch(initializeEnterpriseEmailsAction({}));
+  }, [dispatch]);
 
   return (
     <Container size="lg" className="py-3">
@@ -122,7 +118,6 @@ const CreateGroupModalContent = ({
 CreateGroupModalContent.propTypes = {
   onSetGroupName: PropTypes.func,
   isGroupInvite: PropTypes.bool,
-  enterpriseUUID: PropTypes.string.isRequired,
 };
 
 export default CreateGroupModalContent;

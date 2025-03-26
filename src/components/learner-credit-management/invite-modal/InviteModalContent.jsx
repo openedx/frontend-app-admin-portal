@@ -35,7 +35,6 @@ const InviteModalContent = ({
     isValidInput: null,
     lowerCasedEmails: [],
     duplicateEmails: [],
-    emailsNotInOrg: [],
   });
   const [groupMemberEmails, setGroupMemberEmails] = useState([]);
   const [checkedGroups, setCheckedGroups] = useState({});

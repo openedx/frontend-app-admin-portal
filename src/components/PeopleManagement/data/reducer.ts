@@ -21,9 +21,9 @@ export type ValidatedEmailsReducerType = (
 const allEmails = (state: ValidatedEmailsContext) => {
   // Return all emails from the context regardless of error status
   const {
-    lowerCasedEmails, duplicateEmails, emailsNotInOrg, invalidEmails,
+    lowerCasedEmails, duplicateEmails, invalidEmails,
   } = state;
-  return [lowerCasedEmails, duplicateEmails, emailsNotInOrg, invalidEmails].flatMap((list) => list || []);
+  return [lowerCasedEmails, duplicateEmails, invalidEmails].flatMap((list) => list || []);
 };
 
 const getUpdatedEmailsAndState = (
@@ -34,7 +34,7 @@ const getUpdatedEmailsAndState = (
   if (clearErroredEmails) {
     // Clear errored email fields if option is set
     const newState = {
-      ...state, duplicateEmails: [], emailsNotInOrg: [], invalidEmails: [],
+      ...state, duplicateEmails: [], invalidEmails: [],
     };
     return [newState, [...(newState.lowerCasedEmails || []), ...addedEmails]];
   }
@@ -48,11 +48,10 @@ export const ValidatedEmailsReducer: ValidatedEmailsReducerType = (
 ) => {
   switch (action.type) {
     case INITIALIZE_ENTERPRISE_EMAILS: {
-      const { allEnterpriseLearners, groupEnterpriseLearners } = action.arguments as InitializeArguments;
+      const { groupEnterpriseLearners } = action.arguments as InitializeArguments;
       return {
         ...initialContext,
         groupEnterpriseLearners: [...(groupEnterpriseLearners || [])],
-        allEnterpriseLearners: [...allEnterpriseLearners],
       };
     } case ADD_EMAILS: {
       const { emails: addedEmails, clearErroredEmails, actionType } = action.arguments as AddEmailsArguments;
@@ -66,7 +65,6 @@ export const ValidatedEmailsReducer: ValidatedEmailsReducerType = (
       };
       const emailValidation = isInviteEmailAddressesInputValueValid({
         learnerEmails: emails,
-        allEnterpriseLearners: newState.allEnterpriseLearners as string[],
       });
       return { ...newState, ...emailValidation };
     } case REMOVE_EMAILS: {
