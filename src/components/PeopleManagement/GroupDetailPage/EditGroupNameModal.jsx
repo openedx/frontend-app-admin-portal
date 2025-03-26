@@ -59,6 +59,7 @@ const EditGroupNameModal = ({
         onClose={close}
         hasCloseButton
         isFullscreenOnMobile
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>Edit group name</ModalDialog.Title>

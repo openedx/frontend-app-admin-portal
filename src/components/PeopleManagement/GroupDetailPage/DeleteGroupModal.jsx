@@ -45,6 +45,7 @@ const DeleteGroupModal = ({
         onClose={close}
         hasCloseButton
         isFullscreenOnMobile
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>Delete group?</ModalDialog.Title>

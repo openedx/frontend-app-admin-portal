@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Alert,
-  Button,
-  AlertModal,
-  useToggle,
-  ActionRow,
-  StatefulButton,
+  ActionRow, Alert, AlertModal, Button, StatefulButton, useToggle,
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { Info } from '@openedx/paragon/icons';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { logError } from '@edx/frontend-platform/logging';
 import { connect } from 'react-redux';
 
@@ -148,6 +143,7 @@ const DeleteHighlightSet = ({ enterpriseId, enterpriseSlug }) => {
             />
           </ActionRow>
         )}
+        isOverflowVisible={false}
       >
         <Alert
           show={!!deletionError}

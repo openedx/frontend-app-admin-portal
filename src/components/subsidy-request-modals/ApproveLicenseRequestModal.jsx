@@ -97,6 +97,7 @@ export const ApproveLicenseRequestModal = ({
       isOpen={isOpen}
       hasCloseButton
       onClose={onClose}
+      isOverflowVisible={false}
     >
       <Form>
         <ModalDialog.Header>

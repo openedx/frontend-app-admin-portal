@@ -26,6 +26,7 @@ const RemindAssignmentModal = ({
       isOpen={isOpen}
       onClose={close}
       title="Remind dialog"
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

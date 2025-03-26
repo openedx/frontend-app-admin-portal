@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import {
-  Button, Alert, ModalDialog, ActionRow, Spinner,
+  ActionRow, Alert, Button, ModalDialog, Spinner,
 } from '@openedx/paragon';
 import { Cancel as ErrorIcon } from '@openedx/paragon/icons';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
@@ -236,6 +236,7 @@ class InviteLearnersModal extends React.Component {
         onClose={onClose}
         className="add-users"
         hasCloseButton
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>

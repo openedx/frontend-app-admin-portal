@@ -140,6 +140,7 @@ const MemberRemoveModal = ({
       isOpen={isOpen}
       onClose={handleClose}
       hasCloseButton={false}
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

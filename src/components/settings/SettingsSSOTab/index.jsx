@@ -77,6 +77,7 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
           size="md"
           hasCloseButton
           isFullscreenOnMobile
+          isOverflowVisible={false}
         >
           <ModalDialog.Header>
             <ModalDialog.Title>

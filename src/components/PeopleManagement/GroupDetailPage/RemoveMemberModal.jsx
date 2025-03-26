@@ -1,8 +1,6 @@
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
-import {
-  ActionRow, Button, ModalDialog,
-} from '@openedx/paragon';
+import { ActionRow, Button, ModalDialog } from '@openedx/paragon';
 import { RemoveCircle } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 import { useQueryClient } from '@tanstack/react-query';
@@ -38,6 +36,7 @@ const RemoveMemberModal = ({
       isOpen={isOpen}
       onClose={close}
       isFullscreenOnMobile
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

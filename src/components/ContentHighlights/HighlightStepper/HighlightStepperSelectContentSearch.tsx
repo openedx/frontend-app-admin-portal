@@ -1,8 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
-import { Configure, InstantSearch, connectStateResults } from 'react-instantsearch-dom';
-import { DataTable, CardView, Skeleton } from '@openedx/paragon';
+import { Configure, connectStateResults, InstantSearch } from 'react-instantsearch-dom';
+import { CardView, DataTable, Skeleton } from '@openedx/paragon';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { SearchData, SearchHeader } from '@edx/frontend-enterprise-catalog-search';
 import { connect } from 'react-redux';
@@ -13,10 +13,10 @@ import ContentSearchResultCard from './ContentSearchResultCard';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
 import SelectContentSelectionStatus from './SelectContentSelectionStatus';
 import SelectContentSelectionCheckbox from './SelectContentSelectionCheckbox';
-import SelectContentSearchPagination from './SelectContentSearchPagination';
 import SkeletonContentCard from '../SkeletonContentCard';
 import { useContentHighlightsContext } from '../data/hooks';
 import { SearchUnavailableAlert } from '../../algolia-search';
+import SelectContentSearchPagination from './SelectContentSearchPagination';
 
 const defaultActiveStateValue = 'card';
 

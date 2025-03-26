@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Container,
-  FullscreenModal,
-  Image,
-  Stack,
+  Container, FullscreenModal, Image, Stack,
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../../config';
@@ -35,6 +32,7 @@ const SsoErrorPage = ({
           className="d-flex sso-error-lms-icon"
         />
       )}
+      isOverflowVisible={false}
     >
       <Container size="md" className="pl-6 pr-6">
         <Image

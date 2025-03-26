@@ -2,8 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import {
-  ActionRow, AlertModal, Badge, Button, Card, Dropdown, Icon,
-  IconButton, Image, OverlayTrigger, Popover,
+  ActionRow,
+  AlertModal,
+  Badge,
+  Button,
+  Card,
+  Dropdown,
+  Icon,
+  IconButton,
+  Image,
+  OverlayTrigger,
+  Popover,
 } from '@openedx/paragon';
 import {
   CheckCircle, Error, MoreVert, Sync,
@@ -15,8 +24,11 @@ import handleErrors from '../utils';
 import { getTimeAgo } from './ErrorReporting/utils';
 
 import {
-  ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE, INACTIVATE_TOAST_MESSAGE,
-  errorDeleteConfigModalText, errorToggleModalText,
+  ACTIVATE_TOAST_MESSAGE,
+  DELETE_TOAST_MESSAGE,
+  errorDeleteConfigModalText,
+  errorToggleModalText,
+  INACTIVATE_TOAST_MESSAGE,
 } from '../data/constants';
 
 const INCOMPLETE = 'Incomplete';
@@ -236,6 +248,7 @@ const ExistingCard = ({
             </Button>
           </ActionRow>
         )}
+        isOverflowVisible={false}
       >
         <p>
           <FormattedMessage
