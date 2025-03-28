@@ -31,6 +31,7 @@ const CancelAssignmentModal = ({
       isOpen={isOpen}
       onClose={close}
       title="Cancel dialog"
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

@@ -107,6 +107,7 @@ const GroupMembersCsvDownloadTableAction = ({
             </Button>
           </ActionRow>
         )}
+        isOverflowVisible={false}
       >
         <p>
           <FormattedMessage

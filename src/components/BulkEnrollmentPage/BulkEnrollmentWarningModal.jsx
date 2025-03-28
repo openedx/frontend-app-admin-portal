@@ -29,6 +29,7 @@ const BulkEnrollWarningModal = ({
         />
       </ActionRow>
     )}
+    isOverflowVisible={false}
   >
     Any learners with revoked licenses are not included. Click &quot;Enroll&quot; to enroll
     active and pending learners only.

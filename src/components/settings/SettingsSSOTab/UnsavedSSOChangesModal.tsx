@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModalDialog, ActionRow, Button } from '@openedx/paragon';
+import { ActionRow, Button, ModalDialog } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { UnsavedChangesModalProps } from '../../forms/FormWorkflow';
 
@@ -19,6 +19,7 @@ const UnsavedSSOChangesModal = ({
       isOpen={isOpen}
       onClose={close}
       variant="default"
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

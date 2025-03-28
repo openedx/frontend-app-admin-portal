@@ -55,6 +55,7 @@ const DeleteArchivedCoursesDialogs = ({
         title="Archive error modal"
         isOpen={isErrorOpen}
         onClose={closeError}
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>Something went wrong</ModalDialog.Title>
@@ -81,6 +82,7 @@ const DeleteArchivedCoursesDialogs = ({
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
         isFullscreenOnMobile
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>

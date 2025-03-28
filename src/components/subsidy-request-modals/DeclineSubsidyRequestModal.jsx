@@ -65,6 +65,7 @@ const DeclineSubsidyRequestModal = ({
       isOpen={isOpen}
       hasCloseButton
       onClose={onClose}
+      isOverflowVisible={false}
     >
       <ModalDialog.Header>
         <ModalDialog.Title>

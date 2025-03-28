@@ -216,6 +216,7 @@ export class BaseCodeReminderModal extends React.Component {
         onClose={onClose}
         className="code-reminder"
         hasCloseButton
+        isOverflowVisible={false}
       >
         <ModalDialog.Header>
           <ModalDialog.Title>

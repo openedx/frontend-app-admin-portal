@@ -161,6 +161,7 @@ const SSOConfigConfigureStep = ({
         onClose={closeExitModal}
         isOpen={showExitModal}
         title="Save on Exit Modal"
+        isOverflowVisible={false}
       >
         <ModalDialog.Header className="mt-2 mb-n2">
           <ModalDialog.Title>

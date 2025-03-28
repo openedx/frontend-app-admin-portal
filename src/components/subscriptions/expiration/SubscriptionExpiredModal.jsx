@@ -24,6 +24,7 @@ const SubscriptionExpiredModal = ({
       onClose={onClose}
       isOpen={isOpen}
       hasCloseButton={false}
+      isOverflowVisible={false}
     >
       <ModalDialog.Body>
         <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />

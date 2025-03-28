@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertModal, ActionRow, Button } from '@openedx/paragon';
+import { ActionRow, AlertModal, Button } from '@openedx/paragon';
 import { Error } from '@openedx/paragon/icons';
 
 import { commonErrorAlertModalPropTypes, getBudgetDisplayName } from '../data';
@@ -33,6 +33,7 @@ const ContentNotInCatalogErrorAlertModal = ({
           <Button onClick={handleClose}>Exit</Button>
         </ActionRow>
       )}
+      isOverflowVisible={false}
     >
       <p>
         This course is not included in the catalog for your {budgetDisplayName}. Please try again with another course.

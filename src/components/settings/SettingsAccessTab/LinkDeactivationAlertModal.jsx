@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActionRow,
-  AlertModal,
-  Button,
-  StatefulButton,
+  ActionRow, AlertModal, Button, StatefulButton,
 } from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
@@ -88,6 +85,7 @@ const LinkDeactivationAlertModal = ({
           </StatefulButton>
         </ActionRow>
       )}
+      isOverflowVisible={false}
     >
       <p>
         <FormattedMessage
