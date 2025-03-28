@@ -244,7 +244,7 @@ class EnterpriseAccessApiService {
   }
 
   /**
-   * ALlocates assignments for a specific subsidy access policy.
+   * Allocates assignments for a specific subsidy access policy.
    * @param {String} subsidyAccessPolicyUUID The UUID of the subsidy access policy to allocate content assignments for.
    * @param {Object} payload The metadata to send to the API, including learner emails and the content key.
    * @returns {Promise} - A promise that resolves to the response from the API.
@@ -261,6 +261,23 @@ class EnterpriseAccessApiService {
     }
     const subsidyHydratedGroupLearnersEndpoint = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/group-members?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(subsidyHydratedGroupLearnersEndpoint);
+  }
+
+  /**
+   * Aggregates subscriptions, course enrollments, and flex group memberships to support the learner profile view
+   * @param {String} userEmail The email address for a learner within an enterprise
+   * @param {String} lmsUserId The unique ID of an LMS user
+   * @param {String} enterpriseCustomerUuid The UUID of an enterprise customer
+   * @returns {Promise} - A promise that resolves to the response from the API.
+   */
+  static fetchAdminLearnerProfileData(userEmail, lmsUserId, enterpriseCustomerUuid) {
+    const queryParams = new URLSearchParams({
+      user_email: userEmail,
+      lms_user_id: lmsUserId,
+      enterprise_customer_uuid: enterpriseCustomerUuid,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/admin-view/learner_profile/?${queryParams.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
   }
 }
 
