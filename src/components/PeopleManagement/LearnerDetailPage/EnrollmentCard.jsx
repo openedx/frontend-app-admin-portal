@@ -1,4 +1,3 @@
-/* eslint quote-props: 0 */
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -8,22 +7,9 @@ import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import { camelCaseDict } from '../../../utils';
+import { COURSE_TYPE_MAP } from '../constants';
 
 const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
-  const COURSE_TYPE_MAP = {
-    'audit': 'Audit',
-    'professional': 'Professional',
-    'verified-audit': 'Verified Audit',
-    'credit-verified-audit': 'Credit Verified Audit',
-    'masters': 'Masters',
-    'masters-verified-audit': 'Masters Verified Audit',
-    'verified': 'Verified',
-    'spoc-verified-audit': 'SPOC Verified Audit',
-    'honor': 'Honor',
-    'verified-honor': 'Verified Honor',
-    'credit-verified-honor': 'Credit Verified Honor',
-    'executive-education-2u': 'Executive Education',
-  };
   const courseEnrollment = camelCaseDict(enrollment);
   const renderBadge = () => {
     switch (courseEnrollment.courseRunStatus) {

@@ -146,7 +146,7 @@ class EnterpriseAccessApiService {
   /**
    * List content assignments for a specific AssignmentConfiguration.
    */
-  static listContentAssignments(assignmentConfigurationUUID, options = {}) {
+  static listContentAssignments(assignmentConfigurationUUID, options:any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       page: 1,
@@ -167,7 +167,7 @@ class EnterpriseAccessApiService {
   static listSubsidyAccessPolicies(enterpriseCustomerId) {
     const queryParams = new URLSearchParams({
       enterprise_customer_uuid: enterpriseCustomerId,
-      active: true,
+      active: 'true',
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
@@ -187,7 +187,7 @@ class EnterpriseAccessApiService {
   /**
    * Cancel ALL content assignments for a specific AssignmentConfiguration.
    */
-  static cancelAllContentAssignments(assignmentConfigurationUUID, options = {}) {
+  static cancelAllContentAssignments(assignmentConfigurationUUID, options:any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       ...snakeCaseObject(optionsRest),
@@ -217,7 +217,7 @@ class EnterpriseAccessApiService {
   /**
    * Remind ALL content assignments for a specific AssignmentConfiguration.
    */
-  static remindAllContentAssignments(assignmentConfigurationUUID, options = {}) {
+  static remindAllContentAssignments(assignmentConfigurationUUID, options:any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       ...snakeCaseObject(optionsRest),
@@ -267,14 +267,14 @@ class EnterpriseAccessApiService {
    * Aggregates subscriptions, course enrollments, and flex group memberships to support the learner profile view
    * @param {String} userEmail The email address for a learner within an enterprise
    * @param {String} lmsUserId The unique ID of an LMS user
-   * @param {String} enterpriseCustomerUuid The UUID of an enterprise customer
+   * @param {String} enterpriseUuid The UUID of an enterprise customer
    * @returns {Promise} - A promise that resolves to the response from the API.
    */
-  static fetchAdminLearnerProfileData(userEmail, lmsUserId, enterpriseCustomerUuid) {
+  static fetchAdminLearnerProfileData(userEmail: string, lmsUserId: string, enterpriseUuid: string) {
     const queryParams = new URLSearchParams({
       user_email: userEmail,
       lms_user_id: lmsUserId,
-      enterprise_customer_uuid: enterpriseCustomerUuid,
+      enterprise_customer_uuid: enterpriseUuid,
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/admin-view/learner_profile/?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);

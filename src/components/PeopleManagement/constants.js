@@ -1,3 +1,4 @@
+/* eslint quote-props: 0 */
 export const MAX_LENGTH_GROUP_NAME = 60;
 
 export const GROUP_TYPE_BUDGET = 'budget';
@@ -23,3 +24,18 @@ export const peopleManagementQueryKeys = {
 export const MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT = 15;
 
 export const HELP_CENTER_URL = 'https://enterprise-support.edx.org/s/topic/0TORc000000GBQvOAO/admin-experience';
+
+export const COURSE_TYPE_MAP = {
+  'audit': 'Audit',
+  'professional': 'Professional',
+  'verified-audit': 'Verified Audit',
+  'credit-verified-audit': 'Credit Verified Audit',
+  'masters': 'Masters',
+  'masters-verified-audit': 'Masters Verified Audit',
+  'verified': 'Verified',
+  'spoc-verified-audit': 'SPOC Verified Audit',
+  'honor': 'Honor',
+  'verified-honor': 'Verified Honor',
+  'credit-verified-honor': 'Credit Verified Honor',
+  'executive-education-2u': 'Executive Education',
+};
