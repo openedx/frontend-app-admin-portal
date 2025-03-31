@@ -106,7 +106,6 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
-  // useEnterpriseCourseEnrollments: jest.fn(),
   useEnterpriseGroupMemberships: jest.fn(),
   useEnterpriseGroupUuid: jest.fn(),
 }));

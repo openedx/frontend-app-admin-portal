@@ -1,3 +1,4 @@
+/* eslint quote-props: 0 */
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -9,6 +10,20 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import { camelCaseDict } from '../../../utils';
 
 const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
+  const COURSE_TYPE_MAP = {
+    'audit': 'Audit',
+    'professional': 'Professional',
+    'verified-audit': 'Verified Audit',
+    'credit-verified-audit': 'Credit Verified Audit',
+    'masters': 'Masters',
+    'masters-verified-audit': 'Masters Verified Audit',
+    'verified': 'Verified',
+    'spoc-verified-audit': 'SPOC Verified Audit',
+    'honor': 'Honor',
+    'verified-honor': 'Verified Honor',
+    'credit-verified-honor': 'Credit Verified Honor',
+    'executive-education-2u': 'Executive Education',
+  };
   const courseEnrollment = camelCaseDict(enrollment);
   const renderBadge = () => {
     switch (courseEnrollment.courseRunStatus) {
@@ -30,7 +45,7 @@ const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
         <h3 className="mb-1">{courseEnrollment.displayName}</h3>
         {renderBadge()}
       </Stack>
-      <p className="small">{courseEnrollment.orgName} • {courseEnrollment.courseType}</p>
+      <p className="small">{courseEnrollment.orgName} • {COURSE_TYPE_MAP[courseEnrollment.courseType]}</p>
       <Card.Footer className="p-0 justify-content-start">
         <Hyperlink
           className="btn btn-outline-primary"
