@@ -94,6 +94,13 @@ declare global {
   type EnterpriseFeatures = {
     catalogQuerySearchFiltersEnabled?: boolean,
   };
+
+  export type LearnerProfileType = {
+    subscriptions: string[],
+    group_memberships: string[],
+    enrollments: string[],
+  };
+
 }
 
 export {};

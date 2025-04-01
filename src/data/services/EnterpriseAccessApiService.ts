@@ -1,7 +1,10 @@
+import type { AxiosResponse } from 'axios';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { configuration } from '../../config';
+
+export type LearnerProfileResponse = Promise<AxiosResponse<LearnerProfileType>>;
 
 class EnterpriseAccessApiService {
   static baseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1`;
@@ -268,9 +271,13 @@ class EnterpriseAccessApiService {
    * @param {String} userEmail The email address for a learner within an enterprise
    * @param {String} lmsUserId The unique ID of an LMS user
    * @param {String} enterpriseUuid The UUID of an enterprise customer
-   * @returns {Promise} - A promise that resolves to the response from the API.
+   * @returns {Promise} - A promise that resolves to the learner profile aggregate response.
    */
-  static fetchAdminLearnerProfileData(userEmail: string, lmsUserId: string, enterpriseUuid: string) {
+  static fetchAdminLearnerProfileData(
+    userEmail: string,
+    lmsUserId: string,
+    enterpriseUuid: string,
+  ) : LearnerProfileResponse {
     const queryParams = new URLSearchParams({
       user_email: userEmail,
       lms_user_id: lmsUserId,
