@@ -18,6 +18,7 @@ export const initialContext: ValidatedEmailsContext = {
   isValidInput: true,
   isCreateGroupFileUpload: false,
   isCreateGroupListSelection: false,
+  validatedEmails: [],
   lowerCasedEmails: [],
   duplicateEmails: [],
   invalidEmails: [],

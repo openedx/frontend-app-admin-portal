@@ -13,7 +13,7 @@ import FileUpload from '../../learner-credit-management/invite-modal/FileUpload'
 import EnterpriseCustomerUserDataTable from '../EnterpriseCustomerUserDataTable';
 import { useEnterpriseLearners } from '../../learner-credit-management/data';
 import { HELP_CENTER_URL } from '../constants';
-import { removeStringsFromList, splitAndTrim } from '../../../utils';
+import { removeStringsFromListCaseInsensitive, splitAndTrim } from '../../../utils';
 import { addEmailsAction, initializeEnterpriseEmailsAction } from '../data/actions';
 import { useValidatedEmailsContext } from '../data/ValidatedEmailsContext';
 
@@ -23,14 +23,14 @@ const AddMembersModalContent = ({
   enterpriseGroupLearners,
 }) => {
   const memberInviteMetadata = useValidatedEmailsContext();
-  const { dispatch, lowerCasedEmails } = memberInviteMetadata;
+  const { dispatch, validatedEmails } = memberInviteMetadata;
   const { allEnterpriseLearners } = useEnterpriseLearners({ enterpriseUUID });
 
   const handleCsvUpload = useCallback((csv) => {
     let emails = splitAndTrim('\n', csv);
-    emails = removeStringsFromList(emails, lowerCasedEmails);
+    emails = removeStringsFromListCaseInsensitive(emails, validatedEmails);
     dispatch(addEmailsAction({ emails, clearErroredEmails: true, actionType: 'UPLOAD_CSV_ACTION' }));
-  }, [dispatch, lowerCasedEmails]);
+  }, [dispatch, validatedEmails]);
 
   useEffect(() => {
     const groupEnterpriseLearners = enterpriseGroupLearners.map((learner) => learner?.memberDetails?.userEmail);

@@ -40,15 +40,17 @@ const deleteSelectedRowAction = (rowId) => ({
 
 const CustomSelectColumnCell = ({ row }) => {
   const { isSelected: isTableSelected } = row;
-  const selectedEmail = row?.original?.enterpriseCustomerUser?.email.toLowerCase();
+  const selectedEmail = row?.original?.enterpriseCustomerUser?.email;
   const dataTableContext = useContext(DataTableContext);
   const {
     itemCount,
     controlledTableSelections: [, dataTableDispatch],
   } = dataTableContext;
-  const { dispatch: validateEmailsDispatch, lowerCasedEmails, groupEnterpriseLearners } = useValidatedEmailsContext();
+  const {
+    dispatch: validateEmailsDispatch, lowerCasedEmails, groupEnterpriseLearners,
+  } = useValidatedEmailsContext();
   const isAddedMember = groupEnterpriseLearners.includes(selectedEmail);
-  const isValidated = lowerCasedEmails.includes(selectedEmail);
+  const isValidated = lowerCasedEmails.includes(selectedEmail.toLowerCase());
 
   const toggleSelected = useCallback(
     () => {

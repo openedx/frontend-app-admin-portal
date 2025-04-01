@@ -6,6 +6,7 @@ import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
+import fromPairs from 'lodash/fromPairs';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -663,7 +664,7 @@ function splitAndTrim(separator, str) {
 }
 
 /**
- *
+ * Remove strings from a list, matching in a case-sensitive manner
  * @param {Array<string>} list
  *  List of strings to remove from
  * @param {Array<string>} stringsToRemove
@@ -673,6 +674,22 @@ function splitAndTrim(separator, str) {
 function removeStringsFromList(list, stringsToRemove) {
   const removalSet = new Set([...stringsToRemove]);
   return list.filter((item) => !removalSet.has(item));
+}
+
+/**
+ * Remove strings from a list, matching in a case-insensitive manner
+ * @param {Array<string>} list
+ *  List of strings to remove from
+ * @param {Array<string>} stringsToRemove
+ *  Strings that should be removed from list
+ * @returns {Array<string>}
+ */
+function removeStringsFromListCaseInsensitive(list, stringsToRemove) {
+  const lowercaseMap = fromPairs(list.map(str => [str.toLowerCase(), str]));
+  const lowercaseList = list.map(str => str.toLowerCase());
+  const lowercaseToRemove = stringsToRemove.map(str => str.toLowerCase());
+  const removedLowercase = removeStringsFromList(lowercaseList, lowercaseToRemove);
+  return removedLowercase.map(str => lowercaseMap[str]);
 }
 
 export {
@@ -726,4 +743,5 @@ export {
   downloadCsv,
   splitAndTrim,
   removeStringsFromList,
+  removeStringsFromListCaseInsensitive,
 };

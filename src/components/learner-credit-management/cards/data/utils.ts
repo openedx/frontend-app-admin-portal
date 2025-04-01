@@ -118,6 +118,8 @@ export type LearnerEmailsValidityReport = {
   canInvite: boolean,
   /* If there are no invalid emails and the count of emails is under the limit */
   isValidInput: boolean,
+  /* List of valid emails in their original casing */
+  validatedEmails: string[],
   /* List of valid lower-cased emails */
   lowerCasedEmails: string[],
   /* List of duplicate emails */
@@ -143,6 +145,7 @@ export const isInviteEmailAddressesInputValueValid = ({
 }: LearnerEmailsValidityArgs): LearnerEmailsValidityReport => {
   let validationError;
   const learnerEmailsCount = learnerEmails.length;
+  const lowerCasedEmails: string[] = [];
   const validatedEmails: string[] = [];
   const invalidEmails: string[] = [];
   const duplicateEmails: string[] = [];
@@ -153,12 +156,13 @@ export const isInviteEmailAddressesInputValueValid = ({
     // Validate the email address
     if (!isEmail(email)) {
       invalidEmails.push(email);
-    } else if (validatedEmails.includes(lowerCasedEmail)) {
+    } else if (lowerCasedEmails.includes(lowerCasedEmail)) {
       // Check for duplicates (case-insensitive)
       duplicateEmails.push(email);
     } else {
-      // Add to list of lower-cased emails already handled
-      validatedEmails.push(lowerCasedEmail);
+      // Add to list of emailss already handled
+      lowerCasedEmails.push(lowerCasedEmail);
+      validatedEmails.push(email);
     }
   });
 
@@ -199,7 +203,8 @@ export const isInviteEmailAddressesInputValueValid = ({
 
   return {
     canInvite,
-    lowerCasedEmails: validatedEmails,
+    lowerCasedEmails,
+    validatedEmails,
     duplicateEmails,
     invalidEmails,
     isValidInput,

@@ -432,7 +432,7 @@ describe('<CreateGroupModal />', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
-      expect(screen.getByText('testuser-nonlowercase@2u.com')).toBeInTheDocument();
+      expect(screen.getAllByText('testUser-NonLowercase@2u.com')).toHaveLength(2);
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
 
     // Remove non-lowercased member
@@ -440,7 +440,7 @@ describe('<CreateGroupModal />', () => {
 
     await waitFor(() => {
       expect(screen.queryByText('Summary (1)')).not.toBeInTheDocument();
-      expect(screen.queryByText('testuser-nonlowercase@2u.com')).not.toBeInTheDocument();
+      expect(screen.getAllByText('testUser-NonLowercase@2u.com')).toHaveLength(1);
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
   });
 });

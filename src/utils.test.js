@@ -18,6 +18,7 @@ import {
   downloadCsv,
   splitAndTrim,
   removeStringsFromList,
+  removeStringsFromListCaseInsensitive,
 } from './utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
@@ -224,6 +225,13 @@ describe('utils', () => {
       const list = ['a', 'b', 'c', 'd'];
       const remove = ['b', 'd'];
       expect(removeStringsFromList(list, remove)).toEqual(['a', 'c']);
+    });
+  });
+  describe('removeStringsFromListCaseInsensitive', () => {
+    it('should remove strings from list in a case insensitive way', () => {
+      const list = ['a', 'b', 'c', 'd', 'E'];
+      const remove = ['B', 'd', 'e'];
+      expect(removeStringsFromListCaseInsensitive(list, remove)).toEqual(['a', 'c']);
     });
   });
 });
