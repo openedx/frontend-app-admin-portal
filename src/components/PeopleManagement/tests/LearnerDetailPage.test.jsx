@@ -7,12 +7,13 @@ import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 
 import { useEnterpriseGroupUuid, useEnterpriseGroupMemberships } from '../data/hooks';
 import LearnerDetailPage from '../LearnerDetailPage/LearnerDetailPage';
-import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { queryClient } from '../../test/testUtils';
+import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 const ENTERPRISE_ID = 'test-enterprise-id';
 const ENTERPRISE_SLUG = 'test-slug';
@@ -35,6 +36,39 @@ const TEST_GROUPS = [
     recentAction: 'Removed: March 17, 2025',
   },
 ];
+
+const TEST_AGGREGATE_API_RESPONSE = {
+  subscriptions: [],
+  groupMemberships: [],
+  enrollments: {
+    inProgress: [
+      {
+        courseRunStatus: 'in_progress',
+        startDate: '2023-09-01T10:00:00Z',
+        endDate: '2024-08-31T10:00:00Z',
+        displayName: 'Individualism and Identity in Severance',
+        orgName: 'edx',
+        courseKey: 'edx+Severance_101',
+        courseType: 'verified-audit',
+        enrollBy: '2024-08-21T23:59:59Z',
+      },
+    ],
+    upcoming: [],
+    completed: [
+      {
+        courseRunStatus: 'completed',
+        startDate: '2023-09-01T10:00:00Z',
+        endDate: '2024-08-31T10:00:00Z',
+        displayName: 'The Corruptive Nature of Wealth in White Lotus',
+        orgName: 'edx',
+        courseKey: 'edx+WhtLotus_101',
+        courseType: 'verified-audit',
+        enrollBy: '2024-08-21T23:59:59Z',
+      },
+    ],
+    savedForLater: [],
+  },
+};
 
 const TEST_ENTERPRISE_USER = {
   data: {
@@ -63,6 +97,7 @@ const initialStoreState = {
 };
 
 jest.mock('../../../data/services/LmsApiService');
+jest.mock('../../../data/services/EnterpriseAccessApiService');
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -157,5 +192,28 @@ describe('LearnerDetailPage', () => {
     expect(secondGroupLink).toHaveAttribute('href', '/test-slug/admin/people-management/6721');
     expect(screen.getByText('Accepted: March 10, 2025').toBeInTheDocument);
     expect(screen.getByText('Removed: March 17, 2025').toBeInTheDocument);
+  });
+  it('renders enrollment section', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: ENTERPRISE_SLUG,
+      learnerId: LMS_USER_ID,
+    });
+
+    jest.spyOn(EnterpriseAccessApiService, 'fetchAdminLearnerProfileData');
+    EnterpriseAccessApiService.fetchAdminLearnerProfileData.mockResolvedValue({
+      data: TEST_AGGREGATE_API_RESPONSE,
+    });
+
+    render(<LearnerDetailPageWrapper />);
+    await waitFor(() => {
+      expect(screen.getByText('Enrollments')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Individualism and Identity in Severance')).toBeInTheDocument();
+    expect(screen.getByText('Completed')).toBeInTheDocument();
+    const viewCourseButtons = screen.getAllByText('View course');
+    expect(viewCourseButtons.length).toEqual(2);
+
+    expect(screen.getByText('The Corruptive Nature of Wealth in White Lotus')).toBeInTheDocument();
+    expect(screen.getByText('In Progress')).toBeInTheDocument();
   });
 });

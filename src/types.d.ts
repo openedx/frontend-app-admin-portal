@@ -94,6 +94,90 @@ declare global {
   type EnterpriseFeatures = {
     catalogQuerySearchFiltersEnabled?: boolean,
   };
+
+  type SubscriptionPlan = {
+    title: string,
+    uuid: string,
+    startDate: string,
+    expirationDate: string,
+    enterpriseCustomerUuid: string,
+    enterpriseCatalogUuid: string,
+    isActive: boolean,
+    isCurrent: boolean,
+    isRevocationCapEnabled: boolean,
+    daysUntilExpiration: number,
+    daysUntilExpirationIncludingRenewals: number,
+    isLockedForRenewalProcessing: boolean,
+    shouldAutoApplyLicenses: boolean,
+    created: string,
+    planType: string,
+  };
+
+  type LearnerProfileSubscriptionType = {
+    uuid: string,
+    status: string,
+    userEmail: string,
+    assignedDate: string,
+    activationDate: string,
+    revokedDate: string,
+    lastRemindDate: string,
+    subscriptionPlanTitle: string,
+    subscriptionPlanExpirationDate: string,
+    subscriptionPlan: SubscriptionPlan,
+  };
+
+  type LearnerProfileEnrollmentType = {
+    id: number,
+    created: string,
+    modified: string,
+    courseId: string,
+    savedForLater: boolean,
+    unenrolled: boolean,
+    unenrolledAt: string,
+    enterpriseCustomerUser: number,
+    source: number,
+    courseRunId: string,
+    courseRunStatus: string,
+    startDate: string,
+    endDate: string,
+    displayName: string,
+    orgName: string,
+    pacing: string,
+    isRevoked: boolean,
+    isEnrollmentActive: boolean,
+    mode: string,
+    courseKey: string,
+    productSource: string,
+    enrollBy: string,
+  };
+
+  type LearnerProfileGroupsType = {
+    enterpriseCustomerUserId: number,
+    lmsUserId: number,
+    pendingEnterpriseCustomerUserId: string,
+    memberDetails: {
+      userEmail: string,
+      userName: string,
+    }
+    recentAction: string,
+    status: string,
+    activatedAt: string,
+    enrollments: number,
+    groupName: string,
+    groupUuid: string,
+  };
+
+  export type LearnerProfileType = {
+    subscriptions: LearnerProfileSubscriptionType[],
+    group_memberships: LearnerProfileGroupsType[],
+    enrollments: {
+      inProgress: LearnerProfileEnrollmentType[],
+      upcoming: LearnerProfileEnrollmentType[],
+      completed: LearnerProfileEnrollmentType[],
+      savedForLater: LearnerProfileEnrollmentType[]
+    },
+  };
+
 }
 
 export {};
