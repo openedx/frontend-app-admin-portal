@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { snakeCaseObject } from '@edx/frontend-platform/utils';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { configuration } from '../../config';
 
@@ -271,9 +271,9 @@ class EnterpriseAccessApiService {
    * @param {String} userEmail The email address for a learner within an enterprise
    * @param {String} lmsUserId The unique ID of an LMS user
    * @param {String} enterpriseUuid The UUID of an enterprise customer
-   * @returns {Promise} - A promise that resolves to the learner profile aggregate response.
+   * @returns {LearnerProfileResponse} - The API response of the aggregate endpoint
    */
-  static fetchAdminLearnerProfileData(
+  static async fetchAdminLearnerProfileData(
     userEmail: string,
     lmsUserId: string,
     enterpriseUuid: string,
@@ -284,7 +284,8 @@ class EnterpriseAccessApiService {
       enterprise_customer_uuid: enterpriseUuid,
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/admin-view/learner_profile/?${queryParams.toString()}`;
-    return EnterpriseAccessApiService.apiClient().get(url);
+    const response = await EnterpriseAccessApiService.apiClient().get(url);
+    return camelCaseObject(response);
   }
 }
 

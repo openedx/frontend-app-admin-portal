@@ -6,13 +6,11 @@ import {
 import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
-import { camelCaseDict } from '../../../utils';
 import { COURSE_TYPE_MAP } from '../constants';
 
 const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
-  const courseEnrollment = camelCaseDict(enrollment);
   const renderBadge = () => {
-    switch (courseEnrollment.courseRunStatus) {
+    switch (enrollment.courseRunStatus) {
       case 'completed': {
         return (<Badge variant="light">Completed</Badge>);
       }
@@ -28,15 +26,15 @@ const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
   return (
     <Card className="mt-4 p-4">
       <Stack direction="horizontal" className="justify-content-between">
-        <h3 className="mb-1">{courseEnrollment.displayName}</h3>
+        <h3 className="mb-1">{enrollment.displayName}</h3>
         {renderBadge()}
       </Stack>
-      <p className="small">{courseEnrollment.orgName} • {COURSE_TYPE_MAP[courseEnrollment.courseType]}</p>
+      <p className="small">{enrollment.orgName} • {COURSE_TYPE_MAP[enrollment.courseType]}</p>
       <Card.Footer className="p-0 justify-content-start">
         <Hyperlink
           className="btn btn-outline-primary"
           target="_blank"
-          destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${courseEnrollment.courseKey}`}
+          destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${enrollment.courseKey}`}
         >
           <FormattedMessage
             id="adminPortal.peopleManagement.learnerDetailPage.enrollmentCard.learnerPortalLink"
@@ -55,7 +53,13 @@ const mapStateToProps = state => ({
 
 EnrollmentCard.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enrollment: PropTypes.shape({}).isRequired,
+  enrollment: PropTypes.shape({
+    courseKey: PropTypes.string,
+    courseType: PropTypes.string,
+    courseRunStatus: PropTypes.string,
+    displayName: PropTypes.string,
+    orgName: PropTypes.string,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(EnrollmentCard);

@@ -39,34 +39,34 @@ const TEST_GROUPS = [
 
 const TEST_AGGREGATE_API_RESPONSE = {
   subscriptions: [],
-  group_memberships: [],
+  groupMemberships: [],
   enrollments: {
-    in_progress: [
+    inProgress: [
       {
-        course_run_status: 'in_progress',
-        start_date: '2023-09-01T10:00:00Z',
-        end_date: '2024-08-31T10:00:00Z',
-        display_name: 'Individualism and Identity in Severance',
-        org_name: 'edx',
-        course_key: 'edx+Severance_101',
-        course_type: 'verified-audit',
-        enroll_by: '2024-08-21T23:59:59Z',
+        courseRunStatus: 'in_progress',
+        startDate: '2023-09-01T10:00:00Z',
+        endDate: '2024-08-31T10:00:00Z',
+        displayName: 'Individualism and Identity in Severance',
+        orgName: 'edx',
+        courseKey: 'edx+Severance_101',
+        courseType: 'verified-audit',
+        enrollBy: '2024-08-21T23:59:59Z',
       },
     ],
     upcoming: [],
     completed: [
       {
-        course_run_status: 'completed',
-        start_date: '2023-09-01T10:00:00Z',
-        end_date: '2024-08-31T10:00:00Z',
-        display_name: 'The Corruptive Nature of Wealth in White Lotus',
-        org_name: 'edx',
-        course_key: 'edx+WhtLotus_101',
-        course_type: 'verified-audit',
-        enroll_by: '2024-08-21T23:59:59Z',
+        courseRunStatus: 'completed',
+        startDate: '2023-09-01T10:00:00Z',
+        endDate: '2024-08-31T10:00:00Z',
+        displayName: 'The Corruptive Nature of Wealth in White Lotus',
+        orgName: 'edx',
+        courseKey: 'edx+WhtLotus_101',
+        courseType: 'verified-audit',
+        enrollBy: '2024-08-21T23:59:59Z',
       },
     ],
-    saved_for_later: [],
+    savedForLater: [],
   },
 };
 
