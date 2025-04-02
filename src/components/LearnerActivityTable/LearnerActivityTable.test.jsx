@@ -1,103 +1,31 @@
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
 import LearnerActivityTable from '.';
+import useCourseEnrollments from './data/hooks/useCourseEnrollments';
+import mockUseCourseEnrollments from './data/tests/constants';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
-const learnerActivityEmptyStore = mockStore({
+
+jest.mock('./data/hooks/useCourseEnrollments.js', () => (
+  jest.fn().mockReturnValue({})
+));
+
+const store = mockStore({
   portalConfiguration: {
     enterpriseId,
   },
-  table: {
-    'active-week': {
-      data: {
-        results: [],
-        current_page: 1,
-        num_pages: 1,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
-  },
 });
-
-const tableMockData = {
-  data: {
-    count: 2,
-    num_pages: 1,
-    current_page: 1,
-    results: [
-      {
-        id: 1,
-        passed_date: '2018-09-23T16:27:34.690065Z',
-        course_title: 'Dive into ReactJS',
-        course_key: 'edX/ReactJS',
-        user_email: 'awesome.me@example.com',
-        course_list_price: '200',
-        course_start_date: '2017-10-21T23:47:32.738Z',
-        course_end_date: '2018-05-13T12:47:27.534Z',
-        current_grade: '0.66',
-        progress_status: 'Failed',
-        last_activity_date: '2018-09-22T10:59:28.628Z',
-      },
-      {
-        id: 5,
-        passed_date: '2018-09-22T16:27:34.690065Z',
-        course_title: 'Redux with ReactJS',
-        course_key: 'edX/Redux_ReactJS',
-        user_email: 'new@example.com',
-        course_list_price: '200',
-        course_start_date: '2017-10-21T23:47:32.738Z',
-        course_end_date: '2018-05-13T12:47:27.534Z',
-        current_grade: '0.80',
-        progress_status: 'Passed',
-        last_activity_date: '2018-09-25T10:59:28.628Z',
-      },
-    ],
-    next: null,
-    start: 0,
-    previous: null,
-  },
-  ordering: null,
-  loading: false,
-  error: null,
-};
-
-const learnerActivityStore = mockStore({
-  portalConfiguration: {
-    enterpriseId,
-  },
-  table: {
-    'active-week': tableMockData,
-    'inactive-week': tableMockData,
-    'inactive-month': tableMockData,
-  },
-});
-
-const LearnerActivityEmptyTableWrapper = props => (
-  <MemoryRouter>
-    <IntlProvider locale="en">
-      <Provider store={learnerActivityEmptyStore}>
-        <LearnerActivityTable
-          {...props}
-        />
-      </Provider>
-    </IntlProvider>
-  </MemoryRouter>
-);
 
 const LearnerActivityTableWrapper = props => (
   <MemoryRouter>
     <IntlProvider locale="en">
-      <Provider store={learnerActivityStore}>
+      <Provider store={store}>
         <LearnerActivityTable
           {...props}
         />
@@ -107,63 +35,169 @@ const LearnerActivityTableWrapper = props => (
 );
 
 const verifyLearnerActivityTableRendered = (tableId, activity, columnTitles, rowsData) => {
-  const wrapper = mount((
-    <LearnerActivityTableWrapper id={tableId} activity={activity} />
-  ));
-  // Verify that table has correct number of columns
-  expect(wrapper.find(`.${tableId} thead th`).length).toEqual(columnTitles.length);
+  const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
 
-  // Verify only expected columns are shown
-  wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
+  const table = wrapper.find('[role="table"]');
+  const headerColumns = table.find('thead th');
+  const tableRows = table.find('tbody tr');
+
+  // Verify the number of columns
+  expect(headerColumns).toHaveLength(columnTitles.length);
+
+  // Verify column titles
+  headerColumns.forEach((column, index) => {
     expect(column.text()).toContain(columnTitles[index]);
   });
 
-  // Verify that table has correct number of rows
-  expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(2);
+  // Verify the number of rows
+  expect(tableRows).toHaveLength(rowsData.length);
 
-  // Verify each row in table has correct data
-  wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
-    row.find('td').forEach((cell, colIndex) => {
+  // Verify row data
+  tableRows.forEach((row, rowIndex) => {
+    const cells = row.find('td');
+    cells.forEach((cell, colIndex) => {
       expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
     });
   });
 };
 
 describe('LearnerActivityTable', () => {
-  it('renders empty state correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityEmptyTableWrapper id="active-week" activity="active_past_week" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  beforeEach(() => {
+    useCourseEnrollments.mockReturnValue(mockUseCourseEnrollments);
+  });
+
+  afterEach(() => jest.clearAllMocks());
+
+  // Replacing the snapshot tests with explicit assertions
+  it('renders empty table correctly', () => {
+    useCourseEnrollments.mockReturnValue({
+      isLoading: false,
+      courseEnrollments: {
+        itemCount: 0,
+        pageCount: 0,
+        results: [],
+      },
+      fetchCourseEnrollments: jest.fn(),
+      hasData: false,
+    });
+
+    const wrapper = mount(
+      <LearnerActivityTableWrapper id="active-week" activity="active_past_week" />,
+    );
+
+    // Verify the table exists
+    expect(wrapper.find('[role="table"]').exists()).toBe(true);
+
+    // Verify no data rows are displayed
+    expect(wrapper.find('tbody tr').length).toBe(0);
   });
 
   it('renders active learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="active-week" activity="active_past_week" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const tableId = 'active-week';
+    const activity = 'active_past_week';
+    const columnTitles = [
+      'Email',
+      'Course Title',
+      'Course Price',
+      'Start Date',
+      'End Date',
+      'Passed Date',
+      'Current Grade',
+      'Progress Status',
+      'Last Activity Date',
+    ];
+
+    const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
+
+    // Verify the table exists
+    const table = wrapper.find('[role="table"]');
+    expect(table.exists()).toBe(true);
+
+    // Verify correct columns are displayed
+    const headerColumns = table.find('thead th');
+    expect(headerColumns).toHaveLength(columnTitles.length);
+
+    // Verify column titles
+    headerColumns.forEach((column, index) => {
+      expect(column.text()).toContain(columnTitles[index]);
+    });
+
+    // Verify data is rendered
+    expect(wrapper.find('tbody tr').length).toBeGreaterThan(0);
   });
 
   it('renders inactive past week learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="inactive-week" activity="inactive_past_week" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const tableId = 'inactive-week';
+    const activity = 'inactive_past_week';
+    const columnTitles = [
+      'Email',
+      'Course Title',
+      'Course Price',
+      'Start Date',
+      'End Date',
+      'Current Grade',
+      'Progress Status',
+      'Last Activity Date',
+    ];
+
+    const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
+
+    // Verify the table exists
+    const table = wrapper.find('[role="table"]');
+    expect(table.exists()).toBe(true);
+
+    // Verify correct columns are displayed (should not include Passed Date)
+    const headerColumns = table.find('thead th');
+    expect(headerColumns).toHaveLength(columnTitles.length);
+
+    // Verify column titles
+    headerColumns.forEach((column, index) => {
+      expect(column.text()).toContain(columnTitles[index]);
+    });
+
+    // Verify "Passed Date" column is not present
+    const columnHeaders = headerColumns.map(col => col.text());
+    expect(columnHeaders.includes('Passed Date')).toBe(false);
+
+    // Verify data is rendered
+    expect(wrapper.find('tbody tr').length).toBeGreaterThan(0);
   });
 
   it('renders inactive past month learners table correctly', () => {
-    const tree = renderer
-      .create((
-        <LearnerActivityTableWrapper id="inactive-month" activity="inactive_past_month" />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const tableId = 'inactive-month';
+    const activity = 'inactive_past_month';
+    const columnTitles = [
+      'Email',
+      'Course Title',
+      'Course Price',
+      'Start Date',
+      'End Date',
+      'Current Grade',
+      'Progress Status',
+      'Last Activity Date',
+    ];
+
+    const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
+
+    // Verify the table exists
+    const table = wrapper.find('[role="table"]');
+    expect(table.exists()).toBe(true);
+
+    // Verify correct columns are displayed (should not include Passed Date)
+    const headerColumns = table.find('thead th');
+    expect(headerColumns).toHaveLength(columnTitles.length);
+
+    // Verify column titles
+    headerColumns.forEach((column, index) => {
+      expect(column.text()).toContain(columnTitles[index]);
+    });
+
+    // Verify "Passed Date" column is not present
+    const columnHeaders = headerColumns.map(col => col.text());
+    expect(columnHeaders.includes('Passed Date')).toBe(false);
+
+    // Verify data is rendered
+    expect(wrapper.find('tbody tr').length).toBeGreaterThan(0);
   });
 
   it('renders active learners table with correct data', () => {
