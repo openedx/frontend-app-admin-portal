@@ -17,13 +17,13 @@ const CourseEnrollments = ({ userEmail, lmsUserId, enterpriseUuid }) => {
       ) : (
         <>
           <h3>Enrollments</h3>
-          {enrollments.completed.map((enrollment) => (
+          {enrollments?.completed?.map((enrollment) => (
             <EnrollmentCard enrollment={enrollment} />
           ))}
-          {enrollments.inProgress.map((enrollment) => (
+          {enrollments?.inProgress?.map((enrollment) => (
             <EnrollmentCard enrollment={enrollment} />
           ))}
-          {enrollments.upcoming.map((enrollment) => (
+          {enrollments?.upcoming?.map((enrollment) => (
             <EnrollmentCard enrollment={enrollment} />
           ))}
         </>
