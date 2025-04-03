@@ -690,7 +690,7 @@ function removeStringsFromListCaseInsensitive(list, stringsToRemove) {
   // Create lookup of lowercased -> original strings
   const lowercaseLookup = fromPairs(lowercasePairs);
   // Use lowercased list with lowercased removal strings to perform an efficient set difference operation
-  const lowercaseList = list.map(pair => pair[0]);
+  const lowercaseList = lowercasePairs.map(pair => pair[0]);
   const lowercaseToRemove = stringsToRemove.map(str => str.toLowerCase());
   const removedLowercase = removeStringsFromList(lowercaseList, lowercaseToRemove);
   // Return set difference mapped back to original strings

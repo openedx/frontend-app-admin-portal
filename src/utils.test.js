@@ -229,9 +229,9 @@ describe('utils', () => {
   });
   describe('removeStringsFromListCaseInsensitive', () => {
     it('should remove strings from list in a case insensitive way', () => {
-      const list = ['a', 'b', 'c', 'd', 'E'];
-      const remove = ['B', 'd', 'e'];
-      expect(removeStringsFromListCaseInsensitive(list, remove)).toEqual(['a', 'c']);
+      const list = ['ab', 'bc', 'cd', 'de', 'Ef'];
+      const remove = ['Bc', 'de', 'eF'];
+      expect(removeStringsFromListCaseInsensitive(list, remove)).toEqual(['ab', 'cd']);
     });
   });
 });
