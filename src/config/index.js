@@ -56,6 +56,7 @@ const features = {
   SUBSCRIPTION_LPR: process.env.SUBSCRIPTION_LPR || hasFeatureFlagEnabled('SUBSCRIPTION_LPR'),
   AUTH0_SELF_SERVICE_INTEGRATION: process.env.AUTH0_SELF_SERVICE_INTEGRATION || hasFeatureFlagEnabled('AUTH0_SELF_SERVICE_INTEGRATION'),
   FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING: process.env.FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING || hasFeatureFlagEnabled('FEATURE_HIGHLIGHTS_ARCHIVE_MESSAGING'),
+  ADMIN_V2: process.env.FEATURE_ADMIN_V2 || hasFeatureFlagEnabled('FEATURE_ADMIN_V2'),
 };
 
 export { configuration, features };
