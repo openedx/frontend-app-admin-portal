@@ -7,6 +7,7 @@ import mergeWith from 'lodash/mergeWith';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
 import fromPairs from 'lodash/fromPairs';
+import without from 'lodash/without';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -672,8 +673,7 @@ function splitAndTrim(separator, str) {
  * @returns {Array<string>}
  */
 function removeStringsFromList(list, stringsToRemove) {
-  const removalSet = new Set([...stringsToRemove]);
-  return list.filter((item) => !removalSet.has(item));
+  return without(list, ...stringsToRemove);
 }
 
 /**
@@ -692,9 +692,9 @@ function removeStringsFromListCaseInsensitive(list, stringsToRemove) {
   // Use lowercased list with lowercased removal strings to perform an efficient set difference operation
   const lowercaseList = lowercasePairs.map(pair => pair[0]);
   const lowercaseToRemove = stringsToRemove.map(str => str.toLowerCase());
-  const removedLowercase = removeStringsFromList(lowercaseList, lowercaseToRemove);
+  const remainingLowercase = removeStringsFromList(lowercaseList, lowercaseToRemove);
   // Return set difference mapped back to original strings
-  return removedLowercase.map(str => lowercaseLookup[str]);
+  return remainingLowercase.map(str => lowercaseLookup[str]);
 }
 
 export {
