@@ -8,6 +8,16 @@ class EnterpriseAccessApiService {
 
   static apiClient = getAuthenticatedHttpClient;
 
+  static getLearnerProfileAdminView({ enterpriseId, lmsUserId, userEmail }) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/admin-view/learner_profile/?user_email=${userEmail}&enterprise_customer_uuid=${enterpriseId}&lms_user_id=${lmsUserId}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
+  static getLearnerCreditPlans({ enterpriseId, lmsUserId }) {
+    const url = `${EnterpriseAccessApiService.baseUrl}/policy-redemption/credits_available/?enterprise_customer_uuid=${enterpriseId}&lms_user_id=${lmsUserId}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
+
   static getSubsidyRequestConfiguration({ enterpriseId }) {
     const url = `${EnterpriseAccessApiService.baseUrl}/customer-configurations/${enterpriseId}/`;
     return EnterpriseAccessApiService.apiClient().get(url);
