@@ -8,6 +8,7 @@ export const ROUTE_NAMES = {
   codeManagement: 'coupons',
   contentHighlights: 'content-highlights',
   learners: 'learners',
+  learners_v2: 'learners-v2',
   learnerCredit: 'learner-credit',
   peopleManagement: 'people-management',
   reporting: 'reporting',
