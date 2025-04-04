@@ -24,7 +24,7 @@ const AddMembersModal = ({
   groupUuid,
 }) => {
   const intl = useIntl();
-  const { lowerCasedEmails: learnerEmails, canInvite: canInviteMembers } = useValidatedEmailsContext();
+  const { validatedEmails: learnerEmails, canInvite: canInviteMembers } = useValidatedEmailsContext();
   const [addButtonState, setAddButtonState] = useState('default');
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
   const handleCloseAddMembersModal = () => {

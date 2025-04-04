@@ -6,6 +6,8 @@ import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
+import fromPairs from 'lodash/fromPairs';
+import without from 'lodash/without';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -663,7 +665,7 @@ function splitAndTrim(separator, str) {
 }
 
 /**
- *
+ * Remove strings from a list, matching in a case-sensitive manner
  * @param {Array<string>} list
  *  List of strings to remove from
  * @param {Array<string>} stringsToRemove
@@ -671,8 +673,28 @@ function splitAndTrim(separator, str) {
  * @returns {Array<string>}
  */
 function removeStringsFromList(list, stringsToRemove) {
-  const removalSet = new Set([...stringsToRemove]);
-  return list.filter((item) => !removalSet.has(item));
+  return without(list, ...stringsToRemove);
+}
+
+/**
+ * Remove strings from a list, matching in a case-insensitive manner
+ * @param {Array<string>} list
+ *  List of strings to remove from
+ * @param {Array<string>} stringsToRemove
+ *  Strings that should be removed from list
+ * @returns {Array<string>}
+ */
+function removeStringsFromListCaseInsensitive(list, stringsToRemove) {
+  // Create lowercased versions of original strings
+  const lowercasePairs = list.map(str => [str.toLowerCase(), str]);
+  // Create lookup of lowercased -> original strings
+  const lowercaseLookup = fromPairs(lowercasePairs);
+  // Use lowercased list with lowercased removal strings to perform an efficient set difference operation
+  const lowercaseList = lowercasePairs.map(pair => pair[0]);
+  const lowercaseToRemove = stringsToRemove.map(str => str.toLowerCase());
+  const remainingLowercase = removeStringsFromList(lowercaseList, lowercaseToRemove);
+  // Return set difference mapped back to original strings
+  return remainingLowercase.map(str => lowercaseLookup[str]);
 }
 
 export {
@@ -726,4 +748,5 @@ export {
   downloadCsv,
   splitAndTrim,
   removeStringsFromList,
+  removeStringsFromListCaseInsensitive,
 };

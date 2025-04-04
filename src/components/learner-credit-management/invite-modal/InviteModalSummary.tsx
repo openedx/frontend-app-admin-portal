@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Card, Stack } from '@openedx/paragon';
@@ -8,17 +8,23 @@ import InviteModalSummaryEmptyState from './InviteModalSummaryEmptyState';
 import InviteModalSummaryLearnerList from './InviteModalSummaryLearnerList';
 import InviteModalSummaryErrorState from './InviteModalSummaryErrorState';
 import InviteModalSummaryDuplicate from './InviteModalSummaryDuplicate';
+import { LearnerEmailsValidityReport } from '../cards/data';
+
+type InviteModalSummaryProps = {
+  memberInviteMetadata: LearnerEmailsValidityReport
+  isGroupInvite: boolean,
+};
 
 const InviteModalSummary = ({
   memberInviteMetadata,
   isGroupInvite,
-}) => {
+}: InviteModalSummaryProps) => {
   const {
     isValidInput,
-    lowerCasedEmails,
+    validatedEmails,
     duplicateEmails,
   } = memberInviteMetadata;
-  const renderCard = (contents, showErrorHighlight) => (
+  const renderCard = (contents, showErrorHighlight = false): ReactElement => (
     <Stack gap={2.5} className="mb-4">
       <Card
         className={classNames(
@@ -33,11 +39,11 @@ const InviteModalSummary = ({
     </Stack>
   );
 
-  const hasLearnerEmails = lowerCasedEmails?.length > 0;
-  let cardSections = [];
+  const hasLearnerEmails = validatedEmails?.length > 0;
+  let cardSections = [] as ReactElement[];
   if (hasLearnerEmails) {
     cardSections = cardSections.concat(
-      renderCard(<InviteModalSummaryLearnerList learnerEmails={lowerCasedEmails} />),
+      renderCard(<InviteModalSummaryLearnerList learnerEmails={validatedEmails} />),
     );
   }
 
@@ -55,7 +61,7 @@ const InviteModalSummary = ({
 
   let summaryHeading = 'Summary';
   if (hasLearnerEmails) {
-    summaryHeading = `${summaryHeading} (${lowerCasedEmails.length})`;
+    summaryHeading = `${summaryHeading} (${validatedEmails.length})`;
   }
   return (
     <>
@@ -69,7 +75,7 @@ const InviteModalSummary = ({
 InviteModalSummary.propTypes = {
   memberInviteMetadata: PropTypes.shape({
     isValidInput: PropTypes.bool,
-    lowerCasedEmails: PropTypes.arrayOf(PropTypes.string),
+    validatedEmails: PropTypes.arrayOf(PropTypes.string),
     duplicateEmails: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   isGroupInvite: PropTypes.bool,

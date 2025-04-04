@@ -25,7 +25,7 @@ const CreateGroupModal = ({
 }) => {
   const intl = useIntl();
   const {
-    lowerCasedEmails: learnerEmails,
+    validatedEmails: learnerEmails,
     canInvite: canInviteMembers,
     isCreateGroupFileUpload,
     isCreateGroupListSelection,
