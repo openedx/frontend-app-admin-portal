@@ -9,7 +9,12 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 
-import { useEnterpriseGroupUuid, useEnterpriseGroupMemberships } from '../data/hooks';
+import {
+  useEnterpriseGroupUuid,
+  useEnterpriseGroupMemberships,
+  useLearnerProfileView,
+  useLearnerCreditPlans,
+} from '../data/hooks';
 import LearnerDetailPage from '../LearnerDetailPage/LearnerDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { queryClient } from '../../test/testUtils';
@@ -85,6 +90,28 @@ const TEST_ENTERPRISE_USER = {
   },
 };
 
+const mockProfileData = {
+  subscriptions: [
+    {
+      uuid: 'sub-1',
+      subscriptionPlan: {
+        planType: 'Subscription',
+        title: 'Test Subscription Plan',
+      },
+    },
+  ],
+};
+
+const mockCreditPlansData = [
+  {
+    uuid: 'credit-1',
+    displayName: 'Test Credit Plan',
+    active: true,
+    policyType: 'AssignedLearnerCreditAccessPolicy',
+    planType: 'Credit',
+  },
+];
+
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
 const initialStoreState = {
@@ -108,6 +135,8 @@ jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
   useEnterpriseGroupMemberships: jest.fn(),
   useEnterpriseGroupUuid: jest.fn(),
+  useLearnerProfileView: jest.fn(),
+  useLearnerCreditPlans: jest.fn(),
 }));
 
 const LearnerDetailPageWrapper = ({
@@ -140,7 +169,18 @@ describe('LearnerDetailPage', () => {
       },
     });
     LmsApiService.fetchEnterpriseCustomerMembers.mockResolvedValue(TEST_ENTERPRISE_USER);
+    useLearnerProfileView.mockReturnValue({
+      isLoading: false,
+      data: mockProfileData,
+      error: null,
+    });
+    useLearnerCreditPlans.mockReturnValue({
+      isLoading: false,
+      data: mockCreditPlansData,
+      error: null,
+    });
   });
+
   it('renders breadcrumb from people management page', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,
@@ -190,8 +230,66 @@ describe('LearnerDetailPage', () => {
     const secondGroupLink = screen.getByText('Another Group');
     expect(secondGroupLink).toBeInTheDocument();
     expect(secondGroupLink).toHaveAttribute('href', '/test-slug/admin/people-management/6721');
-    expect(screen.getByText('Accepted: March 10, 2025').toBeInTheDocument);
-    expect(screen.getByText('Removed: March 17, 2025').toBeInTheDocument);
+    expect(screen.getByText('Accepted: March 10, 2025')).toBeInTheDocument();
+    expect(screen.getByText('Removed: March 17, 2025')).toBeInTheDocument();
+  });
+
+  it('renders learner access information when data is loaded', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: ENTERPRISE_SLUG,
+      learnerId: LMS_USER_ID,
+    });
+
+    useLearnerProfileView.mockReturnValue({
+      isLoading: false,
+      data: mockProfileData,
+      error: null,
+    });
+    useLearnerCreditPlans.mockReturnValue({
+      isLoading: false,
+      data: mockCreditPlansData,
+      error: null,
+    });
+
+    render(<LearnerDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Access')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('SUBSCRIPTION')).toBeInTheDocument();
+      expect(screen.getByText('Test Subscription Plan')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const learnerCreditHeader = screen.getByText((content, element) => (
+        element.tagName.toLowerCase() === 'h5' && content.includes('LEARNER CREDIT')
+      ));
+      expect(learnerCreditHeader).toBeInTheDocument();
+      expect(screen.getByText('Test Credit Plan')).toBeInTheDocument();
+    });
+  });
+
+  it('shows error message when there is an error loading access information', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: ENTERPRISE_SLUG,
+      learnerId: LMS_USER_ID,
+    });
+    useLearnerProfileView.mockReturnValue({
+      isLoading: false,
+      data: null,
+      error: new Error('Failed to load profile'),
+    });
+    useLearnerCreditPlans.mockReturnValue({
+      isLoading: false,
+      data: null,
+      error: null,
+    });
+    render(<LearnerDetailPageWrapper />);
+    await waitFor(() => {
+      expect(screen.getByText('Error loading learner access information')).toBeInTheDocument();
+    });
   });
   it('renders enrollment section', async () => {
     useParams.mockReturnValue({

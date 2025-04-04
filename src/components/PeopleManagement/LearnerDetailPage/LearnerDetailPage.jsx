@@ -9,9 +9,14 @@ import {
 import { Person } from '@openedx/paragon/icons';
 
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
-import { useEnterpriseGroupUuid } from '../data/hooks';
-import { useEnterpriseLearnerData } from './data/hooks';
+import {
+  useEnterpriseGroupUuid,
+  useLearnerProfileView,
+  useLearnerCreditPlans,
+} from '../data/hooks';
+import useEnterpriseLearnerData from './data/hooks';
 import LearnerDetailGroupMemberships from './LearnerDetailGroupMemberships';
+import LearnerAccess from './LearnerAccess';
 import CourseEnrollments from './CourseEnrollments';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
@@ -19,6 +24,17 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
 
   const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
+
+  const { isLoading: isLoadingProfile, data: profileData, error: profileError } = useLearnerProfileView({
+    enterpriseId: enterpriseUUID,
+    lmsUserId: learnerId,
+    userEmail: learnerData?.email,
+  });
+
+  const { isLoading: isLoadingCreditPlans, data: creditPlansData, error: creditPlansError } = useLearnerCreditPlans({
+    enterpriseId: enterpriseUUID,
+    lmsUserId: learnerId,
+  });
 
   const activeLabel = () => {
     if (!isLoading && !learnerData?.name) {
@@ -49,6 +65,10 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
     }
     return baseLinks;
   }, [intl, enterpriseSlug, groupUuid, enterpriseGroup]);
+
+  const isLoadingAll = isLoading || isLoadingProfile || isLoadingCreditPlans;
+  const hasError = profileError || creditPlansError;
+
   return (
     <div className="pt-4 pl-4 mb-3">
       <Breadcrumb
@@ -57,13 +77,11 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
         linkAs={Link}
         activeLabel={`${activeLabel()}`}
       />
-      {isLoading ? (
-        <div className="col col-5">
-          <Skeleton
-            width={400}
-            height={200}
-          />
-        </div>
+      {isLoadingAll ? (
+        <Skeleton
+          width={400}
+          height={200}
+        />
       ) : (
         <div className="row">
           <div className="col col-5">
@@ -81,10 +99,21 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
           </div>
         </div>
       )}
-
+      {hasError ? (
+        <div className="pt-3">
+          <p className="text-danger">Error loading learner access information</p>
+        </div>
+      ) : (
+        <LearnerAccess
+          enterpriseUuid={enterpriseUUID}
+          lmsUserId={learnerId}
+          userEmail={learnerData?.email}
+          profileData={profileData}
+          creditPlansData={creditPlansData}
+        />
+      )}
       <LearnerDetailGroupMemberships enterpriseUuid={enterpriseUUID} lmsUserId={learnerId} />
     </div>
-
   );
 };
 

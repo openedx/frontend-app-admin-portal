@@ -232,6 +232,30 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
+  test('getLearnerProfileAdminView calls enterprise-access to fetch learner profile', () => {
+    const mockLmsUserId = 'test-lms-user-id';
+    const mockUserEmail = 'test@example.com';
+    EnterpriseAccessApiService.getLearnerProfileAdminView({
+      enterpriseId: mockEnterpriseUUID,
+      lmsUserId: mockLmsUserId,
+      userEmail: mockUserEmail,
+    });
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/admin-view/learner_profile/?user_email=${mockUserEmail}&enterprise_customer_uuid=${mockEnterpriseUUID}&lms_user_id=${mockLmsUserId}`,
+    );
+  });
+
+  test('getLearnerCreditPlans calls enterprise-access to fetch learner credit plans', () => {
+    const mockLmsUserId = 'test-lms-user-id';
+    EnterpriseAccessApiService.getLearnerCreditPlans({
+      enterpriseId: mockEnterpriseUUID,
+      lmsUserId: mockLmsUserId,
+    });
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/policy-redemption/credits_available/?enterprise_customer_uuid=${mockEnterpriseUUID}&lms_user_id=${mockLmsUserId}`,
+    );
+  });
+
   test('fetchAdminLearnerProfileData calls enterprise-access with correct query params', () => {
     const testUserEmail = 'markscout@lumon.com';
     const testLmsUserId = 2;
