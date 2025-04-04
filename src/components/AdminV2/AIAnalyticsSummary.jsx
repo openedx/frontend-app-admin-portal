@@ -88,7 +88,7 @@ const AIAnalyticsSummary = ({ enterpriseId, insights, renderOverviewHeading }) =
         >
           <>
             <AutoFixHigh className="mr-2" />
-            <FormattedMessage id="adminPortal.summarizeAnalytics" defaultMessage="Summarize Analytics" />
+            <FormattedMessage id="adminPortal.summarizeAnalytics" defaultMessage="Summarize analytics" />
           </>
         </Button>
         {/* Track Progress is currently hidden due to data inconsistency. It will be addressed as part of ENT-7812 */}
