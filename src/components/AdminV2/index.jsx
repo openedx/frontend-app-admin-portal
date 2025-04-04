@@ -27,8 +27,6 @@ import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiServi
 import { formatTimestamp } from '../../utils';
 
 import AdminCardsSkeleton from './AdminCardsSkeleton';
-import { SubscriptionData } from '../subscriptions';
-import EmbeddedSubscription from './EmbeddedSubscription';
 import { withLocation, withParams } from '../../hoc';
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
@@ -91,7 +89,7 @@ class Admin extends React.Component {
     const defaultData = {
       title: intl.formatMessage({
         id: 'admin.portal.lpr.report.full.report.title',
-        defaultMessage: 'Full Report',
+        defaultMessage: 'Full report',
         description: 'Title for full report',
       }),
       component: <EnrollmentsTable />,
@@ -462,139 +460,135 @@ class Admin extends React.Component {
           <>
             <Helmet title="Learner Progress Report" />
             <Hero title="Learner Progress Report" />
-            <div className="container-fluid">
-              <div className="row mt-4">
-                <div className="col">
-                  <BudgetExpiryAlertAndModal />
-                </div>
-              </div>
-              <div className="row mt-4">
-                <div className="col">
-                  {insightsLoading ? <AIAnalyticsSummarySkeleton renderOverviewHeading={this.renderOverviewHeading} />
-                    : (
-                      hasCompleteInsights && (
-                        <AIAnalyticsSummary
-                          enterpriseId={enterpriseId}
-                          renderOverviewHeading={this.renderOverviewHeading}
-                        />
-                      )
-                    )}
-                </div>
-              </div>
-              <div className="row mt-3">
-                {(error || loading) ? (
+            <div className="container-fluid mt-4">
+              <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
+                <div className="row">
                   <div className="col">
-                    {error && this.renderErrorMessage()}
-                    {loading && <AdminCardsSkeleton />}
+                    <BudgetExpiryAlertAndModal />
                   </div>
-                ) : (
-                  <AdminCards />
-                )}
-              </div>
-
-              <div className="row">
-                <div className="col mb-4.5">
-                  <SubscriptionData enterpriseId={enterpriseId}>
-                    <EmbeddedSubscription />
-                  </SubscriptionData>
                 </div>
-              </div>
-
-              <div className="row mt-4" id="learner-progress-report">
-                <div className="col">
-                  <div className="row">
-                    <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
-                      <h2 className="table-title" ref={this.fullReportRef}>{tableMetadata.title}</h2>
-                    </div>
-                    <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
-                      {actionSlug && this.renderUrlResetButton()}
-                      {filtersActive && this.renderFiltersResetButton()}
-                    </div>
+                <div className="row">
+                  <div className="col">
+                    {insightsLoading ? <AIAnalyticsSummarySkeleton renderOverviewHeading={this.renderOverviewHeading} />
+                      : (
+                        hasCompleteInsights && (
+                          <AIAnalyticsSummary
+                            enterpriseId={enterpriseId}
+                            renderOverviewHeading={this.renderOverviewHeading}
+                          />
+                        )
+                      )}
                   </div>
-                  <div className="row">
+                </div>
+                <div className="row mt-3">
+                  {(error || loading) ? (
                     <div className="col">
-                      {tableMetadata.subtitle && <h3>{tableMetadata.subtitle}</h3>}
-                      {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                      {error && this.renderErrorMessage()}
+                      {loading && <AdminCardsSkeleton />}
                     </div>
-                  </div>
+                  ) : (
+                    <AdminCards />
+                  )}
                 </div>
               </div>
 
-              <div className="tabs-container">
-                <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
-                  {lastUpdatedDate
-                    && (
-                      <FormattedMessage
-                        id="admin.portal.lpr.data.refreshed.date.message"
-                        defaultMessage="Showing data as of {timestamp}"
-                        description="Message to show the last updated date of the data on lpr page"
-                        values={{
-                          timestamp: <FormattedDate
-                            value={formatTimestamp({ timestamp: lastUpdatedDate })}
-                            year="numeric"
-                            month="long"
-                            day="numeric"
-                          />,
-                        }}
-                      />
-                    )}
-                </div>
-                <Tabs
-                  variant="tabs"
-                  activeKey={activeTab}
-                  onSelect={(tab) => {
-                    this.setState({ activeTab: tab });
-                  }}
-                >
-                  <Tab
-                    eventKey="learner-progress-report"
-                    title={intl.formatMessage({
-                      id: 'adminPortal.lpr.tab.learnerProgressReport.title',
-                      defaultMessage: 'Learner Progress Report',
-                      description: 'Title for the learner progress report tab in admin portal.',
-                    })}
-                  >
+              <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
+                <div className="row" id="learner-progress-report">
+                  <div className="col">
                     <div className="row">
-                      <div className="col">
-                        {!error && !loading && !this.hasEmptyData() && (
-                          <>
-                            <div className="row pb-3 mt-2">
-                              <div className="col-12 col-md-12 col-xl-12">
-                                {this.renderDownloadButton()}
-                              </div>
-                            </div>
-                            {this.displaySearchBar() && (
-                              <AdminSearchForm
-                                searchParams={searchParams}
-                                searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                                tableData={this.getTableData() ? this.getTableData().results : []}
-                                budgets={budgets}
-                                groups={groups}
-                                enterpriseId={enterpriseId}
-                              />
-                            )}
-                          </>
-                        )}
-                        {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
-                        <div className="mt-3 mb-5">
-                          {enterpriseId && tableMetadata.component}
-                        </div>
+                      <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
+                        <h2 className="table-title" ref={this.fullReportRef}>{tableMetadata.title}</h2>
+                      </div>
+                      <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
+                        {actionSlug && this.renderUrlResetButton()}
+                        {filtersActive && this.renderFiltersResetButton()}
                       </div>
                     </div>
-                  </Tab>
-                  <Tab
-                    eventKey="module-activity"
-                    title={intl.formatMessage({
-                      id: 'adminPortal.lpr.tab.moduleActivity.title',
-                      defaultMessage: 'Module Activity (Executive Education)',
-                      description: 'Title for the module activity tab in admin portal.',
-                    })}
-                  >
-                    <div className="mt-3">
-                      <ModuleActivityReport enterpriseId={enterpriseId} />
+                    <div className="row">
+                      <div className="col">
+                        {tableMetadata.subtitle && <h3>{tableMetadata.subtitle}</h3>}
+                        {tableMetadata.description && <p>{tableMetadata.description}</p>}
+                      </div>
                     </div>
-                  </Tab>
-                </Tabs>
+                  </div>
+                </div>
+
+                <div className="tabs-container">
+                  <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
+                    {lastUpdatedDate
+                      && (
+                        <FormattedMessage
+                          id="admin.portal.lpr.data.refreshed.date.message"
+                          defaultMessage="Showing data as of {timestamp}"
+                          description="Message to show the last updated date of the data on lpr page"
+                          values={{
+                            timestamp: <FormattedDate
+                              value={formatTimestamp({ timestamp: lastUpdatedDate })}
+                              year="numeric"
+                              month="long"
+                              day="numeric"
+                            />,
+                          }}
+                        />
+                      )}
+                  </div>
+                  <Tabs
+                    variant="tabs"
+                    activeKey={activeTab}
+                    onSelect={(tab) => {
+                      this.setState({ activeTab: tab });
+                    }}
+                  >
+                    <Tab
+                      eventKey="learner-progress-report"
+                      title={intl.formatMessage({
+                        id: 'adminPortal.lpr.tab.learnerProgressReport.title',
+                        defaultMessage: 'Learner Progress Report',
+                        description: 'Title for the learner progress report tab in admin portal.',
+                      })}
+                    >
+                      <div className="row">
+                        <div className="col">
+                          {!error && !loading && !this.hasEmptyData() && (
+                            <>
+                              <div className="row pb-3 mt-2">
+                                <div className="col-12 col-md-12 col-xl-12">
+                                  {this.renderDownloadButton()}
+                                </div>
+                              </div>
+                              {this.displaySearchBar() && (
+                                <AdminSearchForm
+                                  searchParams={searchParams}
+                                  searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
+                                  tableData={this.getTableData() ? this.getTableData().results : []}
+                                  budgets={budgets}
+                                  groups={groups}
+                                  enterpriseId={enterpriseId}
+                                />
+                              )}
+                            </>
+                          )}
+                          {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
+                          <div className="mt-3 mb-5">
+                            {enterpriseId && tableMetadata.component}
+                          </div>
+                        </div>
+                      </div>
+                    </Tab>
+                    <Tab
+                      eventKey="module-activity"
+                      title={intl.formatMessage({
+                        id: 'adminPortal.lpr.tab.moduleActivity.title',
+                        defaultMessage: 'Module Activity (Executive Education)',
+                        description: 'Title for the module activity tab in admin portal.',
+                      })}
+                    >
+                      <div className="mt-3">
+                        <ModuleActivityReport enterpriseId={enterpriseId} />
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </div>
               </div>
             </div>
           </>
