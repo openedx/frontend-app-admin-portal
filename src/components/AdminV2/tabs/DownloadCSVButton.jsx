@@ -58,6 +58,7 @@ const DownloadCsvButton = ({ data, testId, fetchData }) => {
       <StatefulButton
         state={buttonState}
         className="download-button"
+        variant="outline-primary"
         data-testid={testId}
         labels={{
           default: intl.formatMessage({
