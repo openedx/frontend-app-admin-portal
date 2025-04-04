@@ -21,9 +21,19 @@ export type ValidatedEmailsReducerType = (
 const allEmails = (state: ValidatedEmailsContext) => {
   // Return all emails from the context regardless of error status
   const {
-    lowerCasedEmails, duplicateEmails, invalidEmails,
+    validatedEmails, duplicateEmails, invalidEmails,
   } = state;
-  return [lowerCasedEmails, duplicateEmails, invalidEmails].flatMap((list) => list || []);
+  return [validatedEmails, duplicateEmails, invalidEmails].flatMap((list) => list || []);
+};
+
+const removeEmailsFromState = (
+  state: ValidatedEmailsContext,
+  removedValidatedEmails: string[],
+): ValidatedEmailsContext => {
+  const validatedEmails = removeStringsFromList(state.validatedEmails as string[], removedValidatedEmails);
+  const lowerCasedEmailsToRemove = removedValidatedEmails.map((str) => str.toLowerCase());
+  const lowerCasedEmails = removeStringsFromList(state.lowerCasedEmails as string[], lowerCasedEmailsToRemove);
+  return { ...state, validatedEmails, lowerCasedEmails };
 };
 
 const getUpdatedEmailsAndState = (
@@ -36,7 +46,7 @@ const getUpdatedEmailsAndState = (
     const newState = {
       ...state, duplicateEmails: [], invalidEmails: [],
     };
-    return [newState, [...(newState.lowerCasedEmails || []), ...addedEmails]];
+    return [newState, [...(newState.validatedEmails || []), ...addedEmails]];
   }
 
   return [state, [...allEmails(state), ...addedEmails]];
@@ -69,10 +79,7 @@ export const ValidatedEmailsReducer: ValidatedEmailsReducerType = (
       return { ...newState, ...emailValidation };
     } case REMOVE_EMAILS: {
       const { emails: removedEmails } = action.arguments as RemoveEmailsArguments;
-      const newState = { ...state };
-      const emails = newState.lowerCasedEmails as string[];
-      newState.lowerCasedEmails = removeStringsFromList(emails, removedEmails);
-      return { ...newState };
+      return removeEmailsFromState(state, removedEmails);
     } default: {
       logError(`Unexpected action: ${action?.type}`);
       return state;

@@ -1,7 +1,10 @@
+import type { AxiosResponse } from 'axios';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
-import { snakeCaseObject } from '@edx/frontend-platform/utils';
+import { camelCaseObject, snakeCaseObject } from '@edx/frontend-platform/utils';
 
 import { configuration } from '../../config';
+
+export type LearnerProfileResponse = Promise<AxiosResponse<LearnerProfileType>>;
 
 class EnterpriseAccessApiService {
   static baseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1`;
@@ -156,7 +159,7 @@ class EnterpriseAccessApiService {
   /**
    * List content assignments for a specific AssignmentConfiguration.
    */
-  static listContentAssignments(assignmentConfigurationUUID, options = {}) {
+  static listContentAssignments(assignmentConfigurationUUID, options:any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       page: 1,
@@ -177,7 +180,7 @@ class EnterpriseAccessApiService {
   static listSubsidyAccessPolicies(enterpriseCustomerId) {
     const queryParams = new URLSearchParams({
       enterprise_customer_uuid: enterpriseCustomerId,
-      active: true,
+      active: 'true',
     });
     const url = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
@@ -197,7 +200,7 @@ class EnterpriseAccessApiService {
   /**
    * Cancel ALL content assignments for a specific AssignmentConfiguration.
    */
-  static cancelAllContentAssignments(assignmentConfigurationUUID, options = {}) {
+  static cancelAllContentAssignments(assignmentConfigurationUUID, options:any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       ...snakeCaseObject(optionsRest),
@@ -227,7 +230,7 @@ class EnterpriseAccessApiService {
   /**
    * Remind ALL content assignments for a specific AssignmentConfiguration.
    */
-  static remindAllContentAssignments(assignmentConfigurationUUID, options = {}) {
+  static remindAllContentAssignments(assignmentConfigurationUUID, options:any = {}) {
     const { learnerState, ...optionsRest } = options;
     const params = {
       ...snakeCaseObject(optionsRest),
@@ -254,7 +257,7 @@ class EnterpriseAccessApiService {
   }
 
   /**
-   * ALlocates assignments for a specific subsidy access policy.
+   * Allocates assignments for a specific subsidy access policy.
    * @param {String} subsidyAccessPolicyUUID The UUID of the subsidy access policy to allocate content assignments for.
    * @param {Object} payload The metadata to send to the API, including learner emails and the content key.
    * @returns {Promise} - A promise that resolves to the response from the API.
@@ -271,6 +274,28 @@ class EnterpriseAccessApiService {
     }
     const subsidyHydratedGroupLearnersEndpoint = `${EnterpriseAccessApiService.baseUrl}/subsidy-access-policies/${subsidyAccessPolicyUUID}/group-members?${queryParams.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(subsidyHydratedGroupLearnersEndpoint);
+  }
+
+  /**
+   * Aggregates subscriptions, course enrollments, and flex group memberships to support the learner profile view
+   * @param {String} userEmail The email address for a learner within an enterprise
+   * @param {String} lmsUserId The unique ID of an LMS user
+   * @param {String} enterpriseUuid The UUID of an enterprise customer
+   * @returns {LearnerProfileResponse} - The API response of the aggregate endpoint
+   */
+  static async fetchAdminLearnerProfileData(
+    userEmail: string,
+    lmsUserId: string,
+    enterpriseUuid: string,
+  ) : LearnerProfileResponse {
+    const queryParams = new URLSearchParams({
+      user_email: userEmail,
+      lms_user_id: lmsUserId,
+      enterprise_customer_uuid: enterpriseUuid,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/admin-view/learner_profile/?${queryParams.toString()}`;
+    const response = await EnterpriseAccessApiService.apiClient().get(url);
+    return camelCaseObject(response);
   }
 }
 

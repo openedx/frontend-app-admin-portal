@@ -88,6 +88,3 @@ LearnerDetailGroupMemberships.propTypes = {
 };
 
 export default LearnerDetailGroupMemberships;
-
-// 21:1  error  Trailing spaces not allowed  no-trailing-spaces
-// 60:5  error  Missing semicolon            @typescript-eslint/semi

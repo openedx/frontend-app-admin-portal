@@ -17,6 +17,7 @@ import {
 import useEnterpriseLearnerData from './data/hooks';
 import LearnerDetailGroupMemberships from './LearnerDetailGroupMemberships';
 import LearnerAccess from './LearnerAccess';
+import CourseEnrollments from './CourseEnrollments';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
@@ -82,14 +83,21 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
           height={200}
         />
       ) : (
-        <Card className="learner-detail-card">
-          <Icon src={Person} className="learner-detail-icon" />
-          <Card.Section className="text-center">
-            <h2>{learnerData?.name}</h2>
-            <p className="mb-1 small">{learnerData?.email}</p>
-            <p className="mb-1 small">Joined on {learnerData?.joinedOrg}</p>
-          </Card.Section>
-        </Card>
+        <div className="row">
+          <div className="col col-5">
+            <Card className="learner-detail-card">
+              <Icon src={Person} className="learner-detail-icon" />
+              <Card.Section className="text-center">
+                <h2>{learnerData?.name}</h2>
+                <p className="mb-1 small">{learnerData?.email}</p>
+                <p className="mb-1 small">Joined on {learnerData?.joinedOrg}</p>
+              </Card.Section>
+            </Card>
+          </div>
+          <div className="col col-6">
+            <CourseEnrollments userEmail={learnerData?.email} lmsUserId={learnerId} enterpriseUuid={enterpriseUUID} />
+          </div>
+        </div>
       )}
       {hasError ? (
         <div className="pt-3">

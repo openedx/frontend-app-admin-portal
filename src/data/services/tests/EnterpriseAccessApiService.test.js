@@ -255,4 +255,19 @@ describe('EnterpriseAccessApiService', () => {
       `${enterpriseAccessBaseUrl}/api/v1/policy-redemption/credits_available/?enterprise_customer_uuid=${mockEnterpriseUUID}&lms_user_id=${mockLmsUserId}`,
     );
   });
+
+  test('fetchAdminLearnerProfileData calls enterprise-access with correct query params', () => {
+    const testUserEmail = 'markscout@lumon.com';
+    const testLmsUserId = 2;
+
+    const queryParams = new URLSearchParams({
+      user_email: testUserEmail,
+      lms_user_id: testLmsUserId,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+
+    EnterpriseAccessApiService.fetchAdminLearnerProfileData(testUserEmail, testLmsUserId, mockEnterpriseUUID);
+
+    expect(axios.get).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/admin-view/learner_profile/?${queryParams.toString()}`);
+  });
 });

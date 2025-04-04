@@ -46,9 +46,11 @@ const CustomSelectColumnCell = ({ row }) => {
     itemCount,
     controlledTableSelections: [, dataTableDispatch],
   } = dataTableContext;
-  const { dispatch: validateEmailsDispatch, lowerCasedEmails, groupEnterpriseLearners } = useValidatedEmailsContext();
+  const {
+    dispatch: validateEmailsDispatch, lowerCasedEmails, groupEnterpriseLearners,
+  } = useValidatedEmailsContext();
   const isAddedMember = groupEnterpriseLearners.includes(selectedEmail);
-  const isValidated = lowerCasedEmails.includes(selectedEmail);
+  const isValidated = lowerCasedEmails.includes(selectedEmail.toLowerCase());
 
   const toggleSelected = useCallback(
     () => {
