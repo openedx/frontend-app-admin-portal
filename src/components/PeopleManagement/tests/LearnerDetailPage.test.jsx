@@ -9,11 +9,15 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 
-import { useEnterpriseGroupUuid, useEnterpriseGroupMemberships } from '../data/hooks';
+import {
+  useEnterpriseGroupUuid,
+  useEnterpriseGroupMemberships,
+  useLearnerProfileView,
+  useLearnerCreditPlans,
+} from '../data/hooks';
 import LearnerDetailPage from '../LearnerDetailPage/LearnerDetailPage';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { queryClient } from '../../test/testUtils';
-import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 
 const ENTERPRISE_ID = 'test-enterprise-id';
 const ENTERPRISE_SLUG = 'test-slug';
@@ -37,36 +41,47 @@ const TEST_GROUPS = [
   },
 ];
 
-const TEST_AGGREGATE_API_RESPONSE = {
-  subscriptions: [],
-  groupMemberships: [],
-  enrollments: {
-    inProgress: [
+const mockProfileData = {
+  data: {
+    subscriptions: [
       {
-        courseRunStatus: 'in_progress',
-        startDate: '2023-09-01T10:00:00Z',
-        endDate: '2024-08-31T10:00:00Z',
-        displayName: 'Individualism and Identity in Severance',
-        orgName: 'edx',
-        courseKey: 'edx+Severance_101',
-        courseType: 'verified-audit',
-        enrollBy: '2024-08-21T23:59:59Z',
+        uuid: 'sub-1',
+        subscriptionPlan: {
+          planType: 'Subscription',
+          title: 'Test Subscription Plan',
+          uuid: 'sub-1',
+        },
       },
     ],
-    upcoming: [],
-    completed: [
-      {
-        courseRunStatus: 'completed',
-        startDate: '2023-09-01T10:00:00Z',
-        endDate: '2024-08-31T10:00:00Z',
-        displayName: 'The Corruptive Nature of Wealth in White Lotus',
-        orgName: 'edx',
-        courseKey: 'edx+WhtLotus_101',
-        courseType: 'verified-audit',
-        enrollBy: '2024-08-21T23:59:59Z',
-      },
-    ],
-    savedForLater: [],
+    groupMemberships: [],
+    enrollments: {
+      inProgress: [
+        {
+          courseRunStatus: 'in_progress',
+          startDate: '2023-09-01T10:00:00Z',
+          endDate: '2024-08-31T10:00:00Z',
+          displayName: 'Individualism and Identity in Severance',
+          orgName: 'edx',
+          courseKey: 'edx+Severance_101',
+          courseType: 'verified-audit',
+          enrollBy: '2024-08-21T23:59:59Z',
+        },
+      ],
+      upcoming: [],
+      completed: [
+        {
+          courseRunStatus: 'completed',
+          startDate: '2023-09-01T10:00:00Z',
+          endDate: '2024-08-31T10:00:00Z',
+          displayName: 'The Corruptive Nature of Wealth in White Lotus',
+          orgName: 'edx',
+          courseKey: 'edx+WhtLotus_101',
+          courseType: 'verified-audit',
+          enrollBy: '2024-08-21T23:59:59Z',
+        },
+      ],
+      savedForLater: [],
+    },
   },
 };
 
@@ -84,6 +99,16 @@ const TEST_ENTERPRISE_USER = {
     ],
   },
 };
+
+const mockCreditPlansData = [
+  {
+    uuid: 'credit-1',
+    displayName: 'Test Credit Plan',
+    active: true,
+    policyType: 'AssignedLearnerCreditAccessPolicy',
+    planType: 'Credit',
+  },
+];
 
 const mockStore = configureMockStore([thunk]);
 const getMockStore = store => mockStore(store);
@@ -108,6 +133,8 @@ jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
   useEnterpriseGroupMemberships: jest.fn(),
   useEnterpriseGroupUuid: jest.fn(),
+  useLearnerProfileView: jest.fn(),
+  useLearnerCreditPlans: jest.fn(),
 }));
 
 const LearnerDetailPageWrapper = ({
@@ -140,7 +167,18 @@ describe('LearnerDetailPage', () => {
       },
     });
     LmsApiService.fetchEnterpriseCustomerMembers.mockResolvedValue(TEST_ENTERPRISE_USER);
+    useLearnerProfileView.mockReturnValue({
+      isLoading: false,
+      data: mockProfileData,
+      error: null,
+    });
+    useLearnerCreditPlans.mockReturnValue({
+      isLoading: false,
+      data: mockCreditPlansData,
+      error: null,
+    });
   });
+
   it('renders breadcrumb from people management page', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,
@@ -161,7 +199,7 @@ describe('LearnerDetailPage', () => {
     render(<LearnerDetailPageWrapper />);
     const expectedLink = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.peopleManagement}/${TEST_GROUP.uuid}`;
     const groupDetailBreadcrumbs = screen.getAllByText(TEST_GROUP.name);
-    expect(groupDetailBreadcrumbs).toHaveLength(2);
+    expect(groupDetailBreadcrumbs).toHaveLength(1);
     expect(groupDetailBreadcrumbs[0]).toHaveAttribute('href', expectedLink);
   });
   it('renders learner detail card', async () => {
@@ -190,18 +228,76 @@ describe('LearnerDetailPage', () => {
     const secondGroupLink = screen.getByText('Another Group');
     expect(secondGroupLink).toBeInTheDocument();
     expect(secondGroupLink).toHaveAttribute('href', '/test-slug/admin/people-management/6721');
-    expect(screen.getByText('Accepted: March 10, 2025').toBeInTheDocument);
-    expect(screen.getByText('Removed: March 17, 2025').toBeInTheDocument);
+    expect(screen.getByText('Accepted: March 10, 2025')).toBeInTheDocument();
+    expect(screen.getByText('Removed: March 17, 2025')).toBeInTheDocument();
+  });
+
+  it('renders learner access information when data is loaded', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: ENTERPRISE_SLUG,
+      learnerId: LMS_USER_ID,
+    });
+
+    useLearnerProfileView.mockReturnValue({
+      isLoading: false,
+      data: mockProfileData,
+      error: null,
+    });
+    useLearnerCreditPlans.mockReturnValue({
+      isLoading: false,
+      data: mockCreditPlansData,
+      error: null,
+    });
+
+    render(<LearnerDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Access')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('SUBSCRIPTION')).toBeInTheDocument();
+      expect(screen.getByText('Test Subscription Plan')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const learnerCreditHeader = screen.getByText((content, element) => (
+        element.tagName.toLowerCase() === 'h5' && content.includes('LEARNER CREDIT')
+      ));
+      expect(learnerCreditHeader).toBeInTheDocument();
+      expect(screen.getByText('Test Credit Plan')).toBeInTheDocument();
+    });
+  });
+
+  it('shows error message when there is an error loading access information', async () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: ENTERPRISE_SLUG,
+      learnerId: LMS_USER_ID,
+    });
+    useLearnerProfileView.mockReturnValue({
+      isLoading: false,
+      data: null,
+      error: new Error('Failed to load profile'),
+    });
+    useLearnerCreditPlans.mockReturnValue({
+      isLoading: false,
+      data: null,
+      error: null,
+    });
+    render(<LearnerDetailPageWrapper />);
+    await waitFor(() => {
+      expect(screen.getByText('Error loading learner information')).toBeInTheDocument();
+    });
   });
   it('renders enrollment section', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,
       learnerId: LMS_USER_ID,
     });
-
-    jest.spyOn(EnterpriseAccessApiService, 'fetchAdminLearnerProfileData');
-    EnterpriseAccessApiService.fetchAdminLearnerProfileData.mockResolvedValue({
-      data: TEST_AGGREGATE_API_RESPONSE,
+    useLearnerProfileView.mockReturnValue({
+      isLoading: false,
+      data: mockProfileData,
+      error: null,
     });
 
     render(<LearnerDetailPageWrapper />);

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Skeleton } from '@openedx/paragon';
 import { Configure, InstantSearch } from 'react-instantsearch-dom';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';

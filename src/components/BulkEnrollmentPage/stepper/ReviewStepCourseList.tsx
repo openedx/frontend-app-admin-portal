@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { InstantSearch, Configure, connectStateResults } from 'react-instantsearch-dom';
 import { camelCaseObject } from '@edx/frontend-platform';

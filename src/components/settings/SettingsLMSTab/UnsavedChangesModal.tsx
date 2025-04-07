@@ -1,3 +1,4 @@
+import React from 'react';
 import { ActionRow, Button, ModalDialog } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
@@ -5,12 +6,12 @@ import { UnsavedChangesModalProps } from '../../forms/FormWorkflow';
 
 // will have to pass in individual saveDraft method and config when
 // drafting is allowed
-const UnsavedChangesModal = ({
+const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
   isOpen,
   close,
   exitWithoutSaving,
   saveDraft,
-}: UnsavedChangesModalProps) => {
+}) => {
   const intl = useIntl();
   return (
     <ModalDialog

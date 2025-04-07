@@ -1,40 +1,46 @@
 import PropTypes from 'prop-types';
 import { Skeleton } from '@openedx/paragon';
 import EnrollmentCard from './EnrollmentCard';
-import useEnterpriseCourseEnrollments from '../data/hooks/useEnterpriseCourseEnrollments';
 
-const CourseEnrollments = ({ userEmail, lmsUserId, enterpriseUuid }) => {
-  const { isLoading, data } = useEnterpriseCourseEnrollments({ userEmail, lmsUserId, enterpriseUuid });
-  const enrollments = data?.data.enrollments;
+const CourseEnrollments = ({ enrollments, isLoading }) => (
+  <div className="ml-5">
+    {isLoading && !enrollments ? (
+      <Skeleton
+        width={400}
+        height={200}
+      />
+    ) : (
+      <>
+        <h3>Enrollments</h3>
+        {enrollments?.completed?.map((enrollment) => (
+          <EnrollmentCard enrollment={enrollment} />
+        ))}
+        {enrollments?.inProgress?.map((enrollment) => (
+          <EnrollmentCard enrollment={enrollment} />
+        ))}
+        {enrollments?.upcoming?.map((enrollment) => (
+          <EnrollmentCard enrollment={enrollment} />
+        ))}
+      </>
+    )}
+  </div>
+);
 
-  return (
-    <div className="ml-5">
-      {isLoading && !enrollments ? (
-        <Skeleton
-          width={400}
-          height={200}
-        />
-      ) : (
-        <>
-          <h3>Enrollments</h3>
-          {enrollments?.completed?.map((enrollment) => (
-            <EnrollmentCard enrollment={enrollment} />
-          ))}
-          {enrollments?.inProgress?.map((enrollment) => (
-            <EnrollmentCard enrollment={enrollment} />
-          ))}
-          {enrollments?.upcoming?.map((enrollment) => (
-            <EnrollmentCard enrollment={enrollment} />
-          ))}
-        </>
-      )}
-    </div>
-  );
-};
+const enrollmentShape = PropTypes.shape({
+  courseKey: PropTypes.string,
+  courseType: PropTypes.string,
+  courseRunStatus: PropTypes.string,
+  displayName: PropTypes.string,
+  orgName: PropTypes.string,
+}).isRequired;
+
 CourseEnrollments.propTypes = {
-  userEmail: PropTypes.string.isRequired,
-  lmsUserId: PropTypes.string.isRequired,
-  enterpriseUuid: PropTypes.string.isRequired,
+  enrollments: PropTypes.shape({
+    completed: PropTypes.arrayOf(enrollmentShape),
+    inProgress: PropTypes.arrayOf(enrollmentShape),
+    upcoming: PropTypes.arrayOf(enrollmentShape),
+  }).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default CourseEnrollments;

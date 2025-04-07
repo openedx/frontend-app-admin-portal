@@ -6,10 +6,35 @@ import { configuration } from '../../config';
 
 export type LearnerProfileResponse = Promise<AxiosResponse<LearnerProfileType>>;
 
+type LearnerCreditPlansArgs = {
+  enterpriseId: string;
+  lmsUserId: string;
+};
+
+export type LearnerCreditPlansResponse = {
+  data: LearnerCreditPlan[];
+};
+
 class EnterpriseAccessApiService {
   static baseUrl = `${configuration.ENTERPRISE_ACCESS_BASE_URL}/api/v1`;
 
   static apiClient = getAuthenticatedHttpClient;
+
+  /**
+   * Retrieves available learner credit plans for a specific learner in an enterprise.
+   * @param {Object} args - The arguments object
+   * @param {string} args.enterpriseId - The UUID of the enterprise customer
+   * @param {string} args.lmsUserId - The unique ID of the LMS user
+   * @returns {Promise<LearnerCreditPlansResponse>}
+   * A promise that resolves to an object containing an array of learner credit plans
+   */
+  static getLearnerCreditPlans({
+    enterpriseId,
+    lmsUserId,
+  }: LearnerCreditPlansArgs): Promise<LearnerCreditPlansResponse> {
+    const url = `${EnterpriseAccessApiService.baseUrl}/policy-redemption/credits_available/?enterprise_customer_uuid=${enterpriseId}&lms_user_id=${lmsUserId}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
 
   static getSubsidyRequestConfiguration({ enterpriseId }) {
     const url = `${EnterpriseAccessApiService.baseUrl}/customer-configurations/${enterpriseId}/`;

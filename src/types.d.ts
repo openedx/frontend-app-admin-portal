@@ -95,7 +95,7 @@ declare global {
     catalogQuerySearchFiltersEnabled?: boolean,
   };
 
-  type SubscriptionPlan = {
+  export type SubscriptionPlan = {
     title: string,
     uuid: string,
     startDate: string,
@@ -111,6 +111,18 @@ declare global {
     shouldAutoApplyLicenses: boolean,
     created: string,
     planType: string,
+  };
+
+  export type Subscription = {
+    subscriptionPlan: SubscriptionPlan;
+    uuid: string;
+  };
+
+  export type LearnerCreditPlan = {
+    displayName: string;
+    active: boolean;
+    policyType: string;
+    uuid: string;
   };
 
   type LearnerProfileSubscriptionType = {

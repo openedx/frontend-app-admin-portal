@@ -19,6 +19,8 @@ export const peopleManagementQueryKeys = {
   learners: (groupUuid) => [...peopleManagementQueryKeys.all, 'learners', groupUuid],
   members: (enterpriseUuid) => [...peopleManagementQueryKeys.all, 'members', enterpriseUuid],
   removeMember: (groupUuid) => [...peopleManagementQueryKeys.all, 'removeMember', groupUuid],
+  learnerProfile: ({ enterpriseUuid, userId, userEmail }) => [...peopleManagementQueryKeys.all, 'learnerProfile', enterpriseUuid, userId, userEmail],
+  learnerCreditPlans: ({ enterpriseId, lmsUserId }) => [...peopleManagementQueryKeys.all, 'learnerCreditPlans', enterpriseId, lmsUserId],
 };
 
 export const MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT = 15;

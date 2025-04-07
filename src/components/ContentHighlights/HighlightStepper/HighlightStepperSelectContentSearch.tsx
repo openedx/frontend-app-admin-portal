@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useContextSelector } from 'use-context-selector';
 import { Configure, connectStateResults, InstantSearch } from 'react-instantsearch-dom';

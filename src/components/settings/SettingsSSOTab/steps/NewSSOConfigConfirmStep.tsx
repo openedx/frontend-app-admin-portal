@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Alert, Button, OverlayTrigger, Popover,
 } from '@openedx/paragon';
