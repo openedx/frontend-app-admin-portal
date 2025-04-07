@@ -11,13 +11,6 @@ type LearnerCreditPlansArgs = {
   lmsUserId: string;
 };
 
-type LearnerCreditPlan = {
-  displayName: string;
-  active: boolean;
-  policyType: string;
-  uuid: string;
-};
-
 export type LearnerCreditPlansResponse = {
   data: LearnerCreditPlan[];
 };

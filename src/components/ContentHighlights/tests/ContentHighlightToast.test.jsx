@@ -23,7 +23,6 @@ describe('<ContentHighlightToast>', () => {
     renderWithRouter(<ContentHighlightToastWrapper toastText="Highlights2" />);
 
     const closeButton = screen.getByLabelText('Close');
-
     const toastContainerClassesBefore = screen.getByRole('alert').className;
     expect(toastContainerClassesBefore.match(/show/)).toBeTruthy();
 

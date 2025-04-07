@@ -26,29 +26,19 @@ const CourseEnrollments = ({ enrollments, isLoading }) => (
   </div>
 );
 
+const enrollmentShape = PropTypes.shape({
+  courseKey: PropTypes.string,
+  courseType: PropTypes.string,
+  courseRunStatus: PropTypes.string,
+  displayName: PropTypes.string,
+  orgName: PropTypes.string,
+}).isRequired;
+
 CourseEnrollments.propTypes = {
   enrollments: PropTypes.shape({
-    completed: PropTypes.arrayOf({
-      courseKey: PropTypes.string,
-      courseType: PropTypes.string,
-      courseRunStatus: PropTypes.string,
-      displayName: PropTypes.string,
-      orgName: PropTypes.string,
-    }).isRequired,
-    inProgress: PropTypes.arrayOf({
-      courseKey: PropTypes.string,
-      courseType: PropTypes.string,
-      courseRunStatus: PropTypes.string,
-      displayName: PropTypes.string,
-      orgName: PropTypes.string,
-    }).isRequired,
-    upcoming: PropTypes.arrayOf({
-      courseKey: PropTypes.string,
-      courseType: PropTypes.string,
-      courseRunStatus: PropTypes.string,
-      displayName: PropTypes.string,
-      orgName: PropTypes.string,
-    }).isRequired,
+    completed: PropTypes.arrayOf(enrollmentShape),
+    inProgress: PropTypes.arrayOf(enrollmentShape),
+    upcoming: PropTypes.arrayOf(enrollmentShape),
   }).isRequired,
   isLoading: PropTypes.bool.isRequired,
 };

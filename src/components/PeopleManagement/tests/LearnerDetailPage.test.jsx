@@ -299,10 +299,6 @@ describe('LearnerDetailPage', () => {
       data: mockProfileData,
       error: null,
     });
-    // jest.spyOn(EnterpriseAccessApiService, 'fetchAdminLearnerProfileData');
-    // EnterpriseAccessApiService.fetchAdminLearnerProfileData.mockResolvedValue({
-    //   data: TEST_AGGREGATE_API_RESPONSE,
-    // });
 
     render(<LearnerDetailPageWrapper />);
     await waitFor(() => {

@@ -61,6 +61,13 @@ const LearnerCreditLink = ({ plan }: LearnerCreditLinkProps) => {
   const { displayName, uuid } = plan;
   const { enterpriseSlug } = useParams() as { enterpriseSlug: string };
   const learnerCreditUrl = learnerCreditPageUrl({ enterpriseSlug, uuid });
+  const intl = useIntl();
+
+  const policyTypeText = intl.formatMessage({
+    id: 'adminPortal.peopleManagement.learnerDetailPage.policyType',
+    defaultMessage: plan.policyType === 'AssignedLearnerCreditAccessPolicy' ? 'Assignment' : 'Browse & Enroll',
+    description: 'Text indicating the type of learner credit policy',
+  });
 
   return (
     <div className="pl-3">
@@ -82,7 +89,7 @@ const LearnerCreditLink = ({ plan }: LearnerCreditLinkProps) => {
           />
         </Hyperlink>
       </div>
-      <p className="small pb-2">{plan.policyType === 'AssignedLearnerCreditAccessPolicy' ? 'Assignment' : 'Browse & Enroll'}</p>
+      <p className="small pb-2">{policyTypeText}</p>
     </div>
   );
 };
