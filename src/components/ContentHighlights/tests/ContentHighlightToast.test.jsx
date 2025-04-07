@@ -24,13 +24,12 @@ describe('<ContentHighlightToast>', () => {
 
     const closeButton = screen.getByLabelText('Close');
 
-    const toastContainer = screen.getByText('Highlights2').closest('[role="alert"]');
-    const toastContainerClassesBefore = toastContainer.className;
+    const toastContainerClassesBefore = screen.getByRole('alert').className;
     expect(toastContainerClassesBefore.match(/show/)).toBeTruthy();
 
     userEvent.click(closeButton);
 
-    const toastContainerClassesAfter = toastContainer.className;
+    const toastContainerClassesAfter = screen.getByRole('alert').className;
     expect(toastContainerClassesAfter.match(/show/)).toBeFalsy();
   });
 });

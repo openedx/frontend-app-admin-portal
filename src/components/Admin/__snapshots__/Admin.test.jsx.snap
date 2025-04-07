@@ -289,33 +289,34 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -910,14 +911,13 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -1930,33 +1930,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -2015,33 +2016,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -2636,14 +2638,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -3656,33 +3657,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -3741,33 +3743,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -4362,14 +4365,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -5382,33 +5384,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -5467,33 +5470,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -6088,14 +6092,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -7108,33 +7111,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -7193,33 +7197,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -7814,14 +7819,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -8834,33 +8838,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -8919,33 +8924,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -9540,14 +9546,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -10560,33 +10565,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -10645,33 +10651,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -11266,14 +11273,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -12286,33 +12292,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -12371,33 +12378,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -12992,14 +13000,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -14012,33 +14019,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -14097,33 +14105,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -14718,14 +14727,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -15738,33 +15746,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -15823,33 +15832,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -16444,14 +16454,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -17464,33 +17473,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -17549,33 +17559,34 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -18170,14 +18181,13 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -19239,33 +19249,34 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -19324,33 +19335,34 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -19945,14 +19957,13 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -20965,33 +20976,34 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -21050,33 +21062,34 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -21671,14 +21684,13 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -22691,33 +22703,34 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -22776,33 +22789,34 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -23397,14 +23411,13 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -23719,33 +23732,34 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -24340,14 +24354,13 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -24679,33 +24692,34 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -25300,14 +25314,13 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
@@ -26365,33 +26378,34 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                               value=""
                             />
                             <button
-                              className="btn"
+                              aria-label="submit search"
+                              className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                               disabled={false}
+                              onClick={[Function]}
                               type="submit"
                             >
                               <span
-                                className="pgn__icon"
+                                className="btn-icon__icon-container"
                               >
-                                <svg
-                                  aria-hidden={true}
-                                  fill="none"
-                                  focusable={false}
-                                  height={24}
-                                  role="img"
-                                  viewBox="0 0 24 24"
-                                  width={24}
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <span
+                                  className="pgn__icon btn-icon__icon"
                                 >
-                                  <path
-                                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                              </span>
-                              <span
-                                className="sr-only"
-                              >
-                                submit search
+                                  <svg
+                                    aria-hidden={true}
+                                    fill="none"
+                                    focusable={false}
+                                    height={24}
+                                    role="img"
+                                    viewBox="0 0 24 24"
+                                    width={24}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </span>
                               </span>
                             </button>
                           </form>
@@ -26450,33 +26464,34 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                     value=""
                   />
                   <button
-                    className="btn"
+                    aria-label="submit search"
+                    className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
                     disabled={false}
+                    onClick={[Function]}
                     type="submit"
                   >
                     <span
-                      className="pgn__icon"
+                      className="btn-icon__icon-container"
                     >
-                      <svg
-                        aria-hidden={true}
-                        fill="none"
-                        focusable={false}
-                        height={24}
-                        role="img"
-                        viewBox="0 0 24 24"
-                        width={24}
-                        xmlns="http://www.w3.org/2000/svg"
+                      <span
+                        className="pgn__icon btn-icon__icon"
                       >
-                        <path
-                          d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span
-                      className="sr-only"
-                    >
-                      submit search
+                        <svg
+                          aria-hidden={true}
+                          fill="none"
+                          focusable={false}
+                          height={24}
+                          role="img"
+                          viewBox="0 0 24 24"
+                          width={24}
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </span>
                     </span>
                   </button>
                 </form>
@@ -27071,14 +27086,13 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                             </button>
                           </li>
                           <li
-                            className="page-item disabled"
+                            className="page-item"
                           >
                             <button
                               aria-label="Next, Page 2"
-                              className="btn-icon btn-icon-primary btn-icon-md next page-link"
-                              disabled={true}
+                              className="btn-icon btn-icon-primary btn-icon-md previous page-link"
+                              disabled={false}
                               onClick={[Function]}
-                              tabIndex="-1"
                               type="button"
                             >
                               <span
