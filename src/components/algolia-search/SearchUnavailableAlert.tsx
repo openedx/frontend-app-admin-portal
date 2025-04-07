@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from '@openedx/paragon';
 import { Error as ErrorIcon } from '@openedx/paragon/icons';

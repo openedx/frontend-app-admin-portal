@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { createContext } from 'use-context-selector';
 import { SearchClient } from 'algoliasearch/lite';
 

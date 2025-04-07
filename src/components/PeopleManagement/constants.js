@@ -19,7 +19,7 @@ export const peopleManagementQueryKeys = {
   learners: (groupUuid) => [...peopleManagementQueryKeys.all, 'learners', groupUuid],
   members: (enterpriseUuid) => [...peopleManagementQueryKeys.all, 'members', enterpriseUuid],
   removeMember: (groupUuid) => [...peopleManagementQueryKeys.all, 'removeMember', groupUuid],
-  learnerProfile: ({ enterpriseId, userId, userEmail }) => [...peopleManagementQueryKeys.all, 'learnerProfile', enterpriseId, userId, userEmail],
+  learnerProfile: ({ enterpriseUuid, userId, userEmail }) => [...peopleManagementQueryKeys.all, 'learnerProfile', enterpriseUuid, userId, userEmail],
   learnerCreditPlans: ({ enterpriseId, lmsUserId }) => [...peopleManagementQueryKeys.all, 'learnerCreditPlans', enterpriseId, lmsUserId],
 };
 

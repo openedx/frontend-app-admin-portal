@@ -50,34 +50,33 @@ exports[`ManageCodesTabWrapper renders renders empty results correctly 1`] = `
             value=""
           />
           <button
-            aria-label="submit search"
-            className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
+            className="btn"
             disabled={false}
-            onClick={[Function]}
             type="submit"
           >
             <span
-              className="btn-icon__icon-container"
+              className="pgn__icon"
             >
-              <span
-                className="pgn__icon btn-icon__icon"
+              <svg
+                aria-hidden={true}
+                fill="none"
+                focusable={false}
+                height={24}
+                role="img"
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden={true}
-                  fill="none"
-                  focusable={false}
-                  height={24}
-                  role="img"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <span
+              className="sr-only"
+            >
+              submit search
             </span>
           </button>
         </form>
@@ -253,34 +252,33 @@ exports[`ManageCodesTabWrapper renders renders error state correctly 1`] = `
             value=""
           />
           <button
-            aria-label="submit search"
-            className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
+            className="btn"
             disabled={false}
-            onClick={[Function]}
             type="submit"
           >
             <span
-              className="btn-icon__icon-container"
+              className="pgn__icon"
             >
-              <span
-                className="pgn__icon btn-icon__icon"
+              <svg
+                aria-hidden={true}
+                fill="none"
+                focusable={false}
+                height={24}
+                role="img"
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden={true}
-                  fill="none"
-                  focusable={false}
-                  height={24}
-                  role="img"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <span
+              className="sr-only"
+            >
+              submit search
             </span>
           </button>
         </form>
@@ -464,34 +462,33 @@ exports[`ManageCodesTabWrapper renders renders loading state correctly 1`] = `
             value=""
           />
           <button
-            aria-label="submit search"
-            className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
+            className="btn"
             disabled={false}
-            onClick={[Function]}
             type="submit"
           >
             <span
-              className="btn-icon__icon-container"
+              className="pgn__icon"
             >
-              <span
-                className="pgn__icon btn-icon__icon"
+              <svg
+                aria-hidden={true}
+                fill="none"
+                focusable={false}
+                height={24}
+                role="img"
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden={true}
-                  fill="none"
-                  focusable={false}
-                  height={24}
-                  role="img"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <span
+              className="sr-only"
+            >
+              submit search
             </span>
           </button>
         </form>
@@ -643,34 +640,33 @@ exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] =
             value=""
           />
           <button
-            aria-label="submit search"
-            className="btn-icon btn-icon-primary btn-icon-sm pgn__searchfield__iconbutton-submit"
+            className="btn"
             disabled={false}
-            onClick={[Function]}
             type="submit"
           >
             <span
-              className="btn-icon__icon-container"
+              className="pgn__icon"
             >
-              <span
-                className="pgn__icon btn-icon__icon"
+              <svg
+                aria-hidden={true}
+                fill="none"
+                focusable={false}
+                height={24}
+                role="img"
+                viewBox="0 0 24 24"
+                width={24}
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden={true}
-                  fill="none"
-                  focusable={false}
-                  height={24}
-                  role="img"
-                  viewBox="0 0 24 24"
-                  width={24}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5Zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <span
+              className="sr-only"
+            >
+              submit search
             </span>
           </button>
         </form>
@@ -1042,45 +1038,34 @@ exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] =
             >
               <button
                 aria-label="Previous"
-                className="previous page-link btn btn-tertiary"
+                className="previous page-link btn btn-primary"
                 disabled={true}
                 onClick={[Function]}
                 tabIndex="-1"
                 type="button"
               >
-                <span
-                  className="pgn__icon btn-icon-before"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
+                <div>
+                  <span
+                    className="pgn__icon"
                   >
-                    <path
-                      d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-                Previous
-              </button>
-            </li>
-            <li
-              className="page-item active"
-            >
-              <button
-                aria-label="Page 1, Current Page"
-                className="page-link btn btn-primary"
-                disabled={false}
-                onClick={[Function]}
-                type="button"
-              >
-                1
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  Previous
+                </div>
               </button>
             </li>
             <li
@@ -1088,32 +1073,34 @@ exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] =
             >
               <button
                 aria-label="Next"
-                className="previous page-link btn btn-tertiary"
+                className="next page-link btn btn-primary"
                 disabled={true}
                 onClick={[Function]}
                 tabIndex="-1"
                 type="button"
               >
-                Next
-                <span
-                  className="pgn__icon btn-icon-after"
-                >
-                  <svg
-                    aria-hidden={true}
-                    fill="none"
-                    focusable={false}
-                    height={24}
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width={24}
-                    xmlns="http://www.w3.org/2000/svg"
+                <div>
+                  Next
+                  <span
+                    className="pgn__icon"
                   >
-                    <path
-                      d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
+                    <svg
+                      aria-hidden={true}
+                      fill="none"
+                      focusable={false}
+                      height={24}
+                      role="img"
+                      viewBox="0 0 24 24"
+                      width={24}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </div>
               </button>
             </li>
           </ul>

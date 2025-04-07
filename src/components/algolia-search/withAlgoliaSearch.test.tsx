@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import configureMockStore, { MockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';

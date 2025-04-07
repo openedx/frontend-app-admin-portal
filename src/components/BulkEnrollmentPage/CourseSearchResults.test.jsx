@@ -113,8 +113,8 @@ describe('<CourseSearchResults />', () => {
   });
   it('displays search pagination', () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
-    expect(screen.getByLabelText('Previous'));
-    expect(screen.getByLabelText('Next'));
+    expect(screen.getByText('Navigate Left'));
+    expect(screen.getByText('Navigate Right'));
   });
   it('returns an error message if there\'s an error', () => {
     const errorMsg = 'It did not work';

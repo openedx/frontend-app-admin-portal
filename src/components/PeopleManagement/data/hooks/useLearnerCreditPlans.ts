@@ -1,23 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 
-import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+import EnterpriseAccessApiService, { LearnerCreditPlansResponse } from '../../../../data/services/EnterpriseAccessApiService';
 import { peopleManagementQueryKeys } from '../../constants';
-
-interface LearnerCreditPlan {
-  uuid: string;
-  policyType: string;
-  displayName: string;
-  active: boolean;
-}
 
 interface LearnerCreditPlansArgs {
   enterpriseId: string;
   lmsUserId: string;
-}
-
-interface LearnerCreditPlansResponse {
-  results: LearnerCreditPlan[];
 }
 
 const getLearnerCreditPlans = async ({

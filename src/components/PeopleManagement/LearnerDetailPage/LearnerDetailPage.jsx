@@ -26,7 +26,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
 
   const { isLoading: isLoadingProfile, data: profileData, error: profileError } = useLearnerProfileView({
-    enterpriseId: enterpriseUUID,
+    enterpriseUuid: enterpriseUUID,
     lmsUserId: learnerId,
     userEmail: learnerData?.email,
   });
@@ -69,6 +69,14 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
   const isLoadingAll = isLoading || isLoadingProfile || isLoadingCreditPlans;
   const hasError = profileError || creditPlansError;
 
+  if (hasError) {
+    return (
+      <div className="pt-3">
+        <p className="text-danger">Error loading learner information</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-4 pl-4 mb-3">
       <Breadcrumb
@@ -93,26 +101,21 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
                 <p className="mb-1 small">Joined on {learnerData?.joinedOrg}</p>
               </Card.Section>
             </Card>
+            <LearnerAccess
+              subscriptions={profileData?.data?.subscriptions}
+              creditPlansData={creditPlansData}
+              isLoading={isLoadingProfile}
+            />
+            <LearnerDetailGroupMemberships enterpriseUuid={enterpriseUUID} lmsUserId={learnerId} />
           </div>
           <div className="col col-6">
-            <CourseEnrollments userEmail={learnerData?.email} lmsUserId={learnerId} enterpriseUuid={enterpriseUUID} />
+            <CourseEnrollments
+              enrollments={profileData?.data?.enrollments}
+              isLoading={isLoadingProfile}
+            />
           </div>
         </div>
       )}
-      {hasError ? (
-        <div className="pt-3">
-          <p className="text-danger">Error loading learner access information</p>
-        </div>
-      ) : (
-        <LearnerAccess
-          enterpriseUuid={enterpriseUUID}
-          lmsUserId={learnerId}
-          userEmail={learnerData?.email}
-          profileData={profileData}
-          creditPlansData={creditPlansData}
-        />
-      )}
-      <LearnerDetailGroupMemberships enterpriseUuid={enterpriseUUID} lmsUserId={learnerId} />
     </div>
   );
 };

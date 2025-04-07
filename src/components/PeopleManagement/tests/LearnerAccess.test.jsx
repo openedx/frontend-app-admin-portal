@@ -5,17 +5,16 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter } from 'react-router-dom';
 import LearnerAccess from '../LearnerDetailPage/LearnerAccess';
 
-const mockProfileData = {
-  subscriptions: [
-    {
-      uuid: 'sub-1',
-      subscriptionPlan: {
-        planType: 'Subscription',
-        title: 'Test Subscription Plan',
-      },
+const subscriptions = [
+  {
+    uuid: 'sub-1',
+    subscriptionPlan: {
+      planType: 'Subscription',
+      title: 'Test Subscription Plan',
+      uuid: 'plan-1',
     },
-  ],
-};
+  },
+];
 
 const mockCreditPlansData = [
   {
@@ -28,10 +27,8 @@ const mockCreditPlansData = [
 ];
 
 const defaultProps = {
-  enterpriseUuid: 'test-enterprise-id',
-  lmsUserId: 'test-lms-user-id',
-  userEmail: 'test@example.com',
-  profileData: mockProfileData,
+  isLoading: false,
+  subscriptions,
   creditPlansData: mockCreditPlansData,
 };
 
@@ -60,7 +57,7 @@ describe('LearnerAccess', () => {
 
   it('does not render subscription section when no subscriptions exist', () => {
     renderComponent({
-      profileData: { subscriptions: [] },
+      subscriptions: [],
     });
     expect(screen.queryByText('SUBSCRIPTION')).not.toBeInTheDocument();
   });

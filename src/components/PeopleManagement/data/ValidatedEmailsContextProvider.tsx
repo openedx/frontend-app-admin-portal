@@ -1,4 +1,4 @@
-import {
+import React, {
   ReactNode, useMemo, useReducer,
 } from 'react';
 import { ValidatedEmailsReducer, ValidatedEmailsReducerType } from './reducer';
