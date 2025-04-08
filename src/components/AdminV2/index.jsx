@@ -15,7 +15,6 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragOverlay,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -39,7 +38,6 @@ import { withLocation, withParams } from '../../hoc';
 import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 import LearnerReport from './LearnerReport';
 import SortableItem from './SortableItem';
-import Item from './Item';
 
 const Admin = ({
   fetchDashboardAnalytics,
@@ -74,7 +72,6 @@ const Admin = ({
     navigateToReport: location?.hash === '#fullreport',
   });
   const [dashboardComponents, setDashboardComponents] = useState(['analytics-overview', 'learner-report']);
-  const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -90,14 +87,6 @@ const Admin = ({
         return arrayMove(items, oldIndex, newIndex);
       });
     }
-
-    setActiveId(null);
-  };
-
-  const handleDragStart = (event) => {
-    const { active } = event;
-
-    setActiveId(active.id);
   };
 
   useEffect(() => {
@@ -494,7 +483,6 @@ const Admin = ({
           <div className="container-fluid mt-4">
             <DndContext
               sensors={sensors}
-              onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
             >
               <SortableContext
@@ -509,13 +497,6 @@ const Admin = ({
                   </SortableItem>
                 ))}
               </SortableContext>
-              <DragOverlay>
-                {activeId ? (
-                  <Item id={activeId}>
-                    <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3" />
-                  </Item>
-                ) : null}
-              </DragOverlay>
             </DndContext>
           </div>
         </>
