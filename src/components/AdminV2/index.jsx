@@ -1,14 +1,27 @@
-import React, { createRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
-  Alert, Icon, Tab, Tabs,
+  Alert, Icon,
 } from '@openedx/paragon';
 import { Error, Undo } from '@openedx/paragon/icons';
 import { Link } from 'react-router-dom';
 import {
-  FormattedDate, FormattedMessage, injectIntl, intlShape,
+  FormattedMessage, injectIntl, intlShape,
 } from '@edx/frontend-platform/i18n';
+
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 import Hero from '../Hero';
 import EnrollmentsTable from '../EnrollmentsTable';
@@ -19,73 +32,101 @@ import CompletedLearnersTable from '../CompletedLearnersTable';
 import PastWeekPassedLearnersTable from '../PastWeekPassedLearnersTable';
 import LearnerActivityTable from '../LearnerActivityTable';
 import DownloadCsvButton from '../../containers/DownloadCsvButton';
-import AdminCards from '../../containers/AdminCards';
-import AdminSearchForm from './AdminSearchForm';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
-
+import AnalyticsOverview from './AnalyticsOverview';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
-import { formatTimestamp } from '../../utils';
-
-import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { withLocation, withParams } from '../../hoc';
-import AIAnalyticsSummary from './AIAnalyticsSummary';
-import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
 import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
-import ModuleActivityReport from './tabs/ModuleActivityReport';
+import LearnerReport from './LearnerReport';
+import SortableItem from './SortableItem';
+import Item from './Item';
 
-class Admin extends React.Component {
-  constructor(props) {
-    super();
+const Admin = ({
+  fetchDashboardAnalytics,
+  clearDashboardAnalytics,
+  fetchDashboardInsights,
+  clearDashboardInsights,
+  fetchEnterpriseBudgets,
+  clearEnterpriseBudgets,
+  fetchEnterpriseGroups,
+  clearEnterpriseGroups,
+  enterpriseId,
+  searchEnrollmentsList,
+  location,
+  activeLearners,
+  enrolledLearners,
+  numberOfUsers,
+  courseCompletions,
+  lastUpdatedDate,
+  loading,
+  error,
+  csv,
+  actionSlug,
+  table,
+  budgets,
+  groups,
+  insightsLoading,
+  insights,
+  intl,
+}) => {
+  const fullReportRef = useRef(null);
+  const [state, setState] = useState({
+    navigateToReport: location?.hash === '#fullreport',
+  });
+  const [dashboardComponents, setDashboardComponents] = useState(['analytics-overview', 'learner-report']);
+  const [activeId, setActiveId] = useState(null);
 
-    this.fullReportRef = createRef();
-    const state = {
-      activeTab: 'learner-progress-report',
-    };
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+  );
 
-    // Prepare to scroll to report section when it loads
-    if (props?.location?.hash === '#fullreport') {
-      state.navigateToReport = true;
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setDashboardComponents((items) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
     }
 
-    this.state = state;
-  }
+    setActiveId(null);
+  };
 
-  componentDidMount() {
-    const { enterpriseId } = this.props;
+  const handleDragStart = (event) => {
+    const { active } = event;
+
+    setActiveId(active.id);
+  };
+
+  useEffect(() => {
     if (enterpriseId) {
-      this.props.fetchDashboardAnalytics(enterpriseId);
-      this.props.fetchDashboardInsights(enterpriseId);
-      this.props.fetchEnterpriseBudgets(enterpriseId);
-      this.props.fetchEnterpriseGroups(enterpriseId);
+      fetchDashboardAnalytics(enterpriseId);
+      fetchDashboardInsights(enterpriseId);
+      fetchEnterpriseBudgets(enterpriseId);
+      fetchEnterpriseGroups(enterpriseId);
     }
-  }
+    return () => {
+      // Equivalent to componentWillUnmount
+      clearDashboardAnalytics();
+      clearDashboardInsights();
+      clearEnterpriseBudgets();
+      clearEnterpriseGroups();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enterpriseId]);
 
-  componentDidUpdate(prevProps) {
-    const element = this.fullReportRef.current;
-    // Scroll to report section if #fullreport in url
-    if (element && this.state.navigateToReport) {
+  // Scroll to report section if #fullreport in url
+  useEffect(() => {
+    const element = fullReportRef.current;
+    if (element && state.navigateToReport) {
       element.scrollIntoView();
-      this.setState({ navigateToReport: false });
+      setState(prevState => ({ ...prevState, navigateToReport: false }));
     }
-    const { enterpriseId } = this.props;
-    if (enterpriseId && enterpriseId !== prevProps.enterpriseId) {
-      this.props.fetchDashboardAnalytics(enterpriseId);
-      this.props.fetchDashboardInsights(enterpriseId);
-      this.props.fetchEnterpriseBudgets(enterpriseId);
-      this.props.fetchEnterpriseGroups(enterpriseId);
-    }
-  }
+  }, [state.navigateToReport]);
 
-  componentWillUnmount() {
-    // Clear the overview data
-    this.props.clearDashboardAnalytics();
-    this.props.clearDashboardInsights();
-    this.props.clearEnterpriseBudgets();
-    this.props.clearEnterpriseGroups();
-  }
-
-  getMetadataForAction(actionSlug) {
-    const { enterpriseId, intl } = this.props;
+  const getMetadataForAction = (actionSlugParam) => {
     const defaultData = {
       title: intl.formatMessage({
         id: 'admin.portal.lpr.report.full.report.title',
@@ -247,60 +288,38 @@ class Admin extends React.Component {
       },
     };
 
-    return actionData[actionSlug] || defaultData;
-  }
+    return actionData[actionSlugParam] || defaultData;
+  };
 
-  getCsvErrorMessage(id) {
-    const { csv } = this.props;
+  const getCsvErrorMessage = (id) => {
     const csvData = csv && csv[id];
     return csvData && csvData.csvError;
-  }
+  };
 
-  getTableData(id = 'enrollments') {
-    const { table } = this.props;
+  const getTableData = (id = 'enrollments') => {
     const tableData = table && table[id];
     return tableData && tableData.data;
-  }
+  };
 
-  displaySearchBar() {
-    return !this.props.actionSlug;
-  }
+  const displaySearchBar = () => !actionSlug;
 
-  isTableDataMissing(id) {
-    const tableData = this.getTableData(id);
+  const isTableDataMissing = (id) => {
+    const tableData = getTableData(id);
     if (!tableData) {
       return true;
     }
     const isTableLoading = tableData.loading;
     const isTableEmpty = tableData.results && !tableData.results.length;
     return isTableLoading || isTableEmpty;
-  }
+  };
 
-  hasAnalyticsData() {
-    const {
-      activeLearners,
-      numberOfUsers,
-      courseCompletions,
-      enrolledLearners,
-    } = this.props;
+  const hasAnalyticsData = () => [activeLearners, courseCompletions, enrolledLearners, numberOfUsers]
+    .some(item => item !== null);
 
-    return [activeLearners, courseCompletions, enrolledLearners, numberOfUsers]
-      .some(item => item !== null);
-  }
+  const hasEmptyData = () => [courseCompletions, enrolledLearners, numberOfUsers].every(item => item === 0);
 
-  hasEmptyData() {
-    const {
-      numberOfUsers,
-      courseCompletions,
-      enrolledLearners,
-    } = this.props;
-
-    return [courseCompletions, enrolledLearners, numberOfUsers].every(item => item === 0);
-  }
-
-  renderDownloadButton() {
-    const { actionSlug, intl } = this.props;
-    const tableMetadata = this.getMetadataForAction(actionSlug);
+  const renderDownloadButton = () => {
+    const tableMetadata = getMetadataForAction(actionSlug);
     let downloadButtonLabel;
     if (actionSlug) {
       downloadButtonLabel = intl.formatMessage({
@@ -314,14 +333,14 @@ class Admin extends React.Component {
       <DownloadCsvButton
         id={tableMetadata.csvButtonId}
         fetchMethod={tableMetadata.csvFetchMethod}
-        disabled={this.isTableDataMissing(actionSlug)}
+        disabled={isTableDataMissing(actionSlug)}
         buttonLabel={downloadButtonLabel}
       />
     );
-  }
+  };
 
-  renderUrlResetButton() {
-    const url = this.props.location.pathname;
+  const renderUrlResetButton = () => {
+    const url = location.pathname;
 
     // Remove the slug from the url so it renders the full report
     const path = url.split('/').slice(0, -1).join('/');
@@ -336,12 +355,12 @@ class Admin extends React.Component {
         />
       </Link>
     );
-  }
+  };
 
-  renderFiltersResetButton() {
-    const { location: { search, pathname } } = this.props;
+  const renderFiltersResetButton = () => {
+    const { search: searchQuery, pathname } = location;
     // remove the querys from the path
-    const queryParams = new URLSearchParams(search);
+    const queryParams = new URLSearchParams(searchQuery);
     ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'].forEach((searchTerm) => {
       queryParams.delete(searchTerm);
     });
@@ -357,246 +376,153 @@ class Admin extends React.Component {
         />
       </Link>
     );
-  }
+  };
 
-  renderErrorMessage() {
-    return (
-      <Alert
-        variant="danger"
-        icon={Error}
-      >
-        <Alert.Heading>
-          <FormattedMessage
-            id="admin.portal.lpr.error.message.heading"
-            defaultMessage="Hey, nice to see you"
-            description="Error message heading for learner progress report page"
-          />
-        </Alert.Heading>
-        <p>
-          <FormattedMessage
-            id="admin.portal.lpr.error.message.detail"
-            defaultMessage="Try refreshing your screen {errorDetail}"
-            description="Error message detail for learner progress report page"
-            values={{ errorDetail: this.props.error.message }}
-          />
-        </p>
-      </Alert>
-    );
-  }
-
-  renderCsvErrorMessage(message) {
-    return (
-      <Alert
-        variant="danger"
-        className="mt-3"
-        icon={Error}
-      >
-        <Alert.Heading>
-          <FormattedMessage
-            id="admin.portal.lpr.error.csv.generation.heading"
-            defaultMessage="Unable to generate CSV report"
-            description="Error message heading for CSV report generation failure"
-          />
-        </Alert.Heading>
-        <p>
-          <FormattedMessage
-            id="admin.portal.lpr.error.csv.generation.detail"
-            defaultMessage="Please try again. {message}"
-            description="Error message detail for CSV report generation failure"
-            values={{ message }}
-          />
-        </p>
-      </Alert>
-    );
-  }
-
-  renderOverviewHeading() {
-    return (
-      <h2>
+  const renderErrorMessage = () => (
+    <Alert
+      variant="danger"
+      icon={Error}
+    >
+      <Alert.Heading>
         <FormattedMessage
-          id="admin.portal.lpr.overview.heading"
-          defaultMessage="Overview"
-          description="Heading for the overview section of the learner progress report page"
+          id="admin.portal.lpr.error.message.heading"
+          defaultMessage="Hey, nice to see you"
+          description="Error message heading for learner progress report page"
         />
-      </h2>
-    );
-  }
+      </Alert.Heading>
+      <p>
+        <FormattedMessage
+          id="admin.portal.lpr.error.message.detail"
+          defaultMessage="Try refreshing your screen {errorDetail}"
+          description="Error message detail for learner progress report page"
+          values={{ errorDetail: error.message }}
+        />
+      </p>
+    </Alert>
+  );
 
-  render() {
-    const {
-      error,
-      lastUpdatedDate,
-      loading,
-      enterpriseId,
-      actionSlug,
-      location: { search },
-      insights,
-      insightsLoading,
-      intl,
-      budgets,
-      groups,
-    } = this.props;
-    const { activeTab } = this.state;
+  const renderCsvErrorMessage = (message) => (
+    <Alert
+      variant="danger"
+      className="mt-3"
+      icon={Error}
+    >
+      <Alert.Heading>
+        <FormattedMessage
+          id="admin.portal.lpr.error.csv.generation.heading"
+          defaultMessage="Unable to generate CSV report"
+          description="Error message heading for CSV report generation failure"
+        />
+      </Alert.Heading>
+      <p>
+        <FormattedMessage
+          id="admin.portal.lpr.error.csv.generation.detail"
+          defaultMessage="Please try again. {message}"
+          description="Error message detail for CSV report generation failure"
+          values={{ message }}
+        />
+      </p>
+    </Alert>
+  );
 
-    const queryParams = new URLSearchParams(search || '');
-    const queryParamsLength = Array.from(queryParams.entries()).length;
-    const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
-    const tableMetadata = this.getMetadataForAction(actionSlug);
-    const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
+  const searchParam = location?.search || '';
+  const queryParams = new URLSearchParams(searchParam);
+  const queryParamsLength = Array.from(queryParams.entries()).length;
+  const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
+  const tableMetadata = getMetadataForAction(actionSlug);
+  const csvErrorMessage = getCsvErrorMessage(tableMetadata.csvButtonId);
+  const searchParams = {
+    searchQuery: queryParams.get('search') || '',
+    searchCourseQuery: queryParams.get('search_course') || '',
+    searchDateQuery: queryParams.get('search_start_date') || '',
+    searchBudgetQuery: queryParams.get('budget_uuid') || '',
+    searchGroupQuery: queryParams.get('group_uuid') || '',
+  };
+  const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
 
-    const searchParams = {
-      searchQuery: queryParams.get('search') || '',
-      searchCourseQuery: queryParams.get('search_course') || '',
-      searchDateQuery: queryParams.get('search_start_date') || '',
-      searchBudgetQuery: queryParams.get('budget_uuid') || '',
-      searchGroupQuery: queryParams.get('group_uuid') || '',
-    };
+  // Render components map based on id
+  const renderComponent = (id) => {
+    switch (id) {
+      case 'analytics-overview':
+        return (
+          <AnalyticsOverview
+            insightsLoading={insightsLoading}
+            hasCompleteInsights={hasCompleteInsights}
+            enterpriseId={enterpriseId}
+            error={error}
+            loading={loading}
+            renderErrorMessage={renderErrorMessage}
+          />
+        );
+      case 'learner-report':
+        return (
+          <LearnerReport
+            fullReportRef={fullReportRef}
+            tableMetadata={tableMetadata}
+            actionSlug={actionSlug}
+            filtersActive={filtersActive}
+            lastUpdatedDate={lastUpdatedDate}
+            renderUrlResetButton={renderUrlResetButton}
+            renderFiltersResetButton={renderFiltersResetButton}
+            error={error}
+            loading={loading}
+            hasEmptyData={hasEmptyData}
+            renderDownloadButton={renderDownloadButton}
+            displaySearchBar={displaySearchBar}
+            searchParams={searchParams}
+            searchEnrollmentsList={searchEnrollmentsList}
+            getTableData={getTableData}
+            budgets={budgets}
+            groups={groups}
+            enterpriseId={enterpriseId}
+            csvErrorMessage={csvErrorMessage}
+            renderCsvErrorMessage={renderCsvErrorMessage}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
-    const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
-
-    return (
-      <main role="main" className="learner-progress-report">
-        {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
-          <>
-            <Helmet title="Learner Progress Report" />
-            <Hero title="Learner Progress Report" />
-            <div className="container-fluid mt-4">
-              <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
-                <div className="row">
-                  <div className="col">
-                    <BudgetExpiryAlertAndModal />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    {insightsLoading ? <AIAnalyticsSummarySkeleton renderOverviewHeading={this.renderOverviewHeading} />
-                      : (
-                        hasCompleteInsights && (
-                          <AIAnalyticsSummary
-                            enterpriseId={enterpriseId}
-                            renderOverviewHeading={this.renderOverviewHeading}
-                          />
-                        )
-                      )}
-                  </div>
-                </div>
-                <div className="row mt-3">
-                  {(error || loading) ? (
-                    <div className="col">
-                      {error && this.renderErrorMessage()}
-                      {loading && <AdminCardsSkeleton />}
+  return (
+    <main role="main" className="learner-progress-report">
+      {!loading && !error && !hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
+        <>
+          <Helmet title="Learner Progress Report" />
+          <Hero title="Learner Progress Report" />
+          <BudgetExpiryAlertAndModal />
+          <div className="container-fluid mt-4">
+            <DndContext
+              sensors={sensors}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={dashboardComponents}
+                strategy={verticalListSortingStrategy}
+              >
+                {dashboardComponents.map((id) => (
+                  <SortableItem key={id} id={id}>
+                    <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
+                      {renderComponent(id)}
                     </div>
-                  ) : (
-                    <AdminCards />
-                  )}
-                </div>
-              </div>
-
-              <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
-                <div className="row" id="learner-progress-report">
-                  <div className="col">
-                    <div className="row">
-                      <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
-                        <h2 className="table-title" ref={this.fullReportRef}>{tableMetadata.title}</h2>
-                      </div>
-                      <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
-                        {actionSlug && this.renderUrlResetButton()}
-                        {filtersActive && this.renderFiltersResetButton()}
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col">
-                        {tableMetadata.subtitle && <h3>{tableMetadata.subtitle}</h3>}
-                        {tableMetadata.description && <p>{tableMetadata.description}</p>}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="tabs-container">
-                  <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
-                    {lastUpdatedDate
-                      && (
-                        <FormattedMessage
-                          id="admin.portal.lpr.data.refreshed.date.message"
-                          defaultMessage="Showing data as of {timestamp}"
-                          description="Message to show the last updated date of the data on lpr page"
-                          values={{
-                            timestamp: <FormattedDate
-                              value={formatTimestamp({ timestamp: lastUpdatedDate })}
-                              year="numeric"
-                              month="long"
-                              day="numeric"
-                            />,
-                          }}
-                        />
-                      )}
-                  </div>
-                  <Tabs
-                    variant="tabs"
-                    activeKey={activeTab}
-                    onSelect={(tab) => {
-                      this.setState({ activeTab: tab });
-                    }}
-                  >
-                    <Tab
-                      eventKey="learner-progress-report"
-                      title={intl.formatMessage({
-                        id: 'adminPortal.lpr.tab.learnerProgressReport.title',
-                        defaultMessage: 'Learner Progress Report',
-                        description: 'Title for the learner progress report tab in admin portal.',
-                      })}
-                    >
-                      <div className="row">
-                        <div className="col">
-                          {!error && !loading && !this.hasEmptyData() && (
-                            <>
-                              <div className="row pb-3 mt-2">
-                                <div className="col-12 col-md-12 col-xl-12">
-                                  {this.renderDownloadButton()}
-                                </div>
-                              </div>
-                              {this.displaySearchBar() && (
-                                <AdminSearchForm
-                                  searchParams={searchParams}
-                                  searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                                  tableData={this.getTableData() ? this.getTableData().results : []}
-                                  budgets={budgets}
-                                  groups={groups}
-                                  enterpriseId={enterpriseId}
-                                />
-                              )}
-                            </>
-                          )}
-                          {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
-                          <div className="mt-3 mb-5">
-                            {enterpriseId && tableMetadata.component}
-                          </div>
-                        </div>
-                      </div>
-                    </Tab>
-                    <Tab
-                      eventKey="module-activity"
-                      title={intl.formatMessage({
-                        id: 'adminPortal.lpr.tab.moduleActivity.title',
-                        defaultMessage: 'Module Activity (Executive Education)',
-                        description: 'Title for the module activity tab in admin portal.',
-                      })}
-                    >
-                      <div className="mt-3">
-                        <ModuleActivityReport enterpriseId={enterpriseId} />
-                      </div>
-                    </Tab>
-                  </Tabs>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-      </main>
-    );
-  }
-}
+                  </SortableItem>
+                ))}
+              </SortableContext>
+              <DragOverlay>
+                {activeId ? (
+                  <Item id={activeId}>
+                    <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3" />
+                  </Item>
+                ) : null}
+              </DragOverlay>
+            </DndContext>
+          </div>
+        </>
+      )}
+    </main>
+  );
+};
 
 Admin.defaultProps = {
   error: null,
