@@ -697,6 +697,29 @@ function removeStringsFromListCaseInsensitive(list, stringsToRemove) {
   return remainingLowercase.map(str => lowercaseLookup[str]);
 }
 
+/**
+ * Save a value to local storage
+ * @param {string} key
+ *  Key to save the value under
+ * @param {any} value
+ *  Value to save
+ */
+const saveToLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+/**
+ * Retrieve a value from local storage
+ * @param {string} key
+ *  Key to retrieve the value from
+ * @returns {any}
+ *  Value stored under the key, or null if not found
+ */
+const getFromLocalStorage = (key) => {
+  const savedValue = localStorage.getItem(key);
+  return savedValue ? JSON.parse(savedValue) : null;
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -749,4 +772,6 @@ export {
   splitAndTrim,
   removeStringsFromList,
   removeStringsFromListCaseInsensitive,
+  saveToLocalStorage,
+  getFromLocalStorage,
 };

@@ -38,6 +38,7 @@ import { withLocation, withParams } from '../../hoc';
 import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 import LearnerReport from './LearnerReport';
 import SortableItem from './SortableItem';
+import { getFromLocalStorage, saveToLocalStorage } from '../../utils';
 
 const Admin = ({
   fetchDashboardAnalytics,
@@ -68,10 +69,13 @@ const Admin = ({
   intl,
 }) => {
   const fullReportRef = useRef(null);
-  const [state, setState] = useState({
-    navigateToReport: location?.hash === '#fullreport',
-  });
-  const [dashboardComponents, setDashboardComponents] = useState(['analytics-overview', 'learner-report']);
+  const [navigateToReport, setNavigateToReport] = useState(location?.hash === '#fullreport');
+  const DEFAULT_LPR_COMPONENTS = ['analytics-overview', 'learner-report'];
+  const LPR_COMPONENTS_KEY = 'lpr-components-order';
+
+  const [lprComponents, setLPRComponents] = useState(
+    getFromLocalStorage(LPR_COMPONENTS_KEY) || DEFAULT_LPR_COMPONENTS,
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -81,10 +85,14 @@ const Admin = ({
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setDashboardComponents((items) => {
+      setLPRComponents((items) => {
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
-        return arrayMove(items, oldIndex, newIndex);
+        const newOrder = arrayMove(items, oldIndex, newIndex);
+
+        saveToLocalStorage(LPR_COMPONENTS_KEY, newOrder);
+
+        return newOrder;
       });
     }
   };
@@ -109,11 +117,11 @@ const Admin = ({
   // Scroll to report section if #fullreport in url
   useEffect(() => {
     const element = fullReportRef.current;
-    if (element && state.navigateToReport) {
+    if (element && navigateToReport) {
       element.scrollIntoView();
-      setState(prevState => ({ ...prevState, navigateToReport: false }));
+      setNavigateToReport(false);
     }
-  }, [state.navigateToReport]);
+  }, [navigateToReport]);
 
   const getMetadataForAction = (actionSlugParam) => {
     const defaultData = {
@@ -486,10 +494,10 @@ const Admin = ({
               onDragEnd={handleDragEnd}
             >
               <SortableContext
-                items={dashboardComponents}
+                items={lprComponents}
                 strategy={verticalListSortingStrategy}
               >
-                {dashboardComponents.map((id) => (
+                {lprComponents.map((id) => (
                   <SortableItem key={id} id={id}>
                     <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
                       {renderComponent(id)}
