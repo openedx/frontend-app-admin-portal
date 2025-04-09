@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 import EVENT_NAMES from '../../../../eventTracking';
-import { trackDataTableEvent } from '../LearnerActivityTable/data/utils';
+import { trackDataTableEvent } from '../../../LearnerActivityTable/data/utils';
 import useCourseUsers from './useCourseUsers';
 
 // Mock dependencies
@@ -18,7 +18,7 @@ jest.mock('../../../../data/services/EnterpriseDataApiService', () => ({
   fetchEnrolledLearnersForInactiveCourses: jest.fn(),
 }));
 
-jest.mock('../utils', () => ({
+jest.mock('./../../LearnerActivityTable/data/utils', () => ({
   trackDataTableEvent: jest.fn(),
 }));
 

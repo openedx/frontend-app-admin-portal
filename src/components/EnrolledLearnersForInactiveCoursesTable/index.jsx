@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useMemo, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { DataTable, TextFilter } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useMemo, useCallback, useEffect } from 'react';
 import useCourseUsers from './data/hooks/useCourseUsers';
 import { PAGE_SIZE } from '../../data/constants/table';
 import { i18nFormatTimestamp } from '../../utils';
