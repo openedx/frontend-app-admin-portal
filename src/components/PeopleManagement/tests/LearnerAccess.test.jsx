@@ -46,7 +46,7 @@ const renderComponent = (props = {}) => {
 describe('LearnerAccess', () => {
   it('renders the access header', () => {
     renderComponent();
-    expect(screen.getByText('Access')).toBeInTheDocument();
+    expect(screen.getByText('Learning Access')).toBeInTheDocument();
   });
 
   it('renders subscription section when subscriptions exist', () => {
