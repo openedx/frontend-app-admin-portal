@@ -6,7 +6,7 @@ import debounce from 'lodash.debounce';
 import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 import EVENT_NAMES from '../../../../eventTracking';
-import { trackDataTableEvent } from '../LearnerActivityTable/data/utils';
+import { trackDataTableEvent } from '../../../LearnerActivityTable/data/utils';
 
 const applySortByToOptions = (sortBy, apiFieldsForColumnAccessor, options) => {
   if (!sortBy || sortBy.length === 0) {
