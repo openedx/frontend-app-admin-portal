@@ -12,13 +12,16 @@ const CourseEnrollments = ({ enrollments, isLoading }) => (
     ) : (
       <>
         <h3>Enrollments</h3>
-        {enrollments?.completed?.map((enrollment) => (
-          <EnrollmentCard enrollment={enrollment} />
-        ))}
         {enrollments?.inProgress?.map((enrollment) => (
           <EnrollmentCard enrollment={enrollment} />
         ))}
         {enrollments?.upcoming?.map((enrollment) => (
+          <EnrollmentCard enrollment={enrollment} />
+        ))}
+        {enrollments?.completed?.map((enrollment) => (
+          <EnrollmentCard enrollment={enrollment} />
+        ))}
+        {enrollments.assignmentsForDisplay.map((enrollment) => (
           <EnrollmentCard enrollment={enrollment} />
         ))}
       </>
@@ -32,6 +35,9 @@ const enrollmentShape = PropTypes.shape({
   courseRunStatus: PropTypes.string,
   displayName: PropTypes.string,
   orgName: PropTypes.string,
+  policyUuid: PropTypes.string,
+  startDate: PropTypes.string,
+  enrollBy: PropTypes.string,
 }).isRequired;
 
 CourseEnrollments.propTypes = {
@@ -39,6 +45,7 @@ CourseEnrollments.propTypes = {
     completed: PropTypes.arrayOf(enrollmentShape),
     inProgress: PropTypes.arrayOf(enrollmentShape),
     upcoming: PropTypes.arrayOf(enrollmentShape),
+    assignmentsForDisplay: PropTypes.arrayOf(enrollmentShape),
   }).isRequired,
   isLoading: PropTypes.bool.isRequired,
 };

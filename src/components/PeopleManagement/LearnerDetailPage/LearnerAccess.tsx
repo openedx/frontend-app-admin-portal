@@ -113,7 +113,7 @@ const LearnerAccess = ({ subscriptions, creditPlansData, isLoading }: LearnerAcc
   const intl = useIntl();
   const accessHeader = intl.formatMessage({
     id: 'adminPortal.peopleManagement.learnerDetailPage.accessHeader',
-    defaultMessage: 'Access',
+    defaultMessage: 'Learning Access',
     description: 'Header for learner access information',
   });
   return (

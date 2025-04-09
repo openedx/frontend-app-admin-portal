@@ -41,3 +41,13 @@ export const COURSE_TYPE_MAP = {
   'credit-verified-honor': 'Credit Verified Honor',
   'executive-education-2u': 'Executive Education',
 };
+
+export const ASSIGNMENT_TYPES = {
+  ACCEPTED: 'accepted',
+  ALLOCATED: 'allocated',
+  CANCELED: 'cancelled',
+  EXPIRED: 'expired',
+  ERRORED: 'errored',
+  EXPIRING: 'expiring',
+  REVERSED: 'reversed',
+};

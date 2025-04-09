@@ -4,7 +4,7 @@ import { BrowserRouter, useParams } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
@@ -174,7 +174,10 @@ describe('LearnerDetailPage', () => {
     });
     useLearnerCreditPlans.mockReturnValue({
       isLoading: false,
-      data: mockCreditPlansData,
+      data: {
+        policies: mockCreditPlansData,
+        assignmentsForDisplay: [],
+      },
       error: null,
     });
   });
@@ -190,6 +193,7 @@ describe('LearnerDetailPage', () => {
     expect(peopleManagementBreadcrumb).toBeInTheDocument();
     expect(peopleManagementBreadcrumb).toHaveAttribute('href', expectedLink);
   });
+
   it('renders breadcrumb from group detail page', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,
@@ -202,17 +206,18 @@ describe('LearnerDetailPage', () => {
     expect(groupDetailBreadcrumbs).toHaveLength(1);
     expect(groupDetailBreadcrumbs[0]).toHaveAttribute('href', expectedLink);
   });
+
   it('renders learner detail card', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,
       learnerId: LMS_USER_ID,
     });
     render(<LearnerDetailPageWrapper />);
-    // one as the active label on the breadcrumb, one on the card
     await waitFor(() => expect(screen.getAllByText('Art Donaldson')).toHaveLength(2));
     expect(screen.getByText('artdonaldson@atp.com')).toBeInTheDocument();
     expect(screen.getByText('Joined on Jun 30, 2023')).toBeInTheDocument();
   });
+
   it('renders groups section', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,
@@ -245,14 +250,17 @@ describe('LearnerDetailPage', () => {
     });
     useLearnerCreditPlans.mockReturnValue({
       isLoading: false,
-      data: mockCreditPlansData,
+      data: {
+        policies: mockCreditPlansData,
+        assignmentsForDisplay: [],
+      },
       error: null,
     });
 
     render(<LearnerDetailPageWrapper />);
 
     await waitFor(() => {
-      expect(screen.getByText('Access')).toBeInTheDocument();
+      expect(screen.getByText('Learning Access')).toBeInTheDocument();
     });
 
     await waitFor(() => {
@@ -289,6 +297,7 @@ describe('LearnerDetailPage', () => {
       expect(screen.getByText('Error loading learner information')).toBeInTheDocument();
     });
   });
+
   it('renders enrollment section', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,
