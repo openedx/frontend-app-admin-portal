@@ -40,6 +40,8 @@ import LearnerReport from './LearnerReport';
 import SortableItem from './SortableItem';
 import { getFromLocalStorage, saveToLocalStorage } from '../../utils';
 
+const DISABLE_DRAG_AND_DROP = true;
+
 const Admin = ({
   fetchDashboardAnalytics,
   clearDashboardAnalytics,
@@ -496,12 +498,11 @@ const Admin = ({
               <SortableContext
                 items={lprComponents}
                 strategy={verticalListSortingStrategy}
+                disabled={DISABLE_DRAG_AND_DROP}
               >
                 {lprComponents.map((id) => (
-                  <SortableItem key={id} id={id}>
-                    <div className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
-                      {renderComponent(id)}
-                    </div>
+                  <SortableItem key={id} id={id} disabled={DISABLE_DRAG_AND_DROP}>
+                    {renderComponent(id)}
                   </SortableItem>
                 ))}
               </SortableContext>
