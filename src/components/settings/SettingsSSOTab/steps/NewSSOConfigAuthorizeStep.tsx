@@ -65,7 +65,7 @@ const SSOConfigAuthorizeStep = () => {
    * Built using enterprise slug and uuid
    */
   const linkToDownloadMetadataXML = formFields?.spMetadataUrl
-    || `${configuration.EDX_ACCESS_URL}/samlp/metadata?connection=${enterpriseSlug}-${formFields?.uuid}`;
+    || `${configuration.EDX_ACCESS_URL}/samlp/metadata?connection=${enterpriseSlug?.toLowerCase()}-${formFields?.uuid}`;
 
   return (
     <>
