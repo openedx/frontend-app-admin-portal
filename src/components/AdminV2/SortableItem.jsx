@@ -5,7 +5,7 @@ import { DragIndicator } from '@openedx/paragon/icons';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-const SortableItem = ({ id, children }) => {
+const SortableItem = ({ id, children, disabled }) => {
   const {
     attributes,
     listeners,
@@ -19,13 +19,13 @@ const SortableItem = ({ id, children }) => {
     transform: CSS.Translate.toString(transform),
     transition,
     position: 'relative',
-    marginBottom: '1rem',
     opacity: isDragging ? 0.8 : 1,
     zIndex: isDragging ? 1 : 'auto',
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
+      {!disabled && (
       <div
         {...attributes}
         {...listeners}
@@ -40,6 +40,7 @@ const SortableItem = ({ id, children }) => {
       >
         <Icon src={DragIndicator} />
       </div>
+      )}
       {children}
     </div>
   );
@@ -48,6 +49,7 @@ const SortableItem = ({ id, children }) => {
 SortableItem.propTypes = {
   id: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default SortableItem;
