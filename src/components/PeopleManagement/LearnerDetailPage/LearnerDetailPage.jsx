@@ -10,7 +10,7 @@ import { Person } from '@openedx/paragon/icons';
 
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { useEnterpriseGroupUuid } from '../data/hooks';
-import { useEnterpriseLearnerData } from './data/hooks';
+import useEnterpriseLearnerData from './data/hooks';
 import LearnerDetailGroupMemberships from './LearnerDetailGroupMemberships';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
