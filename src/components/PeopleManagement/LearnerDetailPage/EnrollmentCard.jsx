@@ -53,9 +53,10 @@ const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
         </Hyperlink>
         {isAssignedCourse && (
           <Hyperlink
-            className="btn btn-outline-primary"
+            className="btn btn-primary"
             target="_blank"
             destination={`/${enterpriseSlug}/admin/learner-credit/${enrollment.policyUuid}/activity`}
+            showLaunchIcon={false}
           >
             <FormattedMessage
               id="adminPortal.peopleManagement.learnerDetailPage.enrollmentCard.learnerCreditAssignmentTable"
@@ -74,17 +75,17 @@ const mapStateToProps = state => ({
 });
 
 EnrollmentCard.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
   enrollment: PropTypes.shape({
     courseKey: PropTypes.string,
-    courseType: PropTypes.string,
     courseRunStatus: PropTypes.string,
+    courseType: PropTypes.string,
     displayName: PropTypes.string,
+    enrollBy: PropTypes.string,
     orgName: PropTypes.string,
     policyUuid: PropTypes.string,
     startDate: PropTypes.string,
-    enrollBy: PropTypes.string,
   }).isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(EnrollmentCard);
