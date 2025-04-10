@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -11,7 +11,6 @@ import AdminSearchForm from './AdminSearchForm';
 import ModuleActivityReport from './tabs/ModuleActivityReport';
 
 const LearnerReport = ({
-  fullReportRef,
   tableMetadata,
   actionSlug,
   filtersActive,
@@ -21,6 +20,7 @@ const LearnerReport = ({
   intl,
   error,
   loading,
+  location,
   hasEmptyData,
   renderDownloadButton,
   displaySearchBar,
@@ -34,6 +34,17 @@ const LearnerReport = ({
   renderCsvErrorMessage,
 }) => {
   const [activeTab, setActiveTab] = useState('learner-progress-report');
+  const fullReportRef = useRef(null);
+  const [navigateToReport, setNavigateToReport] = useState(location?.hash === '#fullreport');
+
+  // Scroll to report section if #fullreport in url
+  useEffect(() => {
+    const element = fullReportRef.current;
+    if (element && navigateToReport) {
+      element.scrollIntoView();
+      setNavigateToReport(false);
+    }
+  }, [navigateToReport]);
 
   return (
     <>
@@ -144,6 +155,9 @@ LearnerReport.defaultProps = {
   lastUpdatedDate: null,
   error: null,
   loading: false,
+  location: {
+    search: '',
+  },
   budgets: [],
   groups: [],
   enterpriseId: null,
@@ -181,6 +195,11 @@ LearnerReport.propTypes = {
   intl: intlShape.isRequired,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+    pathname: PropTypes.string,
+    hash: PropTypes.string,
+  }),
   hasEmptyData: PropTypes.func.isRequired,
   renderDownloadButton: PropTypes.func.isRequired,
   displaySearchBar: PropTypes.func.isRequired,

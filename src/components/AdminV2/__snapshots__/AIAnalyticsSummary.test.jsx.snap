@@ -3,8 +3,11 @@
 exports[`<AIAnalyticsSummary /> should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked 1`] = `
 [
   <div
-    className="pgn__hstack pgn__stack-gap--3"
+    className="pgn__hstack pgn__stack-gap--3 justify-content-between"
   >
+    <div>
+      Overview
+    </div>
     <button
       className="d-sm-inline btn btn-outline-primary"
       data-testid="summarize-analytics"
@@ -25,7 +28,7 @@ exports[`<AIAnalyticsSummary /> should display AnalyticsDetailCard with learner_
           fill="currentColor"
         />
       </svg>
-      Summarize Analytics
+      Summarize analytics
     </button>
     <button
       className="d-none btn btn-outline-primary"
@@ -57,8 +60,11 @@ exports[`<AIAnalyticsSummary /> should display AnalyticsDetailCard with learner_
 exports[`<AIAnalyticsSummary /> should handle null analytics data 1`] = `
 [
   <div
-    className="pgn__hstack pgn__stack-gap--3"
+    className="pgn__hstack pgn__stack-gap--3 justify-content-between"
   >
+    <div>
+      Overview
+    </div>
     <button
       className="d-sm-inline btn btn-outline-primary"
       data-testid="summarize-analytics"
@@ -79,7 +85,7 @@ exports[`<AIAnalyticsSummary /> should handle null analytics data 1`] = `
           fill="currentColor"
         />
       </svg>
-      Summarize Analytics
+      Summarize analytics
     </button>
     <button
       className="d-none btn btn-outline-primary"
@@ -111,8 +117,11 @@ exports[`<AIAnalyticsSummary /> should handle null analytics data 1`] = `
 exports[`<AIAnalyticsSummary /> should render action buttons correctly 1`] = `
 [
   <div
-    className="pgn__hstack pgn__stack-gap--3"
+    className="pgn__hstack pgn__stack-gap--3 justify-content-between"
   >
+    <div>
+      Overview
+    </div>
     <button
       className="d-sm-inline btn btn-outline-primary"
       data-testid="summarize-analytics"
@@ -133,7 +142,7 @@ exports[`<AIAnalyticsSummary /> should render action buttons correctly 1`] = `
           fill="currentColor"
         />
       </svg>
-      Summarize Analytics
+      Summarize analytics
     </button>
     <button
       className="d-none btn btn-outline-primary"

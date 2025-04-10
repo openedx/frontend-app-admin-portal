@@ -115,7 +115,7 @@ class AdminSearchForm extends React.Component {
                   >
                     <option value="">
                       {intl.formatMessage({
-                        id: 'admin.portal.lpr.filter.by.group.dropdown.option.all.groups',
+                        id: 'admin.portal.lpr.v2.filter.by.group.dropdown.option.all.groups',
                         defaultMessage: 'All groups',
                         description: 'Label for the all groups option in the group filter dropdown in the admin portal LPR page.',
                       })}
@@ -149,7 +149,7 @@ class AdminSearchForm extends React.Component {
                 >
                   <option value="">
                     {intl.formatMessage({
-                      id: 'admin.portal.lpr.filter.by.course.dropdown.option.all.courses',
+                      id: 'admin.portal.lpr.v2.filter.by.course.dropdown.option.all.courses',
                       defaultMessage: 'All courses',
                       description: 'Label for the all courses option in the course filter dropdown in the admin portal LPR page.',
                     })}

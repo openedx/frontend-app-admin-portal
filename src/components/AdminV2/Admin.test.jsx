@@ -16,6 +16,25 @@ import Admin from './index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../DownloadCsvButton';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 
+jest.mock('@dnd-kit/core', () => ({
+  DndContext: ({ children }) => children,
+  PointerSensor: jest.fn(),
+  useSensor: jest.fn(),
+  useSensors: jest.fn().mockReturnValue([]),
+}));
+
+jest.mock('@dnd-kit/sortable', () => ({
+  arrayMove: jest.fn(),
+  SortableContext: ({ children }) => children,
+  verticalListSortingStrategy: jest.fn(),
+}));
+
+// Assuming SortableItem is imported from somewhere
+jest.mock('./SortableItem', () => ({
+  __esModule: true,
+  default: ({ children }) => children,
+}));
+
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
   return ({
@@ -88,7 +107,6 @@ const AdminWrapper = props => (
           location={{
             pathname: '/',
           }}
-          {...props}
           budgets={[{
             subsidy_access_policy_uuid: '8d6503dd-e40d-42b8-442b-37dd4c5450e3',
             subsidy_access_policy_display_name: 'Everything',
@@ -103,6 +121,7 @@ const AdminWrapper = props => (
           clearEnterpriseBudgets={() => {}}
           fetchEnterpriseGroups={() => {}}
           clearEnterpriseGroups={() => {}}
+          {...props}
         />
       </IntlProvider>
     </Provider>
@@ -142,6 +161,16 @@ describe('<Admin />', () => {
 
     it('with no dashboard analytics data', () => {
       const mockFetchDashboardAnalytics = jest.fn();
+
+      mount(
+        <AdminWrapper
+          fetchDashboardAnalytics={mockFetchDashboardAnalytics}
+          enterpriseId="test-enterprise-id"
+        />,
+      );
+
+      expect(mockFetchDashboardAnalytics).toHaveBeenCalled();
+
       const tree = renderer
         .create((
           <AdminWrapper
@@ -150,7 +179,6 @@ describe('<Admin />', () => {
           />
         ))
         .toJSON();
-      expect(mockFetchDashboardAnalytics).toHaveBeenCalled();
       expect(tree).toMatchSnapshot();
     });
 
@@ -684,7 +712,7 @@ describe('<Admin />', () => {
         enterpriseId: 'forcing-change-to-trigger-scroll',
       });
       await waitFor(() => {
-        expect(wrapper.text()).toContain('Full Report');
+        expect(wrapper.text()).toContain('Full report');
       });
       expect(scrollIntoViewMock).toHaveBeenCalled();
     });
@@ -702,7 +730,7 @@ describe('<Admin />', () => {
         enterpriseId: 'forcing-change-to-trigger-scroll',
       });
       await waitFor(() => {
-        expect(wrapper.text()).toContain('Full Report');
+        expect(wrapper.text()).toContain('Full report');
       });
       expect(scrollIntoViewMock).not.toHaveBeenCalled();
     });

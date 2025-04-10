@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
@@ -70,8 +70,6 @@ const Admin = ({
   insights,
   intl,
 }) => {
-  const fullReportRef = useRef(null);
-  const [navigateToReport, setNavigateToReport] = useState(location?.hash === '#fullreport');
   const DEFAULT_LPR_COMPONENTS = ['analytics-overview', 'learner-report'];
   const LPR_COMPONENTS_KEY = 'lpr-components-order';
 
@@ -106,8 +104,8 @@ const Admin = ({
       fetchEnterpriseBudgets(enterpriseId);
       fetchEnterpriseGroups(enterpriseId);
     }
+
     return () => {
-      // Equivalent to componentWillUnmount
       clearDashboardAnalytics();
       clearDashboardInsights();
       clearEnterpriseBudgets();
@@ -116,19 +114,10 @@ const Admin = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enterpriseId]);
 
-  // Scroll to report section if #fullreport in url
-  useEffect(() => {
-    const element = fullReportRef.current;
-    if (element && navigateToReport) {
-      element.scrollIntoView();
-      setNavigateToReport(false);
-    }
-  }, [navigateToReport]);
-
   const getMetadataForAction = (actionSlugParam) => {
     const defaultData = {
       title: intl.formatMessage({
-        id: 'admin.portal.lpr.report.full.report.title',
+        id: 'admin.portal.lpr.v2.report.full.report.title',
         defaultMessage: 'Full report',
         description: 'Title for full report',
       }),
@@ -456,7 +445,6 @@ const Admin = ({
       case 'learner-report':
         return (
           <LearnerReport
-            fullReportRef={fullReportRef}
             tableMetadata={tableMetadata}
             actionSlug={actionSlug}
             filtersActive={filtersActive}
@@ -465,6 +453,7 @@ const Admin = ({
             renderFiltersResetButton={renderFiltersResetButton}
             error={error}
             loading={loading}
+            location={location}
             hasEmptyData={hasEmptyData}
             renderDownloadButton={renderDownloadButton}
             displaySearchBar={displaySearchBar}

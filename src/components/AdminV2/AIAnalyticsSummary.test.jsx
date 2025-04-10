@@ -46,6 +46,7 @@ const store = mockStore({
   },
   dashboardInsights: mockedInsights,
 });
+const mockRenderOverviewHeading = () => <div>Overview</div>;
 
 const AIAnalyticsSummaryWrapper = props => (
   <MemoryRouter>
@@ -54,6 +55,7 @@ const AIAnalyticsSummaryWrapper = props => (
         <AIAnalyticsSummary
           enterpriseId="test-enterprise-id"
           insights={mockedInsights}
+          renderOverviewHeading={mockRenderOverviewHeading}
           {...props}
         />,
       </IntlProvider>

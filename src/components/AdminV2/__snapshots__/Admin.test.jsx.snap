@@ -21,21 +21,10 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -108,24 +97,6 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -140,7 +111,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -357,7 +328,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -981,21 +952,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -1555,24 +1515,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -1587,7 +1529,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -1728,38 +1670,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field25"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field25"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -1767,7 +1677,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field26"
+                            htmlFor="form-field17"
                           >
                             Filter by course
                           </label>
@@ -1776,7 +1686,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                           >
                             <select
                               className="form-control"
-                              id="form-field26"
+                              id="form-field17"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -1784,7 +1694,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -1798,7 +1708,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field27"
+                            htmlFor="form-field18"
                           >
                             <span>
                               Filter by start date
@@ -1834,7 +1744,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field27"
+                              id="form-field18"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -1850,43 +1760,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field28"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field28"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -1907,7 +1781,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-29"
+                              htmlFor="pgn-searchfield-input-19"
                             >
                               <span
                                 className="sr-only"
@@ -1919,7 +1793,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-29"
+                              id="pgn-searchfield-input-19"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -1994,7 +1868,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-30"
+                    htmlFor="pgn-searchfield-input-20"
                   >
                     <span
                       className="sr-only"
@@ -2005,7 +1879,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-30"
+                    id="pgn-searchfield-input-20"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -2084,7 +1958,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -2708,21 +2582,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -3282,24 +3145,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -3314,7 +3159,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -3455,38 +3300,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field80"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field80"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -3494,7 +3307,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field81"
+                            htmlFor="form-field52"
                           >
                             Filter by course
                           </label>
@@ -3503,7 +3316,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
-                              id="form-field81"
+                              id="form-field52"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -3511,7 +3324,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -3525,7 +3338,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field82"
+                            htmlFor="form-field53"
                           >
                             <span>
                               Filter by start date
@@ -3561,7 +3374,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field82"
+                              id="form-field53"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -3577,43 +3390,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field83"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field83"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -3634,7 +3411,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-84"
+                              htmlFor="pgn-searchfield-input-54"
                             >
                               <span
                                 className="sr-only"
@@ -3646,7 +3423,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-84"
+                              id="pgn-searchfield-input-54"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -3721,7 +3498,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-85"
+                    htmlFor="pgn-searchfield-input-55"
                   >
                     <span
                       className="sr-only"
@@ -3732,7 +3509,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-85"
+                    id="pgn-searchfield-input-55"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -3811,7 +3588,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -4435,21 +4212,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -5009,24 +4775,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -5041,7 +4789,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -5182,38 +4930,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field91"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field91"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -5221,7 +4937,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field92"
+                            htmlFor="form-field59"
                           >
                             Filter by course
                           </label>
@@ -5230,7 +4946,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
-                              id="form-field92"
+                              id="form-field59"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -5238,7 +4954,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -5252,7 +4968,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field93"
+                            htmlFor="form-field60"
                           >
                             <span>
                               Filter by start date
@@ -5288,7 +5004,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field93"
+                              id="form-field60"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -5304,43 +5020,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field94"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field94"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -5361,7 +5041,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-95"
+                              htmlFor="pgn-searchfield-input-61"
                             >
                               <span
                                 className="sr-only"
@@ -5373,7 +5053,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-95"
+                              id="pgn-searchfield-input-61"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -5448,7 +5128,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-96"
+                    htmlFor="pgn-searchfield-input-62"
                   >
                     <span
                       className="sr-only"
@@ -5459,7 +5139,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-96"
+                    id="pgn-searchfield-input-62"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -5538,7 +5218,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -6162,21 +5842,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -6736,24 +6405,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -6768,7 +6419,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -6909,38 +6560,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field102"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field102"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -6948,7 +6567,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field103"
+                            htmlFor="form-field66"
                           >
                             Filter by course
                           </label>
@@ -6957,7 +6576,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                           >
                             <select
                               className="form-control"
-                              id="form-field103"
+                              id="form-field66"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -6965,7 +6584,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -6979,7 +6598,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field104"
+                            htmlFor="form-field67"
                           >
                             <span>
                               Filter by start date
@@ -7015,7 +6634,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field104"
+                              id="form-field67"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -7031,43 +6650,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field105"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field105"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -7088,7 +6671,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-106"
+                              htmlFor="pgn-searchfield-input-68"
                             >
                               <span
                                 className="sr-only"
@@ -7100,7 +6683,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-106"
+                              id="pgn-searchfield-input-68"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -7175,7 +6758,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-107"
+                    htmlFor="pgn-searchfield-input-69"
                   >
                     <span
                       className="sr-only"
@@ -7186,7 +6769,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-107"
+                    id="pgn-searchfield-input-69"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -7265,7 +6848,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -7889,21 +7472,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -8463,24 +8035,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -8495,7 +8049,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -8636,7 +8190,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
                           className="pgn__form-group"
@@ -8645,10 +8199,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                             className="pgn__form-label search-label mb-2"
                             htmlFor="form-field3"
                           >
-                            Filter by group
+                            Filter by course
                           </label>
                           <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
+                            className="pgn__form-control-decorator-group w-100"
                           >
                             <select
                               className="form-control"
@@ -8660,39 +8214,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                               <option
                                 value=""
                               >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field4"
-                          >
-                            Filter by course
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field4"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -8706,7 +8228,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field5"
+                            htmlFor="form-field4"
                           >
                             <span>
                               Filter by start date
@@ -8742,7 +8264,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field5"
+                              id="form-field4"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -8758,43 +8280,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field6"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field6"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -8815,7 +8301,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-7"
+                              htmlFor="pgn-searchfield-input-5"
                             >
                               <span
                                 className="sr-only"
@@ -8827,7 +8313,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-7"
+                              id="pgn-searchfield-input-5"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -8902,7 +8388,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-8"
+                    htmlFor="pgn-searchfield-input-6"
                   >
                     <span
                       className="sr-only"
@@ -8913,7 +8399,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-8"
+                    id="pgn-searchfield-input-6"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -8992,7 +8478,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -9616,21 +9102,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -10190,24 +9665,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -10222,7 +9679,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -10363,38 +9820,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field69"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field69"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -10402,7 +9827,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field70"
+                            htmlFor="form-field45"
                           >
                             Filter by course
                           </label>
@@ -10411,7 +9836,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
-                              id="form-field70"
+                              id="form-field45"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -10419,7 +9844,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -10433,7 +9858,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field71"
+                            htmlFor="form-field46"
                           >
                             <span>
                               Filter by start date
@@ -10469,7 +9894,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field71"
+                              id="form-field46"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -10485,43 +9910,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field72"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field72"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -10542,7 +9931,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-73"
+                              htmlFor="pgn-searchfield-input-47"
                             >
                               <span
                                 className="sr-only"
@@ -10554,7 +9943,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-73"
+                              id="pgn-searchfield-input-47"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -10629,7 +10018,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-74"
+                    htmlFor="pgn-searchfield-input-48"
                   >
                     <span
                       className="sr-only"
@@ -10640,7 +10029,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-74"
+                    id="pgn-searchfield-input-48"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -10719,7 +10108,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -11343,21 +10732,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -11917,24 +11295,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -11949,7 +11309,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -12090,38 +11450,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field58"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field58"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -12129,7 +11457,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field59"
+                            htmlFor="form-field38"
                           >
                             Filter by course
                           </label>
@@ -12138,7 +11466,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
-                              id="form-field59"
+                              id="form-field38"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -12146,7 +11474,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -12160,7 +11488,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field60"
+                            htmlFor="form-field39"
                           >
                             <span>
                               Filter by start date
@@ -12196,7 +11524,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field60"
+                              id="form-field39"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -12212,43 +11540,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field61"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field61"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -12269,7 +11561,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-62"
+                              htmlFor="pgn-searchfield-input-40"
                             >
                               <span
                                 className="sr-only"
@@ -12281,7 +11573,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-62"
+                              id="pgn-searchfield-input-40"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -12356,7 +11648,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-63"
+                    htmlFor="pgn-searchfield-input-41"
                   >
                     <span
                       className="sr-only"
@@ -12367,7 +11659,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-63"
+                    id="pgn-searchfield-input-41"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -12446,7 +11738,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -13070,21 +12362,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -13644,24 +12925,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -13676,7 +12939,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -13817,38 +13080,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field36"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field36"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -13856,7 +13087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field37"
+                            htmlFor="form-field24"
                           >
                             Filter by course
                           </label>
@@ -13865,7 +13096,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                           >
                             <select
                               className="form-control"
-                              id="form-field37"
+                              id="form-field24"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -13873,7 +13104,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -13887,7 +13118,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field38"
+                            htmlFor="form-field25"
                           >
                             <span>
                               Filter by start date
@@ -13923,7 +13154,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field38"
+                              id="form-field25"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -13939,43 +13170,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field39"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field39"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -13996,7 +13191,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-40"
+                              htmlFor="pgn-searchfield-input-26"
                             >
                               <span
                                 className="sr-only"
@@ -14008,7 +13203,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-40"
+                              id="pgn-searchfield-input-26"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -14083,7 +13278,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-41"
+                    htmlFor="pgn-searchfield-input-27"
                   >
                     <span
                       className="sr-only"
@@ -14094,7 +13289,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-41"
+                    id="pgn-searchfield-input-27"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -14173,7 +13368,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -14797,21 +13992,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -15371,24 +14555,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -15403,7 +14569,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -15544,38 +14710,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field14"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field14"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -15583,7 +14717,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field15"
+                            htmlFor="form-field10"
                           >
                             Filter by course
                           </label>
@@ -15592,7 +14726,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                           >
                             <select
                               className="form-control"
-                              id="form-field15"
+                              id="form-field10"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -15600,7 +14734,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -15614,7 +14748,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field16"
+                            htmlFor="form-field11"
                           >
                             <span>
                               Filter by start date
@@ -15650,7 +14784,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field16"
+                              id="form-field11"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -15666,43 +14800,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field17"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field17"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -15723,7 +14821,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-18"
+                              htmlFor="pgn-searchfield-input-12"
                             >
                               <span
                                 className="sr-only"
@@ -15735,7 +14833,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-18"
+                              id="pgn-searchfield-input-12"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -15810,7 +14908,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-19"
+                    htmlFor="pgn-searchfield-input-13"
                   >
                     <span
                       className="sr-only"
@@ -15821,7 +14919,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-19"
+                    id="pgn-searchfield-input-13"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -15900,7 +14998,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -16524,21 +15622,10 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -17098,24 +16185,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -17130,7 +16199,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -17271,38 +16340,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field47"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field47"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -17310,7 +16347,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field48"
+                            htmlFor="form-field31"
                           >
                             Filter by course
                           </label>
@@ -17319,7 +16356,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                           >
                             <select
                               className="form-control"
-                              id="form-field48"
+                              id="form-field31"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -17327,7 +16364,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -17341,7 +16378,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field49"
+                            htmlFor="form-field32"
                           >
                             <span>
                               Filter by start date
@@ -17377,7 +16414,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field49"
+                              id="form-field32"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -17393,43 +16430,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field50"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field50"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -17450,7 +16451,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-51"
+                              htmlFor="pgn-searchfield-input-33"
                             >
                               <span
                                 className="sr-only"
@@ -17462,7 +16463,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-51"
+                              id="pgn-searchfield-input-33"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -17537,7 +16538,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-52"
+                    htmlFor="pgn-searchfield-input-34"
                   >
                     <span
                       className="sr-only"
@@ -17548,7 +16549,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-52"
+                    id="pgn-searchfield-input-34"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -17627,7 +16628,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -18251,28 +17252,20 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
       >
         <div
-          className="pgn__hstack pgn__stack-gap--3"
+          className="pgn__hstack pgn__stack-gap--3 justify-content-between"
         >
+          <h2>
+            Overview
+          </h2>
           <button
             className="d-sm-inline btn btn-outline-primary"
             data-testid="summarize-analytics"
@@ -18293,7 +17286,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                 fill="currentColor"
               />
             </svg>
-            Summarize Analytics
+            Summarize analytics
           </button>
           <button
             className="d-none btn btn-outline-primary"
@@ -18874,24 +17867,6 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -18906,7 +17881,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -19047,38 +18022,6 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field128"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field128"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -19086,7 +18029,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field129"
+                            htmlFor="form-field84"
                           >
                             Filter by course
                           </label>
@@ -19095,7 +18038,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                           >
                             <select
                               className="form-control"
-                              id="form-field129"
+                              id="form-field84"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -19103,7 +18046,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -19117,7 +18060,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field130"
+                            htmlFor="form-field85"
                           >
                             <span>
                               Filter by start date
@@ -19153,7 +18096,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field130"
+                              id="form-field85"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -19169,43 +18112,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field131"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field131"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -19226,7 +18133,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-132"
+                              htmlFor="pgn-searchfield-input-86"
                             >
                               <span
                                 className="sr-only"
@@ -19238,7 +18145,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-132"
+                              id="pgn-searchfield-input-86"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -19313,7 +18220,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-133"
+                    htmlFor="pgn-searchfield-input-87"
                   >
                     <span
                       className="sr-only"
@@ -19324,7 +18231,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-133"
+                    id="pgn-searchfield-input-87"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -19403,7 +18310,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -20027,21 +18934,10 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -20601,24 +19497,6 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -20633,7 +19511,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -20774,38 +19652,6 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field139"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field139"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -20813,7 +19659,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field140"
+                            htmlFor="form-field91"
                           >
                             Filter by course
                           </label>
@@ -20822,7 +19668,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                           >
                             <select
                               className="form-control"
-                              id="form-field140"
+                              id="form-field91"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -20830,7 +19676,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -20844,7 +19690,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field141"
+                            htmlFor="form-field92"
                           >
                             <span>
                               Filter by start date
@@ -20880,7 +19726,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field141"
+                              id="form-field92"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -20903,7 +19749,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field142"
+                            htmlFor="form-field93"
                           >
                             Filter by budget
                           </label>
@@ -20912,7 +19758,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                           >
                             <select
                               className="form-control"
-                              id="form-field142"
+                              id="form-field93"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -20953,7 +19799,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-143"
+                              htmlFor="pgn-searchfield-input-94"
                             >
                               <span
                                 className="sr-only"
@@ -20965,7 +19811,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-143"
+                              id="pgn-searchfield-input-94"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -21040,7 +19886,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-144"
+                    htmlFor="pgn-searchfield-input-95"
                   >
                     <span
                       className="sr-only"
@@ -21051,7 +19897,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-144"
+                    id="pgn-searchfield-input-95"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -21130,7 +19976,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -21754,21 +20600,10 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -22328,24 +21163,6 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -22360,7 +21177,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -22508,7 +21325,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field150"
+                            htmlFor="form-field100"
                           >
                             Filter by group
                           </label>
@@ -22517,7 +21334,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                           >
                             <select
                               className="form-control"
-                              id="form-field150"
+                              id="form-field100"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -22525,7 +21342,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                               <option
                                 value=""
                               >
-                                All Groups
+                                All groups
                               </option>
                               <option />
                             </select>
@@ -22540,7 +21357,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field151"
+                            htmlFor="form-field101"
                           >
                             Filter by course
                           </label>
@@ -22549,7 +21366,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                           >
                             <select
                               className="form-control"
-                              id="form-field151"
+                              id="form-field101"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -22557,7 +21374,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -22571,7 +21388,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field152"
+                            htmlFor="form-field102"
                           >
                             <span>
                               Filter by start date
@@ -22607,7 +21424,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field152"
+                              id="form-field102"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -22618,42 +21435,6 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                                 Choose a course
                               </option>
                               
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field153"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field153"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
                             </select>
                           </div>
                         </div>
@@ -22680,7 +21461,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-154"
+                              htmlFor="pgn-searchfield-input-103"
                             >
                               <span
                                 className="sr-only"
@@ -22692,7 +21473,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-154"
+                              id="pgn-searchfield-input-103"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -22767,7 +21548,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-155"
+                    htmlFor="pgn-searchfield-input-104"
                   >
                     <span
                       className="sr-only"
@@ -22778,7 +21559,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-155"
+                    id="pgn-searchfield-input-104"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -22857,7 +21638,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -23481,21 +22262,10 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -23551,24 +22321,6 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -23583,7 +22335,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -23710,7 +22462,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-113"
+                    htmlFor="pgn-searchfield-input-73"
                   >
                     <span
                       className="sr-only"
@@ -23721,7 +22473,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-113"
+                    id="pgn-searchfield-input-73"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -23800,7 +22552,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -24424,21 +23176,10 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -24511,24 +23252,6 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -24543,7 +23266,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -24670,7 +23393,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-115"
+                    htmlFor="pgn-searchfield-input-75"
                   >
                     <span
                       className="sr-only"
@@ -24681,7 +23404,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-115"
+                    id="pgn-searchfield-input-75"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -24760,7 +23483,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
@@ -25429,21 +24152,10 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
     </div>
   </div>
   <div
-    className="container-fluid"
+    className="container-fluid mt-4"
   >
     <div
-      className="row mt-4"
-    >
-      <div
-        className="col"
-      >
-        <h2>
-          Overview
-        </h2>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
+      className="row"
     >
       <div
         className="col"
@@ -26003,24 +24715,6 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
     </div>
     <div
       className="row"
-    >
-      <div
-        className="col mb-4.5"
-      >
-        <div
-          className="loading d-flex align-items-center justify-content-center subscriptions"
-        >
-          Loading...
-          <span
-            className="sr-only"
-          >
-            Loading
-          </span>
-        </div>
-      </div>
-    </div>
-    <div
-      className="row mt-4"
       id="learner-progress-report"
     >
       <div
@@ -26035,7 +24729,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
             <h2
               className="table-title"
             >
-              Full Report
+              Full report
             </h2>
           </div>
           <div
@@ -26176,38 +24870,6 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                       className="row w-100 m-0"
                     >
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field117"
-                          >
-                            Filter by group
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 groups-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field117"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All Groups
-                              </option>
-                              <option />
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
                         className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3"
                       >
                         <div
@@ -26215,7 +24877,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         >
                           <label
                             className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field118"
+                            htmlFor="form-field77"
                           >
                             Filter by course
                           </label>
@@ -26224,7 +24886,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                           >
                             <select
                               className="form-control"
-                              id="form-field118"
+                              id="form-field77"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -26232,7 +24894,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                               <option
                                 value=""
                               >
-                                All Courses
+                                All courses
                               </option>
                             </select>
                           </div>
@@ -26246,7 +24908,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         >
                           <label
                             className="pgn__form-label search-label mb-2 d-flex align-items-center"
-                            htmlFor="form-field119"
+                            htmlFor="form-field78"
                           >
                             <span>
                               Filter by start date
@@ -26282,7 +24944,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                             <select
                               className="form-control"
                               disabled={true}
-                              id="form-field119"
+                              id="form-field78"
                               onBlur={[Function]}
                               onChange={[Function]}
                               value=""
@@ -26298,43 +24960,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         </div>
                       </div>
                       <div
-                        className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
-                      >
-                        <div
-                          className="pgn__form-group"
-                        >
-                          <label
-                            className="pgn__form-label search-label mb-2"
-                            htmlFor="form-field120"
-                          >
-                            Filter by budget
-                          </label>
-                          <div
-                            className="pgn__form-control-decorator-group w-100 budgets-dropdown"
-                          >
-                            <select
-                              className="form-control"
-                              id="form-field120"
-                              onBlur={[Function]}
-                              onChange={[Function]}
-                              value=""
-                            >
-                              <option
-                                value=""
-                              >
-                                All budgets
-                              </option>
-                              <option
-                                value="8d6503dd-e40d-42b8-442b-37dd4c5450e3"
-                              >
-                                Everything
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-3"
+                        className="col-12 my-2 my-md-0 px-0 px-md-2 px-lg-3 col-md-6"
                       >
                         <label
                           className="pgn__form-label mb-2"
@@ -26355,7 +24981,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                           >
                             <label
                               className="m-0"
-                              htmlFor="pgn-searchfield-input-121"
+                              htmlFor="pgn-searchfield-input-79"
                             >
                               <span
                                 className="sr-only"
@@ -26367,7 +24993,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                               className="form-control"
                               data-hj-suppress={true}
                               disabled={false}
-                              id="pgn-searchfield-input-121"
+                              id="pgn-searchfield-input-79"
                               name="searchfield-input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -26442,7 +25068,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                 >
                   <label
                     className="m-0"
-                    htmlFor="pgn-searchfield-input-122"
+                    htmlFor="pgn-searchfield-input-80"
                   >
                     <span
                       className="sr-only"
@@ -26453,7 +25079,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                   <input
                     className="form-control"
                     disabled={false}
-                    id="pgn-searchfield-input-122"
+                    id="pgn-searchfield-input-80"
                     name="searchfield-input"
                     onBlur={[Function]}
                     onChange={[Function]}
@@ -26532,7 +25158,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                                 <button
                                   aria-disabled={true}
                                   aria-live="assertive"
-                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-primary"
+                                  className="pgn__stateful-btn pgn__stateful-btn-state-pageLoading download-button disabled btn btn-outline-primary"
                                   data-testid="module-activity-download"
                                   disabled={false}
                                   onClick={[Function]}
