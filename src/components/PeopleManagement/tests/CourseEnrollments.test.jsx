@@ -3,12 +3,61 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CourseEnrollments from '../LearnerDetailPage/CourseEnrollments';
 
 jest.mock('../LearnerDetailPage/EnrollmentCard', () => (
-  jest.fn(() => <div data-testid="enrollment-card" />)));
+  jest.fn(({ enrollment }) => (
+    <div data-testid="enrollment-card">
+      <span>{enrollment.displayName}</span>
+    </div>
+  ))
+));
 
 const mockStore = configureStore([]);
+
+const mockEnrollments = {
+  inProgress: [
+    {
+      uuid: '1',
+      courseKey: 'course-1',
+      displayName: 'Course 1',
+      courseRunStatus: 'in_progress',
+    },
+  ],
+  upcoming: [
+    {
+      uuid: '2',
+      courseKey: 'course-2',
+      displayName: 'Course 2',
+      courseRunStatus: 'upcoming',
+    },
+  ],
+  completed: [
+    {
+      uuid: '3',
+      courseKey: 'course-3',
+      displayName: 'Course 3',
+      courseRunStatus: 'completed',
+    },
+  ],
+  assignmentsForDisplay: [
+    {
+      uuid: '4',
+      courseKey: 'course-4',
+      displayName: 'Course 4',
+      courseRunStatus: 'assigned',
+    },
+  ],
+};
+
+const TestWrapper = ({ children, store }) => (
+  <IntlProvider locale="en">
+    <Provider store={store}>
+      {children}
+    </Provider>
+  </IntlProvider>
+);
 
 describe('CourseEnrollments', () => {
   let store;
@@ -21,75 +70,47 @@ describe('CourseEnrollments', () => {
     });
   });
 
-  it('renders enrollments when not loading', () => {
-    const mockEnrollments = {
-      completed: [
-        { id: '1', courseKey: 'course-1', displayName: 'Completed Course' },
-      ],
-      inProgress: [
-        { id: '2', courseKey: 'course-2', displayName: 'In Progress Course' },
-      ],
-      upcoming: [
-        { id: '3', courseKey: 'course-3', displayName: 'Upcoming Course' },
-      ],
-      assignmentsForDisplay: [
-        { id: '4', courseKey: 'course-4', displayName: 'Assigned Course' },
-      ],
-    };
+  const renderComponent = (props) => render(
+    <TestWrapper store={store}>
+      <CourseEnrollments {...props} />
+    </TestWrapper>,
+  );
 
-    render(
-      <Provider store={store}>
-        <CourseEnrollments enrollments={mockEnrollments} isLoading={false} />
-      </Provider>,
-    );
-
-    expect(screen.getByText('Enrollments')).toBeInTheDocument();
-
-    const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(4); // One for each category
+  it('renders zero state message in a card when there are no enrollments', () => {
+    renderComponent({ enrollments: {}, isLoading: false });
+    expect(screen.getByText('This learner has not enrolled in any courses.')).toBeInTheDocument();
   });
 
-  it('renders empty state when no enrollments', () => {
-    const emptyEnrollments = {
-      completed: [],
-      inProgress: [],
-      upcoming: [],
-      assignmentsForDisplay: [],
-    };
-
-    render(
-      <Provider store={store}>
-        <CourseEnrollments enrollments={emptyEnrollments} isLoading={false} />
-      </Provider>,
-    );
-
-    expect(screen.getByText('Enrollments')).toBeInTheDocument();
-
-    const enrollmentCards = screen.queryAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(0);
+  it('renders in-progress enrollments', () => {
+    renderComponent({ enrollments: mockEnrollments, isLoading: false });
+    const enrollmentCards = screen.getAllByTestId('enrollment-card');
+    expect(enrollmentCards).toHaveLength(4);
+    expect(screen.getByText('Course 1')).toBeInTheDocument();
   });
 
-  it('renders only available enrollment categories', () => {
-    const partialEnrollments = {
-      completed: [
-        { id: '1', courseKey: 'course-1', displayName: 'Completed Course' },
-      ],
-      inProgress: [],
-      upcoming: [
-        { id: '3', courseKey: 'course-3', displayName: 'Upcoming Course' },
-      ],
-      assignmentsForDisplay: [],
-    };
-
-    render(
-      <Provider store={store}>
-        <CourseEnrollments enrollments={partialEnrollments} isLoading={false} />
-      </Provider>,
-    );
-
-    expect(screen.getByText('Enrollments')).toBeInTheDocument();
-
+  it('renders upcoming enrollments', () => {
+    renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(2); // One for completed, one for upcoming
+    expect(enrollmentCards).toHaveLength(4);
+    expect(screen.getByText('Course 2')).toBeInTheDocument();
+  });
+
+  it('renders completed enrollments', () => {
+    renderComponent({ enrollments: mockEnrollments, isLoading: false });
+    const enrollmentCards = screen.getAllByTestId('enrollment-card');
+    expect(enrollmentCards).toHaveLength(4);
+    expect(screen.getByText('Course 3')).toBeInTheDocument();
+  });
+
+  it('renders assigned enrollments', () => {
+    renderComponent({ enrollments: mockEnrollments, isLoading: false });
+    const enrollmentCards = screen.getAllByTestId('enrollment-card');
+    expect(enrollmentCards).toHaveLength(4);
+    expect(screen.getByText('Course 4')).toBeInTheDocument();
+  });
+
+  it('renders enrollments header', () => {
+    renderComponent({ enrollments: mockEnrollments, isLoading: false });
+    expect(screen.getByText('Enrollments')).toBeInTheDocument();
   });
 });
