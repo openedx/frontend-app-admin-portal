@@ -1,0 +1,34 @@
+.learner-progress-report {
+  .table-title {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .reset {
+    margin-top: -5px;
+  }
+
+  .search-label {
+    line-height: 1.5;
+  }
+
+  .admin-cards-skeleton {
+    span {
+      min-height: 200px;
+      width: 100%;
+      .react-loading-skeleton {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  @include media-breakpoint-up(sm) {
+    .admin-cards-skeleton {
+      span {
+        width: 23%;
+        margin-right: 2%;
+      }
+    }
+  }
+}

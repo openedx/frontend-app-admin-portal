@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminCardsSkeleton renders a skeleton 1`] = `
+<div
+  className="admin-cards-skeleton mb-3 d-md-flex w-100"
+>
+  <div
+    className="sr-only"
+  >
+    Loading...
+  </div>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
+    <span
+      className="react-loading-skeleton"
+      style={{}}
+    >
+      ‌
+    </span>
+    <br />
+  </span>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
+    <span
+      className="react-loading-skeleton"
+      style={{}}
+    >
+      ‌
+    </span>
+    <br />
+  </span>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
+    <span
+      className="react-loading-skeleton"
+      style={{}}
+    >
+      ‌
+    </span>
+    <br />
+  </span>
+  <span
+    aria-busy={true}
+    aria-live="polite"
+  >
+    <span
+      className="react-loading-skeleton"
+      style={{}}
+    >
+      ‌
+    </span>
+    <br />
+  </span>
+</div>
+`;
