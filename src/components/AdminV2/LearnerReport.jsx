@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  FormattedDate, FormattedMessage, intlShape, injectIntl,
+  FormattedDate, FormattedMessage, useIntl,
 } from '@edx/frontend-platform/i18n';
 import { Tabs, Tab } from '@openedx/paragon';
 
@@ -11,16 +11,15 @@ import AdminSearchForm from './AdminSearchForm';
 import ModuleActivityReport from './tabs/ModuleActivityReport';
 
 const LearnerReport = ({
-  fullReportRef,
   tableMetadata,
   actionSlug,
   filtersActive,
   lastUpdatedDate,
   renderUrlResetButton,
   renderFiltersResetButton,
-  intl,
   error,
   loading,
+  location,
   hasEmptyData,
   renderDownloadButton,
   displaySearchBar,
@@ -34,6 +33,19 @@ const LearnerReport = ({
   renderCsvErrorMessage,
 }) => {
   const [activeTab, setActiveTab] = useState('learner-progress-report');
+  const fullReportRef = useRef(null);
+  const [navigateToReport, setNavigateToReport] = useState(location?.hash === '#fullreport');
+
+  const intl = useIntl();
+
+  // Scroll to report section if #fullreport in url
+  useEffect(() => {
+    const element = fullReportRef.current;
+    if (element && navigateToReport) {
+      element.scrollIntoView();
+      setNavigateToReport(false);
+    }
+  }, [navigateToReport]);
 
   return (
     <>
@@ -144,6 +156,9 @@ LearnerReport.defaultProps = {
   lastUpdatedDate: null,
   error: null,
   loading: false,
+  location: {
+    search: '',
+  },
   budgets: [],
   groups: [],
   enterpriseId: null,
@@ -178,9 +193,13 @@ LearnerReport.propTypes = {
   lastUpdatedDate: PropTypes.string,
   renderUrlResetButton: PropTypes.func.isRequired,
   renderFiltersResetButton: PropTypes.func.isRequired,
-  intl: intlShape.isRequired,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+    pathname: PropTypes.string,
+    hash: PropTypes.string,
+  }),
   hasEmptyData: PropTypes.func.isRequired,
   renderDownloadButton: PropTypes.func.isRequired,
   displaySearchBar: PropTypes.func.isRequired,
@@ -200,4 +219,4 @@ LearnerReport.propTypes = {
   renderCsvErrorMessage: PropTypes.func.isRequired,
 };
 
-export default injectIntl(LearnerReport);
+export default LearnerReport;

@@ -50,9 +50,9 @@ const AnalyticsDetailCard = ({
             <span className="small font-weight-bold text-gray-800">Dismiss</span>
           </Button>
         </Stack>
-        <label className="x-small" htmlFor="poweredBylabel">
+        <div className="x-small">
           <FormattedMessage id="adminPortal.analyticsCardPoweredBylabel" defaultMessage="Powered by OpenAI" />
-        </label>
+        </div>
       </Card.Section>
     </Card>
   );
@@ -88,7 +88,7 @@ const AIAnalyticsSummary = ({ enterpriseId, insights, renderOverviewHeading }) =
         >
           <>
             <AutoFixHigh className="mr-2" />
-            <FormattedMessage id="adminPortal.summarizeAnalytics" defaultMessage="Summarize analytics" />
+            <FormattedMessage id="adminPortal.v2.summarizeAnalytics" defaultMessage="Summarize analytics" />
           </>
         </Button>
         {/* Track Progress is currently hidden due to data inconsistency. It will be addressed as part of ENT-7812 */}
