@@ -82,4 +82,44 @@ describe('<AdminPage />', () => {
     wrapper.props().fetchDashboardAnalytics('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
     expect(dispatchSpy).toHaveBeenCalled();
   });
+
+  it('clearDashboardAnalytics dispatches clearDashboardAnalytics action', () => {
+    wrapper.props().clearDashboardAnalytics();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('searchEnrollmentsList dispatches paginateTable action', () => {
+    wrapper.props().searchEnrollmentsList();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('fetchDashboardInsights dispatches fetchDashboardInsights action', () => {
+    wrapper.props().fetchDashboardInsights('test-enterprise');
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('clearDashboardInsights dispatches clearDashboardInsights action', () => {
+    wrapper.props().clearDashboardInsights();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('fetchEnterpriseBudgets dispatches fetchEnterpriseBudgets action', () => {
+    wrapper.props().fetchEnterpriseBudgets('test-enterprise');
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('clearEnterpriseBudgets dispatches clearEnterpriseBudgets action', () => {
+    wrapper.props().clearEnterpriseBudgets();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('fetchEnterpriseGroups dispatches fetchEnterpriseGroups action', () => {
+    wrapper.props().fetchEnterpriseGroups('test-enterprise');
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
+
+  it('clearEnterpriseGroups dispatches clearEnterpriseGroups action', () => {
+    wrapper.props().clearEnterpriseGroups();
+    expect(dispatchSpy).toHaveBeenCalled();
+  });
 });

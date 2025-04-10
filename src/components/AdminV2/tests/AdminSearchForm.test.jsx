@@ -4,10 +4,10 @@ import { FormControl } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
-import AdminSearchForm from './AdminSearchForm';
-import SearchBar from '../SearchBar';
-import { updateUrl } from '../../utils';
-import EVENT_NAMES from '../../eventTracking';
+import AdminSearchForm from '../AdminSearchForm';
+import SearchBar from '../../SearchBar';
+import { updateUrl } from '../../../utils';
+import EVENT_NAMES from '../../../eventTracking';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -15,7 +15,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
-jest.mock('../../utils', () => ({
+jest.mock('../../../utils', () => ({
   updateUrl: jest.fn(),
 }));
 

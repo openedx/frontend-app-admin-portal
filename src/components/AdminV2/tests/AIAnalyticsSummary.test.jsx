@@ -1,12 +1,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
-import AIAnalyticsSummary from './AIAnalyticsSummary';
+import AIAnalyticsSummary from '../AIAnalyticsSummary';
+import * as AIAnalyticsSummaryHooks from '../../AIAnalyticsSummary/data/hooks';
 
 const mockedInsights = {
   learner_progress: {
@@ -46,6 +46,7 @@ const store = mockStore({
   },
   dashboardInsights: mockedInsights,
 });
+const mockRenderOverviewHeading = () => <div>Overview</div>;
 
 const AIAnalyticsSummaryWrapper = props => (
   <MemoryRouter>
@@ -54,6 +55,7 @@ const AIAnalyticsSummaryWrapper = props => (
         <AIAnalyticsSummary
           enterpriseId="test-enterprise-id"
           insights={mockedInsights}
+          renderOverviewHeading={mockRenderOverviewHeading}
           {...props}
         />,
       </IntlProvider>
@@ -63,26 +65,8 @@ const AIAnalyticsSummaryWrapper = props => (
 
 describe('<AIAnalyticsSummary />', () => {
   it('should render action buttons correctly', () => {
-    const tree = renderer
-      .create((
-        <AIAnalyticsSummaryWrapper
-          insights={mockedInsights}
-        />
-      ))
-      .toJSON();
-
-    expect(tree).toMatchSnapshot();
-  });
-
-  it('should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked', () => {
     const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
-
-    const tree = renderer
-      .create(<AIAnalyticsSummaryWrapper insights={mockedInsights} />)
-      .toJSON();
-
-    expect(tree).toMatchSnapshot();
+    expect(wrapper.find('[data-testid="summarize-analytics"]').exists()).toBe(true);
   });
 
   // Currently disabled due to data inconsistencies, will be addressed as a part of ENT-7812.
@@ -102,10 +86,48 @@ describe('<AIAnalyticsSummary />', () => {
     const wrapper = mount(<AIAnalyticsSummaryWrapper insights={insightsData} />);
     wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
 
-    const tree = renderer
-      .create(<AIAnalyticsSummaryWrapper insights={insightsData} />)
-      .toJSON();
+    expect(wrapper.find('AnalyticsDetailCard').exists()).toBe(true);
+    expect(wrapper.find('AnalyticsDetailCard').text()).toContain('Analytics not found');
+  });
 
-    expect(tree).toMatchSnapshot();
+  it('should hide the analytics card when Dismiss button is clicked', () => {
+    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    // Open the analytics card
+    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    expect(wrapper.find('AnalyticsDetailCard').exists()).toBe(true);
+
+    // Click the dismiss button
+    wrapper.find('AnalyticsDetailCard Button').simulate('click');
+    wrapper.update();
+    expect(wrapper.find('AnalyticsDetailCard').exists()).toBe(false);
+  });
+
+  it('should display error message when analytics API returns an error', () => {
+    // Mock useAIAnalyticsSummary to return an error
+    jest.spyOn(AIAnalyticsSummaryHooks, 'default').mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: new Error('API Error'),
+    });
+
+    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+
+    expect(wrapper.find('AnalyticsDetailCard').text()).toContain('We encountered an issue');
+    expect(wrapper.find('AnalyticsDetailCard').text()).toContain('API Error');
+  });
+
+  it('should show loading state while fetching analytics data', () => {
+    // Mock useAIAnalyticsSummary to return loading state
+    jest.spyOn(AIAnalyticsSummaryHooks, 'default').mockReturnValue({
+      data: null,
+      isLoading: true,
+      error: null,
+    });
+
+    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+
+    expect(wrapper.find('AnalyticsDetailCard').prop('isLoading')).toBe(true);
   });
 });

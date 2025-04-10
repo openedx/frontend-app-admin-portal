@@ -19,6 +19,8 @@ import {
   splitAndTrim,
   removeStringsFromList,
   removeStringsFromListCaseInsensitive,
+  saveToLocalStorage,
+  getFromLocalStorage,
 } from './utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
@@ -232,6 +234,53 @@ describe('utils', () => {
       const list = ['ab', 'bc', 'cd', 'de', 'Ef'];
       const remove = ['Bc', 'de', 'eF'];
       expect(removeStringsFromListCaseInsensitive(list, remove)).toEqual(['ab', 'cd']);
+    });
+  });
+  describe('localStorage utils', () => {
+    const originalLocalStorage = global.localStorage;
+
+    beforeEach(() => {
+      global.localStorage = {
+        getItem: jest.fn(),
+        setItem: jest.fn(),
+      };
+    });
+
+    afterEach(() => {
+      global.localStorage = originalLocalStorage;
+    });
+
+    describe('saveToLocalStorage', () => {
+      it('saves string value to localStorage', () => {
+        saveToLocalStorage('testKey', 'testValue');
+        expect(localStorage.setItem).toHaveBeenCalledWith('testKey', '"testValue"');
+      });
+
+      it('saves object to localStorage', () => {
+        const testObject = { foo: 'bar', num: 123 };
+        saveToLocalStorage('testKey', testObject);
+        expect(localStorage.setItem).toHaveBeenCalledWith('testKey', JSON.stringify(testObject));
+      });
+    });
+
+    describe('getFromLocalStorage', () => {
+      it('retrieves and parses value from localStorage', () => {
+        const testObject = { foo: 'bar', num: 123 };
+        localStorage.getItem.mockReturnValue(JSON.stringify(testObject));
+
+        const result = getFromLocalStorage('testKey');
+
+        expect(localStorage.getItem).toHaveBeenCalledWith('testKey');
+        expect(result).toEqual(testObject);
+      });
+
+      it('returns null when key not found', () => {
+        localStorage.getItem.mockReturnValue(null);
+
+        const result = getFromLocalStorage('nonExistentKey');
+
+        expect(result).toBeNull();
+      });
     });
   });
 });

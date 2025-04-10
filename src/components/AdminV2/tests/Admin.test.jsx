@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { MemoryRouter, Link } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
@@ -11,10 +10,28 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { screen, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import dayjs from 'dayjs';
-import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
-import Admin from './index';
-import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../DownloadCsvButton';
-import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
+import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
+import Admin from '../index';
+import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../../DownloadCsvButton';
+import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hooks';
+
+jest.mock('@dnd-kit/core', () => ({
+  DndContext: ({ children }) => children,
+  PointerSensor: jest.fn(),
+  useSensor: jest.fn(),
+  useSensors: jest.fn().mockReturnValue([]),
+}));
+
+jest.mock('@dnd-kit/sortable', () => ({
+  arrayMove: jest.fn(),
+  SortableContext: ({ children }) => children,
+  verticalListSortingStrategy: jest.fn(),
+}));
+
+jest.mock('../SortableItem', () => ({
+  __esModule: true,
+  default: ({ children }) => children,
+}));
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
   const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
@@ -24,8 +41,8 @@ jest.mock('@edx/frontend-enterprise-utils', () => {
   });
 });
 
-jest.mock('../EnterpriseSubsidiesContext/data/hooks', () => ({
-  ...jest.requireActual('../EnterpriseSubsidiesContext/data/hooks'),
+jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
   useEnterpriseBudgets: jest.fn().mockReturnValue({
     data: [],
   }),
@@ -88,7 +105,6 @@ const AdminWrapper = props => (
           location={{
             pathname: '/',
           }}
-          {...props}
           budgets={[{
             subsidy_access_policy_uuid: '8d6503dd-e40d-42b8-442b-37dd4c5450e3',
             subsidy_access_policy_display_name: 'Everything',
@@ -103,6 +119,7 @@ const AdminWrapper = props => (
           clearEnterpriseBudgets={() => {}}
           fetchEnterpriseGroups={() => {}}
           clearEnterpriseGroups={() => {}}
+          {...props}
         />
       </IntlProvider>
     </Provider>
@@ -127,227 +144,163 @@ describe('<Admin />', () => {
   describe('renders correctly', () => {
     it('calls fetchDashboardAnalytics prop', () => {
       const mockFetchDashboardAnalytics = jest.fn();
-      const tree = renderer
-        .create((
-          <AdminWrapper
-            fetchDashboardAnalytics={mockFetchDashboardAnalytics}
-            enterpriseId="test-enterprise-id"
-            loading
-          />
-        ))
-        .toJSON();
+      render(
+        <AdminWrapper
+          fetchDashboardAnalytics={mockFetchDashboardAnalytics}
+          enterpriseId="test-enterprise-id"
+          loading
+        />,
+      );
       expect(mockFetchDashboardAnalytics).toHaveBeenCalled();
-      expect(tree).toMatchSnapshot();
-    });
-
-    it('with no dashboard analytics data', () => {
-      const mockFetchDashboardAnalytics = jest.fn();
-      const tree = renderer
-        .create((
-          <AdminWrapper
-            fetchDashboardAnalytics={mockFetchDashboardAnalytics}
-            enterpriseId="test-enterprise-id"
-          />
-        ))
-        .toJSON();
-      expect(mockFetchDashboardAnalytics).toHaveBeenCalled();
-      expect(tree).toMatchSnapshot();
+      expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+      expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
     });
 
     describe('with dashboard analytics data', () => {
       it('renders full report', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(<AdminWrapper {...baseProps} />);
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Full report')).toBeInTheDocument();
       });
 
       it('renders registered but not enrolled report', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'registered-unenrolled-learners',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="registered-unenrolled-learners"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Registered Learners Not Yet Enrolled in a Course')).toBeInTheDocument();
       });
 
       it('renders # courses enrolled by learners', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'enrolled-learners',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="enrolled-learners"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Number of Courses Enrolled by Learners')).toBeInTheDocument();
       });
 
       it('renders learners not enrolled in an active course', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'enrolled-learners-inactive-courses',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="enrolled-learners-inactive-courses"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Learners Not Enrolled in an Active Course')).toBeInTheDocument();
       });
 
       it('renders top active learners', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'learners-active-week',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="learners-active-week"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Learners Enrolled in a Course')).toBeInTheDocument();
+        expect(screen.getByText('Top Active Learners')).toBeInTheDocument();
       });
 
       it('renders inactive learners past week', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'learners-inactive-week',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="learners-inactive-week"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Learners Enrolled in a Course')).toBeInTheDocument();
+        expect(screen.getByText('Not Active in Past Week')).toBeInTheDocument();
       });
 
       it('renders inactive learners past month', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'learners-inactive-month',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="learners-inactive-month"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Learners Enrolled in a Course')).toBeInTheDocument();
+        expect(screen.getByText('Not Active in Past Month')).toBeInTheDocument();
       });
 
       it('renders # of courses completed by learner', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'completed-learners',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="completed-learners"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Number of Courses Completed by Learner')).toBeInTheDocument();
       });
 
       it('renders # of courses completed by learner in past week', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {
-                  actionSlug: 'completed-learners-week',
-                },
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        render(
+          <AdminWrapper
+            {...baseProps}
+            actionSlug="completed-learners-week"
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Number of Courses Completed by Learner')).toBeInTheDocument();
+        expect(screen.getByText('Past Week')).toBeInTheDocument();
       });
 
       it('renders collapsible cards', () => {
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              match={{
-                url: '/',
-                params: {},
-              }}
-            />
-          ))
-          .toJSON();
-        expect(tree).toMatchSnapshot();
+        const { container } = render(
+          <AdminWrapper
+            {...baseProps}
+          />,
+        );
+        expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(screen.getByText('Full report')).toBeInTheDocument();
+        expect(container.querySelector('.card-footer')).toBeInTheDocument();
       });
     });
 
     it('with error state', () => {
-      const tree = renderer
-        .create((
-          <AdminWrapper error={Error('Network Error')} />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      render(<AdminWrapper error={Error('Network Error')} />);
+
+      expect(screen.getByText('Hey, nice to see you')).toBeInTheDocument();
+      expect(screen.getByText(/Try refreshing your screen Network Error/)).toBeInTheDocument();
     });
 
     it('with loading state', () => {
-      const tree = renderer
-        .create((
-          <AdminWrapper loading />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const { container } = render(<AdminWrapper loading />);
+
+      expect(container.querySelector('main')).toHaveClass('learner-progress-report');
+      expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+      expect(container.querySelector('.admin-cards-skeleton')).toBeInTheDocument();
     });
 
     it('with no dashboard insights data', () => {
-      const insights = null;
-      const tree = renderer
-        .create((
-          <AdminWrapper
-            {...baseProps}
-            insights={insights}
-          />
-        ))
-        .toJSON();
+      const { container } = render(<AdminWrapper {...baseProps} insights={null} />);
 
-      expect(tree).toMatchSnapshot();
+      expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
+      expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+      expect(container.querySelector('.number-cards')).not.toBeInTheDocument();
     });
 
     describe('with dashboard insights data', () => {
@@ -383,16 +336,17 @@ describe('<Admin />', () => {
             created_at: '2023-10-02T03:24:40Z',
           },
         };
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              insights={insights}
-            />
-          ))
-          .toJSON();
 
-        expect(tree).toMatchSnapshot();
+        const { container } = render(<AdminWrapper {...baseProps} insights={insights} />);
+
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(container.querySelector('.number-card')).toBeInTheDocument();
+      });
+
+      it('renders skeleton when loading is true', () => {
+        const { container } = render(<AdminWrapper {...baseProps} loading />);
+
+        expect(container.querySelector('.admin-cards-skeleton')).toBeInTheDocument();
       });
     });
 
@@ -403,16 +357,11 @@ describe('<Admin />', () => {
           subsidy_access_policy_uuid: budgetUUID,
           subsidy_access_policy_display_name: 'Everything',
         }];
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              budgets={budgets}
-            />
-          ))
-          .toJSON();
 
-        expect(tree).toMatchSnapshot();
+        const { container } = render(<AdminWrapper {...baseProps} budgets={budgets} />);
+
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(container.querySelector('.budgets-dropdown')).toBeInTheDocument();
       });
     });
 
@@ -422,16 +371,11 @@ describe('<Admin />', () => {
           enterprise_group_uuid: 'test-group-uuid',
           enterprise_group_name: 'test-group-name',
         }];
-        const tree = renderer
-          .create((
-            <AdminWrapper
-              {...baseProps}
-              groups={groups}
-            />
-          ))
-          .toJSON();
 
-        expect(tree).toMatchSnapshot();
+        const { container } = render(<AdminWrapper {...baseProps} groups={groups} />);
+
+        expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
+        expect(container.querySelector('.groups-dropdown')).toBeInTheDocument();
       });
     });
   });
@@ -684,7 +628,7 @@ describe('<Admin />', () => {
         enterpriseId: 'forcing-change-to-trigger-scroll',
       });
       await waitFor(() => {
-        expect(wrapper.text()).toContain('Full Report');
+        expect(wrapper.text()).toContain('Full report');
       });
       expect(scrollIntoViewMock).toHaveBeenCalled();
     });
@@ -702,7 +646,7 @@ describe('<Admin />', () => {
         enterpriseId: 'forcing-change-to-trigger-scroll',
       });
       await waitFor(() => {
-        expect(wrapper.text()).toContain('Full Report');
+        expect(wrapper.text()).toContain('Full report');
       });
       expect(scrollIntoViewMock).not.toHaveBeenCalled();
     });

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import {
@@ -7,7 +7,7 @@ import {
 import { Error, Undo } from '@openedx/paragon/icons';
 import { Link } from 'react-router-dom';
 import {
-  FormattedMessage, injectIntl, intlShape,
+  FormattedMessage, useIntl,
 } from '@edx/frontend-platform/i18n';
 
 import {
@@ -68,12 +68,11 @@ const Admin = ({
   groups,
   insightsLoading,
   insights,
-  intl,
 }) => {
-  const fullReportRef = useRef(null);
-  const [navigateToReport, setNavigateToReport] = useState(location?.hash === '#fullreport');
   const DEFAULT_LPR_COMPONENTS = ['analytics-overview', 'learner-report'];
   const LPR_COMPONENTS_KEY = 'lpr-components-order';
+
+  const intl = useIntl();
 
   const [lprComponents, setLPRComponents] = useState(
     getFromLocalStorage(LPR_COMPONENTS_KEY) || DEFAULT_LPR_COMPONENTS,
@@ -106,8 +105,8 @@ const Admin = ({
       fetchEnterpriseBudgets(enterpriseId);
       fetchEnterpriseGroups(enterpriseId);
     }
+
     return () => {
-      // Equivalent to componentWillUnmount
       clearDashboardAnalytics();
       clearDashboardInsights();
       clearEnterpriseBudgets();
@@ -116,19 +115,10 @@ const Admin = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enterpriseId]);
 
-  // Scroll to report section if #fullreport in url
-  useEffect(() => {
-    const element = fullReportRef.current;
-    if (element && navigateToReport) {
-      element.scrollIntoView();
-      setNavigateToReport(false);
-    }
-  }, [navigateToReport]);
-
   const getMetadataForAction = (actionSlugParam) => {
     const defaultData = {
       title: intl.formatMessage({
-        id: 'admin.portal.lpr.report.full.report.title',
+        id: 'admin.portal.lpr.v2.report.full.report.title',
         defaultMessage: 'Full report',
         description: 'Title for full report',
       }),
@@ -456,7 +446,6 @@ const Admin = ({
       case 'learner-report':
         return (
           <LearnerReport
-            fullReportRef={fullReportRef}
             tableMetadata={tableMetadata}
             actionSlug={actionSlug}
             filtersActive={filtersActive}
@@ -465,6 +454,7 @@ const Admin = ({
             renderFiltersResetButton={renderFiltersResetButton}
             error={error}
             loading={loading}
+            location={location}
             hasEmptyData={hasEmptyData}
             renderDownloadButton={renderDownloadButton}
             displaySearchBar={displaySearchBar}
@@ -567,8 +557,6 @@ Admin.propTypes = {
   groups: PropTypes.arrayOf(PropTypes.shape({})),
   insightsLoading: PropTypes.bool,
   insights: PropTypes.objectOf(PropTypes.shape),
-  // injected
-  intl: intlShape.isRequired,
 };
 
-export default withParams(withLocation(injectIntl(Admin)));
+export default withParams(withLocation(Admin));

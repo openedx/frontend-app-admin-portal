@@ -5,14 +5,14 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { AppContext } from '@edx/frontend-platform/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { SubscriptionDetailPage } from './SubscriptionDetailPage';
-import { SubsidyRequestsContext } from '../subsidy-requests';
+import { SubscriptionDetailPage } from '../SubscriptionDetailPage';
+import { SubsidyRequestsContext } from '../../subsidy-requests';
 import {
   generateSubscriptionPlan,
   mockSubscriptionHooks,
   MockSubscriptionContext,
-} from '../subscriptions/tests/TestUtilities';
-import * as hooks from '../subscriptions/data/contextHooks';
+} from '../../subscriptions/tests/TestUtilities';
+import * as hooks from '../../subscriptions/data/contextHooks';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
