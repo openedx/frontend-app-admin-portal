@@ -116,6 +116,12 @@ const LearnerAccess = ({ subscriptions, creditPlansData, isLoading }: LearnerAcc
     defaultMessage: 'Learning Access',
     description: 'Header for learner access information',
   });
+  const noSubsidiesMessage = intl.formatMessage({
+    id: 'adminPortal.peopleManagement.learnerDetailPage.noSubsidiesMessage',
+    defaultMessage: 'This learner has not been invited to any subsidies.',
+    description: 'Message displayed when a learner has no subscriptions or credit plans',
+  });
+
   return (
     <div>
       {isLoading ? (
@@ -128,22 +134,28 @@ const LearnerAccess = ({ subscriptions, creditPlansData, isLoading }: LearnerAcc
           <div className="pt-3">
             <h3 className="pb-3">{accessHeader}</h3>
             <div className="learner-detail-section">
-              {subscriptions.length > 0 && (
-                <div>
-                  <h5 className="pb-3 ml-3 mb-0">SUBSCRIPTION</h5>
-                  {subscriptions.map((subscription) => (
-                    <SubsidyLink key={subscription.uuid} subscription={subscription} />
-                  ))}
-                </div>
-              )}
+              {subscriptions.length > 0 || creditPlansData?.length > 0 ? (
+                <>
+                  {subscriptions.length > 0 && (
+                    <div>
+                      <h5 className="pb-3 ml-3 mb-0">SUBSCRIPTION</h5>
+                      {subscriptions.map((subscription) => (
+                        <SubsidyLink key={subscription.uuid} subscription={subscription} />
+                      ))}
+                    </div>
+                  )}
 
-              {creditPlansData?.length > 0 && (
-                <div>
-                  <h5 className="pb-3 ml-3 mb-0">LEARNER CREDIT</h5>
-                  {creditPlansData.map((plan) => (
-                    <LearnerCreditLink key={plan.uuid} plan={plan} />
-                  ))}
-                </div>
+                  {creditPlansData?.length > 0 && (
+                    <div>
+                      <h5 className="pb-3 ml-3 mb-0">LEARNER CREDIT</h5>
+                      {creditPlansData.map((plan) => (
+                        <LearnerCreditLink key={plan.uuid} plan={plan} />
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p className="text-muted pl-3">{noSubsidiesMessage}</p>
               )}
             </div>
           </div>

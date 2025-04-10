@@ -237,6 +237,20 @@ describe('LearnerDetailPage', () => {
     expect(screen.getByText('Removed: March 17, 2025')).toBeInTheDocument();
   });
 
+  it('renders groups section without groups', async () => {
+    useEnterpriseGroupMemberships.mockReturnValue({
+      data: {
+        data: {
+          results: [],
+        },
+      },
+    });
+    render(<LearnerDetailPageWrapper />);
+    await waitFor(() => {
+      expect(screen.getByText('This learner has not been added to any groups.')).toBeInTheDocument();
+    });
+  });
+
   it('renders learner access information when data is loaded', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: ENTERPRISE_SLUG,

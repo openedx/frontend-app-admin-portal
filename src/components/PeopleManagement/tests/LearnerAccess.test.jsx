@@ -49,6 +49,16 @@ describe('LearnerAccess', () => {
     expect(screen.getByText('Learning Access')).toBeInTheDocument();
   });
 
+  it('renders zero state', () => {
+    renderComponent({
+      subscriptions: [],
+      creditPlansData: { results: [] },
+    });
+    expect(screen.queryByText(
+      'This learner has not been invited to any subsidies.',
+    )).toBeInTheDocument();
+  });
+
   it('renders subscription section when subscriptions exist', () => {
     renderComponent();
     expect(screen.getByText('SUBSCRIPTION')).toBeInTheDocument();
