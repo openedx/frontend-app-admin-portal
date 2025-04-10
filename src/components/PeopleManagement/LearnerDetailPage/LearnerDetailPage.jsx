@@ -18,6 +18,7 @@ import useEnterpriseLearnerData from './data/hooks';
 import LearnerDetailGroupMemberships from './LearnerDetailGroupMemberships';
 import LearnerAccess from './LearnerAccess';
 import CourseEnrollments from './CourseEnrollments';
+import { transformLearnerContentAssignment } from '../utils';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
@@ -35,7 +36,8 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
     enterpriseId: enterpriseUUID,
     lmsUserId: learnerId,
   });
-
+  const creditAssignments = creditPlansData?.assignmentsForDisplay?.map(enrollment => (
+    transformLearnerContentAssignment(enrollment)));
   const activeLabel = () => {
     if (!isLoading && !learnerData?.name) {
       return learnerData?.email;
@@ -103,14 +105,14 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
             </Card>
             <LearnerAccess
               subscriptions={profileData?.data?.subscriptions}
-              creditPlansData={creditPlansData}
+              creditPlansData={creditPlansData.policies}
               isLoading={isLoadingProfile}
             />
             <LearnerDetailGroupMemberships enterpriseUuid={enterpriseUUID} lmsUserId={learnerId} />
           </div>
           <div className="col col-6">
             <CourseEnrollments
-              enrollments={profileData?.data?.enrollments}
+              enrollments={{ ...profileData?.data?.enrollments, assignmentsForDisplay: creditAssignments }}
               isLoading={isLoadingProfile}
             />
           </div>

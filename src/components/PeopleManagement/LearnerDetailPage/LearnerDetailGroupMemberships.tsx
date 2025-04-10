@@ -47,7 +47,7 @@ GroupMembershipLink.propTypes = {
     groupUuid: PropTypes.string.isRequired,
     groupName: PropTypes.string.isRequired,
     recentAction: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };
 
 const LearnerDetailGroupMemberships = ({ enterpriseUuid, lmsUserId }: EnterpriseGroupMembershipArgs) => {
@@ -71,7 +71,9 @@ const LearnerDetailGroupMemberships = ({ enterpriseUuid, lmsUserId }: Enterprise
         <div className="pt-3">
           <h3 className="pb-3">{groupsHeader}</h3>
           <div className="learner-detail-section">
-            {groupMemberships?.map((groupMembership) => (<GroupMembershipLink groupMembership={groupMembership} />))}
+            {groupMemberships?.map((groupMembership) => (
+              <GroupMembershipLink key={groupMembership.groupUuid} groupMembership={groupMembership} />
+            ))}
           </div>
         </div>
       ))}
