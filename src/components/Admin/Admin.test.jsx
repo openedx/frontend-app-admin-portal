@@ -484,10 +484,6 @@ describe('<Admin />', () => {
         csvFetchMethod: 'fetchEnrolledLearners',
         csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
-      'enrolled-learners-inactive-courses': {
-        csvFetchMethod: 'fetchEnrolledLearnersForInactiveCourses',
-        csvFetchParams: [enterpriseId, {}, { csv: true }],
-      },
       'completed-learners': {
         csvFetchMethod: 'fetchCompletedLearners',
         csvFetchParams: [enterpriseId, {}, { csv: true }],
