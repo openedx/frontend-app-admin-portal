@@ -142,7 +142,7 @@ class Admin extends React.Component {
           defaultMessage: 'Learners who have completed all of their courses and/or courses have ended.',
           description: 'Report description for learners not enrolled in an active course',
         }),
-        component: <EnrolledLearnersForInactiveCoursesTable />,
+        component: <EnrolledLearnersForInactiveCoursesTable id="enrolled-learners-inactive-courses" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchEnrolledLearnersForInactiveCourses(
             enterpriseId,

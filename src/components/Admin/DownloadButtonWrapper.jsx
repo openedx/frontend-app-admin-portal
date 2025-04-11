@@ -15,6 +15,7 @@ const DownloadButtonWrapper = ({
     'learners-active-week',
     'learners-inactive-week',
     'learners-inactive-month',
+    'enrolled-learners-inactive-courses',
   ].includes(actionSlug);
 
   return (
