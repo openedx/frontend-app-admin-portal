@@ -1,38 +1,36 @@
-const mockUseCourseEnrollments = {
+export const mockEnrolledLearnersData = {
   isLoading: false,
-  courseEnrollments: {
-    itemCount: 2,
-    pageCount: 1,
+  hasData: true,
+  fetchData: jest.fn(),
+  fetchDataImmediate: jest.fn(),
+  data: {
     results: [
       {
-        id: 1,
-        passedDate: '2018-09-23',
-        courseTitle: 'Dive into ReactJS',
-        courseKey: 'edX/ReactJS',
-        userEmail: 'awesome.me@example.com',
-        courseListPrice: '200',
-        courseStartDate: '2017-10-21',
-        courseEndDate: '2018-05-13',
-        currentGrade: '0.66',
-        progressStatus: 'Failed',
-        lastActivityDate: '2018-09-22',
+        userEmail: 'learner1@example.com',
+        enrollmentCount: 3,
+        courseCompletionCount: 2,
+        lastActivityDate: '2025-01-01T00:00:00Z',
       },
       {
-        id: 5,
-        passedDate: '2018-09-22',
-        courseTitle: 'Redux with ReactJS',
-        courseKey: 'edX/Redux_ReactJS',
-        userEmail: 'new@example.com',
-        courseListPrice: '200',
-        courseStartDate: '2017-10-21',
-        courseEndDate: '2018-05-13',
-        currentGrade: '0.80',
-        progressStatus: 'Passed',
-        lastActivityDate: '2018-09-25',
+        userEmail: 'learner2@example.com',
+        enrollmentCount: 5,
+        courseCompletionCount: 5,
+        lastActivityDate: '2025-02-01T00:00:00Z',
       },
     ],
+    itemCount: 2,
+    pageCount: 1,
   },
-  fetchCourseEnrollments: jest.fn(),
 };
 
-export default mockUseCourseEnrollments;
+export const mockEmptyEnrolledLearnersData = {
+  isLoading: false,
+  hasData: false,
+  fetchData: jest.fn(),
+  fetchDataImmediate: jest.fn(),
+  data: {
+    results: [],
+    itemCount: 0,
+    pageCount: 0,
+  },
+};
