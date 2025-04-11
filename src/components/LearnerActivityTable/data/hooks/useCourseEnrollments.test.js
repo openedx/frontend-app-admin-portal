@@ -2,8 +2,9 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { logError } from '@edx/frontend-platform/logging';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 import EVENT_NAMES from '../../../../eventTracking';
-import { trackDataTableEvent } from '../utils';
+import { trackDataTableEvent } from '../../../../utils';
 import useCourseEnrollments from './useCourseEnrollments';
+import usePaginatedTableData from '../../../../hooks/usePaginatedTableData';
 
 // Mock dependencies
 jest.mock('@edx/frontend-platform/utils', () => ({
@@ -18,7 +19,12 @@ jest.mock('../../../../data/services/EnterpriseDataApiService', () => ({
   fetchCourseEnrollments: jest.fn(),
 }));
 
-jest.mock('../utils', () => ({
+jest.mock('../../../../hooks/usePaginatedTableData', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+jest.mock('../../../../utils', () => ({
   trackDataTableEvent: jest.fn(),
 }));
 
@@ -32,19 +38,31 @@ describe('useCourseEnrollments', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    usePaginatedTableData.mockReturnValue({
+      isLoading: false,
+      data: {
+        itemCount: 0,
+        pageCount: 0,
+        results: [],
+      },
+      fetchData: jest.fn(),
+      fetchDataImmediate: jest.fn(),
+      hasData: false,
+    });
   });
 
   it('should initialize with correct default values', () => {
     const { result } = renderHook(() => useCourseEnrollments(enterpriseId, tableId, apiFieldsForColumnAccessor));
 
-    expect(result.current.isLoading).toBe(true);
-    expect(result.current.courseEnrollments).toEqual({
+    const { isLoading, data: courseEnrollments, hasData } = result.current;
+
+    expect(isLoading).toBe(false);
+    expect(courseEnrollments).toEqual({
       itemCount: 0,
       pageCount: 0,
       results: [],
     });
-    expect(result.current.hasData).toBe(false);
-    expect(typeof result.current.fetchCourseEnrollments).toBe('function');
+    expect(hasData).toBe(false);
   });
 
   it('should fetch course enrollments successfully', async () => {
@@ -63,6 +81,9 @@ describe('useCourseEnrollments', () => {
       tableId,
       apiFieldsForColumnAccessor,
     ));
+    const {
+      isLoading, data: courseEnrollments, hasData, fetchData,
+    } = result.current;
 
     const fetchArgs = {
       pageIndex: 0,
@@ -71,7 +92,7 @@ describe('useCourseEnrollments', () => {
     };
 
     act(() => {
-      result.current.fetchCourseEnrollments(fetchArgs);
+      fetchData(fetchArgs);
     });
 
     await waitForNextUpdate();
@@ -84,14 +105,14 @@ describe('useCourseEnrollments', () => {
       }),
     );
 
-    expect(result.current.isLoading).toBe(false);
+    expect(isLoading).toBe(false);
 
-    expect(result.current.courseEnrollments).toEqual({
+    expect(courseEnrollments).toEqual({
       itemCount: 2,
       pageCount: 1,
       results: [{ id: 1 }, { id: 2 }],
     });
-    expect(result.current.hasData).toBe(true);
+    expect(hasData).toBe(true);
   });
 
   it('should handle errors when fetching course enrollments', async () => {
