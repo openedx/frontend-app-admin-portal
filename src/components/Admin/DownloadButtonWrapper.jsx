@@ -10,8 +10,8 @@ const DownloadButtonWrapper = ({
 }) => {
   const { tablesWithData } = useTableData();
 
-  // Check if this is a LearnerActivityTable
-  const isLearnerActivityTable = [
+  // Identify tables that rely on the useTableData hook and have been migrated to the new DataTable component.
+  const isTableUsingDataState = [
     'learners-active-week',
     'learners-inactive-week',
     'learners-inactive-month',
@@ -21,7 +21,7 @@ const DownloadButtonWrapper = ({
     <DownloadCsvButton
       id={tableMetadata.csvButtonId}
       fetchMethod={tableMetadata.csvFetchMethod}
-      disabled={isLearnerActivityTable ? !tablesWithData[actionSlug] : isTableDataMissing(actionSlug)}
+      disabled={isTableUsingDataState ? !tablesWithData[actionSlug] : isTableDataMissing(actionSlug)}
       buttonLabel={downloadButtonLabel}
     />
   );

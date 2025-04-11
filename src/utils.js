@@ -15,6 +15,8 @@ import isNumeric from 'validator/lib/isNumeric';
 import { logError } from '@edx/frontend-platform/logging';
 import { snakeCaseObject } from '@edx/frontend-platform/utils';
 
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+
 import { features } from './config';
 
 import {
@@ -697,6 +699,103 @@ function removeStringsFromListCaseInsensitive(list, stringsToRemove) {
   return remainingLowercase.map(str => lowercaseLookup[str]);
 }
 
+/**
+ * This utility was extracted from individual table components where it was being
+ * reused across multiple places. Centralizing it here helps maintain DRY principles
+ * and improves maintainability.
+ *
+ * @param {Array} sortBy - Array of sort configuration objects ({ id, desc }).
+ * @param {Object} apiFieldsForColumnAccessor - Mapping of column ids to API field definitions.
+ * @param {Object} options - Object to which the generated ordering string will be assigned.
+ */
+const applySortByToOptions = (sortBy, apiFieldsForColumnAccessor, options) => {
+  if (!sortBy || sortBy.length === 0) {
+    return;
+  }
+
+  const orderingStrings = sortBy
+    .map(({ id, desc }) => {
+      const fieldForColumnAccessor = apiFieldsForColumnAccessor[id];
+      if (!fieldForColumnAccessor) {
+        return undefined;
+      }
+      const apiFieldKey = fieldForColumnAccessor.key;
+      return desc ? `-${apiFieldKey}` : apiFieldKey;
+    })
+    .filter(Boolean);
+
+  Object.assign(options, {
+    ordering: orderingStrings.join(','),
+  });
+};
+
+/**
+ * Tracks a DataTable event for user interactions such as pagination, sorting, or filtering.
+ * Ensures that events are not sent on the initial page load, but only after the user interacts with the table.
+ *
+ * @param {Object} params - Parameters for tracking the event.
+ * @param {Object} params.shouldTrackRef - A ref object used to determine whether tracking should occur.
+ * @param {string} params.enterpriseId - The ID of the enterprise context for the event.
+ * @param {string} params.eventName - The name of the event to be tracked.
+ * @param {string} params.tableId - Unique identifier for the DataTable.
+ * @param {Object} params.options - Additional data to be sent with the event (e.g., filters, sort, page info).
+ *
+ * @returns {boolean} Updated value of shouldTrackRef.current indicating if tracking is now enabled.
+ */
+const trackDataTableEvent = ({
+  shouldTrackRef,
+  enterpriseId,
+  eventName,
+  tableId,
+  options,
+}) => {
+  if (shouldTrackRef.current) {
+    // track event only after original API query to avoid sending event on initial page load
+    // only track event when user performs manual data operation (e.g., pagination, sort, filter)
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      eventName,
+      {
+        tableId,
+        ...options,
+      },
+    );
+  } else {
+    // set to true to enable tracking events on future API queries
+    // eslint-disable-next-line no-param-reassign
+    shouldTrackRef.current = true;
+  }
+
+  return shouldTrackRef.current;
+};
+
+/**
+ * Tracks a DataTable event for user interactions such as pagination, sorting, or filtering.
+ * Ensures that events are not sent on the initial page load, but only after the user interacts with the table.
+ *
+ * @param {Object} params - Parameters for tracking the event.
+ * @param {Object} params.shouldTrackRef - A ref object used to determine whether tracking should occur.
+ * @param {string} params.enterpriseId - The ID of the enterprise context for the event.
+ * @param {string} params.eventName - The name of the event to be tracked.
+ * @param {string} params.tableId - Unique identifier for the DataTable.
+ * @param {Object} params.options - Additional data to be sent with the event (e.g., filters, sort, page info).
+ *
+ * @returns {boolean} Updated value of shouldTrackRef.current indicating if tracking is now enabled.
+ */
+const updateUrlWithPageNumber = (tableId, pageNumber, location, navigate, replace = true) => {
+  const newQueryParams = new URLSearchParams(location.search);
+
+  if (pageNumber !== 1) { // Default page is 1
+    newQueryParams.set(`${tableId}-page`, pageNumber);
+  } else {
+    newQueryParams.delete(`${tableId}-page`);
+  }
+
+  const newSearch = newQueryParams.toString();
+  const queryString = newSearch ? `?${newSearch}` : '';
+  navigate(`${location.pathname}${queryString}`, { replace });
+};
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -749,4 +848,7 @@ export {
   splitAndTrim,
   removeStringsFromList,
   removeStringsFromListCaseInsensitive,
+  applySortByToOptions,
+  trackDataTableEvent,
+  updateUrlWithPageNumber,
 };

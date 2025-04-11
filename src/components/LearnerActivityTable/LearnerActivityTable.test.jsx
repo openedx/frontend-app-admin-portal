@@ -6,15 +6,13 @@ import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 
 import LearnerActivityTable from '.';
-import useCourseEnrollments from './data/hooks/useCourseEnrollments';
-import mockUseCourseEnrollments from './data/tests/constants';
+import usePaginatedTableData from '../../hooks/usePaginatedTableData';
+import { mockUseCourseEnrollments, mockEmptyCourseEnrollmentsData } from './data/tests/constants';
 
 const enterpriseId = 'test-enterprise';
 const mockStore = configureMockStore([thunk]);
 
-jest.mock('./data/hooks/useCourseEnrollments.js', () => (
-  jest.fn().mockReturnValue({})
-));
+jest.mock('../../hooks/usePaginatedTableData', () => jest.fn());
 
 const store = mockStore({
   portalConfiguration: {
@@ -26,9 +24,7 @@ const LearnerActivityTableWrapper = props => (
   <MemoryRouter>
     <IntlProvider locale="en">
       <Provider store={store}>
-        <LearnerActivityTable
-          {...props}
-        />
+        <LearnerActivityTable {...props} />
       </Provider>
     </IntlProvider>
   </MemoryRouter>
@@ -36,23 +32,18 @@ const LearnerActivityTableWrapper = props => (
 
 const verifyLearnerActivityTableRendered = (tableId, activity, columnTitles, rowsData) => {
   const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
-
   const table = wrapper.find('[role="table"]');
   const headerColumns = table.find('thead th');
   const tableRows = table.find('tbody tr');
 
-  // Verify the number of columns
   expect(headerColumns).toHaveLength(columnTitles.length);
 
-  // Verify column titles
   headerColumns.forEach((column, index) => {
     expect(column.text()).toContain(columnTitles[index]);
   });
 
-  // Verify the number of rows
   expect(tableRows).toHaveLength(rowsData.length);
 
-  // Verify row data
   tableRows.forEach((row, rowIndex) => {
     const cells = row.find('td');
     cells.forEach((cell, colIndex) => {
@@ -63,32 +54,19 @@ const verifyLearnerActivityTableRendered = (tableId, activity, columnTitles, row
 
 describe('LearnerActivityTable', () => {
   beforeEach(() => {
-    useCourseEnrollments.mockReturnValue(mockUseCourseEnrollments);
+    usePaginatedTableData.mockReturnValue(mockUseCourseEnrollments);
   });
 
   afterEach(() => jest.clearAllMocks());
 
-  // Replacing the snapshot tests with explicit assertions
   it('renders empty table correctly', () => {
-    useCourseEnrollments.mockReturnValue({
-      isLoading: false,
-      courseEnrollments: {
-        itemCount: 0,
-        pageCount: 0,
-        results: [],
-      },
-      fetchCourseEnrollments: jest.fn(),
-      hasData: false,
-    });
+    usePaginatedTableData.mockReturnValue(mockEmptyCourseEnrollmentsData);
 
     const wrapper = mount(
       <LearnerActivityTableWrapper id="active-week" activity="active_past_week" />,
     );
 
-    // Verify the table exists
     expect(wrapper.find('[role="table"]').exists()).toBe(true);
-
-    // Verify no data rows are displayed
     expect(wrapper.find('tbody tr').length).toBe(0);
   });
 
@@ -108,21 +86,15 @@ describe('LearnerActivityTable', () => {
     ];
 
     const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
-
-    // Verify the table exists
     const table = wrapper.find('[role="table"]');
-    expect(table.exists()).toBe(true);
-
-    // Verify correct columns are displayed
     const headerColumns = table.find('thead th');
-    expect(headerColumns).toHaveLength(columnTitles.length);
 
-    // Verify column titles
+    expect(table.exists()).toBe(true);
+    expect(headerColumns).toHaveLength(columnTitles.length);
     headerColumns.forEach((column, index) => {
       expect(column.text()).toContain(columnTitles[index]);
     });
 
-    // Verify data is rendered
     expect(wrapper.find('tbody tr').length).toBeGreaterThan(0);
   });
 
@@ -141,25 +113,17 @@ describe('LearnerActivityTable', () => {
     ];
 
     const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
-
-    // Verify the table exists
     const table = wrapper.find('[role="table"]');
-    expect(table.exists()).toBe(true);
-
-    // Verify correct columns are displayed (should not include Passed Date)
     const headerColumns = table.find('thead th');
-    expect(headerColumns).toHaveLength(columnTitles.length);
 
-    // Verify column titles
+    expect(table.exists()).toBe(true);
+    expect(headerColumns).toHaveLength(columnTitles.length);
     headerColumns.forEach((column, index) => {
       expect(column.text()).toContain(columnTitles[index]);
     });
 
-    // Verify "Passed Date" column is not present
     const columnHeaders = headerColumns.map(col => col.text());
     expect(columnHeaders.includes('Passed Date')).toBe(false);
-
-    // Verify data is rendered
     expect(wrapper.find('tbody tr').length).toBeGreaterThan(0);
   });
 
@@ -178,25 +142,17 @@ describe('LearnerActivityTable', () => {
     ];
 
     const wrapper = mount(<LearnerActivityTableWrapper id={tableId} activity={activity} />);
-
-    // Verify the table exists
     const table = wrapper.find('[role="table"]');
-    expect(table.exists()).toBe(true);
-
-    // Verify correct columns are displayed (should not include Passed Date)
     const headerColumns = table.find('thead th');
-    expect(headerColumns).toHaveLength(columnTitles.length);
 
-    // Verify column titles
+    expect(table.exists()).toBe(true);
+    expect(headerColumns).toHaveLength(columnTitles.length);
     headerColumns.forEach((column, index) => {
       expect(column.text()).toContain(columnTitles[index]);
     });
 
-    // Verify "Passed Date" column is not present
     const columnHeaders = headerColumns.map(col => col.text());
     expect(columnHeaders.includes('Passed Date')).toBe(false);
-
-    // Verify data is rendered
     expect(wrapper.find('tbody tr').length).toBeGreaterThan(0);
   });
 
