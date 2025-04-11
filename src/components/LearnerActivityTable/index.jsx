@@ -12,10 +12,10 @@ import {
   i18nFormatPassedTimestamp,
   i18nFormatProgressStatus,
   formatPercentage,
+  updateUrlWithPageNumber,
 } from '../../utils';
 import { formatPrice } from '../learner-credit-management/data';
 import { useTableData } from '../Admin/TableDataContext';
-import { updateUrlWithPageNumber } from './data/utils';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -56,10 +56,21 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
 
   const {
     isLoading,
-    courseEnrollments,
-    fetchCourseEnrollments,
+    data: courseEnrollments,
+    fetchData: fetchCourseEnrollments,
+    fetchDataImmediate,
     hasData,
   } = useCourseEnrollments(enterpriseId, id, apiFieldsForColumnAccessor);
+
+  /// To load data correctly the first time, we use the non-debounced `fetchDataImmediate`
+  // on initial load to ensure the data is fetched immediately without any delay.
+  useEffect(() => {
+    fetchDataImmediate({
+      pageIndex: currentPageFromUrl,
+      pageSize: PAGE_SIZE,
+      sortBy: [],
+    }, true);
+  }, []);
 
   // Update context when data status changes
   useEffect(() => {
