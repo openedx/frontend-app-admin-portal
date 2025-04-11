@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useMemo, useCallback, useEffect } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { DataTable, TextFilter } from '@openedx/paragon';
@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useCourseUsers from './data/hooks/useCourseUsers';
 import { PAGE_SIZE } from '../../data/constants/table';
-import { i18nFormatTimestamp } from '../../utils';
+import { i18nFormatTimestamp, updateUrlWithPageNumber } from '../../utils';
 import { useTableData } from '../Admin/TableDataContext';
-import { updateUrlWithPageNumber } from '../LearnerActivityTable/data/utils';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -45,10 +44,21 @@ const EnrolledLearnersForInactiveCoursesTable = ({ id, enterpriseId }) => {
 
   const {
     isLoading,
-    courseUsers,
-    fetchCourseUsers,
+    data: courseUsers,
+    fetchData: fetchCourseUsers,
+    fetchDataImmediate,
     hasData,
   } = useCourseUsers(enterpriseId, id, apiFieldsForColumnAccessor);
+
+  // To load data correctly the first time, we use the non-debounced `fetchDataImmediate`
+  // on initial load to ensure the data is fetched immediately without any delay.
+  useEffect(() => {
+    fetchDataImmediate({
+      pageIndex: currentPageFromUrl,
+      pageSize: PAGE_SIZE,
+      sortBy: [],
+    }, true);
+  }, []);
 
   // Update context when data status changes
   useEffect(() => {

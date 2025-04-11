@@ -14,7 +14,7 @@ import {
   useLearnerProfileView,
   useLearnerCreditPlans,
 } from '../data/hooks';
-import useEnterpriseLearnerData from './data/hooks';
+import { useEnterpriseLearnerData } from './data/hooks';
 import LearnerDetailGroupMemberships from './LearnerDetailGroupMemberships';
 import LearnerAccess from './LearnerAccess';
 import CourseEnrollments from './CourseEnrollments';
