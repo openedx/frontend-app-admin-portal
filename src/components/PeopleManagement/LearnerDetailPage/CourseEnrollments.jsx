@@ -12,47 +12,35 @@ const CourseEnrollments = ({ enrollments, isLoading }) => {
     description: 'Message displayed when a learner has no course enrollments',
   });
 
-  const hasEnrollments = enrollments?.completed?.length > 0
-    || enrollments?.inProgress?.length > 0
-    || enrollments?.upcoming?.length > 0
-    || enrollments?.assignmentsForDisplay?.length > 0;
+  const enrollmentTypes = ['inProgress', 'upcoming', 'completed', 'assignmentsForDisplay'];
+  const flattenedEnrollments = enrollmentTypes.flatMap(type => enrollments?.[type] || []);
+  const hasEnrollments = flattenedEnrollments.length > 0;
+
+  if (isLoading) {
+    return (
+      <div className="ml-5">
+        <Skeleton width={400} height={200} data-testid="skeleton" />
+      </div>
+    );
+  }
 
   return (
-    <div className="ml-5">
-      {isLoading ? (
-        <Skeleton
-          width={400}
-          height={200}
-          data-testid="skeleton"
-        />
-      ) : (
+    <>
+      <h3>Enrollments</h3>
+      {hasEnrollments ? (
         <>
-          <h3>Enrollments</h3>
-          {hasEnrollments ? (
-            <>
-              {enrollments?.inProgress?.map((enrollment) => (
-                <EnrollmentCard key={enrollment.uuid} enrollment={enrollment} />
-              ))}
-              {enrollments?.upcoming?.map((enrollment) => (
-                <EnrollmentCard key={enrollment.uuid} enrollment={enrollment} />
-              ))}
-              {enrollments?.completed?.map((enrollment) => (
-                <EnrollmentCard key={enrollment.uuid} enrollment={enrollment} />
-              ))}
-              {enrollments?.assignmentsForDisplay?.map((enrollment) => (
-                <EnrollmentCard key={enrollment.uuid} enrollment={enrollment} />
-              ))}
-            </>
-          ) : (
-            <Card className="mb-4">
-              <Card.Body>
-                <p className="text-muted mb-0 pt-3 pb-3 pl-3 ">{noEnrollmentsMessage}</p>
-              </Card.Body>
-            </Card>
-          )}
+          {flattenedEnrollments.map((enrollment) => (
+            <EnrollmentCard key={enrollment.uuid} enrollment={enrollment} />
+          ))}
         </>
+      ) : (
+        <Card className="mb-4">
+          <Card.Section>
+            <p className="text-muted mb-0 pt-3 pb-3 pl-3 ">{noEnrollmentsMessage}</p>
+          </Card.Section>
+        </Card>
       )}
-    </div>
+    </>
   );
 };
 
