@@ -52,12 +52,17 @@ GroupMembershipLink.propTypes = {
 
 const LearnerDetailGroupMemberships = ({ enterpriseUuid, lmsUserId }: EnterpriseGroupMembershipArgs) => {
   const { isLoading, data } = useEnterpriseGroupMemberships({ enterpriseUuid, lmsUserId });
-  const groupMemberships = data?.data?.results;
+  const groupMemberships = data?.data?.results || [];
   const intl = useIntl();
   const groupsHeader = intl.formatMessage({
     id: 'adminPortal.peopleManagement.learnerDetailPage.groupsHeader',
     defaultMessage: 'Groups',
     description: 'Header for groups the learner is part of',
+  });
+  const noGroupsMessage = intl.formatMessage({
+    id: 'adminPortal.peopleManagement.learnerDetailPage.noGroupsMessage',
+    defaultMessage: 'This learner has not been added to any groups.',
+    description: 'Message displayed when a learner has no group memberships',
   });
 
   return (
@@ -67,16 +72,20 @@ const LearnerDetailGroupMemberships = ({ enterpriseUuid, lmsUserId }: Enterprise
           width={400}
           height={200}
         />
-      ) : (groupMemberships && (
+      ) : (
         <div className="pt-3">
           <h3 className="pb-3">{groupsHeader}</h3>
           <div className="learner-detail-section">
-            {groupMemberships?.map((groupMembership) => (
-              <GroupMembershipLink key={groupMembership.groupUuid} groupMembership={groupMembership} />
-            ))}
+            {groupMemberships.length > 0 ? (
+              groupMemberships.map((groupMembership) => (
+                <GroupMembershipLink key={groupMembership.groupUuid} groupMembership={groupMembership} />
+              ))
+            ) : (
+              <p className="text-muted pl-3">{noGroupsMessage}</p>
+            )}
           </div>
         </div>
-      ))}
+      )}
     </div>
   );
 };
