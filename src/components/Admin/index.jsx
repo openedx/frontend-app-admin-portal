@@ -109,7 +109,7 @@ class Admin extends React.Component {
           defaultMessage: 'Registered Learners Not Yet Enrolled in a Course',
           description: 'Report title for registered learners not yet enrolled in a course',
         }),
-        component: <RegisteredLearnersTable />,
+        component: <RegisteredLearnersTable id="registered-unenrolled-learners" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchUnenrolledRegisteredLearners(
             enterpriseId,
