@@ -6,10 +6,12 @@ import {
 } from '@openedx/paragon';
 import { NorthEast } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { groupDetailPageUrl } from '../utils';
 import { useEnterpriseGroupMemberships } from '../data/hooks';
 import { EnterpriseGroupMembershipArgs } from '../../../data/services/LmsApiService';
+import EVENT_NAMES from '../../../eventTracking';
 
 type GroupMembershipLinkProps = {
   groupMembership: EnterpriseGroupMembership
@@ -27,6 +29,16 @@ const GroupMembershipLink = ({ groupMembership }: GroupMembershipLinkProps) => {
         destination={groupDetailUrl}
         target="_blank"
         showLaunchIcon={false}
+        onClick={() => {
+          sendEnterpriseTrackEvent(
+            enterpriseSlug,
+            EVENT_NAMES.LEARNER_PROFILE_VIEW.VIEW_GROUP_LINK_CLICK,
+            {
+              groupUuid,
+              groupName,
+            },
+          );
+        }}
       >
         {groupName}
         <Icon
