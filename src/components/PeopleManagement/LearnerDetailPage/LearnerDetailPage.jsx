@@ -26,10 +26,14 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
 
   const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
 
+  const shouldFetchProfile = !!learnerData?.email;
+
   const { isLoading: isLoadingProfile, data: profileData, error: profileError } = useLearnerProfileView({
     enterpriseUuid: enterpriseUUID,
     lmsUserId: learnerId,
     userEmail: learnerData?.email,
+  }, {
+    enabled: shouldFetchProfile,
   });
 
   const { isLoading: isLoadingCreditPlans, data: creditPlansData, error: creditPlansError } = useLearnerCreditPlans({
