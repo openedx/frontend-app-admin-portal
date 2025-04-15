@@ -10,6 +10,8 @@ import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import useAIAnalyticsSummary from '../AIAnalyticsSummary/data/hooks';
 
 export const SUMMARIZE_ANALYTICS_CLICK_SEGMENT_EVENT_NAME = 'edx.ui.enterprise.admin_portal.summarize_analytics.clicked';
+const ENABLE_TRACK_PROGRESS = false;
+
 const AnalyticsDetailCard = ({
   onClose,
   isLoading,
@@ -92,20 +94,22 @@ const AIAnalyticsSummary = ({ enterpriseId, insights, renderOverviewHeading }) =
           </>
         </Button>
         {/* Track Progress is currently hidden due to data inconsistency. It will be addressed as part of ENT-7812 */}
-        <Button
-          variant="outline-primary"
-          className="d-none"
-          onClick={() => {
-            showTrackProgressCard(true);
-            hideSummarizeCard(true);
-          }}
-          data-testid="track-progress"
-        >
-          <>
-            <Groups className="mr-2" />
-            <FormattedMessage id="adminPortal.trackProgress" defaultMessage="Track Progress" />
-          </>
-        </Button>
+        {ENABLE_TRACK_PROGRESS && (
+          <Button
+            variant="outline-primary"
+            className="d-none"
+            onClick={() => {
+              showTrackProgressCard(true);
+              hideSummarizeCard(true);
+            }}
+            data-testid="track-progress"
+          >
+            <>
+              <Groups className="mr-2" />
+              <FormattedMessage id="adminPortal.trackProgress" defaultMessage="Track Progress" />
+            </>
+          </Button>
+        )}
       </Stack>
       {summarizeCardIsOpen && (
         <AnalyticsDetailCard

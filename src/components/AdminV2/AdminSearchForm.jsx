@@ -142,7 +142,7 @@ class AdminSearchForm extends React.Component {
                   />
                 </Form.Label>
                 <Form.Control
-                  className="w-100"
+                  className="w-100 course-dropdown"
                   as="select"
                   value={searchCourseQuery}
                   onChange={e => this.onCourseSelect(e)}
@@ -191,7 +191,7 @@ class AdminSearchForm extends React.Component {
                 </Form.Label>
                 <Form.Control
                   as="select"
-                  className="w-100"
+                  className="w-100 start-date-dropdown"
                   value={searchDateQuery}
                   onChange={event => updateUrl(this.props.navigate, this.props.location.pathname, {
                     search_start_date: event.target.value,

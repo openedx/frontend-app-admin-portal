@@ -94,4 +94,12 @@ describe('SubscriptionDetailPage', () => {
 
     expect(screen.getByText('No subscription available')).toBeInTheDocument();
   });
+  it('renders loading state when loadingSubscription is true', () => {
+    jest.spyOn(hooks, 'useSubscriptionFromParams').mockImplementation(
+      () => [null, true],
+    );
+    render(<SubscriptionDetailPageWrapper />);
+
+    expect(screen.getByTestId('skelly')).toBeInTheDocument();
+  });
 });

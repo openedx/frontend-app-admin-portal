@@ -12,10 +12,28 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
+// Mock the hook
+jest.mock('../data/hooks', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+const mockUseModuleActivityReport = require('../data/hooks').default;
+
 const DEFAULT_PROPS = {
   enterpriseId: TEST_ENTERPRISE_CUSTOMER_SLUG,
 };
-const getMockData = ({ count }) => {
+
+const mockHookData = (data, itemCount = 0, pageCount = 0, isLoading = false) => ({
+  isLoading,
+  paginationData: {
+    itemCount,
+    pageCount,
+    data,
+  },
+});
+
+const getMockData = (count) => {
   const data = [];
   for (let i = 0; i < count; i++) {
     data.push({
@@ -35,26 +53,23 @@ const getMockData = ({ count }) => {
   return data;
 };
 
-jest.mock('../data/hooks', () => (
-  jest.fn(() => ({
-    isLoading: false,
-    paginationData: {
-      itemCount: 500,
-      pageCount: 5,
-      data: getMockData(500),
-    },
-  }))
-));
-
-const ModuleActivityReportWrapper = props => (
+const ModuleActivityReportWrapper = (props) => (
   <IntlProvider locale="en">
     <ModuleActivityReport {...props} />
   </IntlProvider>
 );
 
 describe('ModuleActivityReport', () => {
-  it('renders the module activity report correctly when table is empty.', async () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders the module activity report correctly when table is empty', () => {
+    mockUseModuleActivityReport.mockReturnValue(mockHookData([], 0, 0));
+
     render(<ModuleActivityReportWrapper {...DEFAULT_PROPS} />);
+
+    // Assert table headers
     expect(screen.getByText('Email')).toBeInTheDocument();
     expect(screen.getByText('Course Title')).toBeInTheDocument();
     expect(screen.getByText('Module')).toBeInTheDocument();
@@ -65,5 +80,58 @@ describe('ModuleActivityReport', () => {
     expect(screen.getByText('Learning Outcomes: Before')).toBeInTheDocument();
     expect(screen.getByText('Learning Outcomes: After')).toBeInTheDocument();
     expect(screen.getByText('Learning Outcomes % Difference')).toBeInTheDocument();
+
+    // Assert empty table message
+    expect(screen.getByText('No results found.')).toBeInTheDocument();
+  });
+
+  it('renders table with pagination controls', () => {
+    mockUseModuleActivityReport.mockReturnValue(mockHookData(getMockData(50), 100, 2));
+
+    const { container } = render(<ModuleActivityReportWrapper {...DEFAULT_PROPS} />);
+
+    // Assert pagination controls
+    expect(container.querySelector('.pagination')).toBeInTheDocument();
+  });
+
+  it('renders the datatable with correct data', () => {
+    mockUseModuleActivityReport.mockReturnValue(mockHookData(getMockData(2), 2, 1));
+
+    render(<ModuleActivityReportWrapper {...DEFAULT_PROPS} />);
+
+    // Assert table rows
+    expect(screen.getByText('Email 0')).toBeInTheDocument();
+    expect(screen.getByText('Course 0')).toBeInTheDocument();
+    expect(screen.getByText('Module 0')).toBeInTheDocument();
+    expect(screen.getByText('Module Grade 0')).toBeInTheDocument();
+    expect(screen.getByText('0 Hours Online')).toBeInTheDocument();
+    expect(screen.getByText('0 Log Views')).toBeInTheDocument();
+
+    expect(screen.getByText('Email 1')).toBeInTheDocument();
+    expect(screen.getByText('Course 1')).toBeInTheDocument();
+    expect(screen.getByText('Module 1')).toBeInTheDocument();
+    expect(screen.getByText('Module Grade 1')).toBeInTheDocument();
+    expect(screen.getByText('1 Hours Online')).toBeInTheDocument();
+    expect(screen.getByText('1 Log Views')).toBeInTheDocument();
+  });
+
+  it('renders the search bar with correct props', () => {
+    mockUseModuleActivityReport.mockReturnValue(mockHookData([], 0, 0));
+
+    render(<ModuleActivityReportWrapper {...DEFAULT_PROPS} />);
+
+    // Assert search bar
+    const searchInput = screen.getByPlaceholderText('Search email or course title');
+    expect(searchInput).toBeInTheDocument();
+  });
+
+  it('renders the download CSV button', () => {
+    mockUseModuleActivityReport.mockReturnValue(mockHookData([], 0, 0));
+
+    render(<ModuleActivityReportWrapper {...DEFAULT_PROPS} />);
+
+    // Assert download button
+    const downloadButton = screen.getByTestId('module-activity-download');
+    expect(downloadButton).toBeInTheDocument();
   });
 });

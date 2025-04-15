@@ -17,6 +17,7 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../../../utils', () => ({
   updateUrl: jest.fn(),
+  formatTimestamp: jest.fn(({ timestamp }) => timestamp), // Mock implementation
 }));
 
 jest.mock('@edx/frontend-enterprise-utils', () => {
@@ -41,6 +42,10 @@ const AdminSearchFormWrapper = props => (
 );
 
 describe('<AdminSearchForm />', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('displays three filters', () => {
     const wrapper = mount(
       <AdminSearchFormWrapper {...DEFAULT_PROPS} />,
@@ -126,5 +131,99 @@ describe('<AdminSearchForm />', () => {
         page: 1,
       },
     );
+  });
+
+  it('handles course selection correctly', () => {
+    const tableData = [
+      { course_title: 'Course A' },
+      { course_title: 'Course B' },
+    ];
+    const props = {
+      ...DEFAULT_PROPS,
+      tableData,
+      location: { pathname: '/admin/learners' },
+    };
+
+    const wrapper = mount(
+      <AdminSearchFormWrapper {...props} />,
+    );
+
+    const selectElement = wrapper.find('.course-dropdown select');
+
+    selectElement.simulate('change', { target: { value: 'Course A' } });
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      {
+        search_course: 'Course A',
+        page: 1,
+      },
+    );
+
+    updateUrl.mockClear();
+
+    selectElement.simulate('change', { target: { value: '' } });
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      {
+        search_course: '',
+        page: 1,
+        search_start_date: '',
+      },
+    );
+  });
+});
+
+describe('<AdminSearchForm />', () => {
+  it('renders the start date dropdown correctly', () => {
+    const tableData = [
+      { course_start_date: '2023-01-01' },
+      { course_start_date: '2023-02-01' },
+    ];
+    const props = {
+      ...DEFAULT_PROPS,
+      tableData,
+      searchParams: { searchCourseQuery: 'Course A', searchDateQuery: '' },
+      location: { pathname: '/admin/learners' },
+    };
+
+    const wrapper = mount(
+      <AdminSearchFormWrapper {...props} />,
+    );
+
+    const selectElement = wrapper.find('.start-date-dropdown select');
+    expect(selectElement.prop('disabled')).toBe(false);
+
+    const options = selectElement.find('option');
+    expect(options).toHaveLength(3); // Includes "All Dates" and two mock dates
+    expect(options.at(0).text()).toBe('All Dates');
+    expect(options.at(1).text()).toContain('February 1, 2023');
+    expect(options.at(2).text()).toContain('January 1, 2023');
+
+    selectElement.simulate('change', { target: { value: '2023-01-01' } });
+    expect(updateUrl).toHaveBeenCalledWith(
+      undefined,
+      '/admin/learners',
+      {
+        search_start_date: '2023-01-01',
+        page: 1,
+      },
+    );
+  });
+
+  it('disables the start date dropdown when no course is selected', () => {
+    const props = {
+      ...DEFAULT_PROPS,
+      searchParams: { searchCourseQuery: '', searchDateQuery: '' },
+      location: { pathname: '/admin/learners' },
+    };
+
+    const wrapper = mount(
+      <AdminSearchFormWrapper {...props} />,
+    );
+
+    const selectElement = wrapper.find('.start-date-dropdown select');
+    expect(selectElement.prop('disabled')).toBe(true);
   });
 });

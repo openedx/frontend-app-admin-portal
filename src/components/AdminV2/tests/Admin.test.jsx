@@ -15,6 +15,9 @@ import Admin from '../index';
 import { CSV_CLICK_SEGMENT_EVENT_NAME } from '../../DownloadCsvButton';
 import { useEnterpriseBudgets } from '../../EnterpriseSubsidiesContext/data/hooks';
 
+const dndKitCore = require('@dnd-kit/core');
+const dndKitSortable = require('@dnd-kit/sortable');
+
 jest.mock('@dnd-kit/core', () => ({
   DndContext: ({ children }) => children,
   PointerSensor: jest.fn(),
@@ -22,11 +25,21 @@ jest.mock('@dnd-kit/core', () => ({
   useSensors: jest.fn().mockReturnValue([]),
 }));
 
-jest.mock('@dnd-kit/sortable', () => ({
-  arrayMove: jest.fn(),
-  SortableContext: ({ children }) => children,
-  verticalListSortingStrategy: jest.fn(),
-}));
+jest.mock('@dnd-kit/sortable', () => {
+  const mockArrayMove = jest.fn().mockImplementation((items, oldIndex, newIndex) => {
+    // Default implementation that can be overridden in specific tests
+    if (oldIndex === 0 && newIndex === 1) {
+      return ['learner-report', 'analytics-overview'];
+    }
+    return items;
+  });
+
+  return {
+    arrayMove: mockArrayMove,
+    SortableContext: ({ children }) => children,
+    verticalListSortingStrategy: jest.fn(),
+  };
+});
 
 jest.mock('../SortableItem', () => ({
   __esModule: true,
@@ -649,6 +662,56 @@ describe('<Admin />', () => {
         expect(wrapper.text()).toContain('Full report');
       });
       expect(scrollIntoViewMock).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('handleDragEnd function', () => {
+    beforeEach(() => {
+      Storage.prototype.getItem = jest.fn().mockReturnValue(JSON.stringify(['analytics-overview', 'learner-report']));
+      Storage.prototype.setItem = jest.fn();
+      dndKitSortable.arrayMove.mockClear();
+    });
+
+    it('updates component order when items are dragged', () => {
+      let capturedOnDragEnd;
+      jest.spyOn(dndKitCore, 'DndContext').mockImplementation(({ children, onDragEnd }) => {
+        capturedOnDragEnd = onDragEnd;
+        return children;
+      });
+
+      render(<AdminWrapper {...baseProps} />);
+
+      const mockDragEvent = {
+        active: { id: 'analytics-overview' },
+        over: { id: 'learner-report' },
+      };
+
+      capturedOnDragEnd(mockDragEvent);
+      expect(dndKitSortable.arrayMove).toHaveBeenCalled();
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'lpr-components-order',
+        JSON.stringify(['learner-report', 'analytics-overview']),
+      );
+    });
+
+    it('does not update component order when drag position stays the same', () => {
+      localStorage.setItem.mockClear();
+
+      let capturedOnDragEnd;
+      jest.spyOn(dndKitCore, 'DndContext').mockImplementation(({ children, onDragEnd }) => {
+        capturedOnDragEnd = onDragEnd;
+        return children;
+      });
+
+      render(<AdminWrapper {...baseProps} />);
+      const mockDragEvent = {
+        active: { id: 'analytics-overview' },
+        over: { id: 'analytics-overview' },
+      };
+
+      capturedOnDragEnd(mockDragEvent);
+      expect(dndKitSortable.arrayMove).not.toHaveBeenCalled();
+      expect(localStorage.setItem).not.toHaveBeenCalled();
     });
   });
 });
