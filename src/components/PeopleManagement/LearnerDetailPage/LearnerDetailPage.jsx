@@ -99,7 +99,11 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
               <Icon src={Person} className="learner-detail-icon" />
               <Card.Section className="text-center">
                 <h2 className="text-wrap">{learnerData?.name}</h2>
-                <p className="mb-1 small">{learnerData?.email}</p>
+                {// checks if the learner's name value is an email
+                  !learnerData?.name?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) && (
+                    <p className="mb-1 small">{learnerData?.email}</p>
+                  )
+                }
                 <p className="mb-1 small">Joined on {learnerData?.joinedOrg}</p>
               </Card.Section>
             </Card>
