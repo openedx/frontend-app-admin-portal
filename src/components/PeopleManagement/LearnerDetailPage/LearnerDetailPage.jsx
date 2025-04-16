@@ -22,7 +22,7 @@ import { transformLearnerContentAssignment } from '../utils';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
-  const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
+  const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid, { queryOptions: { enabled: !!groupUuid } });
 
   const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
 

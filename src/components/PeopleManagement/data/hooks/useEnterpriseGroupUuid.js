@@ -19,6 +19,7 @@ const getEnterpriseGroupUuid = async ({ groupUuid }) => {
 const useEnterpriseGroupUuid = (groupUuid, { queryOptions } = {}) => useQuery({
   queryKey: peopleManagementQueryKeys.group(groupUuid),
   queryFn: () => getEnterpriseGroupUuid({ groupUuid }),
+  enabled: !!groupUuid,
   ...queryOptions,
 });
 
