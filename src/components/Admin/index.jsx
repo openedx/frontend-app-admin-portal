@@ -221,7 +221,7 @@ class Admin extends React.Component {
           defaultMessage: 'Number of Courses Completed by Learner',
           description: 'Report title for number of courses completed by learners',
         }),
-        component: <CompletedLearnersTable />,
+        component: <CompletedLearnersTable id="completed-learners" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCompletedLearners(enterpriseId, {}, { csv: true })
         ),
