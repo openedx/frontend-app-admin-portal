@@ -5,6 +5,10 @@ import { DragIndicator } from '@openedx/paragon/icons';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
+/*
+  * SortableItem component is used to create a draggable item in sortable list.
+  * Any component can be passed as children to make it draggable.
+  */
 const SortableItem = ({ id, children, disabled }) => {
   const {
     attributes,
@@ -23,20 +27,22 @@ const SortableItem = ({ id, children, disabled }) => {
     zIndex: isDragging ? 1 : 'auto',
   };
 
+  const dragIndicatorStyle = {
+    cursor: 'grab',
+    position: 'absolute',
+    right: '2px',
+    top: '4px',
+    zIndex: 2,
+    padding: '5px',
+  };
+
   return (
     <div ref={setNodeRef} style={style} className="container-fluid bg-primary-100 rounded-lg p-4.5 mb-3">
       {!disabled && (
       <div
         {...attributes}
         {...listeners}
-        style={{
-          cursor: 'grab',
-          position: 'absolute',
-          right: '2px',
-          top: '4px',
-          zIndex: 2,
-          padding: '5px',
-        }}
+        style={dragIndicatorStyle}
       >
         <Icon src={DragIndicator} />
       </div>

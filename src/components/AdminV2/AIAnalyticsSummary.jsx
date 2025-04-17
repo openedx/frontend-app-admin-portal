@@ -22,13 +22,13 @@ const AnalyticsDetailCard = ({
     errorMessage: {
       id: 'adminPortal.analyticsCardText.errorMessage',
       defaultMessage: 'We encountered an issue while fetching analytics data. Kindly try again later or contact support for assistance. (Error: {error_message})',
-      description: 'Message shown to the user in case of error returned byt analytics API.',
+      description: 'Message shown to the user in case of error returned by analytics API.',
       values: { error_message: error?.message },
     },
     noContentErrorMessage: {
       id: 'adminPortal.analyticsCardText.noContentErrorMessage',
       defaultMessage: 'Analytics not found.',
-      description: 'Message shown to the user in case of empty response returned byt analytics API.',
+      description: 'Message shown to the user in case of empty response returned by analytics API.',
     },
   });
 
@@ -90,14 +90,17 @@ const AIAnalyticsSummary = ({ enterpriseId, insights, renderOverviewHeading }) =
         >
           <>
             <AutoFixHigh className="mr-2" />
-            <FormattedMessage id="adminPortal.v2.summarizeAnalytics" defaultMessage="Summarize analytics" />
+            <FormattedMessage
+              id="adminPortal.v2.summarizeAnalytics"
+              defaultMessage="Summarize analytics"
+              description="Button to open the summarize analytics card"
+            />
           </>
         </Button>
         {/* Track Progress is currently hidden due to data inconsistency. It will be addressed as part of ENT-7812 */}
         {ENABLE_TRACK_PROGRESS && (
           <Button
             variant="outline-primary"
-            className="d-none"
             onClick={() => {
               showTrackProgressCard(true);
               hideSummarizeCard(true);
