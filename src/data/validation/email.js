@@ -1,8 +1,13 @@
 import { SubmissionError } from 'redux-form';
 import isEmail from 'validator/lib/isEmail';
 import _ from 'lodash';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../constants/addUsers';
-import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT, EMAIL_TEMPLATE_SUBJECT_KEY } from '../constants/emailTemplate';
+import XRegExp from 'xregexp';
+import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../constants/addUsers';
+import {
+  EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
+  EMAIL_TEMPLATE_SUBJECT_KEY,
+  OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
+} from '../constants/emailTemplate';
 import { mergeErrors } from '../../utils';
 
 /* eslint-disable no-underscore-dangle */
@@ -50,6 +55,11 @@ const validateEmailTemplateFields = (formData, templateKey, isSubjectRequired = 
   return errorsDict;
 };
 
+const sanitizeEmail = (email) => {
+  // Strip bidirectional characters. This is mostly to make RTL emails compatible
+  const formatCharRegex = XRegExp('\\p{Cf}', 'g');
+  return XRegExp.replace(email, formatCharRegex, '', 'all').trim();
+};
 const validateEmailAddresses = (emails) => {
   // Validates email addresses lists passed in as the argument.
   //
@@ -68,7 +78,7 @@ const validateEmailAddresses = (emails) => {
     return result;
   }
   emails.forEach((email, index) => {
-    const sanitizedEmail = email.trim();
+    const sanitizedEmail = sanitizeEmail(email);
     if (sanitizedEmail) {
       if (!isEmail(sanitizedEmail)) {
         result.invalidEmails.push(sanitizedEmail);
@@ -225,6 +235,7 @@ const extractSalesforceIds = (formData, userEmails) => {
 
 export {
   extractSalesforceIds,
+  sanitizeEmail,
   validateEmailAddresses,
   validateEmailAddressesFields,
   validateEmailTemplateForm,

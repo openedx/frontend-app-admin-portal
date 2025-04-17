@@ -78,7 +78,8 @@
     "universal-cookie": "4.0.4",
     "use-context-selector": "^1.4.1",
     "uuid": "9.0.1",
-    "validator": "13.12.0"
+    "validator": "13.12.0",
+    "xregexp": "^5.1.2"
   },
   "peerDependencies": {
     "clean-webpack-plugin": "3.0.0",

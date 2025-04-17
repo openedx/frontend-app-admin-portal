@@ -1,14 +1,15 @@
 import _ from 'lodash';
+import XRegExp from 'xregexp';
 import {
   extractSalesforceIds,
+  returnValidatedEmails,
   validateEmailAddresses,
   validateEmailAddressesFields,
+  validateEmailAddrTemplateForm,
   validateEmailTemplateFields,
   validateEmailTemplateForm,
-  validateEmailAddrTemplateForm,
-  returnValidatedEmails,
 } from './email';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../constants/addUsers';
+import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../constants/addUsers';
 import { EMAIL_TEMPLATE_SUBJECT_KEY, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from '../constants/emailTemplate';
 
 describe('email validation', () => {
@@ -35,6 +36,45 @@ describe('email validation', () => {
       expectedResult.validEmails = ['timmy@test.co', 'bigsby@test.co', 'coolstorybro@gtest.com'];
       expectedResult.validEmailIndices = _.range(validEmails.length);
       expect(validateEmailAddresses(validEmails)).toEqual(expectedResult);
+    });
+
+    it('returns valid email addresses and indices when various unicode formatting is in the picture', () => {
+      const unicodeEmails = [
+        'dave.smith@\u200Fexample.com', // RLM after @
+        'john.doe@test.\u200Ecom', // LRM after '.' in domain
+        'alex\u200Ddoe@somewhere.com', // ZWJ between letters in local part
+        'sam\u200C@example.net', // ZWNJ at end of local part
+        '\u202Aalice@example.org', // LRE at start of address
+        'kate.jones@domain\u202B.com', // RLE before '.' in domain
+        'roger+\u202Csales@company.com', // PDF after '+' in local part
+        'chris@exa\u202Dmple.com', // LRO in domain name
+        'mary@contoso.com\u202E', // RLO at end of address
+        'anna\u2066.smith@mysite.com', // LRI before '.' in local part
+        'info@support.\u2067example.com', // RLI after subdomain '.'
+        'mark@example.c\u2068om', // FSI inside TLD
+        'tom.\u2069adams@example.com', // PDI after '.' in local part
+      ];
+
+      // Verify that the Unicode does exist in the email
+      const formatCharRegex = XRegExp('\\p{Cf}', 'g');
+      unicodeEmails.forEach((unicodeEmail) => {
+        const hasUnicodeFormat = XRegExp.test(unicodeEmail, formatCharRegex);
+        expect(hasUnicodeFormat).toBe(true);
+      });
+
+      const expectedResult = { ...baseResults };
+      expectedResult.validEmails = unicodeEmails.map(email => XRegExp.replace(email, formatCharRegex, '').trim());
+      expectedResult.validEmailIndices = _.range(unicodeEmails.length);
+
+      // Validate that we do validate email addresses correctly
+      const emailValidation = validateEmailAddresses(unicodeEmails);
+      expect(emailValidation).toEqual(expectedResult);
+
+      // Validate that we do parse out the Unicode characters.
+      emailValidation.validEmails.forEach((validEmail) => {
+        const hasUnicodeFormat = XRegExp.test(validEmail, formatCharRegex);
+        expect(hasUnicodeFormat).toBe(false);
+      });
     });
 
     it('returns invalid email addresses and indices', () => {
