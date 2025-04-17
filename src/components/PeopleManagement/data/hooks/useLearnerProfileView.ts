@@ -16,6 +16,7 @@ const useLearnerProfileView = ({
 }: LearnerProfileViewArgs) => useQuery({
   queryKey: peopleManagementQueryKeys.learnerProfile({ enterpriseUuid, userId: lmsUserId, userEmail }),
   queryFn: () => EnterpriseAccessApiService.fetchAdminLearnerProfileData(userEmail, lmsUserId, enterpriseUuid),
+  enabled: !!userEmail,
 });
 
 export default useLearnerProfileView;
