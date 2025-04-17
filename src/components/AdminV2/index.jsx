@@ -39,6 +39,8 @@ import BudgetExpiryAlertAndModal from '../BudgetExpiryAlertAndModal';
 import LearnerReport from './LearnerReport';
 import SortableItem from './SortableItem';
 import { getFromLocalStorage, saveToLocalStorage } from '../../utils';
+import SubscriptionModal from './SubscriptionModal';
+import { SubscriptionData } from '../subscriptions';
 
 const DISABLE_DRAG_AND_DROP = true;
 
@@ -480,6 +482,9 @@ const Admin = ({
           <Helmet title="Learner Progress Report" />
           <Hero title="Learner Progress Report" />
           <BudgetExpiryAlertAndModal />
+          <SubscriptionData enterpriseId={enterpriseId}>
+            <SubscriptionModal />
+          </SubscriptionData>
           <div className="container-fluid mt-4">
             <DndContext
               sensors={sensors}
