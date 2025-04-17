@@ -18,7 +18,7 @@ import useEnterpriseLearnerData from './data/hooks';
 import LearnerDetailGroupMemberships from './LearnerDetailGroupMemberships';
 import LearnerAccess from './LearnerAccess';
 import CourseEnrollments from './CourseEnrollments';
-import { transformLearnerContentAssignment } from '../utils';
+import { isEmail, transformLearnerContentAssignment } from '../utils';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
@@ -104,7 +104,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
               <Card.Section className="text-center">
                 <h2 className="text-wrap">{learnerData?.name}</h2>
                 {// checks if the learner's name value is an email
-                  !learnerData?.name?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) && (
+                  !isEmail(learnerData?.name) && (
                     <p className="mb-1 small">{learnerData?.email}</p>
                   )
                 }
