@@ -13,14 +13,16 @@ const OrgMemberCard = ({ original, learnerProfileViewEnabled }) => {
   const {
     name, joinedOrg, email, userId,
   } = enterpriseCustomerUser;
-
+  const hyperlink = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/learner-detail/${userId}`;
   return (
     <Card orientation="horizontal">
       <Card.Body>
         <Card.Section className="pb-1">
           <Row className="d-flex flex-row">
             <Col xs={2}>
-              <Avatar size="lg" />
+              <Hyperlink destination={hyperlink}>
+                <Avatar size="lg" />
+              </Hyperlink>
             </Col>
             <Col>
               <Row>
@@ -42,7 +44,7 @@ const OrgMemberCard = ({ original, learnerProfileViewEnabled }) => {
               <Col>
                 <Hyperlink
                   className="pt-4"
-                  destination={`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/learner-detail/${userId}`}
+                  destination={hyperlink}
                 >
                   View more
                 </Hyperlink>
