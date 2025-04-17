@@ -22,7 +22,7 @@ import { transformLearnerContentAssignment } from '../utils';
 
 const LearnerDetailPage = ({ enterpriseUUID }) => {
   const { enterpriseSlug, groupUuid, learnerId } = useParams();
-  const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid);
+  const { data: enterpriseGroup } = useEnterpriseGroupUuid(groupUuid, { queryOptions: { enabled: !!groupUuid } });
 
   const { isLoading, learnerData } = useEnterpriseLearnerData(enterpriseUUID, learnerId);
 
@@ -102,7 +102,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
             <Card className="learner-detail-card">
               <Icon src={Person} className="learner-detail-icon" />
               <Card.Section className="text-center">
-                <h2>{learnerData?.name}</h2>
+                <h2 className="text-wrap">{learnerData?.name}</h2>
                 <p className="mb-1 small">{learnerData?.email}</p>
                 <p className="mb-1 small">Joined on {learnerData?.joinedOrg}</p>
               </Card.Section>
