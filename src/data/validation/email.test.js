@@ -91,8 +91,8 @@ describe('email validation', () => {
       const expectedResult = { ...baseResults };
       expectedResult.validEmails = expectedCleanedResult;
       expectedResult.validEmailIndices = _.range(expectedCleanedResult.length);
-      expectedResult.invalidEmailIndices = [14, 15];
-      expectedResult.invalidEmails = ['@example.com', ''];
+      expectedResult.invalidEmailIndices = [14];
+      expectedResult.invalidEmails = ['@example.com'];
 
       // Validate that we do validate email addresses correctly
       const emailValidation = validateEmailAddresses(unicodeEmails);

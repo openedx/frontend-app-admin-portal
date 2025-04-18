@@ -91,12 +91,14 @@ const validateEmailAddresses = (emails) => {
   }
   emails.forEach((email, index) => {
     const sanitizedEmail = sanitizeEmail(email);
-    if (!isEmail(sanitizedEmail)) {
-      result.invalidEmails.push(sanitizedEmail);
-      result.invalidEmailIndices.push(index);
-    } else {
-      result.validEmails.push(sanitizedEmail);
-      result.validEmailIndices.push(index);
+    if (sanitizedEmail) {
+      if (!isEmail(sanitizedEmail)) {
+        result.invalidEmails.push(sanitizedEmail);
+        result.invalidEmailIndices.push(index);
+      } else {
+        result.validEmails.push(sanitizedEmail);
+        result.validEmailIndices.push(index);
+      }
     }
   });
   return result;
