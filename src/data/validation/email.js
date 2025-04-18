@@ -1,7 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import isEmail from 'validator/lib/isEmail';
 import _ from 'lodash';
-import XRegExp from 'xregexp';
 import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../constants/addUsers';
 import {
   EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
@@ -55,11 +54,24 @@ const validateEmailTemplateFields = (formData, templateKey, isSubjectRequired = 
   return errorsDict;
 };
 
-const sanitizeEmail = (email) => {
-  // Strip bidirectional characters. This is mostly to make RTL emails compatible
-  const formatCharRegex = XRegExp('\\p{Cf}', 'g');
-  return XRegExp.replace(email, formatCharRegex, '', 'all').trim();
-};
+/**
+ * Sanitizes an email address by:
+ * - Lowercasing the input
+ * - Removing invisible Unicode format characters (e.g., RLM, LRM, ZWJ)
+ * - Trimming leading/trailing whitespace
+ *
+ * This helps ensure compatibility with email validation and delivery systems,
+ * especially when dealing with RTL input or pasted text from rich sources.
+ *
+ * @param {string} email - The raw email address to sanitize.
+ * @returns {string} - The sanitized email address.
+ */
+const sanitizeEmail = (email) => (
+  email.toLowerCase()
+    .replace(/\p{Cf}/gu, '')
+    .trim()
+);
+
 const validateEmailAddresses = (emails) => {
   // Validates email addresses lists passed in as the argument.
   //
@@ -79,14 +91,12 @@ const validateEmailAddresses = (emails) => {
   }
   emails.forEach((email, index) => {
     const sanitizedEmail = sanitizeEmail(email);
-    if (sanitizedEmail) {
-      if (!isEmail(sanitizedEmail)) {
-        result.invalidEmails.push(sanitizedEmail);
-        result.invalidEmailIndices.push(index);
-      } else {
-        result.validEmails.push(sanitizedEmail);
-        result.validEmailIndices.push(index);
-      }
+    if (!isEmail(sanitizedEmail)) {
+      result.invalidEmails.push(sanitizedEmail);
+      result.invalidEmailIndices.push(index);
+    } else {
+      result.validEmails.push(sanitizedEmail);
+      result.validEmailIndices.push(index);
     }
   });
   return result;
