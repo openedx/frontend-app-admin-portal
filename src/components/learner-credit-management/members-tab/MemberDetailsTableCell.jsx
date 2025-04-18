@@ -14,15 +14,17 @@ const MemberDetailsTableCell = ({ row, learnerProfileViewEnabled }) => {
   const hyperlink = `/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/${groupUuid}/learner-detail/${row.original.lmsUserId}`;
   let memberDetails;
   let memberDetailIcon = (
-    <IconButton
-      isActive
-      invertColors
-      src={Person}
-      iconAs={Icon}
-      className="border rounded-circle mr-3"
-      alt="members detail column icon"
-      style={{ opacity: 1, flexShrink: 0 }}
-    />
+    <Hyperlink destination={hyperlink}>
+      <IconButton
+        isActive
+        invertColors
+        src={Person}
+        iconAs={Icon}
+        className="border rounded-circle mr-3"
+        alt="members detail column icon"
+        style={{ opacity: 1, flexShrink: 0 }}
+      />
+    </Hyperlink>
   );
   if (row.original.status === 'removed') {
     memberDetails = (
@@ -38,16 +40,18 @@ const MemberDetailsTableCell = ({ row, learnerProfileViewEnabled }) => {
       </div>
     );
     memberDetailIcon = (
-      <IconButton
-        disabled
-        isActive
-        invertColors
-        src={Person}
-        iconAs={Icon}
-        className="border border-gray-400 rounded-circle mr-3"
-        alt="members detail column icon"
-        style={{ opacity: 0.2, flexShrink: 0 }}
-      />
+      <Hyperlink destination={hyperlink}>
+        <IconButton
+          disabled
+          isActive
+          invertColors
+          src={Person}
+          iconAs={Icon}
+          className="border border-gray-400 rounded-circle mr-3"
+          alt="members detail column icon"
+          style={{ opacity: 0.2, flexShrink: 0 }}
+        />
+      </Hyperlink>
     );
   } else if (row.original.memberDetails.userName) {
     memberDetails = (

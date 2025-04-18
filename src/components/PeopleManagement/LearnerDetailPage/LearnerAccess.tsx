@@ -6,7 +6,9 @@ import {
 } from '@openedx/paragon';
 import { NorthEast } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { subscriptionPageUrl, learnerCreditPageUrl } from '../utils';
+import EVENT_NAMES from '../../../eventTracking';
 
 type SubsidyLinkProps = {
   subscription: Subscription;
@@ -26,6 +28,17 @@ const SubsidyLink = ({ subscription }: SubsidyLinkProps) => {
           destination={subscriptionUrl}
           target="_blank"
           showLaunchIcon={false}
+          onClick={() => {
+            sendEnterpriseTrackEvent(
+              enterpriseSlug,
+              EVENT_NAMES.LEARNER_PROFILE_VIEW.VIEW_SUBSCRIPTION_LINK_CLICK,
+              {
+                subscriptionUuid: uuid,
+                subscriptionTitle: title,
+                planType,
+              },
+            );
+          }}
         >
           <span className="text-truncate">{title}</span>
           <Icon
@@ -78,6 +91,17 @@ const LearnerCreditLink = ({ plan }: LearnerCreditLinkProps) => {
           destination={learnerCreditUrl}
           target="_blank"
           showLaunchIcon={false}
+          onClick={() => {
+            sendEnterpriseTrackEvent(
+              enterpriseSlug,
+              EVENT_NAMES.LEARNER_PROFILE_VIEW.VIEW_CREDIT_PLAN_LINK,
+              {
+                creditPlanUuid: uuid,
+                creditPlanName: displayName,
+                policyType: plan.policyType,
+              },
+            );
+          }}
         >
           <span className="text-truncate">{displayName}</span>
           <Icon
