@@ -5,9 +5,11 @@ import {
 } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { COURSE_TYPE_MAP } from '../constants';
 import { formatDate } from '../../learner-credit-management/data';
+import EVENT_NAMES from '../../../eventTracking';
 
 const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
   const renderBadge = () => {
@@ -44,6 +46,17 @@ const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
           className="btn btn-outline-primary"
           target="_blank"
           destination={`${getConfig().ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${enrollment.courseKey}`}
+          onClick={() => {
+            sendEnterpriseTrackEvent(
+              enterpriseSlug,
+              EVENT_NAMES.LEARNER_PROFILE_VIEW.VIEW_ENROLLMENT_LINK_CLICK,
+              {
+                courseKey: enrollment.courseKey,
+                courseName: enrollment.displayName,
+                courseStatus: enrollment.courseRunStatus,
+              },
+            );
+          }}
         >
           <FormattedMessage
             id="adminPortal.peopleManagement.learnerDetailPage.enrollmentCard.learnerPortalLink"
@@ -57,6 +70,17 @@ const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
             target="_blank"
             destination={`/${enterpriseSlug}/admin/learner-credit/${enrollment.policyUuid}/activity`}
             showLaunchIcon={false}
+            onClick={() => {
+              sendEnterpriseTrackEvent(
+                enterpriseSlug,
+                EVENT_NAMES.LEARNER_PROFILE_VIEW.VIEW_ASSIGNMENT_LINK,
+                {
+                  courseKey: enrollment.courseKey,
+                  courseName: enrollment.displayName,
+                  policyUuid: enrollment.policyUuid,
+                },
+              );
+            }}
           >
             <FormattedMessage
               id="adminPortal.peopleManagement.learnerDetailPage.enrollmentCard.learnerCreditAssignmentTable"

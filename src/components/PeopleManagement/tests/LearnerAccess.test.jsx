@@ -3,7 +3,24 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter } from 'react-router-dom';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import EVENT_NAMES from '../../../eventTracking';
 import LearnerAccess from '../LearnerDetailPage/LearnerAccess';
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({
+    enterpriseSlug: 'test-enterprise-slug',
+  }),
+}));
 
 const subscriptions = [
   {
@@ -44,6 +61,10 @@ const renderComponent = (props = {}) => {
 };
 
 describe('LearnerAccess', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders the access header', () => {
     renderComponent();
     expect(screen.getByText('Learning Access')).toBeInTheDocument();
@@ -101,5 +122,37 @@ describe('LearnerAccess', () => {
   it('renders subscription plan type', () => {
     renderComponent();
     expect(screen.getByText('Subscription')).toBeInTheDocument();
+  });
+
+  it('sends track event when clicking subscription link', () => {
+    renderComponent();
+    const subscriptionLink = screen.getByText('Test Subscription Plan');
+    subscriptionLink.click();
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      'test-enterprise-slug',
+      EVENT_NAMES.LEARNER_PROFILE_VIEW.VIEW_SUBSCRIPTION_LINK_CLICK,
+      {
+        subscriptionUuid: 'plan-1',
+        subscriptionTitle: 'Test Subscription Plan',
+        planType: 'Subscription',
+      },
+    );
+  });
+
+  it('sends track event when clicking credit plan link', () => {
+    renderComponent();
+    const creditPlanLink = screen.getByText('Test Credit Plan');
+    creditPlanLink.click();
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      'test-enterprise-slug',
+      EVENT_NAMES.LEARNER_PROFILE_VIEW.VIEW_CREDIT_PLAN_LINK,
+      {
+        creditPlanUuid: 'credit-1',
+        creditPlanName: 'Test Credit Plan',
+        policyType: 'AssignedLearnerCreditAccessPolicy',
+      },
+    );
   });
 });
