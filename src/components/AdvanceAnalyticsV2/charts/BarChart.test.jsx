@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import Plot from 'react-plotly.js';
 import BarChart from './BarChart';
 
@@ -12,7 +12,7 @@ describe('BarChart', () => {
   const hovertemplate = 'x=%{x}<br>y=%{y}';
 
   it('renders correctly', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <BarChart
         data={mockData}
         xKey="valueX"

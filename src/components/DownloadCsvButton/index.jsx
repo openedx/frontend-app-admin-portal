@@ -26,6 +26,7 @@ class DownloadCsvButton extends React.Component {
     return (
       <Button
         variant="outline-primary"
+        data-testid="download-csv-btn"
         className="download-btn d-sm-inline float-md-right"
         disabled={disabled || csvLoading}
         onClick={() => {

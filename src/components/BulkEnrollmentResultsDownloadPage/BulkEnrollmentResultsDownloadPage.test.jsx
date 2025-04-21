@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, act } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
@@ -69,7 +69,7 @@ describe('<BulkEnrollmentResultsDownloadPage />', () => {
       initialEntries: [`/${TEST_ENTERPRISE_SLUG}/admin/bulk-enrollment-results/${TEST_BULK_ENROLLMENT_UUID}`],
     });
     await act(async () => {
-      mount(<BulkEnrollmentResultsDownloadPageWrapper />);
+      render(<BulkEnrollmentResultsDownloadPageWrapper />);
     });
     await act(() => mockPromiseResolve);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/bulk-enrollment-results/${TEST_BULK_ENROLLMENT_UUID}`;

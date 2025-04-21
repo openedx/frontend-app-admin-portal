@@ -1,11 +1,10 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import { FormControl } from '@openedx/paragon';
+import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import { fireEvent, render, screen } from '@testing-library/react';
 import AdminSearchForm from './AdminSearchForm';
-import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
 import EVENT_NAMES from '../../eventTracking';
 
@@ -41,13 +40,15 @@ const AdminSearchFormWrapper = props => (
 );
 
 describe('<AdminSearchForm />', () => {
-  it('displays three filters', () => {
-    const wrapper = mount(
+  it('displays three filters', async () => {
+    render(
       <AdminSearchFormWrapper {...DEFAULT_PROPS} />,
     );
-    expect(wrapper.find(FormControl)).toHaveLength(2);
-    expect(wrapper.find(SearchBar)).toHaveLength(1);
-    expect(wrapper.find(FormControl).at(1).text()).toContain('Choose a course');
+    // confirm that three filter (course, date and search bar) are present
+    expect(await screen.findByTestId('form-control-course-filter')).toBeInTheDocument();
+    expect(await screen.findByTestId('form-control-date-filter')).toBeInTheDocument();
+    expect(await screen.findByTestId('admin-form-search-bar')).toBeInTheDocument();
+    expect(await screen.findByTestId('form-control-course-filter')).toHaveTextContent('All Courses');
   });
   [
     { searchQuery: 'foo' },
@@ -57,10 +58,15 @@ describe('<AdminSearchForm />', () => {
     it(`calls searchEnrollmentsList when ${Object.keys(searchParams)[0]} changes`, () => {
       const spy = jest.fn();
       const props = { ...DEFAULT_PROPS, searchEnrollmentsList: spy };
-      const wrapper = mount(
+      const { rerender } = render(
         <AdminSearchFormWrapper {...props} />,
       );
-      wrapper.setProps({ searchParams });
+      rerender(<AdminSearchFormWrapper
+        {...DEFAULT_PROPS}
+        searchEnrollmentsList={spy}
+        searchParams={searchParams}
+      />);
+      // wrapper.setProps({ searchParams });
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
@@ -76,12 +82,12 @@ describe('<AdminSearchForm />', () => {
       budgets,
       location: { pathname: '/admin/learners' },
     };
-    const wrapper = mount(
+    const { container } = render(
       <AdminSearchFormWrapper {...props} />,
     );
-    const selectElement = wrapper.find('.budgets-dropdown select');
+    const selectElement = container.querySelector('.budgets-dropdown select');
 
-    selectElement.simulate('change', { target: { value: budgetUUID } });
+    fireEvent.change(selectElement, { target: { value: budgetUUID } });
     expect(updateUrl).toHaveBeenCalled();
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
@@ -93,23 +99,22 @@ describe('<AdminSearchForm />', () => {
     );
   });
 
-  it('select the correct group', () => {
+  it('select the correct group', async () => {
     const groupUUID = '7d6503dd-e40d-42b8-442b-37dd4c5450e3';
     const groups = [{
-      enterprise_group_uuid: groupUUID,
-      enterprise_group_name: 'Test Group',
+      uuid: groupUUID,
+      name: 'Test Group',
     }];
     const props = {
       ...DEFAULT_PROPS,
       groups,
       location: { pathname: '/admin/learners' },
     };
-    const wrapper = mount(
+    const { container } = render(
       <AdminSearchFormWrapper {...props} />,
     );
-    const selectElement = wrapper.find('.groups-dropdown select');
-
-    selectElement.simulate('change', { target: { value: groupUUID } });
+    const selectElement = container.querySelector('.groups-dropdown select');
+    fireEvent.change(selectElement, { target: { value: groupUUID } });
     expect(updateUrl).toHaveBeenCalled();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       'test-id',

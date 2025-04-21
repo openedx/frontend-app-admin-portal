@@ -142,6 +142,7 @@ class NumberCard extends React.Component {
 
     return detailActions.map((action, index) => (
       <Link
+        data-testid="details-action-item"
         ref={(node) => { this.detailActionItemRefs[index] = node; }}
         className={classNames(
           'btn btn-link',
@@ -230,6 +231,7 @@ class NumberCard extends React.Component {
               </Button>
             </div>
             <div
+              data-testid="details-actions"
               id={`footer-body-${id}`}
               className={classNames(
                 'footer-body mt-1',

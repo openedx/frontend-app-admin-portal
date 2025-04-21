@@ -77,9 +77,9 @@ describe('<DeleteHighlightSet />', () => {
     return deleteBtn;
   };
 
-  const clickDeleteHighlightBtn = () => {
+  const clickDeleteHighlightBtn = async () => {
     const deleteBtn = getDeleteHighlightBtn();
-    userEvent.click(deleteBtn);
+    await userEvent.click(deleteBtn);
     expect(screen.getByText('Delete highlight?')).toBeInTheDocument();
   };
 
@@ -99,11 +99,11 @@ describe('<DeleteHighlightSet />', () => {
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
-  it('cancelling confirmation modal closes modal', () => {
+  it('cancelling confirmation modal closes modal', async () => {
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
+    await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    userEvent.click(screen.getByText('Cancel'));
+    await userEvent.click(screen.getByText('Cancel'));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
   });
@@ -112,9 +112,9 @@ describe('<DeleteHighlightSet />', () => {
     EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
 
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
+    await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    userEvent.click(screen.getByTestId('delete-confirmation-button'));
+    await userEvent.click(screen.getByTestId('delete-confirmation-button'));
     expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
 
     await waitFor(() => {
@@ -136,8 +136,8 @@ describe('<DeleteHighlightSet />', () => {
     EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
 
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
-    userEvent.click(screen.getByTestId('delete-confirmation-button'));
+    await clickDeleteHighlightBtn();
+    await userEvent.click(screen.getByTestId('delete-confirmation-button'));
     expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
 
     await waitFor(() => {

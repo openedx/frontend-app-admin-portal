@@ -143,13 +143,13 @@ describe('<BudgetDetailPageWrapper />', () => {
     const expectedToastMessage = toastMessages.join(' ');
 
     // Open Toast notification
-    userEvent.click(getButtonElement('Open Toast'));
+    await userEvent.click(getButtonElement('Open Toast'));
 
     // Verify Toast notification is rendered
     expect(screen.getByText(expectedToastMessage)).toBeInTheDocument();
 
     // Close Toast notification
-    userEvent.click(getButtonElement('Close Toast'));
+    await userEvent.click(getButtonElement('Close Toast'));
 
     // Verify Toast notification is no longer rendered
     await waitFor(() => {
@@ -202,13 +202,13 @@ describe('<BudgetDetailPageWrapper />', () => {
     const expectedToastMessage = toastMessages.join(' ');
 
     // Open Toast notification
-    userEvent.click(getButtonElement('Open Toast'));
+    await userEvent.click(getButtonElement('Open Toast'));
 
     // Verify Toast notification is rendered
     expect(screen.getByText(expectedToastMessage)).toBeInTheDocument();
 
     // Close Toast notification
-    userEvent.click(getButtonElement('Close Toast'));
+    await userEvent.click(getButtonElement('Close Toast'));
 
     // Verify Toast notification is no longer rendered
     await waitFor(() => {
@@ -261,20 +261,20 @@ describe('<BudgetDetailPageWrapper />', () => {
     const expectedToastMessage = toastMessages.join(' ');
 
     // Open Toast notification
-    userEvent.click(getButtonElement('Open Toast'));
+    await userEvent.click(getButtonElement('Open Toast'));
 
     // Verify Toast notification is rendered
     expect(screen.getByText(expectedToastMessage)).toBeInTheDocument();
 
     // Close Toast notification
-    userEvent.click(getButtonElement('Close Toast'));
+    await userEvent.click(getButtonElement('Close Toast'));
 
     // Verify Toast notification is no longer rendered
     await waitFor(() => {
       expect(screen.queryByText(expectedToastMessage)).not.toBeInTheDocument();
     });
   });
-  it('calls segment event on breadcrumb click', () => {
+  it('calls segment event on breadcrumb click', async () => {
     const mockBudgetDisplayName = 'Test Budget';
     renderWithRouter(
       <MockBudgetDetailPageWrapper>
@@ -283,7 +283,7 @@ describe('<BudgetDetailPageWrapper />', () => {
     );
     const previousBreadcrumb = screen.getByText('Budgets');
 
-    userEvent.click(previousBreadcrumb);
+    await userEvent.click(previousBreadcrumb);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 });

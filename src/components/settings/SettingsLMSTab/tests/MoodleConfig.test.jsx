@@ -222,7 +222,7 @@ describe('<MoodleConfig />', () => {
   test('validates poorly formatted existing data on load', async () => {
     render(testMoodleConfigSetup(invalidExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
-    userEvent.click(enableButton);
+    await userEvent.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
     expect(screen.queryByText(validationMessages.verificationRequired)).toBeInTheDocument();

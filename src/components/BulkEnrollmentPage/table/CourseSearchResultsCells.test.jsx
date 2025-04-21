@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { CourseNameCell, FormattedDateCell } from './CourseSearchResultsCells';
 
 const testCourseName = 'TestCourseName';
@@ -14,15 +14,15 @@ describe('CourseNameCell', () => {
     },
   };
   const slug = 'sluggy';
-  const wrapper = mount(<CourseNameCell value={testCourseName} row={row} enterpriseSlug={slug} />);
   it('displays the course name', () => {
-    expect(wrapper.text()).toEqual(testCourseName);
+    const { container } = render(<CourseNameCell value={testCourseName} row={row} enterpriseSlug={slug} />);
+    expect(container.textContent).toEqual(testCourseName);
   });
 });
 
 describe('<FormattedDateCell />', () => {
   it('renders a formatted date', () => {
-    const wrapper = mount(<FormattedDateCell startValue={testStartDate} endValue={testEndDate} />);
-    expect(wrapper.text()).toEqual('Sep 10, 2020 - Sep 10, 2030');
+    const { container } = render(<FormattedDateCell startValue={testStartDate} endValue={testEndDate} />);
+    expect(container.textContent).toEqual('Sep 10, 2020 - Sep 10, 2030');
   });
 });
