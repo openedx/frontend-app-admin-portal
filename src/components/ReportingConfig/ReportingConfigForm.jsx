@@ -190,12 +190,14 @@ class ReportingConfigForm extends React.Component {
 
     return (
       <Form.Group
+        data-testid="reporting-config-form"
         controlId={data.key}
         isInvalid={invalidFields[data.key]}
       >
         <Form.Label>{data.label}</Form.Label>
         <Form.Control
           as="select"
+          data-testid={data.dataTestId}
           name={data.key}
           // eslint-disable-next-line no-nested-ternary
           defaultValue={data.defaultValue ? data.defaultValue : config
@@ -295,6 +297,7 @@ class ReportingConfigForm extends React.Component {
           <div className="col col-6">
             {this.renderSelect({
               key: 'dataType',
+              dataTestId: 'data-type-select',
               helpText: intl.formatMessage({
                 id: 'admin.portal.reporting.config.data.type.help',
                 defaultMessage: 'The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report',
@@ -326,6 +329,7 @@ class ReportingConfigForm extends React.Component {
           <div className="col col-6">
             {this.renderSelect({
               key: 'deliveryMethod',
+              dataTestId: 'delivery-method-select',
               helpText: intl.formatMessage({
                 id: 'admin.portal.reporting.config.delivery.method.help',
                 defaultMessage: 'The method in which the data should be sent',
@@ -343,6 +347,7 @@ class ReportingConfigForm extends React.Component {
             })}
             {this.renderSelect({
               key: 'frequency',
+              dataTestId: 'frequency-select',
               helpText: intl.formatMessage({
                 id: 'admin.portal.reporting.config.frequency.help',
                 defaultMessage: 'The frequency interval (daily, weekly, or monthly) that the report should be sent',
@@ -400,6 +405,7 @@ class ReportingConfigForm extends React.Component {
           <div className="col">
             {this.renderNumberField({
               key: 'hourOfDay',
+              id: 'hourOfDay',
               helpText: intl.formatMessage({
                 id: 'admin.portal.reporting.config.hour.of.day.help',
                 defaultMessage: 'The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings',

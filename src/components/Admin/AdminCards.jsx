@@ -30,6 +30,7 @@ class AdminCards extends React.Component {
         }],
       },
       enrolledLearners: {
+        id: 'enrolled-learners',
         ref: React.createRef(),
         description: intl.formatMessage({
           id: 'adminPortal.cards.enrolledOneCourse',
@@ -105,6 +106,7 @@ class AdminCards extends React.Component {
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
         key={cardKey}
+        id={cardKey}
       >
         <NumberCard
           id={cardKey}

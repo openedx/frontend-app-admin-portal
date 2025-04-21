@@ -24,11 +24,11 @@ describe('<SettingsAccessSubsidyTypeSelection />', () => {
     expect(screen.getByText('Confirm selection')).toBeInTheDocument();
   });
 
-  it('should close confirmation modal when cancel is clicked', () => {
+  it('should close confirmation modal when cancel is clicked', async () => {
     renderWithI18nProvider(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
     userEvent.click(screen.getByLabelText('Licenses'));
     expect(screen.getByText('Confirm selection')).toBeInTheDocument();
-    userEvent.click(screen.getByText('Cancel'));
+    await userEvent.click(screen.getByText('Cancel'));
     expect(screen.queryByText('Confirm selection')).not.toBeInTheDocument();
   });
 

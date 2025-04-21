@@ -136,9 +136,9 @@ describe('EnrollBulkAction', () => {
     };
     render(<EnrollBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Enroll (1)');
-    userEvent.click(enrollButton);
+    await userEvent.click(enrollButton);
     const closeButtonInDialog = await screen.findByTestId('CLOSE_BTN_IN_WARNING_MODAL');
-    userEvent.click(closeButtonInDialog);
+    await userEvent.click(closeButtonInDialog);
     expect(screen.queryByText('Revoked Learners Selected')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -157,9 +157,9 @@ describe('EnrollBulkAction', () => {
     };
     render(<EnrollBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Enroll (1)');
-    userEvent.click(enrollButton);
+    await userEvent.click(enrollButton);
     const closeButtonInDialog = await screen.findByLabelText('Close');
-    userEvent.click(closeButtonInDialog);
+    await userEvent.click(closeButtonInDialog);
     expect(screen.queryByText('Subscription Enrollment')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

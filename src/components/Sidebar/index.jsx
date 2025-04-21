@@ -195,6 +195,7 @@ const Sidebar = ({
     <nav
       id="sidebar"
       aria-label="sidebar"
+      data-testid="nav-sidebar"
       className={classNames([
         'sidebar',
         'border-right',

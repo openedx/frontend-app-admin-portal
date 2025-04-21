@@ -122,8 +122,8 @@ describe('<LicenseManagementRevokeModal />', () => {
 
       const button = screen.getByText('Revoke (1)');
       await act(async () => { userEvent.click(button); });
-      expect(onSubmitMock).toBeCalledTimes(1);
-      expect(onSuccessMock).toBeCalledTimes(0);
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
+      expect(onSuccessMock).toHaveBeenCalledTimes(0);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();
@@ -145,8 +145,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModalWrapper {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).toBeCalledTimes(1);
-        expect(logError).not.toBeCalled();
+        expect(onSuccessMock).toHaveBeenCalledTimes(1);
+        expect(logError).toHaveBeenCalledTimes(0);
       });
 
       it('handles 400 error response correctly', async () => {
@@ -156,8 +156,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModalWrapper {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).not.toBeCalled();
-        expect(logError).toBeCalledTimes(1);
+        expect(onSuccessMock).toHaveBeenCalledTimes(0);
+        expect(logError).toHaveBeenCalledTimes(1);
       });
 
       it('handles 404 error response correctly', async () => {
@@ -167,8 +167,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModalWrapper {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).not.toBeCalled();
-        expect(logError).toBeCalledTimes(1);
+        expect(onSuccessMock).toHaveBeenCalledTimes(0);
+        expect(logError).toHaveBeenCalledTimes(1);
       });
 
       it('handles 207 partial success with only 404 errors correctly', async () => {
@@ -183,8 +183,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModalWrapper {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).toBeCalledTimes(1);
-        expect(logError).not.toBeCalled();
+        expect(onSuccessMock).toHaveBeenCalledTimes(1);
+        expect(logError).toHaveBeenCalledTimes(0);
       });
 
       it('handles 207 partial success with mixed errors correctly', async () => {
@@ -206,8 +206,8 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModalWrapper {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).not.toBeCalled();
-        expect(logError).toBeCalledTimes(1);
+        expect(onSuccessMock).toHaveBeenCalledTimes(0);
+        expect(logError).toHaveBeenCalledTimes(1);
       });
 
       it('handles 207 partial success with 404 errors and successful revocations correctly', async () => {
@@ -229,9 +229,9 @@ describe('<LicenseManagementRevokeModal />', () => {
         render(<LicenseManagementRevokeModalWrapper {...props} />);
         await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
 
-        expect(onSuccessMock).toBeCalledTimes(1);
+        expect(onSuccessMock).toHaveBeenCalledTimes(1);
         expect(onSuccessMock).toHaveBeenCalledWith(mockPartialSuccess207WithMixed404AndSuccess.data);
-        expect(logError).not.toBeCalled();
+        expect(logError).toHaveBeenCalledTimes(0);
       });
     });
 
@@ -245,12 +245,12 @@ describe('<LicenseManagementRevokeModal />', () => {
 
       const button = screen.getByText('Revoke all');
       await act(async () => { userEvent.click(button); });
-      expect(onSubmitMock).toBeCalledTimes(1);
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();
       });
-      expect(logError).toBeCalledTimes(1);
+      expect(logError).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -313,6 +313,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       const props = {
         ...basicProps,
         revokeAllUsers: true,
+        usersToRevoke: [sampleUser],
         totalToRevoke: null,
         activeFilters: [{
           name: 'statusBadge',

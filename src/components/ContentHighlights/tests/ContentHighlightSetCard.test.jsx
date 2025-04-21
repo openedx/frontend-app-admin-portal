@@ -181,7 +181,7 @@ describe('<ContentHighlightSetCard>', () => {
     const createNewHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
     expect(createNewHighlightButton).toBeInTheDocument();
     // Trigger Alert
-    userEvent.click(createNewHighlightButton);
+    await userEvent.click(createNewHighlightButton);
     // Verify Alert
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
     expect(screen.getByText('Highlight limit reached')).toBeInTheDocument();

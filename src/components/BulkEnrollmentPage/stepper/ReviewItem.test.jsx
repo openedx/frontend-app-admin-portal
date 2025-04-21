@@ -2,10 +2,8 @@ import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { mount } from 'enzyme';
-
-import { IconButton } from '@openedx/paragon';
 import ReviewItem from './ReviewItem';
+import '@testing-library/jest-dom';
 import { deleteSelectedRowAction } from '../data/actions';
 
 const defaultProps = {
@@ -28,10 +26,10 @@ describe('AddLearnersStep', () => {
     render(<ReviewItem {...defaultProps} />);
     expect(screen.getByText(defaultProps.row.values.foo)).toBeInTheDocument();
   });
-  it('remove button gets rendered with a correctly named aria label prop', () => {
-    const wrapper = mount(<ReviewItem {...defaultProps} />);
-    const instance = wrapper.find(IconButton);
-    expect(instance.prop('alt')).toEqual(defaultProps.altText);
+  it('remove button gets rendered with a correctly named aria label prop', async () => {
+    render(<ReviewItem {...defaultProps} />);
+    const iconButton = await screen.findByTestId('delete-button');
+    expect(iconButton).toHaveAttribute('aria-label', defaultProps.altText);
   });
   it('dispatches the deleteSelected row action when the delete button is clicked', () => {
     render(<ReviewItem {...defaultProps} />);

@@ -15,17 +15,26 @@ import Leaderboard from './tabs/Leaderboard';
 import Skills from './tabs/Skills';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION } from './data/constants';
+import { DEFAULT_GROUP } from './constants';
 import { formatTimestamp } from '../../utils';
-
-const PAGE_TITLE = 'Analytics';
+import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
   const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
   const [calculation, setCalculation] = useState('Total');
+  const [groupUUID, setGroupUUID] = useState('');
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const intl = useIntl();
+  const { data: groups, isLoading: isGroupsLoading } = useAllFlexEnterpriseGroups(enterpriseId);
+
+  const PAGE_TITLE = intl.formatMessage({
+    id: 'analytics.page.title',
+    defaultMessage: 'Analytics',
+    description: 'Title of the analytics page',
+  });
+
   const { isFetching, isError, data } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
     startDate,
@@ -88,13 +97,46 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
               />
             </Form.Group>
           </div>
+          <div className="col" data-testid="group-select">
+            <Form.Group>
+              <Form.Label>
+                <FormattedMessage
+                  id="advance.analytics.filter.date.group"
+                  defaultMessage="Group"
+                  description="Advance analytics group filter label"
+                />
+              </Form.Label>
+              <Form.Control
+                as="select"
+                value={groupUUID}
+                onChange={(e) => setGroupUUID(e.target.value)}
+                disabled={isGroupsLoading || groups === undefined || groups.length === 0}
+              >
+                <option value={DEFAULT_GROUP}>
+                  {intl.formatMessage({
+                    id: 'adminPortal.analytics.filter.group.all',
+                    defaultMessage: 'All Groups',
+                    description: 'Label for the all groups option in the group filter dropdown in the admin portal analytics.',
+                  })}
+                </option>
+                {groups?.map(grp => (
+                  <option
+                    value={grp.uuid}
+                    key={grp.uuid}
+                  >
+                    {grp.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          </div>
           <div className="col" data-testid="granularity-select">
             <Form.Group>
               <Form.Label>
                 <FormattedMessage
                   id="advance.analytics.filter.date.granularity"
                   defaultMessage="Date granularity"
-                  description="Advance analytics Date granularity filter label"
+                  description="Advance analytics data granularity filter label"
                 />
               </Form.Label>
               <Form.Control
@@ -211,6 +253,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
+                groupUUID={groupUUID}
                 enterpriseId={enterpriseId}
               />
             </Tab>
@@ -227,6 +270,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 endDate={endDate || currentDate}
                 enterpriseId={enterpriseId}
                 granularity={granularity}
+                groupUUID={groupUUID}
                 calculation={calculation}
               />
             </Tab>
@@ -243,6 +287,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 endDate={endDate || currentDate}
                 granularity={granularity}
                 calculation={calculation}
+                groupUUID={groupUUID}
                 enterpriseId={enterpriseId}
               />
             </Tab>

@@ -59,9 +59,9 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
     return deleteBtn;
   };
 
-  const clickDeleteHighlightBtn = () => {
+  const clickDeleteHighlightBtn = async () => {
     const deleteBtn = getDeleteHighlightBtn();
-    userEvent.click(deleteBtn);
+    await userEvent.click(deleteBtn);
     expect(screen.getByText('Delete archived courses?')).toBeInTheDocument();
   };
 
@@ -87,13 +87,13 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
     clickDeleteHighlightBtn();
   });
 
-  it('cancelling confirmation modal closes modal', () => {
+  it('cancelling confirmation modal closes modal', async () => {
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
-    clickDeleteHighlightBtn();
-    userEvent.click(screen.getByText('Cancel'));
+    await clickDeleteHighlightBtn();
+    await userEvent.click(screen.getByText('Cancel'));
     expect(screen.queryByText('Delete archived courses?')).not.toBeInTheDocument();
   });
 
@@ -104,8 +104,8 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
-    clickDeleteHighlightBtn();
-    userEvent.click(screen.getByTestId('delete-archived-button'));
+    await clickDeleteHighlightBtn();
+    await userEvent.click(screen.getByTestId('delete-archived-button'));
 
     await waitFor(() => {
       expect(EnterpriseCatalogApiService.deleteHighlightSetContent).toHaveBeenCalledTimes(1);
@@ -118,8 +118,8 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
-    clickDeleteHighlightBtn();
-    userEvent.click(screen.getByTestId('delete-archived-button'));
+    await clickDeleteHighlightBtn();
+    await userEvent.click(screen.getByTestId('delete-archived-button'));
     expect(screen.getByText('Deleting courses...')).toBeInTheDocument();
 
     await waitFor(() => {

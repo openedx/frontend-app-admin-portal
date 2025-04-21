@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import { mount } from 'enzyme';
+import {
+  fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -12,7 +14,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import CodeSearchResults from './index';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
-import CodeReminderModal from '../../containers/CodeReminderModal';
 
 jest.mock('../../data/services/EcommerceApiService');
 
@@ -303,22 +304,24 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const wrapper = mount((
+
+      const { container } = render(
         <CodeSearchResultsWrapper
           store={store}
           onClose={jest.fn()}
           searchQuery="test@test.com"
           isOpen
-        />
-      ));
+        />,
+      );
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
-      wrapper.find('RemindButton').simulate('click');
-      wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');
+      expect(await screen.queryByRole('alert')).toBeNull();
+      const remindButton = container.querySelector('.remind-btn');
+      await waitFor(() => fireEvent.click(remindButton));
+      const remindModalSubmitButton = await screen.findByTestId('remind-submit-btn');
+      fireEvent.click(remindModalSubmitButton);
       await flushPromises();
-      wrapper.update();
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeTruthy();
+      expect(await screen.queryByRole('alert')).not.toBeNull();
     });
 
     it('should handle remind button for saved template', async () => {
@@ -355,22 +358,23 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const wrapper = mount((
+      const { container } = render(
         <CodeSearchResultsWrapper
           store={store}
           onClose={jest.fn()}
           searchQuery="test@test.com"
           isOpen
-        />
-      ));
+        />,
+      );
       const mockPromiseResolve = () => Promise.resolve({ data: {} });
       EcommerceApiService.fetchEmailTemplate.mockImplementation(mockPromiseResolve);
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeFalsy();
-      wrapper.find('RemindButton').simulate('click');
-      wrapper.find(CodeReminderModal).find('.code-remind-save-btn').first().simulate('click');
+      expect(await screen.queryByRole('alert')).toBeNull();
+      const remindButton = container.querySelector('.remind-btn');
+      await waitFor(() => fireEvent.click(remindButton));
+      const remindModalSubmitButton = await screen.findByTestId('remind-submit-btn');
+      fireEvent.click(remindModalSubmitButton);
       await flushPromises();
-      wrapper.update();
-      expect(wrapper.find('CodeSearchResults').state('isCodeReminderSuccessful')).toBeTruthy();
+      expect(await screen.queryByRole('alert')).not.toBeNull();
     });
 
     it('should handle revoke button', async () => {
@@ -397,20 +401,21 @@ describe('<CodeSearchResults />', () => {
           },
         },
       });
-      const wrapper = mount((
+      const { container } = render(
         <CodeSearchResultsWrapper
           store={store}
           onClose={jest.fn()}
           searchQuery="test@test.com"
           isOpen
-        />
-      ));
-      expect(wrapper.find('CodeSearchResults').state('isCodeRevokeSuccessful')).toBeFalsy();
-      wrapper.find('RevokeButton').simulate('click');
-      wrapper.find('CodeRevokeModal').find('.code-revoke-save-btn').first().simulate('click');
+        />,
+      );
+      expect(screen.queryByRole('alert')).toBeNull();
+      const revokeButton = container.querySelector('.revoke-btn');
+      await waitFor(() => fireEvent.click(revokeButton));
+      const revokeModalSaveBtn = await screen.findByTestId('revoke-submit-btn');
+      fireEvent.click(revokeModalSaveBtn);
       await flushPromises();
-      wrapper.update();
-      expect(wrapper.find('CodeSearchResults').state('isCodeRevokeSuccessful')).toBeTruthy();
+      expect(await screen.queryByRole('alert')).not.toBeNull();
     });
   });
 
@@ -430,16 +435,16 @@ describe('<CodeSearchResults />', () => {
         },
       },
     });
-    const wrapper = mount((
+    const { container } = render(
       <CodeSearchResultsWrapper
         store={store}
         onClose={mockOnClose}
         searchQuery="test@test.com"
         isOpen
-      />
-    ));
-
-    wrapper.find('.close-search-results-btn').first().simulate('click');
+      />,
+    );
+    const closeBtn = container.querySelector('.close-search-results-btn');
+    fireEvent.click(closeBtn);
     expect(mockOnClose).toBeCalledTimes(1);
   });
 });

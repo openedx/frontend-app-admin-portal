@@ -135,6 +135,7 @@ class Coupon extends React.Component {
 
     return (
       <div
+        data-testid="coupon-item"
         className={classNames(
           'coupon mb-3 mb-lg-2 rounded border',
           {
