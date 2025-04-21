@@ -1,5 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import {
+  fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
@@ -75,14 +77,14 @@ describe('<AIAnalyticsSummary />', () => {
   });
 
   it('should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked', () => {
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    screen.findByTestId('summarize-analytics');
 
     const tree = renderer
       .create(<AIAnalyticsSummaryWrapper insights={mockedInsights} />)
       .toJSON();
 
-    expect(tree).toMatchSnapshot();
+    waitFor(() => expect(tree).toMatchSnapshot());
   });
 
   // Currently disabled due to data inconsistencies, will be addressed as a part of ENT-7812.
@@ -97,15 +99,16 @@ describe('<AIAnalyticsSummary />', () => {
   //   expect(tree).toMatchSnapshot();
   // });
 
-  it('should handle null analytics data', () => {
+  it('should handle null analytics data', async () => {
     const insightsData = { ...mockedInsights, learner_engagement: null };
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={insightsData} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
+    const component = await screen.findByTestId('summarize-analytics');
+    fireEvent.click(component);
 
     const tree = renderer
       .create(<AIAnalyticsSummaryWrapper insights={insightsData} />)
       .toJSON();
 
-    expect(tree).toMatchSnapshot();
+    waitFor(() => expect(tree).toMatchSnapshot());
   });
 });

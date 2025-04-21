@@ -3,6 +3,7 @@
 exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -963,6 +964,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -1697,6 +1699,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -1844,7 +1847,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -2690,6 +2692,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -3424,6 +3427,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -3571,7 +3575,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -4417,6 +4420,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -5151,6 +5155,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -5298,7 +5303,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -6144,6 +6148,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -6878,6 +6883,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -7025,7 +7031,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -7871,6 +7876,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
 exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -8605,6 +8611,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -8752,7 +8759,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -9598,6 +9604,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -10332,6 +10339,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -10479,7 +10487,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -11325,6 +11332,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -12059,6 +12067,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -12206,7 +12215,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -13052,6 +13060,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -13786,6 +13795,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -13933,7 +13943,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -14779,6 +14788,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
 exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -15513,6 +15523,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -15660,7 +15671,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -16506,6 +16516,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
 exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -17240,6 +17251,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -17387,7 +17399,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -18233,6 +18244,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
 exports[`<Admin /> renders correctly with dashboard insights data renders dashboard insights data correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -19016,6 +19028,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -19163,7 +19176,6 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -20009,6 +20021,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
 exports[`<Admin /> renders correctly with enterprise budgets data renders budgets correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -20743,6 +20756,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -20890,7 +20904,6 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -21736,6 +21749,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
 exports[`<Admin /> renders correctly with enterprise groups data renders groups correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -22470,6 +22484,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -22617,7 +22632,6 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -23463,6 +23477,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
 exports[`<Admin /> renders correctly with error state 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -24406,6 +24421,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
 exports[`<Admin /> renders correctly with loading state 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -25366,6 +25382,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -25411,6 +25428,7 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -26145,6 +26163,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -26292,7 +26311,6 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
