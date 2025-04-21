@@ -42,7 +42,7 @@ import { getFromLocalStorage, saveToLocalStorage } from '../../utils';
 import SubscriptionModal from './SubscriptionModal';
 import { SubscriptionData } from '../subscriptions';
 
-const DISABLE_DRAG_AND_DROP = true;
+import { features } from '../../config';
 
 const Admin = ({
   fetchDashboardAnalytics,
@@ -493,10 +493,10 @@ const Admin = ({
               <SortableContext
                 items={lprComponents}
                 strategy={verticalListSortingStrategy}
-                disabled={DISABLE_DRAG_AND_DROP}
+                disabled={!features.ENABLE_DRAG_AND_DROP}
               >
                 {lprComponents.map((id) => (
-                  <SortableItem key={id} id={id} disabled={DISABLE_DRAG_AND_DROP}>
+                  <SortableItem key={id} id={id} disabled={!features.ENABLE_DRAG_AND_DROP}>
                     {renderComponent(id)}
                   </SortableItem>
                 ))}

@@ -20,13 +20,13 @@ const AnalyticsDetailCard = ({
 }) => {
   const messages = defineMessages({
     errorMessage: {
-      id: 'adminPortal.analyticsCardText.errorMessage',
+      id: 'adminPortal.v2.analyticsCardText.errorMessage',
       defaultMessage: 'We encountered an issue while fetching analytics data. Kindly try again later or contact support for assistance. (Error: {error_message})',
       description: 'Message shown to the user in case of error returned by analytics API.',
       values: { error_message: error?.message },
     },
     noContentErrorMessage: {
-      id: 'adminPortal.analyticsCardText.noContentErrorMessage',
+      id: 'adminPortal.v2.analyticsCardText.noContentErrorMessage',
       defaultMessage: 'Analytics not found.',
       description: 'Message shown to the user in case of empty response returned by analytics API.',
     },
