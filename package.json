@@ -8,6 +8,9 @@
   ],
   "scripts": {
     "build": "fedx-scripts webpack",
+    "serve": "fedx-scripts serve",
+    "build:serve": "npm run build && npm run serve",
+    "build:with-theme:serve": "npm run build:with-theme && npm run serve",
     "i18n_extract": "fedx-scripts formatjs extract --throws",
     "build:with-theme": "paragon install-theme && fedx-scripts webpack && npm install",
     "check-types": "tsc --noemit",
