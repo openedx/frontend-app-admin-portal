@@ -211,3 +211,16 @@ export const getTransformedAllocatedAssignments = (
   );
   return updatedAssignments;
 };
+
+/**
+ * Checks if a string is a valid email address
+ *
+ * @param {string} email - The string to check if it's an email address
+ * @returns {boolean} - Returns true if the string is a valid email address, false otherwise
+ */
+export const isEmail = (email: string): boolean => {
+  if (!email) {
+    return false;
+  }
+  return !!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+};
