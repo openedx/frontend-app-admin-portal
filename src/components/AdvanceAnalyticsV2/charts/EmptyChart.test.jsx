@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import Plot from 'react-plotly.js';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import EmptyChart from './EmptyChart';
@@ -34,7 +34,7 @@ describe('EmptyChart', () => {
   };
 
   it('renders correctly', () => {
-    const wrapper = mount(
+    const wrapper = render(
       <IntlProvider locale="en">
         <EmptyChart />
       </IntlProvider>,
@@ -48,7 +48,7 @@ describe('EmptyChart', () => {
 
   it('renders custom message', () => {
     const message = 'coming soon...';
-    const wrapper = mount(
+    const wrapper = render(
       <IntlProvider locale="en">
         <EmptyChart message={message} />,
       </IntlProvider>,
