@@ -484,10 +484,6 @@ describe('<Admin />', () => {
         csvFetchMethod: 'fetchEnrolledLearners',
         csvFetchParams: [enterpriseId, {}, { csv: true }],
       },
-      'completed-learners': {
-        csvFetchMethod: 'fetchCompletedLearners',
-        csvFetchParams: [enterpriseId, {}, { csv: true }],
-      },
       'completed-learners-week': {
         csvFetchMethod: 'fetchCourseEnrollments',
         csvFetchParams: [enterpriseId, { passedDate: 'last_week' }, { csv: true }],
