@@ -4,20 +4,18 @@ import {
   Icon, Card, Collapsible,
 } from '@openedx/paragon';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import DetailsAction from './DetailsAction';
 
 const NumberCard = ({
   title, icon, description, detailActions,
 }) => {
-  const handleDetailsActionClick = (event) => {
+  const handleDetailsActionClick = () => {
     const element = document.getElementById('learner-progress-report');
-    if (event) {
-      event.target.click();
-    }
     if (element) {
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         element.scrollIntoView({ behavior: 'smooth' });
-      }, 0);
+      });
     }
   };
 
@@ -37,10 +35,15 @@ const NumberCard = ({
       <Card.Section>
         <Collapsible
           styling="basic"
-          title="Details"
+          title={(
+            <FormattedMessage
+              id="adminPortal.cards.collapsible.details"
+              defaultMessage="Details"
+            />
+          )}
         >
           {
-            detailActions && detailActions.map(action => (
+            detailActions?.map(action => (
               <DetailsAction
                 slug={action.slug}
                 label={action.label}

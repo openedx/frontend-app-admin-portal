@@ -4,7 +4,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
-import AdminCards from '../../containers/AdminCards';
+import AdminCards from '../../containers/AdminCardsV2';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 
 const AnalyticsOverview = ({
