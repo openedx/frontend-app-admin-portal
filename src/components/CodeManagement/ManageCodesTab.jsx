@@ -13,6 +13,7 @@ import {
   CheckCircle, Info, Plus, SpinnerIcon, WarningFilled,
 } from '@openedx/paragon/icons';
 
+import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import SearchBar from '../SearchBar';
 import CodeSearchResults from '../CodeSearchResults';
 import LoadingMessage from '../LoadingMessage';
@@ -173,8 +174,21 @@ class ManageCodesTab extends React.Component {
   renderErrorMessage() {
     return (
       <Alert variant="danger" icon={Info}>
-        <Alert.Heading>Unable to load coupons</Alert.Heading>
-        <p>Try refreshing your screen ({this.props.error.message})</p>
+        <Alert.Heading>
+          <FormattedMessage
+            id="admin.portal.manage.codes.tab.error.heading"
+            defaultMessage="Unable to load coupons"
+            description="Error heading when coupon fetch fails in code management tab"
+          />
+        </Alert.Heading>
+        <p>
+          <FormattedMessage
+            id="admin.portal.manage.codes.tab.error.message.detail"
+            defaultMessage="Try refreshing your screen ({errorDetail})"
+            description="Error message detail for code management tab"
+            values={{ errorDetail: this.props.error.message }}
+          />
+        </p>
       </Alert>
     );
   }
@@ -220,8 +234,20 @@ class ManageCodesTab extends React.Component {
         icon={CheckCircle}
         dismissible
       >
-        <Alert.Heading>Request for more codes received</Alert.Heading>
-        <p>The edX Customer Support team will contact you soon.</p>
+        <Alert.Heading>
+          <FormattedMessage
+            id="admin.portal.manage.codes.tab.request.codes.success.heading"
+            defaultMessage="Request for more codes received"
+            escription="Heading for success message when requesting more codes"
+          />
+        </Alert.Heading>
+        <p>
+          <FormattedMessage
+            id="admin.portal.manage.codes.tab.success.message.content"
+            defaultMessage="The edX Customer Support team will contact you soon."
+            description="Success message content after requesting codes on the manage codes tab"
+          />
+        </p>
       </Alert>
     );
   }
@@ -245,6 +271,7 @@ class ManageCodesTab extends React.Component {
       error,
       loading,
       enterpriseSlug,
+      intl,
     } = this.props;
     const { searchQuery } = this.state;
     const hasSearchQuery = !!searchQuery;
@@ -254,11 +281,21 @@ class ManageCodesTab extends React.Component {
         {isBrowseAndRequestFeatureAlertShown && <NewFeatureAlertBrowseAndRequest />}
         <div className="row mt-4 mb-3 no-gutters">
           <div className="col-12 col-xl-3 mb-3 mb-xl-0">
-            <h2>Overview</h2>
+            <h2>
+              <FormattedMessage
+                id="admin.portal.manage.codes.tab.overview.heading"
+                defaultMessage="Overview"
+                description="Heading for the overview section in the manage codes tab"
+              />
+            </h2>
           </div>
           <div className="col-12 col-xl-4 mb-3 mb-xl-0">
             <SearchBar
-              placeholder="Search by email or code..."
+              placeholder={intl.formatMessage({
+                id: 'admin.portal.manage.codes.tab.search.placeholder.text',
+                defaultMessage: 'Search by email or code...',
+                description: 'Placeholder text for search bar in the manage codes tab',
+              })}
               onSearch={(query) => {
                 this.setState({ searchQuery: query });
                 this.removeQueryParams(['coupon_id', 'page']);
@@ -280,7 +317,11 @@ class ManageCodesTab extends React.Component {
             >
               <>
                 <Icon data-testid="refresh-data" className="mr-2" src={SpinnerIcon} />
-                Refresh data
+                <FormattedMessage
+                  id="admin.portal.manage.codes.tab.refresh.data.label"
+                  defaultMessage="Refresh data"
+                  description="Label to refresh data in the manage codes tab"
+                />
               </>
             </Button>
             <Link
@@ -289,7 +330,11 @@ class ManageCodesTab extends React.Component {
             >
               <>
                 <Icon src={Plus} />
-                Request more codes
+                <FormattedMessage
+                  id="admin.portal.manage.codes.tab.request.more.codes.label"
+                  defaultMessage="Request more codes"
+                  description="Label to request more codes in the manage codes tab"
+                />
               </>
             </Link>
           </div>
@@ -354,6 +399,8 @@ ManageCodesTab.propTypes = {
   }),
   loading: PropTypes.bool,
   error: PropTypes.instanceOf(Error),
+  // injected
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -375,4 +422,4 @@ const mapDispatchToProps = dispatch => ({
 
 ManageCodesTab.contextType = SubsidyRequestsContext;
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigate(withLocation((ManageCodesTab))));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigate(withLocation((injectIntl(ManageCodesTab)))));

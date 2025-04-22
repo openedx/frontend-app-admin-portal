@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 import {
   ActionRow, Form, ModalDialog, Spinner, StatefulButton, useToggle,
@@ -62,7 +62,13 @@ const EditGroupNameModal = ({
         isOverflowVisible={false}
       >
         <ModalDialog.Header>
-          <ModalDialog.Title>Edit group name</ModalDialog.Title>
+          <ModalDialog.Title>
+            <FormattedMessage
+              id="adminPortal.peopleManagement.editGroupNameModal.title"
+              defaultMessage="Edit group name"
+              description="Title for the edit group name modal."
+            />
+          </ModalDialog.Title>
         </ModalDialog.Header>
         <ModalDialog.Body>
           <Form.Control
