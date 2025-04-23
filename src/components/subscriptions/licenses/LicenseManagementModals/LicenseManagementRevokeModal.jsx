@@ -3,17 +3,9 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 
 import {
-  Alert,
-  StatefulButton,
-  ModalDialog,
-  ActionRow,
-  Hyperlink,
-  Icon,
-  Spinner,
+  ActionRow, Alert, Hyperlink, Icon, ModalDialog, Spinner, StatefulButton,
 } from '@openedx/paragon';
-import {
-  RemoveCircle,
-} from '@openedx/paragon/icons';
+import { RemoveCircle } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
 
 import { useRequestState } from './LicenseManagementModalHook';
@@ -100,7 +92,6 @@ const LicenseManagementRevokeModal = ({
     setRequestState({ ...initialRequestState, loading: true });
     const makeRequest = async () => {
       const filtersPresent = activeFilters.length > 0;
-
       // If all users are selected and there are no filters, hit revoke-all endpoint
       if (revokeAllUsers && !filtersPresent) {
         return LicenseManagerApiService.licenseRevokeAll(subscription.uuid);
@@ -110,9 +101,9 @@ const LicenseManagementRevokeModal = ({
       const userEmailsToRevoke = usersToRevoke.map((user) => user.email);
 
       const options = {};
-      if (userEmailsToRevoke.length > 0) {
+      if (userEmailsToRevoke.length > 0 && !revokeAllUsers && !filtersPresent) {
         options.user_emails = userEmailsToRevoke;
-      } else {
+      } else if (filtersPresent) {
         options.filters = transformFiltersForRequest(activeFilters);
       }
       try {
