@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { BrowserRouter } from 'react-router-dom';
 import AdminCards from '../AdminCards';
-import NumberCard from '../../NumberCard';
+import NumberCard from '../cards/NumberCard';
 
 jest.mock('@openedx/paragon/icons', () => ({
   Award: function Award() { return <span data-testid="icon-award" />; },

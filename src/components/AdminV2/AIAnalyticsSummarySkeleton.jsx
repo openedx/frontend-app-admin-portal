@@ -1,10 +1,8 @@
 import React from 'react';
 import { Skeleton, Stack } from '@openedx/paragon';
-import PropTypes from 'prop-types';
 
-const AIAnalyticsSummarySkeleton = ({ renderOverviewHeading }) => (
-  <Stack gap={2} direction="horizontal" className="justify-content-between">
-    {renderOverviewHeading()}
+const AIAnalyticsSummarySkeleton = () => (
+  <Stack gap={2} direction="horizontal" className="justify-content-end">
     <Stack direction="horizontal" gap={2}>
       <Skeleton height={40} width={250} />
       {/* Placeholder for Track Progress is currently hidden due to data inconsistency,
@@ -14,9 +12,5 @@ const AIAnalyticsSummarySkeleton = ({ renderOverviewHeading }) => (
     </Stack>
   </Stack>
 );
-
-AIAnalyticsSummarySkeleton.propTypes = {
-  renderOverviewHeading: PropTypes.func,
-};
 
 export default AIAnalyticsSummarySkeleton;

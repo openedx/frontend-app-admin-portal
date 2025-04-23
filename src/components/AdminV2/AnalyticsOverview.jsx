@@ -4,7 +4,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 import AIAnalyticsSummarySkeleton from './AIAnalyticsSummarySkeleton';
-import AdminCards from '../../containers/AdminCards';
+import AdminCards from '../../containers/AdminCardsV2';
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 
 const AnalyticsOverview = ({
@@ -25,11 +25,20 @@ const AnalyticsOverview = ({
     </h2>
   );
 
+  // If insights are loading => Loading Skeleton is displayed so we need to render overview heading
+  // If we have no insights => AnalyticsSummary does not render so we need to render overview heading
+  const shouldShowOverviewHeading = insightsLoading || !hasCompleteInsights;
+
   return (
     <>
       <div className="row">
+        {shouldShowOverviewHeading && (
+          <div className="col">
+            {renderOverviewHeading()}
+          </div>
+        )}
         <div className="col">
-          {insightsLoading ? <AIAnalyticsSummarySkeleton renderOverviewHeading={renderOverviewHeading} />
+          {insightsLoading ? <AIAnalyticsSummarySkeleton />
             : (
               hasCompleteInsights && (
                 <AIAnalyticsSummary

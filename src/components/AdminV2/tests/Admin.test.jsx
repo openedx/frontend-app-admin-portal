@@ -281,7 +281,7 @@ describe('<Admin />', () => {
       });
 
       it('renders collapsible cards', () => {
-        const { container } = render(
+        render(
           <AdminWrapper
             {...baseProps}
           />,
@@ -289,7 +289,7 @@ describe('<Admin />', () => {
         expect(screen.getByRole('main')).toHaveClass('learner-progress-report');
         expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
         expect(screen.getByText('Full report')).toBeInTheDocument();
-        expect(container.querySelector('.card-footer')).toBeInTheDocument();
+        expect(screen.getByText('total number of learners registered')).toBeInTheDocument();
       });
     });
 
@@ -350,10 +350,10 @@ describe('<Admin />', () => {
           },
         };
 
-        const { container } = render(<AdminWrapper {...baseProps} insights={insights} />);
+        render(<AdminWrapper {...baseProps} insights={insights} />);
 
         expect(screen.getByRole('heading', { name: 'Learner Progress Report' })).toBeInTheDocument();
-        expect(container.querySelector('.number-card')).toBeInTheDocument();
+        expect(screen.getByText('total number of learners registered')).toBeInTheDocument();
       });
 
       it('renders skeleton when loading is true', () => {

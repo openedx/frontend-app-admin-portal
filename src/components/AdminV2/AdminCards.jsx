@@ -6,7 +6,7 @@ import {
   Award, Check, Groups, RemoveRedEye,
 } from '@openedx/paragon/icons';
 
-import NumberCard from '../NumberCard';
+import NumberCard from './cards/NumberCard';
 
 class AdminCards extends React.Component {
   constructor(props) {
