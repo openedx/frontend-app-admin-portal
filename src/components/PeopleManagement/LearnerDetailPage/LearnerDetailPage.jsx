@@ -102,7 +102,7 @@ const LearnerDetailPage = ({ enterpriseUUID }) => {
             <Card className="learner-detail-card">
               <Icon src={Person} className="learner-detail-icon" />
               <Card.Section className="text-center">
-                <h2 className="text-wrap">{learnerData?.name}</h2>
+                <h2 style={{ overflowWrap: 'anywhere' }}>{learnerData?.name}</h2>
                 {// checks if the learner's name value is an email
                   !isEmail(learnerData?.name) && (
                     <p className="mb-1 small">{learnerData?.email}</p>
