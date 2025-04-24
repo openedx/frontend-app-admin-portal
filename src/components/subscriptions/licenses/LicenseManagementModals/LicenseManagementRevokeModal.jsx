@@ -128,16 +128,12 @@ const LicenseManagementRevokeModal = ({
       }
       // If all users not selected, then hit bulk-revoke with the emails loaded into the UI
       const userEmailsToRevoke = usersToRevoke.map((user) => user.email);
-
       if (userEmailsToRevoke.length > 0) {
         options.user_emails = userEmailsToRevoke;
       } else {
         // If the UI happened to render bulk actions without any state set for the table or just a filter is set
         // with no selected items.
-        logError(`Unable to revoke license(s) based on table state,
-        revokeAllUsers: ${revokeAllUsers},
-        userEmailsToRevoke: ${userEmailsToRevoke},
-        filters: ${activeFilters}`);
+        logError('Unable to revoke license(s) based on table state. No licenses selected for revocation');
         throw new Error('Unable to revoke license(s) based on table state');
       }
       return bulkRevokeUsers(options);

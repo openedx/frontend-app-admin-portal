@@ -108,10 +108,7 @@ const LicenseManagementRemindModal = ({
       } else {
         // If the UI happened to render bulk actions without any state set for the table or just a filter is set
         // with no selected items.
-        logError(`Unable to remind license(s) based on table state,
-        remindAllUsers: ${remindAllUsers},
-        userEmailsToRevoke: ${userEmailsToRemind},
-        filters: ${activeFilters}`);
+        logError('Unable to remind license(s) based on table state. No licenses selected for reminder');
         throw new Error('Unable to remind license(s) based on table state');
       }
 
