@@ -72,9 +72,19 @@ const CreateGroupModalContent = ({
             variant="inline"
             className="ml-1"
           >
-            Learn more.
+            <FormattedMessage
+              id="people.management.page.create.groups.modal.learn.more.link"
+              defaultMessage="Learn more."
+              description="Link to help center for creating groups on the create group modal"
+            />
           </Hyperlink>
-          <h4 className="mt-4">Name your group</h4>
+          <h4 className="mt-4">
+            <FormattedMessage
+              id="people.management.page.create.group.name.header"
+              defaultMessage="Name your group"
+              description="Header for group name input section on create group modal"
+            />
+          </h4>
           <Form.Control
             value={groupName}
             onChange={handleGroupNameChange}
@@ -90,7 +100,13 @@ const CreateGroupModalContent = ({
       </Row>
       <Row>
         <Col>
-          <h4>Select group members</h4>
+          <h4>
+            <FormattedMessage
+              id="people.management.page.create.group.members.header"
+              defaultMessage="Select group members"
+              description="Header for group members section on create group modal"
+            />
+          </h4>
           <p>
             <FormattedMessage
               id="people.management.page.create.group.csv.upload"
@@ -104,7 +120,13 @@ const CreateGroupModalContent = ({
           />
         </Col>
         <Col>
-          <h4>Details</h4>
+          <h4>
+            <FormattedMessage
+              id="people.management.page.create.group.details.header"
+              defaultMessage="Details"
+              description="Header for details column in create group modal"
+            />
+          </h4>
           <InviteModalSummary isGroupInvite={isGroupInvite} memberInviteMetadata={memberInviteMetadata} />
           <InviteSummaryCount memberInviteMetadata={memberInviteMetadata} />
           <hr className="my-4" />

@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store';
 
 import { act } from '@testing-library/react';
 
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BulkEnrollmentResultsDownloadPage from './index';
 
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
@@ -29,14 +30,16 @@ const BulkEnrollmentResultsDownloadPageWrapper = ({
   ...rest
 }) => (
   <Provider store={mockStore({ portalConfiguration: { enterpriseId: '1234' } })}>
-    <Router initialEntries={[`/${TEST_ENTERPRISE_SLUG}/admin/bulk-enrollment-results/${TEST_BULK_ENROLLMENT_UUID}`]}>
-      <Routes>
-        <Route
-          path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
-          element={<BulkEnrollmentResultsDownloadPage {...rest} />}
-        />
-      </Routes>
-    </Router>
+    <IntlProvider locale="en">
+      <Router initialEntries={[`/${TEST_ENTERPRISE_SLUG}/admin/bulk-enrollment-results/${TEST_BULK_ENROLLMENT_UUID}`]}>
+        <Routes>
+          <Route
+            path="/:enterpriseSlug/admin/bulk-enrollment-results/:bulkEnrollmentJobId"
+            element={<BulkEnrollmentResultsDownloadPage {...rest} />}
+          />
+        </Routes>
+      </Router>
+    </IntlProvider>
   </Provider>
 );
 

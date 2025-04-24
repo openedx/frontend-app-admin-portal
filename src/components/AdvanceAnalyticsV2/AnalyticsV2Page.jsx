@@ -17,8 +17,6 @@ import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION } from './data/constants';
 import { formatTimestamp } from '../../utils';
 
-const PAGE_TITLE = 'Analytics';
-
 const AnalyticsV2Page = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('enrollments');
   const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
@@ -26,6 +24,13 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const intl = useIntl();
+
+  const PAGE_TITLE = intl.formatMessage({
+    id: 'analytics.page.title',
+    defaultMessage: 'Analytics',
+    description: 'Title of the analytics page',
+  });
+
   const { isFetching, isError, data } = useEnterpriseAnalyticsAggregatesData({
     enterpriseCustomerUUID: enterpriseId,
     startDate,
