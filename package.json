@@ -16,7 +16,6 @@
     "lint": "npm run eslint",
     "lint:fix": "npm run eslint -- --fix",
     "precommit": "npm run lint",
-    "prepublishOnly": "npm run build",
     "postinstall": "patch-package",
     "start": "fedx-scripts webpack-dev-server --progress",
     "start:stage": "npm run start -- --config=webpack.dev-stage.config.js",
