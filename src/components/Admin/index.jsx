@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import {
   FormattedDate, FormattedMessage, injectIntl, intlShape,
 } from '@edx/frontend-platform/i18n';
+import { logError } from '@edx/frontend-platform/logging';
 
 import Hero from '../Hero';
 import EnrollmentsTable from '../EnrollmentsTable';
@@ -42,6 +43,7 @@ class Admin extends React.Component {
     this.fullReportRef = createRef();
     const state = {
       activeTab: 'learner-progress-report',
+      ModuleActivityReportVisible: false,
     };
 
     // Prepare to scroll to report section when it loads
@@ -59,6 +61,7 @@ class Admin extends React.Component {
       this.props.fetchDashboardInsights(enterpriseId);
       this.props.fetchEnterpriseBudgets(enterpriseId);
       this.props.fetchEnterpriseGroups(enterpriseId);
+      this.state.ModuleActivityReportVisible = this.hasModularActivityData(enterpriseId);
     }
   }
 
@@ -75,6 +78,7 @@ class Admin extends React.Component {
       this.props.fetchDashboardInsights(enterpriseId);
       this.props.fetchEnterpriseBudgets(enterpriseId);
       this.props.fetchEnterpriseGroups(enterpriseId);
+      this.state.ModuleActivityReportVisible = this.hasModularActivityData(enterpriseId);
     }
   }
 
@@ -298,6 +302,25 @@ class Admin extends React.Component {
     } = this.props;
 
     return [courseCompletions, enrolledLearners, numberOfUsers].every(item => item === 0);
+  }
+
+  hasModularActivityData(enterpriseId) {
+    const filters = {};
+    EnterpriseDataApiService.fetchEnterpriseModuleActivityReport(enterpriseId, {
+      page: 0,
+      search: '',
+      ...filters,
+    })
+      .then((response) => {
+        // Check if the response data is not empty
+        if (response.data.count > 0) {
+          return true;
+        }
+        return false;
+      })
+      .catch((err) => {
+        logError(err);
+      });
   }
 
   renderDownloadButton() {
@@ -571,18 +594,20 @@ class Admin extends React.Component {
                       </div>
                     </div>
                   </Tab>
-                  <Tab
-                    eventKey="module-activity"
-                    title={intl.formatMessage({
-                      id: 'adminPortal.lpr.tab.moduleActivity.title',
-                      defaultMessage: 'Module Activity (Executive Education)',
-                      description: 'Title for the module activity tab in admin portal.',
-                    })}
-                  >
-                    <div className="mt-3">
-                      <ModuleActivityReport enterpriseId={enterpriseId} />
-                    </div>
-                  </Tab>
+                  {this.state.ModuleActivityReportVisible && (
+                    <Tab
+                      eventKey="module-activity"
+                      title={intl.formatMessage({
+                        id: 'adminPortal.lpr.tab.moduleActivity.title',
+                        defaultMessage: 'Module Activity (Executive Education)',
+                        description: 'Title for the module activity tab in admin portal.',
+                      })}
+                    >
+                      <div className="mt-3">
+                        <ModuleActivityReport enterpriseId={enterpriseId} />
+                      </div>
+                    </Tab>
+                  )}
                 </Tabs>
               </div>
             </div>
