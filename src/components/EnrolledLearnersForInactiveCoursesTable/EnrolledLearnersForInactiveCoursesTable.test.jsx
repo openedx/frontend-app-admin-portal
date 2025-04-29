@@ -180,7 +180,7 @@ describe('EnrolledLearnersForInactiveCoursesTable', () => {
     // Verify each row in table has correct data
     container.querySelectorAll(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
       row.querySelectorAll('td').forEach((cell, colIndex) => {
-        expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
+        expect(cell.textContent).toEqual(rowsData[rowIndex][colIndex]);
       });
     });
   });

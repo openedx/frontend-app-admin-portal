@@ -212,6 +212,7 @@ export class BaseCodeReminderModal extends React.Component {
     return (
       <ModalDialog
         isOpen
+        data-testid="code-reminder-modal"
         size="lg"
         onClose={onClose}
         className="code-reminder"
@@ -232,6 +233,7 @@ export class BaseCodeReminderModal extends React.Component {
               Cancel
             </ModalDialog.CloseButton>
             <Button
+              data-testid="remind-submit-btn"
               key="remind-submit-btn"
               disabled={submitting}
               className="code-remind-save-btn"

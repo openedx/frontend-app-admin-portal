@@ -66,6 +66,7 @@ class CodeSearchResults extends React.Component {
       variant="success"
       icon={CheckCircle}
       onClose={this.resetCodeActionMessages}
+      data-testid="code-search-result-alert"
       dismissible
     >
       <p>{message}</p>
@@ -82,7 +83,7 @@ class CodeSearchResults extends React.Component {
     return (
       <TransitionReplace>
         {isOpen ? (
-          <div key="code-search-results" className="code-search-results border-bottom pb-4">
+          <div data-testid="code-search-results" key="code-search-results" className="code-search-results border-bottom pb-4">
             <CodeSearchResultsHeading
               searchQuery={searchQuery}
               onClose={onClose}
