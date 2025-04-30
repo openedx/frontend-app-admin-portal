@@ -23,6 +23,9 @@ const EnrollmentCard = ({ enrollment, enterpriseSlug }) => {
       case 'upcoming': {
         return (<Badge variant="info">Upcoming</Badge>);
       }
+      case 'saved_for_later': {
+        return (<Badge variant="dark">Saved for later</Badge>);
+      }
       default: {
         return (<Badge variant="info">Assigned</Badge>);
       }
