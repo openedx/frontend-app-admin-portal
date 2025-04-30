@@ -12,7 +12,7 @@ const CourseEnrollments = ({ enrollments, isLoading }) => {
     description: 'Message displayed when a learner has no course enrollments',
   });
 
-  const enrollmentTypes = ['assignmentsForDisplay', 'inProgress', 'upcoming', 'completed'];
+  const enrollmentTypes = ['assignmentsForDisplay', 'inProgress', 'upcoming', 'savedForLater', 'completed'];
   const flattenedEnrollments = enrollmentTypes.flatMap(type => enrollments?.[type] || []);
   const hasEnrollments = flattenedEnrollments.length > 0;
 
@@ -60,6 +60,7 @@ CourseEnrollments.propTypes = {
     completed: PropTypes.arrayOf(enrollmentShape),
     inProgress: PropTypes.arrayOf(enrollmentShape),
     upcoming: PropTypes.arrayOf(enrollmentShape),
+    savedForLater: PropTypes.arrayOf(enrollmentShape),
     assignmentsForDisplay: PropTypes.arrayOf(enrollmentShape),
   }).isRequired,
   isLoading: PropTypes.bool.isRequired,
