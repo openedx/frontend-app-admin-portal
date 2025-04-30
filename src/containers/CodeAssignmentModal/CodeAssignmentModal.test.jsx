@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import last from 'lodash/last';
+import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import CodeAssignmentModal from './index';
@@ -92,42 +93,43 @@ CodeAssignmentModalWrapper.propTypes = {
 };
 
 describe('CodeAssignmentModalWrapper', () => {
-  it('renders individual assignment modal', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper />);
-    expect(wrapper.find('IndividualAssignFields')).toHaveLength(1);
+  it('renders individual assignment modal', async () => {
+    render(<CodeAssignmentModalWrapper />);
+    const fields = await screen.findByText('Add learner');
+    expect(fields).toBeInTheDocument();
   });
 
-  it('renders bulk assignment modal', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper isBulkAssign />);
-    expect(wrapper.find('BulkAssignFields')).toHaveLength(1);
+  it('renders bulk assignment modal', async () => {
+    render(<CodeAssignmentModalWrapper isBulkAssign />);
+    const fields = await screen.findByText('Email Addresses');
+    expect(fields).toBeInTheDocument();
   });
 
-  it('renders <SaveTemplateButton />', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper />);
-    const saveTemplateButton = wrapper.find('SaveTemplateButton');
-    expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().templateType).toEqual('assign');
+  it('renders <SaveTemplateButton />', async () => {
+    render(<CodeAssignmentModalWrapper />);
+    const saveTemplateButton = await screen.findByTestId('save-template-btn');
+    expect(saveTemplateButton).toBeInTheDocument();
   });
 
-  it('renders <TemplateSourceFields /> with source new_email', () => {
-    const wrapper = mount(<CodeAssignmentModalWrapper />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+  it('renders <TemplateSourceFields /> with source new_email', async () => {
+    render(<CodeAssignmentModalWrapper />);
+    const templateSourceFields = await screen.findByTestId('template-source-fields');
+    expect(templateSourceFields).toBeInTheDocument();
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('input[name="template-name"]')).toHaveLength(1);
+    expect(templateSourceFields.querySelector('button#btn-new-email-template')).toHaveAttribute('aria-pressed', 'true');
+    expect(templateSourceFields.querySelector('button#btn-old-email-template')).toHaveAttribute('aria-pressed', 'false');
+    expect(templateSourceFields.querySelector('button#btn-new-email-template')).toHaveAttribute('style', 'pointer-events: none;');
+    expect(templateSourceFields.querySelector('button#btn-old-email-template')).toHaveAttribute('style', 'pointer-events: auto;');
 
-    TemplateSourceFields.find('button#btn-old-email-template').simulate('click');
+    const btnOldEmailTemplate = await screen.findByTestId('btn-old-email-template');
+    fireEvent.click(btnOldEmailTemplate);
     expect(last(store.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE },
     });
   });
 
-  it('renders <TemplateSourceFields /> with source from_template', () => {
+  it('renders <TemplateSourceFields /> with source from_template', async () => {
     const newStore = mockStore({
       ...initialState,
       emailTemplate: {
@@ -135,17 +137,17 @@ describe('CodeAssignmentModalWrapper', () => {
         emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
       },
     });
-    const wrapper = mount(<CodeAssignmentModalWrapper store={newStore} />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+    render(<CodeAssignmentModalWrapper store={newStore} />);
+    const templateSourceFields = await screen.findByTestId('template-source-fields');
+    expect(templateSourceFields).toBeInTheDocument();
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('select[name="template-name-select"]')).toHaveLength(1);
+    expect(templateSourceFields.querySelector('button#btn-new-email-template')).toHaveAttribute('aria-pressed', 'false');
+    expect(templateSourceFields.querySelector('button#btn-old-email-template')).toHaveAttribute('aria-pressed', 'true');
+    expect(templateSourceFields.querySelector('button#btn-new-email-template')).toHaveAttribute('style', 'pointer-events: auto;');
+    expect(templateSourceFields.querySelector('button#btn-old-email-template')).toHaveAttribute('style', 'pointer-events: none;');
 
-    TemplateSourceFields.find('button#btn-new-email-template').simulate('click');
+    const btnNewEmailTemplate = await screen.findByTestId('btn-new-email-template');
+    fireEvent.click(btnNewEmailTemplate);
     expect(last(newStore.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL },

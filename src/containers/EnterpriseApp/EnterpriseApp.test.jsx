@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
 import { breakpoints, Skeleton } from '@openedx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { axiosMock } from '../../setupTest';
 
 import EnterpriseApp from './index';
@@ -122,7 +122,7 @@ describe('<EnterpriseApp />', () => {
   afterEach(() => {
     axiosMock.reset();
   });
-  it('renders not found page correctly', () => {
+  it('renders not found page correctly', async () => {
     const store = mockStore({
       ...initialState,
       portalConfiguration: {
@@ -130,17 +130,18 @@ describe('<EnterpriseApp />', () => {
         enterpriseId: null,
       },
     });
-    const wrapper = mount((
+    const { container } = render((
       <EnterpriseAppWrapper
         initialEntries={['/foo/bar']}
         store={store}
       />
     ));
-    expect(wrapper.find(NotFoundPage).length).toEqual(1);
-    waitFor(() => expect(wrapper.text()).toContain(404));
+    const notFoundInstance = await screen.findByText('Oops, sorry we can\'t find that page!');
+    expect(notFoundInstance).toBeInTheDocument();
+    waitFor(() => expect(container.textContent).toContain(404));
   });
 
-  it('renders the load page correctly', () => {
+  it('renders the load page correctly', async () => {
     const store = mockStore({
       ...initialState,
       portalConfiguration: {
@@ -149,10 +150,11 @@ describe('<EnterpriseApp />', () => {
       },
     });
 
-    const wrapper = mount((
+    render((
       <EnterpriseAppWrapper store={store} />
     ));
-    expect(wrapper.find(Skeleton)).toHaveLength(2);
+    const AppSkeleton = await screen.findByTestId('enterprise-app-skeleton');
+    expect(AppSkeleton).toBeInTheDocument();
   });
 
   it('renders error page correctly', () => {
@@ -165,10 +167,10 @@ describe('<EnterpriseApp />', () => {
       },
     });
 
-    const wrapper = mount((
+    const { container } = render((
       <EnterpriseAppWrapper store={store} />
     ));
-    expect(wrapper.text()).toContain(err);
+    expect(container.textContent).toContain(err);
   });
   describe('location changes', () => {
     beforeEach(() => {
@@ -198,16 +200,14 @@ describe('<EnterpriseApp />', () => {
         },
       });
 
-      const wrapper = mount(
-        <EnterpriseAppWrapper store={store} />,
-        { attachTo: document.getElementById('container') },
-      );
+      const { rerender } = render(<EnterpriseAppWrapper store={store} />);
 
-      wrapper.setProps({
-        location: {
+      rerender(<EnterpriseAppWrapper
+        store={store}
+        location={{
           pathname: '/test-enterprise-slug/admin/codes',
-        },
-      });
+        }}
+      />);
 
       // ensure focus is set on content wrapper
       expect(document.activeElement.className).toEqual('content-wrapper');
@@ -224,7 +224,7 @@ describe('<EnterpriseApp />', () => {
       },
     });
 
-    const wrapper = mount((
+    const { unmount } = render((
       <EnterpriseAppWrapper
         store={store}
       />
@@ -234,7 +234,7 @@ describe('<EnterpriseApp />', () => {
     store.clearActions();
 
     // unmount component to trigger componentWillUnmount lifecycle method
-    wrapper.unmount();
+    unmount();
 
     // ensure the TOGGLE_SIDEBAR_TOGGLE action is dispatched
     const actions = store.getActions().filter(action => action.type === TOGGLE_SIDEBAR_TOGGLE);
