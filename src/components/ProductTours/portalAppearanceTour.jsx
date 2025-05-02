@@ -40,6 +40,8 @@ const portalAppearanceTour = ({
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
+    advanceButtonText: 'Next',
+    endButtonText: 'End',
   };
 
   return tour;

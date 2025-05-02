@@ -17,6 +17,7 @@ import ProductTours from '../ProductTours';
 import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
+  LEARNER_DETAIL_PAGE_COOKIE_NAME,
   TOUR_TARGETS,
 } from '../constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
@@ -38,7 +39,7 @@ const ToursWithContext = ({
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
   subsidyRequestsEnabled = false,
   canManageLearnerCredit = false,
-  enableLearnerPortal = true,
+  enableLearnerPortal = false,
   EnterpriseSubsidiesContextValue = {
     canManageLearnerCredit,
     enterpriseSubsidyTypes: [SUBSIDY_TYPES.coupon],
@@ -54,6 +55,9 @@ const ToursWithContext = ({
     portalConfiguration: {
       enterpriseSlug: ENTERPRISE_SLUG,
       enableLearnerPortal,
+      enterpriseFeatures: {
+        enterpriseGroupsV2: false,
+      },
     },
   }),
 }) => (
@@ -68,6 +72,7 @@ const ToursWithContext = ({
                 <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
                   <>
                     <ProductTours />
+                    <p id={TOUR_TARGETS.PEOPLE_MANAGEMENT}>People Management</p>
                     <p id={TOUR_TARGETS.LEARNER_CREDIT}>Learner Credit Management</p>
                     <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
                   </>
@@ -115,29 +120,30 @@ describe('<ProductTours/>', () => {
 
   describe('browse and request tour', () => {
     it('is shown when feature is enabled, enterprise is eligible for browse and request, and no cookie found', () => {
-      render(<ToursWithContext />);
+      render(<ToursWithContext enableLearnerPortal />);
       expect(screen.queryByText('browse for courses', { exact: false })).toBeTruthy();
     });
 
     it('is not shown if enterprise already has subsidy requests turned on', () => {
-      render(<ToursWithContext subsidyRequestsEnabled />);
+      render(<ToursWithContext enableLearnerPortal subsidyRequestsEnabled />);
       expect(screen.queryByText('browse for courses', { exact: false })).toBeFalsy();
     });
 
     it('is not shown when feature is enabled and localStorage record found ', () => {
       global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
-      render(<ToursWithContext />);
+      render(<ToursWithContext enableLearnerPortal />);
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
     it('it is shown in settings page', () => {
-      render(<ToursWithContext pathname={SETTINGS_PAGE_LOCATION} />);
+      render(<ToursWithContext enableLearnerPortal pathname={SETTINGS_PAGE_LOCATION} />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
     });
 
     it('is not shown if enterprise does not have subsidies that can be used for browse and request', () => {
       render(
         <ToursWithContext
+          enableLearnerPortal
           subsidyRequestContextValue={{
             subsidyRequestConfiguration: {
               subsidyType: null,
@@ -177,6 +183,41 @@ describe('<ProductTours/>', () => {
     it('is shown if in Learner Credit page', () => {
       render(<ToursWithContext pathname={LEARNER_CREDIT_PAGE_LOCATION} canManageLearnerCredit />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
+    });
+  });
+
+  describe('learner detail page tour', () => {
+    it('is shown when feature is enabled, and no cookie found', () => {
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, false);
+      render(
+        <ToursWithContext
+          store={mockStore({
+            portalConfiguration: {
+              enterpriseFeatures: {
+                enterpriseGroupsV2: true,
+              },
+            },
+          })}
+        />,
+      );
+      screen.debug(undefined, 100000);
+      expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+    });
+    it('is not shown when feature is turned off', () => {
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+
+      render(
+        <ToursWithContext
+          store={mockStore({
+            portalConfiguration: {
+              enterpriseFeatures: {
+                enterpriseGroupsV2: false,
+              },
+            },
+          })}
+        />,
+      );
+      expect(screen.queryByText('learner profile feature', { exact: false })).toBeFalsy();
     });
   });
 });

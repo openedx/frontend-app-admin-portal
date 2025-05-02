@@ -41,6 +41,8 @@ const learnerCreditTour = ({
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
+    advanceButtonText: 'Next',
+    endButtonText: 'End',
   };
 
   return tour;
