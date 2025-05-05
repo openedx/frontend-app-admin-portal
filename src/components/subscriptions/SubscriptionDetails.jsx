@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import dayjs from 'dayjs';
 import {
-  Button, Row, Col, Toast, Icon,
+  Button, Col, Icon, Row, Toast,
 } from '@openedx/paragon';
 import { ArrowBackIos } from '@openedx/paragon/icons';
 
