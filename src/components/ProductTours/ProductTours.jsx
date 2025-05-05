@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import {
@@ -13,12 +13,10 @@ import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import learnerDetailPageTour from './learnerDetailPageTour';
 import highlightsTour from './highlightsTour';
+import FloatingCollapsible from '../FloatingCollapsible';
 import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
-import highlightsTour from './highlightsTour';
 import messages from './messages';
-import learnerCreditTour from './learnerCreditTour';
-import portalAppearanceTour from './portalAppearanceTour';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
@@ -41,6 +39,8 @@ const ProductTours = ({
   enterpriseFeatures,
 }) => {
   const intl = useIntl();
+  const [collapsibleOpen, setCollapsibleOpen] = useState(false);
+
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const enabledFeatures = {
@@ -71,26 +71,30 @@ const ProductTours = ({
       <ProductTour
         tours={tours}
       />
-      {/* <FloatingOverlay minimizable draggable>
-        <ProductToursChecklist tours={tours} />
-      </FloatingOverlay> */}
-      <OverlayTrigger
-        placement="left"
-        overlay={(
-          <Tooltip id="product-tours-question-icon-tooltip">
-            {/* TODO: Translate */}
-            {intl.formatMessage(messages.questionIconTooltip)}
-          </Tooltip>
+      {collapsibleOpen && (
+        <FloatingCollapsible>
+          <div>Product Tours Checklist</div>
+        </FloatingCollapsible>
       )}
-      >
-        <IconButton
-          src={Question}
-          className="info-button bottom-right-fixed"
-          iconAs={Icon}
-          alt="More details"
-          size="lg"
-        />
-      </OverlayTrigger>
+      {!collapsibleOpen && (
+        <OverlayTrigger
+          placement="left"
+          overlay={(
+            <Tooltip id="product-tours-question-icon-tooltip">
+              {intl.formatMessage(messages.questionIconTooltip)}
+            </Tooltip>
+      )}
+        >
+          <IconButton
+            src={Question}
+            className="info-button bottom-right-fixed"
+            iconAs={Icon}
+            alt="More details"
+            size="lg"
+            onClick={() => setCollapsibleOpen(true)}
+          />
+        </OverlayTrigger>
+      )}
     </div>
   );
 };
