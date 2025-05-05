@@ -92,3 +92,10 @@ form {
   object-fit: scale-down !important;
   object-position: center center !important;
 }
+
+.bottom-right-fixed {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+}
