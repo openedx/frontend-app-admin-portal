@@ -1,15 +1,24 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
-import { ProductTour } from '@openedx/paragon';
+import {
+  IconButton, Icon, ProductTour, OverlayTrigger, Tooltip,
+} from '@openedx/paragon';
+import { Question } from '@openedx/paragon/icons';
 import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
-import browseAndRequestTour from './browseAndRequestTour';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import learnerDetailPageTour from './learnerDetailPageTour';
 import highlightsTour from './highlightsTour';
+import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
+import highlightsTour from './highlightsTour';
+import messages from './messages';
+import learnerCreditTour from './learnerCreditTour';
+import portalAppearanceTour from './portalAppearanceTour';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
@@ -31,6 +40,7 @@ const ProductTours = ({
   enterpriseSlug,
   enterpriseFeatures,
 }) => {
+  const intl = useIntl();
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const enabledFeatures = {
@@ -57,9 +67,31 @@ const ProductTours = ({
   }];
 
   return (
-    <ProductTour
-      tours={tours}
-    />
+    <div className="product-tours">
+      <ProductTour
+        tours={tours}
+      />
+      {/* <FloatingOverlay minimizable draggable>
+        <ProductToursChecklist tours={tours} />
+      </FloatingOverlay> */}
+      <OverlayTrigger
+        placement="left"
+        overlay={(
+          <Tooltip id="product-tours-question-icon-tooltip">
+            {/* TODO: Translate */}
+            {intl.formatMessage(messages.questionIconTooltip)}
+          </Tooltip>
+      )}
+      >
+        <IconButton
+          src={Question}
+          className="info-button bottom-right-fixed"
+          iconAs={Icon}
+          alt="More details"
+          size="lg"
+        />
+      </OverlayTrigger>
+    </div>
   );
 };
 
