@@ -238,7 +238,7 @@ class Admin extends React.Component {
           defaultMessage: 'Past Week',
           description: 'Report title for number of courses completed by learners in past week',
         }),
-        component: <PastWeekPassedLearnersTable />,
+        component: <PastWeekPassedLearnersTable id="completed-learners-week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,

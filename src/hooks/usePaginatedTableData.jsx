@@ -33,6 +33,7 @@ const usePaginatedTableData = ({
   tableId,
   apiFieldsForColumnAccessor,
   fetchFunction,
+  fetchFunctionOptions,
 }) => {
   const shouldTrackFetchEvents = useRef(false);
 
@@ -55,7 +56,10 @@ const usePaginatedTableData = ({
       };
       applySortByToOptions(args.sortBy, apiFieldsForColumnAccessor, options);
 
-      const response = await fetchFunction(enterpriseId, options);
+      const response = await fetchFunction(enterpriseId, {
+        ...fetchFunctionOptions,
+        ...options,
+      });
       const data = camelCaseObject(response.data);
 
       setTableData({
