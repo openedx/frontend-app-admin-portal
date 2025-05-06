@@ -80,12 +80,12 @@ describe('<ExistingSSOConfigs />', () => {
     expect(screen.getByText('cool ranch')).toBeInTheDocument();
     expect(screen.getByText('Active')).toBeInTheDocument();
 
-    userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${activeConfig[0].id}`));
+    await userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${activeConfig[0].id}`));
 
     expect(screen.getByText('Disable')).toBeInTheDocument();
     expect(screen.getByText('Edit')).toBeInTheDocument();
 
-    userEvent.click(screen.getByText('Disable'));
+    await userEvent.click(screen.getByText('Disable'));
     const data = new FormData();
     data.append('enabled', false);
     data.append('enterprise_customer_uuid', enterpriseId);

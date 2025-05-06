@@ -11,6 +11,7 @@ exports[`<ErrorPage /> renders correctly 1`] = `
 >
   <div
     className="container-fluid"
+    data-testid="error-page"
   >
     <div
       className="row mt-4"

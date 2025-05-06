@@ -84,12 +84,12 @@ describe('ReviewList', () => {
       expect(screen.queryByText(row.values.foo)).not.toBeInTheDocument();
     });
   });
-  it('lets users show all rows', () => {
+  it('lets users show all rows', async () => {
     const rows = rowGenerator(30);
     render(<ReviewList {...defaultProps} rows={rows} />);
 
     const button = screen.getByTestId('show-hide');
-    userEvent.click(button);
+    await userEvent.click(button);
     rows.forEach((row) => {
       expect(screen.getByText(row.values.foo)).toBeInTheDocument();
     });
