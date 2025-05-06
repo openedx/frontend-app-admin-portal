@@ -214,13 +214,14 @@ class ManageCodesTab extends React.Component {
   renderRequestCodesSuccessMessage() {
     return (
       <Alert
+        data-testid="code-request-alert"
         show={this.state.hasRequestedCodes}
         onClose={() => this.setState({ hasRequestedCodes: false })}
         variant="success"
         icon={CheckCircle}
         dismissible
       >
-        <Alert.Heading>Request for more codes received</Alert.Heading>
+        <Alert.Heading data-testid="code-request-alert-heading">Request for more codes received</Alert.Heading>
         <p>The edX Customer Support team will contact you soon.</p>
       </Alert>
     );

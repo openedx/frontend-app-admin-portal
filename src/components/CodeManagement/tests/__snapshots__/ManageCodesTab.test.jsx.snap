@@ -17,6 +17,7 @@ exports[`ManageCodesTabWrapper renders renders empty results correctly 1`] = `
     >
       <div
         className="pgn__searchfield d-flex"
+        data-testid="search-field"
         onSearch={[Function]}
       >
         <form
@@ -220,6 +221,7 @@ exports[`ManageCodesTabWrapper renders renders error state correctly 1`] = `
     >
       <div
         className="pgn__searchfield d-flex"
+        data-testid="search-field"
         onSearch={[Function]}
       >
         <form
@@ -431,6 +433,7 @@ exports[`ManageCodesTabWrapper renders renders loading state correctly 1`] = `
     >
       <div
         className="pgn__searchfield d-flex"
+        data-testid="search-field"
         onSearch={[Function]}
       >
         <form
@@ -580,6 +583,7 @@ exports[`ManageCodesTabWrapper renders renders loading state correctly 1`] = `
     >
       <div
         className="loading d-flex align-items-center justify-content-center coupons mt-3"
+        data-testid="loading-message"
       >
         Loading...
         <span
@@ -610,6 +614,7 @@ exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] =
     >
       <div
         className="pgn__searchfield d-flex"
+        data-testid="search-field"
         onSearch={[Function]}
       >
         <form
@@ -881,6 +886,7 @@ exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] =
         </div>
         <div
           className="coupon-details row no-gutters px-2 my-3 d-none"
+          data-testid="coupon-details"
           id="coupon-details-0"
         >
           <div
@@ -1012,6 +1018,7 @@ exports[`ManageCodesTabWrapper renders renders non-empty results correctly 1`] =
         </div>
         <div
           className="coupon-details row no-gutters px-2 my-3 d-none"
+          data-testid="coupon-details"
           id="coupon-details-1"
         >
           <div
