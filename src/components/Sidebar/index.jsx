@@ -37,7 +37,6 @@ const Sidebar = ({
   onWidthChange,
   isMobile,
   enterpriseGroupsV1,
-  enterpriseGroupsV2,
   onMount,
 }) => {
   const sidebarRef = useRef();
@@ -150,7 +149,6 @@ const Sidebar = ({
       title: 'People Management',
       to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
       icon: <Icon src={Person} />,
-      hidden: !enterpriseGroupsV2,
     },
     {
       title: intl.formatMessage({
@@ -261,7 +259,6 @@ Sidebar.propTypes = {
   onMount: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
   enterpriseGroupsV1: PropTypes.bool,
-  enterpriseGroupsV2: PropTypes.bool,
 };
 
 export default Sidebar;
