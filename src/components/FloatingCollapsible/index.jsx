@@ -1,24 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Collapsible } from '@openedx/paragon';
+import {
+  Collapsible, Icon, ActionRow, Button,
+} from '@openedx/paragon';
+import { KeyboardArrowUp, KeyboardArrowDown } from '@openedx/paragon/icons';
 import Color from 'color';
 
-const FloatingCollapsible = ({ enterpriseBranding }) => {
+const FloatingCollapsible = ({ enterpriseBranding, onDismiss = () => {} }) => {
+  const [collapseIsOpen, setCollapseOpen] = useState(true);
+
   // Use the bottom-right-fixed class that's already defined in index.scss
   const collapsibleStyle = enterpriseBranding?.tertiary_color ? {
     backgroundColor: enterpriseBranding.tertiary_color,
     color: enterpriseBranding.tertiary_color && Color(enterpriseBranding.tertiary_color).isDark() ? '#FFFFFF' : '#454545',
   } : {};
 
+  const handleDismiss = () => {
+    setCollapseOpen(false);
+    onDismiss();
+  };
+
   return (
-    <div className="bottom-right-fixed">
-      <Collapsible
+    <div className="floating-collapsible bottom-right-fixed">
+      <Collapsible.Advanced
         styling="card"
-        title="Product Tours Checklist"
-        style={collapsibleStyle}
+        open={collapseIsOpen}
+        onToggle={isOpen => setCollapseOpen(isOpen)}
       >
-        <div>Product Tours Checklist</div>
-      </Collapsible>
+        <Collapsible.Trigger
+          style={collapsibleStyle}
+          className={`p-3 h4 mb-0 ${collapseIsOpen ? 'rounded-top' : 'rounded'}`}
+        >
+          <div className="d-flex justify-content-between">
+            <div>Quick Start Guide</div>
+            <Collapsible.Visible whenClosed>
+              <Icon src={KeyboardArrowUp} />
+            </Collapsible.Visible>
+            <Collapsible.Visible whenOpen>
+              <Icon src={KeyboardArrowDown} />
+            </Collapsible.Visible>
+          </div>
+        </Collapsible.Trigger>
+        <Collapsible.Body className="floating-collapsible__body bg-light-300 text-gray-700 rounded-bottom p-3">
+          <p className="small">Select any item in the guide to learn more about your administrative portal.</p>
+          <ActionRow>
+            <Button variant="tertiary" onClick={() => setCollapseOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleDismiss}>
+              Dismiss
+            </Button>
+          </ActionRow>
+        </Collapsible.Body>
+      </Collapsible.Advanced>
     </div>
   );
 };
