@@ -11,6 +11,7 @@ import {
 import { mergeConfig } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 import { features } from '../../../config';
 import ProductTours from '../ProductTours';
@@ -200,8 +201,24 @@ describe('<ProductTours/>', () => {
           })}
         />,
       );
-      screen.debug(undefined, 100000);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+    });
+    it('dismiss learner profile product tour', () => {
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
+      render(
+        <ToursWithContext
+          store={mockStore({
+            portalConfiguration: {
+              enterpriseFeatures: {
+                enterpriseGroupsV2: true,
+              },
+            },
+          })}
+        />,
+      );
+      expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+      userEvent.click(screen.getByText('Dismiss'));
+      expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
     });
     it('is not shown when feature is turned off', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);

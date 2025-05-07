@@ -34,11 +34,11 @@ const ProductTours = ({
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const enabledFeatures = {
-    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour({ enableLearnerPortal }),
+    [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour(enableLearnerPortal),
     [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS),
     [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour(),
-    [LEARNER_DETAIL_PAGE_COOKIE_NAME]: useLearnerDetailPageTour({ enterpriseFeatures }),
-    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour({ enablePortalAppearance }),
+    [LEARNER_DETAIL_PAGE_COOKIE_NAME]: useLearnerDetailPageTour(enterpriseFeatures),
+    [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour(enablePortalAppearance),
   };
   const newFeatureTourCheckpoints = {
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: browseAndRequestTour({ enterpriseSlug }),
