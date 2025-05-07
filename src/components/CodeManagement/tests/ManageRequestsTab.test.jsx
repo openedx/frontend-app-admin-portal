@@ -5,7 +5,9 @@ import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 import dayjs from 'dayjs';
 import userEvent from '@testing-library/user-event';
-import { screen, render, cleanup } from '@testing-library/react';
+import {
+  screen, render, cleanup, waitFor,
+} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -262,7 +264,7 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const approveButton = screen.getByText('Approve');
-    await userEvent.click(approveButton);
+    await waitFor(() => userEvent.click(approveButton));
     expect(screen.getByText('Approve coupon code request modal'));
   });
 
@@ -282,11 +284,11 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const approveButton = screen.getByText('Approve');
-    await userEvent.click(approveButton);
+    await waitFor(() => userEvent.click(approveButton));
     expect(screen.getByText('Approve coupon code request modal'));
 
     const closeButton = screen.getByText('Close');
-    await userEvent.click(closeButton);
+    await waitFor(() => userEvent.click(closeButton));
 
     expect(screen.queryByText('Decline coupon code request modal')).not.toBeInTheDocument();
   });
@@ -320,11 +322,11 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const approveButton = screen.getByText('Approve');
-    await userEvent.click(approveButton);
+    await waitFor(() => userEvent.click(approveButton));
     expect(screen.getByText('Approve coupon code request modal'));
 
     const approveInModalButton = screen.getByText('Approve in modal');
-    await userEvent.click(approveInModalButton);
+    await waitFor(() => userEvent.click(approveInModalButton));
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockCouponCodeRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING },
     );
@@ -336,7 +338,7 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    await userEvent.click(declineButton);
+    await waitFor(() => userEvent.click(declineButton));
     expect(screen.getByText('Decline coupon code request modal'));
   });
 
@@ -344,11 +346,11 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    await userEvent.click(declineButton);
+    await waitFor(() => userEvent.click(declineButton));
     expect(screen.getByText('Decline coupon code request modal'));
 
     const closeButton = screen.getByText('Close');
-    await userEvent.click(closeButton);
+    await waitFor(() => userEvent.click(closeButton));
 
     expect(screen.queryByText('Decline coupon code request modal')).not.toBeInTheDocument();
   });
@@ -382,11 +384,11 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const declineButton = screen.getByText('Decline');
-    await userEvent.click(declineButton);
+    await waitFor(() => userEvent.click(declineButton));
     expect(screen.getByText('Decline coupon code request modal'));
 
     const declineInModalButton = screen.getByText('Decline in modal');
-    await userEvent.click(declineInModalButton);
+    await waitFor(() => userEvent.click(declineInModalButton));
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockCouponCodeRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED },
     );
