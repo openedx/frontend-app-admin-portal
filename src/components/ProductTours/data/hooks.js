@@ -40,7 +40,7 @@ export const useLearnerCreditTour = () => {
 export const useLearnerDetailPageTour = ({ enterpriseFeatures }) => {
   const dismissedLearnerDetailTourCookie = global.localStorage.getItem(LEARNER_DETAIL_PAGE_COOKIE_NAME);
   // Only show tour if feature is enabled, hide cookie is undefined or false or not in the settings page
-  const showLearnerDetailPageTour = enterpriseFeatures.enterpriseGroupsV2 && !!dismissedLearnerDetailTourCookie;
+  const showLearnerDetailPageTour = enterpriseFeatures.enterpriseGroupsV2 && !dismissedLearnerDetailTourCookie;
   return showLearnerDetailPageTour;
 };
 

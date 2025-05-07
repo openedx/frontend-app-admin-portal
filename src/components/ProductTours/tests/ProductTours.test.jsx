@@ -188,7 +188,7 @@ describe('<ProductTours/>', () => {
 
   describe('learner detail page tour', () => {
     it('is shown when feature is enabled, and no cookie found', () => {
-      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, false);
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(
         <ToursWithContext
           store={mockStore({
