@@ -14,7 +14,7 @@ import { modifyDataToIntroduceEnrollTypeCount, constructChartHoverTemplate } fro
 dayjs.extend(utc);
 
 const Enrollments = ({
-  startDate, endDate, granularity, calculation, enterpriseId,
+  startDate, endDate, granularity, calculation, enterpriseId, groupUUID,
 }) => {
   const intl = useIntl();
   const {
@@ -25,6 +25,7 @@ const Enrollments = ({
     endDate,
     granularity,
     calculation,
+    groupUUID,
   });
   const enrollmentsOverTimeForCSV = useMemo(() => {
     const enrollmentsOverTime = modifyDataToIntroduceEnrollTypeCount(
@@ -215,6 +216,7 @@ const Enrollments = ({
           startDate={startDate}
           endDate={endDate}
           enterpriseId={enterpriseId}
+          groupUUID={groupUUID}
           enableCSVDownload
           tableColumns={[
             {
@@ -273,6 +275,7 @@ Enrollments.propTypes = {
   endDate: PropTypes.string.isRequired,
   granularity: PropTypes.string.isRequired,
   calculation: PropTypes.string.isRequired,
+  groupUUID: PropTypes.string.isRequired,
 };
 
 export default Enrollments;
