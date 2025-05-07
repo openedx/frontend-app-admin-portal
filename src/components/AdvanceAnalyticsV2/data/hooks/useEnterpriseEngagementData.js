@@ -43,7 +43,7 @@ const applyDataTransformations = (response, granularity, calculation, allowedEnr
 };
 
 /**
-  Fetches enterprise engagement data.
+ Fetches enterprise engagement data.
 
  *  @param {String} enterpriseCustomerUUID - UUID of the enterprise customer.
  *  @param {Date} startDate - Start date for the data.
@@ -51,6 +51,7 @@ const applyDataTransformations = (response, granularity, calculation, allowedEnr
  *  @param {OpUnitType} granularity - Granularity of the data. e.g. `day`, `week`, `month`, `quarter`, `year`.
  *  @param {String} calculation - Calculation to apply on the data. e.g.
  *    `total`, `running_total`, `moving_average_3_periods`, `moving_average_7_periods`.
+ *  @param groupUUID - UUID of the group.
  *  @param {object} queryOptions - Additional options for the query.
  */
 const useEnterpriseEngagementData = ({
@@ -59,9 +60,10 @@ const useEnterpriseEngagementData = ({
   endDate,
   granularity = undefined,
   calculation = undefined,
+  groupUUID = undefined,
   queryOptions = {},
 }) => {
-  const requestOptions = { startDate, endDate };
+  const requestOptions = { startDate, endDate, groupUUID };
   const response = useQuery({
     queryKey: generateKey('engagements', enterpriseCustomerUUID, requestOptions),
     queryFn: () => EnterpriseDataApiService.fetchAdminAnalyticsData(
