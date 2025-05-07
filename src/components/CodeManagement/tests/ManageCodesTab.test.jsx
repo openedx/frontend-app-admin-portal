@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
-import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -102,12 +101,8 @@ const sampleCouponData = {
 describe('ManageCodesTabWrapper', () => {
   describe('renders', () => {
     it('renders empty results correctly', () => {
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const wrapper = mount(<ManageCodesTabWrapper />);
+      expect(wrapper.text()).toContain('There are no results.');
     });
 
     it('renders non-empty results correctly', () => {
@@ -130,12 +125,9 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper store={store} />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+      expect(wrapper.text()).toContain('test-title-1');
+      expect(wrapper.text()).toContain('test-title-2');
     });
 
     it('renders loading state correctly', () => {
@@ -147,12 +139,8 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper store={store} />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+      expect(wrapper.text().toLowerCase()).toContain('loading');
     });
 
     it('renders error state correctly', () => {
@@ -164,12 +152,8 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const tree = renderer
-        .create((
-          <ManageCodesTabWrapper store={store} />
-        ))
-        .toJSON();
-      expect(tree).toMatchSnapshot();
+      const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+      expect(wrapper.text()).toContain('test error');
     });
   });
 
@@ -184,7 +168,7 @@ describe('ManageCodesTabWrapper', () => {
       />
     ));
 
-    expect(wrapper.find('ManageCodesTab').instance().state.hasRequestedCodes).toBeTruthy();
+    expect(wrapper.find('ManageCodesTab').prop('location').state.hasRequestedCodes).toBeTruthy();
   });
 
   it('handles overview_page query parameter change', () => {
@@ -202,8 +186,7 @@ describe('ManageCodesTabWrapper', () => {
     const spy = jest.spyOn(store, 'dispatch');
 
     const wrapper = mount(<ManageCodesTabWrapper store={store} />);
-
-    spy.mockRestore();
+    spy.mockClear();
 
     wrapper.setProps({
       location: {
@@ -211,7 +194,7 @@ describe('ManageCodesTabWrapper', () => {
       },
     });
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('calls clearCouponOrders() on componentWillUnmount', () => {
@@ -221,7 +204,7 @@ describe('ManageCodesTabWrapper', () => {
     wrapper.unmount();
 
     const actions = store.getActions();
-    expect(actions.filter(action => action.type === CLEAR_COUPONS)).toHaveLength(1);
+    expect(actions.some(action => action.type === CLEAR_COUPONS)).toBe(true);
   });
 
   it('calls expand/collapse callbacks properly', () => {

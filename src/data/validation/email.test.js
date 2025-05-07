@@ -1,15 +1,24 @@
 import _ from 'lodash';
 import {
   extractSalesforceIds,
+  returnValidatedEmails,
   validateEmailAddresses,
   validateEmailAddressesFields,
+  validateEmailAddrTemplateForm,
   validateEmailTemplateFields,
   validateEmailTemplateForm,
-  validateEmailAddrTemplateForm,
-  returnValidatedEmails,
 } from './email';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../constants/addUsers';
+import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../constants/addUsers';
 import { EMAIL_TEMPLATE_SUBJECT_KEY, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT } from '../constants/emailTemplate';
+
+const hasFormatChar = (str) => [...str].some(char => {
+  const code = char.charCodeAt(0);
+  return (
+    (code >= 0x200c && code <= 0x200f) // ZWNJ, ZWJ, LRM, RLM
+          || (code >= 0x202a && code <= 0x202e) // LRE–RLO, PDF
+          || (code >= 0x2066 && code <= 0x2069) // LRI–PDI
+  );
+});
 
 describe('email validation', () => {
   const templateKey = 'template-body';
@@ -35,6 +44,64 @@ describe('email validation', () => {
       expectedResult.validEmails = ['timmy@test.co', 'bigsby@test.co', 'coolstorybro@gtest.com'];
       expectedResult.validEmailIndices = _.range(validEmails.length);
       expect(validateEmailAddresses(validEmails)).toEqual(expectedResult);
+    });
+
+    it('returns valid email addresses and indices when various unicode formatting is in the picture', () => {
+      const unicodeEmails = [
+        'dave.smith@\u200Fexample.com', // RLM after @
+        'john.doe@test.\u200Ecom', // LRM after '.' in domain
+        'alex\u200Ddoe@somewhere.com', // ZWJ between letters in local part
+        'sam\u200C@example.net', // ZWNJ at end of local part
+        '\u202Aalice@example.org', // LRE at start of address
+        'kate.jones@domain\u202B.com', // RLE before '.' in domain
+        'roger+\u202Csales@company.com', // PDF after '+' in local part
+        'chris@exa\u202Dmple.com', // LRO in domain name
+        'mary@contoso.com\u202E', // RLO at end of address
+        'anna\u2066.smith@mysite.com', // LRI before '.' in local part
+        'info@support.\u2067example.com', // RLI after subdomain '.'
+        'mark@example.c\u2068om', // FSI inside TLD
+        'tom.\u2069adams@example.com', // PDI after '.' in local part
+        '\u200Fjohnny.smith@\u200Fexample.com', // Multiple Unicode,
+        '\u2069\u202C\u200F@example.com', // Only Unicode character case with domain
+        '\u202A\u200C\u200D\u200F\u2069', // Only Unicode character case without domain
+      ];
+
+      const expectedCleanedResult = [
+        'dave.smith@example.com',
+        'john.doe@test.com',
+        'alexdoe@somewhere.com',
+        'sam@example.net',
+        'alice@example.org',
+        'kate.jones@domain.com',
+        'roger+sales@company.com',
+        'chris@example.com',
+        'mary@contoso.com',
+        'anna.smith@mysite.com',
+        'info@support.example.com',
+        'mark@example.com',
+        'tom.adams@example.com',
+        'johnny.smith@example.com',
+      ];
+
+      // Verify that the Unicode does exist in the email
+      unicodeEmails.forEach((unicodeEmail) => {
+        expect(hasFormatChar(unicodeEmail)).toBe(true);
+      });
+
+      const expectedResult = { ...baseResults };
+      expectedResult.validEmails = expectedCleanedResult;
+      expectedResult.validEmailIndices = _.range(expectedCleanedResult.length);
+      expectedResult.invalidEmailIndices = [14];
+      expectedResult.invalidEmails = ['@example.com'];
+
+      // Validate that we do validate email addresses correctly
+      const emailValidation = validateEmailAddresses(unicodeEmails);
+      expect(emailValidation).toEqual(expectedResult);
+
+      // Validate that we do parse out the Unicode characters.
+      emailValidation.validEmails.forEach((validEmail) => {
+        expect(hasFormatChar(validEmail)).toBe(false);
+      });
     });
 
     it('returns invalid email addresses and indices', () => {

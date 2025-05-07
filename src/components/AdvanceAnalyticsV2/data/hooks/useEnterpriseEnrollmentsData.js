@@ -43,7 +43,7 @@ const applyDataTransformations = (response, granularity, calculation, allowedEnr
 };
 
 /**
-  Fetches enterprise enrollments data.
+ Fetches enterprise enrollments data.
 
  *  @param {String} enterpriseCustomerUUID - UUID of the enterprise customer.
  *  @param {Date} startDate - Start date for the data.
@@ -51,6 +51,7 @@ const applyDataTransformations = (response, granularity, calculation, allowedEnr
  *  @param {OpUnitType} granularity - Granularity of the data. e.g. `day`, `week`, `month`, `quarter`, `year`.
  *  @param {String} calculation - Calculation to apply on the data. e.g.
  *    `total`, `running_total`, `moving_average_3_periods`, `moving_average_7_periods`.
+ *  @param groupUUID - UUID of the group.
  *  @param {Number} currentPage - Current page number.
  *  @param {Number} pageSize - Number of items per page.
  *  @param {object} queryOptions - Additional options for the query.
@@ -61,12 +62,13 @@ const useEnterpriseEnrollmentsData = ({
   endDate,
   granularity = undefined,
   calculation = undefined,
+  groupUUID = undefined,
   currentPage = undefined,
   pageSize = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = {
-    startDate, endDate, page: currentPage, pageSize,
+    startDate, endDate, page: currentPage, pageSize, groupUUID,
   };
   const response = useQuery({
     queryKey: generateKey('enrollments', enterpriseCustomerUUID, requestOptions),

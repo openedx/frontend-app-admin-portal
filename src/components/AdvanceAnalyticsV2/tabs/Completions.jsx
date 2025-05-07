@@ -11,7 +11,7 @@ import DownloadCSVButton from '../DownloadCSVButton';
 import { constructChartHoverTemplate, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
 
 const Completions = ({
-  startDate, endDate, granularity, calculation, enterpriseId,
+  startDate, endDate, granularity, calculation, enterpriseId, groupUUID,
 }) => {
   const intl = useIntl();
 
@@ -24,6 +24,7 @@ const Completions = ({
     endDate,
     granularity,
     calculation,
+    groupUUID,
   });
 
   const completionsOverTimeForCSV = useMemo(() => {
@@ -221,6 +222,7 @@ const Completions = ({
           startDate={startDate}
           endDate={endDate}
           enterpriseId={enterpriseId}
+          groupUUID={groupUUID}
           enableCSVDownload
           tableColumns={[
             {
@@ -269,5 +271,6 @@ Completions.propTypes = {
   endDate: PropTypes.string.isRequired,
   granularity: PropTypes.string.isRequired,
   calculation: PropTypes.string.isRequired,
+  groupUUID: PropTypes.string.isRequired,
 };
 export default Completions;

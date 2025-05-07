@@ -18,6 +18,7 @@ const AnalyticsTable = ({
   startDate,
   endDate,
   enterpriseId,
+  groupUUID,
 }) => {
   const intl = useIntl();
   const [currentPage, setCurrentPage] = useState(0);
@@ -30,6 +31,7 @@ const AnalyticsTable = ({
     key: analyticsDataTableKeys[name],
     startDate,
     endDate,
+    groupUUID,
     // pages index from 1 in backend, frontend components index from 0
     currentPage: currentPage + 1,
     pageSize,
@@ -41,6 +43,7 @@ const AnalyticsTable = ({
     {
       start_date: startDate,
       end_date: endDate,
+      groupUUID,
     },
   );
 
@@ -103,6 +106,10 @@ const AnalyticsTable = ({
   );
 };
 
+AnalyticsTable.defaultProps = {
+  groupUUID: undefined,
+};
+
 AnalyticsTable.propTypes = {
   name: PropTypes.string.isRequired,
   tableColumns: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -111,6 +118,7 @@ AnalyticsTable.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
+  groupUUID: PropTypes.string,
 };
 
 export default AnalyticsTable;

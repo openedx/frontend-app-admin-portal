@@ -3,13 +3,17 @@ import dayjs from 'dayjs';
 import {
   getAssignableCourseRuns,
   getBudgetStatus,
+  getNormalizedStartDate,
   getTranslatedBudgetStatus,
   getTranslatedBudgetTerm,
   orderBudgets,
   startAndEnrollBySortLogic,
   transformSubsidySummary,
 } from '../utils';
-import { EXEC_ED_OFFER_TYPE } from '../constants';
+import {
+  COURSE_PACING_MAP,
+  EXEC_ED_OFFER_TYPE,
+} from '../constants';
 
 const intl = createIntl({
   locale: 'en',
@@ -259,6 +263,92 @@ describe('getTranslatedBudgetTerm', () => {
 
     expect(getTranslatedBudgetTerm(mockintl, term1)).toEqual('');
     expect(getTranslatedBudgetTerm(mockintl, term2)).toEqual('');
+  });
+});
+
+describe('getNormalizedStartDate', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it.each([
+    // Self-paced, and start date is more than START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS days before today.
+    // Adjust the start date to become today.
+    {
+      start: '2024-01-01T00:00:00.000Z',
+      end: '2024-01-30T00:00:00.000Z',
+      today: '2024-01-20T00:00:00.000Z',
+      pacingType: COURSE_PACING_MAP.SELF_PACED,
+      weeksToComplete: 300,
+      expectedResult: '2024-01-20T00:00:00.000Z',
+    },
+    // Self-paced, and there's enough time to complete.
+    // Adjust the start date to become today.
+    {
+      start: '2024-01-15T00:00:00.000Z',
+      end: '2024-02-20T00:00:00.000Z',
+      today: '2024-01-20T00:00:00.000Z',
+      pacingType: COURSE_PACING_MAP.SELF_PACED,
+      weeksToComplete: 3,
+      expectedResult: '2024-01-20T00:00:00.000Z',
+    },
+
+    //
+    // All subsequent test cases should result in NOT adjusting the start date.
+    //
+
+    // Course starts more than START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS days before today,
+    // BUT the course is instructor paced.
+    {
+      start: '2024-01-01T00:00:00.000Z',
+      end: '2024-02-20T00:00:00.000Z',
+      today: '2024-01-20T00:00:00.000Z',
+      pacingType: COURSE_PACING_MAP.INSTRUCTOR_PACED,
+      weeksToComplete: 300,
+      expectedResult: '2024-01-01T00:00:00.000Z',
+    },
+    // Course starts in the past, there's enough time to complete,
+    // BUT the course is instructor paced.
+    {
+      start: '2024-01-15T00:00:00.000Z',
+      end: '2024-02-20T00:00:00.000Z',
+      today: '2024-01-20T00:00:00.000Z',
+      pacingType: COURSE_PACING_MAP.INSTRUCTOR_PACED,
+      weeksToComplete: 3,
+      expectedResult: '2024-01-15T00:00:00.000Z',
+    },
+    // Course is Self-paced, BUT there's no time to complete and it started
+    // within START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS days ago.
+    {
+      start: '2024-01-15T00:00:00.000Z',
+      end: '2024-01-30T00:00:00.000Z',
+      today: '2024-01-20T00:00:00.000Z',
+      pacingType: COURSE_PACING_MAP.SELF_PACED,
+      weeksToComplete: 300,
+      expectedResult: '2024-01-15T00:00:00.000Z',
+    },
+    // NEW test case for fixing ENT-10263.
+    // Course is Self-paced, there's time to complete, BUT start date is in the future.
+    {
+      start: '2024-01-25T00:00:00.000Z',
+      end: '2024-02-20T00:00:00.000Z',
+      today: '2024-01-20T00:00:00.000Z',
+      pacingType: COURSE_PACING_MAP.SELF_PACED,
+      weeksToComplete: 3,
+      expectedResult: '2024-01-25T00:00:00.000Z',
+    },
+  ])('normalizes start date as expected', ({
+    start,
+    end,
+    today,
+    pacingType,
+    weeksToComplete,
+    expectedResult,
+  }) => {
+    jest.useFakeTimers({ now: new Date(today) });
+    expect(getNormalizedStartDate({
+      start, pacingType, end, weeksToComplete,
+    })).toEqual(expectedResult);
   });
 });
 

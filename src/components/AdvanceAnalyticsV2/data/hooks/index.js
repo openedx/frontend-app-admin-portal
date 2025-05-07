@@ -15,12 +15,13 @@ export const useEnterpriseAnalyticsData = ({
   endDate,
   granularity = undefined,
   calculation = undefined,
+  groupUUID = undefined,
   currentPage = undefined,
   pageSize = undefined,
   queryOptions = {},
 }) => {
   const requestOptions = {
-    startDate, endDate, granularity, calculation, page: currentPage, pageSize,
+    startDate, endDate, granularity, calculation, page: currentPage, pageSize, groupUUID,
   };
   return useQuery({
     queryKey: advanceAnalyticsQueryKeys[key](enterpriseCustomerUUID, requestOptions),

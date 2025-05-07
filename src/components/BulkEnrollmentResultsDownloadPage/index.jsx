@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { Toast } from '@openedx/paragon';
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 
@@ -52,7 +53,11 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
           onClose={() => setShowToast(false)}
           show={showToast}
         >
-          Your download is not ready yet.
+          <FormattedMessage
+            id="admin.portal.bulk.enrollment.download.not.ready.message"
+            defaultMessage="Your download is not ready yet."
+            description="Message shown when the bulk enrollment job is not yet ready for download"
+          />
         </Toast>
         <Navigate to={`/${enterpriseSlug}/admin/learners`} replace />
       </>
@@ -65,14 +70,26 @@ const BulkEnrollmentResultsDownloadPage = ({ enterpriseId }) => {
           onClose={() => setShowToast(false)}
           show={showToast}
         >
-          There was a problem with your request.
+          <FormattedMessage
+            id="admin.portal.bulk.enrollment.download.error.label"
+            defaultMessage="There was a problem with your request."
+            description="Error shown when there is an error fetching the bulk enrollment job"
+          />
         </Toast>
         <Navigate to={`/${enterpriseSlug}/admin/learners`} replace />
       </>
     );
   }
   global.location.href = redirectUrl;
-  return <h1>redirecting...</h1>;
+  return (
+    <h1>
+      <FormattedMessage
+        id="admin.portal.bulk.enrollment.download.redirecting.message"
+        defaultMessage="Redirecting..."
+        description="Message displayed while the user is being redirected to the download URL"
+      />
+    </h1>
+  );
 };
 
 BulkEnrollmentResultsDownloadPage.propTypes = {

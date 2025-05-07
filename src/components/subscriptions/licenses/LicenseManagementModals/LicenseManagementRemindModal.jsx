@@ -1,15 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 import {
-  Alert,
-  StatefulButton,
-  ModalDialog,
-  ActionRow,
-  Spinner,
-  Form,
-  Hyperlink,
+  ActionRow, Alert, Form, Hyperlink, ModalDialog, Spinner, StatefulButton,
 } from '@openedx/paragon';
 import { logError } from '@edx/frontend-platform/logging';
 
@@ -112,7 +106,10 @@ const LicenseManagementRemindModal = ({
       if (userEmailsToRemind.length > 0) {
         options.user_emails = userEmailsToRemind;
       } else {
-        options.filters = transformedFilters;
+        // If the UI happened to render bulk actions without any state set for the table or just a filter is set
+        // with no selected items.
+        logError('Unable to remind license(s) based on table state. No licenses selected for reminder');
+        throw new Error('Unable to remind license(s) based on table state');
       }
 
       return LicenseManagerApiService.licenseBulkRemind(subscription.uuid, options);

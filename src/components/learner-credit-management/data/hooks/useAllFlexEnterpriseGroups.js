@@ -12,8 +12,7 @@ import { fetchPaginatedData } from '../../../../data/services/apiServiceUtils';
  */
 export const getAllFlexEnterpriseGroups = async ({ enterpriseId }) => {
   const { results } = await fetchPaginatedData(`${LmsApiService.enterpriseGroupListUrl}?enterprise_uuids=${enterpriseId}`);
-  const flexGroups = results.filter(result => result.groupType === 'flex');
-  return flexGroups;
+  return results.filter(result => result.groupType === 'flex');
 };
 
 const useAllFlexEnterpriseGroups = (enterpriseId, { queryOptions } = {}) => useQuery({

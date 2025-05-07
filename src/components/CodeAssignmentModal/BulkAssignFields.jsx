@@ -1,13 +1,20 @@
 import React from 'react';
 import { Field } from 'redux-form';
 
+import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import TextAreaAutoSize from '../TextAreaAutoSize';
 import FileInput from '../FileInput';
 import { normalizeFileUpload } from '../../utils';
 
 const BulkAssignFields = () => (
   <>
-    <h3 className="mb-2">Add learners</h3>
+    <h3 className="mb-2">
+      <FormattedMessage
+        id="admin.portal.code.assignment.modal.bulk.assign.heading"
+        defaultMessage="Add learners"
+        description="Heading to add learners for the bulk assignment section on code assignment modal"
+      />
+    </h3>
     <div className="pl-4 field-group">
       <Field
         name="email-addresses"

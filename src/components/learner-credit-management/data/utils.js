@@ -582,10 +582,18 @@ export const hasTimeToComplete = ({ end, weeksToComplete }) => {
 const isWithinMinimumStartDateThreshold = ({ start }) => dayjs(start).isBefore(dayjs().subtract(START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS, 'days'));
 
 /**
- * If the start date of the course is before today offset by the START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS
- * then return today's formatted date. Otherwise, pass-through the start date in ISO format.
+ * Normalizes the course start_date based on a heuristic for the purpose of
+ * displaying a reasonable start_date.  Sometimes, it may be appropriate to
+ * display today's date rather than the actual start date in order to
+ * incentivize enrollment.
  *
- * For cases where a start date does not exist, just return today's date.
+ * Heuristic:
+ * For already started self-paced courses for which EITHER there is still
+ * enough time to complete it before it ends, OR the course started a long time
+ * ago, we should display today's date as the "start date".  Otherwise, return
+ * the actual start_date.
+ *
+ * For cases where a start date does not exist, also just return today's date.
  *
  * @param {string} - start
  * @param {string} - pacingType
@@ -601,9 +609,9 @@ export const getNormalizedStartDate = ({
     return todayToIso;
   }
   const startDateIso = dayjs(start).toISOString();
-  if (isCourseSelfPaced({ pacingType })) {
+  if (isCourseSelfPaced({ pacingType }) && dayjs(startDateIso).isBefore(dayjs())) {
     if (hasTimeToComplete({ end, weeksToComplete }) || isWithinMinimumStartDateThreshold({ start })) {
-      // always today's date (incentives enrollment)
+      // always today's date (incentivizes enrollment)
       return todayToIso;
     }
   }

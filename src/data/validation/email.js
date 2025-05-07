@@ -1,8 +1,12 @@
 import { SubmissionError } from 'redux-form';
 import isEmail from 'validator/lib/isEmail';
 import _ from 'lodash';
-import { EMAIL_ADDRESS_TEXT_FORM_DATA, EMAIL_ADDRESS_CSV_FORM_DATA } from '../constants/addUsers';
-import { EMAIL_TEMPLATE_FIELD_MAX_LIMIT, OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT, EMAIL_TEMPLATE_SUBJECT_KEY } from '../constants/emailTemplate';
+import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../constants/addUsers';
+import {
+  EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
+  EMAIL_TEMPLATE_SUBJECT_KEY,
+  OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT,
+} from '../constants/emailTemplate';
 import { mergeErrors } from '../../utils';
 
 /* eslint-disable no-underscore-dangle */
@@ -50,6 +54,24 @@ const validateEmailTemplateFields = (formData, templateKey, isSubjectRequired = 
   return errorsDict;
 };
 
+/**
+ * Sanitizes an email address by:
+ * - Lowercasing the input
+ * - Removing invisible Unicode format characters (e.g., RLM, LRM, ZWJ)
+ * - Trimming leading/trailing whitespace
+ *
+ * This helps ensure compatibility with email validation and delivery systems,
+ * especially when dealing with RTL input or pasted text from rich sources.
+ *
+ * @param {string} email - The raw email address to sanitize.
+ * @returns {string} - The sanitized email address.
+ */
+const sanitizeEmail = (email) => (
+  email.toLowerCase()
+    .replace(/\p{Cf}/gu, '')
+    .trim()
+);
+
 const validateEmailAddresses = (emails) => {
   // Validates email addresses lists passed in as the argument.
   //
@@ -68,7 +90,7 @@ const validateEmailAddresses = (emails) => {
     return result;
   }
   emails.forEach((email, index) => {
-    const sanitizedEmail = email.trim();
+    const sanitizedEmail = sanitizeEmail(email);
     if (sanitizedEmail) {
       if (!isEmail(sanitizedEmail)) {
         result.invalidEmails.push(sanitizedEmail);
@@ -225,6 +247,7 @@ const extractSalesforceIds = (formData, userEmails) => {
 
 export {
   extractSalesforceIds,
+  sanitizeEmail,
   validateEmailAddresses,
   validateEmailAddressesFields,
   validateEmailTemplateForm,

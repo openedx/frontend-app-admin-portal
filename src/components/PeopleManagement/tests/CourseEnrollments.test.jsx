@@ -41,6 +41,14 @@ const mockEnrollments = {
       courseRunStatus: 'completed',
     },
   ],
+  savedForLater: [
+    {
+      uuid: '5',
+      courseKey: 'course-5',
+      displayName: 'Course 5',
+      courseRunStatus: 'saved_for_later',
+    },
+  ],
   assignmentsForDisplay: [
     {
       uuid: '4',
@@ -84,29 +92,36 @@ describe('CourseEnrollments', () => {
   it('renders in-progress enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(4);
+    expect(enrollmentCards).toHaveLength(5);
     expect(screen.getByText('Course 1')).toBeInTheDocument();
   });
 
   it('renders upcoming enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(4);
+    expect(enrollmentCards).toHaveLength(5);
     expect(screen.getByText('Course 2')).toBeInTheDocument();
   });
 
   it('renders completed enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(4);
+    expect(enrollmentCards).toHaveLength(5);
     expect(screen.getByText('Course 3')).toBeInTheDocument();
   });
 
   it('renders assigned enrollments', () => {
     renderComponent({ enrollments: mockEnrollments, isLoading: false });
     const enrollmentCards = screen.getAllByTestId('enrollment-card');
-    expect(enrollmentCards).toHaveLength(4);
+    expect(enrollmentCards).toHaveLength(5);
     expect(screen.getByText('Course 4')).toBeInTheDocument();
+  });
+
+  it('renders saved for later enrollments', () => {
+    renderComponent({ enrollments: mockEnrollments, isLoading: false });
+    const enrollmentCards = screen.getAllByTestId('enrollment-card');
+    expect(enrollmentCards).toHaveLength(5);
+    expect(screen.getByText('Course 5')).toBeInTheDocument();
   });
 
   it('renders enrollments header', () => {

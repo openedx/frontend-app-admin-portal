@@ -110,12 +110,12 @@ describe('<LicenseManagementRemindModal />', () => {
 
       const button = screen.getByText('Remind (1)');
       await act(async () => { userEvent.click(button); });
-      expect(onSubmitMock).toBeCalledTimes(1);
-      expect(onSuccessMock).toBeCalledTimes(1);
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
+      expect(onSuccessMock).toHaveBeenCalledTimes(1);
 
       expect(screen.queryByText('Remind (1)')).toBeFalsy();
       expect(screen.queryByText('Done')).toBeTruthy();
-      expect(logError).toBeCalledTimes(0);
+      expect(logError).toHaveBeenCalledTimes(0);
     });
 
     it('displays alert if licenseRemind has error', async () => {
@@ -128,13 +128,13 @@ describe('<LicenseManagementRemindModal />', () => {
 
       const button = screen.getByText('Remind (1)');
       await act(async () => { userEvent.click(button); });
-      expect(onSubmitMock).toBeCalledTimes(1);
-      expect(onSuccessMock).toBeCalledTimes(0);
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
+      expect(onSuccessMock).toHaveBeenCalledTimes(0);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();
       });
-      expect(logError).toBeCalledTimes(1);
+      expect(logError).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -31,7 +31,11 @@ const fetchCsv = (csvId, fetchMethod) => (
     dispatch(fetchCsvRequest(csvId));
     return fetchMethod(enterpriseId)
       .then((response) => {
-        saveAs(new Blob([response.data]), `${enterpriseId}_progress_report.csv`);
+        // Create blob with explicit MIME type
+        const blob = new Blob([response.data], {
+          type: 'text/csv;charset=utf-8;',
+        });
+        saveAs(blob, `${enterpriseId}_progress_report.csv`);
         dispatch(fetchCsvSuccess(csvId));
       })
       .catch((error) => {
