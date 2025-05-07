@@ -351,7 +351,7 @@ describe('BulkEnrollmentSubmit', () => {
     userEvent.click(button);
     await act(() => flushPromises());
     const alertModalCloseButton = screen.getByText('OK');
-    userEvent.click(alertModalCloseButton);
+    await userEvent.click(alertModalCloseButton);
     expect(screen.queryByText(ALERT_MODAL_TITLE_TEXT)).not.toBeInTheDocument();
   });
 

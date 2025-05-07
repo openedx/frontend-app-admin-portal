@@ -3,6 +3,7 @@
 exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -114,6 +115,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -257,6 +259,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -963,6 +966,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -1006,6 +1010,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -1103,10 +1108,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1127,6 +1134,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -1224,10 +1232,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1244,6 +1254,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1264,6 +1275,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -1361,10 +1373,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1381,6 +1395,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1397,6 +1412,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1417,6 +1433,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -1514,10 +1531,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1534,6 +1553,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -1561,6 +1581,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -1697,6 +1718,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -1729,6 +1751,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -1776,6 +1799,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field26"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -1833,6 +1857,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field27"
                               onBlur={[Function]}
@@ -1844,7 +1869,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -1866,6 +1890,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field28"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -1897,6 +1922,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -1984,6 +2010,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -2690,6 +2717,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -2733,6 +2761,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -2830,10 +2859,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -2854,6 +2885,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -2951,10 +2983,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -2971,6 +3005,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -2991,6 +3026,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -3088,10 +3124,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -3108,6 +3146,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -3124,6 +3163,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -3144,6 +3184,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -3241,10 +3282,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -3261,6 +3304,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -3288,6 +3332,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -3424,6 +3469,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -3456,6 +3502,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -3503,6 +3550,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field81"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -3560,6 +3608,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field82"
                               onBlur={[Function]}
@@ -3571,7 +3620,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -3593,6 +3641,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field83"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -3624,6 +3673,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -3711,6 +3761,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -4417,6 +4468,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -4460,6 +4512,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -4557,10 +4610,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -4581,6 +4636,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -4678,10 +4734,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -4698,6 +4756,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -4718,6 +4777,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -4815,10 +4875,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -4835,6 +4897,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -4851,6 +4914,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -4871,6 +4935,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -4968,10 +5033,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -4988,6 +5055,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -5015,6 +5083,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -5151,6 +5220,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -5183,6 +5253,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -5230,6 +5301,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field92"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -5287,6 +5359,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field93"
                               onBlur={[Function]}
@@ -5298,7 +5371,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -5320,6 +5392,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field94"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -5351,6 +5424,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -5438,6 +5512,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -6144,6 +6219,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -6187,6 +6263,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -6284,10 +6361,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6308,6 +6387,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -6405,10 +6485,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6425,6 +6507,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6445,6 +6528,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -6542,10 +6626,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6562,6 +6648,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6578,6 +6665,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6598,6 +6686,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -6695,10 +6784,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6715,6 +6806,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -6742,6 +6834,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -6878,6 +6971,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -6910,6 +7004,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -6957,6 +7052,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field103"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -7014,6 +7110,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field104"
                               onBlur={[Function]}
@@ -7025,7 +7122,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -7047,6 +7143,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field105"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -7078,6 +7175,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -7165,6 +7263,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -7871,6 +7970,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
 exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -7914,6 +8014,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -8011,10 +8112,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8035,6 +8138,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -8132,10 +8236,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8152,6 +8258,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8172,6 +8279,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -8269,10 +8377,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8289,6 +8399,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8305,6 +8416,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8325,6 +8437,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -8422,10 +8535,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8442,6 +8557,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -8469,6 +8585,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -8605,6 +8722,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -8637,6 +8755,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -8684,6 +8803,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field4"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -8741,6 +8861,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field5"
                               onBlur={[Function]}
@@ -8752,7 +8873,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -8774,6 +8894,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field6"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -8805,6 +8926,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -8892,6 +9014,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -9598,6 +9721,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -9641,6 +9765,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -9738,10 +9863,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -9762,6 +9889,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -9859,10 +9987,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -9879,6 +10009,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -9899,6 +10030,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -9996,10 +10128,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -10016,6 +10150,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -10032,6 +10167,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -10052,6 +10188,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -10149,10 +10286,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -10169,6 +10308,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -10196,6 +10336,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -10332,6 +10473,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -10364,6 +10506,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -10411,6 +10554,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field70"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -10468,6 +10612,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field71"
                               onBlur={[Function]}
@@ -10479,7 +10624,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -10501,6 +10645,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field72"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -10532,6 +10677,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -10619,6 +10765,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -11325,6 +11472,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -11368,6 +11516,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -11465,10 +11614,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11489,6 +11640,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -11586,10 +11738,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11606,6 +11760,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11626,6 +11781,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -11723,10 +11879,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11743,6 +11901,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11759,6 +11918,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11779,6 +11939,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -11876,10 +12037,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11896,6 +12059,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -11923,6 +12087,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -12059,6 +12224,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -12091,6 +12257,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -12138,6 +12305,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field59"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -12195,6 +12363,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field60"
                               onBlur={[Function]}
@@ -12206,7 +12375,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -12228,6 +12396,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field61"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -12259,6 +12428,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -12346,6 +12516,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -13052,6 +13223,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -13095,6 +13267,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -13192,10 +13365,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13216,6 +13391,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -13313,10 +13489,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13333,6 +13511,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13353,6 +13532,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -13450,10 +13630,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13470,6 +13652,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13486,6 +13669,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13506,6 +13690,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -13603,10 +13788,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13623,6 +13810,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -13650,6 +13838,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -13786,6 +13975,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -13818,6 +14008,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -13865,6 +14056,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field37"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -13922,6 +14114,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field38"
                               onBlur={[Function]}
@@ -13933,7 +14126,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -13955,6 +14147,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field39"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -13986,6 +14179,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -14073,6 +14267,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -14779,6 +14974,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
 exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -14822,6 +15018,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -14919,10 +15116,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -14943,6 +15142,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -15040,10 +15240,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -15060,6 +15262,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -15080,6 +15283,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -15177,10 +15381,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -15197,6 +15403,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -15213,6 +15420,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -15233,6 +15441,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -15330,10 +15539,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -15350,6 +15561,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -15377,6 +15589,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -15513,6 +15726,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -15545,6 +15759,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -15592,6 +15807,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field15"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -15649,6 +15865,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field16"
                               onBlur={[Function]}
@@ -15660,7 +15877,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -15682,6 +15898,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field17"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -15713,6 +15930,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -15800,6 +16018,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -16506,6 +16725,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
 exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -16549,6 +16769,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -16646,10 +16867,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -16670,6 +16893,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -16767,10 +16991,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -16787,6 +17013,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -16807,6 +17034,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -16904,10 +17132,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -16924,6 +17154,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -16940,6 +17171,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -16960,6 +17192,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -17057,10 +17290,12 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -17077,6 +17312,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -17104,6 +17340,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -17240,6 +17477,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -17272,6 +17510,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -17319,6 +17558,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field48"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -17376,6 +17616,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field49"
                               onBlur={[Function]}
@@ -17387,7 +17628,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -17409,6 +17649,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field50"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -17440,6 +17681,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -17527,6 +17769,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -18233,6 +18476,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
 exports[`<Admin /> renders correctly with dashboard insights data renders dashboard insights data correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -18325,6 +18569,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -18422,10 +18667,12 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18446,6 +18693,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -18543,10 +18791,12 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18563,6 +18813,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18583,6 +18834,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -18680,10 +18932,12 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18700,6 +18954,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18716,6 +18971,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18736,6 +18992,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -18833,10 +19090,12 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18853,6 +19112,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -18880,6 +19140,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -19016,6 +19277,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -19048,6 +19310,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -19095,6 +19358,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field129"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -19152,6 +19416,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field130"
                               onBlur={[Function]}
@@ -19163,7 +19428,6 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -19185,6 +19449,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field131"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -19216,6 +19481,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -19303,6 +19569,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -20009,6 +20276,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
 exports[`<Admin /> renders correctly with enterprise budgets data renders budgets correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -20052,6 +20320,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -20149,10 +20418,12 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20173,6 +20444,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -20270,10 +20542,12 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20290,6 +20564,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20310,6 +20585,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -20407,10 +20683,12 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20427,6 +20705,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20443,6 +20722,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20463,6 +20743,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -20560,10 +20841,12 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20580,6 +20863,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -20607,6 +20891,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -20743,6 +21028,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -20775,6 +21061,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -20822,6 +21109,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field140"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -20879,6 +21167,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field141"
                               onBlur={[Function]}
@@ -20890,7 +21179,6 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -20912,6 +21200,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field142"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -20943,6 +21232,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -21030,6 +21320,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -21736,6 +22027,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
 exports[`<Admin /> renders correctly with enterprise groups data renders groups correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -21779,6 +22071,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -21876,10 +22169,12 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -21900,6 +22195,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -21997,10 +22293,12 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -22017,6 +22315,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -22037,6 +22336,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -22134,10 +22434,12 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -22154,6 +22456,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -22170,6 +22473,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -22190,6 +22494,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -22287,10 +22592,12 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -22307,6 +22614,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -22334,6 +22642,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -22470,6 +22779,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -22502,6 +22812,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -22549,6 +22860,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field151"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -22606,6 +22918,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field152"
                               onBlur={[Function]}
@@ -22617,7 +22930,6 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -22639,6 +22951,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field153"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -22670,6 +22983,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -22757,6 +23071,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -23463,6 +23778,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
 exports[`<Admin /> renders correctly with error state 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -23557,6 +23873,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -23700,6 +24017,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -24406,6 +24724,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
 exports[`<Admin /> renders correctly with loading state 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -24517,6 +24836,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -24660,6 +24980,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form
@@ -25366,10 +25687,12 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
     className="sr-only"
+    data-testid="enterprise-app-skeleton"
   >
     Loading...
   </div>
@@ -25411,6 +25734,7 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
 <main
   className="learner-progress-report"
+  data-testid="dashboard-root"
   role="main"
 >
   <div
@@ -25454,6 +25778,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
     >
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="numberOfUsers"
       >
         <div
           className="number-card w-100 has-details"
@@ -25551,10 +25876,12 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-numberOfUsers"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/registered-unenrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -25575,6 +25902,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="enrolledLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -25672,10 +26000,12 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-enrolledLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -25692,6 +26022,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/enrolled-learners-inactive-courses"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -25712,6 +26043,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="activeLearners"
       >
         <div
           className="number-card w-100 has-details"
@@ -25809,10 +26141,12 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-activeLearners"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-active-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -25829,6 +26163,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -25845,6 +26180,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/learners-inactive-month"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -25865,6 +26201,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
       </div>
       <div
         className="col-xs-12 col-md-6 col-xl-3 mb-3 d-flex"
+        id="courseCompletions"
       >
         <div
           className="number-card w-100 has-details"
@@ -25962,10 +26299,12 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
             </div>
             <div
               className="footer-body mt-1 d-none"
+              data-testid="details-actions"
               id="footer-body-courseCompletions"
             >
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -25982,6 +26321,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
               </a>
               <a
                 className="btn btn-link"
+                data-testid="details-action-item"
                 href="/completed-learners-week"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -26009,6 +26349,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
       >
         <div
           className="loading d-flex align-items-center justify-content-center subscriptions"
+          data-testid="loading-message"
         >
           Loading...
           <span
@@ -26145,6 +26486,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
+                      data-testid="download-csv-btn"
                       disabled={true}
                       onClick={[Function]}
                       type="button"
@@ -26177,6 +26519,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                     >
                       <div
                         className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3"
+                        data-testid="form-control-group-filter"
                       >
                         <div
                           className="pgn__form-group"
@@ -26224,6 +26567,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-course-filter"
                               id="form-field118"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -26281,6 +26625,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-date-filter"
                               disabled={true}
                               id="form-field119"
                               onBlur={[Function]}
@@ -26292,7 +26637,6 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                               >
                                 Choose a course
                               </option>
-                              
                             </select>
                           </div>
                         </div>
@@ -26314,6 +26658,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                           >
                             <select
                               className="form-control"
+                              data-testid="form-control-budget-filter"
                               id="form-field120"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -26345,6 +26690,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                         <div
                           aria-labelledby="search-email-label"
                           className="pgn__searchfield d-flex py-0"
+                          data-testid="admin-form-search-bar"
                           onSearch={[Function]}
                         >
                           <form
@@ -26432,6 +26778,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
             >
               <div
                 className="pgn__searchfield d-flex mt-2 mb-2 w-25 "
+                data-testid="search-field"
                 onSearch={[Function]}
               >
                 <form

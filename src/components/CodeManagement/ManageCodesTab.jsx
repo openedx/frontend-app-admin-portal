@@ -228,6 +228,7 @@ class ManageCodesTab extends React.Component {
   renderRequestCodesSuccessMessage() {
     return (
       <Alert
+        data-testid="code-request-alert"
         show={this.state.hasRequestedCodes}
         onClose={() => this.setState({ hasRequestedCodes: false })}
         variant="success"

@@ -26,7 +26,7 @@ describe('<ContentHighlightToast>', () => {
     const toastContainerClassesBefore = screen.getByRole('alert').className;
     expect(toastContainerClassesBefore.match(/show/)).toBeTruthy();
 
-    userEvent.click(closeButton);
+    await userEvent.click(closeButton);
 
     const toastContainerClassesAfter = screen.getByRole('alert').className;
     expect(toastContainerClassesAfter.match(/show/)).toBeFalsy();

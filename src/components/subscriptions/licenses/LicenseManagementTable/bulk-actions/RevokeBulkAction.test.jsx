@@ -209,11 +209,11 @@ describe('RevokeBulkAction', () => {
     };
     render(<RevokeBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Revoke (1)');
-    userEvent.click(enrollButton);
+    await userEvent.click(enrollButton);
     const revokeTitle = await screen.findByText('Revoke License');
     expect(revokeTitle).toBeVisible();
     const cancelButtonInDialog = await screen.findByText('Cancel');
-    userEvent.click(cancelButtonInDialog);
+    await userEvent.click(cancelButtonInDialog);
     expect(screen.queryByText('Revoke License')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

@@ -73,16 +73,16 @@ const usersSetup = (
 };
 
 describe('<LicenseManagementTable />', () => {
-  it('renders the license management table', () => {
+  it('renders the license management table', async () => {
     usersSetup();
     render(<LicenseManagementTableWrapper subscriptionPlan={defaultSubscriptionPlan} />);
 
     // Revoke a license
-    screen.getByLabelText('Revoke license').click(); // Click on the revoke license button
+    await screen.getByLabelText('Revoke license').click(); // Click on the revoke license button
     screen.getByLabelText('Revoke License').click(); // Confirm license revocation
 
     // Check Pagination
-    screen.getByLabelText('Next, Page 2').click();
+    await screen.getByLabelText('Next, Page 2').click();
     screen.getByLabelText('Previous, Page 1').click();
   });
 });

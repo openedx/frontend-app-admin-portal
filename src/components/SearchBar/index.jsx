@@ -5,6 +5,7 @@ import { SearchField } from '@openedx/paragon';
 const SearchBar = props => (
   <SearchField
     onSubmit={query => props.onSearch(query)}
+    data-testid="search-field"
     {...props}
   />
 );

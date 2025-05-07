@@ -72,7 +72,7 @@ describe('<SubscriptionExpirationModals />', () => {
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
     });
 
-    test('expired modal is dismissible', () => {
+    test('expired modal is dismissible', async () => {
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -80,7 +80,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeTruthy();
-      userEvent.click(screen.getByText('Dismiss'));
+      await userEvent.click(screen.getByText('Dismiss'));
       expect(screen.queryByLabelText(EXPIRED_MODAL_TITLE)).toBeFalsy();
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -149,7 +149,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeTruthy();
-      userEvent.click(screen.getByText('Dismiss'));
+      await userEvent.click(screen.getByText('Dismiss'));
       expect(screen.queryByLabelText(EXPIRING_MODAL_TITLE)).toBeFalsy();
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -161,7 +161,7 @@ describe('<SubscriptionExpirationModals />', () => {
       );
     });
 
-    test('handles support button click', () => {
+    test('handles support button click', async () => {
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -169,7 +169,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
 
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
-      userEvent.click(screen.getByText('Contact support'));
+      await userEvent.click(screen.getByText('Contact support'));
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
         'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',
