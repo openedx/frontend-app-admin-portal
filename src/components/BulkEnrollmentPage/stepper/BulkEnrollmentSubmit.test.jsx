@@ -132,16 +132,15 @@ describe('BulkEnrollmentAlertModal', () => {
     );
   });
 
-  it('calls toggleClose when the close button is clicked', () => {
+  it('calls toggleClose when the close button is clicked', async () => {
     render(<BulkEnrollmentAlertModalWrapper {...defaultAlertProps} />);
     const closeButton = screen.getByText('OK');
-    userEvent.click(closeButton);
+    await userEvent.click(closeButton);
     expect(defaultAlertProps.toggleClose).toBeCalledTimes(1);
   });
 });
 
 describe('BulkEnrollmentSubmit', () => {
-  const flushPromises = () => new Promise(setImmediate);
   beforeEach(() => {
     emailsDispatch.mockClear();
     coursesDispatch.mockClear();
@@ -301,8 +300,8 @@ describe('BulkEnrollmentSubmit', () => {
 
   it('tests component logs error response on unsuccessful api call', async () => {
     // eslint-disable-next-line prefer-promise-reject-errors
-    const mockPromiseReject = Promise.reject('something went wrong');
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseReject);
+    const mockPromiseReject = new Error('something went wrong');
+    LicenseManagerApiService.licenseBulkEnroll.mockRejectedValue(mockPromiseReject);
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -312,14 +311,13 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     userEvent.click(button);
-    await act(() => flushPromises());
 
-    expect(logError).toBeCalledTimes(1);
+    await waitFor(() => expect(logError).toBeCalledTimes(1));
   });
 
   it('renders alert modal on unsuccessful api call', async () => {
-    const mockPromiseReject = Promise.reject(new Error('something went wrong'));
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseReject);
+    const mockPromiseReject = new Error('something went wrong');
+    LicenseManagerApiService.licenseBulkEnroll.mockRejectedValue(mockPromiseReject);
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -330,16 +328,14 @@ describe('BulkEnrollmentSubmit', () => {
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
 
     userEvent.click(button);
-    // interesting: doing an act(() => mockPromiseReject) does not work!
-    // we still get the act warnings.
-    await act(() => flushPromises());
-    expect(screen.getByText(ALERT_MODAL_TITLE_TEXT)).toBeInTheDocument();
+
+    await waitFor(() => expect(screen.getByText(ALERT_MODAL_TITLE_TEXT)).toBeInTheDocument());
   });
 
   it('alert modal closes when user clicks OK', async () => {
     // eslint-disable-next-line prefer-promise-reject-errors
-    const mockPromiseReject = Promise.reject('something went wrong');
-    LicenseManagerApiService.licenseBulkEnroll.mockReturnValue(mockPromiseReject);
+    const mockPromiseReject = new Error('something went wrong');
+    LicenseManagerApiService.licenseBulkEnroll.mockRejectedValue(mockPromiseReject);
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -349,14 +345,15 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     userEvent.click(button);
-    await act(() => flushPromises());
-    const alertModalCloseButton = screen.getByText('OK');
-    await userEvent.click(alertModalCloseButton);
-    expect(screen.queryByText(ALERT_MODAL_TITLE_TEXT)).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('OK')).toBeInTheDocument());
+    const alertModalCloseButton = await waitFor(() => screen.getByText('OK'));
+
+    userEvent.click(alertModalCloseButton);
+    await waitFor(() => expect(screen.queryByText(ALERT_MODAL_TITLE_TEXT)).not.toBeInTheDocument());
   });
 
   it('component calls return to initial step on successful api call', async () => {
-    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValueOnce({ data: {} });
+    LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
       <BulkEnrollmentSubmitWrapper
@@ -364,7 +361,7 @@ describe('BulkEnrollmentSubmit', () => {
         bulkEnrollInfo={bulkEnrollWithAllSelectedRows}
       />,
     );
-    const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
+    const button = await waitFor(() => screen.getByTestId(FINAL_BUTTON_TEST_ID));
     userEvent.click(button);
     await waitFor(() => {
       expect(screen.getByText('been enrolled', { exact: false })).toBeInTheDocument();

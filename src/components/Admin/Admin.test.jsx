@@ -1,9 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
-import {
-  fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -266,7 +265,7 @@ describe('<Admin />', () => {
             />
           ))
           .toJSON();
-        waitFor(() => expect(tree).toMatchSnapshot());
+        expect(tree).toMatchSnapshot();
       });
 
       it('renders # of courses completed by learner', () => {
@@ -451,8 +450,8 @@ describe('<Admin />', () => {
         enterpriseId="test-enterprise-id-2"
       />);
       const component = await screen.getByTestId('dashboard-root');
-      waitFor(() => expect(component).toHaveAttribute('data-enterprise-id', 'test-enterprise-id-2'));
-      waitFor(() => expect(mockFetchDashboardAnalytics).toHaveBeenCalled());
+      await waitFor(() => expect(component).toHaveAttribute('data-enterprise-id', 'test-enterprise-id-2'));
+      await waitFor(() => expect(mockFetchDashboardAnalytics).toHaveBeenCalled());
     });
 
     it('handles empty change in enterpriseId prop', async () => {
@@ -470,8 +469,8 @@ describe('<Admin />', () => {
         />,
       );
       const component = await screen.getByTestId('dashboard-root');
-      waitFor(() => expect(component).not.toHaveAttribute('data-enterprise-id'));
-      waitFor(() => expect(mockFetchDashboardAnalytics).toHaveBeenCalled());
+      await waitFor(() => expect(component).not.toHaveAttribute('data-enterprise-id'));
+      await waitFor(() => expect(mockFetchDashboardAnalytics).toHaveBeenCalled());
     });
   });
 
@@ -526,6 +525,7 @@ describe('<Admin />', () => {
 
       it(key, async () => {
         spy = jest.spyOn(EnterpriseDataApiService, actionMetadata.csvFetchMethod);
+        const user = userEvent.setup();
         render((
           <AdminWrapper
             {...baseProps}
@@ -544,7 +544,7 @@ describe('<Admin />', () => {
           />
         ));
         const downloadBtn = await screen.findByTestId('download-csv-btn');
-        fireEvent.click(downloadBtn);
+        user.click(downloadBtn);
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
         expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
           enterpriseId,
@@ -565,7 +565,7 @@ describe('<Admin />', () => {
           }
         />
       ));
-      waitFor(() => expect(container).not.toHaveTextContent('Reset Filters'));
+      expect(screen).not.toHaveTextContent('Reset Filters');
     });
     it('should not be present if only query is ordering', () => {
       const { container } = render((
@@ -576,7 +576,7 @@ describe('<Admin />', () => {
           }
         />
       ));
-      waitFor(() => expect(container).not.toHaveTextContent('Reset Filters'));
+      expect(container).not.toHaveTextContent('Reset Filters');
     });
     it('should not be present if query is null', () => {
       const { container } = render((
@@ -587,7 +587,7 @@ describe('<Admin />', () => {
           }
         />
       ));
-      waitFor(() => expect(container).not.toContain('Reset Filters'));
+      expect(container).not.toContain('Reset Filters');
     });
     it('should be present if there is a querystring', async () => {
       const path = '/lael/';
@@ -614,7 +614,7 @@ describe('<Admin />', () => {
           }
         />
       ));
-      waitFor(() => expect(container).toHaveTextContent('Reset Filters'));
+      expect(container).toHaveTextContent('Reset Filters');
       const link = await screen.findByTestId('reset-filters');
       expect(link).toHaveAttribute('href', `${path}?${nonSearchQuery}`);
     });
@@ -697,7 +697,7 @@ describe('<Admin />', () => {
       await waitFor(() => {
         expect(container).toHaveTextContent('Full Report');
       });
-      waitFor(() => expect(scrollIntoViewMock).toHaveBeenCalled());
+      expect(scrollIntoViewMock).toHaveBeenCalled();
     });
     it('does not scroll when fragment absent', async () => {
       const { rerender, container } = render((
@@ -721,7 +721,7 @@ describe('<Admin />', () => {
       await waitFor(() => {
         expect(container).toHaveTextContent('Full Report');
       });
-      waitFor(() => expect(scrollIntoViewMock).not.toHaveBeenCalled());
+      expect(scrollIntoViewMock).not.toHaveBeenCalled();
     });
   });
 });
