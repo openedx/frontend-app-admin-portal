@@ -148,6 +148,7 @@ const Sidebar = ({
     },
     {
       title: 'People Management',
+      id: TOUR_TARGETS.PEOPLE_MANAGEMENT,
       to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
       icon: <Icon src={Person} />,
       hidden: !enterpriseGroupsV2,
