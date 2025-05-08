@@ -40,6 +40,8 @@ const highlightsTour = ({
     onAdvance: handleAdvanceTour,
     onDismiss: handleDismissTour,
     onEnd: handleTourEnd,
+    advanceButtonText: 'Next',
+    endButtonText: 'End',
   };
 
   return tour;
