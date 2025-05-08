@@ -56,9 +56,6 @@ const ToursWithContext = ({
     portalConfiguration: {
       enterpriseSlug: ENTERPRISE_SLUG,
       enableLearnerPortal,
-      enterpriseFeatures: {
-        enterpriseGroupsV2: false,
-      },
     },
   }),
 }) => (
@@ -188,52 +185,21 @@ describe('<ProductTours/>', () => {
   });
 
   describe('learner detail page tour', () => {
-    it('is shown when feature is enabled, and no cookie found', () => {
+    it('is shown when no cookie found', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
-      render(
-        <ToursWithContext
-          store={mockStore({
-            portalConfiguration: {
-              enterpriseFeatures: {
-                enterpriseGroupsV2: true,
-              },
-            },
-          })}
-        />,
-      );
+      render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
     });
     it('dismiss learner profile product tour', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
-      render(
-        <ToursWithContext
-          store={mockStore({
-            portalConfiguration: {
-              enterpriseFeatures: {
-                enterpriseGroupsV2: true,
-              },
-            },
-          })}
-        />,
-      );
+      render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
       userEvent.click(screen.getByText('Dismiss'));
       expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
     });
-    it('is not shown when feature is turned off', () => {
+    it('is not shown when cookie has been dismissed', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
-
-      render(
-        <ToursWithContext
-          store={mockStore({
-            portalConfiguration: {
-              enterpriseFeatures: {
-                enterpriseGroupsV2: false,
-              },
-            },
-          })}
-        />,
-      );
+      render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeFalsy();
     });
   });

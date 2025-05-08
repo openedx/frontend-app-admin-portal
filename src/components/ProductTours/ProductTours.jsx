@@ -29,7 +29,6 @@ import {
 const ProductTours = ({
   enableLearnerPortal,
   enterpriseSlug,
-  enterpriseFeatures,
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
@@ -37,7 +36,7 @@ const ProductTours = ({
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour(enableLearnerPortal),
     [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS),
     [LEARNER_CREDIT_COOKIE_NAME]: useLearnerCreditTour(),
-    [LEARNER_DETAIL_PAGE_COOKIE_NAME]: useLearnerDetailPageTour(enterpriseFeatures),
+    [LEARNER_DETAIL_PAGE_COOKIE_NAME]: useLearnerDetailPageTour(),
     [PORTAL_APPEARANCE_TOUR_COOKIE_NAME]: usePortalAppearanceTour(enablePortalAppearance),
   };
   const newFeatureTourCheckpoints = {
@@ -65,15 +64,11 @@ const ProductTours = ({
 
 ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
-  enterpriseFeatures: PropTypes.shape({
-    enableGroupsV2: PropTypes.bool,
-  }).isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
