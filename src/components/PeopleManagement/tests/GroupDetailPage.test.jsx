@@ -60,7 +60,6 @@ const initialStoreState = {
   portalConfiguration: {
     enterpriseId: enterpriseUUID,
     enterpriseSlug: TEST_ENTERPRISE_SLUG,
-    enterpriseGroupsV2: true,
     enterpriseFeatures: {
       adminPortalLearnerProfileViewEnabled: true,
     },

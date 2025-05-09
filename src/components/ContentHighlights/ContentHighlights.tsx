@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
@@ -23,7 +22,7 @@ type ContentHighlightsToastProps = {
   uuid: string;
 };
 
-const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
+const ContentHighlights = ({ location }) => {
   const navigate = useNavigate();
   const { state: locationState } = location;
   const [toasts, setToasts] = useState<ContentHighlightsToastProps[]>([]);
@@ -47,10 +46,10 @@ const ContentHighlights = ({ location, enterpriseGroupsV1 }) => {
         logError(error);
       }
     }
-    if (enterpriseGroupsV1 && isEdxStaff) {
+    if (isEdxStaff) {
       fetchGroupsData();
     }
-  }, [enterpriseGroupsV1, isEdxStaff]);
+  }, [isEdxStaff]);
 
   useEffect(() => {
     if (locationState?.highlightToast && enterpriseCuration?.toastText) {
@@ -149,11 +148,6 @@ ContentHighlights.propTypes = {
       highlightToast: PropTypes.bool,
     }),
   }),
-  enterpriseGroupsV1: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
-  enterpriseGroupsV1: state.portalConfiguration.enterpriseFeatures?.enterpriseGroupsV1,
-});
-
-export default connect(mapStateToProps)(withLocation(ContentHighlights));
+export default withLocation(ContentHighlights);

@@ -48,8 +48,6 @@ const initialStoreState = {
     enableLearnerPortal: true,
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
-      enterpriseGroupsV1: true,
-      enterpriseGroupsV2: true,
     },
   },
 };

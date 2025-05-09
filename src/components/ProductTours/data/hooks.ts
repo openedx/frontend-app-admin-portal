@@ -57,13 +57,12 @@ export const useLearnerCreditTour = () : boolean => {
   useLearnerDetailPageTour returns true if
   - feature is enabled
   - learner detail tour cookie is undefined or false
- *  @param {shape} enterpriseFeatures - list of features for enterprise
  *  @returns {boolean}
  */
-export const useLearnerDetailPageTour = (enterpriseFeatures: any) : boolean => {
+export const useLearnerDetailPageTour = () : boolean => {
   const dismissedLearnerDetailTourCookie = global.localStorage.getItem(LEARNER_DETAIL_PAGE_COOKIE_NAME);
-  // Only show tour if feature is enabled, hide cookie is undefined or false or not in the settings page
-  const showLearnerDetailPageTour = enterpriseFeatures.enterpriseGroupsV2 && !dismissedLearnerDetailTourCookie;
+  // Only show tour if hide cookie is undefined or false or not in the settings page
+  const showLearnerDetailPageTour = !dismissedLearnerDetailTourCookie;
   return showLearnerDetailPageTour;
 };
 

@@ -31,10 +31,9 @@ const AssignmentModalContent = ({
   onEmailAddressesChange,
   enterpriseFlexGroups,
   onGroupSelectionsChanged,
-  enterpriseFeatures,
   setHasSelectedBulkGroupAssign,
 }) => {
-  const shouldShowGroupsDropdown = enterpriseFeatures.enterpriseGroupsV2 && enterpriseFlexGroups?.length > 0;
+  const shouldShowGroupsDropdown = enterpriseFlexGroups?.length > 0;
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const spendAvailable = subsidyAccessPolicy.aggregates.spendAvailableUsd;
@@ -280,15 +279,11 @@ AssignmentModalContent.propTypes = {
     uuid: PropTypes.string,
     acceptedMembersCount: PropTypes.number,
   })),
-  enterpriseFeatures: PropTypes.shape({
-    enterpriseGroupsV2: PropTypes.bool.isRequired,
-  }),
   setHasSelectedBulkGroupAssign: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
-  enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
 });
 
 export default connect(mapStateToProps)(AssignmentModalContent);

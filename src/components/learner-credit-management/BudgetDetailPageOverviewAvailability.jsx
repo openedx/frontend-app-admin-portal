@@ -30,7 +30,6 @@ const BudgetActions = ({
   budgetId,
   isAssignable,
   enterpriseId,
-  enterpriseGroupsV1,
   isTopDownAssignmentEnabled,
   status,
 }) => {
@@ -190,7 +189,7 @@ const BudgetActions = ({
 
   // TODO: Optimize the return statements with JSX components to improve code readability and maintainability.
   if (!isAssignable) {
-    if (enterpriseGroupsV1 && !isEmpty(subsidyAccessPolicy?.groupAssociations)) {
+    if (!isEmpty(subsidyAccessPolicy?.groupAssociations)) {
       if (isLmsBudget(enterpriseCustomer?.activeIntegrations.length, enterpriseGroup?.appliesToAllContexts)) {
         return (
           <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
@@ -410,7 +409,6 @@ BudgetActions.propTypes = {
   isAssignable: PropTypes.bool.isRequired,
   enterpriseId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  enterpriseGroupsV1: PropTypes.bool.isRequired,
   isTopDownAssignmentEnabled: PropTypes.bool.isRequired,
 };
 
@@ -432,7 +430,6 @@ const BudgetDetailPageOverviewAvailability = ({
           budgetId={budgetId}
           isAssignable={isAssignable && enterpriseFeatures.topDownAssignmentRealTimeLcm}
           enterpriseId={enterpriseId}
-          enterpriseGroupsV1={enterpriseFeatures.enterpriseGroupsV1}
           status={status}
           isTopDownAssignmentEnabled={enterpriseFeatures.topDownAssignmentRealTimeLcm}
         />
@@ -451,7 +448,6 @@ BudgetDetailPageOverviewAvailability.propTypes = {
   isAssignable: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
-    enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
   enterpriseId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
