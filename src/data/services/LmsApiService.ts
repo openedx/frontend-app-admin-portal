@@ -143,6 +143,11 @@ class LmsApiService {
       });
   }
 
+  static fetchLoggedInEnterpriseAdminProfile() {
+    const enterpriseAdminProfileUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/`;
+    return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
+  }
+
   static requestCodes(options) {
     const postParams = {
       email: options.emailAddress,
