@@ -22,7 +22,6 @@ const initialStoreState = {
   portalConfiguration: {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
-    enterpriseGroupsV2: true,
   },
 };
 

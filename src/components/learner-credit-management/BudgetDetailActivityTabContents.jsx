@@ -15,8 +15,7 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
   const { enterpriseOfferId, subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const isEnterpriseGroupsEnabled = enterpriseFeatures.enterpriseGroupsV1
-    && !isEmpty(subsidyAccessPolicy?.groupAssociations);
+  const isEnterpriseGroupsEnabled = !isEmpty(subsidyAccessPolicy?.groupAssociations);
   const { openInviteModal } = useContext(BudgetDetailPageContext);
   const {
     isLoading: isBudgetActivityOverviewLoading,
@@ -99,7 +98,6 @@ BudgetDetailActivityTabContents.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
-    enterpriseGroupsV1: PropTypes.bool,
   }).isRequired,
   appliesToAllContexts: PropTypes.bool.isRequired,
 };

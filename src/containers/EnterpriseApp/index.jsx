@@ -20,7 +20,6 @@ const mapStateToProps = (state) => {
     enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen,
     enterpriseBranding: state.portalConfiguration.enterpriseBranding,
     enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
-    enterpriseGroupsV2: state.portalConfiguration.enterpriseGroupsV2,
     enterpriseId: state.portalConfiguration.enterpriseId,
     enterpriseName: state.portalConfiguration.enterpriseName,
     enterprises: enterpriseListState.data,
