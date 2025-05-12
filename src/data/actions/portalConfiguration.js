@@ -32,33 +32,12 @@ const updatePortalConfigurationEvent = data => ({
 
 const clearPortalConfigurationEvent = () => ({ type: CLEAR_PORTAL_CONFIGURATION });
 
-/**
- * fetchInParallel
- *
- * Takes multiple fetch functions that can be passed like this:
- * [async () => someFetchRequest()]
- *
- * Returns a Promise after all fetch functions have been run in parallel
- * and returned with success or error.
- */
-const fetchInParallel = async (fetchFunctions) => {
-  const promises = fetchFunctions.map(fn => fn());
-  return Promise.allSettled(promises);
-};
-
 const fetchPortalConfiguration = slug => (
   (dispatch) => {
     dispatch(fetchPortalConfigurationRequest());
-    // TODO: modify to simultaneously fetch enterprise-customer-admin
-    const fetchFunctions = [
-      async () => LmsApiService.fetchEnterpriseBySlug(slug),
-      async () => LmsApiService.fetchLoggedInEnterpriseAdminProfile(),
-    ];
-    return fetchInParallel(fetchFunctions)
-      .then((responses) => {
-        const portalConfigurationResponse = responses[0].value;
-        for (const res of responses) { console.log('response: ', res); }
-        dispatch(fetchPortalConfigurationSuccess(portalConfigurationResponse));
+    return LmsApiService.fetchEnterpriseBySlug(slug)
+      .then((response) => {
+        dispatch(fetchPortalConfigurationSuccess(response));
       })
       .catch((error) => {
         logError(error);
