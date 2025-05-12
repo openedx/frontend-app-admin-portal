@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
-import {
-  IconButton, Icon, ProductTour, OverlayTrigger, Tooltip,
-} from '@openedx/paragon';
-import { Question } from '@openedx/paragon/icons';
+import { ProductTour } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
-import { useIntl } from '@edx/frontend-platform/i18n';
 import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import learnerDetailPageTour from './learnerDetailPageTour';
 import highlightsTour from './highlightsTour';
-import FloatingCollapsible from '../FloatingCollapsible';
 import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
-import messages from './messages';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
@@ -29,6 +23,8 @@ import {
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
+import TourCollapsible from './TourCollapsible';
+
 /**
  * All the logic here is for determining what ProductTours we should show.
  * All actual tour specific logic/content should live within the separate tour files.
@@ -38,9 +34,6 @@ const ProductTours = ({
   enterpriseSlug,
   enterpriseFeatures,
 }) => {
-  const intl = useIntl();
-  const [collapsibleOpen, setCollapsibleOpen] = useState(false);
-
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const enabledFeatures = {
@@ -71,30 +64,7 @@ const ProductTours = ({
       <ProductTour
         tours={tours}
       />
-      {collapsibleOpen && (
-        <FloatingCollapsible>
-          <div>Product Tours Checklist</div>
-        </FloatingCollapsible>
-      )}
-      {!collapsibleOpen && (
-        <OverlayTrigger
-          placement="left"
-          overlay={(
-            <Tooltip id="product-tours-question-icon-tooltip">
-              {intl.formatMessage(messages.questionIconTooltip)}
-            </Tooltip>
-      )}
-        >
-          <IconButton
-            src={Question}
-            className="info-button bottom-right-fixed"
-            iconAs={Icon}
-            alt="More details"
-            size="lg"
-            onClick={() => setCollapsibleOpen(true)}
-          />
-        </OverlayTrigger>
-      )}
+      <TourCollapsible />
     </div>
   );
 };

@@ -13,7 +13,7 @@ const fetchLoggedInEnterpriseAdminRequest = () => ({
 const fetchLoggedInEnterpriseAdminSuccess = response => ({
   type: FETCH_ENTERPRISE_CUSTOMER_ADMIN_SUCCESS,
   payload: {
-    data: response.data,
+    data: response.data?.results?.[0],
   },
 });
 
@@ -27,7 +27,6 @@ const fetchLoggedInEnterpriseAdmin = () => (
     try {
       dispatch(fetchLoggedInEnterpriseAdminRequest());
       const response = await LmsApiService.fetchLoggedInEnterpriseAdminProfile();
-      console.log('response: ', response);
       dispatch(fetchLoggedInEnterpriseAdminSuccess(response));
     } catch (error) {
       logError(error);

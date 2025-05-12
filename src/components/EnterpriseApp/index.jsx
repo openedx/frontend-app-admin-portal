@@ -32,7 +32,7 @@ class EnterpriseApp extends React.Component {
 
   componentDidMount() {
     const { enterpriseSlug } = this.props;
-    this.props.fetchPortalConfiguration(enterpriseSlug);
+    this.props.fetchEnterpriseAppData(enterpriseSlug);
     this.props.toggleSidebarToggle(); // ensure sidebar toggle button is in header
   }
 
@@ -204,7 +204,7 @@ EnterpriseApp.propTypes = {
     tertiary_color: PropTypes.string,
     logo: PropTypes.string,
   }),
-  fetchPortalConfiguration: PropTypes.func.isRequired,
+  fetchEnterpriseAppData: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
