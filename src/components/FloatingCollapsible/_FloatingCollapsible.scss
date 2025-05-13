@@ -1,6 +1,12 @@
+@import "../../colors";
+
 .floating-collapsible {
   width: 25rem;
   border-radius: 6px;
-  .floating-collapsible__body {
+  @include pgn-box-shadow(4, "down");
+
+  .floating-collapsible__trigger {
+    background-color: $product-tours-background-color;
+    color: $product-tours-title-color;
   }
 }

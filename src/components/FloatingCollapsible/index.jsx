@@ -4,18 +4,11 @@ import {
   Collapsible, Icon, ActionRow, Button,
 } from '@openedx/paragon';
 import { KeyboardArrowUp, KeyboardArrowDown } from '@openedx/paragon/icons';
-import Color from 'color';
 
 const FloatingCollapsible = ({
   enterpriseBranding, onDismiss = () => {}, title, children,
 }) => {
   const [collapseIsOpen, setCollapseOpen] = useState(true);
-
-  // Use the bottom-right-fixed class that's already defined in index.scss
-  const collapsibleStyle = enterpriseBranding?.tertiary_color ? {
-    backgroundColor: enterpriseBranding.tertiary_color,
-    color: enterpriseBranding.tertiary_color && Color(enterpriseBranding.tertiary_color).isDark() ? '#FFFFFF' : '#454545',
-  } : {};
 
   const handleDismiss = () => {
     setCollapseOpen(false);
@@ -30,8 +23,7 @@ const FloatingCollapsible = ({
         onToggle={isOpen => setCollapseOpen(isOpen)}
       >
         <Collapsible.Trigger
-          style={collapsibleStyle}
-          className={`p-3 h4 mb-0 ${collapseIsOpen ? 'rounded-top' : 'rounded'}`}
+          className={`floating-collapsible__trigger p-3 h4 mb-0 ${collapseIsOpen ? 'rounded-top' : 'rounded'}`}
         >
           <div className="d-flex justify-content-between">
             <div>{title}</div>

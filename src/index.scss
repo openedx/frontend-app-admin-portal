@@ -8,6 +8,9 @@ $modal-max-width: 650px;
 @import "~@edx/frontend-enterprise-catalog-search";
 @import "~@edx/brand/paragon/overrides";
 
+// Custom variables
+@import "./colors";
+
 // Components
 @import "./components/EnterpriseApp/EnterpriseApp";
 @import "./components/CodeSearchResults/CodeSearchResults";
