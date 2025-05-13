@@ -10,10 +10,15 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
 import messages from './messages';
-import { dismissOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
+import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 
 const TourCollapsible = (
-  { onboardingTourCompleted = true, onboardingTourDismissed = true, dismissOnboardingTour: dismissTour },
+  {
+    onboardingTourCompleted = true,
+    onboardingTourDismissed = true,
+    dismissOnboardingTour: dismissTour,
+    reopenOnboardingTour: reopenTour,
+  } = {},
 ) => {
   const intl = useIntl();
   const [showCollapsible, setShowCollapsible] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
@@ -21,6 +26,11 @@ const TourCollapsible = (
   const handleDismiss = () => {
     setShowCollapsible(false);
     dismissTour();
+  };
+
+  const handleReopenTour = () => {
+    setShowCollapsible(true);
+    reopenTour();
   };
 
   return (
@@ -45,7 +55,7 @@ const TourCollapsible = (
             iconAs={Icon}
             alt="More details"
             size="lg"
-            onClick={() => setShowCollapsible(true)}
+            onClick={handleReopenTour}
           />
         </OverlayTrigger>
       )}
@@ -56,6 +66,7 @@ TourCollapsible.propTypes = {
   onboardingTourCompleted: bool,
   onboardingTourDismissed: bool,
   dismissOnboardingTour: func.isRequired,
+  reopenOnboardingTour: func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -66,6 +77,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   dismissOnboardingTour: () => {
     dispatch(dismissOnboardingTour());
+  },
+  reopenOnboardingTour: () => {
+    dispatch(reopenOnboardingTour());
   },
 });
 

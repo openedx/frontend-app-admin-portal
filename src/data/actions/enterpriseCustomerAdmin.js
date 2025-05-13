@@ -39,21 +39,24 @@ const setOnboardingTourDismissed = (dismissed) => ({
   payload: { dismissed },
 });
 
-const dismissOnboardingTour = () => (
+const toggleOnboardingTourDismissal = (value) => (
   async (dispatch) => {
     try {
       // TODO: Implement the backend API for dismissing the onboarding tour.
       // Right now this will cause a 404 error and jump to the catch and finally blocks.
-      const response = await LmsApiService.postOnboardingTourDismissed({ value: true });
+      const response = await LmsApiService.postOnboardingTourDismissed({ value });
       dispatch(dismissOnboardingTourSuccess(response));
     } catch (error) {
       logError(error);
       dispatch(dismissOnboardingTourFailure(error));
     } finally {
-      dispatch(setOnboardingTourDismissed(true));
+      dispatch(setOnboardingTourDismissed(value));
     }
   }
 );
+
+const dismissOnboardingTour = () => toggleOnboardingTourDismissal(true);
+const reopenOnboardingTour = () => toggleOnboardingTourDismissal(false);
 
 const fetchLoggedInEnterpriseAdmin = () => (
   async (dispatch) => {
@@ -71,4 +74,5 @@ const fetchLoggedInEnterpriseAdmin = () => (
 export {
   fetchLoggedInEnterpriseAdmin,
   dismissOnboardingTour,
+  reopenOnboardingTour,
 };
