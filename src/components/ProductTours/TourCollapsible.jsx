@@ -26,8 +26,8 @@ const TourCollapsible = (
   return (
     <>
       {showCollapsible && (
-      <FloatingCollapsible title="Quick Start Guide" onDismiss={handleDismiss}>
-        <p className="small">Select any item in the guide to learn more about your administrative portal.</p>
+      <FloatingCollapsible title={intl.formatMessage(messages.collapsibleTitle)} onDismiss={handleDismiss}>
+        <p className="small">{intl.formatMessage(messages.collapsibleIntro)}</p>
       </FloatingCollapsible>
       )}
       {!showCollapsible && (
