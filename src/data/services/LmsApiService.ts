@@ -148,6 +148,14 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
   }
 
+  // TODO: Implement this endpoint on the backend, if needed change the route here
+  static postOnboardingTourDismissed({ value }) {
+    const dismissOnboardingTourUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/`;
+    return LmsApiService.apiClient().post(dismissOnboardingTourUrl, {
+      onboardingTourDismissed: value,
+    });
+  }
+
   static requestCodes(options) {
     const postParams = {
       email: options.emailAddress,

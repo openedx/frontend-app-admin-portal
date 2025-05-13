@@ -6,7 +6,9 @@ import {
 import { KeyboardArrowUp, KeyboardArrowDown } from '@openedx/paragon/icons';
 import Color from 'color';
 
-const FloatingCollapsible = ({ enterpriseBranding, onDismiss = () => {} }) => {
+const FloatingCollapsible = ({
+  enterpriseBranding, onDismiss = () => {}, title, children,
+}) => {
   const [collapseIsOpen, setCollapseOpen] = useState(true);
 
   // Use the bottom-right-fixed class that's already defined in index.scss
@@ -32,7 +34,7 @@ const FloatingCollapsible = ({ enterpriseBranding, onDismiss = () => {} }) => {
           className={`p-3 h4 mb-0 ${collapseIsOpen ? 'rounded-top' : 'rounded'}`}
         >
           <div className="d-flex justify-content-between">
-            <div>Quick Start Guide</div>
+            <div>{title}</div>
             <Collapsible.Visible whenClosed>
               <Icon src={KeyboardArrowUp} />
             </Collapsible.Visible>
@@ -42,7 +44,7 @@ const FloatingCollapsible = ({ enterpriseBranding, onDismiss = () => {} }) => {
           </div>
         </Collapsible.Trigger>
         <Collapsible.Body className="floating-collapsible__body bg-light-300 text-gray-700 rounded-bottom p-3">
-          <p className="small">Select any item in the guide to learn more about your administrative portal.</p>
+          {children}
           <ActionRow>
             <Button variant="tertiary" onClick={() => setCollapseOpen(false)}>
               Cancel

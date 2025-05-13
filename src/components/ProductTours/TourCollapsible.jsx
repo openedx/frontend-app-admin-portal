@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { bool } from 'prop-types';
+import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
@@ -10,18 +10,27 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
 import messages from './messages';
+import { dismissOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 
-const TourCollapsible = ({ onboardingTourCompleted = true, onboardingTourDismissed = true }) => {
+const TourCollapsible = (
+  { onboardingTourCompleted = true, onboardingTourDismissed = true, dismissOnboardingTour: dismissTour },
+) => {
   const intl = useIntl();
-  const [collapsibleOpen, setCollapsibleOpen] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
+  const [showCollapsible, setShowCollapsible] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
+
+  const handleDismiss = () => {
+    setShowCollapsible(false);
+    dismissTour();
+  };
+
   return (
     <>
-      {collapsibleOpen && (
-      <FloatingCollapsible>
-        <div>Product Tours Checklist</div>
+      {showCollapsible && (
+      <FloatingCollapsible title="Quick Start Guide" onDismiss={handleDismiss}>
+        <p className="small">Select any item in the guide to learn more about your administrative portal.</p>
       </FloatingCollapsible>
       )}
-      {!collapsibleOpen && (
+      {!showCollapsible && (
         <OverlayTrigger
           placement="left"
           overlay={(
@@ -36,7 +45,7 @@ const TourCollapsible = ({ onboardingTourCompleted = true, onboardingTourDismiss
             iconAs={Icon}
             alt="More details"
             size="lg"
-            onClick={() => setCollapsibleOpen(true)}
+            onClick={() => setShowCollapsible(true)}
           />
         </OverlayTrigger>
       )}
@@ -46,6 +55,7 @@ const TourCollapsible = ({ onboardingTourCompleted = true, onboardingTourDismiss
 TourCollapsible.propTypes = {
   onboardingTourCompleted: bool,
   onboardingTourDismissed: bool,
+  dismissOnboardingTour: func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -53,4 +63,10 @@ const mapStateToProps = state => ({
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed,
 });
 
-export default connect(mapStateToProps)(TourCollapsible);
+const mapDispatchToProps = dispatch => ({
+  dismissOnboardingTour: () => {
+    dispatch(dismissOnboardingTour());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TourCollapsible);

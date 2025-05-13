@@ -2,6 +2,7 @@ import {
   FETCH_ENTERPRISE_CUSTOMER_ADMIN_REQUEST,
   FETCH_ENTERPRISE_CUSTOMER_ADMIN_SUCCESS,
   FETCH_ENTERPRISE_CUSTOMER_ADMIN_FAILURE,
+  SET_ONBOARDING_TOUR_DISMISSED,
 } from '../constants/enterpriseCustomerAdmin';
 
 const initialState = {
@@ -42,6 +43,11 @@ const enterpriseCustomerAdmin = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
+      };
+    case SET_ONBOARDING_TOUR_DISMISSED:
+      return {
+        ...state,
+        onboardingTourDismissed: action.payload.dismissed,
       };
     default:
       return state;

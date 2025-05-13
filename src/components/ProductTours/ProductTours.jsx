@@ -33,6 +33,7 @@ const ProductTours = ({
   enableLearnerPortal,
   enterpriseSlug,
   enterpriseFeatures,
+  onboardingEnabled,
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
@@ -64,7 +65,7 @@ const ProductTours = ({
       <ProductTour
         tours={tours}
       />
-      <TourCollapsible />
+      {onboardingEnabled && <TourCollapsible /> }
     </div>
   );
 };
@@ -75,12 +76,14 @@ ProductTours.propTypes = {
     enableGroupsV2: PropTypes.bool,
   }).isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
+  onboardingEnabled: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   enterpriseFeatures: state.portalConfiguration.enterpriseFeatures,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  onboardingEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseAdminOnboardingEnabled || false,
 });
 
 export default connect(mapStateToProps)(ProductTours);
