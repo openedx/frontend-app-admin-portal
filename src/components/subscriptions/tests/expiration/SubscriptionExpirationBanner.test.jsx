@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  screen, render, waitForElementToBeRemoved,
+  screen, render, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -71,8 +71,7 @@ describe('<SubscriptionExpirationBanner />', () => {
     };
     render(<ExpirationBannerWrapper detailState={detailStateCopy} />);
     expect(screen.queryByRole('alert')).not.toBeNull();
-    userEvent.click(screen.getByText('Dismiss'));
-    await waitForElementToBeRemoved(screen.queryByRole('alert'));
+    await waitFor(() => userEvent.click(screen.getByText('Dismiss')));
     expect(screen.queryByRole('alert')).toBeNull();
     expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -117,7 +116,7 @@ describe('<SubscriptionExpirationBanner />', () => {
     }
   });
 
-  test('handles support button click', () => {
+  test('handles support button click', async () => {
     const agreementNetDaysUntilExpiration = 0;
     const detailStateCopy = {
       ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -125,7 +124,7 @@ describe('<SubscriptionExpirationBanner />', () => {
     };
 
     render(<ExpirationBannerWrapper detailState={detailStateCopy} />);
-    userEvent.click(screen.getByText('Contact support'));
+    await waitFor(() => userEvent.click(screen.getByText('Contact support')));
     expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
       'edx.ui.admin_portal.subscriptions.expiration.alert.support_cta.clicked',

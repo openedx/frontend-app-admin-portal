@@ -93,7 +93,7 @@ describe('<ExistingSSOConfigs />', () => {
       expect(LmsApiService.updateProviderConfig).toHaveBeenCalledWith(data, activeConfig[0].id);
     });
   });
-  it('renders inactive config card', () => {
+  it('renders inactive config card', async () => {
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -107,15 +107,10 @@ describe('<ExistingSSOConfigs />', () => {
     );
     expect(screen.getByText('nacho cheese')).toBeInTheDocument();
     expect(screen.getByText('Inactive')).toBeInTheDocument();
-    act(() => {
-      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${inactiveConfig[0].id}`));
-    });
+    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${inactiveConfig[0].id}`)));
     expect(screen.getByText('Enable')).toBeInTheDocument();
     expect(screen.getByText('Edit')).toBeInTheDocument();
-
-    act(() => {
-      userEvent.click(screen.getByText('Enable'));
-    });
+    await waitFor(() => userEvent.click(screen.getByText('Enable')));
     const data = new FormData();
     data.append('enabled', true);
     data.append('enterprise_customer_uuid', enterpriseId);
@@ -158,7 +153,7 @@ describe('<ExistingSSOConfigs />', () => {
     expect(screen.getByText('cool ranch')).toBeInTheDocument();
     expect(screen.getByText('nacho cheese')).toBeInTheDocument();
   });
-  it('executes delete action on incomplete card', () => {
+  it('executes delete action on incomplete card', async () => {
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -170,15 +165,11 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    act(() => {
-      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    });
-    act(() => {
-      userEvent.click(screen.getByText('Delete'));
-    });
+    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
+    await waitFor(() => userEvent.click(screen.getByText('Delete')));
     expect(LmsApiService.deleteProviderConfig).toHaveBeenCalledWith(incompleteConfig[0].id, enterpriseId);
   });
-  it('properly handles errors when deleting provider data', () => {
+  it('properly handles errors when deleting provider data', async () => {
     const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderData');
     mockDeleteProviderData.mockImplementation(() => {
       throw new Error({ response: { data: 'foobar' } });
@@ -194,15 +185,11 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    act(() => {
-      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    });
-    act(() => {
-      userEvent.click(screen.getByText('Delete'));
-    });
+    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
+    await waitFor(() => userEvent.click(screen.getByText('Delete')));
     expect(handleErrors).toHaveBeenCalled();
   });
-  it('properly handles errors when deleting provider configs', () => {
+  it('properly handles errors when deleting provider configs', async () => {
     const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderConfig');
     mockDeleteProviderData.mockImplementation(() => {
       throw new Error({ response: { data: 'foobar' } });
@@ -218,12 +205,8 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    act(() => {
-      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    });
-    act(() => {
-      userEvent.click(screen.getByText('Delete'));
-    });
+    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
+    await waitFor(() => userEvent.click(screen.getByText('Delete')));
     expect(handleErrors).toHaveBeenCalled();
   });
   it('properly displays error message when deleting provider configs', async () => {
@@ -245,12 +228,8 @@ describe('<ExistingSSOConfigs />', () => {
         </Provider>
       </IntlProvider>,
     );
-    act(() => {
-      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    });
-    act(() => {
-      userEvent.click(screen.getByText('Delete'));
-    });
+    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
+    await waitFor(() => userEvent.click(screen.getByText('Delete')));
     await waitFor(() => {
       expect(screen.getByText(
         'We were unable to delete your configuration. Please try removing again or contact support for help.',

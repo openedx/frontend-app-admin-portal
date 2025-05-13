@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
@@ -96,10 +96,10 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(screen.getByText('Create and recommend content collections to your learners, enabling them to quickly locate content relevant to them.')).toBeInTheDocument();
   });
 
-  it('Displays New highlight Modal on button click with no highlighted content list', () => {
+  it('Displays New highlight Modal on button click with no highlighted content list', async () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
-    userEvent.click(newHighlight);
+    await waitFor(() => userEvent.click(newHighlight));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
@@ -117,7 +117,7 @@ describe('<ContentHighlightsDashboard>', () => {
     );
     expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
   });
-  it('Allows selection between tabs of dashboard, when highlight set exist', () => {
+  it('Allows selection between tabs of dashboard, when highlight set exist', async () => {
     renderWithRouter(
       <ContentHighlightsDashboardWrapper
         enterpriseAppContextValue={{
@@ -135,16 +135,16 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(catalogVisibilityTab.classList.contains('active')).toBeFalsy();
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    userEvent.click(catalogVisibilityTab);
+    await waitFor(() => userEvent.click(catalogVisibilityTab));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
 
     expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
     expect(highlightTab.classList.contains('active')).toBeFalsy();
   });
-  it('Displays New highlight modal on button click with highlighted content list', () => {
+  it('Displays New highlight modal on button click with highlighted content list', async () => {
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
-    userEvent.click(newHighlight);
+    await waitFor(() => userEvent.click(newHighlight));
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 });

@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
+import { waitFor } from '@testing-library/react';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
@@ -112,7 +113,7 @@ describe('ContentHighlightCatalogVisibilityAlert', () => {
     const openStepperModalButton = screen.getByText('New highlight');
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeFalsy();
 
-    await userEvent.click(openStepperModalButton);
+    await waitFor(() => userEvent.click(openStepperModalButton));
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeTruthy();

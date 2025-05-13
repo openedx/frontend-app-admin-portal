@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  screen, render,
+  screen, render, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
@@ -92,7 +92,7 @@ describe('<SubscriptionExpirationModals />', () => {
       );
     });
 
-    test('handles support button click', () => {
+    test('handles support button click', async () => {
       const agreementNetDaysUntilExpiration = 0;
       const detailStateCopy = {
         ...SUBSCRIPTION_PLAN_ZERO_STATE,
@@ -100,7 +100,7 @@ describe('<SubscriptionExpirationModals />', () => {
       };
 
       render(<ExpirationModalsWithContext detailState={detailStateCopy} />);
-      userEvent.click(screen.getByText('Contact support'));
+      await waitFor(() => userEvent.click(screen.getByText('Contact support')));
       expect(enterpriseUtils.sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         TEST_ENTERPRISE_CUSTOMER_UUID,
         'edx.ui.admin_portal.subscriptions.expiration.modal.support_cta.clicked',

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { DataTableContext } from '@openedx/paragon';
 import userEvent from '@testing-library/user-event';
@@ -62,7 +62,7 @@ describe('BaseSelectionStatus', () => {
       { exact: false },
     )).toBeInTheDocument();
   });
-  it('handle clearing of selections', () => {
+  it('handle clearing of selections', async () => {
     render(<SelectionStatusWrapper
       dataTableInfo={defaultDataTableInfo}
       {...defaultProps}
@@ -70,7 +70,7 @@ describe('BaseSelectionStatus', () => {
     />);
     const clearSelection = screen.getByText('Clear selection');
     expect(clearSelection).toBeInTheDocument();
-    userEvent.click(clearSelection);
+    await waitFor(() => userEvent.click(clearSelection));
     expect(mockToggleAllRowsSelected).toHaveBeenCalledTimes(1);
   });
 });

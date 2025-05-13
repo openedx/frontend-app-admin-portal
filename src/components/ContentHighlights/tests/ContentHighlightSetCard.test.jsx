@@ -151,10 +151,10 @@ describe('<ContentHighlightSetCard>', () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     expect(screen.getByText('Test Title')).toBeInTheDocument();
   });
-  it('opens model and sends segment event', () => {
+  it('opens model and sends segment event', async () => {
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     const newHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
-    userEvent.click(newHighlightButton);
+    await waitFor(() => userEvent.click(newHighlightButton));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
   it('renders correct text when less then max curations', () => {
@@ -221,7 +221,7 @@ describe('<ContentHighlightSetCard>', () => {
     const dismissButton = screen.getByText('Dismiss');
     expect(dismissButton).toBeInTheDocument();
     global.localStorage.setItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-highlight-set2`, 'test-content2-key');
-    userEvent.click(dismissButton);
+    await waitFor(() => userEvent.click(dismissButton));
     const resultCookieHighlightSet1 = global.localStorage.getItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-uuid`);
     const resultCookieHighlightSet2 = global.localStorage.getItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-highlight-set2`);
     await waitFor(() => { expect(resultCookieHighlightSet1).toEqual('test-content-key'); });

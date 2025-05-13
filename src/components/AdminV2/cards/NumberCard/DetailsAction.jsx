@@ -7,7 +7,7 @@ import React from 'react';
 import { removeTrailingSlash } from '../../../../utils';
 
 const DetailsAction = ({
-  slug, label, isLoading, onClick,
+  slug, label, isLoading, onClick, dataTestId,
 }) => {
   const location = useLocation();
   const { actionSlug } = useParams();
@@ -16,6 +16,7 @@ const DetailsAction = ({
 
   return (
     <Link
+      data-testid={dataTestId}
       key={label}
       to={actionSlug ? `${truncatedURL}/${slug}` : `${removeTrailingSlash(location?.pathname)}/${slug}`}
       onClick={onClick}
@@ -36,6 +37,7 @@ DetailsAction.propTypes = {
   label: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
+  dataTestId: PropTypes.func,
 };
 
 export default DetailsAction;

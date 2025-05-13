@@ -445,7 +445,7 @@ class Admin extends React.Component {
     const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
 
     return (
-      <main data-testid="dashboard-root" role="main" className="learner-progress-report">
+      <main data-enterprise-id={enterpriseId} data-testid="dashboard-root" role="main" className="learner-progress-report">
         {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
           <>
             <Helmet title="Learner Progress Report" />

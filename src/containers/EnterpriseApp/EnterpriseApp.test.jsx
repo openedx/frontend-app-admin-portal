@@ -6,7 +6,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { render, screen, waitFor } from '@testing-library/react';
-import { breakpoints, Skeleton } from '@openedx/paragon';
+import { breakpoints } from '@openedx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom';
@@ -17,7 +17,6 @@ import EnterpriseApp from './index';
 import { TOGGLE_SIDEBAR_TOGGLE } from '../../data/constants/sidebar';
 
 import { features } from '../../config';
-import NotFoundPage from '../../components/NotFoundPage';
 import { EnterpriseSubsidiesContext } from '../../components/EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../../components/EnterpriseApp/EnterpriseAppContextProvider';
 

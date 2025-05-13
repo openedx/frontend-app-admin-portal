@@ -79,7 +79,7 @@ describe('<DeleteHighlightSet />', () => {
 
   const clickDeleteHighlightBtn = async () => {
     const deleteBtn = getDeleteHighlightBtn();
-    await userEvent.click(deleteBtn);
+    await waitFor(() => userEvent.click(deleteBtn));
     expect(screen.getByText('Delete highlight?')).toBeInTheDocument();
   };
 
@@ -93,9 +93,9 @@ describe('<DeleteHighlightSet />', () => {
     expect(deleteBtn).toBeInTheDocument();
   });
 
-  it('clicking delete highlight button opens confirmation modal', () => {
+  it('clicking delete highlight button opens confirmation modal', async () => {
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
+    await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
@@ -114,7 +114,7 @@ describe('<DeleteHighlightSet />', () => {
     render(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    await userEvent.click(screen.getByTestId('delete-confirmation-button'));
+    await waitFor(() => userEvent.click(screen.getByTestId('delete-confirmation-button')));
     expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
 
     await waitFor(() => {
@@ -137,7 +137,7 @@ describe('<DeleteHighlightSet />', () => {
 
     render(<DeleteHighlightSetWrapper />);
     await clickDeleteHighlightBtn();
-    await userEvent.click(screen.getByTestId('delete-confirmation-button'));
+    await waitFor(() => userEvent.click(screen.getByTestId('delete-confirmation-button')));
     expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
 
     await waitFor(() => {

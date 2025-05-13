@@ -544,7 +544,7 @@ describe('<Admin />', () => {
           />
         ));
         const downloadBtn = await screen.findByTestId('download-csv-btn');
-        user.click(downloadBtn);
+        await waitFor(() => user.click(downloadBtn));
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
         expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
           enterpriseId,
@@ -557,7 +557,7 @@ describe('<Admin />', () => {
 
   describe('reset form button', () => {
     it('should not be present if there is no query', () => {
-      const { container } = render((
+      render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -565,7 +565,7 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(screen).not.toHaveTextContent('Reset Filters');
+      expect(screen.queryByText('Reset Filters')).not.toBeInTheDocument();
     });
     it('should not be present if only query is ordering', () => {
       const { container } = render((

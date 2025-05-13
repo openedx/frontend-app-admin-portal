@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { ACTIONS, BULK_ACTION, COUPON_FILTER_TYPES } from './constants';
@@ -58,12 +58,12 @@ describe('CouponBulkActions', () => {
     render(<CouponBulkActions {...props} selectedToggle={COUPON_FILTER_TYPES.unredeemed} numSelectedCodes={1} />);
     expect(screen.getByText(ACTIONS.remind.label)).toHaveProperty('disabled', false);
     expect(screen.getByText(ACTIONS.revoke.label)).toHaveProperty('disabled', false);
-    userEvent.selectOptions(screen.getByLabelText(BULK_ACTION.label), [ACTIONS.revoke.label]);
+    await waitFor(() => userEvent.selectOptions(screen.getByLabelText(BULK_ACTION.label), [ACTIONS.revoke.label]));
     expect(await screen.findByLabelText(BULK_ACTION.label)).toHaveProperty('value', ACTIONS.revoke.value);
   });
-  it('calls handle bulk action with the selected value - default', () => {
+  it('calls handle bulk action with the selected value - default', async () => {
     render(<CouponBulkActions {...props} />);
-    userEvent.click(screen.getByText('Go'));
+    await waitFor(() => userEvent.click(screen.getByText('Go')));
     expect(props.handleBulkAction).toHaveBeenCalledWith(ACTIONS.assign.value);
   });
   it('calls handle bulk action with the selected value - after change', async () => {
@@ -71,7 +71,7 @@ describe('CouponBulkActions', () => {
     expect(screen.getByText(ACTIONS.remind.label)).toHaveProperty('disabled', false);
     expect(screen.getByText(ACTIONS.revoke.label)).toHaveProperty('disabled', false);
     userEvent.selectOptions(screen.getByLabelText(BULK_ACTION.label), [ACTIONS.revoke.label]);
-    userEvent.click(screen.getByText('Go'));
+    await waitFor(() => userEvent.click(screen.getByText('Go')));
     expect(props.handleBulkAction).toHaveBeenCalledWith(ACTIONS.revoke.value);
   });
 });

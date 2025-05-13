@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
@@ -26,7 +26,7 @@ describe('<ContentHighlightToast>', () => {
     const toastContainerClassesBefore = screen.getByRole('alert').className;
     expect(toastContainerClassesBefore.match(/show/)).toBeTruthy();
 
-    await userEvent.click(closeButton);
+    await waitFor(() => userEvent.click(closeButton));
 
     const toastContainerClassesAfter = screen.getByRole('alert').className;
     expect(toastContainerClassesAfter.match(/show/)).toBeFalsy();

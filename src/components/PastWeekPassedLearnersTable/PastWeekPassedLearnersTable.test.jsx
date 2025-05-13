@@ -63,8 +63,6 @@ const PastWeekPassedLearnersWrapper = props => (
 );
 
 describe('PastWeekPassedLearnersTable', () => {
-  let wrapper;
-
   it('renders table correctly', () => {
     const tree = renderer
       .create((

@@ -1,4 +1,4 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
@@ -31,10 +31,10 @@ describe('AddLearnersStep', () => {
     const iconButton = await screen.findByTestId('delete-button');
     expect(iconButton).toHaveAttribute('aria-label', defaultProps.altText);
   });
-  it('dispatches the deleteSelected row action when the delete button is clicked', () => {
+  it('dispatches the deleteSelected row action when the delete button is clicked', async () => {
     render(<ReviewItem {...defaultProps} />);
     const deleteButton = screen.getByTestId('delete-button');
-    userEvent.click(deleteButton);
+    await waitFor(() => userEvent.click(deleteButton));
     expect(defaultProps.dispatch).toHaveBeenCalledTimes(1);
     expect(defaultProps.dispatch).toHaveBeenCalledWith(deleteSelectedRowAction(defaultProps.row.id));
   });

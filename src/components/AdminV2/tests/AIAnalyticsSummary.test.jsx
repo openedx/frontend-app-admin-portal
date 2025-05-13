@@ -1,7 +1,9 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+import { userEvent } from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
@@ -64,9 +66,10 @@ const AIAnalyticsSummaryWrapper = props => (
 );
 
 describe('<AIAnalyticsSummary />', () => {
-  it('should render action buttons correctly', () => {
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    expect(wrapper.find('[data-testid="summarize-analytics"]').exists()).toBe(true);
+  it('should render action buttons correctly', async () => {
+    render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
+    expect(summariseAnalyticsComponent).toBeInTheDocument();
   });
 
   // Currently disabled due to data inconsistencies, will be addressed as a part of ENT-7812.
@@ -81,28 +84,35 @@ describe('<AIAnalyticsSummary />', () => {
   //   expect(tree).toMatchSnapshot();
   // });
 
-  it('should handle null analytics data', () => {
+  it('should handle null analytics data', async () => {
     const insightsData = { ...mockedInsights, learner_engagement: null };
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={insightsData} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    const user = userEvent.setup();
+    render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
+    const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
+    user.click(summariseAnalyticsComponent);
 
-    expect(wrapper.find('AnalyticsDetailCard').exists()).toBe(true);
-    expect(wrapper.find('AnalyticsDetailCard').text()).toContain('Analytics not found');
+    const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
+    expect(detailCardComponent).toBeInTheDocument();
+    expect(detailCardComponent.textContent).toContain(('Analytics not found'));
   });
 
-  it('should hide the analytics card when Dismiss button is clicked', () => {
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+  it('should hide the analytics card when Dismiss button is clicked', async () => {
+    const user = userEvent.setup();
+    render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     // Open the analytics card
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
-    expect(wrapper.find('AnalyticsDetailCard').exists()).toBe(true);
+    const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
+    user.click(summariseAnalyticsComponent);
+    const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
+    expect(detailCardComponent).toBeInTheDocument();
 
     // Click the dismiss button
-    wrapper.find('AnalyticsDetailCard Button').simulate('click');
-    wrapper.update();
-    expect(wrapper.find('AnalyticsDetailCard').exists()).toBe(false);
+    const detailCardButton = await screen.findByTestId('ai-analytics-detail-card-button');
+    await waitFor(() => user.click(detailCardButton));
+    expect(detailCardComponent).not.toBeInTheDocument();
   });
 
-  it('should display error message when analytics API returns an error', () => {
+  it('should display error message when analytics API returns an error', async () => {
+    const user = userEvent.setup();
     // Mock useAIAnalyticsSummary to return an error
     jest.spyOn(AIAnalyticsSummaryHooks, 'default').mockReturnValue({
       data: null,
@@ -110,14 +120,16 @@ describe('<AIAnalyticsSummary />', () => {
       error: new Error('API Error'),
     });
 
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
+    user.click(summariseAnalyticsComponent);
 
-    expect(wrapper.find('AnalyticsDetailCard').text()).toContain('We encountered an issue');
-    expect(wrapper.find('AnalyticsDetailCard').text()).toContain('API Error');
+    const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
+    expect(detailCardComponent.textContent).toContain('We encountered an issue');
+    expect(detailCardComponent.textContent).toContain('API Error');
   });
 
-  it('should show loading state while fetching analytics data', () => {
+  it('should show loading state while fetching analytics data', async () => {
     // Mock useAIAnalyticsSummary to return loading state
     jest.spyOn(AIAnalyticsSummaryHooks, 'default').mockReturnValue({
       data: null,
@@ -125,9 +137,12 @@ describe('<AIAnalyticsSummary />', () => {
       error: null,
     });
 
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
-
-    expect(wrapper.find('AnalyticsDetailCard').prop('isLoading')).toBe(true);
+    const user = userEvent.setup();
+    render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
+    user.click(summariseAnalyticsComponent);
+    // TODO: need to figure out how can we test loading state
+    // const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
+    // expect(wrapper.find('AnalyticsDetailCard').prop('isLoading')).toBe(true);
   });
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   render, act, fireEvent, screen, waitFor,
 } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom';
 import ReportingConfigForm from './ReportingConfigForm';
@@ -348,6 +349,7 @@ describe('<ReportingConfigForm />', () => {
   it('handles API response errors correctly.', async () => {
     defaultConfig.pgpEncryptionKey = 'invalid-key';
     const mock = jest.fn();
+    const user = userEvent.setup();
 
     const { container } = render((
       <IntlProvider locale="en">
@@ -371,17 +373,9 @@ describe('<ReportingConfigForm />', () => {
         entryInput.value = value;
       }
     });
-    const errorResponse = {
-      data: {
-        pgp_encryption_key: ['Please enter a valid PGP encryption key.'],
-        enableCompression: ['Test Compression Error'],
-      },
-    };
-    await act(async () => {
-      const submitButton = container.querySelector('#submitButton');
-      fireEvent.click(submitButton);
-      expect(mock).toHaveBeenCalled();
-    });
+    const submitButton = container.querySelector('#submitButton');
+    await waitFor(() => user.click(submitButton));
+    expect(mock).toHaveBeenCalled();
 
     mock.mockClear();
 
@@ -392,6 +386,7 @@ describe('<ReportingConfigForm />', () => {
     // expect(mock).not.toHaveBeenCalled();
   });
   it("should update the includeDate state when the 'Include Date' checkbox is clicked", async () => {
+    const user = userEvent.setup();
     render((
       <IntlProvider locale="en">
         <ReportingConfigForm
@@ -408,9 +403,7 @@ describe('<ReportingConfigForm />', () => {
     const checkboxInput = await screen.queryByTestId('includeDateCheckbox');
     expect(checkboxInput.checked).toEqual(false);
 
-    await act(async () => {
-      fireEvent.change(checkboxInput, { target: { checked: true } });
-    });
+    await waitFor(() => user.change(checkboxInput, { target: { checked: true } }));
 
     const updatedCheckboxInstance = await screen.queryByTestId('includeDateCheckbox');
     expect(updatedCheckboxInstance.checked).toEqual(true);
