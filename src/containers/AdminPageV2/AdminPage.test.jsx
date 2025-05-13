@@ -1,7 +1,6 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-// import { mount } from 'enzyme';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -79,47 +78,47 @@ describe('<AdminPage />', () => {
     });
   });
 
-  it.skip('fetchDashboardAnalytics dispatches fetchDashboardAnalytics action', () => {
+  it('fetchDashboardAnalytics dispatches fetchDashboardAnalytics action', () => {
     wrapper.props().fetchDashboardAnalytics('ee5e6b3a-069a-4947-bb8d-d2dbc323396c');
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('clearDashboardAnalytics dispatches clearDashboardAnalytics action', () => {
+  it('clearDashboardAnalytics dispatches clearDashboardAnalytics action', () => {
     wrapper.props().clearDashboardAnalytics();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('searchEnrollmentsList dispatches paginateTable action', () => {
+  it('searchEnrollmentsList dispatches paginateTable action', () => {
     wrapper.props().searchEnrollmentsList();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('fetchDashboardInsights dispatches fetchDashboardInsights action', () => {
+  it('fetchDashboardInsights dispatches fetchDashboardInsights action', () => {
     wrapper.props().fetchDashboardInsights('test-enterprise');
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('clearDashboardInsights dispatches clearDashboardInsights action', () => {
+  it('clearDashboardInsights dispatches clearDashboardInsights action', () => {
     wrapper.props().clearDashboardInsights();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('fetchEnterpriseBudgets dispatches fetchEnterpriseBudgets action', () => {
+  it('fetchEnterpriseBudgets dispatches fetchEnterpriseBudgets action', () => {
     wrapper.props().fetchEnterpriseBudgets('test-enterprise');
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('clearEnterpriseBudgets dispatches clearEnterpriseBudgets action', () => {
+  it('clearEnterpriseBudgets dispatches clearEnterpriseBudgets action', () => {
     wrapper.props().clearEnterpriseBudgets();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('fetchEnterpriseGroups dispatches fetchEnterpriseGroups action', () => {
+  it('fetchEnterpriseGroups dispatches fetchEnterpriseGroups action', () => {
     wrapper.props().fetchEnterpriseGroups('test-enterprise');
     expect(dispatchSpy).toHaveBeenCalled();
   });
 
-  it.skip('clearEnterpriseGroups dispatches clearEnterpriseGroups action', () => {
+  it('clearEnterpriseGroups dispatches clearEnterpriseGroups action', () => {
     wrapper.props().clearEnterpriseGroups();
     expect(dispatchSpy).toHaveBeenCalled();
   });

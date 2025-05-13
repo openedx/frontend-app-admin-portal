@@ -36,8 +36,6 @@ const Sidebar = ({
   enableAnalyticsScreen,
   onWidthChange,
   isMobile,
-  enterpriseGroupsV1,
-  enterpriseGroupsV2,
   onMount,
 }) => {
   const sidebarRef = useRef();
@@ -50,7 +48,7 @@ const Sidebar = ({
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const isEdxStaff = getAuthenticatedUser().administrator;
   const [hasBudgetGroup, setHasBudgetGroup] = useState(false);
-  const hideHighlightsForGroups = enterpriseGroupsV1 && hasBudgetGroup && !isEdxStaff;
+  const hideHighlightsForGroups = hasBudgetGroup && !isEdxStaff;
   const intl = useIntl();
 
   const getSidebarWidth = useCallback(() => {
@@ -98,7 +96,7 @@ const Sidebar = ({
         logError(error);
       }
     }
-    if (enterpriseGroupsV1 && !isEdxStaff) {
+    if (!isEdxStaff) {
       fetchGroupsData();
     }
   });
@@ -148,9 +146,9 @@ const Sidebar = ({
     },
     {
       title: 'People Management',
+      id: TOUR_TARGETS.PEOPLE_MANAGEMENT,
       to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
       icon: <Icon src={Person} />,
-      hidden: !enterpriseGroupsV2,
     },
     {
       title: intl.formatMessage({
@@ -245,7 +243,6 @@ Sidebar.defaultProps = {
   enableAnalyticsScreen: false,
   onWidthChange: () => {},
   isMobile: false,
-  enterpriseGroupsV1: false,
 };
 
 Sidebar.propTypes = {
@@ -261,8 +258,6 @@ Sidebar.propTypes = {
   onWidthChange: PropTypes.func,
   onMount: PropTypes.func.isRequired,
   isMobile: PropTypes.bool,
-  enterpriseGroupsV1: PropTypes.bool,
-  enterpriseGroupsV2: PropTypes.bool,
 };
 
 export default Sidebar;

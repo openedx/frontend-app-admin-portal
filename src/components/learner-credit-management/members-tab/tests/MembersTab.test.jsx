@@ -73,7 +73,6 @@ const initialStoreState = {
     enableLearnerPortal: true,
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
-      enterpriseGroupsV1: true,
     },
   },
 };
@@ -135,9 +134,6 @@ describe('<BudgetDetailPage />', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
       },
     };
     useParams.mockReturnValue({
@@ -176,7 +172,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -219,7 +214,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -276,7 +270,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -377,7 +370,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -453,7 +445,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -541,7 +532,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -612,7 +602,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -682,7 +671,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -776,7 +764,6 @@ describe('<BudgetDetailPage />', () => {
         portalConfiguration: {
           ...initialStoreState.portalConfiguration,
           enterpriseFeatures: {
-            enterpriseGroupsV1: true,
           },
         },
       };
@@ -884,7 +871,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };

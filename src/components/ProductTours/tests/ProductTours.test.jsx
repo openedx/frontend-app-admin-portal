@@ -17,6 +17,8 @@ import ProductTours from '../ProductTours';
 import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   LEARNER_CREDIT_COOKIE_NAME,
+  LEARNER_DETAIL_PAGE_COOKIE_NAME,
+  PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   TOUR_TARGETS,
 } from '../constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
@@ -38,7 +40,7 @@ const ToursWithContext = ({
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
   subsidyRequestsEnabled = false,
   canManageLearnerCredit = false,
-  enableLearnerPortal = true,
+  enableLearnerPortal = false,
   EnterpriseSubsidiesContextValue = {
     canManageLearnerCredit,
     enterpriseSubsidyTypes: [SUBSIDY_TYPES.coupon],
@@ -68,6 +70,7 @@ const ToursWithContext = ({
                 <SubsidyRequestsContext.Provider value={subsidyRequestContextValue}>
                   <>
                     <ProductTours />
+                    <p id={TOUR_TARGETS.PEOPLE_MANAGEMENT}>People Management</p>
                     <p id={TOUR_TARGETS.LEARNER_CREDIT}>Learner Credit Management</p>
                     <p id={TOUR_TARGETS.SETTINGS_SIDEBAR}>Settings</p>
                   </>
@@ -85,7 +88,6 @@ describe('<ProductTours/>', () => {
   beforeEach(() => {
     mergeConfig({ FEATURE_CONTENT_HIGHLIGHTS: false });
     mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: false });
-
     global.localStorage.clear();
     jest.clearAllMocks();
   });
@@ -94,8 +96,9 @@ describe('<ProductTours/>', () => {
 
   describe('portal appearance tour', () => {
     let appearanceFeatureFlagValue;
-    beforeAll(() => {
+    beforeEach(() => {
       appearanceFeatureFlagValue = features.SETTINGS_PAGE_APPEARANCE_TAB;
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
     });
     afterAll(() => {
       features.SETTINGS_PAGE_APPEARANCE_TAB = appearanceFeatureFlagValue;
@@ -114,30 +117,35 @@ describe('<ProductTours/>', () => {
   });
 
   describe('browse and request tour', () => {
+    beforeEach(() => {
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
+    });
     it('is shown when feature is enabled, enterprise is eligible for browse and request, and no cookie found', () => {
-      render(<ToursWithContext />);
+      render(<ToursWithContext enableLearnerPortal />);
       expect(screen.queryByText('browse for courses', { exact: false })).toBeTruthy();
     });
 
     it('is not shown if enterprise already has subsidy requests turned on', () => {
-      render(<ToursWithContext subsidyRequestsEnabled />);
+      render(<ToursWithContext enableLearnerPortal subsidyRequestsEnabled />);
       expect(screen.queryByText('browse for courses', { exact: false })).toBeFalsy();
     });
 
     it('is not shown when feature is enabled and localStorage record found ', () => {
       global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
-      render(<ToursWithContext />);
+      render(<ToursWithContext enableLearnerPortal />);
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
     it('it is shown in settings page', () => {
-      render(<ToursWithContext pathname={SETTINGS_PAGE_LOCATION} />);
+      render(<ToursWithContext enableLearnerPortal pathname={SETTINGS_PAGE_LOCATION} />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
     });
 
     it('is not shown if enterprise does not have subsidies that can be used for browse and request', () => {
       render(
         <ToursWithContext
+          enableLearnerPortal
           subsidyRequestContextValue={{
             subsidyRequestConfiguration: {
               subsidyType: null,
@@ -154,12 +162,9 @@ describe('<ProductTours/>', () => {
   describe('learner credit management tour', () => {
     beforeEach(() => {
       mergeConfig({ FEATURE_LEARNER_CREDIT_MANAGEMENT: true });
-
-      // hide browse and request tour
-      Object.defineProperty(window.document, 'cookie', {
-        writable: true,
-        value: `${BROWSE_AND_REQUEST_TOUR_COOKIE_NAME}=true`,
-      });
+      global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
     });
 
     it('is shown if Learner Credit Management feature is on, enterprise has subsidy', () => {
@@ -168,9 +173,9 @@ describe('<ProductTours/>', () => {
     });
 
     it('is not shown if localStorage record is present', () => {
-      global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
       global.localStorage.setItem(LEARNER_CREDIT_COOKIE_NAME, true);
       render(<ToursWithContext canManageLearnerCredit />);
+      screen.debug(undefined, 1000000);
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
@@ -179,4 +184,24 @@ describe('<ProductTours/>', () => {
       expect(screen.queryByText('New Feature')).toBeTruthy();
     });
   });
+
+  // describe('learner detail page tour', () => {
+  //   it('is shown when no cookie found', () => {
+  //     global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
+  //     render(<ToursWithContext />);
+  //     expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+  //   });
+  //   it('dismiss learner profile product tour', () => {
+  //     global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
+  //     render(<ToursWithContext />);
+  //     expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+  //     userEvent.click(screen.getByText('Dismiss'));
+  //     expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
+  //   });
+  //   it('is not shown when cookie has been dismissed', () => {
+  //     global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+  //     render(<ToursWithContext />);
+  //     expect(screen.queryByText('learner profile feature', { exact: false })).toBeFalsy();
+  //   });
+  // });
 });

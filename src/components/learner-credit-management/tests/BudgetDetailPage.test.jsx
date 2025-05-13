@@ -100,7 +100,6 @@ const initialStoreState = {
     enableLearnerPortal: true,
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
-      enterpriseGroupsV1: true,
     },
   },
 };
@@ -534,7 +533,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: false,
         },
       },
     };
@@ -577,7 +575,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -836,7 +833,7 @@ describe('<BudgetDetailPage />', () => {
       isTopDownAssignmentEnabled: false,
       expectedUseOfferRedemptionsArgs: [enterpriseUUID, null, mockSubsidyAccessPolicyUUID, false],
     },
-  ])('displays spend table in "Activity" tab with empty results (%s) when enterpriseGroupsV1 feature is false', async ({
+  ])('displays spend table in "Activity" tab with empty results (%s)', async ({
     subsidyAccessPolicy,
     enterpriseOfferMetadata,
     budgetId,
@@ -899,7 +896,6 @@ describe('<BudgetDetailPage />', () => {
         enterpriseFeatures: {
           ...initialStoreState.portalConfiguration.enterpriseFeatures,
           topDownAssignmentRealTimeLcm: isTopDownAssignmentEnabled,
-          enterpriseGroupsV1: false,
         },
         disableExpiryMessagingForLearnerCredit: false,
       },
@@ -2448,7 +2444,6 @@ describe('<BudgetDetailPage />', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
