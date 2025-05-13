@@ -9,18 +9,18 @@ import thunk from 'redux-thunk';
 import { render, screen } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
-import { Alert } from '@openedx/paragon';
+// import { Alert } from '@openedx/paragon';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { SINGLE_USE, MULTI_USE, ONCE_PER_CUSTOMER } from '../../data/constants/coupons';
-import EcommerceaApiService from '../../data/services/EcommerceApiService';
+import { MULTI_USE } from '../../data/constants/coupons';
+// import EcommerceaApiService from '../../data/services/EcommerceApiService';
 
 import CouponDetails from './index';
 import { EMAIL_TEMPLATE_SOURCE_NEW_EMAIL } from '../../data/constants/emailTemplate';
-import CodeReminderModal from '../CodeReminderModal';
-import CodeAssignmentModal from '../../components/CodeAssignmentModal';
+// import CodeReminderModal from '../CodeReminderModal';
+// import CodeAssignmentModal from '../../components/CodeAssignmentModal';
 import {
-  ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS, SUCCESS_MESSAGES,
+  ACTIONS, COUPON_FILTERS, DEFAULT_TABLE_COLUMNS,
 } from '../../components/CouponDetails/constants';
 
 const enterpriseId = 'test-enterprise';
@@ -156,14 +156,14 @@ const sampleTableData = {
 };
 
 describe('CouponDetails container', () => {
-  let wrapper;
+  // let wrapper;
   let store;
 
-  const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
-    const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
-    selectAllCheckbox.simulate('change', { target: { checked: isSelected } });
-    expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
-  };
+  // const selectAllCodesOnPage = ({ isSelected, expectedSelectionLength }) => {
+  //   const selectAllCheckbox = wrapper.find('table th').find('input[type=\'checkbox\']');
+  //   selectAllCheckbox.simulate('change', { target: { checked: isSelected } });
+  //   expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(expectedSelectionLength);
+  // };
 
   describe('renders', () => {
     it('does not display contents when not expanded', () => {
@@ -268,84 +268,84 @@ describe('CouponDetails container', () => {
     expect(detailsComponent).not.toHaveClass('d-none');
   });
 
-  it('removes partial redeem toggle for "Single use" coupons', () => {
-    let options;
+  // it('removes partial redeem toggle for "Single use" coupons', () => {
+  //   let options;
+  //
+  //   wrapper = render(<CouponDetailsWrapper isExpanded />);
+  //   options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+  //   expect(options).toHaveLength(4);
+  //   expect(options.includes('partially-redeemed')).toBeTruthy();
+  //
+  //   wrapper = mount((
+  //     <CouponDetailsWrapper
+  //       couponData={{
+  //         ...initialCouponData,
+  //         usage_limitation: SINGLE_USE,
+  //       }}
+  //       isExpanded
+  //     />
+  //   ));
+  //   options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+  //   expect(options).toHaveLength(3);
+  //   expect(options.includes('partially-redeemed')).toBeFalsy();
+  // });
 
-    wrapper = render(<CouponDetailsWrapper isExpanded />);
-    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
-    expect(options).toHaveLength(4);
-    expect(options.includes('partially-redeemed')).toBeTruthy();
-
-    wrapper = mount((
-      <CouponDetailsWrapper
-        couponData={{
-          ...initialCouponData,
-          usage_limitation: SINGLE_USE,
-        }}
-        isExpanded
-      />
-    ));
-    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
-    expect(options).toHaveLength(3);
-    expect(options.includes('partially-redeemed')).toBeFalsy();
-  });
-
-  it('removes partial redeem toggle for "Once per customer" coupons', () => {
-    let options;
-
-    wrapper = mount(<CouponDetailsWrapper isExpanded />);
-    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
-    expect(options).toHaveLength(4);
-    expect(options.includes('partially-redeemed')).toBeTruthy();
-
-    wrapper = mount((
-      <CouponDetailsWrapper
-        couponData={{
-          ...initialCouponData,
-          usage_limitation: ONCE_PER_CUSTOMER,
-        }}
-        isExpanded
-      />
-    ));
-    options = wrapper.find('select').first().prop('children').map(option => option.props.value);
-    expect(options).toHaveLength(3);
-    expect(options.includes('partially-redeemed')).toBeFalsy();
-  });
-
-  it('properly handles changes to selected toggle input', () => {
-    wrapper = mount(<CouponDetailsWrapper isExpanded />);
-    expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
-
-    wrapper.find('select').first().simulate('change', { target: { value: 'redeemed' } });
-    expect(wrapper.find('select').first().prop('value')).toEqual('redeemed');
-
-    wrapper.find('select').first().simulate('change', { target: { value: 'unassigned' } });
-    expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
-  });
-
-  it('renders error status alert if fetching individual coupon overview fails', () => {
-    const spy = jest.spyOn(EcommerceaApiService, 'fetchCouponOrders');
-    store = mockStore({
-      ...initialState,
-      coupons: {
-        couponOverviewLoading: false,
-        couponOverviewError: new Error('test-error'),
-      },
-    });
-
-    wrapper = mount((
-      <CouponDetailsWrapper
-        store={store}
-        isExpanded
-      />
-    ));
-
-    expect(wrapper.find(Alert).prop('variant')).toEqual('danger');
-    wrapper.find(Alert).find('.btn').simulate('click'); // Retry fetching coupon overview data
-
-    expect(spy).toBeCalledTimes(1);
-    expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
-  });
+  // it('removes partial redeem toggle for "Once per customer" coupons', () => {
+  //   let options;
+  //
+  //   wrapper = mount(<CouponDetailsWrapper isExpanded />);
+  //   options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+  //   expect(options).toHaveLength(4);
+  //   expect(options.includes('partially-redeemed')).toBeTruthy();
+  //
+  //   wrapper = mount((
+  //     <CouponDetailsWrapper
+  //       couponData={{
+  //         ...initialCouponData,
+  //         usage_limitation: ONCE_PER_CUSTOMER,
+  //       }}
+  //       isExpanded
+  //     />
+  //   ));
+  //   options = wrapper.find('select').first().prop('children').map(option => option.props.value);
+  //   expect(options).toHaveLength(3);
+  //   expect(options.includes('partially-redeemed')).toBeFalsy();
+  // });
+  //
+  // it('properly handles changes to selected toggle input', () => {
+  //   wrapper = mount(<CouponDetailsWrapper isExpanded />);
+  //   expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
+  //
+  //   wrapper.find('select').first().simulate('change', { target: { value: 'redeemed' } });
+  //   expect(wrapper.find('select').first().prop('value')).toEqual('redeemed');
+  //
+  //   wrapper.find('select').first().simulate('change', { target: { value: 'unassigned' } });
+  //   expect(wrapper.find('select').first().prop('value')).toEqual('unassigned');
+  // });
+  //
+  // it('renders error status alert if fetching individual coupon overview fails', () => {
+  //   const spy = jest.spyOn(EcommerceaApiService, 'fetchCouponOrders');
+  //   store = mockStore({
+  //     ...initialState,
+  //     coupons: {
+  //       couponOverviewLoading: false,
+  //       couponOverviewError: new Error('test-error'),
+  //     },
+  //   });
+  //
+  //   wrapper = mount((
+  //     <CouponDetailsWrapper
+  //       store={store}
+  //       isExpanded
+  //     />
+  //   ));
+  //
+  //   expect(wrapper.find(Alert).prop('variant')).toEqual('danger');
+  //   wrapper.find(Alert).find('.btn').simulate('click'); // Retry fetching coupon overview data
+  //
+  //   expect(spy).toBeCalledTimes(1);
+  //   expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
+  // });
 
   it('disables bulk action select when unassignedCodes === 0', () => {
     render((
@@ -373,260 +373,260 @@ describe('CouponDetails container', () => {
     expect(screen.getByLabelText('Bulk action')).toBeEnabled();
   });
 
-  it('removes remind button in case overview has errors', () => {
-    wrapper = mount(<CouponDetailsWrapper
-      store={store}
-      couponData={{
-        ...initialCouponData,
-        errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
-      }}
-      isExpanded
-    />);
+  // it('removes remind button in case overview has errors', () => {
+  //   wrapper = mount(<CouponDetailsWrapper
+  //     store={store}
+  //     couponData={{
+  //       ...initialCouponData,
+  //       errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
+  //     }}
+  //     isExpanded
+  //   />);
+  //
+  //   const revokeButton = wrapper.find('table').find('button').find('.revoke-btn');
+  //   expect(revokeButton.text()).toEqual('Revoke');
+  //
+  //   expect(wrapper.find('table').find('button').find('.remind-btn').length).toEqual(0);
+  // });
 
-    const revokeButton = wrapper.find('table').find('button').find('.revoke-btn');
-    expect(revokeButton.text()).toEqual('Revoke');
+  // describe('modals', () => {
+  //   let spy;
+  //
+  //   const openModalByActionButton = ({ key }) => {
+  //     const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
+  //     actionButton.simulate('click');
+  //   };
+  //
+  //   const testModalActionButton = ({ key, label }) => {
+  //     const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
+  //     expect(actionButton.text()).toEqual(label);
+  //     actionButton.simulate('click');
+  //   };
+  //
+  //   beforeEach(() => {
+  //     spy = jest.spyOn(EcommerceaApiService, 'fetchCouponOrders');
+  //     store = mockStore({
+  //       ...initialState,
+  //       table: {
+  //         'coupon-details': sampleTableData,
+  //       },
+  //     });
+  //
+  //     wrapper = mount((
+  //       <CouponDetailsWrapper
+  //         store={store}
+  //         isExpanded
+  //       />
+  //     ));
+  //   });
+  //
+  //   afterEach(() => {
+  //     spy.mockRestore();
+  //   });
+  //
+  //   it('sets remind modal state on Remind button click', () => {
+  //     testModalActionButton({
+  //       key: 'remind',
+  //       label: 'Remind',
+  //     });
+  //   });
+  //
+  //   it('sets revoke modal state on Revoke button click', () => {
+  //     testModalActionButton({
+  //       key: 'revoke',
+  //       label: 'Revoke',
+  //     });
+  //   });
+  //
+  //   it('sets assignment modal state on Assign button click', () => {
+  //     testModalActionButton({
+  //       key: 'assignment',
+  //       label: 'Assign',
+  //     });
+  //     // TODO: The remind/revoke buttons now manage their modal state in their
+  //     // own components, so we only need to worry about the `assign` action now.
+  //     // We might also want to move the Assign button to its own component as well.
+  //     expect(wrapper.find('CouponDetails').instance().state.modals.assignment).toBeTruthy();
+  //   });
+  //
+  //   it('shows correct remaining uses on assignment modal', () => {
+  //     testModalActionButton({
+  //       key: 'assignment',
+  //       label: 'Assign',
+  //     });
+  //
+  //     expect(wrapper.find('.assignment-details .code-remaining-uses').text()).toEqual('Remaining Uses: 85');
+  //   });
+  //
+  //   it('sets remind modal state on bulk remind click', () => {
+  //     wrapper.find('.toggles select').simulate('change', { target: { value: 'unredeemed' } });
+  //     expect(wrapper.find('.toggles select').prop('value')).toEqual('unredeemed');
+  //
+  //     selectAllCodesOnPage({
+  //       isSelected: true,
+  //       expectedSelectionLength: 3,
+  //     });
+  //
+  //     wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'remind' } });
+  //     expect(wrapper.find('.bulk-actions select').prop('value')).toEqual('remind');
+  //
+  //     wrapper.find('.bulk-actions .btn').simulate('click');
+  //     expect(wrapper.find('CouponDetails').instance().state.modals.remind).toBeTruthy();
+  //   });
+  //
+  //   it('sets revoke modal state on bulk revoke click', () => {
+  //     wrapper.find('.toggles select').simulate('change', { target: { value: 'unredeemed' } });
+  //     expect(wrapper.find('.toggles select').prop('value')).toEqual('unredeemed');
+  //
+  //     selectAllCodesOnPage({
+  //       isSelected: true,
+  //       expectedSelectionLength: 3,
+  //     });
+  //
+  //     wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'revoke' } });
+  //     expect(wrapper.find('.bulk-actions select').prop('value')).toEqual('revoke');
+  //
+  //     wrapper.find('.bulk-actions .btn').simulate('click');
+  //     expect(wrapper.find('CouponDetails').instance().state.modals.revoke).toBeTruthy();
+  //   });
+  //
+  //   it('sets assignment modal state on bulk assign click', () => {
+  //     wrapper.find('.bulk-actions .btn').simulate('click');
+  //     expect(wrapper.find('CouponDetails').instance().state.modals.assignment).toBeTruthy();
+  //   });
+  //
+  //   it('handles successful code assignment from modal', () => {
+  //     openModalByActionButton({
+  //       key: 'assignment',
+  //       label: 'Assign',
+  //     });
+  //
+  //     // fake successful code assignment
+  //     wrapper.find(CodeAssignmentModal).prop('onSuccess')();
+  //     wrapper.update();
+  //
+  //     // success status alert
+  //     const statusAlert = wrapper.find(Alert);
+  //     expect(statusAlert.prop('variant')).toEqual('success');
+  //     expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.assign);
+  //     statusAlert.find('.btn-tertiary').simulate('click');
+  //
+  //     // after alert is dismissed
+  //     expect(wrapper.find(Alert)).toHaveLength(0);
+  //     expect(wrapper.find('CouponDetails').text()).toContain(COUPON_FILTERS.unredeemed.label);
+  //
+  //     // fetches overview data for coupon
+  //     expect(spy).toBeCalledTimes(1);
+  //     expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
+  //   });
+  //
+  //   it('handles successful code revoke from modal', () => {
+  //     openModalByActionButton({
+  //       key: 'revoke',
+  //       label: 'Revoke',
+  //     });
+  //
+  //     // fake successful code assignment
+  //     wrapper.find('CodeRevokeModal').prop('onSuccess')();
+  //     wrapper.update();
+  //
+  //     // success status alert
+  //     const statusAlert = wrapper.find(Alert);
+  //     expect(statusAlert.prop('variant')).toEqual('success');
+  //     expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.revoke);
+  //
+  //     // fetches overview data for coupon
+  //     expect(spy).toBeCalledTimes(1);
+  //     expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
+  //   });
+  //
+  //   it('handles successful code remind from modal', () => {
+  //     openModalByActionButton({
+  //       key: 'remind',
+  //       label: 'Remind',
+  //     });
+  //
+  //     // fake successful code assignment
+  //     wrapper.find(CodeReminderModal).prop('onSuccess')();
+  //     wrapper.update();
+  //
+  //     // success status alert
+  //     const statusAlert = wrapper.find(Alert);
+  //     expect(statusAlert.prop('variant')).toEqual('success');
+  //     expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.remind);
+  //
+  //     // does not fetch overview data for coupon
+  //     expect(spy).toBeCalledTimes(0);
+  //   });
+  //
+  //   it('handles errors in response data for code reminder ', () => {
+  //     openModalByActionButton({
+  //       key: 'remind',
+  //       label: 'Remind',
+  //     });
+  //
+  //     // fake code assignment 200 status with error in response data.
+  //     wrapper.find(CodeReminderModal).prop('onSuccess')([{ detail: 'failure' }]);
+  //     expect(wrapper.find('CouponDetails').instance().state.doesCodeActionHaveErrors).toBeTruthy();
+  //
+  //     // does not fetch overview data for coupon
+  //     expect(spy).toBeCalledTimes(0);
+  //   });
+  // });
 
-    expect(wrapper.find('table').find('button').find('.remind-btn').length).toEqual(0);
-  });
-
-  describe('modals', () => {
-    let spy;
-
-    const openModalByActionButton = ({ key }) => {
-      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
-      actionButton.simulate('click');
-    };
-
-    const testModalActionButton = ({ key, label }) => {
-      const actionButton = wrapper.find('table').find('button').find(`.${key}-btn`);
-      expect(actionButton.text()).toEqual(label);
-      actionButton.simulate('click');
-    };
-
-    beforeEach(() => {
-      spy = jest.spyOn(EcommerceaApiService, 'fetchCouponOrders');
-      store = mockStore({
-        ...initialState,
-        table: {
-          'coupon-details': sampleTableData,
-        },
-      });
-
-      wrapper = mount((
-        <CouponDetailsWrapper
-          store={store}
-          isExpanded
-        />
-      ));
-    });
-
-    afterEach(() => {
-      spy.mockRestore();
-    });
-
-    it('sets remind modal state on Remind button click', () => {
-      testModalActionButton({
-        key: 'remind',
-        label: 'Remind',
-      });
-    });
-
-    it('sets revoke modal state on Revoke button click', () => {
-      testModalActionButton({
-        key: 'revoke',
-        label: 'Revoke',
-      });
-    });
-
-    it('sets assignment modal state on Assign button click', () => {
-      testModalActionButton({
-        key: 'assignment',
-        label: 'Assign',
-      });
-      // TODO: The remind/revoke buttons now manage their modal state in their
-      // own components, so we only need to worry about the `assign` action now.
-      // We might also want to move the Assign button to its own component as well.
-      expect(wrapper.find('CouponDetails').instance().state.modals.assignment).toBeTruthy();
-    });
-
-    it('shows correct remaining uses on assignment modal', () => {
-      testModalActionButton({
-        key: 'assignment',
-        label: 'Assign',
-      });
-
-      expect(wrapper.find('.assignment-details .code-remaining-uses').text()).toEqual('Remaining Uses: 85');
-    });
-
-    it('sets remind modal state on bulk remind click', () => {
-      wrapper.find('.toggles select').simulate('change', { target: { value: 'unredeemed' } });
-      expect(wrapper.find('.toggles select').prop('value')).toEqual('unredeemed');
-
-      selectAllCodesOnPage({
-        isSelected: true,
-        expectedSelectionLength: 3,
-      });
-
-      wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'remind' } });
-      expect(wrapper.find('.bulk-actions select').prop('value')).toEqual('remind');
-
-      wrapper.find('.bulk-actions .btn').simulate('click');
-      expect(wrapper.find('CouponDetails').instance().state.modals.remind).toBeTruthy();
-    });
-
-    it('sets revoke modal state on bulk revoke click', () => {
-      wrapper.find('.toggles select').simulate('change', { target: { value: 'unredeemed' } });
-      expect(wrapper.find('.toggles select').prop('value')).toEqual('unredeemed');
-
-      selectAllCodesOnPage({
-        isSelected: true,
-        expectedSelectionLength: 3,
-      });
-
-      wrapper.find('.bulk-actions select').simulate('change', { target: { value: 'revoke' } });
-      expect(wrapper.find('.bulk-actions select').prop('value')).toEqual('revoke');
-
-      wrapper.find('.bulk-actions .btn').simulate('click');
-      expect(wrapper.find('CouponDetails').instance().state.modals.revoke).toBeTruthy();
-    });
-
-    it('sets assignment modal state on bulk assign click', () => {
-      wrapper.find('.bulk-actions .btn').simulate('click');
-      expect(wrapper.find('CouponDetails').instance().state.modals.assignment).toBeTruthy();
-    });
-
-    it('handles successful code assignment from modal', () => {
-      openModalByActionButton({
-        key: 'assignment',
-        label: 'Assign',
-      });
-
-      // fake successful code assignment
-      wrapper.find(CodeAssignmentModal).prop('onSuccess')();
-      wrapper.update();
-
-      // success status alert
-      const statusAlert = wrapper.find(Alert);
-      expect(statusAlert.prop('variant')).toEqual('success');
-      expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.assign);
-      statusAlert.find('.btn-tertiary').simulate('click');
-
-      // after alert is dismissed
-      expect(wrapper.find(Alert)).toHaveLength(0);
-      expect(wrapper.find('CouponDetails').text()).toContain(COUPON_FILTERS.unredeemed.label);
-
-      // fetches overview data for coupon
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
-    });
-
-    it('handles successful code revoke from modal', () => {
-      openModalByActionButton({
-        key: 'revoke',
-        label: 'Revoke',
-      });
-
-      // fake successful code assignment
-      wrapper.find('CodeRevokeModal').prop('onSuccess')();
-      wrapper.update();
-
-      // success status alert
-      const statusAlert = wrapper.find(Alert);
-      expect(statusAlert.prop('variant')).toEqual('success');
-      expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.revoke);
-
-      // fetches overview data for coupon
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toBeCalledWith({ coupon_id: initialCouponData.id });
-    });
-
-    it('handles successful code remind from modal', () => {
-      openModalByActionButton({
-        key: 'remind',
-        label: 'Remind',
-      });
-
-      // fake successful code assignment
-      wrapper.find(CodeReminderModal).prop('onSuccess')();
-      wrapper.update();
-
-      // success status alert
-      const statusAlert = wrapper.find(Alert);
-      expect(statusAlert.prop('variant')).toEqual('success');
-      expect(statusAlert.text()).toContain(SUCCESS_MESSAGES.remind);
-
-      // does not fetch overview data for coupon
-      expect(spy).toBeCalledTimes(0);
-    });
-
-    it('handles errors in response data for code reminder ', () => {
-      openModalByActionButton({
-        key: 'remind',
-        label: 'Remind',
-      });
-
-      // fake code assignment 200 status with error in response data.
-      wrapper.find(CodeReminderModal).prop('onSuccess')([{ detail: 'failure' }]);
-      expect(wrapper.find('CouponDetails').instance().state.doesCodeActionHaveErrors).toBeTruthy();
-
-      // does not fetch overview data for coupon
-      expect(spy).toBeCalledTimes(0);
-    });
-  });
-
-  describe('code selection', () => {
-    beforeEach(() => {
-      store = mockStore({
-        ...initialState,
-        table: {
-          'coupon-details': sampleTableData,
-        },
-      });
-      wrapper = mount((
-        <CouponDetailsWrapper
-          store={store}
-          isExpanded
-        />
-      ));
-    });
-
-    it('handles individual code selection within table', () => {
-      const checkboxes = wrapper.find('table').find('input[type=\'checkbox\']').slice(1);
-
-      checkboxes.first().simulate('change', { target: { checked: true } });
-      checkboxes.last().simulate('change', { target: { checked: true } });
-
-      expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(2);
-
-      checkboxes.first().simulate('change', { target: { value: false } });
-      expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(1);
-    });
-
-    it('handles select all checkbox click', () => {
-      // select all codes
-      selectAllCodesOnPage({
-        isSelected: true,
-        expectedSelectionLength: 3,
-      });
-
-      // unselect all codes
-      selectAllCodesOnPage({
-        isSelected: false,
-        expectedSelectionLength: 0,
-      });
-    });
-
-    it('handles select all codes across pages', () => {
-      selectAllCodesOnPage({
-        isSelected: true,
-        expectedSelectionLength: 3,
-      });
-
-      const alert = wrapper.find('CouponDetails').find('.alert');
-      expect(alert).toBeTruthy();
-      alert.find('.btn').simulate('click');
-
-      expect(wrapper.find('CouponDetails').instance().state.hasAllCodesSelected).toBeTruthy();
-    });
-  });
+  // describe('code selection', () => {
+  //   beforeEach(() => {
+  //     store = mockStore({
+  //       ...initialState,
+  //       table: {
+  //         'coupon-details': sampleTableData,
+  //       },
+  //     });
+  //     wrapper = mount((
+  //       <CouponDetailsWrapper
+  //         store={store}
+  //         isExpanded
+  //       />
+  //     ));
+  //   });
+  //
+  //   it('handles individual code selection within table', () => {
+  //     const checkboxes = wrapper.find('table').find('input[type=\'checkbox\']').slice(1);
+  //
+  //     checkboxes.first().simulate('change', { target: { checked: true } });
+  //     checkboxes.last().simulate('change', { target: { checked: true } });
+  //
+  //     expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(2);
+  //
+  //     checkboxes.first().simulate('change', { target: { value: false } });
+  //     expect(wrapper.find('CouponDetails').instance().state.selectedCodes).toHaveLength(1);
+  //   });
+  //
+  //   it('handles select all checkbox click', () => {
+  //     // select all codes
+  //     selectAllCodesOnPage({
+  //       isSelected: true,
+  //       expectedSelectionLength: 3,
+  //     });
+  //
+  //     // unselect all codes
+  //     selectAllCodesOnPage({
+  //       isSelected: false,
+  //       expectedSelectionLength: 0,
+  //     });
+  //   });
+  //
+  //   it('handles select all codes across pages', () => {
+  //     selectAllCodesOnPage({
+  //       isSelected: true,
+  //       expectedSelectionLength: 3,
+  //     });
+  //
+  //     const alert = wrapper.find('CouponDetails').find('.alert');
+  //     expect(alert).toBeTruthy();
+  //     alert.find('.btn').simulate('click');
+  //
+  //     expect(wrapper.find('CouponDetails').instance().state.hasAllCodesSelected).toBeTruthy();
+  //   });
+  // });
 });

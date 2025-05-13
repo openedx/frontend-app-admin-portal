@@ -1,5 +1,5 @@
 import {
-  act, fireEvent, render, screen, waitFor,
+  fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -119,9 +119,7 @@ describe('Portal Appearance Tab', () => {
     const fakeFile = new File(['hello'], 'hello.jpg', { type: 'image/jpg' });
     const dropzone = screen.getByRole('presentation', { hidden: true });
     userEvent.upload(dropzone.firstChild, fakeFile);
-    await waitFor(() => {
-      expect(screen.getByText('Invalid file type, only png images allowed.')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Invalid file type, only png images allowed.')).toBeInTheDocument();
   });
   test('renders curated theme cards', async () => {
     render(
@@ -189,31 +187,27 @@ describe('Portal Appearance Tab', () => {
       </IntlProvider>,
     );
     const createCustom = screen.getByText('Create a custom theme.');
-    act(() => {
-      userEvent.click(createCustom);
-    });
+    await waitFor(() => userEvent.click(createCustom));
     expect(screen.getByText('Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.')).toBeInTheDocument();
     expect(screen.getByText('Add theme')).toBeDisabled();
-    userEvent.type(screen.getByLabelText('Banner color'), 'bad number');
+    await waitFor(() => userEvent.type(screen.getByLabelText('Banner color'), 'bad number'));
     expect(screen.getByText('Must be hexadecimal starting with # (Ex: #1e0b57)')).toBeInTheDocument();
-    userEvent.type(screen.getByLabelText('Button color'), '#023E8A');
-    userEvent.type(screen.getByLabelText('Accent color'), '#0077b6');
+    await waitFor(() => userEvent.type(screen.getByLabelText('Button color'), '#023E8A'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('Accent color'), '#0077b6'));
     expect(screen.getByText('Add theme')).toBeDisabled();
 
-    userEvent.clear(screen.getByLabelText('Banner color'));
-    userEvent.clear(screen.getByLabelText('Button color'));
+    await waitFor(() => userEvent.clear(screen.getByLabelText('Banner color')));
+    await waitFor(() => userEvent.clear(screen.getByLabelText('Button color')));
 
-    userEvent.type(screen.getByLabelText('Banner color'), '#03045e');
-    userEvent.type(screen.getByLabelText('Button color'), '#828282');
+    await waitFor(() => userEvent.type(screen.getByLabelText('Banner color'), '#03045e'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('Button color'), '#828282'));
 
     expect(screen.getByText('Color does not meet the WCAG AA standard of accessibility. Learn more at the help center link below.')).toBeInTheDocument();
 
     // user shouldn't be able to add a theme with a bad hex color, but will be able to add one that
     // doesn't meet AA accessibility standards
 
-    act(() => {
-      userEvent.click(screen.getByText('Add theme'));
-    });
+    await waitFor(() => userEvent.click(screen.getByText('Add theme')));
     await waitFor(() => {
       expect(spy).toHaveBeenCalled();
     });
@@ -236,21 +230,16 @@ describe('Portal Appearance Tab', () => {
         </Provider>
       </IntlProvider>,
     );
-    act(() => {
-      userEvent.click(screen.getByText('Edit'));
-    });
+    await waitFor(() => userEvent.click(screen.getByText('Edit')));
     expect(screen.getByText('Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.')).toBeInTheDocument();
     expect(screen.getByLabelText('Button color')).toHaveValue('#03045e');
     expect(screen.getByLabelText('Banner color')).toHaveValue('#023E8A');
     expect(screen.getByLabelText('Accent color')).toHaveValue('#0077b6');
-    act(() => {
-      userEvent.click(screen.getByLabelText('Close'));
-    });
-    await waitFor(() => expect(screen.getByText('Delete')));
-    act(() => {
-      userEvent.click(screen.getByText('Delete'));
-    });
-    await waitFor(() => expect(screen.getByText('Rather use your own colors?')));
+
+    await waitFor(() => userEvent.click(screen.getByLabelText('Close')));
+    expect(screen.getByText('Delete'));
+    await waitFor(() => userEvent.click(screen.getByText('Delete')));
+    expect(screen.getByText('Rather use your own colors?'));
     expect(screen.getByTestId('radio-Scholar (Default)')).toBeChecked();
   });
 });

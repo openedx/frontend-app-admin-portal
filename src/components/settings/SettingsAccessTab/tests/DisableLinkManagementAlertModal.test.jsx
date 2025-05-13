@@ -2,8 +2,7 @@ import React from 'react';
 import {
   screen,
   render,
-  cleanup,
-  act,
+  cleanup, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -62,7 +61,7 @@ describe('<DisableLinkManagementAlertModal />', () => {
       />
     ));
     const disableButton = screen.getByText('Disable');
-    await act(async () => { userEvent.click(disableButton); });
+    await waitFor(() => userEvent.click(disableButton));
     expect(onDisableMock).toHaveBeenCalledTimes(1);
   });
   test('`Go back` button calls `onClose`', async () => {
@@ -73,7 +72,7 @@ describe('<DisableLinkManagementAlertModal />', () => {
       onDisable={() => {}}
     />);
     const backButton = screen.getByText('Go back');
-    await act(async () => { userEvent.click(backButton); });
+    await waitFor(() => userEvent.click(backButton));
     expect(onCloseMock).toHaveBeenCalledTimes(1);
   });
 });

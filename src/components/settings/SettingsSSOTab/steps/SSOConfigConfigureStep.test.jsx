@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
@@ -76,13 +76,13 @@ describe('SSO Config Configure step', () => {
       </SSOConfigConfigureStepWrapper>,
     );
     expect(configValues).toBeNull();
-    userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'f');
-    userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '1');
-    userEvent.type(screen.getByLabelText('User ID Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('Full Name Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('First Name Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('Last Name Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('Email Address Attribute'), 'f');
+    await waitFor(() => userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'f'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '1'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('User ID Attribute'), 'f'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('Full Name Attribute'), 'f'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('First Name Attribute'), 'f'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('Last Name Attribute'), 'f'));
+    await waitFor(() => userEvent.type(screen.getByLabelText('Email Address Attribute'), 'f'));
     expect(mockSetFormUpdated).toHaveBeenCalledTimes(7);
   });
   test('page form validation', () => {

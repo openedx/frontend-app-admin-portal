@@ -18,15 +18,15 @@ describe('<SettingsAccessSubsidyTypeSelection />', () => {
     subsidyTypes: Object.values(SUPPORTED_SUBSIDY_TYPES),
   };
 
-  it('should open confirmation modal when subsidy type is selected', () => {
+  it('should open confirmation modal when subsidy type is selected', async () => {
     renderWithI18nProvider(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
-    userEvent.click(screen.getByLabelText('Licenses'));
+    await waitFor(() => userEvent.click(screen.getByLabelText('Licenses')));
     expect(screen.getByText('Confirm selection')).toBeInTheDocument();
   });
 
   it('should close confirmation modal when cancel is clicked', async () => {
     renderWithI18nProvider(<SettingsAccessSubsidyTypeSelection {...basicProps} />);
-    userEvent.click(screen.getByLabelText('Licenses'));
+    await waitFor(() => userEvent.click(screen.getByLabelText('Licenses')));
     expect(screen.getByText('Confirm selection')).toBeInTheDocument();
     await userEvent.click(screen.getByText('Cancel'));
     expect(screen.queryByText('Confirm selection')).not.toBeInTheDocument();
@@ -40,8 +40,8 @@ describe('<SettingsAccessSubsidyTypeSelection />', () => {
         updateSubsidyRequestConfiguration={mockUpdateSubsidyRequestConfiguration}
       />,
     );
-    userEvent.click(screen.getByLabelText('Licenses'));
-    userEvent.click(screen.getByText('Confirm selection'));
+    await waitFor(() => userEvent.click(screen.getByLabelText('Licenses')));
+    await waitFor(() => userEvent.click(screen.getByText('Confirm selection')));
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith({
         subsidyType: SUPPORTED_SUBSIDY_TYPES.license,
@@ -60,8 +60,8 @@ describe('<SettingsAccessSubsidyTypeSelection />', () => {
       />,
     );
 
-    userEvent.click(screen.getByLabelText('Licenses'));
-    userEvent.click(screen.getByText('Confirm selection'));
+    await waitFor(() => userEvent.click(screen.getByLabelText('Licenses')));
+    await waitFor(() => userEvent.click(screen.getByText('Confirm selection')));
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith({
         subsidyType: SUPPORTED_SUBSIDY_TYPES.license,

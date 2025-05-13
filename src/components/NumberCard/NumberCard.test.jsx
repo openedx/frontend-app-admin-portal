@@ -23,8 +23,6 @@ const NumberCardWrapper = props => (
 );
 
 describe('<NumberCard />', () => {
-  let wrapper;
-
   describe('renders correctly', () => {
     it('without detail actions', () => {
       const tree = renderer

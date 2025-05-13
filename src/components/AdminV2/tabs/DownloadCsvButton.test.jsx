@@ -2,7 +2,7 @@ import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 import {
-  act, render, screen, waitFor,
+  render, screen, waitFor,
 } from '@testing-library/react';
 import { saveAs } from 'file-saver';
 
@@ -72,10 +72,7 @@ describe('DownloadCSVButton', () => {
     render(<DownloadCSVButtonWrapper {...props} />);
     expect(screen.getByTestId('test-id-1')).toBeInTheDocument();
 
-    act(() => {
-      // Click the download button.
-      userEvent.click(screen.getByTestId('test-id-1'));
-    });
+    await waitFor(() => userEvent.click(screen.getByTestId('test-id-1')));
 
     await flushPromises();
 

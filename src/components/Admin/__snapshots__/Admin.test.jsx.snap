@@ -3,6 +3,7 @@
 exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise-id"
   data-testid="dashboard-root"
   role="main"
 >
@@ -966,6 +967,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
 exports[`<Admin /> renders correctly with dashboard analytics data renders # courses enrolled by learners 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -1630,7 +1632,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -2717,6 +2719,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -3381,7 +3384,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -4468,6 +4471,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 exports[`<Admin /> renders correctly with dashboard analytics data renders # of courses completed by learner in past week 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -5132,7 +5136,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -6219,6 +6223,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
 exports[`<Admin /> renders correctly with dashboard analytics data renders collapsible cards 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -6883,7 +6888,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -7970,6 +7975,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
 exports[`<Admin /> renders correctly with dashboard analytics data renders full report 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -8634,7 +8640,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -9721,6 +9727,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past month 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -10385,7 +10392,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -11472,6 +11479,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 exports[`<Admin /> renders correctly with dashboard analytics data renders inactive learners past week 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -12136,7 +12144,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -13223,6 +13231,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
 exports[`<Admin /> renders correctly with dashboard analytics data renders learners not enrolled in an active course 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -13887,7 +13896,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -14974,6 +14983,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
 exports[`<Admin /> renders correctly with dashboard analytics data renders registered but not enrolled report 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -15638,7 +15648,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -16725,6 +16735,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
 exports[`<Admin /> renders correctly with dashboard analytics data renders top active learners 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -17389,7 +17400,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -18476,6 +18487,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
 exports[`<Admin /> renders correctly with dashboard insights data renders dashboard insights data correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -19189,7 +19201,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -20276,6 +20288,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
 exports[`<Admin /> renders correctly with enterprise budgets data renders budgets correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -20940,7 +20953,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -22027,6 +22040,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
 exports[`<Admin /> renders correctly with enterprise groups data renders groups correctly 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -22691,7 +22705,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>
@@ -23778,6 +23792,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
 exports[`<Admin /> renders correctly with error state 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -24724,6 +24739,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
 exports[`<Admin /> renders correctly with loading state 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -25687,6 +25703,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
 exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise-id"
   data-testid="dashboard-root"
   role="main"
 >
@@ -25734,6 +25751,7 @@ exports[`<Admin /> renders correctly with no dashboard analytics data 1`] = `
 exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
 <main
   className="learner-progress-report"
+  data-enterprise-id="test-enterprise"
   data-testid="dashboard-root"
   role="main"
 >
@@ -26398,7 +26416,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of 
+        Showing data as of
         July 31, 2018
       </div>
       <div>

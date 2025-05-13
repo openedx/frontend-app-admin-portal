@@ -3,7 +3,6 @@ import {
   screen,
   render,
   cleanup,
-  act,
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -64,7 +63,7 @@ describe('ActionsTableCell', () => {
       />,
     );
     const copyBtn = screen.getByText('Copy');
-    userEvent.click(copyBtn);
+    await waitFor(() => userEvent.click(copyBtn));
     const expectedURL = `http://localhost:8734/test-enterprise/invite/${TEST_INVITE_KEY_UUID}`;
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(expectedURL);
     await waitFor(() => expect(screen.getByText('Link copied to clipboard')));
@@ -85,7 +84,7 @@ describe('ActionsTableCell', () => {
       />,
     );
     const deactivateBtn = screen.getByText('Deactivate');
-    await act(async () => { userEvent.click(deactivateBtn); });
+    await waitFor(() => userEvent.click(deactivateBtn));
     const deactivateModalConfirmBtn = screen.getByTestId('deactivate-modal-confirmation');
     await waitFor(() => deactivateModalConfirmBtn);
   });

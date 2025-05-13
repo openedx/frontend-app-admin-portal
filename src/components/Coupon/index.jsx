@@ -136,6 +136,7 @@ class Coupon extends React.Component {
     return (
       <div
         data-testid="coupon-item"
+        aria-expanded={isExpanded}
         className={classNames(
           'coupon mb-3 mb-lg-2 rounded border',
           {
@@ -146,6 +147,7 @@ class Coupon extends React.Component {
         )}
       >
         <div
+          data-testid="coupon-item-toggle"
           className={classNames(
             'metadata',
             'row no-gutters p-2 d-flex align-items-center',

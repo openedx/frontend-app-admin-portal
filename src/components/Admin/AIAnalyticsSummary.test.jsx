@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
@@ -96,10 +94,11 @@ describe('<AIAnalyticsSummary />', () => {
   // });
 
   it('should handle null analytics data', async () => {
+    const user = userEvent.setup();
     const insightsData = { ...mockedInsights, learner_engagement: null };
     render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
     const component = await screen.findByTestId('summarize-analytics');
-    fireEvent.click(component);
+    user.click(component);
 
     const tree = render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
 

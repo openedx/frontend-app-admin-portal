@@ -193,11 +193,8 @@ describe('New SSO Config Alerts Tests', () => {
         </SSOConfigContext.Provider>
       </IntlProvider>,
     );
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Dismiss'));
-    }, []).then(() => {
-      expect(mockCloseAlerts).toHaveBeenCalled();
-    });
+    await waitFor(() => userEvent.click(screen.getByText('Dismiss')));
+    expect(mockCloseAlerts).toHaveBeenCalled();
   });
   test('hides live alert properly after dismissing', () => {
     Object.defineProperty(window.document, 'cookie', {
