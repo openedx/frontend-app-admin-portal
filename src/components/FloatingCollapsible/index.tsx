@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
 import {
   Collapsible, Icon, ActionRow, Button,
 } from '@openedx/paragon';
 import { KeyboardArrowUp, KeyboardArrowDown } from '@openedx/paragon/icons';
 
-const FloatingCollapsible = ({
-  enterpriseBranding, onDismiss = () => {}, title, children,
+interface Props {
+  onDismiss?: () => void;
+  title: string;
+  children: React.ReactNode;
+}
+
+const FloatingCollapsible: FC<Props> = ({
+  onDismiss = () => {}, title, children,
 }) => {
-  const [collapseIsOpen, setCollapseOpen] = useState(true);
+  const [collapseOpen, setCollapseOpen] = useState(true);
 
   const handleDismiss = () => {
     setCollapseOpen(false);
@@ -19,11 +25,11 @@ const FloatingCollapsible = ({
     <div className="floating-collapsible bottom-right-fixed">
       <Collapsible.Advanced
         styling="card"
-        open={collapseIsOpen}
-        onToggle={isOpen => setCollapseOpen(isOpen)}
+        open={collapseOpen}
+        onToggle={(value: boolean) => setCollapseOpen(value)}
       >
         <Collapsible.Trigger
-          className={`floating-collapsible__trigger p-3 h4 mb-0 ${collapseIsOpen ? 'rounded-top' : 'rounded'}`}
+          className={`floating-collapsible__trigger p-3 h4 mb-0 ${collapseOpen ? 'rounded-top' : 'rounded'}`}
         >
           <div className="d-flex justify-content-between">
             <div>{title}</div>

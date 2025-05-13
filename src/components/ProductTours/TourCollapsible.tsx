@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { bool, func } from 'prop-types';
+import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -12,13 +11,20 @@ import FloatingCollapsible from '../FloatingCollapsible';
 import messages from './messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 
-const TourCollapsible = (
+interface Props {
+  onboardingTourCompleted: boolean;
+  onboardingTourDismissed: boolean;
+  dismissOnboardingTour: () => void;
+  reopenOnboardingTour: () => void;
+}
+
+const TourCollapsible: FC<Props> = (
   {
     onboardingTourCompleted = true,
     onboardingTourDismissed = true,
     dismissOnboardingTour: dismissTour,
     reopenOnboardingTour: reopenTour,
-  } = {},
+  },
 ) => {
   const intl = useIntl();
   const [showCollapsible, setShowCollapsible] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
@@ -54,7 +60,6 @@ const TourCollapsible = (
             className="info-button bottom-right-fixed"
             iconAs={Icon}
             alt="More details"
-            size="lg"
             onClick={handleReopenTour}
           />
         </OverlayTrigger>
@@ -62,16 +67,10 @@ const TourCollapsible = (
     </>
   );
 };
-TourCollapsible.propTypes = {
-  onboardingTourCompleted: bool,
-  onboardingTourDismissed: bool,
-  dismissOnboardingTour: func.isRequired,
-  reopenOnboardingTour: func.isRequired,
-};
 
 const mapStateToProps = state => ({
-  onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted,
-  onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed,
+  onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,
+  onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
 });
 
 const mapDispatchToProps = dispatch => ({
