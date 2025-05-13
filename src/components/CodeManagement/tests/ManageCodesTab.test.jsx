@@ -2,9 +2,11 @@ import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
+import { userEvent } from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import '@testing-library/jest-dom';
+import { render, screen, waitFor } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import ManageCodesTab from '../ManageCodesTab';
@@ -101,8 +103,8 @@ const sampleCouponData = {
 describe('ManageCodesTabWrapper', () => {
   describe('renders', () => {
     it('renders empty results correctly', () => {
-      const wrapper = mount(<ManageCodesTabWrapper />);
-      expect(wrapper.text()).toContain('There are no results.');
+      const { container } = render(<ManageCodesTabWrapper />);
+      expect(container.textContent).toContain('There are no results.');
     });
 
     it('renders non-empty results correctly', () => {
@@ -125,9 +127,9 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const wrapper = mount(<ManageCodesTabWrapper store={store} />);
-      expect(wrapper.text()).toContain('test-title-1');
-      expect(wrapper.text()).toContain('test-title-2');
+      const { container } = render(<ManageCodesTabWrapper store={store} />);
+      expect(container.textContent).toContain('test-title-1');
+      expect(container.textContent).toContain('test-title-2');
     });
 
     it('renders loading state correctly', () => {
@@ -139,8 +141,8 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const wrapper = mount(<ManageCodesTabWrapper store={store} />);
-      expect(wrapper.text().toLowerCase()).toContain('loading');
+      const { container } = render(<ManageCodesTabWrapper store={store} />);
+      expect(container.textContent).toContain('Loading');
     });
 
     it('renders error state correctly', () => {
@@ -152,13 +154,13 @@ describe('ManageCodesTabWrapper', () => {
         },
       });
 
-      const wrapper = mount(<ManageCodesTabWrapper store={store} />);
-      expect(wrapper.text()).toContain('test error');
+      const { container } = render(<ManageCodesTabWrapper store={store} />);
+      expect(container.textContent).toContain('test error');
     });
   });
 
-  it('handles location.state on componentDidMount', () => {
-    const wrapper = mount((
+  it('handles location.state on componentDidMount', async () => {
+    render((
       <ManageCodesTabWrapper
         location={{
           state: {
@@ -167,8 +169,8 @@ describe('ManageCodesTabWrapper', () => {
         }}
       />
     ));
-
-    expect(wrapper.find('ManageCodesTab').prop('location').state.hasRequestedCodes).toBeTruthy();
+    const requestedCodeAlert = await screen.findByTestId('code-request-alert');
+    expect(requestedCodeAlert).toBeInTheDocument();
   });
 
   it('handles overview_page query parameter change', () => {
@@ -185,14 +187,15 @@ describe('ManageCodesTabWrapper', () => {
     });
     const spy = jest.spyOn(store, 'dispatch');
 
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+    const { rerender } = render(<ManageCodesTabWrapper store={store} />);
     spy.mockClear();
 
-    wrapper.setProps({
-      location: {
+    rerender(<ManageCodesTabWrapper
+      store={store}
+      location={{
         search: '?overview_page=2',
-      },
-    });
+      }}
+    />);
 
     expect(spy).toHaveBeenCalled();
   });
@@ -200,14 +203,14 @@ describe('ManageCodesTabWrapper', () => {
   it('calls clearCouponOrders() on componentWillUnmount', () => {
     const store = mockStore({ ...initialState });
 
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
-    wrapper.unmount();
+    const { unmount } = render(<ManageCodesTabWrapper store={store} />);
+    unmount();
 
     const actions = store.getActions();
     expect(actions.some(action => action.type === CLEAR_COUPONS)).toBe(true);
   });
 
-  it('calls expand/collapse callbacks properly', () => {
+  it('calls expand/collapse callbacks properly', async () => {
     const store = mockStore({
       ...initialState,
       coupons: {
@@ -232,26 +235,26 @@ describe('ManageCodesTabWrapper', () => {
         'coupon-details': {},
       },
     });
-
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
-    const instance = wrapper.find('ManageCodesTab').instance();
-    const spyExpand = jest.spyOn(instance, 'handleCouponExpand');
-    const spyCollapse = jest.spyOn(instance, 'handleCouponCollapse');
+    const user = userEvent.setup();
+    render(<ManageCodesTabWrapper store={store} />);
 
     // expand
-    wrapper.find('Coupon').first().find('.metadata').simulate('click');
-    expect(spyExpand).toBeCalledTimes(1);
+    const couponItem = (await screen.findAllByTestId('coupon-item-toggle'))[0];
+    await waitFor(() => user.click(couponItem));
+    expect(couponItem).toHaveAttribute('aria-expanded', 'true');
 
     // collapse
-    wrapper.find('Coupon').first().find('.metadata').simulate('click');
-    expect(spyCollapse).toBeCalledTimes(1);
+    await waitFor(() => user.click(couponItem));
+    expect(couponItem).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('fetches coupons on refresh button click', () => {
+  it('fetches coupons on refresh button click', async () => {
     const store = mockStore({ ...initialState });
-    const wrapper = mount(<ManageCodesTabWrapper store={store} />);
+    const user = userEvent.setup();
+    render(<ManageCodesTabWrapper store={store} />);
     store.clearActions();
-    wrapper.find('[data-testid="refresh-data"]').hostNodes().simulate('click');
+    const refreshDataComponent = await screen.findByTestId('refresh-data');
+    await waitFor(() => user.click(refreshDataComponent));
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
   });
 
@@ -279,12 +282,12 @@ describe('ManageCodesTabWrapper', () => {
         shouldShowAlert: false,
       },
     ])('should render correctly', ({ subsidyRequestConfiguration, shouldShowAlert }) => {
-      const wrapper = mount(<ManageCodesTabWrapper subsidyRequestConfiguration={subsidyRequestConfiguration} />);
+      const { container } = render(<ManageCodesTabWrapper subsidyRequestConfiguration={subsidyRequestConfiguration} />);
 
       if (shouldShowAlert) {
-        expect(wrapper.text().includes(BNR_NEW_FEATURE_ALERT_TEXT)).toBe(true);
+        expect(container.textContent).toContain(BNR_NEW_FEATURE_ALERT_TEXT);
       } else {
-        expect(wrapper.text().includes(BNR_NEW_FEATURE_ALERT_TEXT)).toBe(false);
+        expect(container.textContent).not.toContain(BNR_NEW_FEATURE_ALERT_TEXT);
       }
     });
   });

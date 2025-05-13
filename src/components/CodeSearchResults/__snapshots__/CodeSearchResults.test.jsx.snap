@@ -18,6 +18,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -124,6 +125,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -238,6 +240,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -609,6 +612,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"
@@ -1060,6 +1064,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
   >
     <div
       className="code-search-results border-bottom pb-4"
+      data-testid="code-search-results"
     >
       <div
         className="d-flex align-items-center justify-content-between mb-3"

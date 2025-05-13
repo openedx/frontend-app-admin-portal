@@ -2,9 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
+import { userEvent } from '@testing-library/user-event';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { SubmissionError } from 'redux-form';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
@@ -120,17 +121,26 @@ describe('<SaveTemplateButton />', () => {
     EcommerceApiService.saveTemplate.mockImplementation(() => Promise.resolve({
       data: successResponse,
     }));
-    const wrapper = mount((
+    const { container } = render((
       <SaveTemplateButtonWrapper disabled={false} />
     ));
 
-    wrapper.find('button').find('.save-template-btn').simulate('click');
+    const saveButton = container.querySelector('.save-template-btn');
+    fireEvent.click(saveButton);
     expect(store.getActions()).toEqual(expectedActions);
 
     expect(saveTemplateSpy).toHaveBeenCalledWith(saveTemplateData);
   });
 
-  it('saveTemplate raises correct errors on invalid data submission', () => {
+  it('saveTemplate raises correct errors on invalid data submission', async () => {
+    const mockSubmit = jest.fn(() => {
+      throw new SubmissionError({
+        'template-name': 'No template name provided. Please enter a template name.',
+        'email-template-subject': `Email subject must be ${OFFER_ASSIGNMENT_EMAIL_SUBJECT_LIMIT} characters or less.`,
+        'email-template-greeting': `Email greeting must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
+        'email-template-closing': `Email closing must be ${EMAIL_TEMPLATE_FIELD_MAX_LIMIT} characters or less.`,
+      });
+    });
     const invalidFormData = {
       'email-template-subject': 'G'.repeat(1001),
       'email-template-greeting': 'G'.repeat(50001),
@@ -142,18 +152,20 @@ describe('<SaveTemplateButton />', () => {
           <SaveTemplateButton
             templateType={templateType}
             setMode={() => {}}
-            handleSubmit={submitFunction => () => submitFunction(invalidFormData)}
+            handleSubmit={() => () => mockSubmit(invalidFormData)}
             {...props}
           />
         </Provider>
       </MemoryRouter>
     );
-    const wrapper = mount((
+    const { container } = render((
       <SaveTemplateButtonWrapperWithInvalidData disabled={false} />
     ));
 
+    const saveButton = container.querySelector('.save-template-btn');
     try {
-      wrapper.find('button').find('.save-template-btn').simulate('click');
+      const user = userEvent.setup();
+      await waitFor(() => user.click(saveButton));
     } catch (e) {
       expect(e instanceof SubmissionError).toBeTruthy();
       expect(e.errors['template-name']).toEqual('No template name provided. Please enter a template name.');

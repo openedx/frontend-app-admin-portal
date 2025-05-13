@@ -98,7 +98,7 @@ class AdminSearchForm extends React.Component {
         <div className="col-12 pr-md-0 mb-0">
           <div className="row w-100 m-0">
             {groups?.length ? (
-              <div className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
+              <div data-testid="form-control-group-filter" className="col-12 col-md-3 my-2 my-md-0 px-0 px-md-2 px-lg-3">
                 <Form.Group>
                   <Form.Label className="search-label mb-2">
                     <FormattedMessage
@@ -142,6 +142,7 @@ class AdminSearchForm extends React.Component {
                   />
                 </Form.Label>
                 <Form.Control
+                  data-testid="form-control-course-filter"
                   className="w-100"
                   as="select"
                   value={searchCourseQuery}
@@ -190,6 +191,7 @@ class AdminSearchForm extends React.Component {
                   />
                 </Form.Label>
                 <Form.Control
+                  data-testid="form-control-date-filter"
                   as="select"
                   className="w-100"
                   value={searchDateQuery}
@@ -236,6 +238,7 @@ class AdminSearchForm extends React.Component {
                     />
                   </Form.Label>
                   <Form.Control
+                    data-testid="form-control-budget-filter"
                     className="w-100 budgets-dropdown"
                     as="select"
                     value={searchBudgetQuery}
@@ -269,6 +272,7 @@ class AdminSearchForm extends React.Component {
                 />
               </Form.Label>
               <SearchBar
+                data-testid="admin-form-search-bar"
                 placeholder={intl.formatMessage({
                   id: 'admin.portal.lpr.filter.by.email.input.placeholder',
                   defaultMessage: 'Search by email...',

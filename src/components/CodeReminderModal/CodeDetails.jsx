@@ -5,7 +5,7 @@ import { displayCode, displayEmail, displaySelectedCodes } from '../CodeModal/co
 const CodeDetails = ({
   isBulkRemind, hasIndividualRemindData, data, numberOfSelectedCodes,
 }) => (
-  <div className="assignment-details mb-4">
+  <div data-testid="assignment-details" className="assignment-details mb-4">
     {!isBulkRemind && hasIndividualRemindData && (
     <>
       <p data-hj-suppress>{displayCode(data.code)}</p>
@@ -13,7 +13,7 @@ const CodeDetails = ({
     </>
     )}
     {isBulkRemind && numberOfSelectedCodes > 0 && (
-    <p className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
+    <p data-testid="bulk-selected-codes" className="bulk-selected-codes">{displaySelectedCodes(numberOfSelectedCodes)}</p>
     )}
   </div>
 );

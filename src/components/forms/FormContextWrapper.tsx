@@ -8,6 +8,7 @@ import DefaultUnsavedChangesModal from '../settings/SettingsLMSTab/UnsavedChange
 
 type FormWrapperProps<FormConfigData> = FormWorkflowProps<FormConfigData> & {
   formData: FormConfigData;
+  // eslint-disable-next-line react/no-unused-prop-types
   unsavedChangesModal?: DynamicComponent<UnsavedChangesModalProps>;
 };
 

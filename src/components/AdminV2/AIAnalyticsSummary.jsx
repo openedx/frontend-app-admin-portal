@@ -33,7 +33,7 @@ const AnalyticsDetailCard = ({
   });
 
   return (
-    <Card className="mt-3 mb-4" isLoading={isLoading}>
+    <Card data-testid="ai-analytics-detail-card" className="mt-3 mb-4" isLoading={isLoading}>
       <Card.Section>
         <Badge variant="light" className="mb-3 font-weight-semibold">
           <FormattedMessage id="adminPortal.analyticsCardBetaButton" defaultMessage="Beta" />
@@ -48,7 +48,7 @@ const AnalyticsDetailCard = ({
               )
             }
           </p>
-          <Button variant="link" className="mb-4 ml-3" onClick={onClose}>
+          <Button data-testid="ai-analytics-detail-card-button" variant="link" className="mb-4 ml-3" onClick={onClose}>
             <span className="small font-weight-bold text-gray-800">Dismiss</span>
           </Button>
         </Stack>
