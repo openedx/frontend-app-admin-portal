@@ -18,6 +18,10 @@ interface Props {
   reopenOnboardingTour: () => void;
 }
 
+const IconWithTestId = (...props: any) => (
+  <span data-testid="reopen-tour-button"><Icon {...props} /></span>
+);
+
 const TourCollapsible: FC<Props> = (
   {
     onboardingTourCompleted = true,
@@ -58,7 +62,7 @@ const TourCollapsible: FC<Props> = (
           <IconButton
             src={Question}
             className="info-button bottom-right-fixed"
-            iconAs={Icon}
+            iconAs={IconWithTestId}
             alt="More details"
             onClick={handleReopenTour}
           />
