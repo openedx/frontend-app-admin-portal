@@ -36,6 +36,8 @@ const SUBSCRIPTION_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.subs
 const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings}/${ACCESS_TAB}`;
 const LEARNER_CREDIT_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.learnerCredit}`;
 
+let onboardingEnabled = true;
+
 const ToursWithContext = ({
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
   subsidyRequestsEnabled = false,
@@ -56,6 +58,13 @@ const ToursWithContext = ({
     portalConfiguration: {
       enterpriseSlug: ENTERPRISE_SLUG,
       enableLearnerPortal,
+      enterpriseFeatures: {
+        enterpriseAdminOnboardingEnabled: onboardingEnabled,
+      },
+    },
+    enterpriseCustomerAdmin: {
+      onboardingTourCompleted: false,
+      onboardingTourDismissed: false,
     },
   }),
 }) => (
@@ -175,13 +184,29 @@ describe('<ProductTours/>', () => {
     it('is not shown if localStorage record is present', () => {
       global.localStorage.setItem(LEARNER_CREDIT_COOKIE_NAME, true);
       render(<ToursWithContext canManageLearnerCredit />);
-      screen.debug(undefined, 1000000);
       expect(screen.queryByText('New Feature')).toBeFalsy();
     });
 
     it('is shown if in Learner Credit page', () => {
       render(<ToursWithContext pathname={LEARNER_CREDIT_PAGE_LOCATION} canManageLearnerCredit />);
       expect(screen.queryByText('New Feature')).toBeTruthy();
+    });
+  });
+
+  describe('TourCollapsible', () => {
+    it('renders the collapsible title', () => {
+      render(<ToursWithContext />);
+      expect(screen.queryByText('Quick Start Guide')).toBeTruthy();
+    });
+
+    describe('with onboarding disabled', () => {
+      beforeEach(() => {
+        onboardingEnabled = false;
+      });
+      it('does not render the collapsible title', () => {
+        render(<ToursWithContext />);
+        expect(screen.queryByText('Quick Start Guide')).toBeFalsy();
+      });
     });
   });
 
