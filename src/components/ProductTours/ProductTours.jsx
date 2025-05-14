@@ -1,14 +1,15 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 import { ProductTour } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform/config';
-import browseAndRequestTour from './browseAndRequestTour';
 import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
 import learnerCreditTour from './learnerCreditTour';
 import learnerDetailPageTour from './learnerDetailPageTour';
 import highlightsTour from './highlightsTour';
+import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
 
 import {
@@ -22,6 +23,8 @@ import {
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
+import TourCollapsible from './TourCollapsible';
+
 /**
  * All the logic here is for determining what ProductTours we should show.
  * All actual tour specific logic/content should live within the separate tour files.
@@ -29,6 +32,7 @@ import {
 const ProductTours = ({
   enableLearnerPortal,
   enterpriseSlug,
+  onboardingEnabled,
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
@@ -56,20 +60,25 @@ const ProductTours = ({
   }];
 
   return (
-    <ProductTour
-      tours={tours}
-    />
+    <div className="product-tours">
+      <ProductTour
+        tours={tours}
+      />
+      {onboardingEnabled && <TourCollapsible /> }
+    </div>
   );
 };
 
 ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
+  onboardingEnabled: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  onboardingEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseAdminOnboardingEnabled || false,
 });
 
 export default connect(mapStateToProps)(ProductTours);

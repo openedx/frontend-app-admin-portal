@@ -8,17 +8,22 @@ $modal-max-width: 650px;
 @import "~@edx/frontend-enterprise-catalog-search";
 @import "~@edx/brand/paragon/overrides";
 
+// Custom variables
+@import "./colors";
+
 // Components
 @import "./components/EnterpriseApp/EnterpriseApp";
 @import "./components/CodeSearchResults/CodeSearchResults";
 @import "./components/Coupon/Coupon";
 @import "./components/CouponDetails/CouponDetails";
 @import "./components/FileInput/FileInput";
+@import "./components/FloatingCollapsible/FloatingCollapsible";
 @import "./components/NumberCard/NumberCard";
 @import "./components/RequestCodesPage/RequestCodesPage";
 @import "./components/Sidebar/Sidebar";
 @import "./components/subscriptions/styles";
 @import "./components/LoadingMessage/LoadingMessage";
+@import "./components/ProductTours/ProductTours";
 @import "./components/TableComponent/TableComponent";
 @import "./components/TableLoadingOverlay/TableLoadingOverlay";
 @import "./components/Hero/Hero";
@@ -90,4 +95,11 @@ form {
 .pgn__card-logo-cap {
   object-fit: scale-down !important;
   object-position: center center !important;
+}
+
+.bottom-right-fixed {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
 }
