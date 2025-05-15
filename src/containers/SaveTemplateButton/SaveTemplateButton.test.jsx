@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import { userEvent } from '@testing-library/user-event';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { SubmissionError } from 'redux-form';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
@@ -133,6 +133,7 @@ describe('<SaveTemplateButton />', () => {
   });
 
   it('saveTemplate raises correct errors on invalid data submission', async () => {
+    const user = userEvent.setup();
     const mockSubmit = jest.fn(() => {
       throw new SubmissionError({
         'template-name': 'No template name provided. Please enter a template name.',
@@ -164,8 +165,7 @@ describe('<SaveTemplateButton />', () => {
 
     const saveButton = container.querySelector('.save-template-btn');
     try {
-      const user = userEvent.setup();
-      await waitFor(() => user.click(saveButton));
+      await user.click(saveButton);
     } catch (e) {
       expect(e instanceof SubmissionError).toBeTruthy();
       expect(e.errors['template-name']).toEqual('No template name provided. Please enter a template name.');

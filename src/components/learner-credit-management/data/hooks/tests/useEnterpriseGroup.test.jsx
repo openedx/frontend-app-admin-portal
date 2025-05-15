@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 
 import useEnterpriseGroup from '../useEnterpriseGroup';
 import LmsApiService from '../../../../../data/services/LmsApiService';
@@ -33,12 +33,14 @@ describe('useEnterpriseGroup', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseGroup(mockSubsidyAccessPolicy),
       { wrapper },
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data).toEqual(
       { enterpriseCustomer: 'customer-uuid', name: 'groupidy group', uuid: 'group-uuid' },
     );
@@ -53,12 +55,13 @@ describe('useEnterpriseGroup', () => {
       },
     });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseGroup(mockSubsidyAccessPolicyNoGroups),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-    expect(result.current.data).toBe(null);
+    await waitFor(() => {
+      expect(result.current.data).toBe(null);
+    });
   });
 });

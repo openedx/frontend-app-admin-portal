@@ -112,6 +112,7 @@ describe('<CouponCodeTabs />', () => {
   });
 
   it('Clicking on a tab changes content via router', async () => {
+    const user = userEvent.setup();
     render(<CouponCodeTabsWrapper />);
 
     // assert "manage codes" and "manage requests" tabs are visible
@@ -122,18 +123,19 @@ describe('<CouponCodeTabs />', () => {
     expect(screen.getByText(MANAGE_CODES_MOCK_CONTENT));
 
     // click a different tab and assert the content changed
-    userEvent.click(manageRequestsTab);
+    await user.click(manageRequestsTab);
     await screen.findByText(MANAGE_REQUESTS_MOCK_CONTENT);
 
     // click default tab again and assert the content changed
-    userEvent.click(manageCodesTab);
+    await user.click(manageCodesTab);
     await screen.findByText(MANAGE_CODES_MOCK_CONTENT);
   });
 
   it('Clicking on default tab does not change content', async () => {
+    const user = userEvent.setup();
     render(<CouponCodeTabsWrapper />);
     const manageCodesTab = screen.getByText(COUPON_CODE_TABS_LABELS[MANAGE_CODES_TAB]);
-    userEvent.click(manageCodesTab);
+    await user.click(manageCodesTab);
     await screen.findByText(MANAGE_CODES_MOCK_CONTENT);
   });
 

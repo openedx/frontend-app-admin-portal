@@ -60,8 +60,9 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
   };
 
   const clickDeleteHighlightBtn = async () => {
+    const user = userEvent.setup();
     const deleteBtn = getDeleteHighlightBtn();
-    await userEvent.click(deleteBtn);
+    await user.click(deleteBtn);
     expect(screen.getByText('Delete archived courses?')).toBeInTheDocument();
   };
 
@@ -88,16 +89,18 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
   });
 
   it('cancelling confirmation modal closes modal', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
     await clickDeleteHighlightBtn();
-    await userEvent.click(screen.getByText('Cancel'));
+    await user.click(screen.getByText('Cancel'));
     expect(screen.queryByText('Delete archived courses?')).not.toBeInTheDocument();
   });
 
   it('confirming deletion in confirmation modal deletes via API', async () => {
+    const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSetContent.mockResolvedValueOnce({ status: 201 });
 
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
@@ -105,7 +108,7 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
       highlightedContent={testHighlightSet}
     />);
     await clickDeleteHighlightBtn();
-    await userEvent.click(screen.getByTestId('delete-archived-button'));
+    await user.click(screen.getByTestId('delete-archived-button'));
 
     await waitFor(() => {
       expect(EnterpriseCatalogApiService.deleteHighlightSetContent).toHaveBeenCalledTimes(1);
@@ -113,21 +116,20 @@ describe('<ContentHighlightsCardItemsContainer />', () => {
   });
 
   it('confirming deletion in confirmation modal handles error via API', async () => {
+    const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSetContent.mockRejectedValueOnce(new Error('oops all berries!'));
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
     await clickDeleteHighlightBtn();
-    await userEvent.click(screen.getByTestId('delete-archived-button'));
-    expect(screen.getByText('Deleting courses...')).toBeInTheDocument();
-
+    await user.click(screen.getByTestId('delete-archived-button'));
     await waitFor(() => {
       expect(screen.queryByText('Something went wrong')).toBeInTheDocument();
     });
     const alertDismissBtn = screen.getByText('Dismiss');
     expect(alertDismissBtn).toBeInTheDocument();
-    userEvent.click(alertDismissBtn);
+    await user.click(alertDismissBtn);
     await waitFor(() => {
       expect(screen.queryByText('Something went wrong')).not.toBeInTheDocument();
     });

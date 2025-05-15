@@ -90,9 +90,10 @@ describe('<HighlightSetSection />', () => {
     expect(screen.getByText('4', { exact: false })).toBeInTheDocument();
   });
   it('sends segment event on click', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<HighlightSetSectionWrapper highlightSetArray={testHighlightSet} />);
     const highlightSetCard = screen.getByTestId('highlight-set-card');
-    await waitFor(() => userEvent.click(highlightSetCard));
+    await user.click(highlightSetCard);
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });

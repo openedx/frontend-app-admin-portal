@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { act, renderHook } from '@testing-library/react-hooks/dom';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -92,7 +92,7 @@ describe('useBudgetRedemptions', () => {
     SubsidyApiService.fetchCustomerTransactions.mockResolvedValueOnce({ data: mockSubsidyTransactionResponse });
     useSubsidyAccessPolicy.mockReturnValue({ data: { subsidyUuid } });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useBudgetRedemptions(TEST_ENTERPRISE_UUID, offerId, budgetId, isTopDownAssignmentEnabled),
       { wrapper },
     );
@@ -119,7 +119,9 @@ describe('useBudgetRedemptions', () => {
       });
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.budgetRedemptions).toBeDefined();
+    });
 
     if (budgetId && isTopDownAssignmentEnabled) {
       const expectedApiOptions = {

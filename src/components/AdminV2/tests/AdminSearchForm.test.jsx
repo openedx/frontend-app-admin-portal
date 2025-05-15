@@ -1,11 +1,10 @@
 import React from 'react';
-import {
-  fireEvent, render, screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
+import userEvent from '@testing-library/user-event';
 import AdminSearchForm from '../AdminSearchForm';
 import { updateUrl } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
@@ -75,7 +74,7 @@ describe('<AdminSearchForm />', () => {
     });
   });
 
-  it('select the correct budget', () => {
+  it('select the correct budget', async () => {
     const budgetUUID = '8d6503dd-e40d-42b8-442b-37dd4c5450e3';
     const budgets = [{
       subsidy_access_policy_uuid: budgetUUID,
@@ -90,7 +89,8 @@ describe('<AdminSearchForm />', () => {
       <AdminSearchFormWrapper {...props} />,
     );
     const selectElement = container.querySelector('.budgets-dropdown select');
-    fireEvent.change(selectElement, { target: { value: budgetUUID } });
+    const user = userEvent.setup();
+    await user.selectOptions(selectElement, budgetUUID);
     expect(updateUrl).toHaveBeenCalled();
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
@@ -102,7 +102,8 @@ describe('<AdminSearchForm />', () => {
     );
   });
 
-  it.skip('select the correct group', async () => {
+  it('select the correct group', async () => {
+    const user = userEvent.setup();
     const groupUUID = '7d6503dd-e40d-42b8-442b-37dd4c5450e3';
     const groups = [{
       enterprise_group_uuid: groupUUID,
@@ -117,7 +118,7 @@ describe('<AdminSearchForm />', () => {
       <AdminSearchFormWrapper {...props} />,
     );
     const selectElement = container.querySelector('.groups-dropdown select');
-    fireEvent.change(selectElement, { target: { value: groupUUID } });
+    await user.selectOptions(selectElement, groupUUID);
     expect(updateUrl).toHaveBeenCalled();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       'test-id',
@@ -136,7 +137,7 @@ describe('<AdminSearchForm />', () => {
     );
   });
 
-  it('handles course selection correctly', () => {
+  it('handles course selection correctly', async () => {
     const tableData = [
       { course_title: 'Course A' },
       { course_title: 'Course B' },
@@ -153,7 +154,8 @@ describe('<AdminSearchForm />', () => {
 
     const selectElement = container.querySelector('.course-dropdown select');
 
-    fireEvent.change(selectElement, { target: { value: 'Course A' } });
+    const user = userEvent.setup();
+    await user.selectOptions(selectElement, 'Course A');
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
       '/admin/learners',
@@ -165,7 +167,7 @@ describe('<AdminSearchForm />', () => {
 
     updateUrl.mockClear();
 
-    fireEvent.change(selectElement, { target: { value: '' } });
+    await user.selectOptions(selectElement, '');
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
       '/admin/learners',
@@ -179,7 +181,7 @@ describe('<AdminSearchForm />', () => {
 });
 
 describe('<AdminSearchForm />', () => {
-  it('renders the start date dropdown correctly', () => {
+  it('renders the start date dropdown correctly', async () => {
     const tableData = [
       { course_start_date: '2023-01-01' },
       { course_start_date: '2023-02-01' },
@@ -203,7 +205,8 @@ describe('<AdminSearchForm />', () => {
     expect(options[1].textContent).toBe('February 1, 2023');
     expect(options[2].textContent).toBe('January 1, 2023');
 
-    fireEvent.change(selectElement, { target: { value: '2023-01-01' } });
+    const user = userEvent.setup();
+    await user.selectOptions(selectElement, '2023-01-01');
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
       '/admin/learners',

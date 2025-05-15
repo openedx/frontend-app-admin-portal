@@ -14,16 +14,18 @@ describe('<ConfirmationModal />', () => {
   };
 
   it('should call onConfirm when confirm button is clicked', async () => {
+    const user = userEvent.setup();
     const mockHandleConfirm = jest.fn();
     renderWithI18nProvider(<ConfirmationModal {...basicProps} onConfirm={mockHandleConfirm} />);
-    await waitFor(() => userEvent.click(screen.getByText('Confirm')));
+    await user.click(screen.getByText('Confirm'));
     expect(mockHandleConfirm).toHaveBeenCalledTimes(1);
   });
 
   it('should call onClose when modal is closed', async () => {
+    const user = userEvent.setup();
     const mockHandleClose = jest.fn();
     renderWithI18nProvider(<ConfirmationModal {...basicProps} onClose={mockHandleClose} />);
-    await waitFor(() => userEvent.click(screen.getByText('Cancel')));
+    await user.click(screen.getByText('Cancel'));
     expect(mockHandleClose).toHaveBeenCalledTimes(1);
   });
 
