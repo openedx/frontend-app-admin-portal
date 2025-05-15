@@ -32,9 +32,10 @@ describe('AddLearnersStep', () => {
     expect(iconButton).toHaveAttribute('aria-label', defaultProps.altText);
   });
   it('dispatches the deleteSelected row action when the delete button is clicked', async () => {
+    const user = userEvent.setup();
     render(<ReviewItem {...defaultProps} />);
     const deleteButton = screen.getByTestId('delete-button');
-    await waitFor(() => userEvent.click(deleteButton));
+    await user.click(deleteButton);
     expect(defaultProps.dispatch).toHaveBeenCalledTimes(1);
     expect(defaultProps.dispatch).toHaveBeenCalledWith(deleteSelectedRowAction(defaultProps.row.id));
   });

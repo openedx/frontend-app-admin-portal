@@ -133,9 +133,10 @@ describe('BulkEnrollmentAlertModal', () => {
   });
 
   it('calls toggleClose when the close button is clicked', async () => {
+    const user = userEvent.setup();
     render(<BulkEnrollmentAlertModalWrapper {...defaultAlertProps} />);
     const closeButton = screen.getByText('OK');
-    await userEvent.click(closeButton);
+    await user.click(closeButton);
     expect(defaultAlertProps.toggleClose).toBeCalledTimes(1);
   });
 });
@@ -198,6 +199,7 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('tests passing correct data to api call', async () => {
+    const user = userEvent.setup();
     LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
@@ -207,7 +209,7 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    userEvent.click(button);
+    await user.click(button);
 
     const expectedParams = {
       emails: userEmails,
@@ -226,6 +228,7 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('tests notify toggle disables param to api service', async () => {
+    const user = userEvent.setup();
     LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
@@ -236,8 +239,8 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
     const checkbox = screen.getByTestId(NOTIFY_CHECKBOX_TEST_ID);
-    userEvent.click(checkbox);
-    userEvent.click(button);
+    await user.click(checkbox); // uncheck the box
+    await user.click(button);
 
     const expectedParams = {
       emails: userEmails,
@@ -256,6 +259,7 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('test component clears selected emails and courses after successful submit', async () => {
+    const user = userEvent.setup();
     LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
@@ -265,7 +269,7 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    userEvent.click(button);
+    await user.click(button);
 
     await waitFor(() => {
       expect(emailsDispatch).toBeCalledTimes(1);
@@ -281,6 +285,7 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('tests component creates toast after successful submit', async () => {
+    const user = userEvent.setup();
     LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
@@ -290,7 +295,7 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    userEvent.click(button);
+    await user.click(button);
 
     await waitFor(() => {
       expect(logError).toBeCalledTimes(0);
@@ -299,6 +304,7 @@ describe('BulkEnrollmentSubmit', () => {
   });
 
   it('tests component logs error response on unsuccessful api call', async () => {
+    const user = userEvent.setup();
     // eslint-disable-next-line prefer-promise-reject-errors
     const mockPromiseReject = new Error('something went wrong');
     LicenseManagerApiService.licenseBulkEnroll.mockRejectedValue(mockPromiseReject);
@@ -310,12 +316,13 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    userEvent.click(button);
+    await user.click(button);
 
     await waitFor(() => expect(logError).toBeCalledTimes(1));
   });
 
   it('renders alert modal on unsuccessful api call', async () => {
+    const user = userEvent.setup();
     const mockPromiseReject = new Error('something went wrong');
     LicenseManagerApiService.licenseBulkEnroll.mockRejectedValue(mockPromiseReject);
 
@@ -327,12 +334,13 @@ describe('BulkEnrollmentSubmit', () => {
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
 
-    userEvent.click(button);
+    await user.click(button);
 
     await waitFor(() => expect(screen.getByText(ALERT_MODAL_TITLE_TEXT)).toBeInTheDocument());
   });
 
   it('alert modal closes when user clicks OK', async () => {
+    const user = userEvent.setup();
     // eslint-disable-next-line prefer-promise-reject-errors
     const mockPromiseReject = new Error('something went wrong');
     LicenseManagerApiService.licenseBulkEnroll.mockRejectedValue(mockPromiseReject);
@@ -344,15 +352,16 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = screen.getByTestId(FINAL_BUTTON_TEST_ID);
-    userEvent.click(button);
+    await user.click(button);
     await waitFor(() => expect(screen.getByText('OK')).toBeInTheDocument());
     const alertModalCloseButton = await waitFor(() => screen.getByText('OK'));
 
-    userEvent.click(alertModalCloseButton);
+    await user.click(alertModalCloseButton);
     await waitFor(() => expect(screen.queryByText(ALERT_MODAL_TITLE_TEXT)).not.toBeInTheDocument());
   });
 
   it('component calls return to initial step on successful api call', async () => {
+    const user = userEvent.setup();
     LicenseManagerApiService.licenseBulkEnroll.mockResolvedValue({ data: {} });
 
     render(
@@ -362,7 +371,7 @@ describe('BulkEnrollmentSubmit', () => {
       />,
     );
     const button = await waitFor(() => screen.getByTestId(FINAL_BUTTON_TEST_ID));
-    userEvent.click(button);
+    await user.click(button);
     await waitFor(() => {
       expect(screen.getByText('been enrolled', { exact: false })).toBeInTheDocument();
       expect(defaultProps.onEnrollComplete).toHaveBeenCalledTimes(1);

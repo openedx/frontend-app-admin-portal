@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/dom';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import LmsApiService from '../../../../data/services/LmsApiService';
 import useEnterpriseLearnerData from './hooks';
 

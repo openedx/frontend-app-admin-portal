@@ -52,6 +52,9 @@ const SettingsSSOTab = ({ enterpriseId, setHasSSOConfig }) => {
     } else {
       setHasSSOConfig(existingConfigs.some(config => config.was_valid_at));
     }
+    console.log('DEBUG?!?!?!', {
+      existingConfigs,
+    });
     if (!existingConfigs || existingConfigs?.length < 1) {
       setShowNoSSOCard(true);
     } else {

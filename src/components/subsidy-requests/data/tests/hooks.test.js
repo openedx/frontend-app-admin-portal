@@ -1,5 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
-import { waitFor, act } from '@testing-library/react';
+import { renderHook, waitFor, act } from '@testing-library/react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import * as logging from '@edx/frontend-platform/logging';
 import {
@@ -56,12 +55,14 @@ describe('useSubsidyRequestConfiguration', () => {
     EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockResolvedValue(
       TEST_CONFIGURATION_RESPONSE,
     );
-    const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+    const { result } = renderHook(() => useSubsidyRequestConfiguration({
       enterpriseId: TEST_ENTERPRISE_UUID,
       enterpriseSubsidyTypesForRequests: [],
     }));
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.subsidyRequestConfiguration).toBeDefined();
+    });
 
     expect(EnterpriseAccessApiService.getSubsidyRequestConfiguration).toHaveBeenCalledWith(
       { enterpriseId: TEST_ENTERPRISE_UUID },
@@ -74,12 +75,14 @@ describe('useSubsidyRequestConfiguration', () => {
   it('should handle non-404 errors', async () => {
     const error = new Error('Error fetching subsidy request configuration');
     EnterpriseAccessApiService.getSubsidyRequestConfiguration.mockRejectedValue(error);
-    const { waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+    const { result } = renderHook(() => useSubsidyRequestConfiguration({
       enterpriseId: TEST_ENTERPRISE_UUID,
       enterpriseSubsidyTypesForRequests: [],
     }));
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.error).toBeDefined();
+    });
 
     expect(logging.logError).toHaveBeenCalledWith(error);
   });
@@ -183,12 +186,14 @@ describe('useSubsidyRequestConfiguration', () => {
       const error = new Error('Error fetching coupon orders');
       EcommerceApiService.fetchCouponOrders.mockRejectedValue(error);
 
-      const { waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+      const { result } = renderHook(() => useSubsidyRequestConfiguration({
         enterpriseId: TEST_ENTERPRISE_UUID,
         enterpriseSubsidyTypesForRequests: [],
       }));
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.error).toBeDefined();
+      });
 
       expect(logging.logError).toHaveBeenCalledWith(error);
     });
@@ -238,12 +243,14 @@ describe('useSubsidyRequestConfiguration', () => {
       const error = new Error('Error updating subsidy request configuration');
       EnterpriseAccessApiService.updateSubsidyRequestConfiguration.mockRejectedValue(error);
 
-      const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestConfiguration({
+      const { result } = renderHook(() => useSubsidyRequestConfiguration({
         enterpriseId: TEST_ENTERPRISE_UUID,
         enterpriseSubsidyTypesForRequests: [],
       }));
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.subsidyRequestConfiguration).toBeDefined();
+      });
 
       const { updateSubsidyRequestConfiguration } = result.current;
 
@@ -326,8 +333,10 @@ describe('useSubsidyRequestsOverview', () => {
       TEST_REQUEST_OVERVIEW_RESPONSE,
     );
 
-    const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
-    await waitForNextUpdate();
+    const { result } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
+    await waitFor(() => {
+      expect(result.current.subsidyRequestsOverview).toBeDefined();
+    });
 
     const actualResult = result.current;
     expect(actualResult.isLoading).toBeFalsy();
@@ -345,8 +354,10 @@ describe('useSubsidyRequestsOverview', () => {
         TEST_REQUEST_OVERVIEW_RESPONSE,
       );
 
-      const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
-      await waitForNextUpdate();
+      const { result } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
+      await waitFor(() => {
+        expect(result.current.error).toBeDefined();
+      });
 
       const actualResult = result.current;
       expect(actualResult.subsidyRequestsCounts.subscriptionLicenses).toEqual(5);
@@ -365,8 +376,10 @@ describe('useSubsidyRequestsOverview', () => {
         TEST_REQUEST_OVERVIEW_RESPONSE,
       );
 
-      const { result, waitForNextUpdate } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
-      await waitForNextUpdate();
+      const { result } = renderHook(() => useSubsidyRequestsOverview(TEST_ENTERPRISE_UUID));
+      await waitFor(() => {
+        expect(result.current.error).toBeDefined();
+      });
 
       const actualResult = result.current;
       expect(actualResult.subsidyRequestsCounts.couponCodes).toEqual(5);

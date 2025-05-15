@@ -42,7 +42,8 @@ describe('<ContentHighlightCardItem>', () => {
     />);
     expect(screen.queryByTestId('hyperlink-title')).not.toBeInTheDocument();
   });
-  it('Sets title as hyperlink when href populated', () => {
+  it('Sets title as hyperlink when href populated', async () => {
+    const user = userEvent.setup();
     const trackClickEvent = jest.fn();
     renderWithRouter(<ContentHighlightCardItemContainerWrapper
       isLoading={false}
@@ -65,7 +66,7 @@ describe('<ContentHighlightCardItem>', () => {
     const hyperlink = screen.getByTestId('hyperlink-title');
     expect(hyperlink).toBeInTheDocument();
     expect(hyperlink.href).toContain(`${initialState.portalConfiguration.enterpriseSlug}/${testHighlightedContent.contentType.toLowerCase()}/${testHighlightedContent.contentKey}`);
-    userEvent.click(hyperlink);
+    await user.click(hyperlink);
     expect(trackClickEvent).toHaveBeenCalled();
   });
   it('Adds archived subtitle when appropriate', () => {

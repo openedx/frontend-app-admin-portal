@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import dayjs from 'dayjs';
 import userEvent from '@testing-library/user-event';
 import {
-  screen, render, cleanup, waitFor,
+  screen, render, cleanup,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -249,6 +249,7 @@ describe('<ManageRequestsTab />', () => {
   });
 
   it('renders <ApproveCouponCodeRequestModal /> when approve is clicked', async () => {
+    const user = userEvent.setup();
     const store = getMockStore({
       ...initialStore,
       coupons: {
@@ -264,11 +265,12 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const approveButton = screen.getByText('Approve');
-    await waitFor(() => userEvent.click(approveButton));
+    await user.click(approveButton);
     expect(screen.getByText('Approve coupon code request modal'));
   });
 
   it('closes <ApproveCouponCodeRequestModal /> when close button is clicked', async () => {
+    const user = userEvent.setup();
     const store = getMockStore({
       ...initialStore,
       coupons: {
@@ -284,16 +286,17 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const approveButton = screen.getByText('Approve');
-    await waitFor(() => userEvent.click(approveButton));
+    await user.click(approveButton);
     expect(screen.getByText('Approve coupon code request modal'));
 
     const closeButton = screen.getByText('Close');
-    await waitFor(() => userEvent.click(closeButton));
+    await user.click(closeButton);
 
     expect(screen.queryByText('Decline coupon code request modal')).not.toBeInTheDocument();
   });
 
   it('handles successfully approving a request', async () => {
+    const user = userEvent.setup();
     const mockHandleUpdateRequestStatus = jest.fn();
     useSubsidyRequests.mockImplementation(() => ({
       isLoading: false,
@@ -322,11 +325,11 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const approveButton = screen.getByText('Approve');
-    await waitFor(() => userEvent.click(approveButton));
+    await user.click(approveButton);
     expect(screen.getByText('Approve coupon code request modal'));
 
     const approveInModalButton = screen.getByText('Approve in modal');
-    await waitFor(() => userEvent.click(approveInModalButton));
+    await user.click(approveInModalButton);
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockCouponCodeRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING },
     );
@@ -335,27 +338,30 @@ describe('<ManageRequestsTab />', () => {
   });
 
   it('renders <DeclineSubsidyRequestModal /> when decline is clicked', async () => {
+    const user = userEvent.setup();
     render(<ManageRequestsTabWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    await waitFor(() => userEvent.click(declineButton));
+    await user.click(declineButton);
     expect(screen.getByText('Decline coupon code request modal'));
   });
 
   it('closes <DeclineSubsidyRequestModal /> when close button is clicked', async () => {
+    const user = userEvent.setup();
     render(<ManageRequestsTabWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    await waitFor(() => userEvent.click(declineButton));
+    await user.click(declineButton);
     expect(screen.getByText('Decline coupon code request modal'));
 
     const closeButton = screen.getByText('Close');
-    await waitFor(() => userEvent.click(closeButton));
+    await user.click(closeButton);
 
     expect(screen.queryByText('Decline coupon code request modal')).not.toBeInTheDocument();
   });
 
   it('handles successfully declining a request', async () => {
+    const user = userEvent.setup();
     const mockHandleUpdateRequestStatus = jest.fn();
     useSubsidyRequests.mockImplementation(() => ({
       isLoading: false,
@@ -384,11 +390,11 @@ describe('<ManageRequestsTab />', () => {
     render(<ManageRequestsTabWithRouter store={store} />);
 
     const declineButton = screen.getByText('Decline');
-    await waitFor(() => userEvent.click(declineButton));
+    await user.click(declineButton);
     expect(screen.getByText('Decline coupon code request modal'));
 
     const declineInModalButton = screen.getByText('Decline in modal');
-    await waitFor(() => userEvent.click(declineInModalButton));
+    await user.click(declineInModalButton);
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockCouponCodeRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED },
     );

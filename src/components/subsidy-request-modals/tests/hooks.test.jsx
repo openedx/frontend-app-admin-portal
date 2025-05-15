@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useApplicableCatalogs, useApplicableSubscriptions, useApplicableCoupons } from '../data/hooks';
 import EnterpriseCatalogApiService from '../../../data/services/EnterpriseCatalogApiService';
 
@@ -19,11 +19,13 @@ describe('useApplicableCatalogs', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('should fetch catalogs containing given the course runs', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useApplicableCatalogs({
+    const { result } = renderHook(() => useApplicableCatalogs({
       enterpriseId: TEST_ENTERPRISE_UUID,
       courseRunIds: TEST_COURSE_RUN_IDS,
     }));
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.applicableCatalogs).toBeDefined();
+    });
     expect(EnterpriseCatalogApiService.fetchApplicableCatalogs).toHaveBeenCalledWith(
       {
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -37,13 +39,14 @@ describe('useApplicableCatalogs', () => {
     const error = new Error('something went wrong');
     EnterpriseCatalogApiService.fetchApplicableCatalogs.mockRejectedValueOnce(error);
 
-    const { result, waitForNextUpdate } = renderHook(() => useApplicableCatalogs({
+    const { result } = renderHook(() => useApplicableCatalogs({
       enterpriseId: TEST_ENTERPRISE_UUID,
       courseRunIds: TEST_COURSE_RUN_IDS,
     }));
 
-    await waitForNextUpdate();
-    expect(result.current.error).toEqual(error);
+    await waitFor(() => {
+      expect(result.current.error).toEqual(error);
+    });
   });
 });
 
@@ -78,13 +81,15 @@ describe('useApplicableSubscriptions', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('should return all subscriptions with a catalog containing the given course runs', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useApplicableSubscriptions({
+    const { result } = renderHook(() => useApplicableSubscriptions({
       enterpriseId: TEST_ENTERPRISE_UUID,
       courseRunIds: TEST_COURSE_RUN_IDS,
       subscriptions,
     }));
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.applicableSubscriptions).toBeDefined();
+    });
     expect(EnterpriseCatalogApiService.fetchApplicableCatalogs).toHaveBeenCalledWith(
       {
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -100,12 +105,14 @@ describe('useApplicableSubscriptions', () => {
     const error = new Error('something went wrong');
     EnterpriseCatalogApiService.fetchApplicableCatalogs.mockRejectedValueOnce(error);
 
-    const { result, waitForNextUpdate } = renderHook(() => useApplicableCatalogs({
+    const { result } = renderHook(() => useApplicableCatalogs({
       enterpriseId: TEST_ENTERPRISE_UUID,
       courseRunIds: TEST_COURSE_RUN_IDS,
     }));
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.error).toEqual(error);
+    });
     expect(result.current.error).toEqual(error);
   });
 });
@@ -138,13 +145,15 @@ describe('useApplicableCoupons', () => {
   afterEach(() => jest.clearAllMocks());
 
   it('should return all coupons with a catalog containing the given course runs', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useApplicableCoupons({
+    const { result } = renderHook(() => useApplicableCoupons({
       enterpriseId: TEST_ENTERPRISE_UUID,
       courseRunIds: TEST_COURSE_RUN_IDS,
       coupons: couponOrders,
     }));
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.applicableCoupons).toBeDefined();
+    });
     expect(EnterpriseCatalogApiService.fetchApplicableCatalogs).toHaveBeenCalledWith(
       {
         enterpriseId: TEST_ENTERPRISE_UUID,
@@ -161,13 +170,14 @@ describe('useApplicableCoupons', () => {
     const error = new Error('something went wrong fetching applicable catalogs');
     EnterpriseCatalogApiService.fetchApplicableCatalogs.mockRejectedValueOnce(error);
 
-    const { result, waitForNextUpdate } = renderHook(() => useApplicableCoupons({
+    const { result } = renderHook(() => useApplicableCoupons({
       enterpriseId: TEST_ENTERPRISE_UUID,
       courseRunIds: TEST_COURSE_RUN_IDS,
       coupons: couponOrders,
     }));
 
-    await waitForNextUpdate();
-    expect(result.current.error).toEqual(error);
+    await waitFor(() => {
+      expect(result.current.error).toEqual(error);
+    });
   });
 });

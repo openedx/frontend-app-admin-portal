@@ -230,7 +230,7 @@ describe('CouponDetails container', () => {
       within(table).getByText(ACTIONS.assign.label);
     });
 
-    it.skip('does not show Assign button for an unavailable coupon', () => {
+    it('does not show Assign button for an unavailable coupon', () => {
       store = mockStore({
         ...initialState,
         table: {

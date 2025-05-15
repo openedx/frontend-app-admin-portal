@@ -103,10 +103,11 @@ describe('<CourseSearchResults />', () => {
     expect(screen.getAllByRole('cell', { name: 'edX' })).toHaveLength(2);
   });
   it('renders popover with course description', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     expect(screen.queryByText(/short description of course 1/)).not.toBeInTheDocument();
     const courseTitle = screen.getByText(testCourseName);
-    userEvent.click(courseTitle);
+    await user.click(courseTitle);
     await waitFor(() => {
       expect(screen.getByText(/short description of course 1/)).toBeInTheDocument();
     });
@@ -127,9 +128,10 @@ describe('<CourseSearchResults />', () => {
     expect(screen.getByText('Loading...'));
   });
   it('shows selection options when at least one course is selected', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     const rowToSelect = screen.getByText(testCourseName2).closest('tr');
-    await waitFor(() => userEvent.click(within(rowToSelect).getByTestId('selectOne')));
+    await user.click(within(rowToSelect).getByTestId('selectOne'));
     expect(screen.getByText('1 selected (1 shown below)', { exact: false })).toBeInTheDocument();
   });
   it('renders a message when there are no results', () => {

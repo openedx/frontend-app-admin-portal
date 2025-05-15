@@ -544,7 +544,7 @@ describe('<Admin />', () => {
           />
         ));
         const downloadBtn = await screen.findByTestId('download-csv-btn');
-        await waitFor(() => user.click(downloadBtn));
+        await user.click(downloadBtn);
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
         expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
           enterpriseId,
