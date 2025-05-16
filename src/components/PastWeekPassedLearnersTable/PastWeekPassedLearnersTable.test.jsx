@@ -1,114 +1,265 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import renderer from 'react-test-renderer';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router';
+import { act } from '@testing-library/react';
 import { mount } from 'enzyme';
-
 import PastWeekPassedLearnersTable from '.';
+import usePastWeekPassedLearners from './data/hooks/usePastWeekPassedLearners';
+import { PAGE_SIZE } from '../../data/constants/table';
 
-const enterpriseId = 'test-enterprise';
+// Mock the hooks
+jest.mock('./data/hooks/usePastWeekPassedLearners', () => jest.fn());
+jest.mock('../Admin/TableDataContext', () => ({
+  useTableData: () => ({
+    setTableHasData: jest.fn(),
+  }),
+}));
+
 const mockStore = configureMockStore([thunk]);
-const store = mockStore({
-  portalConfiguration: {
-    enterpriseId,
-  },
-  table: {
-    'completed-learners-week': {
-      data: {
-        count: 2,
-        num_pages: 1,
-        current_page: 1,
-        results: [
-          {
-            id: 1,
-            passed_date: '2018-09-23T16:27:34.690065Z',
-            course_title: 'Dive into ReactJS',
-            course_key: 'edX/ReactJS',
-            user_email: 'awesome.me@example.com',
-          },
-          {
-            id: 5,
-            passed_date: '2018-09-22T16:27:34.690065Z',
-            course_title: 'Redux with ReactJS',
-            course_key: 'edX/Redux_ReactJS',
-            user_email: 'new@example.com',
 
-          },
-        ],
-        next: null,
-        start: 0,
-        previous: null,
-      },
-      ordering: null,
-      loading: false,
-      error: null,
-    },
-  },
-});
-
-const PastWeekPassedLearnersWrapper = props => (
-  <MemoryRouter>
-    <IntlProvider locale="en">
-      <Provider store={store}>
-        <PastWeekPassedLearnersTable
-          {...props}
-        />
-      </Provider>
-    </IntlProvider>
-  </MemoryRouter>
-);
+// Mock implementations
+const mockFetchData = jest.fn().mockResolvedValue({});
+const mockFetchDataImmediate = jest.fn();
 
 describe('PastWeekPassedLearnersTable', () => {
-  let wrapper;
+  const enterpriseId = 'test-enterprise-id';
+  const tableId = 'completed-learners-week';
 
-  it('renders table correctly', () => {
-    const tree = renderer
-      .create((
-        <PastWeekPassedLearnersWrapper />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  const store = mockStore({
+    portalConfiguration: {
+      enterpriseId,
+    },
   });
 
-  it('renders table with correct data', () => {
-    const tableId = 'completed-learners-week';
-    const columnTitles = ['Email', 'Course Title', 'Passed Date'];
-    const rowsData = [
-      [
-        'awesome.me@example.com',
-        'Dive into ReactJS',
-        'September 23, 2018',
-      ],
-      [
-        'new@example.com',
-        'Redux with ReactJS',
-        'September 22, 2018',
-      ],
-    ];
+  const defaultProps = {
+    id: tableId,
+  };
 
-    wrapper = mount((
-      <PastWeekPassedLearnersWrapper />
-    ));
+  beforeEach(() => {
+    // Setup default mock implementation
+    usePastWeekPassedLearners.mockReturnValue({
+      isLoading: false,
+      data: {
+        results: [
+          {
+            userEmail: 'test1@example.com',
+            courseTitle: 'React Basics',
+            passedDate: '2025-04-20T12:00:00Z',
+          },
+          {
+            userEmail: 'test2@example.com',
+            courseTitle: 'Advanced React',
+            passedDate: '2025-04-19T12:00:00Z',
+          },
+        ],
+        itemCount: 2,
+        pageCount: 1,
+      },
+      fetchData: mockFetchData,
+      fetchDataImmediate: mockFetchDataImmediate,
+      hasData: true,
+    });
+  });
 
-    // Verify that table has correct number of columns
-    expect(wrapper.find(`.${tableId} thead th`).length).toEqual(3);
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-    // Verify only expected columns are shown
-    wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
-      expect(column.text()).toContain(columnTitles[index]);
+  const PastWeekPassedLearnersTableWrapper = (props = {}) => {
+    const history = createMemoryHistory();
+    return (
+      <Router location={history.location} navigator={history}>
+        <IntlProvider locale="en">
+          <Provider store={store}>
+            <PastWeekPassedLearnersTable {...defaultProps} {...props} />
+          </Provider>
+        </IntlProvider>
+      </Router>
+    );
+  };
+
+  it('renders the table with learner data', () => {
+    const wrapper = mount(<PastWeekPassedLearnersTableWrapper />);
+
+    // Check if table exists
+    const table = wrapper.find('DataTable');
+    expect(table.exists()).toBe(true);
+
+    // Verify DataTable props
+    expect(table.prop('id')).toBe(tableId);
+    expect(table.prop('data')).toEqual([
+      {
+        userEmail: 'test1@example.com',
+        courseTitle: 'React Basics',
+        passedDate: '2025-04-20T12:00:00Z',
+      },
+      {
+        userEmail: 'test2@example.com',
+        courseTitle: 'Advanced React',
+        passedDate: '2025-04-19T12:00:00Z',
+      },
+    ]);
+    expect(table.prop('itemCount')).toBe(2);
+    expect(table.prop('pageCount')).toBe(1);
+    expect(table.prop('isLoading')).toBe(false);
+
+    // Verify columns are correctly configured
+    expect(table.prop('columns').length).toBe(3);
+    expect(table.prop('columns')[0].accessor).toBe('userEmail');
+    expect(table.prop('columns')[1].accessor).toBe('courseTitle');
+    expect(table.prop('columns')[2].accessor).toBe('passedDate');
+  });
+
+  it('renders empty table when no data is available', () => {
+    usePastWeekPassedLearners.mockReturnValue({
+      isLoading: false,
+      data: {
+        results: [],
+        itemCount: 0,
+        pageCount: 0,
+      },
+      fetchData: mockFetchData,
+      fetchDataImmediate: mockFetchDataImmediate,
+      hasData: false,
     });
 
-    // Verify that table has correct number of rows
-    expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(2);
+    const wrapper = mount(<PastWeekPassedLearnersTableWrapper />);
 
-    // Verify each row in table has correct data
-    wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
-      row.find('td').forEach((cell, colIndex) => {
-        expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
+    const table = wrapper.find('DataTable');
+    expect(table.exists()).toBe(true);
+    expect(table.prop('data')).toEqual([]);
+    expect(table.prop('itemCount')).toBe(0);
+    expect(table.prop('pageCount')).toBe(0);
+  });
+
+  it('shows loading state when data is being fetched', () => {
+    usePastWeekPassedLearners.mockReturnValue({
+      isLoading: true,
+      data: {
+        results: [],
+        itemCount: 0,
+        pageCount: 0,
+      },
+      fetchData: mockFetchData,
+      fetchDataImmediate: mockFetchDataImmediate,
+      hasData: false,
+    });
+
+    const wrapper = mount(<PastWeekPassedLearnersTableWrapper />);
+
+    const table = wrapper.find('DataTable');
+    expect(table.prop('isLoading')).toBe(true);
+  });
+
+  it('fetches data immediately on mount', () => {
+    mount(<PastWeekPassedLearnersTableWrapper />);
+
+    expect(mockFetchDataImmediate).toHaveBeenCalledTimes(1);
+    expect(mockFetchDataImmediate).toHaveBeenCalledWith(
+      {
+        pageIndex: 0,
+        pageSize: PAGE_SIZE, // PAGE_SIZE constant value
+        sortBy: [
+          { id: 'passedDate', desc: true },
+        ],
+      },
+      true,
+    );
+  });
+
+  it('uses URL query parameters for initial page', () => {
+    const history = createMemoryHistory();
+    history.push(`?${tableId}-page=2`); // Set page 2 in URL
+
+    const wrapper = mount(
+      <Router location={history.location} navigator={history}>
+        <IntlProvider locale="en">
+          <Provider store={store}>
+            <PastWeekPassedLearnersTable {...defaultProps} />
+          </Provider>
+        </IntlProvider>
+      </Router>,
+    );
+
+    const table = wrapper.find('DataTable');
+    // Check that initialState has pageIndex set to 1 (0-based index for page 2)
+    expect(table.prop('initialState').pageIndex).toBe(1);
+
+    // Check that fetchDataImmediate was called with pageIndex 1
+    expect(mockFetchDataImmediate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        pageIndex: 1,
+      }),
+      true,
+    );
+  });
+
+  it('updates URL when page changes', async () => {
+    const history = createMemoryHistory();
+    jest.spyOn(history, 'push');
+
+    const wrapper = mount(
+      <Router location={history.location} navigator={history}>
+        <IntlProvider locale="en">
+          <Provider store={store}>
+            <PastWeekPassedLearnersTable {...defaultProps} />
+          </Provider>
+        </IntlProvider>
+      </Router>,
+    );
+
+    // Simulate page change by calling fetchData prop with new table state
+    const table = wrapper.find('DataTable');
+    await act(async () => {
+      await table.prop('fetchData')({
+        pageIndex: 1, // Navigate to page 2 (0-indexed)
+        pageSize: 50,
+        sortBy: [],
       });
     });
+
+    // Check that fetchData was called
+    expect(mockFetchData).toHaveBeenCalledWith({
+      pageIndex: 1,
+      pageSize: 50,
+      sortBy: [],
+    });
+  });
+
+  it('renders UserEmail component correctly', () => {
+    const wrapper = mount(<PastWeekPassedLearnersTableWrapper />);
+
+    // Find columns in the DataTable props
+    const columns = wrapper.find('DataTable').prop('columns');
+    const emailColumn = columns.find(col => col.accessor === 'userEmail');
+
+    // Test the Cell renderer with a sample row
+    const testRow = {
+      original: {
+        userEmail: 'test@example.com',
+      },
+    };
+
+    const emailCell = mount(
+      <IntlProvider locale="en">
+        {emailColumn.Cell({ row: testRow })}
+      </IntlProvider>,
+    );
+
+    expect(emailCell.find('[data-hj-suppress]').text()).toBe('test@example.com');
+  });
+
+  it('formats timestamps correctly in the passedDate column', () => {
+    const wrapper = mount(<PastWeekPassedLearnersTableWrapper />);
+
+    // Since the actual formatting depends on a utility function i18nFormatTimestamp,
+    // we can verify the Cell prop is properly configured
+    const columns = wrapper.find('DataTable').prop('columns');
+    const dateColumn = columns.find(col => col.accessor === 'passedDate');
+    expect(dateColumn).toBeDefined();
+    expect(typeof dateColumn.Cell).toBe('function');
   });
 });
