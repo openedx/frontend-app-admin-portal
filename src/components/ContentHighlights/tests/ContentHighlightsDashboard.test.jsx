@@ -97,16 +97,10 @@ describe('<ContentHighlightsDashboard>', () => {
   });
 
   it('Displays New highlight Modal on button click with no highlighted content list', async () => {
-<<<<<<< Updated upstream
-    renderWithRouter(<ContentHighlightsDashboardWrapper />);
-    const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
-    await waitFor(() => userEvent.click(newHighlight));
-=======
     const user = userEvent.setup();
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
     await user.click(newHighlight);
->>>>>>> Stashed changes
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });

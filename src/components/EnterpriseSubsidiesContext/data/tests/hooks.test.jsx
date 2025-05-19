@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { logError } from '@edx/frontend-platform/logging';
 import dayjs from 'dayjs';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -78,10 +78,11 @@ describe('useEnterpriseBudgets', () => {
           isLoading: false,
           data: {
             canManageLearnerCredit: false,
-          budgets: [],
-        },
-      }),
-    );
+            budgets: [],
+          },
+        }),
+      );
+    });
   });
 
   it('should always fetch enterprise offers from ecommerce', async () => {
@@ -119,12 +120,13 @@ describe('useEnterpriseBudgets', () => {
       expect(result.current).toEqual(
         expect.objectContaining({
           isLoading: false,
-        data: {
-          budgets: mockBudgets,
-          canManageLearnerCredit: true,
-        },
-      }),
-    );
+          data: {
+            budgets: mockBudgets,
+            canManageLearnerCredit: true,
+          },
+        }),
+      );
+    });
   });
 
   it('should fetch Subsidy-associated budgets from enterprise-subsidy when LC2 feature flag is disabled', async () => {
@@ -344,11 +346,12 @@ describe('useEnterpriseBudgets', () => {
         expect.objectContaining({
           isLoading: false,
           data: {
-          budgets: [],
-          canManageLearnerCredit: false,
-        },
-      }),
-    );
+            budgets: [],
+            canManageLearnerCredit: false,
+          },
+        }),
+      );
+    });
   });
 
   it('should return the active enterprise offer or subsidy when multiple available', async () => {
