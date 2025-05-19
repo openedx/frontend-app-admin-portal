@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from '@openedx/paragon';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 import isEmail from 'validator/lib/isEmail';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 

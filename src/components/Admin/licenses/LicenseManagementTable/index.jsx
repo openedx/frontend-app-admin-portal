@@ -1,24 +1,24 @@
-import _ from 'lodash';
+import { debounce, isEqual } from 'lodash-es';
 import React, {
-  useCallback, useMemo, useContext, useState,
+  useCallback, useContext, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
 import dayjs from 'dayjs';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import {
-  DataTable,
-  TextFilter,
-  CheckboxFilter,
-  Toast,
+  CheckboxFilter, DataTable, TextFilter, Toast,
 } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { SubscriptionContext } from '../../../subscriptions/SubscriptionData';
 import { SubscriptionDetailContext } from '../../../subscriptions/SubscriptionDetailContextProvider';
 import {
-  DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED, API_FIELDS_BY_TABLE_COLUMN_ACCESSOR,
+  ACTIVATED,
+  API_FIELDS_BY_TABLE_COLUMN_ACCESSOR,
+  ASSIGNED,
+  DEFAULT_PAGE,
+  REVOKED,
 } from '../../../subscriptions/data/constants';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
 import { i18nFormatTimestamp } from '../../../../utils';
@@ -26,10 +26,12 @@ import SubscriptionZeroStateMessage from '../../../subscriptions/SubscriptionZer
 import EnrollBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/EnrollBulkAction';
 import RemindBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/RemindBulkAction';
 import RevokeBulkAction from '../../../subscriptions/licenses/LicenseManagementTable/bulk-actions/RevokeBulkAction';
-import LicenseManagementTableActionColumn from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementTableActionColumn';
-import LicenseManagementUserBadge from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementUserBadge';
+import LicenseManagementTableActionColumn
+  from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementTableActionColumn';
+import LicenseManagementUserBadge
+  from '../../../subscriptions/licenses/LicenseManagementTable/LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
-import { pushEvent, EVENTS } from '../../../../optimizely';
+import { EVENTS, pushEvent } from '../../../../optimizely';
 
 const userRecentAction = (user, intl) => {
   switch (user.status) {
@@ -167,7 +169,7 @@ const LicenseManagementTable = ({ subscriptionUUID }) => {
     (args) => {
       if (args.sortBy?.length > 0) {
         const sortByString = applySortBy(args.sortBy);
-        if (!_.isEqual(sortByString, sortBy)) {
+        if (!isEqual(sortByString, sortBy)) {
           setSortBy(sortByString);
         }
       }

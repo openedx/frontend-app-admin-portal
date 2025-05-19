@@ -1,6 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import isEmail from 'validator/lib/isEmail';
-import _ from 'lodash';
+import { union } from 'lodash-es';
 import { EMAIL_ADDRESS_CSV_FORM_DATA, EMAIL_ADDRESS_TEXT_FORM_DATA } from '../constants/addUsers';
 import {
   EMAIL_TEMPLATE_FIELD_MAX_LIMIT,
@@ -205,7 +205,7 @@ const returnValidatedEmails = (formData) => {
     throw new SubmissionError(errorsDict);
   }
 
-  const emails = _.union(extractEmails(formData).allEmails); // Dedup emails
+  const emails = union(extractEmails(formData).allEmails); // Dedup emails
   return validateEmailAddresses(emails).validEmails;
 };
 

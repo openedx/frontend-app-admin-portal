@@ -1,13 +1,8 @@
 import dayjs from 'dayjs';
 import { saveAs } from 'file-saver';
-import camelCase from 'lodash/camelCase';
-import snakeCase from 'lodash/snakeCase';
-import isArray from 'lodash/isArray';
-import mergeWith from 'lodash/mergeWith';
-import isNumber from 'lodash/isNumber';
-import isString from 'lodash/isString';
-import fromPairs from 'lodash/fromPairs';
-import without from 'lodash/without';
+import {
+  camelCase, fromPairs, isArray, isNumber, isString, mergeWith, snakeCase, without,
+} from 'lodash-es';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import isNumeric from 'validator/lib/isNumeric';
@@ -18,9 +13,18 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import { features } from './config';
 
 import {
-  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE,
-  HELP_CENTER_BLACKBOARD, HELP_CENTER_CANVAS, HELP_CENTER_CORNERSTONE,
-  HELP_CENTER_DEGREED, HELP_CENTER_MOODLE, HELP_CENTER_SAP, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE,
+  CANVAS_TYPE,
+  CORNERSTONE_TYPE,
+  DEGREED2_TYPE,
+  HELP_CENTER_BLACKBOARD,
+  HELP_CENTER_CANVAS,
+  HELP_CENTER_CORNERSTONE,
+  HELP_CENTER_DEGREED,
+  HELP_CENTER_MOODLE,
+  HELP_CENTER_SAP,
+  MOODLE_TYPE,
+  SAP_TYPE,
 } from './components/settings/data/constants';
 import BlackboardIcon from './icons/Blackboard.svg';
 import CanvasIcon from './icons/Canvas.svg';

@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
-import { sum } from 'lodash';
 import utc from 'dayjs/plugin/utc';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import { CHART_TYPES, CALCULATION } from './constants';
+import { CALCULATION, CHART_TYPES } from './constants';
 import messages from '../messages';
 
 dayjs.extend(utc);
@@ -90,16 +89,24 @@ e.g. 3 would mean 3-day moving average.
 */
 const calculateMovingAverage = (timeSeriesData, countKey, period) => {
   const modifiedData = [];
-  for (let i = 0; i < timeSeriesData.length; i++) {
-    // Set start to 0 for the first `N` entries where `N` is the `period`.
-    const start = i < period ? 0 : (i - period + 1);
-    const end = i + 1;
+  let windowSum = 0;
+  const queue = [];
 
-    // Calculate moving average for the given period.
-    const arraySlice = timeSeriesData.slice(start, end).map((item) => item[countKey]);
-    const movingAverage = sum(arraySlice) / arraySlice.length;
+  for (let i = 0; i < timeSeriesData.length; i++) {
+    const currentVal = timeSeriesData[i][countKey];
+    queue.push(currentVal);
+    windowSum += currentVal;
+
+    if (queue.length > period) {
+      windowSum -= queue.shift();
+    }
+
+    const divisor = Math.min(period, i + 1);
+    const movingAverage = windowSum / divisor;
+
     modifiedData.push({ ...timeSeriesData[i], [countKey]: movingAverage });
   }
+
   return modifiedData;
 };
 

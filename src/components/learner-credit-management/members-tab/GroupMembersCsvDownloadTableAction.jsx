@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ActionRow, AlertModal, Button } from '@openedx/paragon';
 import { Download } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
-import snakeCase from 'lodash/snakeCase';
+import { snakeCase } from 'lodash-es';
 import { saveAs } from 'file-saver';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';

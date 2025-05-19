@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Stack, Skeleton } from '@openedx/paragon';
+import { Skeleton, Stack } from '@openedx/paragon';
 
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';

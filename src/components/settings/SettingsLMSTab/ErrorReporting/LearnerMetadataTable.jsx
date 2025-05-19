@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isEmpty, isEqual } from 'lodash-es';
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { DataTable, TextFilter } from '@openedx/paragon';
@@ -61,12 +61,12 @@ const LearnerMetadataTable = ({ config, enterpriseCustomerUuid }) => {
         (filter) => filter.value,
       );
       const sortBy = args.sortBy.at(-1);
-      if (!_.isEmpty(sortBy)) {
+      if (!isEmpty(sortBy)) {
         const newSortBys = { sort_by: `${sortBy.desc ? '-' : ''}${sortBy.id}` };
         newFilters = { ...newFilters, ...newSortBys };
       }
 
-      if (!_.isEqual(newFilters, currentFilters)) {
+      if (!isEqual(newFilters, currentFilters)) {
         setCurrentFilters(newFilters);
       }
       if (args.pageIndex !== currentPage) {

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 import { useMemo } from 'react';
 import { ANALYTICS_TABS, generateKey } from '../constants';
-import { applyGranularity, applyCalculation } from '../utils';
+import { applyCalculation, applyGranularity } from '../utils';
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 
 /**
@@ -19,7 +19,7 @@ import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataAp
  * @param {Array} allowedEnrollTypes - Allowed enrollment types to consider. e.g. [`certificate`, `audit`].
  */
 const applyDataTransformations = (response, granularity, calculation, allowedEnrollTypes = ['certificate', 'audit']) => {
-  const modifiedResponse = _.cloneDeep(response);
+  const modifiedResponse = cloneDeep(response);
   if (modifiedResponse?.data?.enrollmentsOverTime) {
     let enrollmentsOverTime = [];
     for (let i = 0; i < allowedEnrollTypes.length; i++) {

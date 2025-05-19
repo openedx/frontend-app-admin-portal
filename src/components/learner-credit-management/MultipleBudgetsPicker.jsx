@@ -1,13 +1,9 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-  DataTable,
-  CardView,
-  TextFilter,
-  Row,
-  Col,
+  CardView, Col, DataTable, Row, TextFilter,
 } from '@openedx/paragon';
-import groupBy from 'lodash/groupBy';
+import { groupBy } from 'lodash-es';
 
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import BudgetCard from './BudgetCard';
