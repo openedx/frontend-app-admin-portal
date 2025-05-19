@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import EnterpriseApp from '../../components/EnterpriseApp';
 
 import { toggleSidebarToggle } from '../../data/actions/sidebar';
-import { fetchEnterpriseAppData } from '../../data/actions/enterpriseApp';
+import { fetchEnterpriseAppData } from '../../data/actions/enterpriseApp.ts';
 
 const mapStateToProps = (state) => {
   const enterpriseListState = state.table['enterprise-list'] || {};
