@@ -11,7 +11,7 @@ type FetchFunction = () => Promise<any>;
 /**
  * fetchInParallel
  *
- * Takes multiple fetch functions that can be passed like this:
+ * Takes multiple async fetch functions that can be passed like this:
  * [async () => someFetchRequest()]
  *
  * Returns a Promise after all fetch functions have been run in parallel
