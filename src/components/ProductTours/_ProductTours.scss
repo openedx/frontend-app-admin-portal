@@ -1,6 +1,8 @@
 .product-tours {
   .info-button {
     padding: 0;
+    transform: translate(-1rem, -3rem);
+    background-color: $white;;
 
     .pgn__icon.btn-icon__icon {
       width: 100%;
