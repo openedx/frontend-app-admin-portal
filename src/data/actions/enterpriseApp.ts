@@ -1,4 +1,4 @@
-import { Dispatch, AnyAction } from 'redux';
+import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { fetchPortalConfiguration } from './portalConfiguration';
 import { fetchLoggedInEnterpriseAdmin } from './enterpriseCustomerAdmin';
