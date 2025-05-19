@@ -70,10 +70,9 @@ describe('useBudgetContentAssignments', () => {
     });
 
     await waitFor(() => {
-      expect(result.current).toBeDefined();
+      expect(result.current.isLoading).toEqual(false);
     });
 
-    expect(result.current.isLoading).toEqual(false);
     expect(result.current.contentAssignments).toEqual({
       results: [
         {
@@ -136,7 +135,7 @@ describe('useBudgetContentAssignments', () => {
     });
 
     await waitFor(() => {
-      expect(result.current).toBeDefined();
+      expect(result.current.isLoading).toEqual(false);
     });
     expect(mockListContentAssignments).toHaveBeenCalledWith(
       '123',
@@ -195,7 +194,7 @@ describe('useBudgetContentAssignments', () => {
     });
 
     await waitFor(() => {
-      expect(result.current).toBeDefined();
+      expect(result.current.isLoading).toEqual(false);
     });
 
     expect(mockListContentAssignments).toHaveBeenCalledWith(
@@ -292,7 +291,7 @@ describe('useBudgetContentAssignments', () => {
     });
 
     await waitFor(() => {
-      expect(result.current).toBeDefined();
+      expect(result.current.isLoading).toEqual(false);
     });
     expect(mockListContentAssignments).toHaveBeenCalledWith(
       '123',
@@ -346,7 +345,7 @@ describe('useBudgetContentAssignments', () => {
     });
 
     await waitFor(() => {
-      expect(result.current).toBeDefined();
+      expect(result.current.isLoading).toEqual(false);
     });
 
     expect(sendEnterpriseTrackEvent).not.toHaveBeenCalled();
@@ -363,9 +362,7 @@ describe('useBudgetContentAssignments', () => {
     });
 
     await waitFor(() => {
-      expect(result.current).toBeDefined();
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     });
-
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 });

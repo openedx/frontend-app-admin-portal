@@ -80,11 +80,7 @@ describe('<DeleteHighlightSet />', () => {
   const clickDeleteHighlightBtn = async () => {
     const user = userEvent.setup();
     const deleteBtn = getDeleteHighlightBtn();
-<<<<<<< Updated upstream
-    await waitFor(() => userEvent.click(deleteBtn));
-=======
     await user.click(deleteBtn);
->>>>>>> Stashed changes
     expect(screen.getByText('Delete highlight?')).toBeInTheDocument();
   };
 
