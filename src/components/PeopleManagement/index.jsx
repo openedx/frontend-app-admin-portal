@@ -19,6 +19,7 @@ import GroupCardGrid from './GroupCardGrid';
 import PeopleManagementTable from './PeopleManagementTable';
 import EVENT_NAMES from '../../eventTracking';
 import ValidatedEmailsContextProvider from './data/ValidatedEmailsContextProvider';
+import GroupInviteErrorToast from './GroupInviteErrorToast';
 
 const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
@@ -34,6 +35,9 @@ const PeopleManagementPage = ({ enterpriseId }) => {
     defaultMessage: 'Group deleted',
     description: 'Toast text after a user has deleted a group.',
   });
+
+  const [isGroupInviteErrorModalOpen, openGroupInviteErrorModal, closeGroupInviteErrorModal] = useToggle(false);
+  const [groupInviteError, setGroupInviteError] = useState('');
 
   const { enterpriseSubsidyTypes } = useContext(EnterpriseSubsidiesContext);
   const { data, isLoading: isGroupsLoading } = useAllFlexEnterpriseGroups(enterpriseId);
@@ -76,6 +80,11 @@ const PeopleManagementPage = ({ enterpriseId }) => {
     }
   }
 
+  const handleInviteError = (errorType) => {
+    setGroupInviteError(errorType);
+    openGroupInviteErrorModal();
+  };
+
   const handleOnClickCreateGroup = () => {
     openModal();
     sendEnterpriseTrackEvent(
@@ -91,6 +100,11 @@ const PeopleManagementPage = ({ enterpriseId }) => {
       <Toast onClose={closeToast} show={isToastOpen}>
         {toastText}
       </Toast>
+      <GroupInviteErrorToast
+        isOpen={isGroupInviteErrorModalOpen}
+        errorType={groupInviteError}
+        closeToast={closeGroupInviteErrorModal}
+      />
       <div className="mx-3 mt-4">
         <ActionRow className="mb-4">
           <span className="flex-column">
@@ -131,6 +145,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
               isModalOpen={isModalOpen}
               openModel={openModal}
               closeModal={closeModal}
+              onInviteError={handleInviteError}
             />
           </ValidatedEmailsContextProvider>
         </ActionRow>

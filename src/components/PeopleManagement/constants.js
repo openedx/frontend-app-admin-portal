@@ -51,3 +51,5 @@ export const ASSIGNMENT_TYPES = {
   EXPIRING: 'expiring',
   REVERSED: 'reversed',
 };
+
+export const ERROR_LEARNER_NOT_IN_ORG = 'learner_not_in_org';
