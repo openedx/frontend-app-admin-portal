@@ -180,9 +180,6 @@ const initialStoreState = {
   portalConfiguration: {
     enterpriseId: enterpriseUUID,
     enterpriseSlug,
-    enterpriseFeatures: {
-      enterpriseGroupsV2: true,
-    },
   },
 };
 

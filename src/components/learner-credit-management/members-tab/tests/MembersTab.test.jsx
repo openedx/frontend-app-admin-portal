@@ -77,7 +77,6 @@ const initialStoreState = {
     enableLearnerPortal: true,
     enterpriseFeatures: {
       topDownAssignmentRealTimeLcm: true,
-      enterpriseGroupsV1: true,
     },
   },
 };
@@ -147,9 +146,6 @@ describe('MembersTab', () => {
     const initialState = {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
       },
     };
     useParams.mockReturnValue({
@@ -188,7 +184,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -231,7 +226,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -289,7 +283,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -390,7 +383,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -466,7 +458,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -554,7 +545,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -625,7 +615,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -695,7 +684,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };
@@ -836,7 +824,6 @@ describe('MembersTab', () => {
         portalConfiguration: {
           ...initialStoreState.portalConfiguration,
           enterpriseFeatures: {
-            enterpriseGroupsV1: true,
           },
         },
       };
@@ -911,7 +898,6 @@ describe('MembersTab', () => {
       portalConfiguration: {
         ...initialStoreState.portalConfiguration,
         enterpriseFeatures: {
-          enterpriseGroupsV1: true,
         },
       },
     };

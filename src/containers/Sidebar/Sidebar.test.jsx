@@ -51,9 +51,6 @@ const initialState = {
     enableSubscriptionManagementScreen: true,
     enableAnalyticsScreen: true,
     enableReportingConfigScreenLink: true,
-    enterpriseFeatures: {
-      enterpriseGroupsV1: false,
-    },
   },
 };
 
@@ -147,9 +144,6 @@ describe('<Sidebar />', () => {
       },
       portalConfiguration: {
         enableCodeManagementScreen: false,
-        enterpriseFeatures: {
-          enterpriseGroupsV1: false,
-        },
       },
     });
 
@@ -462,11 +456,6 @@ describe('<Sidebar />', () => {
     getConfig.mockReturnValue({ FEATURE_CONTENT_HIGHLIGHTS: true });
     const store = mockStore({
       ...initialState,
-      portalConfiguration: {
-        enterpriseFeatures: {
-          enterpriseGroupsV1: true,
-        },
-      },
     });
     LmsApiService.fetchEnterpriseGroups.mockImplementation(() => Promise.resolve({
       data: { results: [{ group_type: groupType }] },

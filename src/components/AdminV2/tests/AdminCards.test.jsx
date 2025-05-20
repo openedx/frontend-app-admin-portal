@@ -118,7 +118,6 @@ describe('AdminCards', () => {
       courseCompletions: 0,
       enrolledLearners: 0,
     };
-
     renderComponent(zeroProps);
     const numberCardsTitles = await screen.findAllByTestId('number-card-title');
 
