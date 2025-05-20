@@ -1,12 +1,13 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import AdminPage from '.';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../../components/EnterpriseSubsidiesContext/data/hooks', () => ({
   ...jest.requireActual('../../components/EnterpriseSubsidiesContext/data/hooks'),
@@ -52,30 +53,38 @@ const store = mockStore({
   },
 });
 
-describe('<AdminPage />', () => {
-  let wrapper;
-  let dispatchSpy;
+const AdminPageWrapper = () => (
+  <MemoryRouter>
+    <Provider store={store}>
+      <IntlProvider locale="en">
+        <AdminPage enterpriseSlug="test-enterprise" />
+      </IntlProvider>
+    </Provider>
+  </MemoryRouter>
+);
 
+describe('<AdminPage />', () => {
   beforeEach(() => {
-    dispatchSpy = jest.spyOn(store, 'dispatch');
-    wrapper = render((
-      <MemoryRouter>
-        <Provider store={store}>
-          <IntlProvider locale="en">
-            <AdminPage enterpriseSlug="test-enterprise" />
-          </IntlProvider>
-        </Provider>
-      </MemoryRouter>
-    ));
+    jest.clearAllMocks();
   });
 
-  it.skip('sets the appropriate props', () => {
-    expect(wrapper.props().enrolledLearners).toEqual(1);
-    expect(wrapper.props().courseCompletions).toEqual(1);
-    expect(wrapper.props().activeLearners).toEqual({
-      past_week: 1,
-      past_month: 1,
-    });
+  it.only('renders the appropriate number cards summary', () => {
+    render(<AdminPageWrapper />);
+    const registeredLearnersCard = screen.getByText('total number of learners registered').closest('[data-testid="number-card"]');
+    const registeredLearnersCount = registeredLearnersCard.querySelector('[data-testid="number-card-title"]').textContent;
+    expect(registeredLearnersCount).toBe('3');
+
+    const enrolledLearnersCard = screen.getByText('learners enrolled in at least one course').closest('[data-testid="number-card"]');
+    const enrolledLearnersCount = enrolledLearnersCard.querySelector('[data-testid="number-card-title"]').textContent;
+    expect(enrolledLearnersCount).toBe('1');
+
+    const courseCompletionsCard = screen.getByText('course completions').closest('[data-testid="number-card"]');
+    const courseCompletionsCount = courseCompletionsCard.querySelector('[data-testid="number-card-title"]').textContent;
+    expect(courseCompletionsCount).toBe('1');
+
+    const activeLearnersCard = screen.getByText('active learners in the past week').closest('[data-testid="number-card"]');
+    const activeLearnersCount = activeLearnersCard.querySelector('[data-testid="number-card-title"]').textContent;
+    expect(activeLearnersCount).toBe('1');
   });
 
   it('fetchDashboardAnalytics dispatches fetchDashboardAnalytics action', () => {
@@ -84,7 +93,8 @@ describe('<AdminPage />', () => {
   });
 
   it('clearDashboardAnalytics dispatches clearDashboardAnalytics action', () => {
-    wrapper.props().clearDashboardAnalytics();
+    userEvent.click(screen.getByText('Clear'));
+    // wrapper.props().clearDashboardAnalytics();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 

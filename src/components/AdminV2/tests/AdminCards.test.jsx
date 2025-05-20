@@ -93,18 +93,18 @@ describe('AdminCards', () => {
     renderComponent();
     const toggleButtons = await screen.getAllByText('Details');
 
-    user.click(toggleButtons[0]);
+    await user.click(toggleButtons[0]);
     const detailActionsList = await screen.findAllByTestId('number-card-detail-action');
     expect(detailActionsList).toHaveLength(1);
 
     // TODO: need to figure out why detailsAction has length 1 for every case
-    user.click(toggleButtons[1]);
+    await user.click(toggleButtons[1]);
     // expect(detailActionsList).toHaveLength(2);
 
-    user.click(toggleButtons[2]);
+    await user.click(toggleButtons[2]);
     // expect(detailActionsList).toHaveLength(3);
 
-    user.click(toggleButtons[3]);
+    await user.click(toggleButtons[3]);
     // expect(detailActionsList).toHaveLength(3);
   });
 

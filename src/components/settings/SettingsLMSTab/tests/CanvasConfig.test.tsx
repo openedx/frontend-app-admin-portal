@@ -149,7 +149,7 @@ describe('<CanvasConfig />', () => {
     expect(!screen.queryByText(INVALID_LINK));
     expect(!screen.queryByText(INVALID_NAME));
   });
-  test.skip('saves draft correctly', async () => {
+  test('saves draft correctly', async () => {
     render(testCanvasConfigSetup(noExistingData));
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
@@ -179,7 +179,7 @@ describe('<CanvasConfig />', () => {
     };
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
-  test.skip('Authorizing a config will initiate backend polling', async () => {
+  test('Authorizing a config will initiate backend polling', async () => {
     render(testCanvasConfigSetup(noExistingData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 

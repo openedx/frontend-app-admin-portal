@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { useEnterpriseGroupLearnersTableData } from '../data/hooks';
@@ -28,7 +28,7 @@ describe('useEnterpriseGroupLearnersTableData', () => {
     const mockEnterpriseGroupLearners = jest.spyOn(LmsApiService, 'fetchEnterpriseGroupLearners');
     mockEnterpriseGroupLearners.mockResolvedValue({ data: mockData });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseGroupLearnersTableData({ groupUuid: mockGroupUUID }),
     );
     result.current.fetchEnterpriseGroupLearnersTableData({
@@ -37,7 +37,9 @@ describe('useEnterpriseGroupLearnersTableData', () => {
       filters: [],
       sortBy: [],
     });
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(LmsApiService.fetchEnterpriseGroupLearners).toHaveBeenCalledWith(mockGroupUUID, { page: 1 });
     expect(result.current.isLoading).toEqual(false);
     expect(result.current.enterpriseGroupLearnersTableData.results).toEqual(camelCaseObject(mockData.results));

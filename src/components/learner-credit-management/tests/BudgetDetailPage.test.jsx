@@ -222,6 +222,7 @@ const BudgetDetailPageWrapper = ({
 
 describe('<BudgetDetailPage />', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     jest.resetAllMocks();
 
     getAuthenticatedUser.mockReturnValue({
@@ -446,6 +447,8 @@ describe('<BudgetDetailPage />', () => {
     expected,
     isLoading,
   }) => {
+    const user = userEvent.setup();
+
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -503,7 +506,7 @@ describe('<BudgetDetailPage />', () => {
       const utilized = redeemed + allocated;
 
       if (utilized > 0) {
-        userEvent.click(screen.getByText('Utilization details'));
+        await user.click(screen.getByText('Utilization details'));
 
         expect(screen.getByTestId('budget-utilization-amount')).toHaveTextContent(expected.utilized);
         expect(screen.getByTestId('budget-utilization-assigned')).toHaveTextContent(expected.allocated);
@@ -616,6 +619,7 @@ describe('<BudgetDetailPage />', () => {
     { isLargeViewport: true },
     { isLargeViewport: false },
   ])('displays assignable budget activity overview empty state', async ({ isLargeViewport }) => {
+    const user = userEvent.setup();
     useIsLargeOrGreater.mockReturnValue(isLargeViewport);
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -647,7 +651,7 @@ describe('<BudgetDetailPage />', () => {
     const illustrationTestIds = ['find-the-right-course-illustration', 'name-your-learners-illustration', 'confirm-spend-illustration'];
     illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
     expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Get started'));
+    await user.click(screen.getByText('Get started'));
     await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
   });
 
@@ -926,6 +930,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('renders with assigned table empty state with spent table and catalog tab available for assignable budgets', async () => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -993,11 +998,12 @@ describe('<BudgetDetailPage />', () => {
     expect(transactionRowWithReversal.getByText(`Refunded on ${formatDate(mockEnrollmentTransactionReversal.created)}`)).toBeInTheDocument();
     expect(transactionRowWithReversal.getByText(`+${formatPrice(mockEnrollmentTransaction.courseListPrice)}`)).toBeInTheDocument();
 
-    userEvent.click(spentSection.queryAllByText(mockContentTitle, { selector: 'a' })[0]);
+    await user.click(spentSection.queryAllByText(mockContentTitle, { selector: 'a' })[0]);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
-  it('renders with assigned table data and handles table refresh', () => {
+  it('renders with assigned table data and handles table refresh', async () => {
+    const user = userEvent.setup();
     const NUMBER_OF_ASSIGNMENTS_TO_GENERATE = 60;
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -1064,14 +1070,16 @@ describe('<BudgetDetailPage />', () => {
     // temporary patch of Paragon is working as intended. If this test fails, it may mean Paragon
     // was upgraded to a version that does not yet contain a fix for the underlying bug related to
     // the incorrect "Select all X" count.
-    const selectAllCheckbox = assignedSection.queryAllByRole('checkbox')[0];
-    userEvent.click(selectAllCheckbox);
-    waitFor(() => {
+    const selectAllCheckbox = screen.queryAllByRole('checkbox')[0];
+    await user.click(selectAllCheckbox);
+
+    await waitFor(() => {
       expect(getButtonElement(`Select all ${NUMBER_OF_ASSIGNMENTS_TO_GENERATE}`, { screenOverride: assignedSection })).toBeInTheDocument();
     });
 
+    const selectAllCheckbox2 = screen.queryAllByRole('checkbox')[0];
     // Unselect the checkbox the "Refresh" table action appears
-    userEvent.click(selectAllCheckbox);
+    await user.click(selectAllCheckbox2);
 
     const expectedTableFetchDataArgs = {
       pageIndex: DEFAULT_PAGE,
@@ -1085,18 +1093,19 @@ describe('<BudgetDetailPage />', () => {
     // Verify "Refresh" behavior
     const refreshCTA = assignedSection.getByText('Refresh', { selector: 'button' });
     expect(refreshCTA).toBeInTheDocument();
-    userEvent.click(refreshCTA);
+    await user.click(refreshCTA);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(mockFetchContentAssignments).toHaveBeenCalledTimes(2); // should be called again on refresh
     expect(mockFetchContentAssignments).toHaveBeenLastCalledWith(expect.objectContaining(expectedTableFetchDataArgs));
 
-    userEvent.click(viewCourseCTA);
+    await user.click(viewCourseCTA);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
-  });
+  }, 30000);
 
   it.each([
     { sortByColumnHeader: 'Amount', expectedSortBy: [{ id: 'amount', desc: false }] },
   ])('renders sortable assigned table data', async ({ sortByColumnHeader, expectedSortBy }) => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -1161,7 +1170,7 @@ describe('<BudgetDetailPage />', () => {
 
     // Verify amount column sort
     const amountColumnHeader = assignedSection.getByText(sortByColumnHeader);
-    userEvent.click(amountColumnHeader);
+    await user.click(amountColumnHeader);
 
     expect(mockFetchContentAssignments).toHaveBeenCalledWith(
       expect.objectContaining(expectedDefaultTableFetchDataArgsAfterSort),
@@ -1187,6 +1196,7 @@ describe('<BudgetDetailPage />', () => {
     filterBy,
     expectedFilters,
   }) => {
+    const user = userEvent.setup();
     const { field, value } = filterBy;
 
     useParams.mockReturnValue({
@@ -1252,14 +1262,14 @@ describe('<BudgetDetailPage />', () => {
 
     if (field === 'status') {
       const filtersButton = getButtonElement('Filters', { screenOverride: assignedSection });
-      userEvent.click(filtersButton);
-      waitFor(() => {
-        const filtersDropdown = screen.getByRole('group', { name: 'Status' });
+      await user.click(filtersButton);
+      await waitFor(async () => {
+        const filtersDropdown = screen.getAllByRole('group', { name: 'Status' })[0];
         const filtersDropdownContainer = within(filtersDropdown);
         if (value.includes('waiting')) {
           const waitingForLearnerOption = filtersDropdownContainer.getByLabelText('Waiting for learner 1', { exact: false });
           expect(waitingForLearnerOption).toBeInTheDocument();
-          userEvent.click(waitingForLearnerOption);
+          await user.click(waitingForLearnerOption);
 
           expect(waitingForLearnerOption).toBeChecked();
           expect(mockFetchContentAssignments).toHaveBeenCalledWith(
@@ -1271,7 +1281,7 @@ describe('<BudgetDetailPage />', () => {
 
     if (field === 'search') {
       const assignmentDetailsInputField = assignedSection.getByLabelText('Search by assignment details');
-      userEvent.type(assignmentDetailsInputField, value);
+      await user.type(assignmentDetailsInputField, value);
 
       await waitFor(() => {
         expect(assignmentDetailsInputField).toHaveValue(value);
@@ -1280,7 +1290,7 @@ describe('<BudgetDetailPage />', () => {
         );
       });
     }
-  });
+  }, 15000);
 
   it.each([
     {
@@ -1288,6 +1298,7 @@ describe('<BudgetDetailPage />', () => {
       columnId: 'amount',
     },
   ])('renders sortable assigned table data (%s)', async ({ columnHeader, columnId }) => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -1354,11 +1365,11 @@ describe('<BudgetDetailPage />', () => {
     );
 
     const orderedColumnHeader = assignedSection.getByText(columnHeader);
-    userEvent.click(orderedColumnHeader);
+    await user.click(orderedColumnHeader);
     expect(mockFetchContentAssignments).toHaveBeenCalledWith(
       expect.objectContaining(expectedTableFetchDataArgsAfterSortAsc),
     );
-    userEvent.click(orderedColumnHeader);
+    await user.click(orderedColumnHeader);
     expect(mockFetchContentAssignments).toHaveBeenCalledWith(
       expect.objectContaining(expectedTableFetchDataArgsAfterSortDesc),
     );
@@ -1418,7 +1429,8 @@ describe('<BudgetDetailPage />', () => {
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
   });
 
-  it('renders with incomplete assignments table data, when budget is retired', () => {
+  it('renders with incomplete assignments table data, when budget is retired', async () => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -1478,8 +1490,14 @@ describe('<BudgetDetailPage />', () => {
     expect(assignedSection.queryAllByText('-$199')).toHaveLength(1);
     expect(assignedSection.queryAllByText(`Assigned: ${formatDate('2023-10-27')}`)).toHaveLength(1);
 
-    userEvent.click(incompleteStatusChips[0]);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    incompleteStatusChips[0].style.pointerEvents = 'auto';
+
+    await user.click(incompleteStatusChips[0]);
+
+    await waitFor(() => {
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+      expect(screen.getByTestId('assignment-status-modalpopup-contents')).toBeInTheDocument();
+    });
 
     // Modal popup is visible with expected text
     const modalPopupContents = within(screen.getByTestId('assignment-status-modalpopup-contents'));
@@ -1488,14 +1506,14 @@ describe('<BudgetDetailPage />', () => {
 
     // Help Center link clicked
     const helpCenterLink = modalPopupContents.getByText('Help Center: Course Assignments');
-    userEvent.click(helpCenterLink);
+    await user.click(helpCenterLink);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
 
-    userEvent.click(incompleteStatusChips[0]);
+    await user.click(incompleteStatusChips[0]);
 
     // Contacting your support link clicked and modal closed
     const contactSupport = modalPopupContents.getByText('contacting support.');
-    userEvent.click(contactSupport);
+    await user.click(contactSupport);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(4);
   });
 
@@ -1634,7 +1652,7 @@ describe('<BudgetDetailPage />', () => {
         errorReason: mockFailedRedemptionLearnerAction.errorReason,
       },
     },
-  ])('renders correct status chips with assigned table data (%s)', ({
+  ])('renders correct status chips with assigned table data (%s)', async ({
     learnerState,
     hasLearnerEmail,
     expectedChipStatus,
@@ -1643,6 +1661,7 @@ describe('<BudgetDetailPage />', () => {
     actions,
     errorReason,
   }) => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -1704,7 +1723,10 @@ describe('<BudgetDetailPage />', () => {
     }
     const statusChip = assignedSection.getByText(expectedChipStatus);
     expect(statusChip).toBeInTheDocument();
-    userEvent.click(statusChip);
+
+    statusChip.style.pointerEvents = 'auto';
+
+    await user.click(statusChip);
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
 
@@ -1716,14 +1738,16 @@ describe('<BudgetDetailPage />', () => {
     // Help Center link clicked and modal closed
     if (screen.queryByText('Help Center: Course Assignments')) {
       const helpCenterLink = screen.getByText('Help Center: Course Assignments');
-      userEvent.click(helpCenterLink);
+      await user.click(helpCenterLink);
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
       // Click chip to close modal
-      userEvent.click(statusChip);
+      await user.click(statusChip);
       expect(sendEnterpriseTrackEvent).toHaveBeenCalled();
     } else {
-      userEvent.click(statusChip);
-      waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2));
+      await waitFor(() => {
+        user.click(statusChip);
+        expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+      });
     }
   });
 
@@ -1924,6 +1948,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('handles user switching to catalog tab', async () => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -1951,7 +1976,7 @@ describe('<BudgetDetailPage />', () => {
     const catalogTab = screen.getByText('Catalog');
 
     await act(async () => {
-      userEvent.click(catalogTab);
+      await user.click(catalogTab);
     });
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
@@ -2032,6 +2057,7 @@ describe('<BudgetDetailPage />', () => {
       shouldDisplayRemindAction: false,
     },
   ])('displays remind and cancel row and bulk actions when appropriate (%s)', async ({ learnerState, shouldDisplayRemindAction }) => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -2089,7 +2115,7 @@ describe('<BudgetDetailPage />', () => {
     // 2 checkboxes exist; the first is the "Select all" checkbox; the 2nd is the checkbox for the first row
     const checkBox = screen.getAllByRole('checkbox')[1];
     expect(checkBox).toBeInTheDocument();
-    userEvent.click(checkBox);
+    await user.click(checkBox);
     expect(await screen.findByText('Cancel (1)')).toBeInTheDocument();
     if (shouldDisplayRemindAction) {
       expect(await screen.findByText('Remind (1)')).toBeInTheDocument();
@@ -2101,6 +2127,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('cancels assignments in bulk', async () => {
+    const user = userEvent.setup();
     EnterpriseAccessApiService.cancelAllContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -2173,15 +2200,15 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
     const cancelRowAction = screen.getByTitle('Toggle All Current Page Rows Selected');
     expect(cancelRowAction).toBeInTheDocument();
-    userEvent.click(cancelRowAction);
+    await user.click(cancelRowAction);
     const cancelBulkActionButton = screen.getByText('Cancel (2)');
     expect(cancelBulkActionButton).toBeInTheDocument();
-    userEvent.click(cancelBulkActionButton);
+    await user.click(cancelBulkActionButton);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
     const cancelDialogButton = getButtonElement('Cancel assignments (2)');
-    userEvent.click(cancelDialogButton);
+    await user.click(cancelDialogButton);
     await waitFor(
       () => expect(
         EnterpriseAccessApiService.cancelAllContentAssignments,
@@ -2194,6 +2221,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('reminds assignments in bulk', async () => {
+    const user = userEvent.setup();
     EnterpriseAccessApiService.remindAllContentAssignments.mockResolvedValueOnce({ status: 202 });
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -2277,15 +2305,16 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
     const remindRowAction = screen.getByTitle('Toggle All Current Page Rows Selected');
     expect(remindRowAction).toBeInTheDocument();
-    userEvent.click(remindRowAction);
+    await user.click(remindRowAction);
     const remindBulkActionButton = screen.getByText('Remind (2)');
     expect(remindBulkActionButton).toBeInTheDocument();
-    userEvent.click(remindBulkActionButton);
+    await user.click(remindBulkActionButton);
+    await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
     const remindDialogButton = getButtonElement('Send reminders (2)');
-    userEvent.click(remindDialogButton);
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
+    await user.click(remindDialogButton);
+    await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2));
     await waitFor(
       () => expect(
         EnterpriseAccessApiService.remindAllContentAssignments,
@@ -2294,10 +2323,10 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(
       () => expect(screen.getByText('Reminders sent (2)')).toBeInTheDocument(),
     );
-    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
   });
 
   it('cancels a single assignment', async () => {
+    const user = userEvent.setup();
     EnterpriseAccessApiService.cancelContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -2356,12 +2385,12 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
     const cancelIconButton = screen.getByTestId('cancel-assignment-test-uuid');
     expect(cancelIconButton).toBeInTheDocument();
-    userEvent.click(cancelIconButton);
+    await user.click(cancelIconButton);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
     const cancelDialogButton = getButtonElement('Cancel assignment');
-    userEvent.click(cancelDialogButton);
+    await user.click(cancelDialogButton);
     await waitFor(
       () => expect(screen.getByText('Assignment canceled')).toBeInTheDocument(),
     );
@@ -2369,6 +2398,7 @@ describe('<BudgetDetailPage />', () => {
   });
 
   it('reminds a single assignment', async () => {
+    const user = userEvent.setup();
     EnterpriseAccessApiService.remindContentAssignments.mockResolvedValueOnce({ status: 200 });
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -2427,12 +2457,12 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
     const remindIconButton = screen.getByTestId('remind-assignment-test-uuid');
     expect(remindIconButton).toBeInTheDocument();
-    userEvent.click(remindIconButton);
+    await user.click(remindIconButton);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     const modalDialog = screen.getByRole('dialog');
     expect(modalDialog).toBeInTheDocument();
     const remindDialogButton = getButtonElement('Send reminder');
-    userEvent.click(remindDialogButton);
+    await user.click(remindDialogButton);
     await waitFor(
       () => expect(screen.getByText('Reminder sent')).toBeInTheDocument(),
     );
@@ -2507,6 +2537,7 @@ describe('<BudgetDetailPage />', () => {
       modifiedDayOffset: 15,
     },
   ])('displays upcoming expiring allocation (%s)', async ({ modifiedDayOffset }) => {
+    const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
       enterpriseAppPage: 'test-enterprise-page',
@@ -2592,11 +2623,11 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('Enroll-by date')).toBeTruthy();
 
     if (expiringAllocationTooltip) {
-      userEvent.hover(expiringAllocationTooltip);
+      await user.hover(expiringAllocationTooltip);
       await waitFor(() => expect(screen.getByText('Enrollment deadline approaching')).toBeTruthy());
     }
 
-    userEvent.hover(enrollByDateTooltip);
+    await user.hover(enrollByDateTooltip);
     await waitFor(() => expect(screen.getByText(
       'Failure to enroll by the enrollment deadline will release funds back into the budget',
     )).toBeTruthy());

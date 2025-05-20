@@ -75,9 +75,9 @@ describe('<AIAnalyticsSummary />', () => {
     const user = userEvent.setup();
     render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     const component = await waitFor(() => screen.findByTestId('summarize-analytics'));
-    user.click(component);
-    const tree = render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    await user.click(component);
 
+    const tree = render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -98,10 +98,9 @@ describe('<AIAnalyticsSummary />', () => {
     const insightsData = { ...mockedInsights, learner_engagement: null };
     render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
     const component = await screen.findByTestId('summarize-analytics');
-    user.click(component);
+    await user.click(component);
 
     const tree = render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
-
     expect(tree).toMatchSnapshot();
   });
 });

@@ -374,7 +374,7 @@ describe('<ReportingConfigForm />', () => {
       }
     });
     const submitButton = container.querySelector('#submitButton');
-    await waitFor(() => user.click(submitButton));
+    await user.click(submitButton);
     expect(mock).toHaveBeenCalled();
 
     mock.mockClear();

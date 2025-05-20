@@ -45,11 +45,12 @@ describe('BaseSelectWithContext', () => {
     expect(checkbox).toHaveProperty('checked', true);
   });
   it('deselects the row when selected checkbox is checked', async () => {
+    const user = userEvent.setup();
     render(
       <BaseSelectWithContext contextKey="emails" row={defaultRow} />,
     );
     const checkbox = screen.getByTestId(SELECT_ONE_TEST_ID);
-    await waitFor(() => userEvent.click(checkbox));
+    await user.click(checkbox);
     expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
 });

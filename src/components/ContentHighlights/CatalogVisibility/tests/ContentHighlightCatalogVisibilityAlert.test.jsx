@@ -104,6 +104,7 @@ describe('ContentHighlightCatalogVisibilityAlert', () => {
     expect(screen.queryByText('Something went wrong when updating your setting. Please try again.')).toBeNull();
   });
   it('renders no highlight sets alert and opens stepper modal', async () => {
+    const user = userEvent.setup();
     renderWithRouter(
       <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={noHighlightsAppContext} />,
     );
@@ -113,7 +114,7 @@ describe('ContentHighlightCatalogVisibilityAlert', () => {
     const openStepperModalButton = screen.getByText('New highlight');
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeFalsy();
 
-    await waitFor(() => userEvent.click(openStepperModalButton));
+    await user.click(openStepperModalButton);
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeTruthy();

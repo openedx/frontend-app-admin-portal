@@ -151,6 +151,7 @@ describe('AddCoursesStep', () => {
     { usesCatalogQuerySearchFilters: false },
     { usesCatalogQuerySearchFilters: true },
   ])('more than max selected courses causes display of warning dialog text', async ({ usesCatalogQuerySearchFilters }) => {
+    const user = userEvent.setup();
     const algolia: UseAlgoliaSearchResult = {
       ...defaultAlgoliaProps,
       isCatalogQueryFiltersEnabled: usesCatalogQuerySearchFilters,
@@ -175,7 +176,7 @@ describe('AddCoursesStep', () => {
     expect(screen.getByText(WARNING_ALERT_TITLE_TEXT)).toBeInTheDocument();
     const alertDismissBtn = screen.getByRole('button', { name: 'Dismiss' });
     expect(alertDismissBtn).toBeInTheDocument();
-    userEvent.click(alertDismissBtn);
+    await user.click(alertDismissBtn);
     await waitFor(() => {
       expect(screen.queryByText(WARNING_ALERT_TITLE_TEXT)).not.toBeInTheDocument();
     });

@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import LmsApiService from '../../../../../data/services/LmsApiService';
@@ -34,11 +34,13 @@ describe('useEnterpriseLearners', () => {
     LmsApiService.fetchEnterpriseLearnerData.mockResolvedValue(mockData);
     camelCaseObject.mockResolvedValue(mockData);
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseLearners({ enterpriseUUID: 'test-id' }),
       { wrapper },
     );
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.allEnterpriseLearners).toBeDefined();
+    });
     expect(LmsApiService.fetchEnterpriseLearnerData).toHaveBeenCalledWith({
       enterprise_customer: 'test-id',
     });

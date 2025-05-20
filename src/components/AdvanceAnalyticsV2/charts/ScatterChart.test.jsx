@@ -29,7 +29,7 @@ describe('ScatterChart', () => {
     customDataKeys: ['category'],
   };
 
-  it.skip('renders correctly', () => {
+  it('renders correctly', () => {
     const wrapper = render(
       <IntlProvider locale="en">
         <ScatterChart {...props} />,
