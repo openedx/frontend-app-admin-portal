@@ -18,6 +18,7 @@ import { useEnterpriseLearners } from '../../learner-credit-management/data';
 import { useEnterpriseMembersTableData } from '../data/hooks';
 import EVENT_NAMES from '../../../eventTracking';
 import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
+import { ERROR_LEARNER_NOT_IN_ORG } from '../constants';
 
 jest.mock('../data/hooks', () => ({
   ...jest.requireActual('../data/hooks'),
@@ -62,6 +63,7 @@ const initialStoreState = {
 const defaultProps = {
   isModalOpen: true,
   closeModal: jest.fn(),
+  onInviteError: jest.fn(),
   enterpriseUUID: 'test-uuid',
 };
 
@@ -364,6 +366,45 @@ describe('<CreateGroupModal />', () => {
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
     expect(screen.queryByText("Members can't be invited as entered.")).not.toBeInTheDocument();
     expect(screen.queryByText('iamnotanemail is not a valid email.')).not.toBeInTheDocument();
+  });
+  it('shows error toast when invitees not part of org', async () => {
+    const mockGroupData = { uuid: 'test-uuid' };
+    LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
+
+    const mockInviteData = {
+      data: {
+        records_processed: 0,
+        new_learners: 0,
+        existing_learners: 0,
+        non_org_rejected: 1,
+      },
+    };
+    LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
+
+    render(<CreateGroupModalWrapper />);
+    const fakeFile = new File(['tomhavenotford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
+    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
+    Object.defineProperty(dropzone, 'files', {
+      value: [fakeFile],
+    });
+    fireEvent.drop(dropzone);
+    const groupNameInput = screen.getByTestId('group-name');
+    userEvent.type(groupNameInput, 'test group name');
+
+    await waitFor(() => {
+      expect(screen.getByText('Summary (1)')).toBeInTheDocument();
+      expect(screen.getByText('tomhavenotford@pawnee.org')).toBeInTheDocument();
+    }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
+
+    const createButton = screen.getByRole('button', { name: 'Create' });
+    userEvent.click(createButton);
+    await waitFor(() => {
+      expect(defaultProps.onInviteError).toHaveBeenCalledWith(ERROR_LEARNER_NOT_IN_ORG);
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseUUID,
+        EVENT_NAMES.PEOPLE_MANAGEMENT.ADD_LEARNER_ERROR_NOT_IN_ORG,
+      );
+    });
   });
   it('displays system error modal', async () => {
     const mockCreateGroup = jest.spyOn(LmsApiService, 'createEnterpriseGroup');
