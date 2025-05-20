@@ -1,4 +1,3 @@
-// filepath: /Users/jhodge/edx-apps/frontend-app-admin-portal/src/data/reducers/enterpriseCustomerAdmin.ts
 import { AnyAction } from 'redux';
 import {
   FETCH_ENTERPRISE_CUSTOMER_ADMIN_REQUEST,
