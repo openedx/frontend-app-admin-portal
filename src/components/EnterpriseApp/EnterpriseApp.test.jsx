@@ -69,7 +69,7 @@ jest.mock('../../containers/Sidebar', () => ({
 
 const basicProps = {
   enterpriseSlug: 'foo',
-  fetchPortalConfiguration: jest.fn(),
+  fetchEnterpriseAppData: jest.fn(),
   toggleSidebarToggle: jest.fn(),
   loading: false,
   enableLearnerPortal: true,
