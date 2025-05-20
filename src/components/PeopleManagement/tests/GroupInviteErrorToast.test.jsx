@@ -22,7 +22,7 @@ const GroupInviteErrorToastWrapper = props => (
 describe('DownloadCSVButton', () => {
   it('renders unlinked learner errors.', async () => {
     render(<GroupInviteErrorToastWrapper {...DEFAULT_PROPS} />);
-    const expectedMsg = 'Looks like some learners aren’t linked to your organization. '
+    const expectedMsg = 'Looks like some learners aren\'t linked to your organization. '
       + 'Please make sure they are associated with a subsidy before adding them to a group.';
 
     // Validate button text
