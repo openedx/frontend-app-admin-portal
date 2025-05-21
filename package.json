@@ -114,6 +114,7 @@
     "identity-obj-proxy": "3.0.0",
     "jest-canvas-mock": "^2.4.0",
     "jest-localstorage-mock": "^2.4.22",
+    "lodash": "^4.17.21",
     "patch-package": "8.0.0",
     "postcss": "8.4.24",
     "react-test-renderer": "^17.0.2",
