@@ -30,6 +30,7 @@ export const SubscriptionDetailPage = ({ enterpriseSlug }) => {
       <SubscriptionDetailsSkeleton data-testid="skelly" />
     );
   }
+
   return (
     <SubscriptionDetailContextProvider subscription={subscription}>
       <SubscriptionExpirationModals />
