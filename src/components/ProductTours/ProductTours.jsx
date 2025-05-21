@@ -23,7 +23,7 @@ import {
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
-import TourCollapsible from './TourCollapsible.tsx';
+import TourCollapsible from './TourCollapsible';
 
 /**
  * All the logic here is for determining what ProductTours we should show.
