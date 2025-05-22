@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
+import { sum } from 'lodash';
 import utc from 'dayjs/plugin/utc';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import { CALCULATION, CHART_TYPES } from './constants';
+import { CHART_TYPES, CALCULATION } from './constants';
 import messages from '../messages';
 
 dayjs.extend(utc);
@@ -100,18 +101,18 @@ const calculateMovingAverage = (timeSeriesData, countKey, period) => {
   for (let i = 0; i < Math.min(period, timeSeriesData.length); i++) {
     windowSum += timeSeriesData[i][countKey];
     count++;
-    modifiedData.push({
-      ...timeSeriesData[i],
-      [countKey]: windowSum / count,
+    modifiedData.push({ 
+      ...timeSeriesData[i], 
+      [countKey]: windowSum / count 
     });
   }
 
   // Process the rest using sliding window
   for (let i = period; i < timeSeriesData.length; i++) {
     windowSum += timeSeriesData[i][countKey] - timeSeriesData[i - period][countKey];
-    modifiedData.push({
-      ...timeSeriesData[i],
-      [countKey]: windowSum / period,
+    modifiedData.push({ 
+      ...timeSeriesData[i], 
+      [countKey]: windowSum / period 
     });
   }
 
