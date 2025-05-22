@@ -1,0 +1,320 @@
+{
+  "original": {
+    "10": {
+      "3": {
+        "executionTime": 0.2880840003490448,
+        "memoryUsage": {
+          "rss": 0.05999999999999517,
+          "heapTotal": 0,
+          "heapUsed": 0.009999999999999787
+        }
+      },
+      "5": {
+        "executionTime": 0.0521249994635582,
+        "memoryUsage": {
+          "rss": 0.010000000000005116,
+          "heapTotal": 0,
+          "heapUsed": 0
+        }
+      },
+      "7": {
+        "executionTime": 0.015124998986721039,
+        "memoryUsage": {
+          "rss": 0.01999999999999602,
+          "heapTotal": 0,
+          "heapUsed": 0
+        }
+      }
+    },
+    "100": {
+      "3": {
+        "executionTime": 0.044958993792533875,
+        "memoryUsage": {
+          "rss": 0.01999999999999602,
+          "heapTotal": 0,
+          "heapUsed": 0.02999999999999936
+        }
+      },
+      "5": {
+        "executionTime": 0.4629170000553131,
+        "memoryUsage": {
+          "rss": 0.18999999999999773,
+          "heapTotal": 0,
+          "heapUsed": 0.02999999999999936
+        }
+      },
+      "7": {
+        "executionTime": 0.14341600239276886,
+        "memoryUsage": {
+          "rss": 0.030000000000001137,
+          "heapTotal": 0,
+          "heapUsed": 0.02999999999999936
+        }
+      }
+    },
+    "1000": {
+      "3": {
+        "executionTime": 1.7796249985694885,
+        "memoryUsage": {
+          "rss": 2.9299999999999997,
+          "heapTotal": 0.5,
+          "heapUsed": -0.4500000000000002
+        }
+      },
+      "5": {
+        "executionTime": 0.9471670016646385,
+        "memoryUsage": {
+          "rss": 0.28000000000000114,
+          "heapTotal": 0,
+          "heapUsed": 0.2999999999999998
+        }
+      },
+      "7": {
+        "executionTime": 6.782915994524956,
+        "memoryUsage": {
+          "rss": 2.3900000000000006,
+          "heapTotal": 1,
+          "heapUsed": -0.5700000000000003
+        }
+      }
+    },
+    "10000": {
+      "3": {
+        "executionTime": 7.058125004172325,
+        "memoryUsage": {
+          "rss": 2.4399999999999977,
+          "heapTotal": 0.25,
+          "heapUsed": -0.07000000000000028
+        }
+      },
+      "5": {
+        "executionTime": 1.623250000178814,
+        "memoryUsage": {
+          "rss": 2.3900000000000006,
+          "heapTotal": 1,
+          "heapUsed": -0.08999999999999986
+        }
+      },
+      "7": {
+        "executionTime": 1.6297079995274544,
+        "memoryUsage": {
+          "rss": 0.01999999999999602,
+          "heapTotal": 0,
+          "heapUsed": -0.129999999999999
+        }
+      }
+    }
+  },
+  "optimized": {
+    "10": {
+      "3": {
+        "executionTime": 0.08816699683666229,
+        "memoryUsage": {
+          "rss": 0.01999999999999602,
+          "heapTotal": 0,
+          "heapUsed": 0
+        }
+      },
+      "5": {
+        "executionTime": 0.023374997079372406,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0
+        }
+      },
+      "7": {
+        "executionTime": 0.01900000125169754,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0
+        }
+      }
+    },
+    "100": {
+      "3": {
+        "executionTime": 0.017792001366615295,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0.009999999999999787
+        }
+      },
+      "5": {
+        "executionTime": 0.015916995704174042,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0
+        }
+      },
+      "7": {
+        "executionTime": 0.014915995299816132,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0.009999999999999787
+        }
+      }
+    },
+    "1000": {
+      "3": {
+        "executionTime": 0.12424999475479126,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0.07000000000000028
+        }
+      },
+      "5": {
+        "executionTime": 0.12095899879932404,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0.08000000000000007
+        }
+      },
+      "7": {
+        "executionTime": 0.11820799857378006,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0.08000000000000007
+        }
+      }
+    },
+    "10000": {
+      "3": {
+        "executionTime": 1.7820000052452087,
+        "memoryUsage": {
+          "rss": 0,
+          "heapTotal": 0,
+          "heapUsed": 0.7100000000000009
+        }
+      },
+      "5": {
+        "executionTime": 2.144499994814396,
+        "memoryUsage": {
+          "rss": 0.01999999999999602,
+          "heapTotal": 0,
+          "heapUsed": 0.75
+        }
+      },
+      "7": {
+        "executionTime": 0.8410419970750809,
+        "memoryUsage": {
+          "rss": 0.3400000000000034,
+          "heapTotal": 0,
+          "heapUsed": -2.110000000000001
+        }
+      }
+    }
+  },
+  "comparison": {
+    "10": {
+      "3": {
+        "originalTime": 0.2880840003490448,
+        "optimizedTime": 0.08816699683666229,
+        "timeImprovement": 69.39538581461015,
+        "originalMemory": 0.009999999999999787,
+        "optimizedMemory": 0,
+        "memoryImprovement": 100
+      },
+      "5": {
+        "originalTime": 0.0521249994635582,
+        "optimizedTime": 0.023374997079372406,
+        "timeImprovement": 55.155880441371686,
+        "originalMemory": 0,
+        "optimizedMemory": 0,
+        "memoryImprovement": null
+      },
+      "7": {
+        "originalTime": 0.015124998986721039,
+        "optimizedTime": 0.01900000125169754,
+        "timeImprovement": -25.619851402162418,
+        "originalMemory": 0,
+        "optimizedMemory": 0,
+        "memoryImprovement": null
+      }
+    },
+    "100": {
+      "3": {
+        "originalTime": 0.044958993792533875,
+        "optimizedTime": 0.017792001366615295,
+        "timeImprovement": 60.42615755877987,
+        "originalMemory": 0.02999999999999936,
+        "optimizedMemory": 0.009999999999999787,
+        "memoryImprovement": 66.66666666666666
+      },
+      "5": {
+        "originalTime": 0.4629170000553131,
+        "optimizedTime": 0.015916995704174042,
+        "timeImprovement": 96.56158756272244,
+        "originalMemory": 0.02999999999999936,
+        "optimizedMemory": 0,
+        "memoryImprovement": 100
+      },
+      "7": {
+        "originalTime": 0.14341600239276886,
+        "optimizedTime": 0.014915995299816132,
+        "timeImprovement": 89.5994902584398,
+        "originalMemory": 0.02999999999999936,
+        "optimizedMemory": 0.009999999999999787,
+        "memoryImprovement": 66.66666666666666
+      }
+    },
+    "1000": {
+      "3": {
+        "originalTime": 1.7796249985694885,
+        "optimizedTime": 0.12424999475479126,
+        "timeImprovement": 93.01819232396338,
+        "originalMemory": -0.4500000000000002,
+        "optimizedMemory": 0.07000000000000028,
+        "memoryImprovement": 115.55555555555561
+      },
+      "5": {
+        "originalTime": 0.9471670016646385,
+        "optimizedTime": 0.12095899879932404,
+        "timeImprovement": 87.22939053126433,
+        "originalMemory": 0.2999999999999998,
+        "optimizedMemory": 0.08000000000000007,
+        "memoryImprovement": 73.3333333333333
+      },
+      "7": {
+        "originalTime": 6.782915994524956,
+        "optimizedTime": 0.11820799857378006,
+        "timeImprovement": 98.25726872234308,
+        "originalMemory": -0.5700000000000003,
+        "optimizedMemory": 0.08000000000000007,
+        "memoryImprovement": 114.03508771929825
+      }
+    },
+    "10000": {
+      "3": {
+        "originalTime": 7.058125004172325,
+        "optimizedTime": 1.7820000052452087,
+        "timeImprovement": 74.75250149024279,
+        "originalMemory": -0.07000000000000028,
+        "optimizedMemory": 0.7100000000000009,
+        "memoryImprovement": 1114.2857142857115
+      },
+      "5": {
+        "originalTime": 1.623250000178814,
+        "optimizedTime": 2.144499994814396,
+        "timeImprovement": -32.11150436335513,
+        "originalMemory": -0.08999999999999986,
+        "optimizedMemory": 0.75,
+        "memoryImprovement": 933.3333333333346
+      },
+      "7": {
+        "originalTime": 1.6297079995274544,
+        "optimizedTime": 0.8410419970750809,
+        "timeImprovement": 48.39308653335769,
+        "originalMemory": -0.129999999999999,
+        "optimizedMemory": -2.110000000000001,
+        "memoryImprovement": -1523.0769230769365
+      }
+    }
+  }
+}
