@@ -89,24 +89,17 @@ e.g. 3 would mean 3-day moving average.
 */
 const calculateMovingAverage = (timeSeriesData, countKey, period) => {
   const modifiedData = [];
-  let windowSum = 0;
-  const queue = [];
-
   for (let i = 0; i < timeSeriesData.length; i++) {
-    const currentVal = timeSeriesData[i][countKey];
-    queue.push(currentVal);
-    windowSum += currentVal;
+    // Set start to 0 for the first `N` entries where `N` is the `period`.
+    const start = i < period ? 0 : (i - period + 1);
+    const end = i + 1;
 
-    if (queue.length > period) {
-      windowSum -= queue.shift();
-    }
-
-    const divisor = Math.min(period, i + 1);
-    const movingAverage = windowSum / divisor;
-
+    // Calculate moving average for the given period.
+    const arraySlice = timeSeriesData.slice(start, end).map((item) => item[countKey]);
+    const sumOfArraySlice = arraySlice.reduce((prev, next) => prev + next, 0);
+    const movingAverage = sumOfArraySlice / arraySlice.length;
     modifiedData.push({ ...timeSeriesData[i], [countKey]: movingAverage });
   }
-
   return modifiedData;
 };
 
