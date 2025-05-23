@@ -125,7 +125,7 @@ class Admin extends React.Component {
           defaultMessage: 'Number of Courses Enrolled by Learners',
           description: 'Report title for number of courses enrolled by learners',
         }),
-        component: <EnrolledLearnersTable />,
+        component: <EnrolledLearnersTable id="enrolled-learners" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchEnrolledLearners(enterpriseId, {}, { csv: true })
         ),
