@@ -1,6 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { DataTable } from '@openedx/paragon';
-import _ from 'lodash';
+import {
+  debounce, isEmpty, isEqual, isNumber,
+} from 'lodash-es';
 import PropTypes from 'prop-types';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
@@ -22,12 +24,12 @@ const ModuleActivityReport = ({ enterpriseId }) => {
       let newFilters = { ...currentFilters };
       // disable pagination and sorting if the search query is not empty
       const sortBy = args.sortBy.at(-1);
-      if (!_.isEmpty(sortBy)) {
+      if (!isEmpty(sortBy)) {
         const newSortBys = { ordering: `${sortBy.desc ? '-' : ''}${sortBy.id}` };
         newFilters = { ...newFilters, ...newSortBys };
       }
 
-      if (!_.isEqual(newFilters, currentFilters)) {
+      if (!isEqual(newFilters, currentFilters)) {
         setCurrentFilters(newFilters);
       }
       if (args.pageIndex !== currentPage) {
@@ -37,7 +39,7 @@ const ModuleActivityReport = ({ enterpriseId }) => {
     [currentFilters, currentPage, setCurrentFilters, setCurrentPage],
   );
   const onSearch = (query) => {
-    if (!_.isEqual(query, searchQuery)) {
+    if (!isEqual(query, searchQuery)) {
       setCurrentPage(0);
       setSearchQuery(query);
     }
@@ -52,9 +54,9 @@ const ModuleActivityReport = ({ enterpriseId }) => {
   return (
     <>
       <SearchBar
-        onSearch={_.debounce(onSearch, 500)}
+        onSearch={debounce(onSearch, 500)}
         onClear={() => onSearch('')}
-        onChange={_.debounce(onSearch, 500)}
+        onChange={debounce(onSearch, 500)}
         className="mt-2 mb-2 w-25 "
         placeholder={intl.formatMessage({
           id: 'adminPortal.LPR.moduleActivityReport.search.placeholder',
@@ -172,7 +174,7 @@ const ModuleActivityReport = ({ enterpriseId }) => {
               description: 'Header for the learning outcomes percentage difference for learning outcome before and after the course column in the module activity report table',
             }),
             Cell: ({ row }) => (
-              _.isNumber(row.original.avg_lo_percentage_difference) ? `${row.original.avg_lo_percentage_difference} %` : row.original.avg_lo_percentage_difference
+              isNumber(row.original.avg_lo_percentage_difference) ? `${row.original.avg_lo_percentage_difference} %` : row.original.avg_lo_percentage_difference
             ),
           },
         ]}

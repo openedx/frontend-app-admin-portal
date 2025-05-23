@@ -1,4 +1,4 @@
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 
 export default function buttonBool(config) {
   let returnVal = true;

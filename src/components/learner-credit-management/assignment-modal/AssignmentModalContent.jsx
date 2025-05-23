@@ -2,7 +2,7 @@ import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 import {
   Card, Col, Container, Form, Row, Stack,
 } from '@openedx/paragon';
@@ -12,10 +12,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 import BaseCourseCard from '../cards/BaseCourseCard';
 import {
-  formatPrice,
-  useBudgetId,
-  useSubsidyAccessPolicy,
-  useGroupDropdownToggle,
+  formatPrice, useBudgetId, useGroupDropdownToggle, useSubsidyAccessPolicy,
 } from '../data';
 import AssignmentModalSummary from './AssignmentModalSummary';
 import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, isAssignEmailAddressesInputValueValid } from '../cards/data';

@@ -5,16 +5,16 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mount } from 'enzyme';
-import last from 'lodash/last';
+import { last } from 'lodash-es';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import CodeReminderModal from './index';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
 import remindEmailTemplate from '../../components/CodeReminderModal/emailTemplate';
 import {
-  SET_EMAIL_TEMPLATE_SOURCE,
-  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  SET_EMAIL_TEMPLATE_SOURCE,
 } from '../../data/constants/emailTemplate';
 import { configuration } from '../../config';
 

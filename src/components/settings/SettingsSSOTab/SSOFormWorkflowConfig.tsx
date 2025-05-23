@@ -1,13 +1,19 @@
-import omit from 'lodash/omit';
+import { omit } from 'lodash-es';
 
 // eslint-disable-next-line import/no-extraneous-dependencies,@typescript-eslint/no-unused-vars
 import { AxiosError } from 'axios';
 import type { FormWorkflowHandlerArgs, FormWorkflowStep } from '../../forms/FormWorkflow';
-import SSOConfigConnectStep, { getValidations as getSSOConfigConnectStepValidations } from './steps/NewSSOConfigConnectStep';
+import SSOConfigConnectStep, {
+  getValidations as getSSOConfigConnectStepValidations,
+} from './steps/NewSSOConfigConnectStep';
 // TODO: Resolve dependency issue
 // eslint-disable-next-line import/no-cycle
-import SSOConfigConfigureStep, { getValidations as getSSOConfigConfigureStepValidations } from './steps/NewSSOConfigConfigureStep';
-import SSOConfigAuthorizeStep, { getValidations as getSSOConfigAuthorizeStepValidations } from './steps/NewSSOConfigAuthorizeStep';
+import SSOConfigConfigureStep, {
+  getValidations as getSSOConfigConfigureStepValidations,
+} from './steps/NewSSOConfigConfigureStep';
+import SSOConfigAuthorizeStep, {
+  getValidations as getSSOConfigAuthorizeStepValidations,
+} from './steps/NewSSOConfigAuthorizeStep';
 import SSOConfigConfirmStep from './steps/NewSSOConfigConfirmStep';
 import LmsApiService from '../../../data/services/LmsApiService';
 import handleErrors from '../utils';

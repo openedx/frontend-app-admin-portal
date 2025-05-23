@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 
 import {
-  CANVAS_TYPE, BLACKBOARD_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
+  BLACKBOARD_TYPE, CANVAS_TYPE, CORNERSTONE_TYPE, DEGREED2_TYPE, MOODLE_TYPE, SAP_TYPE,
 } from '../data/constants';
 import type { FormWorkflowConfig, FormWorkflowStep } from '../../forms/FormWorkflow';
 import BlackboardFormConfig from './LMSConfigs/Blackboard/BlackboardConfig';

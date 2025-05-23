@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
-import omit from 'lodash/omit';
-import isString from 'lodash/isString';
+import { isString, omit } from 'lodash-es';
 
 import { Form } from '@openedx/paragon';
 

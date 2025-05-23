@@ -1,7 +1,7 @@
-import _ from 'lodash';
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash-es';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import FormContextWrapper from '../../forms/FormContextWrapper';
@@ -31,7 +31,7 @@ const LMSConfigPage = ({
     enterpriseCustomerUuid,
     onSubmit: setExistingConfigFormData,
     handleCloseClick: handleCloseWorkflow,
-    existingData: _.cloneDeep(existingConfigFormData),
+    existingData: cloneDeep(existingConfigFormData),
     existingConfigNames: existingConfigs,
     channelMap,
     lmsType,

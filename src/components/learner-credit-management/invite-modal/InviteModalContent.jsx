@@ -2,16 +2,17 @@ import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 import {
-  Col,
-  Container,
-  Form,
-  Row,
+  Col, Container, Form, Row,
 } from '@openedx/paragon';
 
 import InviteModalSummary from './InviteModalSummary';
-import { EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY, INPUT_TYPE, isInviteEmailAddressesInputValueValid } from '../cards/data';
+import {
+  EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY,
+  INPUT_TYPE,
+  isInviteEmailAddressesInputValueValid,
+} from '../cards/data';
 import FileUpload from './FileUpload';
 import InviteModalInputFeedback from './InviteModalInputFeedback';
 import InviteModalMembershipInfo from './InviteModalMembershipInfo';

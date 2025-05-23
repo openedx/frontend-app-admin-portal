@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import {
-  Alert, Button, Toast, Skeleton, useToggle,
+  Alert, Button, Skeleton, Toast, useToggle,
 } from '@openedx/paragon';
 import { Add, Info } from '@openedx/paragon/icons';
 import { logError } from '@edx/frontend-platform/logging';
@@ -19,8 +19,11 @@ import LMSConfigPage from './LMSConfigPage';
 import ExistingLMSCardDeck from './ExistingLMSCardDeck';
 import NoConfigCard from './NoConfigCard';
 import {
-  HELP_CENTER_LINK, ACTIVATE_TOAST_MESSAGE, DELETE_TOAST_MESSAGE,
-  INACTIVATE_TOAST_MESSAGE, SUBMIT_TOAST_MESSAGE,
+  ACTIVATE_TOAST_MESSAGE,
+  DELETE_TOAST_MESSAGE,
+  HELP_CENTER_LINK,
+  INACTIVATE_TOAST_MESSAGE,
+  SUBMIT_TOAST_MESSAGE,
 } from '../data/constants';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { useFormContext } from '../../forms/FormContext';
@@ -57,7 +60,7 @@ const SettingsLMSTab = ({
     dispatch?.setFormFieldAction({ fieldId: 'lms', value: configData.channelCode });
     setLmsType(configData.channelCode);
     // Set the form data to the card's associated config data
-    setExistingConfigFormData(_.cloneDeep(configData));
+    setExistingConfigFormData(cloneDeep(configData));
     // Set the config type to the card's type
     setConfig(configType);
     // Hide the create new configs button

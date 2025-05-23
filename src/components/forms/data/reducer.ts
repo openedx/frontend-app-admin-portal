@@ -1,15 +1,19 @@
-import groupBy from 'lodash/groupBy';
-import isEmpty from 'lodash/isEmpty';
-import keys from 'lodash/keys';
-import {
-  SetShowErrorsArguments,
-  SET_FORM_FIELD, SET_SHOW_ERRORS,
-  SET_STEP, SET_WORKFLOW_STATE,
-  UPDATE_FORM_FIELDS,
-  RESET_EDIT_STATE,
-} from './actions';
+import { groupBy, isEmpty, keys } from 'lodash-es';
 import type {
-  FormActionArguments, SetFormFieldArguments, SetStepArguments, SetWorkflowStateArguments, UpdateFormFieldArguments,
+  FormActionArguments,
+  SetFormFieldArguments,
+  SetStepArguments,
+  SetWorkflowStateArguments,
+  UpdateFormFieldArguments,
+} from './actions';
+import {
+  RESET_EDIT_STATE,
+  SET_FORM_FIELD,
+  SET_SHOW_ERRORS,
+  SET_STEP,
+  SET_WORKFLOW_STATE,
+  SetShowErrorsArguments,
+  UPDATE_FORM_FIELDS,
 } from './actions';
 import { FormContext, FormFields, FormFieldValidation } from '../FormContext';
 import type { FormWorkflowStep } from '../FormWorkflow';

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isEmpty, isEqual } from 'lodash-es';
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -72,12 +72,12 @@ const ContentMetadataTable = ({ config, enterpriseCustomerUuid }) => {
       );
 
       const sortBy = args.sortBy.at(-1);
-      if (!_.isEmpty(sortBy)) {
+      if (!isEmpty(sortBy)) {
         const newSortBys = { sort_by: `${sortBy.desc ? '-' : ''}${sortBy.id}` };
         newFilters = { ...newFilters, ...newSortBys };
       }
 
-      if (!_.isEqual(newFilters, currentFilters)) {
+      if (!isEqual(newFilters, currentFilters)) {
         setCurrentFilters(newFilters);
       }
       if (args.pageIndex !== currentPage) {

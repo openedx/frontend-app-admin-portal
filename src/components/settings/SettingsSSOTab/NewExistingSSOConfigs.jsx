@@ -1,9 +1,6 @@
-import _ from 'lodash';
+import { partition } from 'lodash-es';
 import {
-  Alert,
-  CardGrid,
-  Skeleton,
-  useToggle,
+  Alert, CardGrid, Skeleton, useToggle,
 } from '@openedx/paragon';
 import { Info } from '@openedx/paragon/icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -114,7 +111,7 @@ const NewExistingSSOConfigs = ({
   }
 
   useEffect(() => {
-    const [active, inactive] = _.partition(configs, config => config.active);
+    const [active, inactive] = partition(configs, config => config.active);
     const inProgress = configs.filter(isInProgressConfig);
     const untested = configs.filter(config => !config.validated_at);
     const live = configs.filter(

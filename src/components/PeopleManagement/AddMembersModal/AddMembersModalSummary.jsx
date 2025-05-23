@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Card, Stack } from '@openedx/paragon';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 
 import AddMemberModalSummaryEmptyState from './AddMemberModalSummaryEmptyState';
 import AddMemberModalSummaryLearnerList from './AddMemberModalSummaryLearnerList';

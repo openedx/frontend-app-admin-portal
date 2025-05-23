@@ -1,16 +1,26 @@
-import _ from 'lodash';
+import { isEqual } from 'lodash-es';
 import { snakeCaseDict } from '../../../../../utils';
 import {
-  BLACKBOARD_TYPE, LMS_CONFIG_OAUTH_POLLING_INTERVAL, LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
+  BLACKBOARD_TYPE,
+  LMS_CONFIG_OAUTH_POLLING_INTERVAL,
+  LMS_CONFIG_OAUTH_POLLING_TIMEOUT,
 } from '../../../data/constants';
 import ConfigActivatePage from '../ConfigBasePages/ConfigActivatePage';
 import BlackboardConfigAuthorizePage, { validations } from './BlackboardConfigAuthorizePage';
 import type {
-  FormWorkflowButtonConfig, FormWorkflowConfig, FormWorkflowStep, FormWorkflowHandlerArgs,
+  FormWorkflowButtonConfig,
+  FormWorkflowConfig,
+  FormWorkflowHandlerArgs,
+  FormWorkflowStep,
 } from '../../../../forms/FormWorkflow';
 import { BlackboardConfigCamelCase, BlackboardConfigSnakeCase } from './BlackboardTypes';
 import {
-  activateConfig, afterSubmitHelper, checkForDuplicateNames, handleSaveHelper, handleSubmitHelper, onTimeoutHelper,
+  activateConfig,
+  afterSubmitHelper,
+  checkForDuplicateNames,
+  handleSaveHelper,
+  handleSubmitHelper,
+  onTimeoutHelper,
 } from '../utils';
 
 export type BlackboardFormConfigProps = {
@@ -105,7 +115,7 @@ export const BlackboardFormConfig = ({
           onClick: handleSubmit,
         };
         // if they've never authorized it or if they've changed the form
-        if (!formFields.refreshToken || !_.isEqual(existingData, formFields)) {
+        if (!formFields.refreshToken || !isEqual(existingData, formFields)) {
           config = {
             ...config,
             ...{
