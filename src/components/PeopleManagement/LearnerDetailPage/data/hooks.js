@@ -12,7 +12,7 @@ import LmsApiService from '../../../../data/services/LmsApiService';
  * @param {string} learnerId Enterprise customer learner id
  * @returns An object containing `isLoading` and `learnerData`.
  */
-const useEnterpriseLearnerData = (enterpriseUUID, learnerId) => {
+export const useEnterpriseLearnerData = (enterpriseUUID, learnerId) => {
   const [isLoading, setIsLoading] = useState(true);
   const [learnerData, setLearnerData] = useState({
     userId: '',
@@ -47,5 +47,3 @@ const useEnterpriseLearnerData = (enterpriseUUID, learnerId) => {
     learnerData,
   };
 };
-
-export default useEnterpriseLearnerData;
