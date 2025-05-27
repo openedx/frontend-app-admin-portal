@@ -7,7 +7,8 @@ import thunk from 'redux-thunk';
 import { last } from 'lodash-es';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import { render, screen } from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import CodeAssignmentModal from './index';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import {
@@ -15,6 +16,7 @@ import {
   EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   SET_EMAIL_TEMPLATE_SOURCE,
 } from '../../data/constants/emailTemplate';
+import '@testing-library/jest-dom/extend-expect';
 
 const mockStore = configureMockStore([thunk]);
 const initialState = {
@@ -95,7 +97,7 @@ describe('CodeAssignmentModalWrapper', () => {
   it('renders individual assignment modal', async () => {
     render(<CodeAssignmentModalWrapper />);
     const fields = await screen.findByText('Add learner');
-    expect(fields).toBeInTheDocument();
+    expect(fields).toBeInTheDocument()
   });
 
   it('renders bulk assignment modal', async () => {
@@ -111,6 +113,7 @@ describe('CodeAssignmentModalWrapper', () => {
   });
 
   it('renders <TemplateSourceFields /> with source new_email', async () => {
+    const user = userEvent.setup();
     render(<CodeAssignmentModalWrapper />);
     const templateSourceFields = await screen.findByTestId('template-source-fields');
     expect(templateSourceFields).toBeInTheDocument();
@@ -121,7 +124,7 @@ describe('CodeAssignmentModalWrapper', () => {
     expect(templateSourceFields.querySelector('button#btn-old-email-template')).toHaveAttribute('style', 'pointer-events: auto;');
 
     const btnOldEmailTemplate = await screen.findByTestId('btn-old-email-template');
-    fireEvent.click(btnOldEmailTemplate);
+    await user.click(btnOldEmailTemplate);
     expect(last(store.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE },
@@ -129,6 +132,7 @@ describe('CodeAssignmentModalWrapper', () => {
   });
 
   it('renders <TemplateSourceFields /> with source from_template', async () => {
+    const user = userEvent.setup();
     const newStore = mockStore({
       ...initialState,
       emailTemplate: {
@@ -146,7 +150,7 @@ describe('CodeAssignmentModalWrapper', () => {
     expect(templateSourceFields.querySelector('button#btn-old-email-template')).toHaveAttribute('style', 'pointer-events: none;');
 
     const btnNewEmailTemplate = await screen.findByTestId('btn-new-email-template');
-    fireEvent.click(btnNewEmailTemplate);
+    await user.click(btnNewEmailTemplate);
     expect(last(newStore.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL },
