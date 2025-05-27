@@ -1,5 +1,5 @@
 import React from 'react';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 
 import PropTypes from 'prop-types';
 import {
@@ -9,7 +9,7 @@ import { GroupAdd, Groups, ManageAccounts } from '@openedx/paragon/icons';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  formatDate, useEnterpriseCustomer, useEnterpriseGroup, isLmsBudget,
+  formatDate, isLmsBudget, useEnterpriseCustomer, useEnterpriseGroup,
 } from './data';
 
 const BudgetStatusSubtitle = ({

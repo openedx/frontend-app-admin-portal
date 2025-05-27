@@ -1,13 +1,10 @@
 import {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
+  useCallback, useMemo, useRef, useState,
 } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 
 import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
 import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiService';

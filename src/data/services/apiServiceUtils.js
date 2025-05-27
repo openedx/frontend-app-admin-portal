@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 
@@ -9,7 +9,7 @@ function generateFormattedStatusUrl(url, currentPage, options) {
     pageToUse = currentPage + 1;
   }
   let queryParams = '';
-  if (!_.isEmpty(options)) {
+  if (!isEmpty(options)) {
     queryParams = new URLSearchParams(options);
   }
   const paramString = `?${pageToUse ? `page=${pageToUse}` : ''}&${queryParams.toString()}`;

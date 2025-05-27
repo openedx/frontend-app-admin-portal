@@ -1,23 +1,18 @@
 import React, {
-  useCallback, useMemo, useContext, useState,
+  useCallback, useContext, useMemo, useState,
 } from 'react';
 import dayjs from 'dayjs';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 import {
-  DataTable,
-  TextFilter,
-  CheckboxFilter,
-  useWindowSize,
-  breakpoints,
-  Toast,
+  breakpoints, CheckboxFilter, DataTable, TextFilter, Toast, useWindowSize,
 } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { SubscriptionContext } from '../../SubscriptionData';
-import { SubscriptionDetailContext, defaultStatusFilter } from '../../SubscriptionDetailContextProvider';
+import { defaultStatusFilter, SubscriptionDetailContext } from '../../SubscriptionDetailContextProvider';
 import {
-  PAGE_SIZE, DEFAULT_PAGE, ACTIVATED, REVOKED, ASSIGNED,
+  ACTIVATED, ASSIGNED, DEFAULT_PAGE, PAGE_SIZE, REVOKED,
 } from '../../data/constants';
 import { DEBOUNCE_TIME_MILLIS } from '../../../../algoliaUtils';
 import { formatTimestamp } from '../../../../utils';

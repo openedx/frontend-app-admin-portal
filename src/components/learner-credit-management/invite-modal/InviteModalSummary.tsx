@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Card, Stack } from '@openedx/paragon';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 
 import InviteModalSummaryEmptyState from './InviteModalSummaryEmptyState';
 import InviteModalSummaryLearnerList from './InviteModalSummaryLearnerList';

@@ -1,10 +1,7 @@
-import {
-  useCallback, useMemo, useState,
-} from 'react';
-import _ from 'lodash';
+import { useCallback, useMemo, useState } from 'react';
+import { debounce, snakeCase } from 'lodash-es';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
-import debounce from 'lodash.debounce';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { transformGroupMembersTableResults } from '../utils';
@@ -23,7 +20,7 @@ const useEnterpriseGroupMembersTableData = ({ policyUuid, groupId, refresh }) =>
         const options = { group_uuid: groupId };
         if (args?.sortBy.length > 0) {
           const sortByValue = args.sortBy[0].id;
-          options.sort_by = _.snakeCase(sortByValue);
+          options.sort_by = snakeCase(sortByValue);
           if (!args.sortBy[0].desc) {
             options.is_reversed = !args.sortBy[0].desc;
           }
