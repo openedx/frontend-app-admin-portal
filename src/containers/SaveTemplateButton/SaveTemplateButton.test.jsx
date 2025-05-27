@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { userEvent } from '@testing-library/user-event';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
