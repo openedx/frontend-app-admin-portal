@@ -3,7 +3,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';

@@ -1,5 +1,5 @@
 import React from 'react';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { render } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';

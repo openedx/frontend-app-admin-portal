@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { SubscriptionDetailContext } from '../subscriptions/SubscriptionDetailContextProvider';
 import SubscriptionDetails from './SubscriptionDetails';

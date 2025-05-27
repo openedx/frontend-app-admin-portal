@@ -4,11 +4,10 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import React, { useState } from 'react';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
-import { waitFor } from '@testing-library/react';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {

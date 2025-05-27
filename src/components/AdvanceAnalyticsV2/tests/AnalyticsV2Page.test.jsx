@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AnalyticsV2Page from '../AnalyticsV2Page';

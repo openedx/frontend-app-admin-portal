@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';

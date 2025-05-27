@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import {
-  act, cleanup, render, screen, waitFor,
+  cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
@@ -230,7 +230,7 @@ describe('<LicenseManagementRevokeModal />', () => {
       render(<LicenseManagementRevokeModalWrapper {...props} />);
       const button = screen.getByText('Revoke all');
       await user.click(button);
-      expect(onSubmitMock).toHaveBeenCalledTimes(1)
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();

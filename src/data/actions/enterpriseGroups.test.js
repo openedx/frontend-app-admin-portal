@@ -1,4 +1,4 @@
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { fetchEnterpriseGroups, clearEnterpriseGroups } from './enterpriseGroups';
 import { getAllFlexEnterpriseGroups } from '../../components/learner-credit-management/data/hooks/useAllFlexEnterpriseGroups';

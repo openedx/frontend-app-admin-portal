@@ -2,12 +2,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { last } from 'lodash-es';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
-import {render, screen, waitFor} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CodeAssignmentModal from './index';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
@@ -97,7 +97,7 @@ describe('CodeAssignmentModalWrapper', () => {
   it('renders individual assignment modal', async () => {
     render(<CodeAssignmentModalWrapper />);
     const fields = await screen.findByText('Add learner');
-    expect(fields).toBeInTheDocument()
+    expect(fields).toBeInTheDocument();
   });
 
   it('renders bulk assignment modal', async () => {

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Button } from '@openedx/paragon';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
