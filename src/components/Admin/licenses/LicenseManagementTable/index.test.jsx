@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';

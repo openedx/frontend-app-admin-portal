@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import dayjs from 'dayjs';
 import {
   screen,

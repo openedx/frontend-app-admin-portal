@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
-import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -345,7 +345,7 @@ describe('MembersTab', () => {
       sortBy: [{ desc: true, id: 'memberDetails' }],
     }));
 
-    userEvent.click(screen.getByTestId('members-table-status-column-header'));
+    await user.click(screen.getByTestId('members-table-status-column-header'));
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
       filters: [{ id: 'memberDetails', value: 'foobar' }],
       pageIndex: 0,
@@ -354,7 +354,7 @@ describe('MembersTab', () => {
     }));
 
     const removeToggle = screen.getByTestId('show-removed-toggle');
-    userEvent.click(removeToggle);
+    await user.click(removeToggle);
     expect(screen.getByText('Show removed (1)')).toBeInTheDocument();
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
       filters: [
@@ -366,7 +366,7 @@ describe('MembersTab', () => {
       sortBy: [{ desc: false, id: 'status' }],
     }));
 
-    userEvent.click(screen.getByTestId('members-table-enrollments-column-header'));
+    await user.click(screen.getByTestId('members-table-enrollments-column-header'));
     await waitFor(() => expect(mockFetchEnterpriseGroupMembersTableData).toHaveBeenCalledWith({
       filters: [
         { id: 'memberDetails', value: 'foobar' },

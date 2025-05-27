@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { getConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
@@ -747,7 +747,8 @@ describe('CourseCard', () => {
             queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseUUID),
           });
           // TODO: Fix
-          // expect(getButtonElement('Assigned', { screenOverride: assignmentModal })).toHaveAttribute('aria-disabled', 'true');
+          // expect(getButtonElement('Assigned', { screenOverride: assignmentModal }))
+          // .toHaveAttribute('aria-disabled', 'true');
           await waitFor(() => {
           // Verify all modals close (error modal + assignment modal)
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

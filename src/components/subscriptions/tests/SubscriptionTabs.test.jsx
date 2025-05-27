@@ -8,7 +8,7 @@ import {
   render,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Routes, Route, MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 

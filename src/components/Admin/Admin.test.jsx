@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';

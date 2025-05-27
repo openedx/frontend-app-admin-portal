@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import algoliasearch from 'algoliasearch/lite';

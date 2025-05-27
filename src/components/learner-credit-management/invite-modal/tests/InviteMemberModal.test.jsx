@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -38,7 +38,7 @@ jest.mock('../../data', () => ({
   useContentMetadata: jest.fn(),
   useEnterpriseFlexGroups: jest.fn(),
   useEnterpriseCustomer: jest.fn(),
-  useEnterpriseGroup: jest.fn()
+  useEnterpriseGroup: jest.fn(),
 }));
 jest.mock('../../../../data/services/LmsApiService');
 jest.mock('../../../../data/services/EnterpriseCatalogApiService');

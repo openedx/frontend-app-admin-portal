@@ -5,7 +5,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import '@testing-library/jest-dom/extend-expect';

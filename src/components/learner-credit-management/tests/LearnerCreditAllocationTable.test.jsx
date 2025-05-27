@@ -5,7 +5,7 @@ import {
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 
 import LearnerCreditAllocationTable from '../LearnerCreditAllocationTable';
 

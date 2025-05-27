@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import LicenseAllocationHeader from './LicenseAllocationHeader';
 import { SubscriptionDetailContext } from '../../subscriptions/SubscriptionDetailContextProvider';
 import { SubsidyRequestsContext } from '../../subsidy-requests';

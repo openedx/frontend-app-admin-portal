@@ -1,6 +1,6 @@
 import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { saveAs } from 'file-saver';
 import DownloadCSVButton from './DownloadCSVButton';

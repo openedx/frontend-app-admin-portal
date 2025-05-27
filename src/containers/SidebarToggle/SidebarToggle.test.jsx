@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import '@testing-library/jest-dom';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
