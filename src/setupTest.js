@@ -45,19 +45,24 @@ global.URL.createObjectURL = jest.fn();
 // Suppress specific console.error warnings
 // eslint-disable-next-line no-console
 const originalConsoleError = console.error;
+
+const ignoredErrors = [
+  'Support for defaultProps will be removed from function components',
+  // Add more substrings to ignore additional warnings
+];
+
 // eslint-disable-next-line no-console
 console.error = (...args) => {
   const message = args[0];
 
   if (
     typeof message === 'string'
-      && message.includes('Support for defaultProps will be removed from function components')
+      && ignoredErrors.some(ignored => message.includes(ignored))
   ) {
-    return; // Suppress this specific React warning
+    return; // Suppress matched warning
   }
 
-  // Pass everything else through
-  originalConsoleError(...args);
+  originalConsoleError(...args); // Log everything else
 };
 
 // TODO: Once there are no more console errors in tests, uncomment the code below
