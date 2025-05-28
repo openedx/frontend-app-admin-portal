@@ -19,6 +19,7 @@ export const useSubsidyRequestConfiguration = ({
 }) => {
   const [subsidyRequestConfiguration, setSubsidyRequestConfiguration] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState({});
 
   const createSubsidyRequestConfiguration = useCallback(async () => {
     try {
@@ -51,9 +52,10 @@ export const useSubsidyRequestConfiguration = ({
 
       const customerConfiguration = camelCaseObject(response.data);
       setSubsidyRequestConfiguration(customerConfiguration);
-    } catch (error) {
+    } catch (err) {
       // log error and do nothing
-      logError(error);
+      logError(err);
+      setError(prevState => ({ ...prevState, createSubsidy: err }));
     }
   }, [enterpriseId]);
 
@@ -64,9 +66,9 @@ export const useSubsidyRequestConfiguration = ({
       );
       const customerConfiguration = camelCaseObject(response.data);
       setSubsidyRequestConfiguration(customerConfiguration);
-    } catch (error) {
-      logError(error);
-      throw error;
+    } catch (err) {
+      logError(err);
+      throw err;
     }
   }, [enterpriseId]);
 
@@ -78,13 +80,14 @@ export const useSubsidyRequestConfiguration = ({
     const loadConfiguration = async () => {
       try {
         await loadSubsidyRequestConfiguration();
-      } catch (error) {
-        const httpErrorStatus = error.customAttributes?.httpErrorStatus;
+      } catch (err) {
+        const httpErrorStatus = err.customAttributes?.httpErrorStatus;
         if (httpErrorStatus === 404) {
           // Customer configuration does not exist, create one
           await createSubsidyRequestConfiguration();
         } else {
-          logError(error);
+          logError(err);
+          setError((prevState) => ({ ...prevState, loadSubsidy: err }));
         }
       } finally {
         setIsLoading(false);
@@ -111,6 +114,7 @@ export const useSubsidyRequestConfiguration = ({
       loadSubsidyRequestConfiguration();
     } catch (err) {
       logError(err);
+      setError((prevState) => ({ ...prevState, updateSubsidy: err }));
       throw err;
     }
   }, [enterpriseId, loadSubsidyRequestConfiguration]);
@@ -132,6 +136,7 @@ export const useSubsidyRequestConfiguration = ({
     subsidyRequestConfiguration,
     isLoading,
     updateSubsidyRequestConfiguration,
+    error,
   };
 };
 
