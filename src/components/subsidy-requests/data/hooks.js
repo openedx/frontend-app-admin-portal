@@ -19,7 +19,6 @@ export const useSubsidyRequestConfiguration = ({
 }) => {
   const [subsidyRequestConfiguration, setSubsidyRequestConfiguration] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState({});
 
   const createSubsidyRequestConfiguration = useCallback(async () => {
     try {
@@ -55,7 +54,6 @@ export const useSubsidyRequestConfiguration = ({
     } catch (err) {
       // log error and do nothing
       logError(err);
-      setError(prevState => ({ ...prevState, createSubsidy: err }));
     }
   }, [enterpriseId]);
 
@@ -87,7 +85,6 @@ export const useSubsidyRequestConfiguration = ({
           await createSubsidyRequestConfiguration();
         } else {
           logError(err);
-          setError((prevState) => ({ ...prevState, loadSubsidy: err }));
         }
       } finally {
         setIsLoading(false);
@@ -114,7 +111,6 @@ export const useSubsidyRequestConfiguration = ({
       loadSubsidyRequestConfiguration();
     } catch (err) {
       logError(err);
-      setError((prevState) => ({ ...prevState, updateSubsidy: err }));
       throw err;
     }
   }, [enterpriseId, loadSubsidyRequestConfiguration]);
@@ -136,7 +132,6 @@ export const useSubsidyRequestConfiguration = ({
     subsidyRequestConfiguration,
     isLoading,
     updateSubsidyRequestConfiguration,
-    error,
   };
 };
 
