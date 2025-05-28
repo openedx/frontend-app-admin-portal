@@ -1,6 +1,6 @@
 import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { saveAs } from 'file-saver';
 import DownloadCSVButton from './DownloadCSVButton';
@@ -57,7 +57,7 @@ describe('DownloadCSVButton', () => {
     );
 
     // Click the download button.
-    userEvent.click(screen.getByTestId('plotly-charts-download-csv-button'));
+    await waitFor(() => userEvent.click(screen.getByTestId('plotly-charts-download-csv-button')));
     await flushPromises();
 
     expect(saveAs).toHaveBeenCalledWith(

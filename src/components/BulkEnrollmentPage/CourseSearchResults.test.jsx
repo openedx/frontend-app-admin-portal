@@ -126,10 +126,10 @@ describe('<CourseSearchResults />', () => {
     renderWithRouter(<CourseSearchWrapper props={{ ...defaultProps, isSearchStalled: true }} />);
     expect(screen.getByText('Loading...'));
   });
-  it('shows selection options when at least one course is selected', () => {
+  it('shows selection options when at least one course is selected', async () => {
     renderWithRouter(<CourseSearchWrapper {...defaultProps} />);
     const rowToSelect = screen.getByText(testCourseName2).closest('tr');
-    userEvent.click(within(rowToSelect).getByTestId('selectOne'));
+    await waitFor(() => userEvent.click(within(rowToSelect).getByTestId('selectOne')));
     expect(screen.getByText('1 selected (1 shown below)', { exact: false })).toBeInTheDocument();
   });
   it('renders a message when there are no results', () => {

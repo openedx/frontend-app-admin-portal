@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import {
@@ -44,12 +44,12 @@ describe('BaseSelectWithContext', () => {
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).toHaveProperty('checked', true);
   });
-  it('deselects the row when selected checkbox is checked', () => {
+  it('deselects the row when selected checkbox is checked', async () => {
     render(
       <BaseSelectWithContext contextKey="emails" row={defaultRow} />,
     );
     const checkbox = screen.getByTestId(SELECT_ONE_TEST_ID);
-    userEvent.click(checkbox);
+    await waitFor(() => userEvent.click(checkbox));
     expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
 });

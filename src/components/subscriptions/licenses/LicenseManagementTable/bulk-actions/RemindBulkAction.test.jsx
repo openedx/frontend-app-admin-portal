@@ -216,7 +216,7 @@ describe('RemindBulkAction', () => {
     const remindTitle = await screen.findByText('Remind User');
     expect(remindTitle).toBeVisible();
     const cancelButtonInDialog = await screen.findByText('Cancel');
-    userEvent.click(cancelButtonInDialog);
+    await userEvent.click(cancelButtonInDialog);
     expect(screen.queryByText('Remind User')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

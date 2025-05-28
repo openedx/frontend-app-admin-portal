@@ -127,9 +127,7 @@ describe('DownloadCsvIconButton', () => {
 
     expect(downloadIcon).toBeInTheDocument();
 
-    act(() => {
-      userEvent.click(downloadIcon);
-    });
+    await waitFor(() => userEvent.click(downloadIcon));
     await flushPromises();
 
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();

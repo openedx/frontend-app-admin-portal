@@ -111,7 +111,7 @@ describe('<ApproveLicenseRequestModal />', () => {
     const { getByTestId } = render(<ApproveLicenseRequestModalWrapper onSuccess={handleSuccess} />);
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    userEvent.click(subscriptionChoiceRadio);
+    await waitFor(() => userEvent.click(subscriptionChoiceRadio));
 
     const approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
@@ -134,7 +134,7 @@ describe('<ApproveLicenseRequestModal />', () => {
     const { getByTestId } = render(<ApproveLicenseRequestModalWrapper />);
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    userEvent.click(subscriptionChoiceRadio);
+    await waitFor(() => userEvent.click(subscriptionChoiceRadio));
 
     let approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);

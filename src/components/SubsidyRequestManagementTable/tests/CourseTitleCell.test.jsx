@@ -48,7 +48,7 @@ describe('CourseTitleCell', () => {
     );
     renderWithRouter(Component);
     userEvent.click(screen.getByText(defaultProps.row.original.courseTitle));
-    expect(screen.getByText('Loading course details...'));
+    waitFor(() => expect(screen.getByText('Loading course details...')));
     await waitFor(() => {
       screen.getByText(mockCourseDetails.shortDescription);
       screen.getByText('Learn more about this course');

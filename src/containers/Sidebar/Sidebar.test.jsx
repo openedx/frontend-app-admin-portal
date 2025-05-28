@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
+  fireEvent,
   render, screen,
   waitFor,
 } from '@testing-library/react';
@@ -120,9 +120,10 @@ describe('<Sidebar />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
-    wrapper = mount((
+    const { container } = render((
       <SidebarWrapper />
     ));
+    wrapper = container;
     expect(mockOnMount).toHaveBeenCalledTimes(1);
     expect(mockOnMount).toHaveBeenCalledWith({ sidebarHeight: expect.any(Number) });
   });
@@ -191,12 +192,17 @@ describe('<Sidebar />', () => {
   describe('calls onWidthChange callback', () => {
     it('on isMobile prop change', () => {
       const spy = jest.fn();
-      wrapper = mount((
+      const { rerender } = render((
         <SidebarWrapper
           onWidthChange={spy}
         />
       ));
-      wrapper.setProps({ isMobile: true });
+      rerender(
+        <SidebarWrapper
+          onWidthChange={spy}
+          isMobile
+        />,
+      );
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
@@ -209,7 +215,10 @@ describe('<Sidebar />', () => {
       store.clearActions();
     });
 
-    it('expands on mouse over', () => {
+    it('expands on mouse over', async () => {
+      render((
+        <SidebarWrapper />
+      ));
       const expectedActions = [{
         type: EXPAND_SIDEBAR,
         payload: { usingToggle: false },
@@ -238,7 +247,7 @@ describe('<Sidebar />', () => {
         },
       });
 
-      wrapper = mount((
+      render((
         <SidebarWrapper store={store} />
       ));
 
@@ -251,7 +260,7 @@ describe('<Sidebar />', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('collapses on blur', () => {
+    it('collapses on blur', async () => {
       store = mockStore({
         ...initialState,
         sidebar: {
@@ -260,7 +269,7 @@ describe('<Sidebar />', () => {
         },
       });
 
-      wrapper = mount((
+      render((
         <SidebarWrapper store={store} />
       ));
 
@@ -268,8 +277,8 @@ describe('<Sidebar />', () => {
         type: COLLAPSE_SIDEBAR,
         payload: { usingToggle: false },
       }];
-
-      wrapper.find('Sidebar').simulate('blur');
+      const sideBar = await screen.getByTestId('nav-sidebar');
+      fireEvent.blur(sideBar);
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -452,7 +461,7 @@ describe('<Sidebar />', () => {
       data: { results: [{ group_type: groupType }] },
     }));
     render(<SidebarWrapper store={store} />);
-    const highlightsLink = screen.queryByRole('link', { name: 'Highlights' });
+    const highlightsLink = await screen.findByRole('link', { name: 'Highlights' });
     await waitFor(() => {
       if (groupType === 'flex') {
         expect(highlightsLink).toBeInTheDocument();

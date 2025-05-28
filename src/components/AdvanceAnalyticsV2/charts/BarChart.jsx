@@ -51,6 +51,7 @@ const BarChart = ({
 
   return (
     <Plot
+      data-testid="bar-chart-plot"
       data={traces}
       layout={layout}
       config={config}

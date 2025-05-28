@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
+import { waitFor } from '@testing-library/react';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
 import { ContentHighlightsContext } from '../../ContentHighlightsContext';
 import {
@@ -102,7 +103,7 @@ describe('ContentHighlightCatalogVisibilityAlert', () => {
     expect(screen.queryByText('No highlights created')).toBeNull();
     expect(screen.queryByText('Something went wrong when updating your setting. Please try again.')).toBeNull();
   });
-  it('renders no highlight sets alert and opens stepper modal', () => {
+  it('renders no highlight sets alert and opens stepper modal', async () => {
     renderWithRouter(
       <ContentHighlightCatalogVisibilityAlertWrapper enterpriseAppContextValue={noHighlightsAppContext} />,
     );
@@ -112,7 +113,7 @@ describe('ContentHighlightCatalogVisibilityAlert', () => {
     const openStepperModalButton = screen.getByText('New highlight');
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeFalsy();
 
-    userEvent.click(openStepperModalButton);
+    await waitFor(() => userEvent.click(openStepperModalButton));
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeTruthy();

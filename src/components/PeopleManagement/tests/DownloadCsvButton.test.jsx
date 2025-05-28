@@ -1,7 +1,9 @@
 import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
-import { act, render, screen } from '@testing-library/react';
+import {
+  render, screen, waitFor,
+} from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
@@ -111,10 +113,7 @@ describe('DownloadCSVButton', () => {
     render(<DownloadCSVButtonWrapper {...props} />);
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    act(() => {
-      // Click the download button.
-      userEvent.click(screen.getByTestId(testId));
-    });
+    await waitFor(() => userEvent.click(screen.getByTestId(testId)));
 
     await flushPromises();
 

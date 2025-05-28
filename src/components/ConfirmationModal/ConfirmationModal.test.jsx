@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -13,17 +13,17 @@ describe('<ConfirmationModal />', () => {
     body: 'Content',
   };
 
-  it('should call onConfirm when confirm button is clicked', () => {
+  it('should call onConfirm when confirm button is clicked', async () => {
     const mockHandleConfirm = jest.fn();
     renderWithI18nProvider(<ConfirmationModal {...basicProps} onConfirm={mockHandleConfirm} />);
-    userEvent.click(screen.getByText('Confirm'));
+    await waitFor(() => userEvent.click(screen.getByText('Confirm')));
     expect(mockHandleConfirm).toHaveBeenCalledTimes(1);
   });
 
-  it('should call onClose when modal is closed', () => {
+  it('should call onClose when modal is closed', async () => {
     const mockHandleClose = jest.fn();
     renderWithI18nProvider(<ConfirmationModal {...basicProps} onClose={mockHandleClose} />);
-    userEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => userEvent.click(screen.getByText('Cancel')));
     expect(mockHandleClose).toHaveBeenCalledTimes(1);
   });
 
