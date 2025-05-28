@@ -1,16 +1,13 @@
 import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
+  useCallback, useEffect, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { logError } from '@edx/frontend-platform/logging';
 import {
-  DataTable, TextFilter, Container, Row, Col,
+  Col, Container, DataTable, Row, TextFilter,
 } from '@openedx/paragon';
 
 import LmsApiService from '../../data/services/LmsApiService';

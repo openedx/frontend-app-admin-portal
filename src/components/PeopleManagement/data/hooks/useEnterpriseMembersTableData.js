@@ -1,11 +1,7 @@
-import {
-  useCallback, useMemo, useState,
-} from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
-import debounce from 'lodash.debounce';
-import snakeCase from 'lodash/snakeCase';
-
+import { debounce, snakeCase } from 'lodash-es';
 import LmsApiService from '../../../../data/services/LmsApiService';
 
 const useEnterpriseMembersTableData = ({ enterpriseId }) => {

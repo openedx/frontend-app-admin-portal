@@ -4,11 +4,11 @@ const dotenv = require('dotenv');
 
 /**
  * Injects stage-specific env vars from .env.development-stage.
- * 
+ *
  * Note: ideally, we could use the base config for `webpack-dev-stage` in
- * `getBaseConfig` above, however it appears to have a bug so we have to 
+ * `getBaseConfig` above, however it appears to have a bug so we have to
  * manually load the stage-specific env vars ourselves for now.
- * 
+ *
  * The .env.development-stage env vars must be loaded before the base
  * config is created.
  */
@@ -22,5 +22,7 @@ const config = createConfig('webpack-dev', {
     server: 'https',
   },
 });
+
+config.module.rules[0].exclude = /node_modules\/(?!(lodash-es|@(open)?edx))/;
 
 module.exports = config;

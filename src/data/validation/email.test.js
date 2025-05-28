@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { range } from 'lodash-es';
 import {
   extractSalesforceIds,
   returnValidatedEmails,
@@ -34,7 +34,7 @@ describe('email validation', () => {
       const validEmails = ['timmy@test.co', 'bigsby@test.co', 'coolstorybro@gtest.com'];
       const expectedResult = { ...baseResults };
       expectedResult.validEmails = validEmails;
-      expectedResult.validEmailIndices = _.range(validEmails.length);
+      expectedResult.validEmailIndices = range(validEmails.length);
       expect(validateEmailAddresses(validEmails)).toEqual(expectedResult);
     });
 
@@ -42,7 +42,7 @@ describe('email validation', () => {
       const validEmails = ['timmy@test.co ', ' bigsby@test.co', 'coolstorybro@gtest.com   '];
       const expectedResult = { ...baseResults };
       expectedResult.validEmails = ['timmy@test.co', 'bigsby@test.co', 'coolstorybro@gtest.com'];
-      expectedResult.validEmailIndices = _.range(validEmails.length);
+      expectedResult.validEmailIndices = range(validEmails.length);
       expect(validateEmailAddresses(validEmails)).toEqual(expectedResult);
     });
 
@@ -90,7 +90,7 @@ describe('email validation', () => {
 
       const expectedResult = { ...baseResults };
       expectedResult.validEmails = expectedCleanedResult;
-      expectedResult.validEmailIndices = _.range(expectedCleanedResult.length);
+      expectedResult.validEmailIndices = range(expectedCleanedResult.length);
       expectedResult.invalidEmailIndices = [14];
       expectedResult.invalidEmails = ['@example.com'];
 
@@ -108,7 +108,7 @@ describe('email validation', () => {
       const invalidEmails = ['bobbyb', 'yooooooo3.a.x.y', 'argh@', 'blargh@.co.uk'];
       const expectedResult = { ...baseResults };
       expectedResult.invalidEmails = invalidEmails;
-      expectedResult.invalidEmailIndices = _.range(invalidEmails.length);
+      expectedResult.invalidEmailIndices = range(invalidEmails.length);
       expect(validateEmailAddresses(invalidEmails)).toEqual(expectedResult);
     });
 

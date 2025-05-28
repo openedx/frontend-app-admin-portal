@@ -16,6 +16,7 @@ import userSubscription from './userSubscription';
 import dashboardInsights from './dashboardInsights';
 import enterpriseBudgets from './enterpriseBudgets';
 import enterpriseGroups from './enterpriseGroups';
+import enterpriseCustomerAdmin from './enterpriseCustomerAdmin';
 
 const identityReducer = (state) => {
   const newState = { ...state };
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   userSubscription,
   dashboardInsights,
   enterpriseBudgets,
+  enterpriseCustomerAdmin,
   enterpriseGroups,
 });
 

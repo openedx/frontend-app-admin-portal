@@ -2,7 +2,7 @@ import { defineMessages, useIntl } from '@edx/frontend-platform/i18n';
 import { Dropdown, Skeleton, Stack } from '@openedx/paragon';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import classNames from 'classnames';
 import { SHORT_MONTH_DATE_FORMAT } from '../data';
 
@@ -44,7 +44,8 @@ const NewAssignmentModalDropdown = ({
     }
     return true;
   };
-  const startLabel = ({ start }) => (dayjs(start).isBefore(dayjs()) ? 'Started' : 'Starts');
+  const now = useMemo(() => dayjs(), []);
+  const getStartLabel = useCallback((start) => (dayjs(start).isBefore(now) ? 'Started' : 'Starts'), [now]);
   return (
     <Dropdown
       onSelect={(eventKey, event) => {
@@ -77,7 +78,7 @@ const NewAssignmentModalDropdown = ({
             >
               <Stack>
                 {intl.formatMessage(messages.startDate, {
-                  startLabel: startLabel(courseRun),
+                  startLabel: getStartLabel(courseRun.start),
                   startDate: dayjs(courseRun.start).format(SHORT_MONTH_DATE_FORMAT),
                 })}
                 <span className={classNames('small', { 'text-muted': getDropdownItemClassName(courseRun) })}>

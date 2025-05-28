@@ -5,16 +5,16 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { fireEvent, render, screen } from '@testing-library/react';
-import last from 'lodash/last';
-import '@testing-library/jest-dom';
+import { last } from 'lodash-es';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import '@testing-library/jest-dom';
 
 import CodeAssignmentModal from './index';
 import assignEmailTemplate from '../../components/CodeAssignmentModal/emailTemplate';
 import {
-  SET_EMAIL_TEMPLATE_SOURCE,
-  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
   EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
+  EMAIL_TEMPLATE_SOURCE_NEW_EMAIL,
+  SET_EMAIL_TEMPLATE_SOURCE,
 } from '../../data/constants/emailTemplate';
 
 const mockStore = configureMockStore([thunk]);
