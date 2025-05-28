@@ -11,13 +11,13 @@ jest.mock('@edx/frontend-platform/auth');
 jest.mock('@edx/frontend-platform/logging');
 jest.mock('@edx/frontend-platform/analytics');
 
-// eslint-disable-next-line import/prefer-default-export
+// Set up axios mocks
 export const axiosMock = new MockAdapter(axios);
 getAuthenticatedHttpClient.mockReturnValue(axios);
 axios.isAccessTokenExpired = jest.fn();
 axios.isAccessTokenExpired.mockReturnValue(false);
 
-// mock IntersectionObserver
+// Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
   disconnect() {
     return null;
@@ -36,8 +36,29 @@ global.IntersectionObserver = class IntersectionObserver {
   }
 };
 
+// Mock ResizeObserver
 global.ResizeObserver = ResizeObserverPolyfill;
+
+// Stub createObjectURL
 global.URL.createObjectURL = jest.fn();
+
+// Suppress specific console.error warnings
+// eslint-disable-next-line no-console
+const originalConsoleError = console.error;
+// eslint-disable-next-line no-console
+console.error = (...args) => {
+  const message = args[0];
+
+  if (
+    typeof message === 'string'
+      && message.includes('Support for defaultProps will be removed from function components')
+  ) {
+    return; // Suppress this specific React warning
+  }
+
+  // Pass everything else through
+  originalConsoleError(...args);
+};
 
 // TODO: Once there are no more console errors in tests, uncomment the code below
 // const { error } = global.console;
