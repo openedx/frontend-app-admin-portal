@@ -131,10 +131,10 @@ describe('useBudgetRedemptions', () => {
         search: mockOfferEnrollments[0].user_email,
         subsidyAccessPolicyUuid: budgetId,
       };
-      expect(SubsidyApiService.fetchCustomerTransactions).toHaveBeenCalledWith(
+      await waitFor(() => expect(SubsidyApiService.fetchCustomerTransactions).toHaveBeenCalledWith(
         subsidyUuid,
         expectedApiOptions,
-      );
+      ));
     } else {
       const expectedApiOptions = {
         page: 1,
@@ -145,10 +145,10 @@ describe('useBudgetRedemptions', () => {
         ignoreNullCourseListPrice: true,
         budgetId,
       };
-      expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(
+      await waitFor(() => expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(
         TEST_ENTERPRISE_UUID,
         expectedApiOptions,
-      );
+      ));
     }
 
     const mockExpectedResultsObj = isTopDownAssignmentEnabled ? [{
