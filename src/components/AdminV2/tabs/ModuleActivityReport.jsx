@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { DataTable } from '@openedx/paragon';
 import {
   debounce, isEmpty, isEqual, isNumber,

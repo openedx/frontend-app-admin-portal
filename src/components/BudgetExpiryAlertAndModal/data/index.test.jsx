@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { QueryClientProvider } from '@tanstack/react-query';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';

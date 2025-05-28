@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import userEvent from '@testing-library/user-event';
 import { within } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { render, screen } from '@testing-library/react';
 
@@ -230,7 +230,7 @@ describe('CouponDetails container', () => {
       within(table).getByText(ACTIONS.assign.label);
     });
 
-    it.skip('does not show Assign button for an unavailable coupon', () => {
+    it('does not show Assign button for an unavailable coupon', () => {
       store = mockStore({
         ...initialState,
         table: {

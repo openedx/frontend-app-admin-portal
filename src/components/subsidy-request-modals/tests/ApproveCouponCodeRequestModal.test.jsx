@@ -107,18 +107,19 @@ describe('<ApproveCouponCodeRequestModal />', () => {
   });
 
   it('should call Enterprise Access API to approve the request and call onSuccess afterwards', async () => {
+    const user = userEvent.setup();
     const handleSuccess = jest.fn();
     const { getByTestId } = render(
       <ApproveCouponCodeRequestModal {...basicProps} onSuccess={handleSuccess} />,
     );
 
     const couponChoiceRadio = getByTestId('approve-coupon-code-request-modal-coupon-0');
-    userEvent.click(couponChoiceRadio);
+    await user.click(couponChoiceRadio);
 
     const approveBtn = getByTestId('approve-coupon-code-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    userEvent.click(approveBtn);
+    await user.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveCouponCodeRequests).toHaveBeenCalledWith({
@@ -131,6 +132,7 @@ describe('<ApproveCouponCodeRequestModal />', () => {
   });
 
   it('should render alert if an error occurred', async () => {
+    const user = userEvent.setup();
     EnterpriseAccessApiService.approveCouponCodeRequests.mockRejectedValue(new Error('something went wrong'));
 
     const { getByTestId } = render(
@@ -138,12 +140,12 @@ describe('<ApproveCouponCodeRequestModal />', () => {
     );
 
     const couponChoiceRadio = getByTestId('approve-coupon-code-request-modal-coupon-0');
-    userEvent.click(couponChoiceRadio);
+    await user.click(couponChoiceRadio);
 
     let approveBtn = getByTestId('approve-coupon-code-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    userEvent.click(approveBtn);
+    await user.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveCouponCodeRequests).toHaveBeenCalledWith({
