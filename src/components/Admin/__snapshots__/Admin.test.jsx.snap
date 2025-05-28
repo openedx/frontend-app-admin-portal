@@ -1632,7 +1632,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -3384,7 +3384,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -5136,7 +5136,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -6888,7 +6888,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -8640,7 +8640,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -10392,7 +10392,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -12144,7 +12144,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -13896,7 +13896,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -15648,7 +15648,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -17400,7 +17400,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -19201,7 +19201,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -20953,7 +20953,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -22705,7 +22705,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
@@ -26416,7 +26416,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
       >
-        Showing data as of
+        Showing data as of 
         July 31, 2018
       </div>
       <div>
