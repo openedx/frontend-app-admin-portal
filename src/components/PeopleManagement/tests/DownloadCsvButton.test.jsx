@@ -4,7 +4,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import {
   render, screen, waitFor,
 } from '@testing-library/react';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 

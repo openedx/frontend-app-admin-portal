@@ -5,8 +5,7 @@ import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
-
+import configureMockStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import BulkEnrollmentResultsDownloadPage from './index';
 

@@ -2,12 +2,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { last } from 'lodash-es';
-import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import '@testing-library/jest-dom/extend-expect';
 
 import CodeReminderModal from './index';
 import EcommerceApiService from '../../data/services/EcommerceApiService';
