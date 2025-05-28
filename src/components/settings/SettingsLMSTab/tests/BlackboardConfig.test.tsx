@@ -155,6 +155,7 @@ describe('<BlackboardConfig />', () => {
   });
   test('it creates new configs on submit', async () => {
     const user = userEvent.setup();
+
     render(testBlackboardConfigSetup(noExistingData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 

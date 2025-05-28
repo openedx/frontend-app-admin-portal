@@ -137,7 +137,7 @@ describe('BulkEnrollmentAlertModal', () => {
     render(<BulkEnrollmentAlertModalWrapper {...defaultAlertProps} />);
     const closeButton = screen.getByText('OK');
     await user.click(closeButton);
-    expect(defaultAlertProps.toggleClose).toBeCalledTimes(1);
+    expect(defaultAlertProps.toggleClose).toHaveBeenCalledTimes(1);
   });
 });
 

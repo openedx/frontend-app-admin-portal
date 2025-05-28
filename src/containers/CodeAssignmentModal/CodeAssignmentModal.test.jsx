@@ -6,6 +6,7 @@ import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { last } from 'lodash-es';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import '@testing-library/jest-dom';
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
