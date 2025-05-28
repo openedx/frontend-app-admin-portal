@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { generatePath, useParams, Link } from 'react-router-dom';
+import { generatePath, Link, useParams } from 'react-router-dom';
 import {
   Button, Col, Hyperlink, Row, Stack,
 } from '@openedx/paragon';
@@ -14,12 +14,12 @@ import dayjs from 'dayjs';
 import { configuration } from '../../config';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import {
-  useBudgetId,
-  useSubsidyAccessPolicy,
-  useEnterpriseCustomer,
-  useEnterpriseGroup,
   isLmsBudget,
   LEARNER_CREDIT_ROUTE,
+  useBudgetId,
+  useEnterpriseCustomer,
+  useEnterpriseGroup,
+  useSubsidyAccessPolicy,
 } from './data';
 import EVENT_NAMES from '../../eventTracking';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';

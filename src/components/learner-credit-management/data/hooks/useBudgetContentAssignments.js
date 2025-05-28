@@ -1,7 +1,7 @@
 import {
-  useCallback, useMemo, useState, useRef,
+  useCallback, useMemo, useRef, useState,
 } from 'react';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash-es';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 

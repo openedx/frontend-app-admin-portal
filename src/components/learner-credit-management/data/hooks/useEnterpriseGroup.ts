@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 
 import { learnerCreditManagementQueryKeys } from '../constants';
 import LmsApiService from '../../../../data/services/LmsApiService';
