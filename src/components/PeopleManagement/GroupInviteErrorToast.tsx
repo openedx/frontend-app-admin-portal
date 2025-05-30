@@ -30,7 +30,17 @@ const GroupInviteErrorToast = ({ isOpen, errorType, closeToast }: GroupErrorToas
   const toastText = generateErrorText();
 
   return (
-    <Toast onClose={closeToast} show={isOpen}>{toastText}</Toast>
+    <Toast
+      onClose={closeToast}
+      show={isOpen}
+      delay={10000}
+      action={{
+        label: 'Help',
+        href: 'https://enterprise-support.edx.org/s/article/Why-can-t-I-invite-certain-learners-to-a-group',
+      }}
+    >
+      {toastText}
+    </Toast>
   );
 };
 

@@ -367,7 +367,7 @@ describe('<CreateGroupModal />', () => {
     expect(screen.queryByText("Members can't be invited as entered.")).not.toBeInTheDocument();
     expect(screen.queryByText('iamnotanemail is not a valid email.')).not.toBeInTheDocument();
   });
-  it('shows error toast when invitees not part of org', async () => {
+  it('callback for error toast triggered when invitees not part of org', async () => {
     const mockGroupData = { uuid: 'test-uuid' };
     LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
 
