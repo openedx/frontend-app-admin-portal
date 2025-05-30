@@ -9,6 +9,7 @@ import {
   BUDGET_DETAIL_ACTIVITY_TAB,
   BUDGET_DETAIL_CATALOG_TAB,
   BUDGET_DETAIL_MEMBERS_TAB,
+  BUDGET_DETAIL_REQUESTS_TAB,
 } from './data/constants';
 import { useBudgetDetailTabs, useBudgetId } from './data';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
@@ -21,6 +22,7 @@ import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import BudgetDetailActivityTabContents from './BudgetDetailActivityTabContents';
 import BudgetDetailCatalogTabContents from './BudgetDetailCatalogTabContents';
 import BudgetDetailMembersTabContents from './members-tab/BudgetDetailMembersTabContents';
+import BudgetDetailRequestsTabContent from './BudgetDetailRequestsTabContent';
 
 const DEFAULT_TAB = BUDGET_DETAIL_ACTIVITY_TAB;
 
@@ -33,7 +35,7 @@ function isSupportedTabKey({
 }) {
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0)
     || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
-  const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB];
+  const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_REQUESTS_TAB];
   if (showCatalog) {
     supportedTabs.push(BUDGET_DETAIL_CATALOG_TAB);
   }
@@ -122,6 +124,7 @@ const BudgetDetailTabsAndRoutes = ({
     ActivityTabElement: BudgetDetailActivityTabContents,
     CatalogTabElement: BudgetDetailCatalogTabContents,
     MembersTabElement: BudgetDetailMembersTabContents,
+    RequestsTabElement: BudgetDetailRequestsTabContent,
   });
 
   if (!isSupportedTabKey({
