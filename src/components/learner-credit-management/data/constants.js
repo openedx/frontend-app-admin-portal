@@ -47,10 +47,12 @@ export const EXEC_ED_OFFER_TYPE = 'learner_credit';
 export const BUDGET_DETAIL_ACTIVITY_TAB = 'activity';
 export const BUDGET_DETAIL_CATALOG_TAB = 'catalog';
 export const BUDGET_DETAIL_MEMBERS_TAB = 'members';
+export const BUDGET_DETAIL_REQUESTS_TAB = 'requests';
 export const BUDGET_DETAIL_TAB_LABELS = {
   [BUDGET_DETAIL_ACTIVITY_TAB]: 'Activity',
   [BUDGET_DETAIL_CATALOG_TAB]: 'Catalog',
   [BUDGET_DETAIL_MEMBERS_TAB]: 'Members',
+  [BUDGET_DETAIL_REQUESTS_TAB]: 'Requests',
 };
 
 // TODO: i18n'tify this

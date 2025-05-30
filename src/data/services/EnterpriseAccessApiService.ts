@@ -312,6 +312,14 @@ class EnterpriseAccessApiService {
     const response = await EnterpriseAccessApiService.apiClient().get(url);
     return camelCaseObject(response);
   }
+
+  static fetchBnrSubsidyRequests(options = {}) {
+    const params = new URLSearchParams({
+      ...options,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
 }
 
 export default EnterpriseAccessApiService;
