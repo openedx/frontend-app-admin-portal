@@ -22,10 +22,18 @@ export type EnterpriseGroupMembershipArgs = {
   enterpriseUuid: string,
 };
 
+export type GroupInviteSummary = {
+  records_processed: number,
+  new_learners: number,
+  existing_learners: number,
+  non_org_rejected: number,
+};
+
 export type EnterpriseGroupResponse = Promise<AxiosResponse<EnterpriseGroup>>;
 export type EnterpriseGroupListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroup>>>;
 export type EnterpriseLearnersListResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseLearner>>>;
 export type EnterpriseGroupMembershipResponse = Promise<AxiosResponse<PaginatedCurrentPage<EnterpriseGroupMembership>>>;
+export type EnterpriseGroupInviteResponse = Promise<AxiosResponse<GroupInviteSummary>>;
 
 export type FetchEnterpriseLearnerDataArgs = { enterpriseCustomer?: string, userId?: string, username?: string };
 
@@ -526,7 +534,7 @@ class LmsApiService {
     return response;
   };
 
-  static inviteEnterpriseLearnersToGroup = async (groupUuid: string, formData) => {
+  static inviteEnterpriseLearnersToGroup = async (groupUuid: string, formData) : EnterpriseGroupInviteResponse => {
     const assignLearnerEndpoint = `${LmsApiService.enterpriseGroupListUrl}${groupUuid}/assign_learners/`;
     return LmsApiService.apiClient().post(assignLearnerEndpoint, formData);
   };
