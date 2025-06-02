@@ -7,6 +7,7 @@
   "include": [
     "types.d.ts",
     "src/**/*",
+    "src/custom.d.ts",
     "__mocks__/**/*"
   ],
   "exclude": ["dist", "node_modules", "src/icons/*"],
