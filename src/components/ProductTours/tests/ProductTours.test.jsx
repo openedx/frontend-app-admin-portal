@@ -202,14 +202,13 @@ describe('<ProductTours/>', () => {
       screen.debug(undefined, 1000000);
     });
     it('renders the welcome modal', () => {
-      global.localStorage.setItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
-      expect(screen.queryByText('Hello!')).toBeTruthy();
+      expect(screen.queryByText('Welcome!')).toBeTruthy();
     });
     it('hides the the welcome modal after user has seen it', () => {
       global.localStorage.setItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME, true);
       render(<ToursWithContext />);
-      expect(screen.queryByText('Hello!')).not.toBeTruthy();
+      expect(screen.queryByText('Welcome!')).not.toBeTruthy();
     });
     describe('with onboarding disabled', () => {
       beforeEach(() => {
