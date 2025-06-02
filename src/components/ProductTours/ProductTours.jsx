@@ -77,7 +77,9 @@ const ProductTours = ({
     <div className="product-tours">
       {onboardingEnabled && (
         <>
-          <OnboardingWelcomeModal />
+          <OnboardingWelcomeModal
+            openAdminTour={setIsAdminTourOpen}
+          />
           <TourCollapsible
             onTourSelect={handleTourSelect}
           />

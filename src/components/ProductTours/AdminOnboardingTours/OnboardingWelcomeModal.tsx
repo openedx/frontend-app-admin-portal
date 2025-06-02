@@ -11,7 +11,7 @@ import messages from './messages';
 import welcomeModal from '../data/images/WelcomeModal.svg';
 
 const OnboardingWelcomeModal = ({
-  lastLogin,
+  openAdminTour, lastLogin,
 }) => {
   const intl = useIntl();
   const [isOpen, open, close] = useToggle(false);
@@ -32,6 +32,8 @@ const OnboardingWelcomeModal = ({
 
   const handleStart = () => {
     global.localStorage.setItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME, 'true');
+    openAdminTour(true);
+    close();
   };
 
   return (
@@ -93,6 +95,7 @@ const mapStateToProps = state => ({
 });
 
 OnboardingWelcomeModal.propTypes = {
+  openAdminTour: PropTypes.func.isRequired,
   lastLogin: PropTypes.string,
 };
 

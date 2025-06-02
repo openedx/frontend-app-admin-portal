@@ -4,9 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
-  screen,
-  render,
-  cleanup,
+  cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mergeConfig } from '@edx/frontend-platform';
@@ -199,11 +197,17 @@ describe('<ProductTours/>', () => {
     it('renders the collapsible title', () => {
       render(<ToursWithContext />);
       expect(screen.queryByText('Quick Start Guide')).toBeTruthy();
-      screen.debug(undefined, 1000000);
     });
-    it('renders the welcome modal', () => {
+    it('renders the welcome modal and opens the quick start guide', async () => {
       render(<ToursWithContext />);
       expect(screen.queryByText('Welcome!')).toBeTruthy();
+      userEvent.click(screen.getByText('Get started'));
+      // "Get started" button should un-collapse the quick start guide
+      await waitFor(() => {
+        expect(screen.queryByText(
+          'Select any item in the guide to learn more about your administrative portal.',
+        )).toBeTruthy();
+      });
     });
     it('hides the the welcome modal after user has seen it', () => {
       global.localStorage.setItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME, true);
