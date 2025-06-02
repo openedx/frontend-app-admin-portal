@@ -19,6 +19,7 @@ import AddMembersModal from '../AddMembersModal/AddMembersModal';
 import { makePlural } from '../../../utils';
 import EVENT_NAMES from '../../../eventTracking';
 import ValidatedEmailsContextProvider from '../data/ValidatedEmailsContextProvider';
+import GroupInviteErrorToast from '../GroupInviteErrorToast';
 
 const GroupDetailPage = ({ enterpriseUUID }) => {
   const intl = useIntl();
@@ -29,6 +30,8 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [groupName, setGroupName] = useState(enterpriseGroup?.name);
   const [isAddMembersModalOpen, openAddMembersModal, closeAddMembersModal] = useToggle(false);
+  const [isGroupInviteErrorModalOpen, openGroupInviteErrorModal, closeGroupInviteErrorModal] = useToggle(false);
+  const [groupInviteError, setGroupInviteError] = useState('');
   const {
     isLoading: isTableLoading,
     enterpriseGroupLearnersTableData,
@@ -48,6 +51,11 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
     }
   }, [enterpriseGroup]);
 
+  const handleInviteError = (errorType) => {
+    setGroupInviteError(errorType);
+    openGroupInviteErrorModal();
+  };
+
   const tooltipContent = (
     <FormattedMessage
       id="adminPortal.peopleManagement.groupDetail.deleteGroup.icon"
@@ -60,6 +68,11 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
     <div className="pt-4 pl-4">
       {!isLoading ? (
         <>
+          <GroupInviteErrorToast
+            isOpen={isGroupInviteErrorModalOpen}
+            errorType={groupInviteError}
+            closeToast={closeGroupInviteErrorModal}
+          />
           <DeleteGroupModal
             group={enterpriseGroup}
             isOpen={isDeleteModalOpen}
@@ -175,6 +188,7 @@ const GroupDetailPage = ({ enterpriseUUID }) => {
           groupName={groupName}
           isModalOpen={isAddMembersModalOpen}
           closeModal={closeAddMembersModal}
+          onInviteError={handleInviteError}
         />
       </ValidatedEmailsContextProvider>
     </div>

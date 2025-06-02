@@ -32,6 +32,7 @@ const PEOPLE_MANAGEMENT_EVENTS = {
   GROUP_CREATE_WITH_UPLOAD_CSV: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.csv_upload`,
   GROUP_CREATE_WITH_LIST_SELECTION: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.list_selection`,
   GROUP_CREATE_WITH_CSV_AND_LIST: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.create_group_modal.csv_upload_and_list_selection`,
+  ADD_LEARNER_ERROR_NOT_IN_ORG: `${GROUPS_PEOPLE_MANAGEMENT_PREFIX}.error.learner_not_in_org`,
 };
 // learner-progress-report
 const LEARNER_PROGRESS_REPORT_EVENTS = {
