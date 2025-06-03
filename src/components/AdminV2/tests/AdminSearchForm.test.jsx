@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -46,30 +46,48 @@ describe('<AdminSearchForm />', () => {
     jest.clearAllMocks();
   });
 
-  it('displays three filters', async () => {
-    render(
-      <AdminSearchFormWrapper {...DEFAULT_PROPS} />,
-    );
+  it('displays three filters: search bar, group dropdown, and course dropdown', async () => {
+    render(<AdminSearchFormWrapper {...DEFAULT_PROPS} />);
+
     const formControls = await screen.findAllByTestId('admin-search-form-control');
-    expect(formControls.length).toBe(2);
-    const searchBar = await screen.findByTestId('admin-search-bar');
+    expect(formControls.length).toBe(2); // dropdowns
+    const searchBar = await screen.findByTestId('admin-search-bar'); // search input
     expect(searchBar).toBeInTheDocument();
     expect(formControls[1].textContent).toContain('Choose a course');
   });
-  [
-    { searchQuery: 'foo' },
-    { searchCourseQuery: 'bar' },
-    { searchDateQuery: '' },
-  ].forEach((searchParams) => {
-    it(`calls searchEnrollmentsList when ${Object.keys(searchParams)[0]} changes`, () => {
-      const spy = jest.fn();
-      const props = { ...DEFAULT_PROPS, searchEnrollmentsList: spy };
-      const { rerender } = render(
-        <AdminSearchFormWrapper {...props} />,
-      );
-      rerender(
-        <AdminSearchFormWrapper {...props} {...searchParams} />,
-      );
+
+  it.each([
+    ['searchQuery', { searchQuery: 'foo' }],
+    ['searchCourseQuery', { searchCourseQuery: 'bar' }],
+    ['searchDateQuery', { searchDateQuery: '2023-06-01T12:00:00Z' }],
+  ])('calls searchEnrollmentsList when %s changes', async (_, updatedParam) => {
+    const spy = jest.fn();
+
+    const baseSearchParams = {
+      searchQuery: '',
+      searchCourseQuery: '',
+      searchDateQuery: '',
+      searchBudgetQuery: '',
+      searchGroupQuery: '',
+    };
+
+    const { rerender } = render(
+      <AdminSearchFormWrapper
+        {...DEFAULT_PROPS}
+        searchEnrollmentsList={spy}
+        searchParams={baseSearchParams}
+      />,
+    );
+
+    rerender(
+      <AdminSearchFormWrapper
+        {...DEFAULT_PROPS}
+        searchEnrollmentsList={spy}
+        searchParams={{ ...baseSearchParams, ...updatedParam }}
+      />,
+    );
+
+    await waitFor(() => {
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
@@ -85,10 +103,10 @@ describe('<AdminSearchForm />', () => {
       budgets,
       location: { pathname: '/admin/learners' },
     };
-    const { container } = render(
+    render(
       <AdminSearchFormWrapper {...props} />,
     );
-    const selectElement = container.querySelector('.budgets-dropdown select');
+    const selectElement = screen.getByLabelText('Filter by budget');
     const user = userEvent.setup();
     await user.selectOptions(selectElement, budgetUUID);
     expect(updateUrl).toHaveBeenCalled();
@@ -106,18 +124,18 @@ describe('<AdminSearchForm />', () => {
     const user = userEvent.setup();
     const groupUUID = '7d6503dd-e40d-42b8-442b-37dd4c5450e3';
     const groups = [{
-      enterprise_group_uuid: groupUUID,
-      enterprise_group_name: 'Test Group',
+      uuid: groupUUID,
+      name: 'Test Group',
     }];
     const props = {
       ...DEFAULT_PROPS,
       groups,
       location: { pathname: '/admin/learners' },
     };
-    const { container } = render(
+    render(
       <AdminSearchFormWrapper {...props} />,
     );
-    const selectElement = container.querySelector('.groups-dropdown select');
+    const selectElement = screen.getByLabelText('Filter by group');
     await user.selectOptions(selectElement, groupUUID);
     expect(updateUrl).toHaveBeenCalled();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -182,9 +200,11 @@ describe('<AdminSearchForm />', () => {
 
 describe('<AdminSearchForm />', () => {
   it('renders the start date dropdown correctly', async () => {
+    // Although time metadata is typically not provided, included to have the test pass
+    // locally and during CI for developers
     const tableData = [
-      { course_start_date: '2023-01-01' },
-      { course_start_date: '2023-02-01' },
+      { course_start_date: '2023-01-01T12:00:00Z' },
+      { course_start_date: '2023-02-01T12:00:00Z' },
     ];
     const props = {
       ...DEFAULT_PROPS,
@@ -193,12 +213,11 @@ describe('<AdminSearchForm />', () => {
       location: { pathname: '/admin/learners' },
     };
 
-    const { container } = render(
+    render(
       <AdminSearchFormWrapper {...props} />,
     );
 
-    const selectElement = container.querySelector('.start-date-dropdown select');
-
+    const selectElement = await screen.findByLabelText('Filter by start date');
     const options = selectElement.querySelectorAll('option');
     expect(options).toHaveLength(3); // Includes "All Dates" and two mock dates
     expect(options[0].textContent).toBe('All Dates');
@@ -206,18 +225,18 @@ describe('<AdminSearchForm />', () => {
     expect(options[2].textContent).toBe('January 1, 2023');
 
     const user = userEvent.setup();
-    await user.selectOptions(selectElement, '2023-01-01');
+    await user.selectOptions(selectElement, '2023-01-01T12:00:00Z');
     expect(updateUrl).toHaveBeenCalledWith(
       undefined,
       '/admin/learners',
       {
-        search_start_date: '2023-01-01',
+        search_start_date: '2023-01-01T12:00:00Z',
         page: 1,
       },
     );
   });
 
-  it('disables the start date dropdown when no course is selected', () => {
+  it('disables the start date dropdown when no course is selected', async () => {
     const props = {
       ...DEFAULT_PROPS,
       searchParams: { searchCourseQuery: '', searchDateQuery: '' },
@@ -228,7 +247,7 @@ describe('<AdminSearchForm />', () => {
       <AdminSearchFormWrapper {...props} />,
     );
 
-    const selectElement = screen.findByTestId('admin-search-form-control');
-    expect(selectElement.prop('disabled')).toBe(true);
+    const selectElement = await screen.findByLabelText('Filter by start date');
+    expect(selectElement.disabled).toBe(true);
   });
 });

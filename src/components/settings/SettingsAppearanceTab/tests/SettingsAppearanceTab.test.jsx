@@ -193,27 +193,27 @@ describe('Portal Appearance Tab', () => {
       </IntlProvider>,
     );
     const createCustom = screen.getByText('Create a custom theme.');
-    await waitFor(() => await user.click(createCustom));
+    await user.click(createCustom);
     expect(screen.getByText('Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.')).toBeInTheDocument();
     expect(screen.getByText('Add theme')).toBeDisabled();
-    await waitFor(() => await user.type(screen.getByLabelText('Banner color'), 'bad number'));
+    await user.type(screen.getByLabelText('Banner color'), 'bad number');
     expect(screen.getByText('Must be hexadecimal starting with # (Ex: #1e0b57)')).toBeInTheDocument();
-    await waitFor(() => await user.type(screen.getByLabelText('Button color'), '#023E8A'));
-    await waitFor(() => await user.type(screen.getByLabelText('Accent color'), '#0077b6'));
+    await user.type(screen.getByLabelText('Button color'), '#023E8A');
+    await user.type(screen.getByLabelText('Accent color'), '#0077b6');
     expect(screen.getByText('Add theme')).toBeDisabled();
 
-    await waitFor(() => await user.clear(screen.getByLabelText('Banner color')));
-    await waitFor(() => await user.clear(screen.getByLabelText('Button color')));
+    await user.clear(screen.getByLabelText('Banner color'));
+    await user.clear(screen.getByLabelText('Button color'));
 
-    await waitFor(() => await user.type(screen.getByLabelText('Banner color'), '#03045e'));
-    await waitFor(() => await user.type(screen.getByLabelText('Button color'), '#828282'));
+    await user.type(screen.getByLabelText('Banner color'), '#03045e');
+    await user.type(screen.getByLabelText('Button color'), '#828282');
 
     expect(screen.getByText('Color does not meet the WCAG AA standard of accessibility. Learn more at the help center link below.')).toBeInTheDocument();
 
     // user shouldn't be able to add a theme with a bad hex color, but will be able to add one that
     // doesn't meet AA accessibility standards
 
-    await waitFor(() => await user.click(screen.getByText('Add theme')));
+    await user.click(screen.getByText('Add theme'));
     await waitFor(() => {
       expect(spy).toHaveBeenCalled();
     });
@@ -237,15 +237,15 @@ describe('Portal Appearance Tab', () => {
         </Provider>
       </IntlProvider>,
     );
-    await waitFor(() => await user.click(screen.getByText('Edit')));
+    await user.click(screen.getByText('Edit'));
     expect(screen.getByText('Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.')).toBeInTheDocument();
     expect(screen.getByLabelText('Button color')).toHaveValue('#03045e');
     expect(screen.getByLabelText('Banner color')).toHaveValue('#023E8A');
     expect(screen.getByLabelText('Accent color')).toHaveValue('#0077b6');
 
-    await waitFor(() => await user.click(screen.getByLabelText('Close')));
+    await user.click(screen.getByLabelText('Close'));
     expect(screen.getByText('Delete'));
-    await waitFor(() => await user.click(screen.getByText('Delete')));
+    await user.click(screen.getByText('Delete'));
     expect(screen.getByText('Rather use your own colors?'));
     expect(screen.getByTestId('radio-Scholar (Default)')).toBeChecked();
   });
