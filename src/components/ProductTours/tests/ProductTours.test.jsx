@@ -37,6 +37,7 @@ const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings
 const LEARNER_CREDIT_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.learnerCredit}`;
 
 let onboardingEnabled = true;
+let lastLogin = null;
 
 const ToursWithContext = ({
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
@@ -63,6 +64,7 @@ const ToursWithContext = ({
       },
     },
     enterpriseCustomerAdmin: {
+      lastLogin,
       onboardingTourCompleted: false,
       onboardingTourDismissed: false,
     },
@@ -209,11 +211,22 @@ describe('<ProductTours/>', () => {
         )).toBeTruthy();
       });
     });
+    it('dismissed the modal with an existing user', async () => {
+      lastLogin = '2023-09-15T15:30:00Z';
+      render(<ToursWithContext />);
+      expect(screen.queryByText('Hello!')).toBeTruthy();
+      screen.debug(undefined, 10000000);
+      userEvent.click(screen.getByTestId('welcome-modal-dismiss'));
+      await waitFor(() => {
+        expect(screen.queryByText('Hello.')).not.toBeTruthy();
+      });
+    });
     it('hides the the welcome modal after user has seen it', () => {
       global.localStorage.setItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME, true);
       render(<ToursWithContext />);
       expect(screen.queryByText('Welcome!')).not.toBeTruthy();
     });
+
     describe('with onboarding disabled', () => {
       beforeEach(() => {
         onboardingEnabled = false;

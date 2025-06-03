@@ -15,7 +15,7 @@ const OnboardingWelcomeModal = ({
 }) => {
   const intl = useIntl();
   const [isOpen, open, close] = useToggle(false);
-  const isNewUser = lastLogin === null;
+  const isNewUser = !!lastLogin;
   const boldTagWrapper = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
   const isModalDismissed = global.localStorage.getItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME);
 
@@ -61,7 +61,6 @@ const OnboardingWelcomeModal = ({
 
       <ModalDialog.Body>
         <p>
-
           {isNewUser
             ? intl.formatMessage(messages.welcomeModalNewUserBody, { bold_tag: boldTagWrapper })
             : intl.formatMessage(messages.welcomeModalExistingUserBody, { bold_tag: boldTagWrapper })}
@@ -77,7 +76,7 @@ const OnboardingWelcomeModal = ({
               description="Label for the dismiss button on the onboarding welcome modal."
             />
           </ModalDialog.CloseButton>
-          <Button onClick={handleStart}>
+          <Button onClick={handleStart} data-testid="welcome-modal-dismiss">
             <FormattedMessage
               id="admin.portal.productTours.adminOnboarding.welcomeModal.dismiss"
               defaultMessage="Get started"
