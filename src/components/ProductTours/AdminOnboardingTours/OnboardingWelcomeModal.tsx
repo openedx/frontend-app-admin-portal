@@ -15,7 +15,7 @@ const OnboardingWelcomeModal = ({
 }) => {
   const intl = useIntl();
   const [isOpen, open, close] = useToggle(false);
-  const isNewUser = !!lastLogin;
+  const isNewUser = lastLogin == null;
   const boldTagWrapper = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
   const isModalDismissed = global.localStorage.getItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME);
 
