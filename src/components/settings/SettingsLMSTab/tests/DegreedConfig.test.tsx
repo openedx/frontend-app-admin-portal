@@ -179,12 +179,12 @@ describe('<DegreedConfig />', () => {
     await user.type(screen.getByLabelText('Degreed Token Fetch Base URL'), 'https://www.test.com');
 
     expect(cancelButton).not.toBeDisabled();
-    userEvent.click(cancelButton);
+    await user.click(cancelButton);
 
     await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
     const closeButton = screen.getByRole('button', { name: 'Exit' });
 
-    userEvent.click(closeButton);
+    await user.click(closeButton);
     const expectedConfig = {
       active: false,
       display_name: 'displayName',
@@ -194,7 +194,7 @@ describe('<DegreedConfig />', () => {
       degreed_token_fetch_base_url: 'https://www.test.com',
       enterprise_customer: enterpriseId,
     };
-    expect(mockPost).toHaveBeenCalledWith(expectedConfig);
+    await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   });
   test('validates poorly formatted existing data on load', async () => {
     const user = userEvent.setup();

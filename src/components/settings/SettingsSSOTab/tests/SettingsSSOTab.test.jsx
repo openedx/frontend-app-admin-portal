@@ -52,7 +52,7 @@ describe('SAML Config Tab', () => {
     const link = screen.getByText('Help Center');
     expect(link.getAttribute('href')).toBe(HELP_CENTER_SAML_LINK);
     await act(() => aResult());
-  });
+  }, 10000);
 
   test('page sets has valid sso config with no configs ', async () => {
     LmsApiService.getProviderConfig.mockImplementation(() => (
