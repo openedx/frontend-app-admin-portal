@@ -2,7 +2,9 @@ import { useMemo } from 'react';
 import { Tab } from '@openedx/paragon';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_CATALOG_TAB, BUDGET_DETAIL_MEMBERS_TAB } from '../constants';
+import {
+  BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_CATALOG_TAB, BUDGET_DETAIL_MEMBERS_TAB, BUDGET_DETAIL_REQUESTS_TAB,
+} from '../constants';
 import { BUDGET_STATUSES } from '../../../EnterpriseApp/data/constants';
 import { getBudgetStatus } from '../utils';
 
@@ -19,6 +21,7 @@ export const useBudgetDetailTabs = ({
   ActivityTabElement,
   CatalogTabElement,
   MembersTabElement,
+  RequestsTabElement,
 }) => {
   const intl = useIntl();
   const { status } = getBudgetStatus({
@@ -30,6 +33,7 @@ export const useBudgetDetailTabs = ({
   const isCatalogTabDisabled = [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
     || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
+  const isBnrEnabled = subsidyAccessPolicy?.bnrEnabled || false;
 
   return useMemo(() => {
     const tabsArray = [];
@@ -96,6 +100,26 @@ export const useBudgetDetailTabs = ({
         </Tab>,
       );
     }
+    if (isBnrEnabled) {
+      tabsArray.push(
+        <Tab
+          key={BUDGET_DETAIL_REQUESTS_TAB}
+          eventKey={BUDGET_DETAIL_REQUESTS_TAB}
+          title={
+            intl.formatMessage({
+              id: 'lcm.budget.detail.page.requests.tab.label',
+              defaultMessage: 'Requests',
+              description: 'Label for the requests tab in the budget detail page',
+            })
+          }
+          className={TAB_CLASS_NAME}
+        >
+          {(activeTabKey === BUDGET_DETAIL_REQUESTS_TAB) && (
+            <RequestsTabElement />
+          )}
+        </Tab>,
+      );
+    }
 
     return tabsArray;
   }, [
@@ -110,6 +134,8 @@ export const useBudgetDetailTabs = ({
     intl,
     showCatalog,
     isCatalogTabDisabled,
+    RequestsTabElement,
+    isBnrEnabled,
   ]);
 };
 

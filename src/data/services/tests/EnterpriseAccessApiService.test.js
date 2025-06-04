@@ -257,4 +257,40 @@ describe('EnterpriseAccessApiService', () => {
 
     expect(axios.get).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/admin-view/learner_profile/?${queryParams.toString()}`);
   });
+  test('fetchBnrSubsidyRequests calls enterprise-access with enterpriseUUID only', () => {
+    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/?${expectedParams.toString()}`,
+    );
+  });
+
+  test('fetchBnrSubsidyRequests calls enterprise-access with enterpriseUUID and options', () => {
+    const options = {
+      page: 2,
+      page_size: 10,
+      state: 'requested,declined',
+      search: 'test@example.com',
+      ordering: '-created',
+    };
+
+    EnterpriseAccessApiService.fetchBnrSubsidyRequests(mockEnterpriseUUID, options);
+
+    const expectedParams = new URLSearchParams({
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      page: '2',
+      page_size: '10',
+      state: 'requested,declined',
+      search: 'test@example.com',
+      ordering: '-created',
+    });
+
+    expect(axios.get).toBeCalledWith(
+      `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/?${expectedParams.toString()}`,
+    );
+  });
 });
