@@ -215,7 +215,6 @@ describe('<ProductTours/>', () => {
       lastLogin = '2023-09-15T15:30:00Z';
       render(<ToursWithContext />);
       expect(screen.queryByText('Hello!')).toBeTruthy();
-      screen.debug(undefined, 10000000);
       userEvent.click(screen.getByTestId('welcome-modal-dismiss'));
       await waitFor(() => {
         expect(screen.queryByText('Hello.')).not.toBeTruthy();
