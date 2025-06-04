@@ -327,6 +327,20 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/?${params.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
+
+  /**
+   * Fetches an overview of BNR subsidy requests for a specific enterprise. This includes count of requests by status.
+   * @param {string} enterpriseUUID - The UUID of the enterprise customer.
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the API response.
+   */
+  static fetchBnrSubsidyRequestsOverviw(enterpriseUUID, options = {}) {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUUID,
+      ...options,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/overview/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
 }
 
 export default EnterpriseAccessApiService;

@@ -6,6 +6,7 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { debounce } from 'lodash-es';
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
 import { REQUEST_TAB_VISIBLE_STATES } from '../constants';
+import { transformRequestOverview } from '../utils';
 
 // Map table column accessors to API field names for sorting
 const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
@@ -14,26 +15,6 @@ const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   requestDate: 'requestDate',
   requestStatus: 'requestStatus',
 };
-
-// Hardcoded filter choices for request status
-// This is a temporary solution until the backend supports dynamic filtering
-const HARDCODED_REQUEST_STATUS_FILTER_CHOICES = [
-  {
-    name: 'Requested',
-    value: 'requested',
-    number: 0,
-  },
-  {
-    name: 'Approved',
-    value: 'approved',
-    number: 0,
-  },
-  {
-    name: 'Declined',
-    value: 'declined',
-    number: 0,
-  },
-];
 
 const applySortByToOptions = (sortBy, options) => {
   const orderingStrings = sortBy.map(({ id, desc }) => {
@@ -52,21 +33,25 @@ const applySortByToOptions = (sortBy, options) => {
   }
 };
 
-const applyFiltersToOptions = (filters, options) => {
-  const emailSearchQuery = filters?.find(filter => filter.id === 'requestDetails')?.value;
-  const statusFilter = filters?.find(filter => filter.id === 'requestStatus')?.value;
-
-  if (emailSearchQuery) {
+const applySearchToOptions = (filters, options) => {
+  const requestDetailsSearchQuery = filters?.find(filter => filter.id === 'requestDetails')?.value;
+  if (requestDetailsSearchQuery) {
     Object.assign(options, {
-      search: emailSearchQuery,
+      search: requestDetailsSearchQuery,
     });
   }
+};
+
+const applyFiltersToOptions = (filters, options) => {
+  const statusFilter = filters?.find(filter => filter.id === 'requestStatus')?.value;
 
   if (statusFilter && statusFilter.length > 0) {
     Object.assign(options, {
       state: statusFilter.join(','),
     });
   }
+
+  applySearchToOptions(filters, options);
 };
 
 // Transform API response data to match DataTable the requirements
@@ -97,59 +82,95 @@ const useBnrSubsidyRequests = (
     pageCount: 0,
     results: [],
   });
-  const fetchBnrRequests = useCallback((args = {}) => {
-    const fetch = async () => {
-      try {
-        setIsLoading(true);
+  const [requestsOverview, setRequestsOverview] = useState([]);
 
-        const options = {
-          page: (args.pageIndex || 0) + 1, // DataTable uses zero-indexed array
-          page_size: args.pageSize || 20,
-          state: REQUEST_TAB_VISIBLE_STATES.join(','),
-        };
+  const fetchBnrRequests = useCallback(async (args = {}) => {
+    try {
+      setIsLoading(true);
 
-        // Apply sorting if provided
-        if (args.sortBy && args.sortBy.length > 0) {
-          applySortByToOptions(args.sortBy, options);
-        }
+      const options = {
+        page: (args.pageIndex || 0) + 1, // DataTable uses zero-indexed array
+        page_size: args.pageSize || 20,
+        state: REQUEST_TAB_VISIBLE_STATES.join(','),
+      };
 
-        // Apply filters if provided
-        if (args.filters && args.filters.length > 0) {
-          applyFiltersToOptions(args.filters, options);
-        }
-        // Fetch the requests data
-        const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(
-          enterpriseUUID,
-          options,
-        );
-        const data = camelCaseObject(response.data);
-        const transformedResults = transformApiDataToTableData(data.results || []);
-        setBnrRequests({
-          itemCount: data.count || 0,
-          pageCount: data.numPages || Math.ceil((data.count || 0) / options.page_size),
-          results: transformedResults || [],
-        });
-      } catch (error) {
-        logError('Failed to fetch BNR subsidy requests', error);
-        setBnrRequests({
-          itemCount: 0,
-          pageCount: 0,
-          results: [],
-        });
-      } finally {
-        setIsLoading(false);
+      // Apply sorting if provided
+      if (args.sortBy && args.sortBy.length > 0) {
+        applySortByToOptions(args.sortBy, options);
       }
-    };
 
-    fetch();
+      // Apply filters if provided
+      if (args.filters && args.filters.length > 0) {
+        applyFiltersToOptions(args.filters, options);
+      }
+      // Fetch the requests data
+      const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(
+        enterpriseUUID,
+        options,
+      );
+      const data = camelCaseObject(response.data);
+      const transformedResults = transformApiDataToTableData(data.results || []);
+      setBnrRequests({
+        itemCount: data.count || 0,
+        pageCount: data.numPages || Math.ceil((data.count || 0) / options.page_size),
+        results: transformedResults || [],
+      });
+    } catch (error) {
+      logError('Failed to fetch BNR subsidy requests', error);
+      setBnrRequests({
+        itemCount: 0,
+        pageCount: 0,
+        results: [],
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }, [
     enterpriseUUID,
   ]);
 
-  const debouncedFetchBnrRequests = useMemo(
-    () => debounce(fetchBnrRequests, 300),
-    [fetchBnrRequests],
+  const fetchBnrRequestsOverview = useCallback(async (filters = []) => {
+    try {
+      setIsLoading(true);
+      const options = {};
+
+      if (filters && filters.length > 0) {
+        applySearchToOptions(filters, options);
+      }
+
+      const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequestsOverviw(
+        enterpriseUUID,
+        options,
+      );
+      const data = camelCaseObject(response.data);
+      const transformedOverview = transformRequestOverview(data);
+      setRequestsOverview(transformedOverview);
+    } catch (error) {
+      logError('Failed to fetch BNR subsidy requests overview', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [enterpriseUUID]);
+
+  const fetchData = useCallback(
+    ({
+      pageIndex,
+      pageSize,
+      filters,
+      sortBy,
+    }) => {
+      fetchBnrRequests({
+        pageIndex,
+        pageSize,
+        filters,
+        sortBy,
+      });
+      fetchBnrRequestsOverview(filters);
+    },
+    [fetchBnrRequests, fetchBnrRequestsOverview],
   );
+
+  const debouncedFetchBnrRequests = useMemo(() => debounce(fetchData, 300), [fetchData]);
 
   const updateRequestStatus = useCallback(({ request, newStatus }) => {
     setBnrRequests(prevState => ({
@@ -162,11 +183,12 @@ const useBnrSubsidyRequests = (
 
   const refreshRequests = useCallback(() => {
     fetchBnrRequests();
-  }, [fetchBnrRequests]);
+    fetchBnrRequestsOverview();
+  }, [fetchBnrRequests, fetchBnrRequestsOverview]);
   return {
     isLoading,
     bnrRequests,
-    requestsOverview: HARDCODED_REQUEST_STATUS_FILTER_CHOICES,
+    requestsOverview,
     fetchBnrRequests: debouncedFetchBnrRequests,
     updateRequestStatus,
     refreshRequests,
