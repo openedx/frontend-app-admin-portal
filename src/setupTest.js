@@ -43,27 +43,43 @@ global.ResizeObserver = ResizeObserverPolyfill;
 global.URL.createObjectURL = jest.fn();
 
 // Suppress specific console.error warnings
-// eslint-disable-next-line no-console
+/* eslint-disable no-console */
 const originalConsoleError = console.error;
+const originalConsoleWarn = console.warn;
 
-const ignoredErrors = [
-  'Support for defaultProps will be removed from function components',
-  // Add more substrings to ignore additional warnings
-];
+const CONSOLE_FILTERS = {
+  warn: [
+    'PubSub already loaded',
+  ],
+  error: [
+    'Support for defaultProps will be removed from function components',
+  ],
+};
 
-// eslint-disable-next-line no-console
+// Override `console.error`
 console.error = (...args) => {
   const message = args[0];
-
   if (
     typeof message === 'string'
-      && ignoredErrors.some(ignored => message.includes(ignored))
+      && CONSOLE_FILTERS.error.some(ignored => message.includes(ignored))
   ) {
-    return; // Suppress matched warning
+    return;
   }
-
-  originalConsoleError(...args); // Log everything else
+  originalConsoleError(...args);
 };
+
+// Override `console.warn`
+console.warn = (...args) => {
+  const message = args[0];
+  if (
+    typeof message === 'string'
+      && CONSOLE_FILTERS.warn.some(ignored => message.includes(ignored))
+  ) {
+    return;
+  }
+  originalConsoleWarn(...args);
+};
+/* eslint-enable no-console */
 
 // TODO: Once there are no more console errors in tests, uncomment the code below
 // const { error } = global.console;
