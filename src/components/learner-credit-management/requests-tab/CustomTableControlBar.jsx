@@ -7,7 +7,7 @@ const CustomTableControlBar = ({
   onRefresh, isLoading, intl, ...props
 }) => (
   <Row className="justify-content-between align-items-start">
-    <Col className="flex-grow-1 mx-0">
+    <Col className="flex-grow-1 mx-2.5">
       <DataTable.TableControlBar {...props} className="px-0" />
     </Col>
     <Col xs="auto" className="mt-2">
@@ -16,7 +16,7 @@ const CustomTableControlBar = ({
         onClick={onRefresh}
         disabled={isLoading}
         size="md"
-        className="ml-2"
+        className="mr-2"
       >
         {intl.formatMessage({
           id: 'learnerCreditManagement.budgetDetail.requestsTab.refresh',
