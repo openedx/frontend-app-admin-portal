@@ -7,7 +7,7 @@ import {
   ADMIN_TOUR_TARGETS,
 } from './constants';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface TourStep {
   target: string;

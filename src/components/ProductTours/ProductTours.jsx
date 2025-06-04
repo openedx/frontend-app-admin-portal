@@ -24,6 +24,7 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
 import TourCollapsible from './TourCollapsible';
+import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
 /**
  * All the logic here is for determining what ProductTours we should show.
@@ -75,9 +76,14 @@ const ProductTours = ({
   return (
     <div className="product-tours">
       {onboardingEnabled && (
-        <TourCollapsible
-          onTourSelect={handleTourSelect}
-        />
+        <>
+          <OnboardingWelcomeModal
+            openAdminTour={setIsAdminTourOpen}
+          />
+          <TourCollapsible
+            onTourSelect={handleTourSelect}
+          />
+        </>
       )}
       {isAdminTourOpen && selectedTourTarget ? (
         <AdminOnboardingTours
