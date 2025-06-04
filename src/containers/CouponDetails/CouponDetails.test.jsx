@@ -194,7 +194,8 @@ describe('CouponDetails container', () => {
       [COUPON_FILTERS.unredeemed.value],
       [COUPON_FILTERS.partiallyRedeemed.value],
       [COUPON_FILTERS.redeemed.value],
-    ])('renders the correct table columns for each coupon filter type %s', (filterType) => {
+    ])('renders the correct table columns for each coupon filter type %s', async (filterType) => {
+      const user = userEvent.setup();
       store = mockStore({
         ...initialState,
         table: {
@@ -202,7 +203,7 @@ describe('CouponDetails container', () => {
         },
       });
       render(<CouponDetailsWrapper store={store} isExpanded />);
-      userEvent.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
+      await user.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
 
       DEFAULT_TABLE_COLUMNS[filterType].forEach(({ label }) => {
         expect(screen.getByText(label)).toBeInTheDocument();

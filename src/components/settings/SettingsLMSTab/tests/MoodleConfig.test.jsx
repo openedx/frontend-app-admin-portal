@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, fireEvent, render, screen, waitFor,
+  render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -89,27 +89,13 @@ function testMoodleConfigSetup(formData) {
   );
 }
 
-async function clearForm() {
-  await act(async () => {
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Webservice Short Name'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Token'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Username'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Password'), {
-      target: { value: '' },
-    });
-  });
+async function clearForm(user) {
+  await user.clear(screen.getByLabelText('Display Name'));
+  await user.clear(screen.getByLabelText('Moodle Base URL'));
+  await user.clear(screen.getByLabelText('Webservice Short Name'));
+  await user.clear(screen.getByLabelText('Token'));
+  await user.clear(screen.getByLabelText('Username'));
+  await user.clear(screen.getByLabelText('Password'));
 }
 
 describe('<MoodleConfig />', () => {
@@ -123,37 +109,32 @@ describe('<MoodleConfig />', () => {
     screen.getByLabelText('Password');
   });
   test('test error messages', async () => {
+    const user = userEvent.setup();
     render(testMoodleConfigSetup(noExistingData));
 
     const enableButton = screen.getByRole('button', { name: 'Enable' });
-    await clearForm();
-    userEvent.click(enableButton);
+    await clearForm(user);
+    await user.click(enableButton);
     expect(screen.queryByText(validationMessages.displayNameRequired));
     expect(screen.queryByText(validationMessages.baseUrlRequired));
     expect(screen.queryByText(validationMessages.serviceNameRequired));
     expect(screen.queryByText(validationMessages.verificationRequired));
 
-    userEvent.paste(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
-    userEvent.paste(screen.getByLabelText('Moodle Base URL'), 'badlink');
-    userEvent.paste(screen.getByLabelText('Webservice Short Name'), 'name');
-    userEvent.paste(screen.getByLabelText('Token'), 'ofmyaffection');
-    userEvent.paste(screen.getByLabelText('Username'), 'user');
+    await user.type(screen.getByLabelText('Display Name'), 'terriblenogoodverybaddisplayname');
+    await user.type(screen.getByLabelText('Moodle Base URL'), 'badlink');
+    await user.type(screen.getByLabelText('Webservice Short Name'), 'name');
+    await user.type(screen.getByLabelText('Token'), 'ofmyaffection');
+    await user.type(screen.getByLabelText('Username'), 'user');
 
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
     expect(screen.queryByText(validationMessages.serviceNameRequired));
 
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Moodle Base URL'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Username'), {
-      target: { value: '' },
-    });
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(
+    await user.clear(screen.getByLabelText('Display Name'));
+    await user.clear(screen.getByLabelText('Moodle Base URL'));
+    await user.clear(screen.getByLabelText('Username'));
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(
       screen.getByLabelText('Moodle Base URL'),
       'https://www.test.com',
     );
@@ -163,18 +144,19 @@ describe('<MoodleConfig />', () => {
     expect(!screen.queryByText(validationMessages.serviceNameRequired));
   });
   test('it creates new configs on submit', async () => {
+    const user = userEvent.setup();
     render(testMoodleConfigSetup(noExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
 
-    await clearForm();
+    await clearForm(user);
 
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(screen.getByLabelText('Moodle Base URL'), 'https://www.test.com');
-    userEvent.paste(screen.getByLabelText('Webservice Short Name'), 'name');
-    userEvent.paste(screen.getByLabelText('Username'), 'user');
-    userEvent.paste(screen.getByLabelText('Password'), 'password123');
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(screen.getByLabelText('Moodle Base URL'), 'https://www.test.com');
+    await user.type(screen.getByLabelText('Webservice Short Name'), 'name');
+    await user.type(screen.getByLabelText('Username'), 'user');
+    await user.type(screen.getByLabelText('Password'), 'password123');
 
-    userEvent.click(enableButton);
+    await user.click(enableButton);
     const expectedConfig = {
       active: false,
       display_name: 'displayName',
@@ -188,24 +170,25 @@ describe('<MoodleConfig />', () => {
     await waitFor(() => expect(mockPost).toHaveBeenCalledWith(expectedConfig));
   });
   test('saves draft correctly', async () => {
+    const user = userEvent.setup();
     render(testMoodleConfigSetup(noExistingData));
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
-    await clearForm();
+    await clearForm(user);
 
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(screen.getByLabelText('Moodle Base URL'), 'https://www.test.com');
-    userEvent.paste(screen.getByLabelText('Webservice Short Name'), 'name');
-    userEvent.paste(screen.getByLabelText('Username'), 'user');
-    userEvent.paste(screen.getByLabelText('Password'), 'password123');
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(screen.getByLabelText('Moodle Base URL'), 'https://www.test.com');
+    await user.type(screen.getByLabelText('Webservice Short Name'), 'name');
+    await user.type(screen.getByLabelText('Username'), 'user');
+    await user.type(screen.getByLabelText('Password'), 'password123');
 
     expect(cancelButton).not.toBeDisabled();
-    userEvent.click(cancelButton);
+    await user.click(cancelButton);
 
     await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
     const closeButton = screen.getByRole('button', { name: 'Exit' });
 
-    userEvent.click(closeButton);
+    await user.click(closeButton);
 
     const expectedConfig = {
       active: false,
@@ -220,14 +203,16 @@ describe('<MoodleConfig />', () => {
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('validates poorly formatted existing data on load', async () => {
+    const user = userEvent.setup();
     render(testMoodleConfigSetup(invalidExistingData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
-    await userEvent.click(enableButton);
+    await user.click(enableButton);
     expect(screen.queryByText(INVALID_LINK)).toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).toBeInTheDocument();
     expect(screen.queryByText(validationMessages.verificationRequired)).toBeInTheDocument();
   });
-  test('validates properly formatted existing data on load', () => {
+  test('validates properly formatted existing data on load', async () => {
+    const user = userEvent.setup();
     render(testMoodleConfigSetup(existingConfigData));
     const enableButton = screen.getByRole('button', { name: 'Enable' });
     // ensuring the existing data is prefilled
@@ -236,7 +221,7 @@ describe('<MoodleConfig />', () => {
     expect(screen.getByLabelText('Webservice Short Name').value).toEqual(existingConfigData.serviceShortName);
     expect(screen.getByLabelText('Token').value).toEqual(existingConfigData.token);
 
-    userEvent.click(enableButton);
+    await user.click(enableButton);
 
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
