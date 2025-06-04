@@ -16,9 +16,8 @@ const RequestDetailsCell = ({ row, enterpriseSlug }) => {
         <Link
           className="decoration-none"
           data-testid="course-link"
-          href={linkToCourse}
+          to={linkToCourse}
           target="_blank"
-          rel="noopener noreferrer"
         >
           {courseTitle}
         </Link>
