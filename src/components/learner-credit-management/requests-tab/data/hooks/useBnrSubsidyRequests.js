@@ -5,7 +5,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { debounce } from 'lodash-es';
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
-import { REQUEST_TAB_VISIBLE_STATES } from '../constants';
+import { REQUEST_STATUS_FILTER_CHOICES, REQUEST_TAB_VISIBLE_STATES } from '../constants';
 
 // Map table column accessors to API field names for sorting
 const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
@@ -14,26 +14,6 @@ const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   requestDate: 'requestDate',
   requestStatus: 'requestStatus',
 };
-
-// Hardcoded filter choices for request status
-// This is a temporary solution until the backend supports dynamic filtering
-const HARDCODED_REQUEST_STATUS_FILTER_CHOICES = [
-  {
-    name: 'Requested',
-    value: 'requested',
-    number: 0,
-  },
-  {
-    name: 'Approved',
-    value: 'approved',
-    number: 0,
-  },
-  {
-    name: 'Declined',
-    value: 'declined',
-    number: 0,
-  },
-];
 
 const applySortByToOptions = (sortBy, options) => {
   const orderingStrings = sortBy.map(({ id, desc }) => {
@@ -166,7 +146,7 @@ const useBnrSubsidyRequests = (
   return {
     isLoading,
     bnrRequests,
-    requestsOverview: HARDCODED_REQUEST_STATUS_FILTER_CHOICES,
+    requestsOverview: REQUEST_STATUS_FILTER_CHOICES,
     fetchBnrRequests: debouncedFetchBnrRequests,
     updateRequestStatus,
     refreshRequests,
