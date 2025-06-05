@@ -62,7 +62,7 @@ const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
     email: item?.email,
     courseTitle: item?.courseTitle,
     courseId: item?.courseId,
-    amount: item?.amount || 0,
+    amount: item?.course_price || 0,
     requestDate,
     requestStatus: item?.state,
   };
