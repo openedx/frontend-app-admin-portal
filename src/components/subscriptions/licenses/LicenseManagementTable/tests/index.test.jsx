@@ -2,9 +2,8 @@ import React from 'react';
 import {
   screen,
   render,
-  cleanup,
   act,
-  fireEvent,
+  fireEvent, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -26,13 +25,10 @@ import LicenseManagerApiService from '../../../../../data/services/LicenseManage
 
 jest.useFakeTimers('modern');
 
-jest.mock('@edx/frontend-enterprise-utils', () => {
-  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
-  return ({
-    ...originalModule,
-    sendEnterpriseTrackEvent: jest.fn(),
-  });
-});
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
 
 jest.mock('../../../../../data/services/LicenseManagerAPIService', () => ({
   __esModule: true,
@@ -83,18 +79,17 @@ const singleUserSetup = (status = 'assigned') => {
 };
 
 describe('<LicenseManagementTable />', () => {
-  afterEach(() => {
-    cleanup();
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
   describe('loading', () => {
-    it('renders initially loading state', () => {
+    it('renders initially loading state', async () => {
       const subscriptionPlan = generateSubscriptionPlan();
       mockSubscriptionHooks(subscriptionPlan, [], true);
-      render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
+      render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} loadingUsers />);
       // assert that the spinner is shown (`isLoading` is properly passed to `DataTable`)
-      // expect(screen.getByRole('Status'));
+      await waitFor(() => expect(screen.getByText('loading')));
     });
   });
 
@@ -170,29 +165,28 @@ describe('<LicenseManagementTable />', () => {
         status: 'assigned',
       }));
     }
-    afterEach(() => {
-      cleanup();
-      jest.clearAllMocks();
-    });
     beforeEach(() => {
+      jest.clearAllMocks();
       mockSubscriptionHooks(subscriptionPlan, users);
     });
     it('when clicking status filters', async () => {
+      const user = userEvent.setup();
       render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
 
       // click status checkbox
       const activeCheckBox = screen.getByText('Active');
-      await act(async () => {
-        userEvent.click(activeCheckBox);
-        // filter debounce
+      await user.click(activeCheckBox);
+      // filter debounce
+      act(() => {
         jest.advanceTimersByTime(DEBOUNCE_TIME_MILLIS);
       });
-
-      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
-        TEST_ENTERPRISE_CUSTOMER_UUID,
-        SUBSCRIPTION_TABLE_EVENTS.FILTER_STATUS,
-        { applied_filters: 'activated' },
-      );
+      await waitFor(() => {
+        expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+          TEST_ENTERPRISE_CUSTOMER_UUID,
+          SUBSCRIPTION_TABLE_EVENTS.FILTER_STATUS,
+          { applied_filters: 'activated' },
+        );
+      });
     });
     it('when typing in to email filter', async () => {
       render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
@@ -211,11 +205,12 @@ describe('<LicenseManagementTable />', () => {
     });
 
     it('when changing to the page', async () => {
+      const user = userEvent.setup();
       render(<LicenseManagementTableWrapper subscriptionPlan={subscriptionPlan} />);
       const nextPageButton = screen.getByLabelText('next', { exact: false });
+      await user.click(nextPageButton);
+      // filter debounce
       await act(async () => {
-        userEvent.click(nextPageButton);
-        // filter debounce
         jest.advanceTimersByTime(DEBOUNCE_TIME_MILLIS);
       });
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -224,9 +219,9 @@ describe('<LicenseManagementTable />', () => {
         { page: 1 },
       );
       const prevPageButton = screen.getByLabelText('previous', { exact: false });
+      await user.click(prevPageButton);
+      // filter debounce
       await act(async () => {
-        userEvent.click(prevPageButton);
-        // filter debounce
         jest.advanceTimersByTime(DEBOUNCE_TIME_MILLIS);
       });
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -240,6 +235,7 @@ describe('<LicenseManagementTable />', () => {
 
   describe('refreshes data', () => {
     it('revoking a user', async () => {
+      const user = userEvent.setup();
       const {
         forceRefreshSubscription,
         forceRefreshUsers,
@@ -253,7 +249,7 @@ describe('<LicenseManagementTable />', () => {
       const mockPromiseResolve = Promise.resolve({ data: {} });
       LicenseManagerApiService.licenseBulkRevoke.mockReturnValue(mockPromiseResolve);
       const revokeSubmitButton = screen.getByText('Revoke (1)');
-      await act(async () => { userEvent.click(revokeSubmitButton); });
+      await user.click(revokeSubmitButton);
       expect(screen.queryByRole('dialog')).toBeFalsy();
       // Test all data should have been refreshed
       expect(forceRefreshSubscription).toHaveBeenCalledTimes(1);
@@ -262,18 +258,19 @@ describe('<LicenseManagementTable />', () => {
       expect(screen.getByText('Licenses successfully revoked')).toBeTruthy();
     });
     it('reminding a user', async () => {
+      const user = userEvent.setup();
       const {
         forceRefreshUsers,
       } = singleUserSetup();
       // Open remind dialog by clicking in row button
       const remindButton = screen.getByTitle('Remind learner');
-      await act(async () => { userEvent.click(remindButton); });
+      await user.click(remindButton);
       expect(screen.queryByRole('dialog')).toBeTruthy();
       // Clicks submit and closes dialog
       const mockPromiseResolve = Promise.resolve({ data: {} });
       LicenseManagerApiService.licenseBulkRemind.mockReturnValue(mockPromiseResolve);
       const remindSubmitButton = screen.getByText('Remind (1)');
-      await act(async () => { userEvent.click(remindSubmitButton); });
+      await user.click(remindSubmitButton);
       expect(screen.queryByRole('dialog')).toBeFalsy();
       // Test user data should have been refreshed
       expect(forceRefreshUsers).toHaveBeenCalledTimes(1);
