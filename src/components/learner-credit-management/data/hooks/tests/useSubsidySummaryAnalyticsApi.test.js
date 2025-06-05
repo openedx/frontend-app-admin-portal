@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook, waitFor } from '@testing-library/react';
 import { logError } from '@edx/frontend-platform/logging';
 
 import useSubsidySummaryAnalyticsApi from '../useSubsidySummaryAnalyticsApi';
@@ -85,7 +85,6 @@ describe('useSubsidySummaryAnalyticsApi', () => {
 
     const {
       result,
-      waitForNextUpdate,
     } = renderHook(() => useSubsidySummaryAnalyticsApi(
       TEST_ENTERPRISE_UUID,
       mockBudget.id,
@@ -97,7 +96,9 @@ describe('useSubsidySummaryAnalyticsApi', () => {
         subsidySummary: undefined,
         isLoading: true,
       });
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
       expect(mockFetchEnterpriseOfferSummarySpy).toHaveBeenCalled();
 
       if (shouldThrowApiException) {

@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -101,13 +101,14 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     />);
     expect(screen.getAllByTestId('card-item-skeleton')).toBeTruthy();
   });
-  it('sends track event on click', () => {
+  it('sends track event on click', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
-    userEvent.click(hyperlinkTitle);
+    await user.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
   it('shows archived content subheader', () => {

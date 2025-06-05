@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import userEvent from '@testing-library/user-event';
 import { within } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { render, screen } from '@testing-library/react';
 
@@ -194,7 +194,8 @@ describe('CouponDetails container', () => {
       [COUPON_FILTERS.unredeemed.value],
       [COUPON_FILTERS.partiallyRedeemed.value],
       [COUPON_FILTERS.redeemed.value],
-    ])('renders the correct table columns for each coupon filter type %s', (filterType) => {
+    ])('renders the correct table columns for each coupon filter type %s', async (filterType) => {
+      const user = userEvent.setup();
       store = mockStore({
         ...initialState,
         table: {
@@ -202,7 +203,7 @@ describe('CouponDetails container', () => {
         },
       });
       render(<CouponDetailsWrapper store={store} isExpanded />);
-      userEvent.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
+      await user.selectOptions(screen.getByLabelText('Filter by code status'), filterType);
 
       DEFAULT_TABLE_COLUMNS[filterType].forEach(({ label }) => {
         expect(screen.getByText(label)).toBeInTheDocument();
@@ -230,7 +231,7 @@ describe('CouponDetails container', () => {
       within(table).getByText(ACTIONS.assign.label);
     });
 
-    it.skip('does not show Assign button for an unavailable coupon', () => {
+    it('does not show Assign button for an unavailable coupon', () => {
       store = mockStore({
         ...initialState,
         table: {

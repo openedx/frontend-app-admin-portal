@@ -4,7 +4,8 @@ import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import userEvent from '@testing-library/user-event';
 import { SubscriptionDetailContext } from '../subscriptions/SubscriptionDetailContextProvider';
 import SubscriptionDetails from './SubscriptionDetails';
 import { SubscriptionContext } from '../subscriptions/SubscriptionData';
@@ -82,15 +83,16 @@ SubscriptionDetailsWrapper.propTypes = {
 };
 
 describe('SubscriptionDetails', () => {
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
+    const user = userEvent.setup();
     render(<SubscriptionDetailsWrapper
       initialSubscriptionDetailContextValue={defaultSubscriptionDetailContextValue}
     />);
 
     const manageLearnersButton = screen.getByText('Manage All Learners');
-    manageLearnersButton.click();
+    await user.click(manageLearnersButton);
 
     const inviteLearnersButton = screen.getByText('Invite learners');
-    inviteLearnersButton.click();
+    await user.click(inviteLearnersButton);
   });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
@@ -75,9 +75,9 @@ describe('<AIAnalyticsSummary />', () => {
     const user = userEvent.setup();
     render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     const component = await waitFor(() => screen.findByTestId('summarize-analytics'));
-    user.click(component);
-    const tree = render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    await user.click(component);
 
+    const tree = render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -98,10 +98,9 @@ describe('<AIAnalyticsSummary />', () => {
     const insightsData = { ...mockedInsights, learner_engagement: null };
     render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
     const component = await screen.findByTestId('summarize-analytics');
-    user.click(component);
+    await user.click(component);
 
     const tree = render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
-
     expect(tree).toMatchSnapshot();
   });
 });

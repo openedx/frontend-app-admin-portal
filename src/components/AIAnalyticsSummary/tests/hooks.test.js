@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import useAIAnalyticsSummary from '../data/hooks';
 import LmsApiService from '../../../data/services/LmsApiService';
 
@@ -51,7 +51,7 @@ const mockAnalyticsData = {
 describe('useAIAnalyticsSummary', () => {
   it('should fetch AI analytics summary data', async () => {
     LmsApiService.generateAIAnalyticsSummary.mockResolvedValueOnce({ data: mockAnalyticsData });
-    const { result, waitForNextUpdate } = renderHook(() => useAIAnalyticsSummary(TEST_ENTERPRISE_ID, mockInsightsData));
+    const { result } = renderHook(() => useAIAnalyticsSummary(TEST_ENTERPRISE_ID, mockInsightsData));
 
     expect(result.current).toEqual({
       isLoading: true,
@@ -59,7 +59,9 @@ describe('useAIAnalyticsSummary', () => {
       data: null,
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     expect(LmsApiService.generateAIAnalyticsSummary).toHaveBeenCalled();
     expect(result.current).toEqual({
@@ -72,7 +74,7 @@ describe('useAIAnalyticsSummary', () => {
   it('should handle error when fetching AI analytics summary data', async () => {
     const error = new Error('An error occurred');
     LmsApiService.generateAIAnalyticsSummary.mockRejectedValueOnce(error);
-    const { result, waitForNextUpdate } = renderHook(() => useAIAnalyticsSummary(TEST_ENTERPRISE_ID, mockInsightsData));
+    const { result } = renderHook(() => useAIAnalyticsSummary(TEST_ENTERPRISE_ID, mockInsightsData));
 
     expect(result.current).toEqual({
       isLoading: true,
@@ -80,7 +82,9 @@ describe('useAIAnalyticsSummary', () => {
       data: null,
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     expect(LmsApiService.generateAIAnalyticsSummary).toHaveBeenCalled();
     expect(result.current).toEqual({

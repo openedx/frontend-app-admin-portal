@@ -275,6 +275,7 @@ const FormWorkflow = <FormConfigData extends unknown>({
               )}
             </ActionRow>
           )}
+          isOverflowVisible={false}
         >
           <Stepper activeKey={step?.index.toString()}>
             <Stepper.Header />

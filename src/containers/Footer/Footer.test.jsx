@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { configuration } from '../../config';

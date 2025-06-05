@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { QueryClientProvider } from '@tanstack/react-query';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import {
   screen,
   render,

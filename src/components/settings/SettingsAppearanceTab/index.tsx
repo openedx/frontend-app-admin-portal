@@ -167,6 +167,7 @@ export const SettingsAppearanceTab = ({
           accept={{
             'image/png': ['.png'],
           }}
+          data-testid="logo-upload"
         />
       )}
       {uploadedFile && (
