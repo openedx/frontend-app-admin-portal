@@ -136,7 +136,15 @@ RequestsTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   pageCount: PropTypes.number.isRequired,
   itemCount: PropTypes.number.isRequired,
-  data: PropTypes.arrayOf(),
+  data: PropTypes.arrayOf(PropTypes.shape({
+    uuid: PropTypes.string,
+    email: PropTypes.string,
+    courseTitle: PropTypes.string,
+    courseId: PropTypes.string,
+    amount: PropTypes.number,
+    requestDate: PropTypes.string,
+    requestStatus: PropTypes.string,
+  })),
   requestStatusFilterChoices: PropTypes.arrayOf(PropTypes.shape({
     number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     name: PropTypes.string,
