@@ -139,11 +139,7 @@ describe('useEnterpriseBudgets', () => {
         isActive: true,
       },
     ];
-    // SubsidyApiService.getSubsidyByCustomerUUID.mockResolvedValue({
-    //   data: {
-    //     results: mockEnterpriseSubsidyResponse,
-    //   },
-    // });
+
     getSubsidyByCustomerUUIDSpy.mockResolvedValue({
       data: {
         results: mockEnterpriseSubsidyResponse,

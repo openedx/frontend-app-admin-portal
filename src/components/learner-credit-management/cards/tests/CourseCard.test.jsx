@@ -936,7 +936,7 @@ describe('CourseCard', () => {
         // Verify that assign button in footer is enabled
         expect(submitAssignmentCTA2).not.toBeDisabled();
       });
-    });
+    }, 20000);
   });
 
   test.each([

@@ -122,12 +122,6 @@ describe('<Sidebar />', () => {
     getAuthenticatedUser.mockReturnValue({
       administrator: true,
     });
-    // const { container } = render((
-    //   <SidebarWrapper />
-    // ));
-    // wrapper = container;
-    // expect(mockOnMount).toHaveBeenCalledTimes(1);
-    // expect(mockOnMount).toHaveBeenCalledWith({ sidebarHeight: expect.any(Number) });
   });
 
   it('renders correctly', () => {
