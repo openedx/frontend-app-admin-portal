@@ -231,6 +231,7 @@ class ReportingConfig extends React.Component {
                     </div>
                   </div>
                   )}
+                data-testid="collapsible-trigger-reporting-config"
               >
                 <ReportingConfigForm
                   config={camelCaseObject(config)}

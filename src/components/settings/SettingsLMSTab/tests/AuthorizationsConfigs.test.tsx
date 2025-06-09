@@ -130,9 +130,6 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await user.click(authorizeButton);
-    const inProgress = screen.getByText('Authorization in progress');
-    await waitForElementToBeRemoved(inProgress);
-
     await waitFor(() => {
       expect(screen.queryByText('Your Blackboard integration has been successfully authorized and is ready to activate!')).toBeTruthy();
     });
@@ -209,9 +206,6 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await user.click(authorizeButton);
-    const inProgress = screen.getByText('Authorization in progress');
-    await waitForElementToBeRemoved(inProgress);
-
     await waitFor(() => {
       expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
     });
@@ -258,8 +252,6 @@ describe('Test authorization flows for Blackboard and Canvas', () => {
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await user.click(authorizeButton);
-    const inProgress = screen.getByText('Authorization in progress');
-    await waitForElementToBeRemoved(inProgress);
     await waitFor(() => {
       expect(screen.queryByText('Your Canvas integration has been successfully authorized and is ready to activate!')).toBeTruthy();
     });

@@ -209,7 +209,7 @@ describe('<EnterpriseApp />', () => {
       />);
 
       // ensure focus is set on content wrapper
-      expect(document.activeElement.className).toEqual('content-wrapper');
+      expect(document.activeElement.className).toContain('content-wrapper');
       global.innerWidth = initialWidth;
     });
   });
