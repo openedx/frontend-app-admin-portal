@@ -247,7 +247,8 @@ describe('<ProductTours/>', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
-      userEvent.click(screen.getByText('Dismiss'));
+      const dismissButton = screen.getByRole('button', { name: 'Dismiss' });
+      userEvent.click(dismissButton);
       expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
     });
     it('is not shown when cookie has been dismissed', () => {
