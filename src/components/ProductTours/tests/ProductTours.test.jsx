@@ -238,14 +238,6 @@ describe('<ProductTours/>', () => {
   });
 
   describe('learner detail page tour', () => {
-    beforeEach(() => {
-      global.localStorage.clear();
-    });
-
-    afterEach(() => {
-      global.localStorage.clear();
-    });
-
     it('is shown when no cookie found', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
