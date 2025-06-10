@@ -20,7 +20,7 @@
 }
 
 .engagement-chart-container {
-  height: 535px;
+  height: 540px;
 }
 
 .enrollment-chart-container {
@@ -29,4 +29,11 @@
 
 .download-csv-label {
   font-size: 14px !important;
+}
+
+@media (max-width: 991.98px) {
+  .row {
+      display: flex;
+      flex-direction: row;
+  }
 }

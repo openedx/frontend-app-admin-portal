@@ -2,7 +2,11 @@
 
 import { createIntl } from '@edx/frontend-platform/i18n';
 import {
-  applyCalculation, applyGranularity, constructChartHoverTemplate, calculateMarkerSizes,
+  applyCalculation,
+  applyGranularity,
+  constructChartHoverTemplate,
+  calculateMarkerSizes,
+  sumEntitiesByMetric,
 } from './utils';
 import { CALCULATION, GRANULARITY } from './constants';
 
@@ -231,6 +235,73 @@ describe('utils', () => {
     it('should return empty array if data is empty', () => {
       const result = calculateMarkerSizes([], 'completions');
       expect(result).toEqual([]);
+    });
+  });
+  describe('sumEntitiesByMetric', () => {
+    it('should group records by specified key and sum numeric fields correctly', () => {
+      const records = [
+        {
+          courseKey: 'HarvardX+CS50x',
+          enrollmentCount: 10,
+          enrollType: 'audit',
+        },
+        {
+          courseKey: 'HarvardX+CS50x',
+          enrollmentCount: 20,
+          enrollType: '"certificate"',
+        },
+
+      ];
+      const groupByKey = 'courseKey';
+      const fieldsToSum = ['enrollmentCount'];
+
+      const result = sumEntitiesByMetric(records, groupByKey, fieldsToSum);
+
+      expect(result).toEqual([
+        {
+          courseKey: 'HarvardX+CS50x',
+          enrollmentCount: 30,
+          enrollType: 'audit',
+        },
+      ]);
+    });
+
+    it('should handle empty records array', () => {
+      const records = [];
+      const groupByKey = 'courseKey';
+      const fieldsToSum = ['enrollmentCount'];
+
+      const result = sumEntitiesByMetric(records, groupByKey, fieldsToSum);
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle missing fieldsToSum gracefully', () => {
+      const records = [
+        { courseKey: 'HarvardX+CS50x', enrollmentCount: 10 },
+      ];
+      const groupByKey = 'courseKey';
+
+      const result = sumEntitiesByMetric(records, groupByKey);
+
+      expect(result).toEqual([
+        { courseKey: 'HarvardX+CS50x', enrollmentCount: 10 },
+      ]);
+    });
+
+    it('should correctly handle undefined values in fields to sum', () => {
+      const records = [
+        { courseKey: 'HarvardX+CS50x', enrollmentCount: undefined },
+        { courseKey: 'HarvardX+CS50x', enrollmentCount: 20 },
+      ];
+      const groupByKey = 'courseKey';
+      const fieldsToSum = ['enrollmentCount'];
+
+      const result = sumEntitiesByMetric(records, groupByKey, fieldsToSum);
+
+      expect(result).toEqual([
+        { courseKey: 'HarvardX+CS50x', enrollmentCount: 20 },
+      ]);
     });
   });
 });

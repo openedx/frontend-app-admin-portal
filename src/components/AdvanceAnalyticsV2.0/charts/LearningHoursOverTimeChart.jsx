@@ -5,7 +5,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import Header from '../Header';
 import ChartWrapper from './ChartWrapper';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { constructChartHoverTemplate, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
+import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
 
 const LearningHoursOverTimeChart = ({
   isFetching, isError, data, startDate, endDate,
@@ -14,47 +14,30 @@ const LearningHoursOverTimeChart = ({
 
   // Aggregate "audit" and "certificate" data to single learning hours series per date
   // Groups all records by activityDate. Adds up learningTimeHours for each day.
-  const aggregatedData = useMemo(() => {
-    const rawData = data ?? [];
+  const aggregatedData = React.useMemo(
+    () => sumEntitiesByMetric(data, 'activityDate', ['learningTimeHours']),
+    [data],
+  );
 
-    const aggregated = rawData.reduce((acc, curr) => {
-      const { activityDate, learningTimeHours } = curr;
-      if (!acc[activityDate]) {
-        acc[activityDate] = { activityDate, learningTimeHours: 0 };
-      }
-      acc[activityDate].learningTimeHours += learningTimeHours;
-      return acc;
-    }, {});
-
-    return Object.values(aggregated).sort(
-      (a, b) => new Date(a.activityDate) - new Date(b.activityDate),
-    );
-  }, [data]);
-
-  const engagementOverTimeForCSV = useMemo(() => {
-    const engagementOverTime = modifyDataToIntroduceEnrollTypeCount(
-      data,
-      'activityDate',
-      'learningTimeHours',
-    );
-    return engagementOverTime.map(({ activityDate, certificate, audit }) => ({
+  const engagementOverTimeForCSV = useMemo(
+    () => aggregatedData.map(({ activityDate, learningTimeHours }) => ({
       activity_date: dayjs.utc(activityDate).toISOString().split('T')[0],
-      certificate,
-      audit,
-    }));
-  }, [data]);
+      learning_time_hours: learningTimeHours,
+    })),
+    [aggregatedData],
+  );
 
   return (
     <div className="bg-primary-100 rounded-lg container-fluid p-3 learning-hours-over-time-chart-container mb-3 engagement-chart-container">
       <div className="top-skills-by-enrollment-chart-container mb-4 h-100 overflow-hidden">
         <Header
           title={intl.formatMessage({
-            id: 'advance.analytics.engagement.tab.chart.learning.hours.over.time.title',
+            id: 'advance.analytics.engagement.tab.learning.hours.over.time.chart.title',
             defaultMessage: 'Learning hours over time',
             description: 'Title for the learning hours over time chart.',
           })}
           subtitle={intl.formatMessage({
-            id: 'advance.analytics.engagement.tab.chart.learning.hours.over.time.subtitle',
+            id: 'advance.analytics.engagement.tab.learning.hours.over.time.chart.subtitle',
             defaultMessage: 'See audit and certificate track hours of learning over time.',
             description: 'Subtitle for the learning hours over time chart.',
           })}
@@ -84,7 +67,7 @@ const LearningHoursOverTimeChart = ({
               }),
             }}
             loadingMessage={intl.formatMessage({
-              id: 'advance.analytics.engagements.tab.chart.learning.hours.over.time.loading.message',
+              id: 'advance.analytics.engagements.tab.learning.hours.over.time.chart.loading.message',
               defaultMessage: 'Loading learning hours over time chart data',
               description: 'Loading message for the learning hours over time chart.',
             })}

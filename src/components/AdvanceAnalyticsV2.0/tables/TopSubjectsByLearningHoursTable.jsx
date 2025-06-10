@@ -3,7 +3,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { DataTable } from '@openedx/paragon';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { sumEntitiesByMetric, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
+import { sumEntitiesByMetric } from '../data/utils';
 import Header from '../Header';
 
 const TopSubjectsByLearningHoursTable = ({
@@ -14,6 +14,8 @@ const TopSubjectsByLearningHoursTable = ({
 }) => {
   const intl = useIntl();
 
+  // Aggregate "audit" and "certificate" data. Groups all records by courseSubject.
+  // Adds up learningTimeHours for each course.
   const topSubjectsByEngagement = React.useMemo(
     () => sumEntitiesByMetric(data, 'courseSubject', ['learningTimeHours']),
     [data],
@@ -23,7 +25,7 @@ const TopSubjectsByLearningHoursTable = ({
     {
       header: {
         id: 'analytics.top.subject.by.learning.hours.subjects.column.header',
-        defaultMessage: 'subjects',
+        defaultMessage: 'Subjects',
         description: 'Column header for subjects in top subjects by learning hours table',
       },
       accessor: 'courseSubject',
@@ -38,18 +40,13 @@ const TopSubjectsByLearningHoursTable = ({
     },
   ];
 
-  const topSubjectsByEngagementForCSV = useMemo(() => {
-    const topSubjectsByEngagementCSV = modifyDataToIntroduceEnrollTypeCount(
-      data,
-      'courseSubject',
-      'learningTimeHours',
-    );
-    return topSubjectsByEngagementCSV.map(({ courseSubject, certificate, audit }) => ({
+  const topSubjectsByEngagementForCSV = useMemo(
+    () => topSubjectsByEngagement.map(({ courseSubject, learningTimeHours }) => ({
       course_subject: courseSubject,
-      certificate,
-      audit,
-    }));
-  }, [data]);
+      learning_time_hours: learningTimeHours,
+    })),
+    [topSubjectsByEngagement],
+  );
 
   return (
     <div className="mb-4 rounded-lg">
@@ -61,7 +58,7 @@ const TopSubjectsByLearningHoursTable = ({
         })}
         subtitle={intl.formatMessage({
           id: 'analytics.top.subjects.by.engagement.subtitle',
-          defaultMessage: 'See the most popular subjects at your organization.',
+          defaultMessage: 'See the subjects your learners are spending the most time in.',
           description: 'Subtitle for top 10 subjects by learning hours chart',
         })}
         DownloadCSVComponent={(

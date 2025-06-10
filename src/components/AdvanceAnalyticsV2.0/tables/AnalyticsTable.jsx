@@ -69,7 +69,7 @@ const AnalyticsTable = ({
           >
             <Icon src={Download} className="me-2" />
             <FormattedMessage
-              id="adminPortal.AnalyticsV2.downloadCSV.button"
+              id="adminPortal.analytics.downloadCSV.button"
               defaultMessage="Download {respectiveTableName} CSV"
               description="Button to download CSV for respective table"
               values={{ respectiveTableName: name.charAt(0).toUpperCase() + name.slice(1) }}
@@ -99,7 +99,7 @@ const AnalyticsTable = ({
           <DataTable.Table />
           <DataTable.EmptyTable
             content={intl.formatMessage({
-              id: 'advance.analytics.table.empty',
+              id: 'advance.analytics.table.empty.label',
               defaultMessage: 'No results found.',
               description: 'Message displayed when the table has no data.',
             })}

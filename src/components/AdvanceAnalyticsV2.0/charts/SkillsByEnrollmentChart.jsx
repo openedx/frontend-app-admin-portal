@@ -31,7 +31,7 @@ const SkillsByEnrollmentChart = ({
               colorKey: 'subjectName',
               colorMap: skillsColorMap,
               yAxisTitle: intl.formatMessage({
-                id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.y.axis.title',
+                id: 'advance.analytics.skills.chart.top.skills.by.enrollment.y.axis.title',
                 defaultMessage: 'Number of Enrollments',
               }),
               hovertemplate: constructChartHoverTemplate(intl, {
@@ -40,7 +40,7 @@ const SkillsByEnrollmentChart = ({
               }),
             }}
             loadingMessage={intl.formatMessage({
-              id: 'advance.analytics.skills.tab.chart.top.skills.by.enrollment.loading.message',
+              id: 'advance.analytics.skills.chart.top.skills.by.enrollment.loading.message',
               defaultMessage: 'Loading top skills by enrollment chart data',
             })}
           />
