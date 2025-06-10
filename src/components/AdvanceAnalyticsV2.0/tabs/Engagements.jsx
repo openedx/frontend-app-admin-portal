@@ -11,6 +11,7 @@ import AnalyticsFilters from '../AnalyticsFilters';
 import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 import Stats from '../Stats';
 import SkillsByEnrollmentChart from '../charts/SkillsByEnrollmentChart';
+import Treemap from '../charts/Treemap';
 import Leaderboard from '../tables/LeaderboardTable';
 import EnrollmentsOverTimeChart from '../charts/EnrollmentsOverTimeChart';
 import LearningHoursOverTimeChart from '../charts/LearningHoursOverTimeChart';
@@ -77,6 +78,28 @@ const Engagements = ({ enterpriseId }) => {
     groupUUID,
   });
 
+  const treemapData = {
+    labels: [
+        "Root", "AI", "Data Science", "Python", "Innovation",
+        "Management", "Leadership", "Planning", "Machine Learning",
+        "Data Analysis", "Communications", "Decision Making",
+        "Social Media", "Waterfall", "Agile", "Scrum", "Kanban",
+        "Project Management", "Business Analysis", "Software Development",
+        "Software Engineering", "Software Architecture", "Software Testing",
+        "Software Design", "Software Deployment", "Software Maintenance",
+        "Software Documentation", "Software Configuration Management",
+    ],
+    values: ["",
+        202, 105, 89, 83,
+        115, 96, 72, 60,
+        92, 63, 45,
+        26, 70, 5, 4, 3,
+        2, 30, 100,
+        1, 5, 10,
+        15, 20, 25,
+    ],
+  }
+
   return (
     <div className="tab-engagements mt-4">
       <div className="mt-3">
@@ -142,7 +165,11 @@ const Engagements = ({ enterpriseId }) => {
                   description="Heading for skills by learning hours chart on advance analytics"
                 />
               </h2>
-              <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid w-100 h-100" />
+              <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid" >
+                <Treemap
+                  data={treemapData}
+                />
+              </div>
             </div>
           </div>
         </div>
