@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { sum } from 'lodash';
 import utc from 'dayjs/plugin/utc';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import { CHART_TYPES, CALCULATION } from './constants';
@@ -97,7 +96,8 @@ const calculateMovingAverage = (timeSeriesData, countKey, period) => {
 
     // Calculate moving average for the given period.
     const arraySlice = timeSeriesData.slice(start, end).map((item) => item[countKey]);
-    const movingAverage = sum(arraySlice) / arraySlice.length;
+    const sumOfArraySlice = arraySlice.reduce((prev, next) => prev + next, 0);
+    const movingAverage = sumOfArraySlice / arraySlice.length;
     modifiedData.push({ ...timeSeriesData[i], [countKey]: movingAverage });
   }
   return modifiedData;
@@ -235,7 +235,7 @@ export const calculateMarkerSizes = (dataArray = [], property, minSize = 10, max
 export const sumEntitiesByMetric = (records, groupByKey, fieldsToSum = []) => {
   const result = {};
 
-  records.forEach(record => {
+  records?.forEach(record => {
     const key = record[groupByKey];
     if (!result[key]) {
       // Create a shallow copy of the record to preserve other fields

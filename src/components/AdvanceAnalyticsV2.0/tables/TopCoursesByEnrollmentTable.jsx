@@ -3,7 +3,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { DataTable } from '@openedx/paragon';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { sumEntitiesByMetric, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
+import { sumEntitiesByMetric } from '../data/utils';
 import Header from '../Header';
 
 const TopCoursesByEnrollmentTable = ({
@@ -14,6 +14,8 @@ const TopCoursesByEnrollmentTable = ({
 }) => {
   const intl = useIntl();
 
+  // Aggregate "audit" and "certificate" data. Groups all records by courseKey.
+  // Adds up enrollmentCount for each course.
   const topCoursesByEnrollment = React.useMemo(
     () => sumEntitiesByMetric(data, 'courseKey', ['enrollmentCount']),
     [data],
@@ -38,21 +40,14 @@ const TopCoursesByEnrollmentTable = ({
     },
   ];
 
-  const topCoursesByEnrollmentsForCSV = useMemo(() => {
-    const topCoursesByEnrollments = modifyDataToIntroduceEnrollTypeCount(
-      data,
-      'courseKey',
-      'enrollmentCount',
-    );
-    return topCoursesByEnrollments.map(({
-      courseKey, courseTitle, certificate, audit,
-    }) => ({
+  const topCoursesByEnrollmentsForCSV = useMemo(
+    () => topCoursesByEnrollment.map(({ courseKey, courseTitle, enrollmentCount }) => ({
       course_key: courseKey,
       course_title: courseTitle,
-      certificate,
-      audit,
-    }));
-  }, [data]);
+      enrollment_count: enrollmentCount,
+    })),
+    [topCoursesByEnrollment],
+  );
 
   return (
     <div className="mb-4 rounded-lg">
@@ -64,7 +59,7 @@ const TopCoursesByEnrollmentTable = ({
         })}
         subtitle={intl.formatMessage({
           id: 'analytics.top.courses.by.enrollment.subtitle',
-          defaultMessage: 'See the most popular subjects at your organization.',
+          defaultMessage: 'See the most popular courses at your organization.',
           description: 'Subtitle for top 10 courses by enrollment chart',
         })}
         DownloadCSVComponent={(

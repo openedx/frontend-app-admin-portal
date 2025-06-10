@@ -5,7 +5,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import Header from '../Header';
 import ChartWrapper from './ChartWrapper';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { constructChartHoverTemplate, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
+import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
 
 const EnrollmentsOverTimeChart = ({
   isFetching, isError, data, startDate, endDate,
@@ -14,35 +14,18 @@ const EnrollmentsOverTimeChart = ({
 
   // Aggregate "audit" and "certificate" data to single enrollments series per date
   // Groups all records by enterpriseEnrollmentDate. Adds up enrollmentCount for each day.
-  const aggregatedData = useMemo(() => {
-    const rawData = data ?? [];
+  const aggregatedData = React.useMemo(
+    () => sumEntitiesByMetric(data, 'enterpriseEnrollmentDate', ['enrollmentCount']),
+    [data],
+  );
 
-    const aggregated = rawData.reduce((acc, curr) => {
-      const { enterpriseEnrollmentDate, enrollmentCount } = curr;
-      if (!acc[enterpriseEnrollmentDate]) {
-        acc[enterpriseEnrollmentDate] = { enterpriseEnrollmentDate, enrollmentCount: 0 };
-      }
-      acc[enterpriseEnrollmentDate].enrollmentCount += enrollmentCount;
-      return acc;
-    }, {});
-
-    return Object.values(aggregated).sort(
-      (a, b) => new Date(a.enterpriseEnrollmentDate) - new Date(b.enterpriseEnrollmentDate),
-    );
-  }, [data]);
-
-  const enrollmentsOverTimeForCSV = useMemo(() => {
-    const enrollmentsOverTime = modifyDataToIntroduceEnrollTypeCount(
-      data,
-      'enterpriseEnrollmentDate',
-      'enrollmentCount',
-    );
-    return enrollmentsOverTime.map(({ enterpriseEnrollmentDate, certificate, audit }) => ({
+  const enrollmentsOverTimeForCSV = useMemo(
+    () => aggregatedData.map(({ enterpriseEnrollmentDate, enrollmentCount }) => ({
       enterprise_enrollment_date: dayjs.utc(enterpriseEnrollmentDate).toISOString().split('T')[0],
-      certificate,
-      audit,
-    }));
-  }, [data]);
+      enrollment_count: enrollmentCount,
+    })),
+    [aggregatedData],
+  );
 
   return (
     <div className="bg-primary-100 rounded-lg container-fluid p-3 mb-3 enrollment-chart-container">
