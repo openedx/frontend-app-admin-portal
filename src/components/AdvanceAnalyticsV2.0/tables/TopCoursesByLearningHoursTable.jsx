@@ -3,7 +3,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import { DataTable } from '@openedx/paragon';
 import DownloadCSVButton from '../DownloadCSVButton';
-import { sumEntitiesByMetric, modifyDataToIntroduceEnrollTypeCount } from '../data/utils';
+import { sumEntitiesByMetric } from '../data/utils';
 import Header from '../Header';
 
 const TopCoursesByLearningHoursTable = ({
@@ -14,6 +14,8 @@ const TopCoursesByLearningHoursTable = ({
 }) => {
   const intl = useIntl();
 
+  // Aggregate "audit" and "certificate" data. Groups all records by courseKey.
+  // Adds up learningTimeHours for each course.
   const topCoursesByEngagement = React.useMemo(
     () => sumEntitiesByMetric(data, 'courseKey', ['learningTimeHours']),
     [data],
@@ -38,21 +40,14 @@ const TopCoursesByLearningHoursTable = ({
     },
   ];
 
-  const topCoursesByEngagementForCSV = useMemo(() => {
-    const topCoursesByEngagementCSV = modifyDataToIntroduceEnrollTypeCount(
-      data,
-      'courseKey',
-      'learningTimeHours',
-    );
-    return topCoursesByEngagementCSV.map(({
-      courseKey, courseTitle, certificate, audit,
-    }) => ({
+  const topCoursesByEngagementForCSV = useMemo(
+    () => topCoursesByEngagement.map(({ courseKey, courseTitle, learningTimeHours }) => ({
       course_key: courseKey,
       course_title: courseTitle,
-      certificate,
-      audit,
-    }));
-  }, [data]);
+      learning_time_hours: learningTimeHours,
+    })),
+    [topCoursesByEngagement],
+  );
 
   return (
     <div className="mb-4 rounded-lg">

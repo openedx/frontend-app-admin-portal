@@ -50,11 +50,11 @@ const AnalyticsFilters = ({
       {!collapsed && (
         <>
           <div className="row filter-container mt-3">
-            <div className="col-md-3">
+            <div className="col-3">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
-                    id="advance.analytics.filter.start.date"
+                    id="advance.analytics.date.filter.start.date"
                     defaultMessage="Start date"
                     description="Advance analytics Start date filter label"
                   />
@@ -69,11 +69,11 @@ const AnalyticsFilters = ({
                 />
               </Form.Group>
             </div>
-            <div className="col-md-3">
+            <div className="col-3">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
-                    id="advance.analytics.filter.end.date"
+                    id="advance.analytics.date.filter.end.date"
                     defaultMessage="End date"
                     description="Advance analytics End date filter label"
                   />
@@ -88,7 +88,7 @@ const AnalyticsFilters = ({
                 />
               </Form.Group>
             </div>
-            <div className="col-md-3">
+            <div className="col-3">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -109,7 +109,7 @@ const AnalyticsFilters = ({
             </div>
           </div>
           <div className="row filter-container mt-2 pb-2">
-            <div className="col" data-testid="group-select">
+            <div className="col-3" data-testid="group-select">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -127,7 +127,7 @@ const AnalyticsFilters = ({
                 >
                   <option value={DEFAULT_GROUP}>
                     {intl.formatMessage({
-                      id: 'adminPortal.analytics.filter.group.all',
+                      id: 'adminPortal.analytics.group.filter.all',
                       defaultMessage: 'All groups',
                       description: 'Label for the all groups option',
                     })}
@@ -140,7 +140,7 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col">
+            <div className="col-3">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -159,7 +159,7 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col">
+            <div className="col-3">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -178,7 +178,7 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col">
+            <div className="col-3">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage

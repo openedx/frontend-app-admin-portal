@@ -7,7 +7,6 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import Hero from '../Hero';
 import Engagements from './tabs/Engagements';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
-// import { GRANULARITY, CALCULATION } from './data/constants';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import { AnalyticsFiltersContext } from './AnalyticsFiltersContext';
 

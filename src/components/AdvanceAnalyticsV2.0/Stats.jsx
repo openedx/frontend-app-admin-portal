@@ -14,7 +14,7 @@ const Stats = ({
   if (isError) {
     return (
       <FormattedMessage
-        id="advance.analytics.stats.aggregates.notFound.errorMesssage"
+        id="advance.analytics.engagement.stats.aggregates.notFound.error.messsage"
         defaultMessage="No Matching Data Found"
         description="Error message when no data is found."
       />
@@ -25,7 +25,7 @@ const Stats = ({
     <div className="container-fluid bg-primary-100 rounded-lg p-3 mb-1">
       <h2 className="font-weight-bold mb-3">
         <FormattedMessage
-          id="advance.analytics.stats.engagementMetrics.heading"
+          id="advance.analytics.engagement.stats.engagement.metrics.heading"
           defaultMessage="{tabName} metrics"
           values={{ tabName }}
           description="Heading for the analytics stats section, tab name passed as a prop and metrics is hardcoded"
@@ -42,7 +42,7 @@ const Stats = ({
           <div className="col d-flex flex-column justify-content-center align-items-center">
             <p className="mb-0 small font-weight-normal title-enrollments">
               <FormattedMessage
-                id="advance.analytics.stats.enrollments.title"
+                id="advance.analytics.enrollments.stats.title"
                 defaultMessage="Enrollments"
                 description="Title for the enrollments stat."
               />
@@ -52,7 +52,7 @@ const Stats = ({
           <div className="col d-flex flex-column justify-content-center align-items-center">
             <p className="mb-0 small font-weight-normal title-distinct-courses">
               <FormattedMessage
-                id="advance.analytics.stats.distinct.courses.title"
+                id="advance.analytics.engagement.stats.distinct.courses.title"
                 defaultMessage="Distinct Courses"
                 description="Title for the distinct courses stat."
               />
@@ -62,7 +62,7 @@ const Stats = ({
           <div className="col d-flex flex-column justify-content-center align-items-center">
             <p className="mb-0 small font-weight-normal title-daily-sessions">
               <FormattedMessage
-                id="advance.analytics.stats.daily.sessions.title"
+                id="advance.analytics.engagement.stats.daily.sessions.title"
                 defaultMessage="Daily Sessions"
                 description="Title for the daily sessions stat."
               />
@@ -72,7 +72,7 @@ const Stats = ({
           <div className="col d-flex flex-column justify-content-center align-items-center">
             <p className="mb-0 small font-weight-normal title-learning-hours">
               <FormattedMessage
-                id="advance.analytics.stats.learning.hours.title"
+                id="advance.analytics.engagement.stats.learning.hours.title"
                 defaultMessage="Learning Hours"
                 description="Title for the learning hours stat."
               />
@@ -82,7 +82,7 @@ const Stats = ({
           <div className="col d-flex flex-column justify-content-center align-items-center">
             <p className="mb-0 small font-weight-normal title-completions">
               <FormattedMessage
-                id="advance.analytics.stats.completions.title"
+                id="advance.analytics.engagement.stats.completions.title"
                 defaultMessage="Completions"
                 description="Title for the completions stat."
               />
