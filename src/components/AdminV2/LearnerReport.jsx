@@ -99,7 +99,7 @@ const LearnerReport = ({
             eventKey="learner-progress-report"
             title={intl.formatMessage({
               id: 'adminPortal.lpr.tab.learnerProgressReport.title',
-              defaultMessage: 'Learner Progress Report',
+              defaultMessage: 'Learner Progress Reportttt',
               description: 'Title for the learner progress report tab in admin portal.',
             })}
           >

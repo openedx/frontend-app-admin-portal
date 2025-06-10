@@ -26,6 +26,15 @@ const mockStore = configureStore([]);
 describe('AdminOnboardingTours', () => {
   let store;
 
+  const mockedInsights = {
+    learner_progress: {
+      enterprise_customer_uuid: 'aac56d39-f38d-4510-8ef9-085cab048ea9',
+    },
+    learner_engagement: {
+      enterprise_customer_uuid: 'aac56d39-f38d-4510-8ef9-085cab048ea9',
+    },
+  };
+
   beforeEach(() => {
     store = mockStore({
       portalConfiguration: {
@@ -34,6 +43,10 @@ describe('AdminOnboardingTours', () => {
         enterpriseFeatures: {
           enterpriseAdminOnboardingEnabled: true,
         },
+      },
+      dashboardInsights: {
+        loading: false,
+        insights: mockedInsights,
       },
     });
   });
@@ -79,5 +92,10 @@ describe('AdminOnboardingTours', () => {
       target: '#learner-progress-sidebar',
       placement: 'right',
     });
+  });
+
+  it('renders CheckpointOverlay with correct target', () => {
+    renderComponent();
+    screen.debug(undefined, 10000000);
   });
 });

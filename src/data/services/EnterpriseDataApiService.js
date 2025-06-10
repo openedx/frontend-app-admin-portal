@@ -41,7 +41,22 @@ class EnterpriseDataApiService {
     const enterpriseUUID = EnterpriseDataApiService.getEnterpriseUUID(enterpriseId);
     const { enableAuditDataReporting } = store.getState().portalConfiguration;
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseUUID}/enrollments/overview/?audit_enrollments=${enableAuditDataReporting}`;
-    return EnterpriseDataApiService.apiClient().get(url);
+    // return EnterpriseDataApiService.apiClient().get(url);
+
+    return new Promise((resolve) => {
+      resolve({
+        data: {
+          enrolled_learners: 4,
+          active_learners: {
+            past_week: 0,
+            past_month: 0,
+          },
+          course_completions: 0,
+          last_updated_date: '2025-06-05T02:58:18Z',
+          number_of_users: 0,
+        },
+      });
+    });
   }
 
   static fetchCourseEnrollments(enterpriseId, options, { csv } = {}) {

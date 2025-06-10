@@ -11,7 +11,7 @@ import FloatingCollapsible from '../FloatingCollapsible';
 import messages, { TRACK_LEARNER_PROGRESS_TITLE } from './messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
-import { ADMIN_TOUR_TARGETS } from './AdminOnboardingTours/constants';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 
 interface Props {
   onboardingTourCompleted: boolean;
@@ -19,6 +19,8 @@ interface Props {
   dismissOnboardingTour: () => void;
   reopenOnboardingTour: () => void;
   onTourSelect?: (targetId: string) => void;
+  showCollapsible: boolean;
+  setShowCollapsible: (value: boolean) => void;
 }
 
 const QUICK_START_GUIDE_STEPS = [
@@ -26,22 +28,21 @@ const QUICK_START_GUIDE_STEPS = [
     icon: TrendingUp,
     title: TRACK_LEARNER_PROGRESS_TITLE,
     timeEstimate: 2,
-    targetId: ADMIN_TOUR_TARGETS.LEARNER_PROGRESS_SIDEBAR,
+    targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
   },
   // Add other steps here
 ];
 
 const TourCollapsible: FC<Props> = (
   {
-    onboardingTourCompleted = true,
-    onboardingTourDismissed = true,
     dismissOnboardingTour: dismissTour,
     reopenOnboardingTour: reopenTour,
     onTourSelect,
+    showCollapsible,
+    setShowCollapsible,
   },
 ) => {
   const intl = useIntl();
-  const [showCollapsible, setShowCollapsible] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
 
   const handleDismiss = () => {
     setShowCollapsible(false);

@@ -1,8 +1,24 @@
-// Admin Tour Targets
-const LEARNER_PROGRESS_SIDEBAR = 'learner-progress-sidebar';
+// ADMIN TOUR TARGETS
 
-export const ADMIN_TOUR_TARGETS = {
+// Track learner progress - LPR flow
+const LEARNER_PROGRESS_SIDEBAR = 'learner-progress-sidebar';
+const LPR_OVERVIEW = 'lpr-overview';
+const AI_SUMMARY = 'ai-summary';
+const PROGRESS_REPORT = 'progress-report';
+const FULL_PROGRESS_REPORT = 'full-progress-report';
+const FILTER = 'filter';
+const CSV_DOWNLOAD = 'csv_download';
+const MODULE_ACTIVITY = 'module-activity';
+
+export const TRACK_LEARNER_PROGRESS_TARGETS = {
   LEARNER_PROGRESS_SIDEBAR,
+  LPR_OVERVIEW,
+  AI_SUMMARY,
+  FULL_PROGRESS_REPORT,
+  PROGRESS_REPORT,
+  FILTER,
+  CSV_DOWNLOAD,
+  MODULE_ACTIVITY,
 };
 
 const LEARNER_PROGRESS_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.advance';

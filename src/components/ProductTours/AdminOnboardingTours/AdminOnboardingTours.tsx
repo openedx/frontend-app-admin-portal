@@ -1,31 +1,50 @@
 import React, { FC } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
+import { camelCaseObject } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import useLearnerProgressTour from './useLearnerProgressTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 
+interface Insights {
+  learner_engagement?: any;
+  learner_progress?: any;
+}
+
 interface AdminOnboardingToursProps {
   isOpen: boolean;
   onClose: () => void;
-  enterpriseSlug: string;
   targetSelector: string;
+  setTarget: Function;
+  enterpriseSlug: string;
+  insights: Insights;
+  insightsLoading: boolean;
 }
 
 interface RootState {
+  dashboardInsights: {
+    insights: Insights;
+    loading: boolean;
+  };
   portalConfiguration: {
     enterpriseSlug: string;
   };
+
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   isOpen,
   onClose,
-  enterpriseSlug,
   targetSelector,
+  setTarget,
+  enterpriseSlug,
+  insights,
+  insightsLoading,
 }) => {
-  const learnerProgressStep = useLearnerProgressTour({ enterpriseSlug });
+  const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
+  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, setTarget, aiButtonVisible });
 
   const tours = [
     {
@@ -49,14 +68,14 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       endButtonText: (
         <FormattedMessage
           id="adminPortal.productTours.adminOnboarding.end"
-          defaultMessage="Complete"
+          defaultMessage="Keep going"
           description="Text for the end button"
         />
       ),
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: [learnerProgressStep],
+      checkpoints: learnerProgressSteps,
     },
   ];
 
@@ -74,8 +93,23 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   );
 };
 
+AdminOnboardingTours.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  targetSelector: PropTypes.any.isRequired,
+  setTarget: PropTypes.func.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
+  insights: PropTypes.shape({
+    learner_engagement: PropTypes.any,
+    learner_progress: PropTypes.any,
+  }).isRequired,
+  insightsLoading: PropTypes.any.isRequired,
+};
+
 const mapStateToProps = (state: RootState) => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  insights: state.dashboardInsights.insights,
+  insightsLoading: state.dashboardInsights.loading,
 });
 
 export default connect(mapStateToProps)(AdminOnboardingTours);

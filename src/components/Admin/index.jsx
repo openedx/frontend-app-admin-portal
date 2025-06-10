@@ -22,6 +22,7 @@ import DownloadCsvButton from '../../containers/DownloadCsvButton';
 import AdminCards from '../../containers/AdminCards';
 import AdminSearchForm from './AdminSearchForm';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
 import { formatTimestamp } from '../../utils';
@@ -47,6 +48,12 @@ class Admin extends React.Component {
     // Prepare to scroll to report section when it loads
     if (props?.location?.hash === '#fullreport') {
       state.navigateToReport = true;
+    }
+
+    console.log('in the new code');
+    // Navigate to module activity tab
+    if (props?.location?.hash === '#moduleactivity') {
+      state.activeTab = 'module-activity';
     }
 
     this.state = state;
@@ -451,36 +458,37 @@ class Admin extends React.Component {
             <Helmet title="Learner Progress Report" />
             <Hero title="Learner Progress Report" />
             <div className="container-fluid">
-              <div className="row mt-4">
-                <div className="col">
-                  <BudgetExpiryAlertAndModal />
-                  <h2>
-                    <FormattedMessage
-                      id="admin.portal.lpr.overview.heading"
-                      defaultMessage="Overview"
-                      description="Heading for the overview section of the learner progress report page"
-                    />
-                  </h2>
+              <div id={TRACK_LEARNER_PROGRESS_TARGETS.LPR_OVERVIEW}>
+                <div className="row mt-4">
+                  <div className="col">
+                    <BudgetExpiryAlertAndModal />
+                    <h2>
+                      <FormattedMessage
+                        id="admin.portal.lpr.overview.heading"
+                        defaultMessage="Overview"
+                        description="Heading for the overview section of the learner progress report page"
+                      />
+                    </h2>
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-4">
-                <div className="col">
-                  {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
-                    hasCompleteInsights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                <div className="row mt-4">
+                  <div id={TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY} className="col">
+                    {insightsLoading ? <AIAnalyticsSummarySkeleton /> : (
+                      hasCompleteInsights && <AIAnalyticsSummary enterpriseId={enterpriseId} />
+                    )}
+                  </div>
+                </div>
+                <div className="row mt-3">
+                  {(error || loading) ? (
+                    <div className="col">
+                      {error && this.renderErrorMessage()}
+                      {loading && <AdminCardsSkeleton />}
+                    </div>
+                  ) : (
+                    <AdminCards />
                   )}
                 </div>
               </div>
-              <div className="row mt-3">
-                {(error || loading) ? (
-                  <div className="col">
-                    {error && this.renderErrorMessage()}
-                    {loading && <AdminCardsSkeleton />}
-                  </div>
-                ) : (
-                  <AdminCards />
-                )}
-              </div>
-
               <div className="row">
                 <div className="col mb-4.5">
                   <SubscriptionData enterpriseId={enterpriseId}>
@@ -490,7 +498,7 @@ class Admin extends React.Component {
               </div>
 
               <div className="row mt-4" id="learner-progress-report">
-                <div className="col">
+                <div className="col" id={TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}>
                   <div className="row">
                     <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
                       <h2 className="table-title" ref={this.fullReportRef}>{tableMetadata.title}</h2>
@@ -542,17 +550,19 @@ class Admin extends React.Component {
                       defaultMessage: 'Learner Progress Report',
                       description: 'Title for the learner progress report tab in admin portal.',
                     })}
+                    id={TRACK_LEARNER_PROGRESS_TARGETS.FULL_PROGRESS_REPORT}
                   >
                     <div className="row">
                       <div className="col">
                         {!error && !loading && !this.hasEmptyData() && (
                           <>
                             <div className="row pb-3 mt-2">
-                              <div className="col-12 col-md-12 col-xl-12">
+                              <div className="col-12 col-md-12 col-xl-12" id={TRACK_LEARNER_PROGRESS_TARGETS.CSV_DOWNLOAD}>
                                 {this.renderDownloadButton()}
                               </div>
                             </div>
-                            {this.displaySearchBar() && (
+                            <span id={TRACK_LEARNER_PROGRESS_TARGETS.FILTER}>
+                              {this.displaySearchBar() && (
                               <AdminSearchForm
                                 searchParams={searchParams}
                                 searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
@@ -561,7 +571,8 @@ class Admin extends React.Component {
                                 groups={groups}
                                 enterpriseId={enterpriseId}
                               />
-                            )}
+                              )}
+                            </span>
                           </>
                         )}
                         {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
@@ -578,12 +589,14 @@ class Admin extends React.Component {
                       defaultMessage: 'Module Activity (Executive Education)',
                       description: 'Title for the module activity tab in admin portal.',
                     })}
+                    id={TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}
                   >
                     <div className="mt-3">
                       <ModuleActivityReport enterpriseId={enterpriseId} />
                     </div>
                   </Tab>
                 </Tabs>
+                {/* </span> */}
               </div>
             </div>
           </>
