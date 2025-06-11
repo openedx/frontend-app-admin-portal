@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import React, { useMemo } from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import algoliasearch from 'algoliasearch/lite';
 import userEvent from '@testing-library/user-event';
@@ -151,6 +151,7 @@ describe('AddCoursesStep', () => {
     { usesCatalogQuerySearchFilters: false },
     { usesCatalogQuerySearchFilters: true },
   ])('more than max selected courses causes display of warning dialog text', async ({ usesCatalogQuerySearchFilters }) => {
+    const user = userEvent.setup();
     const algolia: UseAlgoliaSearchResult = {
       ...defaultAlgoliaProps,
       isCatalogQueryFiltersEnabled: usesCatalogQuerySearchFilters,
@@ -175,7 +176,7 @@ describe('AddCoursesStep', () => {
     expect(screen.getByText(WARNING_ALERT_TITLE_TEXT)).toBeInTheDocument();
     const alertDismissBtn = screen.getByRole('button', { name: 'Dismiss' });
     expect(alertDismissBtn).toBeInTheDocument();
-    userEvent.click(alertDismissBtn);
+    await user.click(alertDismissBtn);
     await waitFor(() => {
       expect(screen.queryByText(WARNING_ALERT_TITLE_TEXT)).not.toBeInTheDocument();
     });

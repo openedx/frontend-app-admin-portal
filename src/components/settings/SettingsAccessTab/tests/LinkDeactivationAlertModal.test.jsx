@@ -2,7 +2,6 @@ import React from 'react';
 import {
   screen,
   cleanup,
-  act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -26,6 +25,7 @@ describe('<LinkDeactivationAlertModal/>', () => {
   });
 
   test('`Deactivate` button calls api and `onDeactivateLink`', async () => {
+    const user = userEvent.setup();
     const onDeactivateLinkMock = jest.fn();
     const mockPromiseResolve = Promise.resolve({ data: {} });
     LmsApiService.disableEnterpriseCustomerLink.mockReturnValue(mockPromiseResolve);
@@ -36,7 +36,7 @@ describe('<LinkDeactivationAlertModal/>', () => {
     />);
     // Click `Deactivate` button
     const deactivateButton = screen.getByText('Deactivate');
-    await act(async () => { userEvent.click(deactivateButton); });
+    await user.click(deactivateButton);
     // `onDeactivateLink` and api service should have been called
     expect(LmsApiService.disableEnterpriseCustomerLink).toHaveBeenCalledWith(
       TEST_INVITE_KEY,
@@ -44,6 +44,7 @@ describe('<LinkDeactivationAlertModal/>', () => {
     expect(onDeactivateLinkMock).toHaveBeenCalledTimes(1);
   });
   test('`Go back` calls `onClose`', async () => {
+    const user = userEvent.setup();
     const onCloseMock = jest.fn();
     renderWithI18nProvider(<LinkDeactivationAlertModal
       isOpen
@@ -51,7 +52,7 @@ describe('<LinkDeactivationAlertModal/>', () => {
       inviteKeyUUID={TEST_INVITE_KEY}
     />);
     const backButton = screen.getByText('Go back');
-    await act(async () => { userEvent.click(backButton); });
+    await user.click(backButton);
     expect(onCloseMock).toHaveBeenCalledTimes(1);
   });
 });

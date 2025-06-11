@@ -47,7 +47,6 @@ const MultipleBudgetsPicker = ({
     })
   ));
   const budgetLabelsByStatus = groupBy(budgetLabels, 'status');
-
   const preSelectedBudgetFilters = [];
   if (budgetLabelsByStatus.Active) {
     preSelectedBudgetFilters.push('Active');

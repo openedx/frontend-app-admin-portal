@@ -72,6 +72,7 @@ describe('<NoAvailableCodesBanner />', () => {
   });
 
   it('should dismiss banner', async () => {
+    const user = userEvent.setup();
     const { getByText, container } = render((
       <NoAvailableCodesBannerWrapper
         coupons={[{
@@ -81,7 +82,7 @@ describe('<NoAvailableCodesBanner />', () => {
       />
     ));
     const dismissBtn = getByText('Dismiss');
-    userEvent.click(dismissBtn);
+    await user.click(dismissBtn);
     await waitFor(() => {
       expect(container.childElementCount).toEqual(0);
     });

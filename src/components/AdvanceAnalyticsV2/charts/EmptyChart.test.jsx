@@ -1,11 +1,21 @@
 import React from 'react';
-// import { mount } from 'enzyme';
-import { render } from '@testing-library/react';
 import Plot from 'react-plotly.js';
+import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import '@testing-library/jest-dom/extend-expect';
+
 import EmptyChart from './EmptyChart';
 
+jest.mock('react-plotly.js', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => <div data-testid="Plot" />),
+}));
+
 describe('EmptyChart', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   const defaultLayout = {
     annotations: [
       {
@@ -34,27 +44,50 @@ describe('EmptyChart', () => {
     dragmode: false,
   };
 
-  it.skip('renders correctly', () => {
-    const wrapper = render(
+  it('renders correctly', () => {
+    render(
       <IntlProvider locale="en">
         <EmptyChart />
       </IntlProvider>,
     );
-    const plotComponent = wrapper.find(Plot);
-    expect(plotComponent.prop('data').length).toEqual(0);
-    expect(plotComponent.prop('layout')).toEqual(defaultLayout);
-    expect(plotComponent.prop('config')).toEqual({ displayModeBar: false });
-    expect(plotComponent.prop('style')).toEqual({ width: '100%', height: '100%' });
+    expect(screen.getByTestId('Plot')).toBeInTheDocument();
+    expect(Plot).toHaveBeenCalledWith(
+      {
+        data: [],
+        layout: defaultLayout,
+        config: { displayModeBar: false },
+        style: { width: '100%', height: '100%' },
+      },
+      {}, // React automatically passes the ref as the second argument
+    );
   });
 
-  it.skip('renders custom message', () => {
+  it('renders custom message', () => {
     const message = 'coming soon...';
-    const wrapper = render(
+    render(
       <IntlProvider locale="en">
         <EmptyChart message={message} />,
       </IntlProvider>,
     );
-    const plotComponent = wrapper.find(Plot);
-    expect(plotComponent.prop('layout').annotations[0].text).toBe(message);
+    expect(screen.getByTestId('Plot')).toBeInTheDocument();
+    const expectedLayout = {
+      ...defaultLayout,
+      annotations: [
+        {
+          ...defaultLayout.annotations[0],
+          text: message,
+        },
+        ...defaultLayout.annotations.slice(1),
+      ],
+    };
+    expect(Plot).toHaveBeenCalledWith(
+      {
+        data: [],
+        layout: expectedLayout,
+        config: { displayModeBar: false },
+        style: { width: '100%', height: '100%' },
+      },
+      {}, // React passes the ref as the second argument
+    );
   });
 });

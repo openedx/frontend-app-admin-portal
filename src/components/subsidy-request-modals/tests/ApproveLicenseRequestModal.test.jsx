@@ -107,16 +107,17 @@ describe('<ApproveLicenseRequestModal />', () => {
   });
 
   it('should call Enterprise Access API to approve the request and call onSuccess afterwards', async () => {
+    const user = userEvent.setup();
     const handleSuccess = jest.fn();
     const { getByTestId } = render(<ApproveLicenseRequestModalWrapper onSuccess={handleSuccess} />);
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    await waitFor(() => userEvent.click(subscriptionChoiceRadio));
+    await user.click(subscriptionChoiceRadio);
 
     const approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    userEvent.click(approveBtn);
+    await user.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({
@@ -129,17 +130,18 @@ describe('<ApproveLicenseRequestModal />', () => {
   });
 
   it('should render alert if an error occurred', async () => {
+    const user = userEvent.setup();
     EnterpriseAccessApiService.approveLicenseRequests.mockRejectedValue(new Error('something went wrong'));
 
     const { getByTestId } = render(<ApproveLicenseRequestModalWrapper />);
 
     const subscriptionChoiceRadio = getByTestId('approve-license-request-modal-subscription-0');
-    await waitFor(() => userEvent.click(subscriptionChoiceRadio));
+    await user.click(subscriptionChoiceRadio);
 
     let approveBtn = getByTestId('approve-license-request-modal-approve-btn');
     expect(approveBtn.disabled).toBe(false);
 
-    userEvent.click(approveBtn);
+    await user.click(approveBtn);
 
     await waitFor(() => {
       expect(EnterpriseAccessApiService.approveLicenseRequests).toHaveBeenCalledWith({

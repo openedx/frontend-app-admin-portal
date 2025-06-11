@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { SearchContext } from '@edx/frontend-enterprise-catalog-search';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter } from '@edx/frontend-enterprise-utils';
@@ -228,7 +228,7 @@ describe('Main Catalogs view works as expected', () => {
     );
     expect(screen.queryByText(TEST_COURSE_NAME)).toBeInTheDocument();
     expect(screen.queryByText(TEST_COURSE_NAME_2)).toBeInTheDocument();
-    waitFor(() => expect(screen.getAllByText('Showing 2 of 2.')[0]).toBeInTheDocument());
+    await waitFor(() => expect(screen.getAllByText('Showing 1 - 2 of 2.')[0]).toBeInTheDocument());
   });
   test('error state displays', async () => {
     const budgetDetailPageContextValue = {

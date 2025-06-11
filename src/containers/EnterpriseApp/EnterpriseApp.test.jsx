@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { render, screen, waitFor } from '@testing-library/react';
 import { breakpoints } from '@openedx/paragon';
@@ -137,7 +137,7 @@ describe('<EnterpriseApp />', () => {
     ));
     const notFoundInstance = await screen.findByText('Oops, sorry we can\'t find that page!');
     expect(notFoundInstance).toBeInTheDocument();
-    waitFor(() => expect(container.textContent).toContain(404));
+    await waitFor(() => expect(container.textContent).toContain('404'));
   });
 
   it('renders the load page correctly', async () => {
@@ -184,7 +184,7 @@ describe('<EnterpriseApp />', () => {
         document.body.removeChild(div);
       }
     });
-    it.skip('handles location change properly', () => {
+    it('handles location change properly', () => {
       // There is some logic where we collapse the sidebar on menu click on mobile
       // so we test that here as well. Note that we need to set the window width
       // to mobile first.
@@ -209,7 +209,7 @@ describe('<EnterpriseApp />', () => {
       />);
 
       // ensure focus is set on content wrapper
-      expect(document.activeElement.className).toEqual('content-wrapper');
+      expect(document.activeElement.className).toContain('content-wrapper');
       global.innerWidth = initialWidth;
     });
   });

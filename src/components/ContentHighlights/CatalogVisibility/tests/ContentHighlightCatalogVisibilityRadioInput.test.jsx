@@ -4,11 +4,10 @@ import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterp
 import React, { useState } from 'react';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { camelCaseObject } from '@edx/frontend-platform';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import { useContentHighlightsContext } from '../../data/hooks';
 import ContentHighlightCatalogVisibilityRadioInput from '../ContentHighlightCatalogVisibilityRadioInput';
 import { EnterpriseAppContext } from '../../../EnterpriseApp/EnterpriseAppContextProvider';
@@ -94,6 +93,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(screen.getByText('Learners can only view and enroll into highlighted courses')).toBeTruthy();
   });
   it('Spinner 2 shows on radio 2 click', async () => {
+    const user = userEvent.setup();
     const mockUpdateEnterpriseCuration = jest.fn();
     const mockEnterpriseAppContextValue = {
       enterpriseCuration: {
@@ -122,9 +122,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(radio2LoadingStateInitial).toBeFalsy();
     expect(radio1CheckedState).toBeTruthy();
 
-    await act(async () => {
-      userEvent.click(viewHighlightedContentButton);
-    });
+    await user.click(viewHighlightedContentButton);
 
     await waitFor(() => {
       expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);
@@ -132,6 +130,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     });
   });
   it('Spinner 1 shows on radio 1 click', async () => {
+    const user = userEvent.setup();
     EnterpriseCatalogApiService.updateEnterpriseCurationConfig.mockResolvedValue({
       data: {
         canOnlyViewHighlightSets: false,
@@ -165,9 +164,7 @@ describe('ContentHighlightCatalogVisibilityRadioInput1', () => {
     expect(radio1LoadingStateInitial).toBeFalsy();
     expect(radio2CheckedState).toBeTruthy();
 
-    await act(async () => {
-      userEvent.click(viewAllContentButton);
-    });
+    await user.click(viewAllContentButton);
 
     await waitFor(() => {
       expect(mockUpdateEnterpriseCuration).toHaveBeenCalledTimes(1);

@@ -1,6 +1,5 @@
 import Router from 'react-router-dom';
-import { renderHook } from '@testing-library/react-hooks/dom';
-import { waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 
 import LmsApiService from '../../../../data/services/LmsApiService';
 import {

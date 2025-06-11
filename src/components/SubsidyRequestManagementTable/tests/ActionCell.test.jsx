@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
@@ -25,6 +25,7 @@ describe('ActionCell', () => {
   });
 
   test('renders decline & approve inline buttons when request status is "requested"', async () => {
+    const user = userEvent.setup();
     const mockApprove = jest.fn();
     const mockDecline = jest.fn();
     const props = {
@@ -37,11 +38,11 @@ describe('ActionCell', () => {
     };
     renderWithRouter(<ActionCell {...props} />);
 
-    await waitFor(() => userEvent.click(screen.getByText('Decline')));
+    await user.click(screen.getByText('Decline'));
     expect(mockDecline).toHaveBeenCalledTimes(1);
     expect(mockDecline).toHaveBeenCalledWith({ id: 1, requestStatus: 'requested' });
 
-    await waitFor(() => userEvent.click(screen.getByText('Approve')));
+    await user.click(screen.getByText('Approve'));
     expect(mockApprove).toHaveBeenCalledTimes(1);
     expect(mockApprove).toHaveBeenCalledWith({ id: 1, requestStatus: 'requested' });
   });

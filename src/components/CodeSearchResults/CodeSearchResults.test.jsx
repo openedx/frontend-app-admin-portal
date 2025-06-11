@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import {
   fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 

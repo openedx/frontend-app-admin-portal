@@ -3,7 +3,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import thunk from 'redux-thunk';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -104,6 +104,7 @@ const PeopleManagementPageWrapper = ({
 
 describe('<PeopleManagementPage >', () => {
   it('renders the PeopleManagementPage zero state', async () => {
+    const user = userEvent.setup();
     useAllFlexEnterpriseGroups.mockReturnValue({ data: { results: {} } });
     render(<PeopleManagementPageWrapper />);
     expect(document.querySelector('h3').textContent).toEqual("Your organization's groups");
@@ -113,7 +114,7 @@ describe('<PeopleManagementPage >', () => {
     )).toBeInTheDocument();
     const createGroupBtn = screen.getByText('Create group');
     expect(createGroupBtn).toBeInTheDocument();
-    userEvent.click(createGroupBtn);
+    await user.click(createGroupBtn);
     await waitFor(() => {
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         enterpriseUUID,
@@ -155,6 +156,7 @@ describe('<PeopleManagementPage >', () => {
     expect(screen.getByText('4 members')).toBeInTheDocument();
   });
   it('renders the PeopleManagementPage group card grid with collapsible', async () => {
+    const user = userEvent.setup();
     useAllFlexEnterpriseGroups.mockReturnValue({ data: mockMultipleGroupsResponse });
     const store = getMockStore(initialStoreState);
     render(
@@ -171,7 +173,7 @@ describe('<PeopleManagementPage >', () => {
       EVENT_NAMES.PEOPLE_MANAGEMENT.PAGE_VISIT,
     );
     const viewGroupBtn = screen.getAllByText('View group')[0];
-    userEvent.click(viewGroupBtn);
+    await user.click(viewGroupBtn);
     await waitFor(() => {
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         enterpriseUUID,

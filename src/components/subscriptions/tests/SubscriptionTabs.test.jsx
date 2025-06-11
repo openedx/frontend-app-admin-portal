@@ -8,7 +8,7 @@ import {
   render,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import configureMockStore from 'redux-mock-store';
+import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
 import { Routes, Route, MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
@@ -112,6 +112,7 @@ describe('<SubscriptionTabs />', () => {
   });
 
   it('Clicking on a tab changes content via router', async () => {
+    const user = userEvent.setup();
     render(<SubscriptionTabsWrapper />);
     // assert "manage learners" and "manage requests" tabs are visible
     const manageLearnersTab = screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]);
@@ -121,18 +122,19 @@ describe('<SubscriptionTabs />', () => {
     expect(screen.getByText(MANAGE_LEARNERS_MOCK_CONTENT));
 
     // click a different tab and assert the content changed
-    userEvent.click(manageRequestsTab);
+    await user.click(manageRequestsTab);
     await screen.findByText(MANAGE_REQUESTS_MOCK_CONTENT);
 
     // click the default tab and assert the content changed
-    userEvent.click(manageLearnersTab);
+    await user.click(manageLearnersTab);
     await screen.findByText(MANAGE_LEARNERS_MOCK_CONTENT);
   });
 
   it('Clicking on default tab does not change content', async () => {
+    const user = userEvent.setup();
     render(<SubscriptionTabsWrapper />);
     const manageLearnersTab = screen.getByText(SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]);
-    userEvent.click(manageLearnersTab);
+    await user.click(manageLearnersTab);
     await screen.findByText(MANAGE_LEARNERS_MOCK_CONTENT);
   });
 

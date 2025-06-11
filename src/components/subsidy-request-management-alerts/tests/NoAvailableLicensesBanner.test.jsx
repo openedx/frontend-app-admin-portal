@@ -72,7 +72,8 @@ describe('<NoAvailableLicensesBanner />', () => {
     expect(container.childElementCount).toEqual(0);
   });
 
-  it('should dimiss banner', async () => {
+  it('should dismiss banner', async () => {
+    const user = userEvent.setup();
     const { getByText, container } = render(
       <NoAvailableLicensesBannerWrapper
         subscriptions={[
@@ -83,7 +84,7 @@ describe('<NoAvailableLicensesBanner />', () => {
       />,
     );
     const dismissBtn = getByText('Dismiss');
-    userEvent.click(dismissBtn);
+    await user.click(dismissBtn);
     await waitFor(() => {
       expect(container.childElementCount).toEqual(0);
     });
