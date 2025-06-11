@@ -105,6 +105,7 @@ describe('<BudgetDetailPageWrapper />', () => {
     totalLearnersAlreadyAllocated,
     expectedLearnersAlreadyAllocatedString,
   }) => {
+    const user = userEvent.setup();
     const ToastContextController = () => {
       const {
         successfulAssignmentToast: {
@@ -143,13 +144,13 @@ describe('<BudgetDetailPageWrapper />', () => {
     const expectedToastMessage = toastMessages.join(' ');
 
     // Open Toast notification
-    await userEvent.click(getButtonElement('Open Toast'));
+    await user.click(getButtonElement('Open Toast'));
 
     // Verify Toast notification is rendered
     expect(screen.getByText(expectedToastMessage)).toBeInTheDocument();
 
     // Close Toast notification
-    await userEvent.click(getButtonElement('Close Toast'));
+    await user.click(getButtonElement('Close Toast'));
 
     // Verify Toast notification is no longer rendered
     await waitFor(() => {
@@ -167,6 +168,7 @@ describe('<BudgetDetailPageWrapper />', () => {
   ])('should render Toast notification for successful assignment cancellation (%s)', async ({
     assignmentUUIDs,
   }) => {
+    const user = userEvent.setup();
     const ToastContextController = () => {
       const {
         successfulCancellationToast: {
@@ -202,13 +204,13 @@ describe('<BudgetDetailPageWrapper />', () => {
     const expectedToastMessage = toastMessages.join(' ');
 
     // Open Toast notification
-    await userEvent.click(getButtonElement('Open Toast'));
+    await user.click(getButtonElement('Open Toast'));
 
     // Verify Toast notification is rendered
     expect(screen.getByText(expectedToastMessage)).toBeInTheDocument();
 
     // Close Toast notification
-    await userEvent.click(getButtonElement('Close Toast'));
+    await user.click(getButtonElement('Close Toast'));
 
     // Verify Toast notification is no longer rendered
     await waitFor(() => {
@@ -226,6 +228,7 @@ describe('<BudgetDetailPageWrapper />', () => {
   ])('should render Toast notification for successful assignment reminder (%s)', async ({
     assignmentUUIDs,
   }) => {
+    const user = userEvent.setup();
     const ToastContextController = () => {
       const {
         successfulReminderToast: {
@@ -261,13 +264,13 @@ describe('<BudgetDetailPageWrapper />', () => {
     const expectedToastMessage = toastMessages.join(' ');
 
     // Open Toast notification
-    await userEvent.click(getButtonElement('Open Toast'));
+    await user.click(getButtonElement('Open Toast'));
 
     // Verify Toast notification is rendered
     expect(screen.getByText(expectedToastMessage)).toBeInTheDocument();
 
     // Close Toast notification
-    await userEvent.click(getButtonElement('Close Toast'));
+    await user.click(getButtonElement('Close Toast'));
 
     // Verify Toast notification is no longer rendered
     await waitFor(() => {
@@ -275,6 +278,7 @@ describe('<BudgetDetailPageWrapper />', () => {
     });
   });
   it('calls segment event on breadcrumb click', async () => {
+    const user = userEvent.setup();
     const mockBudgetDisplayName = 'Test Budget';
     renderWithRouter(
       <MockBudgetDetailPageWrapper>
@@ -283,7 +287,7 @@ describe('<BudgetDetailPageWrapper />', () => {
     );
     const previousBreadcrumb = screen.getByText('Budgets');
 
-    await userEvent.click(previousBreadcrumb);
+    await user.click(previousBreadcrumb);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 });

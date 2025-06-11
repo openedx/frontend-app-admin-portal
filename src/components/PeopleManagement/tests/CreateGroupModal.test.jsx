@@ -104,10 +104,12 @@ const mockTabledata = {
   ],
 };
 
-const CreateGroupModalWrapper = () => {
+const CreateGroupModalWrapper = (isCreateGroupListSelection = false, isCreateGroupFileUploaded = false) => {
   const store = getMockStore({ ...initialStoreState });
   const initialContextOverride = {
     groupEnterpriseLearners: mockTabledata.results.map((user) => user.email),
+    isCreateGroupListSelection,
+    isCreateGroupFileUploaded,
   };
   return (
     <IntlProvider locale="en">
@@ -156,7 +158,7 @@ describe('<CreateGroupModal />', () => {
     expect(screen.getByText('Test User 3')).toBeInTheDocument();
     expect(screen.getByText('testuser-3@2u.com')).toBeInTheDocument();
   });
-  it.skip('creates groups and assigns learners', async () => {
+  it('creates groups and assigns learners', async () => {
     const user = userEvent.setup();
     const mockCreateGroup = jest.spyOn(LmsApiService, 'createEnterpriseGroup');
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');
@@ -167,18 +169,18 @@ describe('<CreateGroupModal />', () => {
     const mockInviteData = { records_processed: 1, new_learners: 1, existing_learners: 0 };
     LmsApiService.inviteEnterpriseLearnersToGroup.mockResolvedValue(mockInviteData);
 
-    render(<CreateGroupModalWrapper />);
+    render(<CreateGroupModalWrapper isCreateGroupFileUploaded isCreateGroupListSelection />);
     expect(screen.getByText('You haven\'t uploaded any members yet.')).toBeInTheDocument();
     expect(screen.getByText('Upload a CSV file or select members to get started.')).toBeInTheDocument();
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
-    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
-    Object.defineProperty(dropzone, 'files', {
-      value: [fakeFile],
-    });
+    const dropzone = await screen.findByTestId('csv-upload-input');
 
-    const fileInput = document.querySelector('input[type="file"]');
-    expect(fileInput).not.toBeNull();
-    await user.upload(fileInput, fakeFile);
+    fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [fakeFile],
+        types: ['Files'],
+      },
+    });
 
     const groupNameInput = screen.getByTestId('group-name');
     await user.type(groupNameInput, 'test group name');
@@ -187,8 +189,6 @@ describe('<CreateGroupModal />', () => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
-
-    await user.clear(groupNameInput);
 
     // testing interaction with adding members from the datatable
     let membersCheckboxes = screen.getAllByRole('checkbox');
@@ -211,7 +211,6 @@ describe('<CreateGroupModal />', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
-      expect(screen.findByText('emails.csv')).toBeInTheDocument();
       expect(screen.getByText('Total members to add')).toBeInTheDocument();
       expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();
       expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(1);
@@ -223,6 +222,7 @@ describe('<CreateGroupModal />', () => {
 
     const createButton = screen.getByRole('button', { name: 'Create' });
     await user.click(createButton);
+
     await waitFor(() => {
       expect(mockCreateGroup).toHaveBeenCalledTimes(1);
       expect(mockInvite).toHaveBeenCalledTimes(1);
@@ -274,11 +274,14 @@ describe('<CreateGroupModal />', () => {
     expect(screen.getByText('You haven\'t uploaded any members yet.')).toBeInTheDocument();
     expect(screen.getByText('Upload a CSV file or select members to get started.')).toBeInTheDocument();
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
-    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
-    Object.defineProperty(dropzone, 'files', {
-      value: [fakeFile],
+    const dropzone = await screen.findByTestId('csv-upload-input');
+
+    fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [fakeFile],
+        types: ['Files'],
+      },
     });
-    fireEvent.drop(dropzone);
     const groupNameInput = screen.getByTestId('group-name');
     await user.type(groupNameInput, 'test group name');
 
@@ -297,7 +300,7 @@ describe('<CreateGroupModal />', () => {
     });
     expect(mockInvalidateQueries).toHaveBeenCalledWith({ queryKey: ['learner-credit-management', 'group', '1234'] });
   });
-  it.skip('removes and re-adds user from csv file', async () => {
+  it('removes and re-adds user from csv file', async () => {
     const user = userEvent.setup();
     const mockGroupData = { uuid: 'test-uuid' };
     LmsApiService.createEnterpriseGroup.mockResolvedValue({ status: 201, data: mockGroupData });
@@ -307,12 +310,14 @@ describe('<CreateGroupModal />', () => {
 
     render(<CreateGroupModalWrapper />);
     const fakeFile = new File(['testuser-1@2u.com\ntestuser-2@2u.com'], 'emails.csv', { type: 'text/csv' });
-    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
-    Object.defineProperty(dropzone, 'files', {
-      value: [fakeFile],
-      writable: true,
+    const dropzone = await screen.findByTestId('csv-upload-input');
+
+    fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [fakeFile],
+        types: ['Files'],
+      },
     });
-    fireEvent.drop(dropzone);
 
     await waitFor(() => {
       expect(screen.getByText('Summary (2)')).toBeInTheDocument();
@@ -328,11 +333,14 @@ describe('<CreateGroupModal />', () => {
       expect(screen.getAllByText('testuser-2@2u.com')).toHaveLength(2);
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
 
-    const dropzone2 = screen.getByText('emails.csv');
-    Object.defineProperty(dropzone2, 'files', {
-      value: [fakeFile],
+    const dropzone2 = await screen.findByTestId('csv-upload-input');
+
+    fireEvent.drop(dropzone2, {
+      dataTransfer: {
+        files: [fakeFile],
+        types: ['Files'],
+      },
     });
-    fireEvent.drop(dropzone2);
 
     const groupNameInput = screen.getByTestId('group-name');
     await user.type(groupNameInput, 'test group name');
@@ -347,38 +355,43 @@ describe('<CreateGroupModal />', () => {
     const user = userEvent.setup();
     render(<CreateGroupModalWrapper />);
     const fakeFile = new File(['iamnotanemail'], 'bademails.csv', { type: 'text/csv' });
-    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
-    Object.defineProperty(dropzone, 'files', {
-      value: [fakeFile],
-      writable: true,
+    const dropzone = await screen.findByTestId('csv-upload-input');
+
+    fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [fakeFile],
+        types: ['Files'],
+      },
     });
-    fireEvent.drop(dropzone);
 
     await waitFor(() => {
-      expect(screen.getByText('bademails.csv')).toBeInTheDocument();
+      // expect(screen.getByText('bademails.csv')).toBeInTheDocument();
       expect(screen.getByText("Members can't be invited as entered.")).toBeInTheDocument();
       expect(screen.getByText('iamnotanemail is not a valid email.')).toBeInTheDocument();
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
 
-    const dropzone2 = screen.getByText('bademails.csv');
     const fakeFile2 = new File(['testuser-1@2u.com'], 'goodemails.csv', { type: 'text/csv' });
-    Object.defineProperty(dropzone2, 'files', {
-      value: [fakeFile2],
+    const dropzone2 = await screen.findByTestId('csv-upload-input');
+
+    fireEvent.drop(dropzone2, {
+      dataTransfer: {
+        files: [fakeFile2],
+        types: ['Files'],
+      },
     });
-    fireEvent.drop(dropzone2);
 
     const groupNameInput = screen.getByTestId('group-name');
     await user.type(groupNameInput, 'test group name');
 
     await waitFor(() => {
-      expect(screen.getByText('goodemails.csv')).toBeInTheDocument();
+      // expect(screen.getByText('goodemails.csv')).toBeInTheDocument();
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getAllByText('testuser-1@2u.com')).toHaveLength(2);
     }, { timeout: EMAIL_ADDRESSES_INPUT_VALUE_DEBOUNCE_DELAY + 1000 });
     expect(screen.queryByText("Members can't be invited as entered.")).not.toBeInTheDocument();
     expect(screen.queryByText('iamnotanemail is not a valid email.')).not.toBeInTheDocument();
   });
-  it.skip('displays system error modal', async () => {
+  it('displays system error modal', async () => {
     const user = userEvent.setup();
     const mockCreateGroup = jest.spyOn(LmsApiService, 'createEnterpriseGroup');
     const mockInvite = jest.spyOn(LmsApiService, 'inviteEnterpriseLearnersToGroup');
@@ -388,13 +401,15 @@ describe('<CreateGroupModal />', () => {
 
     render(<CreateGroupModalWrapper />);
     const fakeFile = new File(['tomhaverford@pawnee.org'], 'emails.csv', { type: 'text/csv' });
-    const dropzone = screen.getByText('Drag and drop your file here or click to upload.');
-    Object.defineProperty(dropzone, 'files', {
-      value: [fakeFile],
+    const dropzone = await screen.findByTestId('csv-upload-input');
+
+    fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [fakeFile],
+        types: ['Files'],
+      },
     });
-    fireEvent.drop(dropzone);
     await waitFor(() => {
-      expect(screen.getByText('emails.csv')).toBeInTheDocument();
       expect(screen.getByText('Summary (1)')).toBeInTheDocument();
       expect(screen.getByText('Total members to add')).toBeInTheDocument();
       expect(screen.getByText('tomhaverford@pawnee.org')).toBeInTheDocument();

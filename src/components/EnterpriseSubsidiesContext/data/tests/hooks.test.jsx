@@ -139,6 +139,7 @@ describe('useEnterpriseBudgets', () => {
         isActive: true,
       },
     ];
+
     getSubsidyByCustomerUUIDSpy.mockResolvedValue({
       data: {
         results: mockEnterpriseSubsidyResponse,
@@ -182,7 +183,7 @@ describe('useEnterpriseBudgets', () => {
       },
     ];
 
-    expect(result.current).toEqual(
+    await waitFor(() => expect(result.current).toEqual(
       expect.objectContaining({
         isLoading: false,
         data: {
@@ -190,7 +191,7 @@ describe('useEnterpriseBudgets', () => {
           canManageLearnerCredit: true,
         },
       }),
-    );
+    ));
   });
 
   it('should fetch Subsidy Access Policies (budgets) from enterprise-access when LC2 feature flag is enabled', async () => {
@@ -251,7 +252,7 @@ describe('useEnterpriseBudgets', () => {
       },
     ];
 
-    expect(result.current).toEqual(
+    await waitFor(() => expect(result.current).toEqual(
       expect.objectContaining({
         isLoading: false,
         data: {
@@ -259,7 +260,7 @@ describe('useEnterpriseBudgets', () => {
           canManageLearnerCredit: true,
         },
       }),
-    );
+    ));
   });
 
   it.each([
@@ -416,7 +417,7 @@ describe('useEnterpriseBudgets', () => {
         { subsidyType: 'learner_credit' },
       );
     });
-    expect(result.current).toEqual(
+    await waitFor(() => expect(result.current).toEqual(
       expect.objectContaining({
         isLoading: false,
         data: {
@@ -424,7 +425,7 @@ describe('useEnterpriseBudgets', () => {
           canManageLearnerCredit: true,
         },
       }),
-    );
+    ));
   });
 });
 

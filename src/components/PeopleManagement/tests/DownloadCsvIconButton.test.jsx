@@ -118,6 +118,7 @@ describe('DownloadCsvIconButton', () => {
     expect(downloadCsv).toHaveBeenCalledWith(expectedFileName, mockData.results, expectedHeaders, expect.any(Function));
   });
   it('download button should handle error returned by the API endpoint.', async () => {
+    const user = userEvent.setup();
     const props = {
       ...DEFAULT_PROPS,
       fetchAllData: jest.fn(() => Promise.reject(new Error('Error fetching data'))),
@@ -127,7 +128,7 @@ describe('DownloadCsvIconButton', () => {
 
     expect(downloadIcon).toBeInTheDocument();
 
-    await waitFor(() => userEvent.click(downloadIcon));
+    await user.click(downloadIcon);
     await flushPromises();
 
     expect(DEFAULT_PROPS.fetchAllData).toHaveBeenCalled();

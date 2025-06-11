@@ -107,7 +107,6 @@ export const SettingsAppearanceTab = ({
       setConfigChangeSuccess(false);
     }
   };
-
   return (
     <>
       <h2 className="py-2">
@@ -164,9 +163,7 @@ export const SettingsAppearanceTab = ({
             multipleDragged: 'Cannot upload more than one file.',
           }}
           maxSize={512000}
-          accept={{
-            'image/png': ['.png'],
-          }}
+          accept={{ 'image/png': ['.png'] }}
           data-testid="logo-upload"
         />
       )}

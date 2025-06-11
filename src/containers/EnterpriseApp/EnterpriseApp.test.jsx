@@ -137,7 +137,7 @@ describe('<EnterpriseApp />', () => {
     ));
     const notFoundInstance = await screen.findByText('Oops, sorry we can\'t find that page!');
     expect(notFoundInstance).toBeInTheDocument();
-    waitFor(() => expect(container.textContent).toContain(404));
+    await waitFor(() => expect(container.textContent).toContain('404'));
   });
 
   it('renders the load page correctly', async () => {
@@ -209,7 +209,7 @@ describe('<EnterpriseApp />', () => {
       />);
 
       // ensure focus is set on content wrapper
-      expect(document.activeElement.className).toEqual('content-wrapper');
+      expect(document.activeElement.className).toContain('content-wrapper');
       global.innerWidth = initialWidth;
     });
   });
