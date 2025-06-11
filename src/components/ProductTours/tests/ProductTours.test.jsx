@@ -12,6 +12,7 @@ import { mergeConfig } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 
+import userEvent from '@testing-library/user-event';
 import { features } from '../../../config';
 import ProductTours from '../ProductTours';
 import {
@@ -210,23 +211,24 @@ describe('<ProductTours/>', () => {
     });
   });
 
-  // describe('learner detail page tour', () => {
-  //   it('is shown when no cookie found', () => {
-  //     global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
-  //     render(<ToursWithContext />);
-  //     expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
-  //   });
-  //   it('dismiss learner profile product tour', () => {
-  //     global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
-  //     render(<ToursWithContext />);
-  //     expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
-  //     userEvent.click(screen.getByText('Dismiss'));
-  //     expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
-  //   });
-  //   it('is not shown when cookie has been dismissed', () => {
-  //     global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
-  //     render(<ToursWithContext />);
-  //     expect(screen.queryByText('learner profile feature', { exact: false })).toBeFalsy();
-  //   });
-  // });
+  describe('learner detail page tour', () => {
+    it('is shown when no cookie found', () => {
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
+      render(<ToursWithContext />);
+      expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+    });
+    it('dismiss learner profile product tour', async () => {
+      const user = userEvent.setup();
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
+      render(<ToursWithContext />);
+      expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+      await user.click(screen.getByText('Dismiss'));
+      expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
+    });
+    it('is not shown when cookie has been dismissed', () => {
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      render(<ToursWithContext />);
+      expect(screen.queryByText('learner profile feature', { exact: false })).toBeFalsy();
+    });
+  });
 });

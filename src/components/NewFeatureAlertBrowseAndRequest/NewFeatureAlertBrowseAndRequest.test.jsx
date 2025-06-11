@@ -6,7 +6,6 @@ import {
   screen,
   render,
   cleanup,
-  waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -70,9 +69,10 @@ describe('<NewFeatureAlertBrowseAndRequest/>', () => {
   });
 
   it(`redirects to settings page at ${SETTINGS_PAGE_LOCATION}`, async () => {
+    const user = userEvent.setup();
     render(<NewFeatureAlertBrowseAndRequestWrapper />);
     const button = screen.getByText(REDIRECT_SETTINGS_BUTTON_TEXT);
-    await waitFor(() => userEvent.click(button));
+    await user.click(button);
     expect(mockNavigate).toHaveBeenCalledWith(SETTINGS_PAGE_LOCATION);
   });
 });

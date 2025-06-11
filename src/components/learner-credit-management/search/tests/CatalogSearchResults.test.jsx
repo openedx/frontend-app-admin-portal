@@ -228,7 +228,7 @@ describe('Main Catalogs view works as expected', () => {
     );
     expect(screen.queryByText(TEST_COURSE_NAME)).toBeInTheDocument();
     expect(screen.queryByText(TEST_COURSE_NAME_2)).toBeInTheDocument();
-    waitFor(() => expect(screen.getAllByText('Showing 2 of 2.')[0]).toBeInTheDocument());
+    await waitFor(() => expect(screen.getAllByText('Showing 2 of 2.')[0]).toBeInTheDocument());
   });
   test('error state displays', async () => {
     const budgetDetailPageContextValue = {
