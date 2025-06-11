@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
-import { camelCaseObject } from '@edx/frontend-platform';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import useLearnerProgressTour from './useLearnerProgressTour';
 import CheckpointOverlay from '../CheckpointOverlay';
@@ -17,7 +16,6 @@ interface AdminOnboardingToursProps {
   isOpen: boolean;
   onClose: () => void;
   targetSelector: string;
-  setTarget: Function;
   enterpriseSlug: string;
   insights: Insights;
   insightsLoading: boolean;
@@ -38,13 +36,12 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   isOpen,
   onClose,
   targetSelector,
-  setTarget,
   enterpriseSlug,
   insights,
   insightsLoading,
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
-  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, setTarget, aiButtonVisible });
+  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, aiButtonVisible });
 
   const tours = [
     {
@@ -97,7 +94,6 @@ AdminOnboardingTours.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   targetSelector: PropTypes.any.isRequired,
-  setTarget: PropTypes.func.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   insights: PropTypes.shape({
     learner_engagement: PropTypes.any,

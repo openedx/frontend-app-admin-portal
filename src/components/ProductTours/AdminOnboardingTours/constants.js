@@ -7,7 +7,7 @@ const AI_SUMMARY = 'ai-summary';
 const PROGRESS_REPORT = 'progress-report';
 const FULL_PROGRESS_REPORT = 'full-progress-report';
 const FILTER = 'filter';
-const CSV_DOWNLOAD = 'csv_download';
+const CSV_DOWNLOAD = 'csv-download';
 const MODULE_ACTIVITY = 'module-activity';
 
 export const TRACK_LEARNER_PROGRESS_TARGETS = {

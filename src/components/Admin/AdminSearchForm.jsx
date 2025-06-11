@@ -14,7 +14,6 @@ import { formatTimestamp, updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
 import { withLocation, withNavigate } from '../../hoc';
 import EVENT_NAMES from '../../eventTracking';
-import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 class AdminSearchForm extends React.Component {
   componentDidUpdate(prevProps) {

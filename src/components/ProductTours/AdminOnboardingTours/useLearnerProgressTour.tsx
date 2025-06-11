@@ -1,9 +1,7 @@
-import { ReactNode, useState } from 'react';
-import { generatePath, useNavigate } from 'react-router';
+import { ReactNode } from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
-import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import {
   ADMIN_TOUR_EVENT_NAMES,
   TRACK_LEARNER_PROGRESS_TARGETS,
@@ -21,26 +19,12 @@ interface TourStep {
 
 interface UseLearnerProgressTourProps {
   enterpriseSlug: string;
-  setTarget: Function;
   aiButtonVisible: boolean;
 }
 
-const useLearnerProgressTour = ({ enterpriseSlug, setTarget, aiButtonVisible }: UseLearnerProgressTourProps): Array<TourStep> => {
-  const [tourIndex, setTourIndex] = useState(0);
-  const navigate = useNavigate();
-
-  // const handleAdvanceToModuleActivity = () => {
-  //   // click to module activity tab
-  //   navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/#moduleactivity`);
-  //   handleAdvanceTour();
-  // };
+const useLearnerProgressTour = ({enterpriseSlug, aiButtonVisible }: UseLearnerProgressTourProps): Array<TourStep> => {
 
   const handleAdvanceTour = () => {
-    const newIndex = tourIndex + 1;
-    // setTourIndex(newIndex)
-    // console.log(tour[tourIndex]);
-    // console.log(tour[tourIndex + 1])
-    // setTarget(tour[newIndex].target);
     sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
   };
 

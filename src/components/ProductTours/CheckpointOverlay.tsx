@@ -13,16 +13,13 @@ interface CheckpointOverlayProps {
 
 const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
   const [rect, setRect] = useState<Rect | null>(null);
-  console.log('rect ', rect);
 
   useLayoutEffect(() => {
     const updatePosition = () => {
       const cleanedTarget = target.replace('#', '');
       const targetElement = document.querySelector(cleanedTarget);
-      console.log('target ', targetElement);
       if (targetElement) {
         const boundingRect = targetElement.getBoundingClientRect();
-        console.log('bounding ', boundingRect);
         setRect({
           top: boundingRect.top,
           left: boundingRect.left,

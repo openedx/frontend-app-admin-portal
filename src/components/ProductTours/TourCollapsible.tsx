@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -14,8 +14,6 @@ import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 
 interface Props {
-  onboardingTourCompleted: boolean;
-  onboardingTourDismissed: boolean;
   dismissOnboardingTour: () => void;
   reopenOnboardingTour: () => void;
   onTourSelect?: (targetId: string) => void;
@@ -98,11 +96,6 @@ const TourCollapsible: FC<Props> = (
   );
 };
 
-const mapStateToProps = state => ({
-  onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,
-  onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
-});
-
 const mapDispatchToProps = dispatch => ({
   dismissOnboardingTour: () => {
     dispatch(dismissOnboardingTour());
@@ -112,4 +105,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TourCollapsible);
+export default connect(mapDispatchToProps)(TourCollapsible);

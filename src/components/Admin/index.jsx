@@ -50,7 +50,6 @@ class Admin extends React.Component {
       state.navigateToReport = true;
     }
 
-    console.log('in the new code');
     // Navigate to module activity tab
     if (props?.location?.hash === '#moduleactivity') {
       state.activeTab = 'module-activity';

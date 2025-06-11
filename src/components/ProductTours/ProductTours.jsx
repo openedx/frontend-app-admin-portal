@@ -99,7 +99,6 @@ const ProductTours = ({
           isOpen={isAdminTourOpen}
           onClose={handleTourClose}
           targetSelector={selectedTourTarget}
-          setTarget={setSelectedTourTarget}
         />
       ) : (
         <ProductTour
@@ -114,6 +113,8 @@ ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   onboardingEnabled: PropTypes.bool.isRequired,
+  onboardingTourCompleted: PropTypes.bool.isRequired,
+  onboardingTourDismissed: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
