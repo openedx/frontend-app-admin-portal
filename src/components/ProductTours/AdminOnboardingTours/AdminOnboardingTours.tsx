@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
@@ -43,14 +43,22 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   insights,
   insightsLoading,
 }) => {
+  const [currentStep, setCurrentStep] = useState(0);
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, setTarget, aiButtonVisible });
+
+  useEffect(() => {
+    if (learnerProgressSteps[currentStep]) {
+      const nextTarget = learnerProgressSteps[currentStep].target.replace('#', '');
+      setTarget(nextTarget);
+    }
+  }, [currentStep, learnerProgressSteps, setTarget]);
 
   const tours = [
     {
       tourId: 'admin-onboarding-tour',
       enabled: isOpen,
-      startingIndex: 0,
+      startingIndex: currentStep,
       advanceButtonText: (
         <FormattedMessage
           id="adminPortal.productTours.adminOnboarding.next"
@@ -75,7 +83,13 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: learnerProgressSteps,
+      checkpoints: learnerProgressSteps.map((step, index) => ({
+        ...step,
+        onAdvance: () => {
+          setCurrentStep(index + 1);
+          step.onAdvance();
+        },
+      })),
     },
   ];
 

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { generatePath, useNavigate } from 'react-router';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
@@ -26,25 +26,12 @@ interface UseLearnerProgressTourProps {
 }
 
 const useLearnerProgressTour = ({ enterpriseSlug, setTarget, aiButtonVisible }: UseLearnerProgressTourProps): Array<TourStep> => {
-  const [tourIndex, setTourIndex] = useState(0);
   const navigate = useNavigate();
-
-  // const handleAdvanceToModuleActivity = () => {
-  //   // click to module activity tab
-  //   navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/#moduleactivity`);
-  //   handleAdvanceTour();
-  // };
-
-  const handleAdvanceTour = () => {
-    const newIndex = tourIndex + 1;
-    // setTourIndex(newIndex)
-    // console.log(tour[tourIndex]);
-    // console.log(tour[tourIndex + 1])
-    // setTarget(tour[newIndex].target);
-    sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
-  };
-
   const intl = useIntl();
+
+  const handleAdvanceTour = useCallback(() => {
+    sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
+  }, [enterpriseSlug]);
 
   const tour: Array<TourStep> = [{
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR}`,
@@ -83,7 +70,7 @@ const useLearnerProgressTour = ({ enterpriseSlug, setTarget, aiButtonVisible }: 
     body: intl.formatMessage(messages.trackLearnerProgressStepEightBody),
     onAdvance: handleAdvanceTour,
   },
-  ];
+];
 
   if (aiButtonVisible) {
     tour.splice(2, 0, {
