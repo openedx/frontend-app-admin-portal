@@ -268,7 +268,8 @@ describe('<ReportingConfigForm />', () => {
     ));
     expect(container.querySelector('select#dataType')).toHaveAttribute('disabled');
   });
-  it('Does not disable data type when using new progress/catalog', () => {
+  it('Does not disable data type when using new progress/catalog', async () => {
+    const user = userEvent.setup();
     const { container } = render((
       <IntlProvider locale="en">
         <ReportingConfigForm
@@ -283,12 +284,7 @@ describe('<ReportingConfigForm />', () => {
     ));
     expect(container.querySelector('select#dataType')).not.toHaveAttribute('disabled');
     const dataTypeSelect = container.querySelector('select#dataType');
-    fireEvent.change(dataTypeSelect, {
-      target: {
-        name: 'dataType',
-        value: 'catalog',
-      },
-    });
+    await user.type(dataTypeSelect, 'catalog');
     expect(container.querySelector('select#dataType')).not.toHaveAttribute('disabled');
   });
   it('Does not let you select a new value for data type if it uses the old progress_v2', () => {

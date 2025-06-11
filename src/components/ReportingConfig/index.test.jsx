@@ -200,21 +200,17 @@ describe('<ReportingConfig />', () => {
     // const afterClickingDeleteButton = await screen.findByTestId('deleteConfigButton');
     // expect(afterClickingDeleteButton).not.toBeInTheDocument();
   });
-  it.skip('handles fetchReportingConfigs failure gracefully after deleting a record', async () => {
+  it('handles fetchReportingConfigs failure gracefully after deleting a record', async () => {
     const user = userEvent.setup();
     // Mock fetchReportingConfigs to return a valid response once
     LmsApiService.fetchReportingConfigs = jest.fn().mockResolvedValueOnce(mockConfigsData).mockRejectedValueOnce(new Error('Failed to fetch reporting configs'));
 
     let wrapper;
-
-    await act(async () => {
-      const { container } = render(
-        <IntlProvider locale="en">
-          <ReportingConfig {...defaultProps} intl={mockIntl} />
-        </IntlProvider>,
-      );
-      wrapper = container;
-    });
+    render(
+      <IntlProvider locale="en">
+        <ReportingConfig {...defaultProps} intl={mockIntl} />
+      </IntlProvider>,
+    );
 
     const configUuidToDelete = 'test-config-uuid';
     // Update the wrapper after the state changes and should be in loading state

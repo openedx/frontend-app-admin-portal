@@ -67,7 +67,7 @@ describe('<AdminPage />', () => {
     jest.clearAllMocks();
   });
 
-  it.only('renders the appropriate number cards summary', () => {
+  it('renders the appropriate number cards summary', () => {
     render(<AdminPageWrapper />);
     const registeredLearnersCard = screen.getByText('total number of learners registered').closest('[data-testid="number-card"]');
     const registeredLearnersCount = registeredLearnersCard.querySelector('[data-testid="number-card-title"]').textContent;

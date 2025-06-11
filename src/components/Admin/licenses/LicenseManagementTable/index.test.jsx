@@ -76,10 +76,10 @@ const usersSetup = (
 describe.skip('<LicenseManagementTable />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    usersSetup();
   });
   it('renders the license management table', async () => {
     const user = userEvent.setup();
+    usersSetup();
     render(<LicenseManagementTableWrapper subscriptionPlan={defaultSubscriptionPlan} />);
 
     // Revoke a license
