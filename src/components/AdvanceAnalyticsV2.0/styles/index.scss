@@ -1,0 +1,39 @@
+.analytics-filter-container {
+  height: 284px;
+}
+
+.analytics-filter-container.collapsed {
+  height: auto;
+  padding-bottom: 0;
+}
+
+.analytics-filter-form-controls {
+  height: 42px;
+}
+
+.analytics-stats-inner-container {
+  height: 108px;
+}
+
+.skills-chart-container {
+  height: 545px;
+}
+
+.engagement-chart-container {
+  height: 540px;
+}
+
+.enrollment-chart-container {
+  height: 530px;
+}
+
+.download-csv-label {
+  font-size: 14px !important;
+}
+
+@media (max-width: 991.98px) {
+  .row {
+      display: flex;
+      flex-direction: row;
+  }
+}
