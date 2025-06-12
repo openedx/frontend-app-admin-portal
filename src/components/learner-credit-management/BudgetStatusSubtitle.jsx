@@ -13,7 +13,7 @@ import {
 } from './data';
 
 const BudgetStatusSubtitle = ({
-  badgeVariant, status, isAssignable, term, date, policy, enterpriseUUID, isRetired,
+  badgeVariant, status, isAssignable, term, date, policy, enterpriseUUID, isRetired, isBnREnabled,
 }) => {
   const { data: enterpriseGroup } = useEnterpriseGroup(policy);
   const customGroup = !isEmpty(policy?.groupAssociations) && !enterpriseGroup?.appliesToAllContexts;
@@ -73,6 +73,21 @@ const BudgetStatusSubtitle = ({
       }),
       icon: <Icon size="xs" src={Groups} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
     },
+    browseAndRequest: {
+      enrollmentType:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.browse.and.request',
+        defaultMessage: 'Browse & Request',
+        description: 'Enrollment type for browse and request budgets',
+      }),
+      popoverText:
+      intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.enroll.browse.and.request.popover',
+        defaultMessage: 'Available to all people in your organization',
+        description: 'Popover text for for browse and request budgets',
+      }),
+      icon: <Icon size="xs" src={Groups} className="ml-1 d-inline-flex" svgAttrs={{ transform: 'translate(0,2)' }} />,
+    },
   };
   let budgetTypeToRender;
 
@@ -80,6 +95,8 @@ const BudgetStatusSubtitle = ({
     budgetTypeToRender = budgetType.lms;
   } else if (customGroup) {
     budgetTypeToRender = budgetType.groupsBrowseAndEnroll;
+  } else if (isBnREnabled) {
+    budgetTypeToRender = budgetType.browseAndRequest;
   } else if (isAssignable) {
     budgetTypeToRender = budgetType.assignable;
   } else {
@@ -125,6 +142,7 @@ BudgetStatusSubtitle.propTypes = {
   badgeVariant: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   isAssignable: PropTypes.bool.isRequired,
+  isBnREnabled: PropTypes.bool,
   term: PropTypes.string,
   date: PropTypes.string,
   policy: PropTypes.shape({
@@ -132,6 +150,10 @@ BudgetStatusSubtitle.propTypes = {
   }),
   enterpriseUUID: PropTypes.string.isRequired,
   isRetired: PropTypes.bool.isRequired,
+};
+
+BudgetStatusSubtitle.defaultProps = {
+  isBnREnabled: false,
 };
 
 export default BudgetStatusSubtitle;
