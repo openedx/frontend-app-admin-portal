@@ -74,7 +74,7 @@ describe('FloatingCollapsible', () => {
     const onDismiss = jest.fn();
     setup({ onDismiss });
 
-    fireEvent.click(screen.getByTestId('button-primary'));
+    fireEvent.click(screen.getByTestId('button-tertiary'));
     expect(onDismiss).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(screen.queryByText('Test Content')).toBeFalsy();
@@ -85,7 +85,7 @@ describe('FloatingCollapsible', () => {
     setup();
 
     // Click cancel button to close collapsible
-    fireEvent.click(screen.getByTestId('button-tertiary'));
+    fireEvent.click(screen.getByTestId('button-primary'));
 
     await waitFor(() => {
       expect(screen.queryByText('Test Content')).toBeFalsy();
