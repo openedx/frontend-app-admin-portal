@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
@@ -22,13 +22,12 @@ interface UseLearnerProgressTourProps {
   aiButtonVisible: boolean;
 }
 
-const useLearnerProgressTour = ({enterpriseSlug, aiButtonVisible }: UseLearnerProgressTourProps): Array<TourStep> => {
-
-  const handleAdvanceTour = () => {
-    sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
-  };
-
+const useLearnerProgressTour = ({ enterpriseSlug, aiButtonVisible }: UseLearnerProgressTourProps): Array<TourStep> => {
   const intl = useIntl();
+
+  const handleAdvanceTour = useCallback(() => {
+    sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
+  }, [enterpriseSlug]);
 
   const tour: Array<TourStep> = [{
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR}`,

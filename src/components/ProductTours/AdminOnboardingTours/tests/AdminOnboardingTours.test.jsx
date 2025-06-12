@@ -3,10 +3,10 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
+
 import AdminOnboardingTours from '../AdminOnboardingTours';
 import useLearnerProgressTour from '../useLearnerProgressTour';
-import messages from '../../messages';
-
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   FormattedMessage: ({ defaultMessage }) => defaultMessage,
@@ -15,42 +15,31 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
 
 const mockOnAdvance = jest.fn();
 
-jest.mock('../useLearnerProgressTour', () => jest.fn(() => ([{
-    target: '#learner-progress-sidebar',
+const targets = ['#step-1', '#step-2', '#step-3', '#step-4'];
+
+jest.mock('../useLearnerProgressTour', () => jest.fn(() => ([
+  {
+    target: targets[0],
     placement: 'right',
-    title: 'Track Learner Progress',
-    body: 'Track learner activity and progress across courses with the Learner Progress Report.',
+    title: 'This is a title',
+    body: 'And would you believe it, this is a body!',
     onAdvance: mockOnAdvance,
-  }, {
-    target: '#lpr-overview',
+  },
+  {
+    target: targets[1],
     placement: 'bottom',
-    body: 'Get a high-level view of learner enrollments, course completions, and more.',
+    body: 'Learning is so fun!',
     onAdvance: mockOnAdvance,
   }, {
-    target: '#progress-report',
+    target: targets[2],
     placement: 'top',
-    body: 'Scroll down for a detailed, twice-daily updated progress report.',
+    body: 'Here is a really cool button, or perhaps a table.',
     onAdvance: mockOnAdvance,
   }, {
-    target: '#full-progress-report',
+    target: targets[3],
     placement: 'top',
-    body: 'Access the full Learner Progress Report here.',
-    onAdvance: mockOnAdvance,
-  }, {
-    target: '#filter',
-    placement: 'top',
-    body: 'Filter results by course, start date, or learner email.',
-    onAdvance: mockOnAdvance,
-  }, {
-    target: '#csv-download',
-    placement: 'top',
-    body: 'Export the report as a CSV to gain insights and organize data efficiently.',
-    onAdvance: mockOnAdvance,
-  }, {
-    target: '#module-activity',
-    placement: 'top',
-    body: 'View module-level details for Executive Education courses.',
-    onAdvance: mockOnAdvance,
+    body: 'Upon our conclusion, I wish you an earnest farewell.',
+    onEnd: mockOnAdvance,
   },
 ])));
 
@@ -70,11 +59,13 @@ describe('AdminOnboardingTours', () => {
     },
   };
 
+  const slug = 'Stark Industries';
+
   beforeEach(() => {
     store = mockStore({
       portalConfiguration: {
         enableLearnerPortal: true,
-        enterpriseSlug: 'test-enterprise',
+        enterpriseSlug: slug,
         enterpriseFeatures: {
           enterpriseAdminOnboardingEnabled: true,
         },
@@ -89,7 +80,7 @@ describe('AdminOnboardingTours', () => {
   const defaultProps = {
     isOpen: true,
     onClose: jest.fn(),
-    enterpriseSlug: 'test-enterprise',
+    setTarget: jest.fn(),
     targetSelector: 'learner-progress-sidebar',
     aiButtonVisible: false,
   };
@@ -98,7 +89,13 @@ describe('AdminOnboardingTours', () => {
     const finalProps = { ...defaultProps, ...props };
     return render(
       <Provider store={store}>
-        <AdminOnboardingTours {...finalProps} />
+        <IntlProvider locale="en">
+          <p id={targets[0]}>Step 1</p>
+          <p id={targets[1]}>Step 2</p>
+          <p id={targets[2]}>Step 3</p>
+          <p id={targets[3]}>Step 4</p>
+          <AdminOnboardingTours {...finalProps} />
+        </IntlProvider>
       </Provider>,
     );
   };
@@ -118,7 +115,13 @@ describe('AdminOnboardingTours', () => {
     renderComponent();
     expect(useLearnerProgressTour).toHaveBeenCalledWith({
       aiButtonVisible: defaultProps.aiButtonVisible,
-      enterpriseSlug: defaultProps.enterpriseSlug,
+      enterpriseSlug: slug,
+      setTarget: defaultProps.setTarget,
     });
+  });
+
+  it('renders???', () => {
+    renderComponent();
+    screen.debug(undefined, 1000000);
   });
 });

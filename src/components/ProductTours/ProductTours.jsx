@@ -99,6 +99,7 @@ const ProductTours = ({
           isOpen={isAdminTourOpen}
           onClose={handleTourClose}
           targetSelector={selectedTourTarget}
+          setTarget={setSelectedTourTarget}
         />
       ) : (
         <ProductTour

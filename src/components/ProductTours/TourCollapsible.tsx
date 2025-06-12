@@ -105,4 +105,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapDispatchToProps)(TourCollapsible);
+export default connect(null, mapDispatchToProps)(TourCollapsible);

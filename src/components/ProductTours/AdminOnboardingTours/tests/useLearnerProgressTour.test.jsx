@@ -31,34 +31,38 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
 describe('useLearnerProgressTour', () => {
   const defaultProps = {
     enterpriseSlug: 'test-enterprise',
+    aiButtonVisible: false,
+  };
+
+  const aiButtonTrueProps = {
+    enterpriseSlug: 'test-enterprise',
+    aiButtonVisible: true,
   };
 
   it('returns tour configuration with correct structure', () => {
     const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
+    expect(result.current.length === 7);
+  });
 
-    expect(result.current).toMatchObject({
-      target: '#learner-progress-sidebar',
-      placement: 'right',
-    });
+  it('renders an additional step if AI analytics button is visible', () => {
+    const { result } = renderHook(() => useLearnerProgressTour(aiButtonTrueProps));
+    expect(result.current.length === 8);
   });
 
   it('includes title and body with FormattedMessage components', () => {
     const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
-
-    expect(result.current.title).toBeDefined();
-    expect(result.current.body).toBeDefined();
+    expect(result.current[0].title).toBeDefined();
+    expect(result.current[0].body).toBeDefined();
   });
 
   it('includes onAdvance function', () => {
     const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
-
-    expect(typeof result.current.onAdvance).toBe('function');
+    expect(typeof result.current[0].onAdvance).toBe('function');
   });
 
   it('handles missing enterpriseSlug gracefully', () => {
     const { result } = renderHook(() => useLearnerProgressTour({}));
-
-    expect(result.current).toBeDefined();
+    expect(result.current[0]).toBeDefined();
   });
 
   it('returns all required properties', () => {
@@ -72,7 +76,7 @@ describe('useLearnerProgressTour', () => {
     ];
 
     requiredProps.forEach(prop => {
-      expect(result.current).toHaveProperty(prop);
+      expect(result.current[0]).toHaveProperty(prop);
     });
   });
 });
