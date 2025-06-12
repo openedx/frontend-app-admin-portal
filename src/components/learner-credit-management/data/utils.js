@@ -17,6 +17,7 @@ import {
   LOW_REMAINING_BALANCE_PERCENT_THRESHOLD,
   NO_BALANCE_REMAINING_DOLLAR_THRESHOLD,
   START_DATE_DEFAULT_TO_TODAY_THRESHOLD_DAYS,
+  APPROVED_REQUEST_TYPE,
 } from './constants';
 
 /**
@@ -315,6 +316,18 @@ export async function fetchContentAssignments(assignmentConfigurationUUID, optio
 }
 
 /**
+ * Retrieves BnR subsidy requests for the given enterprise UUID.
+ * @param {String} enterpriseUUID The UUID of the enterprise customer.
+ * @param {Object} options Optional options object to pass/override query parameters.
+ *
+ * @returns Camelcased response from the BnR subsidy requests.
+ */
+export async function fetchBnrRequest(enterpriseUUID, options = {}) {
+  const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(enterpriseUUID, options);
+  return camelCaseObject(response.data);
+}
+
+/**
  * Retrieves spent transactions for the given budget (either a subsidy access
  * policy or an enterprise offer), if any.
  *
@@ -388,6 +401,7 @@ export async function retrieveBudgetDetailActivityOverview({
   isTopDownAssignmentEnabled,
 }) {
   const isBudgetAssignable = !!(isTopDownAssignmentEnabled && subsidyAccessPolicy?.isAssignable);
+  const isBnrEnabledSubsidy = subsidyAccessPolicy?.bnrEnabled;
   const promisesToFulfill = [
     fetchSpentTransactions({
       enterpriseUUID,
@@ -399,12 +413,20 @@ export async function retrieveBudgetDetailActivityOverview({
   if (isBudgetAssignable) {
     promisesToFulfill.push(fetchContentAssignments(subsidyAccessPolicy.assignmentConfiguration.uuid));
   }
+  if (isBnrEnabledSubsidy) {
+    promisesToFulfill.push(fetchBnrRequest(enterpriseUUID, {
+      state: APPROVED_REQUEST_TYPE,
+    }));
+  }
   const responses = await Promise.allSettled(promisesToFulfill);
   const result = {
     spentTransactions: responses[0].value,
   };
   if (isBudgetAssignable) {
     result.contentAssignments = responses[1].value;
+  }
+  if (isBnrEnabledSubsidy) {
+    result.approvedBnrRequests = isBudgetAssignable ? responses[2].value : responses[1].value;
   }
   return result;
 }
