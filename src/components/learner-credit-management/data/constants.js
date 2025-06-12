@@ -142,3 +142,5 @@ export const LEARNER_CREDIT_ROUTE = '/:enterpriseSlug/admin/:enterpriseAppPage/:
 // The `restriction_type` metadata key for course runs may have this value,
 // indicating that the run is restricted.
 export const ENTERPRISE_RESTRICTION_TYPE = 'custom-b2b-enterprise';
+
+export const APPROVED_REQUEST_TYPE = 'approved';

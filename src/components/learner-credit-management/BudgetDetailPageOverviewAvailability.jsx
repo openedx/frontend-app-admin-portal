@@ -54,6 +54,7 @@ const BudgetActions = ({
   });
 
   const enterpriseHasActiveBudget = budgets?.length > 0;
+  const isBnREnabled = subsidyAccessPolicy?.bnrEnabled;
 
   const trackEventMetadata = {};
   if (subsidyAccessPolicy) {
@@ -182,6 +183,38 @@ const BudgetActions = ({
               description="Contact support button on retired budget detail page overview"
             />
           </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isBnREnabled) {
+    return (
+      <div className="h-100 d-flex align-items-center pt-4 pt-lg-0">
+        <div>
+          <h3>
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.manage.edx.for.organization"
+              defaultMessage="Manage edX for your organization"
+              description="Title for the budget actions section on the budget detail page overview"
+            />
+          </h3>
+          <p>
+            <FormattedMessage
+              id="lcm.budget.detail.page.overview.budget.actions.all.people.browse.and.request"
+              defaultMessage="All people in your organization can browse the catalog and make requests to enroll."
+              description="Description which tells that user can browse the catalog and request to enroll"
+            />
+          </p>
+          <Link to={`/${enterpriseSlug}/admin/settings/access`}>
+            <Button variant="outline-primary">
+              <FormattedMessage
+                id="lcm.budget.detail.page.overview.budget.actions.configure.access.general"
+                defaultMessage="Configure access"
+                description="Configure access button on the budget detail page overview"
+              />
+            </Button>
+          </Link>
         </div>
       </div>
     );
