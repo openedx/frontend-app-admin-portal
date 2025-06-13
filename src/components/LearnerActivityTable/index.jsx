@@ -4,7 +4,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { DataTable, TextFilter } from '@openedx/paragon';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useMemo, useCallback, useEffect } from 'react';
+import { useMemo, useCallback, useEffect, useState } from 'react';
 import useCourseEnrollments from './data/hooks/useCourseEnrollments';
 import { PAGE_SIZE } from '../../data/constants/table';
 import {
@@ -37,6 +37,10 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
   const navigate = useNavigate();
   const { setTableHasData } = useTableData();
 
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //initial page index
+    pageSize: 5, //default page size
+  });
   // Parse the current page from URL query parameters - adjust for zero-based indexing
   const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const pageFromUrl = parseInt(queryParams.get(`${id}-page`), 10) || 1; // Default to page 1 in URL
@@ -67,7 +71,7 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
   useEffect(() => {
     fetchDataImmediate({
       pageIndex: currentPageFromUrl,
-      pageSize: PAGE_SIZE,
+      pageSize: pagination.pageSize,
       sortBy: [],
     }, true);
   }, []);
@@ -76,6 +80,15 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
   useEffect(() => {
     setTableHasData(id, hasData);
   }, [id, hasData]);
+
+  useEffect(() => {
+    if (setPagination) {
+      setPagination((pagination) => ({
+        pageIndex: 0,
+        pageSize: pagination.pageSize,
+      }));
+    }
+  }, [setPagination]);
 
   // Wrap fetchCourseEnrollments to update the URL when pagination changes
   const fetchTableData = useCallback((tableState) => {
@@ -184,8 +197,8 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
       defaultColumnValues={{ Filter: TextFilter }}
       columns={columns}
       initialState={{
-        pageIndex: currentPageFromUrl, // Use page from URL
-        pageSize: PAGE_SIZE,
+        // pageIndex: currentPageFromUrl, // Use page from URL
+        // pageSize: PAGE_SIZE,
         sortBy: [{ id: 'lastActivityDate', desc: true }],
         selectedRowsOrdered: [],
       }}
@@ -193,6 +206,12 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
       data={courseEnrollments.results}
       itemCount={courseEnrollments.itemCount}
       pageCount={courseEnrollments.pageCount}
+      initialTableOptions={{
+        onPaginationChange: setPagination,
+        state: {
+          pagination
+        },
+      }}
     />
   );
 };
