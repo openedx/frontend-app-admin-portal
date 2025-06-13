@@ -1,11 +1,11 @@
 import {
-  useCallback, useMemo, useState,
+  useCallback, useMemo, useState, useRef,
 } from 'react';
 import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { debounce } from 'lodash-es';
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
-import { REQUEST_TAB_VISIBLE_STATES } from '../constants';
+import { REQUEST_STATUS_FILTER_CHOICES, REQUEST_TAB_VISIBLE_STATES } from '../constants';
 
 // Map table column accessors to API field names for sorting
 const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
@@ -14,26 +14,6 @@ const API_FIELDS_BY_TABLE_COLUMN_ACCESSOR = {
   requestDate: 'requestDate',
   requestStatus: 'requestStatus',
 };
-
-// Hardcoded filter choices for request status
-// This is a temporary solution until the backend supports dynamic filtering
-const HARDCODED_REQUEST_STATUS_FILTER_CHOICES = [
-  {
-    name: 'Requested',
-    value: 'requested',
-    number: 0,
-  },
-  {
-    name: 'Approved',
-    value: 'approved',
-    number: 0,
-  },
-  {
-    name: 'Declined',
-    value: 'declined',
-    number: 0,
-  },
-];
 
 const applySortByToOptions = (sortBy, options) => {
   const orderingStrings = sortBy.map(({ id, desc }) => {
@@ -76,13 +56,12 @@ const transformApiDataToTableData = (apiResults) => apiResults.map((item) => {
     month: 'short',
     day: 'numeric',
   });
-
   return {
     uuid: item?.uuid,
     email: item?.email,
     courseTitle: item?.courseTitle,
     courseId: item?.courseId,
-    amount: item?.amount || 0,
+    amount: item?.coursePrice || 0,
     requestDate,
     requestStatus: item?.state,
   };
@@ -97,33 +76,39 @@ const useBnrSubsidyRequests = (
     pageCount: 0,
     results: [],
   });
+
+  // Use useRef to store current args without causing re-renders
+  const currentArgsRef = useRef({});
+
   const fetchBnrRequests = useCallback((args = {}) => {
+    // Store current args in ref
+    currentArgsRef.current = args;
+
     const fetch = async () => {
       try {
         setIsLoading(true);
 
         const options = {
-          page: (args.pageIndex || 0) + 1, // DataTable uses zero-indexed array
-          page_size: args.pageSize || 20,
+          page: (args.pageIndex || 0) + 1,
+          page_size: args.pageSize || 4,
           state: REQUEST_TAB_VISIBLE_STATES.join(','),
         };
 
-        // Apply sorting if provided
         if (args.sortBy && args.sortBy.length > 0) {
           applySortByToOptions(args.sortBy, options);
         }
 
-        // Apply filters if provided
         if (args.filters && args.filters.length > 0) {
           applyFiltersToOptions(args.filters, options);
         }
-        // Fetch the requests data
+
         const response = await EnterpriseAccessApiService.fetchBnrSubsidyRequests(
           enterpriseUUID,
           options,
         );
         const data = camelCaseObject(response.data);
         const transformedResults = transformApiDataToTableData(data.results || []);
+
         setBnrRequests({
           itemCount: data.count || 0,
           pageCount: data.numPages || Math.ceil((data.count || 0) / options.page_size),
@@ -142,14 +127,17 @@ const useBnrSubsidyRequests = (
     };
 
     fetch();
-  }, [
-    enterpriseUUID,
-  ]);
+  }, [enterpriseUUID]);
 
   const debouncedFetchBnrRequests = useMemo(
     () => debounce(fetchBnrRequests, 300),
     [fetchBnrRequests],
   );
+
+  // Use stored args when refreshing
+  const refreshRequests = useCallback(() => {
+    fetchBnrRequests(currentArgsRef.current);
+  }, [fetchBnrRequests]);
 
   const updateRequestStatus = useCallback(({ request, newStatus }) => {
     setBnrRequests(prevState => ({
@@ -160,13 +148,10 @@ const useBnrSubsidyRequests = (
     }));
   }, []);
 
-  const refreshRequests = useCallback(() => {
-    fetchBnrRequests();
-  }, [fetchBnrRequests]);
   return {
     isLoading,
     bnrRequests,
-    requestsOverview: HARDCODED_REQUEST_STATUS_FILTER_CHOICES,
+    requestsOverview: REQUEST_STATUS_FILTER_CHOICES,
     fetchBnrRequests: debouncedFetchBnrRequests,
     updateRequestStatus,
     refreshRequests,

@@ -7,7 +7,7 @@ import {
   TRACK_LEARNER_PROGRESS_TARGETS,
 } from './constants';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface TourStep {
   target: string;

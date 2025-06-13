@@ -8,7 +8,7 @@ import { Question, TrendingUp } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
-import messages, { TRACK_LEARNER_PROGRESS_TITLE } from './messages';
+import messages, { TRACK_LEARNER_PROGRESS_TITLE } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
