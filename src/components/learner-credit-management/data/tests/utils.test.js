@@ -9,11 +9,35 @@ import {
   orderBudgets,
   startAndEnrollBySortLogic,
   transformSubsidySummary,
+  retrieveBudgetDetailActivityOverview,
 } from '../utils';
 import {
   COURSE_PACING_MAP,
   EXEC_ED_OFFER_TYPE,
 } from '../constants';
+import EnterpriseDataApiService from '../../../../data/services/EnterpriseDataApiService';
+import SubsidyApiService from '../../../../data/services/EnterpriseSubsidyApiService';
+import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
+
+jest.mock('../../../../data/services/EnterpriseDataApiService', () => ({
+  fetchCourseEnrollments: jest.fn(),
+}));
+jest.mock('../../../../data/services/EnterpriseSubsidyApiService', () => ({
+  fetchCustomerTransactions: jest.fn(),
+}));
+jest.mock('../../../../data/services/EnterpriseAccessApiService', () => ({
+  listContentAssignments: jest.fn(),
+  fetchBnrSubsidyRequests: jest.fn(),
+}));
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  camelCaseObject: jest.fn(obj => obj),
+}));
+
+jest.mock('@edx/frontend-platform/logging', () => ({
+  logInfo: jest.fn(),
+}));
 
 const intl = createIntl({
   locale: 'en',
@@ -470,5 +494,126 @@ describe('getAssignableCourseRuns', () => {
 
     const result = getAssignableCourseRuns({ courseRuns, subsidyExpirationDatetime, isLateRedemptionAllowed });
     expect(result).toEqual([]);
+  });
+});
+
+const mockSpentTransactions = { results: [{ uuid: '123', amount: 100 }] };
+const mockContentAssignments = { results: [{ uuid: 'assignment-123', learnerEmail: 'test@example.com' }] };
+const mockBnrRequests = { results: [{ uuid: 'bnr-123', status: 'approved' }] };
+
+describe('retrieveBudgetDetailActivityOverview', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should fetch only spent transactions when top-down assignment is disabled', async () => {
+    EnterpriseDataApiService.fetchCourseEnrollments.mockResolvedValue({
+      data: mockSpentTransactions,
+    });
+
+    const result = await retrieveBudgetDetailActivityOverview({
+      budgetId: 'budget-123',
+      subsidyAccessPolicy: null,
+      enterpriseUUID: 'enterprise-123',
+      isTopDownAssignmentEnabled: false,
+    });
+
+    expect(result).toEqual({
+      spentTransactions: mockSpentTransactions,
+    });
+
+    expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(
+      'enterprise-123',
+      expect.objectContaining({
+        page: 1,
+        pageSize: 25,
+        ignoreNullCourseListPrice: true,
+      }),
+    );
+    expect(EnterpriseAccessApiService.listContentAssignments).not.toHaveBeenCalled();
+    expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).not.toHaveBeenCalled();
+  });
+
+  it('should fetch spent transactions and content assignments when subsidy access policy is assignable', async () => {
+    SubsidyApiService.fetchCustomerTransactions.mockResolvedValue({
+      data: mockSpentTransactions,
+    });
+    EnterpriseAccessApiService.listContentAssignments.mockResolvedValue({
+      data: mockContentAssignments,
+    });
+
+    const result = await retrieveBudgetDetailActivityOverview({
+      budgetId: 'budget-123',
+      subsidyAccessPolicy: {
+        subsidyUuid: 'subsidy-123',
+        isAssignable: true,
+        assignmentConfiguration: { uuid: 'config-123' },
+        bnrEnabled: false,
+      },
+      enterpriseUUID: 'enterprise-123',
+      isTopDownAssignmentEnabled: true,
+    });
+
+    expect(result).toEqual({
+      spentTransactions: mockSpentTransactions,
+      contentAssignments: mockContentAssignments,
+    });
+
+    expect(SubsidyApiService.fetchCustomerTransactions).toHaveBeenCalledWith(
+      'subsidy-123',
+      expect.objectContaining({
+        page: 1,
+        pageSize: 25,
+        subsidyAccessPolicyUuid: 'budget-123',
+      }),
+    );
+    expect(EnterpriseAccessApiService.listContentAssignments).toHaveBeenCalledWith('config-123', {});
+    expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).not.toHaveBeenCalled();
+  });
+
+  it('should fetch BnR subsidy requests when subsidy access policy has bnrEnabled=true', async () => {
+    SubsidyApiService.fetchCustomerTransactions.mockResolvedValue({
+      data: mockSpentTransactions,
+    });
+    EnterpriseAccessApiService.listContentAssignments.mockResolvedValue({
+      data: mockContentAssignments,
+    });
+    EnterpriseAccessApiService.fetchBnrSubsidyRequests.mockResolvedValue({
+      data: mockBnrRequests,
+    });
+
+    const result = await retrieveBudgetDetailActivityOverview({
+      budgetId: 'budget-123',
+      subsidyAccessPolicy: {
+        subsidyUuid: 'subsidy-123',
+        isAssignable: true,
+        assignmentConfiguration: { uuid: 'config-123' },
+        bnrEnabled: true,
+      },
+      enterpriseUUID: 'enterprise-uuid-123',
+      isTopDownAssignmentEnabled: true,
+    });
+
+    expect(result).toEqual({
+      spentTransactions: mockSpentTransactions,
+      contentAssignments: mockContentAssignments,
+      approvedBnrRequests: mockBnrRequests,
+    });
+
+    expect(SubsidyApiService.fetchCustomerTransactions).toHaveBeenCalledWith(
+      'subsidy-123',
+      expect.objectContaining({
+        page: 1,
+        pageSize: 25,
+        subsidyAccessPolicyUuid: 'budget-123',
+      }),
+    );
+    expect(EnterpriseAccessApiService.listContentAssignments).toHaveBeenCalledWith('config-123', {});
+    expect(EnterpriseAccessApiService.fetchBnrSubsidyRequests).toHaveBeenCalledWith(
+      'enterprise-uuid-123',
+      expect.objectContaining({
+        state: 'approved',
+      }),
+    );
   });
 });
