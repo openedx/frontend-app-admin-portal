@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import AnalyticsFilters from '../AnalyticsFilters';
+import { GRANULARITY, CALCULATION } from '../data/constants';
 
 const mockSetStartDate = jest.fn();
 const mockSetEndDate = jest.fn();
@@ -15,6 +16,9 @@ const mockGroups = [
   { uuid: 'group-1', name: 'Group 1' },
   { uuid: 'group-2', name: 'Group 2' },
 ];
+
+const mockSetGranularity = jest.fn();
+const mockSetCalculation = jest.fn();
 
 describe('AnalyticsFilters Component', () => {
   beforeEach(() => {
@@ -33,6 +37,10 @@ describe('AnalyticsFilters Component', () => {
           groups={mockGroups}
           isFetching={false}
           isGroupsLoading={false}
+          granularity={GRANULARITY.WEEKLY}
+          setGranularity={mockSetGranularity}
+          calculation={CALCULATION.TOTAL}
+          setCalculation={mockSetCalculation}
         />,
       </IntlProvider>,
     );
@@ -41,9 +49,11 @@ describe('AnalyticsFilters Component', () => {
   test('should render the static text and filter inputs', () => {
     expect(screen.getByText(/Date range and filters/i)).toBeInTheDocument();
 
+    expect(screen.getByLabelText('Date range options')).toBeInTheDocument();
     expect(screen.getByLabelText('Start date')).toBeInTheDocument();
     expect(screen.getByLabelText('End date')).toBeInTheDocument();
-    expect(screen.getByLabelText('Date range options')).toBeInTheDocument();
+    expect(screen.getByLabelText('Calculation / Trends')).toBeInTheDocument();
+    expect(screen.getByLabelText('Date granularity')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by group')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by budget')).toBeInTheDocument();
     expect(screen.getByLabelText('Filter by course')).toBeInTheDocument();
@@ -95,5 +105,35 @@ describe('AnalyticsFilters Component', () => {
     fireEvent.click(toggleButton);
 
     expect(toggleButton).toHaveAttribute('aria-label', 'Collapse filters');
+  });
+
+  test('should call setGranularity when granularity is changed', () => {
+    const granularitySelect = screen.getByLabelText(/Date granularity/i);
+    fireEvent.change(granularitySelect, { target: { value: GRANULARITY.WEEKLY } });
+
+    expect(mockSetGranularity).toHaveBeenCalledWith(GRANULARITY.WEEKLY);
+  });
+
+  test('should call setCalculation when calculation is changed', () => {
+    const calculationSelect = screen.getByLabelText(/Calculation \/ Trends/i);
+    fireEvent.change(calculationSelect, { target: { value: CALCULATION.RUNNING_TOTAL } });
+
+    expect(mockSetCalculation).toHaveBeenCalledWith(CALCULATION.RUNNING_TOTAL);
+  });
+
+  test('should render the granularity options', () => {
+    const groupSelect = screen.getByLabelText(/Date granularity/i);
+    expect(groupSelect).toHaveTextContent('Daily');
+    expect(groupSelect).toHaveTextContent('Weekly');
+    expect(groupSelect).toHaveTextContent('Monthly');
+    expect(groupSelect).toHaveTextContent('Quarterly');
+  });
+
+  test('should render the calculation options', () => {
+    const groupSelect = screen.getByLabelText('Calculation / Trends');
+    expect(groupSelect).toHaveTextContent('Total');
+    expect(groupSelect).toHaveTextContent('Running Total');
+    expect(groupSelect).toHaveTextContent('Moving Average (3 Period)');
+    expect(groupSelect).toHaveTextContent('Moving Average (7 Period)');
   });
 });

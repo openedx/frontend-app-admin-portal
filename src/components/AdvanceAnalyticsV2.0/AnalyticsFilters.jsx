@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Form, IconButton, Icon } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import { GRANULARITY, CALCULATION } from './data/constants';
 
 export const DEFAULT_GROUP = '';
 
@@ -11,6 +12,10 @@ const AnalyticsFilters = ({
   setStartDate,
   endDate,
   setEndDate,
+  granularity,
+  setGranularity,
+  calculation,
+  setCalculation,
   groupUUID,
   setGroupUUID,
   currentDate,
@@ -49,46 +54,8 @@ const AnalyticsFilters = ({
 
       {!collapsed && (
         <>
-          <div className="row filter-container mt-3">
-            <div className="col-3">
-              <Form.Group>
-                <Form.Label className="font-weight-normal">
-                  <FormattedMessage
-                    id="advance.analytics.date.filter.start.date"
-                    defaultMessage="Start date"
-                    description="Advance analytics Start date filter label"
-                  />
-                </Form.Label>
-                <Form.Control
-                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
-                  type="date"
-                  value={startDate || data?.minEnrollmentDate || ''}
-                  min={data?.minEnrollmentDate || ''}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  disabled={isFetching}
-                />
-              </Form.Group>
-            </div>
-            <div className="col-3">
-              <Form.Group>
-                <Form.Label className="font-weight-normal">
-                  <FormattedMessage
-                    id="advance.analytics.date.filter.end.date"
-                    defaultMessage="End date"
-                    description="Advance analytics End date filter label"
-                  />
-                </Form.Label>
-                <Form.Control
-                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
-                  type="date"
-                  value={endDate || currentDate || ''}
-                  max={currentDate || ''}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  disabled={isFetching}
-                />
-              </Form.Group>
-            </div>
-            <div className="col-3">
+          <div className="row filter-container mt-2">
+            <div className="col">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -107,9 +74,141 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
+            <div className="col">
+              <Form.Group>
+                <Form.Label className="font-weight-normal">
+                  <FormattedMessage
+                    id="advance.analytics.date.filter.start.date"
+                    defaultMessage="Start date"
+                    description="Advance analytics Start date filter label"
+                  />
+                </Form.Label>
+                <Form.Control
+                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                  type="date"
+                  value={startDate || data?.minEnrollmentDate || ''}
+                  min={data?.minEnrollmentDate || ''}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  disabled={isFetching}
+                />
+              </Form.Group>
+            </div>
+            <div className="col">
+              <Form.Group>
+                <Form.Label className="font-weight-normal">
+                  <FormattedMessage
+                    id="advance.analytics.date.filter.end.date"
+                    defaultMessage="End date"
+                    description="Advance analytics End date filter label"
+                  />
+                </Form.Label>
+                <Form.Control
+                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                  type="date"
+                  value={endDate || currentDate || ''}
+                  max={currentDate || ''}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  disabled={isFetching}
+                />
+              </Form.Group>
+            </div>
+            <div className="col">
+              <Form.Group>
+                <Form.Label>
+                  <FormattedMessage
+                    id="advance.analytics.calculation.filter"
+                    defaultMessage="Calculation / Trends"
+                    description="Advance analytics Calculation filter label"
+                  />
+                </Form.Label>
+                <Form.Control
+                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                  as="select"
+                  value={calculation}
+                  onChange={(e) => setCalculation(e.target.value)}
+                  disabled={isFetching}
+                >
+                  <option value={CALCULATION.TOTAL}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.calculation.filter.option.total',
+                      defaultMessage: 'Total',
+                      description: 'Advance analytics calculation filter total option',
+                    })}
+                  </option>
+                  <option value={CALCULATION.RUNNING_TOTAL}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.calculation.filter.option.running.total',
+                      defaultMessage: 'Running Total',
+                      description: 'Advance analytics calculation filter running total option',
+                    })}
+                  </option>
+                  <option value={CALCULATION.MOVING_AVERAGE_3_PERIODS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.calculation.filter.option.average.3',
+                      defaultMessage: 'Moving Average (3 Period)',
+                      description: 'Advance analytics calculation filter moving average 3 period option',
+                    })}
+                  </option>
+                  <option value={CALCULATION.MOVING_AVERAGE_7_PERIODS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.calculation.filter.option.average.7',
+                      defaultMessage: 'Moving Average (7 Period)',
+                      description: 'Advance analytics calculation filter moving average 7 period option',
+                    })}
+                  </option>
+                </Form.Control>
+              </Form.Group>
+            </div>
           </div>
-          <div className="row filter-container mt-2 pb-2">
-            <div className="col-3" data-testid="group-select">
+          <div className="row filter-container">
+            <div className="col" data-testid="granularity-select">
+              <Form.Group>
+                <Form.Label>
+                  <FormattedMessage
+                    id="advance.analytics.filter.date.granularity"
+                    defaultMessage="Date granularity"
+                    description="Advance analytics data granularity filter label"
+                  />
+                </Form.Label>
+                <Form.Control
+                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                  as="select"
+                  value={granularity}
+                  onChange={(e) => setGranularity(e.target.value)}
+                  disabled={isFetching}
+                >
+                  <option value={GRANULARITY.DAILY}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.filter.granularity.option.daily',
+                      defaultMessage: 'Daily',
+                      description: 'Advance analytics granularity filter daily option',
+                    })}
+                  </option>
+                  <option value={GRANULARITY.WEEKLY}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.filter.granularity.option.weekly',
+                      defaultMessage: 'Weekly',
+                      description: 'Advance analytics granularity filter weekly option',
+                    })}
+                  </option>
+                  <option value={GRANULARITY.MONTHLY}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.filter.granularity.option.monthly',
+                      defaultMessage: 'Monthly',
+                      description: 'Advance analytics granularity filter monthly option',
+                    })}
+                  </option>
+                  <option value={GRANULARITY.QUARTERLY}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.filter.granularity.option.quarterly',
+                      defaultMessage: 'Quarterly',
+                      description: 'Advance analytics granularity filter quarterly option',
+                    })}
+                  </option>
+                </Form.Control>
+              </Form.Group>
+            </div>
+            <div className="col" data-testid="group-select">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -140,7 +239,7 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col-3">
+            <div className="col">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -159,7 +258,7 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col-3">
+            <div className="col">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
                   <FormattedMessage
@@ -178,6 +277,8 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
+          </div>
+          <div className="row filter-container pb-2">
             <div className="col-3">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
@@ -209,6 +310,10 @@ AnalyticsFilters.propTypes = {
   setStartDate: PropTypes.func.isRequired,
   endDate: PropTypes.string,
   setEndDate: PropTypes.func.isRequired,
+  granularity: PropTypes.string.isRequired,
+  setGranularity: PropTypes.func.isRequired,
+  calculation: PropTypes.string.isRequired,
+  setCalculation: PropTypes.func.isRequired,
   groupUUID: PropTypes.string,
   setGroupUUID: PropTypes.func.isRequired,
   currentDate: PropTypes.string.isRequired,
