@@ -27,7 +27,9 @@ const Engagements = ({ enterpriseId }) => {
     endDate,
     setEndDate,
     granularity,
+    setGranularity,
     calculation,
+    setCalculation,
     groupUUID,
     setGroupUUID,
     currentDate,
@@ -105,6 +107,10 @@ const Engagements = ({ enterpriseId }) => {
           setStartDate={setStartDate}
           endDate={endDate}
           setEndDate={setEndDate}
+          granularity={granularity}
+          setGranularity={setGranularity}
+          calculation={calculation}
+          setCalculation={setCalculation}
           groupUUID={groupUUID}
           setGroupUUID={setGroupUUID}
           currentDate={currentDate}

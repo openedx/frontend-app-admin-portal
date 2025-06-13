@@ -7,13 +7,14 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import Hero from '../Hero';
 import Engagements from './tabs/Engagements';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
+import { GRANULARITY, CALCULATION } from './data/constants';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import { AnalyticsFiltersContext } from './AnalyticsFiltersContext';
 
 const AnalyticsPage = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('engagements');
-  const [granularity, setGranularity] = useState('');
-  const [calculation, setCalculation] = useState('');
+  const [granularity, setGranularity] = useState(GRANULARITY.WEEKLY);
+  const [calculation, setCalculation] = useState(CALCULATION.TOTAL);
   const [groupUUID, setGroupUUID] = useState('');
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
