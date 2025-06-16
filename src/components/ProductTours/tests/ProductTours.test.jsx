@@ -242,6 +242,8 @@ describe('<ProductTours/>', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
+      const nextButton = screen.getByRole('button', { name: 'Next' });
+      expect(nextButton).toBeTruthy();
     });
     it('dismiss learner profile product tour', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
