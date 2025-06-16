@@ -22,8 +22,8 @@ describe('EmptyChart', () => {
         yanchor: 'middle',
       },
     ],
-    xaxis: { visible: true },
-    yaxis: { visible: true },
+    xaxis: { visible: true, rangemode: 'tozero' },
+    yaxis: { visible: true, rangemode: 'tozero' },
     margin: {
       t: 0, b: 0, l: 0, r: 0,
     },
