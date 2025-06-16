@@ -193,6 +193,9 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
       data={courseEnrollments.results}
       itemCount={courseEnrollments.itemCount}
       pageCount={courseEnrollments.pageCount}
+      initialTableOptions={{
+        autoResetPage: true,
+      }}
     />
   );
 };
