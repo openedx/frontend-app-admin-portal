@@ -1,5 +1,5 @@
 import {
-  render, screen, fireEvent, waitFor,
+  render, screen, fireEvent,
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
@@ -57,13 +57,13 @@ const setup = (storeState = defaultState, showCollapsible = false) => {
   const wrapper = render(
     <IntlProvider locale="en">
       <Provider store={store}>
-        <TourCollapsible 
+        <TourCollapsible
           onTourSelect={jest.fn()}
           showCollapsible={showCollapsible}
           setShowCollapsible={mockSetShowCollapsible}
         />
       </Provider>
-    </IntlProvider>
+    </IntlProvider>,
   );
 
   return {
@@ -74,7 +74,7 @@ const setup = (storeState = defaultState, showCollapsible = false) => {
 
 describe('TourCollapsible', () => {
   it('renders FloatingCollapsible when tour is not completed and not dismissed', () => {
-    setup(defaultState, true)
+    setup(defaultState, true);
     expect(screen.queryByTestId('floating-collapsible')).toBeTruthy();
   });
 
@@ -85,7 +85,7 @@ describe('TourCollapsible', () => {
         onboardingTourDismissed: false,
       },
     };
-    setup(state)
+    setup(state);
     expect(screen.queryByTestId('floating-collapsible')).toBeFalsy();
     expect(screen.queryByTestId('icon-button')).toBeTruthy();
   });
@@ -97,7 +97,7 @@ describe('TourCollapsible', () => {
         onboardingTourDismissed: true,
       },
     };
-    setup(state)
+    setup(state);
 
     expect(screen.queryByTestId('floating-collapsible')).toBeFalsy();
     expect(screen.queryByTestId('icon-button')).toBeTruthy();

@@ -50,11 +50,6 @@ class Admin extends React.Component {
       state.navigateToReport = true;
     }
 
-    // Navigate to module activity tab
-    if (props?.location?.hash === '#moduleactivity') {
-      state.activeTab = 'module-activity';
-    }
-
     this.state = state;
   }
 
@@ -562,14 +557,14 @@ class Admin extends React.Component {
                             </div>
                             <span id={TRACK_LEARNER_PROGRESS_TARGETS.FILTER}>
                               {this.displaySearchBar() && (
-                              <AdminSearchForm
-                                searchParams={searchParams}
-                                searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
-                                tableData={this.getTableData() ? this.getTableData().results : []}
-                                budgets={budgets}
-                                groups={groups}
-                                enterpriseId={enterpriseId}
-                              />
+                                <AdminSearchForm
+                                  searchParams={searchParams}
+                                  searchEnrollmentsList={() => this.props.searchEnrollmentsList()}
+                                  tableData={this.getTableData() ? this.getTableData().results : []}
+                                  budgets={budgets}
+                                  groups={groups}
+                                  enterpriseId={enterpriseId}
+                                />
                               )}
                             </span>
                           </>
@@ -595,7 +590,6 @@ class Admin extends React.Component {
                     </div>
                   </Tab>
                 </Tabs>
-                {/* </span> */}
               </div>
             </div>
           </>

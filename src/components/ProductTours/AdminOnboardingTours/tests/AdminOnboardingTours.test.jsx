@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import AdminOnboardingTours from '../AdminOnboardingTours';
 import useLearnerProgressTour from '../useLearnerProgressTour';
@@ -60,6 +59,7 @@ describe('AdminOnboardingTours', () => {
   };
 
   const slug = 'Stark Industries';
+  const enterpriseAdminUuid = 'test-uuid';
 
   beforeEach(() => {
     store = mockStore({
@@ -74,6 +74,9 @@ describe('AdminOnboardingTours', () => {
         loading: false,
         insights: mockedInsights,
       },
+      enterpriseCustomerAdmin: {
+        uuid: enterpriseAdminUuid,
+      },
     });
   });
 
@@ -82,20 +85,17 @@ describe('AdminOnboardingTours', () => {
     onClose: jest.fn(),
     setTarget: jest.fn(),
     targetSelector: 'learner-progress-sidebar',
-    aiButtonVisible: false,
   };
 
   const renderComponent = (props = {}) => {
     const finalProps = { ...defaultProps, ...props };
     return render(
       <Provider store={store}>
-        <IntlProvider locale="en">
-          <p id={targets[0]}>Step 1</p>
-          <p id={targets[1]}>Step 2</p>
-          <p id={targets[2]}>Step 3</p>
-          <p id={targets[3]}>Step 4</p>
-          <AdminOnboardingTours {...finalProps} />
-        </IntlProvider>
+        <p id={targets[0]}>Step 1</p>
+        <p id={targets[1]}>Step 2</p>
+        <p id={targets[2]}>Step 3</p>
+        <p id={targets[3]}>Step 4</p>
+        <AdminOnboardingTours {...finalProps} />
       </Provider>,
     );
   };
@@ -114,9 +114,8 @@ describe('AdminOnboardingTours', () => {
   it('renders ProductTour with correct configuration', () => {
     renderComponent();
     expect(useLearnerProgressTour).toHaveBeenCalledWith({
-      aiButtonVisible: defaultProps.aiButtonVisible,
       enterpriseSlug: slug,
-      setTarget: defaultProps.setTarget,
+      adminUuid: enterpriseAdminUuid,
     });
   });
 

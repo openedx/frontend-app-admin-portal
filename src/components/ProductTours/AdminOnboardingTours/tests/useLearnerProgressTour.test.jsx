@@ -31,22 +31,11 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
 describe('useLearnerProgressTour', () => {
   const defaultProps = {
     enterpriseSlug: 'test-enterprise',
-    aiButtonVisible: false,
-  };
-
-  const aiButtonTrueProps = {
-    enterpriseSlug: 'test-enterprise',
-    aiButtonVisible: true,
   };
 
   it('returns tour configuration with correct structure', () => {
     const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
     expect(result.current.length === 7);
-  });
-
-  it('renders an additional step if AI analytics button is visible', () => {
-    const { result } = renderHook(() => useLearnerProgressTour(aiButtonTrueProps));
-    expect(result.current.length === 8);
   });
 
   it('includes title and body with FormattedMessage components', () => {

@@ -7,44 +7,34 @@ import useLearnerProgressTour from './useLearnerProgressTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 
-interface Insights {
-  learner_engagement?: any;
-  learner_progress?: any;
-}
-
 interface AdminOnboardingToursProps {
   isOpen: boolean;
   onClose: () => void;
   targetSelector: string;
+  adminUuid: string,
   setTarget: Function,
   enterpriseSlug: string;
-  insights: Insights;
-  insightsLoading: boolean;
 }
 
 interface RootState {
-  dashboardInsights: {
-    insights: Insights;
-    loading: boolean;
-  };
   portalConfiguration: {
     enterpriseSlug: string;
   };
-
+  enterpriseCustomerAdmin: {
+    uuid: string;
+  }
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   isOpen,
   onClose,
   targetSelector,
+  adminUuid,
   setTarget,
   enterpriseSlug,
-  insights,
-  insightsLoading,
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
-  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, aiButtonVisible });
+  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid });
 
   useEffect(() => {
     if (learnerProgressSteps[currentStep]) {
@@ -91,10 +81,6 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       })),
     },
   ];
-  console.log('bievenidos');
-  console.log(tours);
-  console.log('isopen??? ', isOpen);
-
   if (!isOpen) {
     return null;
   }
@@ -114,18 +100,13 @@ AdminOnboardingTours.propTypes = {
   onClose: PropTypes.func.isRequired,
   targetSelector: PropTypes.string.isRequired,
   setTarget: PropTypes.func.isRequired,
+  adminUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  insights: PropTypes.shape({
-    learner_engagement: PropTypes.shape({}),
-    learner_progress: PropTypes.shape({}),
-  }).isRequired,
-  insightsLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state: RootState) => ({
+  adminUuid: state.enterpriseCustomerAdmin.uuid,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  insights: state.dashboardInsights.insights,
-  insightsLoading: state.dashboardInsights.loading,
 });
 
 export default connect(mapStateToProps)(AdminOnboardingTours);

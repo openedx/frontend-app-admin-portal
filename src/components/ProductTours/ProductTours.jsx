@@ -25,12 +25,9 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
 import TourCollapsible from './TourCollapsible';
-<<<<<<< HEAD
 import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
-=======
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
->>>>>>> master
 
 /**
  * All the logic here is for determining what ProductTours we should show.
@@ -96,11 +93,11 @@ const ProductTours = ({
           <OnboardingWelcomeModal
             openAdminTour={setIsAdminTourOpen}
           />
-        <TourCollapsible
-          onTourSelect={handleTourSelect}
-          showCollapsible={showCollapsible}
-          setShowCollapsible={setShowCollapsible}
-        />
+          <TourCollapsible
+            onTourSelect={handleTourSelect}
+            showCollapsible={showCollapsible}
+            setShowCollapsible={setShowCollapsible}
+          />
         </>
       )}
       {isAdminTourOpen && selectedTourTarget ? (
