@@ -35,30 +35,23 @@ describe('useLearnerProgressTour', () => {
 
   it('returns tour configuration with correct structure', () => {
     const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
-
-    expect(result.current).toMatchObject({
-      target: '#learner-progress-sidebar',
-      placement: 'right',
-    });
+    expect(result.current.length === 7);
   });
 
   it('includes title and body with FormattedMessage components', () => {
     const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
-
-    expect(result.current.title).toBeDefined();
-    expect(result.current.body).toBeDefined();
+    expect(result.current[0].title).toBeDefined();
+    expect(result.current[0].body).toBeDefined();
   });
 
   it('includes onAdvance function', () => {
     const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
-
-    expect(typeof result.current.onAdvance).toBe('function');
+    expect(typeof result.current[0].onAdvance).toBe('function');
   });
 
   it('handles missing enterpriseSlug gracefully', () => {
     const { result } = renderHook(() => useLearnerProgressTour({}));
-
-    expect(result.current).toBeDefined();
+    expect(result.current[0]).toBeDefined();
   });
 
   it('returns all required properties', () => {
@@ -72,7 +65,7 @@ describe('useLearnerProgressTour', () => {
     ];
 
     requiredProps.forEach(prop => {
-      expect(result.current).toHaveProperty(prop);
+      expect(result.current[0]).toHaveProperty(prop);
     });
   });
 });

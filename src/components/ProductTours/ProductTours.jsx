@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ProductTour } from '@openedx/paragon';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { ProductTour } from '@openedx/paragon';
 import { getConfig } from '@edx/frontend-platform/config';
 import { features } from '../../config';
 import portalAppearanceTour from './portalAppearanceTour';
@@ -24,6 +25,8 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
 import TourCollapsible from './TourCollapsible';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
 /**
@@ -34,11 +37,15 @@ const ProductTours = ({
   enableLearnerPortal,
   enterpriseSlug,
   onboardingEnabled,
+  onboardingTourCompleted,
+  onboardingTourDismissed,
 }) => {
+  const navigate = useNavigate();
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const [isAdminTourOpen, setIsAdminTourOpen] = useState(true);
   const [selectedTourTarget, setSelectedTourTarget] = useState(null);
+  const [showCollapsible, setShowCollapsible] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
 
   const enabledFeatures = {
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour(enableLearnerPortal),
@@ -64,11 +71,17 @@ const ProductTours = ({
   }];
 
   const handleTourSelect = (targetId) => {
+    if (targetId === TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/`);
+    }
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);
+    // collapsible will reopen on the last step of the flow
+    setShowCollapsible(false);
   };
 
   const handleTourClose = () => {
+    setShowCollapsible(true);
     setIsAdminTourOpen(false);
     setSelectedTourTarget(null);
   };
@@ -82,6 +95,8 @@ const ProductTours = ({
           />
           <TourCollapsible
             onTourSelect={handleTourSelect}
+            showCollapsible={showCollapsible}
+            setShowCollapsible={setShowCollapsible}
           />
         </>
       )}
@@ -90,6 +105,7 @@ const ProductTours = ({
           isOpen={isAdminTourOpen}
           onClose={handleTourClose}
           targetSelector={selectedTourTarget}
+          setTarget={setSelectedTourTarget}
         />
       ) : (
         <ProductTour
@@ -104,12 +120,16 @@ ProductTours.propTypes = {
   enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
   onboardingEnabled: PropTypes.bool.isRequired,
+  onboardingTourCompleted: PropTypes.bool.isRequired,
+  onboardingTourDismissed: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   enableLearnerPortal: state.portalConfiguration.enableLearnerPortal,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
   onboardingEnabled: state.portalConfiguration.enterpriseFeatures?.enterpriseAdminOnboardingEnabled || false,
+  onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted,
+  onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed,
 });
 
 export default connect(mapStateToProps)(ProductTours);
