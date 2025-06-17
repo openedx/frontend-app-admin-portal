@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import '@testing-library/jest-dom/extend-expect';
 import {
   SEARCH_FACET_FILTERS,

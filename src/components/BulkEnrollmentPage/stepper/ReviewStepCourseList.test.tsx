@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render, renderHook } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import algoliasearch from 'algoliasearch/lite';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import '@testing-library/jest-dom/extend-expect';

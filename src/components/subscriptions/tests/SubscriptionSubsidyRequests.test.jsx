@@ -7,7 +7,7 @@ import {
   render,
   cleanup,
 } from '@testing-library/react';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';

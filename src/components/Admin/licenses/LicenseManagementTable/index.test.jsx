@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
+
 import {
   MockSubscriptionContext,
   generateSubscriptionPlan,
@@ -72,11 +74,12 @@ const usersSetup = (
   ]);
   return refreshFunctions;
 };
-// TODO: Fix
-describe.skip('<LicenseManagementTable />', () => {
+
+describe('<LicenseManagementTable />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it('renders the license management table', async () => {
     const user = userEvent.setup();
     usersSetup();
@@ -84,7 +87,12 @@ describe.skip('<LicenseManagementTable />', () => {
 
     // Revoke a license
     await user.click(screen.getByRole('button', { name: 'Revoke license' })); // Click on the revoke license button
-    await user.click(screen.getByRole('button', { name: 'Revoke License' })); // Confirm license revocation
+
+    const revokeModal = await screen.findByRole('dialog');
+    expect(revokeModal).toBeInTheDocument();
+    const revokeConfirmButton = screen.getByRole('button', { name: 'Revoke (1)' });
+    expect(revokeConfirmButton).toBeInTheDocument();
+    await user.click(revokeConfirmButton); // Confirm license revocation
 
     // Check Pagination
     await user.click(screen.getByRole('button', { name: 'Next, Page 2' }));

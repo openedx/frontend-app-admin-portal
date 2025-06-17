@@ -4,7 +4,7 @@ import {
   render,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 

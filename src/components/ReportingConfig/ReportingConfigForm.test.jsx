@@ -126,7 +126,6 @@ const availableCatalogs = [{
 const createConfig = jest.fn();
 const updateConfig = () => { };
 
-// TODO: Fix it.skips
 describe('<ReportingConfigForm />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -220,11 +219,12 @@ describe('<ReportingConfigForm />', () => {
     expect(container.querySelector('input#hourOfDay')).toHaveAttribute('class', 'form-control is-invalid');
   });
 
-  it.skip('Does not submit if sftp fields are empty and deliveryMethod is sftp', async () => {
+  it('Does not submit if sftp fields are empty and deliveryMethod is sftp', async () => {
+    const user = userEvent.setup();
     const config = { ...defaultConfig };
     config.deliveryMethod = 'sftp';
     config.sftpPort = undefined;
-    const { container } = render((
+    render((
       <IntlProvider locale="en">
         <ReportingConfigForm
           config={config}
@@ -236,17 +236,18 @@ describe('<ReportingConfigForm />', () => {
         />
       </IntlProvider>
     ));
-    container.querySelectorAll('.form-control').forEach(input => fireEvent.blur(input));
+
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+    await user.click(submitButton);
+
     // sftpPort
-    expect(await screen.findByText('Required for all frequency types')).toBeInTheDocument();
+    expect(await screen.findByText('Required. Must be a valid port')).toBeInTheDocument();
     // sftpUsername
     expect(await screen.findByText('Required. Username cannot be blank')).toBeInTheDocument();
     // sftpHostname
     expect(await screen.findByText('Required. Hostname cannot be blank')).toBeInTheDocument();
     // sftpFilePath
     expect(await screen.findByText('Required. File path cannot be blank')).toBeInTheDocument();
-    // encryptedSftpPassword
-    expect(await screen.findByText('Required. Password must not be blank')).toBeInTheDocument();
   });
   it('Does not let you select a new value for data type if it uses the old progress_v1', () => {
     const configWithOldDataType = {
@@ -409,7 +410,7 @@ describe('<ReportingConfigForm />', () => {
     const updatedCheckboxInstance = screen.queryByTestId('includeDateCheckbox');
     expect(updatedCheckboxInstance.checked).toEqual(true);
   });
-  it.skip("should update enableCompression state when the 'Enable Compression' checkbox is clicked", async () => {
+  it("should update enableCompression state when the 'Enable Compression' checkbox is clicked", async () => {
     const user = userEvent.setup();
     render((
       <IntlProvider locale="en">
@@ -424,12 +425,12 @@ describe('<ReportingConfigForm />', () => {
       </IntlProvider>
     ));
 
-    const instance = screen.findByTestId('compressionCheckbox');
+    const instance = await screen.findByTestId('compressionCheckbox');
     expect(instance.checked).toEqual(true);
     const checkBoxInput = screen.getByTestId('compressionCheckbox');
     await user.click(checkBoxInput);
 
-    const updatedInstance = screen.findByTestId('compressionCheckbox');
+    const updatedInstance = await screen.findByTestId('compressionCheckbox');
     expect(updatedInstance.checked).toEqual(false);
   });
 });

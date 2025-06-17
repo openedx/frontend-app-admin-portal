@@ -174,7 +174,7 @@ describe('<ReportingConfig />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it.skip('calls deleteConfig function on button click', async () => {
+  it('calls deleteConfig function on button click', async () => {
     const user = userEvent.setup();
     render(
       <IntlProvider locale="en">
@@ -188,7 +188,7 @@ describe('<ReportingConfig />', () => {
     });
 
     // Find the collapsible component and set its "isOpen" prop to true
-    const collapsibleTrigger = screen.getByTestId('collapsible-trigger-reporting-config');
+    const collapsibleTrigger = screen.getByRole('button', { name: 'Report Type: csv Delivery Method: email Frequency: monthly' });
     await user.click(collapsibleTrigger);
     // Find the delete button using its data-testid and simulate a click event
     const deleteButton = await screen.findByTestId('deleteConfigButton');
