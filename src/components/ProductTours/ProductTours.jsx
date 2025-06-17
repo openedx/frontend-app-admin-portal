@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ProductTour } from '@openedx/paragon';
 import { connect } from 'react-redux';
@@ -11,6 +10,7 @@ import learnerDetailPageTour from './learnerDetailPageTour';
 import highlightsTour from './highlightsTour';
 import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
+import AdminOnboardingTours from './AdminOnboardingTours/AdminOnboardingTours';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
@@ -24,6 +24,7 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
 import TourCollapsible from './TourCollapsible';
+import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
 /**
  * All the logic here is for determining what ProductTours we should show.
@@ -36,6 +37,9 @@ const ProductTours = ({
 }) => {
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
+  const [isAdminTourOpen, setIsAdminTourOpen] = useState(true);
+  const [selectedTourTarget, setSelectedTourTarget] = useState(null);
+
   const enabledFeatures = {
     [BROWSE_AND_REQUEST_TOUR_COOKIE_NAME]: useBrowseAndRequestTour(enableLearnerPortal),
     [HIGHLIGHTS_COOKIE_NAME]: useHighlightsTour(FEATURE_CONTENT_HIGHLIGHTS),
@@ -59,12 +63,39 @@ const ProductTours = ({
     checkpoints: checkpointsArray,
   }];
 
+  const handleTourSelect = (targetId) => {
+    setSelectedTourTarget(targetId);
+    setIsAdminTourOpen(true);
+  };
+
+  const handleTourClose = () => {
+    setIsAdminTourOpen(false);
+    setSelectedTourTarget(null);
+  };
+
   return (
     <div className="product-tours">
-      <ProductTour
-        tours={tours}
-      />
-      {onboardingEnabled && <TourCollapsible /> }
+      {onboardingEnabled && (
+        <>
+          <OnboardingWelcomeModal
+            openAdminTour={setIsAdminTourOpen}
+          />
+          <TourCollapsible
+            onTourSelect={handleTourSelect}
+          />
+        </>
+      )}
+      {isAdminTourOpen && selectedTourTarget ? (
+        <AdminOnboardingTours
+          isOpen={isAdminTourOpen}
+          onClose={handleTourClose}
+          targetSelector={selectedTourTarget}
+        />
+      ) : (
+        <ProductTour
+          tours={tours}
+        />
+      )}
     </div>
   );
 };

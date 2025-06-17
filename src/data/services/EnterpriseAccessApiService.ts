@@ -312,6 +312,21 @@ class EnterpriseAccessApiService {
     const response = await EnterpriseAccessApiService.apiClient().get(url);
     return camelCaseObject(response);
   }
+
+  /**
+   * Fetches BNR subsidy requests for a specific enterprise.
+   * @param {string} enterpriseUUID - The UUID of the enterprise customer.
+   * @param {Object} options - Additional query parameters to filter the requests.
+   * @returns {Promise<AxiosResponse>} - A promise that resolves to the API response.
+   */
+  static fetchBnrSubsidyRequests(enterpriseUUID, options = {}) {
+    const params = new URLSearchParams({
+      enterprise_customer_uuid: enterpriseUUID,
+      ...options,
+    });
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/?${params.toString()}`;
+    return EnterpriseAccessApiService.apiClient().get(url);
+  }
 }
 
 export default EnterpriseAccessApiService;

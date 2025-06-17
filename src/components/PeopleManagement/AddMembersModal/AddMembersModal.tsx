@@ -8,6 +8,7 @@ import { snakeCaseObject } from '@edx/frontend-platform/utils';
 import {
   ActionRow, Button, FullscreenModal, StatefulButton, useToggle,
 } from '@openedx/paragon';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import LmsApiService from '../../../data/services/LmsApiService';
 import SystemErrorAlertModal
   from '../../learner-credit-management/cards/assignment-allocation-status-modals/SystemErrorAlertModal';
@@ -15,6 +16,17 @@ import AddMembersModalContent from './AddMembersModalContent';
 import { peopleManagementQueryKeys } from '../constants';
 import { useAllEnterpriseGroupLearners } from '../data/hooks';
 import { useValidatedEmailsContext } from '../data/ValidatedEmailsContext';
+import { checkForInviteErrors, GroupErrorType } from '../utils';
+import EVENT_NAMES from '../../../eventTracking';
+
+export type AddMembersModalProps = {
+  isModalOpen: boolean,
+  closeModal: () => void,
+  enterpriseUUID: string,
+  groupName: string,
+  groupUuid: string,
+  onInviteError: (errorType: GroupErrorType) => void
+};
 
 const AddMembersModal = ({
   isModalOpen,
@@ -22,6 +34,7 @@ const AddMembersModal = ({
   enterpriseUUID,
   groupName,
   groupUuid,
+  onInviteError,
 }) => {
   const intl = useIntl();
   const { validatedEmails: learnerEmails, canInvite: canInviteMembers } = useValidatedEmailsContext();
@@ -43,7 +56,15 @@ const AddMembersModal = ({
       const requestBody = snakeCaseObject({
         learnerEmails,
       });
-      await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, requestBody);
+      const { data: inviteResponse } = await LmsApiService.inviteEnterpriseLearnersToGroup(groupUuid, requestBody);
+      const { hasErrors, errorType } = checkForInviteErrors(inviteResponse);
+      if (hasErrors) {
+        onInviteError(errorType);
+        sendEnterpriseTrackEvent(
+          enterpriseUUID,
+          EVENT_NAMES.PEOPLE_MANAGEMENT.ADD_LEARNER_ERROR_NOT_IN_ORG,
+        );
+      }
       queryClient.invalidateQueries({
         queryKey: peopleManagementQueryKeys.learners(groupUuid),
       });
@@ -91,7 +112,6 @@ const AddMembersModal = ({
           >
             <AddMembersModalContent
               groupName={groupName}
-              isGroupInvite
               enterpriseUUID={enterpriseUUID}
               enterpriseGroupLearners={enterpriseGroupLearners}
             />
@@ -112,6 +132,7 @@ AddMembersModal.propTypes = {
   enterpriseUUID: PropTypes.string.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
+  onInviteError: PropTypes.func.isRequired,
   groupUuid: PropTypes.string.isRequired,
   groupName: PropTypes.string,
 };

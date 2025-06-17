@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import { logError } from '@edx/frontend-platform/logging';
-import { ASSIGNMENT_TYPES, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
+import { ASSIGNMENT_TYPES, ERROR_LEARNER_NOT_IN_ORG, MAX_INITIAL_LEARNER_EMAILS_DISPLAYED_COUNT } from './constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { GroupInviteSummary } from '../../data/services/LmsApiService';
 
 /**
  * Formats provided dates for display
@@ -223,4 +224,29 @@ export const isEmail = (email: string): boolean => {
     return false;
   }
   return !!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+};
+
+export type GroupErrorType = typeof ERROR_LEARNER_NOT_IN_ORG | '';
+
+export type InviteErrorSummary = {
+  hasErrors: boolean,
+  errorType: GroupErrorType
+};
+
+/**
+ * Checks for error indicators in response from LmsApiService.inviteEnterpriseLearnersToGroup
+ *
+ * @param {GroupInviteSummary} inviteResponse - Response from LmsApiService.inviteEnterpriseLearnersToGroup
+ * @returns {InviteErrorSummary}
+ */
+export const checkForInviteErrors = (inviteResponse: GroupInviteSummary): InviteErrorSummary => {
+  let errorType: GroupErrorType = '';
+  if (inviteResponse?.non_org_rejected) {
+    // If any learners were not invited because they were not part of the org
+    errorType = ERROR_LEARNER_NOT_IN_ORG;
+  }
+  return {
+    errorType,
+    hasErrors: !!errorType,
+  };
 };
