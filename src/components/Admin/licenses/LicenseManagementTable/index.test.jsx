@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
+
 import {
   MockSubscriptionContext,
   generateSubscriptionPlan,
@@ -73,16 +76,26 @@ const usersSetup = (
 };
 
 describe('<LicenseManagementTable />', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders the license management table', async () => {
+    const user = userEvent.setup();
     usersSetup();
     render(<LicenseManagementTableWrapper subscriptionPlan={defaultSubscriptionPlan} />);
 
     // Revoke a license
-    await screen.getByLabelText('Revoke license').click(); // Click on the revoke license button
-    screen.getByLabelText('Revoke License').click(); // Confirm license revocation
+    await user.click(screen.getByRole('button', { name: 'Revoke license' })); // Click on the revoke license button
+
+    const revokeModal = await screen.findByRole('dialog');
+    expect(revokeModal).toBeInTheDocument();
+    const revokeConfirmButton = screen.getByRole('button', { name: 'Revoke (1)' });
+    expect(revokeConfirmButton).toBeInTheDocument();
+    await user.click(revokeConfirmButton); // Confirm license revocation
 
     // Check Pagination
-    await screen.getByLabelText('Next, Page 2').click();
-    screen.getByLabelText('Previous, Page 1').click();
+    await user.click(screen.getByRole('button', { name: 'Next, Page 2' }));
+    await user.click(screen.getByRole('button', { name: 'Previous, Page 1' }));
   });
 });

@@ -1,5 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
-import { waitFor, cleanup } from '@testing-library/react';
+import { renderHook, waitFor, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';

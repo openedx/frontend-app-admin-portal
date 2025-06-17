@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { last } from 'lodash-es';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/extend-expect';
 
 import CodeReminderModal from './index';
 import EcommerceApiService from '../../data/services/EcommerceApiService';

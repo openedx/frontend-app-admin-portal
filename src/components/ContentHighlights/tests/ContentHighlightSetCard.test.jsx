@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -152,9 +151,10 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.getByText('Test Title')).toBeInTheDocument();
   });
   it('opens model and sends segment event', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<ContentHighlightSetCardWrapper />);
     const newHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
-    await waitFor(() => userEvent.click(newHighlightButton));
+    await user.click(newHighlightButton);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
   it('renders correct text when less then max curations', () => {
@@ -164,6 +164,7 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.queryByText('Delete at least one highlight to create a new one.')).not.toBeInTheDocument();
   });
   it('renders correct text when more than or equal to max curations', async () => {
+    const user = userEvent.setup();
     const updatedEnterpriseAppContextValue = {
       enterpriseCuration: {
         enterpriseCuration: {
@@ -181,7 +182,7 @@ describe('<ContentHighlightSetCard>', () => {
     const createNewHighlightButton = screen.getByText(BUTTON_TEXT.createNewHighlight);
     expect(createNewHighlightButton).toBeInTheDocument();
     // Trigger Alert
-    await userEvent.click(createNewHighlightButton);
+    await user.click(createNewHighlightButton);
     // Verify Alert
     expect(screen.queryByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).not.toBeInTheDocument();
     expect(screen.getByText('Highlight limit reached')).toBeInTheDocument();
@@ -190,7 +191,7 @@ describe('<ContentHighlightSetCard>', () => {
     const dismissButton = screen.getByText('Dismiss');
     expect(dismissButton).toBeInTheDocument();
     // Trigger Dismiss
-    userEvent.click(dismissButton);
+    await user.click(dismissButton);
     // Verify Dismiss
     await waitFor(() => { expect(screen.queryByText('Highlight limit reached')).not.toBeInTheDocument(); });
     expect(screen.queryByText('Delete at least one highlight to create a new one.')).not.toBeInTheDocument();
@@ -202,6 +203,7 @@ describe('<ContentHighlightSetCard>', () => {
     expect(screen.queryByText('Needs Review: Archived Course(s)')).not.toBeInTheDocument();
   });
   it('renders archived course alert and sets local storage on dismiss', async () => {
+    const user = userEvent.setup();
     const updatedEnterpriseAppContextValue = {
       enterpriseCuration: {
         enterpriseCuration: {
@@ -221,7 +223,7 @@ describe('<ContentHighlightSetCard>', () => {
     const dismissButton = screen.getByText('Dismiss');
     expect(dismissButton).toBeInTheDocument();
     global.localStorage.setItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-highlight-set2`, 'test-content2-key');
-    await waitFor(() => userEvent.click(dismissButton));
+    await user.click(dismissButton);
     const resultCookieHighlightSet1 = global.localStorage.getItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-uuid`);
     const resultCookieHighlightSet2 = global.localStorage.getItem(`${NEW_ARCHIVED_CONTENT_ALERT_DISMISSED_COOKIE_NAME}-test-highlight-set2`);
     await waitFor(() => { expect(resultCookieHighlightSet1).toEqual('test-content-key'); });

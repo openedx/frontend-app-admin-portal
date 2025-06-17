@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { logError } from '@edx/frontend-platform/logging';
 import { useUpdateActiveEnterpriseForUser } from './index';
@@ -35,7 +35,7 @@ describe('useUpdateActiveEnterpriseForUser', () => {
         { enterpriseCustomer: { uuid: 'some-other-uuid' }, active: true },
       ],
     );
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useUpdateActiveEnterpriseForUser({
         enterpriseId: mockEnterpriseId,
         user: mockUser,
@@ -44,7 +44,9 @@ describe('useUpdateActiveEnterpriseForUser', () => {
     );
     expect(result.current.isLoading).toBe(true);
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     expect(LmsApiService.updateUserActiveEnterprise).toHaveBeenCalledTimes(1);
     expect(result.current.isLoading).toBe(false);
@@ -52,14 +54,16 @@ describe('useUpdateActiveEnterpriseForUser', () => {
 
   it('should do nothing if active enterprise is the same as current enterprise', async () => {
     // Pass the value of the enterprise ID returned by ``getActiveLinkedEnterprise`` to the hook
-    const { waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useUpdateActiveEnterpriseForUser({
         enterpriseId: connectedEnterprise,
         user: mockUser,
       }),
       { wrapper },
     );
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(LmsApiService.updateUserActiveEnterprise).toHaveBeenCalledTimes(0);
   });
 
@@ -71,7 +75,7 @@ describe('useUpdateActiveEnterpriseForUser', () => {
       ],
     );
     LmsApiService.updateUserActiveEnterprise.mockRejectedValueOnce(Error('uh oh'));
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useUpdateActiveEnterpriseForUser({
         enterpriseId: mockEnterpriseId,
         user: mockUser,
@@ -80,7 +84,9 @@ describe('useUpdateActiveEnterpriseForUser', () => {
     );
     expect(result.current.isLoading).toBe(true);
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     expect(LmsApiService.updateUserActiveEnterprise).toHaveBeenCalledTimes(1);
     expect(result.current.isLoading).toBe(false);
@@ -88,7 +94,7 @@ describe('useUpdateActiveEnterpriseForUser', () => {
   });
   it('should handle useQuery errors', async () => {
     LmsApiService.fetchEnterpriseLearnerData.mockRejectedValueOnce(Error('uh oh'));
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useUpdateActiveEnterpriseForUser({
         enterpriseId: mockEnterpriseId,
         user: mockUser,
@@ -97,7 +103,9 @@ describe('useUpdateActiveEnterpriseForUser', () => {
     );
     expect(result.current.isLoading).toBe(true);
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     expect(LmsApiService.fetchEnterpriseLearnerData).toHaveBeenCalledTimes(1);
     expect(result.current.isLoading).toBe(false);

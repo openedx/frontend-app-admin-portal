@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { userEvent } from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import ManageCodesTab from '../ManageCodesTab';
@@ -240,11 +240,11 @@ describe('ManageCodesTabWrapper', () => {
 
     // expand
     const couponItem = (await screen.findAllByTestId('coupon-item-toggle'))[0];
-    await waitFor(() => user.click(couponItem));
+    await user.click(couponItem);
     expect(couponItem).toHaveAttribute('aria-expanded', 'true');
 
     // collapse
-    await waitFor(() => user.click(couponItem));
+    await user.click(couponItem);
     expect(couponItem).toHaveAttribute('aria-expanded', 'false');
   });
 
@@ -254,7 +254,7 @@ describe('ManageCodesTabWrapper', () => {
     render(<ManageCodesTabWrapper store={store} />);
     store.clearActions();
     const refreshDataComponent = await screen.findByTestId('refresh-data');
-    await waitFor(() => user.click(refreshDataComponent));
+    await user.click(refreshDataComponent);
     expect(store.getActions().filter(action => action.type === COUPONS_REQUEST)).toHaveLength(1);
   });
 

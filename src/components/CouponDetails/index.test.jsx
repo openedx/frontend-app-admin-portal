@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
@@ -165,6 +165,7 @@ describe('CouponDetails component', () => {
     });
   });
   it('renders with error state', async () => {
+    const user = userEvent.setup();
     render(<CouponDetailsWrapper
       {...defaultProps}
       couponData={{
@@ -172,7 +173,7 @@ describe('CouponDetails component', () => {
         errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
       }}
     />);
-    await waitFor(() => userEvent.selectOptions(screen.getByLabelText('Filter by code status'), COUPON_FILTERS.unredeemed.label));
+    await user.selectOptions(screen.getByLabelText('Filter by code status'), COUPON_FILTERS.unredeemed.label);
     expect(screen.getByText('An error has occurred:', { exact: false })).toBeInTheDocument();
   });
 });

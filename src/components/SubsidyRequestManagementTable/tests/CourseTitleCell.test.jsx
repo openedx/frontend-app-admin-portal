@@ -36,6 +36,7 @@ const defaultProps = {
 
 describe('CourseTitleCell', () => {
   test('renders', async () => {
+    const user = userEvent.setup();
     const mockCourseDetails = { shortDescription: 'Test short description' };
     const mockPromiseResolve = Promise.resolve({ data: mockCourseDetails });
     DiscoveryApiService.fetchCourseDetails.mockReturnValue(mockPromiseResolve);
@@ -47,8 +48,7 @@ describe('CourseTitleCell', () => {
       </IntlProvider>
     );
     renderWithRouter(Component);
-    userEvent.click(screen.getByText(defaultProps.row.original.courseTitle));
-    waitFor(() => expect(screen.getByText('Loading course details...')));
+    await user.click(screen.getByText(defaultProps.row.original.courseTitle));
     await waitFor(() => {
       screen.getByText(mockCourseDetails.shortDescription);
       screen.getByText('Learn more about this course');

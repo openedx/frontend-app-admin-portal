@@ -54,7 +54,8 @@ const BulkEnrollContextProvider: React.FC<BulkEnrollContextProviderProps> = ({ c
 };
 
 BulkEnrollContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  // @ts-expect-error children is required by React.FC
+  children: PropTypes.node,
   initialEmailsList: PropTypes.arrayOf(PropTypes.string.isRequired),
 };
 

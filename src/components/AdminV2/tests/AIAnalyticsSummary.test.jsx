@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { userEvent } from '@testing-library/user-event';
@@ -89,7 +89,7 @@ describe('<AIAnalyticsSummary />', () => {
     const user = userEvent.setup();
     render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
     const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
-    user.click(summariseAnalyticsComponent);
+    await user.click(summariseAnalyticsComponent);
 
     const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
     expect(detailCardComponent).toBeInTheDocument();
@@ -101,13 +101,13 @@ describe('<AIAnalyticsSummary />', () => {
     render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     // Open the analytics card
     const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
-    user.click(summariseAnalyticsComponent);
+    await user.click(summariseAnalyticsComponent);
     const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
     expect(detailCardComponent).toBeInTheDocument();
 
     // Click the dismiss button
     const detailCardButton = await screen.findByTestId('ai-analytics-detail-card-button');
-    await waitFor(() => user.click(detailCardButton));
+    await user.click(detailCardButton);
     expect(detailCardComponent).not.toBeInTheDocument();
   });
 
@@ -122,7 +122,7 @@ describe('<AIAnalyticsSummary />', () => {
 
     render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
-    user.click(summariseAnalyticsComponent);
+    await user.click(summariseAnalyticsComponent);
 
     const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
     expect(detailCardComponent.textContent).toContain('We encountered an issue');
@@ -140,7 +140,7 @@ describe('<AIAnalyticsSummary />', () => {
     const user = userEvent.setup();
     render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     const summariseAnalyticsComponent = await screen.findByTestId('summarize-analytics');
-    user.click(summariseAnalyticsComponent);
+    await user.click(summariseAnalyticsComponent);
     // TODO: need to figure out how can we test loading state
     // const detailCardComponent = await screen.findByTestId('ai-analytics-detail-card');
     // expect(wrapper.find('AnalyticsDetailCard').prop('isLoading')).toBe(true);

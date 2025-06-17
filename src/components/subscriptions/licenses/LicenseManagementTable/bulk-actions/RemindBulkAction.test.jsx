@@ -185,6 +185,7 @@ describe('RemindBulkAction', () => {
   });
 
   it('shows remind dialog when action is clicked', async () => {
+    const user = userEvent.setup();
     const props = {
       ...basicProps,
       selectedFlatRows: [testActivatedUser, testAssignedUser],
@@ -192,7 +193,7 @@ describe('RemindBulkAction', () => {
     render(<RemindBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Remind (1)');
     expect(screen.queryByText('Remind User')).not.toBeInTheDocument();
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const remindTitle = await screen.findByText('Remind User');
     expect(remindTitle).toBeVisible();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -206,17 +207,18 @@ describe('RemindBulkAction', () => {
   });
 
   it('handles when remind dialog is closed', async () => {
+    const user = userEvent.setup();
     const props = {
       ...basicProps,
       selectedFlatRows: [testActivatedUser, testAssignedUser],
     };
     render(<RemindBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Remind (1)');
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const remindTitle = await screen.findByText('Remind User');
     expect(remindTitle).toBeVisible();
     const cancelButtonInDialog = await screen.findByText('Cancel');
-    await userEvent.click(cancelButtonInDialog);
+    await await user.click(cancelButtonInDialog);
     expect(screen.queryByText('Remind User')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

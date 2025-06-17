@@ -241,6 +241,7 @@ describe('<SubscriptionSubsidyRequests />', () => {
   });
 
   it('renders <ApproveLicenseRequestModal /> when approve is clicked', async () => {
+    const user = userEvent.setup();
     render(<SubsidySubsidyRequestsWithRouter subscriptionsData={{
       data: {
         results: [{
@@ -254,11 +255,12 @@ describe('<SubscriptionSubsidyRequests />', () => {
     }}
     />);
     const approveButton = screen.getByText('Approve');
-    await userEvent.click(approveButton);
+    await user.click(approveButton);
     expect(screen.getByText('Approve license request modal'));
   });
 
   it('handles successfully approving a request', async () => {
+    const user = userEvent.setup();
     const mockHandleUpdateRequestStatus = jest.fn();
     useSubsidyRequests.mockImplementation(() => ({
       isLoading: false,
@@ -285,11 +287,11 @@ describe('<SubscriptionSubsidyRequests />', () => {
     }}
     />);
     const approveButton = screen.getByText('Approve');
-    await userEvent.click(approveButton);
+    await user.click(approveButton);
     expect(screen.getByText('Approve license request modal'));
 
     const approveInModalButton = screen.getByText('Approve in modal');
-    await userEvent.click(approveInModalButton);
+    await user.click(approveInModalButton);
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockLicenseRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING },
     );
@@ -298,27 +300,30 @@ describe('<SubscriptionSubsidyRequests />', () => {
   });
 
   it('renders <DeclineSubsidyRequestModal /> when decline is clicked', async () => {
+    const user = userEvent.setup();
     render(<SubsidySubsidyRequestsWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    await userEvent.click(declineButton);
+    await user.click(declineButton);
     expect(screen.getByText('Decline license request modal'));
   });
 
   it('closes <DeclineSubsidyRequestModal /> when close button is clicked', async () => {
+    const user = userEvent.setup();
     render(<SubsidySubsidyRequestsWithRouter />);
 
     const declineButton = screen.getByText('Decline');
-    await userEvent.click(declineButton);
+    await user.click(declineButton);
     expect(screen.getByText('Decline license request modal'));
 
     const closeButton = screen.getByText('Close');
-    await userEvent.click(closeButton);
+    await user.click(closeButton);
 
     expect(screen.queryByText('Decline license request modal')).not.toBeInTheDocument();
   });
 
   it('handles successfully declining a request', async () => {
+    const user = userEvent.setup();
     const mockHandleUpdateRequestStatus = jest.fn();
     useSubsidyRequests.mockImplementation(() => ({
       isLoading: false,
@@ -345,11 +350,11 @@ describe('<SubscriptionSubsidyRequests />', () => {
     }}
     />);
     const declineButton = screen.getByText('Decline');
-    await userEvent.click(declineButton);
+    await user.click(declineButton);
     expect(screen.getByText('Decline license request modal'));
 
     const declineInModalButton = screen.getByText('Decline in modal');
-    await userEvent.click(declineInModalButton);
+    await user.click(declineInModalButton);
     expect(mockHandleUpdateRequestStatus).toHaveBeenCalledWith(
       { request: mockLicenseRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED },
     );

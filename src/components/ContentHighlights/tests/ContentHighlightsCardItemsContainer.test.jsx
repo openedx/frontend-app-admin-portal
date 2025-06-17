@@ -101,13 +101,14 @@ describe('<ContentHighlightsCardItemsContainer>', () => {
     />);
     expect(screen.getAllByTestId('card-item-skeleton')).toBeTruthy();
   });
-  it('sends track event on click', () => {
+  it('sends track event on click', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<ContentHighlightsCardItemsContainerWrapper
       isLoading={false}
       highlightedContent={testHighlightSet}
     />);
     const hyperlinkTitle = screen.getAllByTestId('hyperlink-title')[0];
-    userEvent.click(hyperlinkTitle);
+    await user.click(hyperlinkTitle);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
   it('shows archived content subheader', () => {

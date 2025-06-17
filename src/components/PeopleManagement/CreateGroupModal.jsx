@@ -39,7 +39,6 @@ const CreateGroupModal = ({
     setCreateButtonState('default');
   };
   const queryClient = useQueryClient();
-
   const handleCreateGroup = async () => {
     setCreateButtonState('pending');
     const options = {

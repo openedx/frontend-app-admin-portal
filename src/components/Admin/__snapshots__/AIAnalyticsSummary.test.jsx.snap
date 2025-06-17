@@ -49,6 +49,45 @@ exports[`<AIAnalyticsSummary /> should display AnalyticsDetailCard with learner_
           Track Progress
         </button>
       </div>
+      <div
+        class="mt-3 mb-4 pgn__card pgn__card-light card"
+        tabindex="-1"
+      >
+        <div
+          class="pgn__card-section"
+        >
+          <span
+            class="mb-3 font-weight-semibold badge badge-light"
+          >
+            Beta
+          </span>
+          <div
+            class="pgn__hstack pgn__stack-gap--1"
+          >
+            <p
+              class="card-text text-justify small"
+            >
+              Analytics not found.
+            </p>
+            <button
+              class="mb-4 ml-3 btn btn-link"
+              type="button"
+            >
+              <span
+                class="small font-weight-bold text-gray-800"
+              >
+                Dismiss
+              </span>
+            </button>
+          </div>
+          <label
+            class="x-small"
+            for="poweredBylabel"
+          >
+            Powered by OpenAI
+          </label>
+        </div>
+      </div>
       ,
     </div>
     <div>
@@ -248,6 +287,45 @@ exports[`<AIAnalyticsSummary /> should handle null analytics data 1`] = `
           </svg>
           Track Progress
         </button>
+      </div>
+      <div
+        class="mt-3 mb-4 pgn__card pgn__card-light card"
+        tabindex="-1"
+      >
+        <div
+          class="pgn__card-section"
+        >
+          <span
+            class="mb-3 font-weight-semibold badge badge-light"
+          >
+            Beta
+          </span>
+          <div
+            class="pgn__hstack pgn__stack-gap--1"
+          >
+            <p
+              class="card-text text-justify small"
+            >
+              Analytics not found.
+            </p>
+            <button
+              class="mb-4 ml-3 btn btn-link"
+              type="button"
+            >
+              <span
+                class="small font-weight-bold text-gray-800"
+              >
+                Dismiss
+              </span>
+            </button>
+          </div>
+          <label
+            class="x-small"
+            for="poweredBylabel"
+          >
+            Powered by OpenAI
+          </label>
+        </div>
       </div>
       ,
     </div>

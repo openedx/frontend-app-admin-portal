@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
@@ -97,9 +97,10 @@ describe('<ContentHighlightsDashboard>', () => {
   });
 
   it('Displays New highlight Modal on button click with no highlighted content list', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
-    await waitFor(() => userEvent.click(newHighlight));
+    await user.click(newHighlight);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
@@ -118,6 +119,7 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(screen.getByText(exampleHighlightSet.title)).toBeInTheDocument();
   });
   it('Allows selection between tabs of dashboard, when highlight set exist', async () => {
+    const user = userEvent.setup();
     renderWithRouter(
       <ContentHighlightsDashboardWrapper
         enterpriseAppContextValue={{
@@ -135,16 +137,17 @@ describe('<ContentHighlightsDashboard>', () => {
     expect(catalogVisibilityTab.classList.contains('active')).toBeFalsy();
 
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    await waitFor(() => userEvent.click(catalogVisibilityTab));
+    await user.click(catalogVisibilityTab);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
 
     expect(catalogVisibilityTab.classList.contains('active')).toBeTruthy();
     expect(highlightTab.classList.contains('active')).toBeFalsy();
   });
   it('Displays New highlight modal on button click with highlighted content list', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<ContentHighlightsDashboardWrapper />);
     const newHighlight = screen.getByTestId(`zero-state-card-${BUTTON_TEXT.zeroStateCreateNewHighlight}`);
-    await waitFor(() => userEvent.click(newHighlight));
+    await user.click(newHighlight);
     expect(screen.getByText(STEPPER_STEP_TEXT.HEADER_TEXT.createTitle)).toBeInTheDocument();
   });
 });

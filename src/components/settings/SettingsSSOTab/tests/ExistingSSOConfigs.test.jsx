@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, render, screen, waitFor,
+  render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -66,6 +66,7 @@ describe('<ExistingSSOConfigs />', () => {
     jest.clearAllMocks();
   });
   it('renders active config card', async () => {
+    const user = userEvent.setup();
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -80,12 +81,12 @@ describe('<ExistingSSOConfigs />', () => {
     expect(screen.getByText('cool ranch')).toBeInTheDocument();
     expect(screen.getByText('Active')).toBeInTheDocument();
 
-    await userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${activeConfig[0].id}`));
+    await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${activeConfig[0].id}`));
 
     expect(screen.getByText('Disable')).toBeInTheDocument();
     expect(screen.getByText('Edit')).toBeInTheDocument();
 
-    await userEvent.click(screen.getByText('Disable'));
+    await user.click(screen.getByText('Disable'));
     const data = new FormData();
     data.append('enabled', false);
     data.append('enterprise_customer_uuid', enterpriseId);
@@ -94,6 +95,7 @@ describe('<ExistingSSOConfigs />', () => {
     });
   });
   it('renders inactive config card', async () => {
+    const user = userEvent.setup();
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -107,16 +109,17 @@ describe('<ExistingSSOConfigs />', () => {
     );
     expect(screen.getByText('nacho cheese')).toBeInTheDocument();
     expect(screen.getByText('Inactive')).toBeInTheDocument();
-    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${inactiveConfig[0].id}`)));
+    await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${inactiveConfig[0].id}`));
     expect(screen.getByText('Enable')).toBeInTheDocument();
     expect(screen.getByText('Edit')).toBeInTheDocument();
-    await waitFor(() => userEvent.click(screen.getByText('Enable')));
+    await user.click(screen.getByText('Enable'));
     const data = new FormData();
     data.append('enabled', true);
     data.append('enterprise_customer_uuid', enterpriseId);
     expect(LmsApiService.updateProviderConfig).toHaveBeenCalledWith(data, inactiveConfig[0].id);
   });
   it('renders incomplete config card', async () => {
+    const user = userEvent.setup();
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -130,9 +133,7 @@ describe('<ExistingSSOConfigs />', () => {
     );
     expect(screen.getByText('bbq')).toBeInTheDocument();
     expect(screen.getByText('Incomplete')).toBeInTheDocument();
-    act(() => {
-      userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
-    });
+    await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
     await waitFor(() => {
       expect(screen.getByText('Delete')).toBeInTheDocument();
       expect(screen.getByText('Edit')).toBeInTheDocument();
@@ -154,6 +155,7 @@ describe('<ExistingSSOConfigs />', () => {
     expect(screen.getByText('nacho cheese')).toBeInTheDocument();
   });
   it('executes delete action on incomplete card', async () => {
+    const user = userEvent.setup();
     render(
       <Provider store={store}>
         <ExistingSSOConfigs
@@ -165,11 +167,12 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
-    await waitFor(() => userEvent.click(screen.getByText('Delete')));
+    await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    await user.click(screen.getByText('Delete'));
     expect(LmsApiService.deleteProviderConfig).toHaveBeenCalledWith(incompleteConfig[0].id, enterpriseId);
   });
   it('properly handles errors when deleting provider data', async () => {
+    const user = userEvent.setup();
     const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderData');
     mockDeleteProviderData.mockImplementation(() => {
       throw new Error({ response: { data: 'foobar' } });
@@ -185,11 +188,12 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
-    await waitFor(() => userEvent.click(screen.getByText('Delete')));
+    await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    await user.click(screen.getByText('Delete'));
     expect(handleErrors).toHaveBeenCalled();
   });
   it('properly handles errors when deleting provider configs', async () => {
+    const user = userEvent.setup();
     const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderConfig');
     mockDeleteProviderData.mockImplementation(() => {
       throw new Error({ response: { data: 'foobar' } });
@@ -205,11 +209,12 @@ describe('<ExistingSSOConfigs />', () => {
         />
       </Provider>,
     );
-    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
-    await waitFor(() => userEvent.click(screen.getByText('Delete')));
+    await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    await user.click(screen.getByText('Delete'));
     expect(handleErrors).toHaveBeenCalled();
   });
   it('properly displays error message when deleting provider configs', async () => {
+    const user = userEvent.setup();
     const mockDeleteProviderData = jest.spyOn(LmsApiService, 'deleteProviderData');
     mockDeleteProviderData.mockImplementation(() => {
       throw new Error({ response: { data: 'foobar' } });
@@ -228,8 +233,8 @@ describe('<ExistingSSOConfigs />', () => {
         </Provider>
       </IntlProvider>,
     );
-    await waitFor(() => userEvent.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`)));
-    await waitFor(() => userEvent.click(screen.getByText('Delete')));
+    await user.click(screen.getByTestId(`existing-sso-config-card-dropdown-${incompleteConfig[0].id}`));
+    await user.click(screen.getByText('Delete'));
     await waitFor(() => {
       expect(screen.getByText(
         'We were unable to delete your configuration. Please try removing again or contact support for help.',
