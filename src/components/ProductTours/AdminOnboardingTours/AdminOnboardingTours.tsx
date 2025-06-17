@@ -81,13 +81,10 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       })),
     },
   ];
-  if (!isOpen) {
-    return null;
-  }
 
   return (
     <>
-      <CheckpointOverlay target={`#${targetSelector}`} />
+      <CheckpointOverlay target={targetSelector} />
       <ProductTour
         tours={tours}
       />
