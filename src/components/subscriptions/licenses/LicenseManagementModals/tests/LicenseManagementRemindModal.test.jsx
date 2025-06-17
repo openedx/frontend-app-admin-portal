@@ -4,7 +4,7 @@ import {
   act, cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import { logError } from '@edx/frontend-platform/logging';
 

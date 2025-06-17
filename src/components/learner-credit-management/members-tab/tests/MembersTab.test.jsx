@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';

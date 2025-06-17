@@ -6,7 +6,7 @@ import {
   screen,
   render,
 } from '@testing-library/react';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import CodeManagementRoutes from '../CodeManagementRoutes';

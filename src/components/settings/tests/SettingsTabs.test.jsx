@@ -7,7 +7,7 @@ import {
   render,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import SettingsTabs from '../SettingsTabs';

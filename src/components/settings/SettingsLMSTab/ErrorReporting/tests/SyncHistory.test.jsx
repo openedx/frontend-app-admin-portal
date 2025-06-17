@@ -3,7 +3,7 @@ import {
   cleanup, screen, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { legacy_configureStore as configureMockStore } from 'redux-mock-store';
+import configureMockStore from 'redux-mock-store';
 
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
