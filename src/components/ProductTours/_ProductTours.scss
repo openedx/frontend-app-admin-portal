@@ -1,8 +1,10 @@
+$white: #FFFFFF;
+
 .product-tours {
   .info-button {
     padding: 0;
     transform: translate(-1rem, -3rem);
-    background-color: $white;;
+    background-color: $white;
 
     .pgn__icon.btn-icon__icon {
       width: 100%;
@@ -14,4 +16,17 @@
       align-self: normal;
     }
   }
+}
+
+.pgn__checkpoint {
+  border-top: 8px solid #D23228;
+}
+
+.pgn__checkpoint-overlay {
+  z-index: 1050;
+}
+
+.modal-image {
+  height: 150px;
+  margin-bottom: 1rem;
 }

@@ -17,12 +17,21 @@ import CreateGroupModalContent from './CreateGroupModalContent';
 import EVENT_NAMES from '../../eventTracking';
 import { learnerCreditManagementQueryKeys } from '../learner-credit-management/data';
 import { useValidatedEmailsContext } from './data/ValidatedEmailsContext';
+import { checkForInviteErrors, GroupErrorType } from './utils';
+
+export type CreateGroupModalProps = {
+  isModalOpen: boolean,
+  closeModal: () => void,
+  enterpriseUUID: string,
+  onInviteError: (errorType: GroupErrorType) => void
+};
 
 const CreateGroupModal = ({
   isModalOpen,
   closeModal,
   enterpriseUUID,
-}) => {
+  onInviteError,
+}: CreateGroupModalProps) => {
   const intl = useIntl();
   const {
     validatedEmails: learnerEmails,
@@ -34,6 +43,7 @@ const CreateGroupModal = ({
   const [groupName, setGroupName] = useState('');
   const [canCreateGroup, setCanCreateGroup] = useState(false);
   const [isSystemErrorModalOpen, openSystemErrorModal, closeSystemErrorModal] = useToggle(false);
+
   const handleCloseCreateGroupModal = () => {
     closeModal();
     setCreateButtonState('default');
@@ -87,7 +97,18 @@ const CreateGroupModal = ({
       const requestBody = snakeCaseObject({
         learnerEmails,
       });
-      await LmsApiService.inviteEnterpriseLearnersToGroup(groupCreationResponse.data.uuid, requestBody);
+      const { data: inviteResponse } = await LmsApiService.inviteEnterpriseLearnersToGroup(
+        groupCreationResponse.data.uuid,
+        requestBody,
+      );
+      const { hasErrors, errorType } = checkForInviteErrors(inviteResponse);
+      if (hasErrors) {
+        onInviteError(errorType);
+        sendEnterpriseTrackEvent(
+          enterpriseUUID,
+          EVENT_NAMES.PEOPLE_MANAGEMENT.ADD_LEARNER_ERROR_NOT_IN_ORG,
+        );
+      }
       queryClient.invalidateQueries({
         queryKey: learnerCreditManagementQueryKeys.group(enterpriseUUID),
       });

@@ -12,6 +12,9 @@ jest.mock('../AdvanceAnalyticsV2/AnalyticsV2Page', () => function AnalyticsV2Pag
 jest.mock('../../containers/AdminPage', () => function AdminPageMock() {
   return <div>AdminPage Mock Component</div>;
 });
+jest.mock('../AdvanceAnalyticsV2.0/AnalyticsPage', () => function RevisedAnalyticsV2PageMock() {
+  return <div>RevisedAnalyticsV2Page Mock Component</div>;
+});
 
 let mockEnterpriseAppPage = 'analytics';
 
@@ -63,5 +66,12 @@ describe('EnterpriseAppRoutes', () => {
     features.ANALYTICS_SUPPORTED = true;
     renderWithProviders(defaultProps);
     expect(screen.getByText('AdminPage Mock Component')).toBeInTheDocument();
+  });
+  it('renders RevisedAnalyticsV2Page when all flags are true', () => {
+    mockEnterpriseAppPage = 'analytics-v2';
+    features.ANALYTICS_SUPPORTED = true;
+    features.ADMIN_V2 = true;
+    renderWithProviders(defaultProps);
+    expect(screen.getByText('RevisedAnalyticsV2Page Mock Component')).toBeInTheDocument();
   });
 });

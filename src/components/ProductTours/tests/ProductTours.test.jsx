@@ -4,9 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
-  screen,
-  render,
-  cleanup,
+  cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import { mergeConfig } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -22,6 +20,7 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
   TOUR_TARGETS,
 } from '../constants';
+import { ONBOARDING_WELCOME_MODAL_COOKIE_NAME } from '../AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { ACCESS_TAB } from '../../settings/data/constants';
 import { SubsidyRequestsContext } from '../../subsidy-requests';
@@ -38,6 +37,7 @@ const SETTINGS_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.settings
 const LEARNER_CREDIT_PAGE_LOCATION = `/${ENTERPRISE_SLUG}/admin/${ROUTE_NAMES.learnerCredit}`;
 
 let onboardingEnabled = true;
+let lastLogin = null;
 
 const ToursWithContext = ({
   subsidyType = SUPPORTED_SUBSIDY_TYPES.license,
@@ -64,6 +64,7 @@ const ToursWithContext = ({
       },
     },
     enterpriseCustomerAdmin: {
+      lastLogin,
       onboardingTourCompleted: false,
       onboardingTourDismissed: false,
     },
@@ -198,6 +199,31 @@ describe('<ProductTours/>', () => {
     it('renders the collapsible title', () => {
       render(<ToursWithContext />);
       expect(screen.queryByText('Quick Start Guide')).toBeTruthy();
+    });
+    it('renders the welcome modal and opens the quick start guide', async () => {
+      render(<ToursWithContext />);
+      expect(screen.queryByText('Welcome!')).toBeTruthy();
+      userEvent.click(screen.getByText('Get started'));
+      // "Get started" button should un-collapse the quick start guide
+      await waitFor(() => {
+        expect(screen.queryByText(
+          'Select any item in the guide to learn more about your administrative portal.',
+        )).toBeTruthy();
+      });
+    });
+    it('dismissed the modal with an existing user', async () => {
+      lastLogin = '2023-09-15T15:30:00Z';
+      render(<ToursWithContext />);
+      expect(screen.queryByText('Hello!')).toBeTruthy();
+      userEvent.click(screen.getByTestId('welcome-modal-dismiss'));
+      await waitFor(() => {
+        expect(screen.queryByText('Hello.')).not.toBeTruthy();
+      });
+    });
+    it('hides the the welcome modal after user has seen it', () => {
+      global.localStorage.setItem(ONBOARDING_WELCOME_MODAL_COOKIE_NAME, true);
+      render(<ToursWithContext />);
+      expect(screen.queryByText('Welcome!')).not.toBeTruthy();
     });
 
     describe('with onboarding disabled', () => {

@@ -13,6 +13,7 @@ import LoadingMessage from '../LoadingMessage';
 import SettingsPage from '../settings';
 import { SubscriptionManagementPage } from '../subscriptions';
 import AnalyticsV2Page from '../AdvanceAnalyticsV2/AnalyticsV2Page';
+import RevisedAnalyticsV2Page from '../AdvanceAnalyticsV2.0/AnalyticsPage';
 import FeatureNotSupportedPage from '../FeatureNotSupportedPage';
 import { ROUTE_NAMES } from './data/constants';
 import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadPage';
@@ -97,6 +98,16 @@ const EnterpriseAppRoutes = ({
             ? <AnalyticsV2Page enterpriseId={enterpriseId} />
             : <FeatureNotSupportedPage />}
         />
+      )}
+
+      {enableAnalyticsPage && enterpriseAppPage === ROUTE_NAMES.analytics_v2 && features.ADMIN_V2 && (
+      <Route
+        key="analytics"
+        path="/"
+        element={features.ANALYTICS_SUPPORTED
+          ? <RevisedAnalyticsV2Page enterpriseId={enterpriseId} />
+          : <FeatureNotSupportedPage />}
+      />
       )}
 
       {enterpriseAppPage === ROUTE_NAMES.bulkEnrollmentResults && (
