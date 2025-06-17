@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import configureMockStore from 'redux-mock-store';
+import configureMockStore, { MockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import type { ThunkDispatch } from 'redux-thunk';
