@@ -2,16 +2,22 @@ import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   DataTable,
-  TextFilter,
   CheckboxFilter,
 } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { connect } from 'react-redux';
+
 import ActionCell from '../../SubsidyRequestManagementTable/ActionCell';
-import RequestDetailsCell from './RequestDetailsCell';
+import RequestStatusTableCell from '../RequestStatusTableCell';
+import RequestDetailsTableCell from '../RequestDetailsTableCell';
 import CustomTableControlBar from './CustomTableControlBar';
-import AmountCell from './AmountCell';
-import BnrRequestStatusCell from './BnrRequestStatusCell';
+import RequestAmountTableCell from '../RequestAmountTableCell';
+import TableTextFilter from '../TableTextFilter';
+import CustomDataTableEmptyState from '../CustomDataTableEmptyState';
+import { DEFAULT_PAGE, PAGE_SIZE } from '../data';
+
+const FilterStatus = (rest) => (
+  <DataTable.FilterStatus showFilteredFields={false} {...rest} />
+);
 
 const RequestsTable = ({
   onApprove,
@@ -22,12 +28,8 @@ const RequestsTable = ({
   isLoading,
   pageCount,
   itemCount,
-  initialTableOptions,
-  initialState,
   disableApproveButton,
   onRefresh,
-  enterpriseSlug,
-  ...rest
 }) => {
   const intl = useIntl();
   const columns = useMemo(
@@ -39,9 +41,8 @@ const RequestsTable = ({
           description: 'Header for the request details column in the requests table',
         }),
         accessor: 'requestDetails',
-        Filter: TextFilter,
-        // eslint-disable-next-line react/no-unstable-nested-components
-        Cell: (props) => <RequestDetailsCell {...props} enterpriseSlug={enterpriseSlug} />,
+        Cell: RequestDetailsTableCell,
+        disableSortBy: true,
       },
       {
         Header: intl.formatMessage({
@@ -50,8 +51,7 @@ const RequestsTable = ({
           description: 'Header for the amount column in the requests table',
         }),
         accessor: 'amount',
-        // eslint-disable-next-line react/no-unstable-nested-components
-        Cell: (props) => <AmountCell {...props} />,
+        Cell: RequestAmountTableCell,
         disableFilters: true,
       },
       {
@@ -70,28 +70,26 @@ const RequestsTable = ({
           description: 'Header for the request status column in the subsidy request management table.',
         }),
         accessor: 'requestStatus',
-        Cell: BnrRequestStatusCell,
+        Cell: RequestStatusTableCell,
         Filter: CheckboxFilter,
         filter: 'includesValue',
         filterChoices: requestStatusFilterChoices,
       },
     ]),
-    [requestStatusFilterChoices, intl, enterpriseSlug],
+    [requestStatusFilterChoices, intl],
   );
+
   return (
     <DataTable
-      isFilterable
-      manualFilters
       isSortable
       manualSortBy
       isPaginated
       manualPagination
-      defaultColumnValues={{ Filter: TextFilter }}
-      itemCount={itemCount}
-      pageCount={pageCount}
-      fetchData={fetchData}
+      isFilterable
+      manualFilters
       isLoading={isLoading}
-      data={data}
+      defaultColumnValues={{ Filter: TableTextFilter }}
+      FilterStatusComponent={FilterStatus}
       columns={columns}
       additionalColumns={[{
         id: 'action',
@@ -106,9 +104,25 @@ const RequestsTable = ({
           />
         ),
       }]}
-      initialTableOptions={initialTableOptions}
-      initialState={initialState}
-      {...rest}
+      initialTableOptions={{
+        getRowId: (row) => row?.uuid?.toString(),
+      }}
+      initialState={{
+        pageSize: PAGE_SIZE,
+        pageIndex: DEFAULT_PAGE,
+        sortBy: [
+          {
+            id: 'requestDate',
+            desc: true,
+          },
+        ],
+        filters: [],
+      }}
+      fetchData={fetchData}
+      data={data}
+      itemCount={itemCount}
+      pageCount={pageCount}
+      EmptyTableComponent={CustomDataTableEmptyState}
     >
       <CustomTableControlBar
         onRefresh={onRefresh}
@@ -116,21 +130,13 @@ const RequestsTable = ({
         intl={intl}
       />
       <DataTable.Table />
-      {!isLoading && (
-        <DataTable.EmptyTable content={intl.formatMessage({
-          id: 'learnerCreditManagement.budgetDetail.requestsTab.noResults',
-          defaultMessage: 'No results found',
-          description: 'Message displayed when no results are found in the requests table.',
-        })}
-        />
-      )}
+
       <DataTable.TableFooter />
     </DataTable>
   );
 };
 
 RequestsTable.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   pageCount: PropTypes.number.isRequired,
@@ -151,8 +157,6 @@ RequestsTable.propTypes = {
   })).isRequired,
   onApprove: PropTypes.func.isRequired,
   onDecline: PropTypes.func.isRequired,
-  initialTableOptions: PropTypes.shape().isRequired,
-  initialState: PropTypes.shape().isRequired,
   disableApproveButton: PropTypes.bool,
   onRefresh: PropTypes.func.isRequired,
 };
@@ -161,8 +165,4 @@ RequestsTable.defaultProps = {
   disableApproveButton: false,
 };
 
-const mapStateToProps = state => ({
-  enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-});
-
-export default connect(mapStateToProps)(RequestsTable);
+export default RequestsTable;
