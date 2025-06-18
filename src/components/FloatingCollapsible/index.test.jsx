@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import FloatingCollapsible from './index';
 
 // Mock Paragon components
@@ -52,9 +53,11 @@ const setup = (props = {}) => {
     store,
     props: mergedProps,
     ...render(
-      <Provider store={store}>
-        <FloatingCollapsible {...mergedProps} />
-      </Provider>,
+      <IntlProvider locale="en" messages={{}}>
+        <Provider store={store}>
+          <FloatingCollapsible {...mergedProps} />
+        </Provider>
+      </IntlProvider>,
     ),
   };
 };
@@ -75,6 +78,7 @@ describe('FloatingCollapsible', () => {
     setup({ onDismiss });
 
     fireEvent.click(screen.getByTestId('button-tertiary'));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
     expect(onDismiss).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(screen.queryByText('Test Content')).toBeFalsy();
