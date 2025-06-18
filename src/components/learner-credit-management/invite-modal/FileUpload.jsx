@@ -44,6 +44,7 @@ const FileUpload = ({ memberInviteMetadata, setEmailAddressesInputValue }) => {
           invalidSize: 'The file size must be between below 1MB or 1000 emails.',
           multipleDragged: 'Cannot upload more than one file.',
         }}
+        data-testid="csv-upload-input"
       />
       <InviteModalInputFeedback memberInviteMetadata={memberInviteMetadata} isCsvUpload />
     </Form.Group>

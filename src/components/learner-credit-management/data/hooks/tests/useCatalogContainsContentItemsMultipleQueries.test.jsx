@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook, waitFor } from '@testing-library/react';
 import { v4 as uuidv4 } from 'uuid';
 
 import useCatalogContainsContentItemsMultipleQueries from '../useCatalogContainsContentItemsMultipleQueries';
@@ -28,7 +28,7 @@ describe('useCatalogContainsContentItemsMultipleQueries', () => {
       .mockResolvedValueOnce({ data: { foo: 'bar' } })
       .mockResolvedValueOnce({ data: { bin: 'baz' } });
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useCatalogContainsContentItemsMultipleQueries(
         TEST_CATALOG_UUID,
         courseRunKeys,
@@ -51,7 +51,10 @@ describe('useCatalogContainsContentItemsMultipleQueries', () => {
       },
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.isFetching).toBe(false);
+    });
 
     expect(result.current).toMatchObject({
       data: [{ foo: 'bar' }, { bin: 'baz' }],

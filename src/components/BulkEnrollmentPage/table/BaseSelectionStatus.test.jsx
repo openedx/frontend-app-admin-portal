@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -62,7 +61,8 @@ describe('BaseSelectionStatus', () => {
       { exact: false },
     )).toBeInTheDocument();
   });
-  it('handle clearing of selections', () => {
+  it('handle clearing of selections', async () => {
+    const user = userEvent.setup();
     render(<SelectionStatusWrapper
       dataTableInfo={defaultDataTableInfo}
       {...defaultProps}
@@ -70,7 +70,7 @@ describe('BaseSelectionStatus', () => {
     />);
     const clearSelection = screen.getByText('Clear selection');
     expect(clearSelection).toBeInTheDocument();
-    userEvent.click(clearSelection);
+    await user.click(clearSelection);
     expect(mockToggleAllRowsSelected).toHaveBeenCalledTimes(1);
   });
 });

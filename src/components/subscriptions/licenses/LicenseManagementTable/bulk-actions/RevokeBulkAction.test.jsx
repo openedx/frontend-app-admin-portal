@@ -182,6 +182,7 @@ describe('RevokeBulkAction', () => {
   });
 
   it('shows revoke dialog when action is clicked', async () => {
+    const user = userEvent.setup();
     const props = {
       ...basicProps,
       selectedFlatRows: [testActivatedUser, testRevokedUser],
@@ -189,7 +190,7 @@ describe('RevokeBulkAction', () => {
     render(<RevokeBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Revoke (1)');
     expect(screen.queryByText('Revoke License')).not.toBeInTheDocument();
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const revokeTitle = await screen.findByText('Revoke License');
     expect(revokeTitle).toBeVisible();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -203,17 +204,18 @@ describe('RevokeBulkAction', () => {
   });
 
   it('handles when revoke dialog is closed', async () => {
+    const user = userEvent.setup();
     const props = {
       ...basicProps,
       selectedFlatRows: [testActivatedUser, testRevokedUser],
     };
     render(<RevokeBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Revoke (1)');
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const revokeTitle = await screen.findByText('Revoke License');
     expect(revokeTitle).toBeVisible();
     const cancelButtonInDialog = await screen.findByText('Cancel');
-    userEvent.click(cancelButtonInDialog);
+    await user.click(cancelButtonInDialog);
     expect(screen.queryByText('Revoke License')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

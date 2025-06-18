@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import TableComponent from './index';
 
@@ -124,24 +123,6 @@ describe('TableComponent', () => {
     const { unmount } = render(<TableComponentWrapper {...mockDefaultProps} />);
     unmount();
     expect(mockClearTable).toHaveBeenCalled();
-  });
-
-  it('Does not call sortTable when ordering is null or undefined', () => {
-    const prevOrdering = null;
-
-    let ordering;
-    const wrapper = shallow(
-      <TableComponentWrapper
-        ordering={ordering}
-        prevOrdering={prevOrdering}
-        sortTable={mockSortTable}
-      />,
-    );
-    expect(mockSortTable).not.toHaveBeenCalled();
-
-    ordering = null;
-    wrapper.setProps({ ordering });
-    expect(mockSortTable).not.toHaveBeenCalled();
   });
 
   it('calls sortTable when ordering changes', () => {

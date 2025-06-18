@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import {
-  act, cleanup, render, screen, waitFor,
+  cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { logError } from '@edx/frontend-platform/logging';
@@ -96,39 +96,33 @@ describe('<LicenseManagementRevokeModal />', () => {
 
   describe('when submit button is clicked', () => {
     it('displays done on submit', async () => {
+      const user = userEvent.setup();
       LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue({ data: {} });
       const props = { ...basicProps, usersToRevoke: [sampleUser] };
-
-      act(() => {
-        render(<LicenseManagementRevokeModalWrapper {...props} totalToRevoke={1} />);
-      });
-
+      render(<LicenseManagementRevokeModalWrapper {...props} totalToRevoke={1} />);
       const button = screen.getByText('Revoke (1)');
-      await act(async () => { userEvent.click(button); });
-      expect(onSubmitMock).toBeCalledTimes(1);
-      expect(onSuccessMock).toBeCalledTimes(1);
+      await user.click(button);
+      expect(onSubmitMock).toHaveBeenCalledTimes(1);
+      expect(onSuccessMock).toHaveBeenCalledTimes(1);
 
       expect(screen.queryByText('Revoke (1)')).toBeFalsy();
       expect(screen.getByText('Done'));
-      expect(logError).toBeCalledTimes(0);
+      expect(logError).toHaveBeenCalledTimes(0);
     });
     it('displays alert if licenseBulkRevoke has error', async () => {
+      const user = userEvent.setup();
       LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(new Error('something went wrong'));
       const props = { ...basicProps, usersToRevoke: [sampleUser], totalToRevoke: 1 };
-
-      act(() => {
-        render(<LicenseManagementRevokeModalWrapper {...props} />);
-      });
-
+      render(<LicenseManagementRevokeModalWrapper {...props} />);
       const button = screen.getByText('Revoke (1)');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(onSubmitMock).toHaveBeenCalledTimes(1);
       expect(onSuccessMock).toHaveBeenCalledTimes(0);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeTruthy();
       });
-      expect(logError).toBeCalledTimes(1);
+      expect(logError).toHaveBeenCalledTimes(1);
     });
 
     describe('handles different bulk-revoke API response cases', () => {
@@ -139,39 +133,37 @@ describe('<LicenseManagementRevokeModal />', () => {
       });
 
       it('handles 200 success response correctly', async () => {
+        const user = userEvent.setup();
         const mockSuccess200 = { status: 200, data: { success: true } };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockSuccess200);
-
         render(<LicenseManagementRevokeModalWrapper {...props} />);
-        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
-
+        await user.click(screen.getByText('Revoke (1)'));
         expect(onSuccessMock).toHaveBeenCalledTimes(1);
         expect(logError).toHaveBeenCalledTimes(0);
       });
 
       it('handles 400 error response correctly', async () => {
+        const user = userEvent.setup();
         const mockError400 = { response: { status: 400, data: { unsuccessful_revocations: [{ error: 'Not found' }] } } };
         LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError400);
-
         render(<LicenseManagementRevokeModalWrapper {...props} />);
-        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
-
+        await user.click(screen.getByText('Revoke (1)'));
         expect(onSuccessMock).toHaveBeenCalledTimes(0);
         expect(logError).toHaveBeenCalledTimes(1);
       });
 
       it('handles 404 error response correctly', async () => {
+        const user = userEvent.setup();
         const mockError404 = { response: { status: 404, data: { unsuccessful_revocations: [{ error: 'Not found' }] } } };
         LicenseManagerApiService.licenseBulkRevoke.mockRejectedValue(mockError404);
-
         render(<LicenseManagementRevokeModalWrapper {...props} />);
-        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
-
+        await user.click(screen.getByText('Revoke (1)'));
         expect(onSuccessMock).toHaveBeenCalledTimes(0);
         expect(logError).toHaveBeenCalledTimes(1);
       });
 
       it('handles 207 partial success with only 404 errors correctly', async () => {
+        const user = userEvent.setup();
         const mockPartialSuccess207WithOnly404 = {
           status: 207,
           data: {
@@ -179,15 +171,14 @@ describe('<LicenseManagementRevokeModal />', () => {
           },
         };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithOnly404);
-
         render(<LicenseManagementRevokeModalWrapper {...props} />);
-        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
-
+        await user.click(screen.getByText('Revoke (1)'));
         expect(onSuccessMock).toHaveBeenCalledTimes(1);
         expect(logError).toHaveBeenCalledTimes(0);
       });
 
       it('handles 207 partial success with mixed errors correctly', async () => {
+        const user = userEvent.setup();
         const mockPartialSuccess207WithMixedErrors = {
           status: 207,
           data: {
@@ -202,15 +193,14 @@ describe('<LicenseManagementRevokeModal />', () => {
           },
         };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithMixedErrors);
-
         render(<LicenseManagementRevokeModalWrapper {...props} />);
-        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
-
+        await user.click(screen.getByText('Revoke (1)'));
         expect(onSuccessMock).toHaveBeenCalledTimes(0);
         expect(logError).toHaveBeenCalledTimes(1);
       });
 
       it('handles 207 partial success with 404 errors and successful revocations correctly', async () => {
+        const user = userEvent.setup();
         const mockPartialSuccess207WithMixed404AndSuccess = {
           status: 207,
           data: {
@@ -225,10 +215,8 @@ describe('<LicenseManagementRevokeModal />', () => {
           },
         };
         LicenseManagerApiService.licenseBulkRevoke.mockResolvedValue(mockPartialSuccess207WithMixed404AndSuccess);
-
         render(<LicenseManagementRevokeModalWrapper {...props} />);
-        await act(async () => { userEvent.click(screen.getByText('Revoke (1)')); });
-
+        await user.click(screen.getByText('Revoke (1)'));
         expect(onSuccessMock).toHaveBeenCalledTimes(1);
         expect(onSuccessMock).toHaveBeenCalledWith(mockPartialSuccess207WithMixed404AndSuccess.data);
         expect(logError).toHaveBeenCalledTimes(0);
@@ -236,15 +224,12 @@ describe('<LicenseManagementRevokeModal />', () => {
     });
 
     it('displays alert if licenseRevokeAll has error', async () => {
+      const user = userEvent.setup();
       LicenseManagerApiService.licenseRevokeAll.mockRejectedValue(new Error('something went wrong'));
       const props = { ...basicProps, revokeAllUsers: true, totalToRevoke: null };
-
-      act(() => {
-        render(<LicenseManagementRevokeModalWrapper {...props} />);
-      });
-
+      render(<LicenseManagementRevokeModalWrapper {...props} />);
       const button = screen.getByText('Revoke all');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(onSubmitMock).toHaveBeenCalledTimes(1);
 
       await waitFor(() => {
@@ -277,30 +262,24 @@ describe('<LicenseManagementRevokeModal />', () => {
     });
 
     it('calls licenseRevokeAll when revoking all users and there are no active filters', async () => {
+      const user = userEvent.setup();
       const props = {
         ...basicProps, revokeAllUsers: true, totalToRevoke: null, activeFilters: [],
       };
-
-      act(() => {
-        render(<LicenseManagementRevokeModalWrapper {...props} />);
-      });
-
+      render(<LicenseManagementRevokeModalWrapper {...props} />);
       const button = screen.getByText('Revoke all');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(LicenseManagerApiService.licenseRevokeAll).toHaveBeenCalled();
     });
 
     it('calls licenseBulkRevoke with emails when users are passed in', async () => {
+      const user = userEvent.setup();
       const props = {
         ...basicProps, usersToRevoke: [sampleUser], totalToRevoke: 1, activeFilters: [],
       };
-
-      act(() => {
-        render(<LicenseManagementRevokeModalWrapper {...props} />);
-      });
-
+      render(<LicenseManagementRevokeModalWrapper {...props} />);
       const button = screen.getByText('Revoke (1)');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(LicenseManagerApiService.licenseBulkRevoke).toHaveBeenCalledWith(
         props.subscription.uuid,
         {
@@ -310,6 +289,7 @@ describe('<LicenseManagementRevokeModal />', () => {
     });
 
     it('calls licenseBulkRevoke with filters when revoking all users and filters are applied', async () => {
+      const user = userEvent.setup();
       const props = {
         ...basicProps,
         revokeAllUsers: true,
@@ -320,13 +300,9 @@ describe('<LicenseManagementRevokeModal />', () => {
           filterValue: [ASSIGNED],
         }],
       };
-
-      act(() => {
-        render(<LicenseManagementRevokeModalWrapper {...props} />);
-      });
-
+      render(<LicenseManagementRevokeModalWrapper {...props} />);
       const button = screen.getByText('Revoke all');
-      await act(async () => { userEvent.click(button); });
+      await user.click(button);
       expect(LicenseManagerApiService.licenseBulkRevoke).toHaveBeenCalledWith(
         props.subscription.uuid,
         {

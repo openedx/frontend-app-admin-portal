@@ -3,19 +3,12 @@ import {
   screen,
   render,
   cleanup,
-  act,
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import ActionsTableCell from '../ActionsTableCell';
-
-Object.assign(navigator, {
-  clipboard: {
-    writeText: () => {},
-  },
-});
 
 jest.mock('@edx/frontend-platform/config', () => ({
   getConfig: () => ({ ENTERPRISE_LEARNER_PORTAL_URL: 'http://localhost:8734' }),
@@ -30,9 +23,7 @@ const ActionsTableCellWrapper = (props) => (
 );
 
 describe('ActionsTableCell', () => {
-  jest.spyOn(navigator.clipboard, 'writeText');
-
-  afterEach(() => {
+  beforeEach(() => {
     cleanup();
     jest.clearAllMocks();
   });
@@ -53,6 +44,16 @@ describe('ActionsTableCell', () => {
   });
 
   test('copies invite URL to clipboard', async () => {
+    const user = userEvent.setup();
+    const mockWriteText = jest.fn();
+
+    Object.defineProperty(navigator, 'clipboard', {
+      value: {
+        writeText: mockWriteText,
+      },
+      writable: true,
+      configurable: true,
+    });
     render(
       <ActionsTableCellWrapper
         row={{
@@ -64,13 +65,17 @@ describe('ActionsTableCell', () => {
       />,
     );
     const copyBtn = screen.getByText('Copy');
-    userEvent.click(copyBtn);
+    await user.click(copyBtn);
     const expectedURL = `http://localhost:8734/test-enterprise/invite/${TEST_INVITE_KEY_UUID}`;
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(expectedURL);
-    await waitFor(() => expect(screen.getByText('Link copied to clipboard')));
+
+    await waitFor(() => {
+      expect(mockWriteText).toHaveBeenCalledWith(expectedURL);
+      expect(screen.getByText('Link copied to clipboard'));
+    });
   });
 
   test('deactivate invite URL click opens confirmaiton modal', async () => {
+    const user = userEvent.setup();
     const handleDeactivateLink = jest.fn();
     const row = {
       original: {
@@ -85,7 +90,7 @@ describe('ActionsTableCell', () => {
       />,
     );
     const deactivateBtn = screen.getByText('Deactivate');
-    await act(async () => { userEvent.click(deactivateBtn); });
+    await user.click(deactivateBtn);
     const deactivateModalConfirmBtn = screen.getByTestId('deactivate-modal-confirmation');
     await waitFor(() => deactivateModalConfirmBtn);
   });

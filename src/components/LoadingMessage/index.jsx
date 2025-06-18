@@ -7,6 +7,7 @@ const LoadingMessage = (props) => {
   const { className } = props;
   return (
     <div
+      data-testid="loading-message"
       className={classNames(
         'loading d-flex align-items-center justify-content-center',
         className,

@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 
 import useSubsidyAccessPolicy from '../useSubsidyAccessPolicy'; // Import the hook
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
@@ -41,14 +41,14 @@ describe('useSubsidyAccessPolicy', () => {
         // Other properties...
       },
     });
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useSubsidyAccessPolicy(mockSubsidyAccessPolicyUUID),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(result.current.isLoading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(result.current.isError).toBe(false);
     expect(result.current.data).toEqual({
       uuid: mockSubsidyAccessPolicyUUID,
@@ -63,14 +63,14 @@ describe('useSubsidyAccessPolicy', () => {
     // Mock an error response from the API
     jest.spyOn(EnterpriseAccessApiService, 'retrieveSubsidyAccessPolicy').mockRejectedValueOnce(new Error('Mock API Error'));
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useSubsidyAccessPolicy(mockSubsidyAccessPolicyUUID),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(result.current.isLoading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(result.current.isError).toBe(true);
     expect(result.current.error.message).toBe('Mock API Error');
   });
@@ -103,11 +103,12 @@ describe('useSubsidyAccessPolicy', () => {
         // Other properties...
       },
     });
-    const { result, waitForNextUpdate } = renderHook(() => useSubsidyAccessPolicy(subsidyAccessPolicyId), { wrapper });
+    const { result } = renderHook(() => useSubsidyAccessPolicy(subsidyAccessPolicyId), { wrapper });
 
     if (expectedData) {
-      await waitForNextUpdate();
-      expect(result.current.isLoading).toBe(false);
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
     } else {
       expect(result.current.isLoading).toBe(true);
     }

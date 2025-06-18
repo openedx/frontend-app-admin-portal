@@ -105,6 +105,7 @@ describe('SAML Config Tab', () => {
     jest.clearAllMocks();
   });
   test('canceling connect step', async () => {
+    const user = userEvent.setup();
     const mockGetProviderConfig = jest.spyOn(LmsApiService, 'getProviderConfig');
     mockGetProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'success!' }] } });
     contextValue.ssoState.currentStep = 'connect';
@@ -128,10 +129,11 @@ describe('SAML Config Tab', () => {
     await expect(
       screen.queryByText('Loading SSO Configurations...'),
     ).toBeInTheDocument();
-    userEvent.click(screen.getByText('Cancel'));
+    await user.click(screen.getByText('Cancel'));
     await waitFor(() => expect(mockSetProviderConfig).toHaveBeenCalledWith(null));
   });
   test('canceling service provider step', async () => {
+    const user = userEvent.setup();
     contextValue.ssoState.currentStep = 'serviceprovider';
     renderWithI18nProvider(
       <Provider store={store}>
@@ -155,12 +157,11 @@ describe('SAML Config Tab', () => {
         screen.queryByText('I have added edX as a Service Provider in my SAML configuration'),
       ).toBeInTheDocument();
     }, []);
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Cancel'));
-    }, []);
+    await user.click(screen.getByText('Cancel'));
     expect(mockSetProviderConfig).toHaveBeenCalledWith(null);
   });
   test('error while configure step updating config from cancel button', async () => {
+    const user = userEvent.setup();
     // Setup
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockImplementation(() => {
@@ -185,18 +186,15 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Cancel'));
-    }, []);
+    await user.type(screen.getByText('Maximum Session Length (seconds)'), '2');
+    await user.click(screen.getByText('Cancel'));
     expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Save'));
-    }, []);
+    await user.click(screen.getByText('Save'));
     expect(handleErrors).toHaveBeenCalled();
     expect(screen.queryByText('Our system experienced an error.'));
   });
   test('canceling configure step without making changes', async () => {
+    const user = userEvent.setup();
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     contextValue.ssoState.currentStep = 'configure';
 
@@ -217,13 +215,12 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Cancel'));
-    }, []);
+    await user.click(screen.getByText('Cancel'));
     expect(mockUpdateProviderConfig).not.toHaveBeenCalled();
     expect(mockSetProviderConfig).toHaveBeenCalledWith(null);
   });
   test('update config method does not make api call if form is not updated', async () => {
+    const user = userEvent.setup();
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     contextValue.ssoState.currentStep = 'configure';
     renderWithI18nProvider(
@@ -243,13 +240,12 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Next'));
-    }, []);
+    await user.click(screen.getByText('Next'));
     expect(mockUpdateProviderConfig).not.toHaveBeenCalled();
     expect(updateCurrentStep).toHaveBeenCalledWith('connect');
   });
   test('error while configure step updating config from next button', async () => {
+    const user = userEvent.setup();
     // Setup
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockImplementation(() => {
@@ -273,14 +269,13 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Next'));
-    }, []);
+    await user.type(screen.getByText('Maximum Session Length (seconds)'), '2');
+    await user.click(screen.getByText('Next'));
     await waitFor(() => (expect(handleErrors).toHaveBeenCalled()), []);
     expect(screen.queryByText('Our system experienced an error.'));
   });
   test('canceling without saving configure form', async () => {
+    const user = userEvent.setup();
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     contextValue.ssoState.currentStep = 'configure';
     renderWithI18nProvider(
@@ -300,18 +295,15 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
+    await user.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
     expect(screen.getByText('Next')).toBeDisabled();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Cancel'));
-    }, []);
+    await user.click(screen.getByText('Cancel'));
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Exit without saving'));
-    }, []);
+    await user.click(screen.getByText('Exit without saving'));
     await expect(mockUpdateProviderConfig).not.toHaveBeenCalled();
   });
   test('saving while canceling configure form updates config', async () => {
+    const user = userEvent.setup();
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue('success!');
 
@@ -332,18 +324,15 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    userEvent.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
+    await user.type(screen.getByText('Maximum Session Length (seconds)'), 'haha hehe');
     expect(screen.getByText('Next')).toBeDisabled();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Cancel'));
-    }, []);
+    await user.click(screen.getByText('Cancel'));
     await expect(screen.queryByText('Do you want to save your work?')).toBeInTheDocument();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Save'));
-    }, []);
+    await user.click(screen.getByText('Save'));
     await expect(mockUpdateProviderConfig).toHaveBeenCalled();
   });
   test('configure step calls set provider config after updating', async () => {
+    const user = userEvent.setup();
     // Setup
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
@@ -365,10 +354,8 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    userEvent.type(screen.getByText('Maximum Session Length (seconds)'), '2');
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Next'));
-    }, []);
+    await user.type(screen.getByText('Maximum Session Length (seconds)'), '2');
+    await user.click(screen.getByText('Next'));
     await expect(mockUpdateProviderConfig).toHaveBeenCalled();
   });
   test('idp completed check for url entry', async () => {
@@ -396,6 +383,7 @@ describe('SAML Config Tab', () => {
     }, []);
   });
   test('show correct metadata entry based on selection', async () => {
+    const user = userEvent.setup();
     setupNewSSOStepper();
     await waitFor(() => {
       expect(getButtonElement('Next')).toBeInTheDocument();
@@ -406,19 +394,20 @@ describe('SAML Config Tab', () => {
     expect(screen.queryByText(uploadXmlText)).not.toBeInTheDocument();
 
     // Verify metadata selectors appear with their respective selections
-    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await user.click(screen.getByText('Enter identity Provider Metadata URL'));
     await waitFor(() => {
       expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
     }, []);
     expect(screen.queryByText(uploadXmlText)).not.toBeInTheDocument();
 
-    userEvent.click(screen.getByText('Upload Identity Provider Metadata XML file'));
+    await user.click(screen.getByText('Upload Identity Provider Metadata XML file'));
     await waitFor(() => {
       expect(screen.queryByText(uploadXmlText)).toBeInTheDocument();
     }, []);
     expect(screen.queryByText(enterUrlText)).not.toBeInTheDocument();
   });
   test('navigate through new non-SAP sso workflow', async () => {
+    const user = userEvent.setup();
     setupNewSSOStepper();
     const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');
     const mockUpdateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'updateEnterpriseSsoOrchestrationRecord');
@@ -434,14 +423,14 @@ describe('SAML Config Tab', () => {
     expect(screen.queryByText('Connect')).toBeInTheDocument();
     expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
     // Click provider
-    userEvent.click(screen.getByText('Okta'));
+    await user.click(screen.getByText('Okta'));
     // Click Enter identity Provider Metadata URL
-    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await user.click(screen.getByText('Enter identity Provider Metadata URL'));
     await waitFor(() => {
       expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
     }, []);
-    userEvent.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
-    userEvent.click(getButtonElement('Next'));
+    await user.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
+    await user.click(getButtonElement('Next'));
 
     // Configure Step
     await waitFor(() => {
@@ -451,7 +440,7 @@ describe('SAML Config Tab', () => {
     // Verify SAP field not present
     expect(screen.queryByText('OAuth Root URL')).not.toBeInTheDocument();
 
-    userEvent.click(getButtonElement('Configure'));
+    await user.click(getButtonElement('Configure'));
 
     // Authorize Step
     await waitFor(() => {
@@ -462,11 +451,11 @@ describe('SAML Config Tab', () => {
     await waitFor(() => {
       expect(getAuthorizedCheckbox()).toBeInTheDocument();
     }, []);
-    userEvent.click(getAuthorizedCheckbox());
+    await user.click(getAuthorizedCheckbox());
     await waitFor(() => {
       expect(getAuthorizedCheckbox()).toBeChecked();
     }, []);
-    userEvent.click(getButtonElement('Next'));
+    await user.click(getButtonElement('Next'));
 
     // Confirm and Test Step
     await waitFor(() => {
@@ -475,14 +464,15 @@ describe('SAML Config Tab', () => {
     expect(screen.queryByText('Wait for SSO configuration confirmation')).toBeInTheDocument();
   });
   test('cancel out of new SSO workflow', async () => {
+    const user = userEvent.setup();
     setupNewSSOStepper();
     // Connect Step Select an option to trigger cancel modal
-    userEvent.click(screen.getByText('Okta'));
-    userEvent.click(getButtonElement('Cancel'));
+    await user.click(screen.getByText('Okta'));
+    await user.click(getButtonElement('Cancel'));
     await waitFor(() => {
       expect(getButtonElement('Exit')).toBeInTheDocument();
     }, []);
-    userEvent.click(getButtonElement('Exit'));
+    await user.click(getButtonElement('Exit'));
 
     expect(setIsStepperOpen).toHaveBeenCalledWith(false);
   });
@@ -508,6 +498,7 @@ describe('SAML Config Tab', () => {
     screen.queryByText(testMetadataUrl);
   });
   test('navigate through new SAP sso workflow', async () => {
+    const user = userEvent.setup();
     setupNewSSOStepper();
     const mockCreateEnterpriseSsoOrchestrationRecord = jest.spyOn(LmsApiService, 'createEnterpriseSsoOrchestrationRecord');
     mockCreateEnterpriseSsoOrchestrationRecord.mockResolvedValue({ data: { record: 'fakeuuid', sp_metadata_url: 'https://fake.url' } });
@@ -520,33 +511,30 @@ describe('SAML Config Tab', () => {
     expect(screen.queryByText('Connect')).toBeInTheDocument();
     expect(screen.queryByText('Let\'s get started')).toBeInTheDocument();
     // Click SAP provider
-    userEvent.click(screen.getByText('SAP SuccessFactors'));
+    await user.click(screen.getByText('SAP SuccessFactors'));
     // Click Enter identity Provider Metadata URL
-    userEvent.click(screen.getByText('Enter identity Provider Metadata URL'));
+    await user.click(screen.getByText('Enter identity Provider Metadata URL'));
     await waitFor(() => {
       expect(screen.queryByText(enterUrlText)).toBeInTheDocument();
     }, []);
-    userEvent.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
-    userEvent.click(getButtonElement('Next'));
+    await user.type(screen.queryByText(enterUrlText), 'https://unimportant.link');
+    await user.click(getButtonElement('Next'));
 
     // Configure Step
     await waitFor(() => {
       expect(screen.queryByText('OAuth Root URL')).toBeInTheDocument();
     }, []);
     // Verify Configure does not advance until fields are filled out
-    userEvent.click(getButtonElement('Configure'));
+    await user.click(getButtonElement('Configure'));
     expect(screen.queryByText('OAuth Root URL')).toBeInTheDocument();
-    const fieldEntries = [
-      ['OAuth Root URL', 'https://test'],
-      ['API Root URL', 'https://test'],
-      ['Company ID', 'test'],
-      ['Private Key', 'test'],
-      ['OAuth User ID', 'test'],
-    ];
-    fieldEntries.forEach(([fieldIdText, value]) => {
-      userEvent.type(screen.queryByText(fieldIdText), value);
-    });
-    userEvent.click(getButtonElement('Configure'));
+
+    await user.type(screen.queryByText('OAuth Root URL'), 'https://test');
+    await user.type(screen.queryByText('API Root URL'), 'https://test');
+    await user.type(screen.queryByText('Company ID'), 'test');
+    await user.type(screen.queryByText('Private Key'), 'test');
+    await user.type(screen.queryByText('OAuth User ID'), 'test');
+
+    await user.click(getButtonElement('Configure'));
     await waitFor(() => {
       expect(getButtonElement('Next')).toBeInTheDocument();
     }, []);
@@ -580,6 +568,7 @@ describe('SAML Config Tab', () => {
     await waitFor(() => expect(screen.getByDisplayValue('https://ayylmao.com')).toBeInTheDocument());
   });
   test('configure step handling SAP IDPs', async () => {
+    const user = userEvent.setup();
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
     contextValue.ssoState.currentStep = 'configure';
@@ -600,22 +589,18 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('I am using SAP Success Factors as an Identity Provider'));
-    }, []);
+    await user.click(screen.getByText('I am using SAP Success Factors as an Identity Provider'));
     await waitFor(() => expect(screen.getByText('SSO Configuration Name')).toBeInTheDocument());
     expect(screen.getByText('Next')).toBeDisabled();
-    userEvent.type(screen.getByText('OData API Root URL'), 'foobar.com');
-    userEvent.type(screen.getByText('OData Company ID'), '2');
-    userEvent.type(screen.getByText('OData Client ID'), '2');
-    userEvent.type(screen.getByText('OData API Timeout Interval'), '2');
-    userEvent.type(screen.getByText('SAP SuccessFactors OAuth Root URL'), 'foobar.com');
-    userEvent.type(screen.getByText('SAP SuccessFactors Private Key'), '2');
-    userEvent.type(screen.getByText('OAuth User ID'), '2');
+    await user.type(screen.getByText('OData API Root URL'), 'foobar.com');
+    await user.type(screen.getByText('OData Company ID'), '2');
+    await user.type(screen.getByText('OData Client ID'), '2');
+    await user.type(screen.getByText('OData API Timeout Interval'), '2');
+    await user.type(screen.getByText('SAP SuccessFactors OAuth Root URL'), 'foobar.com');
+    await user.type(screen.getByText('SAP SuccessFactors Private Key'), '2');
+    await user.type(screen.getByText('OAuth User ID'), '2');
     expect(screen.getByText('Next')).not.toBeDisabled();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Next'));
-    }, []);
+    await user.click(screen.getByText('Next'));
 
     const expectedConfigFormData = {
       enterprise_customer_uuid: enterpriseId,
@@ -659,6 +644,7 @@ describe('SAML Config Tab', () => {
     expect(mockUpdateProviderConfig.mock.calls[0][1]).toEqual(1337);
   });
   test('configure step validating SAP IDP specific fields', async () => {
+    const user = userEvent.setup();
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
     contextValue.ssoState.currentStep = 'configure';
@@ -679,20 +665,19 @@ describe('SAML Config Tab', () => {
         + ' to allow quick access to your organization\'s learning catalog.',
       ),
     ).toBeInTheDocument();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('I am using SAP Success Factors as an Identity Provider'));
-    }, []);
+    await user.click(screen.getByText('I am using SAP Success Factors as an Identity Provider'));
     await waitFor(() => expect(screen.getByText('SSO Configuration Name')).toBeInTheDocument());
     expect(screen.getByText('Next')).toBeDisabled();
-    userEvent.type(screen.getByText('OData API Root URL'), 'wow');
-    userEvent.type(screen.getByText('OData API Timeout Interval'), '40');
-    userEvent.type(screen.getByText('SAP SuccessFactors OAuth Root URL'), 'ayylmao');
+    await user.type(screen.getByText('OData API Root URL'), 'wow');
+    await user.type(screen.getByText('OData API Timeout Interval'), '40');
+    await user.type(screen.getByText('SAP SuccessFactors OAuth Root URL'), 'ayylmao');
     expect(screen.getByText('Next')).toBeDisabled();
     expect(screen.getByText(INVALID_ODATA_API_TIMEOUT_INTERVAL)).toBeInTheDocument();
     expect(screen.getByText(INVALID_SAPSF_OAUTH_ROOT_URL)).toBeInTheDocument();
     expect(screen.getByText(INVALID_API_ROOT_URL)).toBeInTheDocument();
   });
   test('configure step handling attr_username', async () => {
+    const user = userEvent.setup();
     const mockUpdateProviderConfig = jest.spyOn(LmsApiService, 'updateProviderConfig');
     mockUpdateProviderConfig.mockResolvedValue({ data: { result: [{ woohoo: 'ayylmao!' }] } });
     contextValue.ssoState.currentStep = 'configure';
@@ -715,11 +700,9 @@ describe('SAML Config Tab', () => {
     ).toBeInTheDocument();
 
     await waitFor(() => expect(screen.getByText('SSO Configuration Name')).toBeInTheDocument());
-    userEvent.type(screen.getByText('Username Hint Attribute'), 'foobar');
+    await user.type(screen.getByText('Username Hint Attribute'), 'foobar');
     expect(screen.getByText('Next')).not.toBeDisabled();
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Next'));
-    }, []);
+    await user.click(screen.getByText('Next'));
 
     const expectedConfigFormData = {
       enterprise_customer_uuid: enterpriseId,

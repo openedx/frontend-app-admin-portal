@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, render, fireEvent, screen, waitFor,
+  render, screen, waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -89,14 +89,10 @@ function testBlackboardConfigSetup(formData) {
 }
 
 async function clearForm() {
-  await act(async () => {
-    fireEvent.change(screen.getByLabelText('Display Name'), {
-      target: { value: '' },
-    });
-    fireEvent.change(screen.getByLabelText('Blackboard Base URL'), {
-      target: { value: '' },
-    });
-  });
+  const user = userEvent.setup();
+
+  await user.clear(screen.getByLabelText('Display Name'));
+  await user.clear(screen.getByLabelText('Blackboard Base URL'));
 }
 
 describe('<BlackboardConfig />', () => {
@@ -109,44 +105,43 @@ describe('<BlackboardConfig />', () => {
     screen.getByLabelText('Blackboard Base URL');
   });
   test('test error messages', async () => {
+    const user = userEvent.setup();
     render(testBlackboardConfigSetup(noExistingData));
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await clearForm();
-    userEvent.click(authorizeButton);
+    await user.click(authorizeButton);
     expect(screen.queryByText(validationMessages.displayNameRequired));
     expect(screen.queryByText(validationMessages.baseUrlRequired));
 
-    userEvent.paste(screen.getByLabelText('Display Name'), 'name');
-    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'test4');
+    await user.type(screen.getByLabelText('Display Name'), 'name');
+    await user.type(screen.getByLabelText('Blackboard Base URL'), 'test4');
 
-    userEvent.click(authorizeButton);
+    await user.click(authorizeButton);
     expect(screen.queryByText(INVALID_LINK));
     expect(screen.queryByText(INVALID_NAME));
     await clearForm();
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(
-      screen.getByLabelText('Blackboard Base URL'),
-      'https://www.test4.com',
-    );
-    userEvent.click(authorizeButton);
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    await user.click(authorizeButton);
     expect(!screen.queryByText(INVALID_LINK));
     expect(!screen.queryByText(INVALID_NAME));
   });
   test('it edits existing configs on submit', async () => {
+    const user = userEvent.setup();
     render(testBlackboardConfigSetup(existingConfigData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     await clearForm();
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    await waitFor(() => user.type(screen.getByLabelText('Display Name'), 'displayName'));
+    await waitFor(() => user.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com'));
 
     expect(authorizeButton).not.toBeDisabled();
 
-    userEvent.click(authorizeButton);
+    await waitFor(() => user.click(authorizeButton));
 
     // await authorization loading modal
-    await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
+    await waitFor(() => expect(screen.queryAllByText('Please confirm authorization through Blackboard and return to this window once complete.').length > 0));
 
     const expectedConfig = {
       active: true,
@@ -159,15 +154,17 @@ describe('<BlackboardConfig />', () => {
     expect(mockUpdate).toHaveBeenCalledWith(expectedConfig, 1);
   });
   test('it creates new configs on submit', async () => {
+    const user = userEvent.setup();
+
     render(testBlackboardConfigSetup(noExistingData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
 
     await clearForm();
 
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
 
-    userEvent.click(authorizeButton);
+    await user.click(authorizeButton);
     // await authorization loading modal
     await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
 
@@ -180,20 +177,21 @@ describe('<BlackboardConfig />', () => {
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('saves draft correctly', async () => {
+    const user = userEvent.setup();
     render(testBlackboardConfigSetup(noExistingData));
     const cancelButton = screen.getByRole('button', { name: 'Cancel' });
 
     await clearForm();
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
 
     expect(cancelButton).not.toBeDisabled();
-    userEvent.click(cancelButton);
+    await user.click(cancelButton);
 
     await waitFor(() => expect(screen.getByText('Exit configuration')).toBeInTheDocument());
     const closeButton = screen.getByRole('button', { name: 'Exit' });
 
-    userEvent.click(closeButton);
+    await user.click(closeButton);
 
     const expectedConfig = {
       active: false,
@@ -204,12 +202,13 @@ describe('<BlackboardConfig />', () => {
     expect(mockPost).toHaveBeenCalledWith(expectedConfig);
   });
   test('Authorizing a config will initiate backend polling', async () => {
+    const user = userEvent.setup();
     render(testBlackboardConfigSetup(noExistingData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
     await clearForm();
-    userEvent.paste(screen.getByLabelText('Display Name'), 'displayName');
-    userEvent.paste(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
-    userEvent.click(authorizeButton);
+    await user.type(screen.getByLabelText('Display Name'), 'displayName');
+    await user.type(screen.getByLabelText('Blackboard Base URL'), 'https://www.test4.com');
+    await user.click(authorizeButton);
 
     // await authorization loading modal
     await waitFor(() => expect(screen.queryByText('Please confirm authorization through Blackboard and return to this window once complete.')));
@@ -217,14 +216,16 @@ describe('<BlackboardConfig />', () => {
     expect(mockFetch).toHaveBeenCalledWith(1);
   });
   test('validates poorly formatted existing data on load', async () => {
+    const user = userEvent.setup();
     render(testBlackboardConfigSetup(invalidExistingData));
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-    userEvent.click(authorizeButton);
+    await user.click(authorizeButton);
 
     await waitFor(() => expect(screen.getByText(INVALID_NAME)).toBeInTheDocument());
     expect(screen.getByText(INVALID_LINK)).toBeInTheDocument();
   });
-  test('validates properly formatted existing data on load', () => {
+  test('validates properly formatted existing data on load', async () => {
+    const user = userEvent.setup();
     render(testBlackboardConfigSetup(existingConfigDataNoAuth));
     // ensuring the existing data is prefilled
     expect((screen.getByLabelText('Display Name') as HTMLInputElement).value).toEqual(
@@ -235,7 +236,7 @@ describe('<BlackboardConfig />', () => {
     );
 
     const authorizeButton = screen.getByRole('button', { name: 'Authorize' });
-    userEvent.click(authorizeButton);
+    await user.click(authorizeButton);
     expect(screen.queryByText(INVALID_LINK)).not.toBeInTheDocument();
     expect(screen.queryByText(INVALID_NAME)).not.toBeInTheDocument();
   });
