@@ -5,6 +5,7 @@ import { Spinner } from '@openedx/paragon';
 import ScatterChart from './ScatterChart';
 import LineChart from './LineChart';
 import BarChart from './BarChart';
+import TreeMap from './Treemap';
 import EmptyChart from './EmptyChart';
 
 const ChartWrapper = ({
@@ -22,6 +23,7 @@ const ChartWrapper = ({
     ScatterChart: <ScatterChart {...chartProps} />,
     LineChart: <LineChart {...chartProps} />,
     BarChart: <BarChart {...chartProps} />,
+    Treemap: <TreeMap {...chartProps} />,
   };
 
   return (
@@ -39,14 +41,14 @@ const ChartWrapper = ({
 ChartWrapper.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
-  chartType: PropTypes.oneOf(['ScatterChart', 'LineChart', 'BarChart']).isRequired,
+  chartType: PropTypes.oneOf(['ScatterChart', 'LineChart', 'BarChart', 'Treemap']).isRequired,
   chartProps: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    xKey: PropTypes.string.isRequired,
-    yKey: PropTypes.string.isRequired,
-    colorKey: PropTypes.string.isRequired,
-    colorMap: PropTypes.objectOf(PropTypes.string).isRequired,
-    hovertemplate: PropTypes.string.isRequired,
+    xKey: PropTypes.string,
+    yKey: PropTypes.string,
+    colorKey: PropTypes.string,
+    colorMap: PropTypes.objectOf(PropTypes.string),
+    hovertemplate: PropTypes.string,
     xAxisTitle: PropTypes.string,
     yAxisTitle: PropTypes.string,
     markerSizes: PropTypes.arrayOf(PropTypes.number), // An array of sizes for the markers.
