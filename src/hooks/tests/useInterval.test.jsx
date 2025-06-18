@@ -1,13 +1,18 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { useInterval } from '..';
 
 const interval = 1000;
 jest.useFakeTimers();
 
+let callback1;
+beforeEach(() => {
+  callback1 = jest.fn();
+});
+
 describe('useInterval hook', () => {
   // I could not get jest to properly reset the function between tests
-  const callback1 = jest.fn();
+  callback1 = jest.fn();
   const callback2 = jest.fn();
   const FakeComponent = () => {
     useInterval(callback1, interval);
@@ -26,36 +31,25 @@ describe('useInterval hook', () => {
     jest.useRealTimers();
   });
 
-  it('calls the test function every second', (done) => {
-    const wrapper = mount(<FakeComponent />);
-    setTimeout(() => {
-      try {
-        expect(callback1).toHaveBeenCalledTimes(5);
+  it('calls the test function every second', () => {
+    jest.useFakeTimers();
+    render(<FakeComponent />);
 
-        wrapper.unmount();
-        done();
-      } catch (e) {
-        wrapper.unmount();
-        done.fail(e);
-      }
-    }, 5000);
-    // with a delay of 1 second we expect it to have been called 5 times
     jest.advanceTimersByTime(5100);
+
+    expect(callback1).toHaveBeenCalledTimes(5);
+
+    jest.useRealTimers();
   });
   // test not currently working
-  it.skip('does not call the function if the delay is null', (done) => {
-    const wrapper = mount(<FakeComponentNullInterval />);
-    setTimeout(() => {
-      try {
-        expect(callback1).not.toHaveBeenCalled();
-        wrapper.unmount();
-        done();
-      } catch (e) {
-        wrapper.unmount();
-        done.fail(e);
-      }
-    }, 5000);
+  it('does not call the function if the delay is null', () => {
+    jest.useFakeTimers();
+    render(<FakeComponentNullInterval />);
 
     jest.advanceTimersByTime(5100);
+
+    expect(callback1).not.toHaveBeenCalled();
+
+    jest.useRealTimers();
   });
 });

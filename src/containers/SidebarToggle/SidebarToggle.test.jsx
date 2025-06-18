@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import configureMockStore from 'redux-mock-store';
+import '@testing-library/jest-dom';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-
-import { Close, MenuIcon } from '@openedx/paragon/icons';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import SidebarToggle from './index';
 import {
@@ -40,28 +39,30 @@ SidebarToggleWrapper.propTypes = {
 };
 
 describe('<Sidebar />', () => {
-  it('renders correctly with menu icon', () => {
-    const wrapper = mount(<SidebarToggleWrapper />);
-    expect(wrapper.find(MenuIcon)).toHaveLength(1);
+  it('renders correctly with menu icon', async () => {
+    render(<SidebarToggleWrapper />);
+    const menuIcon = await screen.findByTestId('menu-icon');
+    expect(menuIcon).toBeInTheDocument();
   });
 
-  it('renders correctly with close icon', () => {
+  it('renders correctly with close icon', async () => {
     const store = mockStore({
       sidebar: {
         ...initialState.sidebar,
         isExpandedByToggle: true,
       },
     });
-    const wrapper = mount(<SidebarToggleWrapper store={store} />);
-    expect(wrapper.find(Close)).toHaveLength(1);
+    render(<SidebarToggleWrapper store={store} />);
+    const closeIcon = await screen.findByTestId('close-icon');
+    expect(closeIcon).toBeInTheDocument();
   });
 
-  it('dispatches expandSidebar action', () => {
+  it('dispatches expandSidebar action', async () => {
     const store = mockStore({
       ...initialState,
     });
 
-    const wrapper = mount((
+    render((
       <SidebarToggleWrapper store={store} />
     ));
 
@@ -71,11 +72,12 @@ describe('<Sidebar />', () => {
     }];
 
     store.clearActions();
-    wrapper.find('SidebarToggle').simulate('click');
+    const toggleButton = await screen.findByTestId('menu-icon');
+    fireEvent.click(toggleButton);
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('dispatches collapseSidebar action', () => {
+  it('dispatches collapseSidebar action', async () => {
     const store = mockStore({
       ...initialState,
       sidebar: {
@@ -84,7 +86,7 @@ describe('<Sidebar />', () => {
       },
     });
 
-    const wrapper = mount((
+    render((
       <SidebarToggleWrapper store={store} />
     ));
 
@@ -94,7 +96,8 @@ describe('<Sidebar />', () => {
     }];
 
     store.clearActions();
-    wrapper.find('SidebarToggle').simulate('click');
+    const toggleButton = await screen.findByTestId('close-icon');
+    fireEvent.click(toggleButton);
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

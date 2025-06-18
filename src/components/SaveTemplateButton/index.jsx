@@ -142,6 +142,7 @@ class SaveTemplateButton extends React.Component {
       <StatefulButton
         variant={buttonIconClasses[submitState]}
         className="save-template-btn"
+        data-testid="save-template-btn"
         onClick={handleSubmit(this.handleSaveTemplate)}
         state={submitState}
         labels={{

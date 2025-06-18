@@ -27,7 +27,7 @@ const ErrorPage = (props) => {
       <Helmet>
         <title>Error</title>
       </Helmet>
-      <div className="container-fluid">
+      <div data-testid="error-page" className="container-fluid">
         <div className="row mt-4">
           <div className="col">
             <Alert

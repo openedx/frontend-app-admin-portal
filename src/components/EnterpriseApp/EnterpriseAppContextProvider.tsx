@@ -133,7 +133,8 @@ EnterpriseAppContextProvider.propTypes = {
     topDownAssignmentRealTimeLcm: PropTypes.bool.isRequired,
   }).isRequired,
   enablePortalLearnerCreditManagementScreen: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired,
+  // @ts-expect-error children is required by React.FC
+  children: PropTypes.node,
 };
 
 export default EnterpriseAppContextProvider;

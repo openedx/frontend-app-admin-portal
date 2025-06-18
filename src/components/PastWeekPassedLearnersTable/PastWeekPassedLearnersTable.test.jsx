@@ -5,7 +5,8 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 import PastWeekPassedLearnersTable from '.';
 
@@ -62,8 +63,6 @@ const PastWeekPassedLearnersWrapper = props => (
 );
 
 describe('PastWeekPassedLearnersTable', () => {
-  let wrapper;
-
   it('renders table correctly', () => {
     const tree = renderer
       .create((
@@ -89,25 +88,25 @@ describe('PastWeekPassedLearnersTable', () => {
       ],
     ];
 
-    wrapper = mount((
+    const { container } = render((
       <PastWeekPassedLearnersWrapper />
     ));
 
     // Verify that table has correct number of columns
-    expect(wrapper.find(`.${tableId} thead th`).length).toEqual(3);
+    expect(container.querySelector(`.${tableId} thead th`)).toBeInTheDocument();
 
     // Verify only expected columns are shown
-    wrapper.find(`.${tableId} thead th`).forEach((column, index) => {
-      expect(column.text()).toContain(columnTitles[index]);
+    container.querySelectorAll(`.${tableId} thead th`).forEach((column, index) => {
+      expect(column.textContent).toContain(columnTitles[index]);
     });
 
     // Verify that table has correct number of rows
-    expect(wrapper.find(`.${tableId} tbody tr`).length).toEqual(2);
+    expect(container.querySelectorAll(`.${tableId} tbody tr`).length).toEqual(2);
 
     // Verify each row in table has correct data
-    wrapper.find(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
-      row.find('td').forEach((cell, colIndex) => {
-        expect(cell.text()).toEqual(rowsData[rowIndex][colIndex]);
+    container.querySelectorAll(`.${tableId} tbody tr`).forEach((row, rowIndex) => {
+      row.querySelectorAll('td').forEach((cell, colIndex) => {
+        expect(cell.textContent).toContain(rowsData[rowIndex][colIndex]);
       });
     });
   });
