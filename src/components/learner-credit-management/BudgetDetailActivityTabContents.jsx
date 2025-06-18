@@ -6,6 +6,7 @@ import { Skeleton, Stack } from '@openedx/paragon';
 
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
+import BudgetDetailApprovedRequest from './BudgetDetailApprovedRequest';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
@@ -25,6 +26,15 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
     enterpriseUUID,
     isTopDownAssignmentEnabled,
   });
+
+  if (subsidyAccessPolicy?.bnrEnabled) {
+    return (
+      <Stack gap={5}>
+        <BudgetDetailApprovedRequest />
+        <BudgetDetailRedemptions />
+      </Stack>
+    );
+  }
 
   // If the budget activity overview data is loading (either the initial request OR any
   // background re-fetching), show a skeleton.
