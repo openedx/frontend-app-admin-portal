@@ -492,7 +492,7 @@ class Admin extends React.Component {
               </div>
 
               <div className="row mt-4" id="learner-progress-report">
-                <div className="col" id={TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}>
+                <div className="col">
                   <div className="row">
                     <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
                       <h2 className="table-title" ref={this.fullReportRef}>{tableMetadata.title}</h2>
@@ -511,7 +511,7 @@ class Admin extends React.Component {
                 </div>
               </div>
 
-              <div className="tabs-container">
+              <div className="tabs-container" id={TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}>
                 <div className="col-12 col-md-6  col-xl-4 pt-1 pb-3">
                   {lastUpdatedDate
                     && (

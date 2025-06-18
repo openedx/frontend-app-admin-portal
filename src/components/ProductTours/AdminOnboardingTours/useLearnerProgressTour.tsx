@@ -1,4 +1,4 @@
-import { ReactNode, useCallback } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
@@ -10,6 +10,7 @@ import {
 
 import messages from './messages';
 import LmsApiService from '../../../data/services/LmsApiService';
+import { flowUuids } from '../../../config';
 
 interface TourStep {
   target: string;
@@ -22,20 +23,25 @@ interface TourStep {
 interface UseLearnerProgressTourProps {
   enterpriseSlug: string;
   adminUuid: string;
+  aiButtonVisible: boolean;
 }
 
-const useLearnerProgressTour = ({ enterpriseSlug, adminUuid }: UseLearnerProgressTourProps): Array<TourStep> => {
+const useLearnerProgressTour = (
+  { enterpriseSlug, adminUuid, aiButtonVisible }: UseLearnerProgressTourProps,
+): Array<TourStep> => {
   const intl = useIntl();
+  const [stepIndex, setStepIndex] = useState(0);
 
   const handleAdvanceTour = useCallback(() => {
-    sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
-  }, [enterpriseSlug]);
+    const newIndex = stepIndex + 1;
+    sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME, { 'completed-step': newIndex });
+    setStepIndex(newIndex);
+  }, [enterpriseSlug, stepIndex]);
 
   const handleEndTour = async () => {
     try {
       sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
-      const flowUuid = 'test';
-      await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuid);
+      await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuids.TRACK_LEARNER_PROGRESS_UUID);
     } catch (error) {
       logError(error);
     }
@@ -51,11 +57,6 @@ const useLearnerProgressTour = ({ enterpriseSlug, adminUuid }: UseLearnerProgres
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LPR_OVERVIEW}`,
     placement: 'bottom',
     body: intl.formatMessage(messages.trackLearnerProgressStepTwoBody),
-    onAdvance: handleAdvanceTour,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY}`,
-    placement: 'right',
-    body: intl.formatMessage(messages.trackLearnerProgressStepThreeBody),
     onAdvance: handleAdvanceTour,
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}`,
@@ -84,6 +85,15 @@ const useLearnerProgressTour = ({ enterpriseSlug, adminUuid }: UseLearnerProgres
     onAdvance: handleEndTour,
   },
   ];
+
+  if (aiButtonVisible) {
+    tour.splice(2, 0, {
+      target: `#${TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY}`,
+      placement: 'right',
+      body: intl.formatMessage(messages.trackLearnerProgressStepThreeBody),
+      onAdvance: handleAdvanceTour,
+    });
+  }
 
   return tour;
 };

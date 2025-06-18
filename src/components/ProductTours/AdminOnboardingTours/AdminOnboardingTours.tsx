@@ -7,6 +7,11 @@ import useLearnerProgressTour from './useLearnerProgressTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 
+interface Insights {
+  learner_engagement?: any;
+  learner_progress?: any;
+}
+
 interface AdminOnboardingToursProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,9 +19,15 @@ interface AdminOnboardingToursProps {
   adminUuid: string,
   setTarget: Function,
   enterpriseSlug: string;
+  insights: Insights;
+  insightsLoading: boolean;
 }
 
 interface RootState {
+  dashboardInsights: {
+    insights: Insights;
+    loading: boolean;
+  };
   portalConfiguration: {
     enterpriseSlug: string;
   };
@@ -29,12 +40,15 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   isOpen,
   onClose,
   targetSelector,
-  adminUuid,
   setTarget,
+  adminUuid,
   enterpriseSlug,
+  insights,
+  insightsLoading,
 }) => {
+  const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
-  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid });
+  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
 
   useEffect(() => {
     if (learnerProgressSteps[currentStep]) {
@@ -81,13 +95,10 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       })),
     },
   ];
-  if (!isOpen) {
-    return null;
-  }
 
   return (
     <>
-      <CheckpointOverlay target={`#${targetSelector}`} />
+      <CheckpointOverlay target={targetSelector} />
       <ProductTour
         tours={tours}
       />
@@ -102,11 +113,16 @@ AdminOnboardingTours.propTypes = {
   setTarget: PropTypes.func.isRequired,
   adminUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  insights: PropTypes.shape({
+    learner_engagement: PropTypes.shape({}),
+    learner_progress: PropTypes.shape({}),
+  }).isRequired,
+  insightsLoading: PropTypes.bool.isRequired,
 };
-
 const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  insights: state.dashboardInsights.insights,
+  insightsLoading: state.dashboardInsights.loading,
 });
-
 export default connect(mapStateToProps)(AdminOnboardingTours);

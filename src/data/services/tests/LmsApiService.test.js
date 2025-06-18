@@ -184,4 +184,19 @@ describe('LmsApiService', () => {
     );
     expect(response).toEqual(camelCaseDict(mockPayload));
   });
+  test('updateCompletedTourFlows returns', async () => {
+    const mockPayload = {
+      status: 200,
+      data: {
+        message: 'Successfully added tour flow Flow Title to completed flows',
+      },
+    };
+    axios.post.mockResolvedValue(mockPayload);
+    const response = await LmsApiService.updateCompletedTourFlows('test-admin-uuid', 'test-flow-uuid');
+    expect(axios.post).toHaveBeenCalledWith(
+      `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer-admin/test-admin-uuid/complete_tour_flow/`,
+      { flow_uuid: ['test-flow-uuid'] },
+    );
+    expect(response).toEqual(mockPayload);
+  });
 });

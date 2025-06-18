@@ -1,41 +1,36 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
+import userEvent from '@testing-library/user-event';
 import AdminOnboardingTours from '../AdminOnboardingTours';
 import useLearnerProgressTour from '../useLearnerProgressTour';
 
-jest.mock('@edx/frontend-platform/i18n', () => ({
-  FormattedMessage: ({ defaultMessage }) => defaultMessage,
-  defineMessages: (messages) => messages,
-}));
-
 const mockOnAdvance = jest.fn();
-
-const targets = ['#step-1', '#step-2', '#step-3', '#step-4'];
 
 jest.mock('../useLearnerProgressTour', () => jest.fn(() => ([
   {
-    target: targets[0],
+    target: '#step-1',
     placement: 'right',
     title: 'This is a title',
     body: 'And would you believe it, this is a body!',
     onAdvance: mockOnAdvance,
   },
   {
-    target: targets[1],
+    target: '#step-2',
     placement: 'bottom',
     body: 'Learning is so fun!',
     onAdvance: mockOnAdvance,
   }, {
-    target: targets[2],
+    target: '#step-3',
     placement: 'top',
     body: 'Here is a really cool button, or perhaps a table.',
     onAdvance: mockOnAdvance,
   }, {
-    target: targets[3],
+    target: '#step-4',
     placement: 'top',
     body: 'Upon our conclusion, I wish you an earnest farewell.',
     onEnd: mockOnAdvance,
@@ -78,31 +73,34 @@ describe('AdminOnboardingTours', () => {
         uuid: enterpriseAdminUuid,
       },
     });
+    jest.clearAllMocks();
   });
 
   const defaultProps = {
     isOpen: true,
     onClose: jest.fn(),
     setTarget: jest.fn(),
-    targetSelector: 'learner-progress-sidebar',
+    targetSelector: '#step-1',
   };
 
   const renderComponent = (props = {}) => {
     const finalProps = { ...defaultProps, ...props };
     return render(
-      <Provider store={store}>
-        <p id={targets[0]}>Step 1</p>
-        <p id={targets[1]}>Step 2</p>
-        <p id={targets[2]}>Step 3</p>
-        <p id={targets[3]}>Step 4</p>
-        <AdminOnboardingTours {...finalProps} />
-      </Provider>,
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <p id="step-1">Step 1</p>
+          <p id="step-2">Step 2</p>
+          <p id="step-3">Step 3</p>
+          <p id="step-4">Step 4</p>
+          <AdminOnboardingTours {...finalProps} />
+        </Provider>
+      </IntlProvider>,
     );
   };
 
-  it('renders nothing when isOpen is false', () => {
-    const { container } = renderComponent({ isOpen: false });
-    expect(container.firstChild).toBeNull();
+  it('renders nothing when isOpen is false', async () => {
+    renderComponent({ isOpen: false });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('renders CheckpointOverlay with correct target', () => {
@@ -111,16 +109,30 @@ describe('AdminOnboardingTours', () => {
     expect(overlay).toBeTruthy();
   });
 
-  it('renders ProductTour with correct configuration', () => {
+  it('renders useLearnerProgressTour hook with correct parameters', () => {
     renderComponent();
     expect(useLearnerProgressTour).toHaveBeenCalledWith({
       enterpriseSlug: slug,
       adminUuid: enterpriseAdminUuid,
+      aiButtonVisible: true,
     });
   });
 
-  it('renders???', () => {
+  it('renders Product tour', async () => {
     renderComponent();
-    screen.debug(undefined, 1000000);
+    screen.debug(null, Infinity);
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText('This is a title')).toBeInTheDocument();
+    expect(screen.getByText('This is a title')).toBeInTheDocument();
+  });
+
+  it('advances the tour', async () => {
+    renderComponent();
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+    const nextButton = screen.getByRole('button', { name: 'Next' });
+    userEvent.click(nextButton);
+    await waitFor(() => {
+      expect(mockOnAdvance).toHaveBeenCalled();
+    });
   });
 });
