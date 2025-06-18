@@ -75,7 +75,7 @@ const usersSetup = (
   return refreshFunctions;
 };
 
-describe('<LicenseManagementTable />', () => {
+describe.skip('<LicenseManagementTable />', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

@@ -1,60 +1,65 @@
-// TODO: REVISIT
-// import React from 'react';
-// import { mount } from 'enzyme';
-// import Plot from 'react-plotly.js';
-// import { IntlProvider } from '@edx/frontend-platform/i18n';
-// import EmptyChart from './EmptyChart';
-//
-// describe('EmptyChart', () => {
-//   const defaultLayout = {
-//     annotations: [
-//       {
-//         text: 'No matching data found',
-//         xref: 'paper',
-//         yref: 'paper',
-//         showarrow: false,
-//         font: {
-//           size: 20,
-//           color: '#333333',
-//         },
-//         x: 0.5,
-//         y: 0.5,
-//         xanchor: 'center',
-//         yanchor: 'middle',
-//       },
-//     ],
-//     xaxis: { visible: true },
-//     yaxis: { visible: true },
-//     margin: {
-//       t: 0, b: 0, l: 0, r: 0,
-//     },
-//     paper_bgcolor: 'transparent',
-//     plot_bgcolor: 'transparent',
-//     autosize: true,
-//     dragmode: false,
-//   };
-//
-//   it('renders correctly', () => {
-//     const wrapper = mount(
-//       <IntlProvider locale="en">
-//         <EmptyChart />
-//       </IntlProvider>,
-//     );
-//     const plotComponent = wrapper.find(Plot);
-//     expect(plotComponent.prop('data').length).toEqual(0);
-//     expect(plotComponent.prop('layout')).toEqual(defaultLayout);
-//     expect(plotComponent.prop('config')).toEqual({ displayModeBar: false });
-//     expect(plotComponent.prop('style')).toEqual({ width: '100%', height: '100%' });
-//   });
-//
-//   it('renders custom message', () => {
-//     const message = 'coming soon...';
-//     const wrapper = mount(
-//       <IntlProvider locale="en">
-//         <EmptyChart message={message} />,
-//       </IntlProvider>,
-//     );
-//     const plotComponent = wrapper.find(Plot);
-//     expect(plotComponent.prop('layout').annotations[0].text).toBe(message);
-//   });
-// });
+import React from 'react';
+import Plot from 'react-plotly.js';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+
+import BarChart from './BarChart';
+
+jest.mock('react-plotly.js', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => <div data-testid="Plot" />),
+}));
+
+describe('BarChart', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const mockData = [
+    { category: 'A', valueX: 1, valueY: 2 },
+    { category: 'B', valueX: 3, valueY: 4 },
+  ];
+  const colorMap = { A: 'red', B: 'blue' };
+  const hovertemplate = 'x=%{x}<br>y=%{y}';
+
+  it('renders correctly', () => {
+    render(
+      <BarChart
+        data={mockData}
+        xKey="valueX"
+        yKey="valueY"
+        colorKey="category"
+        colorMap={colorMap}
+        hovertemplate={hovertemplate}
+        xAxisTitle="X Axis"
+        yAxisTitle="Y Axis"
+      />,
+    );
+
+    expect(screen.getByTestId('Plot')).toBeInTheDocument();
+    const {
+      data: traces,
+      layout,
+      config,
+      style,
+    } = Plot.mock.calls[0][0];
+    expect(traces.length).toBe(Object.keys(colorMap).length);
+    expect(traces[0].x).toEqual([1]);
+    expect(traces[0].y).toEqual([2]);
+    expect(traces[1].x).toEqual([3]);
+    expect(traces[1].y).toEqual([4]);
+    expect(traces[0].marker.color).toBe('red');
+    expect(traces[1].marker.color).toBe('blue');
+    traces.forEach(trace => {
+      expect(trace.type).toBe('bar');
+      expect(trace.hovertemplate).toBe(hovertemplate);
+    });
+    expect(layout.xaxis.title).toBe('X Axis');
+    expect(layout.yaxis.title).toBe('Y Axis');
+    expect(layout.dragmode).toBeFalsy();
+    expect(layout.autosize).toBeTruthy();
+    expect(layout.barmode).toBe('stack');
+    expect(config).toEqual({ displayModeBar: false });
+    expect(style).toEqual({ width: '100%', height: '100%' });
+  });
+});

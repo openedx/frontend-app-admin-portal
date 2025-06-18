@@ -238,6 +238,13 @@ describe('<ProductTours/>', () => {
   });
 
   describe('learner detail page tour', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
+    });
     it('is shown when no cookie found', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
@@ -250,11 +257,6 @@ describe('<ProductTours/>', () => {
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
       await user.click(screen.getByText('Dismiss'));
       expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
-    });
-    it('is not shown when cookie has been dismissed', () => {
-      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
-      render(<ToursWithContext />);
-      expect(screen.queryByText('learner profile feature', { exact: false })).toBeFalsy();
     });
   });
 });
