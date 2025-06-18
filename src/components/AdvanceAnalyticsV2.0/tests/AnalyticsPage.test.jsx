@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import userEvent from '@testing-library/user-event';
 import AnalyticsPage from '../AnalyticsPage';
 import { useEnterpriseAnalyticsAggregatesData } from '../data/hooks';
 import { useAllFlexEnterpriseGroups } from '../../learner-credit-management/data';
@@ -82,7 +83,8 @@ describe('AnalyticsPage', () => {
     expect(screen.getByText('Analytics')).toBeInTheDocument();
   });
 
-  test('should change tab on click', () => {
+  test('should change tab on click', async () => {
+    const user = userEvent.setup();
     render(
       <IntlProvider locale="en">
         <AnalyticsPage enterpriseId={enterpriseId} />
@@ -93,11 +95,11 @@ describe('AnalyticsPage', () => {
     expect(screen.getByText('Engagements Tab Content')).toBeInTheDocument();
 
     // Switch to "Progress" tab
-    fireEvent.click(screen.getByText('Progress'));
+    await user.click(screen.getByText('Progress'));
     expect(screen.getByText('Progress')).toBeInTheDocument();
 
     // Switch to "Outcomes" tab
-    fireEvent.click(screen.getByText('Outcomes'));
+    await user.click(screen.getByText('Outcomes'));
     expect(screen.getByText('Outcomes')).toBeInTheDocument();
   });
 });
