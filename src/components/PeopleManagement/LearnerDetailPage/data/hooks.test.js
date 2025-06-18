@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/dom';
 import { renderHook } from '@testing-library/react-hooks';
 import LmsApiService from '../../../../data/services/LmsApiService';
-import useEnterpriseLearnerData from './hooks';
+import { useEnterpriseLearnerData } from './hooks';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
   logError: jest.fn(),

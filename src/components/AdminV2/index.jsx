@@ -192,7 +192,7 @@ const Admin = ({
           defaultMessage: 'Top Active Learners',
           description: 'Report subtitle for learners active in the past week',
         }),
-        component: <LearnerActivityTable id="learners-active-week" activity="active_past_week" />,
+        component: <LearnerActivityTable key="learners-active-week" id="learners-active-week" activity="active_past_week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,
@@ -213,7 +213,7 @@ const Admin = ({
           defaultMessage: 'Not Active in Past Week',
           description: 'Report subtitle for learners inactive in the past week',
         }),
-        component: <LearnerActivityTable id="learners-inactive-week" activity="inactive_past_week" />,
+        component: <LearnerActivityTable key="learners-inactive-week" id="learners-inactive-week" activity="inactive_past_week" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,
@@ -234,7 +234,7 @@ const Admin = ({
           defaultMessage: 'Not Active in Past Month',
           description: 'Report subtitle for learners inactive in the past month',
         }),
-        component: <LearnerActivityTable id="learners-inactive-month" activity="inactive_past_month" />,
+        component: <LearnerActivityTable key="learners-inactive-month" id="learners-inactive-month" activity="inactive_past_month" />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchCourseEnrollments(
             enterpriseId,

@@ -21,7 +21,19 @@ import {
   snakeCaseFormData,
   snakeCaseObjectToForm,
   splitAndTrim,
+  applySortByToOptions,
+  trackDataTableEvent,
+  updateUrlWithPageNumber,
+
 } from './utils';
+
+jest.mock('@edx/frontend-enterprise-utils', () => ({
+  ...jest.requireActual('@edx/frontend-enterprise-utils'),
+  sendEnterpriseTrackEvent: jest.fn(),
+}));
+// Needed to mock before import so jest uses the mock correctly
+// eslint-disable-next-line import/order, import/first
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 
 jest.mock('@edx/frontend-platform/logging', () => ({
   ...jest.requireActual('@edx/frontend-platform/logging'),
@@ -281,6 +293,187 @@ describe('utils', () => {
 
         expect(result).toBeNull();
       });
+    });
+  });
+  describe('applySortByToOptions', () => {
+    it('should not modify options when sortBy is empty', () => {
+      const options = {};
+      const sortBy = [];
+      const apiFieldsForColumnAccessor = { someColumn: { key: 'column_name' } };
+
+      applySortByToOptions(sortBy, apiFieldsForColumnAccessor, options);
+
+      expect(options).toEqual({});
+    });
+
+    it('should correctly apply sorting options when sortBy is provided', () => {
+      const options = {};
+      const sortBy = [
+        { id: 'someColumn', desc: false },
+        { id: 'anotherColumn', desc: true },
+      ];
+      const apiFieldsForColumnAccessor = {
+        someColumn: { key: 'column_name' },
+        anotherColumn: { key: 'another_column' },
+      };
+
+      applySortByToOptions(sortBy, apiFieldsForColumnAccessor, options);
+
+      expect(options).toEqual({
+        ordering: 'column_name,-another_column', // Ensure ordering matches the expected format
+      });
+    });
+
+    it('should handle missing keys in apiFieldsForColumnAccessor gracefully', () => {
+      const options = {};
+      const sortBy = [
+        { id: 'nonExistentColumn', desc: false },
+        { id: 'someColumn', desc: true },
+      ];
+      const apiFieldsForColumnAccessor = {
+        someColumn: { key: 'column_name' },
+      };
+
+      applySortByToOptions(sortBy, apiFieldsForColumnAccessor, options);
+
+      expect(options).toEqual({
+        ordering: '-column_name', // Only column_name should be included in ordering
+      });
+    });
+
+    it('should return undefined if sortBy is not provided', () => {
+      const options = {};
+      const sortBy = null;
+      const apiFieldsForColumnAccessor = { someColumn: { key: 'column_name' } };
+
+      applySortByToOptions(sortBy, apiFieldsForColumnAccessor, options);
+
+      expect(options).toEqual({});
+    });
+  });
+  describe('trackDataTableEvent', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('sends track event when shouldTrackRef.current is true', () => {
+      const shouldTrackRef = { current: true };
+      const enterpriseId = 'test-enterprise-id';
+      const eventName = 'test-event-name';
+      const tableId = 'test-table-id';
+      const options = { page: 1, pageSize: 10 };
+
+      const result = trackDataTableEvent({
+        shouldTrackRef,
+        enterpriseId,
+        eventName,
+        tableId,
+        options,
+      });
+
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseId,
+        eventName,
+        {
+          tableId,
+          ...options,
+        },
+      );
+      expect(result).toBe(true);
+      expect(shouldTrackRef.current).toBe(true);
+    });
+
+    it('does not send track event but sets shouldTrackRef to true when initial value is false', () => {
+      const shouldTrackRef = { current: false };
+      const enterpriseId = 'test-enterprise-id';
+      const eventName = 'test-event-name';
+      const tableId = 'test-table-id';
+      const options = { page: 1, pageSize: 10 };
+
+      const result = trackDataTableEvent({
+        shouldTrackRef,
+        enterpriseId,
+        eventName,
+        tableId,
+        options,
+      });
+
+      expect(sendEnterpriseTrackEvent).not.toHaveBeenCalled();
+      expect(result).toBe(true);
+      expect(shouldTrackRef.current).toBe(true);
+    });
+
+    it('handles undefined options properly', () => {
+      const shouldTrackRef = { current: true };
+      const enterpriseId = 'test-enterprise-id';
+      const eventName = 'test-event-name';
+      const tableId = 'test-table-id';
+
+      trackDataTableEvent({
+        shouldTrackRef,
+        enterpriseId,
+        eventName,
+        tableId,
+      });
+
+      expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+        enterpriseId,
+        eventName,
+        {
+          tableId,
+        },
+      );
+    });
+  });
+  describe('updateUrlWithPageNumber', () => {
+    const mockNavigate = jest.fn();
+    const createMockLocation = (search = '') => ({
+      pathname: '/test-path',
+      search,
+    });
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('adds page number to URL when pageNumber is not 1', () => {
+      const location = createMockLocation();
+      const pageNumber = 3;
+      const id = 'test-table';
+
+      updateUrlWithPageNumber(id, pageNumber, location, mockNavigate);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/test-path?test-table-page=3', { replace: true });
+    });
+
+    it('removes page number from URL when pageNumber is 1', () => {
+      const location = createMockLocation('?test-table-page=3&filter=active');
+      const pageNumber = 1;
+      const id = 'test-table';
+
+      updateUrlWithPageNumber(id, pageNumber, location, mockNavigate);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/test-path?filter=active', { replace: true });
+    });
+
+    it('respects existing query parameters when adding page number', () => {
+      const location = createMockLocation('?filter=active&sort=name');
+      const pageNumber = 2;
+      const id = 'test-table';
+
+      updateUrlWithPageNumber(id, pageNumber, location, mockNavigate);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/test-path?filter=active&sort=name&test-table-page=2', { replace: true });
+    });
+
+    it('uses replace=false when specified', () => {
+      const location = createMockLocation();
+      const pageNumber = 2;
+      const id = 'test-table';
+
+      updateUrlWithPageNumber(id, pageNumber, location, mockNavigate, false);
+
+      expect(mockNavigate).toHaveBeenCalledWith('/test-path?test-table-page=2', { replace: false });
     });
   });
 });

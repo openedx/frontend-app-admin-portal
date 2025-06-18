@@ -60,6 +60,7 @@
     "html-react-parser": "3.0.16",
     "jest-environment-jsdom": "29.7.0",
     "lodash-es": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "plotly.js": "^2.33.0",
     "prop-types": "15.8.1",
     "react": "17.0.2",
