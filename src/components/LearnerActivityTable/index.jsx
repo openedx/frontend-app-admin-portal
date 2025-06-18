@@ -183,6 +183,9 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
       FilterStatusComponent={FilterStatus}
       defaultColumnValues={{ Filter: TextFilter }}
       columns={columns}
+      initialTableOptions={{
+        autoResetPage: true,
+      }}
       initialState={{
         pageIndex: currentPageFromUrl, // Use page from URL
         pageSize: PAGE_SIZE,
