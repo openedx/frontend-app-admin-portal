@@ -327,6 +327,33 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/?${params.toString()}`;
     return EnterpriseAccessApiService.apiClient().get(url);
   }
+
+  /**
+   * Declines a BNR (Browse and Request) subsidy request for an enterprise.
+   *
+   * @param params - The parameters for declining the subsidy request
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyRequestUUID - The UUID of the subsidy request to decline
+   * @param params.sendNotification - Whether to send a notification about the decline
+   * @param params.unlinkUsersFromEnterprise - Whether to disassociate users from the organization
+   * @returns A promise that resolves to the API response for the decline operation
+   */
+  static declineBnrSubsidyRequest({
+    enterpriseId,
+    subsidyRequestUUID,
+    sendNotification,
+    unlinkUsersFromEnterprise,
+  }) {
+    const options = {
+      subsidy_request_uuid: subsidyRequestUUID,
+      enterprise_customer_uuid: enterpriseId,
+      send_notification: sendNotification,
+      disassociate_from_org: unlinkUsersFromEnterprise,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/decline/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
 }
 
 export default EnterpriseAccessApiService;
