@@ -2686,4 +2686,63 @@ describe('<BudgetDetailPage />', () => {
       'Failure to enroll by the enrollment deadline will release funds back into the budget',
     )).toBeTruthy());
   });
+
+  it('renders Browse & Request budget type when bnrEnabled is true', () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        ...mockAssignableSubsidyAccessPolicy,
+        bnrEnabled: true,
+        isAssignable: false,
+      },
+    });
+
+    useEnterpriseCustomer.mockReturnValue({
+      data: {
+        uuid: 'test-customer-uuid',
+        activeIntegrations: [],
+      },
+    });
+
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: true,
+        enterpriseCustomer: 'test-customer-uuid',
+        name: 'test-name',
+        uuid: 'test-uuid',
+      },
+    });
+
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    expect(screen.getByText('Browse & Request', { exact: false })).toBeInTheDocument();
+  });
 });
