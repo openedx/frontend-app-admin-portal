@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 import useBnrSubsidyRequests from './requests-tab/data/hooks/useBnrSubsidyRequests';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
-import { ApproveCouponCodeRequestModal, DeclineSubsidyRequestModal } from '../subsidy-request-modals';
+import { ApproveCouponCodeRequestModal } from '../subsidy-request-modals';
 import { PAGE_SIZE } from './requests-tab/data/constants';
 import RequestsTable from './requests-tab/RequestsTable';
+import DeclineBnrSubsidyRequestModal from './requests-tab/DeclineBnrSubsidyRequestModal';
 
 const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
   const {
@@ -66,12 +67,13 @@ const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
             />
           )}
           {isDeclineModalOpen && (
-            <DeclineSubsidyRequestModal
+            <DeclineBnrSubsidyRequestModal
               isOpen
               subsidyRequest={selectedRequest}
-              declineRequestFn={EnterpriseAccessApiService.declineCouponCodeRequests}
+              enterpriseId={enterpriseId}
+              declineRequestFn={EnterpriseAccessApiService.declineBnrSubsidyRequest}
               onSuccess={() => {
-                updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.DECLINED });
+                refreshRequests();
                 setIsDeclineModalOpen(false);
               }}
               onClose={() => setIsDeclineModalOpen(false)}
