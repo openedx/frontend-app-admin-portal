@@ -31,7 +31,7 @@ const Stats = ({
       )}
       <div className="row">
         <div className="col d-flex flex-column justify-content-center align-items-center">
-          <p className="mb-0 small title-enrollments">
+          <p data-testid="title-enrollments" className="mb-0 small title-enrollments">
             <FormattedMessage
               id="advance.analytics.stats.enrollments.title"
               defaultMessage="Enrollments"

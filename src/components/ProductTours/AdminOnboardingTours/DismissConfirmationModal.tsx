@@ -1,30 +1,31 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import {
   ActionRow, Button, ModalDialog, useToggle,
 } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 
-import { ONBOARDING_TOUR_DISMISS_COOKIE_NAME } from './constants';
 import messages from './messages';
 
 interface DismissConfirmationModalProps {
   openConfirmationModal: (value: boolean) => void;
   onConfirm?: () => void;
+  onboardingTourDismissed: boolean;
 }
 
 const DismissConfirmationModal: React.FC<DismissConfirmationModalProps> = ({
   openConfirmationModal,
   onConfirm,
+  onboardingTourDismissed,
 }) => {
   const intl = useIntl();
   const [isOpen, open, close] = useToggle(true);
-  const isModalDismissed = global.localStorage.getItem(ONBOARDING_TOUR_DISMISS_COOKIE_NAME);
 
   useEffect(() => {
-    if (!isModalDismissed) {
+    if (!onboardingTourDismissed) {
       open();
     }
-  }, [isModalDismissed, open]);
+  }, [onboardingTourDismissed, open]);
 
   const handleDismiss = () => {
     close();
@@ -36,7 +37,6 @@ const DismissConfirmationModal: React.FC<DismissConfirmationModalProps> = ({
       onConfirm();
     }
     close();
-    global.localStorage.setItem(ONBOARDING_TOUR_DISMISS_COOKIE_NAME, 'true');
     openConfirmationModal(false);
   };
 
@@ -66,16 +66,16 @@ const DismissConfirmationModal: React.FC<DismissConfirmationModalProps> = ({
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary" onClick={handleDismiss}>
             <FormattedMessage
-              id="admin.portal.productTours.adminOnboarding.welcomeModal.dismiss"
+              id="admin.portal.productTours.adminOnboarding.dismissConfirmationModal.cancel"
               defaultMessage="Cancel"
-              description="Label for the dismiss button on the onboarding welcome modal."
+              description="Label for the cancel button on the dismiss confirmation modal."
             />
           </ModalDialog.CloseButton>
-          <Button onClick={handleConfirmSubmit} data-testid="welcome-modal-dismiss">
+          <Button onClick={handleConfirmSubmit}>
             <FormattedMessage
-              id="admin.portal.productTours.adminOnboarding.welcomeModal.dismiss"
+              id="admin.portal.productTours.adminOnboarding.dismissConfirmationModal.submit"
               defaultMessage="Submit"
-              description="Label for the primary button on the onboarding welcome modal."
+              description="Label for the submit button on the dismiss confirmation modal."
             />
           </Button>
         </ActionRow>
@@ -84,4 +84,8 @@ const DismissConfirmationModal: React.FC<DismissConfirmationModalProps> = ({
   );
 };
 
-export default DismissConfirmationModal;
+const mapStateToProps = state => ({
+  onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
+});
+
+export default connect(mapStateToProps)(DismissConfirmationModal);

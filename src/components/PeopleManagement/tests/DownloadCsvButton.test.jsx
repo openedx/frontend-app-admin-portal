@@ -1,7 +1,9 @@
 import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
-import { act, render, screen } from '@testing-library/react';
+import {
+  render, screen,
+} from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
@@ -104,6 +106,7 @@ describe('DownloadCSVButton', () => {
     expect(downloadCsv).toHaveBeenCalledWith(expectedFileName, mockData.results, expectedHeaders, expect.any(Function));
   });
   it('download button should handle error returned by the API endpoint.', async () => {
+    const user = userEvent.setup();
     const props = {
       ...DEFAULT_PROPS,
       fetchData: jest.fn(() => Promise.reject(new Error('Error fetching data'))),
@@ -111,10 +114,7 @@ describe('DownloadCSVButton', () => {
     render(<DownloadCSVButtonWrapper {...props} />);
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    act(() => {
-      // Click the download button.
-      userEvent.click(screen.getByTestId(testId));
-    });
+    await user.click(screen.getByTestId(testId));
 
     await flushPromises();
 

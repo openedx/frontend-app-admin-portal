@@ -1,11 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import thunk from 'redux-thunk';
+import userEvent from '@testing-library/user-event';
 import AIAnalyticsSummary from './AIAnalyticsSummary';
 
 const mockedInsights = {
@@ -63,25 +63,21 @@ const AIAnalyticsSummaryWrapper = props => (
 
 describe('<AIAnalyticsSummary />', () => {
   it('should render action buttons correctly', () => {
-    const tree = renderer
-      .create((
-        <AIAnalyticsSummaryWrapper
-          insights={mockedInsights}
-        />
-      ))
-      .toJSON();
-
+    const tree = render(
+      <AIAnalyticsSummaryWrapper
+        insights={mockedInsights}
+      />,
+    );
     expect(tree).toMatchSnapshot();
   });
 
-  it('should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked', () => {
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+  it('should display AnalyticsDetailCard with learner_engagement data when Summarize Analytics button is clicked', async () => {
+    const user = userEvent.setup();
+    render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
+    const component = await waitFor(() => screen.findByTestId('summarize-analytics'));
+    await user.click(component);
 
-    const tree = renderer
-      .create(<AIAnalyticsSummaryWrapper insights={mockedInsights} />)
-      .toJSON();
-
+    const tree = render(<AIAnalyticsSummaryWrapper insights={mockedInsights} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -97,15 +93,14 @@ describe('<AIAnalyticsSummary />', () => {
   //   expect(tree).toMatchSnapshot();
   // });
 
-  it('should handle null analytics data', () => {
+  it('should handle null analytics data', async () => {
+    const user = userEvent.setup();
     const insightsData = { ...mockedInsights, learner_engagement: null };
-    const wrapper = mount(<AIAnalyticsSummaryWrapper insights={insightsData} />);
-    wrapper.find('[data-testid="summarize-analytics"]').first().simulate('click');
+    render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
+    const component = await screen.findByTestId('summarize-analytics');
+    await user.click(component);
 
-    const tree = renderer
-      .create(<AIAnalyticsSummaryWrapper insights={insightsData} />)
-      .toJSON();
-
+    const tree = render(<AIAnalyticsSummaryWrapper insights={insightsData} />);
     expect(tree).toMatchSnapshot();
   });
 });

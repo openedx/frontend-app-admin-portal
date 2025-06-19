@@ -164,7 +164,8 @@ describe('CouponDetails component', () => {
       expect(screen.getByText(label)).toBeInTheDocument();
     });
   });
-  it('renders with error state', () => {
+  it('renders with error state', async () => {
+    const user = userEvent.setup();
     render(<CouponDetailsWrapper
       {...defaultProps}
       couponData={{
@@ -172,7 +173,7 @@ describe('CouponDetails component', () => {
         errors: [{ code: 'test-code-1', user_email: 'test@bestrun.com' }],
       }}
     />);
-    userEvent.selectOptions(screen.getByLabelText('Filter by code status'), COUPON_FILTERS.unredeemed.label);
+    await user.selectOptions(screen.getByLabelText('Filter by code status'), COUPON_FILTERS.unredeemed.label);
     expect(screen.getByText('An error has occurred:', { exact: false })).toBeInTheDocument();
   });
 });

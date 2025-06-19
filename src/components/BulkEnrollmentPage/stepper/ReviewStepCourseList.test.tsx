@@ -1,6 +1,5 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { screen, render, renderHook } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import algoliasearch from 'algoliasearch/lite';

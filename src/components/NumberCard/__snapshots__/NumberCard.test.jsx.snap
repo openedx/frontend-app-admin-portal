@@ -97,10 +97,12 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
     </div>
     <div
       className="footer-body mt-1 d-none"
+      data-testid="details-actions"
       id="footer-body-test-id"
     >
       <a
         className="btn btn-link"
+        data-testid="details-action-item"
         href="/action-1"
         onClick={[Function]}
         onKeyDown={[Function]}
@@ -117,6 +119,7 @@ exports[`<NumberCard /> renders correctly with detail actions 1`] = `
       </a>
       <a
         className="btn btn-link"
+        data-testid="details-action-item"
         href="/action-2"
         onClick={[Function]}
         onKeyDown={[Function]}

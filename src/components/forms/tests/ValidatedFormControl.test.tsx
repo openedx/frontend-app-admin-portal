@@ -2,6 +2,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { screen, render } from '@testing-library/react';
+// @ts-ignore
 import userEvent, { TargetElement } from '@testing-library/user-event';
 
 import FormContextProvider from '../FormContext';
@@ -66,7 +67,8 @@ describe('<ValidatedFormControl />', () => {
     expect(screen.getByText('Test Label')).toBeInTheDocument();
     expect(screen.getByText('Test Instructions')).toBeInTheDocument();
   });
-  it('sends change action when field is updated', () => {
+  it('sends change action when field is updated', async () => {
+    const user = userEvent.setup();
     const mockDispatch = jest.fn();
     const { container } = render(
       <ValidatedFormControlWrapper
@@ -76,7 +78,7 @@ describe('<ValidatedFormControl />', () => {
       />,
     );
     const input = container.querySelector('input');
-    userEvent.type(input as TargetElement, 'x');
+    await user.type(input as TargetElement, 'x');
     expect(mockDispatch).toBeCalledWith({ type: 'SET FORM FIELD', fieldId: 'TEST_FORM_FIELD', value: 'x' });
   });
   it('renders with error populated from context', () => {

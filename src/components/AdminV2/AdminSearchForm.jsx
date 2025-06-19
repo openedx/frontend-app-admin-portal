@@ -108,6 +108,7 @@ class AdminSearchForm extends React.Component {
                     />
                   </Form.Label>
                   <Form.Control
+                    data-testid="admin-search-form-control"
                     className="w-100 groups-dropdown"
                     as="select"
                     value={searchGroupQuery}
@@ -142,6 +143,7 @@ class AdminSearchForm extends React.Component {
                   />
                 </Form.Label>
                 <Form.Control
+                  data-testid="admin-search-form-control"
                   className="w-100 course-dropdown"
                   as="select"
                   value={searchCourseQuery}
@@ -190,6 +192,7 @@ class AdminSearchForm extends React.Component {
                   />
                 </Form.Label>
                 <Form.Control
+                  data-testid="admin-search-form-control"
                   as="select"
                   className="w-100 start-date-dropdown"
                   value={searchDateQuery}
@@ -236,6 +239,7 @@ class AdminSearchForm extends React.Component {
                     />
                   </Form.Label>
                   <Form.Control
+                    data-testid="admin-search-form-control"
                     className="w-100 budgets-dropdown"
                     as="select"
                     value={searchBudgetQuery}
@@ -269,6 +273,7 @@ class AdminSearchForm extends React.Component {
                 />
               </Form.Label>
               <SearchBar
+                data-testid="admin-search-bar"
                 placeholder={intl.formatMessage({
                   id: 'admin.portal.lpr.filter.by.email.input.placeholder',
                   defaultMessage: 'Search by email...',
