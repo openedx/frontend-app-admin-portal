@@ -3,7 +3,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { QueryClientProvider } from '@tanstack/react-query';
 import userEvent from '@testing-library/user-event';
 import {
-  act,
   render,
   screen,
   waitFor,
@@ -268,6 +267,7 @@ describe('New Existing SSO Configs tests', () => {
     expect(mockSetRefreshBool).toHaveBeenCalledTimes(2);
   });
   test('enabling config sets loading and renders skeleton', async () => {
+    const user = userEvent.setup();
     LmsApiService.listEnterpriseSsoOrchestrationRecords.mockImplementation(() => Promise.resolve({
       data: [{}],
     }));
@@ -275,9 +275,7 @@ describe('New Existing SSO Configs tests', () => {
     spy.mockImplementation(() => Promise.resolve({}));
     setupNewExistingSSOConfigs(inactiveConfig);
     const button = screen.getByTestId('existing-sso-config-card-enable-button');
-    act(() => {
-      userEvent.click(button);
-    });
+    await user.click(button);
     expect(spy).toBeCalledTimes(1);
     await waitFor(() => expect(
       screen.queryByTestId(
@@ -286,6 +284,7 @@ describe('New Existing SSO Configs tests', () => {
     ).toBeInTheDocument());
   });
   test('config card enable action network error alert', async () => {
+    const user = userEvent.setup();
     LmsApiService.listEnterpriseSsoOrchestrationRecords.mockImplementation(() => Promise.resolve({
       data: [{}],
     }));
@@ -294,9 +293,7 @@ describe('New Existing SSO Configs tests', () => {
 
     setupNewExistingSSOConfigs(inactiveConfig);
     const button = screen.getByTestId('existing-sso-config-card-enable-button');
-    act(() => {
-      userEvent.click(button);
-    });
+    await user.click(button);
     expect(spy).toBeCalledTimes(1);
     await waitFor(() => expect(
       screen.queryByText(
@@ -305,9 +302,7 @@ describe('New Existing SSO Configs tests', () => {
     ).toBeInTheDocument());
 
     const dismissAlertButton = screen.getByText('Dismiss');
-    act(() => {
-      userEvent.click(dismissAlertButton);
-    });
+    await user.click(dismissAlertButton);
     expect(
       screen.queryByText(
         'Something went wrong behind the scenes',
@@ -315,6 +310,7 @@ describe('New Existing SSO Configs tests', () => {
     ).not.toBeInTheDocument();
   });
   test('config card disable action network error alert', async () => {
+    const user = userEvent.setup();
     LmsApiService.listEnterpriseSsoOrchestrationRecords.mockImplementation(() => Promise.resolve({
       data: [{}],
     }));
@@ -323,13 +319,9 @@ describe('New Existing SSO Configs tests', () => {
 
     setupNewExistingSSOConfigs(activeConfig);
     const kebobButton = screen.getByTestId('existing-sso-config-card-dropdown');
-    act(() => {
-      userEvent.click(kebobButton);
-    });
+    await user.click(kebobButton);
     const button = screen.getByTestId('existing-sso-config-disable-dropdown');
-    act(() => {
-      userEvent.click(button);
-    });
+    await user.click(button);
     await waitFor(() => expect(
       screen.queryByText(
         'Something went wrong behind the scenes',
@@ -337,6 +329,7 @@ describe('New Existing SSO Configs tests', () => {
     ).toBeInTheDocument());
   });
   test('config card delete action network error alert', async () => {
+    const user = userEvent.setup();
     LmsApiService.listEnterpriseSsoOrchestrationRecords.mockImplementation(() => Promise.resolve({
       data: [{}],
     }));
@@ -345,13 +338,9 @@ describe('New Existing SSO Configs tests', () => {
 
     setupNewExistingSSOConfigs(inactiveConfig);
     const kebobButton = screen.getByTestId('existing-sso-config-card-dropdown');
-    act(() => {
-      userEvent.click(kebobButton);
-    });
+    await user.click(kebobButton);
     const button = screen.getByTestId('existing-sso-config-delete-dropdown');
-    act(() => {
-      userEvent.click(button);
-    });
+    await user.click(button);
     await waitFor(() => expect(
       screen.queryByText(
         'Something went wrong behind the scenes',
@@ -366,6 +355,7 @@ describe('New Existing SSO Configs tests', () => {
     expect(mockSetPollingNetworkError).toHaveBeenCalledTimes(1);
   });
   test('detects timed out configs', async () => {
+    const user = userEvent.setup();
     const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
     spy.mockImplementation(() => Promise.resolve({
       data: timedOutConfig,
@@ -377,12 +367,11 @@ describe('New Existing SSO Configs tests', () => {
       ),
     ).toBeInTheDocument());
     const button = screen.getByTestId('sso-timeout-alert-configure');
-    act(() => {
-      userEvent.click(button);
-    });
+    await user.click(button);
     expect(mockSetProviderConfig).toHaveBeenCalledTimes(1);
   });
   test('detects errored configs', async () => {
+    const user = userEvent.setup();
     const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
     spy.mockImplementation(() => Promise.resolve({
       data: erroredConfig,
@@ -394,9 +383,7 @@ describe('New Existing SSO Configs tests', () => {
       ),
     ).toBeInTheDocument());
     const button = screen.getByTestId('sso-errored-alert-configure');
-    act(() => {
-      userEvent.click(button);
-    });
+    await user.click(button);
     expect(mockSetProviderConfig).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { snakeCaseObject, camelCaseObject } from '@edx/frontend-platform/utils';
@@ -56,7 +56,7 @@ describe('useEnterpriseAnalyticsData', () => {
     const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${TEST_ENTERPRISE_ID}`;
     const analyticsCompletionsURL = `${baseURL}/completions/stats?${queryParams.toString()}`;
     axiosMock.onGet(`${analyticsCompletionsURL}`).reply(200, mockAnalyticsCompletionsChartsData);
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseAnalyticsData({
         enterpriseCustomerUUID: TEST_ENTERPRISE_ID,
         key: 'completions',
@@ -74,7 +74,9 @@ describe('useEnterpriseAnalyticsData', () => {
       }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
 
     expect(EnterpriseDataApiService.fetchAdminAnalyticsData).toHaveBeenCalled();
     expect(EnterpriseDataApiService.fetchAdminAnalyticsData).toHaveBeenCalledWith(
@@ -103,7 +105,7 @@ describe('useEnterpriseAnalyticsData', () => {
     const baseURL = `${EnterpriseDataApiService.enterpriseAdminAnalyticsV2BaseUrl}${TEST_ENTERPRISE_ID}`;
     const analyticsLeaderboardURL = `${baseURL}/leaderboard?${queryParams.toString()}`;
     axiosMock.onGet(`${analyticsLeaderboardURL}`).reply(200, mockAnalyticsLeaderboardTableData);
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseAnalyticsData({
         enterpriseCustomerUUID: TEST_ENTERPRISE_ID,
         key: 'leaderboardTable',
@@ -121,7 +123,9 @@ describe('useEnterpriseAnalyticsData', () => {
       }),
     );
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isFetching).toBe(false);
+    });
 
     expect(EnterpriseDataApiService.fetchAdminAnalyticsData).toHaveBeenCalled();
     expect(EnterpriseDataApiService.fetchAdminAnalyticsData).toHaveBeenCalledWith(

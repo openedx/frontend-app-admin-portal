@@ -5,7 +5,6 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 import {
   screen,
   render,
-  act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import configureMockStore from 'redux-mock-store';
@@ -93,7 +92,7 @@ const SettingsTabsWithRouter = ({ store = defaultStore }) => (
 );
 
 describe('<SettingsTabs />', () => {
-  afterEach(() => {
+  beforeEach(() => {
     features.EXTERNAL_LMS_CONFIGURATION = true;
     features.FEATURE_SSO_SETTINGS_TAB = true;
     features.SETTINGS_PAGE_LMS_TAB = true;
@@ -115,16 +114,18 @@ describe('<SettingsTabs />', () => {
   });
 
   test('Clicking on a tab changes content via router', async () => {
+    const user = userEvent.setup();
     render(<SettingsTabsWithRouter />);
     const lmsTab = screen.getByText('Learning Platform');
-    await act(async () => { userEvent.click(lmsTab); });
+    await user.click(lmsTab);
     expect(screen.queryByText(LMS_MOCK_CONTENT)).toBeTruthy();
   });
 
   test('Clicking on default tab does not change content', async () => {
+    const user = userEvent.setup();
     render(<SettingsTabsWithRouter />);
     const accessTab = screen.getByText('Configure Access');
-    await act(async () => { userEvent.click(accessTab); });
+    await user.click(accessTab);
     expect(screen.queryByText(ACCESS_MOCK_CONTENT)).toBeTruthy();
   });
 

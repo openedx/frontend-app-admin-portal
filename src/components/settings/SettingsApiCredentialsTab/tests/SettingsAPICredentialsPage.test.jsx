@@ -40,8 +40,19 @@ const copiedData = {
 };
 
 describe('API Credentials Tab', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
+    Object.defineProperty(navigator, 'clipboard', {
+      value: {
+        writeText: jest.fn(),
+      },
+      writable: true,
+      configurable: true,
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   const basicProps = {
@@ -51,6 +62,7 @@ describe('API Credentials Tab', () => {
   const enterpriseId = 'test-enterprise-uuid';
 
   test('renders zero state page when having no api credentials', async () => {
+    const user = userEvent.setup();
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
     const mockCreateFn = jest.spyOn(LmsApiService, 'createNewAPICredentials');
     mockFetchFn.mockRejectedValue();
@@ -71,7 +83,7 @@ describe('API Credentials Tab', () => {
     expect(serviceLink.getAttribute('href')).toBe(API_TERMS_OF_SERVICE);
 
     expect(screen.getByText('Generate API Credentials').toBeInTheDocument);
-    userEvent.click(screen.getByText('Generate API Credentials'));
+    await user.click(screen.getByText('Generate API Credentials'));
     await waitFor(() => expect(mockCreateFn).toHaveBeenCalled());
   });
   test('renders api credentials page when having existing api credentials', async () => {
@@ -96,6 +108,7 @@ describe('API Credentials Tab', () => {
     expect(link.getAttribute('href')).toBe(HELP_CENTER_LINK);
   });
   test('renders error stage while creating new api credentials through clicking generation button', async () => {
+    const user = userEvent.setup();
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
     mockFetchFn.mockRejectedValue();
     const mockCreatFn = jest.spyOn(LmsApiService, 'createNewAPICredentials');
@@ -108,7 +121,7 @@ describe('API Credentials Tab', () => {
     );
 
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
-    userEvent.click(screen.getByText('Generate API Credentials'));
+    await user.click(screen.getByText('Generate API Credentials'));
     await waitFor(() => { expect(mockCreatFn).toHaveBeenCalled(); });
     expect(
       screen.getByText(
@@ -116,19 +129,20 @@ describe('API Credentials Tab', () => {
       ),
     ).toBeInTheDocument();
   });
-  test('renders api credentials page after successfully creating api credentials through clicking generation button', async () => {
-    const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
-    mockFetchFn.mockRejectedValue();
-    const mockCreatFn = jest.spyOn(LmsApiService, 'createNewAPICredentials');
-    mockCreatFn.mockResolvedValue({ data });
-    const writeText = jest.fn();
-    Object.assign(navigator, {
-      clipboard: {
-        writeText,
-      },
-    });
+  test('renders API credentials page after successfully creating credentials via the button', async () => {
+    const user = userEvent.setup();
+
+    const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials').mockRejectedValue();
+    const mockCreateFn = jest.spyOn(LmsApiService, 'createNewAPICredentials').mockResolvedValue({ data });
+
     const jsonString = JSON.stringify(copiedData);
-    navigator.clipboard.writeText.mockResolvedValue(jsonString);
+    Object.defineProperty(navigator, 'clipboard', {
+      value: {
+        writeText: jest.fn().mockResolvedValue(jsonString),
+      },
+      writable: true,
+      configurable: true,
+    });
 
     render(
       <IntlProvider locale="en">
@@ -138,40 +152,45 @@ describe('API Credentials Tab', () => {
 
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
 
-    userEvent.click(screen.getByText('Generate API Credentials'));
-    await waitFor(() => expect(mockCreatFn).toHaveBeenCalled());
+    await user.click(screen.getByText('Generate API Credentials'));
+    await waitFor(() => expect(mockCreateFn).toHaveBeenCalled());
+
     expect(screen.getByText('API credentials successfully generated')).toBeInTheDocument();
+
     const closeButton = screen.getByLabelText('Close');
-    userEvent.click(closeButton);
+    await user.click(closeButton);
     await waitFor(() => {
       expect(screen.queryByText('API credentials successfully generated')).not.toBeInTheDocument();
     });
 
-    expect(screen.getByRole('heading', { name: `Application name: ${name}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri1}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` }).toBeInTheDocument);
-    expect(screen.getByRole('heading', { name: `Last generated on: ${updated}` }).toBeInTheDocument);
+    expect(screen.getByRole('heading', { name: `Application name: ${name}` })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: `Allowed URIs: ${redirectUri1}` })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: `API client ID: ${clientId}` })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: `API client secret: ${clientSecret}` })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: `API client documentation: ${API_CLIENT_DOCUMENTATION}` })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: `Last generated on: ${updated}` })).toBeInTheDocument();
 
     const copyBtn = screen.getByText('Copy credentials to clipboard');
-    userEvent.click(copyBtn);
+    await user.click(copyBtn);
+
     await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith(jsonString));
     await waitFor(() => expect(screen.getByText('Copied Successfully')).toBeInTheDocument());
   });
-  test('renders error message when failing to copying api credentials to clipboard', async () => {
-    const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
-    mockFetchFn.mockRejectedValue();
-    const mockCreatFn = jest.spyOn(LmsApiService, 'createNewAPICredentials');
-    mockCreatFn.mockResolvedValue({ data });
-    const writeText = jest.fn();
-    Object.assign(navigator, {
-      clipboard: {
-        writeText,
+  test('renders error message when failing to copy API credentials to clipboard', async () => {
+    const user = userEvent.setup();
+    const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials').mockRejectedValue();
+    const mockCreateFn = jest.spyOn(LmsApiService, 'createNewAPICredentials').mockResolvedValue({ data });
+
+    // Properly define the clipboard object
+    Object.defineProperty(navigator, 'clipboard', {
+      value: {
+        writeText: jest.fn().mockRejectedValue(new Error('Clipboard write failed')),
       },
+      writable: true,
+      configurable: true,
     });
+
     const jsonString = JSON.stringify(copiedData);
-    navigator.clipboard.writeText.mockRejectedValue();
 
     render(
       <IntlProvider locale="en">
@@ -181,14 +200,17 @@ describe('API Credentials Tab', () => {
 
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
 
-    userEvent.click(screen.getByText('Generate API Credentials'));
-    await waitFor(() => expect(mockCreatFn).toHaveBeenCalled());
+    await user.click(screen.getByText('Generate API Credentials'));
+    await waitFor(() => expect(mockCreateFn).toHaveBeenCalled());
+
     const copyBtn = screen.getByText('Copy credentials to clipboard');
-    userEvent.click(copyBtn);
+    await user.click(copyBtn);
+
     await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith(jsonString));
     await waitFor(() => expect(screen.getByText('Cannot copied to the clipboard')).toBeInTheDocument());
   });
   test('renders api credentials page after successfully regenerating api credentials', async () => {
+    const user = userEvent.setup();
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
     mockFetchFn.mockResolvedValue({ data });
     const mockPatchFn = jest.spyOn(LmsApiService, 'regenerateAPICredentials');
@@ -202,16 +224,16 @@ describe('API Credentials Tab', () => {
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
     const input = screen.getByTestId('form-control');
     expect(input).toHaveValue(redirectUri1);
-    userEvent.clear(input);
-    userEvent.type(input, redirectUri2);
+    await user.clear(input);
+    await user.type(input, redirectUri2);
 
     await waitFor(() => expect(input).toHaveValue(redirectUri2));
     const button = screen.getByText('Regenerate API Credentials');
-    userEvent.click(button);
+    await user.click(button);
 
     await waitFor(() => expect(screen.getByText('Regenerate API credentials?')).toBeInTheDocument());
     const confirmedButton = screen.getByText('Regenerate');
-    userEvent.click(confirmedButton);
+    await user.click(confirmedButton);
     await waitFor(() => {
       expect(mockPatchFn).toHaveBeenCalledWith(redirectUri2, enterpriseId);
     });
@@ -228,6 +250,7 @@ describe('API Credentials Tab', () => {
       .not.toBeInTheDocument();
   });
   test('renders error state when failing to regenerating api credentials', async () => {
+    const user = userEvent.setup();
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
     mockFetchFn.mockResolvedValue({ data });
     const mockPatchFn = jest.spyOn(LmsApiService, 'regenerateAPICredentials');
@@ -241,14 +264,14 @@ describe('API Credentials Tab', () => {
     await waitFor(() => expect(mockFetchFn).toHaveBeenCalled());
     const input = screen.getByTestId('form-control');
     expect(input).toHaveValue(redirectUri1);
-    userEvent.type(input, ` ${redirectUri2}`);
+    await user.type(input, ` ${redirectUri2}`);
     await waitFor(() => expect(input).toHaveValue(`${redirectUri1} ${redirectUri2}`));
     const button = screen.getByText('Regenerate API Credentials');
-    userEvent.click(button);
+    await user.click(button);
 
     await waitFor(() => expect(screen.getByText('Regenerate API credentials?')).toBeInTheDocument());
     const confirmedButton = screen.getByText('Regenerate');
-    userEvent.click(confirmedButton);
+    await user.click(confirmedButton);
     await waitFor(() => {
       expect(mockPatchFn).toHaveBeenCalledWith(`${redirectUri1} ${redirectUri2}`, enterpriseId);
     });
@@ -257,6 +280,7 @@ describe('API Credentials Tab', () => {
       .toBeInTheDocument();
   });
   test('renders api credentials when canceling regenerating api credentials', async () => {
+    const user = userEvent.setup();
     const mockFetchFn = jest.spyOn(LmsApiService, 'fetchAPICredentials');
     mockFetchFn.mockResolvedValue({ data });
     const mockPatchFn = jest.spyOn(LmsApiService, 'regenerateAPICredentials');
@@ -272,11 +296,11 @@ describe('API Credentials Tab', () => {
     const input = screen.getByTestId('form-control');
     expect(input).toHaveValue(redirectUri1);
     const button = screen.getByText('Regenerate API Credentials');
-    userEvent.click(button);
+    await user.click(button);
 
     await waitFor(() => expect(screen.getByText('Regenerate API credentials?')).toBeInTheDocument());
     const cancelButton = screen.getByText('Cancel');
-    userEvent.click(cancelButton);
+    await user.click(cancelButton);
     await waitFor(() => {
       expect(mockPatchFn).not.toHaveBeenCalledWith(redirectUri1, enterpriseId);
     });

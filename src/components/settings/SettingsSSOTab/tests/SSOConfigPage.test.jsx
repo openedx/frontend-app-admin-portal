@@ -37,12 +37,13 @@ const SettingsSSOWrapper = () => (
 
 describe('<SettingsSSOTab />', () => {
   it('Renders with no config card present', async () => {
+    const user = userEvent.setup();
     renderWithRouter(<SettingsSSOWrapper />);
     await waitFor(() => {
-      expect(screen.queryByText('You don\'t have any SSOs integrated yet.')).toBeTruthy();
-      expect(screen.queryByText('New SSO integration')).toBeTruthy();
-      userEvent.click(screen.getByText('New SSO integration'));
-      expect(screen.queryByText('First provide your Identity Provider Metadata and fill out the corresponding fields.')).toBeTruthy();
+      expect(screen.getByText('You don\'t have any SSOs integrated yet.')).toBeInTheDocument();
     });
+    expect(screen.queryByText('New SSO integration')).toBeTruthy();
+    await user.click(screen.getByText('New SSO integration'));
+    expect(screen.queryByText('First provide your Identity Provider Metadata and fill out the corresponding fields.')).toBeTruthy();
   });
 });

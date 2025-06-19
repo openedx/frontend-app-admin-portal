@@ -36,6 +36,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
   };
 
   it('should display current configuration value and handle form switch change', async () => {
+    const user = userEvent.setup();
     const mockUpdateSubsidyRequestConfiguration = jest.fn();
     const props = {
       ...basicProps,
@@ -46,7 +47,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
 
     const checkbox = screen.getByLabelText('Checkbox');
     expect(checkbox.checked).toBe(props.subsidyRequestConfiguration.subsidyRequestsEnabled);
-    userEvent.click(checkbox);
+    await user.click(checkbox);
     await waitFor(() => {
       expect(mockUpdateSubsidyRequestConfiguration).toHaveBeenCalledWith(
         { isSubsidyRequestsEnabled: !props.subsidyRequestConfiguration.subsidyRequestsEnabled },
@@ -94,6 +95,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
   });
 
   it('should show alert if an error occurred', async () => {
+    const user = userEvent.setup();
     const mockUpdateSubsidyRequestConfiguration = jest.fn().mockRejectedValue(new Error());
     const props = {
       ...basicProps,
@@ -103,7 +105,7 @@ describe('<SettingsAccessSubsidyRequestManagement />', () => {
     render(<SettingsAccessSubsidyRequestManagementWrapper {...props} />);
 
     const checkbox = screen.getByLabelText('Checkbox');
-    userEvent.click(checkbox);
+    await user.click(checkbox);
 
     await waitFor(() => {
       expect(screen.getByText('Something went wrong'));

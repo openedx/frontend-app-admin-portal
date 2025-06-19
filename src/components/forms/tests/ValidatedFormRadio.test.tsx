@@ -61,7 +61,8 @@ describe('<ValidatedFormControl />', () => {
     expect(screen.getByText('Test Label')).toBeInTheDocument();
     expect(screen.getByText('Test Instructions')).toBeInTheDocument();
   });
-  it('sends change action when field is updated', () => {
+  it('sends change action when field is updated', async () => {
+    const user = userEvent.setup();
     const mockDispatch = jest.fn();
     render(
       <ValidatedFormRadioWrapper
@@ -72,7 +73,7 @@ describe('<ValidatedFormControl />', () => {
         fieldInstructions="Test Instructions"
       />,
     );
-    userEvent.click(screen.getByText('Label1'));
+    await user.click(screen.getByText('Label1'));
     expect(mockDispatch).toBeCalledWith({ type: 'SET FORM FIELD', fieldId: 'TEST_FORM_FIELD', value: '1' });
   });
   it('renders with error populated from context', () => {

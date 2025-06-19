@@ -70,7 +70,7 @@ const EmailTemplateForm = ({
   return (
     <form onSubmit={e => e.preventDefault()}>
       <div className="mt-4">
-        <h3>{formatMessage(messages.emailFormName)}</h3>
+        <h3 data-testid="email-template-form-title">{formatMessage(messages.emailFormName)}</h3>
         <TemplateSourceFields emailTemplateType={emailTemplateType} currentEmail={currentEmail} disabled={disabled} />
         {Object.values(fieldsWithDefault).map(fieldProps => (
           <Field key={fieldProps.name} disabled={disabled} {...fieldProps} />

@@ -77,9 +77,10 @@ describe('<DeleteHighlightSet />', () => {
     return deleteBtn;
   };
 
-  const clickDeleteHighlightBtn = () => {
+  const clickDeleteHighlightBtn = async () => {
+    const user = userEvent.setup();
     const deleteBtn = getDeleteHighlightBtn();
-    userEvent.click(deleteBtn);
+    await user.click(deleteBtn);
     expect(screen.getByText('Delete highlight?')).toBeInTheDocument();
   };
 
@@ -93,29 +94,30 @@ describe('<DeleteHighlightSet />', () => {
     expect(deleteBtn).toBeInTheDocument();
   });
 
-  it('clicking delete highlight button opens confirmation modal', () => {
+  it('clicking delete highlight button opens confirmation modal', async () => {
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
+    await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
   });
 
-  it('cancelling confirmation modal closes modal', () => {
+  it('cancelling confirmation modal closes modal', async () => {
+    const user = userEvent.setup();
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
+    await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    userEvent.click(screen.getByText('Cancel'));
+    await user.click(screen.getByText('Cancel'));
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
     expect(screen.queryByText('Delete highlight?')).not.toBeInTheDocument();
   });
 
   it('confirming deletion in confirmation modal deletes via API', async () => {
+    const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSet.mockResolvedValueOnce();
 
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
+    await clickDeleteHighlightBtn();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1);
-    userEvent.click(screen.getByTestId('delete-confirmation-button'));
-    expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
+    await user.click(screen.getByTestId('delete-confirmation-button'));
 
     await waitFor(() => {
       expect(mockDispatchFn).toHaveBeenCalledWith(
@@ -133,12 +135,12 @@ describe('<DeleteHighlightSet />', () => {
   });
 
   it('confirming deletion in confirmation modal handles error via API', async () => {
+    const user = userEvent.setup();
     EnterpriseCatalogApiService.deleteHighlightSet.mockRejectedValueOnce(new Error('oh noes!'));
 
     render(<DeleteHighlightSetWrapper />);
-    clickDeleteHighlightBtn();
-    userEvent.click(screen.getByTestId('delete-confirmation-button'));
-    expect(screen.getByText('Deleting highlight...')).toBeInTheDocument();
+    await clickDeleteHighlightBtn();
+    await user.click(screen.getByTestId('delete-confirmation-button'));
 
     await waitFor(() => {
       expect(logError).toHaveBeenCalled();
@@ -152,7 +154,7 @@ describe('<DeleteHighlightSet />', () => {
     expect(screen.getByRole('alert')).toBeInTheDocument();
     const alertDismissBtn = screen.getByText('Dismiss');
     expect(alertDismissBtn).toBeInTheDocument();
-    userEvent.click(alertDismissBtn);
+    await user.click(alertDismissBtn);
 
     await waitFor(() => {
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();

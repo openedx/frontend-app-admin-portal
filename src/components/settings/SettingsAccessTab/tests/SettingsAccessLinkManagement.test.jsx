@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import dayjs from 'dayjs';
-import { screen, render, act } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
@@ -73,6 +73,7 @@ describe('<SettingsAccessLinkManagement/>', () => {
   });
 
   test('Toggle Universal Link Off', async () => {
+    const user = userEvent.setup();
     LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
     render(
       <SettingsAccessLinkManagementWrapper />,
@@ -80,12 +81,12 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
     // Clicking `Enable` opens modal
     const switchInput = screen.queryByText('Enable');
-    await act(async () => { userEvent.click(switchInput); });
+    await user.click(switchInput);
     expect(screen.queryByText('Are you sure?')).toBeTruthy();
 
     // Clicking disable calls api
     const disableButton = screen.queryByText('Disable');
-    await act(async () => { userEvent.click(disableButton); });
+    await user.click(disableButton);
     expect(LmsApiService.toggleEnterpriseCustomerUniversalLink).toHaveBeenCalledTimes(1);
     expect(LmsApiService.toggleEnterpriseCustomerUniversalLink).toHaveBeenCalledWith({
       enterpriseUUID: MOCK_CONSTANTS.ENTERPRISE_ID,
@@ -107,6 +108,7 @@ describe('<SettingsAccessLinkManagement/>', () => {
   });
 
   test('Toggle Universal Link On', async () => {
+    const user = userEvent.setup();
     LmsApiService.toggleEnterpriseCustomerUniversalLink.mockReturnValue({ data: {} });
     const subExpirationDate = dayjs().add(1, 'days').format();
     const couponExpirationDate = dayjs().add(3, 'days').format();
@@ -126,7 +128,7 @@ describe('<SettingsAccessLinkManagement/>', () => {
 
     // Clicking `Enable` does not open modal
     const switchInput = screen.queryByText('Enable');
-    await act(async () => { userEvent.click(switchInput); });
+    await user.click(switchInput);
     expect(screen.queryByText('Are you sure?')).toBeFalsy();
 
     expect(LmsApiService.toggleEnterpriseCustomerUniversalLink).toHaveBeenCalledTimes(1);

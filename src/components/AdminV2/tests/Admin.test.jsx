@@ -1,13 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import { MemoryRouter, Link } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import dayjs from 'dayjs';
 import EnterpriseDataApiService from '../../../data/services/EnterpriseDataApiService';
@@ -396,35 +395,37 @@ describe('<Admin />', () => {
   describe('handle changes to enterpriseId prop', () => {
     it('handles non-empty change in enterpriseId prop', () => {
       const mockFetchDashboardAnalytics = jest.fn();
-      const wrapper = mount((
+      const { rerender } = render(
         <AdminWrapper
           fetchDashboardAnalytics={mockFetchDashboardAnalytics}
           enterpriseId="test-enterprise-id"
-        />
-      ));
+        />,
+      );
 
-      wrapper.setProps({
-        enterpriseId: 'test-enterprise-id-2',
-      });
-
-      expect(wrapper.prop('enterpriseId')).toEqual('test-enterprise-id-2');
+      rerender(<AdminWrapper
+        fetchDashboardAnalytics={mockFetchDashboardAnalytics}
+        enterpriseId="test-enterprise-id-2"
+      />);
+      expect(screen.getByTestId('learner-progress-report')).toHaveAttribute('data-enterprise-id', 'test-enterprise-id-2');
       expect(mockFetchDashboardAnalytics).toBeCalled();
     });
 
     it('handles empty change in enterpriseId prop', () => {
       const mockFetchDashboardAnalytics = jest.fn();
-      const wrapper = mount((
+      const { rerender } = render(
         <AdminWrapper
           fetchDashboardAnalytics={mockFetchDashboardAnalytics}
           enterpriseId="test-enterprise-id"
-        />
-      ));
+        />,
+      );
+      rerender(
+        <AdminWrapper
+          fetchDashboardAnalytics={mockFetchDashboardAnalytics}
+          enterpriseId={null}
+        />,
+      );
 
-      wrapper.setProps({
-        enterpriseId: null,
-      });
-
-      expect(wrapper.prop('enterpriseId')).toEqual(null);
+      expect(screen.getByTestId('learner-progress-report')).not.toHaveAttribute('data-enterprise-id');
       expect(mockFetchDashboardAnalytics).toBeCalled();
     });
   });
@@ -478,9 +479,10 @@ describe('<Admin />', () => {
     Object.keys(actionSlugs).forEach((key) => {
       const actionMetadata = actionSlugs[key];
 
-      it(key, () => {
+      it(key, async () => {
         spy = jest.spyOn(EnterpriseDataApiService, actionMetadata.csvFetchMethod);
-        const wrapper = mount((
+        const user = userEvent.setup();
+        render((
           <AdminWrapper
             {...baseProps}
             enterpriseId="test-enterprise-id"
@@ -497,7 +499,8 @@ describe('<Admin />', () => {
             }}
           />
         ));
-        wrapper.find('.download-btn').hostNodes().simulate('click');
+        const downloadButton = await screen.findByTestId('download-csv-btn');
+        await user.click(downloadButton);
         expect(spy).toHaveBeenCalledWith(...actionMetadata.csvFetchParams);
         expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
           enterpriseId,
@@ -509,42 +512,45 @@ describe('<Admin />', () => {
   });
 
   describe('reset form button', () => {
-    it('should not be present if there is no query', () => {
-      const wrapper = mount((
+    it('should not be present if there is no query', async () => {
+      render(
         <AdminWrapper
           {...baseProps}
           location={
             { search: '' }
           }
-        />
-      ));
-      expect(wrapper.text()).not.toContain('Reset Filters');
+        />,
+      );
+      const resetFilterComponent = await screen.queryByText('Reset Filters');
+      expect(resetFilterComponent).not.toBeInTheDocument();
     });
-    it('should not be present if only query is ordering', () => {
-      const wrapper = mount((
+    it('should not be present if only query is ordering', async () => {
+      render(
         <AdminWrapper
           {...baseProps}
           location={
             { search: 'ordering=xyz' }
           }
-        />
-      ));
-      expect(wrapper.text()).not.toContain('Reset Filters');
+        />,
+      );
+      const resetFilterComponent = await screen.queryByText('Reset Filters');
+      expect(resetFilterComponent).not.toBeInTheDocument();
     });
-    it('should not be present if query is null', () => {
-      const wrapper = mount((
+    it('should not be present if query is null', async () => {
+      render(
         <AdminWrapper
           {...baseProps}
           location={
             { search: null }
           }
-        />
-      ));
-      expect(wrapper.text()).not.toContain('Reset Filters');
+        />,
+      );
+      const resetFilterComponent = await screen.queryByText('Reset Filters');
+      expect(resetFilterComponent).not.toBeInTheDocument();
     });
-    it('should be present if there is a querystring', () => {
+    it('should be present if there is a querystring', async () => {
       const path = '/lael/';
-      const wrapper = mount((
+      render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -552,14 +558,14 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).toContain('Reset Filters');
-      const link = wrapper.find(Link).find('#reset-filters');
-      expect(link.first().props().to).toEqual(path);
+      const resetFilterComponent = await screen.queryByText('Reset Filters');
+      expect(resetFilterComponent).toBeInTheDocument();
+      expect(resetFilterComponent).toHaveAttribute('href', path);
     });
-    it('should be present if there is a querystring mixed with ordering', () => {
+    it('should be present if there is a querystring mixed with ordering', async () => {
       const path = '/lael/';
       const nonSearchQuery = 'ordering=xyz';
-      const wrapper = mount((
+      render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -567,24 +573,24 @@ describe('<Admin />', () => {
           }
         />
       ));
-      expect(wrapper.text()).toContain('Reset Filters');
-      const link = wrapper.find(Link).find('#reset-filters');
-      expect(link.first().props().to).toEqual(`${path}?${nonSearchQuery}`);
+      const resetFilterComponent = await screen.queryByText('Reset Filters');
+      expect(resetFilterComponent).toBeInTheDocument();
+      expect(resetFilterComponent).toHaveAttribute('href', `${path}?${nonSearchQuery}`);
     });
-    it('should not disturb non-search-releated queries', () => {
+    it('should not disturb non-search-releated queries', async () => {
       const path = '/lael/';
       const nonSearchQuery = 'features=bestfeature';
-      const wrapper = mount((
+      render(
         <AdminWrapper
           {...baseProps}
           location={
             { search: `search=foo&${nonSearchQuery}`, pathname: path }
           }
-        />
-      ));
-      expect(wrapper.text()).toContain('Reset Filters');
-      const link = wrapper.find(Link).find('#reset-filters');
-      expect(link.first().props().to).toEqual(`${path}?${nonSearchQuery}`);
+        />,
+      );
+      const resetFilterComponent = await screen.queryByText('Reset Filters');
+      expect(resetFilterComponent).toBeInTheDocument();
+      expect(resetFilterComponent).toHaveAttribute('href', `${path}?${nonSearchQuery}`);
     });
   });
 
@@ -628,7 +634,7 @@ describe('<Admin />', () => {
     });
 
     it('scrolls when fragment present', async () => {
-      const wrapper = mount((
+      const { rerender } = render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -637,16 +643,21 @@ describe('<Admin />', () => {
         />
       ));
       // Setting prop to trigger componentDidUpdate
-      wrapper.setProps({
-        enterpriseId: 'forcing-change-to-trigger-scroll',
-      });
-      await waitFor(() => {
-        expect(wrapper.text()).toContain('Full report');
-      });
+      rerender(
+        <AdminWrapper
+          {...baseProps}
+          location={
+            { hash: '#fullreport' }
+          }
+          enterpriseId="forcing-change-to-trigger-scroll"
+        />,
+      );
+      const fullReportComponent = await screen.findByText('Full report');
+      expect(fullReportComponent).toBeInTheDocument();
       expect(scrollIntoViewMock).toHaveBeenCalled();
     });
     it('does not scroll when fragment absent', async () => {
-      const wrapper = mount((
+      const { rerender } = render((
         <AdminWrapper
           {...baseProps}
           location={
@@ -655,12 +666,17 @@ describe('<Admin />', () => {
         />
       ));
       // Setting prop to trigger componentDidUpdate
-      wrapper.setProps({
-        enterpriseId: 'forcing-change-to-trigger-scroll',
-      });
-      await waitFor(() => {
-        expect(wrapper.text()).toContain('Full report');
-      });
+      rerender(
+        <AdminWrapper
+          {...baseProps}
+          location={
+            {}
+          }
+          enterpriseId="forcing-change-to-trigger-scroll"
+        />,
+      );
+      const fullReportComponent = await screen.findByText('Full report');
+      expect(fullReportComponent).toBeInTheDocument();
       expect(scrollIntoViewMock).not.toHaveBeenCalled();
     });
   });

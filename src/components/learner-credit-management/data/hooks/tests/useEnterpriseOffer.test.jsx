@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 
 import EcommerceApiService from '../../../../../data/services/EcommerceApiService';
 import useEnterpriseOffer from '../useEnterpriseOffer'; // Import the hook
@@ -32,14 +32,14 @@ describe('useEnterpriseOffer', () => {
   it('should fetch and return enterprise offer (%s)', async () => {
     // Mock the policy type in response based on isAssignable
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseOffer(mockEnterpriseOfferUUID),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(result.current.isLoading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(result.current.isError).toBe(false);
     expect(result.current.data).toEqual({
       id: 99511,
@@ -53,14 +53,14 @@ describe('useEnterpriseOffer', () => {
     // Mock an error response from the API
     jest.spyOn(EcommerceApiService, 'fetchEnterpriseOffer').mockRejectedValueOnce(new Error('Mock API Error'));
 
-    const { result, waitForNextUpdate } = renderHook(
+    const { result } = renderHook(
       () => useEnterpriseOffer(mockEnterpriseOfferUUID),
       { wrapper },
     );
 
-    await waitForNextUpdate();
-
-    expect(result.current.isLoading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(result.current.isError).toBe(true);
     expect(result.current.error.message).toBe('Mock API Error');
   });
@@ -84,11 +84,12 @@ describe('useEnterpriseOffer', () => {
     enterpriseOfferId,
     expectedData,
   }) => {
-    const { result, waitForNextUpdate } = renderHook(() => useEnterpriseOffer(enterpriseOfferId), { wrapper });
+    const { result } = renderHook(() => useEnterpriseOffer(enterpriseOfferId), { wrapper });
 
     if (expectedData !== undefined) {
-      await waitForNextUpdate();
-      expect(result.current.isLoading).toBe(false);
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
     } else {
       expect(result.current.isLoading).toBe(true);
     }

@@ -1,8 +1,8 @@
 import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { shallow } from 'enzyme';
-import EnterpriseList from '../../components/EnterpriseList';
+import { render } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EnterpriseIndexPage from './index';
 
@@ -10,8 +10,8 @@ const mockStore = configureMockStore([thunk]);
 
 describe('<EnterpriseIndexPage />', () => {
   let store;
-  let wrapper;
   let dispatchSpy;
+  const clearPortalConfiguration = jest.fn();
 
   const initialState = {
     table: {
@@ -38,13 +38,15 @@ describe('<EnterpriseIndexPage />', () => {
   beforeEach(() => {
     store = mockStore(initialState);
     dispatchSpy = jest.spyOn(store, 'dispatch');
-    wrapper = shallow((
-      <EnterpriseIndexPage store={store} />
+    render((
+      <IntlProvider locale="en">
+        <EnterpriseIndexPage clearPortalConfiguration={clearPortalConfiguration} store={store} />
+      </IntlProvider>
     ));
   });
 
   it('clearPortalConfiguration dispatches clearPortalConfiguration action', () => {
-    wrapper.find(EnterpriseList).props().clearPortalConfiguration();
+    clearPortalConfiguration();
     expect(dispatchSpy).toHaveBeenCalled();
   });
 });

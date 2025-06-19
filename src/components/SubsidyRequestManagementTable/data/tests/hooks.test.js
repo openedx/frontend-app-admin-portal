@@ -1,5 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
-import { waitFor, act } from '@testing-library/react';
+import { renderHook, waitFor, act } from '@testing-library/react';
 
 import DiscoveryApiService from '../../../../data/services/DiscoveryApiService';
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
@@ -183,9 +182,10 @@ describe('useCourseDetails', () => {
     DiscoveryApiService.fetchCourseDetails.mockResolvedValue({
       data: mockCourseDetails,
     });
-    const { result, waitForNextUpdate } = renderHook(() => useCourseDetails(mockCourseKey));
-    await waitForNextUpdate();
+    const { result } = renderHook(() => useCourseDetails(mockCourseKey));
+    await waitFor(() => {
+      expect(result.current[0]).toEqual(mockCourseDetails);
+    });
     expect(DiscoveryApiService.fetchCourseDetails).toHaveBeenCalled();
-    expect(result.current[0]).toEqual(mockCourseDetails);
   });
 });

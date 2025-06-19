@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, cleanup, render, screen,
+  cleanup, render, screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -64,11 +64,9 @@ describe('<LicenseManagementTableActionColumn />', () => {
     cleanup();
     jest.clearAllMocks();
   });
-  const testDialogClosed = () => {
+  const testDialogClosed = async (user) => {
     const cancelButton = screen.getByText('Cancel');
-    act(() => {
-      userEvent.click(cancelButton);
-    });
+    await user.click(cancelButton);
     expect(screen.queryByRole('dialog')).toBeFalsy();
   };
 
@@ -106,13 +104,12 @@ describe('<LicenseManagementTableActionColumn />', () => {
   });
 
   it('opens and closes revoke modal', async () => {
+    const user = userEvent.setup();
     render(<LicenseManagementTableActionColumnWithContext {...basicProps} />);
     expect(screen.queryByRole('dialog')).toBeFalsy();
     // Open dialog
     const revokeButton = screen.getByTitle('Revoke license');
-    await act(async () => {
-      await userEvent.click(revokeButton);
-    });
+    await user.click(revokeButton);
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Event is sent when open
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -120,7 +117,7 @@ describe('<LicenseManagementTableActionColumn />', () => {
       SUBSCRIPTION_TABLE_EVENTS.REVOKE_ROW_CLICK,
     );
     // Close dialog
-    testDialogClosed();
+    await testDialogClosed(user);
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -129,13 +126,12 @@ describe('<LicenseManagementTableActionColumn />', () => {
   });
 
   it('opens and closes remind modal', async () => {
+    const user = userEvent.setup();
     render(<LicenseManagementTableActionColumnWithContext {...basicProps} />);
     expect(screen.queryByRole('dialog')).toBeFalsy();
     // Open dialog
     const remindButton = screen.getByTitle('Remind learner');
-    await act(async () => {
-      await userEvent.click(remindButton);
-    });
+    await user.click(remindButton);
     expect(screen.getByRole('dialog')).toBeTruthy();
     // Event is sent when open
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
@@ -143,7 +139,7 @@ describe('<LicenseManagementTableActionColumn />', () => {
       SUBSCRIPTION_TABLE_EVENTS.REMIND_ROW_CLICK,
     );
     // Close dialog
-    testDialogClosed();
+    await testDialogClosed(user);
     // Event is sent when cancel
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

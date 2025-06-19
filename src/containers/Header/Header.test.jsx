@@ -4,16 +4,13 @@ import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import { getAuthenticatedUser, hydrateAuthenticatedUser } from '@edx/frontend-platform/auth';
-import { AvatarButton } from '@openedx/paragon';
+import '@testing-library/jest-dom';
 import Header from './index';
-import { Logo, HeaderDropdown } from '../../components/Header';
-import SidebarToggle from '../SidebarToggle';
 
 import { configuration } from '../../config';
-import Img from '../../components/Img';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -44,7 +41,7 @@ describe('<Header />', () => {
     getAuthenticatedUser.mockClear();
   });
 
-  it('renders enterprise logo correctly', () => {
+  it('renders enterprise logo correctly', async () => {
     getAuthenticatedUser.mockReturnValue({
       email: 'test@example.com',
       username: null,
@@ -64,27 +61,26 @@ describe('<Header />', () => {
     };
     store = mockStore({ ...storeData });
 
-    const wrapper = mount(<HeaderWrapper store={store} />);
-    const logo = wrapper.find(Logo);
+    render(<HeaderWrapper store={store} />);
+    const logo = await screen.findByTestId('header-logo-img');
 
-    expect(logo.props().enterpriseLogo).toEqual(storeData.portalConfiguration.enterpriseBranding.logo);
-    expect(logo.props().enterpriseName).toEqual(storeData.portalConfiguration.enterpriseName);
+    expect(logo.src).toEqual(storeData.portalConfiguration.enterpriseBranding.logo);
+    expect(logo.alt).toEqual(`${storeData.portalConfiguration.enterpriseName} logo`);
   });
 
-  it('renders edX logo correctly', () => {
+  it('renders edX logo correctly', async () => {
     getAuthenticatedUser.mockReturnValue({});
     store = mockStore({
       portalConfiguration: {},
       sidebar: {},
     });
-    const wrapper = mount(<HeaderWrapper store={store} />);
-    // testing the Img rather than Logo because Logo's props will be undefined
-    const logo = wrapper.find(Img);
-    expect(logo.props().src).toEqual(configuration.LOGO_URL);
-    expect(logo.props().alt).toEqual('edX logo');
+    render(<HeaderWrapper store={store} />);
+    const logo = await screen.findByTestId('header-logo-img');
+    expect(logo.src).toEqual(configuration.LOGO_URL);
+    expect(logo.alt).toEqual('edX logo');
   });
 
-  it('renders profile image correctly', () => {
+  it('renders profile image correctly', async () => {
     const userData = {
       email: 'staff@example.com',
       username: 'staff',
@@ -100,20 +96,20 @@ describe('<Header />', () => {
       },
       sidebar: {},
     });
-    const wrapper = mount(<HeaderWrapper store={store} />);
-    const userImg = wrapper.find(AvatarButton);
-    expect(userImg.props().src).toEqual(userData.profileImage.imageUrlMedium);
-    expect(userImg.props().alt).toContain(userData.username);
+    const { container } = render(<HeaderWrapper store={store} />);
+    const userImg = await container.querySelector('#avatar-dropdown img');
+    expect(userImg.src).toEqual(userData.profileImage.imageUrlMedium);
   });
 
-  it('does not render profile image or dropdown if unauthenticated', () => {
+  it('does not render profile image or dropdown if unauthenticated', async () => {
     getAuthenticatedUser.mockReturnValue(null);
     store = mockStore({
       portalConfiguration: {},
       sidebar: {},
     });
-    const wrapper = mount(<HeaderWrapper store={store} />);
-    expect(wrapper.find(HeaderDropdown).length).toEqual(0);
+    const { container } = render(<HeaderWrapper store={store} />);
+    const userImg = container.querySelector('#avatar-dropdown img');
+    expect(userImg).not.toBeInTheDocument();
   });
 
   it('does not call hydrate if not authenticated', () => {
@@ -123,7 +119,7 @@ describe('<Header />', () => {
       sidebar: {},
     });
 
-    mount(<HeaderWrapper store={store} />);
+    render(<HeaderWrapper store={store} />);
     expect(hydrateAuthenticatedUser.mock.calls.length).toBe(0);
   });
 
@@ -141,8 +137,8 @@ describe('<Header />', () => {
           isExpandedByToggle: false,
         },
       });
-      const wrapper = mount(<HeaderWrapper store={store} />);
-      expect(wrapper.find(SidebarToggle).length).toEqual(0);
+      const { container } = render(<HeaderWrapper store={store} />);
+      expect(container.querySelector('.sidebar-toggle-btn')).not.toBeInTheDocument();
     });
 
     it('does show toggle', () => {
@@ -159,8 +155,8 @@ describe('<Header />', () => {
           isExpandedByToggle: false,
         },
       });
-      const wrapper = mount(<HeaderWrapper store={store} />);
-      expect(wrapper.find(SidebarToggle).length).toEqual(1);
+      const { container } = render(<HeaderWrapper store={store} />);
+      expect(container.querySelector('.sidebar-toggle-btn')).toBeInTheDocument();
     });
   });
 });

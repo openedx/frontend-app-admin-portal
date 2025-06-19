@@ -129,7 +129,7 @@ const SSOConfigAuthorizeStep = () => {
       <hr />
       <p>
         <FormattedMessage
-          id="adminPortal.settings.ssoConfigAuthorizeStep.markedAuthorized"
+          id="adminPortal.settings.ssoConfigAuthorizeStep.markedAuthorizedMessage"
           defaultMessage="Return to this window and check the box once complete"
           description="Helper message displayed against the option to verify authorization of edX as a Service Provider."
         />

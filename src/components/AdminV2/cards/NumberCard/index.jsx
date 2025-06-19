@@ -8,7 +8,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import DetailsAction from './DetailsAction';
 
 const NumberCard = ({
-  title, icon, description, detailActions,
+  title, icon, description, detailActions, id,
 }) => {
   const handleDetailsActionClick = () => {
     const element = document.getElementById('learner-progress-report');
@@ -20,14 +20,14 @@ const NumberCard = ({
   };
 
   return (
-    <Card>
+    <Card id={id} data-testid="number-card">
       <Card.Header
         title={(
           <div className="d-flex align-items-center justify-content-between">
-            <h2 className="h2">
+            <h2 data-testid="number-card-title" className="h2">
               {typeof title === 'number' ? title.toLocaleString() : title}
             </h2>
-            {icon && <Icon src={icon} />}
+            {icon && <Icon data-testid="number-card-icon" src={icon} />}
           </div>
         )}
         subtitle={description}
@@ -45,6 +45,7 @@ const NumberCard = ({
           {
             detailActions?.map(action => (
               <DetailsAction
+                dataTestId="number-card-detail-action"
                 slug={action.slug}
                 label={action.label}
                 isLoading={action.isLoading}
@@ -65,6 +66,7 @@ NumberCard.defaultProps = {
 };
 
 NumberCard.propTypes = {
+  id: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   description: PropTypes.string.isRequired,
   icon: PropTypes.func,

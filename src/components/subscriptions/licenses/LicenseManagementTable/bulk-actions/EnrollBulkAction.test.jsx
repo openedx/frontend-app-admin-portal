@@ -92,6 +92,7 @@ describe('EnrollBulkAction', () => {
   });
 
   it('shows warning dialog when at least 1 revoked learners selected', async () => {
+    const user = userEvent.setup();
     const props = {
       ...basicProps,
       selectedFlatRows: [testActivatedUser, testRevokedUser, testRevokedUser],
@@ -99,21 +100,22 @@ describe('EnrollBulkAction', () => {
     render(<EnrollBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Enroll (1)');
     expect(screen.queryByText('Revoked Learners Selected')).not.toBeInTheDocument();
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const revokedTitle = await screen.findByText('Revoked Learners Selected');
     expect(revokedTitle).toBeVisible();
   });
 
   it('on clicking enroll in warning dialog, shows the bulk enrollment dialog', async () => {
+    const user = userEvent.setup();
     const props = {
       ...basicProps,
       selectedFlatRows: [testActivatedUser, testRevokedUser, testRevokedUser],
     };
     render(<EnrollBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Enroll (1)');
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const enrollButtonInDialog = await screen.findByTestId('ENROLL_BTN_IN_WARNING_MODAL');
-    userEvent.click(enrollButtonInDialog);
+    await user.click(enrollButtonInDialog);
     // Note we mocked out the AddCoursesStep component above, so we expect whatever it renders, to be here.
     // this is sufficient for now to test that bulk enrollment dialog opens up
     const addCoursesTitle = await screen.findByText('Add courses step mock');
@@ -129,6 +131,7 @@ describe('EnrollBulkAction', () => {
   });
 
   it('handles closing the warning dialog', async () => {
+    const user = userEvent.setup();
     const selectedFlatRows = [testActivatedUser, testRevokedUser, testRevokedUser];
     const props = {
       ...basicProps,
@@ -136,9 +139,9 @@ describe('EnrollBulkAction', () => {
     };
     render(<EnrollBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Enroll (1)');
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const closeButtonInDialog = await screen.findByTestId('CLOSE_BTN_IN_WARNING_MODAL');
-    userEvent.click(closeButtonInDialog);
+    await user.click(closeButtonInDialog);
     expect(screen.queryByText('Revoked Learners Selected')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,
@@ -151,15 +154,16 @@ describe('EnrollBulkAction', () => {
   });
 
   it('handles closing the bulk enroll dialog', async () => {
+    const user = userEvent.setup();
     const props = {
       ...basicProps,
       selectedFlatRows: [testActivatedUser],
     };
     render(<EnrollBulkActionWithProvider {...props} />);
     const enrollButton = screen.getByText('Enroll (1)');
-    userEvent.click(enrollButton);
+    await user.click(enrollButton);
     const closeButtonInDialog = await screen.findByLabelText('Close');
-    userEvent.click(closeButtonInDialog);
+    await user.click(closeButtonInDialog);
     expect(screen.queryByText('Subscription Enrollment')).not.toBeInTheDocument();
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
       TEST_ENTERPRISE_CUSTOMER_UUID,

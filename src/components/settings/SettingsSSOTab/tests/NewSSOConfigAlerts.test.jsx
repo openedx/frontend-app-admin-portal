@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { SSOConfigContext, SSO_INITIAL_STATE } from '../SSOConfigContext';
 import { getMockStore } from '../testutils';
 import NewSSOConfigAlerts, { SSO_SETUP_COMPLETION_COOKIE_NAME } from '../NewSSOConfigAlerts';
@@ -174,6 +174,7 @@ describe('New SSO Config Alerts Tests', () => {
     ).toBeInTheDocument();
   });
   test('calls closeAlerts prop on close', async () => {
+    const user = userEvent.setup();
     const mockCloseAlerts = jest.fn();
     render(
       <IntlProvider locale="en">
@@ -193,11 +194,8 @@ describe('New SSO Config Alerts Tests', () => {
         </SSOConfigContext.Provider>
       </IntlProvider>,
     );
-    await waitFor(() => {
-      userEvent.click(screen.getByText('Dismiss'));
-    }, []).then(() => {
-      expect(mockCloseAlerts).toHaveBeenCalled();
-    });
+    await user.click(screen.getByText('Dismiss'));
+    expect(mockCloseAlerts).toHaveBeenCalled();
   });
   test('hides live alert properly after dismissing', () => {
     Object.defineProperty(window.document, 'cookie', {

@@ -1,13 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
 import {
   MemoryRouter, Routes, Route,
 } from 'react-router-dom';
-import { waitFor } from '@testing-library/react';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { isEnterpriseUser } from '@edx/frontend-enterprise-utils';
-
-import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
+import '@testing-library/jest-dom';
 import AdminRegisterPage from './index';
 import LmsApiService from '../../data/services/LmsApiService';
 
@@ -50,11 +48,12 @@ describe('<AdminRegisterPage />', () => {
     LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
       data: mockEnterpriseCustomer,
     }));
-    const wrapper = mount(<AdminRegisterPageWrapper />);
+    render(<AdminRegisterPageWrapper />);
 
     // verify that the loading skeleton appears during redirect
-    await waitFor(() => expect(wrapper.contains(EnterpriseAppSkeleton)).toBeTruthy());
-    await waitFor(() => expect(global.location.href).toBeTruthy());
+    const appSkeleton = await screen.findByTestId('enterprise-app-skeleton');
+    await waitFor(() => expect(appSkeleton).toBeInTheDocument());
+    await waitFor(() => expect(global.location.href).not.toBe(''));
   });
 
   [
@@ -70,8 +69,9 @@ describe('<AdminRegisterPage />', () => {
       LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
         data: mockEnterpriseCustomer,
       }));
-      const wrapper = mount(<AdminRegisterPageWrapper />);
-      await waitFor(() => expect(wrapper.find(EnterpriseAppSkeleton).exists()).toBeTruthy());
+      render(<AdminRegisterPageWrapper />);
+      const appSkeleton = await screen.findByTestId('enterprise-app-skeleton');
+      await waitFor(() => expect(appSkeleton).toBeInTheDocument());
     });
   });
 
@@ -84,7 +84,7 @@ describe('<AdminRegisterPage />', () => {
     LmsApiService.fetchEnterpriseBySlug.mockImplementation(() => Promise.resolve({
       data: mockEnterpriseCustomer,
     }));
-    mount(<AdminRegisterPageWrapper />);
+    render(<AdminRegisterPageWrapper />);
     const expectedRedirectRoute = `/${TEST_ENTERPRISE_SLUG}/admin/register/activate`;
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith(expectedRedirectRoute));
   });

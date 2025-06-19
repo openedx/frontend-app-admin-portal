@@ -37,8 +37,6 @@ const DEFAULT_PROPS = {
   csvFileName: 'completions.csv',
 };
 describe('DownloadCSVButton', () => {
-  const flushPromises = () => new Promise(setImmediate);
-
   it('renders download csv button correctly', async () => {
     render(
       <IntlProvider locale="en">
@@ -50,6 +48,7 @@ describe('DownloadCSVButton', () => {
   });
 
   it('handles successful CSV download', async () => {
+    const user = userEvent.setup();
     render(
       <IntlProvider locale="en">
         <DownloadCSVButton {...DEFAULT_PROPS} />
@@ -57,8 +56,7 @@ describe('DownloadCSVButton', () => {
     );
 
     // Click the download button.
-    userEvent.click(screen.getByTestId('plotly-charts-download-csv-button'));
-    await flushPromises();
+    await user.click(screen.getByTestId('plotly-charts-download-csv-button'));
 
     expect(saveAs).toHaveBeenCalledWith(
       new Blob([mockJsonAsCSV], { type: 'text/csv' }),

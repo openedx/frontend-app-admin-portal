@@ -17,10 +17,11 @@ describe('<ReduxFormSelect />', () => {
     render(<ReduxFormSelect {...props} />);
     expect(screen.getByText(props.label)).toBeInTheDocument();
   });
-  it('shows the options', () => {
+  it('shows the options', async () => {
+    const user = userEvent.setup();
     render(<ReduxFormSelect {...props} />);
     const select = screen.getByText(props.label);
-    userEvent.click(select);
+    await user.click(select);
     props.options.forEach((option) => {
       expect(screen.getByText(option.label)).toBeInTheDocument();
     });

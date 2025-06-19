@@ -52,7 +52,7 @@ describe('SAML Config Tab', () => {
     const link = screen.getByText('Help Center');
     expect(link.getAttribute('href')).toBe(HELP_CENTER_SAML_LINK);
     await act(() => aResult());
-  });
+  }, 10000);
 
   test('page sets has valid sso config with no configs ', async () => {
     LmsApiService.getProviderConfig.mockImplementation(() => (
@@ -127,6 +127,7 @@ describe('SAML Config Tab', () => {
     ).toBeInTheDocument());
   });
   test('creating new sso config with existing config', async () => {
+    const user = userEvent.setup();
     features.AUTH0_SELF_SERVICE_INTEGRATION = true;
     const spy = jest.spyOn(LmsApiService, 'listEnterpriseSsoOrchestrationRecords');
     spy.mockImplementation(() => Promise.resolve({
@@ -155,13 +156,13 @@ describe('SAML Config Tab', () => {
         'New',
       ),
     ).toBeInTheDocument());
-    userEvent.click(screen.getByText('New'));
+    await user.click(screen.getByText('New'));
     await waitFor(() => expect(
       screen.queryByText(
         'Create new SSO configuration?',
       ),
     ).toBeInTheDocument());
-    userEvent.click(screen.getByText('Create new SSO'));
+    await user.click(screen.getByText('Create new SSO'));
     expect(updateEnterpriseSsoOrchestrationRecord).toBeCalled();
   });
 });

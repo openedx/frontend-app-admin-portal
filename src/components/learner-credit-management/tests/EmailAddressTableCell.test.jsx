@@ -62,6 +62,7 @@ describe('<EmailAddressTableCell />', () => {
     fulfillmentIdentifier,
     contentAssignmentUUID,
   }) => {
+    const user = userEvent.setup();
     const props = {
       tableId: 'spent',
       userEmail: null,
@@ -71,7 +72,7 @@ describe('<EmailAddressTableCell />', () => {
     };
     render(<EmailAddressTableCellWrapper {...props} />);
     expect(screen.getByText('Email hidden'));
-    userEvent.click(screen.getByLabelText('More details'));
+    await user.click(screen.getByLabelText('More details'));
 
     // Verify onEntered Segment event is called when popover opens
     await waitFor(() => expect(screen.findByText('Learner data disabled', { exact: false })));
@@ -87,7 +88,7 @@ describe('<EmailAddressTableCell />', () => {
     );
 
     // Verify onExited Segment event is called when popover is closed
-    userEvent.click(screen.getByLabelText('More details'));
+    await user.click(screen.getByLabelText('More details'));
     await waitFor(() => {
       expect(screen.queryByText('Learner data disabled', { exact: false })).not.toBeInTheDocument();
     });

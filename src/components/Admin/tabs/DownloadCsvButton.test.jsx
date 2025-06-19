@@ -1,7 +1,7 @@
 import React from 'react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { saveAs } from 'file-saver';
 
 import '@testing-library/jest-dom/extend-expect';
@@ -49,20 +49,19 @@ const DownloadCSVButtonWrapper = props => (
 );
 
 describe('DownloadCSVButton', () => {
-  const flushPromises = () => new Promise(setImmediate);
-
   it('renders download csv button correctly.', async () => {
+    const user = userEvent.setup();
     render(<DownloadCSVButtonWrapper {...DEFAULT_PROPS} />);
     expect(screen.getByTestId('test-id-1')).toBeInTheDocument();
 
     // Click the download button.
-    screen.getByTestId('test-id-1').click();
-    await flushPromises();
+    await user.click(screen.getByTestId('test-id-1'));
 
     expect(DEFAULT_PROPS.fetchData).toHaveBeenCalled();
     expect(saveAs).toHaveBeenCalled();
   });
   it('download button should handle error returned by the API endpoint.', async () => {
+    const user = userEvent.setup();
     const props = {
       ...DEFAULT_PROPS,
       fetchData: jest.fn(() => Promise.reject(new Error('Error fetching data'))),
@@ -70,12 +69,8 @@ describe('DownloadCSVButton', () => {
     render(<DownloadCSVButtonWrapper {...props} />);
     expect(screen.getByTestId('test-id-1')).toBeInTheDocument();
 
-    act(() => {
-      // Click the download button.
-      userEvent.click(screen.getByTestId('test-id-1'));
-    });
-
-    await flushPromises();
+    // Click the download button.
+    await user.click(screen.getByTestId('test-id-1'));
 
     expect(DEFAULT_PROPS.fetchData).toHaveBeenCalled();
     expect(logError).toHaveBeenCalled();

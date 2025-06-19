@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Info } from '@openedx/paragon/icons';
 import IconWithTooltip from './index';
@@ -19,22 +19,22 @@ describe('<IconWithTooltip />', () => {
     const { container } = render(<IconWithTooltip {...DEFAULT_PROPS} />);
     expect(container.querySelector('svg')).toBeTruthy();
   });
+
   [
     { windowSize: 800, expectedLocation: 'right' },
     { windowSize: 700, expectedLocation: 'top' },
   ].forEach((data) => {
-    it(`renders the tooltip on the ${data.expectedLocation} for ${data.windowSize}px screen`, () => {
+    it(`renders the tooltip on the ${data.expectedLocation} for ${data.windowSize}px screen`, async () => {
+      const user = userEvent.setup();
       global.innerWidth = data.windowSize;
       global.dispatchEvent(new Event('resize'));
       const { container } = render(<IconWithTooltip {...DEFAULT_PROPS} />);
       const icon = container.querySelector('svg');
       expect(icon).toBeTruthy();
 
-      act(async () => {
-        await userEvent.hover(icon);
-        expect(screen.findByText(defaultTooltipText)).toBeTruthy();
-        expect(screen.findByTestId(`tooltip-${data.expectedLocation}`)).toBeTruthy();
-      });
+      await user.hover(icon);
+      expect(screen.findByText(defaultTooltipText)).toBeTruthy();
+      expect(screen.findByTestId(`tooltip-${data.expectedLocation}`)).toBeTruthy();
     });
   });
 });

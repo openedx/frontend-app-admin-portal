@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import Router, { Route } from 'react-router-dom';
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook, waitFor } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { camelCaseObject } from '@edx/frontend-platform';
 import { ContentHighlightsContext } from '../ContentHighlightsContext';
@@ -88,7 +88,7 @@ describe('<ContentHighlightSet>', () => {
     EnterpriseCatalogApiService.fetchHighlightSet.mockResolvedValueOnce({
       data: mockHighlightSetResponse,
     });
-    const { result, waitForNextUpdate } = renderHook(() => useHighlightSet(highlightSetUUID));
+    const { result } = renderHook(() => useHighlightSet(highlightSetUUID));
     expect(result.current).toEqual({
       isLoading: true,
       error: null,
@@ -96,7 +96,9 @@ describe('<ContentHighlightSet>', () => {
       updateHighlightSet: expect.any(Function),
     });
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(result.current).toEqual({
       isLoading: false,
       error: null,

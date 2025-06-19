@@ -57,7 +57,7 @@ describe('SSO Config Configure step', () => {
   test('updating fields fires setFormUpdated', async () => {
     const mockSetFormUpdated = jest.fn();
     const configValues = null;
-
+    const user = userEvent.setup();
     render(
       <SSOConfigConfigureStepWrapper>
         <SSOConfigConfigureStep
@@ -76,17 +76,18 @@ describe('SSO Config Configure step', () => {
       </SSOConfigConfigureStepWrapper>,
     );
     expect(configValues).toBeNull();
-    userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'f');
-    userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '1');
-    userEvent.type(screen.getByLabelText('User ID Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('Full Name Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('First Name Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('Last Name Attribute'), 'f');
-    userEvent.type(screen.getByLabelText('Email Address Attribute'), 'f');
+    await user.type(screen.getByLabelText('SSO Configuration Name'), 'f');
+    await user.type(screen.getByLabelText('Maximum Session Length (seconds)'), '1');
+    await user.type(screen.getByLabelText('User ID Attribute'), 'f');
+    await user.type(screen.getByLabelText('Full Name Attribute'), 'f');
+    await user.type(screen.getByLabelText('First Name Attribute'), 'f');
+    await user.type(screen.getByLabelText('Last Name Attribute'), 'f');
+    await user.type(screen.getByLabelText('Email Address Attribute'), 'f');
     expect(mockSetFormUpdated).toHaveBeenCalledTimes(7);
   });
-  test('page form validation', () => {
+  test('page form validation', async () => {
     const mockSetConfigNextButtonDisabled = jest.fn();
+    const user = userEvent.setup();
     render(
       <SSOConfigConfigureStepWrapper>
         <SSOConfigConfigureStep
@@ -104,8 +105,8 @@ describe('SSO Config Configure step', () => {
         />
       </SSOConfigConfigureStepWrapper>,
     );
-    userEvent.type(screen.getByLabelText('SSO Configuration Name'), 'reallyreallyreallyreallyreallylongname');
-    userEvent.type(screen.getByLabelText('Maximum Session Length (seconds)'), '2000000');
+    await user.type(screen.getByLabelText('SSO Configuration Name'), 'reallyreallyreallyreallyreallylongname');
+    await user.type(screen.getByLabelText('Maximum Session Length (seconds)'), '2000000');
     expect(screen.queryByText(INVALID_NAME));
     expect(screen.queryByText(INVALID_LENGTH));
     expect(mockSetConfigNextButtonDisabled).toHaveBeenCalled();

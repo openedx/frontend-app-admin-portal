@@ -1,7 +1,7 @@
-import { screen, render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { screen, render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
 
 import ReviewList, { ShowHideButton, MAX_ITEMS_DISPLAYED } from './ReviewList';
 import { deleteSelectedRowAction } from '../data/actions';
@@ -66,10 +66,11 @@ describe('ReviewList', () => {
     render(<ReviewList {...defaultProps} rows={[]} />);
     expect(screen.getByTestId('no-rows-alert')).toBeInTheDocument();
   });
-  it('no rows alert returns the user to the selection screen', () => {
+  it('no rows alert returns the user to the selection screen', async () => {
+    const user = userEvent.setup();
     render(<ReviewList {...defaultProps} rows={[]} />);
     const button = screen.getByTestId('return-to-selection-button');
-    userEvent.click(button);
+    await user.click(button);
     expect(defaultProps.returnToSelection).toHaveBeenCalledTimes(1);
   });
   it('shows only 25 rows by default', () => {
@@ -84,22 +85,26 @@ describe('ReviewList', () => {
       expect(screen.queryByText(row.values.foo)).not.toBeInTheDocument();
     });
   });
-  it('lets users show all rows', () => {
+  it('lets users show all rows', async () => {
+    const user = userEvent.setup();
     const rows = rowGenerator(30);
     render(<ReviewList {...defaultProps} rows={rows} />);
 
-    const button = screen.getByTestId('show-hide');
-    userEvent.click(button);
-    rows.forEach((row) => {
-      expect(screen.getByText(row.values.foo)).toBeInTheDocument();
+    const button = await waitFor(() => screen.getByTestId('show-hide'));
+    await user.click(button);
+    await waitFor(() => {
+      rows.forEach((row) => {
+        expect(screen.getByText(row.values.foo)).toBeInTheDocument();
+      });
     });
   });
-  it('lets users hide rows', () => {
+  it('lets users hide rows', async () => {
+    const user = userEvent.setup();
     const rows = rowGenerator(30);
     render(<ReviewList {...defaultProps} rows={rows} />);
-    const button = screen.getByTestId('show-hide');
-    userEvent.click(button);
-    userEvent.click(button);
+    const button = await waitFor(() => screen.getByTestId('show-hide'));
+    await user.click(button);
+    await user.click(button);
     const rowsBeingShown = rows.splice(0, MAX_ITEMS_DISPLAYED);
     const rowsBeingHidden = rows.splice(MAX_ITEMS_DISPLAYED);
     rowsBeingShown.forEach((row) => {
@@ -113,10 +118,11 @@ describe('ReviewList', () => {
     render(<ReviewList {...defaultProps} />);
     expect(screen.queryByTestId('show-hide')).not.toBeInTheDocument();
   });
-  it('dispatches the deleteSelected row action when the delete button is clicked', () => {
+  it('dispatches the deleteSelected row action when the delete button is clicked', async () => {
+    const user = userEvent.setup();
     render(<ReviewList {...defaultProps} />);
     const deleteButton = screen.getAllByTestId('delete-button')[0];
-    userEvent.click(deleteButton);
+    await user.click(deleteButton);
     expect(defaultProps.dispatch).toHaveBeenCalledTimes(1);
     expect(defaultProps.dispatch).toHaveBeenCalledWith(deleteSelectedRowAction(defaultProps.rows[0].id));
   });
@@ -154,16 +160,18 @@ describe('ReviewList', () => {
       expect(screen.getByText(`Hide ${buttonProps.numRows - MAX_ITEMS_DISPLAYED} ${buttonProps.subject.plural}`))
         .toBeInTheDocument();
     });
-    it('show button calls showAll func', () => {
+    it('show button calls showAll func', async () => {
+      const user = userEvent.setup();
       render(<ShowHideButton {...buttonProps} />);
-      const button = screen.getByTestId('test-button');
-      userEvent.click(button);
+      const button = await waitFor(() => screen.getByTestId('test-button'));
+      await user.click(button);
       expect(buttonProps.showAll).toHaveBeenCalledTimes(1);
     });
-    it('hide button calls show25 func', () => {
+    it('hide button calls show25 func', async () => {
+      const user = userEvent.setup();
       render(<ShowHideButton {...buttonProps} isShowingAll />);
-      const button = screen.getByTestId('test-button');
-      userEvent.click(button);
+      const button = await waitFor(() => screen.getByTestId('test-button'));
+      await user.click(button);
       expect(buttonProps.show25).toHaveBeenCalledTimes(1);
     });
   });

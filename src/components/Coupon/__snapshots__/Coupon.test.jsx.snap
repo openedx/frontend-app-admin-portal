@@ -2,12 +2,15 @@
 
 exports[`<Coupon /> renders correctly with error state 1`] = `
 <div
+  aria-expanded={false}
   className="coupon mb-3 mb-lg-2 rounded border border-danger"
+  data-testid="coupon-item"
 >
   <div
     aria-controls="coupon-details-1"
     aria-expanded={false}
     className="metadata row no-gutters p-2 d-flex align-items-center rounded"
+    data-testid="coupon-item-toggle"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -149,6 +152,7 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
   </div>
   <div
     className="coupon-details row no-gutters px-2 my-3 d-none"
+    data-testid="coupon-details"
     id="coupon-details-1"
   >
     <div
@@ -160,12 +164,15 @@ exports[`<Coupon /> renders correctly with error state 1`] = `
 
 exports[`<Coupon /> renders correctly with max uses 1`] = `
 <div
+  aria-expanded={false}
   className="coupon mb-3 mb-lg-2 rounded border"
+  data-testid="coupon-item"
 >
   <div
     aria-controls="coupon-details-1"
     aria-expanded={false}
     className="metadata row no-gutters p-2 d-flex align-items-center rounded"
+    data-testid="coupon-item-toggle"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -283,6 +290,7 @@ exports[`<Coupon /> renders correctly with max uses 1`] = `
   </div>
   <div
     className="coupon-details row no-gutters px-2 my-3 d-none"
+    data-testid="coupon-details"
     id="coupon-details-1"
   >
     <div
@@ -294,12 +302,15 @@ exports[`<Coupon /> renders correctly with max uses 1`] = `
 
 exports[`<Coupon /> renders correctly without max uses 1`] = `
 <div
+  aria-expanded={false}
   className="coupon mb-3 mb-lg-2 rounded border"
+  data-testid="coupon-item"
 >
   <div
     aria-controls="coupon-details-1"
     aria-expanded={false}
     className="metadata row no-gutters p-2 d-flex align-items-center rounded"
+    data-testid="coupon-item-toggle"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -412,6 +423,7 @@ exports[`<Coupon /> renders correctly without max uses 1`] = `
   </div>
   <div
     className="coupon-details row no-gutters px-2 my-3 d-none"
+    data-testid="coupon-details"
     id="coupon-details-1"
   >
     <div

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  act, cleanup, fireEvent, render, screen, waitFor, waitForElementToBeRemoved,
+  cleanup, fireEvent, render, screen, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
 
 import userEvent from '@testing-library/user-event';
@@ -285,6 +285,7 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getByText('Delete')).toBeInTheDocument();
   });
   it('populates with learner sync data', async () => {
+    const user = userEvent.setup();
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
     mockFetchSingleConfig.mockResolvedValue(configData);
     const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
@@ -297,7 +298,7 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
+    await user.click(screen.queryByText('Learner Activity'));
 
     expect(screen.getByText('Learner email')).toBeInTheDocument();
     expect(screen.getAllByText('Course')).toHaveLength(2);
@@ -310,10 +311,11 @@ describe('<ExistingLMSCardDeck />', () => {
 
     expect(screen.getByText('spooooky')).toBeInTheDocument();
     expect(screen.getByText('Passed')).toBeInTheDocument();
-    await waitFor(() => userEvent.click(screen.queryAllByText('Read')[1]));
+    await user.click(screen.queryAllByText('Read')[1]);
     expect(screen.getByText('The server is temporarily unavailable.')).toBeInTheDocument();
   });
   it('paginates over learner data', async () => {
+    const user = userEvent.setup();
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
     mockFetchSingleConfig.mockResolvedValue(configData);
     const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
@@ -326,15 +328,14 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
+    await user.click(screen.queryByText('Learner Activity'));
     await waitFor(() => expect(screen.getByText('spooooky')).toBeInTheDocument());
     expect(screen.getAllByLabelText('Next, Page 2')[1]).not.toBeDisabled();
-    act(() => {
-      fireEvent.click(screen.getAllByLabelText('Next, Page 2')[1]);
-    });
+    await user.click(screen.getAllByLabelText('Next, Page 2')[1]);
     await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
   });
   it('metadata data reporting modal calls fetchContentMetadataItemTransmission with extended page size', async () => {
+    const user = userEvent.setup();
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
     mockFetchSingleConfig.mockResolvedValue(configData);
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
@@ -347,10 +348,11 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => userEvent.click(screen.getByTestId('content-download')));
+    await user.click(screen.getByTestId('content-download'));
     await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: contentSyncData.data.count }));
   });
   it('learner data reporting modal calls fetchLearnerMetadataItemTransmission with extended page size', async () => {
+    const user = userEvent.setup();
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
     mockFetchSingleConfig.mockResolvedValue(configData);
     const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
@@ -363,12 +365,13 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
-    await waitFor(() => userEvent.click(screen.getByTestId('learner-download')));
+    await user.click(screen.queryByText('Learner Activity'));
+    await user.click(screen.getByTestId('learner-download'));
 
     await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: learnerSyncData.data.count }));
   });
   it('populates with content sync data', async () => {
+    const user = userEvent.setup();
     const mockFetchSingleConfig = jest.spyOn(LmsApiService, 'fetchSingleBlackboardConfig');
     mockFetchSingleConfig.mockResolvedValue(configData);
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
@@ -393,14 +396,15 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getAllByText('Error')[0]).toBeInTheDocument();
 
     const readLinks = screen.queryAllByText('Read');
-    await waitFor(() => userEvent.click(readLinks[0]));
+    await user.click(readLinks[0]);
     expect(screen.getByText('The request was unauthorized, check your credentials.')).toBeInTheDocument();
     // Click away to close message
-    await waitFor(() => userEvent.click(readLinks[0]));
-    await waitFor(() => userEvent.click(readLinks[1]));
+    await user.click(readLinks[0]);
+    await user.click(readLinks[1]);
     expect(screen.getByText(/Something went wrong.*Please contact enterprise customer support/)).toBeInTheDocument();
   });
   it('paginates over metadata data', async () => {
+    const user = userEvent.setup();
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
     mockFetchCmits.mockResolvedValue(contentSyncData);
 
@@ -414,10 +418,7 @@ describe('<ExistingLMSCardDeck />', () => {
 
     await waitFor(() => expect(screen.getByText('Demo1')).toBeInTheDocument());
     expect(screen.getAllByLabelText('Next, Page 2')[0]).not.toBeDisabled();
-    act(() => {
-      userEvent.click(screen.getAllByLabelText('Next, Page 2')[0]);
-    });
-
+    await user.click(screen.getAllByLabelText('Next, Page 2')[0]);
     await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 1, {}));
   });
   it('adds filters to the backend url query params', async () => {
@@ -439,6 +440,7 @@ describe('<ExistingLMSCardDeck />', () => {
     await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, 0, { content_id: 'ayylmao' }));
   });
   test('csv download works', async () => {
+    const user = userEvent.setup();
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
     mockFetchCmits.mockResolvedValue(contentSyncData);
 
@@ -454,14 +456,13 @@ describe('<ExistingLMSCardDeck />', () => {
     expect(screen.getAllByText('Download history')).toHaveLength(2);
 
     // Click the button
-    await act(async () => {
-      const input = screen.getByTestId('content-download');
-      userEvent.click(input);
-    });
+    const input = screen.getByTestId('content-download');
+    await user.click(input);
     // Expect to have updated the state to complete
     expect(screen.queryByText('Downloaded')).toBeInTheDocument();
   });
   it('metadata data reporting modal calls fetchContentMetadataItemTransmission with extended page size', async () => {
+    const user = userEvent.setup();
     const mockFetchCmits = jest.spyOn(LmsApiService, 'fetchContentMetadataItemTransmission');
     mockFetchCmits.mockResolvedValue(contentSyncData);
     render(
@@ -471,10 +472,11 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => userEvent.click(screen.getByTestId('content-download')));
+    await user.click(screen.getByTestId('content-download'));
     await waitFor(() => expect(mockFetchCmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: contentSyncData.data.count }));
   });
   it('learner data reporting modal calls fetchLearnerMetadataItemTransmission with extended page size', async () => {
+    const user = userEvent.setup();
     const mockFetchLmits = jest.spyOn(LmsApiService, 'fetchLearnerMetadataItemTransmission');
     mockFetchLmits.mockResolvedValue(learnerSyncData);
     render(
@@ -484,8 +486,8 @@ describe('<ExistingLMSCardDeck />', () => {
     );
     const skeleton = screen.getAllByTestId('skeleton');
     await waitForElementToBeRemoved(skeleton);
-    await waitFor(() => userEvent.click(screen.queryByText('Learner Activity')));
-    await waitFor(() => userEvent.click(screen.getByTestId('learner-download')));
+    await user.click(screen.queryByText('Learner Activity'));
+    await user.click(screen.getByTestId('learner-download'));
 
     await waitFor(() => expect(mockFetchLmits).toBeCalledWith('test-enterprise-id', 'BLACKBOARD', 1, false, { page_size: learnerSyncData.data.count }));
   });

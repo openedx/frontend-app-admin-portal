@@ -20,6 +20,7 @@ export const Logo = ({ enterpriseLogo, enterpriseName }) => {
 
   return (
     <Img
+      dataTestId="header-logo-img"
       src={enterpriseLogo || logo}
       alt={`${enterpriseName} logo`}
       onError={(e) => { e.target.src = logo; }}

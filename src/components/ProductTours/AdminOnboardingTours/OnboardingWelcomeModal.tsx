@@ -78,7 +78,7 @@ const OnboardingWelcomeModal = ({
           </ModalDialog.CloseButton>
           <Button onClick={handleStart} data-testid="welcome-modal-dismiss">
             <FormattedMessage
-              id="admin.portal.productTours.adminOnboarding.welcomeModal.dismiss"
+              id="admin.portal.productTours.adminOnboarding.welcomeModal.start"
               defaultMessage="Get started"
               description="Label for the primary button on the onboarding welcome modal."
             />

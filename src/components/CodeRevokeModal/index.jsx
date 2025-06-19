@@ -174,12 +174,12 @@ class CodeRevokeModal extends React.Component {
               ref={this.errorMessageRef}
             />
           )}
-        <div className="assignment-details mb-4">
-          {(isBulkRevoke && data.selectedCodes.length > 0) && <p className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
+        <div data-testid="assignment-details" className="assignment-details mb-4">
+          {(isBulkRevoke && data.selectedCodes.length > 0) && <p data-testid="bulk-selected-codes" className="bulk-selected-codes">{displaySelectedCodes(data.selectedCodes.length)}</p>}
           {!isBulkRevoke && this.hasIndividualRevokeData() && (
             <>
-              <p className="code">{displayCode(data.code)}</p>
-              <p className="email">{displayEmail(data.assigned_to)}</p>
+              <p data-testid="assignment-details-code" className="code">{displayCode(data.code)}</p>
+              <p data-testid="assignment-details-email" className="email">{displayEmail(data.assigned_to)}</p>
             </>
           )}
         </div>
@@ -227,7 +227,7 @@ class CodeRevokeModal extends React.Component {
         isOverflowVisible={false}
       >
         <ModalDialog.Header>
-          <ModalDialog.Title>
+          <ModalDialog.Title data-testid="modal-title">
             {this.renderTitle()}
           </ModalDialog.Title>
         </ModalDialog.Header>
@@ -242,6 +242,7 @@ class CodeRevokeModal extends React.Component {
             <Button
               key="revoke-submit-btn"
               disabled={submitting}
+              data-testid="revoke-submit-btn"
               className="code-revoke-save-btn"
               onClick={handleSubmit(this.handleModalSubmit)}
             >

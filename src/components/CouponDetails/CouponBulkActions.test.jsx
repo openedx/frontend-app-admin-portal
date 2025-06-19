@@ -17,7 +17,7 @@ const props = {
 
 describe('CouponBulkActions', () => {
   beforeEach(() => {
-    props.handleBulkAction.mockClear();
+    jest.clearAllMocks();
   });
   it('has disabled select and button when table is loading', () => {
     const modifiedProps = {
@@ -55,23 +55,26 @@ describe('CouponBulkActions', () => {
     expect(screen.getByLabelText(BULK_ACTION.label)).toHaveProperty('value', ACTIONS.remind.value);
   });
   it('changes the value when a new value is selected', async () => {
+    const user = userEvent.setup();
     render(<CouponBulkActions {...props} selectedToggle={COUPON_FILTER_TYPES.unredeemed} numSelectedCodes={1} />);
     expect(screen.getByText(ACTIONS.remind.label)).toHaveProperty('disabled', false);
     expect(screen.getByText(ACTIONS.revoke.label)).toHaveProperty('disabled', false);
-    userEvent.selectOptions(screen.getByLabelText(BULK_ACTION.label), [ACTIONS.revoke.label]);
+    await user.selectOptions(screen.getByLabelText(BULK_ACTION.label), [ACTIONS.revoke.label]);
     expect(await screen.findByLabelText(BULK_ACTION.label)).toHaveProperty('value', ACTIONS.revoke.value);
   });
-  it('calls handle bulk action with the selected value - default', () => {
+  it('calls handle bulk action with the selected value - default', async () => {
+    const user = userEvent.setup();
     render(<CouponBulkActions {...props} />);
-    userEvent.click(screen.getByText('Go'));
+    await user.click(screen.getByText('Go'));
     expect(props.handleBulkAction).toHaveBeenCalledWith(ACTIONS.assign.value);
   });
   it('calls handle bulk action with the selected value - after change', async () => {
+    const user = userEvent.setup();
     render(<CouponBulkActions {...props} selectedToggle={COUPON_FILTER_TYPES.unredeemed} numSelectedCodes={1} />);
     expect(screen.getByText(ACTIONS.remind.label)).toHaveProperty('disabled', false);
     expect(screen.getByText(ACTIONS.revoke.label)).toHaveProperty('disabled', false);
-    userEvent.selectOptions(screen.getByLabelText(BULK_ACTION.label), [ACTIONS.revoke.label]);
-    userEvent.click(screen.getByText('Go'));
+    await user.selectOptions(screen.getByLabelText(BULK_ACTION.label), [ACTIONS.revoke.label]);
+    await user.click(screen.getByText('Go'));
     expect(props.handleBulkAction).toHaveBeenCalledWith(ACTIONS.revoke.value);
   });
 });

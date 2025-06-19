@@ -1,5 +1,5 @@
 import {
-  act, fireEvent, render, screen, waitFor,
+  fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import thunk from 'redux-thunk';
@@ -111,9 +111,11 @@ const setupMockTableData = () => {
 
 describe('<GroupDetailPageWrapper >', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     useEnterpriseGroupUuid.mockReturnValue({ data: TEST_GROUP });
   });
   it('renders the GroupDetailPage', async () => {
+    const user = userEvent.setup();
     const { mockFetchEnterpriseGroupLearnersTableData } = setupMockTableData();
     render(<GroupDetailPageWrapper />);
     expect(screen.queryAllByText(TEST_GROUP.name)).toHaveLength(2);
@@ -124,14 +126,14 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByRole('link', { name: 'Test 2u' })).toBeInTheDocument();
     const lprUrl = screen.getByText('View group progress');
     expect(lprUrl).toHaveAttribute('href', '/test-enterprise/admin/learners?group_uuid=12345#fullreport');
-    userEvent.click(lprUrl);
+    await user.click(lprUrl);
     await waitFor(() => {
       expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
         enterpriseUUID,
         EVENT_NAMES.PEOPLE_MANAGEMENT.VIEW_GROUP_PROGRESS_BUTTON,
       );
     });
-    userEvent.click(screen.getByText('Member details'));
+    await user.click(screen.getByText('Member details'));
     await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
       filters: [],
       pageIndex: 0,
@@ -139,7 +141,7 @@ describe('<GroupDetailPageWrapper >', () => {
       sortBy: [{ desc: true, id: 'memberDetails' }],
     }));
 
-    userEvent.click(screen.getByText('Enrollments'));
+    await user.click(screen.getByText('Enrollments'));
     await waitFor(() => expect(mockFetchEnterpriseGroupLearnersTableData).toHaveBeenCalledWith({
       filters: [],
       pageIndex: 0,
@@ -161,37 +163,37 @@ describe('<GroupDetailPageWrapper >', () => {
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
   });
   it('edit flex group name', async () => {
+    const user = userEvent.setup();
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseGroup');
     LmsApiService.updateEnterpriseGroup.mockResolvedValueOnce({ status: 200 });
     render(<GroupDetailPageWrapper />);
     const editGroupNameIcon = screen.getByTestId('edit-modal-icon');
-    editGroupNameIcon.click();
+    await user.click(editGroupNameIcon);
 
     expect(screen.getByText('Edit group name')).toBeInTheDocument();
     const input = screen.getByTestId('group name input');
-    act(() => {
-      fireEvent.change(input, { target: { value: 'new name!' } });
-    });
+    await user.clear(input);
+    await user.type(input, 'new name!');
     await waitFor(() => expect(screen.getByTestId('group name input')).toHaveValue('new name!'));
-    screen.getByText('Save').click();
+    await user.click(screen.getByText('Save'));
 
     const formData = { name: 'new name!' };
     await waitFor(() => expect(spy).toHaveBeenCalledWith(TEST_GROUP.uuid, formData));
   });
   it('edit flex group name error', async () => {
+    const user = userEvent.setup();
     const spy = jest.spyOn(LmsApiService, 'updateEnterpriseGroup');
     LmsApiService.updateEnterpriseGroup.mockResolvedValueOnce({ status: 404 });
     render(<GroupDetailPageWrapper />);
     const editGroupNameIcon = screen.getByTestId('edit-modal-icon');
-    editGroupNameIcon.click();
+    await user.click(editGroupNameIcon);
 
     expect(screen.getByText('Edit group name')).toBeInTheDocument();
     const input = screen.getByTestId('group name input');
-    act(() => {
-      fireEvent.change(input, { target: { value: 'new name!' } });
-    });
+    await user.clear(input);
+    await user.type(input, 'new name!');
     await waitFor(() => expect(screen.getByTestId('group name input')).toHaveValue('new name!'));
-    screen.getByText('Save').click();
+    await user.click(screen.getByText('Save'));
 
     const formData = { name: 'new name!' };
     await waitFor(() => expect(spy).toHaveBeenCalledWith(TEST_GROUP.uuid, formData));
@@ -199,6 +201,7 @@ describe('<GroupDetailPageWrapper >', () => {
     await waitFor(() => expect(screen.getByText('Something went wrong')).toBeInTheDocument());
   });
   it('delete flex group', async () => {
+    const user = userEvent.setup();
     const spy = jest.spyOn(LmsApiService, 'removeEnterpriseGroup');
     LmsApiService.removeEnterpriseGroup.mockResolvedValueOnce({ status: 204 });
     render(<GroupDetailPageWrapper />);
@@ -210,7 +213,7 @@ describe('<GroupDetailPageWrapper >', () => {
       expect(screen.queryByRole('tooltip')).not.toBeNull();
       expect(screen.getAllByText('Delete group')).toHaveLength(1);
     });
-    deleteGroupIcon.click();
+    await user.click(deleteGroupIcon);
 
     // Open delete group modal
     expect(screen.getByText('Delete group?')).toBeInTheDocument();
@@ -221,6 +224,7 @@ describe('<GroupDetailPageWrapper >', () => {
     await waitFor(() => expect(spy).toHaveBeenCalledWith(TEST_GROUP.uuid));
   });
   it('delete flex group error', async () => {
+    const user = userEvent.setup();
     const mockRemoveGroup = jest.spyOn(LmsApiService, 'removeEnterpriseGroup');
     mockRemoveGroup.mockRejectedValue({
       customAttributes: {
@@ -229,31 +233,32 @@ describe('<GroupDetailPageWrapper >', () => {
     });
     render(<GroupDetailPageWrapper />);
     const deleteGroupIcon = screen.getByTestId('delete-group-icon');
-    deleteGroupIcon.click();
+    await user.click(deleteGroupIcon);
 
     expect(screen.getByText('Delete group')).toBeInTheDocument();
     expect(screen.getByText('This action cannot be undone.'));
     const deleteGroupButton = screen.getByTestId('delete-group-button');
-    deleteGroupButton.click();
+    await user.click(deleteGroupButton);
 
     await waitFor(() => expect(mockRemoveGroup).toHaveBeenCalledWith(TEST_GROUP.uuid));
     // error modal
     await waitFor(() => expect(screen.getByText('Something went wrong')).toBeInTheDocument());
   });
   it('removes group member', async () => {
+    const user = userEvent.setup();
     const spyRemoveLearners = jest.spyOn(LmsApiService, 'removeEnterpriseLearnersFromGroup');
     setupMockTableData();
     render(<GroupDetailPageWrapper />);
     expect(screen.getByText('Test 2u')).toBeInTheDocument();
     // Click on kebab
     const learnerKebab = screen.getByTestId('kabob-menu-dropdown');
-    learnerKebab.click();
+    await user.click(learnerKebab);
     // Click remove
     const removeButton = screen.getByText('Remove member');
-    removeButton.click();
+    await user.click(removeButton);
     // Click confirm
     const removeConfirm = screen.getByTestId('remove-member-confirm');
-    removeConfirm.click();
+    await user.click(removeConfirm);
     // Verify remove was called
     await waitFor(() => expect(spyRemoveLearners).toHaveBeenCalled());
     const [uuidArg, learnersFormDataArg] = spyRemoveLearners.mock.lastCall;

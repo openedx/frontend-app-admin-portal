@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { renderHook } from '@testing-library/react-hooks/dom';
-import { waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { logError } from '@edx/frontend-platform/logging';

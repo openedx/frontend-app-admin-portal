@@ -1,5 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
-import { act, waitFor } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { mergeConfig } from '@edx/frontend-platform/config';
 import { camelCaseObject } from '@edx/frontend-platform';
 import useEnterpriseCuration from './useEnterpriseCuration';
@@ -101,7 +100,7 @@ describe('useEnterpriseCuration', () => {
         enterpriseId: TEST_ENTERPRISE_UUID,
         curationTitleForCreation: TEST_ENTERPRISE_NAME,
       };
-      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      const { result } = renderHook(() => useEnterpriseCuration(args));
 
       expect(result.current).toEqual({
         isLoading: true,
@@ -111,7 +110,9 @@ describe('useEnterpriseCuration', () => {
         updateEnterpriseCuration: expect.any(Function),
       });
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
 
       expect(
         EnterpriseCatalogApiService.getEnterpriseCurationConfig,
@@ -149,9 +150,11 @@ describe('useEnterpriseCuration', () => {
         curationTitleForCreation: TEST_ENTERPRISE_NAME,
       };
 
-      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      const { result } = renderHook(() => useEnterpriseCuration(args));
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
 
       const { updateEnterpriseCuration } = result.current;
 
@@ -190,7 +193,7 @@ describe('useEnterpriseCuration', () => {
         enterpriseId: TEST_ENTERPRISE_UUID,
         curationTitleForCreation: TEST_ENTERPRISE_NAME,
       };
-      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      const { result } = renderHook(() => useEnterpriseCuration(args));
 
       expect(result.current).toEqual({
         isLoading: true,
@@ -200,7 +203,9 @@ describe('useEnterpriseCuration', () => {
         updateEnterpriseCuration: expect.any(Function),
       });
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
 
       expect(
         EnterpriseCatalogApiService.getEnterpriseCurationConfig,
@@ -226,7 +231,7 @@ describe('useEnterpriseCuration', () => {
         enterpriseId: TEST_ENTERPRISE_UUID,
         curationTitleForCreation: TEST_ENTERPRISE_NAME,
       };
-      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      const { result } = renderHook(() => useEnterpriseCuration(args));
 
       expect(result.current).toEqual({
         isLoading: true,
@@ -236,7 +241,9 @@ describe('useEnterpriseCuration', () => {
         updateEnterpriseCuration: expect.any(Function),
       });
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
 
       expect(
         EnterpriseCatalogApiService.getEnterpriseCurationConfig,
@@ -265,7 +272,7 @@ describe('useEnterpriseCuration', () => {
         enterpriseId: TEST_ENTERPRISE_UUID,
         curationTitleForCreation: TEST_ENTERPRISE_NAME,
       };
-      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      const { result } = renderHook(() => useEnterpriseCuration(args));
 
       expect(result.current).toEqual({
         isLoading: true,
@@ -275,7 +282,9 @@ describe('useEnterpriseCuration', () => {
         updateEnterpriseCuration: expect.any(Function),
       });
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
 
       expect(
         EnterpriseCatalogApiService.getEnterpriseCurationConfig,
@@ -302,9 +311,11 @@ describe('useEnterpriseCuration', () => {
         curationTitleForCreation: TEST_ENTERPRISE_NAME,
       };
 
-      const { result, waitForNextUpdate } = renderHook(() => useEnterpriseCuration(args));
+      const { result } = renderHook(() => useEnterpriseCuration(args));
 
-      await waitForNextUpdate();
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
 
       const { updateEnterpriseCuration } = result.current;
 

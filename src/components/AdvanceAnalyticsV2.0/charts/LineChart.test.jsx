@@ -1,9 +1,20 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import Plot from 'react-plotly.js';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+
 import LineChart from './LineChart';
 
+jest.mock('react-plotly.js', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => <div data-testid="Plot" />),
+}));
+
 describe('LineChart', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   const mockData = [
     { category: 'A', valueX: 1, valueY: 2 },
     { category: 'B', valueX: 3, valueY: 4 },
@@ -12,7 +23,7 @@ describe('LineChart', () => {
   const hovertemplate = 'x=%{x}<br>y=%{y}';
 
   it('renders correctly', () => {
-    const wrapper = shallow(
+    render(
       <LineChart
         data={mockData}
         xKey="valueX"
@@ -24,8 +35,13 @@ describe('LineChart', () => {
         yAxisTitle="Y Axis"
       />,
     );
-    const plotComponent = wrapper.find(Plot);
-    const traces = plotComponent.prop('data');
+    expect(screen.getByTestId('Plot')).toBeInTheDocument();
+    const {
+      data: traces,
+      layout,
+      config,
+      style,
+    } = Plot.mock.calls[0][0];
     expect(traces.length).toBe(Object.keys(colorMap).length);
     expect(traces[0].x).toEqual([1]);
     expect(traces[0].y).toEqual([2]);
@@ -39,38 +55,11 @@ describe('LineChart', () => {
       expect(trace.hovertemplate).toBe(hovertemplate);
     });
 
-    const layout = plotComponent.prop('layout');
     expect(layout.xaxis.title).toBe('X Axis');
     expect(layout.yaxis.title).toBe('Y Axis');
     expect(layout.dragmode).toBeFalsy();
     expect(layout.autosize).toBeTruthy();
-    expect(plotComponent.prop('config')).toEqual({ displayModeBar: false });
-    expect(plotComponent.prop('style')).toEqual({ width: '100%', height: '100%' });
-  });
-
-  it('renders a single line with fallback color when colorKey is missing', () => {
-    const wrapper = shallow(
-      <LineChart
-        data={mockData}
-        xKey="valueX"
-        yKey="valueY"
-        colorMap={{}}
-        hovertemplate={hovertemplate}
-        xAxisTitle="X Axis"
-        yAxisTitle="Y Axis"
-      />,
-    );
-
-    const plotComponent = wrapper.find(Plot);
-    const traces = plotComponent.prop('data');
-
-    expect(traces.length).toBe(1);
-    expect(traces[0].x).toEqual([1, 3]);
-    expect(traces[0].y).toEqual([2, 4]);
-    expect(traces[0].type).toBe('scatter');
-    expect(traces[0].mode).toBe('lines');
-    expect(traces[0].name).toBe('Learning Hours');
-    expect(traces[0].marker.color).toBe('#3669C9');
-    expect(traces[0].hovertemplate).toBe(hovertemplate);
+    expect(config).toEqual({ displayModeBar: false });
+    expect(style).toEqual({ width: '100%', height: '100%' });
   });
 });

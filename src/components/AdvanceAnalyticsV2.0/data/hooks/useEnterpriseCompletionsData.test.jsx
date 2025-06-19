@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { useQuery } from '@tanstack/react-query';
 import * as utils from '../utils';
 import useEnterpriseCompletionsData from './useEnterpriseCompletionsData';

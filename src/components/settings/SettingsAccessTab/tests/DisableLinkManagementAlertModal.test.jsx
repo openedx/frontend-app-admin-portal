@@ -3,7 +3,6 @@ import {
   screen,
   render,
   cleanup,
-  act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
@@ -53,6 +52,7 @@ describe('<DisableLinkManagementAlertModal />', () => {
     expect(backButton).toHaveProperty('disabled', true);
   });
   test('`Disable` button calls `onDisable`', async () => {
+    const user = userEvent.setup();
     const onDisableMock = jest.fn();
     render((
       <DisableLinkManagementAlertModalWrapper
@@ -62,10 +62,11 @@ describe('<DisableLinkManagementAlertModal />', () => {
       />
     ));
     const disableButton = screen.getByText('Disable');
-    await act(async () => { userEvent.click(disableButton); });
+    await user.click(disableButton);
     expect(onDisableMock).toHaveBeenCalledTimes(1);
   });
   test('`Go back` button calls `onClose`', async () => {
+    const user = userEvent.setup();
     const onCloseMock = jest.fn();
     renderWithI18nProvider(<DisableLinkManagementAlertModal
       isOpen
@@ -73,7 +74,7 @@ describe('<DisableLinkManagementAlertModal />', () => {
       onDisable={() => {}}
     />);
     const backButton = screen.getByText('Go back');
-    await act(async () => { userEvent.click(backButton); });
+    await user.click(backButton);
     expect(onCloseMock).toHaveBeenCalledTimes(1);
   });
 });

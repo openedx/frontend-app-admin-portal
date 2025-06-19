@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { MemoryRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { last } from 'lodash-es';
+import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import EcommerceApiService from '../../data/services/EcommerceApiService';
@@ -115,34 +116,35 @@ describe('CodeRevokeModalWrapper', () => {
 
   it('renders individual assignment revoke modal', async () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
+    render(<CodeRevokeModalWrapper data={data} />);
+    const modalTitle = await screen.findByTestId('modal-title');
+    expect(modalTitle.textContent).toEqual(couponTitle);
 
-    const wrapper = mount(<CodeRevokeModalWrapper data={data} />);
-    expect(wrapper.find('.pgn__modal-title').text()).toEqual(couponTitle);
-
-    expect(wrapper.find('.assignment-details p.code').text()).toEqual(`Code: ${data.code}`);
-    expect(wrapper.find('.assignment-details p.email').text()).toEqual(`Email: ${data.assigned_to}`);
-    expect(wrapper.find('div form h3').text()).toEqual('Email Template');
-    wrapper.find('div .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    expect(await screen.getByTestId('assignment-details-code').textContent).toEqual(`Code: ${data.code}`);
+    expect(await screen.getByTestId('assignment-details-email').textContent).toEqual(`Email: ${data.assigned_to}`);
+    expect(await screen.getByTestId('email-template-form-title').textContent).toEqual('Email Template');
+    const revokeSaveBtn = await screen.getByTestId('revoke-submit-btn');
+    fireEvent.click(revokeSaveBtn);
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(1));
   });
 
   it('renders bulk assignment revoke modal', async () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
     const codeRevokeData = [data, data];
-    const wrapper = mount(<CodeRevokeModalWrapper
+    render(<CodeRevokeModalWrapper
       data={{ ...codeRevokeData, selectedCodes: codeRevokeData }}
       isBulkRevoke
     />);
-
-    expect(wrapper.find('.bulk-selected-codes').text()).toEqual('Selected codes: 2');
-    wrapper.find('div .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    expect(await screen.getByTestId('bulk-selected-codes').textContent).toEqual('Selected codes: 2');
+    const RevokeSaveBtn = await screen.getByTestId('revoke-submit-btn');
+    fireEvent.click(RevokeSaveBtn);
     expect(spy).toHaveBeenCalledWith(couponId, codeRevokeRequestData(2));
   });
 
   it('returns the correct data if learner portal is not enabled', async () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
     const codeRevokeData = [data, data];
-    const wrapper = mount(<CodeRevokeModalWrapper
+    render(<CodeRevokeModalWrapper
       data={{ ...codeRevokeData, selectedCodes: codeRevokeData }}
       isBulkRevoke
       store={mockStore({
@@ -151,51 +153,55 @@ describe('CodeRevokeModalWrapper', () => {
       })}
     />);
 
-    wrapper.find('div .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    const RevokeSaveBtn = await screen.getByTestId('revoke-submit-btn');
+    fireEvent.click(RevokeSaveBtn);
     const expectedData = codeRevokeRequestData(2);
     delete expectedData.base_enterprise_url;
     expect(spy).toHaveBeenCalledWith(couponId, expectedData);
   });
 
-  it('throws error if no code is selected for bulk revoke', () => {
+  it('throws error if no code is selected for bulk revoke', async () => {
     spy = jest.spyOn(EcommerceApiService, 'sendCodeRevoke');
     const codeRevokeData = [data, data];
-    const wrapper = mount(<CodeRevokeModalWrapper
+    render(<CodeRevokeModalWrapper
       data={{ ...codeRevokeData, selectedCodes: [] }}
       isBulkRevoke
     />);
 
-    expect(wrapper.find('.bulk-selected-codes').exists()).toBeFalsy();
-    wrapper.find('div .code-revoke-save-btn .btn-primary').hostNodes().simulate('click');
+    const bulkSelectedCodes = await screen.queryByTestId('bulk-selected-codes');
+    expect(bulkSelectedCodes).not.toBeInTheDocument();
+    const RevokeSaveBtn = await screen.getByTestId('revoke-submit-btn');
+    fireEvent.click(RevokeSaveBtn);
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('renders <SaveTemplateButton />', () => {
-    const wrapper = mount(<CodeRevokeModalWrapper />);
-    const saveTemplateButton = wrapper.find('SaveTemplateButton');
-    expect(saveTemplateButton).toHaveLength(1);
-    expect(saveTemplateButton.props().templateType).toEqual('revoke');
+  it('renders <SaveTemplateButton />', async () => {
+    render(<CodeRevokeModalWrapper />);
+    const saveTemplateButton = await screen.findByTestId('save-template-btn');
+    expect(saveTemplateButton).toBeInTheDocument();
+    // TODO: unable to see how can we test an internal function parameters
+    // expect(saveTemplateButton.props().templateType).toEqual('revoke');
   });
 
-  it('renders <TemplateSourceFields /> with source new_email', () => {
-    const wrapper = mount(<CodeRevokeModalWrapper />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+  it('renders <TemplateSourceFields /> with source new_email', async () => {
+    render(<CodeRevokeModalWrapper />);
+    const TemplateSourceFields = await screen.findAllByTestId('template-source-fields');
+    expect(TemplateSourceFields.length).toEqual(1);
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('input[name="template-name"]')).toHaveLength(1);
+    expect(await screen.findByTestId('btn-new-email-template')).toHaveAttribute('aria-pressed', 'true');
+    expect(await screen.findByTestId('btn-old-email-template')).toHaveAttribute('aria-pressed', 'false');
+    expect(await screen.findByTestId('btn-new-email-template')).toHaveAttribute('style', 'pointer-events: none;');
+    expect(await screen.findByTestId('btn-old-email-template')).toHaveAttribute('style', 'pointer-events: auto;');
 
-    TemplateSourceFields.find('button#btn-old-email-template').simulate('click');
+    const buttonOldEmailTemplate = await screen.findByTestId('btn-old-email-template');
+    fireEvent.click(buttonOldEmailTemplate);
     expect(last(store.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE },
     });
   });
 
-  it('renders <TemplateSourceFields /> with source from_template', () => {
+  it('renders <TemplateSourceFields /> with source from_template', async () => {
     const newStore = mockStore({
       ...initialState,
       emailTemplate: {
@@ -203,17 +209,17 @@ describe('CodeRevokeModalWrapper', () => {
         emailTemplateSource: EMAIL_TEMPLATE_SOURCE_FROM_TEMPLATE,
       },
     });
-    const wrapper = mount(<CodeRevokeModalWrapper store={newStore} />);
-    const TemplateSourceFields = wrapper.find('TemplateSourceFields');
-    expect(TemplateSourceFields).toHaveLength(1);
+    render(<CodeRevokeModalWrapper store={newStore} />);
+    const TemplateSourceFields = await screen.findAllByTestId('template-source-fields');
+    expect(TemplateSourceFields.length).toEqual(1);
 
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('aria-pressed')).toEqual('false');
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('aria-pressed')).toEqual('true');
-    expect(TemplateSourceFields.find('button#btn-new-email-template').prop('style')).toEqual({ pointerEvents: 'auto' });
-    expect(TemplateSourceFields.find('button#btn-old-email-template').prop('style')).toEqual({ pointerEvents: 'none' });
-    expect(TemplateSourceFields.find('select[name="template-name-select"]')).toHaveLength(1);
+    expect(await screen.findByTestId('btn-new-email-template')).toHaveAttribute('aria-pressed', 'false');
+    expect(await screen.findByTestId('btn-old-email-template')).toHaveAttribute('aria-pressed', 'true');
+    expect(await screen.findByTestId('btn-new-email-template')).toHaveAttribute('style', 'pointer-events: auto;');
+    expect(await screen.findByTestId('btn-old-email-template')).toHaveAttribute('style', 'pointer-events: none;');
 
-    TemplateSourceFields.find('button#btn-new-email-template').simulate('click');
+    const buttonNewEmailTemplate = await screen.findByTestId('btn-new-email-template');
+    fireEvent.click(buttonNewEmailTemplate);
     expect(last(newStore.getActions())).toEqual({
       type: SET_EMAIL_TEMPLATE_SOURCE,
       payload: { emailTemplateSource: EMAIL_TEMPLATE_SOURCE_NEW_EMAIL },

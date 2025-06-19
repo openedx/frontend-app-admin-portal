@@ -4,6 +4,7 @@ exports[`EnterpriseAppSkeleton renders a skeleton 1`] = `
 [
   <div
     className="sr-only"
+    data-testid="enterprise-app-skeleton"
   >
     Loading...
   </div>,
