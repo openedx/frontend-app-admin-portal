@@ -24,6 +24,7 @@ const learnerDetailPageTour = ({
     target: `#${TOUR_TARGETS.PEOPLE_MANAGEMENT}`,
     title: 'New Feature',
     onDismiss: handleDismissTour,
+    advanceButtonText: 'Next',
     endButtonText: 'Dismiss',
   };
 
