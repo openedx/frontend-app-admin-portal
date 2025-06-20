@@ -134,7 +134,9 @@ const BudgetDetailAssignments = ({
     return null;
   }
 
-  if (!hasContentAssignments && hasSpentTransactions) {
+  if (!hasContentAssignments
+    && hasSpentTransactions
+    && ![BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status)) {
     return (
       <AssignMoreCoursesEmptyStateMinimal />
     );

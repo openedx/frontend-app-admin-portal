@@ -36,6 +36,10 @@ import {
   useSubsidyAccessPolicy,
   useSubsidySummaryAnalyticsApi,
 } from '../data';
+import {
+  BUDGET_DETAIL_ACTIVITY_TAB,
+  BUDGET_DETAIL_CATALOG_TAB,
+} from '../data/constants';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
   mockAssignableSubsidyAccessPolicy,
@@ -57,6 +61,8 @@ jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedUser: jest.fn(),
 }));
 
+const mockNavigate = jest.fn();
+
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
   sendEnterpriseTrackEvent: jest.fn(),
@@ -64,6 +70,7 @@ jest.mock('@edx/frontend-enterprise-utils', () => ({
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
   useParams: jest.fn(),
 }));
 
@@ -112,6 +119,10 @@ const mockContentTitle = 'edx Demo';
 const mockEmptyStateBudgetDetailActivityOverview = {
   contentAssignments: { count: 0 },
   spentTransactions: { count: 0 },
+};
+const mockBudgetDetailActivityOverviewWithSpend = {
+  contentAssignments: { count: 0 },
+  spentTransactions: { count: 1 },
 };
 const mockEmptyBudgetRedemptions = {
   itemCount: 0,
@@ -2631,5 +2642,127 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.getByText(
       'Failure to enroll by the enrollment deadline will release funds back into the budget',
     )).toBeTruthy());
+  });
+
+  describe('when there are no assignments but there is spend', () => {
+    test.each([
+      [
+        'retired',
+        {
+          ...mockAssignableSubsidyAccessPolicy,
+          retired: true,
+        },
+      ],
+      [
+        'expired',
+        {
+          ...mockAssignableSubsidyAccessPolicy,
+          subsidyExpirationDatetime: dayjs().subtract(1, 'day').toISOString(),
+        },
+      ],
+    ])('should NOT show assign more courses empty state for a %s budget', async (status, budgetData) => {
+      useParams.mockReturnValue({ budgetId: mockSubsidyAccessPolicyUUID, enterpriseSlug, enterpriseAppPage: 'learner-credit' });
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        data: budgetData,
+      });
+      useBudgetDetailActivityOverview.mockReturnValue({
+        isLoading: false,
+        data: mockBudgetDetailActivityOverviewWithSpend,
+      });
+      useBudgetContentAssignments.mockReturnValue({
+        isLoading: false,
+        contentAssignments: { results: [], learnerStateCounts: [] },
+      });
+      useBudgetRedemptions.mockReturnValue({
+        isLoading: false,
+        budgetRedemptions: mockEmptyBudgetRedemptions,
+        fetchBudgetRedemptions: jest.fn(),
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+      await waitFor(() => {
+        expect(screen.queryByText('Assign more courses')).not.toBeInTheDocument();
+      });
+    });
+
+    it('should show assign more courses empty state for an active budget', async () => {
+      useParams.mockReturnValue({ budgetId: mockSubsidyAccessPolicyUUID, enterpriseSlug, enterpriseAppPage: 'learner-credit' });
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        data: {
+          ...mockAssignableSubsidyAccessPolicy,
+          retired: false,
+          subsidyExpirationDatetime: dayjs().add(1, 'year').toISOString(),
+        },
+      });
+      useBudgetDetailActivityOverview.mockReturnValue({
+        isLoading: false,
+        data: mockBudgetDetailActivityOverviewWithSpend,
+      });
+      useBudgetContentAssignments.mockReturnValue({
+        isLoading: false,
+        contentAssignments: { results: [], learnerStateCounts: [] },
+      });
+      useBudgetRedemptions.mockReturnValue({
+        isLoading: false,
+        budgetRedemptions: mockEmptyBudgetRedemptions,
+        fetchBudgetRedemptions: jest.fn(),
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+      await waitFor(() => {
+        expect(screen.getByText('Assign more courses to maximize your budget.')).toBeInTheDocument();
+        expect(screen.getByText('available balance of $10,000', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText('Assign courses', { selector: 'a' })).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('tab redirection for expired and retired budgets', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    const testCases = [
+      {
+        status: 'expired',
+        mockPolicyData: {
+          ...mockAssignableSubsidyAccessPolicy,
+          endDate: dayjs().subtract(1, 'day').format(),
+          isRetired: false,
+        },
+      },
+      {
+        status: 'retired',
+        mockPolicyData: {
+          ...mockAssignableSubsidyAccessPolicy,
+          isRetired: true,
+        },
+      },
+    ];
+
+    it.each(testCases)('should redirect from catalog to activity tab for $status budgets', async ({ mockPolicyData }) => {
+      useParams.mockReturnValue({
+        enterpriseSlug,
+        enterpriseAppPage: 'learner-credit',
+        budgetId: mockSubsidyAccessPolicyUUID,
+        activeTabKey: BUDGET_DETAIL_CATALOG_TAB,
+      });
+
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        isError: false,
+        data: mockPolicyData,
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith(
+          `/${enterpriseSlug}/admin/learner-credit/${mockSubsidyAccessPolicyUUID}/${BUDGET_DETAIL_ACTIVITY_TAB}`,
+        );
+      });
+    });
   });
 });

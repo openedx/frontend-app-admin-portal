@@ -19,7 +19,8 @@ export const getGroupMemberEmails = async (groupUUID) => {
  * @returns A list of flex groups associated with an enterprise customer.
  */
 export const getEnterpriseFlexGroups = async ({ enterpriseId }) => {
-  const { results } = await fetchPaginatedData(LmsApiService.enterpriseGroupListUrl);
+  const groupListUrl = `${LmsApiService.enterpriseGroupListUrl}?page_size=100`;
+  const { results } = await fetchPaginatedData(groupListUrl);
   const flexGroups = results.filter(result => (
     result.enterpriseCustomer === enterpriseId && result.groupType === GROUP_TYPE_FLEX));
   return flexGroups;
