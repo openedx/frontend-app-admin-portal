@@ -6,7 +6,7 @@ import { constructChartHoverTemplate } from '../data/utils';
 import { skillsColorMap } from '../data/constants';
 
 const SkillsByEnrollmentChart = ({
-  isFetching, isError, data,
+  isFetching, isError, data, onClick,
 }) => {
   const intl = useIntl();
 
@@ -24,6 +24,7 @@ const SkillsByEnrollmentChart = ({
             isFetching={isFetching}
             isError={isError}
             chartType="BarChart"
+            onClick={onClick}
             chartProps={{
               data,
               xKey: 'skillName',
@@ -54,6 +55,7 @@ SkillsByEnrollmentChart.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onClick: PropTypes.func,
 };
 
 export default SkillsByEnrollmentChart;

@@ -8,7 +8,7 @@ import DownloadCSVButton from '../DownloadCSVButton';
 import { constructChartHoverTemplate, sumEntitiesByMetric } from '../data/utils';
 
 const EnrollmentsOverTimeChart = ({
-  isFetching, isError, data, startDate, endDate,
+  isFetching, isError, data, startDate, endDate, onClick,
 }) => {
   const intl = useIntl();
 
@@ -53,6 +53,7 @@ const EnrollmentsOverTimeChart = ({
             isFetching={isFetching}
             isError={isError}
             chartType="LineChart"
+            onClick={onClick}
             chartProps={{
               data: aggregatedData,
               xKey: 'enterpriseEnrollmentDate',
@@ -84,6 +85,7 @@ EnrollmentsOverTimeChart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   startDate: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default EnrollmentsOverTimeChart;
