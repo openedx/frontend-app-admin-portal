@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Tabs } from '@openedx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import {
   BUDGET_DETAIL_ACTIVITY_TAB,
@@ -11,8 +12,8 @@ import {
   BUDGET_DETAIL_MEMBERS_TAB,
   BUDGET_DETAIL_REQUESTS_TAB,
 } from './data/constants';
-import { useBudgetDetailTabs, useBudgetId } from './data';
-import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { getBudgetStatus, useBudgetDetailTabs, useBudgetId } from './data';
+import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
 
@@ -73,6 +74,7 @@ const BudgetDetailTabsAndRoutes = ({
   const { activeTabKey: routeActiveTabKey } = useParams();
   const { budgetId } = useBudgetId();
   const navigate = useNavigate();
+  const intl = useIntl();
   const [activeTabKey, setActiveTabKey] = useState(getInitialTabKey(
     routeActiveTabKey,
     {
@@ -87,6 +89,13 @@ const BudgetDetailTabsAndRoutes = ({
     inviteModalIsOpen, closeInviteModal,
   } = useContext(BudgetDetailPageContext);
 
+  const { status: budgetStatus } = getBudgetStatus({
+    intl,
+    startDateStr: subsidyAccessPolicy?.startDate,
+    endDateStr: subsidyAccessPolicy?.endDate,
+    isBudgetRetired: subsidyAccessPolicy?.isRetired,
+  });
+
   /**
    * Ensure the active tab in the UI reflects the active tab in the URL.
    */
@@ -98,7 +107,25 @@ const BudgetDetailTabsAndRoutes = ({
       },
     );
     setActiveTabKey(initialTabKey);
-  }, [routeActiveTabKey, enterpriseFeatures, enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts]);
+
+    // If the budget is retired or expired, redirect to the default tab
+    if (
+      initialTabKey === BUDGET_DETAIL_CATALOG_TAB
+      && [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(budgetStatus)
+    ) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}/${DEFAULT_TAB}`);
+    }
+  }, [
+    routeActiveTabKey,
+    enterpriseFeatures,
+    enterpriseGroupLearners,
+    subsidyAccessPolicy,
+    appliesToAllContexts,
+    budgetStatus,
+    navigate,
+    enterpriseSlug,
+    budgetId,
+  ]);
 
   const handleTabSelect = (nextActiveTabKey) => {
     setActiveTabKey(nextActiveTabKey);
@@ -171,6 +198,9 @@ BudgetDetailTabsAndRoutes.propTypes = {
   subsidyAccessPolicy: PropTypes.shape({
     isAssignable: PropTypes.bool,
     groupAssociations: PropTypes.arrayOf(PropTypes.string),
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    isRetired: PropTypes.bool,
   }),
   appliesToAllContexts: PropTypes.bool,
 };

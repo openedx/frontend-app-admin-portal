@@ -36,6 +36,10 @@ import {
   useSubsidyAccessPolicy,
   useSubsidySummaryAnalyticsApi,
 } from '../data';
+import {
+  BUDGET_DETAIL_ACTIVITY_TAB,
+  BUDGET_DETAIL_CATALOG_TAB,
+} from '../data/constants';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
   mockAssignableSubsidyAccessPolicy,
@@ -57,6 +61,8 @@ jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedUser: jest.fn(),
 }));
 
+const mockNavigate = jest.fn();
+
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
   sendEnterpriseTrackEvent: jest.fn(),
@@ -64,6 +70,7 @@ jest.mock('@edx/frontend-enterprise-utils', () => ({
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
   useParams: jest.fn(),
 }));
 
@@ -2789,6 +2796,53 @@ describe('<BudgetDetailPage />', () => {
       renderWithRouter(<BudgetDetailPageWrapper />);
       await waitFor(() => {
         expect(screen.queryByText('Assign more courses')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('tab redirection for expired and retired budgets', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    const testCases = [
+      {
+        status: 'expired',
+        mockPolicyData: {
+          ...mockAssignableSubsidyAccessPolicy,
+          endDate: dayjs().subtract(1, 'day').format(),
+          isRetired: false,
+        },
+      },
+      {
+        status: 'retired',
+        mockPolicyData: {
+          ...mockAssignableSubsidyAccessPolicy,
+          isRetired: true,
+        },
+      },
+    ];
+
+    it.each(testCases)('should redirect from catalog to activity tab for $status budgets', async ({ mockPolicyData }) => {
+      useParams.mockReturnValue({
+        enterpriseSlug,
+        enterpriseAppPage: 'learner-credit',
+        budgetId: mockSubsidyAccessPolicyUUID,
+        activeTabKey: BUDGET_DETAIL_CATALOG_TAB,
+      });
+
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        isError: false,
+        data: mockPolicyData,
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith(
+          `/${enterpriseSlug}/admin/learner-credit/${mockSubsidyAccessPolicyUUID}/${BUDGET_DETAIL_ACTIVITY_TAB}`,
+        );
       });
     });
   });
