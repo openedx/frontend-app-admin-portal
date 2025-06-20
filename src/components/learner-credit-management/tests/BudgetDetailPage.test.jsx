@@ -113,6 +113,10 @@ const mockEmptyStateBudgetDetailActivityOverview = {
   contentAssignments: { count: 0 },
   spentTransactions: { count: 0 },
 };
+const mockBudgetDetailActivityOverviewWithSpend = {
+  contentAssignments: { count: 0 },
+  spentTransactions: { count: 1 },
+};
 const mockEmptyBudgetRedemptions = {
   itemCount: 0,
   pageCount: 0,
@@ -2631,5 +2635,48 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.getByText(
       'Failure to enroll by the enrollment deadline will release funds back into the budget',
     )).toBeTruthy());
+  });
+
+  describe('when there are no assignments but there is spend', () => {
+    test.each([
+      [
+        'retired',
+        {
+          ...mockAssignableSubsidyAccessPolicy,
+          retired: true,
+        },
+      ],
+      [
+        'expired',
+        {
+          ...mockAssignableSubsidyAccessPolicy,
+          subsidyExpirationDatetime: dayjs().subtract(1, 'day').toISOString(),
+        },
+      ],
+    ])('should NOT show assign more courses empty state for a %s budget', async (status, budgetData) => {
+      useParams.mockReturnValue({ budgetId: mockSubsidyAccessPolicyUUID, enterpriseSlug, enterpriseAppPage: 'learner-credit' });
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        data: budgetData,
+      });
+      useBudgetDetailActivityOverview.mockReturnValue({
+        isLoading: false,
+        data: mockBudgetDetailActivityOverviewWithSpend,
+      });
+      useBudgetContentAssignments.mockReturnValue({
+        isLoading: false,
+        contentAssignments: { results: [], learnerStateCounts: [] },
+      });
+      useBudgetRedemptions.mockReturnValue({
+        isLoading: false,
+        budgetRedemptions: mockEmptyBudgetRedemptions,
+        fetchBudgetRedemptions: jest.fn(),
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+      await waitFor(() => {
+        expect(screen.queryByText('Assign more courses')).not.toBeInTheDocument();
+      });
+    });
   });
 });
