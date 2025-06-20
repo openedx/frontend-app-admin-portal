@@ -2685,6 +2685,38 @@ describe('<BudgetDetailPage />', () => {
         expect(screen.queryByText('Assign more courses')).not.toBeInTheDocument();
       });
     });
+
+    it('should show assign more courses empty state for an active budget', async () => {
+      useParams.mockReturnValue({ budgetId: mockSubsidyAccessPolicyUUID, enterpriseSlug, enterpriseAppPage: 'learner-credit' });
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        data: {
+          ...mockAssignableSubsidyAccessPolicy,
+          retired: false,
+          subsidyExpirationDatetime: dayjs().add(1, 'year').toISOString(),
+        },
+      });
+      useBudgetDetailActivityOverview.mockReturnValue({
+        isLoading: false,
+        data: mockBudgetDetailActivityOverviewWithSpend,
+      });
+      useBudgetContentAssignments.mockReturnValue({
+        isLoading: false,
+        contentAssignments: { results: [], learnerStateCounts: [] },
+      });
+      useBudgetRedemptions.mockReturnValue({
+        isLoading: false,
+        budgetRedemptions: mockEmptyBudgetRedemptions,
+        fetchBudgetRedemptions: jest.fn(),
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+      await waitFor(() => {
+        expect(screen.getByText('Assign more courses to maximize your budget.')).toBeInTheDocument();
+        expect(screen.getByText('available balance of $10,000', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText('Assign courses', { selector: 'a' })).toBeInTheDocument();
+      });
+    });
   });
 
   describe('tab redirection for expired and retired budgets', () => {
