@@ -293,4 +293,40 @@ describe('EnterpriseAccessApiService', () => {
       `${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/?${expectedParams.toString()}`,
     );
   });
+
+  test('declineBnrSubsidyRequest calls enterprise-access to decline BNR subsidy request', () => {
+    const mockBnrSubsidyRequestUUID = 'test-bnr-subsidy-request-uuid';
+
+    EnterpriseAccessApiService.declineBnrSubsidyRequest({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUID: mockBnrSubsidyRequestUUID,
+      sendNotification: true,
+      unlinkUsersFromEnterprise: false,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/decline/`, {
+      subsidy_request_uuid: mockBnrSubsidyRequestUUID,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      send_notification: true,
+      disassociate_from_org: false,
+    });
+  });
+
+  test('declineBnrSubsidyRequest calls enterprise-access with unlinkUsersFromEnterprise set to true', () => {
+    const mockBnrSubsidyRequestUUID = 'test-bnr-subsidy-request-uuid';
+
+    EnterpriseAccessApiService.declineBnrSubsidyRequest({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUID: mockBnrSubsidyRequestUUID,
+      sendNotification: false,
+      unlinkUsersFromEnterprise: true,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/decline/`, {
+      subsidy_request_uuid: mockBnrSubsidyRequestUUID,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      send_notification: false,
+      disassociate_from_org: true,
+    });
+  });
 });
