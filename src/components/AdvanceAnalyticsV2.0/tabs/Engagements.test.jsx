@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -41,9 +42,60 @@ const mockEngagementTableData = {
 };
 
 const mockEngagementChartsData = {
-  engagementOverTime: [],
-  topCoursesByEngagement: [],
-  topSubjectsByEngagement: [],
+  engagementOverTime: [
+    {
+      enterprise_enrollment_date: '2024-02-07T00:00:00',
+      enroll_type: 'certificate',
+      enrollment_count: 1,
+    },
+    {
+      enterprise_enrollment_date: '2024-02-10T00:00:00',
+      enroll_type: 'certificate',
+      enrollment_count: 1,
+    },
+    {
+      enterprise_enrollment_date: '2024-03-14T00:00:00',
+      enroll_type: 'certificate',
+      enrollment_count: 1,
+    },
+  ],
+  topCoursesByEngagement: [
+    {
+      COURSE_KEY: 'IBM+ML0101EN',
+      course_title: 'IBM: Machine Learning with Python: A Practical Introduction',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 729,
+    },
+    {
+      COURSE_KEY: 'HarvardX+CS50P',
+      course_title: 'HarvardX: CS50\'s Introduction to Programming with Python',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 709,
+    },
+    {
+      COURSE_KEY: 'DoaneX+CMS-3162x',
+      course_title: 'DoaneX: Business Writing Techniques',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 694,
+    },
+  ],
+  topSubjectsByEngagement: [
+    {
+      COURSE_SUBJECT: 'computer-science',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 9631,
+    },
+    {
+      COURSE_SUBJECT: 'computer-science',
+      ENROLL_TYPE: 'audit',
+      enrollment_count: 21,
+    },
+    {
+      COURSE_SUBJECT: 'data-analysis-statistics',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 4901,
+    },
+  ],
 };
 
 const mockEnrollmentTableData = {
@@ -71,9 +123,60 @@ const mockEnrollmentTableData = {
 };
 
 const mockEnrollmentChartsData = {
-  enrollmentsOverTime: [],
-  topCoursesByEnrollments: [],
-  topSubjectsByEnrollments: [],
+  enrollmentsOverTime: [
+    {
+      enterprise_enrollment_date: '2024-02-07T00:00:00',
+      enroll_type: 'certificate',
+      enrollment_count: 1,
+    },
+    {
+      enterprise_enrollment_date: '2024-02-10T00:00:00',
+      enroll_type: 'certificate',
+      enrollment_count: 1,
+    },
+    {
+      enterprise_enrollment_date: '2024-03-14T00:00:00',
+      enroll_type: 'certificate',
+      enrollment_count: 1,
+    },
+  ],
+  topCoursesByEnrollments: [
+    {
+      COURSE_KEY: 'IBM+ML0101EN',
+      course_title: 'IBM: Machine Learning with Python: A Practical Introduction',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 729,
+    },
+    {
+      COURSE_KEY: 'HarvardX+CS50P',
+      course_title: 'HarvardX: CS50\'s Introduction to Programming with Python',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 709,
+    },
+    {
+      COURSE_KEY: 'DoaneX+CMS-3162x',
+      course_title: 'DoaneX: Business Writing Techniques',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 694,
+    },
+  ],
+  topSubjectsByEnrollments: [
+    {
+      COURSE_SUBJECT: 'computer-science',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 9631,
+    },
+    {
+      COURSE_SUBJECT: 'computer-science',
+      ENROLL_TYPE: 'audit',
+      enrollment_count: 21,
+    },
+    {
+      COURSE_SUBJECT: 'data-analysis-statistics',
+      ENROLL_TYPE: 'certificate',
+      enrollment_count: 4901,
+    },
+  ],
 };
 
 const mockAnalyticsSkillsData = {
@@ -85,6 +188,14 @@ const mockAnalyticsSkillsData = {
 jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 const axiosMock = new MockAdapter(axios);
 getAuthenticatedHttpClient.mockReturnValue(axios);
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('../AnalyticsFiltersContext', () => ({
   useAnalyticsFilters: jest.fn(),
@@ -98,22 +209,26 @@ jest.mock('../data/hooks', () => ({
   usePaginatedData: jest.fn(() => ({ itemCount: 0, pageCount: 0, data: [] })),
 }));
 
-jest.mock('../charts/LineChart', () => {
-  const MockedLineChart = () => <div>Mocked LineChart</div>;
-  return MockedLineChart;
-});
+const findReact = (dom, traverseUp = 0) => {
+  const rkey = Object.keys(dom).find(key => key.startsWith('__reactFiber$'));
+  const domFiber = dom[rkey];
+  if (domFiber == null) { return null; }
 
-jest.mock('../charts/BarChart', () => {
-  const MockedBarChart = () => <div>Mocked BarChart</div>;
-  return MockedBarChart;
-});
+  const GetCompFiber = fiber => {
+    let parentFiber = fiber.return;
+    while (typeof parentFiber.type === 'string') {
+      parentFiber = parentFiber.return;
+    }
+    return parentFiber;
+  };
+  let compFiber = GetCompFiber(domFiber);
+  for (let i = 0; i < traverseUp; i++) {
+    compFiber = GetCompFiber(compFiber);
+  }
+  return compFiber.stateNode;
+};
 
-describe('Engagements Component', () => {
-  afterEach(() => {
-    axiosMock.reset();
-    jest.resetAllMocks();
-  });
-
+describe('Rendering tests', () => {
   test('renders all sections', async () => {
     axiosMock.onGet(/\/engagements\/stats(\?.*)/).reply(200, mockEngagementChartsData);
     axiosMock.onGet(/\/engagements(\?.*)/).reply(200, mockEngagementTableData);
@@ -225,5 +340,72 @@ describe('Engagements Component', () => {
       await waitFor(() => expect(screen.getByText(title)).toBeInTheDocument());
       await waitFor(() => expect(screen.getByText(subtitle)).toBeInTheDocument());
     });
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(0);
+  });
+
+  test('calls sendEnterpriseTrackEvent on chart click', async () => {
+    axiosMock.onGet(/\/engagements\/stats(\?.*)/).reply(200, mockEngagementChartsData);
+    axiosMock.onGet(/\/engagements(\?.*)/).reply(200, mockEngagementTableData);
+
+    axiosMock.onGet(/\/enrollments\/stats(\?.*)/).reply(200, mockEnrollmentChartsData);
+    axiosMock.onGet(/\/enrollments(\?.*)/).reply(200, mockEnrollmentTableData);
+
+    useAnalyticsFilters.mockReturnValue({
+      startDate: '2021-01-01',
+      setStartDate: jest.fn(),
+      endDate: '2021-12-31',
+      setEndDate: jest.fn(),
+      granularity: 'Daily',
+      calculation: 'Total',
+      groupUUID: 'group-123',
+      setGroupUUID: jest.fn(),
+      currentDate: '2021-12-31',
+      groups: [],
+      isGroupsLoading: false,
+    });
+
+    hooks.useEnterpriseAnalyticsAggregatesData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEngagementChartsData,
+    });
+
+    hooks.useEnterpriseAnalyticsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockAnalyticsSkillsData,
+    });
+
+    hooks.useEnterpriseEngagementData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEngagementChartsData,
+    });
+
+    hooks.useEnterpriseEnrollmentsData.mockReturnValue({
+      isFetching: false,
+      isError: false,
+      data: mockEnrollmentChartsData,
+    });
+
+    render(
+      <Router>
+        <QueryClientProvider client={queryClient()}>
+          <IntlProvider locale="en">
+            <Engagements enterpriseId="33ce6562-95e0-4ecf-a2a7-7d407eb96f69" />
+          </IntlProvider>
+        </QueryClientProvider>
+      </Router>,
+    );
+
+    const chartContainer = document.getElementById('enrollments-over-time-chart');
+    const plotlyChart = findReact(chartContainer.firstElementChild);
+    if (plotlyChart) {
+      plotlyChart.props.onClick({
+        pointerX: 1140,
+        pointerY: 247,
+      });
+    }
+    await waitFor(() => expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(1));
   });
 });

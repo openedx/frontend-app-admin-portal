@@ -21,7 +21,7 @@ import messages from '../messages';
  * @returns The rendered Plotly scatter chart.
  */
 const ScatterChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, markerSizes, customDataKeys,
+  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, markerSizes, customDataKeys, onClick,
 }) => {
   const intl = useIntl();
   const categories = Object.keys(colorMap);
@@ -76,6 +76,7 @@ const ScatterChart = ({
       layout={layout}
       config={config}
       style={{ width: '100%', height: '100%' }}
+      onClick={onClick}
     />
   );
 };
@@ -96,6 +97,7 @@ ScatterChart.propTypes = {
   yAxisTitle: PropTypes.string.isRequired,
   markerSizes: PropTypes.arrayOf(PropTypes.number).isRequired,
   customDataKeys: PropTypes.arrayOf(PropTypes.string),
+  onClick: PropTypes.func,
 };
 
 export default ScatterChart;

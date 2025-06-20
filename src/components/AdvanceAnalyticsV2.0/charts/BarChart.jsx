@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
  * @returns The rendered Plotly bar chart.
  */
 const BarChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle,
+  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, onClick,
 }) => {
   const categories = Object.keys(colorMap).sort();
 
@@ -55,6 +55,7 @@ const BarChart = ({
       layout={layout}
       config={config}
       style={{ width: '100%', height: '100%' }}
+      onClick={onClick}
     />
   );
 };
@@ -72,6 +73,7 @@ BarChart.propTypes = {
   hovertemplate: PropTypes.string.isRequired,
   xAxisTitle: PropTypes.string,
   yAxisTitle: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default BarChart;

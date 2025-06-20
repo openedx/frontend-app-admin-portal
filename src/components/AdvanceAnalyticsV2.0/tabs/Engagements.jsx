@@ -1,5 +1,6 @@
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { ANALYTICS_TABS } from '../constants';
 import {
   useEnterpriseEngagementData,
@@ -19,6 +20,7 @@ import TopCoursesByEnrollmentTable from '../tables/TopCoursesByEnrollmentTable';
 import TopCoursesByLearningHoursTable from '../tables/TopCoursesByLearningHoursTable';
 import TopSubjectsByEnrollmentTable from '../tables/TopSubjectsByEnrollmentTable';
 import TopSubjectsByLearningHoursTable from '../tables/TopSubjectsByLearningHoursTable';
+import EVENT_NAMES from '../../../eventTracking';
 
 const Engagements = ({ enterpriseId }) => {
   // Filters
@@ -80,6 +82,14 @@ const Engagements = ({ enterpriseId }) => {
     groupUUID,
   });
 
+  const handleChartClick = (data) => {
+    sendEnterpriseTrackEvent(
+      enterpriseId,
+      `${EVENT_NAMES.ANALYTICS_V2.ENGAGEMENT_CHART_CLICKED}`,
+      { ...data },
+    );
+  };
+
   return (
     <div className="tab-engagements mt-4">
       <div className="mt-3">
@@ -137,6 +147,7 @@ const Engagements = ({ enterpriseId }) => {
             isFetching={isSkillsFetching}
             isError={isSkillsError}
             data={skillsData?.topSkillsByEnrollments}
+            onClick={handleChartClick}
           />
         </div>
         {/* Skills By Learning Hours Charts */}
@@ -145,6 +156,7 @@ const Engagements = ({ enterpriseId }) => {
             isFetching={isSkillsFetching}
             isError={isSkillsError}
             data={skillsData?.skillsByLearningHours}
+            onClick={handleChartClick}
           />
         </div>
       </div>
@@ -167,7 +179,7 @@ const Engagements = ({ enterpriseId }) => {
         data={engagementData?.engagementOverTime}
         startDate={startDate || statsData?.minEnrollmentDate}
         endDate={endDate || currentDate}
-
+        onClick={handleChartClick}
       />
 
       {/* Enrollments Over Time Chart */}
@@ -177,6 +189,7 @@ const Engagements = ({ enterpriseId }) => {
         data={enrollmentsData?.enrollmentsOverTime}
         startDate={startDate || statsData?.minEnrollmentDate}
         endDate={endDate || currentDate}
+        onClick={handleChartClick}
       />
 
       {/* Top 10 Courses Tables */}
