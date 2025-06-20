@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import ChartWrapper from './ChartWrapper';
 
 const SkillsByLearningHoursChart = ({
-  isFetching, isError, data,
+  isFetching, isError, data, onClick,
 }) => {
   const intl = useIntl();
   const parentLabel = intl.formatMessage({
@@ -37,6 +37,7 @@ const SkillsByLearningHoursChart = ({
             chartType="Treemap"
             chartProps={{
               data: !!data,
+              onClick,
               labels,
               values,
               parents,
@@ -56,6 +57,7 @@ SkillsByLearningHoursChart.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onClick: PropTypes.func,
 };
 
 export default SkillsByLearningHoursChart;
