@@ -706,6 +706,60 @@ describe('<BudgetDetailPage />', () => {
     expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
   });
 
+  it.each([
+    { isLargeViewport: true },
+    { isLargeViewport: false },
+  ])('displays learner credit bnr budget activity overview empty state', async ({ isLargeViewport }) => {
+    useIsLargeOrGreater.mockReturnValue(isLargeViewport);
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9d',
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        ...mockPerLearnerSpendLimitSubsidyAccessPolicy,
+        bnrEnabled: true,
+      },
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: false,
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    // Overview empty state (no content assignments)
+    expect(screen.getByText('No budget activity yet? Invite learners to browse the catalog and request content!')).toBeInTheDocument();
+    const illustrationTestIds = ['find-course-illustration', 'invite-learner-illustration', 'approve-request-illustration'];
+    illustrationTestIds.forEach(testId => expect(screen.getByTestId(testId)).toBeInTheDocument());
+    expect(screen.getByText('Get started', { selector: 'a' })).toBeInTheDocument();
+  });
+
   it('still render bne zero state if there are members but no spend', async () => {
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',
@@ -2631,5 +2685,64 @@ describe('<BudgetDetailPage />', () => {
     await waitFor(() => expect(screen.getByText(
       'Failure to enroll by the enrollment deadline will release funds back into the budget',
     )).toBeTruthy());
+  });
+
+  it('renders Browse & Request budget type when bnrEnabled is true', () => {
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: 'a52e6548-649f-4576-b73f-c5c2bee25e9c',
+      activeTabKey: 'activity',
+    });
+
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: {
+        ...mockAssignableSubsidyAccessPolicy,
+        bnrEnabled: true,
+        isAssignable: false,
+      },
+    });
+
+    useEnterpriseCustomer.mockReturnValue({
+      data: {
+        uuid: 'test-customer-uuid',
+        activeIntegrations: [],
+      },
+    });
+
+    useEnterpriseGroup.mockReturnValue({
+      data: {
+        appliesToAllContexts: true,
+        enterpriseCustomer: 'test-customer-uuid',
+        name: 'test-name',
+        uuid: 'test-uuid',
+      },
+    });
+
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    expect(screen.getByText('Browse & Request', { exact: false })).toBeInTheDocument();
   });
 });

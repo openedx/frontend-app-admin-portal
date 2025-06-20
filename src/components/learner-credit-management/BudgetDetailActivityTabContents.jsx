@@ -10,6 +10,7 @@ import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
 import NoBnEBudgetActivity from './empty-state/NoBnEBudgetActivity';
+import NoBnRBudgetActivity from './empty-state/NoBnRBudgetActivity';
 
 const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, appliesToAllContexts }) => {
   const isTopDownAssignmentEnabled = enterpriseFeatures.topDownAssignmentRealTimeLcm;
@@ -42,6 +43,14 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
 
   // If enterprise groups is turned on, it's learner credit NOT enterprise offers w/ no spend
   const renderBnEActivity = isEnterpriseGroupsEnabled && (enterpriseOfferId == null) && !hasSpentTransactions;
+
+  const hasApprovedBnrRequests = budgetActivityOverview.approvedBnrRequests?.count > 0;
+
+  if (subsidyAccessPolicy?.bnrEnabled && !hasApprovedBnrRequests && !hasSpentTransactions) {
+    // If we don't have a request in approved state and there are no spent transactions,
+    // that means requests table and spent table both are empty.
+    return <NoBnRBudgetActivity />;
+  }
 
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
     if (isEnterpriseGroupsEnabled) {
