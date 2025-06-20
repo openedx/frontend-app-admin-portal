@@ -108,7 +108,7 @@ const BudgetDetailTabsAndRoutes = ({
     );
     setActiveTabKey(initialTabKey);
 
-    // If the budget is retired or expired, redirect to the default tab
+    // If viewing the catalog tab and the budget is retired or expired, redirect to the default tab
     if (
       initialTabKey === BUDGET_DETAIL_CATALOG_TAB
       && [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(budgetStatus)
