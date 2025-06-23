@@ -28,6 +28,7 @@ jest.mock('../services/LmsApiService', () => ({
 }));
 
 const mockStore = configureMockStore([thunk]);
+const mockUuid = 'test-uuid';
 
 describe('enterpriseCustomerAdmin actions', () => {
   let store: any;
@@ -90,7 +91,6 @@ describe('enterpriseCustomerAdmin actions', () => {
     describe('dismissOnboardingTour', () => {
       it('dispatches success action and sets dismissed state to true when API call succeeds', async () => {
         (LmsApiService.postOnboardingTourDismissed as jest.Mock).mockResolvedValue({});
-
         const expectedActions = [
           { type: DISMISS_ONBOARDING_TOUR_SUCCESS },
           {
@@ -99,8 +99,8 @@ describe('enterpriseCustomerAdmin actions', () => {
           },
         ];
 
-        await store.dispatch(dismissOnboardingTour());
-        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: true });
+        await store.dispatch(dismissOnboardingTour(mockUuid));
+        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: true, adminUuid: 'test-uuid' });
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -119,7 +119,7 @@ describe('enterpriseCustomerAdmin actions', () => {
           },
         ];
 
-        await store.dispatch(dismissOnboardingTour());
+        await store.dispatch(dismissOnboardingTour(mockUuid));
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -136,8 +136,8 @@ describe('enterpriseCustomerAdmin actions', () => {
           },
         ];
 
-        await store.dispatch(reopenOnboardingTour());
-        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: false });
+        await store.dispatch(reopenOnboardingTour(mockUuid));
+        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: false, adminUuid: 'test-uuid' });
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -156,7 +156,7 @@ describe('enterpriseCustomerAdmin actions', () => {
           },
         ];
 
-        await store.dispatch(reopenOnboardingTour());
+        await store.dispatch(reopenOnboardingTour(mockUuid));
         expect(store.getActions()).toEqual(expectedActions);
       });
     });

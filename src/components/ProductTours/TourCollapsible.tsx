@@ -16,9 +16,10 @@ import { ADMIN_TOUR_TARGETS } from './AdminOnboardingTours/constants';
 interface Props {
   onboardingTourCompleted: boolean;
   onboardingTourDismissed: boolean;
-  dismissOnboardingTour: () => void;
-  reopenOnboardingTour: () => void;
+  dismissOnboardingTour: (adminUuid: string) => void;
+  reopenOnboardingTour: (adminUuid: string) => void;
   onTourSelect?: (targetId: string) => void;
+  uuid: string;
 }
 
 const QUICK_START_GUIDE_STEPS = [
@@ -38,6 +39,7 @@ const TourCollapsible: FC<Props> = (
     dismissOnboardingTour: dismissTour,
     reopenOnboardingTour: reopenTour,
     onTourSelect,
+    uuid: adminUuid,
   },
 ) => {
   const intl = useIntl();
@@ -45,12 +47,12 @@ const TourCollapsible: FC<Props> = (
 
   const handleDismiss = () => {
     setShowCollapsible(false);
-    dismissTour();
+    dismissTour(adminUuid);
   };
 
   const handleReopenTour = () => {
     setShowCollapsible(true);
-    reopenTour();
+    reopenTour(adminUuid);
   };
 
   return (
@@ -100,14 +102,15 @@ const TourCollapsible: FC<Props> = (
 const mapStateToProps = state => ({
   onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
+  uuid: state.enterpriseCustomerAdmin.uuid as string,
 });
 
 const mapDispatchToProps = dispatch => ({
-  dismissOnboardingTour: () => {
-    dispatch(dismissOnboardingTour());
+  dismissOnboardingTour: (adminUuid: string) => {
+    dispatch(dismissOnboardingTour(adminUuid));
   },
-  reopenOnboardingTour: () => {
-    dispatch(reopenOnboardingTour());
+  reopenOnboardingTour: (adminUuid: string) => {
+    dispatch(reopenOnboardingTour(adminUuid));
   },
 });
 

@@ -40,6 +40,7 @@ const defaultState = {
   enterpriseCustomerAdmin: {
     onboardingTourCompleted: false,
     onboardingTourDismissed: false,
+    uuid: 'test-uuid',
   },
 };
 
@@ -72,6 +73,7 @@ describe('TourCollapsible', () => {
       enterpriseCustomerAdmin: {
         onboardingTourCompleted: true,
         onboardingTourDismissed: false,
+        uuid: 'test-uuid',
       },
     };
     setup(state);
@@ -85,6 +87,7 @@ describe('TourCollapsible', () => {
       enterpriseCustomerAdmin: {
         onboardingTourCompleted: false,
         onboardingTourDismissed: true,
+        uuid: 'test-uuid',
       },
     };
     setup(state);
@@ -110,6 +113,7 @@ describe('TourCollapsible', () => {
       enterpriseCustomerAdmin: {
         onboardingTourCompleted: false,
         onboardingTourDismissed: true,
+        uuid: 'test-uuid',
       },
     };
     const { store } = setup(state);
@@ -130,6 +134,7 @@ describe('TourCollapsible', () => {
       enterpriseCustomerAdmin: {
         onboardingTourCompleted: true,
         onboardingTourDismissed: false,
+        uuid: 'test-uuid',
       },
     };
     setup(state);

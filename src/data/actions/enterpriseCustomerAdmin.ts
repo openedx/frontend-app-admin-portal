@@ -41,12 +41,10 @@ const setOnboardingTourDismissed = (dismissed: boolean): AnyAction => ({
   payload: { dismissed },
 });
 
-const toggleOnboardingTourDismissal = (value: boolean) => (
+const toggleOnboardingTourDismissal = (value: boolean, adminUuid: string) => (
   async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     try {
-      // TODO: Implement the backend API for dismissing the onboarding tour.
-      // Right now this will cause a 404 error and jump to the catch and finally blocks.
-      await LmsApiService.postOnboardingTourDismissed({ value });
+      await LmsApiService.postOnboardingTourDismissed({ value, adminUuid });
       dispatch(dismissOnboardingTourSuccess());
     } catch (error) {
       logError(error);
@@ -57,8 +55,8 @@ const toggleOnboardingTourDismissal = (value: boolean) => (
   }
 );
 
-const dismissOnboardingTour = () => toggleOnboardingTourDismissal(true);
-const reopenOnboardingTour = () => toggleOnboardingTourDismissal(false);
+const dismissOnboardingTour = (adminUuid:string) => toggleOnboardingTourDismissal(true, adminUuid);
+const reopenOnboardingTour = (adminUuid:string) => toggleOnboardingTourDismissal(false, adminUuid);
 
 const fetchLoggedInEnterpriseAdmin = () => (
   async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
