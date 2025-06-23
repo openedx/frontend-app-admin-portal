@@ -49,11 +49,11 @@ describe('DismissConfirmationModal', () => {
     expect(screen.getByText(messages.dismissConfirmationBody.defaultMessage)).toBeInTheDocument();
   });
 
-  it('shows cancel and submit buttons', () => {
+  it('shows cancel and dismiss buttons', () => {
     renderComponent();
 
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Dismiss' })).toBeInTheDocument();
   });
 
   it('calls openConfirmationModal with false when cancel is clicked', () => {
@@ -63,10 +63,10 @@ describe('DismissConfirmationModal', () => {
     expect(mockOpenConfirmationModal).toHaveBeenCalledWith(false);
   });
 
-  it('calls onConfirm when submit is clicked', () => {
+  it('calls onConfirm when dismiss is clicked', () => {
     renderComponent();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
     expect(mockOnConfirm).toHaveBeenCalled();
     expect(mockOpenConfirmationModal).toHaveBeenCalledWith(false);
   });
@@ -74,7 +74,7 @@ describe('DismissConfirmationModal', () => {
   it('does not call onConfirm when it is not provided', () => {
     renderComponent({ onConfirm: undefined });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
     expect(mockOnConfirm).not.toHaveBeenCalled();
     expect(mockOpenConfirmationModal).toHaveBeenCalledWith(false);
   });

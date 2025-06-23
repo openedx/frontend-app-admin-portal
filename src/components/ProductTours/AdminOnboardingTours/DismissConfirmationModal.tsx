@@ -73,9 +73,9 @@ const DismissConfirmationModal: React.FC<DismissConfirmationModalProps> = ({
           </ModalDialog.CloseButton>
           <Button onClick={handleConfirmSubmit}>
             <FormattedMessage
-              id="admin.portal.productTours.adminOnboarding.dismissConfirmationModal.submit"
-              defaultMessage="Submit"
-              description="Label for the submit button on the dismiss confirmation modal."
+              id="admin.portal.productTours.adminOnboarding.dismissConfirmationModal.dismiss"
+              defaultMessage="Dismiss"
+              description="Label for the dismiss button on the dismiss confirmation modal."
             />
           </Button>
         </ActionRow>

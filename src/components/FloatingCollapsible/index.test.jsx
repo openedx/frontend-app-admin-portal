@@ -36,6 +36,10 @@ const defaultState = {
   portalConfiguration: {
     enterpriseBranding: {},
   },
+  enterpriseCustomerAdmin: {
+    onboardingTourDismissed: false,
+    uuid: 'test-uuid',
+  },
 };
 
 const setup = (props = {}) => {
@@ -78,7 +82,8 @@ describe('FloatingCollapsible', () => {
     setup({ onDismiss });
 
     fireEvent.click(screen.getByTestId('button-tertiary'));
-    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
+
     expect(onDismiss).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(screen.queryByText('Test Content')).toBeFalsy();

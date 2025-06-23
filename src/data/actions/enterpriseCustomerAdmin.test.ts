@@ -28,7 +28,7 @@ jest.mock('../services/LmsApiService', () => ({
 }));
 
 const mockStore = configureMockStore([thunk]);
-const mockUuid = 'test-uuid'
+const mockUuid = 'test-uuid';
 
 describe('enterpriseCustomerAdmin actions', () => {
   let store: any;
@@ -100,7 +100,7 @@ describe('enterpriseCustomerAdmin actions', () => {
         ];
 
         await store.dispatch(dismissOnboardingTour(mockUuid));
-        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: true });
+        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: true, adminUuid: 'test-uuid' });
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -137,7 +137,7 @@ describe('enterpriseCustomerAdmin actions', () => {
         ];
 
         await store.dispatch(reopenOnboardingTour(mockUuid));
-        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: false });
+        expect(LmsApiService.postOnboardingTourDismissed).toHaveBeenCalledWith({ value: false, adminUuid: 'test-uuid' });
         expect(store.getActions()).toEqual(expectedActions);
       });
 
