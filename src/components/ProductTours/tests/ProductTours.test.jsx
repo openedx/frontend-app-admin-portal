@@ -256,7 +256,9 @@ describe('<ProductTours/>', () => {
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
       const closeButton = screen.getByRole('button', { name: 'Close tour' });
       userEvent.click(closeButton);
-      expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
+      await waitFor(() => {
+        expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
+      });
     });
   });
 });
