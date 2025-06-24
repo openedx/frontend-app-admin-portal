@@ -120,10 +120,9 @@ describe('AdminOnboardingTours', () => {
 
   it('renders Product tour', async () => {
     renderComponent();
-    screen.debug(null, Infinity);
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
     expect(screen.getByText('This is a title')).toBeInTheDocument();
-    expect(screen.getByText('This is a title')).toBeInTheDocument();
+    expect(screen.getByText('And would you believe it, this is a body!')).toBeInTheDocument();
   });
 
   it('advances the tour', async () => {

@@ -135,7 +135,6 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -164,6 +163,7 @@ exports[`<Admin /> renders correctly calls fetchDashboardAnalytics prop 1`] = `
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -1590,7 +1590,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -1619,6 +1618,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -1710,11 +1710,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # cou
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -3330,7 +3330,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -3359,6 +3358,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -3450,11 +3450,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -5070,7 +5070,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -5099,6 +5098,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -5190,11 +5190,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders # of 
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -6810,7 +6810,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -6839,6 +6838,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -6930,11 +6930,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders colla
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -8550,7 +8550,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -8579,6 +8578,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -8670,11 +8670,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders full 
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -10290,7 +10290,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -10319,6 +10318,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -10410,11 +10410,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -12030,7 +12030,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -12059,6 +12058,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -12150,11 +12150,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders inact
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -13770,7 +13770,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -13799,6 +13798,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -13890,11 +13890,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders learn
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -15510,7 +15510,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -15539,6 +15538,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -15630,11 +15630,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders regis
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -17250,7 +17250,6 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -17279,6 +17278,7 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -17370,11 +17370,11 @@ exports[`<Admin /> renders correctly with dashboard analytics data renders top a
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -19039,7 +19039,6 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -19068,6 +19067,7 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -19159,11 +19159,11 @@ exports[`<Admin /> renders correctly with dashboard insights data renders dashbo
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -20779,7 +20779,6 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -20808,6 +20807,7 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -20899,11 +20899,11 @@ exports[`<Admin /> renders correctly with enterprise budgets data renders budget
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -22519,7 +22519,6 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -22548,6 +22547,7 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -22639,11 +22639,11 @@ exports[`<Admin /> renders correctly with enterprise groups data renders groups 
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
@@ -23755,7 +23755,6 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -23784,6 +23783,7 @@ exports[`<Admin /> renders correctly with error state 1`] = `
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -24723,7 +24723,6 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -24752,6 +24751,7 @@ exports[`<Admin /> renders correctly with loading state 1`] = `
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -26223,7 +26223,6 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
     >
       <div
         className="col"
-        id="progress-report"
       >
         <div
           className="row"
@@ -26252,6 +26251,7 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
     </div>
     <div
       className="tabs-container"
+      id="progress-report"
     >
       <div
         className="col-12 col-md-6  col-xl-4 pt-1 pb-3"
@@ -26343,11 +26343,11 @@ exports[`<Admin /> renders correctly with no dashboard insights data 1`] = `
                 >
                   <div
                     className="col-12 col-md-12 col-xl-12"
-                    id="csv-download"
                   >
                     <button
                       className="download-btn d-sm-inline float-md-right btn btn-outline-primary"
                       disabled={true}
+                      id="csv-download"
                       onClick={[Function]}
                       type="button"
                     >
