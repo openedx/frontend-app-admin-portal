@@ -13,7 +13,8 @@ import {
   BUDGET_DETAIL_REQUESTS_TAB,
 } from './data/constants';
 import { getBudgetStatus, useBudgetDetailTabs, useBudgetId } from './data';
-import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { isBudgetRetiredOrExpired } from './data/utils';
 import NotFoundPage from '../NotFoundPage';
 import EVENT_NAMES from '../../eventTracking';
 
@@ -111,7 +112,7 @@ const BudgetDetailTabsAndRoutes = ({
     // If viewing the catalog tab and the budget is retired or expired, redirect to the default tab
     if (
       initialTabKey === BUDGET_DETAIL_CATALOG_TAB
-      && [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(budgetStatus)
+      && isBudgetRetiredOrExpired(budgetStatus)
     ) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}/${DEFAULT_TAB}`);
     }
