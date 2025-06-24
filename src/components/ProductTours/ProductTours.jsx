@@ -57,7 +57,7 @@ const ProductTours = ({
   const checkpointsArray = filterCheckpoints(newFeatureTourCheckpoints, enabledFeatures);
   const tours = [{
     tourId: 'newFeatureTour',
-    dismissButtonText: 'Dismiss',
+    backButtonText: 'Back',
     enabled: checkpointsArray?.length > 0,
     onEnd: () => disableAll(),
     checkpoints: checkpointsArray,

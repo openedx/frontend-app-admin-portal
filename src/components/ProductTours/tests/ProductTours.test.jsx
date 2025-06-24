@@ -251,12 +251,14 @@ describe('<ProductTours/>', () => {
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
     });
     it('dismiss learner profile product tour', async () => {
-      const user = userEvent.setup();
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
-      await user.click(screen.getByText('Dismiss'));
-      expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
+      const closeButton = screen.getByRole('button', { name: 'Close tour' });
+      userEvent.click(closeButton);
+      await waitFor(() => {
+        expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
+      });
     });
   });
 });
