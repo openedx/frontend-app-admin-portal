@@ -178,6 +178,15 @@ class LmsApiService {
     });
   }
 
+  static updateCompletedTourFlows(adminUuid: string, flowUuid?: string) {
+    const enterpriseAdminCompleteFlowUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/${adminUuid}/complete_tour_flow/`;
+    return LmsApiService.apiClient().post(enterpriseAdminCompleteFlowUrl, {
+      flow_uuid: [
+        flowUuid,
+      ],
+    });
+  }
+
   static requestCodes(options) {
     const postParams = {
       email: options.emailAddress,

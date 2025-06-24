@@ -16,7 +16,7 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
 
   useLayoutEffect(() => {
     const updatePosition = () => {
-      const targetElement = document.querySelector(target);
+      const targetElement = document.querySelector(`#${target}`);
 
       if (targetElement) {
         const boundingRect = targetElement.getBoundingClientRect();

@@ -1,6 +1,5 @@
-import React from 'react';
 import {
-  render, screen, fireEvent, waitFor,
+  render, screen, fireEvent,
 } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { Provider } from 'react-redux';
@@ -35,7 +34,13 @@ jest.mock('@openedx/paragon', () => {
   };
 });
 
+jest.mock('../../../data/actions/enterpriseCustomerAdmin', () => ({
+  dismissOnboardingTour: jest.fn(),
+  reopenOnboardingTour: jest.fn(),
+}));
+
 const mockStore = configureStore([]);
+
 const defaultState = {
   enterpriseCustomerAdmin: {
     onboardingTourCompleted: false,
@@ -44,14 +49,20 @@ const defaultState = {
   },
 };
 
-const setup = (storeState = defaultState) => {
+const mockSetShowCollapsible = jest.fn();
+
+const setup = (storeState = defaultState, showCollapsible = false) => {
   const store = mockStore(storeState);
   store.dispatch = jest.fn();
 
   const wrapper = render(
     <IntlProvider locale="en">
       <Provider store={store}>
-        <TourCollapsible />
+        <TourCollapsible
+          onTourSelect={jest.fn()}
+          showCollapsible={showCollapsible}
+          setShowCollapsible={mockSetShowCollapsible}
+        />
       </Provider>
     </IntlProvider>,
   );
@@ -64,7 +75,7 @@ const setup = (storeState = defaultState) => {
 
 describe('TourCollapsible', () => {
   it('renders FloatingCollapsible when tour is not completed and not dismissed', () => {
-    setup();
+    setup(defaultState, true);
     expect(screen.queryByTestId('floating-collapsible')).toBeTruthy();
   });
 
@@ -77,7 +88,6 @@ describe('TourCollapsible', () => {
       },
     };
     setup(state);
-
     expect(screen.queryByTestId('floating-collapsible')).toBeFalsy();
     expect(screen.queryByTestId('icon-button')).toBeTruthy();
   });
@@ -96,16 +106,14 @@ describe('TourCollapsible', () => {
     expect(screen.queryByTestId('icon-button')).toBeTruthy();
   });
 
-  it('dismisses the tour when dismiss button is clicked', () => {
-    const { store } = setup();
+  it('dismisses the tour when dismiss button is clicked', async () => {
+    setup(defaultState, true);
 
     const dismissButton = screen.getByTestId('dismiss-button');
     fireEvent.click(dismissButton);
 
-    // Check if dismissOnboardingTour action was dispatched
-    expect(store.dispatch).toHaveBeenCalled();
-    expect(screen.queryByTestId('floating-collapsible')).toBeFalsy();
-    expect(screen.queryByTestId('icon-button')).toBeTruthy();
+    // Check if the collapsible has been dismissed
+    expect(mockSetShowCollapsible).toHaveBeenCalledWith(false);
   });
 
   it('reopens the tour when question icon is clicked', async () => {
@@ -116,17 +124,13 @@ describe('TourCollapsible', () => {
         uuid: 'test-uuid',
       },
     };
-    const { store } = setup(state);
+    setup(state);
 
     const questionIconButton = screen.getByTestId('icon-button');
     fireEvent.click(questionIconButton);
 
     // Check if reopenOnboardingTour action was dispatched
-    expect(store.dispatch).toHaveBeenCalled();
-    await waitFor(() => {
-      expect(screen.queryByTestId('floating-collapsible')).toBeTruthy();
-      expect(screen.queryByTestId('icon-button')).toBeFalsy();
-    });
+    expect(mockSetShowCollapsible).toHaveBeenCalledWith(true);
   });
 
   it('displays tooltip when hovering over question icon', () => {

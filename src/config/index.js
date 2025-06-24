@@ -60,4 +60,8 @@ const features = {
   ENABLE_DRAG_AND_DROP: process.env.ENABLE_DRAG_AND_DROP || hasFeatureFlagEnabled('ENABLE_DRAG_AND_DROP'),
 };
 
-export { configuration, features };
+const flowUuids = {
+  TRACK_LEARNER_PROGRESS_UUID: process.env.FLOW_TRACK_LEARNER_PROGRESS_UUID,
+};
+
+export { configuration, features, flowUuids };

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -11,15 +11,15 @@ import FloatingCollapsible from '../FloatingCollapsible';
 import messages, { TRACK_LEARNER_PROGRESS_TITLE } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
-import { ADMIN_TOUR_TARGETS } from './AdminOnboardingTours/constants';
+import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 
 interface Props {
-  onboardingTourCompleted: boolean;
-  onboardingTourDismissed: boolean;
   dismissOnboardingTour: (adminUuid: string) => void;
   reopenOnboardingTour: (adminUuid: string) => void;
   onTourSelect?: (targetId: string) => void;
   uuid: string;
+  showCollapsible: boolean;
+  setShowCollapsible: (value: boolean) => void;
 }
 
 const QUICK_START_GUIDE_STEPS = [
@@ -27,23 +27,22 @@ const QUICK_START_GUIDE_STEPS = [
     icon: TrendingUp,
     title: TRACK_LEARNER_PROGRESS_TITLE,
     timeEstimate: 2,
-    targetId: ADMIN_TOUR_TARGETS.LEARNER_PROGRESS_SIDEBAR,
+    targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
   },
   // Add other steps here
 ];
 
 const TourCollapsible: FC<Props> = (
   {
-    onboardingTourCompleted = true,
-    onboardingTourDismissed = true,
     dismissOnboardingTour: dismissTour,
     reopenOnboardingTour: reopenTour,
     onTourSelect,
+    showCollapsible,
+    setShowCollapsible,
     uuid: adminUuid,
   },
 ) => {
   const intl = useIntl();
-  const [showCollapsible, setShowCollapsible] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
 
   const handleDismiss = () => {
     setShowCollapsible(false);

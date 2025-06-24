@@ -53,14 +53,49 @@ const messages = defineMessages({
     description: 'Title for the dismiss confirmation modal.',
   },
   trackLearnerProgressStepOneTitle: {
-    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.title',
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.title.1',
     defaultMessage: TRACK_LEARNER_PROGRESS_TITLE,
     description: 'Title for the learner progress tracking step',
   },
   trackLearnerProgressStepOneBody: {
-    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body',
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.1',
     defaultMessage: 'Track learner activity and progress across courses with the Learner Progress Report.',
     description: 'Description for the learner progress tracking step one',
+  },
+  trackLearnerProgressStepTwoBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.2',
+    defaultMessage: 'Get a high-level view of learner enrollments, course completions, and more.',
+    description: 'Description for the learner progress tracking step two',
+  },
+  trackLearnerProgressStepThreeBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.3',
+    defaultMessage: 'Get a quick AI-generated overview of your learner analytics with just one click.',
+    description: 'Description for the learner progress tracking step three',
+  },
+  trackLearnerProgressStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.4',
+    defaultMessage: 'Scroll down for a detailed, twice-daily updated progress report.',
+    description: 'Description for the learner progress tracking step four',
+  },
+  trackLearnerProgressStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.5',
+    defaultMessage: 'Access the full Learner Progress Report here.',
+    description: 'Description for the learner progress tracking step five',
+  },
+  trackLearnerProgressStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.6',
+    defaultMessage: 'Filter results by course, start date, or learner email.',
+    description: 'Description for the learner progress tracking step six',
+  },
+  trackLearnerProgressStepSevenBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.7',
+    defaultMessage: 'Export the report as a CSV to gain insights and organize data efficiently.',
+    description: 'Description for the learner progress tracking step seven',
+  },
+  trackLearnerProgressStepEightBody: {
+    id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.8',
+    defaultMessage: 'View module-level details for Executive Education courses.',
+    description: 'Description for the learner progress tracking step eight',
   },
 });
 
