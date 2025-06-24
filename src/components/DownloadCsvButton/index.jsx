@@ -29,6 +29,7 @@ class DownloadCsvButton extends React.Component {
       <Button
         id={TRACK_LEARNER_PROGRESS_TARGETS.CSV_DOWNLOAD}
         variant="outline-primary"
+        data-testid="download-csv-btn"
         className="download-btn d-sm-inline float-md-right"
         disabled={disabled || csvLoading}
         onClick={() => {

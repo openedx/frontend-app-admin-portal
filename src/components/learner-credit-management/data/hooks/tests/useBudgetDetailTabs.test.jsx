@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom';
+import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { useBudgetDetailTabs } from '../useBudgetDetailTabs';

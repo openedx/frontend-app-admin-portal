@@ -351,7 +351,7 @@ class Admin extends React.Component {
     const resetQuery = queryParams.toString();
     const resetLink = resetQuery ? `${pathname}?${resetQuery}` : pathname;
     return (
-      <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
+      <Link data-testid="reset-filters" id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
         <Icon src={Undo} className="mr-2" />
         <FormattedMessage
           id="admin.portal.lpr.reset.filters.button.label"
@@ -446,7 +446,7 @@ class Admin extends React.Component {
     const hasCompleteInsights = insights?.learner_engagement && insights?.learner_progress;
 
     return (
-      <main role="main" className="learner-progress-report">
+      <main data-enterprise-id={enterpriseId} data-testid="dashboard-root" role="main" className="learner-progress-report">
         {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
           <>
             <Helmet title="Learner Progress Report" />

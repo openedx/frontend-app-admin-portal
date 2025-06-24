@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration'; // Assuming this is the path to your expiryThresholds file
 import { createIntl, IntlProvider } from '@edx/frontend-platform/i18n';

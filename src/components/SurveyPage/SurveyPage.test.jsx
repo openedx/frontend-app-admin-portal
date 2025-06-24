@@ -1,15 +1,14 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { act, create } from 'react-test-renderer';
 
 import SurveyPage from './index';
 
 describe('<SurveyPage />', () => {
-  it('renders correctly', () => {
-    const tree = renderer
-      .create((
-        <SurveyPage />
-      ))
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+  it('renders correctly', async () => {
+    let tree;
+    await act(async () => {
+      tree = create(<SurveyPage />);
+    });
+    expect(tree.toJSON()).toMatchSnapshot();
   });
 });

@@ -107,7 +107,7 @@ class InviteLearnersModal extends React.Component {
             />
           </p>
           <div className="mt-4">
-            <h3>
+            <h3 data-testid="add-user-heading">
               <FormattedMessage
                 id="admin.portal.invite.learners.modal.add.users"
                 defaultMessage="Add Users"

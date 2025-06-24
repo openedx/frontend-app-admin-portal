@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './Img.scss';
 
 const Img = (props) => (
-  <img src={props.src} alt={props.alt} {...props} />
+  <img src={props.src} alt={props.alt} data-testid={props.dataTestId} {...props} />
 );
 
 Img.propTypes = {
@@ -12,6 +12,7 @@ Img.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]).isRequired,
+  dataTestId: PropTypes.string,
   alt: PropTypes.string.isRequired,
 };
 

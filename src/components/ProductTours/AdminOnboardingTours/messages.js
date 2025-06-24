@@ -41,6 +41,17 @@ const messages = defineMessages({
     + ' step-by-step guidance on what our portal can do for you.',
     description: 'Body for the welcome modal for existing users.',
   },
+  dismissConfirmationBody: {
+    id: 'admin.portal.productTours.adminOnboarding.dismiss.modal.body',
+    defaultMessage: 'You haven\'t completed all the steps yet. You can revisit the guide anytime--just '
+    + 'click the help icon in the bottom right corner.',
+    description: 'Body for the dismiss confirmation modal.',
+  },
+  dismissConfirmationTitle: {
+    id: 'admin.portal.productTours.adminOnboarding.dismiss.modal.title',
+    defaultMessage: 'Are you sure?',
+    description: 'Title for the dismiss confirmation modal.',
+  },
   trackLearnerProgressStepOneTitle: {
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.title.1',
     defaultMessage: TRACK_LEARNER_PROGRESS_TITLE,

@@ -171,11 +171,10 @@ class LmsApiService {
     return LmsApiService.apiClient().get(enterpriseAdminProfileUrl);
   }
 
-  // TODO: Implement this endpoint on the backend, if needed change the route here
-  static postOnboardingTourDismissed({ value }) {
-    const dismissOnboardingTourUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/`;
-    return LmsApiService.apiClient().post(dismissOnboardingTourUrl, {
-      onboardingTourDismissed: value,
+  static postOnboardingTourDismissed({ value, adminUuid }) {
+    const dismissOnboardingTourUrl = `${LmsApiService.baseUrl}/enterprise/api/v1/enterprise-customer-admin/${adminUuid}/`;
+    return LmsApiService.apiClient().patch(dismissOnboardingTourUrl, {
+      onboarding_tour_dismissed: value,
     });
   }
 

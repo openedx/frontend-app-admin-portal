@@ -476,7 +476,7 @@ const Admin = ({
   };
 
   return (
-    <main role="main" className="learner-progress-report">
+    <main data-enterprise-id={enterpriseId} data-testid="learner-progress-report" role="main" className="learner-progress-report">
       {!loading && !error && !hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
         <>
           <Helmet title="Learner Progress Report" />

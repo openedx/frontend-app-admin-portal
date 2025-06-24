@@ -39,8 +39,8 @@ const LineChart = ({
     legend: {
       title: '', yanchor: 'top', y: 0.99, xanchor: 'right', x: 0.99, bgcolor: 'white',
     },
-    xaxis: { title: xAxisTitle },
-    yaxis: { title: yAxisTitle },
+    xaxis: { title: xAxisTitle, rangemode: 'tozero' },
+    yaxis: { title: yAxisTitle, rangemode: 'tozero' },
     autosize: true,
   };
 

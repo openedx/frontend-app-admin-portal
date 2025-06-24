@@ -11,6 +11,7 @@ import AnalyticsFilters from '../AnalyticsFilters';
 import { useAnalyticsFilters } from '../AnalyticsFiltersContext';
 import Stats from '../Stats';
 import SkillsByEnrollmentChart from '../charts/SkillsByEnrollmentChart';
+import SkillsByLearningHoursChart from '../charts/SkillsByLearningHoursChart';
 import Leaderboard from '../tables/LeaderboardTable';
 import EnrollmentsOverTimeChart from '../charts/EnrollmentsOverTimeChart';
 import LearningHoursOverTimeChart from '../charts/LearningHoursOverTimeChart';
@@ -139,18 +140,11 @@ const Engagements = ({ enterpriseId }) => {
         </div>
         {/* Skills By Learning Hours Charts */}
         <div className="col-6">
-          <div className="bg-primary-100 rounded-lg p-3 skills-chart-container h-100">
-            <div className="h-100 overflow-hidden">
-              <h2 className="font-weight-bold">
-                <FormattedMessage
-                  id="advance.analytics.skills.by.learning.hours.chart.heading"
-                  defaultMessage="Skills by learning hours"
-                  description="Heading for skills by learning hours chart on advance analytics"
-                />
-              </h2>
-              <div className="bg-white border-white py-3 mb-2 rounded-lg container-fluid w-100 h-100" />
-            </div>
-          </div>
+          <SkillsByLearningHoursChart
+            isFetching={isSkillsFetching}
+            isError={isSkillsError}
+            data={skillsData?.skillsByLearningHours}
+          />
         </div>
       </div>
 

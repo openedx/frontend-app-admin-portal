@@ -536,6 +536,7 @@ class CouponDetails extends React.Component {
     return (
       <div
         id={`coupon-details-${id}`}
+        data-testid="coupon-details"
         className={classNames([
           'coupon-details row no-gutters px-2 my-3',
           {

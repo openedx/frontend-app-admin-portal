@@ -7,11 +7,11 @@ import thunk from 'redux-thunk';
 import {
   cleanup, render, screen, waitFor,
 } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { mergeConfig } from '@edx/frontend-platform';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 
+import userEvent from '@testing-library/user-event';
 import { features } from '../../../config';
 import ProductTours from '../ProductTours';
 import {
@@ -239,23 +239,27 @@ describe('<ProductTours/>', () => {
   });
 
   describe('learner detail page tour', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      global.localStorage.setItem(BROWSE_AND_REQUEST_TOUR_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
+      global.localStorage.setItem(PORTAL_APPEARANCE_TOUR_COOKIE_NAME, true);
+    });
     it('is shown when no cookie found', () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
     });
-    it('dismiss learner profile product tour', () => {
+    it('dismiss learner profile product tour', async () => {
       global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, undefined);
       render(<ToursWithContext />);
       expect(screen.queryByText('learner profile feature', { exact: false })).toBeTruthy();
-      const dismissButton = screen.getByRole('button', { name: 'Dismiss' });
-      userEvent.click(dismissButton);
-      expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
-    });
-    it('is not shown when cookie has been dismissed', () => {
-      global.localStorage.setItem(LEARNER_DETAIL_PAGE_COOKIE_NAME, true);
-      render(<ToursWithContext />);
-      expect(screen.queryByText('learner profile feature', { exact: false })).toBeFalsy();
+      const closeButton = screen.getByRole('button', { name: 'Close tour' });
+      userEvent.click(closeButton);
+      await waitFor(() => {
+        expect(screen.queryByText('learner profile feature', { exact: false })).not.toBeTruthy();
+      });
     });
   });
 });

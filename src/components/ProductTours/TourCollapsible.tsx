@@ -14,9 +14,10 @@ import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 
 interface Props {
-  dismissOnboardingTour: () => void;
-  reopenOnboardingTour: () => void;
+  dismissOnboardingTour: (adminUuid: string) => void;
+  reopenOnboardingTour: (adminUuid: string) => void;
   onTourSelect?: (targetId: string) => void;
+  uuid: string;
   showCollapsible: boolean;
   setShowCollapsible: (value: boolean) => void;
 }
@@ -38,18 +39,19 @@ const TourCollapsible: FC<Props> = (
     onTourSelect,
     showCollapsible,
     setShowCollapsible,
+    uuid: adminUuid,
   },
 ) => {
   const intl = useIntl();
 
   const handleDismiss = () => {
     setShowCollapsible(false);
-    dismissTour();
+    dismissTour(adminUuid);
   };
 
   const handleReopenTour = () => {
     setShowCollapsible(true);
-    reopenTour();
+    reopenTour(adminUuid);
   };
 
   return (
@@ -96,13 +98,19 @@ const TourCollapsible: FC<Props> = (
   );
 };
 
+const mapStateToProps = state => ({
+  onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,
+  onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
+  uuid: state.enterpriseCustomerAdmin.uuid as string,
+});
+
 const mapDispatchToProps = dispatch => ({
-  dismissOnboardingTour: () => {
-    dispatch(dismissOnboardingTour());
+  dismissOnboardingTour: (adminUuid: string) => {
+    dispatch(dismissOnboardingTour(adminUuid));
   },
-  reopenOnboardingTour: () => {
-    dispatch(reopenOnboardingTour());
+  reopenOnboardingTour: (adminUuid: string) => {
+    dispatch(reopenOnboardingTour(adminUuid));
   },
 });
 
-export default connect(null, mapDispatchToProps)(TourCollapsible);
+export default connect(mapStateToProps, mapDispatchToProps)(TourCollapsible);

@@ -76,6 +76,7 @@ const BudgetOverviewContent = ({
           badgeVariant={badgeVariant}
           status={status}
           isAssignable={isAssignable}
+          isBnREnabled={subsidyAccessPolicy?.bnrEnabled}
           term={term}
           date={date}
           policy={subsidyAccessPolicy}

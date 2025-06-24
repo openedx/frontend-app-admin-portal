@@ -40,6 +40,7 @@ const InviteModalSummary = ({
   );
 
   const hasLearnerEmails = validatedEmails?.length > 0;
+
   let cardSections = [] as ReactElement[];
   if (hasLearnerEmails) {
     cardSections = cardSections.concat(
@@ -63,6 +64,7 @@ const InviteModalSummary = ({
   if (hasLearnerEmails) {
     summaryHeading = `${summaryHeading} (${validatedEmails.length})`;
   }
+
   return (
     <>
       <h5 className="mb-4">{summaryHeading}</h5>

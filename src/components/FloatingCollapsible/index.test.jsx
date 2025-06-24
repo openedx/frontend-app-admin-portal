@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 import FloatingCollapsible from './index';
 
 // Mock Paragon components
@@ -35,6 +36,10 @@ const defaultState = {
   portalConfiguration: {
     enterpriseBranding: {},
   },
+  enterpriseCustomerAdmin: {
+    onboardingTourDismissed: false,
+    uuid: 'test-uuid',
+  },
 };
 
 const setup = (props = {}) => {
@@ -52,9 +57,11 @@ const setup = (props = {}) => {
     store,
     props: mergedProps,
     ...render(
-      <Provider store={store}>
-        <FloatingCollapsible {...mergedProps} />
-      </Provider>,
+      <IntlProvider locale="en" messages={{}}>
+        <Provider store={store}>
+          <FloatingCollapsible {...mergedProps} />
+        </Provider>
+      </IntlProvider>,
     ),
   };
 };
@@ -74,7 +81,9 @@ describe('FloatingCollapsible', () => {
     const onDismiss = jest.fn();
     setup({ onDismiss });
 
-    fireEvent.click(screen.getByTestId('button-primary'));
+    fireEvent.click(screen.getByTestId('button-tertiary'));
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
+
     expect(onDismiss).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(screen.queryByText('Test Content')).toBeFalsy();
@@ -85,7 +94,7 @@ describe('FloatingCollapsible', () => {
     setup();
 
     // Click cancel button to close collapsible
-    fireEvent.click(screen.getByTestId('button-tertiary'));
+    fireEvent.click(screen.getByTestId('button-primary'));
 
     await waitFor(() => {
       expect(screen.queryByText('Test Content')).toBeFalsy();

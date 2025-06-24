@@ -69,11 +69,11 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
           description="Text for the next button"
         />
       ),
-      dismissButtonText: (
+      backButtonText: (
         <FormattedMessage
-          id="adminPortal.productTours.adminOnboarding.dismiss"
-          defaultMessage="Dismiss"
-          description="Text for the dismiss button"
+          id="adminPortal.productTours.adminOnboarding.back"
+          defaultMessage="Back"
+          description="Text for the back button"
         />
       ),
       endButtonText: (
