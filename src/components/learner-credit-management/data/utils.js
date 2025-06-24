@@ -163,7 +163,7 @@ export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
 //  Utility function to check if the ID is a UUID
 export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
 
-// TODO: Abstract ‘status’ higher up into the component tree to simplify code
+// TODO: Abstract 'status' higher up into the component tree to simplify code
 //  Utility function to check the budget status
 export const getBudgetStatus = ({
   intl,
@@ -798,3 +798,12 @@ export const getAssignableCourseRuns = ({
   // Sorts by the enrollBy date. If enrollBy is equivalent, sort by start
   return assignableCourseRuns.sort(startAndEnrollBySortLogic);
 };
+
+/**
+ * Checks if a budget status is retired or expired.
+ * These states typically disable certain actions or hide UI elements.
+ *
+ * @param {string} status The budget status to check
+ * @returns {boolean} True if the budget is retired or expired, false otherwise
+ */
+export const isBudgetRetiredOrExpired = (status) => [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);

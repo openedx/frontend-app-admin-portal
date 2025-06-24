@@ -15,6 +15,7 @@ import {
   useSubsidyAccessPolicy,
 } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import { isBudgetRetiredOrExpired } from './data/utils';
 
 const BudgetDetailAssignmentsHeader = ({
   status,
@@ -34,7 +35,7 @@ const BudgetDetailAssignmentsHeader = ({
     }
   }, [navigate, location, locationState]);
 
-  if ([BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status)) {
+  if (isBudgetRetiredOrExpired(status)) {
     return (
       <>
         <h3 className="mb-3" ref={assignedHeadingRef}>
@@ -136,7 +137,7 @@ const BudgetDetailAssignments = ({
 
   if (!hasContentAssignments
     && hasSpentTransactions
-    && ![BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status)) {
+    && !isBudgetRetiredOrExpired(status)) {
     return (
       <AssignMoreCoursesEmptyStateMinimal />
     );
@@ -149,7 +150,6 @@ const BudgetDetailAssignments = ({
         isLoading={isLoading}
         tableData={contentAssignments}
         fetchTableData={fetchContentAssignments}
-        status={status}
       />
     </section>
   );

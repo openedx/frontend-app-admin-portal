@@ -3,7 +3,7 @@ import { Col, Skeleton, Card } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import classNames from 'classnames';
 import { formatPrice } from './data';
-import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import { isBudgetRetiredOrExpired } from './data/utils';
 
 const SubBudgetCardUtilization = ({
   isAssignable,
@@ -13,9 +13,7 @@ const SubBudgetCardUtilization = ({
   pending,
   spent,
 }) => {
-  const isRetiredOrExpired = (
-    status === BUDGET_STATUSES.retired || status === BUDGET_STATUSES.expired
-  );
+  const isRetiredOrExpired = isBudgetRetiredOrExpired(status);
 
   return (
     <Card.Section

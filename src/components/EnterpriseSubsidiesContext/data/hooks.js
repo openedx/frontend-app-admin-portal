@@ -5,6 +5,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { getConfig } from '@edx/frontend-platform/config';
 import { useQuery } from '@tanstack/react-query';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import EcommerceApiService from '../../../data/services/EcommerceApiService';
 import LicenseManagerApiService from '../../../data/services/LicenseManagerAPIService';
@@ -13,6 +14,7 @@ import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../../learner-credit-management/data';
 import { isAssignableSubsidyAccessPolicyType } from '../../../utils';
+import { isBudgetRetiredOrExpired, getBudgetStatus } from '../../learner-credit-management/data/utils';
 
 dayjs.extend(isBetween);
 
@@ -112,16 +114,46 @@ export const useEnterpriseBudgets = ({
   enterpriseId,
   isTopDownAssignmentEnabled,
   queryOptions = {},
-}) => useQuery({
-  queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
-  queryFn: (args) => fetchEnterpriseBudgets({
-    queryArgs: args,
-    isTopDownAssignmentEnabled,
-    enterpriseId,
-    enablePortalLearnerCreditManagementScreen,
-  }),
-  ...queryOptions,
-});
+}) => {
+  const intl = useIntl();
+
+  return useQuery({
+    queryKey: learnerCreditManagementQueryKeys.budgets(enterpriseId),
+    queryFn: (args) => fetchEnterpriseBudgets({
+      queryArgs: args,
+      isTopDownAssignmentEnabled,
+      enterpriseId,
+      enablePortalLearnerCreditManagementScreen,
+    }),
+    ...queryOptions,
+    select: (data) => {
+      if (!data?.budgets) {
+        return data;
+      }
+
+      const updatedBudgets = data.budgets.map(budget => {
+        if (budget.source === BUDGET_TYPES.policy) {
+          const { status } = getBudgetStatus({
+            intl,
+            startDateStr: budget.start,
+            endDateStr: budget.end,
+            isBudgetRetired: budget.isRetired,
+          });
+          return {
+            ...budget,
+            isRetiredOrExpired: isBudgetRetiredOrExpired(status),
+          };
+        }
+        return budget;
+      });
+
+      return {
+        ...data,
+        budgets: updatedBudgets,
+      };
+    },
+  });
+};
 
 export const useCustomerAgreement = ({ enterpriseId }) => {
   const [customerAgreement, setCustomerAgreement] = useState();
