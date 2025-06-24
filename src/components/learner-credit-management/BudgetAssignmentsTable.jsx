@@ -10,14 +10,13 @@ import AssignmentAmountTableCell from './AssignmentAmountTableCell';
 import AssignmentRowActionTableCell from './AssignmentRowActionTableCell';
 import AssignmentTableRemindAction from './AssignmentTableRemind';
 import AssignmentTableCancelAction from './AssignmentTableCancel';
-import {
-  DEFAULT_PAGE, PAGE_SIZE,
-} from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
 import AssignmentEnrollByDateCell from './AssignmentEnrollByDateCell';
 import AssignmentEnrollByDateHeader from './AssignmentEnrollByDateHeader';
-import { useBudgetId, useSubsidyAccessPolicy } from './data';
+import {
+  DEFAULT_PAGE, PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy,
+} from './data';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
