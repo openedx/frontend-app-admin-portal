@@ -12,9 +12,8 @@ import LicenseManagerApiService from '../../../data/services/LicenseManagerAPISe
 import SubsidyApiService from '../../../data/services/EnterpriseSubsidyApiService';
 import { BUDGET_TYPES } from '../../EnterpriseApp/data/constants';
 import EnterpriseAccessApiService from '../../../data/services/EnterpriseAccessApiService';
-import { learnerCreditManagementQueryKeys } from '../../learner-credit-management/data';
+import { learnerCreditManagementQueryKeys, isBudgetRetiredOrExpired, getBudgetStatus } from '../../learner-credit-management/data';
 import { isAssignableSubsidyAccessPolicyType } from '../../../utils';
-import { isBudgetRetiredOrExpired, getBudgetStatus } from '../../learner-credit-management/data/utils';
 
 dayjs.extend(isBetween);
 
