@@ -2,6 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { logError } from '@edx/frontend-platform/logging';
 import dayjs from 'dayjs';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { useCoupons, useCustomerAgreement, useEnterpriseBudgets } from '../hooks';
 import EcommerceApiService from '../../../../data/services/EcommerceApiService';
@@ -31,7 +32,9 @@ const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 describe('useEnterpriseBudgets', () => {
   const wrapper = ({ children }) => (
     <QueryClientProvider client={queryClient()}>
-      {children}
+      <IntlProvider locale="en">
+        {children}
+      </IntlProvider>
     </QueryClientProvider>
   );
 

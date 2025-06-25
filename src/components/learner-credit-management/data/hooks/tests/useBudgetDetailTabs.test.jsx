@@ -12,6 +12,7 @@ import { BUDGET_STATUSES } from '../../../../EnterpriseApp/data/constants';
 
 // Mock getBudgetStatus
 jest.mock('../../utils', () => ({
+  ...jest.requireActual('../../utils'),
   getBudgetStatus: jest.fn(),
 }));
 
@@ -147,6 +148,8 @@ describe('useBudgetDetailTabs', () => {
     const { result } = renderHook(() => useBudgetDetailTabs(propsWithActiveRequestsTab), { wrapper });
 
     const requestsTab = result.current.find(tab => tab.key === BUDGET_DETAIL_REQUESTS_TAB);
+    expect(requestsTab).toBeDefined();
     expect(requestsTab.props.children).toBeTruthy();
+    expect(requestsTab.props.children.type).toBe(mockProps.RequestsTabElement);
   });
 });
