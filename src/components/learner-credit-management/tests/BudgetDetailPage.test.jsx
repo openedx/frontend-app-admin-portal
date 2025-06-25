@@ -1542,7 +1542,7 @@ describe('<BudgetDetailPage />', () => {
     expect(viewCourseCTA.getAttribute('href')).toEqual(`${process.env.ENTERPRISE_LEARNER_PORTAL_URL}/${enterpriseSlug}/course/${mockCourseKey}`);
   });
 
-  it.only('renders with incomplete assignments table data, when budget is retired', async () => {
+  it('renders with incomplete assignments table data, when budget is retired', async () => {
     const user = userEvent.setup();
     useParams.mockReturnValue({
       enterpriseSlug: 'test-enterprise-slug',

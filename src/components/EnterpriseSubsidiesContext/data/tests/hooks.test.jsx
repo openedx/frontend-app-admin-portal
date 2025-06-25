@@ -247,6 +247,9 @@ describe('useEnterpriseBudgets', () => {
         isCurrent: true,
         source: BUDGET_TYPES.policy,
         isAssignable: false,
+        isRetired: undefined,
+        isRetiredOrExpired: false,
+        retiredAt: undefined,
         aggregates: {
           available: 700,
           spent: 200,
