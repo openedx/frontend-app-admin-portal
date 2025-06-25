@@ -211,6 +211,7 @@ describe('useEnterpriseBudgets', () => {
           amountAllocatedUsd: 100,
         },
         retired: false,
+        retiredAt: '2025-06-25T19:56:09Z',
       },
     ];
     fetchEnterpriseOffersSpy.mockResolvedValue({
@@ -250,7 +251,7 @@ describe('useEnterpriseBudgets', () => {
         isAssignable: false,
         isRetired: false,
         isRetiredOrExpired: false,
-        retiredAt: undefined,
+        retiredAt: '2025-06-25T19:56:09Z',
         aggregates: {
           available: 700,
           spent: 200,
