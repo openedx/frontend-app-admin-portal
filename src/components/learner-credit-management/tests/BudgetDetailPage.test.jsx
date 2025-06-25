@@ -314,7 +314,6 @@ describe('<BudgetDetailPage />', () => {
       },
     });
 
-    // Add default mocks for hooks that are used in multiple tests
     useBudgetDetailActivityOverview.mockReturnValue({
       isLoading: false,
       data: mockEmptyStateBudgetDetailActivityOverview,
