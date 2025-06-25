@@ -28,7 +28,6 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
   const {
     subsidyUuid, assignmentConfiguration, isSubsidyActive, isAssignable, catalogUuid, aggregates,
   } = subsidyAccessPolicy;
-  const budgetStatusesWithIncompleteAssignments = subsidyAccessPolicy?.isRetiredOrExpired;
   const sharedTrackEventMetadata = {
     learnerState,
     subsidyUuid,
@@ -74,8 +73,8 @@ const AssignmentStatusTableCell = ({ enterpriseId, row }) => {
     return null;
   }
 
-  // Always display "Incomplete assignment" status chip for retired budgets
-  if (budgetStatusesWithIncompleteAssignments) {
+  // Always display "Incomplete assignment" status chip for retired/expired budgets
+  if (subsidyAccessPolicy?.isRetiredOrExpired) {
     return (
       <IncompleteAssignment trackEvent={sendGenericTrackEvent} />
     );
