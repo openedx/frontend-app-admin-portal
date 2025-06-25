@@ -724,6 +724,28 @@ const getFromLocalStorage = (key) => {
   return savedValue ? JSON.parse(savedValue) : null;
 };
 
+/**
+ * Extracts and filters URL query parameters based on an allowed list.
+ *
+ * @param {string} queryString - The query string part of the URL (e.g. "?search=AI&extra=123").
+ * @param {string[]} expectedParams - An array of expected query parameter keys to include.
+ * @returns {Object} An object containing only the filtered query parameters.
+ */
+function getFilteredQueryParams(queryString, expectedParams) {
+  // Convert the query string to a URLSearchParams object
+  const queryParams = new URLSearchParams(queryString);
+
+  // Convert queryParams to an object
+  const options = Object.fromEntries(queryParams.entries());
+
+  // Filter the options object to include only expected parameters
+  const filteredOptions = Object.fromEntries(
+    Object.entries(options).filter(([key]) => expectedParams.includes(key)),
+  );
+
+  return filteredOptions;
+}
+
 export {
   camelCaseDict,
   camelCaseDictArray,
@@ -778,4 +800,5 @@ export {
   removeStringsFromListCaseInsensitive,
   saveToLocalStorage,
   getFromLocalStorage,
+  getFilteredQueryParams,
 };
