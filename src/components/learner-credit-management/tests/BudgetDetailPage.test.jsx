@@ -2892,6 +2892,7 @@ describe('<BudgetDetailPage />', () => {
           ...mockAssignableSubsidyAccessPolicy,
           endDate: dayjs().subtract(1, 'day').format(),
           isRetired: false,
+          isRetiredOrExpired: true,
         },
       },
       {
@@ -2899,6 +2900,7 @@ describe('<BudgetDetailPage />', () => {
         mockPolicyData: {
           ...mockAssignableSubsidyAccessPolicy,
           isRetired: true,
+          isRetiredOrExpired: true,
         },
       },
     ];
