@@ -124,7 +124,6 @@ export const useEnterpriseBudgets = ({
       enterpriseId,
       enablePortalLearnerCreditManagementScreen,
     }),
-    ...queryOptions,
     select: (data) => {
       if (!data?.budgets) {
         return data;
@@ -146,10 +145,16 @@ export const useEnterpriseBudgets = ({
         return budget;
       });
 
-      return {
+      const transformedData = {
         ...data,
         budgets: updatedBudgets,
       };
+
+      if (queryOptions.select) {
+        return queryOptions.select(transformedData);
+      }
+
+      return transformedData;
     },
   });
 };
