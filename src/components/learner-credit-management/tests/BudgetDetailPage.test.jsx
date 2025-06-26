@@ -12,7 +12,7 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import { faker } from '@faker-js/faker';
 import dayjs from 'dayjs';
 
@@ -250,9 +250,8 @@ describe('<BudgetDetailPage />', () => {
     // Mock useBudgetId to be dynamic based on useParams
     useBudgetId.mockImplementation(() => {
       const { budgetId } = useParams();
-      const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
-      const enterpriseOfferId = isUUID(budgetId) ? null : budgetId;
-      const subsidyAccessPolicyId = isUUID(budgetId) ? budgetId : null;
+      const enterpriseOfferId = uuidValidate(budgetId) ? null : budgetId;
+      const subsidyAccessPolicyId = uuidValidate(budgetId) ? budgetId : null;
       return {
         budgetId,
         enterpriseOfferId,

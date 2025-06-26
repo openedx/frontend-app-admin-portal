@@ -160,9 +160,6 @@ export const getProgressBarVariant = ({ percentUtilized, remainingFunds }) => {
   return variant;
 };
 
-//  Utility function to check if the ID is a UUID
-export const isUUID = (id) => /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id);
-
 // TODO: Abstract 'status' higher up into the component tree to simplify code
 //  Utility function to check the budget status
 export const getBudgetStatus = ({
