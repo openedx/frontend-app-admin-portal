@@ -48,12 +48,18 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
-  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
+  const learnerProgressSteps = useLearnerProgressTour({
+    enterpriseSlug,
+    adminUuid,
+    aiButtonVisible,
+    targetSelector,
+  });
 
   useEffect(() => {
     if (learnerProgressSteps[currentStep]) {
-      const nextTarget = learnerProgressSteps[currentStep].target.replace('#', '');
-      setTarget(nextTarget);
+      const nextTarget = learnerProgressSteps[currentStep].target;
+      const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
+      setTarget(targetWithoutPrefix);
     }
   }, [currentStep, learnerProgressSteps, setTarget]);
 
@@ -98,7 +104,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 
   return (
     <>
-      <CheckpointOverlay target={targetSelector} />
+      <CheckpointOverlay target={learnerProgressSteps[currentStep]?.target || targetSelector} />
       <ProductTour
         tours={tours}
       />
