@@ -4,13 +4,14 @@ import { ProgressBar, Stack } from '@openedx/paragon';
 
 import { formatPrice } from './data';
 import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import { isBudgetRetiredOrExpired } from './data/utils';
 
 const BudgetDetail = ({
   available, utilized, limit, status,
 }) => {
   const currentProgressBarLimit = (available / limit) * 100;
 
-  if (status === BUDGET_STATUSES.expired || status === BUDGET_STATUSES.retired) {
+  if (isBudgetRetiredOrExpired(status)) {
     return (
       <Stack className="border border-light-400 p-4">
         <h4>Spent</h4>

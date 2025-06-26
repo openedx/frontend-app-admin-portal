@@ -1,22 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useIntl } from '@edx/frontend-platform/i18n';
 import {
-  formatPrice, getBudgetStatus, useBudgetId, useSubsidyAccessPolicy,
+  formatPrice, useBudgetId, useSubsidyAccessPolicy,
 } from './data';
-import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
 
 const AssignmentAmountTableCell = ({ row }) => {
-  const intl = useIntl();
   const { subsidyAccessPolicyId } = useBudgetId();
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
-  const { status } = getBudgetStatus({
-    intl,
-    startDateStr: subsidyAccessPolicy.subsidyActiveDatetime,
-    endDateStr: subsidyAccessPolicy.subsidyExpirationDatetime,
-    isBudgetRetired: subsidyAccessPolicy.retired,
-  });
-  const shouldStrikeoutPrice = [BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(status);
+  const shouldStrikeoutPrice = subsidyAccessPolicy?.isRetiredOrExpired;
 
   if (shouldStrikeoutPrice) {
     return (

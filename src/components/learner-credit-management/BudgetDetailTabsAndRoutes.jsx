@@ -98,7 +98,31 @@ const BudgetDetailTabsAndRoutes = ({
       },
     );
     setActiveTabKey(initialTabKey);
-  }, [routeActiveTabKey, enterpriseFeatures, enterpriseGroupLearners, subsidyAccessPolicy, appliesToAllContexts]);
+  }, [
+    routeActiveTabKey,
+    enterpriseFeatures,
+    enterpriseGroupLearners,
+    subsidyAccessPolicy,
+    appliesToAllContexts,
+  ]);
+
+  /**
+   * Redirect to default tab if viewing catalog tab and budget is retired or expired.
+   */
+  useEffect(() => {
+    if (
+      activeTabKey === BUDGET_DETAIL_CATALOG_TAB
+      && subsidyAccessPolicy?.isRetiredOrExpired
+    ) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learnerCredit}/${budgetId}/${DEFAULT_TAB}`);
+    }
+  }, [
+    activeTabKey,
+    subsidyAccessPolicy?.isRetiredOrExpired,
+    navigate,
+    enterpriseSlug,
+    budgetId,
+  ]);
 
   const handleTabSelect = (nextActiveTabKey) => {
     setActiveTabKey(nextActiveTabKey);
@@ -171,6 +195,10 @@ BudgetDetailTabsAndRoutes.propTypes = {
   subsidyAccessPolicy: PropTypes.shape({
     isAssignable: PropTypes.bool,
     groupAssociations: PropTypes.arrayOf(PropTypes.string),
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    isRetired: PropTypes.bool,
+    isRetiredOrExpired: PropTypes.bool,
   }),
   appliesToAllContexts: PropTypes.bool,
 };

@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import type { AxiosResponse } from 'axios';
+import { useIntl } from '@edx/frontend-platform/i18n';
 
 import EnterpriseAccessApiService from '../../../../data/services/EnterpriseAccessApiService';
 import { learnerCreditManagementQueryKeys } from '../constants';
 import { isAssignableSubsidyAccessPolicyType } from '../../../../utils';
 import { SubsidyAccessPolicy } from '../types';
+import { isBudgetRetiredOrExpired, getBudgetStatus } from '../utils';
 
 /**
  * Retrieves a subsidy access policy by UUID from the API.
@@ -21,10 +23,32 @@ const getSubsidyAccessPolicy = async ({ queryKey }) => {
   return subsidyAccessPolicy;
 };
 
-const useSubsidyAccessPolicy = (subsidyAccessPolicyId) => useQuery({
-  queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
-  queryFn: getSubsidyAccessPolicy,
-  enabled: !!subsidyAccessPolicyId,
-});
+const useSubsidyAccessPolicy = (subsidyAccessPolicyId) => {
+  const intl = useIntl();
+
+  return useQuery({
+    queryKey: learnerCreditManagementQueryKeys.budget(subsidyAccessPolicyId),
+    queryFn: getSubsidyAccessPolicy,
+    enabled: !!subsidyAccessPolicyId,
+    select: (data) => {
+      if (!data) {
+        return data;
+      }
+
+      // Calculate if the budget is retired or expired using getBudgetStatus for consistency
+      const { status } = getBudgetStatus({
+        intl,
+        startDateStr: data.subsidyActiveDatetime,
+        endDateStr: data.subsidyExpirationDatetime,
+        isBudgetRetired: data.retired,
+      });
+
+      return {
+        ...data,
+        isRetiredOrExpired: isBudgetRetiredOrExpired(status),
+      };
+    },
+  });
+};
 
 export default useSubsidyAccessPolicy;

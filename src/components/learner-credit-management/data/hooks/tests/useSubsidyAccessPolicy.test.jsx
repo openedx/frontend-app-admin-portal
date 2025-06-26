@@ -1,5 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import useSubsidyAccessPolicy from '../useSubsidyAccessPolicy'; // Import the hook
 import EnterpriseAccessApiService from '../../../../../data/services/EnterpriseAccessApiService';
@@ -20,7 +21,9 @@ jest.mock('../../../../../data/services/EnterpriseAccessApiService', () => ({
 }));
 
 const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
+  <IntlProvider locale="en">
+    <QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
+  </IntlProvider>
 );
 
 describe('useSubsidyAccessPolicy', () => {
@@ -55,6 +58,7 @@ describe('useSubsidyAccessPolicy', () => {
       policyType: isAssignable ? 'AssignedLearnerCreditAccessPolicy' : 'PerLearnerCreditSpendLimitAccessPolicy',
       isAssignable,
       assignmentConfiguration: isAssignable ? mockAssignmentConfiguration : undefined,
+      isRetiredOrExpired: true,
       // Other expected properties...
     });
   });
@@ -87,6 +91,7 @@ describe('useSubsidyAccessPolicy', () => {
         policyType: 'AssignedLearnerCreditAccessPolicy',
         assignmentConfiguration: mockAssignmentConfiguration,
         isAssignable: true,
+        isRetiredOrExpired: true,
         // Other expected properties...
       },
     },
