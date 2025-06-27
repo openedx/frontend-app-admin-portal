@@ -60,7 +60,7 @@ const LearnerActivityTable = ({ id, enterpriseId, activity }) => {
     fetchData: fetchCourseEnrollments,
     fetchDataImmediate,
     hasData,
-  } = useCourseEnrollments(enterpriseId, id, apiFieldsForColumnAccessor);
+  } = useCourseEnrollments(enterpriseId, id, apiFieldsForColumnAccessor, activity);
 
   /// To load data correctly the first time, we use the non-debounced `fetchDataImmediate`
   // on initial load to ensure the data is fetched immediately without any delay.
