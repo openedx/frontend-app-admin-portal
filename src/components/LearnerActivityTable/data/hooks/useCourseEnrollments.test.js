@@ -55,7 +55,7 @@ describe('useCourseEnrollments', () => {
 
     expect(EnterpriseDataApiService.fetchCourseEnrollments).toHaveBeenCalledWith(enterpriseId, {
       page: 1,
-      pageSize: 10,
+      page_size: 10,
     });
 
     expect(result.current.data.results).toHaveLength(2);
