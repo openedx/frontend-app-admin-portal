@@ -52,7 +52,7 @@ const usePaginatedTableData = ({
       setIsLoading(true);
       const options = {
         page: args.pageIndex + 1,
-        pageSize: args.pageSize,
+        page_size: args.pageSize,
       };
       applySortByToOptions(args.sortBy, apiFieldsForColumnAccessor, options);
 
