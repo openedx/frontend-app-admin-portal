@@ -18,7 +18,7 @@ import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
-import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
+import { ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
@@ -151,6 +151,7 @@ const Sidebar = ({
       id: TOUR_TARGETS.PEOPLE_MANAGEMENT,
       to: `${baseUrl}/admin/${ROUTE_NAMES.peopleManagement}`,
       icon: <Icon src={Person} />,
+      id: ORGANIZE_LEARNER_TARGETS.ORGANIZE_LEARNERS_SIDEBAR,
     },
     {
       title: intl.formatMessage({

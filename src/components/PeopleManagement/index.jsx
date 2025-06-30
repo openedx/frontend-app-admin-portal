@@ -20,6 +20,7 @@ import PeopleManagementTable from './PeopleManagementTable';
 import EVENT_NAMES from '../../eventTracking';
 import ValidatedEmailsContextProvider from './data/ValidatedEmailsContextProvider';
 import GroupInviteErrorToast from './GroupInviteErrorToast';
+import { ORGANIZE_LEARNER_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
@@ -106,6 +107,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
         closeToast={closeGroupInviteErrorModal}
       />
       <div className="mx-3 mt-4">
+        <span id={ORGANIZE_LEARNER_TARGETS.ORG_GROUPS_ZERO_STATE}>
         <ActionRow className="mb-4">
           <span className="flex-column">
             <span className="d-flex">
@@ -133,7 +135,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
             )}
           </span>
           <ActionRow.Spacer />
-          <Button iconBefore={Add} onClick={handleOnClickCreateGroup}>
+          <Button iconBefore={Add} onClick={handleOnClickCreateGroup} id={ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}>
             <FormattedMessage
               id="adminPortal.peopleManagement.newGroup.button"
               defaultMessage="Create group"
@@ -150,6 +152,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
           </ValidatedEmailsContextProvider>
         </ActionRow>
         {groupsCardSection}
+        </span>
         <h3 className="mt-3">
           <FormattedMessage
             id="adminPortal.peopleManagement.dataTable.title"
@@ -164,7 +167,9 @@ const PeopleManagementPage = ({ enterpriseId }) => {
             description="Subtitle for people management members data table."
           />
         </p>
+        <span id={ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}>
         <PeopleManagementTable />
+        </span>
       </div>
     </>
   );

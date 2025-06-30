@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
-import { Question, TrendingUp } from '@openedx/paragon/icons';
+import { Question, Person, TrendingUp } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
-import messages, { TRACK_LEARNER_PROGRESS_TITLE } from './AdminOnboardingTours/messages';
+import messages, { ORGANIZE_LEARNERS_TITLE, TRACK_LEARNER_PROGRESS_TITLE } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
-import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
+import { ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 
 interface Props {
   dismissOnboardingTour: (adminUuid: string) => void;
@@ -29,7 +29,12 @@ const QUICK_START_GUIDE_STEPS = [
     timeEstimate: 2,
     targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
   },
-  // Add other steps here
+  {
+    icon: Person,
+    title: ORGANIZE_LEARNERS_TITLE,
+    timeEstimate: 2,
+    targetId: ORGANIZE_LEARNER_TARGETS.ORGANIZE_LEARNERS_SIDEBAR,
+  }
 ];
 
 const TourCollapsible: FC<Props> = (

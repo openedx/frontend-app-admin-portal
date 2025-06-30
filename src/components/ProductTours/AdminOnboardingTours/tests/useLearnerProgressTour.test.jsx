@@ -9,7 +9,7 @@ const mockMessages = {
   },
   learnerProgressTitle: {
     id: 'admin.portal.productTours.learnerProgress.title',
-    defaultMessage: 'Track Learner Progress',
+    defaultMessage: 'Track learner progress',
   },
   learnerProgressBody: {
     id: 'admin.portal.productTours.learnerProgress.body',

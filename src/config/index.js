@@ -62,6 +62,7 @@ const features = {
 
 const flowUuids = {
   TRACK_LEARNER_PROGRESS_UUID: process.env.FLOW_TRACK_LEARNER_PROGRESS_UUID,
+  ORGANIZE_LEARNERS_UUID: process.env.FLOW_ORGANIZE_LEARNERS_UUID,
 };
 
 export { configuration, features, flowUuids };

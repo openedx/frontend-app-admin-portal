@@ -446,6 +446,11 @@ class LmsApiService {
     return LmsApiService.apiClient().get(url, options);
   }
 
+  static fetchSingleEnterpriseCustomerMember(enterpriseUUID: string) {
+    let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}?page=1&page_size=1`;
+    return LmsApiService.apiClient().get(url);
+  }
+
   /**
    * Disables EnterpriseCustomerInviteKey
    * @param {string} enterpriseCustomerInviteKeyUUID uuid EnterpriseCustomerInviteKey to disable

@@ -12,6 +12,7 @@ import highlightsTour from './highlightsTour';
 import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
 import AdminOnboardingTours from './AdminOnboardingTours/AdminOnboardingTours';
+import messages from './AdminOnboardingTours/messages';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
@@ -25,7 +26,7 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
 import TourCollapsible from './TourCollapsible';
-import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
+import { ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
@@ -44,6 +45,7 @@ const ProductTours = ({
   const { FEATURE_CONTENT_HIGHLIGHTS } = getConfig();
   const enablePortalAppearance = features.SETTINGS_PAGE_APPEARANCE_TAB;
   const [isAdminTourOpen, setIsAdminTourOpen] = useState(true);
+  const [selectedTour, setSelectedTour] = useState(null);
   const [selectedTourTarget, setSelectedTourTarget] = useState(null);
   const [showCollapsible, setShowCollapsible] = useState(!onboardingTourCompleted && !onboardingTourDismissed);
 
@@ -72,7 +74,12 @@ const ProductTours = ({
 
   const handleTourSelect = (targetId) => {
     if (targetId === TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR) {
+      setSelectedTour(messages.TRACK_LEARNER_PROGRESS_TITLE);
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/`);
+    }
+    if (targetId === ORGANIZE_LEARNER_TARGETS.ORGANIZE_LEARNERS_SIDEBAR) {
+      setSelectedTour(messages.ORGANIZE_LEARNERS_TITLE);
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/`);
     }
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);
@@ -102,6 +109,7 @@ const ProductTours = ({
       )}
       {isAdminTourOpen && selectedTourTarget ? (
         <AdminOnboardingTours
+          selectedTour={selectedTour}
           isOpen={isAdminTourOpen}
           onClose={handleTourClose}
           targetSelector={selectedTourTarget}

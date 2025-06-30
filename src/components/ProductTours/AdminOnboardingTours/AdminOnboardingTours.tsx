@@ -6,6 +6,7 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import useLearnerProgressTour from './useLearnerProgressTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
+import useOrganizeLearnersTour from './useOrganizeLearnersTour';
 
 interface Insights {
   learner_engagement?: any;
@@ -13,12 +14,14 @@ interface Insights {
 }
 
 interface AdminOnboardingToursProps {
+  selectedTour: string;
   isOpen: boolean;
   onClose: () => void;
   targetSelector: string;
   adminUuid: string,
   setTarget: Function,
   enterpriseSlug: string;
+  enterpriseId: string;
   insights: Insights;
   insightsLoading: boolean;
 }
@@ -30,6 +33,7 @@ interface RootState {
   };
   portalConfiguration: {
     enterpriseSlug: string;
+    enterpriseId: string;
   };
   enterpriseCustomerAdmin: {
     uuid: string;
@@ -37,24 +41,34 @@ interface RootState {
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
+  selectedTour,
   isOpen,
   onClose,
   targetSelector,
   setTarget,
   adminUuid,
   enterpriseSlug,
+  enterpriseId,
   insights,
   insightsLoading,
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
+  const organizeLearnersSteps = useOrganizeLearnersTour({ enterpriseSlug, adminUuid, enterpriseId });
 
   useEffect(() => {
-    if (learnerProgressSteps[currentStep]) {
-      const nextTarget = learnerProgressSteps[currentStep].target.replace('#', '');
+    // if (selectedTour === messages.TRACK_LEARNER_PROGRESS_TITLE) {
+    //   const nextTarget = learnerProgressSteps[currentStep].target.replace('#', '');
+    // } else if (selectedTour === messages.ORGANIZE_LEARNERS_TITLE)
+    //   const nextTarget = organizeLearnersSteps[currentStep].target.replace('#', '');
+    // }
+    if (organizeLearnersSteps[currentStep]) {
+      const nextTarget = organizeLearnersSteps[currentStep].target.replace('#', '');
       setTarget(nextTarget);
+
     }
+    // setTarget(nextTarget);
   }, [currentStep, learnerProgressSteps, setTarget]);
 
   const tours = [
@@ -86,7 +100,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: learnerProgressSteps.map((step, index) => ({
+      checkpoints: organizeLearnersSteps.map((step, index) => ({
         ...step,
         onAdvance: () => {
           setCurrentStep(index + 1);
@@ -113,6 +127,7 @@ AdminOnboardingTours.propTypes = {
   setTarget: PropTypes.func.isRequired,
   adminUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
+  enterpriseId: PropTypes.string.isRequired,
   insights: PropTypes.shape({
     learner_engagement: PropTypes.shape({}),
     learner_progress: PropTypes.shape({}),
@@ -122,6 +137,7 @@ AdminOnboardingTours.propTypes = {
 const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
+  enterpriseId: state.portalConfiguration.enterpriseId,
   insights: state.dashboardInsights.insights,
   insightsLoading: state.dashboardInsights.loading,
 });
