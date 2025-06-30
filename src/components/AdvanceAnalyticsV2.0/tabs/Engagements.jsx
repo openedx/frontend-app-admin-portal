@@ -93,7 +93,7 @@ const Engagements = ({ enterpriseId }) => {
         <p className="text-justify small mt-1">
           <FormattedMessage
             id="advance.analytics.engagement.tab.description"
-            defaultMessage=" This tab displays metrics that measure your learners’ engagement with learning content.
+            defaultMessage="This tab displays metrics that measure your learners’ engagement with learning content.
             Use the date range and filters section to filter all the visualizations below it on the page.
             Dig deeper into the specific topics by downloading their associated CSVs."
             description="Description for engagement tab"
@@ -117,6 +117,7 @@ const Engagements = ({ enterpriseId }) => {
           currentDate={currentDate}
           groups={groups}
           isGroupsLoading={isGroupsLoading}
+          activeTab={ANALYTICS_TABS.ENGAGEMENTS}
         />
       </div>
 
