@@ -14,7 +14,7 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
   }),
 }));
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }) => (
   <IntlProvider locale="en" messages={{}}>
     {children}
   </IntlProvider>
@@ -288,7 +288,7 @@ describe('tourFlows', () => {
 
       expect(analyticsFlow.current).toHaveLength(6);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      learnerFlow.current.forEach((step, index) => {
+      learnerFlow.current.forEach((step, _) => {
         expect(step).toHaveProperty('target');
         expect(step).toHaveProperty('placement');
         expect(step).toHaveProperty('body');
@@ -296,7 +296,7 @@ describe('tourFlows', () => {
         expect(typeof step.onAdvance).toBe('function');
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      analyticsFlow.current.forEach((step, index) => {
+      analyticsFlow.current.forEach((step, _) => {
         expect(step).toHaveProperty('target');
         expect(step).toHaveProperty('placement');
         expect(step).toHaveProperty('body');

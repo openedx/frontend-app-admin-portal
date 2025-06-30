@@ -5,8 +5,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import {
   BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_CATALOG_TAB, BUDGET_DETAIL_MEMBERS_TAB, BUDGET_DETAIL_REQUESTS_TAB,
 } from '../constants';
-import { BUDGET_STATUSES } from '../../../EnterpriseApp/data/constants';
-import { getBudgetStatus } from '../utils';
+import { getBudgetStatus, isBudgetRetiredOrExpired } from '../utils';
 
 const TAB_CLASS_NAME = 'pt-4.5';
 
@@ -30,7 +29,7 @@ export const useBudgetDetailTabs = ({
     endDateStr: subsidyAccessPolicy?.subsidyExpirationDatetime,
     isBudgetRetired: subsidyAccessPolicy?.retired,
   });
-  const isCatalogTabDisabled = [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
+  const isCatalogTabDisabled = isBudgetRetiredOrExpired(status);
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
     || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
   const isBnrEnabled = subsidyAccessPolicy?.bnrEnabled || false;

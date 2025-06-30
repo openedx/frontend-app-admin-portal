@@ -2,6 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { logError } from '@edx/frontend-platform/logging';
 import dayjs from 'dayjs';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import { useCoupons, useCustomerAgreement, useEnterpriseBudgets } from '../hooks';
 import EcommerceApiService from '../../../../data/services/EcommerceApiService';
@@ -31,7 +32,9 @@ const TEST_ENTERPRISE_UUID = 'test-enterprise-uuid';
 describe('useEnterpriseBudgets', () => {
   const wrapper = ({ children }) => (
     <QueryClientProvider client={queryClient()}>
-      {children}
+      <IntlProvider locale="en">
+        {children}
+      </IntlProvider>
     </QueryClientProvider>
   );
 
@@ -207,6 +210,8 @@ describe('useEnterpriseBudgets', () => {
           amountRedeemedUsd: 200,
           amountAllocatedUsd: 100,
         },
+        retired: false,
+        retiredAt: '2025-06-25T19:56:09Z',
       },
     ];
     fetchEnterpriseOffersSpy.mockResolvedValue({
@@ -244,6 +249,9 @@ describe('useEnterpriseBudgets', () => {
         isCurrent: true,
         source: BUDGET_TYPES.policy,
         isAssignable: false,
+        isRetired: false,
+        isRetiredOrExpired: false,
+        retiredAt: '2025-06-25T19:56:09Z',
         aggregates: {
           available: 700,
           spent: 200,

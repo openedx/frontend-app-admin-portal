@@ -12,7 +12,7 @@ import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { renderWithRouter, sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { act } from 'react-dom/test-utils';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import { faker } from '@faker-js/faker';
 import dayjs from 'dayjs';
 
@@ -35,7 +35,12 @@ import {
   useIsLargeOrGreater,
   useSubsidyAccessPolicy,
   useSubsidySummaryAnalyticsApi,
+  useBudgetId,
 } from '../data';
+import {
+  BUDGET_DETAIL_ACTIVITY_TAB,
+  BUDGET_DETAIL_CATALOG_TAB,
+} from '../data/constants';
 import { EnterpriseSubsidiesContext } from '../../EnterpriseSubsidiesContext';
 import {
   mockAssignableSubsidyAccessPolicy,
@@ -57,6 +62,8 @@ jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedUser: jest.fn(),
 }));
 
+const mockNavigate = jest.fn();
+
 jest.mock('@edx/frontend-enterprise-utils', () => ({
   ...jest.requireActual('@edx/frontend-enterprise-utils'),
   sendEnterpriseTrackEvent: jest.fn(),
@@ -64,10 +71,16 @@ jest.mock('@edx/frontend-enterprise-utils', () => ({
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
   useParams: jest.fn(),
 }));
 
 jest.mock('../../algolia-search/useAlgoliaSearch');
+
+jest.mock('../../EnterpriseSubsidiesContext/data/hooks', () => ({
+  ...jest.requireActual('../../EnterpriseSubsidiesContext/data/hooks'),
+  useEnterpriseBudgets: jest.fn(),
+}));
 
 jest.mock('../data', () => ({
   ...jest.requireActual('../data'),
@@ -85,6 +98,7 @@ jest.mock('../data', () => ({
   useSubsidyAccessPolicy: jest.fn(),
   useSubsidySummaryAnalyticsApi: jest.fn(),
   useEnterpriseFlexGroups: jest.fn(),
+  useBudgetId: jest.fn(),
 }));
 
 jest.mock('../../../data/services/EnterpriseAccessApiService');
@@ -112,6 +126,10 @@ const mockContentTitle = 'edx Demo';
 const mockEmptyStateBudgetDetailActivityOverview = {
   contentAssignments: { count: 0 },
   spentTransactions: { count: 0 },
+};
+const mockBudgetDetailActivityOverviewWithSpend = {
+  contentAssignments: { count: 0 },
+  spentTransactions: { count: 1 },
 };
 const mockEmptyBudgetRedemptions = {
   itemCount: 0,
@@ -229,6 +247,24 @@ describe('<BudgetDetailPage />', () => {
       userId: 3,
     });
 
+    // Mock useBudgetId to be dynamic based on useParams
+    useBudgetId.mockImplementation(() => {
+      const { budgetId } = useParams();
+      const enterpriseOfferId = uuidValidate(budgetId) ? null : budgetId;
+      const subsidyAccessPolicyId = uuidValidate(budgetId) ? budgetId : null;
+      return {
+        budgetId,
+        enterpriseOfferId,
+        subsidyAccessPolicyId,
+      };
+    });
+
+    // Mock useEnterpriseBudgets to return an empty array to prevent the forEach error
+    const { useEnterpriseBudgets } = jest.requireMock('../../EnterpriseSubsidiesContext/data/hooks');
+    useEnterpriseBudgets.mockReturnValue({
+      data: [],
+    });
+
     useEnterpriseFlexGroups.mockReturnValue({
       data: [],
     });
@@ -275,6 +311,27 @@ describe('<BudgetDetailPage />', () => {
       catalogUuidsToCatalogQueryUuids: {
         [mockSubsidyAccessPolicyUUID]: 'test-catalog-query-uuid',
       },
+    });
+
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: mockEmptyStateBudgetDetailActivityOverview,
+    });
+
+    useBudgetContentAssignments.mockReturnValue({
+      isLoading: false,
+      contentAssignments: {
+        count: 0,
+        results: [],
+        numPages: 1,
+      },
+      fetchContentAssignments: jest.fn(),
+    });
+
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
     });
   });
 
@@ -805,7 +862,7 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     // Overview empty state (no content assignments, no spent transactions)
-    expect(screen.queryByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
+    expect(screen.getByText('No budget activity yet? Invite members to browse the catalog and enroll!')).toBeInTheDocument();
 
     expect(screen.getByText('Invite more members', { selector: 'a' })).toBeInTheDocument();
   });
@@ -1496,6 +1553,7 @@ describe('<BudgetDetailPage />', () => {
       data: {
         ...mockAssignableSubsidyAccessPolicy,
         retired: true,
+        isRetiredOrExpired: true,
       },
     });
     useEnterpriseGroupLearners.mockReturnValue({
@@ -2744,5 +2802,129 @@ describe('<BudgetDetailPage />', () => {
     renderWithRouter(<BudgetDetailPageWrapper />);
 
     expect(screen.getByText('Browse & Request', { exact: false })).toBeInTheDocument();
+  });
+
+  describe('when there are no assignments but there is spend', () => {
+    test.each([
+      [
+        'retired',
+        {
+          ...mockAssignableSubsidyAccessPolicy,
+          retired: true,
+        },
+      ],
+      [
+        'expired',
+        {
+          ...mockAssignableSubsidyAccessPolicy,
+          subsidyExpirationDatetime: dayjs().subtract(1, 'day').toISOString(),
+        },
+      ],
+    ])('should NOT show assign more courses empty state for a %s budget', async (status, budgetData) => {
+      useParams.mockReturnValue({ budgetId: mockSubsidyAccessPolicyUUID, enterpriseSlug, enterpriseAppPage: 'learner-credit' });
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        data: budgetData,
+      });
+      useBudgetDetailActivityOverview.mockReturnValue({
+        isLoading: false,
+        data: mockBudgetDetailActivityOverviewWithSpend,
+      });
+      useBudgetContentAssignments.mockReturnValue({
+        isLoading: false,
+        contentAssignments: { results: [], learnerStateCounts: [] },
+      });
+      useBudgetRedemptions.mockReturnValue({
+        isLoading: false,
+        budgetRedemptions: mockEmptyBudgetRedemptions,
+        fetchBudgetRedemptions: jest.fn(),
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+      await waitFor(() => {
+        expect(screen.queryByText('Assign more courses')).not.toBeInTheDocument();
+      });
+    });
+
+    it('should show assign more courses empty state for an active budget', async () => {
+      useParams.mockReturnValue({ budgetId: mockSubsidyAccessPolicyUUID, enterpriseSlug, enterpriseAppPage: 'learner-credit' });
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        data: {
+          ...mockAssignableSubsidyAccessPolicy,
+          retired: false,
+          subsidyExpirationDatetime: dayjs().add(1, 'year').toISOString(),
+        },
+      });
+      useBudgetDetailActivityOverview.mockReturnValue({
+        isLoading: false,
+        data: mockBudgetDetailActivityOverviewWithSpend,
+      });
+      useBudgetContentAssignments.mockReturnValue({
+        isLoading: false,
+        contentAssignments: { results: [], learnerStateCounts: [] },
+      });
+      useBudgetRedemptions.mockReturnValue({
+        isLoading: false,
+        budgetRedemptions: mockEmptyBudgetRedemptions,
+        fetchBudgetRedemptions: jest.fn(),
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+      await waitFor(() => {
+        expect(screen.getByText('Assign more courses to maximize your budget.')).toBeInTheDocument();
+        expect(screen.getByText('available balance of $10,000', { exact: false })).toBeInTheDocument();
+        expect(screen.getByText('Assign courses', { selector: 'a' })).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('tab redirection for expired and retired budgets', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    const testCases = [
+      {
+        status: 'expired',
+        mockPolicyData: {
+          ...mockAssignableSubsidyAccessPolicy,
+          endDate: dayjs().subtract(1, 'day').format(),
+          isRetired: false,
+          isRetiredOrExpired: true,
+        },
+      },
+      {
+        status: 'retired',
+        mockPolicyData: {
+          ...mockAssignableSubsidyAccessPolicy,
+          isRetired: true,
+          isRetiredOrExpired: true,
+        },
+      },
+    ];
+
+    it.each(testCases)('should redirect from catalog to activity tab for $status budgets', async ({ mockPolicyData }) => {
+      useParams.mockReturnValue({
+        enterpriseSlug,
+        enterpriseAppPage: 'learner-credit',
+        budgetId: mockSubsidyAccessPolicyUUID,
+        activeTabKey: BUDGET_DETAIL_CATALOG_TAB,
+      });
+
+      useSubsidyAccessPolicy.mockReturnValue({
+        isLoading: false,
+        isError: false,
+        data: mockPolicyData,
+      });
+
+      renderWithRouter(<BudgetDetailPageWrapper />);
+
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith(
+          `/${enterpriseSlug}/admin/learner-credit/${mockSubsidyAccessPolicyUUID}/${BUDGET_DETAIL_ACTIVITY_TAB}`,
+        );
+      });
+    });
   });
 });
