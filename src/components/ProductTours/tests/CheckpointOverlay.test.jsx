@@ -4,7 +4,10 @@ import '@testing-library/jest-dom';
 import CheckpointOverlay from '../CheckpointOverlay';
 
 describe('CheckpointOverlay', () => {
-  const mockTarget = '#test-target';
+  const mockIdTarget = 'test-target';
+  const mockClassTarget = '.test-target';
+  const mockFullIdTarget = '#test-target';
+  const mockNthChildTarget = '.container .nav-item:nth-child(-n+3)';
   const mockRect = {
     top: 100,
     left: 200,
@@ -20,6 +23,7 @@ describe('CheckpointOverlay', () => {
       getBoundingClientRect: jest.fn(() => mockRect),
     };
     document.querySelector = jest.fn(() => mockTargetElement);
+    document.querySelectorAll = jest.fn(() => [mockTargetElement]);
     getBoundingClientRectSpy = jest.spyOn(mockTargetElement, 'getBoundingClientRect');
   });
 
@@ -29,12 +33,14 @@ describe('CheckpointOverlay', () => {
 
   it('renders nothing when target element is not found', () => {
     document.querySelector.mockReturnValueOnce(null);
-    const { container } = render(<CheckpointOverlay target={mockTarget} />);
+    const { container } = render(<CheckpointOverlay target={mockIdTarget} />);
     expect(container.firstChild).toBeNull();
   });
 
-  it('renders overlay with correct positioning when target element is found', () => {
-    render(<CheckpointOverlay target={mockTarget} />);
+  it('renders overlay with correct positioning when target element is found using ID', () => {
+    render(<CheckpointOverlay target={mockIdTarget} />);
+    expect(document.querySelector).toHaveBeenCalledWith('#test-target');
+
     const overlay = screen.getByTestId('checkpoint-overlay');
     expect(overlay).toBeInTheDocument();
     expect(overlay).toHaveClass('pgn__checkpoint-overlay');
@@ -49,8 +55,61 @@ describe('CheckpointOverlay', () => {
     });
   });
 
+  it('renders overlay with correct positioning when target element is found using class selector', () => {
+    render(<CheckpointOverlay target={mockClassTarget} />);
+    expect(document.querySelector).toHaveBeenCalledWith('.test-target');
+
+    const overlay = screen.getByTestId('checkpoint-overlay');
+    expect(overlay).toBeInTheDocument();
+    expect(overlay).toHaveClass('pgn__checkpoint-overlay');
+  });
+
+  it('renders overlay with correct positioning when target element is found using full ID selector', () => {
+    render(<CheckpointOverlay target={mockFullIdTarget} />);
+    expect(document.querySelector).toHaveBeenCalledWith('#test-target');
+
+    const overlay = screen.getByTestId('checkpoint-overlay');
+    expect(overlay).toBeInTheDocument();
+    expect(overlay).toHaveClass('pgn__checkpoint-overlay');
+  });
+
+  it('handles nth-child selectors by using querySelectorAll and creating bounding box', () => {
+    const mockElement1 = {
+      getBoundingClientRect: jest.fn(() => ({
+        top: 100,
+        left: 200,
+        width: 300,
+        height: 400,
+        bottom: 500,
+        right: 500,
+      })),
+    };
+    const mockElement2 = {
+      getBoundingClientRect: jest.fn(() => ({
+        top: 150,
+        left: 250,
+        width: 200,
+        height: 300,
+        bottom: 450,
+        right: 450,
+      })),
+    };
+
+    document.querySelectorAll.mockReturnValueOnce([mockElement1, mockElement2]);
+
+    render(<CheckpointOverlay target={mockNthChildTarget} />);
+
+    expect(document.querySelectorAll).toHaveBeenCalledWith('.container .nav-item:nth-child(-n+3)');
+
+    const overlay = screen.getByTestId('checkpoint-overlay');
+    expect(overlay).toBeInTheDocument();
+
+    expect(mockElement1.getBoundingClientRect).toHaveBeenCalled();
+    expect(mockElement2.getBoundingClientRect).toHaveBeenCalled();
+  });
+
   it('updates position on scroll', () => {
-    render(<CheckpointOverlay target={mockTarget} />);
+    render(<CheckpointOverlay target={mockIdTarget} />);
     act(() => {
       window.dispatchEvent(new Event('scroll'));
     });
@@ -58,7 +117,7 @@ describe('CheckpointOverlay', () => {
   });
 
   it('updates position on resize', () => {
-    render(<CheckpointOverlay target={mockTarget} />);
+    render(<CheckpointOverlay target={mockIdTarget} />);
     act(() => {
       window.dispatchEvent(new Event('resize'));
     });
@@ -66,7 +125,7 @@ describe('CheckpointOverlay', () => {
   });
 
   it('cleans up event listeners on unmount', () => {
-    const { unmount } = render(<CheckpointOverlay target={mockTarget} />);
+    const { unmount } = render(<CheckpointOverlay target={mockIdTarget} />);
     const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
     unmount();
     expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
@@ -74,7 +133,7 @@ describe('CheckpointOverlay', () => {
   });
 
   it('renders overlay sections with correct dimensions', () => {
-    render(<CheckpointOverlay target={mockTarget} />);
+    render(<CheckpointOverlay target={mockIdTarget} />);
     const overlay = screen.getByTestId('checkpoint-overlay');
     const sections = overlay.children;
 

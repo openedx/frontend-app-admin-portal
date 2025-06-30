@@ -16,16 +16,52 @@ const CheckpointOverlay: FC<CheckpointOverlayProps> = ({ target }) => {
 
   useLayoutEffect(() => {
     const updatePosition = () => {
-      const targetElement = document.querySelector(`#${target}`);
+      // Determine if target is a class or ID selector
+      const isClassSelector = target.startsWith('.');
+      const isIdSelector = target.startsWith('#');
 
-      if (targetElement) {
-        const boundingRect = targetElement.getBoundingClientRect();
-        setRect({
-          top: boundingRect.top,
-          left: boundingRect.left,
-          width: boundingRect.width,
-          height: boundingRect.height,
-        });
+      const selector = isClassSelector || isIdSelector ? target : `#${target}`;
+
+      // Check if the selector might return multiple elements (like nth-child)
+      const hasMultipleElements = selector.includes('nth-child') || selector.includes('nth-of-type');
+
+      if (hasMultipleElements) {
+        const targetElements = document.querySelectorAll(selector);
+
+        if (targetElements.length > 0) {
+          // Create a bounding box that encompasses all elements
+          let minTop = Infinity;
+          let minLeft = Infinity;
+          let maxBottom = -Infinity;
+          let maxRight = -Infinity;
+
+          targetElements.forEach((element) => {
+            const boundingRect = element.getBoundingClientRect();
+            minTop = Math.min(minTop, boundingRect.top);
+            minLeft = Math.min(minLeft, boundingRect.left);
+            maxBottom = Math.max(maxBottom, boundingRect.bottom);
+            maxRight = Math.max(maxRight, boundingRect.right);
+          });
+
+          setRect({
+            top: minTop,
+            left: minLeft,
+            width: maxRight - minLeft,
+            height: maxBottom - minTop,
+          });
+        }
+      } else {
+        const targetElement = document.querySelector(selector);
+
+        if (targetElement) {
+          const boundingRect = targetElement.getBoundingClientRect();
+          setRect({
+            top: boundingRect.top,
+            left: boundingRect.left,
+            width: boundingRect.width,
+            height: boundingRect.height,
+          });
+        }
       }
     };
 

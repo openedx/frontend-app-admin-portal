@@ -115,6 +115,7 @@ describe('AdminOnboardingTours', () => {
       enterpriseSlug: slug,
       adminUuid: enterpriseAdminUuid,
       aiButtonVisible: true,
+      targetSelector: '#step-1',
     });
   });
 

@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
-import { Question, TrendingUp } from '@openedx/paragon/icons';
+import { Question, TrendingUp, InsertChartOutlined } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
-import messages, { TRACK_LEARNER_PROGRESS_TITLE } from './AdminOnboardingTours/messages';
+import messages, { TRACK_LEARNER_PROGRESS_TITLE, VIEW_ENROLLMENTS_INSIGHT_TITLE } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
@@ -28,6 +28,12 @@ const QUICK_START_GUIDE_STEPS = [
     title: TRACK_LEARNER_PROGRESS_TITLE,
     timeEstimate: 2,
     targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
+  },
+  {
+    icon: InsertChartOutlined,
+    title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
+    timeEstimate: 1,
+    targetId: TRACK_LEARNER_PROGRESS_TARGETS.ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
   },
   // Add other steps here
 ];

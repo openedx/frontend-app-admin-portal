@@ -124,6 +124,7 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <Icon src={InsertChartOutlined} />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
+      id: TRACK_LEARNER_PROGRESS_TARGETS.ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
     },
     {
       title: 'Code Management',

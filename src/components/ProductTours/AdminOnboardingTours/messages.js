@@ -1,6 +1,7 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
 export const TRACK_LEARNER_PROGRESS_TITLE = 'Track Learner Progress';
+export const VIEW_ENROLLMENTS_INSIGHT_TITLE = 'View enrollment insights';
 
 const messages = defineMessages({
   collapsibleTitle: {
@@ -96,6 +97,47 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.8',
     defaultMessage: 'View module-level details for Executive Education courses.',
     description: 'Description for the learner progress tracking step eight',
+  },
+  viewEnrollmentInsights: {
+    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',
+    defaultMessage: VIEW_ENROLLMENTS_INSIGHT_TITLE,
+    description: 'Title for the analytics step',
+  },
+  viewEnrollmentInsightsStepOneBody: {
+    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.1',
+    defaultMessage: 'Explore insights about your learners and their enrollments. '
+    + 'Adjust date ranges, granularity, and analytics type to view data on enrollments, engagement '
+    + 'completions, leaderboards, and skills tracking.',
+    description: 'Description for the analytics tracking step one',
+  },
+  viewEnrollmentInsightsStepTwoBody: {
+    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.2',
+    defaultMessage: 'Adjust the date range and granularity to customize the data displayed below.',
+    description: 'Description for the analytics tracking step two',
+  },
+  viewEnrollmentInsightsStepThreeBody: {
+    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.3',
+    defaultMessage: 'See quick metrics for Enrollments, Distinct Courses, Daily Sessions, Learning Hours, and '
+    + 'completions at a glance.',
+    description: 'Description for the analytics tracking step three',
+  },
+  viewEnrollmentInsightsStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.4',
+    defaultMessage: 'Use the Enrollments, Engagements, and Completions tabs to view learner activity from different '
+    + 'perspectives. Scroll down for a breakdown of metrics by Course, Subject, and Individual.',
+    description: 'Description for the analytics tracking step four',
+  },
+  viewEnrollmentInsightsStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.5',
+    defaultMessage: 'See your top learners ranked by learning hours. Download the CSV for more detailed insights. Only '
+    + 'learners who completed a course and at least one engagement activity are included',
+    description: 'Description for the analytics tracking step five',
+  },
+  viewEnrollmentInsightsStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.body.6',
+    defaultMessage: 'Discover the most in-demand skills in your organization based on course enrollments and completions. '
+    + 'Use these insights to understand learner interests and skill development trends.',
+    description: 'Description for the analytics tracking step six',
   },
 });
 
