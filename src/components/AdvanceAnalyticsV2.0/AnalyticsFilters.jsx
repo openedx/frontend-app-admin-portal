@@ -1,8 +1,9 @@
-import { ExpandLess, ExpandMore } from '@openedx/paragon/icons';
+import { ExpandLess, ExpandMore, Info } from '@openedx/paragon/icons';
 import React, { useState } from 'react';
 import { Form, IconButton, Icon } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
+import IconWithTooltip from '../IconWithTooltip';
 import { GRANULARITY, CALCULATION } from './data/constants';
 
 export const DEFAULT_GROUP = '';
@@ -23,15 +24,14 @@ const AnalyticsFilters = ({
   groups,
   isFetching,
   isGroupsLoading,
+  activeTab,
 }) => {
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
+  const isProgressTab = activeTab === 'progress';
 
   return (
-    <div className={`container-fluid bg-primary-100 rounded-lg p-3 mb-2 position-relative analytics-filter-container ${
-      collapsed ? 'collapsed' : ''
-    }`}
-    >
+    <div className={`container-fluid bg-primary-100 rounded-lg p-3 mb-2 position-relative analytics-filter-container ${collapsed ? 'collapsed' : ''}`}>
       <div className="d-flex justify-content-between align-items-center">
         <h3 className="font-weight-bold mb-0">
           <FormattedMessage
@@ -112,102 +112,99 @@ const AnalyticsFilters = ({
                 />
               </Form.Group>
             </div>
-            <div className="col">
-              <Form.Group>
-                <Form.Label>
-                  <FormattedMessage
-                    id="advance.analytics.calculation.filter"
-                    defaultMessage="Calculation / Trends"
-                    description="Advance analytics Calculation filter label"
-                  />
-                </Form.Label>
-                <Form.Control
-                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
-                  as="select"
-                  value={calculation}
-                  onChange={(e) => setCalculation(e.target.value)}
-                  disabled={isFetching}
-                >
-                  <option value={CALCULATION.TOTAL}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.calculation.filter.option.total',
-                      defaultMessage: 'Total',
-                      description: 'Advance analytics calculation filter total option',
-                    })}
-                  </option>
-                  <option value={CALCULATION.RUNNING_TOTAL}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.calculation.filter.option.running.total',
-                      defaultMessage: 'Running Total',
-                      description: 'Advance analytics calculation filter running total option',
-                    })}
-                  </option>
-                  <option value={CALCULATION.MOVING_AVERAGE_3_PERIODS}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.calculation.filter.option.average.3',
-                      defaultMessage: 'Moving Average (3 Period)',
-                      description: 'Advance analytics calculation filter moving average 3 period option',
-                    })}
-                  </option>
-                  <option value={CALCULATION.MOVING_AVERAGE_7_PERIODS}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.calculation.filter.option.average.7',
-                      defaultMessage: 'Moving Average (7 Period)',
-                      description: 'Advance analytics calculation filter moving average 7 period option',
-                    })}
-                  </option>
-                </Form.Control>
-              </Form.Group>
-            </div>
+
+            {!isProgressTab && (
+              <div className="col">
+                <Form.Group>
+                  <Form.Label>
+                    <FormattedMessage
+                      id="advance.analytics.calculation.filter"
+                      defaultMessage="Calculation / Trends"
+                    />
+                  </Form.Label>
+                  <Form.Control
+                    controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                    as="select"
+                    value={calculation}
+                    onChange={(e) => setCalculation(e.target.value)}
+                    disabled={isFetching}
+                  >
+                    <option value={CALCULATION.TOTAL}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.calculation.filter.option.total',
+                        defaultMessage: 'Total',
+                      })}
+                    </option>
+                    <option value={CALCULATION.RUNNING_TOTAL}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.calculation.filter.option.running.total',
+                        defaultMessage: 'Running Total',
+                      })}
+                    </option>
+                    <option value={CALCULATION.MOVING_AVERAGE_3_PERIODS}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.calculation.filter.option.average.3',
+                        defaultMessage: 'Moving Average (3 Period)',
+                      })}
+                    </option>
+                    <option value={CALCULATION.MOVING_AVERAGE_7_PERIODS}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.calculation.filter.option.average.7',
+                        defaultMessage: 'Moving Average (7 Period)',
+                      })}
+                    </option>
+                  </Form.Control>
+                </Form.Group>
+              </div>
+            )}
           </div>
+
           <div className="row filter-container">
-            <div className="col" data-testid="granularity-select">
-              <Form.Group>
-                <Form.Label>
-                  <FormattedMessage
-                    id="advance.analytics.filter.date.granularity"
-                    defaultMessage="Date granularity"
-                    description="Advance analytics data granularity filter label"
-                  />
-                </Form.Label>
-                <Form.Control
-                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
-                  as="select"
-                  value={granularity}
-                  onChange={(e) => setGranularity(e.target.value)}
-                  disabled={isFetching}
-                >
-                  <option value={GRANULARITY.DAILY}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.filter.granularity.option.daily',
-                      defaultMessage: 'Daily',
-                      description: 'Advance analytics granularity filter daily option',
-                    })}
-                  </option>
-                  <option value={GRANULARITY.WEEKLY}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.filter.granularity.option.weekly',
-                      defaultMessage: 'Weekly',
-                      description: 'Advance analytics granularity filter weekly option',
-                    })}
-                  </option>
-                  <option value={GRANULARITY.MONTHLY}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.filter.granularity.option.monthly',
-                      defaultMessage: 'Monthly',
-                      description: 'Advance analytics granularity filter monthly option',
-                    })}
-                  </option>
-                  <option value={GRANULARITY.QUARTERLY}>
-                    {intl.formatMessage({
-                      id: 'advance.analytics.filter.granularity.option.quarterly',
-                      defaultMessage: 'Quarterly',
-                      description: 'Advance analytics granularity filter quarterly option',
-                    })}
-                  </option>
-                </Form.Control>
-              </Form.Group>
-            </div>
+            {!isProgressTab && (
+              <div className="col" data-testid="granularity-select">
+                <Form.Group>
+                  <Form.Label>
+                    <FormattedMessage
+                      id="advance.analytics.date.granularity.filter"
+                      defaultMessage="Date granularity"
+                    />
+                  </Form.Label>
+                  <Form.Control
+                    controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                    as="select"
+                    value={granularity}
+                    onChange={(e) => setGranularity(e.target.value)}
+                    disabled={isFetching}
+                  >
+                    <option value={GRANULARITY.DAILY}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.filter.granularity.option.label.daily',
+                        defaultMessage: 'Daily',
+                      })}
+                    </option>
+                    <option value={GRANULARITY.WEEKLY}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.filter.granularity.option.label.weekly',
+                        defaultMessage: 'Weekly',
+                      })}
+                    </option>
+                    <option value={GRANULARITY.MONTHLY}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.filter.granularity.option.label.monthly',
+                        defaultMessage: 'Monthly',
+                      })}
+                    </option>
+                    <option value={GRANULARITY.QUARTERLY}>
+                      {intl.formatMessage({
+                        id: 'advance.analytics.filter.granularity.option.label.quarterly',
+                        defaultMessage: 'Quarterly',
+                      })}
+                    </option>
+                  </Form.Control>
+                </Form.Group>
+              </div>
+            )}
+
             <div className="col" data-testid="group-select">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
@@ -239,25 +236,29 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
-            <div className="col">
-              <Form.Group>
-                <Form.Label className="font-weight-normal">
-                  <FormattedMessage
-                    id="advance.analytics.filter.by.budget"
-                    defaultMessage="Filter by budget"
-                    description="Advance analytics filter by budget label"
-                  />
-                </Form.Label>
-                <Form.Control
-                  controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
-                  as="select"
-                  disabled
-                  value=""
-                >
-                  <option value="">All budgets</option>
-                </Form.Control>
-              </Form.Group>
-            </div>
+
+            {!isProgressTab && (
+              <div className="col">
+                <Form.Group>
+                  <Form.Label className="font-weight-normal">
+                    <FormattedMessage
+                      id="advance.analytics.filter.by.budget"
+                      defaultMessage="Filter by budget"
+                      description="Advance analytics filter by budget label"
+                    />
+                  </Form.Label>
+                  <Form.Control
+                    controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                    as="select"
+                    disabled
+                    value=""
+                  >
+                    <option value="">All budgets</option>
+                  </Form.Control>
+                </Form.Group>
+              </div>
+            )}
+
             <div className="col">
               <Form.Group>
                 <Form.Label className="font-weight-normal">
@@ -277,15 +278,31 @@ const AnalyticsFilters = ({
                 </Form.Control>
               </Form.Group>
             </div>
-          </div>
-          <div className="row filter-container pb-2">
-            <div className="col-3">
+
+            {isProgressTab && (
+            <div className="col">
               <Form.Group>
-                <Form.Label className="font-weight-normal">
-                  <FormattedMessage
-                    id="advance.analytics.filter.by.course.type"
-                    defaultMessage="Filter by course type"
-                    description="Advance analytics filter by course type label"
+                <Form.Label className="font-weight-normal d-flex align-items-center">
+                  <span>
+                    <FormattedMessage
+                      id="advance.analytics.filter.by.course.starte.date"
+                      defaultMessage="Filter by start date"
+                      description="Advance analytics filter by course type label"
+                    />
+                  </span>
+                  <IconWithTooltip
+                    data-testid="progress-tooltip-icon"
+                    icon={Info}
+                    altText={intl.formatMessage({
+                      id: 'advance.analytics.filter.by.start.date.alt.text',
+                      defaultMessage: 'More information',
+                      description: 'Alt text for the info icon in the start date filter dropdown in the admin portal analytics page.',
+                    })}
+                    tooltipText={intl.formatMessage({
+                      id: 'advance.analytics.filter.by.start.date.dropdown.tooltip',
+                      defaultMessage: 'Filter by the selected course start date',
+                      description: 'Tooltip text for the start date filter dropdown in the admin portal analytics page.',
+                    })}
                   />
                 </Form.Label>
                 <Form.Control
@@ -294,11 +311,35 @@ const AnalyticsFilters = ({
                   disabled
                   value=""
                 >
-                  <option value="">All course types</option>
+                  <option value="">Choose a course</option>
                 </Form.Control>
               </Form.Group>
             </div>
+            )}
           </div>
+
+          {!isProgressTab && (
+            <div className="row filter-container pb-2">
+              <div className="col-3">
+                <Form.Group>
+                  <Form.Label className="font-weight-normal">
+                    <FormattedMessage
+                      id="advance.analytics.filter.by.course.type"
+                      defaultMessage="Filter by course type"
+                    />
+                  </Form.Label>
+                  <Form.Control
+                    controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
+                    as="select"
+                    disabled
+                    value=""
+                  >
+                    <option value="">All course types</option>
+                  </Form.Control>
+                </Form.Group>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
@@ -321,6 +362,7 @@ AnalyticsFilters.propTypes = {
   groups: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   isFetching: PropTypes.bool.isRequired,
   isGroupsLoading: PropTypes.bool.isRequired,
+  activeTab: PropTypes.string.isRequired,
 };
 
 export default AnalyticsFilters;
