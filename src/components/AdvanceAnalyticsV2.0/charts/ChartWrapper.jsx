@@ -44,6 +44,7 @@ ChartWrapper.propTypes = {
   chartType: PropTypes.oneOf(['ScatterChart', 'LineChart', 'BarChart', 'Treemap']).isRequired,
   chartProps: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    onClick: PropTypes.func,
     xKey: PropTypes.string,
     yKey: PropTypes.string,
     colorKey: PropTypes.string,

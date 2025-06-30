@@ -4,6 +4,7 @@ import {
 } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -85,6 +86,14 @@ const mockAnalyticsSkillsData = {
 jest.spyOn(EnterpriseDataApiService, 'fetchAdminAnalyticsData');
 const axiosMock = new MockAdapter(axios);
 getAuthenticatedHttpClient.mockReturnValue(axios);
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('../AnalyticsFiltersContext', () => ({
   useAnalyticsFilters: jest.fn(),
@@ -225,5 +234,6 @@ describe('Engagements Component', () => {
       await waitFor(() => expect(screen.getByText(title)).toBeInTheDocument());
       await waitFor(() => expect(screen.getByText(subtitle)).toBeInTheDocument());
     });
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(0);
   });
 });
