@@ -50,12 +50,14 @@ import {
   mockEnterpriseOfferId,
   mockEnterpriseOfferMetadata,
   mockPerLearnerSpendLimitSubsidyAccessPolicy,
+  mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
   mockSpendLimitNoGroupsSubsidyAccessPolicy,
   mockSubsidyAccessPolicyUUID,
   mockSubsidySummary,
 } from '../data/tests/constants';
 import { getButtonElement, queryClient } from '../../test/testUtils';
 import { useAlgoliaSearch } from '../../algolia-search';
+import useBnrSubsidyRequests from '../requests-tab/data/hooks/useBnrSubsidyRequests';
 
 jest.mock('@edx/frontend-platform/auth', () => ({
   ...jest.requireActual('@edx/frontend-platform/auth'),
@@ -103,8 +105,10 @@ jest.mock('../data', () => ({
 
 jest.mock('../../../data/services/EnterpriseAccessApiService');
 
+jest.mock('../requests-tab/data/hooks/useBnrSubsidyRequests');
+
 const mockStore = configureMockStore([thunk]);
-const getMockStore = store => mockStore(store);
+const getMockStore = (store) => mockStore(store);
 const enterpriseSlug = 'test-enterprise';
 const enterpriseUUID = '1234';
 const initialStoreState = {
@@ -215,6 +219,29 @@ const mockFailedRedemptionLearnerAction = {
   errorReason: 'enrollment_error',
 };
 
+const mockApprovedRequest = {
+  uuid: 'test-approved-request-uuid',
+  email: mockLearnerEmail,
+  courseTitle: mockContentTitle,
+  courseId: mockCourseKey,
+  amount: 199,
+  requestDate: 'Oct 27, 2023',
+  requestStatus: 'approved',
+  latestAction: { status: 'approved', timestamp: '2023-10-27' },
+};
+
+const createMockApprovedRequest = () => ({
+  ...mockApprovedRequest,
+  uuid: uuidv4(),
+  email: faker.internet.email(),
+});
+
+const mockEmptyApprovedRequests = {
+  itemCount: 0,
+  pageCount: 0,
+  results: [],
+};
+
 const defaultEnterpriseSubsidiesContextValue = {
   isLoading: false,
 };
@@ -311,6 +338,12 @@ describe('<BudgetDetailPage />', () => {
       catalogUuidsToCatalogQueryUuids: {
         [mockSubsidyAccessPolicyUUID]: 'test-catalog-query-uuid',
       },
+    });
+
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: mockEmptyApprovedRequests,
+      fetchBnrRequests: jest.fn(),
     });
 
     useBudgetDetailActivityOverview.mockReturnValue({
@@ -1211,6 +1244,94 @@ describe('<BudgetDetailPage />', () => {
 
     await user.click(viewCourseCTA);
     expect(sendEnterpriseTrackEvent).toHaveBeenCalledTimes(2);
+  }, 30000);
+
+  it('renders with approved requests table data and verifies first field data', async () => {
+    const NUMBER_OF_APPROVE_REQUEST_TO_GENERATE = 60;
+    useParams.mockReturnValue({
+      enterpriseSlug: 'test-enterprise-slug',
+      enterpriseAppPage: 'test-enterprise-page',
+      budgetId: mockSubsidyAccessPolicyUUID,
+      activeTabKey: 'activity',
+    });
+    useSubsidyAccessPolicy.mockReturnValue({
+      isInitialLoading: false,
+      data: mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled,
+    });
+    useEnterpriseGroupLearners.mockReturnValue({
+      data: {
+        count: 0,
+        currentPage: 1,
+        next: null,
+        numPages: 1,
+        results: [],
+      },
+    });
+    useBudgetDetailActivityOverview.mockReturnValue({
+      isLoading: false,
+      data: {
+        approvedBnrRequests: { count: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE },
+        contentAssignments: undefined,
+        spentTransactions: { count: 0 },
+      },
+    });
+    const mockFetchLearnerCreditRequests = jest.fn();
+    // Max page size is 25 rows. Generate one assignment with a known learner email and the others with random emails.
+    const mockRequestsList = [
+      mockApprovedRequest, // Use the mockApprovedRequest with known values
+      ...Array.from({ length: PAGE_SIZE - 1 }, createMockApprovedRequest),
+    ];
+    useBnrSubsidyRequests.mockReturnValue({
+      isLoading: false,
+      bnrRequests: {
+        itemCount: NUMBER_OF_APPROVE_REQUEST_TO_GENERATE,
+        results: mockRequestsList,
+        pageCount: Math.floor(NUMBER_OF_APPROVE_REQUEST_TO_GENERATE / PAGE_SIZE),
+      },
+      fetchBnrRequests: mockFetchLearnerCreditRequests,
+    });
+    useBudgetRedemptions.mockReturnValue({
+      isLoading: false,
+      budgetRedemptions: mockEmptyBudgetRedemptions,
+      fetchBudgetRedemptions: jest.fn(),
+    });
+    useEnterpriseRemovedGroupMembers.mockReturnValue({
+      isRemovedMembersLoading: false,
+      removedGroupMembersCount: 0,
+    });
+    renderWithRouter(<BudgetDetailPageWrapper />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+    });
+
+    const pendingSection = within(
+      screen.getByText('Pending').closest('section'),
+    );
+
+    expect(pendingSection.getByText('Request details')).toBeInTheDocument();
+    expect(pendingSection.getByText('Amount')).toBeInTheDocument();
+    expect(pendingSection.getByText('Status')).toBeInTheDocument();
+    expect(pendingSection.getByText('Recent action')).toBeInTheDocument();
+
+    const tableElement = pendingSection.getByRole('table');
+    const firstDataRow = within(tableElement).getAllByRole('row')[1]; // Skip header row
+    const firstRowCells = within(firstDataRow).getAllByRole('cell');
+
+    const requestDetailsCell = firstRowCells[0];
+    expect(within(requestDetailsCell).getByText(mockLearnerEmail)).toBeInTheDocument();
+    expect(within(requestDetailsCell).getByText(mockContentTitle)).toBeInTheDocument();
+
+    const amountCell = firstRowCells[1];
+    expect(within(amountCell).getByText('-$1.99')).toBeInTheDocument();
+
+    const statusCell = firstRowCells[2];
+    expect(
+      within(statusCell).getByRole('button', { name: 'Waiting for learner' }),
+    ).toBeInTheDocument();
+
+    const recentActionCell = firstRowCells[3];
+    expect(within(recentActionCell).getByText('Approved: Oct 27, 2023')).toBeInTheDocument();
   }, 30000);
 
   it.each([
