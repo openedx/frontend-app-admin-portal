@@ -447,7 +447,7 @@ class LmsApiService {
   }
 
   static fetchSingleEnterpriseCustomerMember(enterpriseUUID: string) {
-    let url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}?page=1&page_size=1`;
+    const url = `${LmsApiService.enterpriseCustomerMembersUrl}${enterpriseUUID}?page=1&page_size=1`;
     return LmsApiService.apiClient().get(url);
   }
 

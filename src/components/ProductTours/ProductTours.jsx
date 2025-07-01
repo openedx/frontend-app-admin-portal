@@ -12,7 +12,7 @@ import highlightsTour from './highlightsTour';
 import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
 import AdminOnboardingTours from './AdminOnboardingTours/AdminOnboardingTours';
-import messages from './AdminOnboardingTours/messages';
+import { TRACK_LEARNER_PROGRESS_TITLE, ORGANIZE_LEARNERS_TITLE } from './AdminOnboardingTours/messages';
 
 import {
   useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
@@ -74,11 +74,11 @@ const ProductTours = ({
 
   const handleTourSelect = (targetId) => {
     if (targetId === TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR) {
-      setSelectedTour(messages.TRACK_LEARNER_PROGRESS_TITLE);
+      setSelectedTour(TRACK_LEARNER_PROGRESS_TITLE);
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/`);
     }
     if (targetId === ORGANIZE_LEARNER_TARGETS.ORGANIZE_LEARNERS_SIDEBAR) {
-      setSelectedTour(messages.ORGANIZE_LEARNERS_TITLE);
+      setSelectedTour(ORGANIZE_LEARNERS_TITLE);
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/`);
     }
     setSelectedTourTarget(targetId);

@@ -11,23 +11,16 @@ import { flowUuids } from '../../../config';
 import { ROUTE_NAMES } from '../../EnterpriseApp/data/constants';
 import { useEnterpriseMembersTableData } from '../../PeopleManagement/data/hooks';
 import { useSingleEnterpriseCustomerMember } from './hooks';
+import { TourStep } from '../types';
 
-interface TourStep {
-  target: string;
-  placement: 'right' | 'left' | 'top' | 'bottom';
-  title?: ReactNode;
-  body: ReactNode;
-  onAdvance: () => void;
-}
-
-interface useOrganizeLearnersToursProps {
+interface useCreateOrganizeLearnersFlowProps {
   enterpriseSlug: string;
   adminUuid: string;
   enterpriseId: string;
 }
 
-const useOrganizeLearnersTour = (
-  { enterpriseSlug, adminUuid, enterpriseId }: useOrganizeLearnersToursProps,
+const useCreateOrganizeLearnersFlow = (
+  { enterpriseSlug, adminUuid, enterpriseId }: useCreateOrganizeLearnersFlowProps,
 ): Array<TourStep> => {
   const intl = useIntl();
   const navigate = useNavigate();
@@ -40,9 +33,8 @@ const useOrganizeLearnersTour = (
     setStepIndex(newIndex);
   }, [enterpriseSlug, stepIndex]);
 
-
   const handleAdvanceToDetailPage = useCallback(() => {
-    console.log('in new advance??')
+    console.log('in new advance??');
     const newIndex = stepIndex + 1;
     sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME, { 'completed-step': newIndex });
     setStepIndex(newIndex);
@@ -99,4 +91,4 @@ const useOrganizeLearnersTour = (
   return tour;
 };
 
-export default useOrganizeLearnersTour;
+export default useCreateOrganizeLearnersFlow;

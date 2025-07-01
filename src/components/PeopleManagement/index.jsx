@@ -108,50 +108,54 @@ const PeopleManagementPage = ({ enterpriseId }) => {
       />
       <div className="mx-3 mt-4">
         <span id={ORGANIZE_LEARNER_TARGETS.ORG_GROUPS_ZERO_STATE}>
-        <ActionRow className="mb-4">
-          <span className="flex-column">
-            <span className="d-flex">
-              <h3 className="mt-2">
-                <FormattedMessage
-                  id="adminPortal.peopleManagement.title"
-                  defaultMessage="Your organization's groups"
-                  description="Title for people management page."
-                />
-              </h3>
-            </span>
-            {hasLearnerCredit && (
+          <ActionRow className="mb-4">
+            <span className="flex-column">
+              <span className="d-flex">
+                <h3 className="mt-2">
+                  <FormattedMessage
+                    id="adminPortal.peopleManagement.title"
+                    defaultMessage="Your organization's groups"
+                    description="Title for people management page."
+                  />
+                </h3>
+              </span>
+              {hasLearnerCredit && (
               <FormattedMessage
                 id="adminPortal.peopleManagement.subtitle.lc"
                 defaultMessage="Monitor group learning progress, assign more courses, and invite members to new Learner Credit budgets."
                 description="Subtitle for people management with learner credit."
               />
-            )}
-            {!hasLearnerCredit && hasOtherSubsidyTypes && (
+              )}
+              {!hasLearnerCredit && hasOtherSubsidyTypes && (
               <FormattedMessage
                 id="adminPortal.peopleManagement.subtitle.noLc"
                 defaultMessage="Monitor group learning progress."
                 description="Subtitle for people management without learner credit."
               />
-            )}
-          </span>
-          <ActionRow.Spacer />
-          <Button iconBefore={Add} onClick={handleOnClickCreateGroup} id={ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}>
-            <FormattedMessage
-              id="adminPortal.peopleManagement.newGroup.button"
-              defaultMessage="Create group"
-              description="CTA button text to open new group modal."
-            />
-          </Button>
-          <ValidatedEmailsContextProvider>
-            <CreateGroupModal
-              isModalOpen={isModalOpen}
-              openModel={openModal}
-              closeModal={closeModal}
-              onInviteError={handleInviteError}
-            />
-          </ValidatedEmailsContextProvider>
-        </ActionRow>
-        {groupsCardSection}
+              )}
+            </span>
+            <ActionRow.Spacer />
+            <Button 
+              iconBefore={Add} 
+              onClick={handleOnClickCreateGroup} 
+              id={ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}
+            >
+              <FormattedMessage
+                id="adminPortal.peopleManagement.newGroup.button"
+                defaultMessage="Create group"
+                description="CTA button text to open new group modal."
+              />
+            </Button>
+            <ValidatedEmailsContextProvider>
+              <CreateGroupModal
+                isModalOpen={isModalOpen}
+                openModel={openModal}
+                closeModal={closeModal}
+                onInviteError={handleInviteError}
+              />
+            </ValidatedEmailsContextProvider>
+          </ActionRow>
+          {groupsCardSection}
         </span>
         <h3 className="mt-3">
           <FormattedMessage
@@ -168,7 +172,7 @@ const PeopleManagementPage = ({ enterpriseId }) => {
           />
         </p>
         <span id={ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}>
-        <PeopleManagementTable />
+          <PeopleManagementTable />
         </span>
       </div>
     </>

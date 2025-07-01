@@ -100,7 +100,7 @@ const messages = defineMessages({
   },
   organizeLearnersStepOneTitle: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.title.1',
-    defaultMessage:  ORGANIZE_LEARNERS_TITLE,
+    defaultMessage: ORGANIZE_LEARNERS_TITLE,
     description: 'Title for the organize learners flow step one',
   },
   organizeLearnersStepOneBody: {

@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { camelCaseObject } from '@edx/frontend-platform/utils';
 import { logError } from '@edx/frontend-platform/logging';
 
-import LmsApiService from "../../../data/services/LmsApiService";
+import LmsApiService from '../../../data/services/LmsApiService';
 
 /**
  * This hook returns the first enterprise customer member
  */
-export const useSingleEnterpriseCustomerMember = ( enterpriseId ) => {
+export const useSingleEnterpriseCustomerMember = (enterpriseId) => {
   const [enterpriseMemberId, setEnterpriseMemberId] = useState(null);
 
   useEffect(() => {

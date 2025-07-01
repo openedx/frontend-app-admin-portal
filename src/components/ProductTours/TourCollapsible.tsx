@@ -34,7 +34,7 @@ const QUICK_START_GUIDE_STEPS = [
     title: ORGANIZE_LEARNERS_TITLE,
     timeEstimate: 2,
     targetId: ORGANIZE_LEARNER_TARGETS.ORGANIZE_LEARNERS_SIDEBAR,
-  }
+  },
 ];
 
 const TourCollapsible: FC<Props> = (

@@ -6,7 +6,9 @@ import { FormattedMessage } from '@edx/frontend-platform/i18n';
 import useLearnerProgressTour from './useLearnerProgressTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
-import useOrganizeLearnersTour from './useOrganizeLearnersTour';
+import useCreateOrganizeLearnersFlow from './useCreateOrganizeLearnersFlow';
+import { TRACK_LEARNER_PROGRESS_TITLE, ORGANIZE_LEARNERS_TITLE } from './messages';
+import { TourStep } from '../types';
 
 interface Insights {
   learner_engagement?: any;
@@ -54,22 +56,23 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
+  // const [selectedFlowSteps, setSelectedFlowSteps] = useState<Array<TourStep> | null>(null);
   const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
-  const organizeLearnersSteps = useOrganizeLearnersTour({ enterpriseSlug, adminUuid, enterpriseId });
+  const organizeLearnersSteps = useCreateOrganizeLearnersFlow({ enterpriseSlug, adminUuid, enterpriseId });
+
+  const selectedFlowSteps: () => Array<TourStep> = () => {
+    if (selectedTour === ORGANIZE_LEARNERS_TITLE) {
+      return organizeLearnersSteps;
+    }
+    return learnerProgressSteps;
+  };
+
+  console.log();
 
   useEffect(() => {
-    // if (selectedTour === messages.TRACK_LEARNER_PROGRESS_TITLE) {
-    //   const nextTarget = learnerProgressSteps[currentStep].target.replace('#', '');
-    // } else if (selectedTour === messages.ORGANIZE_LEARNERS_TITLE)
-    //   const nextTarget = organizeLearnersSteps[currentStep].target.replace('#', '');
-    // }
-    if (organizeLearnersSteps[currentStep]) {
-      const nextTarget = organizeLearnersSteps[currentStep].target.replace('#', '');
-      setTarget(nextTarget);
-
-    }
-    // setTarget(nextTarget);
-  }, [currentStep, learnerProgressSteps, setTarget]);
+    const nextTarget = selectedFlowSteps[currentStep].target.replace('#', '');
+    setTarget(nextTarget);
+  }, [currentStep, setTarget]);
 
   const tours = [
     {
@@ -100,7 +103,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: organizeLearnersSteps.map((step, index) => ({
+      checkpoints: selectedFlowSteps.map((step, index) => ({
         ...step,
         onAdvance: () => {
           setCurrentStep(index + 1);

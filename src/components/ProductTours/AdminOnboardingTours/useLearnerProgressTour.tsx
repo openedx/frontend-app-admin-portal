@@ -11,14 +11,7 @@ import {
 import messages from './messages';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { flowUuids } from '../../../config';
-
-interface TourStep {
-  target: string;
-  placement: 'right' | 'left' | 'top' | 'bottom';
-  title?: ReactNode;
-  body: ReactNode;
-  onAdvance: () => void;
-}
+import { TourStep } from '../types';
 
 interface UseLearnerProgressTourProps {
   enterpriseSlug: string;
