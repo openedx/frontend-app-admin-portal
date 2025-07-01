@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
-import { Question, TrendingUp, InsertChartOutlined } from '@openedx/paragon/icons';
+import { InsertChartOutlined, Question, TrendingUp } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
@@ -35,7 +35,6 @@ const QUICK_START_GUIDE_STEPS = [
     timeEstimate: 1,
     targetId: TRACK_LEARNER_PROGRESS_TARGETS.ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
   },
-  // Add other steps here
 ];
 
 const TourCollapsible: FC<Props> = (

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { logError } from '@edx/frontend-platform/logging';
 
@@ -9,15 +9,9 @@ import {
 
 import LmsApiService from '../../../data/services/LmsApiService';
 import { flowUuids } from '../../../config';
-import { useCreateLearnerProgressFlow, useCreateAnalyticsFlow } from './tourFlows';
-
-interface TourStep {
-  target: string;
-  placement: 'right' | 'left' | 'top' | 'bottom';
-  title?: ReactNode;
-  body: ReactNode;
-  onAdvance: () => void;
-}
+import useCreateLearnerProgressFlow from './useCreateLearnerProgressFlow';
+import useCreateAnalyticsFlow from './useCreateAnalyticsFlow';
+import { TourStep } from '../types';
 
 interface UseLearnerProgressTourProps {
   enterpriseSlug: string;
@@ -60,7 +54,6 @@ const useLearnerProgressTour = (
   const analyticsFlow = useCreateAnalyticsFlow({
     handleAdvanceTour,
     handleEndTour,
-    aiButtonVisible,
   });
 
   // Map target selectors to their respective flows
