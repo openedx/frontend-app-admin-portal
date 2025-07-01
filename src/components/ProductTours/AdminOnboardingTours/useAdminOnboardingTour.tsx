@@ -14,20 +14,20 @@ import useCreateLearnerProgressFlow from './useCreateLearnerProgressFlow';
 import useCreateAnalyticsFlow from './useCreateAnalyticsFlow';
 import { TourStep } from '../types';
 
-interface UseLearnerProgressTourProps {
+interface UseAdminOnboardingTourProps {
   enterpriseSlug: string;
   adminUuid: string;
   aiButtonVisible: boolean;
   targetSelector?: string;
 }
 
-const useLearnerProgressTour = (
+const useAdminOnboardingTour = (
   {
     enterpriseSlug,
     adminUuid,
     aiButtonVisible,
     targetSelector,
-  }: UseLearnerProgressTourProps,
+  }: UseAdminOnboardingTourProps,
 ): Array<TourStep> => {
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -73,4 +73,4 @@ const useLearnerProgressTour = (
   return selectedFlow || learnerProgressFlow;
 };
 
-export default useLearnerProgressTour;
+export default useAdminOnboardingTour;
