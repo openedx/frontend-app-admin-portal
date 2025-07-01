@@ -11,7 +11,7 @@ import FloatingCollapsible from '../FloatingCollapsible';
 import messages, { TRACK_LEARNER_PROGRESS_TITLE, VIEW_ENROLLMENTS_INSIGHT_TITLE } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
-import { TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
+import { TRACK_LEARNER_PROGRESS_TARGETS, ANALYTICS_INSIGHTS_FLOW } from './AdminOnboardingTours/constants';
 
 interface Props {
   dismissOnboardingTour: (adminUuid: string) => void;
@@ -33,7 +33,7 @@ const QUICK_START_GUIDE_STEPS = [
     icon: InsertChartOutlined,
     title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
     timeEstimate: 1,
-    targetId: TRACK_LEARNER_PROGRESS_TARGETS.ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
+    targetId: ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
   },
 ];
 

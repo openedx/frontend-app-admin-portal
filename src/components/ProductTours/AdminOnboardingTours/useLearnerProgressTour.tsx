@@ -5,6 +5,7 @@ import { logError } from '@edx/frontend-platform/logging';
 import {
   ADMIN_TOUR_EVENT_NAMES,
   TRACK_LEARNER_PROGRESS_TARGETS,
+  ANALYTICS_INSIGHTS_FLOW,
 } from './constants';
 
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -62,7 +63,7 @@ const useLearnerProgressTour = (
     [TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR]: learnerProgressFlow,
     // Analytics flow targets
     ...Object.fromEntries(
-      Object.values(TRACK_LEARNER_PROGRESS_TARGETS.ANALYTICS_INSIGHTS_FLOW)
+      Object.values(ANALYTICS_INSIGHTS_FLOW)
         .map(target => [target, analyticsFlow]),
     ),
   };
