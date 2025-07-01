@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import useLearnerProgressTour from '../useLearnerProgressTour';
+import useAdminOnboardingTour from '../useAdminOnboardingTour';
 
 const mockMessages = {
   collapsibleTitle: {
@@ -28,34 +28,34 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
   defineMessages: (messages) => messages,
 }));
 
-describe('useLearnerProgressTour', () => {
+describe('useAdminOnboardingTour', () => {
   const defaultProps = {
     enterpriseSlug: 'test-enterprise',
   };
 
   it('returns tour configuration with correct structure', () => {
-    const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
     expect(result.current.length === 7);
   });
 
   it('includes title and body with FormattedMessage components', () => {
-    const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
     expect(result.current[0].title).toBeDefined();
     expect(result.current[0].body).toBeDefined();
   });
 
   it('includes onAdvance function', () => {
-    const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
     expect(typeof result.current[0].onAdvance).toBe('function');
   });
 
   it('handles missing enterpriseSlug gracefully', () => {
-    const { result } = renderHook(() => useLearnerProgressTour({}));
+    const { result } = renderHook(() => useAdminOnboardingTour({}));
     expect(result.current[0]).toBeDefined();
   });
 
   it('returns all required properties', () => {
-    const { result } = renderHook(() => useLearnerProgressTour(defaultProps));
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
     const requiredProps = [
       'target',
       'title',

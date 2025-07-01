@@ -138,6 +138,7 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.7',
     defaultMessage: 'View a learner\'s enrollments, access type, and group memberships at a glance.',
     description: 'Description for the organize learners flow step seven',
+  },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',
     defaultMessage: VIEW_ENROLLMENTS_INSIGHT_TITLE,

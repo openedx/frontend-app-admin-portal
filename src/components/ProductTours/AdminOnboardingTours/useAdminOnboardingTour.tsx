@@ -4,8 +4,8 @@ import { logError } from '@edx/frontend-platform/logging';
 
 import {
   ADMIN_TOUR_EVENT_NAMES,
-  ANALYTICS_INSIGHTS_FLOW,
   TRACK_LEARNER_PROGRESS_TARGETS,
+  ANALYTICS_INSIGHTS_FLOW,
 } from './constants';
 
 import LmsApiService from '../../../data/services/LmsApiService';
@@ -14,20 +14,20 @@ import useCreateLearnerProgressFlow from './useCreateLearnerProgressFlow';
 import useCreateAnalyticsFlow from './useCreateAnalyticsFlow';
 import { TourStep } from '../types';
 
-interface UseLearnerProgressTourProps {
+interface UseAdminOnboardingTourProps {
   enterpriseSlug: string;
   adminUuid: string;
   aiButtonVisible: boolean;
   targetSelector?: string;
 }
 
-const useLearnerProgressTour = (
+const useAdminOnboardingTour = (
   {
     enterpriseSlug,
     adminUuid,
     aiButtonVisible,
     targetSelector,
-  }: UseLearnerProgressTourProps,
+  }: UseAdminOnboardingTourProps,
 ): Array<TourStep> => {
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -39,7 +39,7 @@ const useLearnerProgressTour = (
 
   const handleEndTour = async () => {
     try {
-      sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_COMPLETED_EVENT_NAME);
+      sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
       await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuids.TRACK_LEARNER_PROGRESS_UUID);
     } catch (error) {
       logError(error);
@@ -73,4 +73,4 @@ const useLearnerProgressTour = (
   return selectedFlow || learnerProgressFlow;
 };
 
-export default useLearnerProgressTour;
+export default useAdminOnboardingTour;

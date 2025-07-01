@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import useLearnerProgressTour from './useLearnerProgressTour';
+import useAdminOnboardingTour from './useAdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 import useCreateOrganizeLearnersFlow from './useCreateOrganizeLearnersFlow';
@@ -56,21 +56,34 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
-  // const [selectedFlowSteps, setSelectedFlowSteps] = useState<Array<TourStep> | null>(null);
-  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
-  const organizeLearnersSteps = useCreateOrganizeLearnersFlow({ enterpriseSlug, adminUuid, enterpriseId });
 
-  const selectedFlowSteps: () => Array<TourStep> = () => {
-    if (selectedTour === ORGANIZE_LEARNERS_TITLE) {
-      return organizeLearnersSteps;
-    }
-    return learnerProgressSteps;
-  };
+  // const [selectedFlowSteps, setSelectedFlowSteps] = useState<Array<TourStep> | null>(null);
+  const adminOnboardingSteps = useAdminOnboardingTour({
+    enterpriseSlug,
+    adminUuid,
+    aiButtonVisible,
+    targetSelector,
+  });
+
+  // const organizeLearnersSteps = useCreateOrganizeLearnersFlow({ enterpriseSlug, adminUuid, enterpriseId });
+  //  const selectedFlowSteps: () => Array<TourStep> = () => {
+  //   if (selectedTour === ORGANIZE_LEARNERS_TITLE) {
+  //     return organizeLearnersSteps;
+  //   }
+  //   return learnerProgressSteps;
+  // };
+
+
+
+  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
 
   useEffect(() => {
-    const nextTarget = selectedFlowSteps[currentStep].target.replace('#', '');
-    setTarget(nextTarget); 
-  }, [currentStep, setTarget]);
+    if (adminOnboardingSteps[currentStep]) {
+      const nextTarget = adminOnboardingSteps[currentStep].target;
+      const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
+      setTarget(targetWithoutPrefix);
+    }
+  }, [currentStep, adminOnboardingSteps, setTarget]);
 
   const tours = [
     {
@@ -101,7 +114,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: selectedFlowSteps.map((step, index) => ({
+      checkpoints: adminOnboardingSteps.map((step, index) => ({
         ...step,
         onAdvance: () => {
           setCurrentStep(index + 1);
@@ -113,7 +126,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 
   return (
     <>
-      <CheckpointOverlay target={learnerProgressSteps[currentStep]?.target || targetSelector} />
+      <CheckpointOverlay target={adminOnboardingSteps[currentStep]?.target || targetSelector} />
       <ProductTour
         tours={tours}
       />
