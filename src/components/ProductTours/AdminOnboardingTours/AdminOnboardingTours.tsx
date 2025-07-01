@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import useLearnerProgressTour from './useLearnerProgressTour';
+import useAdminOnboardingTour from './useAdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 
@@ -48,14 +48,20 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
-  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
+  const adminOnboardingSteps = useAdminOnboardingTour({
+    enterpriseSlug,
+    adminUuid,
+    aiButtonVisible,
+    targetSelector,
+  });
 
   useEffect(() => {
-    if (learnerProgressSteps[currentStep]) {
-      const nextTarget = learnerProgressSteps[currentStep].target.replace('#', '');
-      setTarget(nextTarget);
+    if (adminOnboardingSteps[currentStep]) {
+      const nextTarget = adminOnboardingSteps[currentStep].target;
+      const targetWithoutPrefix = nextTarget.replace(/^[.#]/, '');
+      setTarget(targetWithoutPrefix);
     }
-  }, [currentStep, learnerProgressSteps, setTarget]);
+  }, [currentStep, adminOnboardingSteps, setTarget]);
 
   const tours = [
     {
@@ -86,7 +92,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: learnerProgressSteps.map((step, index) => ({
+      checkpoints: adminOnboardingSteps.map((step, index) => ({
         ...step,
         onAdvance: () => {
           setCurrentStep(index + 1);
@@ -98,7 +104,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 
   return (
     <>
-      <CheckpointOverlay target={targetSelector} />
+      <CheckpointOverlay target={adminOnboardingSteps[currentStep]?.target || targetSelector} />
       <ProductTour
         tours={tours}
       />

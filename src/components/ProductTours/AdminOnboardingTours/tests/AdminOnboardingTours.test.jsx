@@ -7,11 +7,11 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import userEvent from '@testing-library/user-event';
 import AdminOnboardingTours from '../AdminOnboardingTours';
-import useLearnerProgressTour from '../useLearnerProgressTour';
+import useAdminOnboardingTour from '../useAdminOnboardingTour';
 
 const mockOnAdvance = jest.fn();
 
-jest.mock('../useLearnerProgressTour', () => jest.fn(() => ([
+jest.mock('../useAdminOnboardingTour', () => jest.fn(() => ([
   {
     target: '#step-1',
     placement: 'right',
@@ -109,12 +109,13 @@ describe('AdminOnboardingTours', () => {
     expect(overlay).toBeTruthy();
   });
 
-  it('renders useLearnerProgressTour hook with correct parameters', () => {
+  it('renders useAdminOnboardingTour hook with correct parameters', () => {
     renderComponent();
-    expect(useLearnerProgressTour).toHaveBeenCalledWith({
+    expect(useAdminOnboardingTour).toHaveBeenCalledWith({
       enterpriseSlug: slug,
       adminUuid: enterpriseAdminUuid,
       aiButtonVisible: true,
+      targetSelector: '#step-1',
     });
   });
 

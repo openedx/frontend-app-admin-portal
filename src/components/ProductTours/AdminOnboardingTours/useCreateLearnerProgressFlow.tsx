@@ -1,53 +1,22 @@
-import { ReactNode, useCallback, useState } from 'react';
-import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { logError } from '@edx/frontend-platform/logging';
-
-import {
-  ADMIN_TOUR_EVENT_NAMES,
-  TRACK_LEARNER_PROGRESS_TARGETS,
-} from './constants';
-
+import { TRACK_LEARNER_PROGRESS_TARGETS } from './constants';
 import messages from './messages';
-import LmsApiService from '../../../data/services/LmsApiService';
-import { flowUuids } from '../../../config';
+import { TourStep } from '../types';
 
-interface TourStep {
-  target: string;
-  placement: 'right' | 'left' | 'top' | 'bottom';
-  title?: ReactNode;
-  body: ReactNode;
-  onAdvance: () => void;
+interface CreateTourFlowsProps {
+  handleAdvanceTour: () => void;
+  handleEndTour: () => void;
+  aiButtonVisible?: boolean;
 }
 
-interface UseLearnerProgressTourProps {
-  enterpriseSlug: string;
-  adminUuid: string;
-  aiButtonVisible: boolean;
-}
-
-const useLearnerProgressTour = (
-  { enterpriseSlug, adminUuid, aiButtonVisible }: UseLearnerProgressTourProps,
-): Array<TourStep> => {
+const useCreateLearnerProgressFlow = ({
+  handleAdvanceTour,
+  handleEndTour,
+  aiButtonVisible,
+}: CreateTourFlowsProps): Array<TourStep> => {
   const intl = useIntl();
-  const [stepIndex, setStepIndex] = useState(0);
 
-  const handleAdvanceTour = useCallback(() => {
-    const newIndex = stepIndex + 1;
-    sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME, { 'completed-step': newIndex });
-    setStepIndex(newIndex);
-  }, [enterpriseSlug, stepIndex]);
-
-  const handleEndTour = async () => {
-    try {
-      sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME);
-      await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuids.TRACK_LEARNER_PROGRESS_UUID);
-    } catch (error) {
-      logError(error);
-    }
-  };
-
-  const tour: Array<TourStep> = [{
+  const learnerProgressFlow: Array<TourStep> = [{
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR}`,
     placement: 'right',
     title: intl.formatMessage(messages.trackLearnerProgressStepOneTitle),
@@ -83,11 +52,10 @@ const useLearnerProgressTour = (
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepEightBody),
     onAdvance: handleEndTour,
-  },
-  ];
+  }];
 
   if (aiButtonVisible) {
-    tour.splice(2, 0, {
+    learnerProgressFlow.splice(2, 0, {
       target: `#${TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY}`,
       placement: 'right',
       body: intl.formatMessage(messages.trackLearnerProgressStepThreeBody),
@@ -95,7 +63,7 @@ const useLearnerProgressTour = (
     });
   }
 
-  return tour;
+  return learnerProgressFlow;
 };
 
-export default useLearnerProgressTour;
+export default useCreateLearnerProgressFlow;

@@ -60,7 +60,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
           </div>
         </div>
 
-        <div className="row filter-container">
+        <div className="row filter-container" id="analytics-date-range">
           <div className="col">
             <Form.Group>
               <Form.Label>
@@ -224,7 +224,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
           </div>
         </div>
 
-        <div className="row stats-container d-flex justify-content-center">
+        <div className="row stats-container d-flex justify-content-center" id="analytics-metrics">
           <Stats
             data={data}
             isFetching={isFetching}
@@ -232,7 +232,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
           />
         </div>
 
-        <div className="tabs-container">
+        <div className="tabs-container analytics-enrollments-engagements-completions">
           <Tabs
             variant="tabs"
             activeKey={activeTab}
@@ -298,6 +298,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 defaultMessage: 'Leaderboard',
                 description: 'Title for the leaderboard tab in advance analytics.',
               })}
+              id="analytics-leaderboard"
             >
               <Leaderboard
                 startDate={startDate || data?.minEnrollmentDate}
@@ -312,6 +313,7 @@ const AnalyticsV2Page = ({ enterpriseId }) => {
                 defaultMessage: 'Skills',
                 description: 'Title for the skills tab in advance analytics.',
               })}
+              id="analytics-skills"
             >
               <Skills
                 startDate={startDate || data?.minEnrollmentDate}

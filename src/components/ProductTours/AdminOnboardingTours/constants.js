@@ -9,6 +9,14 @@ const FULL_PROGRESS_REPORT = 'full-progress-report';
 const FILTER = 'filter';
 const CSV_DOWNLOAD = 'csv-download';
 const MODULE_ACTIVITY = 'module-activity';
+export const ANALYTICS_INSIGHTS_FLOW = {
+  SIDEBAR: 'analytics-sidebar',
+  DATE_RANGE: 'analytics-date-range',
+  METRICS: 'analytics-metrics',
+  ENROLLMENTS_ENGAGEMENTS_COMPLETIONS: 'analytics-enrollments-engagements-completions .nav-item:nth-child(-n+3)',
+  LEADERBOARD: 'analytics-leaderboard',
+  SKILLS: 'analytics-skills',
+};
 
 export const TRACK_LEARNER_PROGRESS_TARGETS = {
   LEARNER_PROGRESS_SIDEBAR,
