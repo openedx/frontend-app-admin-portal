@@ -32,6 +32,7 @@ export const ANALYTICS_TABS = {
   ENROLLMENTS: 'enrollments',
   LEADERBOARD: 'leaderboard',
   ENGAGEMENTS: 'engagements',
+  PROGRESS: 'progress',
 };
 
 export const analyticsDataTableKeys = {

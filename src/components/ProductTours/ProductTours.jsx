@@ -26,7 +26,7 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
 import TourCollapsible from './TourCollapsible';
-import { ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
+import { ANALYTICS_INSIGHTS_FLOW, ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
@@ -74,12 +74,13 @@ const ProductTours = ({
 
   const handleTourSelect = (targetId) => {
     if (targetId === TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR) {
-      setSelectedTour(TRACK_LEARNER_PROGRESS_TITLE);
+      // setSelectedTour(TRACK_LEARNER_PROGRESS_TITLE);
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/`);
-    }
-    if (targetId === ORGANIZE_LEARNER_TARGETS.ORGANIZE_LEARNERS_SIDEBAR) {
-      setSelectedTour(ORGANIZE_LEARNERS_TITLE);
+    } else if (targetId === ORGANIZE_LEARNER_TARGETS.ORGANIZE_LEARNERS_SIDEBAR) {
+      // setSelectedTour(ORGANIZE_LEARNERS_TITLE);
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/`);
+    } else if (targetId === ANALYTICS_INSIGHTS_FLOW.SIDEBAR) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.analytics}/`);
     }
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);

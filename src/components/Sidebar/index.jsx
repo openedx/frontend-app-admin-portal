@@ -18,7 +18,7 @@ import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
-import { ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
+import { ANALYTICS_INSIGHTS_FLOW, ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
@@ -124,6 +124,7 @@ const Sidebar = ({
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <Icon src={InsertChartOutlined} />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
+      id: ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
     },
     {
       title: 'Code Management',

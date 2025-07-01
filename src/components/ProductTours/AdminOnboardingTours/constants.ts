@@ -30,7 +30,7 @@ const CREATE_GROUP_BUTTON = 'create-group-button';
 const ORG_MEMBER_TABLE = 'org-member-table';
 const ORG_MEMBER_HIGHLIGHT = 'org-member-highlight';
 const MEMBER_VIEW_MORE = 'member-view-more';
-const MEMBER_DETAIL_PAGE = 'member-detail-page';
+const MEMBER_DETAIL_PAGE = 'member-detail-page'; 
 
 export const ORGANIZE_LEARNER_TARGETS = {
   ORGANIZE_LEARNERS_SIDEBAR,
@@ -60,11 +60,3 @@ export const ADMIN_TOUR_EVENT_NAMES = {
 
 export const ONBOARDING_WELCOME_MODAL_COOKIE_NAME = 'seen-onboarding-welcome-modal';
 export const ONBOARDING_TOUR_DISMISS_COOKIE_NAME = 'dismiss-admin-onboarding-tour';
-
-export interface TourStep {
-  target: string;
-  placement: 'right' | 'left' | 'top' | 'bottom';
-  title?: ReactNode;
-  body: ReactNode;
-  onAdvance: () => void;
-}

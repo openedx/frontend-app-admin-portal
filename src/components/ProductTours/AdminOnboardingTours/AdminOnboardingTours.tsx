@@ -67,11 +67,9 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
     return learnerProgressSteps;
   };
 
-  console.log();
-
   useEffect(() => {
     const nextTarget = selectedFlowSteps[currentStep].target.replace('#', '');
-    setTarget(nextTarget);
+    setTarget(nextTarget); 
   }, [currentStep, setTarget]);
 
   const tours = [
@@ -115,7 +113,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 
   return (
     <>
-      <CheckpointOverlay target={targetSelector} />
+      <CheckpointOverlay target={learnerProgressSteps[currentStep]?.target || targetSelector} />
       <ProductTour
         tours={tours}
       />

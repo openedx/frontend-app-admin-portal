@@ -10,14 +10,13 @@ import AssignmentAmountTableCell from './AssignmentAmountTableCell';
 import AssignmentRowActionTableCell from './AssignmentRowActionTableCell';
 import AssignmentTableRemindAction from './AssignmentTableRemind';
 import AssignmentTableCancelAction from './AssignmentTableCancel';
-import {
-  DEFAULT_PAGE, PAGE_SIZE,
-} from './data';
 import AssignmentRecentActionTableCell from './AssignmentRecentActionTableCell';
 import AssignmentsTableRefreshAction from './AssignmentsTableRefreshAction';
 import AssignmentEnrollByDateCell from './AssignmentEnrollByDateCell';
 import AssignmentEnrollByDateHeader from './AssignmentEnrollByDateHeader';
-import { BUDGET_STATUSES } from '../EnterpriseApp/data/constants';
+import {
+  DEFAULT_PAGE, PAGE_SIZE, useBudgetId, useSubsidyAccessPolicy,
+} from './data';
 
 const FilterStatus = (rest) => <DataTable.FilterStatus showFilteredFields={false} {...rest} />;
 
@@ -46,9 +45,10 @@ const BudgetAssignmentsTable = ({
   isLoading,
   tableData,
   fetchTableData,
-  status,
 }) => {
   const intl = useIntl();
+  const { subsidyAccessPolicyId } = useBudgetId();
+  const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const statusFilterChoices = tableData.learnerStateCounts
     .filter(({ learnerState }) => !!getLearnerStateDisplayName(learnerState))
     .map(({ learnerState, count }) => ({
@@ -56,7 +56,7 @@ const BudgetAssignmentsTable = ({
       number: count,
       value: learnerState,
     }));
-  const isRetiredOrExpired = [BUDGET_STATUSES.retired, BUDGET_STATUSES.expired].includes(status);
+  const isRetiredOrExpired = subsidyAccessPolicy?.isRetiredOrExpired;
 
   const budgetAssignmentsTableData = (() => {
     if (isRetiredOrExpired) {
@@ -183,7 +183,6 @@ BudgetAssignmentsTable.propTypes = {
     numPages: PropTypes.number.isRequired,
   }).isRequired,
   fetchTableData: PropTypes.func.isRequired,
-  status: PropTypes.string.isRequired,
 };
 
 export default BudgetAssignmentsTable;

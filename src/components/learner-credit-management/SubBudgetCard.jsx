@@ -15,6 +15,7 @@ import { BUDGET_STATUSES, ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import {
   getBudgetStatus, getTranslatedBudgetStatus, getTranslatedBudgetTerm,
 } from './data';
+import { isBudgetRetiredOrExpired } from './data/utils';
 import { useEnterpriseBudgets } from '../EnterpriseSubsidiesContext/data/hooks';
 import SubBudgetCardUtilization from './SubBudgetCardUtilization';
 
@@ -93,7 +94,7 @@ const BaseSubBudgetCard = ({
       year: 'numeric',
     },
   ) : undefined;
-  const isRetiredOrExpired = [BUDGET_STATUSES.expired, BUDGET_STATUSES.retired].includes(status);
+  const isRetiredOrExpired = isBudgetRetiredOrExpired(status);
 
   const hasBudgetAggregatesSection = () => {
     const statusesWithoutAggregates = [

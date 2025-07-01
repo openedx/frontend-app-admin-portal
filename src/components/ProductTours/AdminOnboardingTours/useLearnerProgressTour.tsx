@@ -1,28 +1,34 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
-import { useIntl } from '@edx/frontend-platform/i18n';
 import { logError } from '@edx/frontend-platform/logging';
 
 import {
   ADMIN_TOUR_EVENT_NAMES,
+  ANALYTICS_INSIGHTS_FLOW,
   TRACK_LEARNER_PROGRESS_TARGETS,
 } from './constants';
 
-import messages from './messages';
 import LmsApiService from '../../../data/services/LmsApiService';
 import { flowUuids } from '../../../config';
+import useCreateLearnerProgressFlow from './useCreateLearnerProgressFlow';
+import useCreateAnalyticsFlow from './useCreateAnalyticsFlow';
 import { TourStep } from '../types';
 
 interface UseLearnerProgressTourProps {
   enterpriseSlug: string;
   adminUuid: string;
   aiButtonVisible: boolean;
+  targetSelector?: string;
 }
 
 const useLearnerProgressTour = (
-  { enterpriseSlug, adminUuid, aiButtonVisible }: UseLearnerProgressTourProps,
+  {
+    enterpriseSlug,
+    adminUuid,
+    aiButtonVisible,
+    targetSelector,
+  }: UseLearnerProgressTourProps,
 ): Array<TourStep> => {
-  const intl = useIntl();
   const [stepIndex, setStepIndex] = useState(0);
 
   const handleAdvanceTour = useCallback(() => {
@@ -40,55 +46,31 @@ const useLearnerProgressTour = (
     }
   };
 
-  const tour: Array<TourStep> = [{
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR}`,
-    placement: 'right',
-    title: intl.formatMessage(messages.trackLearnerProgressStepOneTitle),
-    body: intl.formatMessage(messages.trackLearnerProgressStepOneBody),
-    onAdvance: handleAdvanceTour,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LPR_OVERVIEW}`,
-    placement: 'bottom',
-    body: intl.formatMessage(messages.trackLearnerProgressStepTwoBody),
-    onAdvance: handleAdvanceTour,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepFourBody),
-    onAdvance: handleAdvanceTour,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FULL_PROGRESS_REPORT}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepFiveBody),
-    onAdvance: handleAdvanceTour,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FILTER}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepSixBody),
-    onAdvance: handleAdvanceTour,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.CSV_DOWNLOAD}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepSevenBody),
-    onAdvance: handleAdvanceTour,
-  }, {
-    target: `#${TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.trackLearnerProgressStepEightBody),
-    onAdvance: handleEndTour,
-  },
-  ];
+  const learnerProgressFlow = useCreateLearnerProgressFlow({
+    handleAdvanceTour,
+    handleEndTour,
+    aiButtonVisible,
+  });
 
-  if (aiButtonVisible) {
-    tour.splice(2, 0, {
-      target: `#${TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY}`,
-      placement: 'right',
-      body: intl.formatMessage(messages.trackLearnerProgressStepThreeBody),
-      onAdvance: handleAdvanceTour,
-    });
-  }
+  const analyticsFlow = useCreateAnalyticsFlow({
+    handleAdvanceTour,
+    handleEndTour,
+  });
 
-  return tour;
+  // Map target selectors to their respective flows
+  const flowMapping = {
+    // Learner progress flow targets
+    [TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR]: learnerProgressFlow,
+    // Analytics flow targets
+    ...Object.fromEntries(
+      Object.values(ANALYTICS_INSIGHTS_FLOW)
+        .map(target => [target, analyticsFlow]),
+    ),
+  };
+
+  const selectedFlow = targetSelector ? flowMapping[targetSelector] : learnerProgressFlow;
+
+  return selectedFlow || learnerProgressFlow;
 };
 
 export default useLearnerProgressTour;
