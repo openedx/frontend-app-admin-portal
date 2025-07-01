@@ -6,6 +6,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import Hero from '../Hero';
 import Engagements from './tabs/Engagements';
+import Progress from './tabs/Progress';
 import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION } from './data/constants';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
@@ -22,7 +23,7 @@ const AnalyticsPage = ({ enterpriseId }) => {
   const { data: groups, isLoading: isGroupsLoading } = useAllFlexEnterpriseGroups(enterpriseId);
 
   const PAGE_TITLE = intl.formatMessage({
-    id: 'analytics.page.title',
+    id: 'analytics.page.title.heading',
     defaultMessage: 'Analytics',
     description: 'Title of the analytics page',
   });
@@ -72,8 +73,8 @@ const AnalyticsPage = ({ enterpriseId }) => {
               <Tab
                 eventKey="engagements"
                 title={intl.formatMessage({
-                  id: 'advance.analytics.engagement.tab.title',
-                  defaultMessage: 'Engagements',
+                  id: 'analytics.engagement.tab.title.heading',
+                  defaultMessage: 'Engagement',
                   description: 'Title for the engagements tab in advance analytics.',
                 })}
               >
@@ -84,15 +85,19 @@ const AnalyticsPage = ({ enterpriseId }) => {
               <Tab
                 eventKey="Progress"
                 title={intl.formatMessage({
-                  id: 'advance.analytics.progress.tab.title',
+                  id: 'advance.analytics.progress.tab.title.heading',
                   defaultMessage: 'Progress',
                   description: 'Title for the progress tab in advance analytics.',
                 })}
-              />
+              >
+                <Progress
+                  enterpriseId={enterpriseId}
+                />
+              </Tab>
               <Tab
                 eventKey="Outcomes"
                 title={intl.formatMessage({
-                  id: 'advance.analytics.outcomes.tab.title',
+                  id: 'advance.analytics.outcomes.tab.title.heading',
                   defaultMessage: 'Outcomes',
                   description: 'Title for the outcomes tab in advance analytics.',
                 })}
