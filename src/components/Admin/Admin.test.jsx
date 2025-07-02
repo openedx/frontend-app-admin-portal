@@ -31,6 +31,19 @@ jest.mock('../EnterpriseSubsidiesContext/data/hooks', () => ({
   }),
 }));
 
+const mockModuleActivityReportResponse = {
+  results: [
+    {
+      module_id: 'module-1',
+      user_id: 999,
+    },
+    {
+      module_id: 'module-2',
+      user_id: 1000,
+    },
+  ],
+};
+
 const scrollIntoViewMock = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
@@ -408,6 +421,22 @@ describe('<Admin />', () => {
             <AdminWrapper
               {...baseProps}
               budgets={budgets}
+            />
+          ))
+          .toJSON();
+
+        expect(tree).toMatchSnapshot();
+      });
+    });
+
+    describe('with enterprise module activity data', () => {
+      it('renders module activity data correctly', () => {
+        const mockfetchEnterpriseModuleActivityReport = jest.spyOn(EnterpriseDataApiService, 'fetchEnterpriseModuleActivityReport');
+        mockfetchEnterpriseModuleActivityReport.mockResolvedValue({ data: mockModuleActivityReportResponse });
+        const tree = renderer
+          .create((
+            <AdminWrapper
+              {...baseProps}
             />
           ))
           .toJSON();
