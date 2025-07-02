@@ -61,7 +61,7 @@ describe('usePaginatedTableData', () => {
       await result.current.fetchData({ pageIndex: 0, pageSize: 5, sortBy: [] });
     });
 
-    expect(mockFetchFunction).toHaveBeenCalledWith('enterprise123', { page: 1, pageSize: 5 });
+    expect(mockFetchFunction).toHaveBeenCalledWith('enterprise123', { page: 1, page_size: 5 });
     expect(result.current.isLoading).toBe(false);
     expect(result.current.data).toEqual({
       itemCount: 10,

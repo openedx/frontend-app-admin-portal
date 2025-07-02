@@ -56,9 +56,12 @@ const usePaginatedTableData = ({
       };
       applySortByToOptions(args.sortBy, apiFieldsForColumnAccessor, options);
 
+      const { pageSize, ...rest } = options;
+      // backend expects `page_size` instead of `pageSize`
+      const newOptions = { ...rest, page_size: pageSize };
       const response = await fetchFunction(enterpriseId, {
         ...fetchFunctionOptions,
-        ...options,
+        ...newOptions,
       });
       const data = camelCaseObject(response.data);
 

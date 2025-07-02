@@ -40,6 +40,7 @@ const EnrolledLearnersTable = ({ id, enterpriseId }) => {
     enrollmentCount: { key: 'enrollment_count' },
     courseCompletionCount: { key: 'course_completion_count' },
     lastActivityDate: { key: 'last_activity_date' },
+    lmsUserCreated: { key: 'lms_user_created' },
   }), []);
 
   const {
