@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Stack } from '@openedx/paragon';
 
 import { connect } from 'react-redux';
-import { SUBSIDY_REQUEST_STATUS } from '../../data/constants/subsidyRequests';
 import useBnrSubsidyRequests from './requests-tab/data/hooks/useBnrSubsidyRequests';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
-import { ApproveCouponCodeRequestModal } from '../subsidy-request-modals';
 import { PAGE_SIZE } from './requests-tab/data/constants';
 import RequestsTable from './requests-tab/RequestsTable';
 import DeclineBnrSubsidyRequestModal from './requests-tab/DeclineBnrSubsidyRequestModal';
+import ApproveBnrSubsidyRequestModal from './requests-tab/ApproveBnrSubsidyRequestModal';
+import { useBudgetId } from './data';
 
 const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
   const {
@@ -17,9 +17,10 @@ const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
     bnrRequests,
     requestsOverview,
     fetchBnrRequests,
-    updateRequestStatus,
     refreshRequests,
   } = useBnrSubsidyRequests(enterpriseId);
+
+  const { subsidyAccessPolicyId } = useBudgetId();
   const [selectedRequest, setSelectedRequest] = useState();
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
@@ -56,11 +57,14 @@ const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
       {selectedRequest && (
         <>
           {isApproveModalOpen && (
-            <ApproveCouponCodeRequestModal
+            <ApproveBnrSubsidyRequestModal
               isOpen
-              couponCodeRequest={selectedRequest}
+              subsidyRequest={selectedRequest}
+              enterpriseId={enterpriseId}
+              subsidyAccessPolicyId={subsidyAccessPolicyId}
+              approveRequestFn={EnterpriseAccessApiService.approveBnrSubsidyRequest}
               onSuccess={() => {
-                updateRequestStatus({ request: selectedRequest, newStatus: SUBSIDY_REQUEST_STATUS.PENDING });
+                refreshRequests();
                 setIsApproveModalOpen(false);
               }}
               onClose={() => setIsApproveModalOpen(false)}

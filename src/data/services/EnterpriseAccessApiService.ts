@@ -354,6 +354,30 @@ class EnterpriseAccessApiService {
     const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/decline/`;
     return EnterpriseAccessApiService.apiClient().post(url, options);
   }
+
+  /**
+   * Approves a BNR (Browse and Request) subsidy request for an enterprise.
+   *
+   * @param params - The parameters for approving the subsidy request
+   * @param params.enterpriseId - The UUID of the enterprise customer
+   * @param params.subsidyAccessPolicyId - The UUID of the subsidy policy
+   * @param params.subsidyRequestUUID - The UUID of the subsidy request to approve
+   * @returns A promise that resolves to the API response for the approve operation
+   */
+  static approveBnrSubsidyRequest({
+    enterpriseId,
+    subsidyAccessPolicyId,
+    subsidyRequestUUID,
+  }) {
+    const options = {
+      learner_credit_request_uuid: subsidyRequestUUID,
+      enterprise_customer_uuid: enterpriseId,
+      policy_uuid: subsidyAccessPolicyId,
+    };
+
+    const url = `${EnterpriseAccessApiService.baseUrl}/learner-credit-requests/approve/`;
+    return EnterpriseAccessApiService.apiClient().post(url, options);
+  }
 }
 
 export default EnterpriseAccessApiService;
