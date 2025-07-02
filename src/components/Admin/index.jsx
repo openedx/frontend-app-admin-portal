@@ -1,6 +1,7 @@
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import { isEmpty } from 'lodash-es';
 import {
   Alert, Icon, Tab, Tabs,
 } from '@openedx/paragon';
@@ -25,7 +26,7 @@ import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
 import { TRACK_LEARNER_PROGRESS_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
-import { formatTimestamp } from '../../utils';
+import { formatTimestamp, getFilteredQueryParams } from '../../utils';
 
 import AdminCardsSkeleton from './AdminCardsSkeleton';
 import { SubscriptionData } from '../subscriptions';
@@ -89,6 +90,9 @@ class Admin extends React.Component {
 
   getMetadataForAction(actionSlug) {
     const { enterpriseId, intl } = this.props;
+    const expectedQueryParams = ['search', 'search_course', 'search_start_date', 'budget_uuid', 'group_uuid'];
+    const filteredQueryParams = getFilteredQueryParams(this.props.location.search, expectedQueryParams);
+
     const defaultData = {
       title: intl.formatMessage({
         id: 'admin.portal.lpr.report.full.report.title',
@@ -97,9 +101,10 @@ class Admin extends React.Component {
       }),
       component: <EnrollmentsTable />,
       csvFetchMethod: () => (
-        EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
+        EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, filteredQueryParams, { csv: true })
       ),
       csvButtonId: 'enrollments',
+      hasActiveFilters: !isEmpty(filteredQueryParams),
     };
 
     const actionData = {
@@ -305,7 +310,7 @@ class Admin extends React.Component {
     const { actionSlug, intl } = this.props;
     const tableMetadata = this.getMetadataForAction(actionSlug);
     let downloadButtonLabel;
-    if (actionSlug) {
+    if (actionSlug || tableMetadata.hasActiveFilters) {
       downloadButtonLabel = intl.formatMessage({
         id: 'admin.portal.lpr.current.report.csv.download',
         defaultMessage: 'Download current report (CSV)',
