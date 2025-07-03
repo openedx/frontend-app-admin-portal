@@ -12,6 +12,7 @@ const ChartWrapper = ({
   isFetching,
   isError,
   chartType,
+  chartId,
   chartProps,
   loadingMessage,
 }) => {
@@ -27,7 +28,7 @@ const ChartWrapper = ({
   };
 
   return (
-    <div className={classNames('analytics-chart-container', { chartType }, { 'is-fetching': isFetching })}>
+    <div id={chartId} className={classNames('analytics-chart-container', { chartType }, { 'is-fetching': isFetching })}>
       {isFetching && (
         <div className="spinner-centered">
           <Spinner animation="border" screenReaderText={loadingMessage} />
@@ -42,8 +43,10 @@ ChartWrapper.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   chartType: PropTypes.oneOf(['ScatterChart', 'LineChart', 'BarChart', 'Treemap']).isRequired,
+  chartId: PropTypes.string.isRequired,
   chartProps: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    onClick: PropTypes.func,
     xKey: PropTypes.string,
     yKey: PropTypes.string,
     colorKey: PropTypes.string,
