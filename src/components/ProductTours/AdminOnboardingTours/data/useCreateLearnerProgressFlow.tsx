@@ -1,18 +1,19 @@
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { TRACK_LEARNER_PROGRESS_TARGETS } from './constants';
-import messages from './messages';
-import { TourStep } from '../types';
+import { TRACK_LEARNER_PROGRESS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
+import messages from '../messages';
+import { TourStep } from '../../types';
+import { flowUuids } from '../../../../config';
 
 interface CreateTourFlowsProps {
-  handleAdvanceTour: () => void;
-  handleEndTour: () => void;
   aiButtonVisible?: boolean;
+  handleAdvanceTour: (advanceEventName: string) => void;
+  handleEndTour: (endEventName: string, flowUuid?: string) => void;
 }
 
 const useCreateLearnerProgressFlow = ({
+  aiButtonVisible,
   handleAdvanceTour,
   handleEndTour,
-  aiButtonVisible,
 }: CreateTourFlowsProps): Array<TourStep> => {
   const intl = useIntl();
 
@@ -21,37 +22,40 @@ const useCreateLearnerProgressFlow = ({
     placement: 'right',
     title: intl.formatMessage(messages.trackLearnerProgressStepOneTitle),
     body: intl.formatMessage(messages.trackLearnerProgressStepOneBody),
-    onAdvance: handleAdvanceTour,
+    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME),
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.LPR_OVERVIEW}`,
     placement: 'bottom',
     body: intl.formatMessage(messages.trackLearnerProgressStepTwoBody),
-    onAdvance: handleAdvanceTour,
+    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME),
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepFourBody),
-    onAdvance: handleAdvanceTour,
+    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME),
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FULL_PROGRESS_REPORT}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepFiveBody),
-    onAdvance: handleAdvanceTour,
+    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME),
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.FILTER}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepSixBody),
-    onAdvance: handleAdvanceTour,
+    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME),
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.CSV_DOWNLOAD}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepSevenBody),
-    onAdvance: handleAdvanceTour,
+    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME),
   }, {
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepEightBody),
-    onAdvance: handleEndTour,
+    onAdvance: () => handleEndTour(
+      ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_COMPLETED_EVENT_NAME,
+      flowUuids.TRACK_LEARNER_PROGRESS_UUID,
+    ),
   }];
 
   if (aiButtonVisible) {

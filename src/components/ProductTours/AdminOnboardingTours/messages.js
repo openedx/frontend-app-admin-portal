@@ -30,7 +30,6 @@ const messages = defineMessages({
     defaultMessage: 'We\'re excited to show you the edX administrative portal.'
     + ' Use our {bold_tag}Quick Start Guide{bold_tag} to get step-by-step guidance on what our portal can do for you.',
     description: 'Body for the welcome modal for new users.',
-
   },
   welcomeModalExistingUserTitle: {
     id: 'admin.portal.productTours.adminOnboarding.welcomeModal.title.existing',
@@ -131,13 +130,9 @@ const messages = defineMessages({
   },
   organizeLearnersStepSixBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.6',
-    defaultMessage: '"View more" allows you to see the learner\'s full profile. Let\'s take you there now!',
+    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
+    + ' memberships at a glance.',
     description: 'Description for the organize learners flow step six',
-  },
-  organizeLearnersStepSevenBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.7',
-    defaultMessage: 'View a learner\'s enrollments, access type, and group memberships at a glance.',
-    description: 'Description for the organize learners flow step seven',
   },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',

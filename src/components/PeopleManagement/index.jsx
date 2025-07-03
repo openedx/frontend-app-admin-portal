@@ -135,9 +135,9 @@ const PeopleManagementPage = ({ enterpriseId }) => {
               )}
             </span>
             <ActionRow.Spacer />
-            <Button 
-              iconBefore={Add} 
-              onClick={handleOnClickCreateGroup} 
+            <Button
+              iconBefore={Add}
+              onClick={handleOnClickCreateGroup}
               id={ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}
             >
               <FormattedMessage

@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import useAdminOnboardingTour from './useAdminOnboardingTour';
+import useAdminOnboardingTour from './data/useAdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
-import useCreateOrganizeLearnersFlow from './useCreateOrganizeLearnersFlow';
-import { TRACK_LEARNER_PROGRESS_TITLE, ORGANIZE_LEARNERS_TITLE } from './messages';
-import { TourStep } from '../types';
 
 interface Insights {
   learner_engagement?: any;
@@ -16,16 +13,14 @@ interface Insights {
 }
 
 interface AdminOnboardingToursProps {
-  selectedTour: string;
-  isOpen: boolean;
-  onClose: () => void;
-  targetSelector: string;
   adminUuid: string,
-  setTarget: Function,
   enterpriseSlug: string;
-  enterpriseId: string;
   insights: Insights;
   insightsLoading: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  setTarget: Function,
+  targetSelector: string;
 }
 
 interface RootState {
@@ -33,49 +28,22 @@ interface RootState {
     insights: Insights;
     loading: boolean;
   };
-  portalConfiguration: {
-    enterpriseSlug: string;
-    enterpriseId: string;
-  };
   enterpriseCustomerAdmin: {
     uuid: string;
-  }
+  };
+  portalConfiguration: {
+    enterpriseSlug: string;
+  };
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  selectedTour,
-  isOpen,
-  onClose,
-  targetSelector,
-  setTarget,
-  adminUuid,
-  enterpriseSlug,
-  enterpriseId,
-  insights,
-  insightsLoading,
+  adminUuid, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
-
-  // const [selectedFlowSteps, setSelectedFlowSteps] = useState<Array<TourStep> | null>(null);
   const adminOnboardingSteps = useAdminOnboardingTour({
-    enterpriseSlug,
-    adminUuid,
-    aiButtonVisible,
-    targetSelector,
+    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, targetSelector,
   });
-
-  // const organizeLearnersSteps = useCreateOrganizeLearnersFlow({ enterpriseSlug, adminUuid, enterpriseId });
-  //  const selectedFlowSteps: () => Array<TourStep> = () => {
-  //   if (selectedTour === ORGANIZE_LEARNERS_TITLE) {
-  //     return organizeLearnersSteps;
-  //   }
-  //   return learnerProgressSteps;
-  // };
-
-
-
-  const learnerProgressSteps = useLearnerProgressTour({ enterpriseSlug, adminUuid, aiButtonVisible });
 
   useEffect(() => {
     if (adminOnboardingSteps[currentStep]) {
@@ -114,13 +82,14 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: adminOnboardingSteps.map((step, index) => ({
-        ...step,
-        onAdvance: () => {
-          setCurrentStep(index + 1);
-          step.onAdvance();
-        },
-      })),
+      checkpoints: adminOnboardingSteps,
+      // checkpoints: adminOnboardingSteps.map((step, index) => ({
+      //   ...step,
+      //   onAdvance: () => {
+      //     setCurrentStep(index + 1);
+      //     step.onAdvance();
+      //   },
+      // })),
     },
   ];
 
@@ -135,23 +104,21 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 };
 
 AdminOnboardingTours.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  targetSelector: PropTypes.string.isRequired,
-  setTarget: PropTypes.func.isRequired,
   adminUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
-  enterpriseId: PropTypes.string.isRequired,
   insights: PropTypes.shape({
     learner_engagement: PropTypes.shape({}),
     learner_progress: PropTypes.shape({}),
   }).isRequired,
   insightsLoading: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  setTarget: PropTypes.func.isRequired,
+  targetSelector: PropTypes.string.isRequired,
 };
 const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
-  enterpriseId: state.portalConfiguration.enterpriseId,
   insights: state.dashboardInsights.insights,
   insightsLoading: state.dashboardInsights.loading,
 });

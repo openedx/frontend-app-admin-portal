@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import useAdminOnboardingTour from '../useAdminOnboardingTour';
+import useAdminOnboardingTour from '../data/useAdminOnboardingTour';
 
 const mockMessages = {
   collapsibleTitle: {
