@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
 import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import useAdminOnboardingTour from './useAdminOnboardingTour';
+import useAdminOnboardingTour from './data/useAdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 
@@ -13,14 +13,14 @@ interface Insights {
 }
 
 interface AdminOnboardingToursProps {
-  isOpen: boolean;
-  onClose: () => void;
-  targetSelector: string;
   adminUuid: string,
-  setTarget: Function,
   enterpriseSlug: string;
   insights: Insights;
   insightsLoading: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  setTarget: Function,
+  targetSelector: string;
 }
 
 interface RootState {
@@ -28,31 +28,21 @@ interface RootState {
     insights: Insights;
     loading: boolean;
   };
+  enterpriseCustomerAdmin: {
+    uuid: string;
+  };
   portalConfiguration: {
     enterpriseSlug: string;
   };
-  enterpriseCustomerAdmin: {
-    uuid: string;
-  }
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  isOpen,
-  onClose,
-  targetSelector,
-  setTarget,
-  adminUuid,
-  enterpriseSlug,
-  insights,
-  insightsLoading,
+  adminUuid, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const adminOnboardingSteps = useAdminOnboardingTour({
-    enterpriseSlug,
-    adminUuid,
-    aiButtonVisible,
-    targetSelector,
+    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, targetSelector,
   });
 
   useEffect(() => {
@@ -92,13 +82,14 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: adminOnboardingSteps.map((step, index) => ({
-        ...step,
-        onAdvance: () => {
-          setCurrentStep(index + 1);
-          step.onAdvance();
-        },
-      })),
+      checkpoints: adminOnboardingSteps,
+      // checkpoints: adminOnboardingSteps.map((step, index) => ({
+      //   ...step,
+      //   onAdvance: () => {
+      //     setCurrentStep(index + 1);
+      //     step.onAdvance();
+      //   },
+      // })),
     },
   ];
 
@@ -113,10 +104,6 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 };
 
 AdminOnboardingTours.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  targetSelector: PropTypes.string.isRequired,
-  setTarget: PropTypes.func.isRequired,
   adminUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   insights: PropTypes.shape({
@@ -124,6 +111,10 @@ AdminOnboardingTours.propTypes = {
     learner_progress: PropTypes.shape({}),
   }).isRequired,
   insightsLoading: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  setTarget: PropTypes.func.isRequired,
+  targetSelector: PropTypes.string.isRequired,
 };
 const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,

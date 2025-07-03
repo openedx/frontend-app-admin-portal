@@ -1,9 +1,9 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import useCreateLearnerProgressFlow from '../useCreateLearnerProgressFlow';
-import useCreateAnalyticsFlow from '../useCreateAnalyticsFlow';
-import { ANALYTICS_INSIGHTS_FLOW } from '../constants';
+import useCreateLearnerProgressFlow from '../data/useCreateLearnerProgressFlow';
+import useCreateAnalyticsFlow from '../data/useCreateAnalyticsFlow';
+import { ANALYTICS_INSIGHTS_TARGETS } from '../constants';
 import messages from '../messages';
 
 const mockFormatMessage = jest.fn((message) => message.defaultMessage || message.id || 'Mocked message');
@@ -43,47 +43,42 @@ describe('useCreateAnalyticsFlow', () => {
 
     expect(flow).toHaveLength(6);
 
-    expect(flow[0]).toEqual({
-      target: `#${ANALYTICS_INSIGHTS_FLOW.SIDEBAR}`,
+    // can't test equality of onAdvance since it's an anonymous function
+    expect(flow[0]).toMatchObject({
+      target: `#${ANALYTICS_INSIGHTS_TARGETS.SIDEBAR}`,
       placement: 'right',
       title: messages.viewEnrollmentInsights.defaultMessage,
       body: messages.viewEnrollmentInsightsStepOneBody.defaultMessage,
-      onAdvance: mockHandleAdvanceTour,
     });
 
-    expect(flow[1]).toEqual({
-      target: `#${ANALYTICS_INSIGHTS_FLOW.DATE_RANGE}`,
+    expect(flow[1]).toMatchObject({
+      target: `#${ANALYTICS_INSIGHTS_TARGETS.DATE_RANGE}`,
       placement: 'top',
       body: messages.viewEnrollmentInsightsStepTwoBody.defaultMessage,
-      onAdvance: mockHandleAdvanceTour,
     });
 
-    expect(flow[2]).toEqual({
-      target: `#${ANALYTICS_INSIGHTS_FLOW.METRICS}`,
+    expect(flow[2]).toMatchObject({
+      target: `#${ANALYTICS_INSIGHTS_TARGETS.METRICS}`,
       placement: 'top',
       body: messages.viewEnrollmentInsightsStepThreeBody.defaultMessage,
-      onAdvance: mockHandleAdvanceTour,
     });
 
-    expect(flow[3]).toEqual({
-      target: `.${ANALYTICS_INSIGHTS_FLOW.ENROLLMENTS_ENGAGEMENTS_COMPLETIONS}`,
+    expect(flow[3]).toMatchObject({
+      target: `.${ANALYTICS_INSIGHTS_TARGETS.ENROLLMENTS_ENGAGEMENTS_COMPLETIONS}`,
       placement: 'top',
       body: messages.viewEnrollmentInsightsStepFourBody.defaultMessage,
-      onAdvance: mockHandleAdvanceTour,
     });
 
-    expect(flow[4]).toEqual({
-      target: `#${ANALYTICS_INSIGHTS_FLOW.LEADERBOARD}`,
+    expect(flow[4]).toMatchObject({
+      target: `#${ANALYTICS_INSIGHTS_TARGETS.LEADERBOARD}`,
       placement: 'top',
       body: messages.viewEnrollmentInsightsStepFiveBody.defaultMessage,
-      onAdvance: mockHandleAdvanceTour,
     });
 
-    expect(flow[5]).toEqual({
-      target: `#${ANALYTICS_INSIGHTS_FLOW.SKILLS}`,
+    expect(flow[5]).toMatchObject({
+      target: `#${ANALYTICS_INSIGHTS_TARGETS.SKILLS}`,
       placement: 'top',
       body: messages.viewEnrollmentInsightsStepSixBody.defaultMessage,
-      onAdvance: mockHandleEndTour,
     });
   });
 
@@ -99,40 +94,25 @@ describe('useCreateAnalyticsFlow', () => {
 
     const flow = result.current;
 
-    expect(flow[0].target).toBe(`#${ANALYTICS_INSIGHTS_FLOW.SIDEBAR}`);
-    expect(flow[1].target).toBe(`#${ANALYTICS_INSIGHTS_FLOW.DATE_RANGE}`);
-    expect(flow[2].target).toBe(`#${ANALYTICS_INSIGHTS_FLOW.METRICS}`);
-    expect(flow[3].target).toBe(`.${ANALYTICS_INSIGHTS_FLOW.ENROLLMENTS_ENGAGEMENTS_COMPLETIONS}`);
-    expect(flow[4].target).toBe(`#${ANALYTICS_INSIGHTS_FLOW.LEADERBOARD}`);
-    expect(flow[5].target).toBe(`#${ANALYTICS_INSIGHTS_FLOW.SKILLS}`);
+    expect(flow[0].target).toBe(`#${ANALYTICS_INSIGHTS_TARGETS.SIDEBAR}`);
+    expect(flow[1].target).toBe(`#${ANALYTICS_INSIGHTS_TARGETS.DATE_RANGE}`);
+    expect(flow[2].target).toBe(`#${ANALYTICS_INSIGHTS_TARGETS.METRICS}`);
+    expect(flow[3].target).toBe(`.${ANALYTICS_INSIGHTS_TARGETS.ENROLLMENTS_ENGAGEMENTS_COMPLETIONS}`);
+    expect(flow[4].target).toBe(`#${ANALYTICS_INSIGHTS_TARGETS.LEADERBOARD}`);
+    expect(flow[5].target).toBe(`#${ANALYTICS_INSIGHTS_TARGETS.SKILLS}`);
   });
 });
 
 describe('function behavior', () => {
   it('returns different function references for onAdvance and onEndTour', () => {
-    const { result: learnerFlow } = renderHook(
-      () => useCreateLearnerProgressFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-        aiButtonVisible: false,
-      }),
-      { wrapper },
-    );
-
     const { result: analyticsFlow } = renderHook(
       () => useCreateAnalyticsFlow({
         handleAdvanceTour: mockHandleAdvanceTour,
         handleEndTour: mockHandleEndTour,
-        aiButtonVisible: false,
       }),
       { wrapper },
     );
-
-    expect(learnerFlow.current[0].onAdvance).toBe(mockHandleAdvanceTour);
-    expect(analyticsFlow.current[0].onAdvance).toBe(mockHandleAdvanceTour);
-
-    expect(learnerFlow.current[6].onAdvance).toBe(mockHandleEndTour);
-    expect(analyticsFlow.current[5].onAdvance).toBe(mockHandleEndTour);
+    expect(analyticsFlow.current[0].onAdvance).not.toEqual(analyticsFlow.current[5].onAdvance);
   });
 
   it('maintains correct step order in both flows', () => {

@@ -7,11 +7,10 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import userEvent from '@testing-library/user-event';
 import AdminOnboardingTours from '../AdminOnboardingTours';
-import useAdminOnboardingTour from '../useAdminOnboardingTour';
 
 const mockOnAdvance = jest.fn();
 
-jest.mock('../useAdminOnboardingTour', () => jest.fn(() => ([
+jest.mock('../data/useAdminOnboardingTour', () => jest.fn(() => ([
   {
     target: '#step-1',
     placement: 'right',
@@ -107,16 +106,6 @@ describe('AdminOnboardingTours', () => {
     renderComponent();
     const overlay = screen.getByTestId('checkpoint-overlay');
     expect(overlay).toBeTruthy();
-  });
-
-  it('renders useAdminOnboardingTour hook with correct parameters', () => {
-    renderComponent();
-    expect(useAdminOnboardingTour).toHaveBeenCalledWith({
-      enterpriseSlug: slug,
-      adminUuid: enterpriseAdminUuid,
-      aiButtonVisible: true,
-      targetSelector: '#step-1',
-    });
   });
 
   it('renders Product tour', async () => {

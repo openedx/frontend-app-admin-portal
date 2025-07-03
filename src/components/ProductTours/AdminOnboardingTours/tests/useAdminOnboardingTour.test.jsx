@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import useAdminOnboardingTour from '../useAdminOnboardingTour';
+import useAdminOnboardingTour from '../data/useAdminOnboardingTour';
 
 const mockMessages = {
   collapsibleTitle: {
@@ -9,7 +9,7 @@ const mockMessages = {
   },
   learnerProgressTitle: {
     id: 'admin.portal.productTours.learnerProgress.title',
-    defaultMessage: 'Track Learner Progress',
+    defaultMessage: 'Track learner progress',
   },
   learnerProgressBody: {
     id: 'admin.portal.productTours.learnerProgress.body',

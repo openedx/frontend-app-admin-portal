@@ -20,6 +20,7 @@ import PeopleManagementTable from './PeopleManagementTable';
 import EVENT_NAMES from '../../eventTracking';
 import ValidatedEmailsContextProvider from './data/ValidatedEmailsContextProvider';
 import GroupInviteErrorToast from './GroupInviteErrorToast';
+import { ORGANIZE_LEARNER_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const PeopleManagementPage = ({ enterpriseId }) => {
   const intl = useIntl();
@@ -106,50 +107,56 @@ const PeopleManagementPage = ({ enterpriseId }) => {
         closeToast={closeGroupInviteErrorModal}
       />
       <div className="mx-3 mt-4">
-        <ActionRow className="mb-4">
-          <span className="flex-column">
-            <span className="d-flex">
-              <h3 className="mt-2">
-                <FormattedMessage
-                  id="adminPortal.peopleManagement.title"
-                  defaultMessage="Your organization's groups"
-                  description="Title for people management page."
-                />
-              </h3>
-            </span>
-            {hasLearnerCredit && (
+        <span id={ORGANIZE_LEARNER_TARGETS.ORG_GROUPS_ZERO_STATE}>
+          <ActionRow className="mb-4">
+            <span className="flex-column">
+              <span className="d-flex">
+                <h3 className="mt-2">
+                  <FormattedMessage
+                    id="adminPortal.peopleManagement.title"
+                    defaultMessage="Your organization's groups"
+                    description="Title for people management page."
+                  />
+                </h3>
+              </span>
+              {hasLearnerCredit && (
               <FormattedMessage
                 id="adminPortal.peopleManagement.subtitle.lc"
                 defaultMessage="Monitor group learning progress, assign more courses, and invite members to new Learner Credit budgets."
                 description="Subtitle for people management with learner credit."
               />
-            )}
-            {!hasLearnerCredit && hasOtherSubsidyTypes && (
+              )}
+              {!hasLearnerCredit && hasOtherSubsidyTypes && (
               <FormattedMessage
                 id="adminPortal.peopleManagement.subtitle.noLc"
                 defaultMessage="Monitor group learning progress."
                 description="Subtitle for people management without learner credit."
               />
-            )}
-          </span>
-          <ActionRow.Spacer />
-          <Button iconBefore={Add} onClick={handleOnClickCreateGroup}>
-            <FormattedMessage
-              id="adminPortal.peopleManagement.newGroup.button"
-              defaultMessage="Create group"
-              description="CTA button text to open new group modal."
-            />
-          </Button>
-          <ValidatedEmailsContextProvider>
-            <CreateGroupModal
-              isModalOpen={isModalOpen}
-              openModel={openModal}
-              closeModal={closeModal}
-              onInviteError={handleInviteError}
-            />
-          </ValidatedEmailsContextProvider>
-        </ActionRow>
-        {groupsCardSection}
+              )}
+            </span>
+            <ActionRow.Spacer />
+            <Button
+              iconBefore={Add}
+              onClick={handleOnClickCreateGroup}
+              id={ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}
+            >
+              <FormattedMessage
+                id="adminPortal.peopleManagement.newGroup.button"
+                defaultMessage="Create group"
+                description="CTA button text to open new group modal."
+              />
+            </Button>
+            <ValidatedEmailsContextProvider>
+              <CreateGroupModal
+                isModalOpen={isModalOpen}
+                openModel={openModal}
+                closeModal={closeModal}
+                onInviteError={handleInviteError}
+              />
+            </ValidatedEmailsContextProvider>
+          </ActionRow>
+          {groupsCardSection}
+        </span>
         <h3 className="mt-3">
           <FormattedMessage
             id="adminPortal.peopleManagement.dataTable.title"
@@ -164,7 +171,9 @@ const PeopleManagementPage = ({ enterpriseId }) => {
             description="Subtitle for people management members data table."
           />
         </p>
-        <PeopleManagementTable />
+        <span id={ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}>
+          <PeopleManagementTable />
+        </span>
       </div>
     </>
   );
