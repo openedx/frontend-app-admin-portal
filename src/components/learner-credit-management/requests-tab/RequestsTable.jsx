@@ -8,10 +8,10 @@ import {
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { connect } from 'react-redux';
 import ActionCell from '../../SubsidyRequestManagementTable/ActionCell';
-import RequestStatusCell from '../../SubsidyRequestManagementTable/RequestStatusCell';
 import RequestDetailsCell from './RequestDetailsCell';
 import CustomTableControlBar from './CustomTableControlBar';
 import AmountCell from './AmountCell';
+import BnrRequestStatusCell from './BnrRequestStatusCell';
 
 const RequestsTable = ({
   onApprove,
@@ -70,7 +70,7 @@ const RequestsTable = ({
           description: 'Header for the request status column in the subsidy request management table.',
         }),
         accessor: 'requestStatus',
-        Cell: RequestStatusCell,
+        Cell: BnrRequestStatusCell,
         Filter: CheckboxFilter,
         filter: 'includesValue',
         filterChoices: requestStatusFilterChoices,
@@ -78,7 +78,6 @@ const RequestsTable = ({
     ]),
     [requestStatusFilterChoices, intl, enterpriseSlug],
   );
-
   return (
     <DataTable
       isFilterable
