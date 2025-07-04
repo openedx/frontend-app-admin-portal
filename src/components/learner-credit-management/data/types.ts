@@ -15,4 +15,5 @@ export type SubsidyAccessPolicy = {
     amountRedeemedUsd: number;
     amountAllocatedUsd: number;
   };
+  bnrEnabled?: boolean;
 };

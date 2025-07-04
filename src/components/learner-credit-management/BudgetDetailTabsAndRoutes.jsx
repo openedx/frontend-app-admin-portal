@@ -34,7 +34,8 @@ function isSupportedTabKey({
   appliesToAllContexts,
 }) {
   const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0)
-    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
+    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable)
+    || subsidyAccessPolicy?.bnrEnabled;
   const supportedTabs = [BUDGET_DETAIL_ACTIVITY_TAB, BUDGET_DETAIL_REQUESTS_TAB];
   if (showCatalog) {
     supportedTabs.push(BUDGET_DETAIL_CATALOG_TAB);
