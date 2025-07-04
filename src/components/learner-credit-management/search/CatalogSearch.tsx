@@ -42,6 +42,7 @@ export const CatalogSearch = ({ algolia }: CatalogSearchProps) => {
   const searchFilters = useAlgoliaFilters(subsidyAccessPolicy, algolia);
 
   const { data: enterpriseGroup } = useEnterpriseGroup(subsidyAccessPolicy);
+  const bnrEnabled = subsidyAccessPolicy?.bnrEnabled || false;
 
   if (algolia.isCatalogQueryFiltersEnabled && algolia.isLoading) {
     return (
@@ -62,7 +63,9 @@ export const CatalogSearch = ({ algolia }: CatalogSearchProps) => {
     return <SearchUnavailableAlert />;
   }
 
-  const showSubtitle = subsidyAccessPolicy?.groupAssociations?.length > 0 && !enterpriseGroup?.appliesToAllContexts;
+  const showSubtitle = bnrEnabled
+    || (subsidyAccessPolicy?.groupAssociations?.length > 0
+      && !enterpriseGroup?.appliesToAllContexts);
 
   return (
     <section>

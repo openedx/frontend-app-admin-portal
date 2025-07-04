@@ -15,7 +15,7 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
     data: subsidyAccessPolicy,
   } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
   const { data } = useEnterpriseGroup(subsidyAccessPolicy);
-
+  const bnrEnabled = subsidyAccessPolicy?.bnrEnabled;
   const catalogGroupView = subsidyAccessPolicy?.groupAssociations?.length > 0
     && !data.appliesToAllContexts;
   const { linkToCourse, uuid } = course;
@@ -42,7 +42,7 @@ const CourseCardFooterActions = ({ enterpriseId, course }) => {
           description="Button text to view course"
         />
       </Button>
-      {!catalogGroupView && (
+      {(!catalogGroupView && !bnrEnabled) && (
         <NewAssignmentModalButton key="assignment-modal-trigger" course={course}>
           <FormattedMessage
             id="lcm.budget.detail.page.catalog.tab.course.card.assign"
