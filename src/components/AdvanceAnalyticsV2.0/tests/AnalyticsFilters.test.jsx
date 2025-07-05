@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import AnalyticsFilters from '../AnalyticsFilters';
-import { GRANULARITY, CALCULATION } from '../data/constants';
+import { GRANULARITY, CALCULATION, DATE_RANGE } from '../data/constants';
 
 const mockSetStartDate = jest.fn();
 const mockSetEndDate = jest.fn();
@@ -58,6 +58,7 @@ describe('AnalyticsFilters Component', () => {
     expect(screen.getByLabelText('Filter by budget')).toBeDisabled();
     expect(screen.getByLabelText('Filter by course')).toBeDisabled();
     expect(screen.getByLabelText('Filter by course type')).toBeDisabled();
+    expect(screen.getByLabelText('Date range options')).toBeInTheDocument();
   });
 
   test('renders progress-specific filters', async () => {
@@ -199,6 +200,54 @@ describe('AnalyticsFilters Component', () => {
     });
 
     expect(mockSetCalculation).toHaveBeenCalledWith(CALCULATION.RUNNING_TOTAL);
+  });
+
+  test('changing date range calls handler', () => {
+    render(
+      <IntlProvider locale="en">
+        <AnalyticsFilters
+          {...defaultProps}
+          activeTab="engagement"
+        />
+      </IntlProvider>,
+    );
+
+    const past7Date = new Date();
+    fireEvent.change(screen.getByLabelText('Date range options'), {
+      target: { value: DATE_RANGE.LAST_7_DAYS },
+    });
+    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past7Date.setDate(past7Date.getDate() - 7)).toISOString().split('T')[0]);
+    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
+    mockSetStartDate.mockClear();
+    mockSetEndDate.mockClear();
+    const past30Date = new Date();
+    fireEvent.change(screen.getByLabelText('Date range options'), {
+      target: { value: DATE_RANGE.LAST_30_DAYS },
+    });
+    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past30Date.setDate(past30Date.getDate() - 30)).toISOString().split('T')[0]);
+    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
+    mockSetStartDate.mockClear();
+    mockSetEndDate.mockClear();
+    const past90Date = new Date();
+    fireEvent.change(screen.getByLabelText('Date range options'), {
+      target: { value: DATE_RANGE.LAST_90_DAYS },
+    });
+    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past90Date.setDate(past90Date.getDate() - 90)).toISOString().split('T')[0]);
+    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
+    mockSetStartDate.mockClear();
+    mockSetEndDate.mockClear();
+    const past365Date = new Date();
+    fireEvent.change(screen.getByLabelText('Date range options'), {
+      target: { value: DATE_RANGE.YEAR_TO_DATE },
+    });
+    expect(mockSetStartDate).toHaveBeenCalledWith(new Date(past365Date.setDate(past365Date.getDate() - 365)).toISOString().split('T')[0]);
+    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
+    mockSetStartDate.mockClear();
+    mockSetEndDate.mockClear();
+    fireEvent.change(screen.getByLabelText('Date range options'), {
+      target: { value: '' },
+    });
+    expect(mockSetEndDate).toHaveBeenCalledWith(new Date().toISOString().split('T')[0]);
   });
 
   test('renders granularity and calculation options correctly', () => {
