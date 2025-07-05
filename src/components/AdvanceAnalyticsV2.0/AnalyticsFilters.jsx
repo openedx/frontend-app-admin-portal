@@ -4,7 +4,7 @@ import { Form, IconButton, Icon } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import IconWithTooltip from '../IconWithTooltip';
-import { GRANULARITY, CALCULATION } from './data/constants';
+import { GRANULARITY, CALCULATION, DATE_RANGE } from './data/constants';
 
 export const DEFAULT_GROUP = '';
 
@@ -29,6 +29,29 @@ const AnalyticsFilters = ({
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
   const isProgressTab = activeTab === 'progress';
+
+  const handleDateRangeChange = (e) => {
+    const selectedRange = e.target.value;
+    if (selectedRange === 'DATE_RANGE.LAST_7_DAYS') {
+      const today = new Date();
+      setStartDate(new Date(today.setDate(today.getDate() - 7)).toISOString().split('T')[0]);
+      setEndDate(new Date().toISOString().split('T')[0]);
+    } else if (selectedRange === 'DATE_RANGE.LAST_30_DAYS') {
+      const today = new Date();
+      setStartDate(new Date(today.setDate(today.getDate() - 30)).toISOString().split('T')[0]);
+      setEndDate(new Date().toISOString().split('T')[0]);
+    } else if (selectedRange === 'DATE_RANGE.LAST_90_DAYS') {
+      const today = new Date();
+      setStartDate(new Date(today.setDate(today.getDate() - 90)).toISOString().split('T')[0]);
+      setEndDate(new Date().toISOString().split('T')[0]);
+    } else if (selectedRange === 'DATE_RANGE.YEAR_TO_DATE') {
+      const today = new Date();
+      setStartDate(new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0]);
+      setEndDate(new Date().toISOString().split('T')[0]);
+    } else {
+      setEndDate(new Date().toISOString().split('T')[0]);
+    }
+  };
 
   return (
     <div className={`container-fluid bg-primary-100 rounded-lg p-3 mb-2 position-relative analytics-filter-container ${collapsed ? 'collapsed' : ''}`}>
@@ -67,10 +90,35 @@ const AnalyticsFilters = ({
                 <Form.Control
                   controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                   as="select"
-                  disabled
-                  defaultValue=""
+                  value={calculation}
+                  onChange={(e) => handleDateRangeChange(e)}
+                  disabled={isFetching}
+                  defaultValue={DATE_RANGE.LAST_90_DAYS}
                 >
-                  <option value="">Custom</option>
+                  <option value={DATE_RANGE.LAST_7_DAYS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.last.7.days',
+                      defaultMessage: 'Last 7 days',
+                    })}
+                  </option>
+                  <option value={DATE_RANGE.LAST_30_DAYS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.last.30.days',
+                      defaultMessage: 'Last 30 days',
+                    })}
+                  </option>
+                  <option value={DATE_RANGE.LAST_90_DAYS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.last.90.days',
+                      defaultMessage: 'Last 90 days',
+                    })}
+                  </option>
+                  <option value={CALCULATION.MOVING_AVERAGE_7_PERIODS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.year.to.date',
+                      defaultMessage: 'Year to date',
+                    })}
+                  </option>
                 </Form.Control>
               </Form.Group>
             </div>
