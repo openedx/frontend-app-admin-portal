@@ -19,12 +19,13 @@ interface AdminOnboardingTourProps {
   currentStep: number;
   setCurrentStep: (currentStep: number) => void;
   enterpriseSlug: string;
+  onClose: () => void;
   targetSelector?: string;
 }
 
 const AdminOnboardingTour = (
   {
-    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, targetSelector,
+    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, onClose, targetSelector,
   }: AdminOnboardingTourProps,
 ): Array<TourStep> => {
   function handleAdvanceTour(advanceEventName: string) {
@@ -34,6 +35,7 @@ const AdminOnboardingTour = (
   }
   async function handleEndTour(endEventName: string, flowUuid: string) {
     try {
+      onClose();
       sendEnterpriseTrackEvent(enterpriseSlug, endEventName);
       await LmsApiService.updateCompletedTourFlows(adminUuid, flowUuid);
     } catch (error) {

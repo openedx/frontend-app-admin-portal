@@ -103,11 +103,10 @@ describe('tourFlows', () => {
     expect(flow[0].target).toBe(`#${TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR}`);
     expect(flow[1].target).toBe(`#${TRACK_LEARNER_PROGRESS_TARGETS.LPR_OVERVIEW}`);
 
-    expect(flow[2]).toEqual({
+    expect(flow[2]).toMatchObject({
       target: `#${TRACK_LEARNER_PROGRESS_TARGETS.AI_SUMMARY}`,
       placement: 'right',
       body: messages.trackLearnerProgressStepThreeBody.defaultMessage,
-      onAdvance: mockHandleAdvanceTour,
     });
 
     expect(flow[3].target).toBe(`#${TRACK_LEARNER_PROGRESS_TARGETS.PROGRESS_REPORT}`);

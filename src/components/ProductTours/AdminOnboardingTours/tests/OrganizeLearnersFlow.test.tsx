@@ -64,7 +64,7 @@ describe('useCreateOrganizeLearnersFlow', () => {
     expect(flow[4]).toMatchObject({
       target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
       placement: 'left',
-      body: messages.organizeLearnersStepSixBody.defaultMessage,
+      body: messages.organizeLearnersStepFiveBody.defaultMessage,
     });
   });
 

@@ -43,7 +43,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const adminOnboardingSteps = AdminOnboardingTour({
-    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, targetSelector,
+    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, onClose, targetSelector,
   });
 
   useEffect(() => {
