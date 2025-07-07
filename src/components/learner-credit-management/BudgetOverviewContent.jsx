@@ -32,6 +32,8 @@ const BudgetOverviewContent = ({
   const { isLoading: isLoadingEnterpriseOffer, data: enterpriseOfferMetadata } = useEnterpriseOffer(enterpriseOfferId);
   const { data: subsidyAccessPolicy } = useSubsidyAccessPolicy(subsidyAccessPolicyId);
 
+  const isBnREnabledPolicy = subsidyAccessPolicy?.bnrEnabled || false;
+
   const policyOrOfferId = subsidyAccessPolicyId || enterpriseOfferId;
   const {
     budgetId,
@@ -94,6 +96,7 @@ const BudgetOverviewContent = ({
           budgetTotalSummary={budgetTotalSummary}
           budgetAggregates={budgetAggregates}
           isAssignable={isAssignable}
+          isBnREnabledPolicy={isBnREnabledPolicy}
           isRetired={isRetired}
         />
       </Card.Section>
