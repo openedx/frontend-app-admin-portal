@@ -145,20 +145,4 @@ describe('AdminOnboardingTours', () => {
       expect(mockOnEnd).toHaveBeenCalled();
     });
   });
-
-  // it('should call sendEnterpriseTrackEvent with correct parameters when tour advances', () => {
-  //   renderComponent();
-
-  //   const firstStep = result.current[0];
-
-  //   act(() => {
-  //     firstStep.onAdvance();
-  //   });
-
-  //   expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
-  //     defaultProps.enterpriseSlug,
-  //     ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME,
-  //     { 'completed-step': 1 }
-  //   );
-  // });
 });

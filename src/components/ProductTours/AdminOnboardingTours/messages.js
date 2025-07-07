@@ -124,11 +124,6 @@ const messages = defineMessages({
     description: 'Description for the organize learners flow step four',
   },
   organizeLearnersStepFiveBody: {
-    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.5',
-    defaultMessage: 'View key details about this learner, including their name, email, join date, and course enrollments.',
-    description: 'Description for the organize learners flow step five',
-  },
-  organizeLearnersStepSixBody: {
     id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.6',
     defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
     + ' memberships at a glance.',
