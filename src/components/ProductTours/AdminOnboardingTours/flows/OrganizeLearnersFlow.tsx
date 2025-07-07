@@ -5,15 +5,15 @@ import messages from '../messages';
 import { configuration } from '../../../../config';
 import { TourStep } from '../../types';
 
-interface CreateOrganizeLearnersFlowProps {
+interface OrganizeLearnersFlowProps {
   handleAdvanceTour: (advanceEventName: string) => void;
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
 }
 
-const useCreateOrganizeLearnersFlow = ({
+const OrganizeLearnersFlow = ({
   handleAdvanceTour,
   handleEndTour,
-}: CreateOrganizeLearnersFlowProps): Array<TourStep> => {
+}: OrganizeLearnersFlowProps): Array<TourStep> => {
   const intl = useIntl();
 
   const tour: Array<TourStep> = [{
@@ -49,4 +49,4 @@ const useCreateOrganizeLearnersFlow = ({
   return tour;
 };
 
-export default useCreateOrganizeLearnersFlow;
+export default OrganizeLearnersFlow;

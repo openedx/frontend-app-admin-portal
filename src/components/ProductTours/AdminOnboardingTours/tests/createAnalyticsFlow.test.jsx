@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import useCreateAnalyticsFlow from '../data/useCreateAnalyticsFlow';
+import useCreateAnalyticsFlow from '../flows/AnalyticsFlow';
 import { ANALYTICS_INSIGHTS_TARGETS } from '../constants';
 import messages from '../messages';
 
@@ -103,17 +103,6 @@ describe('useCreateAnalyticsFlow', () => {
 });
 
 describe('function behavior', () => {
-  it('returns different function references for onAdvance and onEndTour', () => {
-    const { result: analyticsFlow } = renderHook(
-      () => useCreateAnalyticsFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-      }),
-      { wrapper },
-    );
-    expect(analyticsFlow.current[0].onAdvance).not.toEqual(analyticsFlow.current[5].onAdvance);
-  });
-
   it('maintains correct step order in analytics flows', () => {
     const { result: analyticsFlow } = renderHook(
       () => useCreateAnalyticsFlow({

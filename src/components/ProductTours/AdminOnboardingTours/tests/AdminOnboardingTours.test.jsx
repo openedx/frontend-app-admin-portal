@@ -13,7 +13,7 @@ const mockOnEnd = jest.fn();
 const eventName = 'onboarding-tour-event-name';
 const mockUuid = '123-issa-id';
 
-jest.mock('../data/useAdminOnboardingTour', () => jest.fn(() => ([
+jest.mock('../data/createAdminOnboardingTour', () => jest.fn(() => ([
   {
     target: '#step-1',
     placement: 'right',

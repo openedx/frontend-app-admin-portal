@@ -9,7 +9,7 @@ interface CreateTourFlowsProps {
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
 }
 
-const useCreateAnalyticsFlow = ({
+const AnalyticsFlow = ({
   handleAdvanceTour,
   handleEndTour,
 }: CreateTourFlowsProps): Array<TourStep> => {
@@ -51,4 +51,4 @@ const useCreateAnalyticsFlow = ({
   }];
 };
 
-export default useCreateAnalyticsFlow;
+export default AnalyticsFlow;

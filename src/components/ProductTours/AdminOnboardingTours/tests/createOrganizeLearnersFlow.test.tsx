@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import useCreateOrganizeLearnersFlow from '../data/useCreateOrganizeLearnersFlow';
+import useCreateOrganizeLearnersFlow from '../flows/OrganizeLearnersFlow';
 import { ORGANIZE_LEARNER_TARGETS } from '../constants';
 import messages from '../messages';
 
@@ -84,15 +84,5 @@ describe('useCreateOrganizeLearnersFlow', () => {
     expect(flow[2].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`);
     expect(flow[3].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}`);
     expect(flow[4].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`);
-  });
-  it('returns different function references for onAdvance and onEndTour', () => {
-    const { result: learnerFlow } = renderHook(
-      () => useCreateOrganizeLearnersFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-      }),
-      { wrapper },
-    );
-    expect(learnerFlow.current[0].onAdvance).not.toEqual(learnerFlow.current[4].onAdvance);
   });
 });

@@ -10,7 +10,7 @@ interface CreateTourFlowsProps {
   handleEndTour: (endEventName: string, flowUuid?: string) => void;
 }
 
-const useCreateLearnerProgressFlow = ({
+const LearnerProgressFlow = ({
   aiButtonVisible,
   handleAdvanceTour,
   handleEndTour,
@@ -70,4 +70,4 @@ const useCreateLearnerProgressFlow = ({
   return learnerProgressFlow;
 };
 
-export default useCreateLearnerProgressFlow;
+export default LearnerProgressFlow;

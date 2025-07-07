@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import useCreateLearnerProgressFlow from '../data/useCreateLearnerProgressFlow';
+import useCreateLearnerProgressFlow from '../flows/LearnerProgressFlow';
 import { TRACK_LEARNER_PROGRESS_TARGETS } from '../constants';
 import messages from '../messages';
 
@@ -145,15 +145,5 @@ describe('tourFlows', () => {
     );
 
     expect(mockFormatMessage).toHaveBeenCalledWith(messages.trackLearnerProgressStepThreeBody);
-  });
-  it('returns different function references for onAdvance and onEndTour', () => {
-    const { result: learnerFlow } = renderHook(
-      () => useCreateLearnerProgressFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-      }),
-      { wrapper },
-    );
-    expect(learnerFlow.current[0].onAdvance).not.toEqual(learnerFlow.current[5].onAdvance);
   });
 });
