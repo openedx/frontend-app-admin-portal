@@ -15,32 +15,33 @@ const OrganizeLearnersFlow = ({
   handleEndTour,
 }: OrganizeLearnersFlowProps): Array<TourStep> => {
   const intl = useIntl();
+  const onOrganizeAdvance = () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME);
 
   const tour: Array<TourStep> = [{
     target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
     placement: 'right',
     title: intl.formatMessage(messages.organizeLearnersStepOneTitle),
     body: intl.formatMessage(messages.organizeLearnersStepOneBody),
-    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME),
+    onAdvance: onOrganizeAdvance,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.ORG_GROUPS_ZERO_STATE}`,
     placement: 'top',
     body: intl.formatMessage(messages.organizeLearnersStepTwoBody),
-    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME),
+    onAdvance: onOrganizeAdvance,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`,
     placement: 'left',
     body: intl.formatMessage(messages.organizeLearnersStepThreeBody),
-    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME),
+    onAdvance: onOrganizeAdvance,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}`,
     placement: 'top',
     body: intl.formatMessage(messages.organizeLearnersStepFourBody),
-    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME),
+    onAdvance: onOrganizeAdvance,
   }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
     placement: 'left',
-    body: intl.formatMessage(messages.organizeLearnersStepSixBody),
+    body: intl.formatMessage(messages.organizeLearnersStepFiveBody),
     onEnd: () => handleEndTour(
       ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_COMPLETED_EVENT_NAME,
       configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID,
