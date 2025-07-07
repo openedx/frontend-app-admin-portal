@@ -33,6 +33,7 @@ export const ANALYTICS_TABS = {
   LEADERBOARD: 'leaderboard',
   ENGAGEMENTS: 'engagements',
   PROGRESS: 'progress',
+  OUTCOMES: 'outcomes',
 };
 
 export const analyticsDataTableKeys = {

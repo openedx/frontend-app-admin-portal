@@ -5,7 +5,7 @@ import { Spinner } from '@openedx/paragon';
 import classNames from 'classnames';
 
 const Stats = ({
-  isFetching, isError, data, tabName,
+  isFetching, isError, data, title, activeTab,
 }) => {
   const formatNumber = (number) => (number >= 10000
     ? new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 2 }).format(number)
@@ -21,74 +21,100 @@ const Stats = ({
     );
   }
 
+  const isEngagementTab = activeTab === 'engagements';
+  const isOutcomesTab = activeTab === 'outcomes';
+
   return (
     <div className="container-fluid bg-primary-100 rounded-lg p-3 mb-1">
       <h2 className="font-weight-bold mb-3">
         <FormattedMessage
           id="advance.analytics.engagement.stats.engagement.metrics.heading"
-          defaultMessage="{tabName} metrics"
-          values={{ tabName }}
-          description="Heading for the analytics stats section, tab name passed as a prop and metrics is hardcoded"
+          defaultMessage="{title} metrics"
+          values={{ title }}
+          description="Heading for the analytics stats section"
         />
       </h2>
 
       <div className={classNames('stats-container bg-white border-white rounded-lg pt-3 analytics-stats-inner-container', { 'is-fetching': isFetching })}>
         {isFetching && (
-        <div className="spinner-centered">
-          <Spinner animation="border" />
-        </div>
+          <div className="spinner-centered">
+            <Spinner animation="border" />
+          </div>
         )}
         <div className="row">
-          <div className="col d-flex flex-column justify-content-center align-items-center">
-            <p className="mb-0 small font-weight-normal title-enrollments">
-              <FormattedMessage
-                id="advance.analytics.enrollments.stats.title"
-                defaultMessage="Enrollments"
-                description="Title for the enrollments stat."
-              />
-            </p>
-            <p className="font-weight-bolder analytics-stat-number value-enrollments">{formatNumber(data?.enrolls || 0)}</p>
-          </div>
-          <div className="col d-flex flex-column justify-content-center align-items-center">
-            <p className="mb-0 small font-weight-normal title-distinct-courses">
-              <FormattedMessage
-                id="advance.analytics.engagement.stats.distinct.courses.title"
-                defaultMessage="Distinct Courses"
-                description="Title for the distinct courses stat."
-              />
-            </p>
-            <p className="font-weight-bolder analytics-stat-number value-distinct-courses">{formatNumber(data?.courses || 0)}</p>
-          </div>
-          <div className="col d-flex flex-column justify-content-center align-items-center">
-            <p className="mb-0 small font-weight-normal title-daily-sessions">
-              <FormattedMessage
-                id="advance.analytics.engagement.stats.daily.sessions.title"
-                defaultMessage="Daily Sessions"
-                description="Title for the daily sessions stat."
-              />
-            </p>
-            <p className="font-weight-bolder analytics-stat-number value-daily-sessions">{formatNumber(data?.sessions || 0)}</p>
-          </div>
-          <div className="col d-flex flex-column justify-content-center align-items-center">
-            <p className="mb-0 small font-weight-normal title-learning-hours">
-              <FormattedMessage
-                id="advance.analytics.engagement.stats.learning.hours.title"
-                defaultMessage="Learning Hours"
-                description="Title for the learning hours stat."
-              />
-            </p>
-            <p className="font-weight-bolder analytics-stat-number value-learning-hours">{formatNumber(data?.hours || 0)}</p>
-          </div>
-          <div className="col d-flex flex-column justify-content-center align-items-center">
-            <p className="mb-0 small font-weight-normal title-completions">
-              <FormattedMessage
-                id="advance.analytics.engagement.stats.completions.title"
-                defaultMessage="Completions"
-                description="Title for the completions stat."
-              />
-            </p>
-            <p className="font-weight-bolder analytics-stat-number value-completions">{formatNumber(data?.completions || 0)}</p>
-          </div>
+          {isEngagementTab && (
+            <>
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-enrollments">
+                  <FormattedMessage id="advance.analytics.enrollments.stats.title" defaultMessage="Enrollments" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-enrollments">{formatNumber(data?.enrolls || 0)}</p>
+              </div>
+
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-distinct-courses">
+                  <FormattedMessage id="advance.analytics.engagement.stats.distinct.courses.title" defaultMessage="Distinct Courses" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-distinct-courses">{formatNumber(data?.courses || 0)}</p>
+              </div>
+
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-daily-sessions">
+                  <FormattedMessage id="advance.analytics.engagement.stats.daily.sessions.title" defaultMessage="Daily Sessions" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-daily-sessions">{formatNumber(data?.sessions || 0)}</p>
+              </div>
+
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-learning-hours">
+                  <FormattedMessage id="advance.analytics.engagement.stats.learning.hours.title" defaultMessage="Learning Hours" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-learning-hours">{formatNumber(data?.hours || 0)}</p>
+              </div>
+
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-completions">
+                  <FormattedMessage id="advance.analytics.engagement.stats.completions.title" defaultMessage="Completions" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-completions">{formatNumber(data?.completions || 0)}</p>
+              </div>
+            </>
+          )}
+
+          {isOutcomesTab && (
+            <>
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-completions">
+                  <FormattedMessage id="advance.analytics.outcomes.stats.completions.title" defaultMessage="Completions" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-completions">{formatNumber(data?.completions || 0)}</p>
+              </div>
+
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-unique-skills">
+                  <FormattedMessage id="advance.analytics.outcomes.stats.unique.skills.title" defaultMessage="Unique skills gained" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-unique-skills">{formatNumber(0)}</p>
+              </div>
+
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-upskilled-learners">
+                  <FormattedMessage id="advance.analytics.outcomes.stats.upskilled.learners.title" defaultMessage="Upskilled learners" />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-upskilled-learners">{formatNumber(0)}</p>
+              </div>
+
+              <div className="col d-flex flex-column justify-content-center align-items-center">
+                <p className="mb-0 small font-weight-normal title-new-skills">
+                  <FormattedMessage
+                    id="advance.analytics.outcomes.stats.new.skills.this.year.title"
+                    defaultMessage={`New skills learned in ${new Date().getFullYear()}`}
+                  />
+                </p>
+                <p className="font-weight-bolder analytics-stat-number value-new-skills">{formatNumber(0)}</p>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -96,7 +122,7 @@ const Stats = ({
 };
 
 Stats.propTypes = {
-  tabName: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   data: PropTypes.shape({
     enrolls: PropTypes.number,
     courses: PropTypes.number,
@@ -106,6 +132,7 @@ Stats.propTypes = {
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
+  activeTab: PropTypes.string.isRequired,
 };
 
 export default Stats;

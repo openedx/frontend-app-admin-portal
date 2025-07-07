@@ -11,6 +11,7 @@ import { useEnterpriseAnalyticsAggregatesData } from './data/hooks';
 import { GRANULARITY, CALCULATION } from './data/constants';
 import { useAllFlexEnterpriseGroups } from '../learner-credit-management/data';
 import { AnalyticsFiltersContext } from './AnalyticsFiltersContext';
+import Outcomes from './tabs/Outcomes';
 
 const AnalyticsPage = ({ enterpriseId }) => {
   const [activeTab, setActiveTab] = useState('engagements');
@@ -101,7 +102,11 @@ const AnalyticsPage = ({ enterpriseId }) => {
                   defaultMessage: 'Outcomes',
                   description: 'Title for the outcomes tab in advance analytics.',
                 })}
-              />
+              >
+                <Outcomes
+                  enterpriseId={enterpriseId}
+                />
+              </Tab>
             </Tabs>
           </div>
         </AnalyticsFiltersContext.Provider>
