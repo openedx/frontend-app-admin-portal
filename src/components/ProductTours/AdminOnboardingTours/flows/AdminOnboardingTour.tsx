@@ -22,7 +22,7 @@ interface AdminOnboardingTourProps {
   targetSelector?: string;
 }
 
-const createAdminOnboardingTour = (
+const AdminOnboardingTour = (
   {
     adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, targetSelector,
   }: AdminOnboardingTourProps,
@@ -62,4 +62,4 @@ const createAdminOnboardingTour = (
   return selectedFlow || learnerProgressFlow;
 };
 
-export default createAdminOnboardingTour;
+export default AdminOnboardingTour;

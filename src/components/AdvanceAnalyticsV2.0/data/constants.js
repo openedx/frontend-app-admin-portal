@@ -114,3 +114,9 @@ export const CALCULATION = {
   MOVING_AVERAGE_3_PERIODS: 'moving-average-3-period',
   MOVING_AVERAGE_7_PERIODS: 'moving-average-7-period',
 };
+export const DATE_RANGE = {
+  LAST_7_DAYS: 'last_7_days',
+  LAST_30_DAYS: 'last_30_days',
+  LAST_90_DAYS: 'last_90_days',
+  YEAR_TO_DATE: 'year_to_date',
+};

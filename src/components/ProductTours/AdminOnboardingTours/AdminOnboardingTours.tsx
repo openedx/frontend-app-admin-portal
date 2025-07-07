@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import createAdminOnboardingTour from './flows/AdminOnboardingTour';
+import AdminOnboardingTour from './flows/AdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 
@@ -42,7 +42,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   const intl = useIntl();
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
-  const adminOnboardingSteps = createAdminOnboardingTour({
+  const adminOnboardingSteps = AdminOnboardingTour({
     adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, targetSelector,
   });
 
