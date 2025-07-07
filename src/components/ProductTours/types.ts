@@ -7,6 +7,7 @@ export interface TourStep {
   body: ReactNode;
   // flow uuid is needed for the final completion step
   onAdvance?: (advanceEventName: string, flowUuid?: string) => void;
+  onEnd?: (endEventName: string, flowUuid?: string) => void;
 }
 
 export interface TourFlow {

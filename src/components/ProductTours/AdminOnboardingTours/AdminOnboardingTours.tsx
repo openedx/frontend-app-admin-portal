@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import useAdminOnboardingTour from './data/useAdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
@@ -39,6 +39,7 @@ interface RootState {
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   adminUuid, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
+  const intl = useIntl();
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
   const adminOnboardingSteps = useAdminOnboardingTour({
@@ -58,38 +59,25 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       tourId: 'admin-onboarding-tour',
       enabled: isOpen,
       startingIndex: currentStep,
-      advanceButtonText: (
-        <FormattedMessage
-          id="adminPortal.productTours.adminOnboarding.next"
-          defaultMessage="Next"
-          description="Text for the next button"
-        />
-      ),
-      backButtonText: (
-        <FormattedMessage
-          id="adminPortal.productTours.adminOnboarding.back"
-          defaultMessage="Back"
-          description="Text for the back button"
-        />
-      ),
-      endButtonText: (
-        <FormattedMessage
-          id="adminPortal.productTours.adminOnboarding.end"
-          defaultMessage="Keep going"
-          description="Text for the end button"
-        />
-      ),
+      advanceButtonText: intl.formatMessage({
+        id: 'adminPortal.productTours.adminOnboarding.next',
+        defaultMessage: 'Next',
+        description: 'Text for the next button',
+      }),
+      backButtonText: intl.formatMessage({
+        id: 'adminPortal.productTours.adminOnboarding.back',
+        defaultMessage: 'Back',
+        description: 'Text for the back button',
+      }),
+      endButtonText: intl.formatMessage({
+        id: 'adminPortal.productTours.adminOnboarding.end',
+        defaultMessage: 'Keep going',
+        description: 'Text for the end button',
+      }),
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
       checkpoints: adminOnboardingSteps,
-      // checkpoints: adminOnboardingSteps.map((step, index) => ({
-      //   ...step,
-      //   onAdvance: () => {
-      //     setCurrentStep(index + 1);
-      //     step.onAdvance();
-      //   },
-      // })),
     },
   ];
 

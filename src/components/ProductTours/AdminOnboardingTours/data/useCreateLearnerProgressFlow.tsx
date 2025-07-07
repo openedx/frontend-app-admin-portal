@@ -2,7 +2,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { TRACK_LEARNER_PROGRESS_TARGETS, ADMIN_TOUR_EVENT_NAMES } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
-import { flowUuids } from '../../../../config';
+import { configuration } from '../../../../config';
 
 interface CreateTourFlowsProps {
   aiButtonVisible?: boolean;
@@ -52,9 +52,9 @@ const useCreateLearnerProgressFlow = ({
     target: `#${TRACK_LEARNER_PROGRESS_TARGETS.MODULE_ACTIVITY}`,
     placement: 'top',
     body: intl.formatMessage(messages.trackLearnerProgressStepEightBody),
-    onAdvance: () => handleEndTour(
+    onEnd: () => handleEndTour(
       ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_COMPLETED_EVENT_NAME,
-      flowUuids.TRACK_LEARNER_PROGRESS_UUID,
+      configuration.ADMIN_ONBOARDING_UUIDS.FLOW_TRACK_LEARNER_PROGRESS_UUID,
     ),
   }];
 

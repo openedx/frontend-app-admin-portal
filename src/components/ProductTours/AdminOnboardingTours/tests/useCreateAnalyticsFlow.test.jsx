@@ -1,7 +1,6 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
-import useCreateLearnerProgressFlow from '../data/useCreateLearnerProgressFlow';
 import useCreateAnalyticsFlow from '../data/useCreateAnalyticsFlow';
 import { ANALYTICS_INSIGHTS_TARGETS } from '../constants';
 import messages from '../messages';
@@ -115,16 +114,7 @@ describe('function behavior', () => {
     expect(analyticsFlow.current[0].onAdvance).not.toEqual(analyticsFlow.current[5].onAdvance);
   });
 
-  it('maintains correct step order in both flows', () => {
-    const { result: learnerFlow } = renderHook(
-      () => useCreateLearnerProgressFlow({
-        handleAdvanceTour: mockHandleAdvanceTour,
-        handleEndTour: mockHandleEndTour,
-        aiButtonVisible: false,
-      }),
-      { wrapper },
-    );
-
+  it('maintains correct step order in analytics flows', () => {
     const { result: analyticsFlow } = renderHook(
       () => useCreateAnalyticsFlow({
         handleAdvanceTour: mockHandleAdvanceTour,
@@ -134,24 +124,15 @@ describe('function behavior', () => {
       { wrapper },
     );
 
-    expect(learnerFlow.current).toHaveLength(7);
-
     expect(analyticsFlow.current).toHaveLength(6);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    learnerFlow.current.forEach((step, _) => {
-      expect(step).toHaveProperty('target');
-      expect(step).toHaveProperty('placement');
-      expect(step).toHaveProperty('body');
-      expect(step).toHaveProperty('onAdvance');
-      expect(typeof step.onAdvance).toBe('function');
-    });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     analyticsFlow.current.forEach((step, _) => {
       expect(step).toHaveProperty('target');
       expect(step).toHaveProperty('placement');
       expect(step).toHaveProperty('body');
-      expect(step).toHaveProperty('onAdvance');
-      expect(typeof step.onAdvance).toBe('function');
     });
+
+    expect(analyticsFlow.current[0]).toHaveProperty('onAdvance');
+    expect(analyticsFlow.current[5]).toHaveProperty('onEnd');
   });
 });

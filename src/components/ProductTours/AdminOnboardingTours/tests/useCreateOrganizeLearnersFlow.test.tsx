@@ -38,7 +38,7 @@ describe('useCreateOrganizeLearnersFlow', () => {
 
     const flow = result.current;
 
-    expect(flow).toHaveLength(6);
+    expect(flow).toHaveLength(5);
 
     expect(flow[0]).toMatchObject({
       target: `#${ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR}`,
@@ -62,11 +62,6 @@ describe('useCreateOrganizeLearnersFlow', () => {
       body: messages.organizeLearnersStepFourBody.defaultMessage,
     });
     expect(flow[4]).toMatchObject({
-      target: `#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_HIGHLIGHT}`,
-      placement: 'top',
-      body: messages.organizeLearnersStepFiveBody.defaultMessage,
-    });
-    expect(flow[5]).toMatchObject({
       target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
       placement: 'left',
       body: messages.organizeLearnersStepSixBody.defaultMessage,
@@ -88,8 +83,7 @@ describe('useCreateOrganizeLearnersFlow', () => {
     expect(flow[1].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.ORG_GROUPS_ZERO_STATE}`);
     expect(flow[2].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.CREATE_GROUP_BUTTON}`);
     expect(flow[3].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_TABLE}`);
-    expect(flow[4].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_HIGHLIGHT}`);
-    expect(flow[5].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`);
+    expect(flow[4].target).toBe(`#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`);
   });
   it('returns different function references for onAdvance and onEndTour', () => {
     const { result: learnerFlow } = renderHook(
@@ -99,6 +93,6 @@ describe('useCreateOrganizeLearnersFlow', () => {
       }),
       { wrapper },
     );
-    expect(learnerFlow.current[0].onAdvance).not.toEqual(learnerFlow.current[5].onAdvance);
+    expect(learnerFlow.current[0].onAdvance).not.toEqual(learnerFlow.current[4].onAdvance);
   });
 });

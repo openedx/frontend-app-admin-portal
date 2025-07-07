@@ -2,7 +2,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { ADMIN_TOUR_EVENT_NAMES, ANALYTICS_INSIGHTS_TARGETS } from '../constants';
 import messages from '../messages';
 import { TourStep } from '../../types';
-import { flowUuids } from '../../../../config';
+import { configuration } from '../../../../config';
 
 interface CreateTourFlowsProps {
   handleAdvanceTour: (advanceEventName: string) => void;
@@ -44,9 +44,9 @@ const useCreateAnalyticsFlow = ({
     target: `#${ANALYTICS_INSIGHTS_TARGETS.SKILLS}`,
     placement: 'top',
     body: intl.formatMessage(messages.viewEnrollmentInsightsStepSixBody),
-    onAdvance: () => handleEndTour(
+    onEnd: () => handleEndTour(
       ADMIN_TOUR_EVENT_NAMES.ENROLLMENT_INSIGHTS_COMPLETED_EVENT_NAME,
-      flowUuids.ENROLLMENT_INSIGHTS_UUID,
+      configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ENROLLMENT_INSIGHTS,
     ),
   }];
 };

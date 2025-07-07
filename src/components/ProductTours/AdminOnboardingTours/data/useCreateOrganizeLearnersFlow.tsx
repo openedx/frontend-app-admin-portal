@@ -2,7 +2,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { ADMIN_TOUR_EVENT_NAMES, ORGANIZE_LEARNER_TARGETS } from '../constants';
 import messages from '../messages';
-import { flowUuids } from '../../../../config';
+import { configuration } from '../../../../config';
 import { TourStep } from '../../types';
 
 interface CreateOrganizeLearnersFlowProps {
@@ -38,17 +38,12 @@ const useCreateOrganizeLearnersFlow = ({
     body: intl.formatMessage(messages.organizeLearnersStepFourBody),
     onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME),
   }, {
-    target: `#${ORGANIZE_LEARNER_TARGETS.ORG_MEMBER_HIGHLIGHT}`,
-    placement: 'top',
-    body: intl.formatMessage(messages.organizeLearnersStepFiveBody),
-    onAdvance: () => handleAdvanceTour(ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_ADVANCE_EVENT_NAME),
-  }, {
     target: `#${ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}`,
     placement: 'left',
     body: intl.formatMessage(messages.organizeLearnersStepSixBody),
-    onAdvance: () => handleEndTour(
+    onEnd: () => handleEndTour(
       ADMIN_TOUR_EVENT_NAMES.ORGANIZE_LEARNERS_COMPLETED_EVENT_NAME,
-      flowUuids.ORGANIZE_LEARNERS_UUID,
+      configuration.ADMIN_ONBOARDING_UUIDS.FLOW_ORGANIZE_LEARNERS_UUID,
     ),
   }];
   return tour;

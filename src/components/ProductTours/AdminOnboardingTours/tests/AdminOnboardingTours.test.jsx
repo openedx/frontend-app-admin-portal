@@ -9,6 +9,9 @@ import userEvent from '@testing-library/user-event';
 import AdminOnboardingTours from '../AdminOnboardingTours';
 
 const mockOnAdvance = jest.fn();
+const mockOnEnd = jest.fn();
+const eventName = 'onboarding-tour-event-name';
+const mockUuid = '123-issa-id';
 
 jest.mock('../data/useAdminOnboardingTour', () => jest.fn(() => ([
   {
@@ -16,23 +19,23 @@ jest.mock('../data/useAdminOnboardingTour', () => jest.fn(() => ([
     placement: 'right',
     title: 'This is a title',
     body: 'And would you believe it, this is a body!',
-    onAdvance: mockOnAdvance,
+    onAdvance: () => mockOnAdvance(eventName),
   },
   {
     target: '#step-2',
     placement: 'bottom',
     body: 'Learning is so fun!',
-    onAdvance: mockOnAdvance,
+    onAdvance: () => mockOnAdvance(eventName),
   }, {
     target: '#step-3',
     placement: 'top',
     body: 'Here is a really cool button, or perhaps a table.',
-    onAdvance: mockOnAdvance,
+    onAdvance: () => mockOnAdvance(eventName),
   }, {
     target: '#step-4',
     placement: 'top',
     body: 'Upon our conclusion, I wish you an earnest farewell.',
-    onEnd: mockOnAdvance,
+    onAdvance: () => mockOnEnd(eventName, mockUuid),
   },
 ])));
 

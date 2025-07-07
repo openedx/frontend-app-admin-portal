@@ -32,7 +32,6 @@ const useAdminOnboardingTour = (
     sendEnterpriseTrackEvent(enterpriseSlug, advanceEventName, { 'completed-step': newIndex });
     setCurrentStep(newIndex);
   };
-
   const handleEndTour = async (endEventName: string, flowUuid: string) => {
     try {
       sendEnterpriseTrackEvent(enterpriseSlug, endEventName);
