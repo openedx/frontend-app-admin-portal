@@ -269,6 +269,23 @@ describe('EnterpriseAccessApiService', () => {
     );
   });
 
+  test('approveBnrSubsidyRequest calls enterprise-access to approve BNR subsidy request', () => {
+    const mockBnrSubsidyRequestUUID = 'test-bnr-subsidy-request-uuid';
+
+    EnterpriseAccessApiService.approveBnrSubsidyRequest({
+      enterpriseId: mockEnterpriseUUID,
+      subsidyRequestUUID: mockBnrSubsidyRequestUUID,
+      subsidyAccessPolicyId: mockSubsidyAccessPolicyUUID,
+    });
+
+    expect(axios.post).toBeCalledWith(`${enterpriseAccessBaseUrl}/api/v1/learner-credit-requests/approve/`, {
+      learner_credit_request_uuid: mockBnrSubsidyRequestUUID,
+      enterprise_customer_uuid: mockEnterpriseUUID,
+      policy_uuid: mockSubsidyAccessPolicyUUID,
+
+    });
+  });
+
   test('fetchBnrSubsidyRequests calls enterprise-access with enterpriseUUID and options', () => {
     const options = {
       page: 2,
