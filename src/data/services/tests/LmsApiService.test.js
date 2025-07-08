@@ -195,7 +195,7 @@ describe('LmsApiService', () => {
     const response = await LmsApiService.updateCompletedTourFlows('test-admin-uuid', 'test-flow-uuid');
     expect(axios.post).toHaveBeenCalledWith(
       `${lmsBaseUrl}/enterprise/api/v1/enterprise-customer-admin/test-admin-uuid/complete_tour_flow/`,
-      { flow_uuid: ['test-flow-uuid'] },
+      { flow_uuid: 'test-flow-uuid' },
     );
     expect(response).toEqual(mockPayload);
   });

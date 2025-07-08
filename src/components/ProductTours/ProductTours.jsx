@@ -12,11 +12,6 @@ import highlightsTour from './highlightsTour';
 import browseAndRequestTour from './browseAndRequestTour';
 import { disableAll, filterCheckpoints } from './data/utils';
 import AdminOnboardingTours from './AdminOnboardingTours/AdminOnboardingTours';
-
-import {
-  useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
-  useLearnerDetailPageTour,
-} from './data/hooks';
 import {
   BROWSE_AND_REQUEST_TOUR_COOKIE_NAME,
   HIGHLIGHTS_COOKIE_NAME,
@@ -24,8 +19,13 @@ import {
   LEARNER_DETAIL_PAGE_COOKIE_NAME,
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
+
+import {
+  useBrowseAndRequestTour, usePortalAppearanceTour, useLearnerCreditTour, useHighlightsTour,
+  useLearnerDetailPageTour,
+} from './data/hooks';
 import TourCollapsible from './TourCollapsible';
-import { TRACK_LEARNER_PROGRESS_TARGETS, ANALYTICS_INSIGHTS_FLOW } from './AdminOnboardingTours/constants';
+import { ANALYTICS_INSIGHTS_TARGETS, ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
@@ -73,11 +73,11 @@ const ProductTours = ({
   const handleTourSelect = (targetId) => {
     if (targetId === TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.learners}/`);
-    }
-    if (targetId === ANALYTICS_INSIGHTS_FLOW.SIDEBAR) {
+    } else if (targetId === ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/`);
+    } else if (targetId === ANALYTICS_INSIGHTS_TARGETS.SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.analytics}/`);
     }
-
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);
     // collapsible will reopen on the last step of the flow
@@ -99,8 +99,8 @@ const ProductTours = ({
           />
           <TourCollapsible
             onTourSelect={handleTourSelect}
-            showCollapsible={showCollapsible}
             setShowCollapsible={setShowCollapsible}
+            showCollapsible={showCollapsible}
           />
         </>
       )}
@@ -108,8 +108,8 @@ const ProductTours = ({
         <AdminOnboardingTours
           isOpen={isAdminTourOpen}
           onClose={handleTourClose}
-          targetSelector={selectedTourTarget}
           setTarget={setSelectedTourTarget}
+          targetSelector={selectedTourTarget}
         />
       ) : (
         <ProductTour
@@ -121,8 +121,8 @@ const ProductTours = ({
 };
 
 ProductTours.propTypes = {
-  enterpriseSlug: PropTypes.string.isRequired,
   enableLearnerPortal: PropTypes.bool.isRequired,
+  enterpriseSlug: PropTypes.string.isRequired,
   onboardingEnabled: PropTypes.bool.isRequired,
   onboardingTourCompleted: PropTypes.bool.isRequired,
   onboardingTourDismissed: PropTypes.bool.isRequired,

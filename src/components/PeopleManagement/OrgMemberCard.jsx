@@ -6,6 +6,7 @@ import {
 } from '@openedx/paragon';
 
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
+import { ORGANIZE_LEARNER_TARGETS } from '../ProductTours/AdminOnboardingTours/constants';
 
 const OrgMemberCard = ({ original, learnerProfileViewEnabled }) => {
   const { enterpriseSlug } = useParams();
@@ -43,6 +44,7 @@ const OrgMemberCard = ({ original, learnerProfileViewEnabled }) => {
             {learnerProfileViewEnabled && (
               <Col>
                 <Hyperlink
+                  id={ORGANIZE_LEARNER_TARGETS.MEMBER_VIEW_MORE}
                   className="pt-4"
                   destination={learnerDetailHyperlink}
                 >

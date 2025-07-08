@@ -7,33 +7,35 @@ import { IntlProvider } from '@edx/frontend-platform/i18n';
 
 import userEvent from '@testing-library/user-event';
 import AdminOnboardingTours from '../AdminOnboardingTours';
-import useAdminOnboardingTour from '../useAdminOnboardingTour';
 
 const mockOnAdvance = jest.fn();
+const mockOnEnd = jest.fn();
+const eventName = 'onboarding-tour-event-name';
+const mockUuid = '123-issa-id';
 
-jest.mock('../useAdminOnboardingTour', () => jest.fn(() => ([
+jest.mock('../flows/AdminOnboardingTour', () => jest.fn(() => ([
   {
     target: '#step-1',
     placement: 'right',
     title: 'This is a title',
     body: 'And would you believe it, this is a body!',
-    onAdvance: mockOnAdvance,
+    onAdvance: () => mockOnAdvance(eventName),
   },
   {
     target: '#step-2',
     placement: 'bottom',
     body: 'Learning is so fun!',
-    onAdvance: mockOnAdvance,
+    onAdvance: () => mockOnAdvance(eventName),
   }, {
     target: '#step-3',
     placement: 'top',
     body: 'Here is a really cool button, or perhaps a table.',
-    onAdvance: mockOnAdvance,
+    onAdvance: () => mockOnAdvance(eventName),
   }, {
     target: '#step-4',
     placement: 'top',
     body: 'Upon our conclusion, I wish you an earnest farewell.',
-    onEnd: mockOnAdvance,
+    onEnd: () => mockOnEnd(eventName, mockUuid),
   },
 ])));
 
@@ -109,16 +111,6 @@ describe('AdminOnboardingTours', () => {
     expect(overlay).toBeTruthy();
   });
 
-  it('renders useAdminOnboardingTour hook with correct parameters', () => {
-    renderComponent();
-    expect(useAdminOnboardingTour).toHaveBeenCalledWith({
-      enterpriseSlug: slug,
-      adminUuid: enterpriseAdminUuid,
-      aiButtonVisible: true,
-      targetSelector: '#step-1',
-    });
-  });
-
   it('renders Product tour', async () => {
     renderComponent();
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
@@ -133,6 +125,24 @@ describe('AdminOnboardingTours', () => {
     userEvent.click(nextButton);
     await waitFor(() => {
       expect(mockOnAdvance).toHaveBeenCalled();
+    });
+  });
+
+  it('ends the tour', async () => {
+    renderComponent();
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+    const nextButton = screen.getByRole('button', { name: 'Next' });
+    userEvent.click(nextButton);
+    expect(await screen.findByText('Learning is so fun!')).toBeInTheDocument();
+    userEvent.click(nextButton);
+    expect(await screen.findByText('Here is a really cool button, or perhaps a table.')).toBeInTheDocument();
+    userEvent.click(nextButton);
+    expect(await screen.findByText('Upon our conclusion, I wish you an earnest farewell.')).toBeInTheDocument();
+    const endButton = screen.getByRole('button', { name: 'Keep going' });
+    userEvent.click(endButton);
+
+    await waitFor(() => {
+      expect(mockOnEnd).toHaveBeenCalled();
     });
   });
 });

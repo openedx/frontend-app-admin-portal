@@ -1,5 +1,6 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
+export const ORGANIZE_LEARNERS_TITLE = 'Organize learners';
 export const TRACK_LEARNER_PROGRESS_TITLE = 'Track Learner Progress';
 export const VIEW_ENROLLMENTS_INSIGHT_TITLE = 'View enrollment insights';
 
@@ -29,7 +30,6 @@ const messages = defineMessages({
     defaultMessage: 'We\'re excited to show you the edX administrative portal.'
     + ' Use our {bold_tag}Quick Start Guide{bold_tag} to get step-by-step guidance on what our portal can do for you.',
     description: 'Body for the welcome modal for new users.',
-
   },
   welcomeModalExistingUserTitle: {
     id: 'admin.portal.productTours.adminOnboarding.welcomeModal.title.existing',
@@ -97,6 +97,37 @@ const messages = defineMessages({
     id: 'adminPortal.productTours.adminOnboarding.trackLearnerProgress.body.8',
     defaultMessage: 'View module-level details for Executive Education courses.',
     description: 'Description for the learner progress tracking step eight',
+  },
+  organizeLearnersStepOneTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.title.1',
+    defaultMessage: ORGANIZE_LEARNERS_TITLE,
+    description: 'Title for the organize learners flow step one',
+  },
+  organizeLearnersStepOneBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.1',
+    defaultMessage: 'Create learner groups, view all learners in your organization, and access individual learner profiles—all in one place.',
+    description: 'Description for the organize learners flow step one',
+  },
+  organizeLearnersStepTwoBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.2',
+    defaultMessage: 'Organize learners by creating groups for tracking and assignments.',
+    description: 'Description for the organize learners flow step two',
+  },
+  organizeLearnersStepThreeBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.3',
+    defaultMessage: 'When you\'re ready, use "Create Group" to get started.',
+    description: 'Description for the organize learners flow step three',
+  },
+  organizeLearnersStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.4',
+    defaultMessage: 'View all learners in your organization. Search by name and access profiles to track progress and view learning access.',
+    description: 'Description for the organize learners flow step four',
+  },
+  organizeLearnersStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.organizeLearners.body.6',
+    defaultMessage: '"View more" allows you to see the learner\'s full profile with enrollments, access type, and group'
+    + ' memberships at a glance.',
+    description: 'Description for the organize learners flow step six',
   },
   viewEnrollmentInsights: {
     id: 'adminPortal.productTours.adminOnboarding.viewEnrollmentInsights.title.1',
