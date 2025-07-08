@@ -29,6 +29,16 @@ export const TRACK_LEARNER_PROGRESS_TARGETS = {
   MODULE_ACTIVITY,
 };
 
+export const ADMINISTER_SUBSCRIPTIONS_FLOW = {
+  SIDEBAR: 'subscriptions-sidebar',
+  SUBSCRIPTION_PLANS_LIST: 'subscription-plans-list',
+  MANAGE_LEARNERS_BUTTON: 'manage-learners-button',
+  SUBSCRIPTION_PLANS_DETAIL_PAGE: 'subscription-plans-detail-page',
+  INVITE_LEARNERS_BUTTON: 'invite-learners-button',
+  LICENSE_ALLOCATION_SECTION: 'license-allocation-section',
+  LICENSE_ALLOCATION_FILTERS: 'pgn__data-table-layout-sidebar',
+  SUBSCRIPTIONS_NAVIGATION: 'subscription-navigation',
+};
 const LEARNER_PROGRESS_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.advance';
 const LEARNER_PROGRESS_DISMISS_EVENT_NAME = 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.dismiss';
 

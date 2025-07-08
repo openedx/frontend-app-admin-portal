@@ -54,6 +54,7 @@ const SubscriptionCard = ({
 
     return actions.map(action => (
       <Button
+        id={action.buttonText === 'Manage learners' ? 'manage-learners-button' : action.buttonText}
         key={action.to}
         variant={action.variant}
         as={Link}

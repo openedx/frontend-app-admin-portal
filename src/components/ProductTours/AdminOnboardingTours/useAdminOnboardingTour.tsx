@@ -6,12 +6,14 @@ import {
   ADMIN_TOUR_EVENT_NAMES,
   TRACK_LEARNER_PROGRESS_TARGETS,
   ANALYTICS_INSIGHTS_FLOW,
+  ADMINISTER_SUBSCRIPTIONS_FLOW,
 } from './constants';
 
 import LmsApiService from '../../../data/services/LmsApiService';
 import { flowUuids } from '../../../config';
 import useCreateLearnerProgressFlow from './useCreateLearnerProgressFlow';
 import useCreateAnalyticsFlow from './useCreateAnalyticsFlow';
+import useAdministerSubscriptionsFlow from './useAdministerSubscriptionsFlow';
 import { TourStep } from '../types';
 
 interface UseAdminOnboardingTourProps {
@@ -32,10 +34,18 @@ const useAdminOnboardingTour = (
   const [stepIndex, setStepIndex] = useState(0);
 
   const handleAdvanceTour = useCallback(() => {
+    const manageLearnersButton = document.getElementById('manage-learners-button');
+    if (manageLearnersButton && targetSelector === 'manage-learners-button') {
+      manageLearnersButton.click();
+      // Reset step index to 0 when navigating to detail page
+      // The flow will change, so we need to start from the beginning
+      setStepIndex(0);
+      return;
+    }
     const newIndex = stepIndex + 1;
     sendEnterpriseTrackEvent(enterpriseSlug, ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME, { 'completed-step': newIndex });
     setStepIndex(newIndex);
-  }, [enterpriseSlug, stepIndex]);
+  }, [enterpriseSlug, stepIndex, targetSelector]);
 
   const handleEndTour = async () => {
     try {
@@ -57,6 +67,10 @@ const useAdminOnboardingTour = (
     handleEndTour,
   });
 
+  const administerSubscriptionsFlow = useAdministerSubscriptionsFlow({
+    handleAdvanceTour,
+    handleEndTour,
+  });
   // Map target selectors to their respective flows
   const flowMapping = {
     // Learner progress flow targets
@@ -65,6 +79,11 @@ const useAdminOnboardingTour = (
     ...Object.fromEntries(
       Object.values(ANALYTICS_INSIGHTS_FLOW)
         .map(target => [target, analyticsFlow]),
+    ),
+    // Subscription flow targets - map to appropriate flow based on current page
+    ...Object.fromEntries(
+      Object.values(ADMINISTER_SUBSCRIPTIONS_FLOW)
+        .map(target => [target, administerSubscriptionsFlow]),
     ),
   };
 

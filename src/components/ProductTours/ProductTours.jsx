@@ -25,7 +25,11 @@ import {
   PORTAL_APPEARANCE_TOUR_COOKIE_NAME,
 } from './constants';
 import TourCollapsible from './TourCollapsible';
-import { TRACK_LEARNER_PROGRESS_TARGETS, ANALYTICS_INSIGHTS_FLOW } from './AdminOnboardingTours/constants';
+import {
+  TRACK_LEARNER_PROGRESS_TARGETS,
+  ANALYTICS_INSIGHTS_FLOW,
+  ADMINISTER_SUBSCRIPTIONS_FLOW,
+} from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
@@ -77,7 +81,9 @@ const ProductTours = ({
     if (targetId === ANALYTICS_INSIGHTS_FLOW.SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.analytics}/`);
     }
-
+    if (targetId === ADMINISTER_SUBSCRIPTIONS_FLOW.SIDEBAR) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`);
+    }
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);
     // collapsible will reopen on the last step of the flow

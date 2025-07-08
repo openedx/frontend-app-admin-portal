@@ -4,14 +4,27 @@ import { connect } from 'react-redux';
 import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
-import { InsertChartOutlined, Question, TrendingUp } from '@openedx/paragon/icons';
+import {
+  InsertChartOutlined,
+  Question,
+  TrendingUp,
+  CreditCard,
+} from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
-import messages, { TRACK_LEARNER_PROGRESS_TITLE, VIEW_ENROLLMENTS_INSIGHT_TITLE } from './AdminOnboardingTours/messages';
+import messages, {
+  TRACK_LEARNER_PROGRESS_TITLE,
+  VIEW_ENROLLMENTS_INSIGHT_TITLE,
+  ADMINISTER_SUBSCRIPTIONS_TITLE,
+} from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
-import { TRACK_LEARNER_PROGRESS_TARGETS, ANALYTICS_INSIGHTS_FLOW } from './AdminOnboardingTours/constants';
+import {
+  TRACK_LEARNER_PROGRESS_TARGETS,
+  ANALYTICS_INSIGHTS_FLOW,
+  ADMINISTER_SUBSCRIPTIONS_FLOW,
+} from './AdminOnboardingTours/constants';
 
 interface Props {
   dismissOnboardingTour: (adminUuid: string) => void;
@@ -34,6 +47,12 @@ const QUICK_START_GUIDE_STEPS = [
     title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
     timeEstimate: 1,
     targetId: ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
+  },
+  {
+    icon: CreditCard,
+    title: ADMINISTER_SUBSCRIPTIONS_TITLE,
+    timeEstimate: 2,
+    targetId: ADMINISTER_SUBSCRIPTIONS_FLOW.SIDEBAR,
   },
 ];
 

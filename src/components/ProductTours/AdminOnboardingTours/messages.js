@@ -2,6 +2,7 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 
 export const TRACK_LEARNER_PROGRESS_TITLE = 'Track Learner Progress';
 export const VIEW_ENROLLMENTS_INSIGHT_TITLE = 'View enrollment insights';
+export const ADMINISTER_SUBSCRIPTIONS_TITLE = 'Administer subscriptions';
 
 const messages = defineMessages({
   collapsibleTitle: {
@@ -138,6 +139,52 @@ const messages = defineMessages({
     defaultMessage: 'Discover the most in-demand skills in your organization based on course enrollments and completions. '
     + 'Use these insights to understand learner interests and skill development trends.',
     description: 'Description for the analytics tracking step six',
+  },
+  administerSubscriptionsTitle: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.title',
+    defaultMessage: ADMINISTER_SUBSCRIPTIONS_TITLE,
+    description: 'Title for the administer subscriptions step',
+  },
+  administerSubscriptionsStepOneBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.1',
+    defaultMessage: 'Manage your subscription plans and give learners access to self-enroll in courses. '
+    + 'Invite learners, track, usage, and manage licenses--all in one place.',
+    description: 'Description for the administer subscriptions flow step one',
+  },
+  administerSubscriptionsStepTwoBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.2',
+    defaultMessage: 'The list below shows active and expired subscription plans for you to view and manage.',
+    description: 'Description for the administer subscriptions flow step two',
+  },
+  administerSubscriptionsStepThreeBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.3',
+    defaultMessage: '"Manage learners" allows you to view more details about a plan.',
+    description: 'Description for the administer subscriptions flow step three',
+  },
+  administerSubscriptionsStepFourBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.4',
+    defaultMessage: 'On the subscription plan details page, you can check the expiration date, invite learners, and manage licenses.',
+    description: 'Description for the administer subscriptions flow step four',
+  },
+  administerSubscriptionsStepFiveBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.5',
+    defaultMessage: '"Invite Learners" allows you to invite learners to your subscription plan.',
+    description: 'Description for the administer subscriptions flow step five',
+  },
+  administerSubscriptionsStepSixBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.6',
+    defaultMessage: 'The License Allocation section lets you see invited learners, track license status, and revoke licenses as needed.',
+    description: 'Description for the administer subscriptions flow step six',
+  },
+  administerSubscriptionsStepSevenBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.7',
+    defaultMessage: 'Use filters to sort invited learners by license status or search by email address.',
+    description: 'Description for the administer subscriptions flow step seven',
+  },
+  administerSubscriptionsStepEightBody: {
+    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.8',
+    defaultMessage: 'To view more plans, navigate back to Subscription Management using this button or the main menu.',
+    description: 'Description for the administer subscriptions flow step eight',
   },
 });
 

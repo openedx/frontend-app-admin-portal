@@ -55,6 +55,11 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
     targetSelector,
   });
 
+  // Reset currentStep to 0 when the flow changes (e.g., when navigating between pages)
+  useEffect(() => {
+    setCurrentStep(0);
+  }, [adminOnboardingSteps.length]); // Reset when the number of steps changes
+
   useEffect(() => {
     if (adminOnboardingSteps[currentStep]) {
       const nextTarget = adminOnboardingSteps[currentStep].target;
@@ -95,8 +100,10 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       checkpoints: adminOnboardingSteps.map((step, index) => ({
         ...step,
         onAdvance: () => {
-          setCurrentStep(index + 1);
-          step.onAdvance();
+          if (step.onAdvance) {
+            step.onAdvance();
+            setCurrentStep(index + 1);
+          }
         },
       })),
     },

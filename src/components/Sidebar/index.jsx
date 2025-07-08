@@ -18,7 +18,11 @@ import { configuration, features } from '../../config';
 import { SubsidyRequestsContext } from '../subsidy-requests';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { TOUR_TARGETS } from '../ProductTours/constants';
-import { TRACK_LEARNER_PROGRESS_TARGETS, ANALYTICS_INSIGHTS_FLOW } from '../ProductTours/AdminOnboardingTours/constants';
+import {
+  TRACK_LEARNER_PROGRESS_TARGETS,
+  ANALYTICS_INSIGHTS_FLOW,
+  ADMINISTER_SUBSCRIPTIONS_FLOW,
+} from '../ProductTours/AdminOnboardingTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
@@ -139,6 +143,7 @@ const Sidebar = ({
       icon: <Icon src={CreditCard} />,
       hidden: !enableSubscriptionManagementScreen,
       notification: !!subsidyRequestsCounts.subscriptionLicenses,
+      id: ADMINISTER_SUBSCRIPTIONS_FLOW.SIDEBAR,
     },
     {
       title: 'Learner Credit Management',

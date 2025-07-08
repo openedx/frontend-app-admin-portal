@@ -123,7 +123,7 @@ const SubscriptionExpirationModals = ({ enterpriseId }) => {
     closeModal();
   };
 
-  return (showExpirationNotifications
+  return (!showExpirationNotifications
     && (
     <>
       <SubscriptionExpiringModal

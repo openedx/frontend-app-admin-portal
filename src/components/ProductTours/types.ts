@@ -5,7 +5,8 @@ export interface TourStep {
   placement: 'right' | 'left' | 'top' | 'bottom';
   title?: ReactNode;
   body: ReactNode;
-  onAdvance: () => void;
+  onAdvance?: () => void;
+  onEnd?: () => void;
 }
 
 export interface TourFlow {
