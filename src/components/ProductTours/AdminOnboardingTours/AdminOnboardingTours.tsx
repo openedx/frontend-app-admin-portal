@@ -58,7 +58,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   // Reset currentStep to 0 when the flow changes (e.g., when navigating between pages)
   useEffect(() => {
     setCurrentStep(0);
-  }, [adminOnboardingSteps.length]); // Reset when the number of steps changes
+  }, [adminOnboardingSteps.length]);
 
   useEffect(() => {
     if (adminOnboardingSteps[currentStep]) {

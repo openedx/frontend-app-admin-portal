@@ -37,8 +37,6 @@ const useAdminOnboardingTour = (
     const manageLearnersButton = document.getElementById('manage-learners-button');
     if (manageLearnersButton && targetSelector === 'manage-learners-button') {
       manageLearnersButton.click();
-      // Reset step index to 0 when navigating to detail page
-      // The flow will change, so we need to start from the beginning
       setStepIndex(0);
       return;
     }

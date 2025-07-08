@@ -4,7 +4,7 @@ import { Form, IconButton, Icon } from '@openedx/paragon';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import PropTypes from 'prop-types';
 import IconWithTooltip from '../IconWithTooltip';
-import { GRANULARITY, CALCULATION } from './data/constants';
+import { GRANULARITY, CALCULATION, DATE_RANGE } from './data/constants';
 
 export const DEFAULT_GROUP = '';
 
@@ -29,6 +29,24 @@ const AnalyticsFilters = ({
   const intl = useIntl();
   const [collapsed, setCollapsed] = useState(false);
   const isProgressTab = activeTab === 'progress';
+
+  const handleDateRangeChange = (selectedRange) => {
+    const today = new Date();
+    const rangeMap = {
+      [DATE_RANGE.LAST_7_DAYS]: 7,
+      [DATE_RANGE.LAST_30_DAYS]: 30,
+      [DATE_RANGE.LAST_90_DAYS]: 90,
+      [DATE_RANGE.YEAR_TO_DATE]: 365,
+    };
+    if (rangeMap[selectedRange]) {
+      const newStartDate = new Date(today.setDate(today.getDate() - rangeMap[selectedRange]))
+        .toISOString()
+        .split('T')[0];
+      setStartDate(newStartDate);
+    }
+    const newEndDate = new Date().toISOString().split('T')[0];
+    setEndDate(newEndDate);
+  };
 
   return (
     <div className={`container-fluid bg-primary-100 rounded-lg p-3 mb-2 position-relative analytics-filter-container ${collapsed ? 'collapsed' : ''}`}>
@@ -67,10 +85,38 @@ const AnalyticsFilters = ({
                 <Form.Control
                   controlClassName="font-weight-normal analytics-filter-form-controls rounded-0"
                   as="select"
-                  disabled
-                  defaultValue=""
+                  onChange={(e) => handleDateRangeChange(e.target.value)}
+                  disabled={isFetching}
+                  defaultValue={DATE_RANGE.LAST_90_DAYS}
                 >
-                  <option value="">Custom</option>
+                  <option value={DATE_RANGE.LAST_7_DAYS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.last.7.days',
+                      defaultMessage: 'Last 7 days',
+                      description: 'Option for last 7 days in date range filter in the admin portal analytics page',
+                    })}
+                  </option>
+                  <option value={DATE_RANGE.LAST_30_DAYS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.last.30.days',
+                      defaultMessage: 'Last 30 days',
+                      description: 'Option for last 30 days in date range filter in the admin portal analytics page',
+                    })}
+                  </option>
+                  <option value={DATE_RANGE.LAST_90_DAYS}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.last.90.days',
+                      defaultMessage: 'Last 90 days',
+                      description: 'Option for last 90 days in date range filter in the admin portal analytics page',
+                    })}
+                  </option>
+                  <option value={DATE_RANGE.YEAR_TO_DATE}>
+                    {intl.formatMessage({
+                      id: 'advance.analytics.date.range.filter.option.year.to.date',
+                      defaultMessage: 'Year to date',
+                      description: 'Option for year to date in date range filter in the admin portal analytics page',
+                    })}
+                  </option>
                 </Form.Control>
               </Form.Group>
             </div>

@@ -79,13 +79,14 @@ describe('useBudgetDetailTabs', () => {
     expect(catalogTab.props.disabled).toBe(true);
   });
 
-  test('excludes catalog tab when showCatalog conditions are not met', () => {
+  test('excludes catalog tab when showCatalog conditions are not met and policy is not bnr enabled', () => {
     const propsWithoutCatalog = {
       ...mockProps,
       subsidyAccessPolicy: {
         ...mockProps.subsidyAccessPolicy,
         groupAssociations: [],
         isAssignable: false,
+        bnrEnabled: false,
       },
       appliesToAllContexts: true,
       enterpriseFeatures: { topDownAssignmentRealTimeLcm: false },
@@ -95,6 +96,25 @@ describe('useBudgetDetailTabs', () => {
 
     const catalogTab = result.current.find(tab => tab.key === BUDGET_DETAIL_CATALOG_TAB);
     expect(catalogTab).toBeUndefined();
+  });
+
+  test('show catalog tab when showCatalog conditions are not met and policy is bnr enabled', () => {
+    const propsWithoutCatalog = {
+      ...mockProps,
+      subsidyAccessPolicy: {
+        ...mockProps.subsidyAccessPolicy,
+        groupAssociations: [],
+        isAssignable: false,
+        bnrEnabled: true,
+      },
+      appliesToAllContexts: true,
+      enterpriseFeatures: { topDownAssignmentRealTimeLcm: false },
+    };
+
+    const { result } = renderHook(() => useBudgetDetailTabs(propsWithoutCatalog), { wrapper });
+
+    const catalogTab = result.current.find(tab => tab.key === BUDGET_DETAIL_CATALOG_TAB);
+    expect(catalogTab).toBeDefined();
   });
 
   test('includes members tab when group learners exist and not applies to all contexts', () => {

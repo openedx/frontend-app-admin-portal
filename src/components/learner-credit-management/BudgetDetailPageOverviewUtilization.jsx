@@ -11,23 +11,25 @@ import { generatePath, useParams, Link } from 'react-router-dom';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { formatPrice, LEARNER_CREDIT_ROUTE } from './data';
 import EVENT_NAMES from '../../eventTracking';
+import { AssignedUtilizationDetails, BnRUtilizationDetails } from './utilization-details';
 
 const BudgetDetailPageOverviewUtilization = ({
   budgetId,
   budgetTotalSummary: { utilized },
   budgetAggregates,
   isAssignable,
+  isBnREnabledPolicy,
   enterpriseFeatures,
   enterpriseId,
   isRetired,
 }) => {
   const { enterpriseSlug, enterpriseAppPage } = useParams();
   const intl = useIntl();
-  const { amountAllocatedUsd, amountRedeemedUsd } = budgetAggregates;
   const {
     BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE,
     BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE,
     BUDGET_OVERVIEW_UTILIZATION_DROPDOWN_TOGGLE,
+    BUDGET_OVERVIEW_UTILIZATION_VIEW_PENDING_TABLE,
   } = EVENT_NAMES.LEARNER_CREDIT_MANAGEMENT;
 
   if (
@@ -35,7 +37,7 @@ const BudgetDetailPageOverviewUtilization = ({
     || isRetired
     || !enterpriseFeatures.topDownAssignmentRealTimeLcm
     || utilized <= 0
-    || !isAssignable
+    || (!isAssignable && !isBnREnabledPolicy)
   ) {
     return null;
   }
@@ -45,20 +47,31 @@ const BudgetDetailPageOverviewUtilization = ({
       return null;
     }
 
-    const linkText = (type === 'assigned')
-      ? intl.formatMessage({
+    let linkText;
+    let eventNameType;
+
+    if (type === 'assigned') {
+      linkText = intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.utilization.view.assigned',
         defaultMessage: 'View assigned activity',
         description: 'Link text for the view assigned activity link on the budget detail page',
-      })
-      : intl.formatMessage({
+      });
+      eventNameType = BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE;
+    } else if (type === 'approved-requests') {
+      linkText = intl.formatMessage({
+        id: 'lcm.budget.detail.page.overview.utilization.view.pending',
+        defaultMessage: 'View pending activity',
+        description: 'Link text for the view pending activity link on the budget detail page',
+      });
+      eventNameType = BUDGET_OVERVIEW_UTILIZATION_VIEW_PENDING_TABLE;
+    } else {
+      linkText = intl.formatMessage({
         id: 'lcm.budget.detail.page.overview.utilization.view.spent',
         defaultMessage: 'View spent activity',
         description: 'Link text for the view spent activity link on the budget detail page',
       });
-    const eventNameType = (type === 'assigned')
-      ? BUDGET_OVERVIEW_UTILIZATION_VIEW_ASSIGNED_TABLE
-      : BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE;
+      eventNameType = BUDGET_OVERVIEW_UTILIZATION_VIEW_SPENT_TABLE;
+    }
 
     return (
       <Button
@@ -115,52 +128,17 @@ const BudgetDetailPageOverviewUtilization = ({
               </h4>
               <Stack direction="vertical" gap={1}>
                 <h1 data-testid="budget-utilization-amount">{formatPrice(utilized)}</h1>
-                <p className="micro">
-                  <FormattedMessage
-                    id="lcm.budget.detail.page.overview.utilization.description"
-                    defaultMessage="Your total utilization includes both assigned funds (earmarked for future enrollment) and spent
-                    funds (redeemed for enrollment)"
-                    description="Description for the utilization details on the budget detail page"
+                {isBnREnabledPolicy ? (
+                  <BnRUtilizationDetails
+                    budgetAggregates={budgetAggregates}
+                    renderActivityLink={renderActivityLink}
                   />
-                </p>
-                <Stack className="small">
-                  <Row>
-                    <Col xl={3} className="mt-auto mb-auto">
-                      <FormattedMessage
-                        id="lcm.budget.detail.page.overview.utilization.assigned"
-                        defaultMessage="Amount assigned"
-                        description="Label for the amount assigned on the budget detail page"
-                      />
-                    </Col>
-                    <Col className="mt-auto mb-auto text-right" data-testid="budget-utilization-assigned">
-                      {formatPrice(amountAllocatedUsd)}
-                    </Col>
-                    <Col xl={7} className="text-right">
-                      {renderActivityLink({
-                        amount: amountAllocatedUsd,
-                        type: 'assigned',
-                      })}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xl={3} className="mt-auto mb-auto">
-                      <FormattedMessage
-                        id="lcm.budget.detail.page.overview.utilization.spent"
-                        defaultMessage="Amount spent"
-                        description="Label for the amount spent on the budget detail page"
-                      />
-                    </Col>
-                    <Col className="mt-auto mb-auto text-right" data-testid="budget-utilization-spent">
-                      {formatPrice(amountRedeemedUsd)}
-                    </Col>
-                    <Col xl={7} lg={7} className="text-right">
-                      {renderActivityLink({
-                        amount: amountRedeemedUsd,
-                        type: 'spent',
-                      })}
-                    </Col>
-                  </Row>
-                </Stack>
+                ) : (
+                  <AssignedUtilizationDetails
+                    budgetAggregates={budgetAggregates}
+                    renderActivityLink={renderActivityLink}
+                  />
+                )}
               </Stack>
             </Stack>
           </Col>
@@ -186,6 +164,7 @@ BudgetDetailPageOverviewUtilization.propTypes = {
   budgetTotalSummary: PropTypes.shape(budgetTotalSummaryShape).isRequired,
   budgetAggregates: PropTypes.shape(budgetAggregatesShape).isRequired,
   isAssignable: PropTypes.bool.isRequired,
+  isBnREnabledPolicy: PropTypes.bool.isRequired,
   enterpriseFeatures: PropTypes.shape({
     topDownAssignmentRealTimeLcm: PropTypes.bool,
   }).isRequired,
