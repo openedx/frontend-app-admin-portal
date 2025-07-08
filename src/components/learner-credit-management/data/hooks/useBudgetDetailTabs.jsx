@@ -30,9 +30,9 @@ export const useBudgetDetailTabs = ({
     isBudgetRetired: subsidyAccessPolicy?.retired,
   });
   const isCatalogTabDisabled = isBudgetRetiredOrExpired(status);
-  const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
-    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable);
   const isBnrEnabled = subsidyAccessPolicy?.bnrEnabled || false;
+  const showCatalog = (subsidyAccessPolicy?.groupAssociations?.length > 0 && !appliesToAllContexts)
+    || (enterpriseFeatures.topDownAssignmentRealTimeLcm && !!subsidyAccessPolicy?.isAssignable) || isBnrEnabled;
 
   return useMemo(() => {
     const tabsArray = [];
