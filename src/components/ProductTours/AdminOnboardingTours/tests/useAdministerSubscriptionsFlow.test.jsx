@@ -12,45 +12,6 @@ jest.mock('@edx/frontend-enterprise-utils', () => ({
   sendEnterpriseTrackEvent: jest.fn(),
 }));
 
-jest.mock('../messages', () => ({
-  administerSubscriptionsTitle: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.title',
-    defaultMessage: 'Administer subscriptions',
-  },
-  administerSubscriptionsStepOneBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.1',
-    defaultMessage: 'Manage your subscription plans and give learners access to self-enroll in courses.',
-  },
-  administerSubscriptionsStepTwoBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.2',
-    defaultMessage: 'The list below shows active and expired subscription plans.',
-  },
-  administerSubscriptionsStepThreeBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.3',
-    defaultMessage: '"Manage learners" allows you to view more details about a plan.',
-  },
-  administerSubscriptionsStepFourBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.4',
-    defaultMessage: 'On the subscription plan details page, you can check the expiration date.',
-  },
-  administerSubscriptionsStepFiveBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.5',
-    defaultMessage: '"Invite Learners" allows you to invite learners to your subscription plan.',
-  },
-  administerSubscriptionsStepSixBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.6',
-    defaultMessage: 'The License Allocation section lets you see invited learners.',
-  },
-  administerSubscriptionsStepSevenBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.7',
-    defaultMessage: 'Use filters to sort invited learners by license status.',
-  },
-  administerSubscriptionsStepEightBody: {
-    id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.8',
-    defaultMessage: 'To view more plans, navigate back to Subscription Management.',
-  },
-}));
-
 const renderHookWithIntl = (hookFn) => renderHook(hookFn, {
   wrapper: ({ children }) => (
     <IntlProvider locale="en" messages={{}}>
@@ -151,7 +112,7 @@ describe('useAdministerSubscriptionsFlow', () => {
       expect(result.current[0].target).toBe('#subscription-plans-detail-page');
       expect(result.current[1].target).toBe('#invite-learners-button');
       expect(result.current[2].target).toBe('#license-allocation-section');
-      expect(result.current[3].target).toBe('.pgn__data-table-layout-sidebar');
+      expect(result.current[3].target).toBe('#license-allocation-filters');
       expect(result.current[4].target).toBe('#subscription-navigation');
     });
 

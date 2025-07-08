@@ -36,7 +36,7 @@ export const ADMINISTER_SUBSCRIPTIONS_FLOW = {
   SUBSCRIPTION_PLANS_DETAIL_PAGE: 'subscription-plans-detail-page',
   INVITE_LEARNERS_BUTTON: 'invite-learners-button',
   LICENSE_ALLOCATION_SECTION: 'license-allocation-section',
-  LICENSE_ALLOCATION_FILTERS: 'pgn__data-table-layout-sidebar',
+  LICENSE_ALLOCATION_FILTERS: 'license-allocation-filters',
   SUBSCRIPTIONS_NAVIGATION: 'subscription-navigation',
 };
 const LEARNER_PROGRESS_ADVANCE_EVENT_NAME = 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.learner-progress.advance';

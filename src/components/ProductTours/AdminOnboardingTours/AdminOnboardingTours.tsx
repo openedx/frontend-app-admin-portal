@@ -55,10 +55,13 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
     targetSelector,
   });
 
-  // Reset currentStep to 0 when the flow changes (e.g., when navigating between pages)
+  // Reset step for use case where we need to navigate to a different page but still
+  // on the same flow
   useEffect(() => {
-    setCurrentStep(0);
-  }, [adminOnboardingSteps.length]);
+    if (targetSelector === 'subscription-plans-detail-page') {
+      setCurrentStep(0);
+    }
+  }, [targetSelector]);
 
   useEffect(() => {
     if (adminOnboardingSteps[currentStep]) {

@@ -40,7 +40,7 @@ const useAdministerSubscriptionsFlow = ({
         onAdvance: handleAdvanceTour,
       },
       {
-        target: `.${ADMINISTER_SUBSCRIPTIONS_FLOW.LICENSE_ALLOCATION_FILTERS}`,
+        target: `#${ADMINISTER_SUBSCRIPTIONS_FLOW.LICENSE_ALLOCATION_FILTERS}`,
         placement: 'right',
         body: intl.formatMessage(messages.administerSubscriptionsStepSevenBody),
         onAdvance: handleAdvanceTour,

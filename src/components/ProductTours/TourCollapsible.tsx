@@ -33,6 +33,7 @@ interface Props {
   uuid: string;
   showCollapsible: boolean;
   setShowCollapsible: (value: boolean) => void;
+  enableSubscriptionManagementScreen: boolean;
 }
 
 const QUICK_START_GUIDE_STEPS = [
@@ -64,6 +65,7 @@ const TourCollapsible: FC<Props> = (
     showCollapsible,
     setShowCollapsible,
     uuid: adminUuid,
+    enableSubscriptionManagementScreen,
   },
 ) => {
   const intl = useIntl();
@@ -87,16 +89,21 @@ const TourCollapsible: FC<Props> = (
         >
           <p className="small">{intl.formatMessage(messages.collapsibleIntro)}</p>
           <Stack gap={3} className="mb-3">
-            {QUICK_START_GUIDE_STEPS.map(step => (
-              <Step
-                key={step.title}
-                icon={step.icon}
-                title={step.title}
-                timeEstimate={step.timeEstimate}
-                targetId={step.targetId}
-                onTourSelect={onTourSelect}
-              />
-            ))}
+            {QUICK_START_GUIDE_STEPS.map(step => {
+              if (step.title === ADMINISTER_SUBSCRIPTIONS_TITLE && !enableSubscriptionManagementScreen) {
+                return <div />;
+              }
+              return (
+                <Step
+                  key={step.title}
+                  icon={step.icon}
+                  title={step.title}
+                  timeEstimate={step.timeEstimate}
+                  targetId={step.targetId}
+                  onTourSelect={onTourSelect}
+                />
+              );
+            })}
           </Stack>
         </FloatingCollapsible>
       )}
@@ -107,7 +114,7 @@ const TourCollapsible: FC<Props> = (
             <Tooltip id="product-tours-question-icon-tooltip">
               {intl.formatMessage(messages.questionIconTooltip)}
             </Tooltip>
-      )}
+          )}
         >
           <IconButton
             src={Question}
@@ -126,6 +133,7 @@ const mapStateToProps = state => ({
   onboardingTourCompleted: state.enterpriseCustomerAdmin.onboardingTourCompleted as boolean,
   onboardingTourDismissed: state.enterpriseCustomerAdmin.onboardingTourDismissed as boolean,
   uuid: state.enterpriseCustomerAdmin.uuid as string,
+  enableSubscriptionManagementScreen: state.portalConfiguration.enableSubscriptionManagementScreen as boolean,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -61,6 +61,12 @@ const selectColumn = {
   disableSortBy: true,
 };
 
+const CustomCheckboxFilter = (props) => (
+  <div id="license-status-filter">
+    <CheckboxFilter {...props} />
+  </div>
+);
+
 const LicenseManagementTable = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -217,7 +223,7 @@ const LicenseManagementTable = () => {
 
   return (
     <>
-      {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage /> }
+      {showSubscriptionZeroStateMessage && <SubscriptionZeroStateMessage />}
       <DataTable
         showFiltersInSidebar={showFiltersInSidebar}
         isLoading={loadingUsers}
@@ -240,23 +246,23 @@ const LicenseManagementTable = () => {
           getRowId: row => row.id,
         }}
         EmptyTableComponent={
-            /* eslint-disable react/no-unstable-nested-components */
-            () => {
-              if (loadingUsers) {
-                return null;
-              }
-              return (
-                <DataTable.EmptyTable
-                  content={intl.formatMessage({
-                    id: 'admin.portal.license.management.empty.table.no.results.label',
-                    defaultMessage: 'No results found',
-                    description: 'Message displayed when no results are found in license management table.',
-                  })}
-                />
-              );
+          /* eslint-disable react/no-unstable-nested-components */
+          () => {
+            if (loadingUsers) {
+              return null;
             }
-            /* eslint-enable react/no-unstable-nested-components */
+            return (
+              <DataTable.EmptyTable
+                content={intl.formatMessage({
+                  id: 'admin.portal.license.management.empty.table.no.results.label',
+                  defaultMessage: 'No results found',
+                  description: 'Message displayed when no results are found in license management table.',
+                })}
+              />
+            );
           }
+          /* eslint-enable react/no-unstable-nested-components */
+        }
         fetchData={fetchData}
         data={rows}
         columns={[
@@ -280,7 +286,7 @@ const LicenseManagementTable = () => {
               description: 'Header label for the status column in the license management table.',
             }),
             accessor: 'statusBadge',
-            Filter: CheckboxFilter,
+            Filter: CustomCheckboxFilter,
             filter: 'includesValue',
             filterChoices: [
               {
@@ -363,7 +369,7 @@ const LicenseManagementTable = () => {
         ]}
       />
       {toastMessage && (
-      <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>
+        <Toast onClose={() => setShowToast(false)} show={showToast}>{toastMessage}</Toast>
       )}
     </>
   );

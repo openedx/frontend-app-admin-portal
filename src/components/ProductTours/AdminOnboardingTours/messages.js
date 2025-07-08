@@ -158,7 +158,7 @@ const messages = defineMessages({
   },
   administerSubscriptionsStepThreeBody: {
     id: 'adminPortal.productTours.adminOnboarding.administerSubscriptions.body.3',
-    defaultMessage: '"Manage learners" allows you to view more details about a plan.',
+    defaultMessage: '"Manage learners" allows you to view more details about a plan. Let\'s take you there now',
     description: 'Description for the administer subscriptions flow step three',
   },
   administerSubscriptionsStepFourBody: {
