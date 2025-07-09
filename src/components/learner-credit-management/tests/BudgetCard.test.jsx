@@ -549,6 +549,66 @@ describe('<BudgetCard />', () => {
     expect(screen.getByText(formatPrice(mockBudgetAggregates.spent))).toBeInTheDocument();
   });
 
+  it.each([
+    { isBnREnabled: true },
+    { isBnREnabled: false },
+  ])('displays correctly for a current BnR enabled Policy (enterprise-access) (%s)', ({ isBnREnabled }) => {
+    const mockBudgetAggregates = {
+      total: 5000,
+      spent: 200,
+      pending: 100,
+      available: isBnREnabled ? 4700 : 4800,
+    };
+    const mockBudget = {
+      id: mockBudgetUuid,
+      name: mockBudgetDisplayName,
+      start: '2022-01-01',
+      end: '3023-01-01',
+      source: BUDGET_TYPES.policy,
+      aggregates: {
+        available: mockBudgetAggregates.available,
+        pending: isBnREnabled ? mockBudgetAggregates.pending : undefined,
+        spent: mockBudgetAggregates.spent,
+      },
+      isBnREnabled,
+      enterpriseSlug,
+      enterpriseUUID,
+    };
+    useSubsidySummaryAnalyticsApi.mockReturnValue({
+      isLoading: false,
+      subsidySummary: undefined,
+    });
+
+    render(<BudgetCardWrapper
+      original={mockBudget}
+    />);
+
+    expect(screen.getByText(mockBudgetDisplayName)).toBeInTheDocument();
+    expect(screen.queryByText('Executive Education')).not.toBeInTheDocument();
+    const formattedString = `Expires ${dayjs(mockBudget.end).format('MMMM D, YYYY')}`;
+    const elementsWithTestId = screen.getAllByTestId('budget-date');
+    const firstElementWithTestId = elementsWithTestId[0];
+    expect(firstElementWithTestId).toHaveTextContent(formattedString);
+
+    // View budget CTA
+    const viewBudgetCTA = screen.getByText('View budget', { selector: 'a' });
+    expect(viewBudgetCTA).toBeInTheDocument();
+    expect(viewBudgetCTA).toHaveAttribute('href', `/${enterpriseSlug}/admin/learner-credit/${mockBudgetUuid}`);
+
+    // Aggregates
+    expect(screen.getByText('Balance')).toBeInTheDocument();
+    expect(screen.getByText('Available')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.available))).toBeInTheDocument();
+    if (isBnREnabled) {
+      expect(screen.getByText('Pending')).toBeInTheDocument();
+      expect(screen.getByText(formatPrice(mockBudgetAggregates.pending))).toBeInTheDocument();
+    } else {
+      expect(screen.queryByText('Pending')).not.toBeInTheDocument();
+    }
+    expect(screen.getByText('Spent')).toBeInTheDocument();
+    expect(screen.getByText(formatPrice(mockBudgetAggregates.spent))).toBeInTheDocument();
+  });
+
   it('displays correctly for a retired Policy (enterprise-access) (%s)', () => {
     const mockBudgetAggregates = {
       total: 5000,

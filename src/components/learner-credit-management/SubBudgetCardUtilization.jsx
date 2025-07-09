@@ -7,6 +7,7 @@ import { isBudgetRetiredOrExpired } from './data/utils';
 
 const SubBudgetCardUtilization = ({
   isAssignable,
+  isBnREnabled,
   isFetchingBudgets,
   status,
   available,
@@ -57,6 +58,20 @@ const SubBudgetCardUtilization = ({
               </span>
             </Col>
             )}
+            {isBnREnabled && (
+            <Col xs="6" md="auto" className="mb-3 mb-md-0">
+              <div className="small font-weight-bold">
+                <FormattedMessage
+                  id="lcm.budgets.budget.card.pending"
+                  defaultMessage="Pending"
+                  description="Label for the pending balance on the budget card"
+                />
+              </div>
+              <span className="small">
+                {isFetchingBudgets ? <Skeleton /> : formatPrice(pending)}
+              </span>
+            </Col>
+            )}
           </>
         )}
         <Col xs="6" md="auto" className={classNames('mb-3 mb-md-0', { 'ml-n4.5': isRetiredOrExpired })}>
@@ -82,6 +97,7 @@ const SubBudgetCardUtilization = ({
 
 SubBudgetCardUtilization.propTypes = {
   isAssignable: PropTypes.bool,
+  isBnREnabled: PropTypes.bool,
   isFetchingBudgets: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   available: PropTypes.number,
