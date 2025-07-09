@@ -35,8 +35,8 @@ const SkillsByLearningHoursChart = ({
             isFetching={isFetching}
             isError={isError}
             chartType="Treemap"
-            chartId="skills-by-learning-hours-chart"
             chartProps={{
+              chartId: 'skills-by-learning-hours-chart',
               data: !!data,
               onClick,
               labels,

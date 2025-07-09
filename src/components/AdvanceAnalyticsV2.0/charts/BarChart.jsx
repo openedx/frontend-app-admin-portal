@@ -17,13 +17,14 @@ import PropTypes from 'prop-types';
  * @returns The rendered Plotly bar chart.
  */
 const BarChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, onClick,
+  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, onClick, chartId,
 }) => {
   const categories = Object.keys(colorMap).sort();
 
   const traces = useMemo(() => categories.map(category => {
     const filteredData = data.filter(item => item[colorKey] === category);
     return {
+      chartId,
       x: filteredData.map(item => item[xKey]),
       y: filteredData.map(item => item[yKey]),
       type: 'bar',
@@ -31,7 +32,7 @@ const BarChart = ({
       marker: { color: colorMap[category] },
       hovertemplate,
     };
-  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories]);
+  }), [data, xKey, yKey, colorKey, colorMap, hovertemplate, categories, chartId]);
 
   const layout = {
     margin: { t: 0 },
@@ -65,6 +66,7 @@ BarChart.defaultProps = {
 };
 
 BarChart.propTypes = {
+  chartId: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   xKey: PropTypes.string.isRequired,
   yKey: PropTypes.string.isRequired,

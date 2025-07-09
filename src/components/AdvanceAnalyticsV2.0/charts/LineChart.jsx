@@ -17,12 +17,13 @@ import PropTypes from 'prop-types';
  * @returns The rendered Plotly line chart.
  */
 const LineChart = ({
-  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, onClick,
+  data, xKey, yKey, colorKey, colorMap, hovertemplate, xAxisTitle, yAxisTitle, onClick, chartId,
 }) => {
   const traces = useMemo(() => {
     if (!colorKey) {
       // No grouping — render one line
       return [{
+        chartId,
         x: data.map(item => item[xKey]),
         y: data.map(item => item[yKey]),
         type: 'scatter',
@@ -46,7 +47,7 @@ const LineChart = ({
         hovertemplate,
       };
     });
-  }, [data, xKey, yKey, colorKey, colorMap, hovertemplate]);
+  }, [data, xKey, yKey, colorKey, colorMap, hovertemplate, chartId]);
 
   const layout = {
     margin: { t: 0 },
@@ -78,6 +79,7 @@ LineChart.defaultProps = {
 };
 
 LineChart.propTypes = {
+  chartId: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   xKey: PropTypes.string.isRequired,
   yKey: PropTypes.string.isRequired,
