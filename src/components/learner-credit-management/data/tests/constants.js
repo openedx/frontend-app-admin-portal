@@ -120,25 +120,6 @@ export const mockSpendLimitNoGroupsSubsidyAccessPolicy = {
   subsidyUuid: 'mock-subsidy-uuid',
 };
 
-export const mockPerLearnerSpendLimitSubsidyAccessPolicyWithBnrEnabled = {
-  uuid: mockSubsidyAccessPolicyUUID,
-  subsidyActiveDatetime: new Date(today).toISOString(),
-  subsidyExpirationDatetime: new Date(today + 130 * 24 * 60 * 60 * 1000).toISOString(),
-  groupAssociations: [mockGroupUuid],
-  policyType: 'PerLearnerSpendCreditAccessPolicy',
-  displayName: 'Browse and Request Per Learner Credit',
-  spendLimit: 10000 * 100,
-  aggregates: {
-    spendAvailableUsd: 10000,
-    amountAllocatedUsd: 100,
-    amountRedeemedUsd: 350,
-  },
-  isAssignable: false,
-  subsidyUuid: 'mock-subsidy-uuid',
-  catalogUuid: 'mock-catalog-uuid',
-  bnrEnabled: true,
-};
-
 export const mockSubsidySummary = {
   budgetsSummary: [],
   offerId: '1234',
