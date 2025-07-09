@@ -5,8 +5,9 @@ export interface TourStep {
   placement: 'right' | 'left' | 'top' | 'bottom';
   title?: ReactNode;
   body: ReactNode;
-  onAdvance?: () => void;
-  onEnd?: () => void;
+  // flow uuid is needed for the final completion step
+  onAdvance?: (advanceEventName: string, flowUuid?: string) => void;
+  onEnd?: (endEventName: string, flowUuid?: string) => void;
 }
 
 export interface TourFlow {

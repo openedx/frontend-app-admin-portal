@@ -2,8 +2,8 @@ import React, { FC, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ProductTour } from '@openedx/paragon';
-import { FormattedMessage } from '@edx/frontend-platform/i18n';
-import useAdminOnboardingTour from './useAdminOnboardingTour';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import AdminOnboardingTour from './flows/AdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
 
@@ -13,14 +13,14 @@ interface Insights {
 }
 
 interface AdminOnboardingToursProps {
-  isOpen: boolean;
-  onClose: () => void;
-  targetSelector: string;
   adminUuid: string,
-  setTarget: Function,
   enterpriseSlug: string;
   insights: Insights;
   insightsLoading: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  setTarget: Function,
+  targetSelector: string;
 }
 
 interface RootState {
@@ -28,31 +28,22 @@ interface RootState {
     insights: Insights;
     loading: boolean;
   };
+  enterpriseCustomerAdmin: {
+    uuid: string;
+  };
   portalConfiguration: {
     enterpriseSlug: string;
   };
-  enterpriseCustomerAdmin: {
-    uuid: string;
-  }
 }
 
 const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
-  isOpen,
-  onClose,
-  targetSelector,
-  setTarget,
-  adminUuid,
-  enterpriseSlug,
-  insights,
-  insightsLoading,
+  adminUuid, enterpriseSlug, insights, insightsLoading, isOpen, onClose, setTarget, targetSelector,
 }) => {
+  const intl = useIntl();
   const aiButtonVisible = (insights?.learner_engagement && insights?.learner_progress) && !insightsLoading;
   const [currentStep, setCurrentStep] = useState(0);
-  const adminOnboardingSteps = useAdminOnboardingTour({
-    enterpriseSlug,
-    adminUuid,
-    aiButtonVisible,
-    targetSelector,
+  const adminOnboardingSteps = AdminOnboardingTour({
+    adminUuid, aiButtonVisible, currentStep, setCurrentStep, enterpriseSlug, onClose, targetSelector,
   });
 
   // Reset step for use case where we need to navigate to a different page but still
@@ -76,39 +67,25 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
       tourId: 'admin-onboarding-tour',
       enabled: isOpen,
       startingIndex: currentStep,
-      advanceButtonText: (
-        <FormattedMessage
-          id="adminPortal.productTours.adminOnboarding.next"
-          defaultMessage="Next"
-          description="Text for the next button"
-        />
-      ),
-      backButtonText: (
-        <FormattedMessage
-          id="adminPortal.productTours.adminOnboarding.back"
-          defaultMessage="Back"
-          description="Text for the back button"
-        />
-      ),
-      endButtonText: (
-        <FormattedMessage
-          id="adminPortal.productTours.adminOnboarding.end"
-          defaultMessage="Keep going"
-          description="Text for the end button"
-        />
-      ),
+      advanceButtonText: intl.formatMessage({
+        id: 'adminPortal.productTours.adminOnboarding.next',
+        defaultMessage: 'Next',
+        description: 'Text for the next button',
+      }),
+      backButtonText: intl.formatMessage({
+        id: 'adminPortal.productTours.adminOnboarding.back',
+        defaultMessage: 'Back',
+        description: 'Text for the back button',
+      }),
+      endButtonText: intl.formatMessage({
+        id: 'adminPortal.productTours.adminOnboarding.end',
+        defaultMessage: 'Keep going',
+        description: 'Text for the end button',
+      }),
       onDismiss: onClose,
       onEnd: onClose,
       onEscape: onClose,
-      checkpoints: adminOnboardingSteps.map((step, index) => ({
-        ...step,
-        onAdvance: () => {
-          if (step.onAdvance) {
-            step.onAdvance();
-            setCurrentStep(index + 1);
-          }
-        },
-      })),
+      checkpoints: adminOnboardingSteps,
     },
   ];
 
@@ -123,10 +100,6 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
 };
 
 AdminOnboardingTours.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  targetSelector: PropTypes.string.isRequired,
-  setTarget: PropTypes.func.isRequired,
   adminUuid: PropTypes.string.isRequired,
   enterpriseSlug: PropTypes.string.isRequired,
   insights: PropTypes.shape({
@@ -134,6 +107,10 @@ AdminOnboardingTours.propTypes = {
     learner_progress: PropTypes.shape({}),
   }).isRequired,
   insightsLoading: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  setTarget: PropTypes.func.isRequired,
+  targetSelector: PropTypes.string.isRequired,
 };
 const mapStateToProps = (state: RootState) => ({
   adminUuid: state.enterpriseCustomerAdmin.uuid,

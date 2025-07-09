@@ -62,7 +62,7 @@ const selectColumn = {
 };
 
 const CustomCheckboxFilter = (props) => (
-  <div id="license-status-filter">
+  <div id="license-allocation-filters">
     <CheckboxFilter {...props} />
   </div>
 );

@@ -5,25 +5,24 @@ import {
   IconButton, Icon, OverlayTrigger, Tooltip, Stack,
 } from '@openedx/paragon';
 import {
-  InsertChartOutlined,
-  Question,
-  TrendingUp,
-  CreditCard,
+  CreditCard, InsertChartOutlined, Question, Person, TrendingUp,
 } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
 import FloatingCollapsible from '../FloatingCollapsible';
 import messages, {
+  ADMINISTER_SUBSCRIPTIONS_TITLE,
+  ORGANIZE_LEARNERS_TITLE,
   TRACK_LEARNER_PROGRESS_TITLE,
   VIEW_ENROLLMENTS_INSIGHT_TITLE,
-  ADMINISTER_SUBSCRIPTIONS_TITLE,
 } from './AdminOnboardingTours/messages';
 import { dismissOnboardingTour, reopenOnboardingTour } from '../../data/actions/enterpriseCustomerAdmin';
 import { Step } from './AdminOnboardingTours/OnboardingSteps';
 import {
+  ADMINISTER_SUBSCRIPTIONS_TARGETS,
+  ANALYTICS_INSIGHTS_TARGETS,
+  ORGANIZE_LEARNER_TARGETS,
   TRACK_LEARNER_PROGRESS_TARGETS,
-  ANALYTICS_INSIGHTS_FLOW,
-  ADMINISTER_SUBSCRIPTIONS_FLOW,
 } from './AdminOnboardingTours/constants';
 
 interface Props {
@@ -36,26 +35,27 @@ interface Props {
   enableSubscriptionManagementScreen: boolean;
 }
 
-const QUICK_START_GUIDE_STEPS = [
-  {
-    icon: TrendingUp,
-    title: TRACK_LEARNER_PROGRESS_TITLE,
-    timeEstimate: 2,
-    targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
-  },
-  {
-    icon: InsertChartOutlined,
-    title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
-    timeEstimate: 1,
-    targetId: ANALYTICS_INSIGHTS_FLOW.SIDEBAR,
-  },
-  {
-    icon: CreditCard,
-    title: ADMINISTER_SUBSCRIPTIONS_TITLE,
-    timeEstimate: 2,
-    targetId: ADMINISTER_SUBSCRIPTIONS_FLOW.SIDEBAR,
-  },
-];
+const QUICK_START_GUIDE_STEPS = [{
+  icon: TrendingUp,
+  title: TRACK_LEARNER_PROGRESS_TITLE,
+  timeEstimate: 2,
+  targetId: TRACK_LEARNER_PROGRESS_TARGETS.LEARNER_PROGRESS_SIDEBAR,
+}, {
+  icon: InsertChartOutlined,
+  title: VIEW_ENROLLMENTS_INSIGHT_TITLE,
+  timeEstimate: 1,
+  targetId: ANALYTICS_INSIGHTS_TARGETS.SIDEBAR,
+}, {
+  icon: CreditCard,
+  title: ADMINISTER_SUBSCRIPTIONS_TITLE,
+  timeEstimate: 2,
+  targetId: ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR,
+}, {
+  icon: Person,
+  title: ORGANIZE_LEARNERS_TITLE,
+  timeEstimate: 2,
+  targetId: ORGANIZE_LEARNER_TARGETS.PEOPLE_MANAGEMENT_SIDEBAR,
+}];
 
 const TourCollapsible: FC<Props> = (
   {

@@ -1,6 +1,8 @@
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import useAdminOnboardingTour from '../useAdminOnboardingTour';
+import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import useAdminOnboardingTour from '../flows/AdminOnboardingTour';
+import { ADMIN_TOUR_EVENT_NAMES } from '../constants';
 
 const mockMessages = {
   collapsibleTitle: {
@@ -9,13 +11,21 @@ const mockMessages = {
   },
   learnerProgressTitle: {
     id: 'admin.portal.productTours.learnerProgress.title',
-    defaultMessage: 'Track Learner Progress',
+    defaultMessage: 'Track learner progress',
   },
   learnerProgressBody: {
     id: 'admin.portal.productTours.learnerProgress.body',
     defaultMessage: 'Track learner activity and progress.',
   },
 };
+
+jest.mock('@edx/frontend-enterprise-utils', () => {
+  const originalModule = jest.requireActual('@edx/frontend-enterprise-utils');
+  return ({
+    ...originalModule,
+    sendEnterpriseTrackEvent: jest.fn(),
+  });
+});
 
 jest.mock('@edx/frontend-platform/i18n', () => ({
   useIntl: () => ({
@@ -30,6 +40,8 @@ jest.mock('@edx/frontend-platform/i18n', () => ({
 
 describe('useAdminOnboardingTour', () => {
   const defaultProps = {
+    currentStep: 0,
+    setCurrentStep: jest.fn(),
     enterpriseSlug: 'test-enterprise',
   };
 
@@ -67,5 +79,21 @@ describe('useAdminOnboardingTour', () => {
     requiredProps.forEach(prop => {
       expect(result.current[0]).toHaveProperty(prop);
     });
+  });
+
+  it('should call sendEnterpriseTrackEvent with correct parameters when tour advances', () => {
+    const { result } = renderHook(() => useAdminOnboardingTour(defaultProps));
+
+    const firstStep = result.current[0];
+
+    act(() => {
+      firstStep.onAdvance();
+    });
+
+    expect(sendEnterpriseTrackEvent).toHaveBeenCalledWith(
+      defaultProps.enterpriseSlug,
+      ADMIN_TOUR_EVENT_NAMES.LEARNER_PROGRESS_ADVANCE_EVENT_NAME,
+      { 'completed-step': 1 },
+    );
   });
 });
