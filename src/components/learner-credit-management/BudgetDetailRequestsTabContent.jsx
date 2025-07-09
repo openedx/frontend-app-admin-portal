@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Stack } from '@openedx/paragon';
 
 import { connect } from 'react-redux';
-import useBnrSubsidyRequests from './data/hooks/useBnrSubsidyRequests';
+import useBnrSubsidyRequests from './requests-tab/data/hooks/useBnrSubsidyRequests';
 import EnterpriseAccessApiService from '../../data/services/EnterpriseAccessApiService';
-
+import { PAGE_SIZE } from './requests-tab/data/constants';
 import RequestsTable from './requests-tab/RequestsTable';
 import DeclineBnrSubsidyRequestModal from './requests-tab/DeclineBnrSubsidyRequestModal';
 import ApproveBnrSubsidyRequestModal from './requests-tab/ApproveBnrSubsidyRequestModal';
-import { PAGE_SIZE, useBudgetId } from './data';
+import { useBudgetId } from './data';
 
 const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
   const {
@@ -18,7 +18,7 @@ const BudgetDetailRequestsTabContent = ({ enterpriseId }) => {
     requestsOverview,
     fetchBnrRequests,
     refreshRequests,
-  } = useBnrSubsidyRequests({ enterpriseId });
+  } = useBnrSubsidyRequests(enterpriseId);
 
   const { subsidyAccessPolicyId } = useBudgetId();
   const [selectedRequest, setSelectedRequest] = useState();

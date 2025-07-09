@@ -419,13 +419,11 @@ export async function retrieveBudgetDetailActivityOverview({
   const result = {
     spentTransactions: responses[0].value,
   };
-  let responseIndex = 1;
   if (isBudgetAssignable) {
-    result.contentAssignments = responses[responseIndex].value;
-    responseIndex += 1;
+    result.contentAssignments = responses[1].value;
   }
   if (isBnrEnabledSubsidy) {
-    result.approvedBnrRequests = responses[responseIndex].value;
+    result.approvedBnrRequests = isBudgetAssignable ? responses[2].value : responses[1].value;
   }
   return result;
 }
@@ -716,12 +714,10 @@ export const startAndEnrollBySortLogic = (prev, next) => {
  * @param courseRuns
  * @param subsidyExpirationDatetime
  * @param isLateRedemptionAllowed
- * @param catalogContainsRestrictedRunsData
  * @returns {*}
  */
 export const getAssignableCourseRuns = ({
-  courseRuns,
-  subsidyExpirationDatetime,
+  courseRuns, subsidyExpirationDatetime,
   isLateRedemptionAllowed,
   catalogContainsRestrictedRunsData,
 }) => {

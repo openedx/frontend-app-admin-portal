@@ -6,7 +6,6 @@ import { Skeleton, Stack } from '@openedx/paragon';
 
 import BudgetDetailAssignments from './BudgetDetailAssignments';
 import BudgetDetailRedemptions from './BudgetDetailRedemptions';
-import BudgetDetailApprovedRequest from './BudgetDetailApprovedRequest';
 import { BudgetDetailPageContext } from './BudgetDetailPageWrapper';
 import { useBudgetDetailActivityOverview, useBudgetId, useSubsidyAccessPolicy } from './data';
 import NoAssignableBudgetActivity from './empty-state/NoAssignableBudgetActivity';
@@ -41,36 +40,19 @@ const BudgetDetailActivityTabContents = ({ enterpriseUUID, enterpriseFeatures, a
 
   const hasSpentTransactions = budgetActivityOverview.spentTransactions?.count > 0;
   const hasContentAssignments = budgetActivityOverview.contentAssignments?.count > 0;
-  const hasApprovedBnrRequests = budgetActivityOverview.approvedBnrRequests?.count > 0;
 
   // If enterprise groups is turned on, it's learner credit NOT enterprise offers w/ no spend
   const renderBnEActivity = isEnterpriseGroupsEnabled && (enterpriseOfferId == null) && !hasSpentTransactions;
 
-  if (subsidyAccessPolicy?.bnrEnabled) {
-    // If we don't have a request in the approved state and there are no spent transactions,
-    // that means requests table and spent table both are empty.
-    if (!hasApprovedBnrRequests && !hasSpentTransactions) {
-      return <NoBnRBudgetActivity />;
-    }
+  const hasApprovedBnrRequests = budgetActivityOverview.approvedBnrRequests?.count > 0;
 
-    return (
-      <Stack gap={5}>
-        <BudgetDetailApprovedRequest />
-        <BudgetDetailRedemptions />
-      </Stack>
-    );
+  if (subsidyAccessPolicy?.bnrEnabled && !hasApprovedBnrRequests && !hasSpentTransactions) {
+    // If we don't have a request in approved state and there are no spent transactions,
+    // that means requests table and spent table both are empty.
+    return <NoBnRBudgetActivity />;
   }
 
   if (!isTopDownAssignmentEnabled || !subsidyAccessPolicy?.isAssignable) {
-    if (subsidyAccessPolicy?.bnrEnabled) {
-      return (
-        <Stack gap={5}>
-          <BudgetDetailApprovedRequest />
-          <BudgetDetailRedemptions />
-        </Stack>
-      );
-    }
-
     if (isEnterpriseGroupsEnabled) {
       if (appliesToAllContexts) {
         return (
