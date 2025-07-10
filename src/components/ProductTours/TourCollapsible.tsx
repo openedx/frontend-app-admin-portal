@@ -91,7 +91,7 @@ const TourCollapsible: FC<Props> = (
           <Stack gap={3} className="mb-3">
             {QUICK_START_GUIDE_STEPS.map(step => {
               if (step.title === ADMINISTER_SUBSCRIPTIONS_TITLE && !enableSubscriptionManagementScreen) {
-                return <div />;
+                return null;
               }
               return (
                 <Step

@@ -6,6 +6,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import AdminOnboardingTour from './flows/AdminOnboardingTour';
 import CheckpointOverlay from '../CheckpointOverlay';
 import '../_ProductTours.scss';
+import { RESET_TARGETS } from './constants';
 
 interface Insights {
   learner_engagement?: any;
@@ -49,7 +50,7 @@ const AdminOnboardingTours: FC<AdminOnboardingToursProps> = ({
   // Reset step for use case where we need to navigate to a different page but still
   // on the same flow
   useEffect(() => {
-    if (targetSelector === 'subscription-plans-detail-page') {
+    if (RESET_TARGETS.includes(targetSelector)) {
       setCurrentStep(0);
     }
   }, [targetSelector]);

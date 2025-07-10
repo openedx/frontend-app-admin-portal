@@ -42,6 +42,11 @@ export const ADMINISTER_SUBSCRIPTIONS_TARGETS = {
   SUBSCRIPTIONS_NAVIGATION: 'subscription-navigation',
 };
 
+// targets that will trigger an index reset
+export const RESET_TARGETS = [
+  ADMINISTER_SUBSCRIPTIONS_TARGETS.SUBSCRIPTION_PLANS_DETAIL_PAGE,
+];
+
 export const ADMIN_TOUR_EVENT_NAMES = {
   ENROLLMENT_INSIGHTS_ADVANCE_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.advance',
   ENROLLMENT_INSIGHTS_COMPLETED_EVENT_NAME: 'edx.ui.enterprise.admin-portal.admin-onboarding-tours.enrollment-insights.completed',
