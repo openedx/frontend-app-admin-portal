@@ -25,7 +25,12 @@ import {
   useLearnerDetailPageTour,
 } from './data/hooks';
 import TourCollapsible from './TourCollapsible';
-import { ANALYTICS_INSIGHTS_TARGETS, ORGANIZE_LEARNER_TARGETS, TRACK_LEARNER_PROGRESS_TARGETS } from './AdminOnboardingTours/constants';
+import {
+  ADMINISTER_SUBSCRIPTIONS_TARGETS,
+  ANALYTICS_INSIGHTS_TARGETS,
+  ORGANIZE_LEARNER_TARGETS,
+  TRACK_LEARNER_PROGRESS_TARGETS,
+} from './AdminOnboardingTours/constants';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import OnboardingWelcomeModal from './AdminOnboardingTours/OnboardingWelcomeModal';
 
@@ -77,6 +82,8 @@ const ProductTours = ({
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.peopleManagement}/`);
     } else if (targetId === ANALYTICS_INSIGHTS_TARGETS.SIDEBAR) {
       navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.analytics}/`);
+    } else if (targetId === ADMINISTER_SUBSCRIPTIONS_TARGETS.SIDEBAR) {
+      navigate(`/${enterpriseSlug}/admin/${ROUTE_NAMES.subscriptionManagement}/`);
     }
     setSelectedTourTarget(targetId);
     setIsAdminTourOpen(true);
