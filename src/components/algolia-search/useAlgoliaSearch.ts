@@ -32,7 +32,6 @@ interface UseSecuredAlgoliaApiKeyResult {
 
 interface UseAlgoliaSearchArgs {
   enterpriseId: string;
-  enterpriseFeatures: EnterpriseFeatures;
 }
 
 export interface UseAlgoliaSearchResult {
@@ -98,12 +97,8 @@ function useSecuredAlgoliaApiKey({
 
 function useAlgoliaSearch({
   enterpriseId,
-  enterpriseFeatures,
 }: UseAlgoliaSearchArgs): UseAlgoliaSearchResult {
-  const isCatalogQueryFiltersEnabled = !!(
-    enterpriseFeatures.catalogQuerySearchFiltersEnabled
-    && !!configuration.ALGOLIA.APP_ID
-  );
+  const isCatalogQueryFiltersEnabled = !!configuration.ALGOLIA.APP_ID;
   const securedAlgoliaApiKeyResult = useSecuredAlgoliaApiKey({
     enterpriseId,
     isCatalogQueryFiltersEnabled,

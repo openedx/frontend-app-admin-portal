@@ -3,10 +3,10 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import configureMockStore, { MockStore } from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
 import type { ThunkDispatch } from 'redux-thunk';
+import thunk from 'redux-thunk';
 import type { AnyAction } from 'redux';
-import { getAuthenticatedUser, getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { getAuthenticatedHttpClient, getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { QueryClientProvider } from '@tanstack/react-query';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
@@ -49,9 +49,6 @@ const mockStore = configureMockStore([thunk]);
 
 interface PortalConfigurationState {
   enterpriseId: string;
-  enterpriseFeatures: {
-    catalogQuerySearchFiltersEnabled: boolean;
-  };
 }
 
 interface RootState {
@@ -97,21 +94,13 @@ describe('withAlgoliaSearch', () => {
   });
 
   it.each([
-    // Legacy filters, enterprise customer specific attributes
     {
-      hasCatalogQuerySearchFiltersEnabled: false,
-    },
-    // New filters, catalog query specific attributes
-    {
-      hasCatalogQuerySearchFiltersEnabled: true,
       hasErrorOnSecuredAlgoliaApiKeyRequest: false,
     },
     {
-      hasCatalogQuerySearchFiltersEnabled: true,
       hasErrorOnSecuredAlgoliaApiKeyRequest: true,
     },
   ])('should render WrappedComponent with expected injected props (%s)', async ({
-    hasCatalogQuerySearchFiltersEnabled,
     hasErrorOnSecuredAlgoliaApiKeyRequest,
   }) => {
     const mockEnterpriseId = 'test-enterprise-id';
@@ -119,28 +108,23 @@ describe('withAlgoliaSearch', () => {
     const store: MockStore<RootState, DispatchExts> = mockStore({
       portalConfiguration: {
         enterpriseId: mockEnterpriseId,
-        enterpriseFeatures: {
-          catalogQuerySearchFiltersEnabled: hasCatalogQuerySearchFiltersEnabled,
-        },
       },
     });
-    if (hasCatalogQuerySearchFiltersEnabled) {
-      const apiUrl = `${configuration.ENTERPRISE_CATALOG_BASE_URL}/api/v1/enterprise-customer/${mockEnterpriseId}/secured-algolia-api-key/`;
-      const mockSecuredAlgoliaApiKeyResponse = {
-        algolia: {
-          securedApiKey: 'securedApiKey',
-          validUntil: '2023-10-01T00:00:00Z',
-        },
-        catalog_uuids_to_catalog_query_uuids: {
-          'catalog-uuid-1': 'catalog-query-uuid-1',
-          'catalog-uuid-2': 'catalog-query-uuid-2',
-        },
-      };
-      if (hasErrorOnSecuredAlgoliaApiKeyRequest) {
-        axiosMock.onGet(apiUrl).reply(500);
-      } else {
-        axiosMock.onGet(apiUrl).reply(200, mockSecuredAlgoliaApiKeyResponse);
-      }
+    const apiUrl = `${configuration.ENTERPRISE_CATALOG_BASE_URL}/api/v1/enterprise-customer/${mockEnterpriseId}/secured-algolia-api-key/`;
+    const mockSecuredAlgoliaApiKeyResponse = {
+      algolia: {
+        securedApiKey: 'securedApiKey',
+        validUntil: '2023-10-01T00:00:00Z',
+      },
+      catalog_uuids_to_catalog_query_uuids: {
+        'catalog-uuid-1': 'catalog-query-uuid-1',
+        'catalog-uuid-2': 'catalog-query-uuid-2',
+      },
+    };
+    if (hasErrorOnSecuredAlgoliaApiKeyRequest) {
+      axiosMock.onGet(apiUrl).reply(500);
+    } else {
+      axiosMock.onGet(apiUrl).reply(200, mockSecuredAlgoliaApiKeyResponse);
     }
     render(<Wrapper store={store} />);
 
@@ -150,7 +134,7 @@ describe('withAlgoliaSearch', () => {
       expect(screen.getByText('Search Client Loaded')).toBeInTheDocument();
     });
 
-    if (hasCatalogQuerySearchFiltersEnabled && !hasErrorOnSecuredAlgoliaApiKeyRequest) {
+    if (!hasErrorOnSecuredAlgoliaApiKeyRequest) {
       expect(algoliasearch).toHaveBeenCalledWith(
         configuration.ALGOLIA.APP_ID,
         mockSecuredApiKey,
